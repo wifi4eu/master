@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <localRepository>c:/project/.m2</localRepository>
+
+  <pluginGroups>
+     <pluginGroup>com.oracle.weblogic</pluginGroup>
+  </pluginGroups>
+
+  <proxies>
+    <proxy>
+      <id>optional</id>
+      <active>true</active>
+      <protocol>http</protocol>
+      <username>USER</username>
+      <password>PASSWORD</password>
+      <host>147.67.138.13</host>
+      <port>8012</port>
+      <nonProxyHosts>local.net|some.host.com</nonProxyHosts>
+    </proxy>
+  </proxies>
+
+
+  <servers>
+
+    <server>
+      <id>nexus-ec</id>
+      <username>USER</username>
+      <password>PASSWORD</password>
+    </server>
+	
+    <server>
+      <id>nexus-digit</id>
+      <username>USER</username>
+      <password>PASSWORD</password>
+    </server>    
+	
+    <server>
+      <id>nexus-digit-snapshots</id>
+      <username>USER</username>
+      <password>PASSWORD</password>
+    </server>    
+
+    <server>
+      <id>refapp</id>
+      <username>USER</username>
+      <password>PASSWORD</password>
+    </server>	
+
+    <server>
+      <id>refapp-snapshots</id>
+      <username>USER</username>
+      <password>PASSWORD</password>
+    </server>	
+
+
+  </servers>
+
+  <mirrors>
+  </mirrors>
+  
+  <profiles>
+  <profile>
+            <id>location-commission</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>env.USERDOMAIN</name>
+                    <value>NET1</value>
+                </property>
+           </activation>
+
+            <repositories>
+                <repository>
+                    <id>nexus-ec</id>
+                    <url>https://webgate.ec.europa.eu/CITnet/nexus/content/groups/public</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+
+                <repository>
+                    <id>nexus-digit</id>
+                    <url>https://webgate.ec.europa.eu/CITnet/nexus/content/repositories/digit</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+
+                <repository>
+                    <id>nexus-digit-snapshots</id>
+                    <url>https://webgate.ec.europa.eu/CITnet/nexus/content/repositories/digit-snapshots</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+
+				<repository>
+					<id>refapp</id>
+					<name>Refapp Repository</name>
+					<url>https://webgate.ec.europa.eu/CITnet/nexus/content/repositories/digit</url>
+				</repository>
+				<repository>
+					<id>refapp-snapshots</id>
+					<name>Refapp Snapshots Repository</name>
+					<url>https://webgate.ec.europa.eu/CITnet/nexus/content/repositories/refapp-snapshots</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>					
+				</repository>	                
+                
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>nexus-ec</id>
+                    <url>https://webgate.ec.europa.eu/CITnet/nexus/content/groups/public/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+                                                
+        </profile>
+
+  </profiles>
+
+
+</settings>
