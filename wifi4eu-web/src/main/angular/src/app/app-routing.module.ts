@@ -1,19 +1,24 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { HomeComponent } from './home/home.component';
- 
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {HomeComponent} from './home/home.component';
+
 @NgModule({
-    imports: [
-        RouterModule.forRoot([
-            { path: '', redirectTo: 'screen/home', pathMatch: 'full' },
-            { path: 'index.jsp', redirectTo: 'screen/home' },
-            { path: 'screen/home', component: HomeComponent },
-            { path: 'screen/module1', loadChildren: 'app/+module1/module1.module#Module1Module' },
-            { path: 'screen/module2', loadChildren: 'app/+module2/module2.module#Module2Module' }
-        ])
-    ],
-    exports: [
-        RouterModule
-    ]
+  imports: [RouterModule.forRoot([
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      }, {
+        path: 'index.jsp',
+        redirectTo: 'home'
+      }, {
+        path: 'home',
+        component: HomeComponent
+      }, {
+        path: 'registration',
+        loadChildren: 'app/+registration/registration.module#RegistrationModule'
+      }
+    ])],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}
