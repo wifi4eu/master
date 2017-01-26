@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+
+p-autocomplete {
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.ui-autocomplete {
+  display: block;
+}
