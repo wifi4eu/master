@@ -1,4 +1,70 @@
-<p-autoComplete [(ngModel)]="country" [suggestions]="countrySuggestions" (completeMethod)="filterCountry($event)" field="name"
-  [size]="30" placeholder="Countries" [minLength]="1"></p-autoComplete>
-<p-autoComplete [(ngModel)]="municipality" [suggestions]="municipalitySuggestions" (completeMethod)="filterMunicipality($event)"
-  field="name" [size]="30" placeholder="Municipalities" [minLength]="1"></p-autoComplete>
+<div class="ui-g">
+  <div class="ui-g-3"></div>
+  <div class="ui-g-6" style="text-align: center !important">
+<div id="component-title">
+  <h3>Step 1: Legal entity</h3>
+</div>
+</div>
+<div class="ui-g-3"></div>
+</div>
+<div class="ui-g">
+  <div class="ui-g-3"></div>
+  <div class="ui-g-6" style="text-align: center !important">
+<div id="component-subtitle">
+  <h6>Please select the options listed below</h6>
+</div>
+</div>
+<div class="ui-g-3"></div>
+</div>
+<div class="form-group ui-g">
+  <div class="ui-g-3"></div>
+  <div class="ui-g-6">
+    <label for="country">Country</label>
+    <p-autoComplete [(ngModel)]="country" [suggestions]="countrySuggestions" (completeMethod)="filterCountry($event)" field="name"
+      [size]="30" placeholder="Countries" [minLength]="1" class="form-control ng-pristine ng-valid ng-touched" id="country"
+      ngcontrol="country">
+    </p-autoComplete>
+  </div>
+  <div class="ui-g-3"></div>
+</div>
+<div class="form-group ui-g">
+  <div class="ui-g-3"></div>
+  <div class="ui-g-6">
+    <label for="municipality">Municipality</label>
+    <p-autoComplete [(ngModel)]="municipality" [suggestions]="municipalitySuggestions" (completeMethod)="filterMunicipality($event)"
+      field="name" [size]="30" placeholder="Municipalities" [minLength]="1" class="form-control ng-pristine ng-valid ng-touched"
+      id="municipality" ngcontrol="municipality">
+    </p-autoComplete>
+  </div>
+  <div class="ui-g-3"></div>
+</div>
+<div class="form-group ui-g">
+  <div class="ui-g-3"></div>
+  <div class="ui-g-5">
+    <label for="address">Address</label>
+    <input class="form-control ng-pristine ng-valid ng-touched" id="address" ngcontrol="address" type="text">
+  </div>
+  <div class="ui-g-1">
+    <label for="number">Number</label>
+    <input class="form-control ng-pristine ng-valid ng-touched" id="number" ngcontrol="number" type="text">
+  </div>
+  <div class="ui-g-3"></div>
+</div>
+<div class="form-group ui-g">
+  <div class="ui-g-3"></div>
+  <div class="ui-g-6">
+    <label for="postal-code">Postal Code</label>
+    <input class="form-control ng-pristine ng-valid ng-touched" id="postal-code" ngcontrol="postal-code" type="text">
+  </div>
+  <div class="ui-g-3"></div>
+</div>
+<div class="form-group ui-g">
+  <div class="ui-g-4"></div>
+  <div class="ui-g-2" style="text-align: center !important">
+<button class="btn" type="submit">Back</button>
+</div>
+<div class="ui-g-2" style="text-align: center !important">
+<button class="btn btn-primary" type="submit">Next</button>
+</div>
+<div class="ui-g-4"></div>
+</div>
