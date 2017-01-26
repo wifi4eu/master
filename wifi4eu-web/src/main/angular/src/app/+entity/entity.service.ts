@@ -8,12 +8,12 @@ import {CountryDetails} from './country-details.model';
 export class EntityService {
   constructor(protected http : Http, protected uxService : UxService) {}
 
-  getCountries() : Observable < CountryDetails[] > {
+  /*getCountries() : Observable < CountryDetails[] > {
     // TODO - Should call our internal REST API.
     return this
       .http
       .get('http://www.primefaces.org/primeng/showcase/resources/data/countries.json')
       .map((response : Response) => response.json().data)
       .catch(this.uxService.handleError);
-  }
+  }*/
 }
