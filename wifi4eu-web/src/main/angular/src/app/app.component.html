@@ -1,59 +1,58 @@
 <ux-layout-app uxTrackScroll>
-    
-    <uxLayoutAppMainContainer>
 
-        <ux-layout-app-main>
+  <uxLayoutAppMainContainer>
 
-            <uxLayoutAppMainHeaderContainer>
-                    <ux-layout-header appFullName="Application name" appShortName="App" [userInfos]="userInfos"></ux-layout-header>
-            </uxLayoutAppMainHeaderContainer>
+    <ux-layout-app-main>
 
-            <uxLayoutAppMainNavBarContainer>
-                <ux-layout-nav-bar>
-                    <ux-layout-nav-bar-top-menu [links]="menuLinks"></ux-layout-nav-bar-top-menu>
-                    <ux-layout-nav-bar-actions>
-                        <ux-layout-nav-bar-action-item iconClass="fa-info-circle">
-                            <ul>
-                                <li><a>About</a></li>
-                                <li><a>Contact</a></li>
-                            </ul>
-                            <ul>
-                                <li><a>Legal notice</a></li>
-                                <li><a>...</a></li>
-                            </ul>                       
-                        </ux-layout-nav-bar-action-item>
+      <uxLayoutAppMainHeaderContainer>
+        <ux-layout-header appFullName="Wifi4EU Free Wifi for Europeans" appShortName="App" [userInfos]="userInfos"></ux-layout-header>
+      </uxLayoutAppMainHeaderContainer>
 
-                        <ux-layout-nav-bar-action-item iconClass="fa-search" contentClass="search-bar" isHiddenMobile="true">
-                            <app-search-input></app-search-input>
-                        </ux-layout-nav-bar-action-item>   
+      <uxLayoutAppMainNavBarContainer>
+        <ux-layout-nav-bar>
+          <ux-layout-nav-bar-top-menu [links]="menuLinks"></ux-layout-nav-bar-top-menu>
+          <ux-layout-nav-bar-actions>
+            <ux-layout-nav-bar-action-item iconClass="fa-info-circle">
+              <ul>
+                <li><a>About</a></li>
+                <li><a>Contact</a></li>
+              </ul>
+              <ul>
+                <li><a>Legal notice</a></li>
+                <li><a>...</a></li>
+              </ul>
+            </ux-layout-nav-bar-action-item>
 
-                        <ux-layout-nav-bar-action-item iconClass="fa-bell" tagCount="{{notifications.length}}">
-                            <ux-layout-nav-bar-action-item-notifications [notifications]="notifications"></ux-layout-nav-bar-action-item-notifications>
-                        </ux-layout-nav-bar-action-item>            
+            <ux-layout-nav-bar-action-item iconClass="fa-search" contentClass="search-bar" isHiddenMobile="true">
+              <app-search-input></app-search-input>
+            </ux-layout-nav-bar-action-item>
 
-                        <ux-layout-nav-bar-action-item iconClass="fa-cog" contentClass="auto-width">
-                            <ux-layout-nav-bar-action-item-settings></ux-layout-nav-bar-action-item-settings>
-                        </ux-layout-nav-bar-action-item>
-                        
-                        <ux-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu" isOverlayPanel="true" userInfos="NAME Firstname" [links]="menuLinks"></ux-layout-nav-bar-action-item>
-                    </ux-layout-nav-bar-actions>
-                </ux-layout-nav-bar>
-            </uxLayoutAppMainNavBarContainer>
+            <ux-layout-nav-bar-action-item iconClass="fa-bell" tagCount="{{notifications.length}}">
+              <ux-layout-nav-bar-action-item-notifications [notifications]="notifications"></ux-layout-nav-bar-action-item-notifications>
+            </ux-layout-nav-bar-action-item>
 
-            <uxLayoutAppMainContentContainer>
-                <router-outlet></router-outlet>
-            </uxLayoutAppMainContentContainer>
+            <ux-layout-nav-bar-action-item iconClass="fa-cog" contentClass="auto-width">
+              <ux-layout-nav-bar-action-item-settings></ux-layout-nav-bar-action-item-settings>
+            </ux-layout-nav-bar-action-item>
 
-            <uxLayoutAppMainFooterContainer>
-                <ux-layout-footer isCompact="true">
-                    version <strong class="color-primary">1.0.0</strong> - DD/MM/YYYY
-                </ux-layout-footer>
-            </uxLayoutAppMainFooterContainer>
+            <ux-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu" isOverlayPanel="true" userInfos="NAME Firstname"
+              [links]="menuLinks"></ux-layout-nav-bar-action-item>
+          </ux-layout-nav-bar-actions>
+        </ux-layout-nav-bar>
+      </uxLayoutAppMainNavBarContainer>
 
-        </ux-layout-app-main>
+      <uxLayoutAppMainContentContainer>
+        <router-outlet></router-outlet>
+      </uxLayoutAppMainContentContainer>
 
-    </uxLayoutAppMainContainer>
+      <uxLayoutAppMainFooterContainer>
+        <ux-layout-footer isCompact="true">
+          Problems with your registration? Please click here to <strong><a href="#">contact the Help-Desk</a></strong>.
+        </ux-layout-footer>
+      </uxLayoutAppMainFooterContainer>
+
+    </ux-layout-app-main>
+
+  </uxLayoutAppMainContainer>
 
 </ux-layout-app>
-
-
