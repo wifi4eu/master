@@ -1,7 +1,13 @@
 {
-    "page.home.title": "¡Bienvenido a eUI!",
-    "app.search.button": "Buscar",
-    "registration.step1.title": "PASO 1: Entidad legal",
-    "registration.step2.title": "PASO 2: Detalles del beneficiario",
-    "registration.step3.title": "PASO 3: Revisión"
+  "registration.entity.title": "PASO 1: Entidad legal",
+  "registration.beneficiary.title": "PASO 2: Detalles del beneficiario",
+  "registration.review.title": "PASO 3: Revisión",
+  "registration.subtitle": "Por favor rellene las opciones inferiores",
+  "country.label": "País",
+  "municipality.label": "Ciudad",
+  "address.label": "Dirección",
+  "number.label": "Número",
+  "postal-code.label": "Código Postal",
+  "back.button": "Atrás",
+  "next.button": "Siguiente"
 }

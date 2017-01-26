@@ -1,7 +1,13 @@
 {
-    "page.home.title": "Welcome to eUI!",
-    "app.search.button": "Search",
-    "registration.step1.title": "STEP 1: Legal entity",
-    "registration.step2.title": "STEP 2: Beneficiary details",
-    "registration.step3.title": "STEP 3: Review"
+  "registration.entity.title": "STEP 1: Legal entity",
+  "registration.beneficiary.title": "STEP 2: Beneficiary details",
+  "registration.review.title": "STEP 3: Review",
+  "registration.subtitle": "Please select the options listed below",
+  "country.label": "Country",
+  "municipality.label": "Municipality",
+  "address.label": "Address",
+  "number.label": "Number",
+  "postal-code.label": "Postal Code",
+  "back.button": "Back",
+  "next.button": "Next"
 }

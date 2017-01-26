@@ -2,7 +2,7 @@
   <div class="ui-g-3"></div>
   <div class="ui-g-6" style="text-align: center !important">
 <div id="component-title">
-  <h3>Step 1: Legal entity</h3>
+  <h3>{{ 'registration.entity.title' | translate }}</h3>
 </div>
 </div>
 <div class="ui-g-3"></div>
@@ -11,7 +11,7 @@
   <div class="ui-g-3"></div>
   <div class="ui-g-6" style="text-align: center !important">
 <div id="component-subtitle">
-  <h6>Please select the options listed below</h6>
+  <h6>{{ 'registration.entity.title' | translate }}</h6>
 </div>
 </div>
 <div class="ui-g-3"></div>
@@ -19,10 +19,9 @@
 <div class="form-group ui-g">
   <div class="ui-g-3"></div>
   <div class="ui-g-6">
-    <label for="country">Country</label>
+    <label for="country">{{ 'country.label' | translate }}</label>
     <p-autoComplete [(ngModel)]="country" [suggestions]="countrySuggestions" (completeMethod)="filterCountry($event)" field="name"
-      [size]="30" placeholder="Countries" [minLength]="1" class="form-control ng-pristine ng-valid ng-touched" id="country"
-      ngcontrol="country">
+      [size]="30" [minLength]="1" class="form-control ng-pristine ng-valid ng-touched" id="country" ngcontrol="country">
     </p-autoComplete>
   </div>
   <div class="ui-g-3"></div>
@@ -30,10 +29,9 @@
 <div class="form-group ui-g">
   <div class="ui-g-3"></div>
   <div class="ui-g-6">
-    <label for="municipality">Municipality</label>
+    <label for="municipality">{{ 'municipality.label' | translate }}</label>
     <p-autoComplete [(ngModel)]="municipality" [suggestions]="municipalitySuggestions" (completeMethod)="filterMunicipality($event)"
-      field="name" [size]="30" placeholder="Municipalities" [minLength]="1" class="form-control ng-pristine ng-valid ng-touched"
-      id="municipality" ngcontrol="municipality">
+      field="name" [size]="30" [minLength]="1" class="form-control ng-pristine ng-valid ng-touched" id="municipality" ngcontrol="municipality">
     </p-autoComplete>
   </div>
   <div class="ui-g-3"></div>
@@ -41,11 +39,11 @@
 <div class="form-group ui-g">
   <div class="ui-g-3"></div>
   <div class="ui-g-5">
-    <label for="address">Address</label>
+    <label for="address">{{ 'address.label' | translate }}</label>
     <input class="form-control ng-pristine ng-valid ng-touched" id="address" ngcontrol="address" type="text">
   </div>
   <div class="ui-g-1">
-    <label for="number">Number</label>
+    <label for="number">{{ 'number.label' | translate }}</label>
     <input class="form-control ng-pristine ng-valid ng-touched" id="number" ngcontrol="number" type="text">
   </div>
   <div class="ui-g-3"></div>
@@ -53,7 +51,7 @@
 <div class="form-group ui-g">
   <div class="ui-g-3"></div>
   <div class="ui-g-6">
-    <label for="postal-code">Postal Code</label>
+    <label for="postal-code">{{ 'postal-code.label' | translate }}</label>
     <input class="form-control ng-pristine ng-valid ng-touched" id="postal-code" ngcontrol="postal-code" type="text">
   </div>
   <div class="ui-g-3"></div>
@@ -61,10 +59,10 @@
 <div class="form-group ui-g">
   <div class="ui-g-4"></div>
   <div class="ui-g-2" style="text-align: center !important">
-<button class="btn" type="submit">Back</button>
+<button class="btn">{{ 'back.button' | translate }}</button>
 </div>
 <div class="ui-g-2" style="text-align: center !important">
-<button class="btn btn-primary" type="submit">Next</button>
+<button class="btn btn-primary">{{ 'next.button' | translate }}</button>
 </div>
 <div class="ui-g-4"></div>
 </div>
