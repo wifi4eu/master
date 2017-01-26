@@ -1,2 +1,4 @@
-<p-autoComplete [(ngModel)]="country" [suggestions]="suggestions" (completeMethod)="filterCountrySingle($event)" field="name"
+<p-autoComplete [(ngModel)]="country" [suggestions]="countrySuggestions" (completeMethod)="filterCountry($event)" field="name"
   [size]="30" placeholder="Countries" [minLength]="1"></p-autoComplete>
+<p-autoComplete [(ngModel)]="municipality" [suggestions]="municipalitySuggestions" (completeMethod)="filterMunicipality($event)"
+  field="name" [size]="30" placeholder="Municipalities" [minLength]="1"></p-autoComplete>
