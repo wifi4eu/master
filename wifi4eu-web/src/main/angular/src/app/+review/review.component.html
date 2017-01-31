@@ -123,7 +123,15 @@
     <button class="btn">{{ 'cancel.button' | translate }}</button>
   </div>
   <div class="ui-g-2" style="text-align: center !important">
-    <button class="btn btn-primary">{{ 'submitregistration.button' | translate }}</button>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#confirmingModal">{{ 'submitregistration.button' | translate }}</button>
   </div>
   <div class="ui-g-4"></div>
+</div>
+<div id="confirmingModal" class="modal fade" role="dialog">
+  <div class="modal-content">
+    <div class="modal-body">
+      <h3>Confirming Data, please wait...</h3>
+      <p>Your registration to Wifi4EU is in the process of being submitted.<br>Please don't close this window.</p>
+    </div>
+  </div>
 </div>
