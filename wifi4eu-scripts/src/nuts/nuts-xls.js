@@ -25,10 +25,10 @@ var extractNutsJson = function(){
         console.log("worksheet is null");
       }else{
         var wsJson = xlsx.utils.sheet_to_json(ws);
-        // jsonfile.writeFile(sheetName+'.json', wsJson, function (err) {
-        //   console.error("error creating "+sheetName+".json");
-        // });
-        // console.log(wsJson[0]);
+        jsonfile.writeFile(sheetName+'.json', wsJson, function (err) {
+           console.error("error creating "+sheetName+".json");
+        });
+        console.log(wsJson[0]);
         nutsJson = nutsJson.concat(wsJson);
       }
     });
@@ -52,10 +52,10 @@ var extractLauJson = function(){
           console.log("worksheet is null");
         }else{
           var wsJson = xlsx.utils.sheet_to_json(ws);
-          // jsonfile.writeFile(sheetName+'.json', wsJson, function (err) {
-          //   console.error("error creating "+sheetName+".json");
-          // });
-          // console.log(wsJson[0]);
+          jsonfile.writeFile(sheetName+'.json', wsJson, function (err) {
+             console.error("error creating "+sheetName+".json");
+          });
+          console.log(wsJson[0]);
           lauJson = lauJson.concat(wsJson);
         }
       });
