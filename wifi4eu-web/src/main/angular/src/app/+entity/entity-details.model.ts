@@ -1,4 +1,4 @@
-import {CountryDetails} from './country-details.model';
+import {CountryDetails} from "./country-details.model";
 
 export class EntityDetails {
     public country: CountryDetails;
