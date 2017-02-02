@@ -18,7 +18,7 @@ import {HomeComponent} from './home/home.component';
         path: 'registration',
         loadChildren: 'app/+registration/registration.module#RegistrationModule'
       }
-    ])],
+    ],{ useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
