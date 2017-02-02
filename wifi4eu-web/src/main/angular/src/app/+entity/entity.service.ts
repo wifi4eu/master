@@ -8,11 +8,11 @@ import {MunicipalityDetails} from './municipality-details.model';
 export class EntityService {
   constructor(protected http : Http, protected uxService : UxService) {}
 
-  getMunicipalities() : Observable < MunicipalityDetails[] > {
+  getMunicipalities(countryCode:string) : Observable < MunicipalityDetails[] > {
     // TODO - Should call our internal REST API.
     return this
       .http
-      .get('lau.json')
+      .get('/lau/'+countryCode+'.json')
       .map(function(response: Response){
         return response.json();
       })

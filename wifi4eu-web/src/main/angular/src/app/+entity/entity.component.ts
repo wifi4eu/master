@@ -8,7 +8,7 @@ import {MunicipalityDetails} from './municipality-details.model';
 @Component({selector: 'entity-component', templateUrl: 'entity.component.html', providers: [EntityService]})
 export class EntityComponent {
 
-  country : any;
+  country : CountryDetails;
   countries : any[];
   countrySuggestions : any[];
 
@@ -17,9 +17,6 @@ export class EntityComponent {
   municipalitySuggestions : any[];
 
   constructor(private entityService : EntityService,private http:Http) {}
-
-ngOnInit(){this.getMunicipalities()}
-
 
   filterCountry(event) {
     let query = event.query;
@@ -51,12 +48,16 @@ ngOnInit(){this.getMunicipalities()}
     return filtered;
   }
 
-  getMunicipalities(){
+  getMunicipalities(query){
     let that = this;
-    this.entityService.getMunicipalities().subscribe(function(res){
+    if(this.country != null){
+    this.entityService.getMunicipalities(this.country.code).subscribe(function(res){
         that.municipalities = res;
-        this.municipalities = res;
+        if(that.municipalities != null){
+          that.municipalitySuggestions = that.filterMunicipalities(query,res);;
+        }
       }); 
+    }
   }
 
   filterMunicipality(event) {
@@ -70,10 +71,7 @@ ngOnInit(){this.getMunicipalities()}
     // TODO - In a real application, make a request to a remote url with the query
     // and return results, for demo we get it at client side.
 
-    if(this.municipalities != null){
-      this.municipalitySuggestions = this.filterMunicipalities(query,this.municipalities);
-    }
-    
+    this.getMunicipalities(query);
 
   }
 
