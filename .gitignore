@@ -5,7 +5,7 @@
 *.war
 *.ear
 hs_err_pid*
-/target/
+*/target/*
 /build/
 /benchpress-build/
 .DS_Store
