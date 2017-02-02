@@ -2,7 +2,7 @@
   "registration.entity.title": "STEP 1: Legal entity",
   "registration.beneficiary.title": "STEP 2: Beneficiary details",
   "registration.review.title": "STEP 3: Review",
-  "registration.subtitle": "Please select the options listed below",
+  "registration.step1.instructions": "Please select the options listed below",
   "registration.step2.instructions": "To proceed select the options listed below.",
   "registration.step3.instructions": "Please, review all the information provided before you submit your registration request.",
   "country.label": "Country",
