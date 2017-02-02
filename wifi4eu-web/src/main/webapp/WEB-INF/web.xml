@@ -2,8 +2,8 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         version="2.5">
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
 
     <display-name>eUI Angular2 application</display-name>
 
@@ -55,7 +55,7 @@
         <url-pattern>/*</url-pattern>
      </filter-mapping>
 
-
+<!--
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -65,8 +65,9 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+-->
 
-
+<!--
     <filter>
         <filter-name>userFilter</filter-name>
         <filter-class>wifi4eu.wifi4eu.web.filter.UserFilter</filter-class>
@@ -74,10 +75,11 @@
     <filter-mapping>
         <filter-name>userFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>    
-
+    </filter-mapping>
+-->
 
     <!-- This is an example security constraint for a resource that requires only authentication but not authorization: -->
+<!--
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>ecasV2-minimal</web-resource-name>
@@ -100,7 +102,7 @@
         </user-data-constraint>
     </security-constraint>
 
-
+-->
 
 
 </web-app>

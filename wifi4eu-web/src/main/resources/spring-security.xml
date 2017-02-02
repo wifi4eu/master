@@ -6,7 +6,6 @@
                            http://www.springframework.org/schema/security
                            http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-
     <security:authentication-manager alias="authenticationManager">
         <security:authentication-provider
                 ref="preauthAuthProvider" />
@@ -37,6 +36,5 @@
 
 
     <bean id="allAuthenticatedUserService" class="wifi4eu.wifi4eu.service.security.UserDetailsServiceCustom" />
-
 
 </beans>

@@ -43,7 +43,7 @@
                                 <goal>exec</goal>
                             </goals>
                             <configuration>
-                                <executable>ng.cmd</executable>
+                                <executable>ng</executable>
                                 <workingDirectory>src/main/angular</workingDirectory>
                                 <arguments>
                                     <argument>build</argument>
