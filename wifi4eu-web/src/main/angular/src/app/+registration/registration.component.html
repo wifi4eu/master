@@ -1,0 +1,24 @@
+<ux-wizard-steps [isCustomContent]="true">
+    <ux-wizard-step label="{{ 'registration.entity.title' | translate }}" [isCompleted]="completedSteps[0]"
+                    [isActive]="activeSteps[0]">
+        <uxWizardStepCustomContent>
+            <entity-component [entityDetails]="entityDetails" [currentStep]="currentStep"
+                              [completedSteps]="completedSteps" [activeSteps]="activeSteps"></entity-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'registration.beneficiary.title' | translate }}" [isCompleted]="completedSteps[1]"
+                    [isActive]="activeSteps[1]">
+        <uxWizardStepCustomContent>
+            <beneficiary-component [beneficiaryDetails]="beneficiaryDetails" [currentStep]="currentStep"
+                                   [completedSteps]="completedSteps"
+                                   [activeSteps]="activeSteps"></beneficiary-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'registration.review.title' | translate }}" [isCompleted]="completedSteps[2]"
+                    [isActive]="activeSteps[2]">
+        <uxWizardStepCustomContent>
+            <review-component [entityDetails]="entityDetails"
+                              [beneficiaryDetails]="beneficiaryDetails"></review-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+</ux-wizard-steps>
