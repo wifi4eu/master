@@ -1,0 +1,146 @@
+<div class="ui-g">
+    <div class="ui-g-12 center" style="text-align: center !important">
+        <div id="component-title">
+            <h3>{{ 'registration.review.title' | translate }}</h3>
+        </div>
+    </div>
+</div>
+<div class="ui-g">
+    <div class="ui-g-12 center" style="text-align: center !important">
+        <div id="component-subtitle">
+            <h6>{{ 'registration.step3.instructions' | translate }}</h6>
+        </div>
+    </div>
+</div>
+<div class="ui-g">
+    <div class="ui-g-7 center" style="text-align: center !important">
+        <div id="representantive_details" [ngClass]="{'hidden': !beneficiaryDetails.representativeSelected}">
+            <hr>
+            <span class="ui-g-3">
+                <div><img src="https://www.amzaffiliatebootcamp.com/wp-content/uploads/2016/09/unknown.gif"
+                          style="max-width: 100%;"></div>
+                <div>{{ 'imrepresentative.option' | translate }}</div>
+            </span>
+            <span class="ui-g-9" style="text-align: left;">
+                <h3 class="ui-g-11">{{ 'representativedetails.title' | translate }}</h3>
+                <a href="" class="ui-g-1">{{ 'edit.button' | translate }} <span
+                        class="glyphicon glyphicon-pencil"></span></a>
+                <div>
+                  <span class="ui-g-5">{{ 'treatment.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{beneficiaryDetails.treatmentRepresentative}}</b></span>
+                </div>
+                <div>
+                  <span class="ui-g-5">{{ 'name.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{beneficiaryDetails.nameRepresentative}}</b></span>
+                </div>
+                <div>
+                  <span class="ui-g-5">{{ 'surname.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{beneficiaryDetails.surnameRepresentative}}</b></span>
+                </div>
+                <div>
+                  <span class="ui-g-5">{{ 'role.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{beneficiaryDetails.roleRepresentative}}</b></span>
+                </div>
+                <div>
+                  <span class="ui-g-5">{{ 'email.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{beneficiaryDetails.emailRepresentative}}</b></span>
+                </div>
+            </span>
+        </div>
+        <div id="mayor_details">
+            <hr>
+            <span class="ui-g-3"></span>
+            <span class="ui-g-9" style="text-align: left;">
+                <h3 class="ui-g-11">{{ 'mayordetails.title' | translate }}</h3>
+                <a href="" class="ui-g-1">{{ 'edit.button' | translate }} <span
+                        class="glyphicon glyphicon-pencil"></span></a>
+                <div>
+                  <span class="ui-g-5">{{ 'treatment.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{beneficiaryDetails.treatment}}</b></span>
+                </div>
+                <div>
+                  <span class="ui-g-5">{{ 'name.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{beneficiaryDetails.name}}</b></span>
+                </div>
+                <div>
+                  <span class="ui-g-5">{{ 'surname.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{beneficiaryDetails.surname}}</b></span>
+                </div>
+                <div>
+                  <span class="ui-g-5">{{ 'email.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{beneficiaryDetails.email}}</b></span>
+                </div>
+            </span>
+        </div>
+        <div id="entity_details">
+            <hr>
+            <span class="ui-g-3"></span>
+            <span class="ui-g-9" style="text-align: left;">
+                <h3 class="ui-g-11">{{ 'legalentity.label' | translate }}</h3>
+                <a href="" class="ui-g-1">{{ 'edit.button' | translate }} <span
+                        class="glyphicon glyphicon-pencil"></span></a>
+                <div>
+                  <span class="ui-g-5">{{ 'country.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{entityDetails.country}}</b></span>
+                </div>
+                <div>
+                  <span class="ui-g-5">{{ 'street.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{entityDetails.address}}, {{entityDetails.number}}</b></span>
+                </div>
+                <div>
+                  <span class="ui-g-5">{{ 'postal-code.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{entityDetails.postalCode}}</b></span>
+                </div>
+                <div>
+                  <span class="ui-g-5">{{ 'city.label' | translate }}</span>
+                  <span class="ui-g-7"><b>{{entityDetails.municipality}}</b></span>
+                </div>
+                <div>
+                  <span class="ui-g-5">{{ 'province.label' | translate }}</span>
+                  <span class="ui-g-7"><b>Barcelona</b></span>
+                </div>
+            </span>
+        </div>
+        <div id="confirm_checkboxes">
+            <hr>
+            <div class="ui-g-12 checkbox" style="text-align: left;">
+                <span class="ui-g-3"></span>
+                <label class="ui-g-6" for="check_1"><input type="checkbox" id="check_1"> {{
+                    'preview.registration.check1' | translate }}</label>
+                <span class="ui-g-3"></span>
+            </div>
+            <div class="ui-g-12" style="text-align: left;">
+                <span class="ui-g-3"></span>
+                <label class="ui-g-6" for="check_2"><input type="checkbox" id="check_2"> {{
+                    'preview.registration.check2' | translate }}</label>
+                <span class="ui-g-3"></span>
+            </div>
+            <div class="ui-g-12" style="text-align: left;">
+                <span class="ui-g-3"></span>
+                <label class="ui-g-6" for="check_3"><input type="checkbox" id="check_3"> {{
+                    'preview.registration.check3' | translate }}</label>
+                <span class="ui-g-3"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-group ui-g">
+    <div class="ui-g-4"></div>
+    <div class="ui-g-2" style="text-align: center !important">
+        <button class="btn">{{ 'cancel.button' | translate }}</button>
+    </div>
+    <div class="ui-g-2" style="text-align: center !important">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#confirmingModal">{{
+            'submitregistration.button' | translate }}
+        </button>
+    </div>
+    <div class="ui-g-4"></div>
+</div>
+<div id="confirmingModal" class="modal fade" role="dialog">
+    <div class="modal-content">
+        <div class="modal-body">
+            <h3>Confirming Data, please wait...</h3>
+            <p>Your registration to Wifi4EU is in the process of being submitted.<br>Please don't close this window.</p>
+        </div>
+    </div>
+</div>

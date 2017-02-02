@@ -7,6 +7,13 @@ import {MunicipalityDetails} from './municipality-details.model';
 
 @Component({selector: 'entity-component', templateUrl: 'entity.component.html', providers: [EntityService]})
 export class EntityComponent {
+    @Input('entityDetails') entityDetails: EntityDetails;
+    @Input('completedSteps') completedSteps: boolean[];
+    @Input('activeSteps') activeSteps: boolean[];
+    @Input('currentStep') currentStep: number;
+    wrongDetails: string [];
+    countrySuggestions: any[];
+    municipalitySuggestions: any[];
 
   country : CountryDetails;
   countries : any[];
@@ -15,9 +22,13 @@ export class EntityComponent {
   municipality : any;
   municipalities : MunicipalityDetails[];
   municipalitySuggestions : any[];
+    @Output() onNext = new EventEmitter<number>();
 
   constructor(private entityService : EntityService,private http:Http) {}
 
+    nextStep(step: number) {
+        this.onNext.emit(step);
+    }
   filterCountry(event) {
     let query = event.query;
     let countryList = new CountryList()

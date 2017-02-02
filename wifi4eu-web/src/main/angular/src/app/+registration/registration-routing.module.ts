@@ -1,12 +1,17 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {RegistrationComponent} from './registration.component';
+import {SuccessRegistrationComponent} from './success.registration.component'
 
 @NgModule({
   imports: [RouterModule.forChild([
       {
         path: '',
-        component: RegistrationComponent
+        component: RegistrationComponent,
+      },
+      {
+          path: 'success',
+          component: SuccessRegistrationComponent,
       }
     ])],
   exports: [RouterModule]
