@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {BeneficiaryDetails} from './beneficiary-details.model';
+import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {BeneficiaryDetails} from "./beneficiary-details.model";
 
 @Component({
     selector: 'beneficiary-component',
@@ -17,33 +17,10 @@ export class BeneficiaryComponent {
         this.wrongDetails = [];
     }
 
-    nextStep() {
-        console.log(this.beneficiaryDetails);
-        // We need to remake the array without any values stored.
-        this.wrongDetails = [];
-        // Check if mayor details are empty.
-        this.checkMayorDetails();
-        // If we selected the representative option, check if the details are empty.
-        if (this.beneficiaryDetails.representativeSelected) {
-            this.checkRepresentativeDetails();
-        }
-        // If there is at least one wrong/empty detail, we won't allow to go to the next step.
-        if (this.wrongDetails.length > 0) {
-            this.completedSteps[1] = false;
-            this.activeSteps = [false, true, false];
-            this.currentStep = 1;
-            console.log("somethings wrong, shut the light");
-            console.log(this.wrongDetails);
-        } else {
-            // GO TO NEXT STEP
-            this.completedSteps = [true, true, false];
-            this.activeSteps = [false, false, true];
-            this.currentStep++;
-        }
-        console.log("END OF 'nextStep'");
-        console.log(this.completedSteps);
-        console.log(this.activeSteps);
-        console.log(this.currentStep);
+    @Output() onNext = new EventEmitter<number>();
+
+    nextStep(step: number) {
+        this.onNext.emit(step);
     }
 
     checkMayorDetails() {

@@ -48,7 +48,7 @@
             <div class="ui-g-3">
                 <label for="treatment">{{ 'treatment.label' | translate }}</label>
                 <select class="form-control" name="treatment" id="treatment" [(ngModel)]="beneficiaryDetails.treatment"
-                        [required]="checkIfWrong('treatment')">
+                        required>
                     <option value="mr">{{ 'treatment.option1' | translate }}</option>
                     <option value="ms">{{ 'treatment.option2' | translate }}</option>
                 </select>
@@ -60,7 +60,7 @@
             <div class="ui-g-6">
                 <label for="name">{{ 'name.label' | translate }}</label>
                 <input class="form-control" type="text" name="name" id="name" [(ngModel)]="beneficiaryDetails.name"
-                       [required]="checkIfWrong('name')">
+                       required>
             </div>
             <div class="ui-g-3"></div>
         </div>
@@ -69,7 +69,7 @@
             <div class="ui-g-6">
                 <label for="surname">{{ 'surname.label' | translate }}</label>
                 <input class="form-control" type="text" name="surname" id="surname"
-                       [(ngModel)]="beneficiaryDetails.surname" [required]="checkIfWrong('surname')">
+                       [(ngModel)]="beneficiaryDetails.surname" required>
             </div>
             <div class="ui-g-3"></div>
         </div>
@@ -78,7 +78,7 @@
             <div class="ui-g-6">
                 <label for="email">{{ 'email.label' | translate }}</label>
                 <input class="form-control" type="email" name="email" id="email" [(ngModel)]="beneficiaryDetails.email"
-                       [required]="checkIfWrong('email')">
+                       required>
                 <label for="email" class="field-desc" style="margin-top: 10px;color: gray;">{{ 'email.fielddesc' |
                     translate }}</label>
             </div>
@@ -89,7 +89,7 @@
             <div class="ui-g-6">
                 <label for="confirmemail">{{ 'confirmemail.label' | translate }}</label>
                 <input class="form-control" type="email" name="confirmemail" id="confirmemail"
-                       [(ngModel)]="beneficiaryDetails.confirmEmail" [required]="checkIfWrong('confirmEmail')">
+                       [(ngModel)]="beneficiaryDetails.confirmEmail" required>
             </div>
             <div class="ui-g-3"></div>
         </div>
@@ -116,7 +116,7 @@
                 <label for="treatment_representative">{{ 'treatment.label' | translate }}</label>
                 <select class="form-control" name="treatment_representative" id="treatment_representative"
                         [(ngModel)]="beneficiaryDetails.treatmentRepresentative"
-                        [required]="checkIfWrong('treatmentRepresentative')">
+                        required>
                     <option value="mr">{{ 'treatment.option1' | translate }}</option>
                     <option value="ms">{{ 'treatment.option2' | translate }}</option>
                 </select>
@@ -129,7 +129,7 @@
                 <label for="name_representative">{{ 'name.label' | translate }}</label>
                 <input class="form-control" type="text" name="name_representative" id="name_representative"
                        [(ngModel)]="beneficiaryDetails.nameRepresentative"
-                       [required]="checkIfWrong('nameRepresentative')">
+                       required>
             </div>
             <div class="ui-g-3"></div>
         </div>
@@ -139,7 +139,7 @@
                 <label for="surname_representative">{{ 'surname.label' | translate }}</label>
                 <input class="form-control" type="text" name="surname_representative" id="surname_representative"
                        [(ngModel)]="beneficiaryDetails.surnameRepresentative"
-                       [required]="checkIfWrong('surnameRepresentative')">
+                       required>
             </div>
             <div class="ui-g-3"></div>
         </div>
@@ -149,7 +149,7 @@
                 <label for="role_municipality">{{ 'role.label' | translate }}</label>
                 <input class="form-control" type="text" name="role_municipality" id="role_municipality"
                        [(ngModel)]="beneficiaryDetails.roleRepresentative"
-                       [required]="checkIfWrong('roleRepresentative')">
+                       required>
             </div>
             <div class="ui-g-3"></div>
         </div>
@@ -159,7 +159,7 @@
                 <label for="email_representative">{{ 'email.label' | translate }}</label>
                 <input class="form-control" type="email" name="email-representative" id="email_representative"
                        [(ngModel)]="beneficiaryDetails.emailRepresentative"
-                       [required]="checkIfWrong('emailRepresentative')">
+                       required>
                 <label for="email_representative" class="field-desc" style="margin-top: 10px;color: gray;">{{
                     'email.fielddesc' | translate }}</label>
             </div>
@@ -171,7 +171,7 @@
                 <label for="confirmemail_representative">{{ 'confirmemail.label' | translate }}</label>
                 <input class="form-control" type="email" name="confirmemail_representative"
                        id="confirmemail_representative" [(ngModel)]="beneficiaryDetails.confirmEmailRepresentative"
-                       [required]="checkIfWrong('confirmEmailRepresentative')">
+                       required>
             </div>
             <div class="ui-g-3"></div>
         </div>
@@ -185,7 +185,7 @@
             <button class="btn">{{ 'back.button' | translate }}</button>
         </div>
         <div class="ui-g-2" style="text-align: center !important">
-            <button class="btn btn-primary" (click)="nextStep()">{{ 'next.button' | translate }}</button>
+            <button class="btn btn-primary" (click)="nextStep(2)">{{ 'next.button' | translate }}</button>
         </div>
         <div class="ui-g-4"></div>
     </div>

@@ -1,8 +1,8 @@
-import {Component, Input} from '@angular/core';
-import {EntityService} from './entity.service';
-import {CountryList} from './country-list.model';
-import {CountryDetails} from './country-details.model';
-import {EntityDetails} from './entity-details.model';
+import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {EntityService} from "./entity.service";
+import {CountryList} from "./country-list.model";
+import {CountryDetails} from "./country-details.model";
+import {EntityDetails} from "./entity-details.model";
 
 @Component({selector: 'entity-component', templateUrl: 'entity.component.html', providers: [EntityService]})
 export class EntityComponent {
@@ -18,57 +18,38 @@ export class EntityComponent {
         this.wrongDetails = [];
     }
 
+    @Output() onNext = new EventEmitter<number>();
+
     doStuff() {
     }
 
-    nextStep() {
-        console.log(this.entityDetails);
-        // We need to remake the array without any values stored.
-        this.wrongDetails = [];
-        // Check if the entity details are empty.
-        this.checkEntityDetails();
-        // If there is at least one wrong/empty detail, we won't allow to go to the next step.
-        if (this.wrongDetails.length > 0) {
-            this.completedSteps[0] = false;
-            this.activeSteps = [true, false, false];
-            this.currentStep = 0;
-            console.log("MEEEC!");
-            console.log(this.wrongDetails);
-        } else {
-            // GO TO NEXT STEP
-            this.completedSteps = [true, false, false];
-            this.activeSteps = [false, true, false];
-            this.currentStep++;
-        }
-        console.log("END OF 'nextStep'");
-        console.log(this.completedSteps);
-        console.log(this.activeSteps);
-        console.log(this.currentStep);
+    nextStep(step: number) {
+        this.onNext.emit(step);
     }
 
     checkEntityDetails() {
         if (this.entityDetails.country == null || this.entityDetails.country.name == "" || this.entityDetails.country.code == "") {
             this.wrongDetails.push("country");
-            console.log("country is empty!");
+            //console.log("country is empty!");
         }
         if (this.entityDetails.municipality == null || this.entityDetails.municipality == "") {
             this.wrongDetails.push("municipality");
-            console.log("municipality is empty!");
+            //console.log("municipality is empty!");
         }
         if (typeof this.entityDetails.municipality != "string") {
-            console.log("the municipality is an object, not a string!");
+            //console.log("the municipality is an object, not a string!");
         }
         if (this.entityDetails.address == null || this.entityDetails.address == "") {
             this.wrongDetails.push("address");
-            console.log("address is empty!");
+            //console.log("address is empty!");
         }
         if (this.entityDetails.number == null || this.entityDetails.number == "") {
             this.wrongDetails.push("number");
-            console.log("number is empty!");
+            //console.log("number is empty!");
         }
         if (this.entityDetails.postalCode == null || this.entityDetails.postalCode == "") {
             this.wrongDetails.push("postalCode");
-            console.log("postalCode is empty!");
+            //console.log("postalCode is empty!");
         }
     }
 
@@ -91,7 +72,7 @@ export class EntityComponent {
          .entityService
          .getCountries()
          .subscribe(countries => {
-         console.log(countries);
+         //console.log(countries);
          this.suggestions = this.filterCountries(query, countries);
          });
          */
@@ -129,7 +110,7 @@ export class EntityComponent {
          .entityService
          .getCountries()
          .subscribe(countries => {
-         console.log(countries);
+         //console.log(countries);
          this.suggestions = this.filterCountries(query, countries);
          });
          */
