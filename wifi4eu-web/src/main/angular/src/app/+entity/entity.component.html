@@ -21,7 +21,7 @@
         <div class="ui-g-3"></div>
         <div class="ui-g-6">
             <label for="country">{{ 'country.label' | translate }}</label>
-            <p-autoComplete [(ngModel)]="entityDetails.country" [suggestions]="countrySuggestions"
+            <p-autoComplete [(ngModel)]="country" [suggestions]="countrySuggestions"
                             (completeMethod)="filterCountry($event)" field="name"
                             [size]="30" [minLength]="1" class="form-control ng-pristine ng-valid ng-touched"
                             name="country" id="country" ngcontrol="country" required>
@@ -33,9 +33,9 @@
         <div class="ui-g-3"></div>
         <div class="ui-g-6">
             <label for="municipality">{{ 'municipality.label' | translate }}</label>
-            <p-autoComplete [(ngModel)]="entityDetails.municipality" [suggestions]="municipalitySuggestions"
+            <p-autoComplete [(ngModel)]="municipality" [suggestions]="municipalitySuggestions"
                             (completeMethod)="filterMunicipality($event)"
-                            field="name" [size]="30" [minLength]="1"
+                            field="NAME_1" [size]="30" [minLength]="1"
                             class="form-control ng-pristine ng-valid ng-touched" name="municipality" id="municipality"
                             ngcontrol="municipality" required>
             </p-autoComplete>

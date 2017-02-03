@@ -1,7 +1,8 @@
-import {Component} from '@angular/core';
+import {Component,Input,Output,EventEmitter} from '@angular/core';
 import {Http, Response } from '@angular/http';
 import {EntityService} from './entity.service';
 import {CountryList} from './country-list.model';
+import {EntityDetails} from './entity-details.model';
 import {CountryDetails} from './country-details.model';
 import {MunicipalityDetails} from './municipality-details.model';
 
@@ -17,11 +18,9 @@ export class EntityComponent {
 
   country : CountryDetails;
   countries : any[];
-  countrySuggestions : any[];
 
   municipality : any;
   municipalities : MunicipalityDetails[];
-  municipalitySuggestions : any[];
     @Output() onNext = new EventEmitter<number>();
 
   constructor(private entityService : EntityService,private http:Http) {}

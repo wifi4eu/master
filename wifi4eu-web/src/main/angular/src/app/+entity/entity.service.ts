@@ -12,7 +12,7 @@ export class EntityService {
     // TODO - Should call our internal REST API.
     return this
       .http
-      .get('/lau/'+countryCode+'.json')
+      .get(countryCode+'.json')
       .map(function(response: Response){
         return response.json();
       })
