@@ -20,6 +20,7 @@ export class EntityComponent {
     }
 
     onSubmit(step: number) {
+	this.validateInputs();
         this.onNext.emit(step);
     }
 
@@ -41,6 +42,21 @@ export class EntityComponent {
          */
     }
 
+    validateInputs() {
+        if (typeof this.entityDetails.country == "string") {
+            let countryString = JSON.stringify(this.entityDetails.country);
+            countryString = countryString.substring(1, countryString.length - 1);
+            countryString = countryString.toLowerCase();
+            countryString = countryString.charAt(0).toUpperCase() + countryString.slice(1);
+            let countryList = new CountryList().getAll();
+            for (let i = 0; i < countryList.length; i++) {
+                if (countryList[i].name === countryString) {
+                    this.entityDetails.country = countryList[i];
+                    break;
+                }
+            }
+        }
+    }
     filterCountries(query, countries: CountryDetails[]): CountryDetails[] {
         // TODO - In a real application, make a request to a remote url with the query
         // and return filtered results, for demo we filter at client side.
