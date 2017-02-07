@@ -6,7 +6,7 @@
 *.ear
 hs_err_pid*
 */target/*
-*/dist/*
+**/dist
 /build/
 /benchpress-build/
 .DS_Store
