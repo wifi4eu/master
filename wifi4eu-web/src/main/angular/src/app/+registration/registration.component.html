@@ -2,17 +2,14 @@
     <ux-wizard-step label="{{ 'registration.entity.title' | translate }}" [isCompleted]="completed[0]"
                     [isActive]="active[0]">
         <uxWizardStepCustomContent>
-            <entity-component [entityDetails]="entityDetails" [currentStep]="currentStep"
-                              [completedSteps]="completedSteps" [activeSteps]="activeSteps"
-                              (onNext)="onNext($event)"></entity-component>
+            <entity-component [entityDetails]="entityDetails" (onNext)="onNext($event)"></entity-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'registration.beneficiary.title' | translate }}" [isCompleted]="completed[1]"
                     [isActive]="active[1]">
         <uxWizardStepCustomContent>
-            <beneficiary-component [beneficiaryDetails]="beneficiaryDetails" [currentStep]="currentStep"
-                                   [completedSteps]="completedSteps"
-                                   [activeSteps]="activeSteps" (onNext)="onNext($event)"></beneficiary-component>
+            <beneficiary-component [beneficiaryDetails]="beneficiaryDetails"
+                                   (onNext)="onNext($event)"></beneficiary-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'registration.review.title' | translate }}" [isCompleted]="completed[2]"
