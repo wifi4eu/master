@@ -40,7 +40,8 @@
                 <p-autoComplete [(ngModel)]="entityDetails.municipality" [suggestions]="municipalitySuggestions"
                                 (completeMethod)="filterMunicipality($event)" field="NAME_1"
                                 [size]="30" [minLength]="1" class="form-control"
-                                name="municipality" ngcontrol="municipality" #municipality="ngModel" required>
+                                name="municipality" ngcontrol="municipality" #municipality="ngModel"
+                                (keydown)="checkCountry()" required>
                 </p-autoComplete>
                 <div [hidden]="municipality.valid || municipality.pristine" class="alert alert-danger">Municipality is
                     required
