@@ -1,13 +1,19 @@
 import {Component, Input, Output, EventEmitter} from "@angular/core";
 import {Http} from "@angular/http";
+import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {EntityService} from "./entity.service";
-import {CountryList} from "./country-list.model";
 import {EntityDetails} from "./entity-details.model";
 import {CountryDetails} from "./country-details.model";
 import {MunicipalityDetails} from "./municipality-details.model";
 
-@Component({selector: 'entity-component', templateUrl: 'entity.component.html', providers: [EntityService]})
+@Component({
+    selector: 'entity-component',
+    templateUrl: 'entity.component.html',
+    providers: [EntityService]
+})
 export class EntityComponent {
+
+    countries: CountryDetails[];
 
     countrySuggestions: any[];
     municipalitySuggestions: any[];
@@ -16,13 +22,13 @@ export class EntityComponent {
     @Output() onNext = new EventEmitter<number>();
 
 
-    constructor(private entityService: EntityService, private http: Http) {
+    constructor(private http: Http, private entityService: EntityService, private uxService: UxService) {
     }
 
     checkCountry() {
         if (typeof this.entityDetails.country === "string") {
             let countryName: string = this.entityDetails.country;
-            let countries = new CountryList().getAll();
+            let countries: CountryDetails[] = this.countries;
 
             for (let i in countries) {
                 if (countries[i].name.toLowerCase() == countryName.toLowerCase()) {
@@ -40,13 +46,18 @@ export class EntityComponent {
     filterCountry(event) {
         // TODO - In a real application, make a request to a remote url with the query
         // and return results, for demo we get it at client side.
-        let query = event.query;
-        let countryList = new CountryList();
-
-        this.countrySuggestions = this.filterCountries(query, countryList.getAll());
-        /*
-         this
-         .entityService
+        this.entityService.getCountries().subscribe(countries => {
+            this.countries = countries;
+            this.countrySuggestions = this.filterCountries(event.query, countries);
+        }, error => {
+            this.uxService.growl({
+                severity: 'warn',
+                summary: 'WARNING',
+                detail: 'Could not get countries, ignore this when NG is working in offline mode'
+            });
+            console.log('WARNING: Could not get countries');
+        });
+        /*this.entityService
          .getCountries()
          .subscribe(countries => {
          console.log(countries);
@@ -72,13 +83,10 @@ export class EntityComponent {
         // TODO - In a real application, make a request to a remote url with the query
         // and return filtered results, for demo we filter at client side.
         let query = event.query;
-
+        this.getMunicipalities(query);
         /*this.http.get('lau.json').map(function(res:Response){
          municipalityList = res.data;
          });*/
-
-        this.getMunicipalities(query);
-
     }
 
     getMunicipalities(query) {
