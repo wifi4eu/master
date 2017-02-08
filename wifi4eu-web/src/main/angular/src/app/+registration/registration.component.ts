@@ -1,6 +1,7 @@
-import {Component} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import {EntityDetails} from "../+entity/entity-details.model";
 import {BeneficiaryDetails} from "../+beneficiary/beneficiary-details.model";
+import {ReviewComponent} from "../+review/review.component";
 
 @Component({templateUrl: 'registration.component.html'})
 export class RegistrationComponent {
@@ -12,6 +13,9 @@ export class RegistrationComponent {
 
     private completed: boolean[];
     private active: boolean[];
+
+    @ViewChild(ReviewComponent)
+    private childReview: ReviewComponent;
 
     constructor() {
         console.log("Constructor");
@@ -25,6 +29,8 @@ export class RegistrationComponent {
     }
 
     onNext(step: number) {
+        // The review child component must check the country and municipality objects to display them correctly.
+        this.childReview.checkObjects();
         this.completed[step - 1] = true;
         this.active[step - 1] = false;
         this.active[step] = true;
