@@ -7,7 +7,14 @@ export class ReviewComponent {
     @Input('entityDetails') entityDetails: EntityDetails;
     @Input('beneficiaryDetails') beneficiaryDetails: BeneficiaryDetails;
 
+    displayConfirmingData: boolean = false;
+    confirmingData: boolean = true;
+
     constructor() {
+    }
+
+    submitRegistration() {
+        this.displayConfirmingData = true;
     }
 
 }
