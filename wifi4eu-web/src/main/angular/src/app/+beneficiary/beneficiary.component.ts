@@ -11,12 +11,17 @@ export class BeneficiaryComponent {
 
     @Input('beneficiaryDetails') beneficiaryDetails: BeneficiaryDetails;
     @Output() onNext = new EventEmitter<number>();
+    @Output() onBack = new EventEmitter<number>();
 
     constructor() {
     }
 
     onSubmit(step: number) {
         this.onNext.emit(step);
+    }
+
+    stepBack(step: number) {
+        this.onBack.emit(step);
     }
 
     checkIfMayorEmailMatches() {
