@@ -19,7 +19,7 @@ export class EntityService {
 
     getMunicipalities(countryCode: string): Observable <MunicipalityDetails[]> {
         // TODO - Should call our internal REST API.
-        return this
+        return thisºgit 
             .http
             .get(countryCode + '.json')
             .map(function (response: Response) {
