@@ -27,21 +27,35 @@ export interface IDefaultApi {
 
 
     /**
+     * get all nuts
+     * 
+     */
+    findAllNuts(): Observable<string>;
+    /**
+     * get Lau by Country Code i.e: ES
+     * 
+     * @param c 
+     * @param countryCode 
+     */
+    findLauByCountryCode<T extends models.LauDTO>(countryCode: string, c?: ClassType<T>): Observable<T[]>;
+    /**
+     * get all nuts from level X
+     * 
+     * @param c 
+     * @param level 
+     */
+    findNutsByLevel<T extends models.NutsDTO>(level: number, c?: ClassType<T>): Observable<T[]>;
+    /**
      * User details resource
      * 
      * @param c 
      */
     getIdentity<T extends models.UserContext>(c?: ClassType<T>): Observable<T>;
     /**
-     * Country values
-     * 
-     */
-    getSomething(): Observable<string>;
-    /**
      * Test resource for Swagger implementation
      * 
      */
-    getSomething_1(): Observable<string>;
+    getSomething(): Observable<string>;
 
 }
 
@@ -61,6 +75,69 @@ export class DefaultApi implements IDefaultApi {
             this.configuration = configuration;
         }
     }
+
+
+    /**
+     * get all nuts
+     * 
+     */
+    public findAllNuts(): Observable<string> {
+        return this.findAllNutsWithHttpInfo()
+            .map((response: Response) => {
+                if (response.status === 204) {
+                    return undefined;
+                } else {
+                    return response.json();
+                }
+            });
+    }
+
+
+
+
+    /**
+     * get Lau by Country Code i.e: ES
+     * 
+     * @param c
+     * @param countryCode 
+     */
+    findLauByCountryCode<T extends models.LauDTO>(countryCode: string, c?: ClassType<T>): Observable<T[]> {
+
+        return this.findLauByCountryCodeWithHttpInfo(countryCode)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserializeArray(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
+     * get all nuts from level X
+     * 
+     * @param c
+     * @param level 
+     */
+    findNutsByLevel<T extends models.NutsDTO>(level: number, c?: ClassType<T>): Observable<T[]> {
+
+        return this.findNutsByLevelWithHttpInfo(level)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserializeArray(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
 
 
 
@@ -86,7 +163,7 @@ export class DefaultApi implements IDefaultApi {
 
 
     /**
-     * Country values
+     * Test resource for Swagger implementation
      * 
      */
     public getSomething(): Observable<string> {
@@ -103,21 +180,99 @@ export class DefaultApi implements IDefaultApi {
 
 
     /**
-     * Test resource for Swagger implementation
+     * get all nuts
      * 
      */
-    public getSomething_1(): Observable<string> {
-        return this.getSomething_1WithHttpInfo()
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
+    private findAllNutsWithHttpInfo(): Observable<Response> {
+        const path = this.basePath + `/nuts`;
+
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
     }
 
+    /**
+     * get Lau by Country Code i.e: ES
+     * 
+     * @param countryCode 
+     */
+    private findLauByCountryCodeWithHttpInfo(countryCode: string ): Observable<Response> {
+        const path = this.basePath + `/lau/${countryCode}`;
+//        .replace('{' + 'countryCode' + '}', String(countryCode));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
 
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'countryCode' is not null or undefined
+        if (countryCode === null || countryCode === undefined) {
+            throw new Error('Required parameter countryCode was null or undefined when calling findLauByCountryCode.');
+        }
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * get all nuts from level X
+     * 
+     * @param level 
+     */
+    private findNutsByLevelWithHttpInfo(level: number ): Observable<Response> {
+        const path = this.basePath + `/nuts/${level}`;
+//        .replace('{' + 'level' + '}', String(level));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'level' is not null or undefined
+        if (level === null || level === undefined) {
+            throw new Error('Required parameter level was null or undefined when calling findNutsByLevel.');
+        }
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
 
     /**
      * User details resource
@@ -147,37 +302,10 @@ export class DefaultApi implements IDefaultApi {
     }
 
     /**
-     * Country values
-     * 
-     */
-    private getSomethingWithHttpInfo(): Observable<Response> {
-        const path = this.basePath + `/country/country`;
-
-
-        let queryParameters = new URLSearchParams();
-        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
-
-
-
-
-
-
-
-        let requestOptions: RequestOptionsArgs = new RequestOptions({
-            method: RequestMethod.Get,
-            headers: headers,
-            search: queryParameters,
-            responseType: ResponseContentType.Json
-        });
-
-        return this.http.request(path, requestOptions);
-    }
-
-    /**
      * Test resource for Swagger implementation
      * 
      */
-    private getSomething_1WithHttpInfo(): Observable<Response> {
+    private getSomethingWithHttpInfo(): Observable<Response> {
         const path = this.basePath + `/test`;
 
 

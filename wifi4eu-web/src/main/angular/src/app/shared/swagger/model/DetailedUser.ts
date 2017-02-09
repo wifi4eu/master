@@ -8,13 +8,13 @@ export interface DetailedUser {
 
     email?: string;
 
-    firstName?: string;
-
-    uid?: string;
-
     timeZone?: string;
 
     locale?: string;
+
+    uid?: string;
+
+    firstName?: string;
 
     lastName?: string;
 
@@ -56,9 +56,9 @@ export interface DetailedUser {
 
     pgtId?: string;
 
-    proxyGrantingProtocol?: models.ProxyGrantingProtocol;
-
     pgtIou?: string;
+
+    proxyGrantingProtocol?: models.ProxyGrantingProtocol;
 
     ticketType?: models.TicketType;
 
@@ -66,9 +66,9 @@ export interface DetailedUser {
 
     fromSingleSignOn?: boolean;
 
-    authenticationStrengths?: Array<any>;
-
     authenticationTime?: Date;
+
+    authenticationStrengths?: Array<any>;
 
 }
 
@@ -89,16 +89,16 @@ export class DetailedUserBase  implements DetailedUser{
     email?:  string ;
 
 
-    firstName?:  string ;
+    timeZone?:  string ;
+
+
+    locale?:  string ;
 
 
     uid?:  string ;
 
 
-    timeZone?:  string ;
-
-
-    locale?:  string ;
+    firstName?:  string ;
 
 
     lastName?:  string ;
@@ -160,11 +160,11 @@ export class DetailedUserBase  implements DetailedUser{
 
     pgtId?:  string ;
 
-    
-    proxyGrantingProtocol?:  models.ProxyGrantingProtocolBase ;
-
 
     pgtIou?:  string ;
+
+    
+    proxyGrantingProtocol?:  models.ProxyGrantingProtocolBase ;
 
     
     ticketType?:  models.TicketTypeBase ;
@@ -175,10 +175,10 @@ export class DetailedUserBase  implements DetailedUser{
 
     fromSingleSignOn?:  boolean ;
 
-
-    authenticationStrengths?:  Array<any> ;
-
 @Type(() => Date)
     authenticationTime?:  Date ;
+
+
+    authenticationStrengths?:  Array<any> ;
 
 }
