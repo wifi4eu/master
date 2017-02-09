@@ -11,6 +11,10 @@ export class ReviewComponent {
     displayConfirmingData: boolean = false;
     confirmingData: boolean = true;
 
+    private countryField;
+    private municipalityField;
+    private checkboxes: boolean[] = [false, false, false];
+
     constructor() {
     }
 
@@ -21,4 +25,14 @@ export class ReviewComponent {
     editStep(step: number) {
         this.gotoStep.emit(step);
     }
+}
+    checkObjects() {
+        this.countryField = this.entityDetails.country;
+        this.municipalityField = this.entityDetails.municipality;
+        if (typeof this.entityDetails.country != "string") {
+            this.countryField = this.entityDetails.country.name;
+            this.municipalityField = this.entityDetails.municipality.NAME_1;
+        }
+    }
+
 }

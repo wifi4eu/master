@@ -1,123 +1,121 @@
 <div class="ui-g">
-    <div class="ui-g-12 center" style="text-align: center !important">
+</div>
+<div class="ui-g-10 center">
+    <div class="ui-g-12 center">
         <div id="component-title">
             <h3>{{ 'registration.review.title' | translate }}</h3>
         </div>
     </div>
-</div>
-<div class="ui-g">
-    <div class="ui-g-12 center" style="text-align: center !important">
+    <div class="ui-g-12 center">
         <div id="component-subtitle">
             <h6>{{ 'registration.step3.instructions' | translate }}</h6>
         </div>
     </div>
-</div>
-<div class="ui-g">
-    <div class="ui-g-7 center" style="text-align: center !important">
-        <div id="representantive_details" [ngClass]="{'hidden': !beneficiaryDetails.representativeSelected}">
+    <div class="ui-g-12 center">
+        <div id="representantive_details" class="ui-g-12"
+             [ngClass]="{'hidden': !beneficiaryDetails.representativeSelected}">
             <hr>
-            <span class="ui-g-3">
-                <div><img src="https://www.amzaffiliatebootcamp.com/wp-content/uploads/2016/09/unknown.gif"
-                          style="max-width: 100%;"></div>
-                <div>{{ 'imrepresentative.option' | translate }}</div>
-            </span>
-            <span class="ui-g-9" style="text-align: left;">
-                <h3 class="ui-g-11">{{ 'representativedetails.title' | translate }}</h3>
-                <a class="ui-g-1" (click)="editStep(2)">{{ 'edit.button' | translate }} <span
-                        class="glyphicon glyphicon-pencil"></span></a>
-                <div>
-                  <span class="ui-g-5">{{ 'treatment.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{beneficiaryDetails.treatmentRepresentative}}</b></span>
-                </div>
-                <div>
-                  <span class="ui-g-5">{{ 'name.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{beneficiaryDetails.nameRepresentative}}</b></span>
-                </div>
-                <div>
-                  <span class="ui-g-5">{{ 'surname.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{beneficiaryDetails.surnameRepresentative}}</b></span>
-                </div>
-                <div>
-                  <span class="ui-g-5">{{ 'role.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{beneficiaryDetails.roleRepresentative}}</b></span>
-                </div>
-                <div>
-                  <span class="ui-g-5">{{ 'email.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{beneficiaryDetails.emailRepresentative}}</b></span>
-                </div>
-            </span>
+            <span class="ui-g-1"></span>
+            <span class="ui-g-10" style="text-align: left;">
+                    <h3 class="ui-g-11">{{ 'representativedetails.title' | translate }}</h3>
+                    <a class="ui-g-1">{{ 'edit.button' | translate }} <span
+                            class="glyphicon glyphicon-pencil"></span></a>
+                    <div>
+                      <span class="ui-g-4">{{ 'treatment.label' | translate }}</span>
+                      <span class="ui-g-8"><b>{{beneficiaryDetails.treatmentRepresentative}}</b></span>
+                    </div>
+                    <div>
+                      <span class="ui-g-4">{{ 'name.label' | translate }}</span>
+                      <span class="ui-g-8"><b>{{beneficiaryDetails.nameRepresentative}}</b></span>
+                    </div>
+                    <div>
+                      <span class="ui-g-4">{{ 'surname.label' | translate }}</span>
+                      <span class="ui-g-8"><b>{{beneficiaryDetails.surnameRepresentative}}</b></span>
+                    </div>
+                    <div>
+                      <span class="ui-g-4">{{ 'role.label' | translate }}</span>
+                      <span class="ui-g-8"><b>{{beneficiaryDetails.roleRepresentative}}</b></span>
+                    </div>
+                    <div>
+                      <span class="ui-g-4">{{ 'email.label' | translate }}</span>
+                      <span class="ui-g-8"><b>{{beneficiaryDetails.emailRepresentative}}</b></span>
+                    </div>
+                </span>
+            <span class="ui-g-1"></span>
         </div>
-        <div id="mayor_details">
+        <div id="mayor_details" class="ui-g-12">
             <hr>
-            <span class="ui-g-3"></span>
-            <span class="ui-g-9" style="text-align: left;">
-                <h3 class="ui-g-11">{{ 'mayordetails.title' | translate }}</h3>
-                <a class="ui-g-1" (click)="editStep(2)">{{ 'edit.button' | translate }} <span
-                        class="glyphicon glyphicon-pencil"></span></a>
-                <div>
-                  <span class="ui-g-5">{{ 'treatment.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{beneficiaryDetails.treatment}}</b></span>
-                </div>
-                <div>
-                  <span class="ui-g-5">{{ 'name.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{beneficiaryDetails.name}}</b></span>
-                </div>
-                <div>
-                  <span class="ui-g-5">{{ 'surname.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{beneficiaryDetails.surname}}</b></span>
-                </div>
-                <div>
-                  <span class="ui-g-5">{{ 'email.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{beneficiaryDetails.email}}</b></span>
-                </div>
-            </span>
+            <span class="ui-g-1"></span>
+            <span class="ui-g-10" style="text-align: left;">
+                    <h3 class="ui-g-11">{{ 'mayordetails.title' | translate }}</h3>
+                    <a class="ui-g-1">{{ 'edit.button' | translate }} <span
+                            class="glyphicon glyphicon-pencil"></span></a>
+                    <div>
+                      <span class="ui-g-4">{{ 'treatment.label' | translate }}</span>
+                      <span class="ui-g-8"><b>{{beneficiaryDetails.treatment}}</b></span>
+                    </div>
+                    <div>
+                      <span class="ui-g-4">{{ 'name.label' | translate }}</span>
+                      <span class="ui-g-8"><b>{{beneficiaryDetails.name}}</b></span>
+                    </div>
+                    <div>
+                      <span class="ui-g-4">{{ 'surname.label' | translate }}</span>
+                      <span class="ui-g-8"><b>{{beneficiaryDetails.surname}}</b></span>
+                    </div>
+                    <div>
+                      <span class="ui-g-4">{{ 'email.label' | translate }}</span>
+                      <span class="ui-g-8"><b>{{beneficiaryDetails.email}}</b></span>
+                    </div>
+                </span>
+            <span class="ui-g-1"></span>
         </div>
-        <div id="entity_details">
+        <div id="entity_details" class="ui-g-12">
             <hr>
-            <span class="ui-g-3"></span>
-            <span class="ui-g-9" style="text-align: left;">
+            <span class="ui-g-1"></span>
+            <span class="ui-g-10" style="text-align: left;">
                 <h3 class="ui-g-11">{{ 'legalentity.label' | translate }}</h3>
-                <a class="ui-g-1" (click)="editStep(1)">{{ 'edit.button' | translate }} <span
+                <a class="ui-g-1">{{ 'edit.button' | translate }} <span
                         class="glyphicon glyphicon-pencil"></span></a>
                 <div>
-                  <span class="ui-g-5">{{ 'country.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{entityDetails.country}}</b></span>
+                    <span class="ui-g-4">{{ 'country.label' | translate }}</span>
+                    <span class="ui-g-8"><b>{{countryField}}</b></span>
                 </div>
                 <div>
-                  <span class="ui-g-5">{{ 'street.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{entityDetails.address}}, {{entityDetails.number}}</b></span>
+                    <span class="ui-g-4">{{ 'municipality.label' | translate }}</span>
+                    <span class="ui-g-8"><b>{{municipalityField}}</b></span>
                 </div>
                 <div>
-                  <span class="ui-g-5">{{ 'postal-code.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{entityDetails.postalCode}}</b></span>
+                    <span class="ui-g-4">{{ 'address.label' | translate }}</span>
+                    <span class="ui-g-8"><b>{{entityDetails.address}}</b></span>
                 </div>
                 <div>
-                  <span class="ui-g-5">{{ 'city.label' | translate }}</span>
-                  <span class="ui-g-7"><b>{{entityDetails.municipality}}</b></span>
+                    <span class="ui-g-4">{{ 'number.label' | translate }}</span>
+                    <span class="ui-g-8"><b>{{entityDetails.number}}</b></span>
                 </div>
                 <div>
-                  <span class="ui-g-5">{{ 'province.label' | translate }}</span>
-                  <span class="ui-g-7"><b>Barcelona</b></span>
+                    <span class="ui-g-4">{{ 'postal-code.label' | translate }}</span>
+                    <span class="ui-g-8"><b>{{entityDetails.postalCode}}</b></span>
                 </div>
             </span>
+            <span class="ui-g-1"></span>
         </div>
         <div id="confirm_checkboxes">
             <hr>
             <div class="ui-g-12 checkbox" style="text-align: left;">
                 <span class="ui-g-3"></span>
-                <label class="ui-g-6" for="check_1"><input type="checkbox" id="check_1"> {{
+                <label class="ui-g-6" for="check_1"><input type="checkbox" id="check_1" [(ngModel)]="checkboxes[0]"> {{
                     'preview.registration.check1' | translate }}</label>
                 <span class="ui-g-3"></span>
             </div>
             <div class="ui-g-12" style="text-align: left;">
                 <span class="ui-g-3"></span>
-                <label class="ui-g-6" for="check_2"><input type="checkbox" id="check_2"> {{
+                <label class="ui-g-6" for="check_2"><input type="checkbox" id="check_2" [(ngModel)]="checkboxes[1]"> {{
                     'preview.registration.check2' | translate }}</label>
                 <span class="ui-g-3"></span>
             </div>
             <div class="ui-g-12" style="text-align: left;">
                 <span class="ui-g-3"></span>
-                <label class="ui-g-6" for="check_3"><input type="checkbox" id="check_3"> {{
+                <label class="ui-g-6" for="check_3"><input type="checkbox" id="check_3" [(ngModel)]="checkboxes[2]"> {{
                     'preview.registration.check3' | translate }}</label>
                 <span class="ui-g-3"></span>
             </div>
