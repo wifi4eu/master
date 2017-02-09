@@ -17,9 +17,6 @@ export class RegistrationComponent {
         console.log("Constructor");
         this.entityDetails = new EntityDetails();
         this.beneficiaryDetails = new BeneficiaryDetails();
-        this.completedSteps = [false, false, false];
-        this.activeSteps = [false, false, false];
-        this.currentStep = 1;
         this.completed = [false, false, false];
         this.active = [true, false, false];
     }
@@ -30,5 +27,22 @@ export class RegistrationComponent {
         this.active[step] = true;
         console.log("Completed", this.completed);
         console.log("Active", this.active);
+    }
+    
+    gotoStep(step: number) {
+        switch (step) {
+            case 1:
+                this.completed = [false, false, false];
+                this.active = [true, false, false];
+                break;
+            case 2:
+                this.completed = [true, false, false];
+                this.active = [false, true, false];
+                break;
+            case 3:
+                this.completed = [true, true, false];
+                this.active = [false, false, true];
+                break;
+        }
     }
 }
