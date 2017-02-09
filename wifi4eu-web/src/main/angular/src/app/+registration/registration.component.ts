@@ -14,6 +14,7 @@ export class RegistrationComponent {
     private active: boolean[];
 
     private successRegistration: boolean = false;
+    private failureRegistration: boolean = false;
 
     constructor() {
         console.log("Constructor");

@@ -7,13 +7,14 @@ import {BeneficiaryComponent} from '../+beneficiary/beneficiary.component';
 import {ReviewComponent} from '../+review/review.component';
 import {SuccessRegistrationComponent} from './success.registration.component';
 import {SuccessComponent} from '../+review/success.component';
+import {FailureComponent} from '../+review/failure.component';
 
 @NgModule({
     imports: [
         SharedModule, RegistrationRoutingModule
     ],
     declarations: [
-        RegistrationComponent, EntityComponent, BeneficiaryComponent, ReviewComponent, SuccessRegistrationComponent, SuccessComponent
+        RegistrationComponent, EntityComponent, BeneficiaryComponent, ReviewComponent, SuccessRegistrationComponent, SuccessComponent, FailureComponent
     ],
     bootstrap: [RegistrationComponent]
 })
