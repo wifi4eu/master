@@ -1,5 +1,4 @@
-<div class="ui-g">
-</div>
+<div class="ui-g-1"></div>
 <div class="ui-g-10 center">
     <div class="ui-g-12 center">
         <div id="component-title">
@@ -18,7 +17,7 @@
             <span class="ui-g-1"></span>
             <span class="ui-g-10" style="text-align: left;">
                     <h3 class="ui-g-11">{{ 'representativedetails.title' | translate }}</h3>
-                    <a class="ui-g-1">{{ 'edit.button' | translate }} <span
+                    <a class="ui-g-1" (click)="editStep(2)">{{ 'edit.button' | translate }} <span
                             class="glyphicon glyphicon-pencil"></span></a>
                     <div>
                       <span class="ui-g-4">{{ 'treatment.label' | translate }}</span>
@@ -48,7 +47,7 @@
             <span class="ui-g-1"></span>
             <span class="ui-g-10" style="text-align: left;">
                     <h3 class="ui-g-11">{{ 'mayordetails.title' | translate }}</h3>
-                    <a class="ui-g-1">{{ 'edit.button' | translate }} <span
+                    <a class="ui-g-1" (click)="editStep(2)">{{ 'edit.button' | translate }} <span
                             class="glyphicon glyphicon-pencil"></span></a>
                     <div>
                       <span class="ui-g-4">{{ 'treatment.label' | translate }}</span>
@@ -74,7 +73,7 @@
             <span class="ui-g-1"></span>
             <span class="ui-g-10" style="text-align: left;">
                 <h3 class="ui-g-11">{{ 'legalentity.label' | translate }}</h3>
-                <a class="ui-g-1">{{ 'edit.button' | translate }} <span
+                <a class="ui-g-1" (click)="editStep(1)">{{ 'edit.button' | translate }} <span
                         class="glyphicon glyphicon-pencil"></span></a>
                 <div>
                     <span class="ui-g-4">{{ 'country.label' | translate }}</span>
@@ -99,7 +98,7 @@
             </span>
             <span class="ui-g-1"></span>
         </div>
-        <div id="confirm_checkboxes">
+        <div id="confirm_checkboxes" class="ui-g-12">
             <hr>
             <div class="ui-g-12 checkbox" style="text-align: left;">
                 <span class="ui-g-3"></span>
@@ -120,28 +119,27 @@
                 <span class="ui-g-3"></span>
             </div>
         </div>
+        <div class="form-group ui-g-12">
+            <div class="ui-g-4"></div>
+            <div class="ui-g-2" style="text-align: center !important">
+                <button class="btn">{{ 'cancel.button' | translate }}</button>
+            </div>
+            <div class="ui-g-2" style="text-align: center !important">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#confirmingModal"
+                        (click)="submitRegistration()" [disabled]="!checkboxes[0] || !checkboxes[1] || !checkboxes[2]">
+                    {{'submitregistration.button' | translate }}
+                </button>
+            </div>
+            <div class="ui-g-4"></div>
+        </div>
     </div>
 </div>
-<div class="form-group ui-g">
-    <div class="ui-g-4"></div>
-    <div class="ui-g-2" style="text-align: center !important">
-        <button class="btn">{{ 'cancel.button' | translate }}</button>
-    </div>
-    <div class="ui-g-2" style="text-align: center !important">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#confirmingModal"
-                (click)="submitRegistration()">{{
-            'submitregistration.button' | translate }}
-        </button>
-    </div>
-    <div class="ui-g-4"></div>
-</div>
-<div class="form-group ui-g">
-    <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="false" [closeOnEscape]="false">
-        <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
-        <h1 class="Modalh1Confirmation">Confirming Data, please wait...</h1>
-        <p class="ModalpConfirmation">Your registration to Wifi4EU is in the process of being submitted.<br>Please don't
-            close this window.</p>
-    </p-dialog>
-</div>
+<div class="ui-g-1"></div>
+<p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false"
+          [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+    <h1 class="Modalh1Confirmation">Confirming Data, please wait...</h1>
+    <p class="ModalpConfirmation">Your registration to Wifi4EU is in the process of being submitted.<br>Please don't
+        close this window.</p>
+</p-dialog>
 
