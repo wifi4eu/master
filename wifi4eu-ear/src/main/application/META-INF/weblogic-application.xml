@@ -11,6 +11,7 @@
     <prefer-application-packages>
 		<package-name>org.apache.commons.lang.*</package-name>
         <package-name>org.joda.*</package-name>
+        <package-name>com.fasterxml.jackson.*</package-name>
     </prefer-application-packages>
 
 

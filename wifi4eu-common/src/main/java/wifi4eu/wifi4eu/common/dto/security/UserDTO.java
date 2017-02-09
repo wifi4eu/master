@@ -8,53 +8,62 @@ import java.io.Serializable;
 
 public class UserDTO implements Serializable {
 
-    private Long perId;
-    private String userId;
-    private Date dtDeb;
-    private Date dtFin;
+    private long userId;
+    private String email;
+    private String password;
+    private Date createDate;
+    private Date accessDate;
     private List<RoleDTO> roles;
 
-    public UserDTO() {
-    }
+    public UserDTO(){}
 
-    public UserDTO(Long perId, String userId, Date dtDeb, Date dtFin, List<RoleDTO> roleDTOs) {
-        this.perId = perId;
+    public UserDTO(long userId, String email, String password, Date createDate, Date accessDate, List<RoleDTO> roles) {
         this.userId = userId;
-        this.dtDeb = dtDeb;
-        this.dtFin = dtFin;
-        this.roles = roleDTOs;
+        this.email = email;
+        this.password = password;
+        this.createDate = createDate;
+        this.accessDate = accessDate;
+        this.roles = roles;
     }
 
-    public Long getPerId() {
-        return perId;
-    }
-
-    public void setPerId(Long perId) {
-        this.perId = perId;
-    }
-
-    public String getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
-    public Date getDtDeb() {
-        return dtDeb;
+    public String getEmail() {
+        return email;
     }
 
-    public void setDtDeb(Date dtDeb) {
-        this.dtDeb = dtDeb;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Date getDtFin() {
-        return dtFin;
+    public String getPassword() {
+        return password;
     }
 
-    public void setDtFin(Date dtFin) {
-        this.dtFin = dtFin;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getAccessDate() {
+        return accessDate;
+    }
+
+    public void setAccessDate(Date accessDate) {
+        this.accessDate = accessDate;
     }
 
     public List<RoleDTO> getRoles() {
