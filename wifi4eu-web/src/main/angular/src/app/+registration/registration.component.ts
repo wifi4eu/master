@@ -47,5 +47,12 @@ export class RegistrationComponent {
                 this.active = [false, false, true];
                 break;
         }
+
+    onBack(step: number) {
+        this.completed[step - 1] = false;
+        this.active[step - 1] = true;
+        this.active[step] = false;
+        console.log("Completed", this.completed);
+        console.log("Active", this.active);
     }
 }
