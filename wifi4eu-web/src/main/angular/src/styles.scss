@@ -8,3 +8,50 @@ p-autocomplete {
 .ui-autocomplete {
   display: block;
 }
+
+.alert.alert-danger {
+  background-image: none;
+  padding-left: 1rem;
+}
+
+
+.ui-dialog{
+  border:none;
+  background-color: rgba(255,0,0,0);
+
+}
+
+.ui-widget-header{
+  border:none;
+  background: none;
+}
+
+.Modalh1Confirmation{
+  color:#004494;
+  text-align: center;
+  font-size: 30px;
+  font-family:Verdana;
+  font-weight: bold;
+
+}
+
+
+.ModalpConfirmation{
+  text-align: center;
+  color: #4a4a4a;
+  font-size: 15px;
+  font-family:Verdana;
+}
+
+.ui-dialog-mask {
+  background: rgba(255, 255, 255, 1) !important;
+
+}
+
+.ui-widget-overlay{
+  opacity:0.9;
+}
+
+.ui-shadow{
+  box-shadow: none;
+}

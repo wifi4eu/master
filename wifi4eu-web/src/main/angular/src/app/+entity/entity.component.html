@@ -16,53 +16,93 @@
     </div>
     <div class="ui-g-3"></div>
 </div>
-<form>
+<form (ngSubmit)="onSubmit(1)" #entityForm="ngForm">
     <div class="form-group ui-g">
         <div class="ui-g-3"></div>
         <div class="ui-g-6">
-            <label for="country">{{ 'country.label' | translate }}</label>
-            <p-autoComplete [(ngModel)]="country" [suggestions]="countrySuggestions"
-                            (completeMethod)="filterCountry($event)" field="name"
-                            [size]="30" [minLength]="1" class="form-control ng-pristine ng-valid ng-touched"
-                            name="country" id="country" ngcontrol="country" required>
-            </p-autoComplete>
+            <div class="form-group">
+                <label for="country">{{ 'country.label' | translate }}</label>
+                <p-autoComplete [(ngModel)]="entityDetails.country"
+                                [suggestions]="countrySuggestions"
+                                (completeMethod)="filterCountry($event)"
+                                field="name"
+                                [size]="30" [minLength]="1" class="form-control"
+                                name="country" ngcontrol="country"
+                                #country="ngModel" required>
+                </p-autoComplete>
+                <div [hidden]="country.valid || country.pristine"
+                     class="alert alert-danger">Country is required
+                </div>
+            </div>
         </div>
         <div class="ui-g-3"></div>
     </div>
     <div class="form-group ui-g">
         <div class="ui-g-3"></div>
         <div class="ui-g-6">
-            <label for="municipality">{{ 'municipality.label' | translate }}</label>
-            <p-autoComplete [(ngModel)]="municipality" [suggestions]="municipalitySuggestions"
-                            (completeMethod)="filterMunicipality($event)"
-                            field="NAME_1" [size]="30" [minLength]="1"
-                            class="form-control ng-pristine ng-valid ng-touched" name="municipality" id="municipality"
-                            ngcontrol="municipality" required>
-            </p-autoComplete>
+            <div class="form-group">
+                <label for="municipality">{{ 'municipality.label' | translate
+                    }}</label>
+                <p-autoComplete [(ngModel)]="entityDetails.municipality"
+                                [suggestions]="municipalitySuggestions"
+                                (completeMethod)="filterMunicipality($event)"
+                                field="NAME_1"
+                                [size]="30" [minLength]="1" class="form-control"
+                                name="municipality" ngcontrol="municipality"
+                                #municipality="ngModel"
+                                (keydown)="checkCountry()" required>
+                </p-autoComplete>
+                <div [hidden]="municipality.valid || municipality.pristine"
+                     class="alert alert-danger">Municipality is
+                    required
+                </div>
+            </div>
         </div>
         <div class="ui-g-3"></div>
     </div>
     <div class="form-group ui-g">
         <div class="ui-g-3"></div>
         <div class="ui-g-5">
-            <label for="address">{{ 'address.label' | translate }}</label>
-            <input class="form-control ng-pristine ng-valid ng-touched" name="address" id="address" ngcontrol="address"
-                   type="text" [(ngModel)]="entityDetails.address" required>
+            <div class="form-group">
+                <label for="address">{{ 'address.label' | translate }}</label>
+                <input type="text" [(ngModel)]="entityDetails.address"
+                       class="form-control"
+                       name="address" ngcontrol="address" #address="ngModel"
+                       required>
+                <div [hidden]="address.valid || address.pristine"
+                     class="alert alert-danger">Address is required
+                </div>
+            </div>
         </div>
         <div class="ui-g-1">
-            <label for="number">{{ 'number.label' | translate }}</label>
-            <input class="form-control ng-pristine ng-valid ng-touched" name="number" id="number" ngcontrol="number"
-                   type="text" [(ngModel)]="entityDetails.number" required>
+            <div class="form-group">
+                <label for="number">{{ 'number.label' | translate }}</label>
+                <input type="text" [(ngModel)]="entityDetails.number"
+                       class="form-control"
+                       name="number" ngcontrol="number" #number="ngModel"
+                       required>
+                <div [hidden]="number.valid || number.pristine"
+                     class="alert alert-danger">Address is required
+                </div>
+            </div>
         </div>
         <div class="ui-g-3"></div>
     </div>
     <div class="form-group ui-g">
         <div class="ui-g-3"></div>
         <div class="ui-g-6">
-            <label for="postalCode">{{ 'postal-code.label' | translate }}</label>
-            <input class="form-control ng-pristine ng-valid ng-touched" name="postalCode" id="postalCode"
-                   ngcontrol="postalCode" type="text" [(ngModel)]="entityDetails.postalCode"
-                   required>
+            <div class="form-group">
+                <label for="postalCode">{{ 'postal-code.label' | translate
+                    }}</label>
+                <input type="text" [(ngModel)]="entityDetails.postalCode"
+                       class="form-control"
+                       name="postalCode" ngcontrol="postalCode"
+                       #postalCode="ngModel" required>
+                <div [hidden]="postalCode.valid || postalCode.pristine"
+                     class="alert alert-danger">Postal code is
+                    required
+                </div>
+            </div>
         </div>
         <div class="ui-g-3"></div>
     </div>
@@ -72,7 +112,10 @@
             <button class="btn">{{ 'back.button' | translate }}</button>
         </div>
         <div class="ui-g-2" style="text-align: center !important">
-            <button class="btn btn-primary" (click)="nextStep(1)">{{ 'next.button' | translate }}</button>
+            <button type="submit" class="btn btn-primary"
+                    [disabled]="!entityForm.form.valid">{{ 'next.button' |
+                translate }}
+            </button>
         </div>
         <div class="ui-g-4"></div>
     </div>
