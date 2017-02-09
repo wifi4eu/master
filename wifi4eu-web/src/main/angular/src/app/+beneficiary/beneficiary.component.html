@@ -105,7 +105,7 @@
                 <input class="form-control" type="email" name="confirmemail"
                        id="confirmemail" ngcontrol="confirmemail"
                        #confirmemail="ngModel"
-                       [(ngModel)]="beneficiaryDetails.confirmEmail" required>
+                       [(ngModel)]="beneficiaryDetails.confirmEmail" (keyup)="checkIfMayorEmailMatches()" required>
                 <div [hidden]="mayorEmailMatches || confirmemail.pristine"
                      class="alert alert-info">The email
                     information must
@@ -207,10 +207,16 @@
                     | translate }}</label>
                 <input class="form-control" type="email"
                        name="confirmemail_representative"
-                       id="confirmemail_representative"
+                       id="confirmemail_representative" ngcontrol="confirmemail_representative"
+                       #confirmemail_representative="ngModel"
                        [(ngModel)]="beneficiaryDetails.confirmEmailRepresentative"
                        (keyup)="checkIfRepresentativeEmailMatches()"
                        [required]="beneficiaryDetails.representativeSelected">
+                <div [hidden]="representativeEmailMatches || confirmemail_representative.pristine"
+                     class="alert alert-info">The email
+                    information must
+                    match
+                </div>
             </div>
             <div class="ui-g-3"></div>
         </div>
