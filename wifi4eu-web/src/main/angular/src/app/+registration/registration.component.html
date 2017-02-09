@@ -16,7 +16,8 @@
                     [isActive]="active[2]">
         <uxWizardStepCustomContent>
             <review-component [entityDetails]="entityDetails"
-                              [beneficiaryDetails]="beneficiaryDetails" (onNext)="onNext($event)"></review-component>
+                              [beneficiaryDetails]="beneficiaryDetails" (onNext)="onNext($event)"
+                              (gotoStep)="gotoStep($event)"></review-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
 </ux-wizard-steps>
