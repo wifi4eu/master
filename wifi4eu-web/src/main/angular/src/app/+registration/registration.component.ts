@@ -61,4 +61,12 @@ export class RegistrationComponent {
         console.log("Completed", this.completed);
         console.log("Active", this.active);
     }
+
+    onSuccess(value: boolean) {
+        this.successRegistration = value;
+    }
+
+    onFailure(value: boolean) {
+        this.failureRegistration = value;
+    }
 }

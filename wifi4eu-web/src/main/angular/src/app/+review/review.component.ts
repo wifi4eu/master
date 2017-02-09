@@ -7,6 +7,8 @@ export class ReviewComponent {
     @Input('entityDetails') entityDetails: EntityDetails;
     @Input('beneficiaryDetails') beneficiaryDetails: BeneficiaryDetails;
     @Output() gotoStep = new EventEmitter<number>();
+    @Output() onSuccess = new EventEmitter<boolean>();
+    @Output() onFailure = new EventEmitter<boolean>();
 
     displayConfirmingData: boolean = false;
     confirmingData: boolean = true;
@@ -19,7 +21,12 @@ export class ReviewComponent {
     }
 
     submitRegistration() {
+        let that = this;
         this.displayConfirmingData = true;
+        setTimeout(function () {
+            that.displayConfirmingData = false;
+            that.onSuccess.emit(true);
+        }, 2000);
     }
 
     editStep(step: number) {

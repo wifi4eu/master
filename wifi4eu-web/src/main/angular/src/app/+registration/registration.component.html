@@ -24,7 +24,8 @@
             <review-component [entityDetails]="entityDetails"
                               [beneficiaryDetails]="beneficiaryDetails"
                               (onNext)="onNext($event)"
-                              (gotoStep)="gotoStep($event)"></review-component>
+                              (gotoStep)="gotoStep($event)" (onSuccess)="onSuccess($event)"
+                              (onFailure)="onFailure($event)"></review-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
 </ux-wizard-steps>
