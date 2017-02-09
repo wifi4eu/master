@@ -137,17 +137,13 @@
     </div>
     <div class="ui-g-4"></div>
 </div>
-<p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
-          [closable]="false" [closeOnEscape]="false">
-    <h1 style="text-align: center;">Confirming Data, please wait...</h1>
-    <p style="text-align: center;">Your registration to Wifi4EU is in the process of being submitted.<br>Please don't
-        close this window.</p>
-</p-dialog>
-
-<div [hidden]="confirmingData" id="loading"
-     style="bottom: 0px;left: 0px;position: fixed;right: 0px;top: 0px;z-index: 999999; background: rgba(243, 243, 243, 0.8);">
-    <div id="loading_content" style="margin-top: 15%; text-align: center; font-size: 18px;">
-        <h1><b>Confirming Data, please wait...</b></h1>
-        <p>Your registration to Wifi4EU is in the process of being submitted.<br>Please don't close this window.</p>
-    </div>
+<div class="form-group ui-g">
+    <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false" [closable]="false" [closeOnEscape]="false">
+        <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+        <h1 class="Modalh1Confirmation">Confirming Data, please wait...</h1>
+        <p class="ModalpConfirmation">Your registration to Wifi4EU is in the process of being submitted.<br>Please don't
+            close this window.</p>
+    </p-dialog>
 </div>
+
