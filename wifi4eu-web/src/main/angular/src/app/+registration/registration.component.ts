@@ -13,6 +13,8 @@ export class RegistrationComponent {
     private completed: boolean[];
     private active: boolean[];
 
+    private successRegistration: boolean = false;
+
     constructor() {
         console.log("Constructor");
         this.entityDetails = new EntityDetails();
