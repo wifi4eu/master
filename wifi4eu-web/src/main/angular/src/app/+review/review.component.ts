@@ -25,7 +25,7 @@ export class ReviewComponent {
     editStep(step: number) {
         this.gotoStep.emit(step);
     }
-}
+
     checkObjects() {
         this.countryField = this.entityDetails.country;
         this.municipalityField = this.entityDetails.municipality;

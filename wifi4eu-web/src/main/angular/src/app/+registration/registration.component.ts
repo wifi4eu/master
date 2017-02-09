@@ -36,7 +36,7 @@ export class RegistrationComponent {
         console.log("Completed", this.completed);
         console.log("Active", this.active);
     }
-    
+
     gotoStep(step: number) {
         switch (step) {
             case 1:
@@ -52,6 +52,7 @@ export class RegistrationComponent {
                 this.active = [false, false, true];
                 break;
         }
+    }
 
     onBack(step: number) {
         this.completed[step - 1] = false;
