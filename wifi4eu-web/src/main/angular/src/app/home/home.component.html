@@ -1,50 +1,119 @@
-<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-    <div class="form-group ui-g">
-        <div class="ui-g-3"></div>
-        <div class="ui-g-6">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" [(ngModel)]="userDetails.email"
-                       class="form-control"
-                       name="email" ngcontrol="email"
-                       #email="ngModel" required>
-                <div [hidden]="email.valid || email.pristine"
-                     class="alert alert-danger">Email is
-                    required
-                </div>
-            </div>
-        </div>
-        <div class="ui-g-3"></div>
+<!--<form (ngSubmit)="onSubmit()" #loginForm="ngForm">-->
+    <!--<div class="form-group ui-g">-->
+        <!--<div class="ui-g-3"></div>-->
+        <!--<div class="ui-g-6">-->
+            <!--<div class="form-group">-->
+                <!--<label for="email">Email</label>-->
+                <!--<input type="email" [(ngModel)]="userDetails.email"-->
+                       <!--class="form-control"-->
+                       <!--name="email" ngcontrol="email"-->
+                       <!--#email="ngModel" required>-->
+                <!--<div [hidden]="email.valid || email.pristine"-->
+                     <!--class="alert alert-danger">Email is-->
+                    <!--required-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="ui-g-3"></div>-->
+    <!--</div>-->
+    <!--<div class="form-group ui-g">-->
+        <!--<div class="ui-g-3"></div>-->
+        <!--<div class="ui-g-6">-->
+            <!--<div class="form-group">-->
+                <!--<label for="password">Password</label>-->
+                <!--<input type="password" [(ngModel)]="userDetails.password"-->
+                       <!--class="form-control"-->
+                       <!--name="password" ngcontrol="password"-->
+                       <!--#password="ngModel" required>-->
+                <!--<div [hidden]="password.valid || password.pristine"-->
+                     <!--class="alert alert-danger">Password is-->
+                    <!--required-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="ui-g-3"></div>-->
+    <!--</div>-->
+    <!--<div class="form-group ui-g">-->
+        <!--<div class="ui-g-4"></div>-->
+        <!--<div class="ui-g-4" style="text-align: center !important">-->
+            <!--<button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">Login</button>-->
+        <!--</div>-->
+        <!--<div class="ui-g-4"></div>-->
+    <!--</div>-->
+<!--</form>-->
+<!--<p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false"-->
+          <!--[draggable]="false" [closable]="false" [closeOnEscape]="false">-->
+    <!--<p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>-->
+    <!--<h1 class="Modalh1Confirmation">Confirming Data, please wait...</h1>-->
+    <!--<p class="ModalpConfirmation">Your registration to Wifi4EU is in the process of being submitted.<br>Please don't-->
+        <!--close this window.</p>-->
+<!--</p-dialog>-->
+
+
+
+<!--LUCIA-->
+
+<div class="container first">
+    <div class="ui-g-6 margin-top">
+        <img src="assets/images/group.png" alt="">
+        <h1>FREE Wi-Fi FOR EUROP</h1>
+        <p>The European Commission wishes to promote free Wi-Fi connectivity for citizens and visitors in public spaces such as parks, squares, public building, libraries, health centres, and museums everywhere in Europe through WiFi4EU.</p>
+        <p>The initial budget of the WiFi4EU scheme is EUR 120 million between 2017-2019. It will support the installation of state-of-the-art Wi-Fi equipment in the centres of community life.</p>
     </div>
-    <div class="form-group ui-g">
-        <div class="ui-g-3"></div>
-        <div class="ui-g-6">
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" [(ngModel)]="userDetails.password"
-                       class="form-control"
-                       name="password" ngcontrol="password"
-                       #password="ngModel" required>
-                <div [hidden]="password.valid || password.pristine"
-                     class="alert alert-danger">Password is
-                    required
-                </div>
-            </div>
-        </div>
-        <div class="ui-g-3"></div>
+    <div class="ui-g-6 margin-top">
+        <p>“Everyone benefiting from connectivity means that it should not matter where you live or how much you earn.  So we propose today to equip every European village and every city with free wireless internet ac­cess around the main centres of public life by 2020.”</p>
+        <p>Jean-Claude JUNCKER</p>
+        <p>State of the Union speech, September 2016</p>
+   </div>
+</div>
+<div class="container second">
+    <div class="ui-g-6">
+        <h1>WHO WILL BENEFIT?</h1>
+        <h2>All Europeans</h2>
+        <p>The WiFi4EU scheme will be disbursed in a geographically balanced manner, so that high-speed connections can benefit both residents and visitors of thousands of local communities across the EU. At least 6,000 to 8,000 local communities Up to 40-50 million connections per day</p>
     </div>
-    <div class="form-group ui-g">
-        <div class="ui-g-4"></div>
-        <div class="ui-g-4" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">Login</button>
-        </div>
-        <div class="ui-g-4"></div>
+    <div class="ui-g-6">
+        <h2>Entities with a public mission</h2>
+        <p> The WiFi4EU scheme will be open to entities with a public mission – typically local municipalities, libraries, health centres, etc. It will fund the equipment and installation costs (internet access points), while the local entity will pay for the connectivity (internet subscription) and maintenance in good order of the equipment. The local authorities will be encouraged to develop and promote their own digital services in areas such as e-government, e-health and e-tourism.</p>
+        <button>watch video</button>
     </div>
-</form>
-<p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false"
-          [draggable]="false" [closable]="false" [closeOnEscape]="false">
-    <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
-    <h1 class="Modalh1Confirmation">Confirming Data, please wait...</h1>
-    <p class="ModalpConfirmation">Your registration to Wifi4EU is in the process of being submitted.<br>Please don't
-        close this window.</p>
-</p-dialog>
+</div>
+<div class="container third">
+    <div class="ui-g-6">
+        <h2>HOW TO APPLY FOR WiF</h2>
+        <p>The WiFi4EU scheme will be delivered through simple and non-bureaucratic procedures such as online applications, payments by vouchers and light-touch monitoring requirements.</p>
+        <img src="">
+        <p>I'm a Mayor</p>
+        <p>or I represent a municipality</p>
+        <button>watch video</button>
+    </div>
+    <div class="ui-g-6">
+        <p>The WiFi4EU scheme will be delivered through simple and non-bureaucratic procedures such as online applications, payments by vouchers and light-touch monitoring requirements.</p>
+        <img src="">
+        <p>I'm a Mayor</p>
+        <p>or I represent a municipality</p>
+        <button>watch video</button>
+    </div>
+</div>
+
+<div class="container azul">
+    <div class="ui-g-12">
+        <h1>NEED MORE INFORMATION?</h1>
+        <p>Please visit following links form more information about the project</p>
+    </div>
+    <div class="ui-g-6">
+        <p></p>
+        <p></p>
+        <p></p>
+    </div>
+    <div class="ui-g-6">
+        <p>Factsheet on WiFi4EU </p>
+        <p>Strategy on Connectivity for a European Gigabit Society</p>
+
+        <p>Proposed Regulation on the promotion of Internet connectivity in local communities and public spaces (WiFi4EU)</p>
+        <p>“Bringing it all together in WiFi4EU” - presentation from the B-DAY: Going Giga, 15 Nov 2016</p>
+    </div>
+</div>
+<div class="container">
+    Footer
+</div>
