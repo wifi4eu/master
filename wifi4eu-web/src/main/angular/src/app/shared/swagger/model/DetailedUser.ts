@@ -4,41 +4,13 @@ import {Type} from "class-transformer";
 export interface DetailedUser {
     name?: string;
 
-    teleworkingPriority?: boolean;
-
-    employeeType?: string;
-
-    storkId?: string;
-
-    telephoneNumber?: string;
-
-    tokenId?: string;
-
-    tokenCramId?: string;
-
-    domainUsername?: string;
-
-    deviceName?: string;
-
-    employeeNumber?: string;
-
-    assuranceLevel?: models.AssuranceLevel;
-
-    registrationLevelVersions?: { [key: string]: any; };
-
-    orgId?: string;
-
-    userManager?: string;
-
-    uid?: string;
+    domain?: string;
 
     mobilePhoneNumber?: string;
 
-    unversionedUid?: string;
+    registrationLevelVersions?: { [key: string]: any; };
 
-    departmentNumber?: string;
-
-    domain?: string;
+    storkId?: string;
 
     email?: string;
 
@@ -46,27 +18,55 @@ export interface DetailedUser {
 
     timeZone?: string;
 
+    assuranceLevel?: models.AssuranceLevel;
+
+    employeeType?: string;
+
+    orgId?: string;
+
+    deviceName?: string;
+
+    departmentNumber?: string;
+
+    employeeNumber?: string;
+
+    telephoneNumber?: string;
+
+    teleworkingPriority?: boolean;
+
+    tokenCramId?: string;
+
+    tokenId?: string;
+
+    unversionedUid?: string;
+
+    userManager?: string;
+
+    extendedAttributes?: { [key: string]: any; };
+
+    domainUsername?: string;
+
     firstName?: string;
 
     lastName?: string;
 
-    extendedAttributes?: { [key: string]: any; };
+    uid?: string;
 
     proxies?: Array<any>;
 
-    proxyGrantingProtocol?: models.ProxyGrantingProtocol;
+    pgtIou?: string;
 
     pgtId?: string;
 
-    pgtIou?: string;
+    proxyGrantingProtocol?: models.ProxyGrantingProtocol;
 
     ticketType?: models.TicketType;
 
     extendedUserDetails?: models.ExtendedUserDetails;
 
-    authenticationStrengths?: Array<any>;
-
     authenticationTime?: Date;
+
+    authenticationStrengths?: Array<any>;
 
     fromSingleSignOn?: boolean;
 
@@ -83,58 +83,16 @@ export class DetailedUserBase  implements DetailedUser{
     name?:  string ;
 
 
-    teleworkingPriority?:  boolean ;
-
-
-    employeeType?:  string ;
-
-
-    storkId?:  string ;
-
-
-    telephoneNumber?:  string ;
-
-
-    tokenId?:  string ;
-
-
-    tokenCramId?:  string ;
-
-
-    domainUsername?:  string ;
-
-
-    deviceName?:  string ;
-
-
-    employeeNumber?:  string ;
-
-    
-    assuranceLevel?:  models.AssuranceLevelBase ;
-
-
-    registrationLevelVersions?:  { [key: string]: any; } ;
-
-
-    orgId?:  string ;
-
-
-    userManager?:  string ;
-
-
-    uid?:  string ;
+    domain?:  string ;
 
 
     mobilePhoneNumber?:  string ;
 
 
-    unversionedUid?:  string ;
+    registrationLevelVersions?:  { [key: string]: any; } ;
 
 
-    departmentNumber?:  string ;
-
-
-    domain?:  string ;
+    storkId?:  string ;
 
 
     email?:  string ;
@@ -145,6 +103,48 @@ export class DetailedUserBase  implements DetailedUser{
 
     timeZone?:  string ;
 
+    
+    assuranceLevel?:  models.AssuranceLevelBase ;
+
+
+    employeeType?:  string ;
+
+
+    orgId?:  string ;
+
+
+    deviceName?:  string ;
+
+
+    departmentNumber?:  string ;
+
+
+    employeeNumber?:  string ;
+
+
+    telephoneNumber?:  string ;
+
+
+    teleworkingPriority?:  boolean ;
+
+
+    tokenCramId?:  string ;
+
+
+    tokenId?:  string ;
+
+
+    unversionedUid?:  string ;
+
+
+    userManager?:  string ;
+
+
+    extendedAttributes?:  { [key: string]: any; } ;
+
+
+    domainUsername?:  string ;
+
 
     firstName?:  string ;
 
@@ -152,19 +152,19 @@ export class DetailedUserBase  implements DetailedUser{
     lastName?:  string ;
 
 
-    extendedAttributes?:  { [key: string]: any; } ;
+    uid?:  string ;
 
 
     proxies?:  Array<any> ;
 
-    
-    proxyGrantingProtocol?:  models.ProxyGrantingProtocolBase ;
+
+    pgtIou?:  string ;
 
 
     pgtId?:  string ;
 
-
-    pgtIou?:  string ;
+    
+    proxyGrantingProtocol?:  models.ProxyGrantingProtocolBase ;
 
     
     ticketType?:  models.TicketTypeBase ;
@@ -172,11 +172,11 @@ export class DetailedUserBase  implements DetailedUser{
     
     extendedUserDetails?:  models.ExtendedUserDetailsBase ;
 
-
-    authenticationStrengths?:  Array<any> ;
-
 @Type(() => Date)
     authenticationTime?:  Date ;
+
+
+    authenticationStrengths?:  Array<any> ;
 
 
     fromSingleSignOn?:  boolean ;

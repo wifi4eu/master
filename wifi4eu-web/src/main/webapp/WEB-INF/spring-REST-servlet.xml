@@ -13,13 +13,13 @@
 
     <context:component-scan base-package="wifi4eu.wifi4eu.web.rest"/>
 
+    <!--
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="smtp.gmail.com" />
         <property name="port" value="587" />
         <property name="username" value="portaleseveris@gmail.com" />
 		<property name="password" value="bcf74eb9b6" />
 
-		<!-- The name of the property, following JavaBean naming conventions -->
 		<property name="javaMailProperties">
         <props>
             <prop key="mail.transport.protocol">smtp</prop>
@@ -29,6 +29,6 @@
         </props>
     </property>
     </bean>
-
+    -->
 
 </beans>
