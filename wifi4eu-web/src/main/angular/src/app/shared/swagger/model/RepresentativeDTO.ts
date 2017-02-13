@@ -16,7 +16,7 @@ export interface RepresentativeDTO {
 
     mayorRepeatEmail?: string;
 
-    mayorId?: string;
+    mayorId?: number;
 
 }
 
@@ -49,6 +49,6 @@ export class RepresentativeDTOBase  implements RepresentativeDTO{
     mayorRepeatEmail?:  string ;
 
 
-    mayorId?:  string ;
+    mayorId?:  number ;
 
 }

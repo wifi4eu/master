@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by rgarcita on 11/02/2017.
  */
-@Service
+
 public class MailService {
 
     @Autowired
