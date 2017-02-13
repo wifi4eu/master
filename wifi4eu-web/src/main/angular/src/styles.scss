@@ -86,36 +86,280 @@ p-autocomplete {
 .ui-shadow {
   box-shadow: none;
 }
+$darkish-blue:#004494;
+$dark-blue: #254872;
+$dark-grey:#262626;
 
+body{
+  font-family:verdana;
+}
+
+.contenedor{
+  margin-left: 8em;
+  margin-right: 8em;
+}
 
 .first{
-    background-image: url("assets/images/group-6.png");
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 997px;
+  position: relative;
+}
+#first-background{
+  width: 100%;
+}
 
+#img-wifi{
+  position: absolute;
+  bottom:0;
+  max-width: 500px;
+  width:60%;
 }
 
 .second{
-  background-image: url("assets/images/group-7.png");
-  width: auto;
-  //background-size: cover;
-  //background-repeat: no-repeat;
-
-  height: 607px;
+  background-color: #f5ce23;
+  padding-top: 60px;
+  margin-bottom: 0;
+  margin-top: -70px;
 
 }
 
 .third{
   background-image: url("assets/images/group-5.png");
-  width: auto;
+  height: 444px;
+  width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
-  height: 444px;
+}
+
+.margin-top, .margin-top-right{
+  margin-top:1%;
+}
+
+
+
+.margin-top-right img{
+  margin: 0 auto;
+  display: block;
+  position: relative;
+  margin-top: -50px;
 
 }
 
-.margin-top{
-  margin-top:468px;
+.title-home{
+  font-family: Verdana;
+  font-size: 50px;
+  font-weight: bold;
+  line-height: 1.2;
+  color: $dark-blue;
+  margin-top:30px;
+}
+
+.subtitle-home{
+  font-size:22px;
+  color: $dark-blue;
+  font-weight: bold;
+}
+
+.normal-text{
+  font-size:18px;
+  }
+
+.subtitle-italic{
+  font-size:20px;
+  font-style: italic;
+  color: $dark-blue;
+  position: relative;
+  z-index: 1;
+}
+
+.subtitle-bold-italic{
+  font-size:20px;
+  font-style: italic;
+  font-weight: bold;
+  color: $dark-blue;
+}
+
+.azul{
+  background-color: $dark-blue;
+  color: white;
+  padding-bottom:60px;
+}
+
+.azul a{
+  color: white;
+}
+
+.benefit{
+  font-size: 60px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.europeans{
+  color:$dark-blue;
+  font-size:34px;
+  font-weight:bold;
+  margin-top: 40px;
+}
+
+.europeans-text{
+  font-size:18px;
+  color: $dark-grey;
+  margin-top: 30px;
+  font-weight: 100;
+  position: relative;
+  z-index: 1;
+
+}
+
+.entities{
+  color: $dark-blue;
+  font-size:34px;
+  font-weight: bold;
+}
+
+.entities-text{
+  font-size: 18px;
+  color: $dark-grey;
+  margin-top: 29px;
+  margin-bottom: 40px;
+  font-weight: 100;
+}
+
+
+.video-button{
+  background-color: $darkish-blue;
+  width: 190px;
+  height: 50px;
+  font-family: Verdana;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.5;
+  color: #ffffff;
+  display: block;
+  margin: 0 auto;
+}
+
+.mayor{
+  background-color: #f5f5f5;
+}
+
+.apply{
+
+  font-family: Verdana;
+  font-size: 52px;
+  font-weight: bold;
+  line-height: 1.15;
+  color: $darkish-blue;
+}
+
+.apply-text{
+  font-size:18px;
+  margin-top:48px;
+  }
+
+.mayor .row{
+  padding-top:80px;
+  padding-bottom: 50px;
+  margin-top:-75px;
+}
+
+
+.mayor-title, .supplier{
+  font-size: 34px;
+  font-weight:bold;
+  color: $darkish-blue;
+  text-align: center;
+}
+
+.supplier{
+  margin-bottom:40px;
+}
+
+.mayor-title{
+  margin-bottom:0;
+}
+
+.represent{
+  margin-top: 0;
+  font-size: 20px;
+  font-weight:bold;
+  color: $darkish-blue;
+  text-align: center;
+}
+
+.mayor img{
+  display: block;
+  margin: 0 auto;
+}
+
+
+.supplier-img{
+margin-top:20px !important;
+}
+
+.information{
+  font-size:40px;
+  font-weight:bold;
+  color: white;
+  padding-top:55px;
+}
+
+.text-information{
+  font-size:20px;
+  font-weight:bold;
+  color: white;
+  margin-bottom:30px;
+}
+
+.white-links{
+  font-size:18px;
+  line-height: 1.67;
+  color: white;
+  text-decoration: underline;
+  margin-bottom: 30px;
+
+}
+
+.footer-landing{
+  background-color: #dedede;
+  font-size: 14px;
+  color: #4a4a4a;
+  text-align: center;
+  padding-bottom:10px;
+  padding-top:10px;
+}
+
+.footer-landing a{
+  color: #4a4a4a;
+  text-decoration: underline;
+}
+
+.footer-landing p{
+  margin: 0px;
+  text-decoration: none;
+}
+
+#main-content{
+  padding:0rem 0rem 3rem 0rem;
+}
+
+
+#img-scnd img{
+  margin: 0 auto;
+  display: block;
+  position: relative;
+  margin-top: -131px;
+  }
+
+@media only screen and (max-width : 1024px) {
+  #img-scnd img, #img-europeans img{
+    width:70%;
+  }
+
+  .contenedor {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+    .title-home{
+      font-size: 44px;
+    }
 }
