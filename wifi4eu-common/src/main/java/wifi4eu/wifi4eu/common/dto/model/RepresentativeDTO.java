@@ -5,17 +5,20 @@ package wifi4eu.wifi4eu.common.dto.model;
  */
 public class RepresentativeDTO {
 
+
+    private long representativeId;
     private String treatment;
     private String name;
     private String surname;
     private String municipalityRole;
     private String email;
     private String mayorRepeatEmail;
-    private String mayorId;
+    private long mayorId;
 
     public RepresentativeDTO(){}
 
-    public RepresentativeDTO(String treatment, String name, String surname, String municipalityRole, String email, String mayorRepeatEmail, String mayorId) {
+    public RepresentativeDTO(long representativeId, String treatment, String name, String surname, String municipalityRole, String email, String mayorRepeatEmail, long mayorId) {
+        this.representativeId = representativeId;
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
@@ -23,6 +26,14 @@ public class RepresentativeDTO {
         this.email = email;
         this.mayorRepeatEmail = mayorRepeatEmail;
         this.mayorId = mayorId;
+    }
+
+    public long getRepresentativeId() {
+        return representativeId;
+    }
+
+    public void setRepresentativeId(long representativeId) {
+        this.representativeId = representativeId;
     }
 
     public String getTreatment() {
@@ -73,11 +84,11 @@ public class RepresentativeDTO {
         this.mayorRepeatEmail = mayorRepeatEmail;
     }
 
-    public String getMayorId() {
+    public Long getMayorId() {
         return mayorId;
     }
 
-    public void setMayorId(String mayorId) {
+    public void setMayorId(Long mayorId) {
         this.mayorId = mayorId;
     }
 }

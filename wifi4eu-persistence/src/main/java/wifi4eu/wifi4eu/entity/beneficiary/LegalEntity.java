@@ -40,7 +40,7 @@ public class LegalEntity {
 
     public LegalEntity(){}
 
-    public LegalEntity(long legalEntityId, String countryCode, String municipalityCode, String address, String addressNum, String postalCode, boolean legalCheckbox1, boolean legalCheckbox2, boolean legalCheckbox3) {
+    public LegalEntity(Long legalEntityId, String countryCode, String municipalityCode, String address, String addressNum, String postalCode, Boolean legalCheckbox1, Boolean legalCheckbox2, Boolean legalCheckbox3) {
         this.legalEntityId = legalEntityId;
         this.countryCode = countryCode;
         this.municipalityCode = municipalityCode;
@@ -56,7 +56,7 @@ public class LegalEntity {
         return legalEntityId;
     }
 
-    public void setLegalEntityId(long legalEntityId) {
+    public void setLegalEntityId(Long legalEntityId) {
         this.legalEntityId = legalEntityId;
     }
 
@@ -100,27 +100,27 @@ public class LegalEntity {
         this.postalCode = postalCode;
     }
 
-    public boolean isLegalCheckbox1() {
+    public Boolean isLegalCheckbox1() {
         return legalCheckbox1;
     }
 
-    public void setLegalCheckbox1(boolean legalCheckbox1) {
+    public void setLegalCheckbox1(Boolean legalCheckbox1) {
         this.legalCheckbox1 = legalCheckbox1;
     }
 
-    public boolean isLegalCheckbox2() {
+    public Boolean isLegalCheckbox2() {
         return legalCheckbox2;
     }
 
-    public void setLegalCheckbox2(boolean legalCheckbox2) {
+    public void setLegalCheckbox2(Boolean legalCheckbox2) {
         this.legalCheckbox2 = legalCheckbox2;
     }
 
-    public boolean isLegalCheckbox3() {
+    public Boolean isLegalCheckbox3() {
         return legalCheckbox3;
     }
 
-    public void setLegalCheckbox3(boolean legalCheckbox3) {
+    public void setLegalCheckbox3(Boolean legalCheckbox3) {
         this.legalCheckbox3 = legalCheckbox3;
     }
 }

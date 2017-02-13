@@ -5,6 +5,7 @@ package wifi4eu.wifi4eu.common.dto.model;
  */
 public class MayorDTO {
 
+    private long mayorId;
     private String treatment;
     private String name;
     private String surname;
@@ -13,12 +14,21 @@ public class MayorDTO {
 
     public MayorDTO(){}
 
-    public MayorDTO(String treatment, String name, String surname, String email, String repeatEmail) {
+    public MayorDTO(long mayorId, String treatment, String name, String surname, String email, String repeatEmail) {
+        this.mayorId = mayorId;
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.repeatEmail = repeatEmail;
+    }
+
+    public long getMayorId() {
+        return mayorId;
+    }
+
+    public void setMayorId(long mayorId) {
+        this.mayorId = mayorId;
     }
 
     public String getTreatment() {

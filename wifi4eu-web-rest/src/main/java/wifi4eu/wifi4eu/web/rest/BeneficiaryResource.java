@@ -1,16 +1,15 @@
 package wifi4eu.wifi4eu.web.rest;
 
-import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
-import org.apache.log4j.Logger;
+import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.service.security.UserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,17 +23,26 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("beneficiary")
 public class BeneficiaryResource {
 
-    Logger _log = Logger.getLogger(BeneficiaryResource.class);
+    Logger _log = LoggerFactory.getLogger(BeneficiaryResource.class);
 
     @Autowired
     private UserService userService;
 
+    @ApiOperation(value = "create Beneficiary")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody final BeneficiaryDTO beneficiaryDTO, final HttpServletResponse response) {
 
         userService.create(beneficiaryDTO);
 
+    }
+
+    @ApiOperation(value = "get legal Entity information")
+    @RequestMapping(value="/{legalEntityId}",method = RequestMethod.GET,produces = "application/json")
+    @ResponseBody
+    public LegalEntityDTO getLegalEntity(@PathVariable("legalEntityId") final Long legalEntityId, final HttpServletResponse response) {
+        _log.info("getLegalEntity: " + legalEntityId);
+        return userService.getLegalEntity(legalEntityId);
     }
 
 }

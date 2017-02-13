@@ -4,71 +4,71 @@ import {Type} from "class-transformer";
 export interface DetailedUser {
     name?: string;
 
-    domain?: string;
-
-    email?: string;
-
-    timeZone?: string;
-
-    locale?: string;
-
-    uid?: string;
-
-    firstName?: string;
-
-    lastName?: string;
-
-    assuranceLevel?: models.AssuranceLevel;
-
-    departmentNumber?: string;
-
-    orgId?: string;
-
-    deviceName?: string;
-
-    domainUsername?: string;
-
-    employeeNumber?: string;
+    teleworkingPriority?: boolean;
 
     employeeType?: string;
-
-    mobilePhoneNumber?: string;
-
-    registrationLevelVersions?: { [key: string]: any; };
 
     storkId?: string;
 
     telephoneNumber?: string;
 
-    teleworkingPriority?: boolean;
+    tokenId?: string;
 
     tokenCramId?: string;
 
-    tokenId?: string;
+    domainUsername?: string;
+
+    deviceName?: string;
+
+    employeeNumber?: string;
+
+    assuranceLevel?: models.AssuranceLevel;
+
+    registrationLevelVersions?: { [key: string]: any; };
+
+    orgId?: string;
+
+    userManager?: string;
+
+    uid?: string;
+
+    mobilePhoneNumber?: string;
 
     unversionedUid?: string;
 
-    userManager?: string;
+    departmentNumber?: string;
+
+    domain?: string;
+
+    email?: string;
+
+    locale?: string;
+
+    timeZone?: string;
+
+    firstName?: string;
+
+    lastName?: string;
 
     extendedAttributes?: { [key: string]: any; };
 
     proxies?: Array<any>;
 
+    proxyGrantingProtocol?: models.ProxyGrantingProtocol;
+
     pgtId?: string;
 
     pgtIou?: string;
-
-    proxyGrantingProtocol?: models.ProxyGrantingProtocol;
 
     ticketType?: models.TicketType;
 
     extendedUserDetails?: models.ExtendedUserDetails;
 
-    fromSingleSignOn?: boolean;
+    authenticationStrengths?: Array<any>;
 
     authenticationTime?: Date;
 
-    authenticationStrengths?: Array<any>;
+    fromSingleSignOn?: boolean;
 
 }
 
@@ -83,52 +83,10 @@ export class DetailedUserBase  implements DetailedUser{
     name?:  string ;
 
 
-    domain?:  string ;
-
-
-    email?:  string ;
-
-
-    timeZone?:  string ;
-
-
-    locale?:  string ;
-
-
-    uid?:  string ;
-
-
-    firstName?:  string ;
-
-
-    lastName?:  string ;
-
-    
-    assuranceLevel?:  models.AssuranceLevelBase ;
-
-
-    departmentNumber?:  string ;
-
-
-    orgId?:  string ;
-
-
-    deviceName?:  string ;
-
-
-    domainUsername?:  string ;
-
-
-    employeeNumber?:  string ;
+    teleworkingPriority?:  boolean ;
 
 
     employeeType?:  string ;
-
-
-    mobilePhoneNumber?:  string ;
-
-
-    registrationLevelVersions?:  { [key: string]: any; } ;
 
 
     storkId?:  string ;
@@ -137,25 +95,70 @@ export class DetailedUserBase  implements DetailedUser{
     telephoneNumber?:  string ;
 
 
-    teleworkingPriority?:  boolean ;
+    tokenId?:  string ;
 
 
     tokenCramId?:  string ;
 
 
-    tokenId?:  string ;
+    domainUsername?:  string ;
+
+
+    deviceName?:  string ;
+
+
+    employeeNumber?:  string ;
+
+    
+    assuranceLevel?:  models.AssuranceLevelBase ;
+
+
+    registrationLevelVersions?:  { [key: string]: any; } ;
+
+
+    orgId?:  string ;
+
+
+    userManager?:  string ;
+
+
+    uid?:  string ;
+
+
+    mobilePhoneNumber?:  string ;
 
 
     unversionedUid?:  string ;
 
 
-    userManager?:  string ;
+    departmentNumber?:  string ;
+
+
+    domain?:  string ;
+
+
+    email?:  string ;
+
+
+    locale?:  string ;
+
+
+    timeZone?:  string ;
+
+
+    firstName?:  string ;
+
+
+    lastName?:  string ;
 
 
     extendedAttributes?:  { [key: string]: any; } ;
 
 
     proxies?:  Array<any> ;
+
+    
+    proxyGrantingProtocol?:  models.ProxyGrantingProtocolBase ;
 
 
     pgtId?:  string ;
@@ -164,21 +167,18 @@ export class DetailedUserBase  implements DetailedUser{
     pgtIou?:  string ;
 
     
-    proxyGrantingProtocol?:  models.ProxyGrantingProtocolBase ;
-
-    
     ticketType?:  models.TicketTypeBase ;
 
     
     extendedUserDetails?:  models.ExtendedUserDetailsBase ;
 
 
-    fromSingleSignOn?:  boolean ;
+    authenticationStrengths?:  Array<any> ;
 
 @Type(() => Date)
     authenticationTime?:  Date ;
 
 
-    authenticationStrengths?:  Array<any> ;
+    fromSingleSignOn?:  boolean ;
 
 }

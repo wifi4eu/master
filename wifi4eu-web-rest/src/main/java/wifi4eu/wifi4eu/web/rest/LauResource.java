@@ -30,7 +30,7 @@ public class LauResource {
     private LocationService locationService;
 
     @ApiOperation(value = "get Lau by Country Code i.e: ES")
-    @RequestMapping(value="/{countryCode}",method = RequestMethod.GET,produces = "application/JSON")
+    @RequestMapping(value="/{countryCode}",method = RequestMethod.GET,produces = "application/json")
     @ResponseBody
     public List<LauDTO> findLauByCountryCode(@PathVariable("countryCode") final String countryCode, final HttpServletResponse response) {
         _log.debug("findLauByCountryCode: " + countryCode);
