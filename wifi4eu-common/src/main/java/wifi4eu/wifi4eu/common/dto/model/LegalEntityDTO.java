@@ -5,6 +5,7 @@ package wifi4eu.wifi4eu.common.dto.model;
  */
 public class LegalEntityDTO {
 
+    private long legalEntityId;
     private String countryCode;
     private String municipalityCode;
     private String address;
@@ -17,7 +18,8 @@ public class LegalEntityDTO {
 
     public LegalEntityDTO(){}
 
-    public LegalEntityDTO(String countryCode, String municipalityCode, String address, String addressNum, String postalCode, boolean legalCheckbox1, boolean legalCheckbox2, boolean legalCheckbox3) {
+    public LegalEntityDTO(long legalEntityId, String countryCode, String municipalityCode, String address, String addressNum, String postalCode, boolean legalCheckbox1, boolean legalCheckbox2, boolean legalCheckbox3) {
+        this.legalEntityId = legalEntityId;
         this.countryCode = countryCode;
         this.municipalityCode = municipalityCode;
         this.address = address;
@@ -26,6 +28,14 @@ public class LegalEntityDTO {
         this.legalCheckbox1 = legalCheckbox1;
         this.legalCheckbox2 = legalCheckbox2;
         this.legalCheckbox3 = legalCheckbox3;
+    }
+
+    public long getLegalEntityId() {
+        return legalEntityId;
+    }
+
+    public void setLegalEntityId(long legalEntityId) {
+        this.legalEntityId = legalEntityId;
     }
 
     public String getCountryCode() {
@@ -90,5 +100,19 @@ public class LegalEntityDTO {
 
     public void setLegalCheckbox3(boolean legalCheckbox3) {
         this.legalCheckbox3 = legalCheckbox3;
+    }
+
+    public String toString(){
+
+        StringBuffer result = new StringBuffer();
+
+        result.append("legalEntityId: " + this.getLegalEntityId());
+        result.append("address: " + this.getAddress());
+        result.append("addressNum:" + this.getAddressNum());
+        result.append("countryCode: " + this.getCountryCode());
+        result.append("municipalityCode" + this.getMunicipalityCode());
+        result.append("postalCode" + this.getPostalCode());
+
+        return result.toString();
     }
 }

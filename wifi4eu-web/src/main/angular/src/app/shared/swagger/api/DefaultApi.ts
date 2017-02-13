@@ -27,6 +27,13 @@ export interface IDefaultApi {
 
 
     /**
+     * create Beneficiary
+     * 
+     * @param c 
+     * @param body 
+     */
+    create<T extends >(body?: models.BeneficiaryDTO, c?: ClassType<T>): Observable<{}>;
+    /**
      * get all nuts
      * 
      */
@@ -52,6 +59,13 @@ export interface IDefaultApi {
      */
     getIdentity<T extends models.UserContext>(c?: ClassType<T>): Observable<T>;
     /**
+     * get legal Entity information
+     * 
+     * @param c 
+     * @param legalEntityId 
+     */
+    getLegalEntity<T extends models.LegalEntityDTO>(legalEntityId: number, c?: ClassType<T>): Observable<T>;
+    /**
      * Test resource for Swagger implementation
      * 
      */
@@ -75,6 +89,29 @@ export class DefaultApi implements IDefaultApi {
             this.configuration = configuration;
         }
     }
+
+
+
+    /**
+     * create Beneficiary
+     * 
+     * @param c
+     * @param body 
+     */
+    create<T extends >(body?: models.BeneficiaryDTO, c?: ClassType<T>): Observable<{}> {
+        // noinspection TypeScriptValidateTypes
+        return this.createWithHttpInfo(body)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
 
 
     /**
@@ -162,6 +199,29 @@ export class DefaultApi implements IDefaultApi {
 
 
 
+
+    /**
+     * get legal Entity information
+     * 
+     * @param c
+     * @param legalEntityId 
+     */
+    getLegalEntity<T extends models.LegalEntityDTO>(legalEntityId: number, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.getLegalEntityWithHttpInfo(legalEntityId)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
     /**
      * Test resource for Swagger implementation
      * 
@@ -178,6 +238,36 @@ export class DefaultApi implements IDefaultApi {
     }
 
 
+
+    /**
+     * create Beneficiary
+     * 
+     * @param body 
+     */
+    private createWithHttpInfo(body?: models.BeneficiaryDTO ): Observable<Response> {
+        const path = this.basePath + `/beneficiary`;
+
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+
+
+
+
+
+        headers.set('Content-Type', 'application/json');
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Post,
+            headers: headers,
+            body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
 
     /**
      * get all nuts
@@ -284,6 +374,40 @@ export class DefaultApi implements IDefaultApi {
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * get legal Entity information
+     * 
+     * @param legalEntityId 
+     */
+    private getLegalEntityWithHttpInfo(legalEntityId: number ): Observable<Response> {
+        const path = this.basePath + `/beneficiary/${legalEntityId}`;
+//        .replace('{' + 'legalEntityId' + '}', String(legalEntityId));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'legalEntityId' is not null or undefined
+        if (legalEntityId === null || legalEntityId === undefined) {
+            throw new Error('Required parameter legalEntityId was null or undefined when calling getLegalEntity.');
+        }
 
 
 

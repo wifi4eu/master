@@ -1,13 +1,15 @@
 package wifi4eu.wifi4eu.service.security;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
+import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+import wifi4eu.wifi4eu.common.dto.model.RepresentativeDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
-import wifi4eu.wifi4eu.entity.beneficiary.Representative;
-import wifi4eu.wifi4eu.entity.security.User;
 import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.MayorMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.RepresentativeMapper;
@@ -25,7 +27,7 @@ import java.util.Date;
 @Service
 public class UserService {
 
-    private final static Logger _log = Logger.getLogger(UserService.class);
+    private final static Logger _log = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     LegalEntityRepository legalEntityRepository;
@@ -54,16 +56,24 @@ public class UserService {
     @Transactional
     public void create(BeneficiaryDTO beneficiaryDTO){
 
-        _log.debug("create beneficiary");
+        _log.info("create beneficiary");
 
         UserDTO userDTO = new UserDTO();
         userDTO.setCreateDate(new Date());
 
-        legalEntityRepository.save(legalEntityMapper.toEntity(beneficiaryDTO.getLegalEntityDTO()));
-        mayorRepository.save(mayorMapper.toEntity(beneficiaryDTO.getMayorDTO()));
+        _log.info("create legalEntity: " + beneficiaryDTO.getLegalEntityDTO().toString());
+        LegalEntityDTO legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(beneficiaryDTO.getLegalEntityDTO())));
+
+        _log.info("created legalEntity: " + legalEntityDTO.toString());
+
+        _log.info("create mayor: " + beneficiaryDTO.getMayorDTO().toString());
+        MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(beneficiaryDTO.getMayorDTO())));
 
         if(beneficiaryDTO.getRepresentativeDTO() != null){
             //it is a representative
+            _log.info("create representant: " + beneficiaryDTO.getRepresentativeDTO().toString());
+            RepresentativeDTO representativeDTO =  beneficiaryDTO.getRepresentativeDTO();
+            representativeDTO.setMayorId(mayorDTO.getMayorId());
             representativeRepository.save(representativeMapper.toEntity(beneficiaryDTO.getRepresentativeDTO()));
             userDTO.setEmail(beneficiaryDTO.getRepresentativeDTO().getEmail());
         }else{
@@ -71,7 +81,27 @@ public class UserService {
             userDTO.setEmail(beneficiaryDTO.getMayorDTO().getEmail());
         }
 
+        _log.info("create user: " + userDTO.toString());
         securityUserRepository.save(userMapper.toEntity(userDTO));
+
+    }
+
+    public LegalEntityDTO getLegalEntity(Long legalEntityId){
+
+        LegalEntityDTO legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.findOne(legalEntityId));
+
+        _log.info("legalEntityDTO: " + legalEntityDTO);
+
+        return legalEntityDTO;
+    }
+
+    public MayorDTO getMayor(Long mayorId){
+
+        MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.findOne(mayorId));
+
+        _log.info("mayorDTO: " + mayorDTO);
+
+        return mayorDTO;
 
     }
 
