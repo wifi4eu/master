@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {HomeComponent} from './home/home.component';
+import {ActivationComponent} from './activation/activation.component';
 
 @NgModule({
   imports: [RouterModule.forRoot([
@@ -17,6 +18,9 @@ import {HomeComponent} from './home/home.component';
       }, {
         path: 'registration',
         loadChildren: 'app/+registration/registration.module#RegistrationModule'
+      }, {
+          path: 'activation',
+          component: ActivationComponent
       }
     ],{ useHash: true })],
   exports: [RouterModule]
