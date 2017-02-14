@@ -2,6 +2,7 @@ import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
 import {MapComponent} from "./+map/map.component";
+import {ActivationComponent} from './activation/activation.component';
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -18,6 +19,9 @@ import {MapComponent} from "./+map/map.component";
         }, {
             path: 'map',
             component: MapComponent
+		}, {
+          path: 'activation',
+          component: ActivationComponent
         }, {
             path: 'registration',
             loadChildren: 'app/+registration/registration.module#RegistrationModule'

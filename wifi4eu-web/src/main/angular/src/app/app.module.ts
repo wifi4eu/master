@@ -14,6 +14,7 @@ import {AppComponent} from "./app.component";
 import {AppRoutingModule} from "./app-routing.module";
 import {HomeComponent} from "./home/home.component";
 import {MapComponent} from "./+map/map.component";
+import {ActivationComponent} from "./activation/activation.component";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -23,7 +24,8 @@ export function translateFactory(http: Http) {
     declarations: [
         AppComponent,
         HomeComponent,
-        MapComponent
+        MapComponent,
+        ActivationComponent
     ],
     imports: [
         CoreModule,
