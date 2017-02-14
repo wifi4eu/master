@@ -352,7 +352,7 @@ margin-top:20px !important;
 
 @media only screen and (max-width : 1024px) {
   #img-scnd img, #img-europeans img{
-    width:70%;
+    width:100%;
   }
 
   .contenedor {
@@ -362,4 +362,10 @@ margin-top:20px !important;
     .title-home{
       font-size: 44px;
     }
+  .second{
+    padding-bottom: 32%;
+  }
+  .supplier-img {
+    margin-top: 93px !important;
+  }
 }
