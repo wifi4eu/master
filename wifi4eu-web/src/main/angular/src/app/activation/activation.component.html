@@ -24,14 +24,14 @@
                 <p class="text-align-center">Please, select a password of 8 characters minimum, case sensitive and 1 digit.</p>
 
                 <label for="psswd"></label>
-                <input type="password" [(ngModel)]="activationDetails.psswd" class="form-control" name="psswd" ngcontrol="psswd"
-                       #psswd="ngModel" minlength="8" required>
-                <div [hidden]="psswd.valid || psswd.pristine" class="alert alert-danger">Password is required</div>
+                <input type="password" [(ngModel)]="activationDetails.psswd" class="form-control" name="password" ngcontrol="password"
+                       #password="ngModel" minlength="8" required>
+                <div [hidden]="password.valid || password.pristine" class="alert alert-danger">Password is required</div>
 
                 <label for="newPsswd"></label>
-                <input type="password" [(ngModel)]="activationDetails.newPsswd" class="form-control" name="newPsswd" ngcontrol="newPsswd"
-                       #newPsswd="ngModel" minlength="8" required>
-                <div [hidden]="newPsswd.valid || newPsswd.pristine" class="alert alert-danger">New password is required</div>
+                <input type="password" [(ngModel)]="activationDetails.newPsswd" class="form-control" name="newPassword" ngcontrol="newPassword"
+                       #newPassword="ngModel" minlength="8" required>
+                <div [hidden]="newPassword.valid || newPassword.pristine" class="alert alert-danger">New password is required</div>
 
             </div>
         </div>
@@ -43,7 +43,7 @@
             <button type="button" class="btn">Cancel</button>
         </div>
         <div class="ui-g-2" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary" [disabled]="!activationForm.form.valid || !actiavtionEmailMatches()">Confirm</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!activationForm.form.valid || !emailMatches()">Confirm</button>
         </div>
         <div class="ui-g-4"></div>
     </div>
