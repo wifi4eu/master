@@ -6,24 +6,23 @@ import {print} from "util";
 export class ActivationComponent {
     @Input('activationDetails') activationDetails: ActivationDetails=new ActivationDetails();
 
+    constructor(){
+
+    }
     activationEmailMatches: boolean = false;
 
-    constructor(){
-    }
-
-    checkIfPasswordActivationMatches() {
-        if (this.activationDetails.newPsswd === this.activationDetails.newPsswd) {
-            this.activationEmailMatches = true;
+    actiavtionEmailMatches() {
+        if (this.activationDetails.psswd === this.activationDetails.newPsswd) {
+            return true;
         } else {
-            this.activationEmailMatches = false;
+            return false;
         }
     }
 
-    onSubmit(){
-       console.log(this.activationDetails.email);
-        console.log(this.activationDetails.code);
-        console.log(this.activationDetails.psswd);
-        console.log(this.activationDetails.newPsswd);
-    }
+    // onSubmit (){
+    //     console.log(
+    //         this.actiavtionEmailMatches()
+    //     )
+    // }
 
 }
