@@ -1,49 +1,5 @@
-<!--<div class="clearfix"></div>-->
-<!--<div class="container center activation">-->
-    <!--<div class="container-fluid">-->
-        <!--<div class="row">-->
-            <!--<div class="col-xl-3"></div>-->
-            <!--<div class="col-xl-6">-->
-                <!--<p class="h2 h2-title">Enter your e-mail address and security code</p>-->
-                <!--<p>Please enter the information we sent to your e-mail address.</p>-->
-                <!--<form class="form-group ui-g" (ngSubmit)="onSubmit" #entityForm="ngForm" action="checkIfPasswordActivationMatches()">-->
-                    <!--<p class="label">Email address</p>-->
-                    <!--<input class="form-control ng-pristine ng-invalid ng-touched" ng-reflect-name="email" ng-control="email" type="email" name="email" placeholder="Email" required>-->
-                    <!--<p class="label">Security code</p>-->
-                    <!--<input class="form-control ng-pristine ng-invalid ng-touched" ng-reflect-name="code" ng-control="code" type="password" name="code" placeholder="Code" required>-->
-                    <!--<p class="smallLetter">Please enter the 8-digit security code we sent to your e-mail adress</p>-->
 
-
-                <!--<p class="h2 h2-title center">Select a new password</p>-->
-                <!--<p class="text-align-center">Please, select a password of 8 characters minimum, case sensitive and 1 digit.</p>-->
-
-                    <!--<p class="label">New Password</p>-->
-                    <!--<input class="form-control ng-pristine ng-invalid ng-touched" ng-reflect-name="newPsswd" ng-control="newPsswd" type="password" name="newPsswd" placeholder="New Password" required>-->
-                    <!--<p class="label">Confirm Password</p>-->
-                    <!--<input class="form-control ng-pristine ng-invalid ng-touched"  ng-reflect-name="confirmPsswd" ng-control="confirmPsswd" type="password" name="confirmPsswd" placeholder="Confirm Password" required>-->
-                        <!--<div class="row">-->
-                            <!--<div class="col-xl-6">-->
-                                <!--<button class="btn" type="submit" value="Cancel">Cancel</button>-->
-                            <!--</div>-->
-
-                            <!--<div class="col-xl-6">-->
-                                <!--<button class="btn btn-primary" type="submit" value="Confirm">Confirm</button>-->
-                            <!--</div>-->
-                        <!--</div>-->
-
-                <!--</form>-->
-            <!--</div>-->
-            <!--<div class="col-xl-3"></div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="footerAct">-->
-      <!--<div class="center footerActivation">Problems with the activation of your account? Please click here to <a class="linkActivation" href="#" target="_blank"> the Help-Desk.</a></div>-->
-
-        <!--<div class="content footer-landing">-->
-            <!--<p>Last Update 0/01/2017  |  <a href="#">Top</a></p>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
+<div class="clearfix"></div>
 
 <form (ngSubmit)="onSubmit()" #activationForm="ngForm">
         <div class="form-group ui-g">
@@ -59,7 +15,7 @@
 
                 <label for="code"></label>
                 <input type="password" [(ngModel)]="activationDetails.code" class="form-control" name="email" ngcontrol="code"
-                       #code="ngModel" required>
+                       #code="ngModel" minlength="8" required>
                 <div [hidden]="code.valid || code.pristine" class="alert alert-danger">Code is required</div>
                 <p class="smallLetter">Please enter the 8-digit security code we sent to your e-mail adress</p>
 
@@ -69,12 +25,12 @@
 
                 <label for="psswd"></label>
                 <input type="password" [(ngModel)]="activationDetails.psswd" class="form-control" name="psswd" ngcontrol="psswd"
-                       #psswd="ngModel"  required>
+                       #psswd="ngModel" minlength="8" required>
                 <div [hidden]="psswd.valid || psswd.pristine" class="alert alert-danger">Password is required</div>
 
                 <label for="newPsswd"></label>
                 <input type="password" [(ngModel)]="activationDetails.newPsswd" class="form-control" name="newPsswd" ngcontrol="newPsswd"
-                       #newPsswd="ngModel" required>
+                       #newPsswd="ngModel" minlength="8" required>
                 <div [hidden]="newPsswd.valid || newPsswd.pristine" class="alert alert-danger">New password is required</div>
 
             </div>
@@ -84,14 +40,12 @@
     <div class="form-group ui-g">
         <div class="ui-g-4"></div>
         <div class="ui-g-2" style="text-align: center !important">
-            <button type="button" class="btn">back</button>
+            <button type="button" class="btn">Cancel</button>
         </div>
         <div class="ui-g-2" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary" [disabled]="!activationForm.form.valid">next</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!activationForm.form.valid || !actiavtionEmailMatches()">Confirm</button>
         </div>
         <div class="ui-g-4"></div>
     </div>
 </form>
-<!--<div>-->
-    <!--{{activationDetails.email}}-->
-<!--</div>-->
+
