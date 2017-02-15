@@ -18,7 +18,7 @@
     <tx:annotation-driven/>
     
 	<jdbc:embedded-database id="dataSource" type="HSQL">
-		<jdbc:script location="classpath:/hsql-db-init.sql"/>
+		<jdbc:script location="classpath:/wifi4eu-db-init.sql"/>
 	</jdbc:embedded-database>
 	
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

@@ -23,12 +23,12 @@
 
 
     <category name="org.apache.commons.digester">
-        <level value="info"/>
+        <level value="debug"/>
     </category>
 
     <root>
-        <level value="info"/>
-        <priority value="info"/>
+        <level value="debug"/>
+        <priority value="debug"/>
         <appender-ref ref="CONSOLE_APPENDER"/>
         <appender-ref ref="FILE_APPENDER"/>
     </root>

@@ -6,37 +6,29 @@ export interface DetailedUser {
 
     domain?: string;
 
-    email?: string;
-
-    firstName?: string;
-
-    uid?: string;
-
-    timeZone?: string;
-
-    locale?: string;
-
-    lastName?: string;
-
-    assuranceLevel?: models.AssuranceLevel;
-
-    departmentNumber?: string;
-
-    orgId?: string;
-
-    deviceName?: string;
-
-    domainUsername?: string;
-
-    employeeNumber?: string;
-
-    employeeType?: string;
-
     mobilePhoneNumber?: string;
 
     registrationLevelVersions?: { [key: string]: any; };
 
     storkId?: string;
+
+    email?: string;
+
+    locale?: string;
+
+    timeZone?: string;
+
+    assuranceLevel?: models.AssuranceLevel;
+
+    employeeType?: string;
+
+    orgId?: string;
+
+    deviceName?: string;
+
+    departmentNumber?: string;
+
+    employeeNumber?: string;
 
     telephoneNumber?: string;
 
@@ -52,23 +44,31 @@ export interface DetailedUser {
 
     extendedAttributes?: { [key: string]: any; };
 
+    domainUsername?: string;
+
+    firstName?: string;
+
+    lastName?: string;
+
+    uid?: string;
+
     proxies?: Array<any>;
+
+    pgtIou?: string;
 
     pgtId?: string;
 
     proxyGrantingProtocol?: models.ProxyGrantingProtocol;
 
-    pgtIou?: string;
-
     ticketType?: models.TicketType;
 
     extendedUserDetails?: models.ExtendedUserDetails;
 
-    fromSingleSignOn?: boolean;
+    authenticationTime?: Date;
 
     authenticationStrengths?: Array<any>;
 
-    authenticationTime?: Date;
+    fromSingleSignOn?: boolean;
 
 }
 
@@ -86,28 +86,28 @@ export class DetailedUserBase  implements DetailedUser{
     domain?:  string ;
 
 
+    mobilePhoneNumber?:  string ;
+
+
+    registrationLevelVersions?:  { [key: string]: any; } ;
+
+
+    storkId?:  string ;
+
+
     email?:  string ;
-
-
-    firstName?:  string ;
-
-
-    uid?:  string ;
-
-
-    timeZone?:  string ;
 
 
     locale?:  string ;
 
 
-    lastName?:  string ;
+    timeZone?:  string ;
 
     
     assuranceLevel?:  models.AssuranceLevelBase ;
 
 
-    departmentNumber?:  string ;
+    employeeType?:  string ;
 
 
     orgId?:  string ;
@@ -116,22 +116,10 @@ export class DetailedUserBase  implements DetailedUser{
     deviceName?:  string ;
 
 
-    domainUsername?:  string ;
+    departmentNumber?:  string ;
 
 
     employeeNumber?:  string ;
-
-
-    employeeType?:  string ;
-
-
-    mobilePhoneNumber?:  string ;
-
-
-    registrationLevelVersions?:  { [key: string]: any; } ;
-
-
-    storkId?:  string ;
 
 
     telephoneNumber?:  string ;
@@ -155,7 +143,22 @@ export class DetailedUserBase  implements DetailedUser{
     extendedAttributes?:  { [key: string]: any; } ;
 
 
+    domainUsername?:  string ;
+
+
+    firstName?:  string ;
+
+
+    lastName?:  string ;
+
+
+    uid?:  string ;
+
+
     proxies?:  Array<any> ;
+
+
+    pgtIou?:  string ;
 
 
     pgtId?:  string ;
@@ -163,22 +166,19 @@ export class DetailedUserBase  implements DetailedUser{
     
     proxyGrantingProtocol?:  models.ProxyGrantingProtocolBase ;
 
-
-    pgtIou?:  string ;
-
     
     ticketType?:  models.TicketTypeBase ;
 
     
     extendedUserDetails?:  models.ExtendedUserDetailsBase ;
 
-
-    fromSingleSignOn?:  boolean ;
+@Type(() => Date)
+    authenticationTime?:  Date ;
 
 
     authenticationStrengths?:  Array<any> ;
 
-@Type(() => Date)
-    authenticationTime?:  Date ;
+
+    fromSingleSignOn?:  boolean ;
 
 }
