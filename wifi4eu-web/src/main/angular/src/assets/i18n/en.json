@@ -42,6 +42,25 @@
   "submitregistration.success.resendconfirm.part1": "Haven't you recieved any e-mail?",
   "submitregistration.success.resendconfirm.part2": "Re-send confirmation.",
   "backtohome.button": "Back to the Homepage",
+  "voucher.statusmessage1": "Your identity has to be verified from your Member State.",
+  "voucher.statusmessage2": "Your application for voucher competition has been accepted.",
+  "voucher.statusmessage3": "Your application for voucher competition has been rejected.",
+  "voucher.statusmessage4": "The voucher competition is open.",
+  "voucher.statusmessage5": "Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.",
+  "voucher.rejectedtitle": "Your application has been rejected for the following reasons:",
+  "voucher.rejected.reason1": "The information you provided in the registration phase is not real.",
+  "voucher.tryagain": "Please, try again next year.",
+  "voucher.backhome": "Back home",
+  "voucher.apply.title": "You can apply now for a voucher",
+  "voucher.apply.subtitle": "And give to your citizens connectivity everywhere.",
+  "voucher.applyforvoucher": "Apply for Voucher",
+  "voucher.alreadyapplied": "You have already applied for a voucher",
+  "voucher.timeleft.title": "Time left to the competition",
+  "voucher.timeleft.subtitle": "Competition for voucher will be open in",
+  "voucher.days": "Days",
+  "voucher.hours": "Hours",
+  "voucher.minutes": "Minutes",
+  "voucher.seconds": "Seconds"
   "home.part1.title": "FREE WI-FI FOR EUROPEANS",
   "home.part1.text1" : "The European Commission wishes to promote free Wi-Fi connectivity for citizens and visitors in public spaces such as parks, squares, public building, libraries, health centres, and museums everywhere in Europe through WiFi4EU.",
   "home.part1.text2" : "The initial budget of the WiFi4EU scheme is EUR 120 million between 2017-2019. It will support the installation of state-of-the-art Wi-Fi equipment in the centres of community life.",
@@ -82,6 +101,8 @@
   "confirmNewPassword.label" : "Confirm password",
   "confirm.button" : "Confirm",
   "activate.account" : "Activate yout account"
+
+
 
 
 

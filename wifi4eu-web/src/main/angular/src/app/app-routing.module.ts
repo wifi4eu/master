@@ -1,3 +1,7 @@
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {HomeComponent} from './home/home.component';
+import {VoucherComponent} from './+voucher/voucher.component';
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
@@ -29,6 +33,12 @@ import {LoginComponent} from "./+login/login.component";
         }, {
             path: 'registration',
             loadChildren: 'app/+registration/registration.module#RegistrationModule'
+        }
+            path: 'registration',
+            loadChildren: 'app/+registration/registration.module#RegistrationModule'
+        }, {
+            path: 'voucher',
+            component: VoucherComponent
         }
     ], {useHash: true})],
     exports: [RouterModule]
