@@ -11,3 +11,4 @@ export * from './RightDTO';
 export * from './RoleDTO';
 export * from './TicketType';
 export * from './UserContext';
+export * from './UserDTO';

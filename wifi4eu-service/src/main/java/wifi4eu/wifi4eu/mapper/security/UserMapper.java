@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.mapper.security;
 
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
+import wifi4eu.wifi4eu.common.dto.security.RoleDTO;
 import wifi4eu.wifi4eu.entity.security.User;
 import org.mapstruct.Mapper;
 
