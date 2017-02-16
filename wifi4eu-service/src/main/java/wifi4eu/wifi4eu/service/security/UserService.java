@@ -20,6 +20,7 @@ import wifi4eu.wifi4eu.repository.beneficiary.RepresentativeRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by rgarcita on 09/02/2017.
@@ -81,6 +82,8 @@ public class UserService {
             userDTO.setEmail(beneficiaryDTO.getMayorDTO().getEmail());
         }
 
+        String password = UUID.randomUUID().toString().replace("-","").substring(0,7);
+        userDTO.setPassword(password);
         _log.info("create user: " + userDTO.toString());
         securityUserRepository.save(userMapper.toEntity(userDTO));
 
@@ -93,6 +96,17 @@ public class UserService {
         _log.info("legalEntityDTO: " + legalEntityDTO);
 
         return legalEntityDTO;
+    }
+
+    public String login(UserDTO userDTO){
+
+        UserDTO persUserDTO =  userMapper.toDTO(securityUserRepository.findByEmail(userDTO.getEmail()));
+
+        if(persUserDTO != null && userDTO.getPassword().equals(persUserDTO.getPassword())) {
+            return "{'result':'success'}";
+        }else {
+            return "{'result':'error'}";
+        }
     }
 
     public MayorDTO getMayor(Long mayorId){

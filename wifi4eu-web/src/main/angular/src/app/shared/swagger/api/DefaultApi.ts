@@ -70,6 +70,12 @@ export interface IDefaultApi {
      * 
      */
     getSomething(): Observable<string>;
+    /**
+     * get legal Entity information
+     * 
+     * @param body 
+     */
+    login(body?: models.UserDTO ): Observable<string>;
 
 }
 
@@ -228,6 +234,24 @@ export class DefaultApi implements IDefaultApi {
      */
     public getSomething(): Observable<string> {
         return this.getSomethingWithHttpInfo()
+            .map((response: Response) => {
+                if (response.status === 204) {
+                    return undefined;
+                } else {
+                    return response.json();
+                }
+            });
+    }
+
+
+
+    /**
+     * get legal Entity information
+     * 
+     * @param body 
+     */
+    public login(body?: models.UserDTO ): Observable<string> {
+        return this.loginWithHttpInfo(body)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -445,6 +469,36 @@ export class DefaultApi implements IDefaultApi {
         let requestOptions: RequestOptionsArgs = new RequestOptions({
             method: RequestMethod.Get,
             headers: headers,
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * get legal Entity information
+     * 
+     * @param body 
+     */
+    private loginWithHttpInfo(body?: models.UserDTO ): Observable<Response> {
+        const path = this.basePath + `/user/login`;
+
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+
+
+
+
+
+        headers.set('Content-Type', 'application/json');
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Post,
+            headers: headers,
+            body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
             search: queryParameters,
             responseType: ResponseContentType.Json
         });
