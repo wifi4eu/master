@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Http, Headers, RequestOptions, Response} from "@angular/http";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {Observable} from "rxjs";
-import {UserDetails} from "../models/user-details.model";
+import {BeneficiaryDTO} from "../swagger/model/BeneficiaryDTO";
 import * as CryptoJS from "crypto-js";
 
 @Injectable()
@@ -12,8 +12,8 @@ export class UserService {
     private loginUrl: string;
 
     constructor(protected http: Http, protected uxService: UxService) {
-        this.userUrl = '/api/user';
-        this.loginUrl = '/api/user/login/';
+        this.addBeneficiaryUrl = 'api/beneficiary';
+        this.loginUrl = 'api/user/login';
     }
 
     private extractData(response: Response): Object {
@@ -21,13 +21,13 @@ export class UserService {
         return body.data || {};
     }
 
-    addUser(user: UserDetails): Observable<UserDetails> {
+    addBeneficiary(beneficiary: BeneficiaryDTO): Observable<UserDetails> {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
 
-        console.log(user);
+        console.log(beneficiary);
 
-        return this.http.post(this.userUrl, user, options)
+        return this.http.post(this.addBeneficiaryUrl, beneficiary, options)
             .map(this.extractData)
             .catch(this.uxService.handleError);
     }
@@ -42,7 +42,7 @@ export class UserService {
 
         return this.http.post(this.loginUrl, {
             "email": user.beneficiary.email,
-            "password": token,
+            "password": user.beneficiary.password,
         }, options)
             .map(this.extractData)
             .catch(this.uxService.handleError);

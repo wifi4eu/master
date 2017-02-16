@@ -8,15 +8,15 @@ export interface DetailedUser {
 
     email?: string;
 
+    lastName?: string;
+
+    firstName?: string;
+
     timeZone?: string;
 
     locale?: string;
 
     uid?: string;
-
-    lastName?: string;
-
-    firstName?: string;
 
     assuranceLevel?: models.AssuranceLevel;
 
@@ -64,11 +64,11 @@ export interface DetailedUser {
 
     extendedUserDetails?: models.ExtendedUserDetails;
 
-    fromSingleSignOn?: boolean;
-
     authenticationStrengths?: Array<any>;
 
     authenticationTime?: Date;
+
+    fromSingleSignOn?: boolean;
 
 }
 
@@ -89,6 +89,12 @@ export class DetailedUserBase  implements DetailedUser{
     email?:  string ;
 
 
+    lastName?:  string ;
+
+
+    firstName?:  string ;
+
+
     timeZone?:  string ;
 
 
@@ -96,12 +102,6 @@ export class DetailedUserBase  implements DetailedUser{
 
 
     uid?:  string ;
-
-
-    lastName?:  string ;
-
-
-    firstName?:  string ;
 
     
     assuranceLevel?:  models.AssuranceLevelBase ;
@@ -173,12 +173,12 @@ export class DetailedUserBase  implements DetailedUser{
     extendedUserDetails?:  models.ExtendedUserDetailsBase ;
 
 
-    fromSingleSignOn?:  boolean ;
-
-
     authenticationStrengths?:  Array<any> ;
 
 @Type(() => Date)
     authenticationTime?:  Date ;
+
+
+    fromSingleSignOn?:  boolean ;
 
 }

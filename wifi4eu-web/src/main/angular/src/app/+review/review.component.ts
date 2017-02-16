@@ -4,6 +4,7 @@ import {BeneficiaryDetails} from "../+beneficiary/beneficiary-details.model";
 import {UserDetails} from "../shared/models/user-details.model";
 import {UserService} from "../shared/services/user.service";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {BeneficiaryDTO} from "../shared/swagger/model/BeneficiaryDTO";
 
 @Component({
     selector: 'review-component',
@@ -13,6 +14,7 @@ import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 export class ReviewComponent {
     @Input('entityDetails') entityDetails: EntityDetails;
     @Input('beneficiaryDetails') beneficiaryDetails: BeneficiaryDetails;
+    private beneficiaryDTO: BeneficiaryDTO;
     @Output() gotoStep = new EventEmitter<number>();
     @Output() onSuccess = new EventEmitter<boolean>();
     @Output() onFailure = new EventEmitter<boolean>();
@@ -40,7 +42,9 @@ export class ReviewComponent {
 
         this.displayConfirmingData = true;
 
-        this.userService.addUser(this.userDetails).subscribe(
+        this.beneficiaryDTO = this.mapperBeneficiaryDTO(this.beneficiaryDetails);
+
+        this.userService.addUser(this.beneficiaryDTO).subscribe(
             user => console.log(user),
             error => {
                 this.uxService.growl({
@@ -69,6 +73,16 @@ export class ReviewComponent {
             this.countryField = this.entityDetails.country.name;
             this.municipalityField = this.entityDetails.municipality.NAME_1;
         }
+    }
+
+    mapperBeneficiaryDTO(beneficiaryDetails:BeneficiaryDetails):BeneficiaryDTO{
+
+        let beneficiaryDTO: BeneficiaryDTO = new BeneficiaryDTO();
+
+
+
+
+        return beneficiaryDTO;
     }
 
 }
