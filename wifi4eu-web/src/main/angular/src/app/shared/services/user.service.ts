@@ -2,13 +2,14 @@ import {Injectable} from "@angular/core";
 import {Http, Headers, RequestOptions, Response} from "@angular/http";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {Observable} from "rxjs";
+import {UserDetails} from "../models/user-details.model";
 import {BeneficiaryDTO} from "../swagger/model/BeneficiaryDTO";
 import * as CryptoJS from "crypto-js";
 
 @Injectable()
 export class UserService {
 
-    private userUrl: string;
+    private addBeneficiaryUrl: string;
     private loginUrl: string;
 
     constructor(protected http: Http, protected uxService: UxService) {
@@ -21,7 +22,7 @@ export class UserService {
         return body.data || {};
     }
 
-    addBeneficiary(beneficiary: BeneficiaryDTO): Observable<UserDetails> {
+    addBeneficiary(beneficiary: BeneficiaryDTO): Observable<BeneficiaryDTO> {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
 

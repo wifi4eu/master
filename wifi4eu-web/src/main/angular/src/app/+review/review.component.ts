@@ -4,7 +4,7 @@ import {BeneficiaryDetails} from "../+beneficiary/beneficiary-details.model";
 import {UserDetails} from "../shared/models/user-details.model";
 import {UserService} from "../shared/services/user.service";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {BeneficiaryDTO} from "../shared/swagger/model/BeneficiaryDTO";
+import {BeneficiaryDTO} from "./beneficiaryDTO.model";
 
 @Component({
     selector: 'review-component',
@@ -14,7 +14,6 @@ import {BeneficiaryDTO} from "../shared/swagger/model/BeneficiaryDTO";
 export class ReviewComponent {
     @Input('entityDetails') entityDetails: EntityDetails;
     @Input('beneficiaryDetails') beneficiaryDetails: BeneficiaryDetails;
-    private beneficiaryDTO: BeneficiaryDTO;
     @Output() gotoStep = new EventEmitter<number>();
     @Output() onSuccess = new EventEmitter<boolean>();
     @Output() onFailure = new EventEmitter<boolean>();
@@ -26,6 +25,8 @@ export class ReviewComponent {
     private municipalityField;
     private checkboxes: boolean[] = [false, false, false];
     private userDetails: UserDetails;
+
+    private beneficiaryDTO: BeneficiaryDTO;
 
     constructor(private userService: UserService, private uxService: UxService) {
         this.userDetails = new UserDetails();
@@ -42,9 +43,9 @@ export class ReviewComponent {
 
         this.displayConfirmingData = true;
 
-        this.beneficiaryDTO = this.mapperBeneficiaryDTO(this.beneficiaryDetails);
+        this.beneficiaryDTO = this.mapperBeneficiaryDTO(this.userDetails);
 
-        this.userService.addUser(this.beneficiaryDTO).subscribe(
+        this.userService.addBeneficiary(this.beneficiaryDTO).subscribe(
             user => console.log(user),
             error => {
                 this.uxService.growl({
@@ -75,12 +76,28 @@ export class ReviewComponent {
         }
     }
 
-    mapperBeneficiaryDTO(beneficiaryDetails:BeneficiaryDetails):BeneficiaryDTO{
+    mapperBeneficiaryDTO(userDetails: UserDetails): BeneficiaryDTO {
+
+        console.log("Mapping beneficiaryDetails to benenficiaryDTO...");
 
         let beneficiaryDTO: BeneficiaryDTO = new BeneficiaryDTO();
 
+        beneficiaryDTO.mayorDTO.email = userDetails.beneficiary.email;
+        beneficiaryDTO.mayorDTO.name = userDetails.beneficiary.name;
+        beneficiaryDTO.mayorDTO.surname = userDetails.beneficiary.surname;
+        beneficiaryDTO.mayorDTO.treatment = userDetails.beneficiary.treatment;
+        beneficiaryDTO.mayorDTO.repeatEmail = userDetails.beneficiary.email;
 
+        beneficiaryDTO.legalEntityDTO.address = userDetails.entity.address;
+        beneficiaryDTO.legalEntityDTO.addressNum = userDetails.entity.number;
+        beneficiaryDTO.legalEntityDTO.postalCode = userDetails.entity.postalCode;
+        beneficiaryDTO.legalEntityDTO.countryCode = userDetails.entity.country.code;
+        beneficiaryDTO.legalEntityDTO.legalCheckbox1 = true;
+        beneficiaryDTO.legalEntityDTO.legalCheckbox2 = true;
+        beneficiaryDTO.legalEntityDTO.legalCheckbox3 = true;
+        beneficiaryDTO.legalEntityDTO.municipalityCode = userDetails.entity.municipality.LAU1_NAT_CODE;
 
+        console.log("Mapping result:", beneficiaryDTO);
 
         return beneficiaryDTO;
     }

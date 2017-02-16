@@ -1,10 +1,7 @@
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
-import {HomeComponent} from './home/home.component';
-import {VoucherComponent} from './+voucher/voucher.component';
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
+import {VoucherComponent} from "./+voucher/voucher.component";
 import {MapComponent} from "./+map/map.component";
 import {ActivationComponent} from "./activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
@@ -33,7 +30,7 @@ import {LoginComponent} from "./+login/login.component";
         }, {
             path: 'registration',
             loadChildren: 'app/+registration/registration.module#RegistrationModule'
-        }
+        }, {
             path: 'registration',
             loadChildren: 'app/+registration/registration.module#RegistrationModule'
         }, {

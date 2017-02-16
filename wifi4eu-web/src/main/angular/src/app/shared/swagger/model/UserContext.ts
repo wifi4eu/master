@@ -26,9 +26,13 @@ export interface UserContext {
 
     detailedUser?: models.DetailedUser;
 
-    name?: string;
+    enabled?: boolean;
 
     password?: string;
+
+    fullName?: string;
+
+    authorities?: Array<models.GrantedAuthority>;
 
     accountNonExpired?: boolean;
 
@@ -36,11 +40,7 @@ export interface UserContext {
 
     credentialsNonExpired?: boolean;
 
-    authorities?: Array<models.GrantedAuthority>;
-
-    enabled?: boolean;
-
-    fullName?: string;
+    name?: string;
 
 }
 
@@ -88,10 +88,16 @@ export class UserContextBase  implements UserContext{
     detailedUser?:  models.DetailedUserBase ;
 
 
-    name?:  string ;
+    enabled?:  boolean ;
 
 
     password?:  string ;
+
+
+    fullName?:  string ;
+
+    @Type(() => models.GrantedAuthorityBase)
+    authorities?:  models.GrantedAuthorityBase[] ;
 
 
     accountNonExpired?:  boolean ;
@@ -102,13 +108,7 @@ export class UserContextBase  implements UserContext{
 
     credentialsNonExpired?:  boolean ;
 
-    @Type(() => models.GrantedAuthorityBase)
-    authorities?:  models.GrantedAuthorityBase[] ;
 
-
-    enabled?:  boolean ;
-
-
-    fullName?:  string ;
+    name?:  string ;
 
 }

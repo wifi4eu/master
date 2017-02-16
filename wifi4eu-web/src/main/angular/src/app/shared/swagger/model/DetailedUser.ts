@@ -4,27 +4,23 @@ import {Type} from "class-transformer";
 export interface DetailedUser {
     name?: string;
 
-    domain?: string;
-
-    email?: string;
-
-    lastName?: string;
-
-    firstName?: string;
+    locale?: string;
 
     timeZone?: string;
 
-    locale?: string;
+    tokenCramId?: string;
+
+    tokenId?: string;
+
+    email?: string;
+
+    domain?: string;
 
     uid?: string;
 
     assuranceLevel?: models.AssuranceLevel;
 
-    orgId?: string;
-
     departmentNumber?: string;
-
-    deviceName?: string;
 
     domainUsername?: string;
 
@@ -34,6 +30,8 @@ export interface DetailedUser {
 
     mobilePhoneNumber?: string;
 
+    orgId?: string;
+
     registrationLevelVersions?: { [key: string]: any; };
 
     storkId?: string;
@@ -42,13 +40,15 @@ export interface DetailedUser {
 
     teleworkingPriority?: boolean;
 
-    tokenCramId?: string;
-
-    tokenId?: string;
-
     unversionedUid?: string;
 
     userManager?: string;
+
+    deviceName?: string;
+
+    firstName?: string;
+
+    lastName?: string;
 
     extendedAttributes?: { [key: string]: any; };
 
@@ -83,22 +83,22 @@ export class DetailedUserBase  implements DetailedUser{
     name?:  string ;
 
 
-    domain?:  string ;
-
-
-    email?:  string ;
-
-
-    lastName?:  string ;
-
-
-    firstName?:  string ;
+    locale?:  string ;
 
 
     timeZone?:  string ;
 
 
-    locale?:  string ;
+    tokenCramId?:  string ;
+
+
+    tokenId?:  string ;
+
+
+    email?:  string ;
+
+
+    domain?:  string ;
 
 
     uid?:  string ;
@@ -107,13 +107,7 @@ export class DetailedUserBase  implements DetailedUser{
     assuranceLevel?:  models.AssuranceLevelBase ;
 
 
-    orgId?:  string ;
-
-
     departmentNumber?:  string ;
-
-
-    deviceName?:  string ;
 
 
     domainUsername?:  string ;
@@ -128,6 +122,9 @@ export class DetailedUserBase  implements DetailedUser{
     mobilePhoneNumber?:  string ;
 
 
+    orgId?:  string ;
+
+
     registrationLevelVersions?:  { [key: string]: any; } ;
 
 
@@ -140,16 +137,19 @@ export class DetailedUserBase  implements DetailedUser{
     teleworkingPriority?:  boolean ;
 
 
-    tokenCramId?:  string ;
-
-
-    tokenId?:  string ;
-
-
     unversionedUid?:  string ;
 
 
     userManager?:  string ;
+
+
+    deviceName?:  string ;
+
+
+    firstName?:  string ;
+
+
+    lastName?:  string ;
 
 
     extendedAttributes?:  { [key: string]: any; } ;

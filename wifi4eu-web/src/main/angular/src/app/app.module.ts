@@ -14,7 +14,7 @@ import {AppComponent} from "./app.component";
 import {AppRoutingModule} from "./app-routing.module";
 import {HomeComponent} from "./home/home.component";
 import {VoucherComponent} from "./+voucher/voucher.component";
-import {TimelineComponent} from './shared/components/timeline/timeline.component';
+import {TimelineComponent} from "./shared/components/timeline/timeline.component";
 import {TimerComponent} from "./shared/components/timer/timer.component";
 import {MapComponent} from "./+map/map.component";
 import {ActivationComponent} from "./activation/activation.component";
@@ -30,11 +30,14 @@ export function translateFactory(http: Http) {
         HomeComponent,
         VoucherComponent,
         TimelineComponent,
-        TimerComponent
+        TimerComponent,
+        MapComponent,
+        ActivationComponent,
+        LoginComponent
     ],
     exports: [
         TimelineComponent,
-        TimerComponent
+        TimerComponent,
         MapComponent,
         ActivationComponent,
         LoginComponent
