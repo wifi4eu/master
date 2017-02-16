@@ -10,13 +10,14 @@ export class ActivationComponent {
     constructor(private activationService: ActivationService, private uxService: UxService){
     }
 
-    emailMatches(): boolean {
+    passwordMatches(): boolean {
         return this.activationDetails.password === this.activationDetails.newPassword ? true : false;
     }
 
     onSubmit (){
         console.log(this.activationDetails);
-        this.activationService.addNewPassword().subscribe(data => {
+        //to do roger
+        this.activationService.addNewPassword("patata").subscribe(data => {
             console.log(data)
         }, error => {
             this.uxService.growl({

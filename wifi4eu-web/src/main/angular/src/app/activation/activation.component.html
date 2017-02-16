@@ -14,7 +14,7 @@
                 <div [hidden]="email.valid || email.pristine" class="alert alert-danger">Email is required</div>
 
                 <label for="code"></label>
-                <input type="password" [(ngModel)]="activationDetails.code" class="form-control" name="email" ngcontrol="code"
+                <input type="number" [(ngModel)]="activationDetails.code" class="form-control" name="email" ngcontrol="code"
                        #code="ngModel" minlength="8" required>
                 <div [hidden]="code.valid || code.pristine" class="alert alert-danger">Code is required</div>
                 <p class="smallLetter">Please enter the 8-digit security code we sent to your e-mail adress</p>
@@ -43,7 +43,7 @@
             <button type="button" class="btn">Cancel</button>
         </div>
         <div class="ui-g-2" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary" [disabled]="!activationForm.form.valid || !emailMatches()">Confirm</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!activationForm.form.valid || !passwordMatches()">Confirm</button>
         </div>
         <div class="ui-g-4"></div>
     </div>
