@@ -35,10 +35,13 @@ export class UserService {
         let password512 = CryptoJS.SHA512(user.beneficiary.password);
         let token = CryptoJS.SHA512(email512 + password512 + 'Wifi4EU').toString();
 
-        let headers = new Headers({'Authorization': 'Bearer ' + token});
+        let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
 
-        return this.http.get(this.userUrl, options)
+        return this.http.post(this.userUrl, {
+            "email": user.beneficiary.email,
+            "password": token,
+        }, options)
             .map(this.extractData)
             .catch(this.uxService.handleError);
     }
