@@ -1,28 +1,35 @@
 import {Component, Input} from '@angular/core';
 import {ActivationDetails} from "./activation-details.model";
-import {print} from "util";
+import {ActivationService} from "./activation.service";
+import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 
-@Component({templateUrl: 'activation.component.html'})
+@Component({templateUrl: 'activation.component.html', providers: [ActivationService, UxService]})
 export class ActivationComponent {
-    @Input('activationDetails') activationDetails: ActivationDetails=new ActivationDetails();
 
-    constructor(){
+    @Input('activationDetails') activationDetails: ActivationDetails;
 
+    constructor(private activationService: ActivationService, private uxService: UxService){
+        this.activationDetails = new ActivationDetails();
     }
-    activationEmailMatches: boolean = false;
-
-    actiavtionEmailMatches() {
-        if (this.activationDetails.psswd === this.activationDetails.newPsswd) {
-            return true;
-        } else {
-            return false;
-        }
+    
+    checkPassword() {
+       return this.activationDetails.newPassword === this.activationDetails.repeatNewPassword;
     }
 
-    // onSubmit (){
-    //     console.log(
-    //         this.actiavtionEmailMatches()
-    //     )
-    // }
+    onSubmit (){
+        this.activationService.addNewPassword(this.activationDetails).subscribe(
+            data => {
+                console.log(data)
+            },
+            error => {
+                this.uxService.growl({
+                    severity: 'warn',
+                    summary: 'WARNING',
+                    detail: 'Could not get countries, ignore this when NG is working in offline mode'
+                });
+                console.log('WARNING: Could not get countries', error);
+            }
+        );
+    }
 
 }

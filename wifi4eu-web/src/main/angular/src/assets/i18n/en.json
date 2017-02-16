@@ -69,4 +69,21 @@
   "home.part4.link4" : "“Bringing it all together in WiFi4EU” - presentation from the B-DAY: Going Giga, 15 Nov 2016",
   "home.footer.update" : "Last Update 01/01/2017 | ",
   "home.footer.top" : "Top"
+  "code.label" : "Code",
+  "code.required" : "Code is required",
+  "password.label" : "New password",
+  "email.information" : "Please enter the information we sent to your e-mail address.",
+  "email.required" : "Email is required",
+  "password.required" : "Password is required",
+  "newPassword.required" : "Confirm password is required",
+  "code.digits" : "Please enter the 8-digit security code we sent to your e-mail adress",
+  "select.newPassword" : "Select a new password",
+  "select.password" : "Please, select a password of 8 characters minimum, case sensitive and 1 digit.",
+  "confirmNewPassword.label" : "Confirm password",
+  "confirm.button" : "Confirm",
+  "activate.account" : "Activate yout account"
+
+
+
+
 }

@@ -69,4 +69,23 @@
   "home.part4.link4" : "“Traer todo junto en WiFi4EU“ - presentación desde el B-DAY: Going Giga, 15 Nov 2016",
   "home.footer.update" : "Última actualización 01/01/2017 | ",
   "home.footer.top" : "Arriba"
+  "code.label" : "Código",
+  "code.required" : "El código es necesario",
+  "password.label" : "Nueva contraseña",
+  "email.information" : "Por favor, introduzca la información que le hemos enviado a su dirección de correo electrónico.",
+  "email.required" : "El correo es necesario",
+  "password.required" : "La contraseña es necesaria",
+  "newPassword.required" : "La confirmación de la contraseña es necesaria",
+  "code.digits" : "Por favor, introduzca los 8 díjitos que le enviamos a su dirección de correo electrónico",
+  "select.newPassword" : "Seleccione una nueva contraseña",
+  "select.password" : "Por favor, seleccione una contraseña de 8 caracteres mínimo, sensible a mayúsculas y 1 dígito.",
+  "confirmNewPassword.label" : "Confirme la contraseña",
+  "confirm.button" : "Confirmar",
+  "activate.account" : "Activa tu cuenta"
+
+
+
+
+
+
 }

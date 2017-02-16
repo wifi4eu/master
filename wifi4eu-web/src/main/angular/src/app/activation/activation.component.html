@@ -6,32 +6,32 @@
         <div class="ui-g-3"></div>
         <div class="ui-g-6">
             <div class="form-group">
-                <p class="h2 h2-title">Enter your e-mail address and security code</p>
-                <p class="text-align-center">Please enter the information we sent to your e-mail address.</p>
-                <label for="email"></label>
-                <input type="email" [(ngModel)]="activationDetails.email" class="form-control" name="email" ngcontrol="email"
+                <p class="h2 h2-title">{{ 'activate.account' | translate }}</p>
+                <p class="text-align-center">{{ 'email.information' | translate }}</p>
+                <label for="email">{{ 'email.label' | translate }}</label>
+                <input type="email" [(ngModel)]="activationDetails.email"  class="form-control" name="email" ngcontrol="email"
                         #email="ngModel" required>
-                <div [hidden]="email.valid || email.pristine" class="alert alert-danger">Email is required</div>
+                <div [hidden]="email.valid || email.pristine" class="alert alert-danger" >{{ 'email.required' | translate }}</div>
 
-                <label for="code"></label>
-                <input type="password" [(ngModel)]="activationDetails.code" class="form-control" name="email" ngcontrol="code"
-                       #code="ngModel" minlength="8" required>
-                <div [hidden]="code.valid || code.pristine" class="alert alert-danger">Code is required</div>
-                <p class="smallLetter">Please enter the 8-digit security code we sent to your e-mail adress</p>
+                <label for="code">{{ 'code.label' | translate }}</label>
+                <input type="text" [(ngModel)]="activationDetails.code" class="form-control" name="code" ngcontrol="code"
+                       #code="ngModel"  minlength="8" maxlength="8" required>
+                <div [hidden]="code.valid || code.pristine" class="alert alert-danger">{{ 'code.required' | translate }}</div>
+                <p class="smallLetter">{{ 'code.digits' | translate }}</p>
 
 
-                <p class="h2 h2-title center">Select a new password</p>
-                <p class="text-align-center">Please, select a password of 8 characters minimum, case sensitive and 1 digit.</p>
+                <p class="h2 h2-title center">{{ 'select.newPassword' | translate }}</p>
+                <p class="text-align-center">{{ 'select.password' | translate }}</p>
 
-                <label for="psswd"></label>
-                <input type="password" [(ngModel)]="activationDetails.psswd" class="form-control" name="psswd" ngcontrol="psswd"
-                       #psswd="ngModel" minlength="8" required>
-                <div [hidden]="psswd.valid || psswd.pristine" class="alert alert-danger">Password is required</div>
+                <label for="newPassword">{{ 'password.label' | translate }}</label>
+                <input type="password" [(ngModel)]="activationDetails.newPassword" class="form-control" name="newPassword" ngcontrol="newPassword"
+                       #newPassword="ngModel" minlength="8" (keyup)="checkPassword()" required>
+                <div [hidden]="newPassword.valid || newPassword.pristine" class="alert alert-danger">{{ 'password.required' | translate }}</div>
 
-                <label for="newPsswd"></label>
-                <input type="password" [(ngModel)]="activationDetails.newPsswd" class="form-control" name="newPsswd" ngcontrol="newPsswd"
-                       #newPsswd="ngModel" minlength="8" required>
-                <div [hidden]="newPsswd.valid || newPsswd.pristine" class="alert alert-danger">New password is required</div>
+                <label for="repeatNewPassword">{{ 'confirmNewPassword.label' | translate }}</label>
+                <input type="password" [(ngModel)]="activationDetails.repeatNewPassword" class="form-control" name="repeatNewPassword" ngcontrol="repeatNewPassword"
+                       #repeatNewPassword="ngModel" minlength="8" (keyup)="checkPassword()" required>
+                <div [hidden]="repeatNewPassword.valid || repeatNewPassword.pristine" class="alert alert-danger">{{ 'newPassword.required' | translate }}</div>
 
             </div>
         </div>
@@ -40,10 +40,10 @@
     <div class="form-group ui-g">
         <div class="ui-g-4"></div>
         <div class="ui-g-2" style="text-align: center !important">
-            <button type="button" class="btn">Cancel</button>
+            <button type="button" class="btn">{{ 'cancel.button' | translate }}</button>
         </div>
         <div class="ui-g-2" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary" [disabled]="!activationForm.form.valid || !actiavtionEmailMatches()">Confirm</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!activationForm.form.valid || !checkPassword()">{{ 'confirm.button' | translate }}</button>
         </div>
         <div class="ui-g-4"></div>
     </div>
