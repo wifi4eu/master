@@ -1,7 +1,11 @@
 export class ActivationDetails {
     public email : string;
-    public password : string;
+    public code : string; /* TODO - This should not be an attribute */
     public newPassword : string;
-    public code : string;
-    public actiavtionEmailMatches : boolean;
+    public repeatNewPassword : string; // TODO - This should not be an attribute
+
+
+    public constructor() {
+
+    }
 }

@@ -41,5 +41,22 @@
   "submitregistration.success.text.part2": "Cuando haga clic en el email, su direcció de correo electrónico será verificada, y se le redirigirá a la página para identificarse.",
   "submitregistration.success.resendconfirm.part1": "¿No ha recibido ningún email?",
   "submitregistration.success.resendconfirm.part2": "Haga clic aquí para reenviar el email de confirmación.",
-  "backtohome.button": "Volver a la página principal"
+  "backtohome.button": "Volver a la página principal",
+  "code.label" : "Código",
+  "code.required" : "El código es necesario",
+  "password.label" : "Nueva contraseña",
+  "email.information" : "Por favor, introduzca la información que le hemos enviado a su dirección de correo electrónico.",
+  "email.required" : "El correo es necesario",
+  "password.required" : "La contraseña es necesaria",
+  "newPassword.required" : "La confirmación de la contraseña es necesaria",
+  "code.digits" : "Por favor, introduzca los 8 díjitos que le enviamos a su dirección de correo electrónico",
+  "select.newPassword" : "Seleccione una nueva contraseña",
+  "select.password" : "Por favor, seleccione una contraseña de 8 caracteres mínimo, sensible a mayúsculas y 1 dígito.",
+  "confirmNewPassword.label" : "Confirme la contraseña",
+  "confirm.button" : "Confirmar",
+  "activate.account" : "Activa tu cuenta"
+
+
+
+
 }

@@ -11,18 +11,19 @@ export class ActivationService {
 
     constructor(private http: Http, private uxService: UxService){}
 
-    addNewPassword(body: string): Observable <ActivationDetails>{
-        let bodyString = JSON.stringify(body);
+    private extractData(response: Response) {
+        let body = response.json();
+        return body.data || { };
+    }
+
+    addNewPassword(body: ActivationDetails): Observable <ActivationDetails>{
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
 
-        return this.http.post(this.activationUrl, { body }, options)
+        return this.http.post(this.activationUrl, body , options)
             .map(this.extractData)
             .catch(this.uxService.handleError);
     }
 
-    private extractData(res: Response) {
-        let body = res.json();
-        return body.data || { };
-    }
+
 }
