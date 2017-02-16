@@ -15,8 +15,8 @@ export class EntityComponent {
 
     countries: CountryDetails[];
 
-    countrySuggestions: any[];
-    municipalitySuggestions: any[];
+    countrySuggestions: CountryDetails[];
+    municipalitySuggestions: MunicipalityDetails[];
 
     @Input('entityDetails') entityDetails: EntityDetails;
     @Output() onNext = new EventEmitter<number>();
