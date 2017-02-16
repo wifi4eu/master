@@ -5,11 +5,9 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
-import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.service.security.UserService;
 
@@ -37,6 +35,18 @@ public class UserResource {
         String result = userService.login(userDTO);
         _log.info("result: " + result);
         return result;
+    }
+
+    @ApiOperation(value = "send forgot password mail")
+    @RequestMapping(value="forgotpassword",method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public void forgotPassword(@RequestBody final String email, final HttpServletResponse response){
+
+        _log.info("forgot Password: "+ email);
+
+        userService.forgotPassword(email);
+
+
     }
 
 }

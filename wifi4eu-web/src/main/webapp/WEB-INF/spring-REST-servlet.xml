@@ -9,40 +9,8 @@
 
     <context:annotation-config />
 
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven />
 
     <context:component-scan base-package="wifi4eu.wifi4eu.web.rest"/>
-
-<<<<<<< HEAD
-    <!--
-=======
->>>>>>> b91e370681b926aaabd5d02c9cad160ca95ca8e2
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="smtp.gmail.com" />
-        <property name="port" value="587" />
-        <property name="username" value="portaleseveris@gmail.com" />
-		<property name="password" value="bcf74eb9b6" />
-
-		<property name="javaMailProperties">
-<<<<<<< HEAD
-        <props>
-            <prop key="mail.transport.protocol">smtp</prop>
-            <prop key="mail.smtp.auth">true</prop>
-            <prop key="mail.smtp.starttls.enable">true</prop>
-            <prop key="mail.debug">true</prop>
-        </props>
-    </property>
-    </bean>
-    -->
-=======
-            <props>
-                <prop key="mail.transport.protocol">smtp</prop>
-                <prop key="mail.smtp.auth">true</prop>
-                <prop key="mail.smtp.starttls.enable">true</prop>
-                <prop key="mail.debug">true</prop>
-            </props>
-        </property>
-    </bean>
->>>>>>> b91e370681b926aaabd5d02c9cad160ca95ca8e2
 
 </beans>

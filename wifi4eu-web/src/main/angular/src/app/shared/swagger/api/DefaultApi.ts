@@ -53,6 +53,13 @@ export interface IDefaultApi {
      */
     findNutsByLevel<T extends models.NutsDTO>(level: number, c?: ClassType<T>): Observable<T[]>;
     /**
+     * send forgot password mail
+     * 
+     * @param c 
+     * @param body 
+     */
+    forgotPassword<T extends >(body?: string, c?: ClassType<T>): Observable<{}>;
+    /**
      * User details resource
      * 
      * @param c 
@@ -175,6 +182,29 @@ export class DefaultApi implements IDefaultApi {
                         return undefined;
                     } else if (c) {
                         return deserializeArray(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
+     * send forgot password mail
+     * 
+     * @param c
+     * @param body 
+     */
+    forgotPassword<T extends >(body?: string, c?: ClassType<T>): Observable<{}> {
+        // noinspection TypeScriptValidateTypes
+        return this.forgotPasswordWithHttpInfo(body)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
                     } else {
                         return response.json();
                     }
@@ -381,6 +411,36 @@ export class DefaultApi implements IDefaultApi {
         let requestOptions: RequestOptionsArgs = new RequestOptions({
             method: RequestMethod.Get,
             headers: headers,
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * send forgot password mail
+     * 
+     * @param body 
+     */
+    private forgotPasswordWithHttpInfo(body?: string ): Observable<Response> {
+        const path = this.basePath + `/user/forgotpassword`;
+
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+
+
+
+
+
+        headers.set('Content-Type', 'application/json');
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Post,
+            headers: headers,
+            body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
             search: queryParameters,
             responseType: ResponseContentType.Json
         });
