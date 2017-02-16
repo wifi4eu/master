@@ -3,6 +3,7 @@ export class BeneficiaryDetails {
     public name: string;
     public surname: string;
     public email: string;
+    public password: string;
     public confirmEmail: string; // TODO - This should not be an attribute
     // TODO - Representative need to be treated as an object instance
     public representativeSelected: boolean;

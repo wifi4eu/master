@@ -3,6 +3,7 @@ import {Http, Headers, RequestOptions, Response} from "@angular/http";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {Observable} from "rxjs";
 import {UserDetails} from "../models/user-details.model";
+import * as CryptoJS from "crypto-js";
 
 @Injectable()
 export class UserService {
@@ -25,6 +26,19 @@ export class UserService {
         console.log(user);
 
         return this.http.post(this.userUrl, user, options)
+            .map(this.extractData)
+            .catch(this.uxService.handleError);
+    }
+
+    getUser(user: UserDetails): Observable<UserDetails> {
+        let email512 = CryptoJS.SHA512(user.beneficiary.email);
+        let password512 = CryptoJS.SHA512(user.beneficiary.password);
+        let token = CryptoJS.SHA512(email512 + password512 + 'Wifi4EU').toString();
+
+        let headers = new Headers({'Authorization': 'Bearer ' + token});
+        let options = new RequestOptions({headers: headers});
+
+        return this.http.get(this.userUrl, options)
             .map(this.extractData)
             .catch(this.uxService.handleError);
     }
