@@ -88,4 +88,25 @@
 
 
 
+  "voucher.statusmessage1": "Tu identidad ha de ser verificada.",
+  "voucher.statusmessage2": "Tu solicitud para la competición de proveedores ha sido aceptada.",
+  "voucher.statusmessage3": "Tu solicitud para la competición de proveedores ha sido rechazada.",
+  "voucher.statusmessage4": "La competición de proveedores ya está disponible.",
+  "voucher.statusmessage5": "Se ha envíado satisfactoriamente tu petición. Wifi4Eu le notificará pronto de si ha conseguido un proveedor de wi-fi gratis.",
+  "voucher.rejectedtitle": "Tu solicitud se ha rechazado por los siguientes motivos:",
+  "voucher.rejected.reason1": "La información facilitada durante la fase de registro no es verídica.",
+  "voucher.tryagain": "Por favor, inténtalo el año que viene.",
+  "voucher.backhome": "Volver a la página principal",
+  "voucher.apply.title": "Ya puedes inscribirte como proveedor",
+  "voucher.apply.subtitle": "Y ofrecer a tus ciudadanos conexión en cualquier parte.",
+  "voucher.applyforvoucher": "Inscribirse como proveedor",
+  "voucher.alreadyapplied": "You have already applied for a voucher",
+  "voucher.timeleft.title": "Tiempo restante para la competición",
+  "voucher.timeleft.subtitle": "La competición de proveedores comenzará en",
+  "voucher.days": "Días",
+  "voucher.hours": "Horas",
+  "voucher.minutes": "Minutos",
+  "voucher.seconds": "Segundos"
+
+
 }
