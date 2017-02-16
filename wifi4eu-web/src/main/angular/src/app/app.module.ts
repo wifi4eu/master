@@ -9,6 +9,9 @@ import {CoreService} from "./core/core.service";
 import {AppComponent} from "./app.component";
 import {AppRoutingModule} from "./app-routing.module";
 import {HomeComponent} from "./home/home.component";
+import {VoucherComponent} from "./+voucher/voucher.component";
+import {TimelineComponent} from './shared/components/timeline/timeline.component';
+import {TimerComponent} from "./shared/components/timer/timer.component";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -17,7 +20,14 @@ export function translateFactory(http: Http) {
 @NgModule({
     declarations: [
         AppComponent,
-        HomeComponent
+        HomeComponent,
+        VoucherComponent,
+        TimelineComponent,
+        TimerComponent
+    ],
+    exports: [
+        TimelineComponent,
+        TimerComponent
     ],
     imports: [
         CoreModule,
