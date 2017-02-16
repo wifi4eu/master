@@ -6,11 +6,12 @@ import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 @Component({templateUrl: 'activation.component.html', providers: [ActivationService, UxService]})
 export class ActivationComponent {
 
-    @Input('activationDetails') activationDetails: ActivationDetails = new ActivationDetails();
+    @Input('activationDetails') activationDetails: ActivationDetails;
 
     constructor(private activationService: ActivationService, private uxService: UxService){
+        this.activationDetails = new ActivationDetails();
     }
-
+    
     checkPassword() {
        return this.activationDetails.newPassword === this.activationDetails.repeatNewPassword;
     }
