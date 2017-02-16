@@ -9,9 +9,11 @@ import * as CryptoJS from "crypto-js";
 export class UserService {
 
     private userUrl: string;
+    private loginUrl: string;
 
     constructor(protected http: Http, protected uxService: UxService) {
         this.userUrl = '/api/user';
+        this.loginUrl = '/api/user/login/';
     }
 
     private extractData(response: Response): Object {
@@ -38,7 +40,7 @@ export class UserService {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
 
-        return this.http.post(this.userUrl, {
+        return this.http.post(this.loginUrl, {
             "email": user.beneficiary.email,
             "password": token,
         }, options)
