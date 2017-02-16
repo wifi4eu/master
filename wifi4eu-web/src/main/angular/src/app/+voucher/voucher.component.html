@@ -1,102 +1,105 @@
 <timeline-component></timeline-component>
-<!-- no competition active, display timer -->
-<div *ngIf="!competitionRejected && !competitionOpen">
-    <div class="ui-g-12 center">
-        <span class="ui-g-2"></span>
-        <ux-alert class="ui-g-8" styleClass="alert-success">{{ 'voucher.statusmessage2' | translate}}</ux-alert>
-        <span class="ui-g-2"></span>
+<div [ngSwitch]="voucherCompetitionState">
+    <!-- no competition active, display timer -->
+    <div *ngSwitchCase="0">
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <ux-alert class="ui-g-8" styleClass="alert-success">{{ 'voucher.statusmessage2' | translate}}</ux-alert>
+            <span class="ui-g-2"></span>
+        </div>
+        <br>
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <h2 class="ui-g-8">{{ 'voucher.timeleft.title' | translate}}</h2>
+            <span class="ui-g-2"></span>
+        </div>
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <span class="ui-g-8">{{ 'voucher.timeleft.subtitle' | translate}}</span>
+            <span class="ui-g-2"></span>
+        </div>
+        <br>
+        <div class="ui-g-12 center">
+            <timer-component *ngIf="!competitionOpen" (timerEvent)="beginCompetition()"></timer-component>
+        </div>
     </div>
-    <br>
-    <div class="ui-g-12 center">
-        <span class="ui-g-2"></span>
-        <h2 class="ui-g-8">{{ 'voucher.timeleft.title' | translate}}</h2>
-        <span class="ui-g-2"></span>
+    <!-- competition Open, display apply button -->
+    <div *ngSwitchCase="1">
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <ux-alert class="ui-g-8" styleClass="alert-info">{{ 'voucher.statusmessage4' | translate}}</ux-alert>
+            <span class="ui-g-2"></span>
+        </div>
+        <br>
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <h2 class="ui-g-8">{{ 'voucher.apply.title' | translate}}</h2>
+            <span class="ui-g-2"></span>
+        </div>
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <span class="ui-g-8">{{ 'voucher.apply.subtitle' | translate}}</span>
+            <span class="ui-g-2"></span>
+        </div>
+        <br><br>
+        <div class="ui-g-12 center">
+            <span class="ui-g-4"></span>
+            <button class="btn btn-primary ui-g-4" (click)="applyForVoucher()">{{ 'voucher.applyforvoucher' |
+                translate}}
+            </button>
+            <span class="ui-g-4"></span>
+        </div>
     </div>
-    <div class="ui-g-12 center">
-        <span class="ui-g-2"></span>
-        <span class="ui-g-8">{{ 'voucher.timeleft.subtitle' | translate}}</span>
-        <span class="ui-g-2"></span>
+    <!-- user has applied for voucher -->
+    <div *ngSwitchCase="2">
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <ux-alert class="ui-g-8" styleClass="alert-success">{{ 'voucher.statusmessage5' | translate}}</ux-alert>
+            <span class="ui-g-2"></span>
+        </div>
+        <br>
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <h2 class="ui-g-8">{{ 'voucher.alreadyapplied' | translate}}</h2>
+            <span class="ui-g-2"></span>
+        </div>
+        <br><br>
+        <div class="ui-g-12 center">
+            <span class="ui-g-4"></span>
+            <button class="btn btn-primary ui-g-4" disabled>{{ 'voucher.applyforvoucher' | translate}}</button>
+            <span class="ui-g-4"></span>
+        </div>
     </div>
-    <br>
-    <div class="ui-g-12 center">
-        <timer-component *ngIf="!competitionOpen" (timerEnd)="beginCompetition()"></timer-component>
-    </div>
-</div>
-<!-- user rejected -->
-<div *ngIf="competitionRejected">
-    <div class="ui-g-12 center">
-        <span class="ui-g-2"></span>
-        <ux-alert class="ui-g-8" styleClass="alert-danger">{{ 'voucher.statusmessage3' | translate}}</ux-alert>
-        <span class="ui-g-2"></span>
-    </div>
-    <br>
-    <div class="ui-g-12 center">
-        <span class="ui-g-2"></span>
-        <h2 class="ui-g-8">{{ 'voucher.rejectedtitle' | translate}}</h2>
-        <span class="ui-g-2"></span>
-    </div>
-    <div class="ui-g-12 center">
-        <span class="ui-g-2"></span>
-        <span class="ui-g-8">{{ 'voucher.rejected.reason1' | translate}}</span>
-        <span class="ui-g-2"></span>
-    </div>
-    <br><br>
-    <div class="ui-g-12 center">
-        <span class="ui-g-4"></span>
-        <span class="ui-g-4">{{ 'voucher.tryagain' | translate}}</span>
-        <span class="ui-g-4"></span>
-    </div>
-    <div class="ui-g-12 center">
-        <span class="ui-g-4"></span>
-        <button class="btn btn-primary ui-g-4" routerLink="/home" routerLinkActive="active">{{ 'voucher.backhome' |
-            translate}}
-        </button>
-        <span class="ui-g-4"></span>
-    </div>
-</div>
-<!-- competition Open, display apply button -->
-<div *ngIf="!competitionRejected && competitionOpen && !competitionRegistered">
-    <div class="ui-g-12 center">
-        <span class="ui-g-2"></span>
-        <ux-alert class="ui-g-8" styleClass="alert-info">{{ 'voucher.statusmessage4' | translate}}</ux-alert>
-        <span class="ui-g-2"></span>
-    </div>
-    <br>
-    <div class="ui-g-12 center">
-        <span class="ui-g-2"></span>
-        <h2 class="ui-g-8">{{ 'voucher.apply.title' | translate}}</h2>
-        <span class="ui-g-2"></span>
-    </div>
-    <div class="ui-g-12 center">
-        <span class="ui-g-2"></span>
-        <span class="ui-g-8">{{ 'voucher.apply.subtitle' | translate}}</span>
-        <span class="ui-g-2"></span>
-    </div>
-    <br><br>
-    <div class="ui-g-12 center">
-        <span class="ui-g-4"></span>
-        <button class="btn btn-primary ui-g-4" (click)="applyForVoucher()">{{ 'voucher.applyforvoucher' | translate}}
-        </button>
-        <span class="ui-g-4"></span>
-    </div>
-</div>
-<!-- user has applied for voucher -->
-<div *ngIf="!competitionRejected && competitionOpen && competitionRegistered">
-    <div class="ui-g-12 center">
-        <span class="ui-g-2"></span>
-        <ux-alert class="ui-g-8" styleClass="alert-success">{{ 'voucher.statusmessage5' | translate}}</ux-alert>
-        <span class="ui-g-2"></span>
-    </div>
-    <br>
-    <div class="ui-g-12 center">
-        <span class="ui-g-2"></span>
-        <h2 class="ui-g-8">{{ 'voucher.alreadyapplied' | translate}}</h2>
-        <span class="ui-g-2"></span>
-    </div>
-    <br><br>
-    <div class="ui-g-12 center">
-        <span class="ui-g-4"></span>
-        <button class="btn btn-primary ui-g-4" disabled>{{ 'voucher.applyforvoucher' | translate}}</button>
-        <span class="ui-g-4"></span>
+    <!-- user rejected -->
+    <div *ngSwitchCase="3">
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <ux-alert class="ui-g-8" styleClass="alert-danger">{{ 'voucher.statusmessage3' | translate}}</ux-alert>
+            <span class="ui-g-2"></span>
+        </div>
+        <br>
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <h2 class="ui-g-8">{{ 'voucher.rejectedtitle' | translate}}</h2>
+            <span class="ui-g-2"></span>
+        </div>
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <span class="ui-g-8">{{ 'voucher.rejected.reason1' | translate}}</span>
+            <span class="ui-g-2"></span>
+        </div>
+        <br><br>
+        <div class="ui-g-12 center">
+            <span class="ui-g-4"></span>
+            <span class="ui-g-4">{{ 'voucher.tryagain' | translate}}</span>
+            <span class="ui-g-4"></span>
+        </div>
+        <div class="ui-g-12 center">
+            <span class="ui-g-4"></span>
+            <button class="btn btn-primary ui-g-4" routerLink="/home" routerLinkActive="active">{{ 'voucher.backhome' |
+                translate}}
+            </button>
+            <span class="ui-g-4"></span>
+        </div>
     </div>
 </div>

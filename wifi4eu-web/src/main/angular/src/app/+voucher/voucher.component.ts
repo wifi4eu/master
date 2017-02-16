@@ -4,22 +4,17 @@ import {Component} from '@angular/core';
     templateUrl: 'voucher.component.html',
 })
 export class VoucherComponent {
-
-    private competitionRejected: boolean;
-    private competitionOpen: boolean;
-    private competitionRegistered: boolean;
+    private voucherCompetitionState: number;
 
     constructor() {
-        this.competitionOpen = false;
-        this.competitionRegistered = false;
-        this.competitionRejected = false;
+        this.voucherCompetitionState = 0;
     }
 
     beginCompetition() {
-        this.competitionOpen = true;
+        this.voucherCompetitionState = 1;
     }
 
     applyForVoucher() {
-        this.competitionRegistered = true;
+        this.voucherCompetitionState = 2;
     }
 }
