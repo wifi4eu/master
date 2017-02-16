@@ -72,10 +72,13 @@ public class UserService {
             email = beneficiaryDTO.getMayorDTO().getEmail();
         }
 
+
+        /*
+        TODO: enable a validation to avoid user duplicity
         UserDTO persUserDTO = getUserByEmail(email);
 
         if(persUserDTO != null) {
-
+        */
             UserDTO userDTO = new UserDTO();
             userDTO.setCreateDate(new Date());
             userDTO.setEmail(email);
@@ -103,9 +106,11 @@ public class UserService {
 
             mailService.sendEmail(email, "portales.everis@gmail.com", "Welcome to wifi4eu", "You have successfully registered to wifi4eu, you can login with your email and password: " + password);
 
+        /*
         }else{
             _log.warn("trying to register twice");
         }
+        */
     }
 
     public LegalEntityDTO getLegalEntity(Long legalEntityId) {
