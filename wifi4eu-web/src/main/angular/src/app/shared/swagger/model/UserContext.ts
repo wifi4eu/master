@@ -32,6 +32,8 @@ export interface UserContext {
 
     enabled?: boolean;
 
+    fullName?: string;
+
     authorities?: Array<models.GrantedAuthority>;
 
     accountNonExpired?: boolean;
@@ -39,8 +41,6 @@ export interface UserContext {
     accountNonLocked?: boolean;
 
     credentialsNonExpired?: boolean;
-
-    fullName?: string;
 
 }
 
@@ -96,6 +96,9 @@ export class UserContextBase  implements UserContext{
 
     enabled?:  boolean ;
 
+
+    fullName?:  string ;
+
     @Type(() => models.GrantedAuthorityBase)
     authorities?:  models.GrantedAuthorityBase[] ;
 
@@ -107,8 +110,5 @@ export class UserContextBase  implements UserContext{
 
 
     credentialsNonExpired?:  boolean ;
-
-
-    fullName?:  string ;
 
 }

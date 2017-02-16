@@ -1,7 +1,5 @@
 package wifi4eu.wifi4eu.common.dto.security;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.util.Date;
 import java.util.List;
 import java.io.Serializable;
@@ -72,5 +70,18 @@ public class UserDTO implements Serializable {
 
     public void setRoles(List<RoleDTO> roles) {
         this.roles = roles;
+    }
+
+    public String toString(){
+
+        StringBuffer result = new StringBuffer();
+
+        result.append("userId: " + this.userId);
+        result.append("email: " + this.email);
+        result.append("password:" + this.password);
+        result.append("createDate: " + this.createDate);
+        result.append("accessDate" + this.accessDate);
+
+        return result.toString();
     }
 }
