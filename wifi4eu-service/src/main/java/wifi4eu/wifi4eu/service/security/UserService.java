@@ -20,6 +20,10 @@ import wifi4eu.wifi4eu.repository.beneficiary.RepresentativeRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 
 import java.util.Date;
+<<<<<<< HEAD
+=======
+import java.util.UUID;
+>>>>>>> b91e370681b926aaabd5d02c9cad160ca95ca8e2
 
 /**
  * Created by rgarcita on 09/02/2017.
@@ -81,6 +85,11 @@ public class UserService {
             userDTO.setEmail(beneficiaryDTO.getMayorDTO().getEmail());
         }
 
+<<<<<<< HEAD
+=======
+        String password = UUID.randomUUID().toString().replace("-","").substring(0,7);
+        userDTO.setPassword(password);
+>>>>>>> b91e370681b926aaabd5d02c9cad160ca95ca8e2
         _log.info("create user: " + userDTO.toString());
         securityUserRepository.save(userMapper.toEntity(userDTO));
 
@@ -95,6 +104,20 @@ public class UserService {
         return legalEntityDTO;
     }
 
+<<<<<<< HEAD
+=======
+    public String login(UserDTO userDTO){
+
+        UserDTO persUserDTO =  userMapper.toDTO(securityUserRepository.findByEmail(userDTO.getEmail()));
+
+        if(persUserDTO != null && userDTO.getPassword().equals(persUserDTO.getPassword())) {
+            return "{'result':'success'}";
+        }else {
+            return "{'result':'error'}";
+        }
+    }
+
+>>>>>>> b91e370681b926aaabd5d02c9cad160ca95ca8e2
     public MayorDTO getMayor(Long mayorId){
 
         MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.findOne(mayorId));

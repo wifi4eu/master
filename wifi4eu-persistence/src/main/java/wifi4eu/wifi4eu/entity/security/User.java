@@ -9,6 +9,10 @@ import java.util.List;
 public class User {
 
     @Id
+<<<<<<< HEAD
+=======
+    @GeneratedValue(strategy = GenerationType.AUTO)
+>>>>>>> b91e370681b926aaabd5d02c9cad160ca95ca8e2
     @Column(name="USER_ID")
     private Long userId;
 
@@ -16,7 +20,11 @@ public class User {
     private String email;
 
     @Column(name="PASSWORD")
+<<<<<<< HEAD
     private Long password;
+=======
+    private String password;
+>>>>>>> b91e370681b926aaabd5d02c9cad160ca95ca8e2
 
     @Column(name="CREATE_DATE")
     private Date createDate;
@@ -33,7 +41,11 @@ public class User {
 
     }
 
+<<<<<<< HEAD
     public User(long userId, String email, long password, Date createDate, Date accessDate, List<Role> roles) {
+=======
+    public User(long userId, String email, String password, Date createDate, Date accessDate, List<Role> roles) {
+>>>>>>> b91e370681b926aaabd5d02c9cad160ca95ca8e2
         this.userId = userId;
         this.email = email;
         this.password = password;
@@ -58,11 +70,19 @@ public class User {
         this.email = email;
     }
 
+<<<<<<< HEAD
     public long getPassword() {
         return password;
     }
 
     public void setPassword(long password) {
+=======
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+>>>>>>> b91e370681b926aaabd5d02c9cad160ca95ca8e2
         this.password = password;
     }
 
