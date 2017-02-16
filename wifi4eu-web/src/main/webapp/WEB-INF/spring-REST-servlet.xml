@@ -9,9 +9,8 @@
 
     <context:annotation-config />
 
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven />
 
     <context:component-scan base-package="wifi4eu.wifi4eu.web.rest"/>
-
 
 </beans>

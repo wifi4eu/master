@@ -8,21 +8,21 @@ export interface DetailedUser {
 
     email?: string;
 
-    firstName?: string;
-
-    uid?: string;
-
     timeZone?: string;
 
     locale?: string;
 
+    uid?: string;
+
     lastName?: string;
+
+    firstName?: string;
 
     assuranceLevel?: models.AssuranceLevel;
 
-    departmentNumber?: string;
-
     orgId?: string;
+
+    departmentNumber?: string;
 
     deviceName?: string;
 
@@ -89,28 +89,28 @@ export class DetailedUserBase  implements DetailedUser{
     email?:  string ;
 
 
-    firstName?:  string ;
-
-
-    uid?:  string ;
-
-
     timeZone?:  string ;
 
 
     locale?:  string ;
 
 
+    uid?:  string ;
+
+
     lastName?:  string ;
+
+
+    firstName?:  string ;
 
     
     assuranceLevel?:  models.AssuranceLevelBase ;
 
 
-    departmentNumber?:  string ;
-
-
     orgId?:  string ;
+
+
+    departmentNumber?:  string ;
 
 
     deviceName?:  string ;

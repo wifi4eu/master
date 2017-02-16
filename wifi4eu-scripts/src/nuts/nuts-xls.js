@@ -56,6 +56,22 @@ var extractLauJson = function(){
              console.error("error creating "+sheetName+".json");
           });
           console.log(wsJson[0]);
+
+          var lauSql = '';
+
+          wsJson.forEach(function(lauItem){
+            var sqlParams = {
+                $insert: 'LOC_LAU_T',
+                $values : lauItem
+            }
+            var sql = sqlGenerator.insert(sqlParams);
+            lauSql = lauSql + ' ' + sql;
+          });
+
+          jsonfile.writeFile(sheetName+'.sql', lauSql, function (err) {
+            console.error("error creating lau.sql");
+          });
+
           lauJson = lauJson.concat(wsJson);
         }
       });
@@ -90,11 +106,11 @@ var transformNutsXlsToSql = function (){
 
       nutsJson.forEach(function(nutsItem){
         var sqlParams = {
-            $insert: 'nuts',
+            $insert: 'LOC_NUTS_T',
             $values : nutsItem
         }
         var sql = sqlGenerator.insert(sqlParams);
-        nutsSql = nutsSql + '\n' + sql;
+        nutsSql = nutsSql + ' ' + sql;
       });
 
       jsonfile.writeFile('nuts.sql', nutsSql, function (err) {
@@ -129,11 +145,11 @@ var transformLauXlsToSql = function (){
 
       lauJson.forEach(function(lauItem){
         var sqlParams = {
-            $insert: 'lau',
+            $insert: 'LOC_LAU_T',
             $values : lauItem
         }
         var sql = sqlGenerator.insert(sqlParams);
-        lauSql = lauSql + '\n' + sql;
+        lauSql = lauSql + ' ' + sql;
       });
 
 

@@ -28,13 +28,13 @@ export interface UserContext {
 
     name?: string;
 
-    authorities?: Array<models.GrantedAuthority>;
-
     password?: string;
+
+    enabled?: boolean;
 
     fullName?: string;
 
-    enabled?: boolean;
+    authorities?: Array<models.GrantedAuthority>;
 
     accountNonExpired?: boolean;
 
@@ -90,17 +90,17 @@ export class UserContextBase  implements UserContext{
 
     name?:  string ;
 
-    @Type(() => models.GrantedAuthorityBase)
-    authorities?:  models.GrantedAuthorityBase[] ;
-
 
     password?:  string ;
 
 
+    enabled?:  boolean ;
+
+
     fullName?:  string ;
 
-
-    enabled?:  boolean ;
+    @Type(() => models.GrantedAuthorityBase)
+    authorities?:  models.GrantedAuthorityBase[] ;
 
 
     accountNonExpired?:  boolean ;

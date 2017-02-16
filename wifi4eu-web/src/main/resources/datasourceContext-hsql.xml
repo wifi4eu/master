@@ -19,7 +19,8 @@
 
     <tx:annotation-driven/>
 
-	<jdbc:embedded-database id="dataSource" type="HSQL"/>
+	<jdbc:embedded-database id="dataSource" type="HSQL">
+	</jdbc:embedded-database>
 	
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="packagesToScan" value="wifi4eu.wifi4eu.entity"/>
