@@ -1,8 +1,25 @@
 {
-    "departmentNumber": "DIGIT.B.1.001",
-    "domain": "NET1",
-    "domainUsername": "smithjo",
-    "email": "John.SMITH@ext.ec.europa.eu",
-    "firstName": "John",
-    "lastName": "SMITH"
+  "data": {
+    "entity": {
+      "country": {
+        "name": "Spain",
+        "code": "ES"
+      },
+      "municipality": {
+        "NUTS_3": "ES511",
+        "LAU1_NAT_CODE": "no",
+        "LAU2_NAT_CODE": "08019",
+        "CHANGE": "no",
+        "NAME_1": "Barcelona",
+        "NAME_2_LAT": "Barcelona",
+        "AREA": "98211086"
+      }
+    },
+    "beneficiary": {
+      "treatment": "Mr",
+      "name": "Roger",
+      "surname": "Fernandez Guri",
+      "email": "roger.fernandez.guri@everis.com"
+    }
+  }
 }
