@@ -19,7 +19,7 @@ export class UserService {
 
     private extractData(response: Response): Object {
         let body = response.json();
-        return body.data || {};
+        return body.data || body.error || {};
     }
 
     addBeneficiary(beneficiary: BeneficiaryDTO): Observable<BeneficiaryDTO> {
@@ -33,7 +33,7 @@ export class UserService {
             .catch(this.uxService.handleError);
     }
 
-    getUser(user: UserDetails): Observable<UserDetails> {
+    getUser(user: UserDetails): Observable<Object> {
         let email512 = CryptoJS.SHA512(user.beneficiary.email);
         let password512 = CryptoJS.SHA512(user.beneficiary.password);
         let token = CryptoJS.SHA512(email512 + password512 + 'Wifi4EU').toString();

@@ -13,7 +13,7 @@ export class TimerService {
 
     getExpirationDateTime(): number {
         // TODO - Should call our internal REST API.
-        return new Date(2017, 1, 16, 17, 18, 25, 250).getTime();
+        return new Date(2017, 1, 17, 9, 30, 0, 250).getTime();
     }
 
     getExpirationDateTime2(): Observable <number> {

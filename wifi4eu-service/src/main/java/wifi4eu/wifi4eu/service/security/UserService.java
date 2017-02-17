@@ -129,9 +129,9 @@ public class UserService {
 
         if (persUserDTO != null && userDTO.getPassword().equals(persUserDTO.getPassword())) {
 
-            return "{\"result\":\"success\"}";
+            return "{\"data\":\"success\"}";
         } else {
-            return "{\"result\":\"error\"}";
+            return "{\"error\":\"error\"}";
         }
     }
 

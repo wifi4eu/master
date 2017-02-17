@@ -14,7 +14,7 @@ export class TimerComponent {
 
     constructor(private timerService: TimerService) {
         this.currentTimestamp = new Date().getTime();
-        this.expirationTimestamp = (timerService.getExpirationDateTime());
+        this.expirationTimestamp = timerService.getExpirationDateTime();
         Observable.interval(500).map((x) => {
             this.currentTimestamp = new Date().getTime();
         }).subscribe((x) => {

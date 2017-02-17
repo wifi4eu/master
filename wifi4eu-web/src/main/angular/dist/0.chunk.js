@@ -1,20 +1,20 @@
 webpackJsonp([0,4],{
 
-/***/ 1176:
+/***/ 1223:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_shared_module__ = __webpack_require__(523);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__registration_routing_module__ = __webpack_require__(1185);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__registration_component__ = __webpack_require__(1179);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__entity_entity_component__ = __webpack_require__(1183);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__beneficiary_beneficiary_component__ = __webpack_require__(1182);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__review_review_component__ = __webpack_require__(1181);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__success_registration_component__ = __webpack_require__(1180);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__review_success_component__ = __webpack_require__(1187);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__review_failure_component__ = __webpack_require__(1186);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_shared_module__ = __webpack_require__(539);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__registration_routing_module__ = __webpack_require__(1230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__registration_component__ = __webpack_require__(1224);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__entity_entity_component__ = __webpack_require__(1228);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__beneficiary_beneficiary_component__ = __webpack_require__(1227);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__review_review_component__ = __webpack_require__(1226);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__success_registration_component__ = __webpack_require__(1225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__review_success_component__ = __webpack_require__(1235);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__review_failure_component__ = __webpack_require__(1232);
 /* harmony export (binding) */ __webpack_require__.d(exports, "RegistrationModule", function() { return RegistrationModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -56,43 +56,14 @@ var RegistrationModule = (function () {
 
 /***/ },
 
-/***/ 1177:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return BeneficiaryDetails; });
-var BeneficiaryDetails = (function () {
-    function BeneficiaryDetails() {
-        this.representativeSelected = false;
-    }
-    return BeneficiaryDetails;
-}());
-//# sourceMappingURL=/Users/rgarcita/Proyectos/wifi4EU/wifi4eu/wifi4eu-web/src/main/angular/src/beneficiary-details.model.js.map
-
-/***/ },
-
-/***/ 1178:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return EntityDetails; });
-var EntityDetails = (function () {
-    function EntityDetails() {
-    }
-    return EntityDetails;
-}());
-//# sourceMappingURL=/Users/rgarcita/Proyectos/wifi4EU/wifi4eu/wifi4eu-web/src/main/angular/src/entity-details.model.js.map
-
-/***/ },
-
-/***/ 1179:
+/***/ 1224:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__entity_entity_details_model__ = __webpack_require__(1178);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__beneficiary_beneficiary_details_model__ = __webpack_require__(1177);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__review_review_component__ = __webpack_require__(1181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__entity_entity_details_model__ = __webpack_require__(536);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__beneficiary_beneficiary_details_model__ = __webpack_require__(535);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__review_review_component__ = __webpack_require__(1226);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return RegistrationComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -160,7 +131,7 @@ var RegistrationComponent = (function () {
         __metadata('design:type', (typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__review_review_component__["a" /* ReviewComponent */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__review_review_component__["a" /* ReviewComponent */]) === 'function' && _a) || Object)
     ], RegistrationComponent.prototype, "childReview", void 0);
     RegistrationComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({ template: __webpack_require__(1190) }), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({ template: __webpack_require__(1238) }), 
         __metadata('design:paramtypes', [])
     ], RegistrationComponent);
     return RegistrationComponent;
@@ -170,7 +141,7 @@ var RegistrationComponent = (function () {
 
 /***/ },
 
-/***/ 1180:
+/***/ 1225:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -190,7 +161,7 @@ var SuccessRegistrationComponent = (function () {
     function SuccessRegistrationComponent() {
     }
     SuccessRegistrationComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({ template: __webpack_require__(1191) }), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({ template: __webpack_require__(1239) }), 
         __metadata('design:paramtypes', [])
     ], SuccessRegistrationComponent);
     return SuccessRegistrationComponent;
@@ -199,13 +170,17 @@ var SuccessRegistrationComponent = (function () {
 
 /***/ },
 
-/***/ 1181:
+/***/ 1226:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__entity_entity_details_model__ = __webpack_require__(1178);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__beneficiary_beneficiary_details_model__ = __webpack_require__(1177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__entity_entity_details_model__ = __webpack_require__(536);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__beneficiary_beneficiary_details_model__ = __webpack_require__(535);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_models_user_details_model__ = __webpack_require__(537);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_services_user_service__ = __webpack_require__(538);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ec_digit_uxatec_eui_angular2_ux_commons__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__beneficiaryDTO_model__ = __webpack_require__(1231);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return ReviewComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -219,21 +194,43 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
+
+
 var ReviewComponent = (function () {
-    function ReviewComponent() {
+    function ReviewComponent(userService, uxService) {
+        this.userService = userService;
+        this.uxService = uxService;
         this.gotoStep = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.onSuccess = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.onFailure = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.displayConfirmingData = false;
         this.confirmingData = true;
         this.checkboxes = [false, false, false];
+        this.userDetails = new __WEBPACK_IMPORTED_MODULE_3__shared_models_user_details_model__["a" /* UserDetails */]();
     }
     ReviewComponent.prototype.submitRegistration = function () {
-        var that = this;
+        var _this = this;
+        if (!this.entityDetails || !this.beneficiaryDetails) {
+            this.onFailure.emit(true);
+            return;
+        }
+        this.userDetails.entity = this.entityDetails;
+        this.userDetails.beneficiary = this.beneficiaryDetails;
         this.displayConfirmingData = true;
+        this.beneficiaryDTO = this.mapperBeneficiaryDTO(this.userDetails);
+        this.userService.addBeneficiary(this.beneficiaryDTO).subscribe(function (user) { return console.log(user); }, function (error) {
+            _this.uxService.growl({
+                severity: 'warn',
+                summary: 'WARNING',
+                detail: 'Could not get user, ignore this when NG is' + ' working in offline mode'
+            });
+            console.log('WARNING: Could not get user: ', error);
+        });
         setTimeout(function () {
-            that.displayConfirmingData = false;
-            that.onSuccess.emit(true);
+            _this.displayConfirmingData = false;
+            _this.onSuccess.emit(true);
         }, 2000);
     };
     ReviewComponent.prototype.editStep = function (step) {
@@ -246,6 +243,25 @@ var ReviewComponent = (function () {
             this.countryField = this.entityDetails.country.name;
             this.municipalityField = this.entityDetails.municipality.NAME_1;
         }
+    };
+    ReviewComponent.prototype.mapperBeneficiaryDTO = function (userDetails) {
+        console.log("Mapping beneficiaryDetails to benenficiaryDTO...");
+        var beneficiaryDTO = new __WEBPACK_IMPORTED_MODULE_6__beneficiaryDTO_model__["a" /* BeneficiaryDTO */]();
+        beneficiaryDTO.mayorDTO.email = userDetails.beneficiary.email;
+        beneficiaryDTO.mayorDTO.name = userDetails.beneficiary.name;
+        beneficiaryDTO.mayorDTO.surname = userDetails.beneficiary.surname;
+        beneficiaryDTO.mayorDTO.treatment = userDetails.beneficiary.treatment;
+        beneficiaryDTO.mayorDTO.repeatEmail = userDetails.beneficiary.email;
+        beneficiaryDTO.legalEntityDTO.address = userDetails.entity.address;
+        beneficiaryDTO.legalEntityDTO.addressNum = userDetails.entity.number;
+        beneficiaryDTO.legalEntityDTO.postalCode = userDetails.entity.postalCode;
+        beneficiaryDTO.legalEntityDTO.countryCode = userDetails.entity.country.code;
+        beneficiaryDTO.legalEntityDTO.legalCheckbox1 = true;
+        beneficiaryDTO.legalEntityDTO.legalCheckbox2 = true;
+        beneficiaryDTO.legalEntityDTO.legalCheckbox3 = true;
+        beneficiaryDTO.legalEntityDTO.municipalityCode = userDetails.entity.municipality.LAU1_NAT_CODE;
+        console.log("Mapping result:", beneficiaryDTO);
+        return beneficiaryDTO;
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])('entityDetails'), 
@@ -268,22 +284,26 @@ var ReviewComponent = (function () {
         __metadata('design:type', Object)
     ], ReviewComponent.prototype, "onFailure", void 0);
     ReviewComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({ selector: 'review-component', template: __webpack_require__(1193) }), 
-        __metadata('design:paramtypes', [])
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'review-component',
+            template: __webpack_require__(1241),
+            providers: [__WEBPACK_IMPORTED_MODULE_4__shared_services_user_service__["a" /* UserService */]]
+        }), 
+        __metadata('design:paramtypes', [(typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__shared_services_user_service__["a" /* UserService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__shared_services_user_service__["a" /* UserService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_5__ec_digit_uxatec_eui_angular2_ux_commons__["a" /* UxService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__ec_digit_uxatec_eui_angular2_ux_commons__["a" /* UxService */]) === 'function' && _d) || Object])
     ], ReviewComponent);
     return ReviewComponent;
-    var _a, _b;
+    var _a, _b, _c, _d;
 }());
 //# sourceMappingURL=/Users/rgarcita/Proyectos/wifi4EU/wifi4eu/wifi4eu-web/src/main/angular/src/review.component.js.map
 
 /***/ },
 
-/***/ 1182:
+/***/ 1227:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__beneficiary_details_model__ = __webpack_require__(1177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__beneficiary_details_model__ = __webpack_require__(535);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return BeneficiaryComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -348,7 +368,7 @@ var BeneficiaryComponent = (function () {
     ], BeneficiaryComponent.prototype, "onBack", void 0);
     BeneficiaryComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-            selector: 'beneficiary-component', template: __webpack_require__(1188)
+            selector: 'beneficiary-component', template: __webpack_require__(1236)
         }), 
         __metadata('design:paramtypes', [])
     ], BeneficiaryComponent);
@@ -359,15 +379,15 @@ var BeneficiaryComponent = (function () {
 
 /***/ },
 
-/***/ 1183:
+/***/ 1228:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ec_digit_uxatec_eui_angular2_ux_commons__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__entity_service__ = __webpack_require__(1184);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__entity_details_model__ = __webpack_require__(1178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ec_digit_uxatec_eui_angular2_ux_commons__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__entity_service__ = __webpack_require__(1229);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__entity_details_model__ = __webpack_require__(536);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return EntityComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -484,7 +504,7 @@ var EntityComponent = (function () {
     EntityComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'entity-component',
-            template: __webpack_require__(1189),
+            template: __webpack_require__(1237),
             providers: [__WEBPACK_IMPORTED_MODULE_3__entity_service__["a" /* EntityService */]]
         }), 
         __metadata('design:paramtypes', [(typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["Http"] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_http__["Http"]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__entity_service__["a" /* EntityService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__entity_service__["a" /* EntityService */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__ec_digit_uxatec_eui_angular2_ux_commons__["a" /* UxService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_2__ec_digit_uxatec_eui_angular2_ux_commons__["a" /* UxService */]) === 'function' && _d) || Object])
@@ -496,13 +516,13 @@ var EntityComponent = (function () {
 
 /***/ },
 
-/***/ 1184:
+/***/ 1229:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ec_digit_uxatec_eui_angular2_ux_commons__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ec_digit_uxatec_eui_angular2_ux_commons__ = __webpack_require__(57);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return EntityService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -523,13 +543,13 @@ var EntityService = (function () {
     }
     EntityService.prototype.getCountries = function () {
         // TODO - Should call our internal REST API.
-        return this.http.get('/api/countries').map(function (response) {
+        return this.http.get('countries.json').map(function (response) {
             return response.json();
         }).catch(this.uxService.handleError);
     };
     EntityService.prototype.getMunicipalities = function (countryCode) {
         // TODO - Should call our internal REST API.
-        return this.http.get('/api/countries/' + countryCode + '/municipalities').map(function (response) {
+        return this.http.get(countryCode + '.json').map(function (response) {
             return response.json();
         }).catch(this.uxService.handleError);
     };
@@ -544,14 +564,14 @@ var EntityService = (function () {
 
 /***/ },
 
-/***/ 1185:
+/***/ 1230:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__registration_component__ = __webpack_require__(1179);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__success_registration_component__ = __webpack_require__(1180);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__registration_component__ = __webpack_require__(1224);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__success_registration_component__ = __webpack_require__(1225);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return RegistrationRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -591,7 +611,27 @@ var RegistrationRoutingModule = (function () {
 
 /***/ },
 
-/***/ 1186:
+/***/ 1231:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mayorDTO_model__ = __webpack_require__(1234);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__legalEntityDTO_model__ = __webpack_require__(1233);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return BeneficiaryDTO; });
+
+
+var BeneficiaryDTO = (function () {
+    function BeneficiaryDTO() {
+        this.mayorDTO = new __WEBPACK_IMPORTED_MODULE_0__mayorDTO_model__["a" /* MayorDTO */]();
+        this.legalEntityDTO = new __WEBPACK_IMPORTED_MODULE_1__legalEntityDTO_model__["a" /* LegalEntityDTO */]();
+    }
+    return BeneficiaryDTO;
+}());
+//# sourceMappingURL=/Users/rgarcita/Proyectos/wifi4EU/wifi4eu/wifi4eu-web/src/main/angular/src/beneficiaryDTO.model.js.map
+
+/***/ },
+
+/***/ 1232:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -611,7 +651,7 @@ var FailureComponent = (function () {
     function FailureComponent() {
     }
     FailureComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({ selector: 'failure-component', template: __webpack_require__(1192) }), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({ selector: 'failure-component', template: __webpack_require__(1240) }), 
         __metadata('design:paramtypes', [])
     ], FailureComponent);
     return FailureComponent;
@@ -620,7 +660,35 @@ var FailureComponent = (function () {
 
 /***/ },
 
-/***/ 1187:
+/***/ 1233:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return LegalEntityDTO; });
+var LegalEntityDTO = (function () {
+    function LegalEntityDTO() {
+    }
+    return LegalEntityDTO;
+}());
+//# sourceMappingURL=/Users/rgarcita/Proyectos/wifi4EU/wifi4eu/wifi4eu-web/src/main/angular/src/legalEntityDTO.model.js.map
+
+/***/ },
+
+/***/ 1234:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return MayorDTO; });
+var MayorDTO = (function () {
+    function MayorDTO() {
+    }
+    return MayorDTO;
+}());
+//# sourceMappingURL=/Users/rgarcita/Proyectos/wifi4EU/wifi4eu/wifi4eu-web/src/main/angular/src/mayorDTO.model.js.map
+
+/***/ },
+
+/***/ 1235:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -640,7 +708,7 @@ var SuccessComponent = (function () {
     function SuccessComponent() {
     }
     SuccessComponent = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({ selector: 'success-component', template: __webpack_require__(1194) }), 
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({ selector: 'success-component', template: __webpack_require__(1242) }), 
         __metadata('design:paramtypes', [])
     ], SuccessComponent);
     return SuccessComponent;
@@ -649,52 +717,52 @@ var SuccessComponent = (function () {
 
 /***/ },
 
-/***/ 1188:
+/***/ 1236:
 /***/ function(module, exports) {
 
 module.exports = "<div class=\"ui-g\">\n    <div class=\"ui-g-12 center\" style=\"text-align: center !important\">\n        <div id=\"component-title\">\n            <h3>{{ 'registration.beneficiary.title' | translate }}</h3>\n        </div>\n    </div>\n</div>\n<div class=\"ui-g\">\n    <div class=\"ui-g-12 center\" style=\"text-align: center !important\">\n        <div id=\"component-subtitle\">\n            <h6>{{ 'registration.step2.instructions' | translate }}</h6>\n        </div>\n    </div>\n</div>\n<form (ngSubmit)=\"onSubmit(2)\" #entityForm=\"ngForm\">\n    <div class=\"form-group ui-g\">\n        <div class=\"ui-g-3\"></div>\n        <div class=\"ui-g-3 center\" style=\"text-align: center !important\">\n            <label>\n                <input type=\"radio\" name=\"mayor_or_representative\"\n                       [(ngModel)]=\"beneficiaryDetails.representativeSelected\"\n                       [value]=\"false\"> {{ 'immayor.option' |\n                translate}}\n            </label>\n        </div>\n        <div class=\"ui-g-3 center\" style=\"text-align: center !important\">\n            <label><input type=\"radio\" name=\"mayor_or_representative\"\n                          [(ngModel)]=\"beneficiaryDetails.representativeSelected\"\n                          [value]=\"true\"> {{\n                'imrepresentative.option' | translate}}</label>\n        </div>\n        <div class=\"ui-g-3\"></div>\n    </div>\n    <!--\n      THIS PART BELOW IS ALWAYS DISPLAYED.\n    -->\n    <div>\n        <div class=\"ui-g\">\n            <div class=\"ui-g-7 center\" style=\"text-align: center !important\">\n                <hr>\n            </div>\n        </div>\n        <div class=\"ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-6\">\n                <h3>{{ 'mayordetails.title' | translate }}</h3>\n            </div>\n            <div class=\"ui-g-3\"></div>\n        </div>\n        <div class=\"form-group ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-3\">\n                <label for=\"treatment\">{{ 'treatment.label' | translate\n                    }}</label>\n                <select class=\"form-control\" name=\"treatment\" id=\"treatment\"\n                        [(ngModel)]=\"beneficiaryDetails.treatment\"\n                        required>\n                    <option value=\"mr\">{{ 'treatment.option1' | translate }}\n                    </option>\n                    <option value=\"ms\">{{ 'treatment.option2' | translate }}\n                    </option>\n                </select>\n            </div>\n            <div class=\"ui-g-1\"></div>\n        </div>\n        <div class=\"form-group ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-6\">\n                <label for=\"name\">{{ 'name.label' | translate }}</label>\n                <input class=\"form-control\" type=\"text\" name=\"name\" id=\"name\"\n                       [(ngModel)]=\"beneficiaryDetails.name\"\n                       required>\n            </div>\n            <div class=\"ui-g-3\"></div>\n        </div>\n        <div class=\"form-group ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-6\">\n                <label for=\"surname\">{{ 'surname.label' | translate }}</label>\n                <input class=\"form-control\" type=\"text\" name=\"surname\"\n                       id=\"surname\"\n                       [(ngModel)]=\"beneficiaryDetails.surname\" required>\n            </div>\n            <div class=\"ui-g-3\"></div>\n        </div>\n        <div class=\"form-group ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-6\">\n                <label for=\"email\">{{ 'email.label' | translate }}</label>\n                <input class=\"form-control\" type=\"email\" name=\"email\" id=\"email\"\n                       [(ngModel)]=\"beneficiaryDetails.email\"\n                       (keyup)=\"checkIfMayorEmailMatches()\" required>\n                <label for=\"email\" class=\"field-desc\"\n                       style=\"margin-top: 10px;color: gray;\">{{\n                    'email.fielddesc' |\n                    translate }}</label>\n            </div>\n            <div class=\"ui-g-3\"></div>\n        </div>\n        <div class=\"form-group ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-6\">\n                <label for=\"confirmemail\">{{ 'confirmemail.label' | translate\n                    }}</label>\n                <input class=\"form-control\" type=\"email\" name=\"confirmemail\"\n                       id=\"confirmemail\" ngcontrol=\"confirmemail\"\n                       #confirmemail=\"ngModel\"\n                       [(ngModel)]=\"beneficiaryDetails.confirmEmail\" (keyup)=\"checkIfMayorEmailMatches()\" required>\n                <div [hidden]=\"mayorEmailMatches || confirmemail.pristine\"\n                     class=\"alert alert-info\">The email\n                    information must\n                    match\n                </div>\n            </div>\n            <div class=\"ui-g-3\"></div>\n        </div>\n    </div>\n    <!--\n      THIS PART BELOW IS DISPLAYED ONLY IF YOU SELECT \"I'm a Mayor representative\".\n    -->\n    <div [ngClass]=\"{'hidden': !beneficiaryDetails.representativeSelected}\">\n        <div class=\"ui-g\">\n            <div class=\"ui-g-7 center\" style=\"text-align: center !important\">\n                <hr>\n            </div>\n        </div>\n        <div class=\"ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-6\">\n                <h3>{{ 'representativedetails.title' | translate }}</h3>\n            </div>\n            <div class=\"ui-g-3\"></div>\n        </div>\n        <div class=\"form-group ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-1\">\n                <label for=\"treatment_representative\">{{ 'treatment.label' |\n                    translate }}</label>\n                <select class=\"form-control\" name=\"treatment_representative\"\n                        id=\"treatment_representative\"\n                        [(ngModel)]=\"beneficiaryDetails.treatmentRepresentative\"\n                        [required]=\"beneficiaryDetails.representativeSelected\">\n                    <option value=\"mr\">{{ 'treatment.option1' | translate }}\n                    </option>\n                    <option value=\"ms\">{{ 'treatment.option2' | translate }}\n                    </option>\n                </select>\n            </div>\n            <div class=\"ui-g-3\"></div>\n        </div>\n        <div class=\"form-group ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-6\">\n                <label for=\"name_representative\">{{ 'name.label' | translate\n                    }}</label>\n                <input class=\"form-control\" type=\"text\"\n                       name=\"name_representative\" id=\"name_representative\"\n                       [(ngModel)]=\"beneficiaryDetails.nameRepresentative\"\n                       [required]=\"beneficiaryDetails.representativeSelected\">\n            </div>\n            <div class=\"ui-g-3\"></div>\n        </div>\n        <div class=\"form-group ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-6\">\n                <label for=\"surname_representative\">{{ 'surname.label' |\n                    translate }}</label>\n                <input class=\"form-control\" type=\"text\"\n                       name=\"surname_representative\" id=\"surname_representative\"\n                       [(ngModel)]=\"beneficiaryDetails.surnameRepresentative\"\n                       [required]=\"beneficiaryDetails.representativeSelected\">\n            </div>\n            <div class=\"ui-g-3\"></div>\n        </div>\n        <div class=\"form-group ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-6\">\n                <label for=\"role_municipality\">{{ 'role.label' | translate\n                    }}</label>\n                <input class=\"form-control\" type=\"text\" name=\"role_municipality\"\n                       id=\"role_municipality\"\n                       [(ngModel)]=\"beneficiaryDetails.roleRepresentative\"\n                       [required]=\"beneficiaryDetails.representativeSelected\">\n            </div>\n            <div class=\"ui-g-3\"></div>\n        </div>\n        <div class=\"form-group ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-6\">\n                <label for=\"email_representative\">{{ 'email.label' | translate\n                    }}</label>\n                <input class=\"form-control\" type=\"email\"\n                       name=\"email-representative\" id=\"email_representative\"\n                       [(ngModel)]=\"beneficiaryDetails.emailRepresentative\"\n                       (keyup)=\"checkIfRepresentativeEmailMatches()\"\n                       [required]=\"beneficiaryDetails.representativeSelected\">\n                <label for=\"email_representative\" class=\"field-desc\"\n                       style=\"margin-top: 10px;color: gray;\">{{\n                    'email.fielddesc' | translate }}</label>\n            </div>\n            <div class=\"ui-g-3\"></div>\n        </div>\n        <div class=\"form-group ui-g\">\n            <div class=\"ui-g-3\"></div>\n            <div class=\"ui-g-6\">\n                <label for=\"confirmemail_representative\">{{ 'confirmemail.label'\n                    | translate }}</label>\n                <input class=\"form-control\" type=\"email\"\n                       name=\"confirmemail_representative\"\n                       id=\"confirmemail_representative\" ngcontrol=\"confirmemail_representative\"\n                       #confirmemail_representative=\"ngModel\"\n                       [(ngModel)]=\"beneficiaryDetails.confirmEmailRepresentative\"\n                       (keyup)=\"checkIfRepresentativeEmailMatches()\"\n                       [required]=\"beneficiaryDetails.representativeSelected\">\n                <div [hidden]=\"representativeEmailMatches || confirmemail_representative.pristine\"\n                     class=\"alert alert-info\">The email\n                    information must\n                    match\n                </div>\n            </div>\n            <div class=\"ui-g-3\"></div>\n        </div>\n    </div>\n    <!--\n      THIS PART BELOW DISPLAYS THE 'Back' AND 'Next' BUTTONS, WHICH ARE ALWAYS SHOWN.\n    -->\n    <div class=\"form-group ui-g\">\n        <div class=\"ui-g-4\"></div>\n        <div class=\"ui-g-2\" style=\"text-align: center !important\">\n            <button type=\"button\" class=\"btn\" (click)=\"stepBack(1)\">{{ 'back.button' | translate }}</button>\n        </div>\n        <div class=\"ui-g-2\" style=\"text-align: center !important\">\n            <button type=\"submit\" class=\"btn btn-primary\"\n                    [disabled]=\"!entityForm.form.valid || !allEmailsMatch()\">{{\n                'next.button' |\n                translate }}\n            </button>\n        </div>\n        <div class=\"ui-g-4\"></div>\n    </div>\n</form>"
 
 /***/ },
 
-/***/ 1189:
+/***/ 1237:
 /***/ function(module, exports) {
 
 module.exports = "<div class=\"ui-g\">\n    <div class=\"ui-g-3\"></div>\n    <div class=\"ui-g-6\" style=\"text-align: center !important\">\n        <div id=\"component-title\">\n            <h3>{{ 'registration.entity.title' | translate }}</h3>\n        </div>\n    </div>\n    <div class=\"ui-g-3\"></div>\n</div>\n<div class=\"ui-g\">\n    <div class=\"ui-g-3\"></div>\n    <div class=\"ui-g-6\" style=\"text-align: center !important\">\n        <div id=\"component-subtitle\">\n            <h6>{{ 'registration.step1.instructions' | translate }}</h6>\n        </div>\n    </div>\n    <div class=\"ui-g-3\"></div>\n</div>\n<form (ngSubmit)=\"onSubmit(1)\" #entityForm=\"ngForm\">\n    <div class=\"form-group ui-g\">\n        <div class=\"ui-g-3\"></div>\n        <div class=\"ui-g-6\">\n            <div class=\"form-group\">\n                <label for=\"country\">{{ 'country.label' | translate }}</label>\n                <p-autoComplete [(ngModel)]=\"entityDetails.country\"\n                                [suggestions]=\"countrySuggestions\"\n                                (completeMethod)=\"filterCountry($event)\"\n                                field=\"name\"\n                                [size]=\"30\" [minLength]=\"1\" class=\"form-control\"\n                                name=\"country\" ngcontrol=\"country\"\n                                #country=\"ngModel\" required>\n                </p-autoComplete>\n                <div [hidden]=\"country.valid || country.pristine\"\n                     class=\"alert alert-danger\">Country is required\n                </div>\n            </div>\n        </div>\n        <div class=\"ui-g-3\"></div>\n    </div>\n    <div class=\"form-group ui-g\">\n        <div class=\"ui-g-3\"></div>\n        <div class=\"ui-g-6\">\n            <div class=\"form-group\">\n                <label for=\"municipality\">{{ 'municipality.label' | translate\n                    }}</label>\n                <p-autoComplete [(ngModel)]=\"entityDetails.municipality\"\n                                [suggestions]=\"municipalitySuggestions\"\n                                (completeMethod)=\"filterMunicipality($event)\"\n                                field=\"NAME_1\"\n                                [size]=\"30\" [minLength]=\"1\" class=\"form-control\"\n                                name=\"municipality\" ngcontrol=\"municipality\"\n                                #municipality=\"ngModel\"\n                                (keydown)=\"checkCountry()\" required>\n                </p-autoComplete>\n                <div [hidden]=\"municipality.valid || municipality.pristine\"\n                     class=\"alert alert-danger\">Municipality is\n                    required\n                </div>\n            </div>\n        </div>\n        <div class=\"ui-g-3\"></div>\n    </div>\n    <div class=\"form-group ui-g\">\n        <div class=\"ui-g-3\"></div>\n        <div class=\"ui-g-5\">\n            <div class=\"form-group\">\n                <label for=\"address\">{{ 'address.label' | translate }}</label>\n                <input type=\"text\" [(ngModel)]=\"entityDetails.address\"\n                       class=\"form-control\"\n                       name=\"address\" ngcontrol=\"address\" #address=\"ngModel\"\n                       required>\n                <div [hidden]=\"address.valid || address.pristine\"\n                     class=\"alert alert-danger\">Address is required\n                </div>\n            </div>\n        </div>\n        <div class=\"ui-g-1\">\n            <div class=\"form-group\">\n                <label for=\"number\">{{ 'number.label' | translate }}</label>\n                <input type=\"number\" min=\"1\" [(ngModel)]=\"entityDetails.number\"\n                       class=\"form-control\"\n                       name=\"number\" ngcontrol=\"number\" #number=\"ngModel\"\n                       required>\n                <div [hidden]=\"number.valid || number.pristine\"\n                     class=\"alert alert-danger\">Address is required\n                </div>\n            </div>\n        </div>\n        <div class=\"ui-g-3\"></div>\n    </div>\n    <div class=\"form-group ui-g\">\n        <div class=\"ui-g-3\"></div>\n        <div class=\"ui-g-6\">\n            <div class=\"form-group\">\n                <label for=\"postalCode\">{{ 'postal-code.label' | translate\n                    }}</label>\n                <input type=\"text\" [(ngModel)]=\"entityDetails.postalCode\"\n                       class=\"form-control\"\n                       name=\"postalCode\" ngcontrol=\"postalCode\"\n                       #postalCode=\"ngModel\" required>\n                <div [hidden]=\"postalCode.valid || postalCode.pristine\"\n                     class=\"alert alert-danger\">Postal code is\n                    required\n                </div>\n            </div>\n        </div>\n        <div class=\"ui-g-3\"></div>\n    </div>\n    <div class=\"form-group ui-g\">\n        <div class=\"ui-g-4\"></div>\n        <div class=\"ui-g-2\" style=\"text-align: center !important\">\n            <button type=\"button\" class=\"btn\">{{ 'back.button' | translate }}</button>\n        </div>\n        <div class=\"ui-g-2\" style=\"text-align: center !important\">\n            <button type=\"submit\" class=\"btn btn-primary\"\n                    [disabled]=\"!entityForm.form.valid\">{{ 'next.button' |\n                translate }}\n            </button>\n        </div>\n        <div class=\"ui-g-4\"></div>\n    </div>\n</form>\n"
 
 /***/ },
 
-/***/ 1190:
+/***/ 1238:
 /***/ function(module, exports) {
 
 module.exports = "<ux-wizard-steps [isCustomContent]=\"true\" *ngIf=\"!successRegistration && !failureRegistration\">\n    <ux-wizard-step label=\"{{ 'registration.entity.title' | translate }}\"\n                    [isCompleted]=\"completed[0]\"\n                    [isActive]=\"active[0]\">\n        <uxWizardStepCustomContent>\n            <entity-component [entityDetails]=\"entityDetails\"\n                              (onNext)=\"onNext($event)\"\n                              (onBack)=\"onBack($event)\"></entity-component>\n        </uxWizardStepCustomContent>\n    </ux-wizard-step>\n    <ux-wizard-step label=\"{{ 'registration.beneficiary.title' | translate }}\"\n                    [isCompleted]=\"completed[1]\"\n                    [isActive]=\"active[1]\">\n        <uxWizardStepCustomContent>\n            <beneficiary-component [beneficiaryDetails]=\"beneficiaryDetails\"\n                                   (onNext)=\"onNext($event)\"\n                                   (onBack)=\"onBack($event)\"></beneficiary-component>\n        </uxWizardStepCustomContent>\n    </ux-wizard-step>\n    <ux-wizard-step label=\"{{ 'registration.review.title' | translate }}\"\n                    [isCompleted]=\"completed[2]\"\n                    [isActive]=\"active[2]\">\n        <uxWizardStepCustomContent>\n            <review-component [entityDetails]=\"entityDetails\"\n                              [beneficiaryDetails]=\"beneficiaryDetails\"\n                              (onNext)=\"onNext($event)\"\n                              (gotoStep)=\"gotoStep($event)\" (onSuccess)=\"onSuccess($event)\"\n                              (onFailure)=\"onFailure($event)\"></review-component>\n        </uxWizardStepCustomContent>\n    </ux-wizard-step>\n</ux-wizard-steps>\n<success-component\n        *ngIf=\"successRegistration\"></success-component>\n<failure-component *ngIf=\"failureRegistration\"></failure-component>\n<failure-component *ngIf=\"failureRegistration\"></failure-component>\n"
 
 /***/ },
 
-/***/ 1191:
+/***/ 1239:
 /***/ function(module, exports) {
 
 module.exports = "<div class=\"ui-g\">\n  <div class=\"ui-g-12 center\" style=\"text-align: center !important\">\n    <i class=\"ion-checkmark-circled fa-2x\" data-pack=\"default\" data-tags=\"complete, finished, success, on\"></i>\n    <h2>{{ 'submitregistration.success.title' | translate }}</h2>\n    <br>\n    <p>{{ 'submitregistration.success.text.part1' | translate }}<br>{{ 'submitregistration.success.text.part2' | translate }}</p>\n    <p>{{ 'submitregistration.success.resendconfirm.part1' | translate }} <u><b>{{ 'submitregistration.success.resendconfirm.part2' | translate }}</b></u></p>\n    <br>\n    <button class=\"btn btn-primary\">{{ 'backtohome.button' | translate }}</button>\n  </div>\n</div>"
 
 /***/ },
 
-/***/ 1192:
+/***/ 1240:
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"ui-g\">\n    <div class=\"ui-g-12 center\" style=\"text-align: center !important\">\n        <i class=\"zmdi zmdi-close-circle fa-3x\"></i><br>\n        <h2>Failure title!</h2>\n        <br>\n        <p>{{ 'submitregistration.success.text.part1' | translate }}<br>{{ 'submitregistration.success.text.part2' |\n            translate }}</p>\n        <p>{{ 'submitregistration.success.resendconfirm.part1' | translate }} <u><b>{{\n            'submitregistration.success.resendconfirm.part2' | translate }}</b></u></p>\n        <br>\n        <button class=\"btn btn-primary\">{{ 'backtohome.button' | translate }}</button>\n    </div>\n\n</div>"
+module.exports = "<div class=\"ui-g\">\n    <div class=\"ui-g-12 center\" style=\"text-align: center !important\">\n        <i class=\"zmdi zmdi-close-circle fa-3x\"></i><br>\n        <h2>Failure title!</h2>\n        <br>\n        <p>{{ 'submitregistration.success.text.part1' | translate }}<br>{{ 'submitregistration.success.text.part2' |\n            translate }}</p>\n        <p>{{ 'submitregistration.success.resendconfirm.part1' | translate }} <u><b>{{\n            'submitregistration.success.resendconfirm.part2' | translate }}</b></u></p>\n        <br>\n        <button class=\"btn btn-primary\" routerLink=\"/home\" routerLinkActive=\"active\">{{ 'backtohome.button' | translate\n            }}\n        </button>\n    </div>\n\n</div>"
 
 /***/ },
 
-/***/ 1193:
+/***/ 1241:
 /***/ function(module, exports) {
 
 module.exports = "<div class=\"ui-g-1\"></div>\n<div class=\"ui-g-10 center\">\n    <div class=\"ui-g-12 center\">\n        <div id=\"component-title\">\n            <h3>{{ 'registration.review.title' | translate }}</h3>\n        </div>\n    </div>\n    <div class=\"ui-g-12 center\">\n        <div id=\"component-subtitle\">\n            <h6>{{ 'registration.step3.instructions' | translate }}</h6>\n        </div>\n    </div>\n    <div class=\"ui-g-12 center\">\n        <div id=\"representantive_details\" class=\"ui-g-12\"\n             [ngClass]=\"{'hidden': !beneficiaryDetails.representativeSelected}\">\n            <hr>\n            <span class=\"ui-g-1\"></span>\n            <span class=\"ui-g-10\" style=\"text-align: left;\">\n                    <h3 class=\"ui-g-11\">{{ 'representativedetails.title' | translate }}</h3>\n                    <a class=\"ui-g-1\" (click)=\"editStep(2)\">{{ 'edit.button' | translate }} <span\n                            class=\"glyphicon glyphicon-pencil\"></span></a>\n                    <div>\n                      <span class=\"ui-g-4\">{{ 'treatment.label' | translate }}</span>\n                      <span class=\"ui-g-8\"><b>{{beneficiaryDetails.treatmentRepresentative}}</b></span>\n                    </div>\n                    <div>\n                      <span class=\"ui-g-4\">{{ 'name.label' | translate }}</span>\n                      <span class=\"ui-g-8\"><b>{{beneficiaryDetails.nameRepresentative}}</b></span>\n                    </div>\n                    <div>\n                      <span class=\"ui-g-4\">{{ 'surname.label' | translate }}</span>\n                      <span class=\"ui-g-8\"><b>{{beneficiaryDetails.surnameRepresentative}}</b></span>\n                    </div>\n                    <div>\n                      <span class=\"ui-g-4\">{{ 'role.label' | translate }}</span>\n                      <span class=\"ui-g-8\"><b>{{beneficiaryDetails.roleRepresentative}}</b></span>\n                    </div>\n                    <div>\n                      <span class=\"ui-g-4\">{{ 'email.label' | translate }}</span>\n                      <span class=\"ui-g-8\"><b>{{beneficiaryDetails.emailRepresentative}}</b></span>\n                    </div>\n                </span>\n            <span class=\"ui-g-1\"></span>\n        </div>\n        <div id=\"mayor_details\" class=\"ui-g-12\">\n            <hr>\n            <span class=\"ui-g-1\"></span>\n            <span class=\"ui-g-10\" style=\"text-align: left;\">\n                    <h3 class=\"ui-g-11\">{{ 'mayordetails.title' | translate }}</h3>\n                    <a class=\"ui-g-1\" (click)=\"editStep(2)\">{{ 'edit.button' | translate }} <span\n                            class=\"glyphicon glyphicon-pencil\"></span></a>\n                    <div>\n                      <span class=\"ui-g-4\">{{ 'treatment.label' | translate }}</span>\n                      <span class=\"ui-g-8\"><b>{{beneficiaryDetails.treatment}}</b></span>\n                    </div>\n                    <div>\n                      <span class=\"ui-g-4\">{{ 'name.label' | translate }}</span>\n                      <span class=\"ui-g-8\"><b>{{beneficiaryDetails.name}}</b></span>\n                    </div>\n                    <div>\n                      <span class=\"ui-g-4\">{{ 'surname.label' | translate }}</span>\n                      <span class=\"ui-g-8\"><b>{{beneficiaryDetails.surname}}</b></span>\n                    </div>\n                    <div>\n                      <span class=\"ui-g-4\">{{ 'email.label' | translate }}</span>\n                      <span class=\"ui-g-8\"><b>{{beneficiaryDetails.email}}</b></span>\n                    </div>\n                </span>\n            <span class=\"ui-g-1\"></span>\n        </div>\n        <div id=\"entity_details\" class=\"ui-g-12\">\n            <hr>\n            <span class=\"ui-g-1\"></span>\n            <span class=\"ui-g-10\" style=\"text-align: left;\">\n                <h3 class=\"ui-g-11\">{{ 'legalentity.label' | translate }}</h3>\n                <a class=\"ui-g-1\" (click)=\"editStep(1)\">{{ 'edit.button' | translate }} <span\n                        class=\"glyphicon glyphicon-pencil\"></span></a>\n                <div>\n                    <span class=\"ui-g-4\">{{ 'country.label' | translate }}</span>\n                    <span class=\"ui-g-8\"><b>{{countryField}}</b></span>\n                </div>\n                <div>\n                    <span class=\"ui-g-4\">{{ 'municipality.label' | translate }}</span>\n                    <span class=\"ui-g-8\"><b>{{municipalityField}}</b></span>\n                </div>\n                <div>\n                    <span class=\"ui-g-4\">{{ 'address.label' | translate }}</span>\n                    <span class=\"ui-g-8\"><b>{{entityDetails.address}}</b></span>\n                </div>\n                <div>\n                    <span class=\"ui-g-4\">{{ 'number.label' | translate }}</span>\n                    <span class=\"ui-g-8\"><b>{{entityDetails.number}}</b></span>\n                </div>\n                <div>\n                    <span class=\"ui-g-4\">{{ 'postal-code.label' | translate }}</span>\n                    <span class=\"ui-g-8\"><b>{{entityDetails.postalCode}}</b></span>\n                </div>\n            </span>\n            <span class=\"ui-g-1\"></span>\n        </div>\n        <div id=\"confirm_checkboxes\" class=\"ui-g-12\">\n            <hr>\n            <div class=\"ui-g-12 checkbox\" style=\"text-align: left;\">\n                <span class=\"ui-g-3\"></span>\n                <label class=\"ui-g-6\" for=\"check_1\"><input type=\"checkbox\" id=\"check_1\" [(ngModel)]=\"checkboxes[0]\"> {{\n                    'preview.registration.check1' | translate }}</label>\n                <span class=\"ui-g-3\"></span>\n            </div>\n            <div class=\"ui-g-12\" style=\"text-align: left;\">\n                <span class=\"ui-g-3\"></span>\n                <label class=\"ui-g-6\" for=\"check_2\"><input type=\"checkbox\" id=\"check_2\" [(ngModel)]=\"checkboxes[1]\"> {{\n                    'preview.registration.check2' | translate }}</label>\n                <span class=\"ui-g-3\"></span>\n            </div>\n            <div class=\"ui-g-12\" style=\"text-align: left;\">\n                <span class=\"ui-g-3\"></span>\n                <label class=\"ui-g-6\" for=\"check_3\"><input type=\"checkbox\" id=\"check_3\" [(ngModel)]=\"checkboxes[2]\"> {{\n                    'preview.registration.check3' | translate }}</label>\n                <span class=\"ui-g-3\"></span>\n            </div>\n        </div>\n        <div class=\"form-group ui-g-12\">\n            <div class=\"ui-g-4\"></div>\n            <div class=\"ui-g-2\" style=\"text-align: center !important\">\n                <button class=\"btn\">{{ 'cancel.button' | translate }}</button>\n            </div>\n            <div class=\"ui-g-2\" style=\"text-align: center !important\">\n                <button class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#confirmingModal\"\n                        (click)=\"submitRegistration()\" [disabled]=\"!checkboxes[0] || !checkboxes[1] || !checkboxes[2]\">\n                    {{'submitregistration.button' | translate }}\n                </button>\n            </div>\n            <div class=\"ui-g-4\"></div>\n        </div>\n    </div>\n</div>\n<div class=\"ui-g-1\"></div>\n<p-dialog [(visible)]=\"displayConfirmingData\" [modal]=\"true\" [responsive]=\"true\" [resizable]=\"false\"\n          [draggable]=\"false\" [closable]=\"false\" [closeOnEscape]=\"false\">\n    <p class=\"ModalLoaderDots\"><span>.</span><span>.</span><span>.</span></p>\n    <h1 class=\"Modalh1Confirmation\">Confirming Data, please wait...</h1>\n    <p class=\"ModalpConfirmation\">Your registration to Wifi4EU is in the process of being submitted.<br>Please don't\n        close this window.</p>\n</p-dialog>\n\n"
 
 /***/ },
 
-/***/ 1194:
+/***/ 1242:
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"ui-g\">\n    <div class=\"ui-g-12 center\" style=\"text-align: center !important\">\n        <i class=\"zmdi zmdi-check-circle fa-3x\"></i><br>\n        <h2>{{ 'submitregistration.success.title' | translate }}</h2>\n        <br>\n        <p>{{ 'submitregistration.success.text.part1' | translate }}<br>{{ 'submitregistration.success.text.part2' |\n            translate }}</p>\n        <p>{{ 'submitregistration.success.resendconfirm.part1' | translate }} <u><b>{{\n            'submitregistration.success.resendconfirm.part2' | translate }}</b></u></p>\n        <br>\n        <button class=\"btn btn-primary\">{{ 'backtohome.button' | translate }}</button>\n    </div>\n</div>"
+module.exports = "<div class=\"ui-g\">\n    <div class=\"ui-g-12 center\" style=\"text-align: center !important\">\n        <i class=\"zmdi zmdi-check-circle fa-3x\"></i><br>\n        <h2>{{ 'submitregistration.success.title' | translate }}</h2>\n        <br>\n        <p>{{ 'submitregistration.success.text.part1' | translate }}<br>{{ 'submitregistration.success.text.part2' |\n            translate }}</p>\n        <p>{{ 'submitregistration.success.resendconfirm.part1' | translate }} <u><b>{{\n            'submitregistration.success.resendconfirm.part2' | translate }}</b></u></p>\n        <br>\n        <button class=\"btn btn-primary\" routerLink=\"/home\" routerLinkActive=\"active\">{{ 'backtohome.button' | translate\n            }}\n        </button>\n    </div>\n</div>"
 
 /***/ }
 

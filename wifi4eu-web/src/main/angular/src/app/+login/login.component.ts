@@ -21,8 +21,26 @@ export class LoginComponent {
         this.displayConfirmingData = true;
 
         this.userService.getUser(this.userDetails).subscribe(
-            user => console.log(user),
+            data => {
+                this.displayConfirmingData = false;
+                if(data == "error"){
+                    this.uxService.growl({
+                        severity: 'error',
+                        summary: 'ERROR',
+                        detail: 'Could not login, with these user password'
+                    });
+                    console.log('ERROR: Could not login, with these user password');
+                }else if(data == "success"){
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: 'SUCCESS',
+                        detail: 'Login success'
+                    });
+                    console.log('SUCCESS: Login success');
+                }
+            },
             error => {
+                this.displayConfirmingData = false;
                 this.uxService.growl({
                     severity: 'warn',
                     summary: 'WARNING',
@@ -31,9 +49,5 @@ export class LoginComponent {
                 console.log('WARNING: Could not get countries', error);
             }
         );
-
-        setTimeout(() => {
-            this.displayConfirmingData = false;
-        }, 2000);
     }
 }
