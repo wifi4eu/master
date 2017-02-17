@@ -81,7 +81,11 @@
   "select.password" : "Please, select a password of 8 characters minimum, case sensitive and 1 digit.",
   "confirmNewPassword.label" : "Confirm password",
   "confirm.button" : "Confirm",
-  "activate.account" : "Activate yout account"
+  "activate.account" : "Activate yout account",
+  "beneficiaryProfile.text" : "If you know your current password, you can change it by clicking on the button below",
+  "beneficiaryProfile.password" : "Change password",
+  "profile.title" : "My profile",
+  "mayor.details" : "Detalles alcalde"
 
 
 

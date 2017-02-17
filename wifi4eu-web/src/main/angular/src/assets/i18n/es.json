@@ -81,7 +81,11 @@
   "select.password" : "Por favor, seleccione una contraseña de 8 caracteres mínimo, sensible a mayúsculas y 1 dígito.",
   "confirmNewPassword.label" : "Confirme la contraseña",
   "confirm.button" : "Confirmar",
-  "activate.account" : "Activa tu cuenta"
+  "activate.account" : "Activa tu cuenta",
+  "beneficiaryProfile.text" : "Si conoces tu contraseña actual, puedes cambiarla clicando en el botón de abajo",
+  "beneficiaryProfile.password" : "Cambiar contraseña",
+  "profile.title" : "Mi perfil",
+  "mayor.details" : "Mayor details"
 
 
 
