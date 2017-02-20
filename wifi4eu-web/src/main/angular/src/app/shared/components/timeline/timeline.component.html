@@ -1,5 +1,21 @@
+<!--
 <div class="ui-g-12 center" style="border: 1px solid;background-color: white;">
-    <span class="ui-g-3">Timeline</span>
-    <span class="ui-g-6"></span>
+    <span class="ui-g-9"></span>
     <span class="ui-g-3">Expand</span>
 </div>
+-->
+<div class="ui-g-12 center" style="border-bottom: 1px solid;">
+    <span class="ui-g-9"></span>
+    <span class="ui-g-3" style="cursor: pointer;" (click)="displayTimeline()">{{expandHideString}} <i
+            [class]="expandHideClass" style="font-size: 15px;"></i></span>
+</div>
+<ux-timeline-items id="timelineList" class="ui-g-12" [isLeftAligned]="true" [hidden]="!timelineVisible">
+    <ux-timeline-item date="30/04/2017" styleClass="success" label="Opening"
+                      subLabel="Registration open for Mayors, Representative and Suppliers"></ux-timeline-item>
+    <ux-timeline-item date="15/06/2017" styleClass="success" label="Closing"
+                      subLabel="Registration closed for Mayors, Representative and Suppliers"></ux-timeline-item>
+    <ux-timeline-item date="30/09/2017" styleClass="info" label="Opening"
+                      subLabel="Opening the call"></ux-timeline-item>
+    <ux-timeline-item date="20/10/2017" label="Payment"
+                      subLabel="First round of payments"></ux-timeline-item>
+</ux-timeline-items>
