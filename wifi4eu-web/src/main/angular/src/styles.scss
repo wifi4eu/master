@@ -14,11 +14,12 @@ p-autocomplete {
   padding-left: 1rem;
 }
 
-.ui-dialog {
-  border: none;
-  background-color: rgba(255, 0, 0, 0);
-
-}
+//.ui-dialog {
+//  border: none;
+//  background-color: rgba(255, 0, 0, 0);
+//
+//}
+/**LUCIA*/
 
 .ui-widget-header {
   border: none;
@@ -74,15 +75,17 @@ p-autocomplete {
   }
 }
 
-.ui-dialog-mask {
-  background: rgba(255, 255, 255, 1) !important;
+/**LUCIA*/
+//
+//.ui-dialog-mask {
+//  background: rgba(255, 255, 255, 1) !important;
+//
+//}
 
-}
-
-.ui-widget-overlay {
-  opacity: 0.9;
-}
-
+//.ui-widget-overlay {
+//  opacity: 0.9;
+//}
+/**LUCIA*/
 .ui-shadow {
   box-shadow: none;
 }
@@ -476,3 +479,58 @@ body {
   background: none;
 }
 
+.button-content {
+  border: solid 1px rgba(0, 0, 0, 0.3);
+  padding-bottom: 52px;
+  padding-left: 18px;
+  padding-top: 12px;
+  background-color: white;
+}
+
+.changePassword {
+  margin-top: 0.5em;
+  width: 71%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.changePasswordModal {
+  margin-top: 6em;
+  width: 30%;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.beneficiaryMayorModal {
+  font-size: 21px;
+  font-weight: bold;
+  color: $dark-blue;
+  text-align: center;
+}
+
+.profileData {
+  font-weight: bold;
+  //text-align: right;
+}
+
+.beneficiaryProfileI {
+  width: 32em;
+  height: 3em;
+}
+
+.forgotPassword {
+  font-size: 0.8em;
+  color: blue !important;
+}
+
+.labelModal {
+  margin-top: 1.2em;
+}
+
+.profileDialog {
+  padding: 0em 5em !important;
+}

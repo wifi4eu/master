@@ -85,5 +85,8 @@
   "beneficiaryProfile.text": "Si conoces tu contraseña actual, puedes cambiarla clicando en el botón de abajo",
   "beneficiaryProfile.password": "Cambiar contraseña",
   "profile.title": "Mi perfil",
-  "mayor.details": "Mayor details"
+  "mayor.details": "Detalles alcalde",
+  "currentPassword.label": "Contraseña actual",
+  "forgot.password": "¿Olvidó su contraseña?",
+  "change": "Cambiar"
 }
