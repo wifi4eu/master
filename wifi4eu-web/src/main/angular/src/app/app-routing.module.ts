@@ -4,7 +4,7 @@ import {HomeComponent} from "./home/home.component";
 import {MapComponent} from "./+map/map.component";
 import {ActivationComponent} from "./activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
-import {BeneficiaryProfileComponent} from "./beneficiaryProfile/beneficiaryProfile.component";
+import {BeneficiaryProfileComponent} from "./+beneficiary/profile/profile.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -31,7 +31,7 @@ import {BeneficiaryProfileComponent} from "./beneficiaryProfile/beneficiaryProfi
             path: 'registration',
             loadChildren: 'app/+registration/registration.module#RegistrationModule'
         }, {
-            path: 'beneficiaryProfile',
+            path: 'beneficiary/profile',
             component: BeneficiaryProfileComponent
         }
     ], {useHash: true})],

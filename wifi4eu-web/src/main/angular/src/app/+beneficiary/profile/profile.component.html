@@ -1,0 +1,75 @@
+<div class="clearfix"></div>
+<div class="container font">
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <p class="beneficiaryTitle">{{ 'profile.title' | translate }}</p>
+        </div>
+        <hr class="beneficiaryHr">
+        <div class="ui-g">
+            <div class="ui-g-10">
+                <p class="beneficiaryMayor">{{ 'mayor.details' | translate }}</p>
+            </div>
+            <div class="ui-g-2">
+                <p class="edit">{{ 'edit.button' | translate }} <i class="fa fa-pencil" aria-hidden="true"></i></p>
+            </div>
+        </div>
+
+        <div class="ui-g">
+            <div class="ui-g-4">
+                <p>{{ 'treatment.label' | translate }}</p>
+                <p>{{ 'name.label' | translate }}</p>
+                <p>{{ 'surname.label' | translate }}</p>
+                <p>{{ 'email.label' | translate }}</p>
+            </div>
+            <div class="ui-g-8">
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+            </div>
+        </div>
+
+        <hr class="beneficiaryHr">
+
+        <div class="ui-g">
+            <div class="ui-g-10">
+                <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
+            </div>
+            <div class="ui-g-2">
+                <p>{{ 'edit.button' | translate }} <i class="fa fa-pencil" aria-hidden="true"></i></p>
+            </div>
+        </div>
+
+        <div class="ui-g">
+            <div class="ui-g-4">
+                <p>{{ 'country.label' | translate }}</p>
+                <p>{{ 'municipality.label' | translate }}</p>
+                <p>{{ 'address.label' | translate }}</p>
+                <p>{{ 'number.label' | translate }}</p>
+                <p>{{ 'postal-code.label' | translate }}</p>
+            </div>
+            <div class="ui-g-8">
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+                <p></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui-g-6">
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <p>{{ 'beneficiaryProfile.text' | translate }}</p>
+            <div style="text-align: center !important">
+                <button type="submit" class="btn btn-primary" [disabled]="!activationForm.form.valid">
+                    {{'beneficiaryProfile.password' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="center">{{ 'home.footer.update' | translate }}</div>
