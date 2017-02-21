@@ -74,8 +74,6 @@
                 <div class="ui-g-8 button-content">
                     <p>{{ 'beneficiaryProfile.text' | translate }}</p>
                     <div style="text-align: center !important">
-                        <!--<a href="#changingPassword" id="changingPassword">Change password</a>-->
-
                         <button type="button" (click)="changingPassword()"
                                 class="btn btn-primary changePassword">
                             {{'beneficiaryProfile.password' | translate }}
@@ -95,8 +93,6 @@
         <p class="beneficiaryMayorModal">{{'beneficiaryProfile.password' | translate }}</p>
         <form (ngSubmit)="onSubmit()" #profileForm="ngForm">
             <div class="form-group profileDialog">
-
-
                 <label class="labelModal" for="currentPassword">{{ 'currentPassword.label' | translate }}</label>
                 <input type="password" [(ngModel)]="beneficiaryDetails.currentPassword"
                        class="form-control beneficiaryProfileI"
