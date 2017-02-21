@@ -1,14 +1,13 @@
-<!-- Accordin Box style
+<!-- Accordin Box style -->
 <ux-accordion-boxes>
-    <ux-accordion-box id="expandHideBox" label="Expand/Hide" [isExpanded]="false">
+    <custom-ux-accordion-box id="expandHideBox" label="Expand" [isExpanded]="false" [rightSide]="true">
         <ux-timeline-items id="timelineList" [isLeftAligned]="true">
             <ux-timeline-item *ngFor="let item of timelineElements" [date]="item.date" [label]="item.label"
                               [subLabel]="item.subLabel" [styleClass]="item.styleClass"></ux-timeline-item>
         </ux-timeline-items>
-    </ux-accordion-box>
+    </custom-ux-accordion-box>
 </ux-accordion-boxes>
--->
-<!-- Custom Expand/Hide button style -->
+<!-- Custom Expand/Hide button style
 <div class="ui-g-12 center" style="border-bottom: 1px solid;">
     <span class="ui-g-9"></span>
     <span class="ui-g-3" style="cursor: pointer;" (click)="displayTimeline()">{{expandHideString}} <i
@@ -18,3 +17,4 @@
     <ux-timeline-item *ngFor="let item of timelineElements" [date]="item.date" [label]="item.label"
                       [subLabel]="item.subLabel" [styleClass]="item.styleClass"></ux-timeline-item>
 </ux-timeline-items>
+-->
