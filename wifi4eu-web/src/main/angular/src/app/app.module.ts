@@ -19,6 +19,7 @@ import {TimerComponent} from "./shared/components/timer/timer.component";
 import {MapComponent} from "./+map/map.component";
 import {ActivationComponent} from "./activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
+import {ForgotComponent} from "./+forgot/forgot.component";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -33,14 +34,16 @@ export function translateFactory(http: Http) {
         TimerComponent,
         MapComponent,
         ActivationComponent,
-        LoginComponent
+        LoginComponent,
+        ForgotComponent,
     ],
     exports: [
         TimelineComponent,
         TimerComponent,
         MapComponent,
         ActivationComponent,
-        LoginComponent
+        LoginComponent,
+        ForgotComponent
     ],
     imports: [
         CoreModule,
