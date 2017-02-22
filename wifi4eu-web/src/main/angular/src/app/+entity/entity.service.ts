@@ -12,14 +12,14 @@ export class EntityService {
 
     getCountries(): Observable <CountryDetails[]> {
         // TODO - Should call our internal REST API.
-        return this.http.get('/api/countries').map(function (response: Response) {
+        return this.http.get('countries.json').map(function (response: Response) {
             return response.json();
         }).catch(this.uxService.handleError);
     }
 
     getMunicipalities(countryCode: string): Observable <MunicipalityDetails[]> {
         // TODO - Should call our internal REST API.
-        return this.http.get('/api/countries/' + countryCode + '/municipalities').map(function (response: Response) {
+        return this.http.get(countryCode + '.json').map(function (response: Response) {
             return response.json();
         }).catch(this.uxService.handleError);
     }

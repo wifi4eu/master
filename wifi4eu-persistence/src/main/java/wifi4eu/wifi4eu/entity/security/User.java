@@ -19,10 +19,12 @@ public class User {
     @Column(name="PASSWORD")
     private String password;
 
+    @Temporal(TemporalType.DATE)
     @Column(name="CREATE_DATE")
     private Date createDate;
 
-    @Column(name="ACESS_DATE")
+    @Temporal(TemporalType.DATE)
+    @Column(name="ACCESS_DATE")
     private Date accessDate;
 
     @ManyToMany(cascade = CascadeType.ALL)

@@ -30,9 +30,9 @@ export interface UserContext {
 
     password?: string;
 
-    enabled?: boolean;
-
     fullName?: string;
+
+    enabled?: boolean;
 
     authorities?: Array<models.GrantedAuthority>;
 
@@ -94,10 +94,10 @@ export class UserContextBase  implements UserContext{
     password?:  string ;
 
 
-    enabled?:  boolean ;
-
-
     fullName?:  string ;
+
+
+    enabled?:  boolean ;
 
     @Type(() => models.GrantedAuthorityBase)
     authorities?:  models.GrantedAuthorityBase[] ;

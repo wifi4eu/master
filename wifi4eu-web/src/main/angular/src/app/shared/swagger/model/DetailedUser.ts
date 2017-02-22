@@ -4,19 +4,15 @@ import {Type} from "class-transformer";
 export interface DetailedUser {
     name?: string;
 
-    domain?: string;
-
     email?: string;
 
-    timeZone?: string;
+    domain?: string;
 
     locale?: string;
 
+    timeZone?: string;
+
     uid?: string;
-
-    lastName?: string;
-
-    firstName?: string;
 
     assuranceLevel?: models.AssuranceLevel;
 
@@ -52,6 +48,10 @@ export interface DetailedUser {
 
     extendedAttributes?: { [key: string]: any; };
 
+    firstName?: string;
+
+    lastName?: string;
+
     proxies?: Array<any>;
 
     pgtId?: string;
@@ -83,25 +83,19 @@ export class DetailedUserBase  implements DetailedUser{
     name?:  string ;
 
 
-    domain?:  string ;
-
-
     email?:  string ;
 
 
-    timeZone?:  string ;
+    domain?:  string ;
 
 
     locale?:  string ;
 
 
+    timeZone?:  string ;
+
+
     uid?:  string ;
-
-
-    lastName?:  string ;
-
-
-    firstName?:  string ;
 
     
     assuranceLevel?:  models.AssuranceLevelBase ;
@@ -153,6 +147,12 @@ export class DetailedUserBase  implements DetailedUser{
 
 
     extendedAttributes?:  { [key: string]: any; } ;
+
+
+    firstName?:  string ;
+
+
+    lastName?:  string ;
 
 
     proxies?:  Array<any> ;

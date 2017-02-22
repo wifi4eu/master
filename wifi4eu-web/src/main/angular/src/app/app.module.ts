@@ -9,6 +9,10 @@ import {CoreService} from "./core/core.service";
 import {AppComponent} from "./app.component";
 import {AppRoutingModule} from "./app-routing.module";
 import {HomeComponent} from "./home/home.component";
+import {VoucherComponent} from "./+voucher/voucher.component";
+import {TimelineComponent} from "./shared/components/timeline/timeline.component";
+import {CustomUxAccordionBoxComponent} from "./shared/components/timeline/custom-ux-accordion-box.component";
+import {TimerComponent} from "./shared/components/timer/timer.component";
 import {MapComponent} from "./+map/map.component";
 import {ActivationComponent} from "./activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
@@ -22,6 +26,18 @@ export function translateFactory(http: Http) {
     declarations: [
         AppComponent,
         HomeComponent,
+        VoucherComponent,
+        TimelineComponent,
+        CustomUxAccordionBoxComponent,
+        TimerComponent,
+        MapComponent,
+        ActivationComponent,
+        LoginComponent
+    ],
+    exports: [
+        TimelineComponent,
+        CustomUxAccordionBoxComponent,
+        TimerComponent,
         MapComponent,
         ActivationComponent,
         LoginComponent,
