@@ -14,11 +14,12 @@ p-autocomplete {
   padding-left: 1rem;
 }
 
-.ui-dialog {
-  border: none;
-  background-color: rgba(255, 0, 0, 0);
-
-}
+//.ui-dialog {
+//  border: none;
+//  background-color: rgba(255, 0, 0, 0);
+//
+//}
+/**LUCIA*/
 
 .ui-widget-header {
   border: none;
@@ -74,47 +75,51 @@ p-autocomplete {
   }
 }
 
-.ui-dialog-mask {
-  background: rgba(255, 255, 255, 1) !important;
+/**LUCIA*/
+//
+//.ui-dialog-mask {
+//  background: rgba(255, 255, 255, 1) !important;
+//
+//}
 
-}
-
-.ui-widget-overlay {
-  opacity: 0.9;
-}
-
+//.ui-widget-overlay {
+//  opacity: 0.9;
+//}
+/**LUCIA*/
 .ui-shadow {
   box-shadow: none;
 }
-$darkish-blue:#004494;
+
+$darkish-blue: #004494;
 $dark-blue: #254872;
-$dark-grey:#262626;
+$dark-grey: #262626;
 $grey: #515151;
 
-body{
-  font-family:verdana;
+body {
+  font-family: verdana;
 }
 
-.contenedor{
+.contenedor {
   margin-left: 8em;
   margin-right: 8em;
 }
 
-.first{
+.first {
   position: relative;
 }
-#first-background{
+
+#first-background {
   width: 100%;
 }
 
-#img-wifi{
+#img-wifi {
   position: absolute;
-  bottom:0;
+  bottom: 0;
   max-width: 500px;
-  width:60%;
+  width: 60%;
 }
 
-.second{
+.second {
   background-color: #f5ce23;
   padding-top: 60px;
   margin-bottom: 0;
@@ -122,7 +127,7 @@ body{
 
 }
 
-.third{
+.third {
   background-image: url("assets/images/group-5.png");
   height: 444px;
   width: 100%;
@@ -130,13 +135,11 @@ body{
   background-repeat: no-repeat;
 }
 
-.margin-top, .margin-top-right{
-  margin-top:1%;
+.margin-top, .margin-top-right {
+  margin-top: 1%;
 }
 
-
-
-.margin-top-right img{
+.margin-top-right img {
   margin: 0 auto;
   display: block;
   position: relative;
@@ -144,65 +147,65 @@ body{
 
 }
 
-.title-home{
+.title-home {
   font-family: Verdana;
   font-size: 50px;
   font-weight: bold;
   line-height: 1.2;
   color: $dark-blue;
-  margin-top:30px;
+  margin-top: 30px;
 }
 
-.subtitle-home{
-  font-size:22px;
+.subtitle-home {
+  font-size: 22px;
   color: $dark-blue;
   font-weight: bold;
 }
 
-.normal-text{
-  font-size:18px;
-  }
+.normal-text {
+  font-size: 18px;
+}
 
-.subtitle-italic{
-  font-size:20px;
+.subtitle-italic {
+  font-size: 20px;
   font-style: italic;
   color: $dark-blue;
   position: relative;
   z-index: 1;
 }
 
-.subtitle-bold-italic{
-  font-size:20px;
+.subtitle-bold-italic {
+  font-size: 20px;
   font-style: italic;
   font-weight: bold;
   color: $dark-blue;
 }
 
-.azul{
+.azul {
   background-color: $dark-blue;
   color: white;
-  padding-bottom:60px;
+  padding-bottom: 60px;
 }
 
-.azul a{
+.azul a {
   color: white;
 }
 
-.benefit{
+.benefit {
   font-size: 60px;
   font-weight: bold;
   color: #ffffff;
 }
 
-.europeans{
-  color:$dark-blue;
-  font-size:34px;
-  font-weight:bold;
+.europeans {
+  color: $dark-blue;
+  font-size: 34px;
+  font-weight: bold;
   margin-top: 40px;
 }
 
-.europeans-text{
-  font-size:18px;
+.europeans-text {
+  font-size: 18px;
   color: $dark-grey;
   margin-top: 30px;
   font-weight: 100;
@@ -211,13 +214,13 @@ body{
 
 }
 
-.entities{
+.entities {
   color: $dark-blue;
-  font-size:34px;
+  font-size: 34px;
   font-weight: bold;
 }
 
-.entities-text{
+.entities-text {
   font-size: 18px;
   color: $dark-grey;
   margin-top: 29px;
@@ -225,8 +228,7 @@ body{
   font-weight: 100;
 }
 
-
-.video-button{
+.video-button {
   background-color: $darkish-blue;
   width: 56%;
   height: 50px;
@@ -239,11 +241,11 @@ body{
   margin: 0 auto;
 }
 
-.mayor{
+.mayor {
   background-color: #f5f5f5;
 }
 
-.apply{
+.apply {
 
   font-family: Verdana;
   font-size: 52px;
@@ -252,67 +254,65 @@ body{
   color: $darkish-blue;
 }
 
-.apply-text{
-  font-size:18px;
-  margin-top:48px;
-  }
-
-.mayor .row{
-  padding-top:80px;
-  padding-bottom: 50px;
-  margin-top:-75px;
+.apply-text {
+  font-size: 18px;
+  margin-top: 48px;
 }
 
+.mayor .row {
+  padding-top: 80px;
+  padding-bottom: 50px;
+  margin-top: -75px;
+}
 
-.mayor-title, .supplier{
+.mayor-title, .supplier {
   font-size: 34px;
-  font-weight:bold;
+  font-weight: bold;
   color: $darkish-blue;
   text-align: center;
 }
 
-.supplier{
-  margin-bottom:40px;
+.supplier {
+  margin-bottom: 40px;
 }
 
-.mayor-title{
-  margin-bottom:0;
+.mayor-title {
+  margin-bottom: 0;
 }
 
-.represent{
+.represent {
   margin-top: 0;
   font-size: 20px;
-  font-weight:bold;
+  font-weight: bold;
   color: $darkish-blue;
   text-align: center;
 }
 
-.mayor img{
+.mayor img {
   display: block;
   margin: 0 auto;
 }
 
-
-.supplier-img{
-margin-top:20px !important;
+.supplier-img {
+  margin-top: 20px !important;
 }
 
-.information{
-  font-size:40px;
-  font-weight:bold;
+.information {
+  font-size: 40px;
+  font-weight: bold;
   color: white;
-  padding-top:55px;
+  padding-top: 55px;
 }
 
-.text-information{
-  font-size:20px;
-  font-weight:bold;
+.text-information {
+  font-size: 20px;
+  font-weight: bold;
   color: white;
-  margin-bottom:30px;
+  margin-bottom: 30px;
 }
 
-.white-links{
-  font-size:18px;
+.white-links {
+  font-size: 18px;
   line-height: 1.67;
   color: white;
   text-decoration: underline;
@@ -320,50 +320,49 @@ margin-top:20px !important;
 
 }
 
-.footer-landing{
+.footer-landing {
   background-color: #dedede;
   font-size: 14px;
   color: #4a4a4a;
   text-align: center;
-  padding-bottom:10px;
-  padding-top:10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
 
-.footer-landing a{
+.footer-landing a {
   color: #4a4a4a;
   text-decoration: underline;
 }
 
-.footer-landing p{
+.footer-landing p {
   margin: 0px;
   text-decoration: none;
 }
 
-#main-content{
-  padding:0rem 0rem 3rem 0rem;
+#main-content {
+  padding: 0rem 0rem 3rem 0rem;
 }
 
-
-#img-scnd img{
+#img-scnd img {
   margin: 0 auto;
   display: block;
   position: relative;
   margin-top: -131px;
-  }
+}
 
-@media only screen and (max-width : 1024px) {
-  #img-scnd img, #img-europeans img{
-    width:100%;
+@media only screen and (max-width: 1024px) {
+  #img-scnd img, #img-europeans img {
+    width: 100%;
   }
 
   .contenedor {
     margin-left: 1em;
     margin-right: 1em;
   }
-    .title-home{
-      font-size: 44px;
-    }
-  .second{
+  .title-home {
+    font-size: 44px;
+  }
+  .second {
     padding-bottom: 32%;
   }
   .supplier-img {
@@ -373,7 +372,7 @@ margin-top:20px !important;
 
 /***ACTIVATION**/
 
-.h2-title{
+.h2-title {
   font-weight: bold;
   line-height: 0.5 !important;
   padding-top: 2em;
@@ -381,14 +380,13 @@ margin-top:20px !important;
   text-align: center;
 }
 
-.label{
+.label {
   font-size: 1.2em;
   color: #5c5c5c;
   text-align: left;
   margin-top: 1.4em;
   margin-bottom: 0.5em;
 }
-
 
 //.activation form{
 //  text-align: left;
@@ -400,10 +398,11 @@ margin-top:20px !important;
 //  color: $grey !important;
 //}
 //
-.smallLetter{
-  margin-top:0;
+.smallLetter {
+  margin-top: 0;
   color: #969696;
 }
+
 //.cancelBtn, .submitBtn{
 //  margin: 4em 0;
 //  height: 3.5em !important;
@@ -450,3 +449,92 @@ margin-top:20px !important;
 //    line-height: 1 !important;
 //  }
 //}
+
+.font {
+  font-size: 16px;
+}
+
+.beneficiaryTitle {
+  font-size: 25px;
+  font-weight: bold;
+  color: $dark-blue;
+}
+
+.beneficiaryMayor {
+  font-size: 21px;
+  font-weight: bold;
+  color: $dark-blue;
+}
+
+.edit {
+  color: $dark-blue;
+  font-size: 16px;
+}
+
+.beneficiaryHr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  background: none;
+}
+
+.button-content {
+  border: solid 1px rgba(0, 0, 0, 0.3);
+  padding-bottom: 52px;
+  padding-left: 18px;
+  padding-top: 12px;
+  background-color: white;
+}
+
+.changePassword {
+  margin-top: 0.5em;
+  width: 71%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.changePasswordModal {
+  margin-top: 6em;
+  width: 30%;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.beneficiaryMayorModal {
+  font-size: 21px;
+  font-weight: bold;
+  color: $dark-blue;
+  text-align: center;
+}
+
+.profileData {
+  font-weight: bold;
+  //text-align: right;
+}
+
+.beneficiaryProfileI {
+  width: 32em;
+  height: 3em;
+}
+
+.forgotPassword {
+  font-size: 0.8em;
+  color: blue !important;
+}
+
+.labelModal {
+  margin-top: 1.2em;
+}
+
+.profileDialog {
+  padding: 0em 5em !important;
+}
+
+.paddingLegal {
+  padding-left: 13em;
+}
