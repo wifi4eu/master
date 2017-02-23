@@ -1,9 +1,9 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
-import {VoucherComponent} from "./+voucher/voucher.component";
+import {VoucherComponent} from "./+beneficiary-portal/+voucher/voucher.component";
 import {MapComponent} from "./+map/map.component";
-import {ActivationComponent} from "./activation/activation.component";
+import {ActivationComponent} from "./+activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 
 @NgModule({
@@ -29,13 +29,13 @@ import {LoginComponent} from "./+login/login.component";
             component: LoginComponent
         }, {
             path: 'registration',
-            loadChildren: 'app/+registration/registration.module#RegistrationModule'
+            loadChildren: 'app/+beneficiary-registration/registration.module#RegistrationModule'
         }, {
             path: 'registration',
-            loadChildren: 'app/+registration/registration.module#RegistrationModule'
+            loadChildren: 'app/+beneficiary-registration/registration.module#RegistrationModule'
         }, {
-            path: 'voucher',
-            component: VoucherComponent
+            path: 'beneficiary-portal',
+            loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule'
         }
     ], {useHash: true})],
     exports: [RouterModule]

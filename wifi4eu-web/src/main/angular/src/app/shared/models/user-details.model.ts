@@ -1,5 +1,5 @@
-import {EntityDetails} from "../../+entity/entity-details.model";
-import {BeneficiaryDetails} from "../../+beneficiary/beneficiary-details.model";
+import {EntityDetails} from "./legal-entity-details.model";
+import {BeneficiaryDetails} from "./beneficiary-details.model";
 
 export class UserDetails {
     entity: EntityDetails;

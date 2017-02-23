@@ -2,8 +2,8 @@ import {Injectable} from "@angular/core";
 import {Response, Http} from "@angular/http";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {Observable} from "rxjs";
-import {MunicipalityDetails} from "./municipality-details.model";
-import {CountryDetails} from "./country-details.model";
+import {MunicipalityDetails} from "../../shared/models/municipality-details.model";
+import {CountryDetails} from "../../shared/models/country-details.model";
 
 @Injectable()
 export class EntityService {

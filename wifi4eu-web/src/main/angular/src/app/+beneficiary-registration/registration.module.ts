@@ -2,12 +2,12 @@ import {NgModule} from '@angular/core';
 import {SharedModule} from '../shared/shared.module';
 import {RegistrationRoutingModule} from './registration-routing.module';
 import {RegistrationComponent} from './registration.component';
-import {EntityComponent} from '../+entity/entity.component';
-import {BeneficiaryComponent} from '../+beneficiary/beneficiary.component';
-import {ReviewComponent} from '../+review/review.component';
-import {SuccessRegistrationComponent} from './success.registration.component';
-import {SuccessComponent} from '../+review/success.component';
-import {FailureComponent} from '../+review/failure.component';
+import {EntityComponent} from './+beneficiary-registration-step1/legal-entity.component';
+import {BeneficiaryComponent} from './+beneficiary-registration-step2/beneficiary.component';
+import {ReviewComponent} from './+beneficiary-registration-step3/review.component';
+import {SuccessRegistrationComponent} from '../shared/components/success-registration/success.registration.component';
+import {SuccessComponent} from '../shared/components/success/success.component';
+import {FailureComponent} from '../shared/components/failure/failure.component';
 
 @NgModule({
     imports: [

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {BeneficiaryDetails} from "./beneficiary-details.model";
+import {BeneficiaryDetails} from "../../shared/models/beneficiary-details.model";
 
 @Component({
     selector: 'beneficiary-component', templateUrl: 'beneficiary.component.html'
