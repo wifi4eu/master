@@ -7,18 +7,20 @@ import {ActivationDetails} from "./activation-details.model";
 @Injectable()
 export class ActivationService {
 
-    private activationUrl = '/api/activation';
+    private activationUrl: string;
 
-    constructor(private http: Http, private uxService: UxService){}
+    constructor(private http: Http, private uxService: UxService) {
+        this.activationUrl = '/api/user/activateaccount'
+    }
 
     private extractData(response: Response) {
         let body = response.json();
         return body.data || { };
     }
 
-    addNewPassword(body: ActivationDetails): Observable <ActivationDetails>{
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+    addNewPassword(body: ActivationDetails): Observable <ActivationDetails> {
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
 
         return this.http.post(this.activationUrl, body , options)
             .map(this.extractData)

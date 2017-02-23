@@ -24,7 +24,24 @@ export class ForgotComponent implements OnInit {
         return this.forgotDetails.password === this.forgotDetails.confirmPassword;
     }
 
-    onSubmit() {
+    onSendEmail() {
+        this.forgotService.sendEmail(this.forgotDetails.email).subscribe(
+            data => {
+                console.log(data)
+            },
+            error => {
+                this.uxService.growl({
+                    severity: 'warn',
+                    summary: 'WARNING',
+                    detail: 'Could not add new password, ignore this when' +
+                    ' NG is working in offline mode'
+                });
+                console.log('WARNING: Could not add new password', error);
+            }
+        );
+    }
+
+    onNewPassword() {
         this.forgotService.addNewPassword(this.forgotDetails).subscribe(
             data => {
                 console.log(data)
