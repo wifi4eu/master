@@ -14,22 +14,30 @@ import {BeneficiaryDTO} from "./beneficiaryDTO.model";
 export class ReviewComponent {
     @Input('entityDetails') entityDetails: EntityDetails;
     @Input('beneficiaryDetails') beneficiaryDetails: BeneficiaryDetails;
-    @Output() gotoStep = new EventEmitter<number>();
-    @Output() onSuccess = new EventEmitter<boolean>();
-    @Output() onFailure = new EventEmitter<boolean>();
+    @Output() gotoStep: EventEmitter<number>;
+    @Output() onSuccess: EventEmitter<boolean>;
+    @Output() onFailure: EventEmitter<boolean>;
 
-    displayConfirmingData: boolean = false;
-    confirmingData: boolean = true;
+    displayConfirmingData: boolean;
+    confirmingData: boolean;
 
     private countryField;
     private municipalityField;
-    private checkboxes: boolean[] = [false, false, false];
+    private checkboxes: boolean[];
     private userDetails: UserDetails;
+    private successCaptcha: boolean;
 
     private beneficiaryDTO: BeneficiaryDTO;
 
     constructor(private userService: UserService, private uxService: UxService) {
+        this.gotoStep = new EventEmitter<number>();
+        this.onSuccess = new EventEmitter<boolean>();
+        this.onFailure = new EventEmitter<boolean>();
         this.userDetails = new UserDetails();
+        this.displayConfirmingData = false;
+        this.confirmingData = true;
+        this.checkboxes = [false, false, false];
+        this.successCaptcha = false;
     }
 
     submitRegistration() {
@@ -102,15 +110,8 @@ export class ReviewComponent {
         return beneficiaryDTO;
     }
 
-    private successCaptcha: boolean = false;
-
     private onCaptchaComplete(response: any) {
-        console.log('reCAPTCHA response recieved:');
-        if (response.success) {
-            this.successCaptcha = true;
-        } else {
-            this.successCaptcha = false;
-        }
+        this.successCaptcha = response.success;
     }
 
 }
