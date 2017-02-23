@@ -21,6 +21,7 @@ import {MapComponent} from "./+map/map.component";
 import {ActivationComponent} from "./activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {BeneficiaryProfileComponent} from "./+beneficiary/profile/profile.component";
+import {ForgotComponent} from "./+forgot/forgot.component";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -37,7 +38,8 @@ export function translateFactory(http: Http) {
         MapComponent,
         ActivationComponent,
         LoginComponent,
-        BeneficiaryProfileComponent
+        BeneficiaryProfileComponent,
+        ForgotComponent,
     ],
     exports: [
         TimelineComponent,
@@ -46,7 +48,8 @@ export function translateFactory(http: Http) {
         MapComponent,
         ActivationComponent,
         LoginComponent,
-        BeneficiaryProfileComponent
+        BeneficiaryProfileComponent,
+        ForgotComponent
     ],
     imports: [
         CoreModule,

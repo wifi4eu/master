@@ -91,6 +91,8 @@
   "code.label": "Code",
   "code.required": "Code is required",
   "password.label": "New password",
+  "forgot.title": "Forgot password",
+  "email.forgot": "Enter your email, we will email instructions on how to reset your password.",
   "email.information": "Please enter the information we sent to your e-mail address.",
   "email.required": "Email is required",
   "password.required": "Password is required",

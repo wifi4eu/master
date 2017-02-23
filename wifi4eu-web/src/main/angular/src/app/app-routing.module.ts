@@ -6,6 +6,7 @@ import {MapComponent} from "./+map/map.component";
 import {ActivationComponent} from "./activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {BeneficiaryProfileComponent} from "./+beneficiary/profile/profile.component";
+import {ForgotComponent} from "./+forgot/forgot.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -28,6 +29,10 @@ import {BeneficiaryProfileComponent} from "./+beneficiary/profile/profile.compon
         }, {
             path: 'login',
             component: LoginComponent
+        },
+        {
+            path: 'forgot',
+            component: ForgotComponent
         }, {
             path: 'registration',
             loadChildren: 'app/+registration/registration.module#RegistrationModule'
