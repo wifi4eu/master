@@ -136,7 +136,7 @@
                     'password.required'
                     | translate }}
                 </div>
-                <a class="forgotPassword" href="#">Forgot password?</a><br>
+                <a class="forgotPassword" routerLink="/forgot">Forgot password?</a><br>
                 <label class="labelModal" for="newPassword">{{ 'password.label' | translate }}</label>
                 <input type="password" [(ngModel)]="beneficiaryDetails.newPassword"
                        class="form-control beneficiaryProfileI"
@@ -179,24 +179,6 @@
     <p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="true" [closeOnEscape]="true">
 
-        <div class="ui-g">
-            <div class="ui-g-1 paddingLegal"></div>
-            <div class="ui-g-10" style="text-align: center !important">
-                <div id="component-title">
-                    <h3>{{ 'registration.entity.title' | translate }}</h3>
-                </div>
-            </div>
-            <div class="ui-g-1 paddingLegal"></div>
-        </div>
-        <div class="ui-g">
-            <div class="ui-g-1"></div>
-            <div class="ui-g-0" style="text-align: center !important">
-                <div id="component-subtitle">
-                    <h6>{{ 'registration.step1.instructions' | translate }}</h6>
-                </div>
-            </div>
-            <div class="ui-g-1"></div>
-        </div>
         <form (ngSubmit)="onSubmit()" #entityForm="ngForm">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
