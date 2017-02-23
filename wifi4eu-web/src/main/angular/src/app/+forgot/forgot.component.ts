@@ -18,7 +18,7 @@ export class ForgotComponent implements OnInit {
 
     ngOnInit() {
         this.forgotDetails = new ForgotDetails();
-        this.route.params.subscribe(params => this.token = params['token']);
+        this.route.params.subscribe(params => this.forgotDetails.token = params['token']);
     }
 
     checkPassword() {
