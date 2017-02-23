@@ -10,7 +10,6 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class ForgotComponent implements OnInit {
 
-    private token: string;
     private forgotDetails: ForgotDetails;
 
     constructor(private forgotService: ForgotService, private uxService: UxService, private route: ActivatedRoute) {

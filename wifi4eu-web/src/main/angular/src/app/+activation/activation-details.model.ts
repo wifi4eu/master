@@ -1,11 +1,11 @@
 export class ActivationDetails {
-    public email : string;
-    public code : string; /* TODO - This should not be an attribute */
-    public newPassword : string;
-    public repeatNewPassword : string; // TODO - This should not be an attribute
+    public token: string;
+    public password: string;
+    public confirmPassword: string;
 
-
-    public constructor() {
-
+    public constructor(token?: string, password?: string, confirmPassword?: string) {
+        this.token = token;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
     }
 }
