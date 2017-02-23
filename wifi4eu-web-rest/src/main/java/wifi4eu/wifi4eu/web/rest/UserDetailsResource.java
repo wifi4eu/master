@@ -12,10 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@Api(description = "UserDetailsResource")
 @RequestMapping("user-details")
 public class UserDetailsResource {
-    @ApiOperation(value = "User details resource")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody UserContext getIdentity(HttpServletRequest request) {
         return (UserContext) request.getSession(true).getAttribute(Constant.USER);

@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @Controller
-@Api(description = "BeneficiaryResource")
+@Api(value="/beneficiary",description = "BeneficiaryResource")
 @RequestMapping("beneficiary")
 public class BeneficiaryResource {
 
@@ -33,16 +33,22 @@ public class BeneficiaryResource {
     @ApiOperation(value = "create Beneficiary")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody final BeneficiaryDTO beneficiaryDTO, final HttpServletResponse response) {
+    public ResponseDTO create(@RequestBody final BeneficiaryDTO beneficiaryDTO, final HttpServletResponse response) {
 
-        userService.create(beneficiaryDTO);
+        try {
+            userService.create(beneficiaryDTO);
+            return new ResponseDTO(true,null,null);
+        }catch(Exception e){
+            ErrorDTO errorDTO = new ErrorDTO(0,e.getMessage());
+            return new ResponseDTO(false,null,errorDTO);
+        }
 
     }
 
     @ApiOperation(value = "Update beneficiary information")
     @RequestMapping(value="/{beneficiaryId}",method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO update(@RequestBody final BeneficiaryDTO beneficiaryDTO, final HttpServletResponse response){
+    public ResponseDTO update(@RequestBody final BeneficiaryDTO beneficiaryDTO,@PathVariable("beneficiaryId") final Long beneficiaryId, final HttpServletResponse response){
 
         _log.info("beneficiary update");
 
