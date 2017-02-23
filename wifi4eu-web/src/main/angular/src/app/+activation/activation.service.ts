@@ -10,12 +10,12 @@ export class ActivationService {
     private activationUrl: string;
 
     constructor(private http: Http, private uxService: UxService) {
-        this.activationUrl = '/api/user/activateaccount'
+        this.activationUrl = 'api/user/activateaccount'
     }
 
     private extractData(response: Response) {
         let body = response.json();
-        return body.data || { };
+        return body.data || body.error || {};
     }
 
     addNewPassword(body: ActivationDetails): Observable <ActivationDetails> {

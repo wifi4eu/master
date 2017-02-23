@@ -2,9 +2,9 @@ import * as models from './models';
 import {Type} from "class-transformer";
 
 export interface ErrorDTO {
-    code?: number;
+    errorCode?: number;
 
-    message?: string;
+    errorMessage?: string;
 
 }
 
@@ -16,9 +16,9 @@ export interface ErrorDTO {
 
 export class ErrorDTOBase  implements ErrorDTO{
 
-    code?:  number ;
+    errorCode?:  number ;
 
 
-    message?:  string ;
+    errorMessage?:  string ;
 
 }

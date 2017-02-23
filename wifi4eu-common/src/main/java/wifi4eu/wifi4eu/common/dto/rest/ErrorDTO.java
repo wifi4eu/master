@@ -5,29 +5,29 @@ package wifi4eu.wifi4eu.common.dto.rest;
  */
 public class ErrorDTO{
 
-    private long code;
-    private String message;
+    private long errorCode;
+    private String errorMessage;
 
     public ErrorDTO(){}
 
-    public ErrorDTO(long code, String message) {
-        this.code = code;
-        this.message = message;
+    public ErrorDTO(long errorCode, String errorMessage) {
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
     }
 
-    public long getCode() {
-        return code;
+    public long getErrorCode() {
+        return errorCode;
     }
 
-    public void setCode(long code) {
-        this.code = code;
+    public void setErrorCode(long errorCode) {
+        this.errorCode = errorCode;
     }
 
-    public String getMessage() {
-        return message;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

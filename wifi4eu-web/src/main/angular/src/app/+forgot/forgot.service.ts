@@ -10,8 +10,8 @@ export class ForgotService {
     private forgotUrl: string;
 
     constructor(private http: Http, private uxService: UxService) {
-        this.activationUrl = '/api/user/activateaccount';
-        this.forgotUrl = '/api/user/forgotpassword';
+        this.activationUrl = 'api/user/activateaccount';
+        this.forgotUrl = 'api/user/forgotpassword';
     }
 
     private extractData(response: Response) {

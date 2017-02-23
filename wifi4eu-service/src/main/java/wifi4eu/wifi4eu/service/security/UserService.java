@@ -128,7 +128,7 @@ public class UserService {
             String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
             userDTO.setPassword(password);
             _log.info("create user: " + userDTO.toString());
-            securityUserRepository.save(userMapper.toEntity(userDTO));
+            userDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
 
             /* create a temporal token */
 
