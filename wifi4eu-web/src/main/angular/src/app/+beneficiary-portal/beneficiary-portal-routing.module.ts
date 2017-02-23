@@ -13,7 +13,7 @@ import {BeneficiaryProfileComponent} from "./profile/profile.component";
             path: 'voucher',
             component: VoucherComponent,
         }, {
-            path: 'beneficiary/profile',
+            path: 'profile',
             component: BeneficiaryProfileComponent
         }
     ])],
