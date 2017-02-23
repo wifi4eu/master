@@ -72,6 +72,8 @@
   "code.label": "Código",
   "code.required": "El código es necesario",
   "password.label": "Nueva contraseña",
+  "forgot.title": "Olvidaste tu password",
+  "email.forgot": "Introduce tu e-mail, te enviaremos un coreo con instrucciones sobre como re-establecer tu contraseña.",
   "email.information": "Por favor, introduzca la información que le hemos enviado a su dirección de correo electrónico.",
   "email.required": "El correo es necesario",
   "password.required": "La contraseña es necesaria",
@@ -100,5 +102,12 @@
   "voucher.days": "Días",
   "voucher.hours": "Horas",
   "voucher.minutes": "Minutos",
-  "voucher.seconds": "Segundos"
+  "voucher.seconds": "Segundos",
+	"beneficiaryProfile.text": "Si conoces tu contraseña actual, puedes cambiarla clicando en el botón de abajo",
+  "beneficiaryProfile.password": "Cambiar contraseña",
+  "profile.title": "Mi perfil",
+  "mayor.details": "Detalles alcalde",
+  "currentPassword.label": "Contraseña actual",
+  "forgot.password": "¿Olvidó su contraseña?",
+  "change": "Cambiar"
 }

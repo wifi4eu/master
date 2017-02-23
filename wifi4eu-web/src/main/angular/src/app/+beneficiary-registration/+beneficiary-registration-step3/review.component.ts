@@ -102,4 +102,15 @@ export class ReviewComponent {
         return beneficiaryDTO;
     }
 
+    private successCaptcha: boolean = false;
+
+    private onCaptchaComplete(response: any) {
+        console.log('reCAPTCHA response recieved:');
+        if (response.success) {
+            this.successCaptcha = true;
+        } else {
+            this.successCaptcha = false;
+        }
+    }
+
 }

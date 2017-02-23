@@ -8,10 +8,11 @@ import {ReviewComponent} from './+beneficiary-registration-step3/review.componen
 import {SuccessRegistrationComponent} from '../shared/components/success-registration/success.registration.component';
 import {SuccessComponent} from '../shared/components/success/success.component';
 import {FailureComponent} from '../shared/components/failure/failure.component';
+import {Ng2GoogleRecaptchaModule} from 'ng2-google-recaptcha';
 
 @NgModule({
     imports: [
-        SharedModule, RegistrationRoutingModule
+        SharedModule, RegistrationRoutingModule, Ng2GoogleRecaptchaModule
     ],
     declarations: [
         RegistrationComponent, EntityComponent, BeneficiaryComponent, ReviewComponent, SuccessRegistrationComponent, SuccessComponent, FailureComponent

@@ -1,5 +1,9 @@
-<div class="ui-g-12 center" style="border: 1px solid;background-color: white;">
-    <span class="ui-g-3">Timeline</span>
-    <span class="ui-g-6"></span>
-    <span class="ui-g-3">Expand</span>
-</div>
+<!-- Accordin Box style -->
+<ux-accordion-boxes>
+    <custom-ux-accordion-box id="expandHideBox" label="Expand" [isExpanded]="false" [rightSide]="true">
+        <ux-timeline-items id="timelineList">
+            <ux-timeline-item *ngFor="let item of timelineElements" [date]="item.date" [label]="item.label"
+                              [subLabel]="item.subLabel" [styleClass]="item.styleClass"></ux-timeline-item>
+        </ux-timeline-items>
+    </custom-ux-accordion-box>
+</ux-accordion-boxes>
