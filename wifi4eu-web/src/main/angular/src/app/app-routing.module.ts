@@ -34,6 +34,9 @@ import {BeneficiaryProfileComponent} from "./+beneficiary/profile/profile.compon
         }, {
             path: 'voucher',
             component: VoucherComponent
+        }, {
+            path: 'beneficiary/profile',
+            component: BeneficiaryProfileComponent
         }
     ], {useHash: true})],
     exports: [RouterModule]
