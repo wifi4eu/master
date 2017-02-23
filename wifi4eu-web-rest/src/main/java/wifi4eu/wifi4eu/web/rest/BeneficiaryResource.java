@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.security.UserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +36,23 @@ public class BeneficiaryResource {
     public void create(@RequestBody final BeneficiaryDTO beneficiaryDTO, final HttpServletResponse response) {
 
         userService.create(beneficiaryDTO);
+
+    }
+
+    @ApiOperation(value = "Update beneficiary information")
+    @RequestMapping(value="/{beneficiaryId}",method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO update(@RequestBody final BeneficiaryDTO beneficiaryDTO, final HttpServletResponse response){
+
+        _log.info("beneficiary update");
+
+        try {
+            userService.update(beneficiaryDTO);
+            return new ResponseDTO(true,null,null);
+        }catch(Exception e){
+            ErrorDTO errorDTO = new ErrorDTO(0,e.getMessage());
+            return new ResponseDTO(false,null,errorDTO);
+        }
 
     }
 

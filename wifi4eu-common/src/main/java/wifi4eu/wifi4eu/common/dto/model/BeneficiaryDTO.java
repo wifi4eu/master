@@ -10,13 +10,15 @@ public class BeneficiaryDTO implements Serializable{
     private MayorDTO mayorDTO;
     private RepresentativeDTO representativeDTO;
     private LegalEntityDTO legalEntityDTO;
+    private boolean isRepresented;
 
     public BeneficiaryDTO (){}
 
-    public BeneficiaryDTO(MayorDTO mayorDTO, RepresentativeDTO representativeDTO, LegalEntityDTO legalEntityDTO) {
+    public BeneficiaryDTO(MayorDTO mayorDTO, RepresentativeDTO representativeDTO, LegalEntityDTO legalEntityDTO, boolean isRepresented) {
         this.mayorDTO = mayorDTO;
         this.representativeDTO = representativeDTO;
         this.legalEntityDTO = legalEntityDTO;
+        this.isRepresented = isRepresented;
     }
 
     public MayorDTO getMayorDTO() {
@@ -41,5 +43,13 @@ public class BeneficiaryDTO implements Serializable{
 
     public void setLegalEntityDTO(LegalEntityDTO legalEntityDTO) {
         this.legalEntityDTO = legalEntityDTO;
+    }
+
+    public boolean isRepresented() {
+        return isRepresented;
+    }
+
+    public void setRepresented(boolean represented) {
+        isRepresented = represented;
     }
 }

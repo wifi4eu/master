@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.service.security.UserService;
 
@@ -27,7 +30,7 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
-    @ApiOperation(value = "get legal Entity information")
+    @ApiOperation(value = "Service to do Login with a user email and SHA512 password")
     @RequestMapping(value="login",method = RequestMethod.POST,produces = "application/json")
     @ResponseBody
     public String login(@RequestBody final UserDTO userDTO, final HttpServletResponse response) {
@@ -37,16 +40,41 @@ public class UserResource {
         return result;
     }
 
-    @ApiOperation(value = "send forgot password mail")
+    @ApiOperation(value = "Send forgot password mail with a link to reset password")
     @RequestMapping(value="forgotpassword",method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public void forgotPassword(@RequestBody final String email, final HttpServletResponse response){
+    public ResponseDTO forgotPassword(@RequestBody final String email, final HttpServletResponse response){
 
         _log.info("forgot Password: "+ email);
 
-        userService.forgotPassword(email);
+        try {
+            userService.forgotPassword(email);
+            return new ResponseDTO(true,null,null);
+        }catch(Exception e){
+            ErrorDTO errorDTO = new ErrorDTO(0,e.getMessage());
+            return new ResponseDTO(false,null,errorDTO);
+        }
+
+    }
+
+    @ApiOperation(value = "Activate account or reset password")
+    @RequestMapping(value="activateaccount",method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO activateAccount(@RequestBody final ActivateAccountDTO activateAccountDTO, final HttpServletResponse response){
+
+        _log.info("activate Account: ");
+
+        try {
+            userService.activateAccount(activateAccountDTO);
+            return new ResponseDTO(true,null,null);
+        }catch(Exception e){
+            ErrorDTO errorDTO = new ErrorDTO(0,e.getMessage());
+            return new ResponseDTO(false,null,errorDTO);
+        }
 
 
     }
+
+
 
 }
