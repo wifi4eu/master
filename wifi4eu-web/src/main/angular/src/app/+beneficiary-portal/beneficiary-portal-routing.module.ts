@@ -1,19 +1,23 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {VoucherComponent} from './+voucher/voucher.component';
-import {} from './';
+import {BeneficiaryProfileComponent} from "./profile/profile.component";
 
 @NgModule({
-  imports: [RouterModule.forChild([
-      {
-        path: '',
-        component: VoucherComponent,
-      },
-      {
-          path: 'voucher',
-          component: VoucherComponent,
-      }
+    imports: [RouterModule.forChild([
+        {
+            path: '',
+            component: VoucherComponent,
+        },
+        {
+            path: 'voucher',
+            component: VoucherComponent,
+        }, {
+            path: 'beneficiary/profile',
+            component: BeneficiaryProfileComponent
+        }
     ])],
-  exports: [RouterModule]
+    exports: [RouterModule]
 })
-export class BeneficiaryPortalRoutingModule {}
+export class BeneficiaryPortalRoutingModule {
+}
