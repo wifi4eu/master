@@ -19,15 +19,20 @@ export class BeneficiaryProfileComponent {
     @Input('countryDetails') countryDetails: CountryDetails;
     @Input('municipalityDetails') municipalityDetails: MunicipalityDetails;
 
-    display: boolean = false;
-    displayLegal: boolean = false;
-    displayMayor: boolean = false;
+    display: boolean;
+    displayLegal: boolean;
+    displayMayor: boolean;
+    displayRepresentative: boolean;
 
 
     constructor(private profileService: ProfileService, private uxService: UxService) {
 
         this.beneficiaryDetails = new BeneficiaryDetails();
         this.entityDetails = new EntityDetails();
+        this.display = false;
+        this.displayLegal = false;
+        this.displayMayor = false;
+        this.displayRepresentative = false;
     }
 
     onSubmit() {
@@ -47,12 +52,16 @@ export class BeneficiaryProfileComponent {
         this.display = true;
     }
 
-    LegalEntity() {
+    legalEntity() {
         this.displayLegal = true;
     }
 
-    MayorEdit() {
+    mayorEdit() {
         this.displayMayor = true;
+    }
+
+    representativeEdit() {
+        this.displayRepresentative = true;
     }
 
     checkPassword() {

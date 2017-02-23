@@ -22,6 +22,7 @@ export class BeneficiaryDetails {
         this.currentPassword = '';
         this.newPassword = '';
         this.repeatNewPassword = '';
+        this.emailRepresentative = '';
 
     }
 }
