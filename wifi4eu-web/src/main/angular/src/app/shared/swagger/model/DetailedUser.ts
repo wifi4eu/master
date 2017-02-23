@@ -4,23 +4,23 @@ import {Type} from "class-transformer";
 export interface DetailedUser {
     name?: string;
 
-    email?: string;
+    uid?: string;
 
     domain?: string;
 
-    locale?: string;
+    email?: string;
 
     timeZone?: string;
 
-    uid?: string;
-
-    assuranceLevel?: models.AssuranceLevel;
-
-    orgId?: string;
+    locale?: string;
 
     departmentNumber?: string;
 
+    assuranceLevel?: models.AssuranceLevel;
+
     deviceName?: string;
+
+    orgId?: string;
 
     domainUsername?: string;
 
@@ -83,31 +83,31 @@ export class DetailedUserBase  implements DetailedUser{
     name?:  string ;
 
 
-    email?:  string ;
+    uid?:  string ;
 
 
     domain?:  string ;
 
 
-    locale?:  string ;
+    email?:  string ;
 
 
     timeZone?:  string ;
 
 
-    uid?:  string ;
+    locale?:  string ;
+
+
+    departmentNumber?:  string ;
 
     
     assuranceLevel?:  models.AssuranceLevelBase ;
 
 
-    orgId?:  string ;
-
-
-    departmentNumber?:  string ;
-
-
     deviceName?:  string ;
+
+
+    orgId?:  string ;
 
 
     domainUsername?:  string ;

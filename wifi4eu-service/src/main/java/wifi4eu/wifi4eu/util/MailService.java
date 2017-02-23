@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
 
+    public final static String FROM_ADDRESS =  "portales.everis@gmail.com";
+
     @Autowired
     private MailSender mailSender;
 
