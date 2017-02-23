@@ -14,6 +14,8 @@ export interface MayorDTO {
 
     repeatEmail?: string;
 
+    legalEntityId?: number;
+
 }
 
 
@@ -40,5 +42,8 @@ export class MayorDTOBase  implements MayorDTO{
 
 
     repeatEmail?:  string ;
+
+
+    legalEntityId?:  number ;
 
 }

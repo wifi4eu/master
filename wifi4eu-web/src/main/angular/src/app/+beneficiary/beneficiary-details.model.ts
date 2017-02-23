@@ -13,8 +13,16 @@ export class BeneficiaryDetails {
     public roleRepresentative: string;
     public emailRepresentative: string;
     public confirmEmailRepresentative: string;
+    public newPassword: string;
+    public repeatNewPassword: string; // TODO - This should not be an attribute
+    public currentPassword: string;
 
     public constructor() {
         this.representativeSelected = false;
+        this.currentPassword = '';
+        this.newPassword = '';
+        this.repeatNewPassword = '';
+        this.emailRepresentative = '';
+
     }
 }

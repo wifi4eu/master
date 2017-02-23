@@ -86,8 +86,8 @@
   "home.part4.link2": "Strategy on Connectivity for a European Gigabit Society",
   "home.part4.link3": "Proposed Regulation on the promotion of Internet connectivity in local communities and public spaces (WiFi4EU)",
   "home.part4.link4": "“Bringing it all together in WiFi4EU” - presentation from the B-DAY: Going Giga, 15 Nov 2016",
-  "home.footer.update": "Last Update 01/01/2017 | ",
-  "home.footer.top": "Top",
+  "home.footer.update": "Last Update 01/01/2017",
+  "home.footer.top": " | Top",
   "code.label": "Code",
   "code.required": "Code is required",
   "password.label": "New password",
@@ -102,5 +102,12 @@
   "select.password": "Please, select a password of 8 characters minimum, case sensitive and 1 digit.",
   "confirmNewPassword.label": "Confirm password",
   "confirm.button": "Confirm",
-  "activate.account": "Activate yout account"
+  "activate.account": "Activate yout account",
+  "beneficiaryProfile.text": "If you know your current password, you can change it by clicking on the button below",
+  "beneficiaryProfile.password": "Change password",
+  "profile.title": "My profile",
+  "mayor.details": "Mayor details",
+  "currentPassword.label": "Current password",
+  "forgot.password": "Forgot password?",
+  "change":"Change"
 }

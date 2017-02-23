@@ -102,5 +102,12 @@
   "voucher.days": "Días",
   "voucher.hours": "Horas",
   "voucher.minutes": "Minutos",
-  "voucher.seconds": "Segundos"
+  "voucher.seconds": "Segundos",
+	"beneficiaryProfile.text": "Si conoces tu contraseña actual, puedes cambiarla clicando en el botón de abajo",
+  "beneficiaryProfile.password": "Cambiar contraseña",
+  "profile.title": "Mi perfil",
+  "mayor.details": "Detalles alcalde",
+  "currentPassword.label": "Contraseña actual",
+  "forgot.password": "¿Olvidó su contraseña?",
+  "change": "Cambiar"
 }

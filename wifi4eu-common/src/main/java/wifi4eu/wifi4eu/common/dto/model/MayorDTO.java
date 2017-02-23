@@ -11,6 +11,7 @@ public class MayorDTO {
     private String surname;
     private String email;
     private String repeatEmail;
+    private long legalEntityId;
 
     public MayorDTO(){}
 
@@ -69,5 +70,13 @@ public class MayorDTO {
 
     public void setRepeatEmail(String repeatEmail) {
         this.repeatEmail = repeatEmail;
+    }
+
+    public long getLegalEntityId() {
+        return legalEntityId;
+    }
+
+    public void setLegalEntityId(long legalEntityId) {
+        this.legalEntityId = legalEntityId;
     }
 }
