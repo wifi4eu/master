@@ -41,6 +41,7 @@ public class UserService {
     private final static int TIMEFRAME_ACTIVATE_ACCOUNT_HOURS = 2;
 
     private final static String RESET_PASS_URL = "http://www.wifi4eu.eu/wifi4eu/newpassword/";
+    private final static String ACTIVATE_ACCOUNT_URL = "wifi4eu.everisdigitalchannels.com:7001/wifi4eu/#/activation/";
 
     @Autowired
     LegalEntityRepository legalEntityRepository;
@@ -144,7 +145,7 @@ public class UserService {
             tempTokenDTO = tempTokenMapper.toDTO(securityTempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO)));
 
             String subject = "Welcome to wifi4eu";
-            String msgBody = "You have successfully registered to wifi4eu, access to the next link and activate your account "+RESET_PASS_URL+tempTokenDTO.getToken();
+            String msgBody = "You have successfully registered to wifi4eu, access to the next link and activate your account "+ACTIVATE_ACCOUNT_URL+tempTokenDTO.getToken();
 
             mailService.sendEmail(email, MailService.FROM_ADDRESS, subject, msgBody);
 

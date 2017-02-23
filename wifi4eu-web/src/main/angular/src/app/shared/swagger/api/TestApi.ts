@@ -21,9 +21,9 @@ import {Configuration} from '../configuration';
 import {ClassType} from '../classType';
 
 
-export const IDefaultApi = new OpaqueToken('IDefaultApi');
+export const ITestApi = new OpaqueToken('ITestApi');
 
-export interface IDefaultApi {
+export interface ITestApi {
 
 
     /**
@@ -35,7 +35,7 @@ export interface IDefaultApi {
 }
 
 @Injectable()
-export class DefaultApi implements IDefaultApi {
+export class TestApi implements ITestApi {
     protected basePath = 'http://localhost:7001/wifi4eu/api';
     public defaultHeaders: Headers = new Headers();
     public configuration: Configuration = new Configuration();

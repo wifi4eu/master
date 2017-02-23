@@ -52,9 +52,9 @@ public class CallService {
 
     }
 
-    public void createCall(PublicationCallDTO publicationCallDTO){
+    public PublicationCallDTO createCall(PublicationCallDTO publicationCallDTO){
 
-        publicationCallRepository.save(publicationCallMapper.toEntity(publicationCallDTO));
+        return publicationCallMapper.toDTO(publicationCallRepository.save(publicationCallMapper.toEntity(publicationCallDTO)));
 
     }
 

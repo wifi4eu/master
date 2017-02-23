@@ -1,9 +1,9 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
-import {VoucherComponent} from "./+voucher/voucher.component";
+import {VoucherComponent} from "./+beneficiary-portal/+voucher/voucher.component";
 import {MapComponent} from "./+map/map.component";
-import {ActivationComponent} from "./activation/activation.component";
+import {ActivationComponent} from "./+activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {BeneficiaryProfileComponent} from "./+beneficiary/profile/profile.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
@@ -29,13 +29,15 @@ import {ForgotComponent} from "./+forgot/forgot.component";
         }, {
             path: 'login',
             component: LoginComponent
-        },
-        {
+        }, {
             path: 'forgot',
             component: ForgotComponent
         }, {
             path: 'registration',
-            loadChildren: 'app/+registration/registration.module#RegistrationModule'
+            loadChildren: 'app/+beneficiary-registration/registration.module#RegistrationModule'
+        }, {
+            path: 'beneficiary-portal',
+            loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule'
         }, {
             path: 'voucher',
             component: VoucherComponent

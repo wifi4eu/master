@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created by rgarcita on 15/02/2017.
  */
 @Controller
-@Api(description = "UserResource")
+@Api(value="/user",description = "UserResource")
 @RequestMapping("user")
 public class UserResource {
 

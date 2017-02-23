@@ -20,7 +20,7 @@ import java.util.List;
  * Created by rgarcita on 23/02/2017.
  */
 @Controller
-@Api(description = "Voucher resources")
+@Api(value="/voucher",description = "VoucherResource")
 @RequestMapping("voucher")
 public class VoucherResource {
 
@@ -32,6 +32,7 @@ public class VoucherResource {
     @ApiOperation(value = "create Voucher request")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
     public ResponseDTO create(@RequestBody final VoucherDTO voucherDTO, final HttpServletResponse response) {
 
         VoucherDTO resVoucherDTO;

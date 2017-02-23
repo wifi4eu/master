@@ -3,9 +3,9 @@
                     [isCompleted]="completed[0]"
                     [isActive]="active[0]">
         <uxWizardStepCustomContent>
-            <entity-component [entityDetails]="entityDetails"
+            <legal-entity-component [entityDetails]="entityDetails"
                               (onNext)="onNext($event)"
-                              (onBack)="onBack($event)"></entity-component>
+                              (onBack)="onBack($event)"></legal-entity-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'registration.beneficiary.title' | translate }}"

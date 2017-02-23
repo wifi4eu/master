@@ -1,7 +1,7 @@
 import {Component, ViewChild} from "@angular/core";
-import {EntityDetails} from "../+entity/entity-details.model";
-import {BeneficiaryDetails} from "../+beneficiary/beneficiary-details.model";
-import {ReviewComponent} from "../+review/review.component";
+import {EntityDetails} from "../shared/models/legal-entity-details.model";
+import {BeneficiaryDetails} from "../shared/models/beneficiary-details.model";
+import {ReviewComponent} from "./+beneficiary-registration-step3/review.component";
 
 @Component({templateUrl: 'registration.component.html'})
 export class RegistrationComponent {
