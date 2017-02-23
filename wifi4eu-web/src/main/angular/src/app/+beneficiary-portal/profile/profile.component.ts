@@ -1,10 +1,10 @@
 import {Component, Input} from "@angular/core";
-import {BeneficiaryDetails} from "../beneficiary-details.model";
-import {EntityDetails} from "../../+entity/entity-details.model";
-import {CountryDetails} from "../../+entity/country-details.model";
-import {MunicipalityDetails} from "../../+entity/municipality-details.model";
 import {ProfileService} from "./profile.service";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {BeneficiaryDetails} from "../../shared/models/beneficiary-details.model";
+import {EntityDetails} from "../../shared/models/legal-entity-details.model";
+import {CountryDetails} from "../../shared/models/country-details.model";
+import {MunicipalityDetails} from "../../shared/models/municipality-details.model";
 
 @Component({
     moduleId: module.id,
