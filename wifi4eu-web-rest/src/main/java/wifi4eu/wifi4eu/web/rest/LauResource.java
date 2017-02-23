@@ -4,12 +4,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.location.Lau;
 import wifi4eu.wifi4eu.service.location.LocationService;
 
@@ -20,7 +21,7 @@ import java.util.List;
  * Created by rgarcita on 08/02/2017.
  */
 @Controller
-@Api(description = "NutsResource")
+@Api(value="/lau",description = "NutsResource")
 @RequestMapping("lau")
 public class LauResource {
 
@@ -35,6 +36,16 @@ public class LauResource {
     public List<LauDTO> findLauByCountryCode(@PathVariable("countryCode") final String countryCode, final HttpServletResponse response) {
         _log.debug("findLauByCountryCode: " + countryCode);
         return locationService.getLauByCountryCode(countryCode);
+    }
+
+    @ApiOperation(value = "create LAU")
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseDTO create(@RequestBody final LauDTO lauDTO, final HttpServletResponse response) {
+
+
+        ErrorDTO errorDTO = new ErrorDTO(0,"unexpected");
+        return new ResponseDTO(false,null,errorDTO);
     }
 
 

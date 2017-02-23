@@ -1,8 +1,8 @@
 import {Component, Input, Output, EventEmitter} from "@angular/core";
-import {EntityDetails} from "../+entity/entity-details.model";
-import {BeneficiaryDetails} from "../+beneficiary/beneficiary-details.model";
-import {UserDetails} from "../shared/models/user-details.model";
-import {UserService} from "../shared/services/user.service";
+import {EntityDetails} from "../../shared/models/legal-entity-details.model";
+import {BeneficiaryDetails} from "../../shared/models/beneficiary-details.model";
+import {UserDetails} from "../../shared/models/user-details.model";
+import {UserService} from "../../shared/services/user.service";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {BeneficiaryDTO} from "./beneficiaryDTO.model";
 

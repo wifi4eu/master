@@ -1,14 +1,14 @@
 import {Component, Input, Output, EventEmitter} from "@angular/core";
 import {Http} from "@angular/http";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {EntityService} from "./entity.service";
-import {EntityDetails} from "./entity-details.model";
-import {CountryDetails} from "./country-details.model";
-import {MunicipalityDetails} from "./municipality-details.model";
+import {EntityService} from "./legal-entity.service";
+import {EntityDetails} from "../../shared/models/legal-entity-details.model";
+import {CountryDetails} from "../../shared/models/country-details.model";
+import {MunicipalityDetails} from "../../shared/models/municipality-details.model";
 
 @Component({
-    selector: 'entity-component',
-    templateUrl: 'entity.component.html',
+    selector: 'legal-entity-component',
+    templateUrl: 'legal-entity.component.html',
     providers: [EntityService]
 })
 export class EntityComponent {

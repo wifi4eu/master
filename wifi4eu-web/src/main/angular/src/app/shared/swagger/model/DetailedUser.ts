@@ -4,15 +4,15 @@ import {Type} from "class-transformer";
 export interface DetailedUser {
     name?: string;
 
-    uid?: string;
+    email?: string;
 
     domain?: string;
-
-    email?: string;
 
     timeZone?: string;
 
     locale?: string;
+
+    uid?: string;
 
     departmentNumber?: string;
 
@@ -64,11 +64,11 @@ export interface DetailedUser {
 
     extendedUserDetails?: models.ExtendedUserDetails;
 
-    fromSingleSignOn?: boolean;
-
     authenticationStrengths?: Array<any>;
 
     authenticationTime?: Date;
+
+    fromSingleSignOn?: boolean;
 
 }
 
@@ -83,19 +83,19 @@ export class DetailedUserBase  implements DetailedUser{
     name?:  string ;
 
 
-    uid?:  string ;
+    email?:  string ;
 
 
     domain?:  string ;
-
-
-    email?:  string ;
 
 
     timeZone?:  string ;
 
 
     locale?:  string ;
+
+
+    uid?:  string ;
 
 
     departmentNumber?:  string ;
@@ -173,12 +173,12 @@ export class DetailedUserBase  implements DetailedUser{
     extendedUserDetails?:  models.ExtendedUserDetailsBase ;
 
 
-    fromSingleSignOn?:  boolean ;
-
-
     authenticationStrengths?:  Array<any> ;
 
 @Type(() => Date)
     authenticationTime?:  Date ;
+
+
+    fromSingleSignOn?:  boolean ;
 
 }
