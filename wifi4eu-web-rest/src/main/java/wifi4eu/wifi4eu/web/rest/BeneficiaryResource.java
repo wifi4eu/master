@@ -33,6 +33,7 @@ public class BeneficiaryResource {
     @ApiOperation(value = "create Beneficiary")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
     public ResponseDTO create(@RequestBody final BeneficiaryDTO beneficiaryDTO, final HttpServletResponse response) {
 
         try {

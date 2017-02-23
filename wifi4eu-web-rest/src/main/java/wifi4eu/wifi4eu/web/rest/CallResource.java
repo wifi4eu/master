@@ -52,6 +52,7 @@ public class CallResource {
     @ApiOperation(value = "create Call")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
     public ResponseDTO createCall(@RequestBody final PublicationCallDTO publicationCallDTO, final HttpServletResponse response) {
 
         /* TODO: validate user rights, only DG Connect users can create a Call */

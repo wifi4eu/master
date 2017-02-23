@@ -54,6 +54,7 @@ public class NutsResource {
     @ApiOperation(value = "create Nuts")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
     public ResponseDTO create(@RequestBody final NutsDTO nutsDTO, final HttpServletResponse response) {
 
         ErrorDTO errorDTO = new ErrorDTO(0,"unexpected");

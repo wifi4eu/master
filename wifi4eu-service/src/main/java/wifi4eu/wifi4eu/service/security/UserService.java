@@ -40,8 +40,8 @@ public class UserService {
 
     private final static int TIMEFRAME_ACTIVATE_ACCOUNT_HOURS = 2;
 
-    private final static String RESET_PASS_URL = "http://www.wifi4eu.eu/wifi4eu/newpassword/";
-    private final static String ACTIVATE_ACCOUNT_URL = "wifi4eu.everisdigitalchannels.com:7001/wifi4eu/#/activation/";
+    private final static String RESET_PASS_URL = "http://wifi4eu.everisdigitalchannels.com:7001/wifi4eu/#/forgot;token=";
+    private final static String ACTIVATE_ACCOUNT_URL = "http://wifi4eu.everisdigitalchannels.com:7001/wifi4eu/#/activation;token=";
 
     @Autowired
     LegalEntityRepository legalEntityRepository;

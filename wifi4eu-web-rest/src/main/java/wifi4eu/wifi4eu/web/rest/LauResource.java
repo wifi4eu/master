@@ -41,6 +41,7 @@ public class LauResource {
     @ApiOperation(value = "create LAU")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
     public ResponseDTO create(@RequestBody final LauDTO lauDTO, final HttpServletResponse response) {
 
 
