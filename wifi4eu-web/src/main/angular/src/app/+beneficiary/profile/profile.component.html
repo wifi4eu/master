@@ -16,7 +16,7 @@
                         <p class="beneficiaryMayor">{{ 'mayor.details' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="MayorEdit()" class="edit">{{ 'edit.button' | translate }} <i class="fa fa-pencil"
+                        <a (click)="mayorEdit()" class="edit">{{ 'edit.button' | translate }} <i class="fa fa-pencil"
                                                                                                  aria-hidden="true"></i>
                         </a>
                     </div>
@@ -44,7 +44,7 @@
                         <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="LegalEntity()">{{ 'edit.button' | translate }} <i class="fa fa-pencil"
+                        <a (click)="legalEntity()">{{ 'edit.button' | translate }} <i class="fa fa-pencil"
                                                                                       aria-hidden="true"></i></a>
                     </div>
                 </div>
@@ -57,6 +57,36 @@
                         <p>{{ 'address.label' | translate }}</p>
                         <p>{{ 'number.label' | translate }}</p>
                         <p>{{ 'postal-code.label' | translate }}</p>
+                    </div>
+                    <div class="ui-g-8">
+                        <p class="profileData"></p>
+                        <p class="profileData"></p>
+                        <p class="profileData"></p>
+                        <p class="profileData"></p>
+                        <p class="profileData"></p>
+                    </div>
+                </div>
+                <hr class="beneficiaryHr">
+            </div>
+            <div class="ui-g-12" *ngIf="beneficiaryDetails.emailRepresentative != ''">
+                <div class="ui-g">
+                    <div class="ui-g-10">
+                        <p class="beneficiaryMayor">{{ 'representativedetails.title' | translate }}</p>
+                    </div>
+                    <div class="ui-g-2">
+                        <a (click)="representativeEdit()">{{ 'edit.button' | translate }} <i class="fa fa-pencil"
+                                                                                             aria-hidden="true"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="ui-g">
+                    <div class="ui-g-4">
+                        <p>{{ 'treatment.label' | translate }}</p>
+                        <p>{{ 'name.label' | translate }}</p>
+                        <p>{{ 'role.label' | translate }}</p>
+                        <p>{{ 'surname.label' | translate }}</p>
+                        <p>{{ 'email.label' | translate }}</p>
                     </div>
                     <div class="ui-g-8">
                         <p class="profileData"></p>
@@ -86,7 +116,7 @@
         </div>
     </div>
 </div>
-
+<!--MODALS BELOW-->
 <div class="center">{{ 'home.footer.update' | translate }}</div>
 <div class="container font">
     <div class="ui-g-1"></div>
@@ -150,28 +180,28 @@
               [draggable]="false" [closable]="true" [closeOnEscape]="true">
 
         <div class="ui-g">
-            <div class="ui-g-3 paddingLegal"></div>
-            <div class="ui-g-6" style="text-align: center !important">
+            <div class="ui-g-1 paddingLegal"></div>
+            <div class="ui-g-10" style="text-align: center !important">
                 <div id="component-title">
                     <h3>{{ 'registration.entity.title' | translate }}</h3>
                 </div>
             </div>
-            <div class="ui-g-3 paddingLegal"></div>
+            <div class="ui-g-1 paddingLegal"></div>
         </div>
         <div class="ui-g">
-            <div class="ui-g-3"></div>
-            <div class="ui-g-6" style="text-align: center !important">
+            <div class="ui-g-1"></div>
+            <div class="ui-g-0" style="text-align: center !important">
                 <div id="component-subtitle">
                     <h6>{{ 'registration.step1.instructions' | translate }}</h6>
                 </div>
             </div>
-            <div class="ui-g-3"></div>
+            <div class="ui-g-1"></div>
         </div>
         <form (ngSubmit)="onSubmit()" #entityForm="ngForm">
             <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
-                    <div class="form-group profileDialog">
+                <div class="ui-g-1"></div>
+                <div class="ui-g-10">
+                    <div class="form-group">
                         <label for="country">{{ 'country.label' | translate }}</label>
                         <p-autoComplete [(ngModel)]="entityDetails.country"
                                         [suggestions]="countrySuggestions"
@@ -179,18 +209,18 @@
                                         field="name"
                                         [size]="30" [minLength]="1" class="form-control"
                                         name="country" ngcontrol="country"
-                                        #country="ngModel" required>
+                                        #country="ngModel" required disabled>
                         </p-autoComplete>
                         <div [hidden]="country.valid || country.pristine"
                              class="alert alert-danger">Country is required
                         </div>
                     </div>
                 </div>
-                <div class="ui-g-3"></div>
+                <div class="ui-g-1"></div>
             </div>
             <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-g-1"></div>
+                <div class="ui-g-10">
                     <div class="form-group">
                         <label for="municipality">{{ 'municipality.label' | translate
                             }}</label>
@@ -201,7 +231,7 @@
                                         [size]="30" [minLength]="1" class="form-control"
                                         name="municipality" ngcontrol="municipality"
                                         #municipality="ngModel"
-                                        (keydown)="checkCountry()" required>
+                                        (keydown)="checkCountry()" required disabled>
                         </p-autoComplete>
                         <div [hidden]="municipality.valid || municipality.pristine"
                              class="alert alert-danger">Municipality is
@@ -209,11 +239,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui-g-3"></div>
+                <div class="ui-g-1"></div>
             </div>
             <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-5">
+                <div class="ui-g-1"></div>
+                <div class="ui-g-7">
                     <div class="form-group">
                         <label for="address">{{ 'address.label' | translate }}</label>
                         <input type="text" [(ngModel)]="entityDetails.address"
@@ -225,8 +255,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui-g-1">
+                <div class="ui-g-3">
                     <div class="form-group">
+                        <label for="number">{{ 'number.label' | translate }}</label>
                         <input type="entityDetails.number" min="1" [(ngModel)]="entityDetails.number"
                                class="form-control"
                                name="number" ngcontrol="number" #number="ngModel"
@@ -236,11 +267,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui-g-3"></div>
+                <div class="ui-g-1"></div>
             </div>
             <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-g-1"></div>
+                <div class="ui-g-10">
                     <div class="form-group">
                         <label for="postalCode">{{ 'postal-code.label' | translate
                             }}</label>
@@ -254,7 +285,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui-g-3"></div>
+                <div class="ui-g-1"></div>
             </div>
             <div class="form-group ui-g">
                 <div class="ui-g-4"></div>
@@ -277,6 +308,98 @@
 <div class="container-font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMayor" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false" [closable]="true" [closeOnEscape]="true">
+        <div>
+            <div class="ui-g">
+                <div class="ui-g-7 center" style="text-align: center !important">
+                    <hr>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-6">
+                    <h3>{{ 'mayordetails.title' | translate }}</h3>
+                </div>
+                <div class="ui-g-3"></div>
+            </div>
+            <div class="form-group ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-3">
+                    <label for="treatment">{{ 'treatment.label' | translate
+                        }}</label>
+                    <select class="form-control" name="treatment" id="treatment"
+                            [(ngModel)]="beneficiaryDetails.treatment"
+                            required>
+                        <option value="mr">{{ 'treatment.option1' | translate }}
+                        </option>
+                        <option value="ms">{{ 'treatment.option2' | translate }}
+                        </option>
+                    </select>
+                </div>
+                <div class="ui-g-1"></div>
+            </div>
+            <div class="form-group ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-6">
+                    <label for="name">{{ 'name.label' | translate }}</label>
+                    <input class="form-control" type="text" name="name" id="name"
+                           [(ngModel)]="beneficiaryDetails.name"
+                           required>
+                </div>
+                <div class="ui-g-3"></div>
+            </div>
+            <div class="form-group ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-6">
+                    <label for="surname">{{ 'surname.label' | translate }}</label>
+                    <input class="form-control" type="text" name="surname"
+                           id="surname"
+                           [(ngModel)]="beneficiaryDetails.surname" required>
+                </div>
+                <div class="ui-g-3"></div>
+            </div>
+            <div class="form-group ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-6">
+                    <label for="email">{{ 'email.label' | translate }}</label>
+                    <input class="form-control" type="email" name="email" id="email"
+                           [(ngModel)]="beneficiaryDetails.email"
+                           (keyup)="checkIfMayorEmailMatches()" required disabled>
+                    <label for="email" class="field-desc"
+                           style="margin-top: 10px;color: gray;">{{
+                        'email.fielddesc' |
+                        translate }}</label>
+                </div>
+                <div class="ui-g-3"></div>
+            </div>
+            <div class="form-group ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-6">
+                    <label for="confirmemail">{{ 'confirmemail.label' | translate
+                        }}</label>
+                    <input class="form-control" type="email" name="confirmemail"
+                           id="confirmemail" ngcontrol="confirmemail"
+                           #confirmemail="ngModel"
+                           [(ngModel)]="beneficiaryDetails.confirmEmail" (keyup)="checkIfMayorEmailMatches()" required>
+                    <div [hidden]="mayorEmailMatches || confirmemail.pristine"
+                         class="alert alert-info">The email
+                        information must
+                        match
+                    </div>
+                </div>
+                <div class="ui-g-3"></div>
+            </div>
+        </div>
+
+
+    </p-dialog>
+
+</div>
+
+
+<div class="container-font">
+    <div class="ui-g-1"></div>
+    <p-dialog [(visible)]="displayRepresentative" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="true" [closeOnEscape]="true">
         <div>
             <!--<div class="ui-g">-->
@@ -340,7 +463,7 @@
                     <input class="form-control" type="text" name="role_municipality"
                            id="role_municipality"
                            [(ngModel)]="beneficiaryDetails.roleRepresentative"
-                           [required]="beneficiaryDetails.representativeSelected">
+                           [required]="beneficiaryDetails.representativeSelected" disabled>
                 </div>
                 <div class="ui-g-3"></div>
             </div>
@@ -353,7 +476,7 @@
                            name="email-representative" id="email_representative"
                            [(ngModel)]="beneficiaryDetails.emailRepresentative"
                            (keyup)="checkIfRepresentativeEmailMatches()"
-                           [required]="beneficiaryDetails.representativeSelected">
+                           [required]="beneficiaryDetails.representativeSelected" disabled>
                     <label for="email_representative" class="field-desc"
                            style="margin-top: 10px;color: gray;">{{
                         'email.fielddesc' | translate }}</label>
@@ -386,5 +509,4 @@
     </p-dialog>
 
 </div>
-
 
