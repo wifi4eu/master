@@ -25,7 +25,12 @@ export class ActivationComponent implements OnInit {
     onSubmit() {
         this.activationService.addNewPassword(this.activationDetails).subscribe(
             data => {
-                console.log(data)
+                this.uxService.growl({
+                    severity: 'success',
+                    summary: 'SUCCESS',
+                    detail: 'User activation success'
+                });
+                console.log('SUCCESS: User activation success');
             },
             error => {
                 this.uxService.growl({

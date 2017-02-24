@@ -27,7 +27,12 @@ export class ForgotComponent implements OnInit {
     onSendEmail() {
         this.forgotService.sendEmail(this.forgotDetails.email).subscribe(
             data => {
-                console.log(data)
+                this.uxService.growl({
+                    severity: 'success',
+                    summary: 'SUCCESS',
+                    detail: 'forgot password success'
+                });
+                console.log('SUCCESS: User activation success');            
             },
             error => {
                 this.uxService.growl({
@@ -44,7 +49,22 @@ export class ForgotComponent implements OnInit {
     onNewPassword() {
         this.forgotService.addNewPassword(this.forgotDetails).subscribe(
             data => {
-                console.log(data)
+                console.log(data);
+                if(data != null){
+                    this.uxService.growl({
+                        severity: 'error',
+                        summary: 'ERROR',
+                        detail: 'Could not change user password'
+                    });
+                    console.log('ERROR: Could not change user password');
+                }else{
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: 'SUCCESS',
+                        detail: 'User has changed password'
+                    });
+                    console.log('SUCCESS: User has changed password');
+                }
             },
             error => {
                 this.uxService.growl({
