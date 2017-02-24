@@ -109,5 +109,12 @@
   "mayor.details": "Detalles alcalde",
   "currentPassword.label": "Contraseña actual",
   "forgot.password": "¿Olvidó su contraseña?",
-  "change": "Cambiar"
+  "change": "Cambiar",
+  "dgconnect.title": "Tablero DG Connect",
+  "reporting.dashboard": "Informes",
+  "statistics.dashboard": "Estadisticas",
+  "helpdesk.dashboard": "Soporte",
+  "timeline.dashboard": "Configuración de la línea de tiempo",
+  "publication.dashboard": "Publicación de la convocatoria",
+  "voucher.dashboard": "Asignación de cupones"
 }

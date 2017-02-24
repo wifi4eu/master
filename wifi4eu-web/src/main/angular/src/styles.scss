@@ -75,17 +75,18 @@ p-autocomplete {
   }
 }
 
-/**LUCIA*/
 //
-//.ui-dialog-mask {
-//  background: rgba(255, 255, 255, 1) !important;
+//@document url-prefix(http://localhost:4200/#/registration) {
+//  .ui-dialog-mask {
+//    background: rgba(255, 255, 255, 1) !important;
+//  }
+//
+//  .ui-widget-overlay {
+//    opacity: 0.9;
+//  }
 //
 //}
 
-//.ui-widget-overlay {
-//  opacity: 0.9;
-//}
-/**LUCIA*/
 .ui-shadow {
   box-shadow: none;
 }
@@ -537,4 +538,30 @@ body {
 
 .paddingLegal {
   padding-left: 13em;
+}
+
+.dashboardItem {
+  height: 19.2em;
+  padding-top: 1em;
+  background-color: white;
+  width: 16em;
+  box-shadow: 0 2px 4px 0 rgba(163, 163, 163, 0.5);
+}
+
+.dashboardItem:hover {
+  box-shadow: 0 2px 16px 0 rgba(128, 128, 128, 0.5);
+}
+
+.md4Dashboard {
+  margin-top: 5em;
+}
+
+.rowMarginBottom {
+  margin-bottom: 11em;
+}
+
+.fontDashboard {
+  padding-top: 2em;
+  font-size: 16px;
+  color: #333333;
 }

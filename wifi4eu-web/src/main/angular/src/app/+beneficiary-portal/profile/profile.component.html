@@ -176,7 +176,7 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false"
+    <p-dialog styleClass="pepe" [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="true" [closeOnEscape]="true">
 
         <form (ngSubmit)="onSubmit()" #entityForm="ngForm">
@@ -381,7 +381,8 @@
 
 <div class="container-font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayRepresentative" [modal]="true" [responsive]="true" [resizable]="false"
+    <p-dialog [(visible)]="displayRepresentative" [modal]="true" [responsive]="true"
+              [resizable]="false"
               [draggable]="false" [closable]="true" [closeOnEscape]="true">
         <div>
             <!--<div class="ui-g">-->

@@ -109,5 +109,12 @@
   "mayor.details": "Mayor details",
   "currentPassword.label": "Current password",
   "forgot.password": "Forgot password?",
-  "change":"Change"
+  "change":"Change",
+  "dgconnect.title": "DG Connect Dashboard",
+  "reporting.dashboard":"Reporting",
+  "statistics.dashboard":"Statistics",
+  "helpdesk.dashboard":"Helpdesk",
+  "timeline.dashboard":"Timeline Configuration",
+  "publication.dashboard":"Publication of the call",
+  "voucher.dashboard":"Voucher Assignment"
 }

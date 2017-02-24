@@ -17,6 +17,8 @@ import {MapComponent} from "./+map/map.component";
 import {ActivationComponent} from "./+activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
+import {DgConnPortalComponent} from "./dgconn-portal/dgconnportal.component";
+import {DgConnTimelineComponent} from "./dgconn-portal/timeline/timeline.component";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -30,10 +32,13 @@ export function translateFactory(http: Http) {
         MapComponent,
         ActivationComponent,
         LoginComponent,
-        ForgotComponent,
+        ForgotComponent
     ],
     exports: [
         MapComponent,
+        BeneficiaryProfileComponent,
+        DgConnPortalComponent,
+        DgConnTimelineComponent
         ActivationComponent,
         LoginComponent,
         ForgotComponent
