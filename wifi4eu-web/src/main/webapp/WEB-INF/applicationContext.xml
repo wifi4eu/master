@@ -7,9 +7,9 @@
     
 	<context:component-scan base-package="wifi4eu.wifi4eu"/>
 
-    <!--<import resource="classpath:datasourceContext.xml" />-->        <!-- JNDI on ORACLE / WLS -->
+    <import resource="classpath:datasourceContext.xml" />        <!-- JNDI on ORACLE / WLS -->
 
-	<import resource="classpath:datasourceContext-hsql.xml" />  <!-- HSQL MEM DB WITHOUT TABLE GEN -->
+	<!--<import resource="classpath:datasourceContext-hsql.xml" />-->  <!-- HSQL MEM DB WITHOUT TABLE GEN -->
 
 	<!-- <import resource="classpath:datasourceContext-hsql-db.xml" />-->		<!-- HSQL MEM DB WITH SECURITY TABLES -->
 
