@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.service.security;
 
+import org.apache.log4j.Logger;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.dto.security.RightDTO;
 import wifi4eu.wifi4eu.common.dto.security.RoleDTO;
@@ -13,8 +14,6 @@ import wifi4eu.wifi4eu.mapper.security.UserMapper;
 import wifi4eu.wifi4eu.repository.security.SecurityRightRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityRoleRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,7 @@ import java.util.List;
 @Service
 public class SecurityService {
 
-    private final static Logger logger = LoggerFactory.getLogger(SecurityService.class);
+    private final static Logger logger = Logger.getLogger(SecurityService.class);
 
     @Autowired
     SecurityUserRepository securityUserRepository;

@@ -33,7 +33,9 @@ public class LauResource {
     @RequestMapping(value="/{countryCode}",method = RequestMethod.GET,produces = "application/json")
     @ResponseBody
     public List<LauDTO> findLauByCountryCode(@PathVariable("countryCode") final String countryCode, final HttpServletResponse response) {
-        _log.debug("findLauByCountryCode: " + countryCode);
+        if(_log.isDebugEnabled()) {
+            _log.debug("findLauByCountryCode: " + countryCode);
+        }
         return locationService.getLauByCountryCode(countryCode);
     }
 
