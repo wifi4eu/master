@@ -53,12 +53,9 @@
                 <label for="treatment">{{ 'treatment.label' | translate
                     }}</label>
                 <select class="form-control" name="treatment" id="treatment"
-                        [(ngModel)]="beneficiaryDetails.treatment"
-                        required>
-                    <option value="mr">{{ 'treatment.option1' | translate }}
-                    </option>
-                    <option value="ms">{{ 'treatment.option2' | translate }}
-                    </option>
+                        [(ngModel)]="beneficiaryDetails.treatment" required>
+                    <option value="mr">{{ 'treatment.option1' | translate }}</option>
+                    <option value="ms">{{ 'treatment.option2' | translate }}</option>
                 </select>
             </div>
             <div class="ui-g-1"></div>
