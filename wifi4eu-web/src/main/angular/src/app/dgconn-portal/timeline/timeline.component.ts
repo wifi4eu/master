@@ -12,7 +12,7 @@ export class DgConnTimelineComponent implements OnInit {
     @Input('dgConnDetails') dgConnDetails: DgConnDetails;
 
     private timelineElements: TimelineElement[];
-    display: boolean;
+    private display: boolean;
 
     constructor() {
         this.display = false;
@@ -20,20 +20,12 @@ export class DgConnTimelineComponent implements OnInit {
         this.timelineElements = [
             new TimelineElement(),
             new TimelineElement()
-
         ];
         this.timelineElements[0].createTimelineForDgconn('Registration of Mayor and Supplier', '01/01/2017', '00:01', '31/12/2017', '23:59', 'Edit');
         this.timelineElements[1].createTimelineForDgconn('Registration of Mayor and Supplier2', '012/01/2017', '020:01', '31/12/2017', '23:59', 'Edit');
-
-
     }
 
     ngOnInit() {
-
-    }
-
-    onSubmit() {
-
     }
 
     addTimeline() {
