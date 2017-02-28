@@ -565,3 +565,64 @@ body {
   font-size: 16px;
   color: #333333;
 }
+
+.tableTitle {
+  margin-top: 5em;
+  border-bottom: solid 1px #c1c1c1;
+  padding-top: 1.2em;
+  padding-bottom: 0.5em;
+  margin-left: 0em;
+  margin-right: 0em;
+  background-color: white;
+}
+
+.h2Table {
+  font-weight: bold;
+  font-size: 1.4em;
+  color: #333333;
+  padding-top: 0.5em;
+}
+
+.publish-button {
+  background-color: #004494;
+  width: 15em;
+  margin-top: 2em;
+  height: 50px;
+  font-family: Verdana;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.cancel-button {
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
+  width: 10em;
+  margin-top: 2em;
+  height: 50px;
+  font-family: Verdana;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.containerTimeline {
+  width: 53em;
+  background-color: rgba(215, 215, 215, 0.1);
+  border: solid 1px #cecece;
+  padding: 0 1em;
+  padding-bottom: 1em;
+}
+
+.containerTimeline input {
+  height: 3.2em;
+}
+
+.containerTimeline .form-group {
+  margin: 0;
+
+}
+
+.ui-calendar.ui-calendar-w-btn input {
+  float: left;
+}
+
