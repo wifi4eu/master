@@ -44,6 +44,7 @@ p-autocomplete {
   animation-duration: 1.4s;
   animation-iteration-count: infinite;
   animation-fill-mode: both;
+  color: #004494;
 }
 
 .ModalLoaderDots span:nth-child(2) {
@@ -547,3 +548,22 @@ body {
   float: left;
 }
 
+.modal-content {
+  border: none;
+  background-color: transparent;
+}
+
+.modal-backdrop.in {
+  opacity: 0.95;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.modal-header, .modal-footer{
+  border-bottom: none;
+  border-top:none;
+}
+
+.close {
+  color: #000;
+  opacity: 1;
+}

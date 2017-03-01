@@ -32,6 +32,7 @@
     "core-js": "^2.4.1",
     "crypto-js": "^3.1.9-1",
     "moment": "^2.16.0",
+    "ng2-bs3-modal": "^0.10.4",
     "ng2-google-recaptcha": "^1.1.0",
     "ng2-translate": "^4.0.1",
     "primeng": "^1.1.1",

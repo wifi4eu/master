@@ -1,21 +1,23 @@
-<div class="ui-g-1"></div>
-<div class="ui-g-10 center">
-    <div class="ui-g-12 center">
-        <div id="component-title">
-            <h3>{{ 'registration.review.title' | translate }}</h3>
+<div class="clearfix"></div>
+<div class="container">
+    <div class="ui-g-1"></div>
+    <div class="ui-g-10 center">
+        <div class="ui-g-12 center">
+            <div id="component-title">
+                <h3>{{ 'registration.review.title' | translate }}</h3>
+            </div>
         </div>
-    </div>
-    <div class="ui-g-12 center">
-        <div id="component-subtitle">
-            <h6>{{ 'registration.step3.instructions' | translate }}</h6>
+        <div class="ui-g-12 center">
+            <div id="component-subtitle">
+                <h6>{{ 'registration.step3.instructions' | translate }}</h6>
+            </div>
         </div>
-    </div>
-    <div class="ui-g-12 center">
-        <div id="representantive_details" class="ui-g-12"
-             [ngClass]="{'hidden': !beneficiaryDetails.representativeSelected}">
-            <hr>
-            <span class="ui-g-1"></span>
-            <span class="ui-g-10" style="text-align: left;">
+        <div class="ui-g-12 center">
+            <div id="representantive_details" class="ui-g-12"
+                 [ngClass]="{'hidden': !beneficiaryDetails.representativeSelected}">
+                <hr>
+                <span class="ui-g-1"></span>
+                <span class="ui-g-10" style="text-align: left;">
                     <h3 class="ui-g-11">{{ 'representativedetails.title' | translate }}</h3>
                     <a class="ui-g-1" (click)="editStep(2)">{{ 'edit.button' | translate }} <span
                             class="glyphicon glyphicon-pencil"></span></a>
@@ -40,12 +42,12 @@
                       <span class="ui-g-8"><b>{{beneficiaryDetails.emailRepresentative}}</b></span>
                     </div>
                 </span>
-            <span class="ui-g-1"></span>
-        </div>
-        <div id="mayor_details" class="ui-g-12">
-            <hr>
-            <span class="ui-g-1"></span>
-            <span class="ui-g-10" style="text-align: left;">
+                <span class="ui-g-1"></span>
+            </div>
+            <div id="mayor_details" class="ui-g-12">
+                <hr>
+                <span class="ui-g-1"></span>
+                <span class="ui-g-10" style="text-align: left;">
                     <h3 class="ui-g-11">{{ 'mayordetails.title' | translate }}</h3>
                     <a class="ui-g-1" (click)="editStep(2)">{{ 'edit.button' | translate }} <span
                             class="glyphicon glyphicon-pencil"></span></a>
@@ -66,12 +68,12 @@
                       <span class="ui-g-8"><b>{{beneficiaryDetails.email}}</b></span>
                     </div>
                 </span>
-            <span class="ui-g-1"></span>
-        </div>
-        <div id="entity_details" class="ui-g-12">
-            <hr>
-            <span class="ui-g-1"></span>
-            <span class="ui-g-10" style="text-align: left;">
+                <span class="ui-g-1"></span>
+            </div>
+            <div id="entity_details" class="ui-g-12">
+                <hr>
+                <span class="ui-g-1"></span>
+                <span class="ui-g-10" style="text-align: left;">
                 <h3 class="ui-g-11">{{ 'legalentity.label' | translate }}</h3>
                 <a class="ui-g-1" (click)="editStep(1)">{{ 'edit.button' | translate }} <span
                         class="glyphicon glyphicon-pencil"></span></a>
@@ -96,58 +98,76 @@
                     <span class="ui-g-8"><b>{{entityDetails.postalCode}}</b></span>
                 </div>
             </span>
-            <span class="ui-g-1"></span>
-        </div>
-        <div id="confirm_checkboxes" class="ui-g-12">
-            <hr>
-            <div class="ui-g-12 checkbox" style="text-align: left;">
+                <span class="ui-g-1"></span>
+            </div>
+            <div id="confirm_checkboxes" class="ui-g-12">
+                <hr>
+                <div class="ui-g-12 checkbox" style="text-align: left;">
+                    <span class="ui-g-3"></span>
+                    <label class="ui-g-6" for="check_1"><input type="checkbox" id="check_1" [(ngModel)]="checkboxes[0]">
+                        {{
+                        'preview.registration.check1' | translate }}</label>
+                    <span class="ui-g-3"></span>
+                </div>
+                <div class="ui-g-12" style="text-align: left;">
+                    <span class="ui-g-3"></span>
+                    <label class="ui-g-6" for="check_2"><input type="checkbox" id="check_2" [(ngModel)]="checkboxes[1]">
+                        {{
+                        'preview.registration.check2' | translate }}</label>
+                    <span class="ui-g-3"></span>
+                </div>
+                <div class="ui-g-12" style="text-align: left;">
+                    <span class="ui-g-3"></span>
+                    <label class="ui-g-6" for="check_3"><input type="checkbox" id="check_3" [(ngModel)]="checkboxes[2]">
+                        {{
+                        'preview.registration.check3' | translate }}</label>
+                    <span class="ui-g-3"></span>
+                </div>
+            </div>
+            <div class="ui-g-12">
                 <span class="ui-g-3"></span>
-                <label class="ui-g-6" for="check_1"><input type="checkbox" id="check_1" [(ngModel)]="checkboxes[0]"> {{
-                    'preview.registration.check1' | translate }}</label>
+                <ng2-google-recaptcha class="ui-g-6" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu"
+                                      (onCaptchaComplete)="onCaptchaComplete($event)"></ng2-google-recaptcha>
                 <span class="ui-g-3"></span>
             </div>
-            <div class="ui-g-12" style="text-align: left;">
-                <span class="ui-g-3"></span>
-                <label class="ui-g-6" for="check_2"><input type="checkbox" id="check_2" [(ngModel)]="checkboxes[1]"> {{
-                    'preview.registration.check2' | translate }}</label>
-                <span class="ui-g-3"></span>
+            <div class="form-group ui-g-12">
+                <div class="ui-g-4"></div>
+                <div class="ui-g-2" style="text-align: center !important">
+                    <button class="btn">{{ 'cancel.button' | translate }}</button>
+                </div>
+                <div class="ui-g-2" style="text-align: center !important">
+                    <button type="button" class="btn btn-primary" (click)="modal.open()"
+                            [disabled]="!checkboxes[0] || !checkboxes[1] || !checkboxes[2] || !successCaptcha">
+                        {{'submitregistration.button' | translate }}
+                    </button>
+                </div>
+                <div class="ui-g-4"></div>
             </div>
-            <div class="ui-g-12" style="text-align: left;">
-                <span class="ui-g-3"></span>
-                <label class="ui-g-6" for="check_3"><input type="checkbox" id="check_3" [(ngModel)]="checkboxes[2]"> {{
-                    'preview.registration.check3' | translate }}</label>
-                <span class="ui-g-3"></span>
-            </div>
-        </div>
-        <div class="ui-g-12">
-            <span class="ui-g-3"></span>
-            <ng2-google-recaptcha class="ui-g-6" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu"
-                                  (onCaptchaComplete)="onCaptchaComplete($event)"></ng2-google-recaptcha>
-            <span class="ui-g-3"></span>
-        </div>
-        <div class="form-group ui-g-12">
-            <div class="ui-g-4"></div>
-            <div class="ui-g-2" style="text-align: center !important">
-                <button class="btn">{{ 'cancel.button' | translate }}</button>
-            </div>
-            <div class="ui-g-2" style="text-align: center !important">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#confirmingModal"
-                        (click)="submitRegistration()"
-                        [disabled]="!checkboxes[0] || !checkboxes[1] || !checkboxes[2] || !successCaptcha">
-                    {{'submitregistration.button' | translate }}
-                </button>
-            </div>
-            <div class="ui-g-4"></div>
         </div>
     </div>
+    <div class="ui-g-1"></div>
+    <!--<p-dialog styleClass="white-mask" [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true"-->
+    <!--[resizable]="false"-->
+    <!--[draggable]="false" [closable]="false" [closeOnEscape]="false">-->
+    <!--<p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>-->
+    <!--<h1 class="Modalh1Confirmation">Confirming Data, please wait...</h1>-->
+    <!--<p class="ModalpConfirmation">Your registration to Wifi4EU is in the process of being submitted.<br>Please don't-->
+    <!--close this window.</p>-->
+    <!--</p-dialog>-->
+
+    <modal #modal>
+        <modal-header [show-close]="true">
+        </modal-header>
+        <modal-body>
+            <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+            <h1 class="Modalh1Confirmation">Confirming Data, please wait...</h1>
+            <p class="ModalpConfirmation">Your registration to Wifi4EU is in the process of being submitted.<br>Please
+                don't
+                close this window.</p>
+        </modal-body>
+        <modal-footer></modal-footer>
+    </modal>
 </div>
-<div class="ui-g-1"></div>
-<p-dialog styleClass="white-mask" [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true"
-          [resizable]="false"
-          [draggable]="false" [closable]="false" [closeOnEscape]="false">
-    <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
-    <h1 class="Modalh1Confirmation">Confirming Data, please wait...</h1>
-    <p class="ModalpConfirmation">Your registration to Wifi4EU is in the process of being submitted.<br>Please don't
-        close this window.</p>
-</p-dialog>
+
+
 
