@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {TimelineElement} from './timeline-element.model';
+import {TimelineElement} from '../../models/timeline-element.model';
 import {CustomUxAccordionBoxComponent} from './custom-ux-accordion-box.component';
 
 @Component({selector: 'timeline-component', templateUrl: 'timeline.component.html'})
