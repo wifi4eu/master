@@ -16,6 +16,8 @@ import {LoginComponent} from "./+login/login.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
 import {DgConnPortalComponent} from "./dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./dgconn-portal/timeline/timeline.component";
+import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
+
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -49,7 +51,8 @@ export function translateFactory(http: Http) {
             deps: [Http]
         }),
         AppRoutingModule,
-        FormsModule
+        FormsModule,
+        Ng2Bs3ModalModule
     ],
     providers: [
         UxService,
