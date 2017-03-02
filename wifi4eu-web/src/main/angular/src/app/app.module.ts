@@ -17,6 +17,7 @@ import {ForgotComponent} from "./+forgot/forgot.component";
 import {DgConnPortalComponent} from "./dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./dgconn-portal/timeline/timeline.component";
 import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
+import {DgConnPublicationComponent} from "./dgconn-portal/publication/publication.component";
 
 
 export function translateFactory(http: Http) {
@@ -32,7 +33,8 @@ export function translateFactory(http: Http) {
         LoginComponent,
         ForgotComponent,
         DgConnPortalComponent,
-        DgConnTimelineComponent
+        DgConnTimelineComponent,
+        DgConnPublicationComponent
     ],
     exports: [
         MapComponent,
@@ -40,7 +42,8 @@ export function translateFactory(http: Http) {
         DgConnTimelineComponent,
         ActivationComponent,
         LoginComponent,
-        ForgotComponent
+        ForgotComponent,
+        DgConnPublicationComponent
     ],
     imports: [
         CoreModule,
