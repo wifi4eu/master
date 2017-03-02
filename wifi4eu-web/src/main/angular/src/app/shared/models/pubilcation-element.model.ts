@@ -8,10 +8,8 @@ export class PublicationElement {
     private startDate: string;
     private endDate: string;
     private endTime: string;
-    private edit: string;
 
-
-    constructor(date?: string, label?: string, subLabel?: string, styleClass?: string, event?: string, startTime?: string, startDate?: string, endDate?: string, endTime?: string, edit?: string) {
+    constructor(date?: string, label?: string, subLabel?: string, styleClass?: string, event?: string, startTime?: string, startDate?: string, endDate?: string, endTime?: string) {
         this.date = date;
         this.label = label;
         this.subLabel = subLabel;
@@ -21,16 +19,14 @@ export class PublicationElement {
         this.startDate = startDate;
         this.endDate = endDate;
         this.endTime = endTime;
-        this.edit = edit;
     }
 
-    createPublicationForDgconn(event: string, startTime: string, startDate: string, endDate: string, endTime: string, edit: string) {
+    createPublicationForDgconn(event: string, startTime: string, startDate: string, endDate: string, endTime: string) {
         this.event = event;
         this.startTime = startTime;
         this.startDate = startDate;
         this.endDate = endDate;
         this.endTime = endTime;
-        this.edit = edit;
     }
 
     getDate(): string {
@@ -104,15 +100,5 @@ export class PublicationElement {
     setEndTime(value: string) {
         this.endTime = value;
     }
-
-    getEdit(): string {
-        return this.edit;
-    }
-
-    setEdit(value: string) {
-        this.edit = value;
-    }
 }
-/**
- * Created by lviverof on 01/03/2017.
- */
+
