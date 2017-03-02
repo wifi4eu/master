@@ -2,8 +2,8 @@
 <ux-accordion-boxes>
     <custom-ux-accordion-box id="expandHideBox" label="Expand" [isExpanded]="false" [rightSide]="true">
         <ux-timeline-items id="timelineList">
-            <ux-timeline-item *ngFor="let item of timelineElements" [date]="item.date" [label]="item.label"
-                              [subLabel]="item.subLabel" [styleClass]="item.styleClass"></ux-timeline-item>
+            <ux-timeline-item *ngFor="let item of timelineElements" [date]="item.startDate" [label]="item.eventTitle"
+                              [styleClass]="item.styleClass"></ux-timeline-item>
         </ux-timeline-items>
     </custom-ux-accordion-box>
 </ux-accordion-boxes>

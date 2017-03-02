@@ -4,12 +4,14 @@ import {BeneficiaryDetails} from "../../shared/models/beneficiary-details.model"
 import {UserDetails} from "../../shared/models/user-details.model";
 import {UserService} from "../../shared/services/user.service";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {BeneficiaryDTO} from "./beneficiaryDTO.model";
+// import {BeneficiaryDTO} from "./beneficiaryDTO.model";
+import {BeneficiaryDTO,BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
+import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
 
 @Component({
     selector: 'review-component',
     templateUrl: 'review.component.html',
-    providers: [UserService]
+    providers: [UserService,BeneficiaryApi]
 })
 export class ReviewComponent {
     @Input('entityDetails') entityDetails: EntityDetails;
@@ -29,7 +31,8 @@ export class ReviewComponent {
 
     private beneficiaryDTO: BeneficiaryDTO;
 
-    constructor(private userService: UserService, private uxService: UxService) {
+    constructor(private userService: UserService, private uxService: UxService,
+        private beneficiaryApi:BeneficiaryApi) {
         this.gotoStep = new EventEmitter<number>();
         this.onSuccess = new EventEmitter<boolean>();
         this.onFailure = new EventEmitter<boolean>();
@@ -53,6 +56,23 @@ export class ReviewComponent {
 
         this.beneficiaryDTO = this.mapperBeneficiaryDTO(this.userDetails);
 
+        this.beneficiaryApi.create(this.beneficiaryDTO).subscribe(
+            user => {
+                console.log(user);
+                this.displayConfirmingData = false;
+                this.onSuccess.emit(true);
+            },
+            error => {
+                this.uxService.growl({
+                    severity: 'warn',
+                    summary: 'WARNING',
+                    detail: 'Could not get user, ignore this when NG is' + ' working in offline mode'
+                });
+                console.log('WARNING: Could not get user: ', error);
+            }
+        );
+
+/*
         this.userService.addBeneficiary(this.beneficiaryDTO).subscribe(
             user => console.log(user),
             error => {
@@ -69,6 +89,7 @@ export class ReviewComponent {
             this.displayConfirmingData = false;
             this.onSuccess.emit(true);
         }, 2000);
+*/
     }
 
     editStep(step: number) {
@@ -88,7 +109,7 @@ export class ReviewComponent {
 
         console.log("Mapping beneficiaryDetails to benenficiaryDTO...");
 
-        let beneficiaryDTO: BeneficiaryDTO = new BeneficiaryDTO();
+        let beneficiaryDTO: BeneficiaryDTO = new BeneficiaryDTOBase();
 
         beneficiaryDTO.mayorDTO.email = userDetails.beneficiary.email;
         beneficiaryDTO.mayorDTO.name = userDetails.beneficiary.name;

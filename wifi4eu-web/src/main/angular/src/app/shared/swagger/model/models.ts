@@ -10,5 +10,6 @@ export * from './RepresentativeDTO';
 export * from './ResponseDTO';
 export * from './RightDTO';
 export * from './RoleDTO';
+export * from './TimelineDTO';
 export * from './UserDTO';
 export * from './VoucherDTO';
