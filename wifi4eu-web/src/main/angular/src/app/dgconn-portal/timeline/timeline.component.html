@@ -50,7 +50,7 @@
         <div class="ui-g-1"></div>
         <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
                   [draggable]="false" [closable]="true" [closeOnEscape]="true">
-            <p class="beneficiaryMayorModal">{{'publication.call' | translate }}</p>
+            <p class="beneficiaryMayorModal">{{'timeline.dashboard' | translate }}</p>
 
             <form (ngSubmit)="onSubmit()" #timelineForm="ngForm">
                 <div class="containerTimeline center">
@@ -126,7 +126,7 @@
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
                         <button type="button" (click)="saveChanges()" class="btn btn-primary publish-button"
-                        >{{ 'add.timeline' |
+                        >{{ 'timeline.change' |
                             translate }}
                         </button>
                     </div>
