@@ -4,7 +4,7 @@
 
     <div class="row tableTitle">
         <div class="col-md-10">
-            <h2 class="h2Table">{{ 'timeline.label' | translate }}</h2>
+            <h2 class="h2Table">{{ 'publication.title' | translate }}</h2>
         </div>
         <div class="col-md-2">
             <a (click)="addNewElement()" class="edit editTable"><img
@@ -126,7 +126,7 @@
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
                         <button type="button" (click)="saveChanges()" class="btn btn-primary publish-button"
-                        >{{ 'add.timeline' |
+                        >{{ 'change.publication' |
                             translate }}
                         </button>
                     </div>
@@ -143,7 +143,7 @@
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
                         <button type="button" (click)="createPublication()" class="btn btn-primary publish-button">{{
-                            'add.timeline' |
+                            'add.publication' |
                             translate }}
                         </button>
                     </div>
