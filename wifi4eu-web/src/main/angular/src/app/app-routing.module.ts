@@ -7,6 +7,7 @@ import {ActivationComponent} from "./+activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {BeneficiaryProfileComponent} from "./+beneficiary-portal/profile/profile.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
+import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -38,6 +39,9 @@ import {ForgotComponent} from "./+forgot/forgot.component";
         }, {
             path: 'beneficiary-portal',
             loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule'
+        }, {
+            path: 'helpdesk',
+            component: HelpdeskComponent
         }
     ], {useHash: true})],
     exports: [RouterModule]
