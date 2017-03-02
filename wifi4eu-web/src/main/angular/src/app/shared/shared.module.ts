@@ -6,7 +6,14 @@ import {UxModule, UX_DIRECTIVES} from '@ec-digit-uxatec/eui-angular2-ux-commons'
 import {UxLanguageSelectorComponent} from '@ec-digit-uxatec/eui-angular2-ux-language-selector';
 import {UxSearchInputComponent} from '@ec-digit-uxatec/eui-angular2-ux-search-input';
 
-import {CheckboxModule, GrowlModule, BlockUIModule, AutoCompleteModule, DialogModule} from 'primeng/primeng';
+import {
+    CheckboxModule,
+    GrowlModule,
+    BlockUIModule,
+    AutoCompleteModule,
+    DialogModule,
+    DataTableModule
+} from 'primeng/primeng';
 
 import {APP_DIRECTIVES} from './components/index';
 
@@ -23,7 +30,8 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         BlockUIModule,
         HttpModule,
         AutoCompleteModule,
-        DialogModule
+        DialogModule,
+        DataTableModule
     ],
     declarations: [
         UX_DIRECTIVES, UxLanguageSelectorComponent, UxSearchInputComponent, APP_DIRECTIVES
@@ -39,7 +47,8 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         BlockUIModule,
         HttpModule,
         AutoCompleteModule,
-        DialogModule
+        DialogModule,
+        DataTableModule
     ],
     providers: [
         {
