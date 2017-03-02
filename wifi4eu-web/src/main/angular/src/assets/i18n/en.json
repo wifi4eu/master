@@ -130,7 +130,9 @@
   "opening.date": "Opening date",
   "closing.date": "Closing date",
   "add.timeline": "Add to timeline",
-  "date.tooltip": "dd/mm/yyyy",
-  "time.tooltip": "hh:mm",
-  "url.tooltip": "http://www.example.eu"
+  "publication.title": "Publication call configuration",
+  "timeline.change": "Change timeline",
+  "add.publication": "Add publication",
+  "change.publication": "Change publication"
+
 }

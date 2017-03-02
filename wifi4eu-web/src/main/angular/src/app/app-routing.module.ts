@@ -7,6 +7,8 @@ import {LoginComponent} from "./+login/login.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
 import {DgConnPortalComponent} from "./dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./dgconn-portal/timeline/timeline.component";
+import {DgConnPublicationComponent} from "./dgconn-portal/publication/publication.component";
+
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -44,6 +46,9 @@ import {DgConnTimelineComponent} from "./dgconn-portal/timeline/timeline.compone
         }, {
             path: 'dgconn-portal/timeline',
             component: DgConnTimelineComponent
+        }, {
+            path: 'dgconn-portal/publication',
+            component: DgConnPublicationComponent
         }
     ], {useHash: true})],
     exports: [RouterModule]

@@ -130,7 +130,8 @@
   "opening.date": "Fecha apertura",
   "closing.date": "Fecha cierre",
   "add.timeline": "Añadir línea de tiempo",
-  "date.tooltip": "dd/mm/aaaa",
-  "time.tooltip": "hh:mm",
-  "url.tooltip": "http://www.ejemplo.eu"
+  "publication.title": "Configuración de la publicación",
+  "timeline.change" : "Cambiar cronograma",
+  "add.publication": "Añadir publicación",
+  "change.publication": "Cambiar publicación"
 }

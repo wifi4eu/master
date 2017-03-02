@@ -1,4 +1,4 @@
-export class TimelineElement {
+export class PublicationElement {
     private date: string;
     private label: string;
     private subLabel: string;
@@ -8,7 +8,6 @@ export class TimelineElement {
     private startDate: string;
     private endDate: string;
     private endTime: string;
-
 
     constructor(date?: string, label?: string, subLabel?: string, styleClass?: string, event?: string, startTime?: string, startDate?: string, endDate?: string, endTime?: string) {
         this.date = date;
@@ -20,16 +19,14 @@ export class TimelineElement {
         this.startDate = startDate;
         this.endDate = endDate;
         this.endTime = endTime;
-
     }
 
-    createTimelineForDgconn(event: string, startTime: string, startDate: string, endDate: string, endTime: string) {
+    createPublicationForDgconn(event: string, startTime: string, startDate: string, endDate: string, endTime: string) {
         this.event = event;
         this.startTime = startTime;
         this.startDate = startDate;
         this.endDate = endDate;
         this.endTime = endTime;
-
     }
 
     getDate(): string {
@@ -104,3 +101,4 @@ export class TimelineElement {
         this.endTime = value;
     }
 }
+

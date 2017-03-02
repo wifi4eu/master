@@ -142,18 +142,11 @@
                     </button>
                 </div>
                 <div class="ui-g-4"></div>
+
             </div>
         </div>
     </div>
     <div class="ui-g-1"></div>
-    <!--<p-dialog styleClass="white-mask" [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true"-->
-    <!--[resizable]="false"-->
-    <!--[draggable]="false" [closable]="false" [closeOnEscape]="false">-->
-    <!--<p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>-->
-    <!--<h1 class="Modalh1Confirmation">Confirming Data, please wait...</h1>-->
-    <!--<p class="ModalpConfirmation">Your registration to Wifi4EU is in the process of being submitted.<br>Please don't-->
-    <!--close this window.</p>-->
-    <!--</p-dialog>-->
 
     <modal #modal>
         <modal-header [show-close]="true">
@@ -168,6 +161,24 @@
         <modal-footer></modal-footer>
     </modal>
 </div>
+<div class="ui-g-1"></div>
 
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
 
+    </div>
+</div>
 

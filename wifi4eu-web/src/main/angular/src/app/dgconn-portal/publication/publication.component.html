@@ -1,10 +1,10 @@
-<div class="clearfi"></div>
+<div class="clearfix"></div>
 
 <div class="container">
 
     <div class="row tableTitle">
         <div class="col-md-10">
-            <h2 class="h2Table">{{ 'timeline.label' | translate }}</h2>
+            <h2 class="h2Table">{{ 'publication.title' | translate }}</h2>
         </div>
         <div class="col-md-2">
             <a (click)="addNewElement()" class="edit editTable"><img
@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <p-dataTable [value]="timelineElements" [rows]="5" [paginator]="true" [pageLinks]="3"
+    <p-dataTable [value]="publicationElements" [rows]="5" [paginator]="true" [pageLinks]="3"
                  [rowsPerPageOptions]="[5,10,20]">
         <p-column field="event" header="{{ 'event.title' | translate }}"
                   [sortable]="true"></p-column>
@@ -50,9 +50,9 @@
         <div class="ui-g-1"></div>
         <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
                   [draggable]="false" [closable]="true" [closeOnEscape]="true">
-            <p class="beneficiaryMayorModal">{{'timeline.dashboard' | translate }}</p>
+            <p class="beneficiaryMayorModal">{{'publication.call' | translate }}</p>
 
-            <form (ngSubmit)="onSubmit()" #timelineForm="ngForm">
+            <form (ngSubmit)="onSubmit()" #publicationForm="ngForm">
                 <div class="containerTimeline center">
                     <div class="form-group ui-g">
                         <div class="ui-g-12">
@@ -118,7 +118,7 @@
                 <div class="form-group ui-g" *ngIf="!newElementForm">
                     <div class="ui-g-3"></div>
                     <div class="ui-g-2" style="text-align: center !important">
-                        <button type="button" (click)="cancelTimeline()" class="btn btn-primary cancel-button">{{
+                        <button type="button" (click)="cancelPublication()" class="btn btn-primary cancel-button">{{
                             'cancel.button' | translate
                             }}
                         </button>
@@ -126,7 +126,7 @@
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
                         <button type="button" (click)="saveChanges()" class="btn btn-primary publish-button"
-                        >{{ 'timeline.change' |
+                        >{{ 'change.publication' |
                             translate }}
                         </button>
                     </div>
@@ -135,15 +135,15 @@
                 <div class="form-group ui-g" *ngIf="newElementForm">
                     <div class="ui-g-3"></div>
                     <div class="ui-g-2" style="text-align: center !important">
-                        <button type="button" (click)="cancelTimeline()" class="btn btn-primary cancel-button">{{
+                        <button type="button" (click)="cancelPublication()" class="btn btn-primary cancel-button">{{
                             'cancel.button' | translate
                             }}
                         </button>
                     </div>
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
-                        <button type="button" (click)="createTimeline()" class="btn btn-primary publish-button">{{
-                            'add.timeline' |
+                        <button type="button" (click)="createPublication()" class="btn btn-primary publish-button">{{
+                            'add.publication' |
                             translate }}
                         </button>
                     </div>
