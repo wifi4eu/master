@@ -13,6 +13,10 @@ export class DgConnTimelineComponent implements OnInit {
 
     private timelineElements: TimelineElement[];
     private display: boolean;
+    private elementSelected: TimelineElement;
+    private elementSelectedOriginal: TimelineElement;
+    private elementIndex: number;
+    private newElementForm: boolean;
 
     constructor() {
         this.display = false;
@@ -21,8 +25,11 @@ export class DgConnTimelineComponent implements OnInit {
             new TimelineElement(),
             new TimelineElement()
         ];
-        this.timelineElements[0].createTimelineForDgconn('Registration of Mayor and Supplier', '01/01/2017', '00:01', '31/12/2017', '23:59', 'Edit');
-        this.timelineElements[1].createTimelineForDgconn('Registration of Mayor and Supplier2', '012/01/2017', '020:01', '31/12/2017', '23:59', 'Edit');
+        this.timelineElements[0].createTimelineForDgconn('Registration of Mayor and Supplier', '00:01', '01/01/2017', '31/12/2017', '23:59');
+        this.timelineElements[1].createTimelineForDgconn('Registration of Mayor and Supplier2', '20:01', '12/01/2017', '31/12/2017', '23:59');
+        this.elementSelected = new TimelineElement();
+        this.elementSelectedOriginal = new TimelineElement();
+        this.newElementForm = false;
     }
 
     ngOnInit() {
@@ -31,5 +38,45 @@ export class DgConnTimelineComponent implements OnInit {
     addTimeline() {
         this.display = true;
     }
+
+    cancelTimeline() {
+        this.display = false;
+        this.timelineElements[this.elementIndex] = this.elementSelectedOriginal;
+        this.elementSelected = new TimelineElement();
+    }
+
+    saveChanges() {
+        this.timelineElements[this.elementIndex] = this.elementSelected;
+        this.elementSelected = new TimelineElement();
+        this.display = false;
+    }
+
+    displayInfo(element: TimelineElement, rowElement: number) {
+        this.display = true;
+        this.elementSelected = element;
+        this.elementIndex = rowElement;
+        this.elementSelectedMakeCopy(element);
+    }
+
+    elementSelectedMakeCopy(element: TimelineElement) {
+        this.elementSelectedOriginal = new TimelineElement();
+        this.elementSelectedOriginal.createTimelineForDgconn(element.getEvent(), element.getStartTime(), element.getStartDate(), element.getEndDate(), element.getEndTime());
+    }
+
+    createTimeline() {
+        this.timelineElements.push(this.elementSelected);
+        this.newElementForm = false;
+        this.display = false;
+        console.log(this.timelineElements);
+        this.elementSelected = new TimelineElement();
+    }
+
+    addNewElement() {
+        this.newElementForm = true;
+        this.display = true;
+        this.elementSelected = new TimelineElement();
+    }
+
+
 }
 
