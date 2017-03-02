@@ -7,7 +7,7 @@
             <h2 class="h2Table">{{ 'timeline.label' | translate }}</h2>
         </div>
         <div class="col-md-2">
-            <a (click)="addTimeline()" class="edit editTable"><img
+            <a (click)="addNewElement()" class="edit editTable"><img
                     src="assets/images/add-circle-outline-material-icons-regular.png" alt="">{{
                 'newEvent.label' | translate }}</a>
         </div>
@@ -25,8 +25,16 @@
                   [sortable]="true"></p-column>
         <p-column field="endTime" header="{{ 'end.time' | translate }}"
                   [sortable]="true"></p-column>
-        <p-column field="edit" header="{{ 'edit.button' | translate }}"
-                  [sortable]="false"></p-column>
+        <p-column header="{{ 'edit.button' | translate }}">
+            <template pTemplate="body" let-element="rowData" let-rowElement="rowIndex">
+                <button type="button" class="btn" style="background: none; padding: 0;"
+                        (click)="displayInfo(element, rowElement)">
+                    <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{ 'edit.button' | translate
+                    }}
+                </button>
+            </template>
+        </p-column>
+
     </p-dataTable>
 
 
@@ -49,11 +57,11 @@
                     <div class="form-group ui-g">
                         <div class="ui-g-12">
                             <div class="form-group left">
-                                <label class="labelModal" for="url">{{'labelModal.timeline' | translate }}</label>
-                                <input type="text" [(ngModel)]="dgConnDetails.url"
+                                <label class="labelModal" for="event">{{'labelModal.timeline' | translate }}</label>
+                                <input type="text" [(ngModel)]="elementSelected.event"
                                        class="form-control"
-                                       name="url" ngcontrol="url"
-                                       #url="ngModel" required>
+                                       name="event" ngcontrol="event"
+                                       #event="ngModel" required>
                             </div>
                         </div>
                     </div>
@@ -62,19 +70,22 @@
                     <div class="form-group ui-g">
                         <div class="ui-g-3">
                             <div class="form-group left">
-                                <label class="labelModal" for="openingDate">{{'opening.date' | translate }}</label>
-                                <p-calendar [showIcon]="true"></p-calendar>
+                                <label class="labelModal" for="startDate">{{'opening.date' | translate }}</label>
+                                <p-calendar [showIcon]="true" type="text" dateFormat="dd/mm/yy"
+                                            [(ngModel)]="elementSelected.startDate"
+                                            name="startDate" ngcontrol="startDate"
+                                            #startDate="ngModel" required></p-calendar>
 
                             </div>
                         </div>
                         <div class="ui-g-1"></div>
                         <div class="ui-g-2">
                             <div class="form-group left">
-                                <label class="labelModal" for="startTimeModal">{{'start.time' | translate }}</label>
-                                <input type="text" [(ngModel)]="dgConnDetails.startTimeModal"
+                                <label class="labelModal" for="startTime">{{'start.time' | translate }}</label>
+                                <input type="text" [(ngModel)]="elementSelected.startTime"
                                        class="form-control"
-                                       name="startTimeModal" ngcontrol="startTimeModal"
-                                       #startTimeModal="ngModel" required>
+                                       name="startTime" ngcontrol="startTime"
+                                       #startTime="ngModel" required>
                             </div>
                         </div>
                         <div class="ui-g-6"></div>
@@ -84,34 +95,55 @@
                     <div class="form-group ui-g">
                         <div class="ui-g-3">
                             <div class="form-group left">
-                                <label class="labelModal" for="closingDate">{{'closing.date' | translate }}</label>
-                                <p-calendar [showIcon]="true"></p-calendar>
+                                <label class="labelModal" for="endDate">{{'closing.date' | translate }}</label>
+                                <p-calendar [showIcon]="true" type="text" dateFormat="dd/mm/yy"
+                                            [(ngModel)]="elementSelected.endDate"
+                                            name="endDate" ngcontrol="startDate"
+                                            #endDate="ngModel" required></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-1"></div>
                         <div class="ui-g-2">
                             <div class="form-group left">
-                                <label class="labelModal" for="endTimeModal">{{'end.time' | translate }}</label>
-                                <input type="text" [(ngModel)]="dgConnDetails.endTimeModal"
+                                <label class="labelModal" for="endTime">{{'end.time' | translate }}</label>
+                                <input type="text" [(ngModel)]="elementSelected.endTime"
                                        class="form-control"
-                                       name="endTimeModal" ngcontrol="endTimeModal"
-                                       #endTimeModal="ngModel" required>
+                                       name="endTime" ngcontrol="endTime"
+                                       #endTime="ngModel" required>
                             </div>
                         </div>
                         <div class="ui-g-6"></div>
                     </div>
                 </div>
-                <div class="form-group ui-g">
+                <div class="form-group ui-g" *ngIf="!newElementForm">
                     <div class="ui-g-3"></div>
                     <div class="ui-g-2" style="text-align: center !important">
-                        <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate
+                        <button type="button" (click)="cancelTimeline()" class="btn btn-primary cancel-button">{{
+                            'cancel.button' | translate
                             }}
                         </button>
                     </div>
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
-                        <button type="submit" class="btn btn-primary publish-button"
+                        <button type="button" (click)="saveChanges()" class="btn btn-primary publish-button"
                         >{{ 'add.timeline' |
+                            translate }}
+                        </button>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+                <div class="form-group ui-g" *ngIf="newElementForm">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-2" style="text-align: center !important">
+                        <button type="button" (click)="cancelTimeline()" class="btn btn-primary cancel-button">{{
+                            'cancel.button' | translate
+                            }}
+                        </button>
+                    </div>
+                    <div class="ui-g-1"></div>
+                    <div class="ui-g-2" style="text-align: center !important">
+                        <button type="button" (click)="createTimeline()" class="btn btn-primary publish-button">{{
+                            'add.timeline' |
                             translate }}
                         </button>
                     </div>
