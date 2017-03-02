@@ -130,5 +130,9 @@
   "opening.date": "Opening date",
   "closing.date": "Closing date",
   "add.timeline": "Add to timeline",
-  "publication.title": "Publication configuration"
+  "publication.title": "Publication call configuration",
+  "timeline.change": "Change timeline",
+  "add.publication": "Add publication",
+  "change.publication": "Change publication"
+
 }

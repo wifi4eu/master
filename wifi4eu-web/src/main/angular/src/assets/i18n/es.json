@@ -130,5 +130,8 @@
   "opening.date": "Fecha apertura",
   "closing.date": "Fecha cierre",
   "add.timeline": "Añadir línea de tiempo",
-  "publication.title": "Configuración de la publicación"
+  "publication.title": "Configuración de la publicación",
+  "timeline.change" : "Cambiar cronograma",
+  "add.publication": "Añadir publicación",
+  "change.publication": "Cambiar publicación"
 }
