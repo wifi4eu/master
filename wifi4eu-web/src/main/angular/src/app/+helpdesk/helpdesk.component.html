@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="ui-widget-header" style="padding:5px 10px; margin-top: 15px;">
+        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+        <input #gb type="text" pInputText size="50" placeholder="{{ 'search.threedots' | translate }}">
+    </div>
+    <p-dataTable [value]="issues" [(selection)]="selectedIssues" [rows]="10" [paginator]="true"
+                 [pageLinks]="3" [rowsPerPageOptions]="[10,20,50,100]" [globalFilter]="gb">
+        <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+        <p-column field="portal" header="{{ 'portal' | translate }}" [sortable]="true"></p-column>
+        <p-column field="topic" header="{{ 'topic' | translate }}" [sortable]="false"></p-column>
+        <p-column field="memberState" header="{{ 'memberState' | translate }}" [sortable]="false"></p-column>
+        <p-column field="date" header="{{ 'date' | translate }}" [sortable]="true"></p-column>
+        <p-column field="time" header="{{ 'time' | translate }}" [sortable]="false"></p-column>
+        <p-column field="assignedTo" header="{{ 'assignedTo' | translate }}" [sortable]="true"></p-column>
+        <p-column field="status" header="{{ 'status' | translate }}" [sortable]="true"></p-column>
+        <p-column header="{{ 'details' | translate }}">
+            <template pTemplate="body" let-issue="rowData" let-rowIndex="rowIndex">
+                <button type="button" class="btn" style="background: none; padding: 0;"
+                        (click)="viewIssueDetails(issue, rowIndex)">
+                    <i class="fa fa-2x fa-eye" style="font-size: 20px;"></i> {{ 'view' | translate }}
+                </button>
+            </template>
+        </p-column>
+    </p-dataTable>
+    <div class="right">
+        <button type="submit" class="btn btn-primary" (click)="resolveIssues()">{{ 'resolve' | translate }}</button>
+    </div>
+    <br>
+    <!--MODAL Displayed -->
+    <p-dialog [(visible)]="display" [modal]="true" [resizable]="false" [draggable]="false" [closable]="false"
+              [closeOnEscape]="false">
+        <h2 style="font-weight: bold;color: #254872; margin-bottom: 10px">{{ 'issueDetails' | translate }}</h2>
+        <div class="ui-g-12" style="background: #F5F5F5;border: 1px solid #C1C1C1; margin-bottom: 20px">
+            <div style="padding-bottom: 0;">
+                <span class="ui-g-6">{{ 'from' | translate }}: <b>{{issueSelected.from}}</b></span>
+                <span class="ui-g-6">{{ 'memberState' | translate }}: <b>{{issueSelected.status}}</b></span>
+            </div>
+            <div style="padding-top: 0; padding-bottom: 0;">
+                <span class="ui-g-6">{{ 'topic' | translate }}: <b>{{issueSelected.topic}}</b></span>
+                <span class="ui-g-6">{{ 'dateandtime' | translate }}: <b>{{issueSelected.date}} - {{issueSelected.time}}</b></span>
+            </div>
+            <div style="padding-top: 0;">
+                <span class="ui-g-6">{{ 'portal' | translate }}: <b>{{issueSelected.portal}}</b></span>
+                <span class="ui-g-6"></span>
+            </div>
+            <div class="form-group">
+                <label class="ui-g-12" for="issueSummary" style="margin: 0;">{{ 'issueSummary' | translate }}:</label>
+                <textarea id="issueSummary" class="ui-g-12" disabled [(ngModel)]="issueSelected.issueSummary">{{issueSelected.issueSummary}}</textarea>
+            </div>
+            <div class="form-group">
+                <label class="ui-g-12" for="memberStateComments" style="margin: 0;">{{ 'memberStateComments' | translate
+                    }}:</label>
+                <textarea id="memberStateComments" class="ui-g-12" [(ngModel)]="issueSelected.memberStateComments">{{issueSelected.memberStateComments}}</textarea>
+            </div>
+        </div>
+        <div class="ui-g-12" style="background: #F5F5F5;border: 1px solid #C1C1C1;">
+            <div class="form-group">
+                <label class="ui-g-12" for="dgConnectComments" style="margin: 0;">{{ 'dgConnectComments' | translate
+                    }}:</label>
+                <textarea id="dgConnectComments" class="ui-g-12" [(ngModel)]="issueSelected.dgConnectComments">{{issueSelected.dgConnectComments}}</textarea>
+            </div>
+        </div>
+        <div class="ui-g-12" style="margin-top: 20px;">
+            <span>
+                <button type="button" class="btn cancel-button"
+                        (click)="cancel()">{{ 'cancel.button' | translate }}</button>
+            </span>
+            <span style="float: right;">
+                <button type="button" class="btn btn-primary" (click)="setAsResolved()" style="margin-right: 15px;">{{ 'setAsResolved' | translate }}</button>
+                <button type="button" class="btn btn-primary" (click)="keepAsPending()">{{ 'keepAsPending' | translate }}</button>
+            </span>
+        </div>
+    </p-dialog>
+</div>
