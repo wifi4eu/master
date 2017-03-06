@@ -538,3 +538,11 @@ body {
 .paddingLegal {
   padding-left: 13em;
 }
+
+.closeButton, .ui-widget .closeButton:focus {
+  background-color: transparent !important;
+  float: right !important;
+  border: none !important;
+  color: #000;
+  cursor: pointer;
+}
