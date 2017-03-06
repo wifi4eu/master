@@ -9,8 +9,11 @@
         <p-column field="portal" header="{{ 'portal' | translate }}" [sortable]="true"></p-column>
         <p-column field="topic" header="{{ 'topic' | translate }}" [sortable]="false"></p-column>
         <p-column field="memberState" header="{{ 'memberState' | translate }}" [sortable]="false"></p-column>
-        <p-column field="date" header="{{ 'date' | translate }}" [sortable]="true"></p-column>
-        <p-column field="time" header="{{ 'time' | translate }}" [sortable]="false"></p-column>
+        <p-column field="date" header="{{ 'dateandtime' | translate }}" [sortable]="true">
+            <template pTemplate="body" let-issue="rowData">
+                <span>{{issue.date}}</span>
+            </template>
+        </p-column>
         <p-column field="assignedTo" header="{{ 'assignedTo' | translate }}" [sortable]="true"></p-column>
         <p-column field="status" header="{{ 'status' | translate }}" [sortable]="true"></p-column>
         <p-column header="{{ 'details' | translate }}">
@@ -29,15 +32,24 @@
     <!--MODAL Displayed -->
     <p-dialog [(visible)]="display" [modal]="true" [resizable]="false" [draggable]="false" [closable]="false"
               [closeOnEscape]="false">
+        <button type="button" class="closeButton" (click)="cancel()">X</button>
         <h2 style="font-weight: bold;color: #254872; margin-bottom: 10px">{{ 'issueDetails' | translate }}</h2>
         <div class="ui-g-12" style="background: #F5F5F5;border: 1px solid #C1C1C1; margin-bottom: 20px">
+            <div>
+                <span class="ui-g-12">{{ 'assignedTo' | translate }}:
+                    <select [(ngModel)]="issueSelected.assignedTo" name="assignedTo">
+                        <option [selected]="issueSelected.assignedTo == 'Member State'">Member State</option>
+                        <option [selected]="issueSelected.assignedTo == 'DG Connect'">DG Connect</option>
+                    </select>
+                </span>
+            </div>
             <div style="padding-bottom: 0;">
                 <span class="ui-g-6">{{ 'from' | translate }}: <b>{{issueSelected.from}}</b></span>
-                <span class="ui-g-6">{{ 'memberState' | translate }}: <b>{{issueSelected.status}}</b></span>
+                <span class="ui-g-6">{{ 'memberState' | translate }}: <b>{{issueSelected.memberState}}</b></span>
             </div>
             <div style="padding-top: 0; padding-bottom: 0;">
                 <span class="ui-g-6">{{ 'topic' | translate }}: <b>{{issueSelected.topic}}</b></span>
-                <span class="ui-g-6">{{ 'dateandtime' | translate }}: <b>{{issueSelected.date}} - {{issueSelected.time}}</b></span>
+                <span class="ui-g-6">{{ 'dateandtime' | translate }}: <b>{{issueSelected.date}}</b></span>
             </div>
             <div style="padding-top: 0;">
                 <span class="ui-g-6">{{ 'portal' | translate }}: <b>{{issueSelected.portal}}</b></span>
