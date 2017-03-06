@@ -1,4 +1,3 @@
-///<reference path="../../../../node_modules/protractor/built/index.d.ts"/>
 import {Component, Input, OnInit} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
 import {TimelineElement} from "../../shared/models/timeline-element.model";
@@ -78,12 +77,10 @@ export class DgConnTimelineComponent implements OnInit {
         this.elementSelected = new TimelineElement();
     }
 
-    _keyPress(event: any) {
+    keyPress(event: any) {
         const pattern = /[0-9\:]/;
         let inputChar = String.fromCharCode(event.charCode);
-
         if (!pattern.test(inputChar)) {
-            // invalid character, prevent input
             event.preventDefault();
         }
     }

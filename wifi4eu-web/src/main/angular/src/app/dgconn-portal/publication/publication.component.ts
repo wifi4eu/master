@@ -75,7 +75,7 @@ export class DgConnPublicationComponent {
         this.elementSelected = new PublicationElement();
     }
 
-    _keyPress(event: any) {
+    keyPress(event: any) {
         const pattern = /[0-9\:]/;
         let inputChar = String.fromCharCode(event.charCode);
 
