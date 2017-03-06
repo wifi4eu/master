@@ -75,5 +75,23 @@ export class DgConnPublicationComponent {
         this.elementSelected = new PublicationElement();
     }
 
+    keyPress(event: any) {
+        const pattern = /[0-9\:]/;
+        let inputChar = String.fromCharCode(event.charCode);
 
+        if (!pattern.test(inputChar)) {
+            // invalid character, prevent input
+            event.preventDefault();
+        }
+    }
+
+    changeDateStart() {
+        var date = new Date(this.publicationElements[this.elementIndex].getStartDate());
+        this.publicationElements[this.elementIndex].setStartDate(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear());
+    }
+
+    changeDateEnd() {
+        var date = new Date(this.publicationElements[this.elementIndex].getEndDate());
+        this.publicationElements[this.elementIndex].setEndDate(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear());
+    }
 }

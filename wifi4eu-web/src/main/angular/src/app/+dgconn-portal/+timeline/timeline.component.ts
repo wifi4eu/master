@@ -77,6 +77,24 @@ export class DgConnTimelineComponent implements OnInit {
         this.elementSelected = new TimelineElement();
     }
 
+    keyPress(event: any) {
+        const pattern = /[0-9\:]/;
+        let inputChar = String.fromCharCode(event.charCode);
+        if (!pattern.test(inputChar)) {
+            event.preventDefault();
+        }
+    }
+
+    changeDateStart() {
+        var date = new Date(this.timelineElements[this.elementIndex].getStartDate());
+        this.timelineElements[this.elementIndex].setStartDate(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear());
+    }
+
+    changeDateEnd() {
+        var date = new Date(this.timelineElements[this.elementIndex].getEndDate());
+        this.timelineElements[this.elementIndex].setEndDate(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear());
+    }
+
 
 }
 
