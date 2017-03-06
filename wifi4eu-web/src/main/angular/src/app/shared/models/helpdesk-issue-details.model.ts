@@ -2,8 +2,7 @@ export class HelpdeskIssue {
     private portal: string;
     private topic: string;
     private memberState: string;
-    private date: string;
-    private time: string;
+    private date: Date;
     private assignedTo: string;
     private status: string;
     private from: string;
@@ -11,13 +10,11 @@ export class HelpdeskIssue {
     private memberStateComments: string;
     private dgConnectComments: string;
 
-
-    constructor(portal?: string, topic?: string, memberState?: string, date?: string, time?: string, assignedTo?: string, status?: string, from?: string, issueSummary?: string, memberStateComments?: string, dgConnectComments?: string) {
+    constructor(portal?: string, topic?: string, memberState?: string, date?: Date, assignedTo?: string, status?: string, from?: string, issueSummary?: string, memberStateComments?: string, dgConnectComments?: string) {
         this.portal = portal;
         this.topic = topic;
         this.memberState = memberState;
         this.date = date;
-        this.time = time;
         this.assignedTo = assignedTo;
         this.status = status;
         this.from = from;
@@ -42,12 +39,12 @@ export class HelpdeskIssue {
         return this.date;
     }
 
-    getTime() {
-        return this.time;
-    }
-
     getAssignedTo() {
         return this.assignedTo;
+    }
+
+    setAssignedTo(assignedTo: string) {
+        this.assignedTo = assignedTo;
     }
 
     getStatus() {
