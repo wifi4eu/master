@@ -10,14 +10,14 @@ import {CoreService} from "./core/core.service";
 import {AppComponent} from "./app.component";
 import {AppRoutingModule} from "./app-routing.module";
 import {HomeComponent} from "./home/home.component";
-import {MapComponent} from "./+map/map.component";
+import {MapComponent} from "./+beneficiary-portal/+voucher/+map/map.component";
 import {ActivationComponent} from "./+activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
-import {DgConnPortalComponent} from "./dgconn-portal/dgconnportal.component";
-import {DgConnTimelineComponent} from "./dgconn-portal/timeline/timeline.component";
+import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
+import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
 import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
-import {DgConnPublicationComponent} from "./dgconn-portal/publication/publication.component";
+import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
 
 
 export function translateFactory(http: Http) {
