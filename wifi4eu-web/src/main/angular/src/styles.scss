@@ -558,12 +558,20 @@ body {
   background-color: rgba(255, 255, 255, 1);
 }
 
-.modal-header, .modal-footer{
+.modal-header, .modal-footer {
   border-bottom: none;
-  border-top:none;
+  border-top: none;
 }
 
 .close {
   color: #000;
   opacity: 1;
+}
+
+.closeButton, .ui-widget .closeButton:focus {
+  background-color: transparent !important;
+  float: right !important;
+  border: none !important;
+  color: #000;
+  cursor: pointer;
 }
