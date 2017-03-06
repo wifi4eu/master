@@ -49,7 +49,8 @@
     <div class="container font">
         <div class="ui-g-1"></div>
         <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
-                  [draggable]="false" [closable]="true" [closeOnEscape]="true">
+                  [draggable]="false" [closable]="false" data-dismiss="modal" [closeOnEscape]="false">
+            <button type="button" (click)="cancelTimeline()" class="closeButton" >X</button>
             <p class="beneficiaryMayorModal">{{'publication.call' | translate }}</p>
 
             <form (ngSubmit)="onSubmit()" #timelineForm="ngForm">
@@ -73,8 +74,7 @@
                                 <label class="labelModal" for="startDate">{{'opening.date' | translate }}</label>
                                 <p-calendar [showIcon]="true" type="text" dateFormat="dd/mm/yy"
                                             [(ngModel)]="elementSelected.startDate"
-                                            name="startDate" ngcontrol="startDate"
-                                            #startDate="ngModel" required></p-calendar>
+                                            name="startDate" ngcontrol="startDate" #startDate="ngModel" onkeydown="return false" required (onSelect)="changeDateStart()"></p-calendar>
 
                             </div>
                         </div>
@@ -82,9 +82,9 @@
                         <div class="ui-g-2">
                             <div class="form-group left">
                                 <label class="labelModal" for="startTime">{{'start.time' | translate }}</label>
-                                <input type="text" [(ngModel)]="elementSelected.startTime"
+                                <input type="text" maxlength="5" [(ngModel)]="elementSelected.startTime"
                                        class="form-control"
-                                       name="startTime" ngcontrol="startTime"
+                                       name="startTime" ngcontrol="startTime" (keypress)="_keyPress($event)"
                                        #startTime="ngModel" required>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                                 <p-calendar [showIcon]="true" type="text" dateFormat="dd/mm/yy"
                                             [(ngModel)]="elementSelected.endDate"
                                             name="endDate" ngcontrol="startDate"
-                                            #endDate="ngModel" required></p-calendar>
+                                            #endDate="ngModel" onkeydown="return false" required (onSelect)="changeDateEnd()"></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-1"></div>
@@ -108,7 +108,7 @@
                                 <label class="labelModal" for="endTime">{{'end.time' | translate }}</label>
                                 <input type="text" [(ngModel)]="elementSelected.endTime"
                                        class="form-control"
-                                       name="endTime" ngcontrol="endTime"
+                                       name="endTime" ngcontrol="endTime" (keypress)="_keyPress($event)"
                                        #endTime="ngModel" required>
                             </div>
                         </div>
