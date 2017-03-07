@@ -43,7 +43,7 @@ export class ReviewComponent {
         this.successCaptcha = false;
     }
 
-    submitRegistration() {
+    onSubmit() {
         if (!this.entityDetails || !this.beneficiaryDetails) {
             this.onFailure.emit(true);
             return;

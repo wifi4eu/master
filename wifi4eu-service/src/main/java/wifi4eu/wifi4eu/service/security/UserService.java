@@ -1,8 +1,7 @@
 package wifi4eu.wifi4eu.service.security;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +35,7 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    private final static Logger _log = LoggerFactory.getLogger(UserService.class);
+    private final static Logger _log = Logger.getLogger(UserService.class);
 
     private final static int TIMEFRAME_ACTIVATE_ACCOUNT_HOURS = 2;
 

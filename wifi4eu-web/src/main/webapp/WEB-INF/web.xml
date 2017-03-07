@@ -68,6 +68,7 @@
     <login-config>
         <auth-method>CLIENT-CERT</auth-method>
     </login-config>
+
 <!--    <filter>
         <filter-name>userFilter</filter-name>
         <filter-class>wifi4eu.wifi4eu.web.filter.UserFilter</filter-class>
