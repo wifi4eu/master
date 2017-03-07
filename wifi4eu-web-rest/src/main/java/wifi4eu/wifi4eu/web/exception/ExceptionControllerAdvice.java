@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.web.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 
-	private static final Logger logger = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
+	private static final Logger logger = Logger.getLogger(ExceptionControllerAdvice.class);
  
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ExceptionResponse> exceptionHandler(Exception ex) {

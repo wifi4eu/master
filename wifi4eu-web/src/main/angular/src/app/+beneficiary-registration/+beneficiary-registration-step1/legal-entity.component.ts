@@ -5,11 +5,13 @@ import {EntityService} from "./legal-entity.service";
 import {EntityDetails} from "../../shared/models/legal-entity-details.model";
 import {CountryDetails} from "../../shared/models/country-details.model";
 import {MunicipalityDetails} from "../../shared/models/municipality-details.model";
+import {LauApi} from "../../shared/swagger/api/LauApi";
+import {NutsApi} from "../../shared/swagger/api/NutsApi";
 
 @Component({
     selector: 'legal-entity-component',
     templateUrl: 'legal-entity.component.html',
-    providers: [EntityService]
+    providers: [EntityService,LauApi,NutsApi]
 })
 export class EntityComponent {
 
@@ -22,7 +24,9 @@ export class EntityComponent {
     @Output() onNext = new EventEmitter<number>();
 
 
-    constructor(private http: Http, private entityService: EntityService, private uxService: UxService) {
+    constructor(private http: Http, private entityService: EntityService, 
+        private lauApi:LauApi, private nutsApi:NutsApi,
+        private uxService: UxService) {
     }
 
     checkCountry() {

@@ -1,13 +1,15 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
-import {VoucherComponent} from "./+beneficiary-portal/+voucher/voucher.component";
-import {MapComponent} from "./+map/map.component";
+import {MapComponent} from "./+beneficiary-portal/+voucher/+map/map.component";
 import {ActivationComponent} from "./+activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
-import {BeneficiaryProfileComponent} from "./+beneficiary-portal/profile/profile.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
+import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
+import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
+import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
+
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -42,6 +44,15 @@ import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
         }, {
             path: 'helpdesk',
             component: HelpdeskComponent
+        }, {
+            path: 'dgconn-portal',
+            component: DgConnPortalComponent
+        }, {
+            path: 'dgconn-portal/timeline',
+            component: DgConnTimelineComponent
+        }, {
+            path: 'dgconn-portal/publication',
+            component: DgConnPublicationComponent
         }
     ], {useHash: true})],
     exports: [RouterModule]
