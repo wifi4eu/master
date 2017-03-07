@@ -5,6 +5,7 @@ import {MapComponent} from "./+beneficiary-portal/+voucher/+map/map.component";
 import {ActivationComponent} from "./+activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
+import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
@@ -40,6 +41,9 @@ import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publicat
         }, {
             path: 'beneficiary-portal',
             loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule'
+        }, {
+            path: 'helpdesk',
+            component: HelpdeskComponent
         }, {
             path: 'dgconn-portal',
             component: DgConnPortalComponent
