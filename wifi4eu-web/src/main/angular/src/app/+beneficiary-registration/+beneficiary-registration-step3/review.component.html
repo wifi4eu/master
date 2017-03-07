@@ -130,19 +130,21 @@
                                       (onCaptchaComplete)="onCaptchaComplete($event)"></ng2-google-recaptcha>
                 <span class="ui-g-3"></span>
             </div>
-            <div class="form-group ui-g-12">
-                <div class="ui-g-4"></div>
-                <div class="ui-g-2" style="text-align: center !important">
-                    <button class="btn">{{ 'cancel.button' | translate }}</button>
+            <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+                <div class="form-group ui-g-12">
+                    <div class="ui-g-4"></div>
+                    <div class="ui-g-2" style="text-align: center !important">
+                        <button class="btn">{{ 'cancel.button' | translate }}</button>
+                    </div>
+                    <div class="ui-g-2" style="text-align: center !important">
+                        <button type="submit" class="btn btn-primary" (click)="modal.open()"
+                                [disabled]="!checkboxes[0] || !checkboxes[1] || !checkboxes[2] || !successCaptcha">
+                            {{'submitregistration.button' | translate }}
+                        </button>
+                    </div>
+                    <div class="ui-g-4"></div>
                 </div>
-                <div class="ui-g-2" style="text-align: center !important">
-                    <button type="button" class="btn btn-primary" (click)="modal.open()"
-                            [disabled]="!checkboxes[0] || !checkboxes[1] || !checkboxes[2] || !successCaptcha">
-                        {{'submitregistration.button' | translate }}
-                    </button>
-                </div>
-                <div class="ui-g-4"></div>
-            </div>
+            </form>
         </div>
     </div>
     <div class="ui-g-1"></div>
