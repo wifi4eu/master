@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface SecurityUserRepository extends CrudRepository<User, Long> {
     User findByUserId(Long userId);
+
     User findByEmail(String email);
+
     User findByToken(String token);
 }

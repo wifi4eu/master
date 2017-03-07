@@ -10,11 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.entity.security.Role;
-import wifi4eu.wifi4eu.entity.security.TempToken;
 import wifi4eu.wifi4eu.entity.security.User;
-import wifi4eu.wifi4eu.repository.security.SecurityTempTokenRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 
 import java.util.*;
