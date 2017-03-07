@@ -5,12 +5,13 @@ import io.swagger.annotations.ApiOperation;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.LauDTO;
 import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.location.LocationService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +21,7 @@ import java.util.List;
  * Created by rgarcita on 08/02/2017.
  */
 @Controller
-@Api(description = "NutsResource")
+@Api(value="/nuts",description = "NutsResource")
 @RequestMapping("nuts")
 public class NutsResource {
 
@@ -47,6 +48,17 @@ public class NutsResource {
         _log.info("findNutsByLevel " + level);
 
         return locationService.getNutsByLevel(level);
+
+    }
+
+    @ApiOperation(value = "create Nuts")
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO create(@RequestBody final NutsDTO nutsDTO, final HttpServletResponse response) {
+
+        ErrorDTO errorDTO = new ErrorDTO(0,"unexpected");
+        return new ResponseDTO(false,null,errorDTO);
 
     }
 

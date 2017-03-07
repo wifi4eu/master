@@ -8,6 +8,8 @@ export interface BeneficiaryDTO {
 
     legalEntityDTO?: models.LegalEntityDTO;
 
+    represented?: boolean;
+
 }
 
 
@@ -25,5 +27,8 @@ export class BeneficiaryDTOBase  implements BeneficiaryDTO{
 
     
     legalEntityDTO?:  models.LegalEntityDTOBase ;
+
+
+    represented?:  boolean ;
 
 }

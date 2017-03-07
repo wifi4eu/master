@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
  * Created by rgarcita on 11/02/2017.
  */
 
+@Service
 public class MailService {
+
+    public final static String FROM_ADDRESS =  "portales.everis@gmail.com";
 
     @Autowired
     private MailSender mailSender;
 
-    public void rendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
+    public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
 
         SimpleMailMessage mailMsg = new SimpleMailMessage();
         mailMsg.setFrom(fromAddress);

@@ -2,19 +2,78 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title>Wifi4EU Free Wifi for Europeans</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta charset="utf-8">
+    <title>Wifi4EU Free Wifi for Europeans</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
+    <style>
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script src="https://js.arcgis.com/3.19/"></script>
+    <script>
+        require([
+                "dojo/dom-construct",
+                "esri/map",
+                "esri/layers/FeatureLayer",
+                "esri/geometry/Extent",
+                "esri/InfoTemplate",
+                "dojo/domReady!"
+            ], function (domConstruct,
+                         Map,
+                         FeatureLayer,
+                         Extent,
+                         InfoTemplate) {
+                var bounds = new Extent({
+                    "xmin": -6767978.981609231,
+                    "ymin": 2591986.6022099443,
+                    "xmax": 8559731.130780501,
+                    "ymax": 11154688.85635359,
+                    "spatialReference": {"wkid": 102100}
+                });
+
+                map = new Map("map", {
+                    extent: bounds
+                });
+
+                //Adress for map web service wit NUTS
+                var url = "http://services.arcgis.com/1WXsSdZFzziTTcic/arcgis/rest/services/NUTS3vs2013/FeatureServer/0";
+
+                //Template for map popup
+                var template = new InfoTemplate("Europe NUTS3", "NUT: ${NUTS_NAME}<br /> NUT ID: ${NUTS_ID}<br /> CNTR_CODE: ${CNTR_CODE}");
+
+                var fl = new FeatureLayer(url, {
+                    id: "europe-nuts3",
+                    infoTemplate: template,
+                    outFields: ["*"]
+                });
+                map.addLayer(fl);
+            }
+        );
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+    <!-- jQuery -->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <!-- BS JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
 </head>
 
 <body>
-  <app-root>
+<app-root>
     <div id="loader-wrapper">
-      <div id="loader"></div>
+        <div id="loader"></div>
     </div>
-  </app-root>
+</app-root>
 </body>
 
 </html>

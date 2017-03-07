@@ -9,6 +9,7 @@ import java.util.List;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="USER_ID")
     private Long userId;
 
@@ -16,12 +17,14 @@ public class User {
     private String email;
 
     @Column(name="PASSWORD")
-    private Long password;
+    private String password;
 
+    @Temporal(TemporalType.DATE)
     @Column(name="CREATE_DATE")
     private Date createDate;
 
-    @Column(name="ACESS_DATE")
+    @Temporal(TemporalType.DATE)
+    @Column(name="ACCESS_DATE")
     private Date accessDate;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -33,7 +36,7 @@ public class User {
 
     }
 
-    public User(long userId, String email, long password, Date createDate, Date accessDate, List<Role> roles) {
+    public User(long userId, String email, String password, Date createDate, Date accessDate, List<Role> roles) {
         this.userId = userId;
         this.email = email;
         this.password = password;
@@ -58,11 +61,11 @@ public class User {
         this.email = email;
     }
 
-    public long getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(long password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 

@@ -51,7 +51,7 @@ public class SecurityService {
     // GET RBAC roles entries for Spring Security mapped roles
     // -------------------------------------------------------
 
-    public List<String> getSecurityUserRoles(String userId) {
+    public List<String> getSecurityUserRoles(Long userId) {
         List<String> roles = new ArrayList<>();
 
         try {

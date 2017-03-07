@@ -23,24 +23,28 @@ public class Mayor {
     @Column(name="EMAIL")
     private String email;
 
+    @Column(name="LEGAL_ENTITY_ID")
+    private Long legalEntityId;
+
     private String repeatEmail;
 
     public Mayor(){}
 
-    public Mayor(long mayorId, String treatment, String name, String surname, String email, String repeatEmail) {
+    public Mayor(Long mayorId, String treatment, String name, String surname, String email, Long legalEntityId, String repeatEmail) {
         this.mayorId = mayorId;
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
         this.email = email;
+        this.legalEntityId = legalEntityId;
         this.repeatEmail = repeatEmail;
     }
 
-    public long getMayorId() {
+    public Long getMayorId() {
         return mayorId;
     }
 
-    public void setMayorId(long mayorId) {
+    public void setMayorId(Long mayorId) {
         this.mayorId = mayorId;
     }
 
@@ -82,5 +86,14 @@ public class Mayor {
 
     public void setRepeatEmail(String repeatEmail) {
         this.repeatEmail = repeatEmail;
+    }
+
+
+    public Long getLegalEntityId() {
+        return legalEntityId;
+    }
+
+    public void setLegalEntityId(Long legalEntityId) {
+        this.legalEntityId = legalEntityId;
     }
 }
