@@ -55,7 +55,6 @@
         <url-pattern>/*</url-pattern>
      </filter-mapping>
 
-<!--
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -65,10 +64,12 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
--->
 
-<!--
-    <filter>
+    <login-config>
+        <auth-method>CLIENT-CERT</auth-method>
+    </login-config>
+
+<!--    <filter>
         <filter-name>userFilter</filter-name>
         <filter-class>wifi4eu.wifi4eu.web.filter.UserFilter</filter-class>
     </filter>

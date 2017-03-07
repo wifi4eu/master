@@ -21,6 +21,8 @@
             <property name="eclipselink.target-database"
                       value="org.eclipse.persistence.platform.database.oracle.Oracle11Platform"/>
             <property name="eclipselink.cache.shared.default" value="false"/>
+            <property name="javax.persistence.schema-generation.database.action"
+                      value="create"/>
         </properties>
 
     </persistence-unit>

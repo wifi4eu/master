@@ -14,19 +14,19 @@ public class Nuts {
     @Column(name="NUTS_ID")
     private Long nutsId;
 
-    @Column(name="CODE")
+    @Column(name="NUTS_CODE")
     private String code;
 
-    @Column(name="NAME")
+    @Column(name="NUTS_LABEL")
     private String name;
 
-    @Column(name="LEVEL")
+    @Column(name="NUTS_LEVEL")
     private Long level;
 
-    @Column(name="CONTRY_CODE")
+    @Column(name="COUNTRY_CODE")
     private String countryCode;
 
-    @Column(name="_ORDER")
+    @Column(name="\"_ORDER\"")
     private Long order;
 
     @Column(name="SORTING")
