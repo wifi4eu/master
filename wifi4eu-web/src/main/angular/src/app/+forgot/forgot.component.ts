@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {ForgotService} from "./forgot.service";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {ForgotDetails} from "./forgot-details.model";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     templateUrl: 'forgot.component.html',
@@ -12,7 +12,7 @@ export class ForgotComponent implements OnInit {
 
     private forgotDetails: ForgotDetails;
 
-    constructor(private forgotService: ForgotService, private uxService: UxService, private route: ActivatedRoute) {
+    constructor(private forgotService: ForgotService, private uxService: UxService, private route: ActivatedRoute, private router: Router) {
     }
 
     ngOnInit() {
@@ -64,6 +64,7 @@ export class ForgotComponent implements OnInit {
                         detail: 'User has changed password'
                     });
                     console.log('SUCCESS: User has changed password');
+                    this.router.navigateByUrl("/login")
                 }
             },
             error => {

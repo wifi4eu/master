@@ -42,11 +42,6 @@ export class ReviewComponent {
     }
 
     onSubmit() {
-        if (!this.beneficiaryDTO) {
-            this.onFailure.emit(true);
-            return;
-        }
-
         this.displayConfirmingData = true;
 
         this.beneficiaryApi.create(this.beneficiaryDTO).subscribe(
