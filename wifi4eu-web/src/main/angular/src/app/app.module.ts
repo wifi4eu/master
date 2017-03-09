@@ -14,6 +14,7 @@ import {MapComponent} from "./+beneficiary-portal/+voucher/+map/map.component";
 import {ActivationComponent} from "./+activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
+import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
 import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
@@ -31,6 +32,7 @@ export function translateFactory(http: Http) {
         ActivationComponent,
         LoginComponent,
         ForgotComponent,
+        HelpdeskComponent,
         DgConnPortalComponent,
         DgConnTimelineComponent,
         DgConnPublicationComponent
@@ -40,7 +42,8 @@ export function translateFactory(http: Http) {
         ActivationComponent,
         LoginComponent,
         ForgotComponent,
-		DgConnPortalComponent,
+        HelpdeskComponent,
+        DgConnPortalComponent,
         DgConnTimelineComponent,
         DgConnPublicationComponent
     ],
