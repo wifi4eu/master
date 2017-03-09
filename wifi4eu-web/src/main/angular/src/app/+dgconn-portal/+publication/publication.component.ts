@@ -1,9 +1,11 @@
 import {Component, Input} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
 import {PublicationElement} from "../../shared/models/pubilcation-element.model";
+import {PublicationCallDTO, PublicationCallDTOBase} from '../../shared/swagger/model/PublicationCallDTO';
+import {CallApi} from '../../shared/swagger/api/CallApi';
 
 @Component({
-    templateUrl: 'publication.component.html'
+    templateUrl: 'publication.component.html', providers: [CallApi]
 })
 
 export class DgConnPublicationComponent {
@@ -17,20 +19,23 @@ export class DgConnPublicationComponent {
     private elementIndex: number;
     private newElementForm: boolean;
 
-    constructor() {
+    constructor(private callApi: CallApi) {
         this.display = false;
         this.dgConnDetails = new DgConnDetails();
-        this.publicationElements = [
-            new PublicationElement(),
-            new PublicationElement()
-        ];
-        this.publicationElements[0].createPublicationForDgconn('Registration of Mayor and Supplier', '00:01', '01/01/2017', '31/12/2017', '23:59');
-        this.publicationElements[1].createPublicationForDgconn('Registration of Mayor and Supplier2', '20:01', '12/01/2017', '31/12/2017', '23:59');
+        this.publicationElements = [];
+        this.callApi.allCalls().subscribe(
+            calls => this.mapElement(calls),
+            error => console.log(error)
+        );
         this.elementSelected = new PublicationElement();
         this.newElementForm = false;
     }
 
-    ngOnInit() {
+    mapElement(calls: PublicationCallDTOBase[]) {
+        console.log("Calls:", calls);
+        for (let i = 0; i < calls.length; i++) {
+            this.publicationElements.push(this.transformDTOToElement(calls[i]));
+        }
     }
 
     addPublication() {
@@ -58,14 +63,17 @@ export class DgConnPublicationComponent {
 
     elementSelectedMakeCopy(element: PublicationElement) {
         this.elementSelectedOriginal = new PublicationElement();
-        this.elementSelectedOriginal.createPublicationForDgconn(element.getEvent(), element.getStartTime(), element.getStartDate(), element.getEndDate(), element.getEndTime());
+        this.elementSelectedOriginal.setUrl(element.getUrl());
+        this.elementSelectedOriginal.setStartDate(element.getStartDate());
+        this.elementSelectedOriginal.setStartTime(element.getStartTime());
+        this.elementSelectedOriginal.setEndDate(element.getEndDate());
+        this.elementSelectedOriginal.setEndTime(element.getEndTime());
     }
 
     createPublication() {
         this.publicationElements.push(this.elementSelected);
         this.newElementForm = false;
         this.display = false;
-        console.log(this.publicationElements);
         this.elementSelected = new PublicationElement();
     }
 
@@ -93,5 +101,28 @@ export class DgConnPublicationComponent {
     changeDateEnd() {
         var date = new Date(this.publicationElements[this.elementIndex].getEndDate());
         this.publicationElements[this.elementIndex].setEndDate(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear());
+    }
+
+    transformDTOToElement(dto: PublicationCallDTOBase) {
+        let element = new PublicationElement();
+        element.setId(dto.callId);
+        element.setUrl(dto.url);
+        let startDate = new Date(dto.startDate);
+        let endDate = new Date(dto.endDate);
+        element.setStartDate(startDate.getDate() + "/" + (startDate.getMonth() + 1) + "/" + startDate.getFullYear());
+        element.setStartTime(startDate.getHours() + ":" + startDate.getMinutes());
+        element.setEndDate(endDate.getDate() + "/" + (endDate.getMonth() + 1) + "/" + endDate.getFullYear());
+        element.setEndTime(endDate.getHours() + ":" + endDate.getMinutes());
+        console.log("Element:", element);
+        return element;
+    }
+
+    transformElementToDTO(element: PublicationElement) {
+        let dto = new PublicationCallDTOBase();
+        dto.callId = element.getId();
+        dto.url = element.getUrl();
+        dto.startDate = new Date(element.getStartDate() + " " + element.getStartTime());
+        dto.endDate = new Date(element.getEndDate() + " " + element.getEndTime());
+        return dto;
     }
 }
