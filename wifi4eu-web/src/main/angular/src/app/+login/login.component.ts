@@ -2,7 +2,7 @@ import {Component, Input} from "@angular/core";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {UserDetails} from "../shared/models/user-details.model";
 import {UserService} from "../shared/services/user.service";
-
+import {Router} from "@angular/router";
 @Component({
     selector: 'login-component',
     templateUrl: 'login.component.html',
@@ -14,7 +14,7 @@ export class LoginComponent {
 
     @Input('userDetails') userDetails: UserDetails = new UserDetails();
 
-    constructor(private userService: UserService, private uxService: UxService) {
+    constructor(private userService: UserService, private uxService: UxService, private router: Router) {
     }
 
     onSubmit() {
@@ -23,20 +23,21 @@ export class LoginComponent {
         this.userService.getUser(this.userDetails).subscribe(
             data => {
                 this.displayConfirmingData = false;
-                if(data == "error"){
+                if (data == "error") {
                     this.uxService.growl({
                         severity: 'error',
                         summary: 'ERROR',
                         detail: 'Could not login, with these user password'
                     });
                     console.log('ERROR: Could not login, with these user password');
-                }else if(data == "success"){
+                } else if (data == "success") {
                     this.uxService.growl({
                         severity: 'success',
                         summary: 'SUCCESS',
                         detail: 'Login success'
                     });
                     console.log('SUCCESS: Login success');
+                    this.router.navigateByUrl("beneficiary-portal/voucher")
                 }
             },
             error => {
