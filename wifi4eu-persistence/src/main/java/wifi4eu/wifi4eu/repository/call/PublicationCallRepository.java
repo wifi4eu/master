@@ -10,6 +10,6 @@ import java.util.List;
  * Created by rgarcita on 21/02/2017.
  */
 public interface PublicationCallRepository extends CrudRepository<PublicationCall,Long>{
-    List<PublicationCall> findByCallDateLessThanEqual(Date now);
-    List<PublicationCall> findByClosingDateGreaterThanEqual(Date now);
+    //List<PublicationCall> findByCallDateLessThanEqual(Date now);
+    //List<PublicationCall> findByClosingDateGreaterThanEqual(Date now);
 }
