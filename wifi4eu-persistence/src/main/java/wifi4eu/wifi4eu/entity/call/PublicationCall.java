@@ -1,47 +1,41 @@
 package wifi4eu.wifi4eu.entity.call;
 
 import javax.persistence.*;
-import java.util.Date;
 
-/**
- * Created by rgarcita on 21/02/2017.
- */
 @Entity
-@Table(name="CAL_PUBCALL_T")
+@Table(name = "CAL_PUBCALL_T")
 public class PublicationCall {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="CALL_ID")
+    @Column(name = "CALL_ID")
     private Long callId;
 
-    @Column(name="URL")
+    @Column(name = "URL")
     private String url;
 
-    @Column(name="NAME")
-    private String name;
+    @Column(name = "START_DATE")
+    private String startDate;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name="CALL_DATE")
-    private Date callDate;
+    @Column(name = "START_TIME")
+    private String startTime;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name="COMPETITION_DATE")
-    private Date competitionDate;
+    @Column(name = "END_DATE")
+    private String endDate;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name="CLOSING_DATE")
-    private Date closingDate;
+    @Column(name = "END_TIME")
+    private String endTime;
 
-    public PublicationCall(){}
+    public PublicationCall() {
+    }
 
-    public PublicationCall(Long callId, String url, String name, Date callDate, Date competitionDate, Date closingDate) {
+    public PublicationCall(Long callId, String url, String startDate, String startTime, String endDate, String endTime) {
         this.callId = callId;
         this.url = url;
-        this.name = name;
-        this.callDate = callDate;
-        this.competitionDate = competitionDate;
-        this.closingDate = closingDate;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
     }
 
     public Long getCallId() {
@@ -60,35 +54,35 @@ public class PublicationCall {
         this.url = url;
     }
 
-    public String getName() {
-        return name;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
-    public Date getCallDate() {
-        return callDate;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setCallDate(Date callDate) {
-        this.callDate = callDate;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public Date getCompetitionDate() {
-        return competitionDate;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setCompetitionDate(Date competitionDate) {
-        this.competitionDate = competitionDate;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
-    public Date getClosingDate() {
-        return closingDate;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setClosingDate(Date closingDate) {
-        this.closingDate = closingDate;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }
