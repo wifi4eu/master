@@ -18,6 +18,7 @@ import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
 import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
+import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -33,16 +34,18 @@ export function translateFactory(http: Http) {
         ForgotComponent,
         DgConnPortalComponent,
         DgConnTimelineComponent,
-        DgConnPublicationComponent
+        DgConnPublicationComponent,
+        HelpdeskComponent
     ],
     exports: [
         MapComponent,
         ActivationComponent,
         LoginComponent,
         ForgotComponent,
-		DgConnPortalComponent,
+        DgConnPortalComponent,
         DgConnTimelineComponent,
-        DgConnPublicationComponent
+        DgConnPublicationComponent,
+        HelpdeskComponent
     ],
     imports: [
         CoreModule,
