@@ -1,67 +1,74 @@
 import {Component} from "@angular/core";
-import {HelpdeskIssue} from "../shared/models/helpdesk-issue-details.model";
+import {HelpdeskDTO, HelpdeskDTOBase} from '../shared/swagger/model/HelpdeskDTO';
+import {HelpdeskApi} from '../shared/swagger/api/HelpdeskApi'
 
 @Component({
-    templateUrl: 'helpdesk.component.html'
+    templateUrl: 'helpdesk.component.html', providers: [HelpdeskApi]
 })
 
 export class HelpdeskComponent {
-    private issues: HelpdeskIssue[];
-    private selectedIssues: HelpdeskIssue[];
-    private issueSelected: HelpdeskIssue;
-    private issueSelectedOriginal: HelpdeskIssue;
-    private issueIndex: number;
+    private issues: HelpdeskDTOBase[];
+    private selectedIssues: HelpdeskDTOBase[];
+    private issueSelected: HelpdeskDTOBase;
+    private issueSelectedOriginal: HelpdeskDTOBase;
     private display: boolean;
 
-    constructor() {
-        this.issues = [
-            new HelpdeskIssue("Supplier", "Password", "Austria", new Date(1488788967 * 1000), "DG Connect", "Resolved", "john.smith@mail.com", "Hi, I can't login as a mayor into Beneficiary portal with my temporary password that you sent on my email address. Thanks.", "", ""),
-            new HelpdeskIssue("Supplier", "Login", "Austria", new Date(1488788967 * 1000), "Member State", "Resolved", "doomguy@idsoftware.com", "Gonna get mine, get outta my way!", "it's gonna be", "gonna be"),
-            new HelpdeskIssue("Beneficiary", "Registration", "Austria", new Date(1488694526 * 1000), "DG Connect", "Pending"),
-            new HelpdeskIssue("Member State", "Approval", "Austria", new Date(1488694526 * 1000), "Member State", "Pending"),
-            new HelpdeskIssue("Beneficiary", "Login", "Austria", new Date(1510726655 * 1000), "DG Connect", "Resolved"),
-            new HelpdeskIssue("Beneficiary", "Registration", "Austria", new Date(1510726655 * 1000), "DG Connect", "Resolved"),
-            new HelpdeskIssue("Supplier", "Password", "Austria", new Date(793840955 * 1000), "DG Connect", "Pending")
-        ];
-        this.issueSelected = new HelpdeskIssue();
+    constructor(private helpdeskApi: HelpdeskApi) {
+        this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
+        this.issueSelected = new HelpdeskDTOBase();
         this.display = false;
     }
 
-    viewIssueDetails(issue: HelpdeskIssue, rowIndex: number) {
-        this.issueIndex = rowIndex;
-        this.issueSelected = issue;
-        this.makeIssueSelectedCopy(issue);
+    viewIssueDetails(issue: HelpdeskDTOBase, rowIndex: number) {
+        this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
+        this.helpdeskApi.getHelpdeskIssue(this.issues[rowIndex].issueId).subscribe(helpdeskIssue => this.issueSelected = helpdeskIssue);
+        this.makeIssueSelectedCopy(this.issueSelected);
         this.display = true;
     }
 
     resolveIssues() {
         for (var i = 0; i < this.selectedIssues.length; i++) {
-            this.selectedIssues[i].setStatus("Resolved");
+            this.selectedIssues[i].status = "Resolved";
+            this.helpdeskApi.createHelpdeskIssue(this.selectedIssues[i]).subscribe();
         }
+        this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
     }
 
     setAsResolved() {
         this.display = false;
-        this.issueSelected.setStatus("Resolved");
-        this.issues[this.issueIndex] = this.issueSelected;
-        this.issueSelected = new HelpdeskIssue();
+        this.issueSelected.status = "Resolved";
+        this.helpdeskApi.createHelpdeskIssue(this.issueSelected).subscribe();
+        this.issueSelected = new HelpdeskDTOBase();
+        this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
     }
 
     keepAsPending() {
         this.display = false;
-        this.issueSelected.setStatus("Pending");
-        this.issues[this.issueIndex] = this.issueSelected;
-        this.issueSelected = new HelpdeskIssue();
+        this.issueSelected.status = "Pending";
+        this.helpdeskApi.createHelpdeskIssue(this.issueSelected).subscribe();
+        this.issueSelected = new HelpdeskDTOBase();
+        this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
     }
 
     cancel() {
         this.display = false;
-        this.issues[this.issueIndex] = this.issueSelectedOriginal;
-        this.issueSelected = new HelpdeskIssue();
+        this.issueSelected = new HelpdeskDTOBase();
+        this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
     }
 
-    makeIssueSelectedCopy(issue: HelpdeskIssue) {
-        this.issueSelectedOriginal = new HelpdeskIssue(issue.getPortal(), issue.getTopic(), issue.getMemberState(), issue.getDate(), issue.getAssignedTo(), issue.getStatus(), issue.getFrom(), issue.getIssueSummary(), issue.getMemberStateComments(), issue.getDgConnectComments());
+    makeIssueSelectedCopy(issue: HelpdeskDTOBase) {
+        this.issueSelectedOriginal = new HelpdeskDTOBase();
+        this.issueSelectedOriginal.issueId = issue.issueId;
+        this.issueSelectedOriginal.portal = issue.portal;
+        this.issueSelectedOriginal.topic = issue.topic;
+        this.issueSelectedOriginal.memberState = issue.memberState;
+        this.issueSelectedOriginal.date = issue.date;
+        this.issueSelectedOriginal.assignedTo = issue.assignedTo;
+        this.issueSelectedOriginal.status = issue.status;
+        this.issueSelectedOriginal.from = issue.from;
+        this.issueSelectedOriginal.issueSummary = issue.issueSummary;
+        this.issueSelectedOriginal.memberStateComments = issue.memberStateComments;
+        this.issueSelectedOriginal.dgConnectComments = issue.dgConnectComments;
     }
 }
 
