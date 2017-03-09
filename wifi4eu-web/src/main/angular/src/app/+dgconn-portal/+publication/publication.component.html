@@ -15,7 +15,7 @@
 
     <p-dataTable [value]="publicationElements" [rows]="5" [paginator]="true" [pageLinks]="3"
                  [rowsPerPageOptions]="[5,10,20]">
-        <p-column field="event" header="{{ 'event.title' | translate }}"
+        <p-column field="url" header="{{ 'event.title' | translate }}"
                   [sortable]="true"></p-column>
         <p-column field="startDate" header="{{ 'start.date' | translate }}"
                   [sortable]="true"></p-column>
@@ -58,11 +58,11 @@
                     <div class="form-group ui-g">
                         <div class="ui-g-12">
                             <div class="form-group left">
-                                <label class="labelModal" for="event">{{'labelModal.timeline' | translate }}</label>
-                                <input type="text" [(ngModel)]="elementSelected.event"
+                                <label class="labelModal" for="url">{{'labelModal.timeline' | translate }}</label>
+                                <input type="text" [(ngModel)]="elementSelected.url"
                                        class="form-control"
-                                       name="event" ngcontrol="event"
-                                       #event="ngModel" required>
+                                       name="url" ngcontrol="url"
+                                       #url="ngModel" required>
                             </div>
                         </div>
                     </div>
