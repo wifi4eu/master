@@ -3,33 +3,42 @@
                     [isCompleted]="completed[0]"
                     [isActive]="active[0]">
         <uxWizardStepCustomContent>
-            <legal-entity-component [entityDetails]="entityDetails"
-                              (onNext)="onNext($event)"
-                              (onBack)="onBack($event)"></legal-entity-component>
+            <legal-entity-component *ngIf="active[0]"
+                                    [beneficiaryDTO]="beneficiaryDTO"
+                                    [nutsDTO]="nutsDTO"
+                                    [lausDTO]="lausDTO"
+                                    (onNext)="onNext($event)"
+                                    (onBack)="onBack($event)">
+            </legal-entity-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'registration.beneficiary.title' | translate }}"
                     [isCompleted]="completed[1]"
                     [isActive]="active[1]">
         <uxWizardStepCustomContent>
-            <beneficiary-component [beneficiaryDetails]="beneficiaryDetails"
+            <beneficiary-component *ngIf="active[1]"
+                                   [beneficiaryDTO]="beneficiaryDTO"
+                                   [selection]="selection"
                                    (onNext)="onNext($event)"
-                                   (onBack)="onBack($event)"></beneficiary-component>
+                                   (onBack)="onBack($event)">
+            </beneficiary-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'registration.review.title' | translate }}"
                     [isCompleted]="completed[2]"
                     [isActive]="active[2]">
         <uxWizardStepCustomContent>
-            <review-component [entityDetails]="entityDetails"
-                              [beneficiaryDetails]="beneficiaryDetails"
+            <review-component *ngIf="active[2]"
+                              [beneficiaryDTO]="beneficiaryDTO"
+                              [nutsDTO]="nutsDTO"
+                              [lausDTO]="lausDTO"
+                              [selection]="selection"
                               (onNext)="onNext($event)"
-                              (gotoStep)="gotoStep($event)" (onSuccess)="onSuccess($event)"
+                              (gotoStep)="gotoStep($event)"
+                              (onSuccess)="onSuccess($event)"
                               (onFailure)="onFailure($event)"></review-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
 </ux-wizard-steps>
-<success-component
-        *ngIf="successRegistration"></success-component>
-<failure-component *ngIf="failureRegistration"></failure-component>
+<success-component *ngIf="successRegistration"></success-component>
 <failure-component *ngIf="failureRegistration"></failure-component>

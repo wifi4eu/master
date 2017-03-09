@@ -16,22 +16,27 @@
     </div>
     <div class="ui-g-3"></div>
 </div>
-<form (ngSubmit)="onSubmit(1)" #entityForm="ngForm">
+<form #entityForm="ngForm">
     <div class="form-group ui-g">
         <div class="ui-g-3"></div>
         <div class="ui-g-6">
             <div class="form-group">
                 <label for="country">{{ 'country.label' | translate }}</label>
-                <p-autoComplete [(ngModel)]="entityDetails.country"
-                                [suggestions]="countrySuggestions"
-                                (completeMethod)="filterCountry($event)"
+                <p-autoComplete id="country"
+                                class="form-control"
+                                name="country"
                                 field="name"
-                                [size]="30" [minLength]="1" class="form-control"
-                                name="country" ngcontrol="country"
-                                #country="ngModel" required>
+                                placeholder="Espanya"
+                                ngcontrol="country"
+                                #country="ngModel"
+                                [(ngModel)]="nutsDTO"
+                                [suggestions]="nutsSuggestions"
+                                [size]="30"
+                                [minLength]="1"
+                                (completeMethod)="filterNuts($event)"
+                                required>
                 </p-autoComplete>
-                <div [hidden]="country.valid || country.pristine"
-                     class="alert alert-danger">Country is required
+                <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required
                 </div>
             </div>
         </div>
@@ -43,14 +48,20 @@
             <div class="form-group">
                 <label for="municipality">{{ 'municipality.label' | translate
                     }}</label>
-                <p-autoComplete [(ngModel)]="entityDetails.municipality"
-                                [suggestions]="municipalitySuggestions"
-                                (completeMethod)="filterMunicipality($event)"
-                                field="NAME_1"
-                                [size]="30" [minLength]="1" class="form-control"
-                                name="municipality" ngcontrol="municipality"
+                <p-autoComplete id="municipality"
+                                class="form-control"
+                                name="municipality"
+                                field="name1"
+                                placeholder="Barcelona"
+                                ngcontrol="municipality"
                                 #municipality="ngModel"
-                                (keydown)="checkCountry()" required>
+                                [(ngModel)]="lausDTO"
+                                [suggestions]="lausSuggestions"
+                                [size]="30"
+                                [minLength]="1"
+                                (keyup)="onKeyUp($event)"
+                                (completeMethod)="filterLaus($event)"
+                                required>
                 </p-autoComplete>
                 <div [hidden]="municipality.valid || municipality.pristine"
                      class="alert alert-danger">Municipality is
@@ -65,9 +76,15 @@
         <div class="ui-g-5">
             <div class="form-group">
                 <label for="address">{{ 'address.label' | translate }}</label>
-                <input type="text" [(ngModel)]="entityDetails.address"
+                <input id="address"
+                       type="text"
                        class="form-control"
-                       name="address" ngcontrol="address" #address="ngModel"
+                       name="address"
+                       min="1"
+                       placeholder="Diagonal"
+                       ngcontrol="address"
+                       #address="ngModel"
+                       [(ngModel)]="beneficiaryDTO.legalEntityDTO.address"
                        required>
                 <div [hidden]="address.valid || address.pristine"
                      class="alert alert-danger">Address is required
@@ -77,9 +94,14 @@
         <div class="ui-g-1">
             <div class="form-group">
                 <label for="number">{{ 'number.label' | translate }}</label>
-                <input type="number" min="1" [(ngModel)]="entityDetails.number"
+                <input id="number"
+                       type="number"
                        class="form-control"
-                       name="number" ngcontrol="number" #number="ngModel"
+                       name="number"
+                       placeholder="605"
+                       ngcontrol="number"
+                       #number="ngModel"
+                       [(ngModel)]="beneficiaryDTO.legalEntityDTO.addressNum"
                        required>
                 <div [hidden]="number.valid || number.pristine"
                      class="alert alert-danger">Address is required
@@ -92,14 +114,17 @@
         <div class="ui-g-3"></div>
         <div class="ui-g-6">
             <div class="form-group">
-                <label for="postalCode">{{ 'postal-code.label' | translate
-                    }}</label>
-                <input type="text" [(ngModel)]="entityDetails.postalCode"
+                <label for="postalCode">{{ 'postal-code.label' | translate }}</label>
+                <input id="postalCode"
+                       type="text"
                        class="form-control"
-                       name="postalCode" ngcontrol="postalCode"
-                       #postalCode="ngModel" required>
-                <div [hidden]="postalCode.valid || postalCode.pristine"
-                     class="alert alert-danger">Postal code is
+                       name="postalCode"
+                       placeholder="08022"
+                       ngcontrol="postalCode"
+                       #postalCode="ngModel"
+                       [(ngModel)]="beneficiaryDTO.legalEntityDTO.postalCode"
+                       required>
+                <div class="alert alert-danger" [hidden]="postalCode.valid || postalCode.pristine">Postal code is
                     required
                 </div>
             </div>
@@ -112,8 +137,8 @@
             <button type="button" class="btn">{{ 'back.button' | translate }}</button>
         </div>
         <div class="ui-g-2" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary"
-                    [disabled]="!entityForm.form.valid">{{ 'next.button' |
+            <button type="submit" class="btn btn-primary" [disabled]="!entityForm.form.valid" (click)="onSubmit(1)">{{
+                'next.button' |
                 translate }}
             </button>
         </div>
