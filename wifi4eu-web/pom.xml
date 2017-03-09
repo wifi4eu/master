@@ -49,7 +49,20 @@
                                 <arguments>
                                     <argument>build</argument>
                                 </arguments>
-                            </configuration>
+
+                               <executable>cmd</executable>
+
+                               <workingDirectory>src/main/angular</workingDirectory>
+
+                               <arguments>
+
+                                   <argument>/c</argument>
+
+                                   <argument>"ng build"</argument>
+
+                               </arguments>
+
+                           </configuration>
                         </execution>
                     </executions>
                 </plugin>
