@@ -14,6 +14,7 @@ import {
     DataTableModule,
     CalendarModule
 } from "primeng/primeng";
+
 import {APP_DIRECTIVES} from "./components/index";
 
 export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions) {
