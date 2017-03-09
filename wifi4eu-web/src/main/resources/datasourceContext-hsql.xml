@@ -20,6 +20,8 @@
     <tx:annotation-driven/>
 
 	<jdbc:embedded-database id="dataSource" type="HSQL">
+		<jdbc:script location="classpath:/ES.sql"/>
+		<jdbc:script location="classpath:/nuts.sql"/>
 	</jdbc:embedded-database>
 	
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

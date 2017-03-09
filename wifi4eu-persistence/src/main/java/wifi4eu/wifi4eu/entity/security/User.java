@@ -19,6 +19,9 @@ public class User {
     @Column(name="PASSWORD")
     private String password;
 
+    @Column(name="TOKEN")
+    private String token;
+
     @Temporal(TemporalType.DATE)
     @Column(name="CREATE_DATE")
     private Date createDate;
@@ -36,10 +39,11 @@ public class User {
 
     }
 
-    public User(long userId, String email, String password, Date createDate, Date accessDate, List<Role> roles) {
+    public User(long userId, String email, String password, String token, Date createDate, Date accessDate, List<Role> roles) {
         this.userId = userId;
         this.email = email;
         this.password = password;
+        this.token = token;
         this.createDate = createDate;
         this.accessDate = accessDate;
         this.roles = roles;
@@ -67,6 +71,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public Date getCreateDate() {

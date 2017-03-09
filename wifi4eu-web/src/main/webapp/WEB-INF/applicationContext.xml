@@ -7,13 +7,13 @@
     
 	<context:component-scan base-package="wifi4eu.wifi4eu"/>
 
-    <!--<import resource="classpath:datasourceContext.xml" />-->        <!-- JNDI on ORACLE / WLS -->
+	<!--<import resource="classpath:datasourceContext.xml" />        &lt;!&ndash; JNDI on ORACLE / WLS &ndash;&gt;-->
 
-	<import resource="classpath:datasourceContext-hsql.xml" />  <!-- HSQL MEM DB WITHOUT TABLE GEN -->
+	<!--<import resource="classpath:datasourceContext-hsql.xml" />-->  <!-- HSQL MEM DB WITHOUT TABLE GEN -->
 
-	<!-- <import resource="classpath:datasourceContext-hsql-db.xml" />-->		<!-- HSQL MEM DB WITH SECURITY TABLES -->
+	<import resource="classpath:datasourceContext-hsql-db.xml"/>         <!-- HSQL MEM DB WITH SECURITY TABLES -->
 
-	<import resource="classpath:spring-security.xml" />
+	<!--<import resource="classpath:spring-security.xml" />-->
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />

@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class LocationService {
 
-    private final static Logger logger = Logger.getLogger(LocationService.class);
+    private final static Logger _log = Logger.getLogger(LocationService.class);
 
     @Autowired
     LocationNutsRepository locationNutsRepository;
@@ -34,14 +34,21 @@ public class LocationService {
     LauMapper lauMapper;
 
     public List<NutsDTO> getNutsByLevel(long level) {
+        if(_log.isDebugEnabled()) {
+            _log.debug("Get NUTS with level: " + level);
+        }
         return nutsMapper.toDTOList(Lists.newArrayList(locationNutsRepository.findByLevel(level)));
     }
 
     public List<NutsDTO> getAllNuts() {
+        _log.debug("Get all NUTS");
         return nutsMapper.toDTOList(Lists.newArrayList(locationNutsRepository.findAll()));
     }
 
     public List<LauDTO> getLauByCountryCode(String countryCode){
+        if(_log.isDebugEnabled()) {
+            _log.debug("Get LAU from country: " + countryCode);
+        }
         return lauMapper.toDTOList(Lists.newArrayList(locationLauRepository.findByCountryCode(countryCode)));
     }
 

@@ -1,0 +1,4 @@
+INSERT INTO LOC_LAU_T (LAU_ID, COUNTRY_CODE, NUTS3, LAU1, LAU2, "_CHANGE", NAME1, NAME2, AREA, POP)
+VALUES (1, 'ES', 'ES511', 'no', '08019', 'no', 'Barcelona', 'Barcelona', 98211086, 0);
+INSERT INTO LOC_LAU_T (LAU_ID, COUNTRY_CODE, NUTS3, LAU1, LAU2, "_CHANGE", NAME1, NAME2, AREA, POP)
+VALUES (2, 'ES', 'ES511', 'no', '08205', 'no', 'Sant Cugat del Vallès', 'Sant Cugat del Vallès', 48269751, 0);

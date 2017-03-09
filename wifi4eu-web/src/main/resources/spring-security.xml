@@ -2,11 +2,42 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
                            http://www.springframework.org/schema/security
                            http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-    <security:authentication-manager alias="authenticationManager">
+    <security:http use-expressions="true" create-session="stateless"
+                   entry-point-ref="http403ForbiddenEntryPoint" authentication-manager-ref="authenticationManager">
+        <security:intercept-url pattern="/api/beneficiary/*" access="isAuthenticated()" />
+        <security:custom-filter after="PRE_AUTH_FILTER" ref="customFilter" />
+    </security:http>
+
+    <security:authentication-manager id="authenticationManager">
+        <security:authentication-provider ref="authProvider"/>
+    </security:authentication-manager>
+
+    <bean id="authProvider"
+          class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
+        <property name="preAuthenticatedUserDetailsService">
+            <bean class="wifi4eu.wifi4eu.service.security.UsersDetailsByTokenCustom">
+                <property name="userDetailsService">
+                    <bean id="dbUserService" class="wifi4eu.wifi4eu.service.security.DBUserDetailsServiceCustom" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="customFilter"
+          class="wifi4eu.wifi4eu.web.filter.CustomW4EUFilter">
+        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="authenticationEntryPoint" ref="http403ForbiddenEntryPoint" />
+    </bean>
+
+    <bean id="http403ForbiddenEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
+
+
+
+    <!--<security:authentication-manager alias="authenticationManager">
         <security:authentication-provider
                 ref="preauthAuthProvider" />
     </security:authentication-manager>
@@ -35,6 +66,6 @@
     </bean>
 
 
-    <bean id="allAuthenticatedUserService" class="wifi4eu.wifi4eu.service.security.UserDetailsServiceCustom" />
+    <bean id="allAuthenticatedUserService" class="wifi4eu.wifi4eu.service.security.UserDetailsServiceCustom" />-->
 
 </beans>

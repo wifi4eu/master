@@ -1,12 +1,14 @@
 import {Component, ViewChild} from "@angular/core";
 import {EntityDetails} from "../shared/models/legal-entity-details.model";
-import {BeneficiaryDetails} from "../shared/models/beneficiary-details.model";
+//import {BeneficiaryDetails} from "../shared/models/beneficiary-details.model";
+import {BeneficiaryDTO, BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
 import {ReviewComponent} from "./+beneficiary-registration-step3/review.component";
+import {Router} from "@angular/router";
 
 @Component({templateUrl: 'registration.component.html'})
 export class RegistrationComponent {
     private entityDetails: EntityDetails;
-    private beneficiaryDetails: BeneficiaryDetails;
+    private beneficiaryDTO: BeneficiaryDTO;
     private completedSteps: boolean[];
     private activeSteps: boolean[];
     private currentStep: number;
@@ -19,10 +21,10 @@ export class RegistrationComponent {
     @ViewChild(ReviewComponent)
     private childReview: ReviewComponent;
 
-    constructor() {
+    constructor(private router: Router) {
         console.log("Constructor");
         this.entityDetails = new EntityDetails();
-        this.beneficiaryDetails = new BeneficiaryDetails();
+        this.beneficiaryDTO = new BeneficiaryDTOBase();
         this.completed = [false, false, false];
         this.active = [true, false, false];
     }
@@ -64,6 +66,7 @@ export class RegistrationComponent {
 
     onSuccess(value: boolean) {
         this.successRegistration = value;
+        this.router.navigateByUrl("beneficiary-portal/voucher")
     }
 
     onFailure(value: boolean) {

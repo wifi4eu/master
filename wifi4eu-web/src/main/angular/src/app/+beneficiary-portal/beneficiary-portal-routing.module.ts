@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {VoucherComponent} from './+voucher/voucher.component';
-import {BeneficiaryProfileComponent} from "./profile/profile.component";
+import {BeneficiaryProfileComponent} from "./+profile/profile.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
