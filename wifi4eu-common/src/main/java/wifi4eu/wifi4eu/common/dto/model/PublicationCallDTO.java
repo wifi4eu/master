@@ -1,34 +1,25 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-/**
- * Created by rgarcita on 21/02/2017.
- */
 public class PublicationCallDTO {
 
     private Long callId;
     @NotNull
     private String url;
-    private String name;
     @NotNull
-    private Date callDate;
+    private Date startDate;
     @NotNull
-    private Date competitionDate;
-    @NotNull
-    private Date closingDate;
+    private Date endDate;
 
     public PublicationCallDTO(){}
 
-    public PublicationCallDTO(Long callId, String url, String name, Date callDate, Date competitionDate, Date closingDate) {
+    public PublicationCallDTO(Long callId, String url, Date startDate, Date endDate) {
         this.callId = callId;
         this.url = url;
-        this.name = name;
-        this.callDate = callDate;
-        this.competitionDate = competitionDate;
-        this.closingDate = closingDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public Long getCallId() {
@@ -47,35 +38,19 @@ public class PublicationCallDTO {
         this.url = url;
     }
 
-    public String getName() {
-        return name;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public Date getCallDate() {
-        return callDate;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setCallDate(Date callDate) {
-        this.callDate = callDate;
-    }
-
-    public Date getCompetitionDate() {
-        return competitionDate;
-    }
-
-    public void setCompetitionDate(Date competitionDate) {
-        this.competitionDate = competitionDate;
-    }
-
-    public Date getClosingDate() {
-        return closingDate;
-    }
-
-    public void setClosingDate(Date closingDate) {
-        this.closingDate = closingDate;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }
