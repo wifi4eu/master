@@ -1,0 +1,46 @@
+<div class="ui-g-1"></div>
+<div class="ui-g-10">
+    <div class="ui-g-12 center">
+        Problems with your registration? Please click here to <a (click)="expanded = true">contact the Help-Desk</a>
+    </div>
+    <div id="helpdesk-form" class="ui-g-12" [hidden]="!expanded">
+        <br>
+        <hr class="ui-g-12 center">
+        <br>
+        <div class="ui-g-1"></div>
+        <form class="ui-g-10">
+            <label for="problem_type">Select type of problem from the list</label><br>
+            <select class="form-control" name="problem_type" id="problem_type" required>
+                <option value="opt1">Option 1</option>
+                <option value="opt2">Option 2</option>
+                <option value="opt3">Option 3</option>
+                <option value="opt4">Option 4</option>
+            </select><br><br>
+            <label for="problem_desc">Describe the problem</label><br>
+            <textarea id="problem_desc" class="ui-g-12" required></textarea><br><br>
+            <label for="problem_name">Your name</label><br>
+            <input id="problem_name" class="ui-g-12" type="text" required><br><br>
+            <label for="problem_surname">Your surname</label><br>
+            <input id="problem_surname" class="ui-g-12" type="text" required><br><br>
+            <label for="problem_email">Your email</label><br>
+            <input id="problem_email" class="ui-g-12" type="email" required><br><br>
+            <label for="problem_country">Country</label><br>
+            <select class="form-control" name="problem_country" id="problem_country" required>
+                <option selected disabled>Select</option>
+                <option *ngFor="let country of countries" value="country.code">{{country.name}}</option>
+            </select><br><br>
+            <div class="form-group ui-g">
+                <div class="ui-g-4"></div>
+                <div class="ui-g-2" style="text-align: center !important">
+                    <button type="button" class="btn">{{ 'cancel.button' | translate }}</button>
+                </div>
+                <div class="ui-g-2" style="text-align: center !important">
+                    <button type="submit" class="btn btn-primary">Send message</button>
+                </div>
+                <div class="ui-g-4"></div>
+            </div>
+        </form>
+        <div class="ui-g-1"></div>
+    </div>
+</div>
+<div class="ui-g-1"></div>
