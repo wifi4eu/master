@@ -1,32 +1,42 @@
 export class PublicationElement {
+    private id: number;
     private date: string;
     private label: string;
     private subLabel: string;
     private styleClass: string;
-    private event: string;
+    private url: string;
     private startTime: string;
     private startDate: string;
     private endDate: string;
     private endTime: string;
 
-    constructor(date?: string, label?: string, subLabel?: string, styleClass?: string, event?: string, startTime?: string, startDate?: string, endDate?: string, endTime?: string) {
+    constructor(id?: number, date?: string, label?: string, subLabel?: string, styleClass?: string, url?: string, startTime?: string, startDate?: string, endDate?: string, endTime?: string) {
+        this.id = id;
         this.date = date;
         this.label = label;
         this.subLabel = subLabel;
         this.styleClass = styleClass;
-        this.event = event;
+        this.url = url;
         this.startTime = startTime;
         this.startDate = startDate;
         this.endDate = endDate;
         this.endTime = endTime;
     }
 
-    createPublicationForDgconn(event: string, startTime: string, startDate: string, endDate: string, endTime: string) {
-        this.event = event;
+    createPublicationForDgconn(url: string, startTime: string, startDate: string, endDate: string, endTime: string) {
+        this.url = url;
         this.startTime = startTime;
         this.startDate = startDate;
         this.endDate = endDate;
         this.endTime = endTime;
+    }
+
+    getId(): number {
+        return this.id;
+    }
+
+    setId(value: number) {
+        this.id = value;
     }
 
     getDate(): string {
@@ -61,12 +71,12 @@ export class PublicationElement {
         this.styleClass = value;
     }
 
-    getEvent(): string {
-        return this.event;
+    getUrl(): string {
+        return this.url;
     }
 
-    setEvent(value: string) {
-        this.event = value;
+    setUrl(value: string) {
+        this.url = value;
     }
 
     getStartTime(): string {
