@@ -26,33 +26,35 @@ public class CallService {
     @Autowired
     PublicationCallMapper publicationCallMapper;
 
-    public PublicationCallDTO getActiveCall(){
+    public PublicationCallDTO getActiveCall() {
 
         Date now = new Date();
         _log.debug("now: " + now);
         PublicationCallDTO activeCallDTO = null;
 
-        List<PublicationCallDTO> callOpenDTOs = publicationCallMapper.toDTOList(publicationCallRepository.findByCallDateLessThanEqual(now));
-        List<PublicationCallDTO> callNotClosedDTOs = publicationCallMapper.toDTOList(publicationCallRepository.findByClosingDateGreaterThanEqual(now));
+        //List<PublicationCallDTO> callOpenDTOs = publicationCallMapper.toDTOList(publicationCallRepository.findByCallDateLessThanEqual(now));
+        //List<PublicationCallDTO> callNotClosedDTOs = publicationCallMapper.toDTOList(publicationCallRepository.findByClosingDateGreaterThanEqual(now));
 
+        /*
         for(PublicationCallDTO callDTO:callOpenDTOs){
             if(callNotClosedDTOs.contains(callDTO)){
                 activeCallDTO = callDTO;
                 break;
             }
         }
+        */
 
         return activeCallDTO;
 
     }
 
-    public List<PublicationCallDTO> getAllCalls(){
+    public List<PublicationCallDTO> getAllCalls() {
 
         return publicationCallMapper.toDTOList(Lists.newArrayList(publicationCallRepository.findAll()));
 
     }
 
-    public PublicationCallDTO createCall(PublicationCallDTO publicationCallDTO){
+    public PublicationCallDTO createCall(PublicationCallDTO publicationCallDTO) {
 
         return publicationCallMapper.toDTO(publicationCallRepository.save(publicationCallMapper.toEntity(publicationCallDTO)));
 
