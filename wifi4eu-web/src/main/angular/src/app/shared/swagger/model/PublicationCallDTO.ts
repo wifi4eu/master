@@ -6,13 +6,9 @@ export interface PublicationCallDTO {
 
     url: string;
 
-    name?: string;
+    startDate: Date;
 
-    callDate: Date;
-
-    competitionDate: Date;
-
-    closingDate: Date;
+    endDate: Date;
 
 }
 
@@ -29,16 +25,10 @@ export class PublicationCallDTOBase  implements PublicationCallDTO{
 
     url:  string ;
 
-
-    name?:  string ;
+@Type(() => Date)
+    startDate:  Date ;
 
 @Type(() => Date)
-    callDate:  Date ;
-
-@Type(() => Date)
-    competitionDate:  Date ;
-
-@Type(() => Date)
-    closingDate:  Date ;
+    endDate:  Date ;
 
 }
