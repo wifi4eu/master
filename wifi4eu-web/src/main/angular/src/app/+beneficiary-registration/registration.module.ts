@@ -8,6 +8,7 @@ import {ReviewComponent} from "./+beneficiary-registration-step3/review.componen
 import {SuccessRegistrationComponent} from "../shared/components/success-registration/success.registration.component";
 import {SuccessComponent} from "../shared/components/success/success.component";
 import {FailureComponent} from "../shared/components/failure/failure.component";
+import {HelpdeskFormComponent} from "../shared/components/helpdesk-form/helpdesk-form.component";
 import {Ng2GoogleRecaptchaModule} from "ng2-google-recaptcha";
 import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
 
@@ -16,7 +17,7 @@ import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
         SharedModule, RegistrationRoutingModule, Ng2GoogleRecaptchaModule, Ng2Bs3ModalModule
     ],
     declarations: [
-        RegistrationComponent, EntityComponent, BeneficiaryComponent, ReviewComponent, SuccessRegistrationComponent, SuccessComponent, FailureComponent
+        RegistrationComponent, EntityComponent, BeneficiaryComponent, ReviewComponent, SuccessRegistrationComponent, SuccessComponent, FailureComponent, HelpdeskFormComponent
     ],
     bootstrap: [RegistrationComponent]
 })
