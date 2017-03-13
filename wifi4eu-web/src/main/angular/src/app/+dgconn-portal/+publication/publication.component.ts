@@ -1,7 +1,7 @@
 import {Component, Input} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
-import {PublicationElement} from "../../shared/models/pubilcation-element.model";
-import {PublicationCallDTO, PublicationCallDTOBase} from '../../shared/swagger/model/PublicationCallDTO';
+import {Call} from "../../shared/models/call-details.model";
+import {CallDTO, CallDTOBase} from '../../shared/swagger/model/CallDTO';
 import {CallApi} from '../../shared/swagger/api/CallApi';
 
 @Component({
@@ -9,78 +9,96 @@ import {CallApi} from '../../shared/swagger/api/CallApi';
 })
 
 export class DgConnPublicationComponent {
-
     @Input('dgConnDetails') dgConnDetails: DgConnDetails;
-
-    private publicationElements: PublicationElement[];
     private display: boolean;
-    private elementSelected: PublicationElement;
-    private elementSelectedOriginal: PublicationElement;
-    private elementIndex: number;
+    private calls: CallDTOBase[];
+    private selectedCall: Call;
+    private originalCall: CallDTOBase;
+    private index: number;
     private newElementForm: boolean;
 
     constructor(private callApi: CallApi) {
         this.display = false;
         this.dgConnDetails = new DgConnDetails();
-        this.publicationElements = [];
         this.callApi.allCalls().subscribe(
-            calls => this.mapElement(calls),
+            calls => this.calls = calls,
             error => console.log(error)
         );
-        this.elementSelected = new PublicationElement();
+        this.selectedCall = new Call();
+        this.originalCall = new CallDTOBase();
         this.newElementForm = false;
-    }
-
-    mapElement(calls: PublicationCallDTOBase[]) {
-        console.log("Calls:", calls);
-        for (let i = 0; i < calls.length; i++) {
-            this.publicationElements.push(this.transformDTOToElement(calls[i]));
-        }
-    }
-
-    addPublication() {
-        this.display = true;
-    }
-
-    cancelPublication() {
-        this.display = false;
-        this.publicationElements[this.elementIndex] = this.elementSelectedOriginal;
-        this.elementSelected = new PublicationElement();
-    }
-
-    saveChanges() {
-        this.publicationElements[this.elementIndex] = this.elementSelected;
-        this.elementSelected = new PublicationElement();
-        this.display = false;
-    }
-
-    displayInfo(element: PublicationElement, rowElement: number) {
-        this.display = true;
-        this.elementSelected = element;
-        this.elementIndex = rowElement;
-        this.elementSelectedMakeCopy(element);
-    }
-
-    elementSelectedMakeCopy(element: PublicationElement) {
-        this.elementSelectedOriginal = new PublicationElement();
-        this.elementSelectedOriginal.setUrl(element.getUrl());
-        this.elementSelectedOriginal.setStartDate(element.getStartDate());
-        this.elementSelectedOriginal.setStartTime(element.getStartTime());
-        this.elementSelectedOriginal.setEndDate(element.getEndDate());
-        this.elementSelectedOriginal.setEndTime(element.getEndTime());
-    }
-
-    createPublication() {
-        this.publicationElements.push(this.elementSelected);
-        this.newElementForm = false;
-        this.display = false;
-        this.elementSelected = new PublicationElement();
     }
 
     addNewElement() {
         this.newElementForm = true;
         this.display = true;
-        this.elementSelected = new PublicationElement();
+        this.selectedCall = new Call();
+        this.selectedCall.setCallId(null);
+    }
+
+    displayInfo(element: CallDTOBase, rowElement: number) {
+        this.display = true;
+        this.selectedCall = this.convertDTOToCall(element);
+        this.index = rowElement;
+    }
+
+    cancelPublication() {
+        this.newElementForm = false;
+        this.display = false;
+        this.callApi.allCalls().subscribe(
+            calls => this.calls = calls,
+            error => console.log(error)
+        );
+    }
+
+    createPublication() {
+        this.callApi.createCall(this.convertCallToDTO(this.selectedCall)).subscribe();
+        this.newElementForm = false;
+        this.display = false;
+        this.callApi.allCalls().subscribe(
+            calls => this.calls = calls,
+            error => console.log(error)
+        );
+    }
+
+    convertCallToDTO(call: Call) {
+        console.log("call", call);
+        let dto = new CallDTOBase();
+        dto.callId = call.getCallId();
+        dto.startDate = new Date(call.getStartDate());
+        if (dto.startDate != null) {
+            let startTime = call.getStartTime().split(":");
+            dto.startDate.setHours(parseInt(startTime[0]));
+            dto.startDate.setMinutes(parseInt(startTime[1]));
+        }
+        dto.endDate = new Date(call.getEndDate());
+        if (dto.endDate != null) {
+            let endTime = call.getEndTime().split(":");
+            dto.endDate.setHours(parseInt(endTime[0]));
+            dto.endDate.setMinutes(parseInt(endTime[1]));
+        }
+        dto.event = call.getEvent();
+        return dto;
+    }
+
+    convertDTOToCall(dto: CallDTOBase) {
+        let call = new Call();
+        call.setCallId(dto.callId);
+        call.setStartDate(new Date(dto.startDate));
+        call.setEndDate(new Date(dto.endDate));
+        if (dto.startDate != null) {
+            call.setStartTime(call.getStartDate().getHours() + ":" + ((call.getStartDate().getMinutes() < 10) ? ("0" + call.getStartDate().getMinutes()) : call.getStartDate().getMinutes()));
+        }
+        if (dto.endDate != null) {
+            call.setEndTime(call.getEndDate().getHours() + ":" + ((call.getEndDate().getMinutes() < 10) ? ("0" + call.getEndDate().getMinutes()) : call.getEndDate().getMinutes()));
+        }
+        call.setEvent(dto.event);
+        return call;
+    }
+
+    formatTimestamp(timestamp) {
+        let date = new Date(timestamp);
+        return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + ((date.getMinutes() < 10) ? ("0" + date.getMinutes()) : date.getMinutes());
     }
 
     keyPress(event: any) {
@@ -88,41 +106,7 @@ export class DgConnPublicationComponent {
         let inputChar = String.fromCharCode(event.charCode);
 
         if (!pattern.test(inputChar)) {
-            // invalid character, prevent input
             event.preventDefault();
         }
-    }
-
-    changeDateStart() {
-        var date = new Date(this.publicationElements[this.elementIndex].getStartDate());
-        this.publicationElements[this.elementIndex].setStartDate(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear());
-    }
-
-    changeDateEnd() {
-        var date = new Date(this.publicationElements[this.elementIndex].getEndDate());
-        this.publicationElements[this.elementIndex].setEndDate(date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear());
-    }
-
-    transformDTOToElement(dto: PublicationCallDTOBase) {
-        let element = new PublicationElement();
-        element.setId(dto.callId);
-        element.setUrl(dto.url);
-        let startDate = new Date(dto.startDate);
-        let endDate = new Date(dto.endDate);
-        element.setStartDate(startDate.getDate() + "/" + (startDate.getMonth() + 1) + "/" + startDate.getFullYear());
-        element.setStartTime(startDate.getHours() + ":" + startDate.getMinutes());
-        element.setEndDate(endDate.getDate() + "/" + (endDate.getMonth() + 1) + "/" + endDate.getFullYear());
-        element.setEndTime(endDate.getHours() + ":" + endDate.getMinutes());
-        console.log("Element:", element);
-        return element;
-    }
-
-    transformElementToDTO(element: PublicationElement) {
-        let dto = new PublicationCallDTOBase();
-        dto.callId = element.getId();
-        dto.url = element.getUrl();
-        dto.startDate = new Date(element.getStartDate() + " " + element.getStartTime());
-        dto.endDate = new Date(element.getEndDate() + " " + element.getEndTime());
-        return dto;
     }
 }
