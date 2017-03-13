@@ -1,8 +1,10 @@
 import {Component, EventEmitter, Output} from '@angular/core';
-import {TimerService} from "./timer.service";
+//import {TimerService} from "./timer.service";
 import {Observable} from 'rxjs/Rx';
+import {CallDTO, CallDTOBase} from '../../../shared/swagger/model/CallDTO';
+import {CallApi} from '../../../shared/swagger/api/CallApi';
 
-@Component({selector: 'timer-component', templateUrl: 'timer.component.html', providers: [TimerService]})
+@Component({selector: 'timer-component', templateUrl: 'timer.component.html', providers: [CallApi]})
 export class TimerComponent {
     @Output() timerEvent = new EventEmitter<any>();
     private currentTimestamp: number;
@@ -12,15 +14,20 @@ export class TimerComponent {
     private minutes: number;
     private seconds: number;
 
-    constructor(private timerService: TimerService) {
+    constructor(private callApi: CallApi) {
         this.currentTimestamp = new Date().getTime();
-        this.expirationTimestamp = timerService.getExpirationDateTime();
-        Observable.interval(500).map((x) => {
-            this.currentTimestamp = new Date().getTime();
-        }).subscribe((x) => {
-            this.toEpoch(this.expirationTimestamp - this.currentTimestamp);
-            this.checkIfFinished(this.expirationTimestamp - this.currentTimestamp);
-        });
+        callApi.allCalls().subscribe(
+            (publications: CallDTOBase[]) => {
+                this.expirationTimestamp = Number(publications[0].startDate);
+                Observable.interval(500).map((x) => {
+                    this.currentTimestamp = new Date().getTime();
+                }).subscribe((x) => {
+                    this.toEpoch(this.expirationTimestamp - this.currentTimestamp);
+                    this.checkIfFinished(this.expirationTimestamp - this.currentTimestamp);
+                });
+            },
+            error => console.log(error)
+        );
     }
 
     toEpoch(timestamp: number) {
