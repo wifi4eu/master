@@ -1,0 +1,77 @@
+<div class="clearfix"></div>
+
+<button (click)="openModal()">Click!</button>
+
+
+<!--MODAL BELOW-->
+<div class="font container supplier">
+    <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false" [closable]="true" [closeOnEscape]="false">
+        <div class="ui-g-12">
+            <div class="ui-g-12">
+                <div class="beneficiaryMayorModal left">{{ 'company.details' | translate }}</div>
+            </div>
+        </div>
+        <div class="ui-g-12 light-grey left">
+            <div class="ui-g-3">
+                <div class="ui-g-12">
+                    <p class="labelModal">{{ 'company.name' | translate }}</p>
+                </div>
+                <div class="ui-g-12">
+                    <p class="labelModal">{{ 'legal.address' | translate }}</p>
+                </div>
+                <div class="ui-g-12">
+                    <p class="labelModal">{{ 'web.site' | translate }}</p>
+                </div>
+            </div>
+            <div class="ui-g-7">
+                <div class="ui-g-12">
+                    <p class="profileData"></p>
+                </div>
+                <div class="ui-g-12">
+                    <p class="profileData"></p>
+                </div>
+                <div class="ui-g-12">
+                    <p class="profileData"></p>
+                </div>
+            </div>
+            <div class="ui-g-2">
+                <img src="">
+            </div>
+        </div>
+
+
+        <div class="ui-g-12">
+            <div class="ui-g-12">
+                <div class="beneficiaryMayorModal left labelModal">{{ 'contact.person' | translate }}</div>
+            </div>
+        </div>
+        <div class="ui-g-12 light-grey left">
+            <div class="ui-g-3">
+                <div class="ui-g-12">
+                    <p class="labelModal">{{ 'contact.name' | translate }}</p>
+                </div>
+                <div class="ui-g-12">
+                    <p class="labelModal">{{ 'phone.number' | translate }}</p>
+                </div>
+                <div class="ui-g-12">
+                    <p class="labelModal">{{ 'email.modal' | translate }}</p>
+                </div>
+            </div>
+            <div class="ui-g-9">
+                <div class="ui-g-12">
+                    <p class="profileData"></p>
+                </div>
+                <div class="ui-g-12">
+                    <p class="profileData"></p>
+                </div>
+                <div class="ui-g-12">
+                    <p class="profileData"></p>
+                </div>
+            </div>
+        </div>
+
+    </p-dialog>
+</div>
+
+

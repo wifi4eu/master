@@ -75,6 +75,7 @@ $darkish-blue: #004494;
 $dark-blue: #254872;
 $dark-grey: #262626;
 $grey: #515151;
+$light-grey: #f4f4f4;
 
 body {
   font-family: verdana;
@@ -574,4 +575,15 @@ body {
   border: none !important;
   color: #000;
   cursor: pointer;
+}
+
+.light-grey {
+  background: $light-grey;
+  border: solid 1px #e3e3e3;
+}
+
+.supplier p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 16px;
 }
