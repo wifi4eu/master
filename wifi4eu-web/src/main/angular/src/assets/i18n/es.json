@@ -133,5 +133,14 @@
   "publication.title": "Configuración de la publicación",
   "timeline.change" : "Cambiar cronograma",
   "add.publication": "Añadir publicación",
-  "change.publication": "Cambiar publicación"
+  "change.publication": "Cambiar publicación",
+  "company.details": "Detalles compañía",
+  "company.name" : "Nombre compañía",
+  "legal.address" : "Dirección legal",
+  "web.site" : "Sitio web",
+  "contact.person" : "Persona de contacto",
+  "contact.name" : "Nombre de contacto",
+  "phone.number" : "Número de teléfono",
+  "email.modal" : "E-mail"
+
 }

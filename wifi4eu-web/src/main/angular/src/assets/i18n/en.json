@@ -133,6 +133,14 @@
   "publication.title": "Publication call configuration",
   "timeline.change": "Change timeline",
   "add.publication": "Add publication",
-  "change.publication": "Change publication"
+  "change.publication": "Change publication",
+  "company.details": "Company details",
+  "company.name" : "Company name",
+  "legal.address" : "Legal address",
+  "web.site" : "Web site",
+  "contact.person" : "Contact person",
+  "contact.name" : "Contact name",
+  "phone.number" : "Phone Number",
+  "email.modal" : "E-mail"
 
 }
