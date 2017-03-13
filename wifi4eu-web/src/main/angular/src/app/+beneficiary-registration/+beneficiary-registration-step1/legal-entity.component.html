@@ -76,12 +76,12 @@
         </div>
         <div class="ui-g-1">
             <div class="form-group">
-                <label for="number">{{ 'number.label' | translate }}</label>
-                <input type="number" min="1" [(ngModel)]="entityDetails.number"
+                <label for="callId">{{ 'callId.label' | translate }}</label>
+                <input type="callId" min="1" [(ngModel)]="entityDetails.callId"
                        class="form-control"
-                       name="number" ngcontrol="number" #number="ngModel"
+                       name="callId" ngcontrol="callId" #callId="ngModel"
                        required>
-                <div [hidden]="number.valid || number.pristine"
+                <div [hidden]="callId.valid || callId.pristine"
                      class="alert alert-danger">Address is required
                 </div>
             </div>
