@@ -3,23 +3,23 @@ package wifi4eu.wifi4eu.common.dto.model;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-public class PublicationCallDTO {
+public class CallDTO {
 
     private Long callId;
     @NotNull
-    private String url;
-    @NotNull
     private Date startDate;
-    @NotNull
     private Date endDate;
+    private String event;
 
-    public PublicationCallDTO(){}
+    public CallDTO() {
+    }
 
-    public PublicationCallDTO(Long callId, String url, Date startDate, Date endDate) {
+    public CallDTO(Long callId, Date startDate, Date endDate, String event) {
+
         this.callId = callId;
-        this.url = url;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.event = event;
     }
 
     public Long getCallId() {
@@ -28,14 +28,6 @@ public class PublicationCallDTO {
 
     public void setCallId(Long callId) {
         this.callId = callId;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public Date getStartDate() {
@@ -52,5 +44,13 @@ public class PublicationCallDTO {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
     }
 }
