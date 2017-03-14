@@ -6,7 +6,36 @@
 
             <uxLayoutAppMainHeaderContainer>
                 <ux-layout-header appFullName="Wifi4EU Free Wifi for Europeans" appShortName="App"
-                                  [userInfos]="userInfos"></ux-layout-header>
+                                  [userInfos]="userInfos" [isCustomRightContent]="true" [isBig]="true">
+
+                    <uxLayoutHeaderRightContent>
+                        <div class="profile-wrapper">
+                            <div class="left-panel">
+                                <div class="user-infos">
+                                    Welcome <strong class="color-primary">Firstname</strong>
+                                </div>
+                                <div class="time-wrapper">
+                                    <div class="current-time">
+                                        <span class="fa fa-clock-o"></span>03:14:58
+                                    </div>
+                                    <div class="utc-time">
+                                        18:15:58 UTC-5:00
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right-panel">
+                                <div class="picture">
+                                    <span class="fa fa-user-circle-o"></span>
+                                    <span class="connected-state">
+                                        <span *ngIf="isOnline" class="fa fa-circle color-success-light"></span>
+                                        <span *ngIf="!isOnline" class="fa fa-circle color-danger-light"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </uxLayoutHeaderRightContent>
+
+                </ux-layout-header>
             </uxLayoutAppMainHeaderContainer>
 
             <uxLayoutAppMainNavBarContainer>
