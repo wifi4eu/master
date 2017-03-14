@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {TranslateService} from 'ng2-translate/ng2-translate';
-import {UxService, UxLayoutLink, UxLayoutNotificationItem} from '@ec-digit-uxatec/eui-angular2-ux-commons';
-import {CoreService} from './core/core.service';
+import {Component, OnInit} from "@angular/core";
+import {TranslateService} from "ng2-translate/ng2-translate";
+import {UxService, UxLayoutLink, UxLayoutNotificationItem} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {CoreService} from "./core/core.service";
 
 @Component({selector: 'app-root', templateUrl: './app.component.html', styleUrls: ['./app.component.scss']})
 export class AppComponent implements OnInit {
@@ -19,7 +19,8 @@ export class AppComponent implements OnInit {
                 new UxLayoutLink({label: 'Free Wi-Fi for Europeans', url: 'home'}),
                 new UxLayoutLink({label: 'Who will benefit', url: 'home'}),
                 new UxLayoutLink({label: 'How to apply', url: 'home'}),
-                new UxLayoutLink({label: 'More information', url: 'home'})
+                new UxLayoutLink({label: 'More information', url: 'home'}),
+                new UxLayoutLink({label: 'DGConnect Portal', url: 'home'})
             ]
         })];
 
