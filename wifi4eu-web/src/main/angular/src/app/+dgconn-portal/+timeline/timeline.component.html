@@ -1,160 +1,126 @@
-<div class="clearfi"></div>
-
+<div class="clearfix"></div>
 <div class="container">
-
     <div class="row tableTitle">
         <div class="col-md-10">
             <h2 class="h2Table">{{ 'timeline.label' | translate }}</h2>
         </div>
         <div class="col-md-2">
             <a (click)="addNewElement()" class="edit editTable"><img
-                    src="assets/images/add-circle-outline-material-icons-regular.png" alt="">{{
-                'newEvent.label' | translate }}</a>
+                    src="assets/images/add-circle-outline-material-icons-regular.png" alt="">{{'newEvent.label' |
+                translate }}</a>
         </div>
     </div>
-
-    <p-dataTable [value]="timelineElements" [rows]="5" [paginator]="true" [pageLinks]="3"
+    <p-dataTable [value]="timelines" [rows]="5" [paginator]="true" [pageLinks]="3"
                  [rowsPerPageOptions]="[5,10,20]">
         <p-column field="event" header="{{ 'event.title' | translate }}"
                   [sortable]="true"></p-column>
         <p-column field="startDate" header="{{ 'start.date' | translate }}"
-                  [sortable]="true"></p-column>
-        <p-column field="startTime" header="{{ 'start.time' | translate }}"
-                  [sortable]="true"></p-column>
+                  [sortable]="true">
+            <template pTemplate="body" let-timeline="rowData">
+                <span>{{formatTimestamp(timeline.startDate)}}</span>
+            </template>
+        </p-column>
         <p-column field="endDate" header="{{ 'end.date' | translate }}"
-                  [sortable]="true"></p-column>
-        <p-column field="endTime" header="{{ 'end.time' | translate }}"
-                  [sortable]="true"></p-column>
+                  [sortable]="true">
+            <template pTemplate="body" let-timeline="rowData">
+                <span>{{formatTimestamp(timeline.endDate)}}</span>
+            </template>
+        </p-column>
         <p-column header="{{ 'edit.button' | translate }}">
-            <template pTemplate="body" let-element="rowData" let-rowElement="rowIndex">
+            <template pTemplate="body" let-rowElement="rowIndex">
                 <button type="button" class="btn" style="background: none; padding: 0;"
-                        (click)="displayInfo(element, rowElement)">
+                        (click)="displayInfo(rowElement)">
                     <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{ 'edit.button' | translate
                     }}
                 </button>
             </template>
         </p-column>
-
     </p-dataTable>
-
-
     <div class="right">
         <button type="submit" class="btn btn-primary publish-button"
                 [disabled]="">{{ 'publish.button' | translate }}
         </button>
     </div>
-
     <!--MODALS BELOW-->
-
     <div class="container font">
         <div class="ui-g-1"></div>
         <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
-                  [draggable]="false" [closable]="false" data-dismiss="modal" [closeOnEscape]="false">
-            <button type="button" (click)="cancelTimeline()" class="closeButton">X</button>
+                  [draggable]="false" [closable]="false" [closeOnEscape]="false">
+            <button type="button" (click)="cancelPublication()" class="closeButton">X</button>
             <p class="beneficiaryMayorModal">{{'publication.call' | translate }}</p>
-
-            <form (ngSubmit)="onSubmit()" #timelineForm="ngForm">
+            <form (ngSubmit)="onSubmit()" #publicationForm="ngForm">
                 <div class="containerTimeline center">
                     <div class="form-group ui-g">
                         <div class="ui-g-12">
                             <div class="form-group left">
                                 <label class="labelModal" for="event">{{'labelModal.timeline' | translate }}</label>
-                                <input type="text" [(ngModel)]="elementSelected.event"
-                                       class="form-control"
-                                       name="event" ngcontrol="event"
-                                       #event="ngModel" required>
+                                <input type="text" [(ngModel)]="selectedTimeline.event" id="event" class="form-control"
+                                       name="event" ngcontrol="event" #event="ngModel" required>
                             </div>
                         </div>
                     </div>
-
-
                     <div class="form-group ui-g">
                         <div class="ui-g-3">
                             <div class="form-group left">
                                 <label class="labelModal" for="startDate">{{'opening.date' | translate }}</label>
                                 <p-calendar [showIcon]="true" type="text" dateFormat="dd/mm/yy"
-                                            [(ngModel)]="elementSelected.startDate"
-                                            name="startDate" ngcontrol="startDate" #startDate="ngModel"
-                                            onkeydown="return false" required
-                                            (onSelect)="changeDateStart()"></p-calendar>
-
+                                            [(ngModel)]="selectedTimeline.startDate" name="startDate"
+                                            ngcontrol="startDate"
+                                            #startDate="ngModel" onkeydown="return false" required></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-1"></div>
                         <div class="ui-g-2">
                             <div class="form-group left">
                                 <label class="labelModal" for="startTime">{{'start.time' | translate }}</label>
-                                <input type="text" maxlength="5" [(ngModel)]="elementSelected.startTime"
-                                       class="form-control"
-                                       name="startTime" ngcontrol="startTime" (keypress)="keyPress($event)"
-                                       #startTime="ngModel" required>
+                                <input type="text" [(ngModel)]="selectedTimeline.startTime"
+                                       class="form-control" name="startTime" ngcontrol="startTime" maxlength="5"
+                                       class="form-control" name="startTime" ngcontrol="startTime" maxlength="5"
+                                       (keypress)="keyPress($event)" #startTime="ngModel" required>
                             </div>
                         </div>
                         <div class="ui-g-6"></div>
                     </div>
-
-
                     <div class="form-group ui-g">
                         <div class="ui-g-3">
                             <div class="form-group left">
                                 <label class="labelModal" for="endDate">{{'closing.date' | translate }}</label>
                                 <p-calendar [showIcon]="true" type="text" dateFormat="dd/mm/yy"
-                                            [(ngModel)]="elementSelected.endDate"
-                                            name="endDate" ngcontrol="startDate"
-                                            #endDate="ngModel" onkeydown="return false" required
-                                            (onSelect)="changeDateEnd()"></p-calendar>
+                                            [(ngModel)]="selectedTimeline.endDate" name="endDate" ngcontrol="endDate"
+                                            #endDate="ngModel" onkeydown="return false" required></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-1"></div>
                         <div class="ui-g-2">
                             <div class="form-group left">
                                 <label class="labelModal" for="endTime">{{'end.time' | translate }}</label>
-                                <input type="text" [(ngModel)]="elementSelected.endTime"
-                                       class="form-control"
-                                       name="endTime" ngcontrol="endTime" (keypress)="keyPress($event)"
+                                <input type="text" [(ngModel)]="selectedTimeline.endTime" class="form-control"
+                                       name="endTime" ngcontrol="endTime" maxlength="5" (keypress)="keyPress($event)"
                                        #endTime="ngModel" required>
                             </div>
                         </div>
                         <div class="ui-g-6"></div>
                     </div>
                 </div>
-                <div class="form-group ui-g" *ngIf="!newElementForm">
+                <div class="form-group ui-g">
                     <div class="ui-g-3"></div>
                     <div class="ui-g-2" style="text-align: center !important">
-                        <button type="button" (click)="cancelTimeline()" class="btn btn-primary cancel-button">{{
-                            'cancel.button' | translate
-                            }}
+                        <button type="button" (click)="cancelPublication()" class="btn btn-primary cancel-button">
+                            {{'cancel.button' | translate}}
                         </button>
                     </div>
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
-                        <button type="button" (click)="saveChanges()" class="btn btn-primary publish-button"
-                        >{{ 'add.timeline' |
-                            translate }}
+                        <button type="button" (click)="createPublication()" class="btn btn-primary publish-button"
+                                *ngIf="!newElementForm">{{'add.timeline' | translate }}
                         </button>
-                    </div>
-                    <div class="ui-g-3"></div>
-                </div>
-                <div class="form-group ui-g" *ngIf="newElementForm">
-                    <div class="ui-g-3"></div>
-                    <div class="ui-g-2" style="text-align: center !important">
-                        <button type="button" (click)="cancelTimeline()" class="btn btn-primary cancel-button">{{
-                            'cancel.button' | translate
-                            }}
-                        </button>
-                    </div>
-                    <div class="ui-g-1"></div>
-                    <div class="ui-g-2" style="text-align: center !important">
-                        <button type="button" (click)="createTimeline()" class="btn btn-primary publish-button">{{
-                            'add.timeline' |
-                            translate }}
+                        <button type="button" (click)="createPublication()" class="btn btn-primary publish-button"
+                                *ngIf="newElementForm">{{'add.timeline' | translate }}
                         </button>
                     </div>
                     <div class="ui-g-3"></div>
                 </div>
             </form>
-
         </p-dialog>
     </div>
-
 </div>
