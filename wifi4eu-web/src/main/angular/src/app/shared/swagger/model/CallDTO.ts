@@ -4,9 +4,9 @@ import {Type} from "class-transformer";
 export interface CallDTO {
     callId?: number;
 
-    startDate: Date;
+    startDate: number;
 
-    endDate?: Date;
+    endDate?: number;
 
     event?: string;
 
@@ -22,11 +22,11 @@ export class CallDTOBase  implements CallDTO{
 
     callId?:  number ;
 
-@Type(() => Date)
-    startDate:  Date ;
 
-@Type(() => Date)
-    endDate?:  Date ;
+    startDate:  number ;
+
+
+    endDate?:  number ;
 
 
     event?:  string ;
