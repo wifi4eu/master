@@ -11,9 +11,9 @@ import {CallApi} from '../../shared/swagger/api/CallApi';
 export class DgConnPublicationComponent {
     @Input('dgConnDetails') dgConnDetails: DgConnDetails;
     private display: boolean;
-    private calls: CallDTOBase[];
+    private calls: CallDTO[];
     private selectedCall: Call;
-    private originalCall: CallDTOBase;
+    private originalCall: CallDTO;
     private newElementForm: boolean;
 
     constructor(private callApi: CallApi) {
