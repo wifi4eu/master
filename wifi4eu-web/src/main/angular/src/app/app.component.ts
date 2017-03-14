@@ -5,8 +5,8 @@ import {CoreService} from "./core/core.service";
 
 @Component({selector: 'app-root', templateUrl: './app.component.html', styleUrls: ['./app.component.scss']})
 export class AppComponent implements OnInit {
-    menuLinks: Array < UxLayoutLink > = [];
-    notifications: Array < UxLayoutNotificationItem > = [];
+    menuLinks: Array<UxLayoutLink> = [];
+    notifications: Array<UxLayoutNotificationItem> = [];
     userInfos: string = '';
 
     constructor(translateService: TranslateService, private coreService: CoreService, private uxService: UxService) {
@@ -17,9 +17,7 @@ export class AppComponent implements OnInit {
             label: 'Wifi4EU',
             children: [
                 new UxLayoutLink({label: 'Free Wi-Fi for Europeans', url: 'home'}),
-                new UxLayoutLink({label: 'Who will benefit', url: 'home'}),
-                new UxLayoutLink({label: 'How to apply', url: 'home'}),
-                new UxLayoutLink({label: 'More information', url: 'home'}),
+                new UxLayoutLink({label: 'Registration', url: 'registration'}),
                 new UxLayoutLink({label: 'Beneficiary Portal', url: 'beneficiary-portal'}),
                 new UxLayoutLink({label: 'DGConnect Portal', url: 'dgconn-portal'})
             ]
