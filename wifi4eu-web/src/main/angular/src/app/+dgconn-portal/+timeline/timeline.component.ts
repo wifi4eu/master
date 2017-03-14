@@ -25,8 +25,8 @@ export class DgConnTimelineComponent implements OnInit {
             new TimelineElement(),
             new TimelineElement()
         ];
-        this.timelineElements[0].createTimelineForDgconn('Registration of Mayor and Supplier', '00:01', '01/01/2017', '31/12/2017', '23:59');
-        this.timelineElements[1].createTimelineForDgconn('Registration of Mayor and Supplier2', '20:01', '12/01/2017', '31/12/2017', '23:59');
+        //this.timelineElements[0].createTimelineForDgconn('Registration of Mayor and Supplier', '00:01', '01/01/2017', '31/12/2017', '23:59');
+        //this.timelineElements[1].createTimelineForDgconn('Registration of Mayor and Supplier2', '20:01', '12/01/2017', '31/12/2017', '23:59');
         this.elementSelected = new TimelineElement();
         this.elementSelectedOriginal = new TimelineElement();
         this.newElementForm = false;

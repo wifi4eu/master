@@ -33,6 +33,7 @@ export function translateFactory(http: Http) {
         ActivationComponent,
         LoginComponent,
         ForgotComponent,
+        HelpdeskComponent,
         DgConnPortalComponent,
         DgConnTimelineComponent,
         DgConnPublicationComponent,

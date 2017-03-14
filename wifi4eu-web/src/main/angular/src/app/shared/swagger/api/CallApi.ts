@@ -27,24 +27,25 @@ export interface ICallApi {
 
 
     /**
-     * Get the active publication of the call
+     * Get all the calls
      * 
      * @param c 
      */
-    activeCall<T extends models.PublicationCallDTO>(c?: ClassType<T>): Observable<T>;
+    allCalls<T extends models.CallDTO>(c?: ClassType<T>): Observable<T[]>;
     /**
-     * Get all the publication of the call
-     * 
-     * @param c 
-     */
-    allCalls<T extends models.PublicationCallDTO>(c?: ClassType<T>): Observable<T[]>;
-    /**
-     * create Call
+     * create call
      * 
      * @param c 
      * @param body 
      */
-    createCall<T extends models.ResponseDTO>(body?: models.PublicationCallDTO, c?: ClassType<T>): Observable<T>;
+    createCall<T extends models.ResponseDTO>(body?: models.CallDTO, c?: ClassType<T>): Observable<T>;
+    /**
+     * Get call by callId
+     * 
+     * @param c 
+     * @param callId 
+     */
+    getCall<T extends models.CallDTO>(callId: number, c?: ClassType<T>): Observable<T>;
 
 }
 
@@ -68,33 +69,11 @@ export class CallApi implements ICallApi {
 
 
     /**
-     * Get the active publication of the call
+     * Get all the calls
      * 
      * @param c
      */
-    activeCall<T extends models.PublicationCallDTO>(c?: ClassType<T>): Observable<T> {
-        // noinspection TypeScriptValidateTypes
-        return this.activeCallWithHttpInfo()
-                .map((response: Response) => {
-                    if (response.status === 204) {
-                        return undefined;
-                    } else if (c) {
-                        return deserialize(c, response.text());
-                    } else {
-                        return response.json();
-                    }
-                });
-        }
-
-
-
-
-    /**
-     * Get all the publication of the call
-     * 
-     * @param c
-     */
-    allCalls<T extends models.PublicationCallDTO>(c?: ClassType<T>): Observable<T[]> {
+    allCalls<T extends models.CallDTO>(c?: ClassType<T>): Observable<T[]> {
 
         return this.allCallsWithHttpInfo()
                 .map((response: Response) => {
@@ -112,12 +91,12 @@ export class CallApi implements ICallApi {
 
 
     /**
-     * create Call
+     * create call
      * 
      * @param c
      * @param body 
      */
-    createCall<T extends models.ResponseDTO>(body?: models.PublicationCallDTO, c?: ClassType<T>): Observable<T> {
+    createCall<T extends models.ResponseDTO>(body?: models.CallDTO, c?: ClassType<T>): Observable<T> {
         // noinspection TypeScriptValidateTypes
         return this.createCallWithHttpInfo(body)
                 .map((response: Response) => {
@@ -133,35 +112,31 @@ export class CallApi implements ICallApi {
 
 
 
+
     /**
-     * Get the active publication of the call
+     * Get call by callId
      * 
+     * @param c
+     * @param callId 
      */
-    private activeCallWithHttpInfo(): Observable<Response> {
-        const path = this.basePath + `/call/active`;
+    getCall<T extends models.CallDTO>(callId: number, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.getCallWithHttpInfo(callId)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
 
 
-        let queryParameters = new URLSearchParams();
-        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
-
-
-
-
-
-
-
-        let requestOptions: RequestOptionsArgs = new RequestOptions({
-            method: RequestMethod.Get,
-            headers: headers,
-            search: queryParameters,
-            responseType: ResponseContentType.Json
-        });
-
-        return this.http.request(path, requestOptions);
-    }
 
     /**
-     * Get all the publication of the call
+     * Get all the calls
      * 
      */
     private allCallsWithHttpInfo(): Observable<Response> {
@@ -188,11 +163,11 @@ export class CallApi implements ICallApi {
     }
 
     /**
-     * create Call
+     * create call
      * 
      * @param body 
      */
-    private createCallWithHttpInfo(body?: models.PublicationCallDTO ): Observable<Response> {
+    private createCallWithHttpInfo(body?: models.CallDTO ): Observable<Response> {
         const path = this.basePath + `/call`;
 
 
@@ -210,6 +185,40 @@ export class CallApi implements ICallApi {
             method: RequestMethod.Post,
             headers: headers,
             body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * Get call by callId
+     * 
+     * @param callId 
+     */
+    private getCallWithHttpInfo(callId: number ): Observable<Response> {
+        const path = this.basePath + `/call/${callId}`;
+//        .replace('{' + 'callId' + '}', String(callId));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'callId' is not null or undefined
+        if (callId === null || callId === undefined) {
+            throw new Error('Required parameter callId was null or undefined when calling getCall.');
+        }
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
             search: queryParameters,
             responseType: ResponseContentType.Json
         });
