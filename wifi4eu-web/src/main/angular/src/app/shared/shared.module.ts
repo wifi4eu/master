@@ -16,6 +16,8 @@ import {
 } from "primeng/primeng";
 
 import {APP_DIRECTIVES} from "./components/index";
+import {TimelineComponent} from "./components/timeline/timeline.component";
+import {CustomUxAccordionBoxComponent} from "./components/timeline/custom-ux-accordion-box.component";
 
 export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions) {
     return new UxHttp(backend, defaultOptions);
@@ -35,7 +37,12 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         CalendarModule
     ],
     declarations: [
-        UX_DIRECTIVES, UxLanguageSelectorComponent, UxSearchInputComponent, APP_DIRECTIVES
+        UX_DIRECTIVES,
+        UxLanguageSelectorComponent,
+        UxSearchInputComponent,
+        TimelineComponent,
+        CustomUxAccordionBoxComponent,
+        APP_DIRECTIVES
     ],
     exports: [
         UX_DIRECTIVES,
@@ -50,7 +57,9 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         AutoCompleteModule,
         DialogModule,
         DataTableModule,
-        CalendarModule
+        CalendarModule,
+        TimelineComponent,
+        CustomUxAccordionBoxComponent
     ],
     providers: [
         {
