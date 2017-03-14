@@ -20,7 +20,8 @@ export class AppComponent implements OnInit {
                 new UxLayoutLink({label: 'Who will benefit', url: 'home'}),
                 new UxLayoutLink({label: 'How to apply', url: 'home'}),
                 new UxLayoutLink({label: 'More information', url: 'home'}),
-                new UxLayoutLink({label: 'DGConnect Portal', url: 'home'})
+                new UxLayoutLink({label: 'Beneficiary Portal', url: 'beneficiary-portal'}),
+                new UxLayoutLink({label: 'DGConnect Portal', url: 'dgconn-portal'})
             ]
         })];
 
