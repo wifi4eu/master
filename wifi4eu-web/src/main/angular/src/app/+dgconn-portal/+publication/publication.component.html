@@ -29,7 +29,7 @@
         <p-column header="{{ 'edit.button' | translate }}">
             <template pTemplate="body" let-element="rowData" let-rowElement="rowIndex">
                 <button type="button" class="btn" style="background: none; padding: 0;"
-                        (click)="displayInfo(element, rowElement)">
+                        (click)="displayInfo(rowElement)">
                     <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{ 'edit.button' | translate
                     }}
                 </button>
@@ -75,7 +75,7 @@
                                 <label class="labelModal" for="startTime">{{'start.time' | translate }}</label>
                                 <input type="text" [(ngModel)]="selectedCall.startTime"
                                        class="form-control"
-                                       name="startTime" ngcontrol="startTime" maxlength="5" keyPress="($event)"
+                                       name="startTime" ngcontrol="startTime" maxlength="5" (keypress)="keyPress($event)"
                                        #startTime="ngModel" required>
                             </div>
                         </div>

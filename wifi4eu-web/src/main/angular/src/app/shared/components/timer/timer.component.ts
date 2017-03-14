@@ -18,7 +18,7 @@ export class TimerComponent {
         this.currentTimestamp = new Date().getTime();
         callApi.allCalls().subscribe(
             (publications: CallDTOBase[]) => {
-                this.expirationTimestamp = Number(publications[0].startDate);
+                this.expirationTimestamp = new Date(publications[0].startDate).getTime();
                 Observable.interval(500).map((x) => {
                     this.currentTimestamp = new Date().getTime();
                 }).subscribe((x) => {

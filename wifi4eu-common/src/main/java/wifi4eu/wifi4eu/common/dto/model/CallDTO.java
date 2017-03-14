@@ -7,14 +7,14 @@ public class CallDTO {
 
     private Long callId;
     @NotNull
-    private Date startDate;
-    private Date endDate;
+    private Long startDate;
+    private Long endDate;
     private String event;
 
     public CallDTO() {
     }
 
-    public CallDTO(Long callId, Date startDate, Date endDate, String event) {
+    public CallDTO(Long callId, Long startDate, Long endDate, String event) {
 
         this.callId = callId;
         this.startDate = startDate;
@@ -30,19 +30,19 @@ public class CallDTO {
         this.callId = callId;
     }
 
-    public Date getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
 
