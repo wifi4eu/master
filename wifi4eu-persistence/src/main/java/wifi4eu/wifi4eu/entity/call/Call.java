@@ -13,13 +13,11 @@ public class Call {
     @Column(name = "CALL_ID")
     private Long callId;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "START_DATE")
-    private Date startDate;
+    private Long startDate;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "END_DATE")
-    private Date endDate;
+    private Long endDate;
 
     @Column(name = "EVENT")
     private String event;
@@ -27,7 +25,7 @@ public class Call {
     public Call() {
     }
 
-    public Call(Long callId, Date startDate, Date endDate, String event) {
+    public Call(Long callId, Long startDate, Long endDate, String event) {
         this.callId = callId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -42,19 +40,19 @@ public class Call {
         this.callId = callId;
     }
 
-    public Date getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
 
