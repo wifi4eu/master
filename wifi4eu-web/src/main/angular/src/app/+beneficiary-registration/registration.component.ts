@@ -1,41 +1,49 @@
 import {Component, ViewChild} from "@angular/core";
-import {EntityDetails} from "../shared/models/legal-entity-details.model";
-//import {BeneficiaryDetails} from "../shared/models/beneficiary-details.model";
-import {BeneficiaryDTO,BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
-import {ReviewComponent} from "./+beneficiary-registration-step3/review.component";
+import {BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
+import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
+import {LauDTOBase} from "../shared/swagger/model/LauDTO";
+import {LegalEntityDTOBase} from "../shared/swagger/model/LegalEntityDTO";
+import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
+import {RepresentativeDTOBase} from "../shared/swagger/model/RepresentativeDTO";
+import {EntityComponent} from "./+beneficiary-registration-step1/legal-entity.component";
 
 @Component({templateUrl: 'registration.component.html'})
 export class RegistrationComponent {
-    private entityDetails: EntityDetails;
-    private beneficiaryDTO: BeneficiaryDTO;
-    private completedSteps: boolean[];
-    private activeSteps: boolean[];
-    private currentStep: number;
+    @ViewChild(EntityComponent) legalEntityComponent: EntityComponent;
 
+    private beneficiaryDTO: BeneficiaryDTOBase;
+    private nutsDTO: NutsDTOBase;
+    private lausDTO: LauDTOBase;
+
+    private selection: boolean[];
     private completed: boolean[];
     private active: boolean[];
-
-    private successRegistration: boolean = false;
-    private failureRegistration: boolean = false;
-    @ViewChild(ReviewComponent)
-    private childReview: ReviewComponent;
+    private successRegistration: boolean;
+    private failureRegistration: boolean;
 
     constructor() {
-        console.log("Constructor");
-        this.entityDetails = new EntityDetails();
         this.beneficiaryDTO = new BeneficiaryDTOBase();
+        this.beneficiaryDTO.legalEntityDTO = new LegalEntityDTOBase();
+        this.beneficiaryDTO.mayorDTO = new MayorDTOBase();
+        this.beneficiaryDTO.representativeDTO = new RepresentativeDTOBase();
+
+        this.selection = [true, false];
         this.completed = [false, false, false];
         this.active = [true, false, false];
+        this.successRegistration = false;
+        this.failureRegistration = false;
     }
 
     onNext(step: number) {
-        // The review child component must check the country and municipality objects to display them correctly.
-        this.childReview.checkObjects();
+        if (step == 1) {
+            this.nutsDTO = this.legalEntityComponent.nutsDTO;
+            this.lausDTO = this.legalEntityComponent.lausDTO;
+            this.beneficiaryDTO.legalEntityDTO.countryCode = this.nutsDTO.countryCode;
+            this.beneficiaryDTO.legalEntityDTO.municipalityCode = this.lausDTO.nuts3;
+        }
         this.completed[step - 1] = true;
         this.active[step - 1] = false;
         this.active[step] = true;
-        console.log("Completed", this.completed);
-        console.log("Active", this.active);
     }
 
     gotoStep(step: number) {
@@ -59,8 +67,6 @@ export class RegistrationComponent {
         this.completed[step - 1] = false;
         this.active[step - 1] = true;
         this.active[step] = false;
-        console.log("Completed", this.completed);
-        console.log("Active", this.active);
     }
 
     onSuccess(value: boolean) {

@@ -75,6 +75,7 @@ $darkish-blue: #004494;
 $dark-blue: #254872;
 $dark-grey: #262626;
 $grey: #515151;
+$light-grey: #f4f4f4;
 
 body {
   font-family: verdana;
@@ -118,6 +119,10 @@ body {
 
 .margin-top, .margin-top-right {
   margin-top: 1%;
+}
+
+.marginTop {
+  margin-top: 2%;
 }
 
 .margin-top-right img {
@@ -574,4 +579,44 @@ body {
   border: none !important;
   color: #000;
   cursor: pointer;
+}
+
+.light-grey {
+  background: $light-grey;
+  border: solid 1px #e3e3e3;
+}
+
+.supplier p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 16px;
+
+}
+
+.white {
+  border: solid 1px #e3e3e3;
+  background-color: white;
+  color: $dark-grey !important;
+  margin-top: 3.5em;
+}
+
+.white input {
+  width: 70%;
+  margin: 1em 1em 0em 1em;
+}
+
+.white button {
+  margin: 1em 0em;
+  width: 85%;
+  font-weight: bold;
+}
+
+.white p {
+  display: inline;
+}
+
+.marginTop .ui-datatable table thead th {
+  font-weight: 100 !important;
+  font-family: verdana;
+  color: black;
 }

@@ -8,29 +8,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
+
+    <script src="https://js.arcgis.com/3.19/"></script>
+
+
+    <!-- mapa-->
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <meta name="description" content="[Feature Layer Only Map]">
     <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
     <style>
         html, body, #map {
-            height: 100%;
+            height: 90%;
             width: 100%;
             margin: 0;
             padding: 0;
         }
+
+        #otherOptions input[type] {
+            margin: 2px;
+        }
+
+        #sltCountries {
+            margin-top: 20em !important;
+        }
+
+        #HomeButton {
+            position: absolute;
+            top: 95px;
+            left: 20px;
+            z-index: 50;
+        }
+
+        #combos {
+            position: absolute;
+            top: 150px;
+            left: 20px;
+            z-index: 50;
+        }
+
+        #combos select {
+            width: 150px;
+            margin: 10px 0;
+            display: block;
+        }
     </style>
-    <script src="https://js.arcgis.com/3.19/"></script>
+
     <script>
-        require([
-                "dojo/dom-construct",
-                "esri/map",
-                "esri/layers/FeatureLayer",
-                "esri/geometry/Extent",
-                "esri/InfoTemplate",
-                "dojo/domReady!"
-            ], function (domConstruct,
-                         Map,
-                         FeatureLayer,
-                         Extent,
-                         InfoTemplate) {
+        require(["esri/map", "esri/layers/FeatureLayer", "esri/geometry/Extent", "esri/InfoTemplate", "esri/dijit/HomeButton", "esri/tasks/query"
+                , "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol", "esri/Color", "esri/graphicsUtils", "dojo/domReady!"],
+            function (Map, FeatureLayer, Extent, InfoTemplate, HomeButton, Query, SimpleFillSymbol, SimpleLineSymbol, Color, graphicsUtils) {
+                //Bounds and map definition
                 var bounds = new Extent({
                     "xmin": -6767978.981609231,
                     "ymin": 2591986.6022099443,
@@ -38,23 +67,199 @@
                     "ymax": 11154688.85635359,
                     "spatialReference": {"wkid": 102100}
                 });
+                map = new Map("map", {extent: bounds, logo: false});
+                //Home button to return to initial zoom
+                var home = new HomeButton({map: map}, "HomeButton");
+                home.startup();
 
-                map = new Map("map", {
-                    extent: bounds
+                //definition of the symbol when admin unit is selected
+                var line = new SimpleLineSymbol();
+                line.setWidth(2);
+                line.setColor(new Color([0, 255, 197, 1]));
+                var fill = new SimpleFillSymbol();
+                fill.setOutline(line);
+                var adminInfo = [];
+                var layersToLoad = 5;
+
+                //Function to zoom map to specific scale
+                zoomTo = function (level) {
+                    // scales
+                    // 10507435 - hide Countries and show NUTS1
+                    // 5253717 - hide NUTS1 and show NUTS2
+                    // 2626858 - hide NUTS2 and show NUTS3
+                    // 656713 - hide NUTS3 and show Communes
+                    var zoomLevels = {
+                        0: 11205991,
+                        1: 10507430,
+                        2: 5253710,
+                        3: 2626850,
+                        4: 656710
+                    }
+                    map.setScale(zoomLevels[level]);
+                }
+
+                //Function to fill the combos of the different admin units, that also zooms and centers on the map when an admin zone is selected
+                fillCombos = function (target, level, value) {
+                    var cases = {
+                        0: {"text": "Countries", "fl": flCountries},
+                        1: {"text": "NUTS1", "fl": flNuts1},
+                        2: {"text": "NUTS2", "fl": flNuts2},
+                        3: {"text": "NUTS3", "fl": flNuts3},
+                        4: {"text": "Communes", "fl": flCommunes}
+                    };
+                    var featureLayer = cases[level].fl;
+                    level = value == "" ? level : level + 1;
+
+                    if (target) {
+                        target.innerHTML = "";
+                        var option = document.createElement("option");
+                        option.text = cases[level].text;
+                        option.value = "";
+                        target.add(option, target[target.length]);
+                        for (var admin in adminInfo) {
+                            if ((adminInfo[admin].level == level) && (value == "0" || value == adminInfo[admin].parentNUT)) {
+                                option = document.createElement("option");
+                                option.text = adminInfo[admin].adminName;
+                                option.value = adminInfo[admin].adminID;
+                                target.add(option, target[target.length]);
+                            }
+                        }
+                        target.disabled = false;
+                    }
+                    if (value != "") {
+                        var query = new Query();
+                        query.where = level - 1 < 4 ? "NUTS_ID IN ('" + value + "')" : "COMM_ID IN ('" + value + "')";
+                        featureLayer.queryFeatures(query, function (featureSet) {
+                            //featureLayer.clearSelection();
+                            zoomTo(level - 1);
+                            map.centerAt(graphicsUtils.graphicsExtent(featureSet.features).getCenter());
+                            setTimeout(function () {
+                                featureLayer.selectFeatures(query, FeatureLayer.SELECTION_NEW);
+                            }, 200);
+                        });
+                    }
+                }
+
+                //Function to store all the admin units in a local array to easier search when filling in the combos
+                //It will be populated with data coming from the map services
+                storeAdminInfo = function (layer) {
+                    var cases = {
+                        "europe-countries": 0,
+                        "europe-nuts1": 1,
+                        "europe-nuts2": 2,
+                        "europe-nuts3": 3,
+                        "europe-communes": 4,
+                    };
+                    var level = cases[layer.layer.id];
+                    var query = new Query();
+                    query.where = "1=1";
+                    //We don't need geometry for this
+                    query.returnGeometry = false;
+                    query.outFields = layer.layer.id == "europe-communes" ? ["COMM_NAME", "COMM_ID", "NUTS_CODE"] : ["NAME_LATN", "NUTS_ID"];
+                    query.returnDistinctValues = true;
+                    layer.layer.queryFeatures(query, function (featureSet) {
+                        var adminID = "", adminName = "", parentNUT = "";
+                        for (var feature in featureSet.features) {
+                            for (var att in featureSet.features[feature].attributes) {
+                                if (level == 4 && att == "NUTS_CODE")
+                                    parentNUT = featureSet.features[feature].attributes[att];
+                                else if (att.indexOf("ID") > -1) {
+                                    adminID = featureSet.features[feature].attributes[att];
+                                    parentNUT = level == 0 ? "" : level == 4 ? parentNUT : adminID.substr(0, level + 1);
+                                }
+                                else
+                                    adminName = featureSet.features[feature].attributes[att];
+                            }
+                            adminInfo.push({level: level, adminID: adminID, adminName: adminName, parentNUT: parentNUT})
+                        }
+                        layersToLoad--;
+                        if (layersToLoad == 0)
+                            fillCombos(document.getElementById("sltCountries"), 0, "");
+                    });
+                }
+
+                //Function that will be called when opening a Popup on the map.
+                //Like this we can access external data relevant to the feature the popup is pointing.
+                displayPopup = function (value, key, data) {
+                    return document.getElementById("popupText").value;
+                }
+
+                //Definition of layers to add to the map.
+                var flCountries = new FeatureLayer("https://services2.arcgis.com/aptrPtSBUDThgWRD/ArcGIS/rest/services/WIFI4EU/FeatureServer/4", {
+                    id: "europe-countries",
+                    infoTemplate: new InfoTemplate("Countries", "Country Name: ${NAME_LATN}<br /> Country ID: ${NUTS_ID}"),
+                    outFields: ["NAME_LATN", "NUTS_ID"],
+                    maxScale: 10507436
                 });
-
-                //Adress for map web service wit NUTS
-                var url = "http://services.arcgis.com/1WXsSdZFzziTTcic/arcgis/rest/services/NUTS3vs2013/FeatureServer/0";
-
-                //Template for map popup
-                var template = new InfoTemplate("Europe NUTS3", "NUT: ${NUTS_NAME}<br /> NUT ID: ${NUTS_ID}<br /> CNTR_CODE: ${CNTR_CODE}");
-
-                var fl = new FeatureLayer(url, {
+                flCountries.setSelectionSymbol(fill);
+                //After layer is loaded, get all data about the admin areas
+                flCountries.on("load", storeAdminInfo);
+                var flNuts1 = new FeatureLayer("https://services2.arcgis.com/aptrPtSBUDThgWRD/ArcGIS/rest/services/WIFI4EU/FeatureServer/3", {
+                    id: "europe-nuts1",
+                    infoTemplate: new InfoTemplate("NUTS1", "NUTS1 Name: ${NAME_LATN}<br /> NUTS1 ID: ${NUTS_ID}"),
+                    outFields: ["NAME_LATN", "NUTS_ID"],
+                    maxScale: 5253718,
+                    minScale: 10507436
+                });
+                flNuts1.setSelectionSymbol(fill);
+                flNuts1.on("load", storeAdminInfo);
+                var flNuts2 = new FeatureLayer("https://services2.arcgis.com/aptrPtSBUDThgWRD/ArcGIS/rest/services/WIFI4EU/FeatureServer/2", {
+                    id: "europe-nuts2",
+                    infoTemplate: new InfoTemplate("NUTS2", "NUTS2 Name: ${NAME_LATN}<br /> NUTS2 ID: ${NUTS_ID}"),
+                    outFields: ["NAME_LATN", "NUTS_ID"],
+                    maxScale: 2626859,
+                    minScale: 5253718
+                });
+                flNuts2.setSelectionSymbol(fill);
+                flNuts2.on("load", storeAdminInfo);
+                var flNuts3 = new FeatureLayer("https://services2.arcgis.com/aptrPtSBUDThgWRD/ArcGIS/rest/services/WIFI4EU/FeatureServer/1", {
                     id: "europe-nuts3",
-                    infoTemplate: template,
-                    outFields: ["*"]
+                    infoTemplate: new InfoTemplate("NUTS3", "NUTS3 Name: ${NAME_LATN}<br /> NUTS3 ID: ${NUTS_ID}"),
+                    outFields: ["NAME_LATN", "NUTS_ID"],
+                    maxScale: 656714,
+                    minScale: 2626859
                 });
-                map.addLayer(fl);
+                flNuts3.setSelectionSymbol(fill);
+                flNuts3.on("load", storeAdminInfo);
+                var flCommunes = new FeatureLayer("https://services2.arcgis.com/aptrPtSBUDThgWRD/ArcGIS/rest/services/WIFI4EU/FeatureServer/0", {
+                    id: "europe-communes",
+                    infoTemplate: new InfoTemplate("Communes", "Commune Name: ${COMM_NAME}<br /> Commune ID: ${COMM_ID} <br /> ${COMM_ID:displayPopup} "),
+                    outFields: ["COMM_NAME", "COMM_ID"],
+                    minScale: 656714
+                });
+                flCommunes.setSelectionSymbol(fill);
+                flCommunes.on("load", storeAdminInfo);
+                map.addLayers([flCountries, flNuts1, flNuts2, flNuts3, flCommunes]);
+
+                //Send back ids of communes visible on the map an external element
+                flCommunes.on("update-end", function () {
+                    //Define query parameters
+                    var query = new Query();
+                    query.geometry = map.extent;
+                    query.returnGeometry = false;
+                    query.outFields = ["COMM_ID"];
+                    flCommunes.queryFeatures(query, function (featureSet) {
+                        var visibleCommunes = [];
+                        for (var feature of featureSet.features) {
+                            visibleCommunes.push(feature.attributes["COMM_ID"]);
+                        }
+                        document.getElementById("visibleCommunes").innerHTML = visibleCommunes.join(", ");
+                    });
+                });
+
+                //Zoom the map to specific set of communes
+                zoomToCommune = function (communeIDs) {
+                    var communeID = "'" + communeIDs.split(" ").join("").split(",").join("','") + "'";
+                    var query = new Query();
+                    query.where = "COMM_ID IN (" + communeID + ")";
+                    flCommunes.queryFeatures(query, function (featureSet) {
+                        flCommunes.clearSelection();
+                        map.setExtent(graphicsUtils.graphicsExtent(featureSet.features));
+                        setTimeout(function () {
+                            flCommunes.selectFeatures(query, FeatureLayer.SELECTION_NEW);
+                        }, 500);
+                    });
+                }
             }
         );
     </script>

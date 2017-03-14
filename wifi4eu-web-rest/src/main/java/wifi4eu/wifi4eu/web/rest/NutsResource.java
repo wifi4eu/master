@@ -2,13 +2,11 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.LauDTO;
 import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -33,12 +31,10 @@ public class NutsResource {
     @ApiOperation(value="get all nuts")
     @RequestMapping(method = RequestMethod.GET,produces = "application/JSON")
     @ResponseBody
-    public String findAllNuts() {
-
+    public List<NutsDTO> findAllNuts() {
         _log.info("findAllNuts");
-        //return locationService.getAllNuts();
-        return "{id:1;name:'nuts'}";
 
+        return locationService.getAllNuts();
     }
 
     @ApiOperation(value="get all nuts from level X")

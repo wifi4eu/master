@@ -2,6 +2,7 @@ export * from './ActivateAccountDTO';
 export * from './BeneficiaryDTO';
 export * from './CallDTO';
 export * from './ErrorDTO';
+export * from './HelpdeskDTO';
 export * from './LauDTO';
 export * from './LegalEntityDTO';
 export * from './MayorDTO';

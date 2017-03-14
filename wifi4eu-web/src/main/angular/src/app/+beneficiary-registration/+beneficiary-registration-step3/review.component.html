@@ -13,8 +13,7 @@
             </div>
         </div>
         <div class="ui-g-12 center">
-            <div id="representantive_details" class="ui-g-12"
-                 [ngClass]="{'hidden': !beneficiaryDetails.representativeSelected}">
+            <div id="representantive_details" class="ui-g-12" *ngIf="selection[1]">
                 <hr>
                 <span class="ui-g-1"></span>
                 <span class="ui-g-10" style="text-align: left;">
@@ -23,23 +22,23 @@
                             class="glyphicon glyphicon-pencil"></span></a>
                     <div>
                       <span class="ui-g-4">{{ 'treatment.label' | translate }}</span>
-                      <span class="ui-g-8"><b>{{beneficiaryDetails.treatmentRepresentative}}</b></span>
+                      <span class="ui-g-8"><b>{{beneficiaryDTO.representativeDTO.treatment}}</b></span>
                     </div>
                     <div>
                       <span class="ui-g-4">{{ 'name.label' | translate }}</span>
-                      <span class="ui-g-8"><b>{{beneficiaryDetails.nameRepresentative}}</b></span>
+                      <span class="ui-g-8"><b>{{beneficiaryDTO.representativeDTO.name}}</b></span>
                     </div>
                     <div>
                       <span class="ui-g-4">{{ 'surname.label' | translate }}</span>
-                      <span class="ui-g-8"><b>{{beneficiaryDetails.surnameRepresentative}}</b></span>
+                      <span class="ui-g-8"><b>{{beneficiaryDTO.representativeDTO.surname}}</b></span>
                     </div>
                     <div>
                       <span class="ui-g-4">{{ 'role.label' | translate }}</span>
-                      <span class="ui-g-8"><b>{{beneficiaryDetails.roleRepresentative}}</b></span>
+                      <span class="ui-g-8"><b>{{beneficiaryDTO.representativeDTO.municipalityRole}}</b></span>
                     </div>
                     <div>
                       <span class="ui-g-4">{{ 'email.label' | translate }}</span>
-                      <span class="ui-g-8"><b>{{beneficiaryDetails.emailRepresentative}}</b></span>
+                      <span class="ui-g-8"><b>{{beneficiaryDTO.representativeDTO.mayorRepeatEmail}}</b></span>
                     </div>
                 </span>
                 <span class="ui-g-1"></span>
@@ -53,19 +52,19 @@
                             class="glyphicon glyphicon-pencil"></span></a>
                     <div>
                       <span class="ui-g-4">{{ 'treatment.label' | translate }}</span>
-                      <span class="ui-g-8"><b>{{beneficiaryDetails.treatment}}</b></span>
+                      <span class="ui-g-8"><b>{{beneficiaryDTO.mayorDTO.treatment}}</b></span>
                     </div>
                     <div>
                       <span class="ui-g-4">{{ 'name.label' | translate }}</span>
-                      <span class="ui-g-8"><b>{{beneficiaryDetails.name}}</b></span>
+                      <span class="ui-g-8"><b>{{beneficiaryDTO.mayorDTO.name}}</b></span>
                     </div>
                     <div>
                       <span class="ui-g-4">{{ 'surname.label' | translate }}</span>
-                      <span class="ui-g-8"><b>{{beneficiaryDetails.surname}}</b></span>
+                      <span class="ui-g-8"><b>{{beneficiaryDTO.mayorDTO.surname}}</b></span>
                     </div>
                     <div>
                       <span class="ui-g-4">{{ 'email.label' | translate }}</span>
-                      <span class="ui-g-8"><b>{{beneficiaryDetails.email}}</b></span>
+                      <span class="ui-g-8"><b>{{beneficiaryDTO.mayorDTO.email}}</b></span>
                     </div>
                 </span>
                 <span class="ui-g-1"></span>
@@ -79,23 +78,23 @@
                         class="glyphicon glyphicon-pencil"></span></a>
                 <div>
                     <span class="ui-g-4">{{ 'country.label' | translate }}</span>
-                    <span class="ui-g-8"><b>{{countryField}}</b></span>
+                    <span class="ui-g-8"><b>{{nutsDTO.name}}</b></span>
                 </div>
                 <div>
                     <span class="ui-g-4">{{ 'municipality.label' | translate }}</span>
-                    <span class="ui-g-8"><b>{{municipalityField}}</b></span>
+                    <span class="ui-g-8"><b>{{lausDTO.name1}}</b></span>
                 </div>
                 <div>
                     <span class="ui-g-4">{{ 'address.label' | translate }}</span>
-                    <span class="ui-g-8"><b>{{entityDetails.address}}</b></span>
+                    <span class="ui-g-8"><b>{{beneficiaryDTO.legalEntityDTO.address}}</b></span>
                 </div>
                 <div>
-                    <span class="ui-g-4">{{ 'callId.label' | translate }}</span>
-                    <span class="ui-g-8"><b>{{entityDetails.callId}}</b></span>
+                    <span class="ui-g-4">{{ 'number.label' | translate }}</span>
+                    <span class="ui-g-8"><b>{{beneficiaryDTO.legalEntityDTO.addressNum}}</b></span>
                 </div>
                 <div>
                     <span class="ui-g-4">{{ 'postal-code.label' | translate }}</span>
-                    <span class="ui-g-8"><b>{{entityDetails.postalCode}}</b></span>
+                    <span class="ui-g-8"><b>{{beneficiaryDTO.legalEntityDTO.postalCode}}</b></span>
                 </div>
             </span>
                 <span class="ui-g-1"></span>
@@ -105,33 +104,30 @@
                 <div class="ui-g-12 checkbox" style="text-align: left;">
                     <span class="ui-g-3"></span>
                     <label class="ui-g-6" for="check_1"><input type="checkbox" id="check_1" [(ngModel)]="checkboxes[0]">
-                        {{
-                        'preview.registration.check1' | translate }}</label>
+                        {{ 'preview.registration.check1' | translate }}</label>
                     <span class="ui-g-3"></span>
                 </div>
                 <div class="ui-g-12" style="text-align: left;">
                     <span class="ui-g-3"></span>
                     <label class="ui-g-6" for="check_2"><input type="checkbox" id="check_2" [(ngModel)]="checkboxes[1]">
-                        {{
-                        'preview.registration.check2' | translate }}</label>
+                        {{ 'preview.registration.check2' | translate }}</label>
                     <span class="ui-g-3"></span>
                 </div>
                 <div class="ui-g-12" style="text-align: left;">
                     <span class="ui-g-3"></span>
                     <label class="ui-g-6" for="check_3"><input type="checkbox" id="check_3" [(ngModel)]="checkboxes[2]">
-                        {{
-                        'preview.registration.check3' | translate }}</label>
+                        {{ 'preview.registration.check3' | translate }}</label>
                     <span class="ui-g-3"></span>
                 </div>
             </div>
-            <div class="ui-g-12">
+            <div id="captcha" class="ui-g-12">
                 <span class="ui-g-3"></span>
                 <ng2-google-recaptcha class="ui-g-6" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu"
                                       (onCaptchaComplete)="onCaptchaComplete($event)"></ng2-google-recaptcha>
                 <span class="ui-g-3"></span>
             </div>
             <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-                <div class="form-group ui-g-12">
+                <div id="navigation-buttons" class="form-group ui-g-12">
                     <div class="ui-g-4"></div>
                     <div class="ui-g-2" style="text-align: center !important">
                         <button class="btn">{{ 'cancel.button' | translate }}</button>
@@ -148,7 +144,6 @@
         </div>
     </div>
     <div class="ui-g-1"></div>
-
     <modal #modal>
         <modal-header [show-close]="true">
         </modal-header>
@@ -162,8 +157,6 @@
         <modal-footer></modal-footer>
     </modal>
 </div>
-<div class="ui-g-1"></div>
-
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->

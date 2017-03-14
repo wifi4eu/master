@@ -24,8 +24,8 @@ import wifi4eu.wifi4eu.repository.beneficiary.RepresentativeRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityTempTokenRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 import wifi4eu.wifi4eu.util.MailService;
-import java.security.SecureRandom;
 
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.UUID;
 
@@ -78,17 +78,14 @@ public class UserService {
     @Transactional
     public void create(BeneficiaryDTO beneficiaryDTO) {
 
-        _log.info("create beneficiary");
+        _log.info("Creating beneficiary...");
 
         String email;
 
         /* check if it is a mayor or a representative */
-        if (beneficiaryDTO.getRepresentativeDTO() != null) {
-            email = beneficiaryDTO.getRepresentativeDTO().getEmail();
-        }else{
-            email = beneficiaryDTO.getMayorDTO().getEmail();
-        }
+        //email = beneficiaryDTO.getRepresentativeDTO() != null ? beneficiaryDTO.getRepresentativeDTO().getEmail() : beneficiaryDTO.getMayorDTO().getEmail();
 
+        email = "roger.fernandez.guri@everis.com";
 
         /*
         TODO: enable a validation to avoid user duplicity

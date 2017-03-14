@@ -36,8 +36,9 @@ export interface INutsApi {
     /**
      * get all nuts
      * 
+     * @param c 
      */
-    findAllNuts(): Observable<string>;
+    findAllNuts<T extends models.NutsDTO>(c?: ClassType<T>): Observable<T[]>;
     /**
      * get all nuts from level X
      * 
@@ -89,20 +90,25 @@ export class NutsApi implements INutsApi {
 
 
 
+
     /**
      * get all nuts
      * 
+     * @param c
      */
-    public findAllNuts(): Observable<string> {
+    findAllNuts<T extends models.NutsDTO>(c?: ClassType<T>): Observable<T[]> {
+
         return this.findAllNutsWithHttpInfo()
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
-    }
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserializeArray(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
 
 
 
