@@ -14,7 +14,6 @@ export class DgConnPublicationComponent {
     private calls: CallDTOBase[];
     private selectedCall: Call;
     private originalCall: CallDTOBase;
-    private index: number;
     private newElementForm: boolean;
 
     constructor(private callApi: CallApi) {
@@ -34,12 +33,21 @@ export class DgConnPublicationComponent {
         this.display = true;
         this.selectedCall = new Call();
         this.selectedCall.setCallId(null);
+        this.callApi.allCalls().subscribe(
+            calls => this.calls = calls,
+            error => console.log(error)
+        );
     }
 
-    displayInfo(element: CallDTOBase, rowElement: number) {
-        this.display = true;
-        this.selectedCall = this.convertDTOToCall(element);
-        this.index = rowElement;
+    displayInfo(rowElement: number) {
+        this.callApi.allCalls().subscribe(
+            calls => {
+                this.calls = calls;
+                this.selectedCall = this.convertDTOToCall(this.calls[rowElement]);
+                this.display = true;
+            },
+            error => console.log(error)
+        );
     }
 
     cancelPublication() {
@@ -52,30 +60,35 @@ export class DgConnPublicationComponent {
     }
 
     createPublication() {
-        this.callApi.createCall(this.convertCallToDTO(this.selectedCall)).subscribe();
-        this.newElementForm = false;
-        this.display = false;
-        this.callApi.allCalls().subscribe(
-            calls => this.calls = calls,
+        this.callApi.createCall(this.convertCallToDTO(this.selectedCall)).subscribe(
+            call => {
+                this.newElementForm = false;
+                this.display = false;
+                this.callApi.allCalls().subscribe(
+                    calls => this.calls = calls,
+                    error => console.log(error)
+                );
+            },
             error => console.log(error)
         );
     }
 
     convertCallToDTO(call: Call) {
-        console.log("call", call);
         let dto = new CallDTOBase();
         dto.callId = call.getCallId();
-        dto.startDate = new Date(call.getStartDate());
-        if (dto.startDate != null) {
+        let startDate = new Date(call.getStartDate());
+        if (startDate != null) {
             let startTime = call.getStartTime().split(":");
-            dto.startDate.setHours(parseInt(startTime[0]));
-            dto.startDate.setMinutes(parseInt(startTime[1]));
+            startDate.setHours(parseInt(startTime[0]));
+            startDate.setMinutes(parseInt(startTime[1]));
+            dto.startDate = startDate.getTime();
         }
-        dto.endDate = new Date(call.getEndDate());
-        if (dto.endDate != null) {
+        let endDate = new Date(call.getEndDate());
+        if (endDate != null) {
             let endTime = call.getEndTime().split(":");
-            dto.endDate.setHours(parseInt(endTime[0]));
-            dto.endDate.setMinutes(parseInt(endTime[1]));
+            endDate.setHours(parseInt(endTime[0]));
+            endDate.setMinutes(parseInt(endTime[1]));
+            dto.endDate = endDate.getTime();
         }
         dto.event = call.getEvent();
         return dto;
