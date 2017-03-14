@@ -135,12 +135,18 @@
   "add.publication": "Add publication",
   "change.publication": "Change publication",
   "company.details": "Company details",
-  "company.name" : "Company name",
-  "legal.address" : "Legal address",
-  "web.site" : "Web site",
-  "contact.person" : "Contact person",
-  "contact.name" : "Contact name",
-  "phone.number" : "Phone Number",
-  "email.modal" : "E-mail"
-
+  "company.name": "Company name",
+  "legal.address": "Legal address",
+  "web.site": "Web site",
+  "contact.person": "Contact person",
+  "contact.name": "Contact name",
+  "phone.number": "Phone Number",
+  "email.modal": "E-mail",
+  "select.supplier": "Select supplier",
+  "one.supplier": "You can select only one supplier",
+  "search.button": "Search",
+  "label.details": "Details",
+  "number": "Nº",
+  "registered.date": "Registered date",
+  "image": "Image"
 }

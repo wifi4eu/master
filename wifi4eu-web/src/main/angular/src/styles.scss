@@ -121,6 +121,10 @@ body {
   margin-top: 1%;
 }
 
+.marginTop {
+  margin-top: 2%;
+}
+
 .margin-top-right img {
   margin: 0 auto;
   display: block;
@@ -586,4 +590,33 @@ body {
   margin-top: 0px;
   margin-bottom: 0px;
   font-size: 16px;
+
+}
+
+.white {
+  border: solid 1px #e3e3e3;
+  background-color: white;
+  color: $dark-grey !important;
+  margin-top: 3.5em;
+}
+
+.white input {
+  width: 70%;
+  margin: 1em 1em 0em 1em;
+}
+
+.white button {
+  margin: 1em 0em;
+  width: 85%;
+  font-weight: bold;
+}
+
+.white p {
+  display: inline;
+}
+
+.marginTop .ui-datatable table thead th {
+  font-weight: 100 !important;
+  font-family: verdana;
+  color: black;
 }
