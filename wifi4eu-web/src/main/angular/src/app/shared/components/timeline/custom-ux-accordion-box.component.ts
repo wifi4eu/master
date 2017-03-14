@@ -1,5 +1,5 @@
-import {Component, Input, Host, forwardRef, Inject} from '@angular/core';
-import {UxAccordionBoxComponent} from '@ec-digit-uxatec/eui-angular2-ux-commons';
+import {Component, Input} from "@angular/core";
+import {UxAccordionBoxComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 
 @Component({
     selector: 'custom-ux-accordion-box',
@@ -19,6 +19,7 @@ import {UxAccordionBoxComponent} from '@ec-digit-uxatec/eui-angular2-ux-commons'
 
 export class CustomUxAccordionBoxComponent extends UxAccordionBoxComponent {
     @Input() rightSide: boolean = false;
+    @Input() isExpanded: boolean;
 
     toggle() {
         super.toggle();
