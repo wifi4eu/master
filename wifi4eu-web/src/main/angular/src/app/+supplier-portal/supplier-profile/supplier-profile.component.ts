@@ -6,7 +6,7 @@ import {SupplierDetails} from "../../shared/models/supplier-details.model";
     templateUrl: 'supplier-profile.component.html'
 })
 
-export class SupplierProfile {
+export class SupplierProfileComponent {
 
     private supplierDetails: SupplierDetails;
     private display: boolean;
