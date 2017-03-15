@@ -10,6 +10,7 @@ import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
 import {SupplierPortal} from "./+supplier-portal/supplier-portal.component";
+import {SupplierProfile} from "./+supplier-portal/supplier-profile/supplier-profile.component";
 
 
 @NgModule({
@@ -57,6 +58,9 @@ import {SupplierPortal} from "./+supplier-portal/supplier-portal.component";
         }, {
             path: 'supplier-portal',
             component: SupplierPortal
+        }, {
+            path: 'supplier-portal/supplier-profile',
+            component: SupplierProfile
         }
     ], {useHash: true})],
     exports: [RouterModule]
