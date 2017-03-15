@@ -433,6 +433,10 @@ body {
   font-size: 1.1em;
   font-weight: bold;
 }
+.changePasswordModalNoTop {
+  margin-top: 0em;
+
+}
 
 .beneficiaryMayorModal {
   font-size: 21px;
@@ -619,4 +623,8 @@ body {
   font-weight: 100 !important;
   font-family: verdana;
   color: black;
+}
+
+.ui-dialog.ui-widget {
+  width: 50% !important;
 }
