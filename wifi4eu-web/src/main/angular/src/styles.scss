@@ -400,6 +400,12 @@ body {
   font-size: 16px;
 }
 
+.descriptionCountdown {
+  color: black;
+  font-size: 16px;
+  font-weight: normal;
+}
+
 .beneficiaryHr {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -597,7 +603,7 @@ body {
 
 }
 
-.white {
+.white, .whiteNoInline {
   border: solid 1px #e3e3e3;
   background-color: white;
   color: $dark-grey !important;
@@ -627,4 +633,28 @@ body {
 
 .ui-dialog.ui-widget {
   width: 50% !important;
+}
+
+.whiteNoInline {
+  padding-left: 2.5em;
+  margin-top: 0;
+}
+
+.ui-column-title {
+  padding-left: 1.8em;
+}
+
+.ui-datatable table td {
+  padding-left: 2.5em;
+}
+
+.marginTopCountdown {
+  margin-top: 3em;
+}
+
+.subTitleCountdown {
+  margin-top: 3em;
+  font-size: 18px;
+  font-weight: bold;
+  color: $dark-blue;
 }

@@ -19,8 +19,8 @@ import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.compo
 import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
-import {SupplierPortal} from "./+supplier-portal/supplier-portal.component";
-import {SupplierProfileComponent} from "./+supplier-portal/supplier-profile/supplier-profile.component";
+import {SupplierPortalComponent} from "./+supplier-portal/supplier-portal.component";
+import {SupplierInstallationComponent} from "./+supplier-portal/installation/supplier-installation.component";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -39,8 +39,8 @@ export function translateFactory(http: Http) {
         DgConnTimelineComponent,
         DgConnPublicationComponent,
         HelpdeskComponent,
-        SupplierPortal,
-        SupplierProfileComponent
+        SupplierPortalComponent,
+        SupplierInstallationComponent
     ],
     exports: [
         MapComponent,
@@ -51,8 +51,8 @@ export function translateFactory(http: Http) {
         DgConnTimelineComponent,
         DgConnPublicationComponent,
         HelpdeskComponent,
-        SupplierPortal,
-        SupplierProfileComponent
+        SupplierPortalComponent,
+        SupplierInstallationComponent
     ],
     imports: [
         CoreModule,
