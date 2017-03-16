@@ -9,8 +9,8 @@ import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
-import {SupplierPortal} from "./+supplier-portal/supplier-portal.component";
-import {InstallationSupplier} from "./+supplier-portal/installation/supplier-installation.component";
+import {SupplierPortalComponent} from "./+supplier-portal/supplier-portal.component";
+import {SupplierInstallationComponent} from "./+supplier-portal/installation/supplier-installation.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -56,10 +56,10 @@ import {InstallationSupplier} from "./+supplier-portal/installation/supplier-ins
             component: DgConnPublicationComponent
         }, {
             path: 'supplier-portal',
-            component: SupplierPortal
+            component: SupplierPortalComponent
         }, {
             path: 'supplier-portal/installation',
-            component: InstallationSupplier
+            component: SupplierInstallationComponent
         }
     ], {useHash: true})],
     exports: [RouterModule]
