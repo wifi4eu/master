@@ -157,5 +157,9 @@
   "outdoor.access": "Número punto acceso externo",
   "indoor.access": "Número punto acceso interno",
   "about.municipality": "Sobre el municipio",
-  "municipalities.list": "Lista de municipios"
+  "municipalities.list": "Lista de municipios",
+  "bidding.label":"Ofertas",
+  "invoicing.label": "Facturación",
+  "invoicing.installed" : "Información del Punto de Acceso instalado"
+
 }

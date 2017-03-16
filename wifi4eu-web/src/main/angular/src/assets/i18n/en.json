@@ -157,5 +157,8 @@
   "outdoor.access": "Outdoor access point number",
   "indoor.access": "Indoor access point number",
   "about.municipality" : "About the municipality",
-  "municipalities.list": "List of municipalities"
+  "municipalities.list": "List of municipalities",
+  "bidding.countdown":"Bidding",
+  "invoicing.label": "Invoicing",
+  "invoicing.installed" : "Installed Accespoint information"
 }
