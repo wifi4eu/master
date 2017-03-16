@@ -161,4 +161,20 @@
   "bidding.countdown":"Bidding",
   "invoicing.label": "Invoicing",
   "invoicing.installed" : "Installed Accespoint information"
+  "image": "Image",
+  "vat.label": "VAT",
+  "bic.label": "BIC",
+  "logo.label": "Company Logo",
+  "name.required": "Name is requied",
+  "surname.required": "Surame is requied",
+  "phone.required": "Phone number is requied",
+  "country.required":"Country is required",
+  "municipality.required":"Municipality is required",
+  "company.required":"Company is required",
+  "address.required":"Address is required",
+  "vat.required":"VAT is required",
+  "bic.required":"BIC is required",
+  "logo.required":"Logo is required"
+
+
 }

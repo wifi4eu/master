@@ -162,4 +162,17 @@
   "invoicing.label": "Facturación",
   "invoicing.installed" : "Información del Punto de Acceso instalado"
 
+  "image": "Imagen",
+  "vat.label": "VAT",
+  "bic.label": "BIC",
+  "logo.label": "Logo compañía",
+  "name.required": "El nombre es obligatorio",
+  "surname.required": "El apellido es obligatorio",
+  "phone.required": "El télefono es obligatorio",
+  "country.required": "El país es obligatorio",
+  "municipality.required": "El municipio es obligatorio",
+  "address.required":"La dirección es obligatioria",
+  "vat.required":"VAT es obligatorio",
+  "bic.required":"BIC es obligatorio",
+  "logo.required":"Logo es obligatorio"
 }
