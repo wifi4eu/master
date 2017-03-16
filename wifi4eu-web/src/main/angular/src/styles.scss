@@ -400,6 +400,12 @@ body {
   font-size: 16px;
 }
 
+.descriptionCountdown {
+  color: black;
+  font-size: 16px;
+  font-weight: normal;
+}
+
 .beneficiaryHr {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -623,6 +629,7 @@ body {
 
 .whiteNoInline {
   padding-left: 2.5em;
+  margin-top: 0;
 }
 
 .ui-column-title {
@@ -631,4 +638,15 @@ body {
 
 .ui-datatable table td {
   padding-left: 2.5em;
+}
+
+.marginTopCountdown {
+  margin-top: 3em;
+}
+
+.subTitleCountdown {
+  margin-top: 3em;
+  font-size: 18px;
+  font-weight: bold;
+  color: $dark-blue;
 }
