@@ -3,7 +3,7 @@ import {TimelineComponent} from '../shared/components/timeline/timeline.componen
 import {CustomUxAccordionBoxComponent} from "../shared/components/timeline/custom-ux-accordion-box.component";
 
 @Component({templateUrl: 'supplier-portal.component.html'})
-export class SupplierPortal {
+export class SupplierPortalComponent {
     private display: boolean;
 
     constructor() {
