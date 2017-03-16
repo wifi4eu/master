@@ -593,7 +593,7 @@ body {
 
 }
 
-.white {
+.white, .whiteNoInline {
   border: solid 1px #e3e3e3;
   background-color: white;
   color: $dark-grey !important;
@@ -619,4 +619,16 @@ body {
   font-weight: 100 !important;
   font-family: verdana;
   color: black;
+}
+
+.whiteNoInline {
+  padding-left: 2.5em;
+}
+
+.ui-column-title {
+  padding-left: 1.8em;
+}
+
+.ui-datatable table td {
+  padding-left: 2.5em;
 }

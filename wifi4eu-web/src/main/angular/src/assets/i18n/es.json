@@ -148,5 +148,14 @@
   "label.details": "Detalles",
   "number": "Nº",
   "registered.date": "Fecha de registro",
-  "image": "Imagen"
+  "image": "Imagen",
+  "accesPoint.name": "Nombre punto de acceso",
+  "sn.countdown": "S/N",
+  "product.number": "Número producto",
+  "product.model": "Model number",
+  "nip.countdown": "NIP",
+  "outdoor.access": "Número punto acceso externo",
+  "indoor.access": "Número punto acceso interno",
+  "about.municipality": "Sobre el municipio",
+  "municipalities.list": "Lista de municipios"
 }

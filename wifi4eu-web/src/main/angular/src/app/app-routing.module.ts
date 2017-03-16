@@ -10,7 +10,7 @@ import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
 import {SupplierPortal} from "./+supplier-portal/supplier-portal.component";
-
+import {CountDownSupplier} from "./+supplier-portal/countdown/supplier-countdown.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -57,6 +57,9 @@ import {SupplierPortal} from "./+supplier-portal/supplier-portal.component";
         }, {
             path: 'supplier-portal',
             component: SupplierPortal
+        }, {
+            path: 'supplier-portal/countdown',
+            component: CountDownSupplier
         }
     ], {useHash: true})],
     exports: [RouterModule]
