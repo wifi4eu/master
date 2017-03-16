@@ -30,3 +30,4 @@ if [ $OUT = 0 ]; then
 else
     echo "[ERROR] Failed uploaded wifi4eu.ear"
 fi
+rm -rf ${DIR}/upload.log.tmp
