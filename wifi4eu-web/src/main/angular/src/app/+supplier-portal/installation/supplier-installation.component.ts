@@ -1,8 +1,8 @@
 import {Component} from "@angular/core";
 
-@Component({templateUrl: 'supplier-countdown.component.html'})
+@Component({templateUrl: 'supplier-installation.component.html'})
 
-export class CountDownSupplier {
+export class InstallationSupplier {
 
 
 }
