@@ -15,23 +15,17 @@
 
                             <div class="left-panel">
                                 <div *ngIf="isOnline" class="user-infos">
-                                    Welcome <strong class="color-primary">Firstname</strong>
-                                    <br>Log Out
+                                    <span class="wellcomeHeader">Welcome <strong
+                                            class="color-primary">Firstname</strong></span>
+                                    <button class="headerButton">Logout</button>
                                 </div>
                                 <div *ngIf="!isOnline" class="user-infos">
-                                    <strong class="color-primary"><a>Login</a></strong>
+                                    <strong class="color-primary">
+                                    </strong>
+                                    <button class="headerButton">Login</button>
                                 </div>
 
                             </div>
-                            <!--<div class="right-panel">-->
-                            <!--<div class="picture">-->
-                            <!--<span class="fa fa-user-circle-o"></span>-->
-                            <!--<span class="connected-state">-->
-                            <!--<span *ngIf="!isOnline" class="fa fa-circle color-success-light"></span>-->
-                            <!--<span *ngIf="isOnline" class="fa fa-circle color-danger-light"></span>-->
-                            <!--</span>-->
-                            <!--</div>-->
-                            <!--</div>-->
                         </div>
                     </uxLayoutHeaderRightContent>
 
