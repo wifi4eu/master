@@ -148,5 +148,15 @@
   "label.details": "Details",
   "number": "Nº",
   "registered.date": "Registered date",
-  "image": "Image"
+  "image": "Image",
+  "step1.supplier": "STEP 1: Company details",
+  "step2.supplier": "STEP 2: Company details",
+  "step3.supplier": "STEP 3: Contact person",
+  "step4.supplier": "STEP 4: Company details",
+  "company.info": "Please, provide information about your company.",
+  "bank.account": "Bank account",
+  "company.web": "Company website",
+  "company.logo": "Company logo (Optional)",
+  "contact.description": "Please, specify a contact person for you company.",
+  "prefix.number":"Prefix number"
 }

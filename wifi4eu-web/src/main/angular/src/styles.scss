@@ -456,7 +456,7 @@ body {
 }
 
 .labelModal {
-  margin-top: 1.2em;
+  margin-top: 1.2em !important;
 }
 
 .profileDialog {
@@ -619,4 +619,8 @@ body {
   font-weight: 100 !important;
   font-family: verdana;
   color: black;
+}
+
+.floatLeft {
+  float: left;
 }

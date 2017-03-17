@@ -20,6 +20,8 @@ import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {SupplierPortal} from "./+supplier-portal/supplier-portal.component";
+import {SupplierRegistrationComponent} from "./+supplier-registration/+supplier-registration-step1/supplier-registration.component-step1";
+import {SupplierRegistrationComponent3} from "./+supplier-registration/+supplier-registration-step3/supplier-registration.component-step3";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -39,6 +41,9 @@ export function translateFactory(http: Http) {
         DgConnPublicationComponent,
         HelpdeskComponent,
         SupplierPortal,
+        SupplierRegistrationComponent,
+        SupplierRegistrationComponent3
+
     ],
     exports: [
         MapComponent,
@@ -50,6 +55,8 @@ export function translateFactory(http: Http) {
         DgConnPublicationComponent,
         HelpdeskComponent,
         SupplierPortal,
+        SupplierRegistrationComponent,
+        SupplierRegistrationComponent3
     ],
     imports: [
         CoreModule,

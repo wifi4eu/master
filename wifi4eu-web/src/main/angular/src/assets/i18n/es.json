@@ -148,5 +148,15 @@
   "label.details": "Detalles",
   "number": "Nº",
   "registered.date": "Fecha de registro",
-  "image": "Imagen"
+  "image": "Imagen",
+  "step1.supplier": "PASO 1: Detalles de la compañía",
+  "step2.supplier": "PASO 2: Detalles de la compañía",
+  "step3.supplier": "PASO 3: Persona de conatcto",
+  "step4.supplier": "PASO 4: Detalles de la compañía",
+  "company.info": "Proporcione información sobre su empresa.",
+  "bank.account": "Cuenta bancaria",
+  "company.web": "Web compañía",
+  "company.logo": "Logo compañía (Opcional)",
+  "contact.description": "Por favor, especifique una persona de contacto para su compañía.",
+  "prefix.number":"Prefijo"
 }

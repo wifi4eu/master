@@ -1,0 +1,145 @@
+<div class="clearfix"></div>
+<div class="container">
+    <div class="center">
+        <p class="beneficiaryTitle labelModal">{{ 'step1.supplier' | translate }}</p>
+        <p>{{ 'company.info' | translate }}</p>
+
+        <form #registrationForm="ngForm">
+            <div class="ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-6">
+                    <div class="form-group">
+                        <label class="label floatLeft" for="company">{{ 'company.name' | translate }}</label>
+                        <input class="form-control" type="text" [(ngModel)]="company.companyName"
+                               name="company"
+                               ngcontrol="company"
+                               #company="ngModel" required>
+                        <div class="alert alert-danger" [hidden]="company.valid || company.pristine">Company is
+                            required
+                        </div>
+                        <div class="ui-g-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-6">
+                    <div class="form-group">
+                        <label class="label floatLeft" for="legalAddress">{{ 'legal.address' | translate }}</label>
+                        <input class="form-control" type="text" [(ngModel)]="company.legalAddress"
+                               name="legalAddress"
+                               ngcontrol="legalAddress"
+                               #legalAddress="ngModel" required>
+                        <div class="alert alert-danger" [hidden]="legalAddress.valid || legalAddress.pristine">Address
+                            is
+                            required
+                        </div>
+                        <div class="ui-g-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-6">
+                    <div class="form-group">
+                        <label class="label floatLeft" for="vatNumber">{{ 'vat.number' | translate }}</label>
+                        <input class="form-control" type="text" [(ngModel)]="company.vatNumber"
+                               name="vatNumber"
+                               ngcontrol="vatNumber"
+                               #vatNumber="ngModel" required>
+                        <div class="alert alert-danger" [hidden]="vatNumber.valid || vatNumber.pristine">VAT number
+                            is
+                            required
+                        </div>
+                        <div class="ui-g-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-6">
+                    <div class="form-group">
+                        <label class="label floatLeft" for="bic">{{ 'bic.number' | translate }}</label>
+                        <input class="form-control" type="text" [(ngModel)]="company.bic"
+                               name="bic"
+                               ngcontrol="bic"
+                               #bic="ngModel" required>
+                        <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">BIC is required
+                        </div>
+                        <div class="ui-g-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-6">
+                    <div class="form-group">
+                        <label class="label floatLeft" for="bankAccount">{{ 'bank.account' | translate }}</label>
+                        <input class="form-control" type="text" [(ngModel)]="company.bankAccount"
+                               name="bankAccount"
+                               ngcontrol="bankAccount"
+                               #bankAccount="ngModel" required>
+                        <div class="alert alert-danger" [hidden]="bankAccount.valid || bankAccount.pristine">Bank
+                            account is
+                            required
+                        </div>
+                        <div class="ui-g-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-6">
+                    <div class="form-group">
+                        <label class="label floatLeft" for="companyWeb">{{ 'company.web' | translate }}</label>
+                        <input class="form-control" type="text" [(ngModel)]="company.companyWeb"
+                               name="companyWeb"
+                               ngcontrol="companyWeb"
+                               #companyWeb="ngModel" required>
+                        <div class="alert alert-danger" [hidden]="companyWeb.valid || companyWeb.pristine">Company Web
+                            is
+                            required
+                        </div>
+                        <div class="ui-g-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui-g">
+                <div class="ui-g-3"></div>
+                <div class="ui-g-6">
+                    <div class="form-group">
+                        <label class="label floatLeft" for="companyLogo">{{ 'company.logo' | translate }}</label>
+                        <!--<p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)"-->
+                                      <!--multiple="multiple" accept="image/*" maxFileSize="1000000">-->
+                            <!--<ng-template pTemplate type="content">-->
+                                <!--<ul *ngIf="uploadedFiles.length">-->
+                                    <!--<li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>-->
+                                <!--</ul>-->
+                            <!--</ng-template>-->
+                        <!--</p-fileUpload>-->
+                        <div class="ui-g-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group ui-g">
+                <div class="ui-g-4"></div>
+                <div class="ui-g-2" style="text-align: center !important">
+                    <button type="button" class="btn">{{ 'cancel.button' | translate
+                        }}
+                    </button>
+                </div>
+                <div class="ui-g-2" style="text-align: center !important">
+                    <button type="submit" class="btn btn-primary"
+                            [disabled]="!registrationForm.form.valid">{{
+                        'confirm.button' | translate }}
+                    </button>
+                </div>
+                <div class="ui-g-4"></div>
+            </div>
+        </form>
+    </div>
+</div>
