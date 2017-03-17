@@ -439,9 +439,9 @@ body {
   font-size: 1.1em;
   font-weight: bold;
 }
+
 .changePasswordModalNoTop {
   margin-top: 0em;
-
 }
 
 .beneficiaryMayorModal {
@@ -657,4 +657,38 @@ body {
   font-size: 18px;
   font-weight: bold;
   color: $dark-blue;
+}
+@media only screen and (max-width: 772px) {
+  #app-header .right-content {
+    float: none;
+    padding: 0;
+    margin-top: 0;
+  }
+
+  .overlay-panel .header .profile .picture {
+    display: none;
+  }
+}
+
+#app-header .right-content {
+  margin-top: 0;
+}
+
+.headerButton {
+  background: white;
+  border: solid 1px grey;
+  padding: 0.3em 0.8em;
+  float: right;
+  margin-left: 0.4em;
+  margin-top: 0.5em;
+}
+
+#app-header {
+  height: 90px;
+}
+
+.wellcomeHeader {
+  position: relative;
+  float: left;
+  margin-top: 5%;
 }
