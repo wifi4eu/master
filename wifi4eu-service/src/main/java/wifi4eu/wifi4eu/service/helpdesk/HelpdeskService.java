@@ -8,14 +8,13 @@ import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskDTO;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskMapper;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskRepository;
-import wifi4eu.wifi4eu.service.call.CallService;
 
 import java.util.List;
 
 @Service
 public class HelpdeskService {
 
-    Logger _log = LoggerFactory.getLogger(CallService.class);
+    Logger _log = LoggerFactory.getLogger(HelpdeskService.class);
 
     @Autowired
     HelpdeskRepository helpdeskRepository;
