@@ -39,7 +39,7 @@ public class BeneficiarySupplierPublicationResource {
     public BeneficiarySupplierPublicationDTO getBeneficiarySupplierPublicationById(@PathVariable("benSupplierPublicationId") final Long benSupplierPublicationId, final HttpServletResponse response) {
         _log.info("getBeneficiarySupplierPublicationById " + benSupplierPublicationId);
 
-        return beneficiarySupplierPublicationService.getBeneficiarySupplierPublication(benSupplierPublicationId);
+        return beneficiarySupplierPublicationService.getBeneficiarySupplierPublicationById(benSupplierPublicationId);
 
     }
 

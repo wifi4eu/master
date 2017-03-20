@@ -39,7 +39,7 @@ public class CallResource {
     public CallDTO getCallById(@PathVariable("callId") final Long callId, final HttpServletResponse response) {
         _log.info("getCallById " + callId);
 
-        return callService.getCall(callId);
+        return callService.getCallById(callId);
 
     }
 

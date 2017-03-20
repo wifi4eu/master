@@ -39,7 +39,7 @@ public class SupplierResource {
     public SupplierDTO getSupplierById(@PathVariable("supplierId") final Long supplierId, final HttpServletResponse response) {
         _log.info("getSupplierById " + supplierId);
 
-        return supplierService.getSupplier(supplierId);
+        return supplierService.getSupplierById(supplierId);
 
     }
 
