@@ -73,7 +73,7 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="email">{{ 'email.label' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="email.companyName"
+                        <input class="form-control" type="email" [(ngModel)]="email.companyName"
                                name="email"
                                ngcontrol="email"
                                #email="ngModel" required>
@@ -89,7 +89,7 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="confirmEmail">{{ 'confirmemail.label' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="confirmEmail.companyName"
+                        <input class="form-control" type="email" [(ngModel)]="confirmEmail.companyName"
                                name="confirmEmail"
                                ngcontrol="confirmEmail"
                                #confirmEmail="ngModel" required>

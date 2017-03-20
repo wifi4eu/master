@@ -14,11 +14,10 @@ import {
     DataTableModule,
     CalendarModule
 } from "primeng/primeng";
-
 import {APP_DIRECTIVES} from "./components/index";
 import {TimelineComponent} from "./components/timeline/timeline.component";
 import {CustomUxAccordionBoxComponent} from "./components/timeline/custom-ux-accordion-box.component";
-
+import {Ng2GoogleRecaptchaModule} from "ng2-google-recaptcha";
 export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions) {
     return new UxHttp(backend, defaultOptions);
 }
@@ -34,7 +33,9 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         AutoCompleteModule,
         DialogModule,
         DataTableModule,
-        CalendarModule
+        CalendarModule,
+        Ng2GoogleRecaptchaModule,
+
     ],
     declarations: [
         UX_DIRECTIVES,

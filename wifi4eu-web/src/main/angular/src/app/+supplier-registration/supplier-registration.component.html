@@ -1,0 +1,51 @@
+<ux-wizard-steps [isCustomContent]="true" *ngIf="!successRegistration && !failureRegistration">
+    <ux-wizard-step label="{{ 'step1.supplier' | translate }}"
+                    [isCompleted]="completed[0]"
+                    [isActive]="active[0]">
+        <uxWizardStepCustomContent>
+            <supplier-registration-step1-component *ngIf="active[0]"
+                                                   (onNext)="onNext($event)"
+                                                   (onBack)="onBack($event)">
+            </supplier-registration-step1-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'step2.supplier' | translate }}"
+                    [isCompleted]="completed[1]"
+                    [isActive]="active[1]">
+        <uxWizardStepCustomContent>
+            <supplier-registration-step2-component *ngIf="active[0]"
+                                                   [selection]="selection"
+                                                   (onNext)="onNext($event)"
+                                                   (onBack)="onBack($event)">
+            </supplier-registration-step2-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'step3.supplier' | translate }}"
+                    [isCompleted]="completed[2]"
+                    [isActive]="active[2]">
+        <uxWizardStepCustomContent>
+            <supplier-registration-step3-component *ngIf="active[0]"
+                                                   [selection]="selection"
+                                                   (onNext)="onNext($event)"
+                                                   (onBack)="onBack($event)">
+            </supplier-registration-step3-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'step4.supplier' | translate }}"
+                    [isCompleted]="completed[3]"
+                    [isActive]="active[3]">
+        <uxWizardStepCustomContent>
+            <supplier-registration-step4-component *ngIf="active[0]"
+                                                   [selection]="selection"
+                                                   (onNext)="onNext($event)"
+                                                   (gotoStep)="gotoStep($event)"
+                                                   (onSuccess)="onSuccess($event)"
+                                                   (onFailure)="onFailure($event)">
+
+            </supplier-registration-step4-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+</ux-wizard-steps>
+<!--<success-component *ngIf="successRegistration"></success-component>-->
+<!--<failure-component *ngIf="failureRegistration"></failure-component>-->
+<!--<helpdesk-form-component></helpdesk-form-component>-->

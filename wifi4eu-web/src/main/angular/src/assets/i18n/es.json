@@ -150,13 +150,20 @@
   "registered.date": "Fecha de registro",
   "image": "Imagen",
   "step1.supplier": "PASO 1: Detalles de la compañía",
-  "step2.supplier": "PASO 2: Detalles de la compañía",
+  "step2.supplier": "PASO 2: Entidad jurídica",
   "step3.supplier": "PASO 3: Persona de conatcto",
-  "step4.supplier": "PASO 4: Detalles de la compañía",
+  "step4.supplier": "PASO 4: Revisión",
   "company.info": "Proporcione información sobre su empresa.",
   "bank.account": "Cuenta bancaria",
   "company.web": "Web compañía",
   "company.logo": "Logo compañía (Opcional)",
   "contact.description": "Por favor, especifique una persona de contacto para su compañía.",
-  "prefix.number":"Prefijo"
+  "prefix.number": "Prefijo",
+  "review.label": "Revisión",
+  "review.description": "Por favor, revise toda la información proporcionada antes de enviar la solicitud.",
+  "logo.label": "Logo compañía",
+  "entity.support": "Entidad jurídica a apoyar",
+  "eu.requirements": "Por la presente confirmo que el software y el hardware utilizados son compatibles con los requisitos de la UE.",
+  "submit.application": "Por la presente, confirmo que la información aquí proporcionada es a mi leal saber y entender y que tengo todos los poderes y autoridad para presentar esta solicitud. Consiento que esta información sea verificada por ...",
+  "requirements.head": "EU Requirements for software and hardware"
 }

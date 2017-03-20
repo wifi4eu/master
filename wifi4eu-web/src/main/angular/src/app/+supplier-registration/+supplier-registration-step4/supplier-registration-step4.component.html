@@ -1,0 +1,177 @@
+<div class="clearfix"></div>
+<div class="container">
+    <div class="center">
+        <p class="beneficiaryTitle labelModal">{{ 'step4.supplier' | translate }}</p>
+        <p>{{ 'contact.description' | translate }}</p>
+    </div>
+    <div class="container">
+        <div class="ui-g">
+            <hr class="beneficiaryHr">
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-2"></div>
+            <div class="ui-g-9">
+                <p class="beneficiaryMayor">{{ 'contact.person' | translate }}</p>
+            </div>
+
+            <div class="ui-g-1"><i class="fa fa-pencil"
+                                   aria-hidden="true"></i> {{ 'edit.button' | translate }}
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-2"></div>
+            <div class="ui-g-3">{{ 'name.label' | translate }}</div>
+            <div class="ui-g-7">
+                <p classs="profileData"></p>
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-2"></div>
+            <div class="ui-g-3">{{ 'surname.label' | translate }}</div>
+            <div class="ui-g-7">
+                <p class="profileData"></p>
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-2"></div>
+            <div class="ui-g-3">{{ 'phone.number' | translate }}</div>
+            <div class="ui-g-7">
+                <p class="profileData"></p>
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-2"></div>
+            <div class="ui-g-3">{{ 'email.modal' | translate }}</div>
+            <div class="ui-g-7">
+                <p class="profileData"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui-g">
+        <hr class="beneficiaryHr">
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-2"></div>
+        <div class="ui-g-9">
+            <p class="beneficiaryMayor">{{ 'company.details' | translate }}</p>
+        </div>
+        <div class="ui-g-1"><i class="fa fa-pencil"
+                               aria-hidden="true"> {{ 'edit.button' | translate }}</i></div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-2"></div>
+        <div class="ui-g-3">{{ 'company.name' | translate }}</div>
+        <div class="ui-g-7">
+            <p classs="profileData"></p>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-2"></div>
+        <div class="ui-g-3">{{ 'legal.address' | translate }}</div>
+        <div class="ui-g-7">
+            <p class="profileData"></p>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-2"></div>
+        <div class="ui-g-3">{{ 'vat.number' | translate }}</div>
+        <div class="ui-g-7">
+            <p class="profileData"></p>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-2"></div>
+        <div class="ui-g-3">{{ 'bic.number' | translate }}</div>
+        <div class="ui-g-7">
+            <p class="profileData"></p>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-2"></div>
+        <div class="ui-g-3">{{ 'logo.label' | translate }}</div>
+        <div class="ui-g-7">
+            <p class="profileData"></p>
+        </div>
+    </div>
+
+
+    <div class="ui-g">
+        <hr class="beneficiaryHr">
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-2"></div>
+        <div class="ui-g-9">
+            <p class="beneficiaryMayor">{{ 'entity.support' | translate }}</p>
+        </div>
+        <div class="ui-g-1"><i class="fa fa-pencil"
+                               aria-hidden="true"> </i>{{ 'edit.button' | translate }}
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-2"></div>
+        <div class="ui-g-3">{{ 'country.label' | translate }}</div>
+        <div class="ui-g-7">
+            <p classs="profileData"></p>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-2"></div>
+        <div class="ui-g-3">{{ 'municipality.label' | translate }}</div>
+        <div class="ui-g-7">
+            <p class="profileData"></p>
+        </div>
+    </div>
+
+    <div class="ui-g">
+        <hr class="beneficiaryHr">
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="ui-g">
+        <div class="ui-g-1">
+            <input type="checkbox" name="" value="">
+        </div>
+        <div class="ui-g-11">{{ 'eu.requirements' | translate }}</div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-1">
+            <input type="checkbox" name="" value="">
+        </div>
+        <div class="ui-g-11">{{ 'submit.application' | translate }}</div>
+    </div>
+
+
+    <div>
+        <span class="ui-g-3"></span>
+        <ng2-google-recaptcha class="ui-g-6" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu"
+        ></ng2-google-recaptcha>
+        <span class="ui-g-3"></span>
+    </div>
+
+
+    <div class=" ui-g">
+        <div class="ui-g-4"></div>
+        <div class="ui-g-2" style="text-align: center !important">
+            <button type="button" class="btn">{{ 'cancel.button' | translate
+                }}
+            </button>
+        </div>
+        <div class="ui-g-2" style="text-align: center !important">
+            <button type="submit" class="btn btn-primary" (click)="openModal()"
+            >{{ 'confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="ui-g-4"></div>
+    </div>
+</div>
+
+<!--MODAL-->
+
+
+<p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
+          [draggable]="false" [closable]="true" [closeOnEscape]="true">
+    <p class="beneficiaryMayor">{{ 'requirements.head' | translate }}</p>
+
+
+</p-dialog>

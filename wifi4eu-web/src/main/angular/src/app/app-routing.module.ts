@@ -10,9 +10,6 @@ import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
 import {SupplierPortal} from "./+supplier-portal/supplier-portal.component";
-import {SupplierRegistrationComponent} from "./+supplier-registration/+supplier-registration-step1/supplier-registration.component-step1";
-import {SupplierRegistrationComponent3} from "./+supplier-registration/+supplier-registration-step3/supplier-registration.component-step3";
-
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -61,10 +58,7 @@ import {SupplierRegistrationComponent3} from "./+supplier-registration/+supplier
             component: SupplierPortal
         }, {
             path: 'supplier-registration/registration',
-            component: SupplierRegistrationComponent
-        }, {
-            path: 'supplier-registration/registration3',
-            component: SupplierRegistrationComponent3
+            loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule'
         }
     ], {useHash: true})],
     exports: [RouterModule]
