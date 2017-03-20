@@ -45,7 +45,7 @@ export interface IBeneficiarysupplierpublicationApi {
      * @param c 
      * @param benSupplierPublicationId 
      */
-    getBeneficiarySupplierPublication<T extends models.BeneficiarySupplierPublicationDTO>(benSupplierPublicationId: number, c?: ClassType<T>): Observable<T>;
+    getBeneficiarySupplierPublicationById<T extends models.BeneficiarySupplierPublicationDTO>(benSupplierPublicationId: number, c?: ClassType<T>): Observable<T>;
 
 }
 
@@ -119,9 +119,9 @@ export class BeneficiarysupplierpublicationApi implements IBeneficiarysupplierpu
      * @param c
      * @param benSupplierPublicationId 
      */
-    getBeneficiarySupplierPublication<T extends models.BeneficiarySupplierPublicationDTO>(benSupplierPublicationId: number, c?: ClassType<T>): Observable<T> {
+    getBeneficiarySupplierPublicationById<T extends models.BeneficiarySupplierPublicationDTO>(benSupplierPublicationId: number, c?: ClassType<T>): Observable<T> {
         // noinspection TypeScriptValidateTypes
-        return this.getBeneficiarySupplierPublicationWithHttpInfo(benSupplierPublicationId)
+        return this.getBeneficiarySupplierPublicationByIdWithHttpInfo(benSupplierPublicationId)
                 .map((response: Response) => {
                     if (response.status === 204) {
                         return undefined;
@@ -197,7 +197,7 @@ export class BeneficiarysupplierpublicationApi implements IBeneficiarysupplierpu
      * 
      * @param benSupplierPublicationId 
      */
-    private getBeneficiarySupplierPublicationWithHttpInfo(benSupplierPublicationId: number ): Observable<Response> {
+    private getBeneficiarySupplierPublicationByIdWithHttpInfo(benSupplierPublicationId: number ): Observable<Response> {
         const path = this.basePath + `/beneficiarysupplierpublication/${benSupplierPublicationId}`;
 //        .replace('{' + 'benSupplierPublicationId' + '}', String(benSupplierPublicationId));  
 // not needed as long as the Angular2Typescript language generates the path as TypeScript template string 

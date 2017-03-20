@@ -45,7 +45,7 @@ export interface ISupplierApi {
      * @param c 
      * @param supplierId 
      */
-    getSupplier<T extends models.SupplierDTO>(supplierId: number, c?: ClassType<T>): Observable<T>;
+    getSupplierById<T extends models.SupplierDTO>(supplierId: number, c?: ClassType<T>): Observable<T>;
 
 }
 
@@ -119,9 +119,9 @@ export class SupplierApi implements ISupplierApi {
      * @param c
      * @param supplierId 
      */
-    getSupplier<T extends models.SupplierDTO>(supplierId: number, c?: ClassType<T>): Observable<T> {
+    getSupplierById<T extends models.SupplierDTO>(supplierId: number, c?: ClassType<T>): Observable<T> {
         // noinspection TypeScriptValidateTypes
-        return this.getSupplierWithHttpInfo(supplierId)
+        return this.getSupplierByIdWithHttpInfo(supplierId)
                 .map((response: Response) => {
                     if (response.status === 204) {
                         return undefined;
@@ -197,7 +197,7 @@ export class SupplierApi implements ISupplierApi {
      * 
      * @param supplierId 
      */
-    private getSupplierWithHttpInfo(supplierId: number ): Observable<Response> {
+    private getSupplierByIdWithHttpInfo(supplierId: number ): Observable<Response> {
         const path = this.basePath + `/supplier/${supplierId}`;
 //        .replace('{' + 'supplierId' + '}', String(supplierId));  
 // not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
