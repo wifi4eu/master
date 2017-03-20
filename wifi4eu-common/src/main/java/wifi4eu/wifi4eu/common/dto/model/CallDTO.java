@@ -1,9 +1,10 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-public class CallDTO {
+public class CallDTO implements Serializable {
 
     private Long callId;
     @NotNull

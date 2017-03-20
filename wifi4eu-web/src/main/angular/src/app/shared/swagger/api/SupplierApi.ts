@@ -21,36 +21,36 @@ import {Configuration} from '../configuration';
 import {ClassType} from '../classType';
 
 
-export const ICallApi = new OpaqueToken('ICallApi');
+export const ISupplierApi = new OpaqueToken('ISupplierApi');
 
-export interface ICallApi {
+export interface ISupplierApi {
 
 
     /**
-     * Get all the calls
+     * Get all the suppliers
      * 
      * @param c 
      */
-    allCalls<T extends models.CallDTO>(c?: ClassType<T>): Observable<T[]>;
+    allSuppliers<T extends models.SupplierDTO>(c?: ClassType<T>): Observable<T[]>;
     /**
-     * create call
+     * create supplier
      * 
      * @param c 
      * @param body 
      */
-    createCall<T extends models.ResponseDTO>(body?: models.CallDTO, c?: ClassType<T>): Observable<T>;
+    createSupplier<T extends models.ResponseDTO>(body?: models.SupplierDTO, c?: ClassType<T>): Observable<T>;
     /**
-     * Get call by callId
+     * Get supplier by supplierId
      * 
      * @param c 
-     * @param callId 
+     * @param supplierId 
      */
-    getCall<T extends models.CallDTO>(callId: number, c?: ClassType<T>): Observable<T>;
+    getSupplier<T extends models.SupplierDTO>(supplierId: number, c?: ClassType<T>): Observable<T>;
 
 }
 
 @Injectable()
-export class CallApi implements ICallApi {
+export class SupplierApi implements ISupplierApi {
     protected basePath = 'http://localhost:7001/wifi4eu/api';
     public defaultHeaders: Headers = new Headers();
     public configuration: Configuration = new Configuration();
@@ -69,13 +69,13 @@ export class CallApi implements ICallApi {
 
 
     /**
-     * Get all the calls
+     * Get all the suppliers
      * 
      * @param c
      */
-    allCalls<T extends models.CallDTO>(c?: ClassType<T>): Observable<T[]> {
+    allSuppliers<T extends models.SupplierDTO>(c?: ClassType<T>): Observable<T[]> {
 
-        return this.allCallsWithHttpInfo()
+        return this.allSuppliersWithHttpInfo()
                 .map((response: Response) => {
                     if (response.status === 204) {
                         return undefined;
@@ -91,14 +91,14 @@ export class CallApi implements ICallApi {
 
 
     /**
-     * create call
+     * create supplier
      * 
      * @param c
      * @param body 
      */
-    createCall<T extends models.ResponseDTO>(body?: models.CallDTO, c?: ClassType<T>): Observable<T> {
+    createSupplier<T extends models.ResponseDTO>(body?: models.SupplierDTO, c?: ClassType<T>): Observable<T> {
         // noinspection TypeScriptValidateTypes
-        return this.createCallWithHttpInfo(body)
+        return this.createSupplierWithHttpInfo(body)
                 .map((response: Response) => {
                     if (response.status === 204) {
                         return undefined;
@@ -114,14 +114,14 @@ export class CallApi implements ICallApi {
 
 
     /**
-     * Get call by callId
+     * Get supplier by supplierId
      * 
      * @param c
-     * @param callId 
+     * @param supplierId 
      */
-    getCall<T extends models.CallDTO>(callId: number, c?: ClassType<T>): Observable<T> {
+    getSupplier<T extends models.SupplierDTO>(supplierId: number, c?: ClassType<T>): Observable<T> {
         // noinspection TypeScriptValidateTypes
-        return this.getCallWithHttpInfo(callId)
+        return this.getSupplierWithHttpInfo(supplierId)
                 .map((response: Response) => {
                     if (response.status === 204) {
                         return undefined;
@@ -136,11 +136,11 @@ export class CallApi implements ICallApi {
 
 
     /**
-     * Get all the calls
+     * Get all the suppliers
      * 
      */
-    private allCallsWithHttpInfo(): Observable<Response> {
-        const path = this.basePath + `/call`;
+    private allSuppliersWithHttpInfo(): Observable<Response> {
+        const path = this.basePath + `/supplier`;
 
 
         let queryParameters = new URLSearchParams();
@@ -163,12 +163,12 @@ export class CallApi implements ICallApi {
     }
 
     /**
-     * create call
+     * create supplier
      * 
      * @param body 
      */
-    private createCallWithHttpInfo(body?: models.CallDTO ): Observable<Response> {
-        const path = this.basePath + `/call`;
+    private createSupplierWithHttpInfo(body?: models.SupplierDTO ): Observable<Response> {
+        const path = this.basePath + `/supplier`;
 
 
         let queryParameters = new URLSearchParams();
@@ -193,21 +193,21 @@ export class CallApi implements ICallApi {
     }
 
     /**
-     * Get call by callId
+     * Get supplier by supplierId
      * 
-     * @param callId 
+     * @param supplierId 
      */
-    private getCallWithHttpInfo(callId: number ): Observable<Response> {
-        const path = this.basePath + `/call/${callId}`;
-//        .replace('{' + 'callId' + '}', String(callId));  
+    private getSupplierWithHttpInfo(supplierId: number ): Observable<Response> {
+        const path = this.basePath + `/supplier/${supplierId}`;
+//        .replace('{' + 'supplierId' + '}', String(supplierId));  
 // not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
 // (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
-        // verify required parameter 'callId' is not null or undefined
-        if (callId === null || callId === undefined) {
-            throw new Error('Required parameter callId was null or undefined when calling getCallById.');
+        // verify required parameter 'supplierId' is not null or undefined
+        if (supplierId === null || supplierId === undefined) {
+            throw new Error('Required parameter supplierId was null or undefined when calling getSupplierById.');
         }
 
 

@@ -21,36 +21,36 @@ import {Configuration} from '../configuration';
 import {ClassType} from '../classType';
 
 
-export const ICallApi = new OpaqueToken('ICallApi');
+export const IBeneficiarysupplierpublicationApi = new OpaqueToken('IBeneficiarysupplierpublicationApi');
 
-export interface ICallApi {
+export interface IBeneficiarysupplierpublicationApi {
 
 
     /**
-     * Get all the calls
+     * Get all the beneficiarysupplierpublication
      * 
      * @param c 
      */
-    allCalls<T extends models.CallDTO>(c?: ClassType<T>): Observable<T[]>;
+    allBeneficiarySupplierPublications<T extends models.BeneficiarySupplierPublicationDTO>(c?: ClassType<T>): Observable<T[]>;
     /**
-     * create call
+     * create beneficiarySupplierPublication
      * 
      * @param c 
      * @param body 
      */
-    createCall<T extends models.ResponseDTO>(body?: models.CallDTO, c?: ClassType<T>): Observable<T>;
+    createBeneficiarySupplierPublication<T extends models.ResponseDTO>(body?: models.BeneficiarySupplierPublicationDTO, c?: ClassType<T>): Observable<T>;
     /**
-     * Get call by callId
+     * Get beneficiarysupplierpublication by benSupplierPublicationId
      * 
      * @param c 
-     * @param callId 
+     * @param benSupplierPublicationId 
      */
-    getCall<T extends models.CallDTO>(callId: number, c?: ClassType<T>): Observable<T>;
+    getBeneficiarySupplierPublication<T extends models.BeneficiarySupplierPublicationDTO>(benSupplierPublicationId: number, c?: ClassType<T>): Observable<T>;
 
 }
 
 @Injectable()
-export class CallApi implements ICallApi {
+export class BeneficiarysupplierpublicationApi implements IBeneficiarysupplierpublicationApi {
     protected basePath = 'http://localhost:7001/wifi4eu/api';
     public defaultHeaders: Headers = new Headers();
     public configuration: Configuration = new Configuration();
@@ -69,13 +69,13 @@ export class CallApi implements ICallApi {
 
 
     /**
-     * Get all the calls
+     * Get all the beneficiarysupplierpublication
      * 
      * @param c
      */
-    allCalls<T extends models.CallDTO>(c?: ClassType<T>): Observable<T[]> {
+    allBeneficiarySupplierPublications<T extends models.BeneficiarySupplierPublicationDTO>(c?: ClassType<T>): Observable<T[]> {
 
-        return this.allCallsWithHttpInfo()
+        return this.allBeneficiarySupplierPublicationsWithHttpInfo()
                 .map((response: Response) => {
                     if (response.status === 204) {
                         return undefined;
@@ -91,14 +91,14 @@ export class CallApi implements ICallApi {
 
 
     /**
-     * create call
+     * create beneficiarySupplierPublication
      * 
      * @param c
      * @param body 
      */
-    createCall<T extends models.ResponseDTO>(body?: models.CallDTO, c?: ClassType<T>): Observable<T> {
+    createBeneficiarySupplierPublication<T extends models.ResponseDTO>(body?: models.BeneficiarySupplierPublicationDTO, c?: ClassType<T>): Observable<T> {
         // noinspection TypeScriptValidateTypes
-        return this.createCallWithHttpInfo(body)
+        return this.createBeneficiarySupplierPublicationWithHttpInfo(body)
                 .map((response: Response) => {
                     if (response.status === 204) {
                         return undefined;
@@ -114,14 +114,14 @@ export class CallApi implements ICallApi {
 
 
     /**
-     * Get call by callId
+     * Get beneficiarysupplierpublication by benSupplierPublicationId
      * 
      * @param c
-     * @param callId 
+     * @param benSupplierPublicationId 
      */
-    getCall<T extends models.CallDTO>(callId: number, c?: ClassType<T>): Observable<T> {
+    getBeneficiarySupplierPublication<T extends models.BeneficiarySupplierPublicationDTO>(benSupplierPublicationId: number, c?: ClassType<T>): Observable<T> {
         // noinspection TypeScriptValidateTypes
-        return this.getCallWithHttpInfo(callId)
+        return this.getBeneficiarySupplierPublicationWithHttpInfo(benSupplierPublicationId)
                 .map((response: Response) => {
                     if (response.status === 204) {
                         return undefined;
@@ -136,11 +136,11 @@ export class CallApi implements ICallApi {
 
 
     /**
-     * Get all the calls
+     * Get all the beneficiarysupplierpublication
      * 
      */
-    private allCallsWithHttpInfo(): Observable<Response> {
-        const path = this.basePath + `/call`;
+    private allBeneficiarySupplierPublicationsWithHttpInfo(): Observable<Response> {
+        const path = this.basePath + `/beneficiarysupplierpublication`;
 
 
         let queryParameters = new URLSearchParams();
@@ -163,12 +163,12 @@ export class CallApi implements ICallApi {
     }
 
     /**
-     * create call
+     * create beneficiarySupplierPublication
      * 
      * @param body 
      */
-    private createCallWithHttpInfo(body?: models.CallDTO ): Observable<Response> {
-        const path = this.basePath + `/call`;
+    private createBeneficiarySupplierPublicationWithHttpInfo(body?: models.BeneficiarySupplierPublicationDTO ): Observable<Response> {
+        const path = this.basePath + `/beneficiarysupplierpublication`;
 
 
         let queryParameters = new URLSearchParams();
@@ -193,21 +193,21 @@ export class CallApi implements ICallApi {
     }
 
     /**
-     * Get call by callId
+     * Get beneficiarysupplierpublication by benSupplierPublicationId
      * 
-     * @param callId 
+     * @param benSupplierPublicationId 
      */
-    private getCallWithHttpInfo(callId: number ): Observable<Response> {
-        const path = this.basePath + `/call/${callId}`;
-//        .replace('{' + 'callId' + '}', String(callId));  
+    private getBeneficiarySupplierPublicationWithHttpInfo(benSupplierPublicationId: number ): Observable<Response> {
+        const path = this.basePath + `/beneficiarysupplierpublication/${benSupplierPublicationId}`;
+//        .replace('{' + 'benSupplierPublicationId' + '}', String(benSupplierPublicationId));  
 // not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
 // (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
-        // verify required parameter 'callId' is not null or undefined
-        if (callId === null || callId === undefined) {
-            throw new Error('Required parameter callId was null or undefined when calling getCallById.');
+        // verify required parameter 'benSupplierPublicationId' is not null or undefined
+        if (benSupplierPublicationId === null || benSupplierPublicationId === undefined) {
+            throw new Error('Required parameter benSupplierPublicationId was null or undefined when calling getBeneficiarySupplierPublicationById.');
         }
 
 
