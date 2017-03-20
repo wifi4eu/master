@@ -27,7 +27,7 @@ public class InvoiceService {
         return invoiceMapper.toDTOList(Lists.newArrayList(invoiceRepository.findAll()));
     }
 
-    public InvoiceDTO getInvoice(Long invoiceId) {
+    public InvoiceDTO getInvoiceById(Long invoiceId) {
         return invoiceMapper.toDTO(invoiceRepository.findOne(invoiceId));
     }
 

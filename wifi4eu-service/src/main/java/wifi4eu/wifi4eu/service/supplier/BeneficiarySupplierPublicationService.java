@@ -27,7 +27,7 @@ public class BeneficiarySupplierPublicationService {
         return beneficiarySupplierPublicationMapper.toDTOList(Lists.newArrayList(beneficiarySupplierPublicationRepository.findAll()));
     }
 
-    public BeneficiarySupplierPublicationDTO getBeneficiarySupplierPublication(Long benSupplierPublicationId) {
+    public BeneficiarySupplierPublicationDTO getBeneficiarySupplierPublicationById(Long benSupplierPublicationId) {
         return beneficiarySupplierPublicationMapper.toDTO(beneficiarySupplierPublicationRepository.findOne(benSupplierPublicationId));
     }
 

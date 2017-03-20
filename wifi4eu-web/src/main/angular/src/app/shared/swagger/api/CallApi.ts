@@ -207,7 +207,7 @@ export class CallApi implements ICallApi {
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
         // verify required parameter 'callId' is not null or undefined
         if (callId === null || callId === undefined) {
-            throw new Error('Required parameter callId was null or undefined when calling getCall.');
+            throw new Error('Required parameter callId was null or undefined when calling getCallById.');
         }
 
 

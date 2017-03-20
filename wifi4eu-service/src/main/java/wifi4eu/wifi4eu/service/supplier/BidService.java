@@ -27,7 +27,7 @@ public class BidService {
         return bidMapper.toDTOList(Lists.newArrayList(bidRepository.findAll()));
     }
 
-    public BidDTO getBid(Long bidId) {
+    public BidDTO getBidById(Long bidId) {
         return bidMapper.toDTO(bidRepository.findOne(bidId));
     }
 

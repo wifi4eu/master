@@ -207,7 +207,7 @@ export class BeneficiarysupplierpublicationApi implements IBeneficiarysupplierpu
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
         // verify required parameter 'benSupplierPublicationId' is not null or undefined
         if (benSupplierPublicationId === null || benSupplierPublicationId === undefined) {
-            throw new Error('Required parameter benSupplierPublicationId was null or undefined when calling getBeneficiarySupplierPublication.');
+            throw new Error('Required parameter benSupplierPublicationId was null or undefined when calling getBeneficiarySupplierPublicationById.');
         }
 
 

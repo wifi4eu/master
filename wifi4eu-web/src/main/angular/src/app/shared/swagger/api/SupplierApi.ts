@@ -207,7 +207,7 @@ export class SupplierApi implements ISupplierApi {
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
         // verify required parameter 'supplierId' is not null or undefined
         if (supplierId === null || supplierId === undefined) {
-            throw new Error('Required parameter supplierId was null or undefined when calling getSupplier.');
+            throw new Error('Required parameter supplierId was null or undefined when calling getSupplierById.');
         }
 
 

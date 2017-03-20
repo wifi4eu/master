@@ -28,7 +28,7 @@ public class CallService {
         return callMapper.toDTOList(Lists.newArrayList(callRepository.findAll()));
     }
 
-    public CallDTO getCall(Long callId) {
+    public CallDTO getCallById(Long callId) {
         return callMapper.toDTO(callRepository.findOne(callId));
     }
 

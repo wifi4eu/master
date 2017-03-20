@@ -36,8 +36,8 @@ public class CallResource {
     @ApiOperation(value = "Get call by callId")
     @RequestMapping(value = "/{callId}", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
-    public CallDTO getCall(@PathVariable("callId") final Long callId, final HttpServletResponse response) {
-        _log.info("getCall " + callId);
+    public CallDTO getCallById(@PathVariable("callId") final Long callId, final HttpServletResponse response) {
+        _log.info("getCallById " + callId);
 
         return callService.getCall(callId);
 

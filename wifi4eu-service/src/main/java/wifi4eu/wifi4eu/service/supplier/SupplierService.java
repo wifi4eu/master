@@ -27,7 +27,7 @@ public class SupplierService {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
     }
 
-    public SupplierDTO getSupplier(Long supplierId) {
+    public SupplierDTO getSupplierById(Long supplierId) {
         return supplierMapper.toDTO(supplierRepository.findOne(supplierId));
     }
 

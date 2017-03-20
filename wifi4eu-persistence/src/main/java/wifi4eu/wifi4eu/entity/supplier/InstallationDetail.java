@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 
 import wifi4eu.wifi4eu.common.dto.model.BidDTO;
 import wifi4eu.wifi4eu.entity.supplier.Invoice;
-//import wifi4eu.wifi4eu.common.dto.model.InvoiceDTO;
 
 @Entity
 @Table(name = "SUPP_INSTALLATIONDETAIL_T")

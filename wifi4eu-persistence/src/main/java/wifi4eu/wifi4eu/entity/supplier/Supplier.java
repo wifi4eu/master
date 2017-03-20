@@ -6,9 +6,7 @@ import javax.validation.constraints.NotNull;
 
 import wifi4eu.wifi4eu.common.dto.model.CompanyDTO;
 import wifi4eu.wifi4eu.common.dto.model.ContactPersonDTO;
-//import wifi4eu.wifi4eu.common.dto.model.InstallationDTO;
 import wifi4eu.wifi4eu.entity.supplier.Installation;
-//import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
 import wifi4eu.wifi4eu.entity.location.Nuts;
 
 @Entity

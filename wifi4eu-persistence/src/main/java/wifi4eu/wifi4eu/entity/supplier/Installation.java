@@ -3,7 +3,7 @@ package wifi4eu.wifi4eu.entity.supplier;
 import javax.persistence.*;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-//import wifi4eu.wifi4eu.common.dto.model.InstallationDetailDTO;
+
 import wifi4eu.wifi4eu.entity.supplier.InstallationDetail;
 import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
 

@@ -27,7 +27,7 @@ public class InstallationService {
         return installationMapper.toDTOList(Lists.newArrayList(installationRepository.findAll()));
     }
 
-    public InstallationDTO getInstallation(Long installationId) {
+    public InstallationDTO getInstallationById(Long installationId) {
         return installationMapper.toDTO(installationRepository.findOne(installationId));
     }
 

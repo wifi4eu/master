@@ -27,7 +27,7 @@ public class ContactPersonService {
         return contactPersonMapper.toDTOList(Lists.newArrayList(contactPersonRepository.findAll()));
     }
 
-    public ContactPersonDTO getContactPerson(Long contactPersonId) {
+    public ContactPersonDTO getContactPersonById(Long contactPersonId) {
         return contactPersonMapper.toDTO(contactPersonRepository.findOne(contactPersonId));
     }
 

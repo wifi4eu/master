@@ -36,8 +36,8 @@ public class BeneficiarySupplierPublicationResource {
     @ApiOperation(value = "Get beneficiarysupplierpublication by benSupplierPublicationId")
     @RequestMapping(value = "/{benSupplierPublicationId}", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
-    public BeneficiarySupplierPublicationDTO getBeneficiarySupplierPublication(@PathVariable("benSupplierPublicationId") final Long benSupplierPublicationId, final HttpServletResponse response) {
-        _log.info("getBeneficiarySupplierPublication " + benSupplierPublicationId);
+    public BeneficiarySupplierPublicationDTO getBeneficiarySupplierPublicationById(@PathVariable("benSupplierPublicationId") final Long benSupplierPublicationId, final HttpServletResponse response) {
+        _log.info("getBeneficiarySupplierPublicationById " + benSupplierPublicationId);
 
         return beneficiarySupplierPublicationService.getBeneficiarySupplierPublication(benSupplierPublicationId);
 

@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.mapper.supplier;
 
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-//import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import org.mapstruct.Mapper;
 import wifi4eu.wifi4eu.mapper.location.NutsMapper;

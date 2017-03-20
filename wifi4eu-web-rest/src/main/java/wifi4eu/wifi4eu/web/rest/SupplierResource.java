@@ -36,8 +36,8 @@ public class SupplierResource {
     @ApiOperation(value = "Get supplier by supplierId")
     @RequestMapping(value = "/{supplierId}", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
-    public SupplierDTO getSupplier(@PathVariable("supplierId") final Long supplierId, final HttpServletResponse response) {
-        _log.info("getSupplier " + supplierId);
+    public SupplierDTO getSupplierById(@PathVariable("supplierId") final Long supplierId, final HttpServletResponse response) {
+        _log.info("getSupplierById " + supplierId);
 
         return supplierService.getSupplier(supplierId);
 

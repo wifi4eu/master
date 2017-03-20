@@ -27,7 +27,7 @@ public class CompanyService {
         return companyMapper.toDTOList(Lists.newArrayList(companyRepository.findAll()));
     }
 
-    public CompanyDTO getCompany(Long companyId) {
+    public CompanyDTO getCompanyById(Long companyId) {
         return companyMapper.toDTO(companyRepository.findOne(companyId));
     }
 
