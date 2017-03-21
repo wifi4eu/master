@@ -2,7 +2,7 @@ import {Component, Input} from "@angular/core";
 import {UxAccordionBoxComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 
 @Component({
-    selector: 'custom-ux-accordion-box',
+    selector: 'custom-timeline-accordion-box',
     template: `
     <div class="box accordion-box" [class.expanded]="isExpanded" (click)="toggle()">
         <div class="header">
@@ -17,7 +17,7 @@ import {UxAccordionBoxComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons"
   `
 })
 
-export class CustomUxAccordionBoxComponent extends UxAccordionBoxComponent {
+export class CustomTimelineAccordionBoxComponent extends UxAccordionBoxComponent {
     @Input() rightSide: boolean = false;
     @Input() isExpanded: boolean;
 

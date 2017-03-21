@@ -22,8 +22,9 @@ import java.util.List;
  * Created by rgarcita on 02/03/2017.
  */
 
+@CrossOrigin(origins = "http://localhost:4200")
 @Controller
-@Api(value="/timeline",description = "Timeline services")
+@Api(value = "/timeline", description = "Timeline services")
 @RequestMapping("timeline")
 public class TimelineResource {
 
@@ -33,9 +34,9 @@ public class TimelineResource {
     private TimelineService timelineService;
 
     @ApiOperation(value = "Get all the timeline entries")
-    @RequestMapping(method = RequestMethod.GET,produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<TimelineDTO> allTimelines(){
+    public List<TimelineDTO> allTimelines() {
 
         return timelineService.getAllTimelines();
     }
@@ -51,14 +52,13 @@ public class TimelineResource {
 
         try {
             TimelineDTO resTimeline = timelineService.createTimeline(timelineDTO);
-            return new ResponseDTO(true,resTimeline,null);
-        }catch(Exception e){
-            ErrorDTO errorDTO = new ErrorDTO(0,e.getMessage());
-            return new ResponseDTO(false,null,errorDTO);
+            return new ResponseDTO(true, resTimeline, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
         }
 
     }
-
 
 
 }

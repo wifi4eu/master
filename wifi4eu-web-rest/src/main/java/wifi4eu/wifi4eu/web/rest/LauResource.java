@@ -20,8 +20,9 @@ import java.util.List;
 /**
  * Created by rgarcita on 08/02/2017.
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @Controller
-@Api(value="/lau",description = "NutsResource")
+@Api(value = "/lau", description = "NutsResource")
 @RequestMapping("lau")
 public class LauResource {
 
@@ -31,10 +32,10 @@ public class LauResource {
     private LocationService locationService;
 
     @ApiOperation(value = "get Lau by Country Code i.e: ES")
-    @RequestMapping(value="/{countryCode}",method = RequestMethod.GET,produces = "application/json")
+    @RequestMapping(value = "/{countryCode}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<LauDTO> findLauByCountryCode(@PathVariable("countryCode") final String countryCode, final HttpServletResponse response) {
-        if(_log.isDebugEnabled()) {
+        if (_log.isDebugEnabled()) {
             _log.debug("findLauByCountryCode: " + countryCode);
         }
         return locationService.getLauByCountryCode(countryCode);
@@ -47,8 +48,8 @@ public class LauResource {
     public ResponseDTO create(@RequestBody final LauDTO lauDTO, final HttpServletResponse response) {
 
 
-        ErrorDTO errorDTO = new ErrorDTO(0,"unexpected");
-        return new ResponseDTO(false,null,errorDTO);
+        ErrorDTO errorDTO = new ErrorDTO(0, "unexpected");
+        return new ResponseDTO(false, null, errorDTO);
     }
 
 

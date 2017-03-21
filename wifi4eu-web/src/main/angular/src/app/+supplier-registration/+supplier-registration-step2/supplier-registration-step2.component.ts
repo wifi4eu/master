@@ -1,20 +1,66 @@
-import {Component, Input, EventEmitter, Output} from "@angular/core";
+import {Component, Input, EventEmitter, Output, OnInit} from "@angular/core";
+import {SelectItem} from 'primeng/primeng';
 import {SupplierRegstration} from "../supplier-registration.model";
+import {NutsApi} from "../../shared/swagger/api/NutsApi";
+import {NutsDTO} from "../../shared/swagger/model/NutsDTO";
 
 @Component({
     selector: 'supplier-registration-step2-component',
-    templateUrl: 'supplier-registration-step2.component.html'
+    templateUrl: 'supplier-registration-step2.component.html',
+    providers: [NutsApi]
 })
-export class SupplierRegistrationComponentStep2 {
+export class SupplierRegistrationComponentStep2 implements OnInit {
     @Input('company') company: SupplierRegstration;
     @Input('selection') selection: boolean[];
 
     @Output() onNext: EventEmitter<number>;
     @Output() onBack: EventEmitter<number>;
 
-    constructor() {
+    private countries: SelectItem[];
+    private selectedCountries: NutsDTO[];
+
+    private provinces: NutsDTO[][];
+    private selectedProvinces: NutsDTO[][];
+
+    constructor(private nutsApi: NutsApi) {
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();
+
+        this.countries = [];
+        this.selectedCountries = [];
+
+        this.provinces = [];
+        this.selectedProvinces = [];
+    }
+
+    ngOnInit() {
+        this.nutsApi.findNutsByLevel(0).subscribe(
+            (nuts: NutsDTO[]) => {
+                for (let nut of nuts) {
+                    this.countries.push({
+                        label: ' ' + nut.name,
+                        value: nut
+                    });
+                }
+            }
+        );
+    }
+
+    onMultiSelectChange(event) {
+        console.log(event);
+        if (event.value.length > 0) {
+            let country: NutsDTO = event.value[event.value.length - 1];
+            this.nutsApi.findNutsByLevel(3).subscribe(
+                (nuts: NutsDTO[]) => {
+                    this.provinces[country.name.toUpperCase()] = [];
+                    for (let nut of nuts) {
+                        if (country.countryCode === nut.countryCode) {
+                            this.provinces[country.name.toUpperCase()].push(nut);
+                        }
+                    }
+                }
+            );
+        }
     }
 
     onSubmit(step: number) {

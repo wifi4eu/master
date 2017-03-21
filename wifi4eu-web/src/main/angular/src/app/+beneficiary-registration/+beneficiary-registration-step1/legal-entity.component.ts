@@ -65,7 +65,7 @@ export class EntityComponent {
         let filteredNuts: NutsDTOBase[] = [];
         for (let i = 0; i < nuts.length; i++) {
             let nut = nuts[i];
-            nut.name = nut.name.toLowerCase()
+            nut.name = nut.name.toLowerCase();
             if (nut.name.indexOf(query.toLowerCase()) == 0) {
                 nut.name = nut.name.charAt(0).toUpperCase() + nut.name.slice(1);
                 filteredNuts.push(nut);

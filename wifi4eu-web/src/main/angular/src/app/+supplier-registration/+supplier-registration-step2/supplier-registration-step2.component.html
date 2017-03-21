@@ -1,9 +1,33 @@
 <div class="clearfix"></div>
-
 <div class="container">
     <div class="center">
         <p class="beneficiaryTitle labelModal">{{ 'step2.supplier' | translate }}</p>
         <p>{{ '' | translate }}</p>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-2"></div>
+        <div class="ui-g-4">
+            <p-multiSelect [options]="countries"
+                           [(ngModel)]="selectedCountries"
+                           (onChange)="onMultiSelectChange($event)">
+            </p-multiSelect>
+        </div>
+        <div class="ui-g-6">
+            <p-tabView *ngIf="selectedCountries.length > 0">
+                <p-tabPanel *ngFor="let country of selectedCountries;"
+                            [header]="country.name">
+                    <div class="ui-g">
+                        <div class="ui-g-12" *ngFor="let province of provinces[country.name];">
+                            <p-checkbox name="group1"
+                                        value={{province.name}}
+                                        label={{province.name}}
+                                        [(ngModel)]="selectedProvinces[i]">
+                            </p-checkbox>
+                        </div>
+                    </div>
+                </p-tabPanel>
+            </p-tabView>
+        </div>
     </div>
     <!-- Navigation buttons -->
     <div id="navigation-buttons" class="form-group ui-g">
