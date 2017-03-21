@@ -4,6 +4,7 @@
                     [isActive]="active[0]">
         <uxWizardStepCustomContent>
             <supplier-registration-step1-component *ngIf="active[0]"
+                                                   [registration]="registration"
                                                    (onNext)="onNext($event)"
                                                    (onBack)="onBack($event)">
             </supplier-registration-step1-component>
@@ -13,7 +14,7 @@
                     [isCompleted]="completed[1]"
                     [isActive]="active[1]">
         <uxWizardStepCustomContent>
-            <supplier-registration-step2-component *ngIf="active[0]"
+            <supplier-registration-step2-component *ngIf="active[1]"
                                                    [selection]="selection"
                                                    (onNext)="onNext($event)"
                                                    (onBack)="onBack($event)">
@@ -24,7 +25,8 @@
                     [isCompleted]="completed[2]"
                     [isActive]="active[2]">
         <uxWizardStepCustomContent>
-            <supplier-registration-step3-component *ngIf="active[0]"
+            <supplier-registration-step3-component *ngIf="active[2]"
+                                                   [registration]="registration"
                                                    [selection]="selection"
                                                    (onNext)="onNext($event)"
                                                    (onBack)="onBack($event)">
@@ -35,7 +37,8 @@
                     [isCompleted]="completed[3]"
                     [isActive]="active[3]">
         <uxWizardStepCustomContent>
-            <supplier-registration-step4-component *ngIf="active[0]"
+            <supplier-registration-step4-component *ngIf="active[3]"
+                                                   [registration]="registration"
                                                    [selection]="selection"
                                                    (onNext)="onNext($event)"
                                                    (gotoStep)="gotoStep($event)"

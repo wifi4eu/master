@@ -1,5 +1,7 @@
 import {Component, Input, EventEmitter, Output} from "@angular/core";
 import {SupplierRegstration} from "../supplier-registration.model";
+import {CompanyDTOBase} from "../../shared/swagger/model/CompanyDTO";
+import {ContactPersonDTOBase} from "../../shared/swagger/model/ContactPersonDTO";
 
 @Component({
     selector: 'supplier-registration-step4-component',
@@ -7,8 +9,10 @@ import {SupplierRegstration} from "../supplier-registration.model";
 })
 
 export class SupplierRegistrationComponentStep4 {
-    @Input('company') company: SupplierRegstration;
+    @Input('registration') registration: SupplierRegstration;
     @Input('selection') selection: boolean[];
+    @Input('beneficiaryDTO') companyDTO: CompanyDTOBase;
+    @Input('beneficiaryDTO') contactDTO: ContactPersonDTOBase;
 
     @Output() onNext: EventEmitter<number>;
     @Output() onBack: EventEmitter<number>;

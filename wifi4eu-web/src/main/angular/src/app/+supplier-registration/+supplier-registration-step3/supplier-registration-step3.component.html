@@ -10,7 +10,7 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="name">{{ 'name.label' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="name.companyName"
+                        <input class="form-control" type="text" [(ngModel)]="registration.name"
                                name="name"
                                ngcontrol="name"
                                #name="ngModel" required>
@@ -26,7 +26,7 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="surname">{{ 'surname.label' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="surname.companyName"
+                        <input class="form-control" type="text" [(ngModel)]="registration.surname"
                                name="surname"
                                ngcontrol="surname"
                                #surname="ngModel" required>
@@ -44,10 +44,10 @@
                     <div class="form-group">
 
                         <label class="label floatLeft" for="phonePrefix">{{ 'prefix.number' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="phonePrefix.companyName"
+                        <input class="form-control" type="text" [(ngModel)]="registration.phonePrefix"
                                name="phonePrefix"
                                ngcontrol="phonePrefix"
-                               #phonePrefix="ngModel" required>
+                               #phonePrefix="ngModel" minlength="3" maxlength="3" required>
                         <div class="alert alert-danger" [hidden]="phonePrefix.valid || phonePrefix.pristine">Prefix is
                             required
                         </div>
@@ -57,7 +57,7 @@
                     <div class="form-group">
                         <label class="label floatLeft" for="phoneNumber">{{ 'phone.number' | translate }}</label>
                         <label class="label floatLeft" for="phoneNumber"></label>
-                        <input class="form-control" type="text" [(ngModel)]="phoneNumber.companyName"
+                        <input class="form-control" type="number" [(ngModel)]="registration.phoneNumber"
                                name="phoneNumber"
                                ngcontrol="phoneNumber"
                                #phoneNumber="ngModel" required>
@@ -73,10 +73,8 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="email">{{ 'email.label' | translate }}</label>
-                        <input class="form-control" type="email" [(ngModel)]="email.companyName"
-                               name="email"
-                               ngcontrol="email"
-                               #email="ngModel" required>
+                        <input class="form-control" type="email" [(ngModel)]="registration.email"
+                               name="email" ngcontrol="email" #email="ngModel" (keyup)="checkIfEmailDiffers()" required>
                         <div class="alert alert-danger" [hidden]="email.valid || email.pristine">Email is
                             required
                         </div>
@@ -89,10 +87,9 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="confirmEmail">{{ 'confirmemail.label' | translate }}</label>
-                        <input class="form-control" type="email" [(ngModel)]="confirmEmail.companyName"
-                               name="confirmEmail"
-                               ngcontrol="confirmEmail"
-                               #confirmEmail="ngModel" required>
+                        <input class="form-control" type="email" [(ngModel)]="registration.confirmEmail"
+                               name="confirmEmail" ngcontrol="confirmEmail" #confirmEmail="ngModel"
+                               (keyup)="checkIfEmailDiffers()" required>
                         <div class="alert alert-danger" [hidden]="confirmEmail.valid || confirmEmail.pristine">Email is
                             required
                         </div>
@@ -105,14 +102,12 @@
             <div class="form-group ui-g">
                 <div class="ui-g-4"></div>
                 <div class="ui-g-2" style="text-align: center !important">
-                    <button type="button" class="btn">{{ 'cancel.button' | translate
-                        }}
-                    </button>
+                    <button type="button" class="btn" (click)="stepBack(2)">{{ 'back.button' | translate }}</button>
                 </div>
                 <div class="ui-g-2" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary"
-                            [disabled]="!registrationForm.form.valid">{{
-                        'confirm.button' | translate }}
+                            [disabled]="!registrationForm.form.valid || emailDiffers"
+                            (click)="onSubmit(3)">{{ 'confirm.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-4"></div>

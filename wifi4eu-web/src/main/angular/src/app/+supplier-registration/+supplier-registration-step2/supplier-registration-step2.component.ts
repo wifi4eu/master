@@ -16,4 +16,12 @@ export class SupplierRegistrationComponentStep2 {
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();
     }
+
+    onSubmit(step: number) {
+        this.onNext.emit(step);
+    }
+
+    stepBack(step: number) {
+        this.onBack.emit(step);
+    }
 }

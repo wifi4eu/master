@@ -9,12 +9,12 @@
                 <div class="ui-g-3"></div>
                 <div class="ui-g-6">
                     <div class="form-group">
-                        <label class="label floatLeft" for="company">{{ 'company.name' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="company.companyName"
-                               name="company"
-                               ngcontrol="company"
-                               #company="ngModel" required>
-                        <div class="alert alert-danger" [hidden]="company.valid || company.pristine">Company is
+                        <label class="label floatLeft" for="name">{{ 'company.name' | translate }}</label>
+                        <input class="form-control" type="text" [(ngModel)]="registration.companyName"
+                               name="companyName"
+                               ngcontrol="companyName"
+                               #companyName="ngModel" required>
+                        <div class="alert alert-danger" [hidden]="companyName.valid || companyName.pristine">Company is
                             required
                         </div>
                         <div class="ui-g-3"></div>
@@ -26,8 +26,8 @@
                 <div class="ui-g-3"></div>
                 <div class="ui-g-6">
                     <div class="form-group">
-                        <label class="label floatLeft" for="legalAddress">{{ 'legal.address' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="company.legalAddress"
+                        <label class="label floatLeft" for="address">{{ 'legal.address' | translate }}</label>
+                        <input class="form-control" type="text" [(ngModel)]="registration.legalAddress"
                                name="legalAddress"
                                ngcontrol="legalAddress"
                                #legalAddress="ngModel" required>
@@ -43,8 +43,8 @@
                 <div class="ui-g-3"></div>
                 <div class="ui-g-6">
                     <div class="form-group">
-                        <label class="label floatLeft" for="vatNumber">{{ 'vat.number' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="company.vatNumber"
+                        <label class="label floatLeft" for="vat">{{ 'vat.label' | translate }}</label>
+                        <input class="form-control" type="text" [(ngModel)]="registration.vatNumber"
                                name="vatNumber"
                                ngcontrol="vatNumber"
                                #vatNumber="ngModel" required>
@@ -60,8 +60,8 @@
                 <div class="ui-g-3"></div>
                 <div class="ui-g-6">
                     <div class="form-group">
-                        <label class="label floatLeft" for="bic">{{ 'bic.number' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="company.bic"
+                        <label class="label floatLeft" for="bic">{{ 'bic.label' | translate }}</label>
+                        <input class="form-control" type="text" [(ngModel)]="registration.bic"
                                name="bic"
                                ngcontrol="bic"
                                #bic="ngModel" required>
@@ -77,7 +77,7 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="bankAccount">{{ 'bank.account' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="company.bankAccount"
+                        <input class="form-control" type="text" [(ngModel)]="registration.bankAccount"
                                name="bankAccount"
                                ngcontrol="bankAccount"
                                #bankAccount="ngModel" required>
@@ -94,8 +94,8 @@
                 <div class="ui-g-3"></div>
                 <div class="ui-g-6">
                     <div class="form-group">
-                        <label class="label floatLeft" for="companyWeb">{{ 'company.web' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="company.companyWeb"
+                        <label class="label floatLeft" for="website">{{ 'company.web' | translate }}</label>
+                        <input class="form-control" type="text" [(ngModel)]="registration.companyWeb"
                                name="companyWeb"
                                ngcontrol="companyWeb"
                                #companyWeb="ngModel" required>
@@ -133,9 +133,9 @@
                     </button>
                 </div>
                 <div class="ui-g-2" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary"
-                            [disabled]="!registrationForm.form.valid">{{
-                        'confirm.button' | translate }}
+                    <button type="submit" class="btn btn-primary" [disabled]="!registrationForm.form.valid"
+                            (click)="onSubmit(1)">
+                        {{ 'confirm.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-4"></div>
