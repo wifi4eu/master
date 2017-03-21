@@ -23,16 +23,16 @@ public class CallService {
     CallMapper callMapper;
 
 
-    public List<CallDTO> getAllCalls(){
+    public List<CallDTO> getAllCalls() {
 
         return callMapper.toDTOList(Lists.newArrayList(callRepository.findAll()));
     }
 
-    public CallDTO getCall(Long callId) {
+    public CallDTO getCallById(Long callId) {
         return callMapper.toDTO(callRepository.findOne(callId));
     }
 
-    public CallDTO createCall(CallDTO callDTO){
+    public CallDTO createCall(CallDTO callDTO) {
 
         return callMapper.toDTO(callRepository.save(callMapper.toEntity(callDTO)));
 

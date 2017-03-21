@@ -45,7 +45,7 @@ export interface ICallApi {
      * @param c 
      * @param callId 
      */
-    getCall<T extends models.CallDTO>(callId: number, c?: ClassType<T>): Observable<T>;
+    getCallById<T extends models.CallDTO>(callId: number, c?: ClassType<T>): Observable<T>;
 
 }
 
@@ -119,9 +119,9 @@ export class CallApi implements ICallApi {
      * @param c
      * @param callId 
      */
-    getCall<T extends models.CallDTO>(callId: number, c?: ClassType<T>): Observable<T> {
+    getCallById<T extends models.CallDTO>(callId: number, c?: ClassType<T>): Observable<T> {
         // noinspection TypeScriptValidateTypes
-        return this.getCallWithHttpInfo(callId)
+        return this.getCallByIdWithHttpInfo(callId)
                 .map((response: Response) => {
                     if (response.status === 204) {
                         return undefined;
@@ -197,7 +197,7 @@ export class CallApi implements ICallApi {
      * 
      * @param callId 
      */
-    private getCallWithHttpInfo(callId: number ): Observable<Response> {
+    private getCallByIdWithHttpInfo(callId: number ): Observable<Response> {
         const path = this.basePath + `/call/${callId}`;
 //        .replace('{' + 'callId' + '}', String(callId));  
 // not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
@@ -207,7 +207,7 @@ export class CallApi implements ICallApi {
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
         // verify required parameter 'callId' is not null or undefined
         if (callId === null || callId === undefined) {
-            throw new Error('Required parameter callId was null or undefined when calling getCall.');
+            throw new Error('Required parameter callId was null or undefined when calling getCallById.');
         }
 
 

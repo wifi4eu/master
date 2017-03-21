@@ -400,6 +400,12 @@ body {
   font-size: 16px;
 }
 
+.descriptionCountdown {
+  color: black;
+  font-size: 16px;
+  font-weight: normal;
+}
+
 .beneficiaryHr {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -432,6 +438,10 @@ body {
   padding-bottom: 9px;
   font-size: 1.1em;
   font-weight: bold;
+}
+
+.changePasswordModalNoTop {
+  margin-top: 0em;
 }
 
 .beneficiaryMayorModal {
@@ -593,7 +603,7 @@ body {
 
 }
 
-.white {
+.white, .whiteNoInline {
   border: solid 1px #e3e3e3;
   background-color: white;
   color: $dark-grey !important;
@@ -621,10 +631,64 @@ body {
   color: black;
 }
 
-.floatLeft {
-  float: left;
+.ui-dialog.ui-widget {
+  width: 50% !important;
 }
 
-.floatRight {
+.whiteNoInline {
+  padding-left: 2.5em;
+  margin-top: 0;
+}
+
+.ui-column-title {
+  padding-left: 1.8em;
+}
+
+.ui-datatable table td {
+  padding-left: 2.5em;
+}
+
+.marginTopCountdown {
+  margin-top: 3em;
+}
+
+.subTitleCountdown {
+  margin-top: 3em;
+  font-size: 18px;
+  font-weight: bold;
+  color: $dark-blue;
+}
+@media only screen and (max-width: 772px) {
+  #app-header .right-content {
+    float: none;
+    padding: 0;
+    margin-top: 0;
+  }
+
+  .overlay-panel .header .profile .picture {
+    display: none;
+  }
+}
+
+#app-header .right-content {
+  margin-top: 0;
+}
+
+.headerButton {
+  background: white;
+  border: solid 1px grey;
+  padding: 0.3em 0.8em;
   float: right;
+  margin-left: 0.4em;
+  margin-top: 0.5em;
+}
+
+#app-header {
+  height: 90px;
+}
+
+.wellcomeHeader {
+  position: relative;
+  float: left;
+  margin-top: 5%;
 }

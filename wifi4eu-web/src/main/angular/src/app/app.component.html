@@ -5,32 +5,26 @@
         <ux-layout-app-main>
 
             <uxLayoutAppMainHeaderContainer>
+
                 <ux-layout-header appFullName="Wifi4EU Free Wifi for Europeans" appShortName="App"
-                                  [userInfos]="userInfos" [isCustomRightContent]="true" [isBig]="true">
+                                  [userInfos]="userInfos" [isCustomRightContent]="true" languageCodes="fr,en">
 
                     <uxLayoutHeaderRightContent>
-                        <div class="profile-wrapper">
+                        <ux-language-selector></ux-language-selector>
+                        <div class="profile-wrapper" isCompact="false">
+
                             <div class="left-panel">
-                                <div class="user-infos">
-                                    Welcome <strong class="color-primary">Firstname</strong>
+                                <div *ngIf="isOnline" class="user-infos">
+                                    <span class="wellcomeHeader">Welcome <strong
+                                            class="color-primary">Firstname</strong></span>
+                                    <button class="headerButton">Logout</button>
                                 </div>
-                                <div class="time-wrapper">
-                                    <div class="current-time">
-                                        <span class="fa fa-clock-o"></span>03:14:58
-                                    </div>
-                                    <div class="utc-time">
-                                        18:15:58 UTC-5:00
-                                    </div>
+                                <div *ngIf="!isOnline" class="user-infos">
+                                    <strong class="color-primary">
+                                    </strong>
+                                    <button class="headerButton">Login</button>
                                 </div>
-                            </div>
-                            <div class="right-panel">
-                                <div class="picture">
-                                    <span class="fa fa-user-circle-o"></span>
-                                    <span class="connected-state">
-                                        <span *ngIf="isOnline" class="fa fa-circle color-success-light"></span>
-                                        <span *ngIf="!isOnline" class="fa fa-circle color-danger-light"></span>
-                                    </span>
-                                </div>
+
                             </div>
                         </div>
                     </uxLayoutHeaderRightContent>
@@ -66,11 +60,23 @@
                         <ux-layout-nav-bar-action-item iconClass="fa-cog" contentClass="auto-width">
                             <ux-layout-nav-bar-action-item-settings></ux-layout-nav-bar-action-item-settings>
                         </ux-layout-nav-bar-action-item>
-
-                        <ux-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu" isOverlayPanel="true"
-                                                       userInfos="NAME Firstname"
-                                                       [links]="menuLinks"></ux-layout-nav-bar-action-item>
+                        <div *ngIf="isOnline">
+                            <ux-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
+                                                           isOverlayPanel="true"
+                                                           userInfos="NAME Firstname"
+                                                           [links]="menuLinks"></ux-layout-nav-bar-action-item>
+                        </div>
+                        <div *ngIf="!isOnline">
+                            <div class="clearfix"></div>
+                            <ux-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
+                                                           isOverlayPanel="true"
+                                                           [links]="menuLinks"
+                                                           userInfos="Login"
+                            >Log out
+                            </ux-layout-nav-bar-action-item>
+                        </div>
                     </ux-layout-nav-bar-actions>
+
                 </ux-layout-nav-bar>
             </uxLayoutAppMainNavBarContainer>
 
