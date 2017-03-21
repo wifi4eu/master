@@ -20,24 +20,25 @@
     <div id="mayor">
         <!-- Role selector -->
         <div id="role-selector" class="form-group ui-g">
-        <div class="ui-g-3"></div>
-        <div class="ui-g-3 center" style="text-align: center !important">
-            <label>
-                <input type="radio" name="mayorOption" value="mayor" [checked]="selection[0]" (click)="onToggleRadio()">
-                {{ 'immayor.option' |
-                translate}}
-            </label>
+            <div class="ui-g-3"></div>
+            <div class="ui-g-3 center" style="text-align: center !important">
+                <label>
+                    <input type="radio" name="mayorOption" value="mayor" [checked]="selection[0]"
+                           (click)="onToggleRadio()">
+                    {{ 'immayor.option' |
+                    translate}}
+                </label>
+            </div>
+            <div class="ui-g-3 center" style="text-align: center !important">
+                <label>
+                    <input type="radio" name="representativeOption" value="representative" [checked]="selection[1]"
+                           (click)="onToggleRadio()"> {{
+                    'imrepresentative.option'
+                    | translate}}
+                </label>
+            </div>
+            <div class="ui-g-3"></div>
         </div>
-        <div class="ui-g-3 center" style="text-align: center !important">
-            <label>
-                <input type="radio" name="representativeOption" value="representative" [checked]="selection[1]"
-                       (click)="onToggleRadio()"> {{
-                'imrepresentative.option'
-                | translate}}
-            </label>
-        </div>
-        <div class="ui-g-3"></div>
-    </div>
         <!-- Separator -->
         <div id="mayor-separator" class="form-group ui-g">
             <div class="ui-g-7 center" style="text-align: center !important">
@@ -212,9 +213,7 @@
                        [(ngModel)]="beneficiaryDTO.representativeDTO.mayorRepeatEmail"
                        (keyup)="checkIfRepresentativeEmailMatches()" [required]="selection[1]">
                 <div [hidden]="representativeEmailMatches || confirmemail_representative.pristine"
-                     class="alert alert-info">The email
-                    information must
-                    match
+                     class="alert alert-info">The email information must match
                 </div>
             </div>
             <div class="ui-g-3"></div>
