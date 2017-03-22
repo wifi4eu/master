@@ -6,13 +6,13 @@
     </div>
     <div class="ui-g">
         <div class="ui-g-2"></div>
-        <div class="ui-g-4">
+        <div class="ui-g-4 marginSelect">
             <p-multiSelect [options]="countries"
                            [(ngModel)]="selectedCountries"
                            (onChange)="onMultiSelectChange($event)">
             </p-multiSelect>
         </div>
-        <div class="ui-g-6">
+        <div class="ui-g-6 white">
             <p-tabView *ngIf="selectedCountries.length > 0">
                 <p-tabPanel *ngFor="let country of selectedCountries;"
                             [header]="country.name">
@@ -34,11 +34,14 @@
         <div class="ui-g-4"></div>
         <!-- Back button -->
         <div class="ui-g-2" style="text-align: center !important">
-            <button type="button" class="btn" (click)="stepBack(1)">{{ 'back.button' | translate }}</button>
+            <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(1)">{{ 'back.button' |
+                translate }}
+            </button>
         </div>
         <!-- Next button -->
         <div class="ui-g-2" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary" (click)="onSubmit(2)">{{ 'next.button' | translate }}
+            <button type="submit" class="btn btn-primary publish-button" (click)="onSubmit(2)">{{ 'next.button' |
+                translate }}
             </button>
         </div>
         <div class="ui-g-4"></div>
