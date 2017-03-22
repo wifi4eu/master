@@ -173,5 +173,6 @@
   "address.required": "La dirección es obligatioria",
   "vat.required": "VAT es obligatorio",
   "bic.required": "BIC es obligatorio",
-  "logo.required": "Logo es obligatorio"
+  "logo.required": "Logo es obligatorio",
+  "check.municipalities": "Puedes comprobar todos los Municipios que hay en el programa."
 }

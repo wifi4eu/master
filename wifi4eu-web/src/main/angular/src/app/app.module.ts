@@ -21,6 +21,7 @@ import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publicat
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {SupplierPortalComponent} from "./+supplier-portal/supplier-portal.component";
 import {SupplierInstallationComponent} from "./+supplier-portal/installation/supplier-installation.component";
+import {SupplierMunicipalitiesComponent} from "./+supplier-portal/municipalities/supplier-municipalities.component";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -40,7 +41,8 @@ export function translateFactory(http: Http) {
         DgConnPublicationComponent,
         HelpdeskComponent,
         SupplierPortalComponent,
-        SupplierInstallationComponent
+        SupplierInstallationComponent,
+        SupplierMunicipalitiesComponent
     ],
     exports: [
         MapComponent,
@@ -52,7 +54,8 @@ export function translateFactory(http: Http) {
         DgConnPublicationComponent,
         HelpdeskComponent,
         SupplierPortalComponent,
-        SupplierInstallationComponent
+        SupplierInstallationComponent,
+        SupplierMunicipalitiesComponent
     ],
     imports: [
         CoreModule,
