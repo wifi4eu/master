@@ -174,5 +174,9 @@
   "address.required": "Address is required",
   "vat.required": "VAT is required",
   "bic.required": "BIC is required",
-  "logo.required": "Logo is required"
+  "logo.required": "Logo is required",
+  "check.municipalities": "You can check all the Municipalities which are in the programme.",
+  "access.point": "Access point",
+  "municipalities.awarded": "Municipalities awarded with voucher",
+  "municipalities.selected": "Municipalities that selected me"
 }

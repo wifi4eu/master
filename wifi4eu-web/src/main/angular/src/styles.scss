@@ -640,6 +640,19 @@ body {
   margin-top: 0;
 }
 
+.whiteNoMargin {
+  margin-top: 0;
+}
+
+.whiteNoMargin .ui-datatable table th, .whiteNoMargin .ui-datatable table td {
+  padding-top: 1.55rem;
+  padding-bottom: 1.55rem;
+}
+
+.whiteNoMargin .ui-datatable {
+  border: solid 1px #e3e3e3;
+}
+
 .ui-column-title {
   padding-left: 1.8em;
 }
