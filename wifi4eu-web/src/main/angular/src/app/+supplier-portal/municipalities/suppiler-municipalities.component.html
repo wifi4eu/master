@@ -1,0 +1,22 @@
+<timeline-component></timeline-component>
+<div class="clearfix"></div>
+<div class="container">
+    <p class="Modalh1Confirmation">{{ 'select.supplier' | translate }}</p>
+    <p class="ModalpConfirmation">{{ 'one.supplier' | translate }}</p>
+    <form action="">
+        <div class="ui-g-12 white">
+            <div class="ui-g-5">
+                <p>{{ 'country.label' | translate }}</p><input type="text" placeholder="Prefilled">
+            </div>
+
+            <div class="ui-g-5">
+                <p> {{ 'municipality.label' | translate }}</p> <input type="text" placeholder="Prefilled">
+            </div>
+
+            <div class="ui-g-2">
+                <button (click)="openModal()" class="btn btn-primary">{{ 'search.button' | translate }}
+                </button>
+            </div>
+        </div>
+    </form>
+    <div class="clearfix"></div>
