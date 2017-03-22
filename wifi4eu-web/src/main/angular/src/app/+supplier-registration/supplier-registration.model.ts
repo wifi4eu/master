@@ -1,8 +1,8 @@
-export class SupplierRegstration {
+export class SupplierRegistration {
     companyName?: string;
     legalAddress?: string;
-    vatNumber?: number;
-    bic?: number
+    vatNumber?: string;
+    bic?: string;
     bankAccount?: string;
     companyWeb?: string;
     companyLogo?: string;

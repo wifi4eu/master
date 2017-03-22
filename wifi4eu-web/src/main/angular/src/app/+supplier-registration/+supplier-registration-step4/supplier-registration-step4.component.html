@@ -127,22 +127,21 @@
 
     <div class="ui-g">
         <div class="ui-g-1">
-            <input type="checkbox" name="" value="">
+            <input type="checkbox" [(ngModel)]="legalChecks[0]">
         </div>
         <div class="ui-g-11">{{ 'eu.requirements' | translate }}</div>
     </div>
     <div class="ui-g">
         <div class="ui-g-1">
-            <input type="checkbox" name="" value="">
+            <input type="checkbox" [(ngModel)]="legalChecks[1]">
         </div>
         <div class="ui-g-11">{{ 'submit.application' | translate }}</div>
     </div>
 
-
     <div>
         <span class="ui-g-3"></span>
         <ng2-google-recaptcha class="ui-g-6" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu"
-        ></ng2-google-recaptcha>
+                              (onCaptchaComplete)="onCaptchaComplete($event)"></ng2-google-recaptcha>
         <span class="ui-g-3"></span>
     </div>
 
@@ -150,13 +149,12 @@
     <div class=" ui-g">
         <div class="ui-g-4"></div>
         <div class="ui-g-2" style="text-align: center !important">
-            <button type="button" class="btn">{{ 'cancel.button' | translate
-                }}
-            </button>
+            <button type="button" class="btn">{{ 'cancel.button' | translate }}</button>
         </div>
         <div class="ui-g-2" style="text-align: center !important">
             <button type="submit" class="btn btn-primary" (click)="openModal()"
-            >{{ 'confirm.button' | translate }}
+                    [disabled]="!legalChecks[0] || !legalChecks[1] || !successCaptcha">
+                {{ 'confirm.button' | translate}}
             </button>
         </div>
         <div class="ui-g-4"></div>
@@ -172,7 +170,7 @@
 
     <div class="ui-g-2" style="text-align: center !important">
         <button type="submit" class="btn btn-primary publish-button"
-                (click)="onSubmit(3)">{{ 'confirm.button' | translate }}
+                (click)="onSubmit()">{{ 'confirm.button' | translate }}
         </button>
     </div>
 </p-dialog>

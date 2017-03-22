@@ -45,9 +45,8 @@
 
                         <label class="label floatLeft" for="phonePrefix">{{ 'prefix.number' | translate }}</label>
                         <input class="form-control" type="text" [(ngModel)]="registration.phonePrefix"
-                               name="phonePrefix"
-                               ngcontrol="phonePrefix"
-                               #phonePrefix="ngModel" minlength="3" maxlength="3" required>
+                               name="phonePrefix" ngcontrol="phonePrefix" #phonePrefix="ngModel"
+                               (keypress)="keyPressPrefix($event)" required>
                         <div class="alert alert-danger" [hidden]="phonePrefix.valid || phonePrefix.pristine">Prefix is
                             required
                         </div>
@@ -58,9 +57,8 @@
                         <label class="label floatLeft" for="phoneNumber">{{ 'phone.number' | translate }}</label>
                         <label class="label floatLeft" for="phoneNumber"></label>
                         <input class="form-control" type="number" [(ngModel)]="registration.phoneNumber"
-                               name="phoneNumber"
-                               ngcontrol="phoneNumber"
-                               #phoneNumber="ngModel" required>
+                               name="phoneNumber" ngcontrol="phoneNumber" #phoneNumber="ngModel"
+                               step="1" min="1" required>
                         <div class="alert alert-danger" [hidden]="phoneNumber.valid || phoneNumber.pristine">Phone is
                             required
                         </div>

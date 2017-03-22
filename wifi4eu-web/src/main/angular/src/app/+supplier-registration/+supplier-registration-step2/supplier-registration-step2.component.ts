@@ -1,6 +1,6 @@
 import {Component, Input, EventEmitter, Output, OnInit} from "@angular/core";
 import {SelectItem} from 'primeng/primeng';
-import {SupplierRegstration} from "../supplier-registration.model";
+import {SupplierRegistration} from "../supplier-registration.model";
 import {NutsApi} from "../../shared/swagger/api/NutsApi";
 import {NutsDTO} from "../../shared/swagger/model/NutsDTO";
 
@@ -10,7 +10,7 @@ import {NutsDTO} from "../../shared/swagger/model/NutsDTO";
     providers: [NutsApi]
 })
 export class SupplierRegistrationComponentStep2 implements OnInit {
-    @Input('company') company: SupplierRegstration;
+    @Input('company') company: SupplierRegistration;
     @Input('selection') selection: boolean[];
 
     @Output() onNext: EventEmitter<number>;

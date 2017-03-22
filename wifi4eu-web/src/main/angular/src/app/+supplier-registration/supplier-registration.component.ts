@@ -1,14 +1,14 @@
 import {Component} from "@angular/core";
 import {ContactPersonDTOBase} from "../shared/swagger/model/ContactPersonDTO";
 import {CompanyDTOBase} from "../shared/swagger/model/CompanyDTO";
-import {SupplierRegstration} from "./supplier-registration.model";
+import {SupplierRegistration} from "./supplier-registration.model";
 
 @Component({templateUrl: 'supplier-registration.component.html'})
 export class SupplierRegistrationComponent {
 
     // private contactPerson: ContactPersonDTOBase;
     // private company: CompanyDTOBase;
-    private registration: SupplierRegstration;
+    private registration: SupplierRegistration;
 
     private selection: boolean[];
     private completed: boolean[];
@@ -22,7 +22,7 @@ export class SupplierRegistrationComponent {
         this.active = [true, false, false, false];
         this.successRegistration = false;
         this.failureRegistration = false;
-        this.registration = new SupplierRegstration();
+        this.registration = new SupplierRegistration();
     }
 
     onNext(step: number) {
