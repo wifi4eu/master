@@ -21,28 +21,28 @@
             <div class="ui-g-2"></div>
             <div class="ui-g-3">{{ 'name.label' | translate }}</div>
             <div class="ui-g-7">
-                <p class="profileData">{{registration.name}}</p>
+                <p class="profileData">{{supplierDTO.contactPersonDTO.name}}</p>
             </div>
         </div>
         <div class="ui-g">
             <div class="ui-g-2"></div>
             <div class="ui-g-3">{{ 'surname.label' | translate }}</div>
             <div class="ui-g-7">
-                <p class="profileData">{{registration.surname}}</p>
+                <p class="profileData">{{supplierDTO.contactPersonDTO.surname}}</p>
             </div>
         </div>
         <div class="ui-g">
             <div class="ui-g-2"></div>
             <div class="ui-g-3">{{ 'phone.number' | translate }}</div>
             <div class="ui-g-7">
-                <p class="profileData">{{registration.phonePrefix}} {{registration.phoneNumber}}</p>
+                <p class="profileData">{{supplierDTO.contactPersonDTO.phone}}</p>
             </div>
         </div>
         <div class="ui-g">
             <div class="ui-g-2"></div>
             <div class="ui-g-3">{{ 'email.modal' | translate }}</div>
             <div class="ui-g-7">
-                <p class="profileData">{{registration.email}}</p>
+                <p class="profileData">{{supplierDTO.contactPersonDTO.email}}</p>
             </div>
         </div>
     </div>
@@ -61,28 +61,28 @@
         <div class="ui-g-2"></div>
         <div class="ui-g-3">{{ 'company.name' | translate }}</div>
         <div class="ui-g-7">
-            <p class="profileData">{{registration.companyName}}</p>
+            <p class="profileData">{{supplierDTO.companyDTO.name}}</p>
         </div>
     </div>
     <div class="ui-g">
         <div class="ui-g-2"></div>
         <div class="ui-g-3">{{ 'legal.address' | translate }}</div>
         <div class="ui-g-7">
-            <p class="profileData">{{registration.legalAddress}}</p>
+            <p class="profileData">{{supplierDTO.companyDTO.address}}</p>
         </div>
     </div>
     <div class="ui-g">
         <div class="ui-g-2"></div>
         <div class="ui-g-3">{{ 'vat.number' | translate }}</div>
         <div class="ui-g-7">
-            <p class="profileData">{{registration.vatNumber}}</p>
+            <p class="profileData">{{supplierDTO.companyDTO.vat}}</p>
         </div>
     </div>
     <div class="ui-g">
         <div class="ui-g-2"></div>
         <div class="ui-g-3">{{ 'bic.number' | translate }}</div>
         <div class="ui-g-7">
-            <p class="profileData">{{registration.bic}}</p>
+            <p class="profileData">{{supplierDTO.companyDTO.bic}}</p>
         </div>
     </div>
     <div class="ui-g">
@@ -107,16 +107,8 @@
     </div>
     <div class="ui-g">
         <div class="ui-g-2"></div>
-        <div class="ui-g-3">{{ 'country.label' | translate }}</div>
-        <div class="ui-g-7">
-            <p class="profileData"></p>
-        </div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-2"></div>
-        <div class="ui-g-3">{{ 'municipality.label' | translate }}</div>
-        <div class="ui-g-7">
-            <p class="profileData"></p>
+        <div class="ui-g-3">
+            <p class="profileData" *ngFor="let region of supplierDTO.supportedRegions">{{region.name}}</p>
         </div>
     </div>
 

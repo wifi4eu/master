@@ -19,9 +19,9 @@
                     <div class="ui-g">
                         <div class="ui-g-12" *ngFor="let province of provinces[country.name];">
                             <p-checkbox name="group1"
-                                        value={{province.name}}
+                                        [value]=province
                                         label={{province.name}}
-                                        [(ngModel)]="selectedProvinces[i]">
+                                        [(ngModel)]="supplierDTO.supportedRegions">
                             </p-checkbox>
                         </div>
                     </div>

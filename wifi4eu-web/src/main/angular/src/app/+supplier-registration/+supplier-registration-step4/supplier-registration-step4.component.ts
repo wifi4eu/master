@@ -12,11 +12,10 @@ import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
 })
 
 export class SupplierRegistrationComponentStep4 {
-    @Input('registration') registration: SupplierRegistration;
+    @Input('supplierDTO') supplierDTO: SupplierDTOBase;
+
     @Input('selection') selection: boolean[];
-    @Input('beneficiaryDTO') companyDTO: CompanyDTOBase;
-    @Input('beneficiaryDTO') contactDTO: ContactPersonDTOBase;
-    private supplier: SupplierDTOBase;
+
     private legalChecks: boolean[];
     private successCaptcha: boolean;
     private display: boolean;
@@ -28,15 +27,15 @@ export class SupplierRegistrationComponentStep4 {
     @Output() onFailure: EventEmitter<boolean>;
 
     constructor(private supplierApi: SupplierApi) {
+        this.legalChecks = [false, false];
+        this.successCaptcha = false;
         this.display = false;
+
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();
         this.gotoStep = new EventEmitter<number>();
         this.onSuccess = new EventEmitter<boolean>();
         this.onFailure = new EventEmitter<boolean>();
-        this.supplier = new SupplierDTOBase();
-        this.legalChecks = [false, false];
-        this.successCaptcha = false;
     }
 
     openModal() {
@@ -48,8 +47,7 @@ export class SupplierRegistrationComponentStep4 {
     }
 
     onSubmit() {
-        this.createSupplierDTO();
-        this.supplierApi.createSupplier(this.supplier).subscribe(
+        this.supplierApi.createSupplier(this.supplierDTO).subscribe(
             supplier => {
                 console.log(supplier);
             },
@@ -57,23 +55,5 @@ export class SupplierRegistrationComponentStep4 {
                 console.log(error);
             }
         );
-    }
-
-    createSupplierDTO() {
-        this.supplier.companyDTO = new CompanyDTOBase();
-        this.supplier.companyDTO.name = this.registration.companyName;
-        this.supplier.companyDTO.address = this.registration.legalAddress;
-        this.supplier.companyDTO.vat = this.registration.vatNumber;
-        this.supplier.companyDTO.bic = this.registration.bic;
-        this.supplier.companyDTO.accountNumber = this.registration.bankAccount;
-        this.supplier.companyDTO.website = this.registration.companyWeb;
-        this.supplier.contactPersonDTO = new ContactPersonDTOBase();
-        this.supplier.contactPersonDTO.name = this.registration.name;
-        this.supplier.contactPersonDTO.surname = this.registration.surname;
-        this.supplier.contactPersonDTO.phone = this.registration.phonePrefix + " " + this.registration.phoneNumber;
-        this.supplier.contactPersonDTO.email = this.registration.email;
-        this.supplier.legalCheck1 = this.legalChecks[0];
-        this.supplier.legalCheck2 = this.legalChecks[1];
-        this.supplier.createDate = new Date().getTime();
     }
 }
