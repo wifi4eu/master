@@ -61,7 +61,7 @@ import {SupplierInstallationComponent} from "./+supplier-portal/installation/sup
             path: 'supplier-portal/installation',
             component: SupplierInstallationComponent
         }, {
-            path: 'supplier-registration/registration',
+            path: 'supplier-registration',
             loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule'
         }
     ], {useHash: true})],

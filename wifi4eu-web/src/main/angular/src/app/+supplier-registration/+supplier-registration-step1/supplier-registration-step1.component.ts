@@ -1,12 +1,13 @@
 import {Component, Input, Output, EventEmitter} from "@angular/core";
-import {SupplierRegstration} from "../supplier-registration.model";
-import {CompanyDTOBase} from "../../shared/swagger/model/CompanyDTO";
+import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
 
 
-@Component({selector: 'supplier-registration-step1-component', templateUrl: 'supplier-registration-step1.component.html'})
+@Component({
+    selector: 'supplier-registration-step1-component',
+    templateUrl: 'supplier-registration-step1.component.html'
+})
 export class SupplierRegistrationComponentStep1 {
-    //@Input('company') company: SupplierRegstration;
-    @Input('registration') registration: SupplierRegstration;
+    @Input('supplierDTO') supplierDTO: SupplierDTOBase;
 
     @Output() onNext = new EventEmitter<number>();
 

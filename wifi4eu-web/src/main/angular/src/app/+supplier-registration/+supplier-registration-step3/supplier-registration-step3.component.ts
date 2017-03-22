@@ -1,27 +1,30 @@
 import {Component, Input, EventEmitter, Output} from "@angular/core";
-import {SupplierRegstration} from "../supplier-registration.model";
-
+import {SupplierRegistration} from "../supplier-registration.model";
+import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
 
 @Component({
     selector: 'supplier-registration-step3-component',
     templateUrl: 'supplier-registration-step3.component.html'
 })
 export class SupplierRegistrationComponentStep3 {
-    @Input('registration') registration: SupplierRegstration;
+    @Input('supplierDTO') supplierDTO: SupplierDTOBase;
+
     @Input('selection') selection: boolean[];
 
     @Output() onNext: EventEmitter<number>;
     @Output() onBack: EventEmitter<number>;
 
-    private emailDiffers : boolean;
+    private phonePrefix: string;
+    private confirmEmail: string;
 
     constructor() {
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();
-        this.emailDiffers = true;
     }
 
     onSubmit(step: number) {
+        this.supplierDTO.contactPersonDTO.phone = this.phonePrefix + this.supplierDTO.contactPersonDTO.phone;
+        console.log(this.supplierDTO);
         this.onNext.emit(step);
     }
 
@@ -29,10 +32,15 @@ export class SupplierRegistrationComponentStep3 {
         this.onBack.emit(step);
     }
 
-    checkIfEmailDiffers() {
-        this.emailDiffers = true;
-        if (this.registration.email === this.registration.confirmEmail) {
-            this.emailDiffers = false;
+    checkEmail() {
+        return this.supplierDTO.contactPersonDTO.email !== this.confirmEmail
+    }
+
+    keyPressPrefix(event: any) {
+        const pattern = /[0-9\+]/;
+        let inputChar = String.fromCharCode(event.charCode);
+        if (!pattern.test(inputChar)) {
+            event.preventDefault();
         }
     }
 }

@@ -1,8 +1,9 @@
 import {Component, Input, EventEmitter, Output, OnInit} from "@angular/core";
 import {SelectItem} from 'primeng/primeng';
-import {SupplierRegstration} from "../supplier-registration.model";
+import {SupplierRegistration} from "../supplier-registration.model";
 import {NutsApi} from "../../shared/swagger/api/NutsApi";
 import {NutsDTO} from "../../shared/swagger/model/NutsDTO";
+import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
 
 @Component({
     selector: 'supplier-registration-step2-component',
@@ -10,7 +11,7 @@ import {NutsDTO} from "../../shared/swagger/model/NutsDTO";
     providers: [NutsApi]
 })
 export class SupplierRegistrationComponentStep2 implements OnInit {
-    @Input('company') company: SupplierRegstration;
+    @Input('supplierDTO') supplierDTO: SupplierDTOBase;
     @Input('selection') selection: boolean[];
 
     @Output() onNext: EventEmitter<number>;
@@ -20,7 +21,6 @@ export class SupplierRegistrationComponentStep2 implements OnInit {
     private selectedCountries: NutsDTO[];
 
     private provinces: NutsDTO[][];
-    private selectedProvinces: NutsDTO[][];
 
     constructor(private nutsApi: NutsApi) {
         this.onNext = new EventEmitter<number>();
@@ -30,7 +30,6 @@ export class SupplierRegistrationComponentStep2 implements OnInit {
         this.selectedCountries = [];
 
         this.provinces = [];
-        this.selectedProvinces = [];
     }
 
     ngOnInit() {
@@ -64,6 +63,7 @@ export class SupplierRegistrationComponentStep2 implements OnInit {
     }
 
     onSubmit(step: number) {
+        console.log(this.supplierDTO);
         this.onNext.emit(step);
     }
 

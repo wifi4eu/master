@@ -10,10 +10,12 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="name">{{ 'company.name' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="registration.companyName"
+                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.companyDTO.name"
                                name="companyName"
                                ngcontrol="companyName"
-                               #companyName="ngModel" required>
+                               #companyName="ngModel"
+                               placeholder="Everis"
+                               required>
                         <div class="alert alert-danger" [hidden]="companyName.valid || companyName.pristine">Company is
                             required
                         </div>
@@ -27,10 +29,12 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="address">{{ 'legal.address' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="registration.legalAddress"
+                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.companyDTO.address"
                                name="legalAddress"
                                ngcontrol="legalAddress"
-                               #legalAddress="ngModel" required>
+                               #legalAddress="ngModel"
+                               placeholder="Diagonal, 605, 08022, Barcelona"
+                               required>
                         <div class="alert alert-danger" [hidden]="legalAddress.valid || legalAddress.pristine">Address
                             is
                             required
@@ -44,10 +48,12 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="vat">{{ 'vat.label' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="registration.vatNumber"
+                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.companyDTO.vat"
                                name="vatNumber"
                                ngcontrol="vatNumber"
-                               #vatNumber="ngModel" required>
+                               #vatNumber="ngModel"
+                               placeholder="000000000"
+                               required>
                         <div class="alert alert-danger" [hidden]="vatNumber.valid || vatNumber.pristine">VAT number
                             is
                             required
@@ -61,10 +67,12 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="bic">{{ 'bic.label' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="registration.bic"
+                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.companyDTO.bic"
                                name="bic"
                                ngcontrol="bic"
-                               #bic="ngModel" required>
+                               #bic="ngModel"
+                               placeholder="000000000000"
+                               required>
                         <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">BIC is required
                         </div>
                         <div class="ui-g-3"></div>
@@ -77,10 +85,12 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="bankAccount">{{ 'bank.account' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="registration.bankAccount"
+                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.companyDTO.accountNumber"
                                name="bankAccount"
                                ngcontrol="bankAccount"
-                               #bankAccount="ngModel" required>
+                               #bankAccount="ngModel"
+                               placeholder="000000000000000000"
+                               required>
                         <div class="alert alert-danger" [hidden]="bankAccount.valid || bankAccount.pristine">Bank
                             account is
                             required
@@ -95,10 +105,12 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="website">{{ 'company.web' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="registration.companyWeb"
+                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.companyDTO.website"
                                name="companyWeb"
                                ngcontrol="companyWeb"
-                               #companyWeb="ngModel" required>
+                               #companyWeb="ngModel"
+                               placeholder="http://everis.com"
+                               required>
                         <div class="alert alert-danger" [hidden]="companyWeb.valid || companyWeb.pristine">Company Web
                             is
                             required

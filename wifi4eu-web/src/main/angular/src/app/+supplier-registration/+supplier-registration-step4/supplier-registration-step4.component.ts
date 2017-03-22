@@ -1,18 +1,24 @@
 import {Component, Input, EventEmitter, Output} from "@angular/core";
-import {SupplierRegstration} from "../supplier-registration.model";
+import {SupplierRegistration} from "../supplier-registration.model";
 import {CompanyDTOBase} from "../../shared/swagger/model/CompanyDTO";
 import {ContactPersonDTOBase} from "../../shared/swagger/model/ContactPersonDTO";
+import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
+import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
 
 @Component({
     selector: 'supplier-registration-step4-component',
-    templateUrl: 'supplier-registration-step4.component.html'
+    templateUrl: 'supplier-registration-step4.component.html',
+    providers: [SupplierApi]
 })
 
 export class SupplierRegistrationComponentStep4 {
-    @Input('registration') registration: SupplierRegstration;
+    @Input('supplierDTO') supplierDTO: SupplierDTOBase;
+
     @Input('selection') selection: boolean[];
-    @Input('beneficiaryDTO') companyDTO: CompanyDTOBase;
-    @Input('beneficiaryDTO') contactDTO: ContactPersonDTOBase;
+
+    private legalChecks: boolean[];
+    private successCaptcha: boolean;
+    private display: boolean;
 
     @Output() onNext: EventEmitter<number>;
     @Output() onBack: EventEmitter<number>;
@@ -20,11 +26,11 @@ export class SupplierRegistrationComponentStep4 {
     @Output() onSuccess: EventEmitter<boolean>;
     @Output() onFailure: EventEmitter<boolean>;
 
-
-    display: boolean;
-
-    constructor() {
+    constructor(private supplierApi: SupplierApi) {
+        this.legalChecks = [false, false];
+        this.successCaptcha = false;
         this.display = false;
+
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();
         this.gotoStep = new EventEmitter<number>();
@@ -36,4 +42,18 @@ export class SupplierRegistrationComponentStep4 {
         this.display = true;
     }
 
+    private onCaptchaComplete(response: any) {
+        this.successCaptcha = response.success;
+    }
+
+    onSubmit() {
+        this.supplierApi.createSupplier(this.supplierDTO).subscribe(
+            supplier => {
+                console.log(supplier);
+            },
+            error => {
+                console.log(error);
+            }
+        );
+    }
 }

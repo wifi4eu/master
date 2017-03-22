@@ -4,29 +4,32 @@
                     [isActive]="active[0]">
         <uxWizardStepCustomContent>
             <supplier-registration-step1-component *ngIf="active[0]"
-                                                   [registration]="registration"
+                                                   [supplierDTO]="supplierDTO"
                                                    (onNext)="onNext($event)"
                                                    (onBack)="onBack($event)">
             </supplier-registration-step1-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
-    <ux-wizard-step label="{{ 'step2.supplier' | translate }}"
-                    [isCompleted]="completed[1]"
-                    [isActive]="active[1]">
+    <ux-wizard-step
+            label="{{ 'step2.supplier' | translate }}"
+            [isCompleted]="completed[1]"
+            [isActive]="active[1]">
         <uxWizardStepCustomContent>
             <supplier-registration-step2-component *ngIf="active[1]"
+                                                   [supplierDTO]="supplierDTO"
                                                    [selection]="selection"
                                                    (onNext)="onNext($event)"
                                                    (onBack)="onBack($event)">
             </supplier-registration-step2-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
-    <ux-wizard-step label="{{ 'step3.supplier' | translate }}"
-                    [isCompleted]="completed[2]"
-                    [isActive]="active[2]">
+    <ux-wizard-step
+            label="{{ 'step3.supplier' | translate }}"
+            [isCompleted]="completed[2]"
+            [isActive]="active[2]">
         <uxWizardStepCustomContent>
             <supplier-registration-step3-component *ngIf="active[2]"
-                                                   [registration]="registration"
+                                                   [supplierDTO]="supplierDTO"
                                                    [selection]="selection"
                                                    (onNext)="onNext($event)"
                                                    (onBack)="onBack($event)">
@@ -38,13 +41,12 @@
                     [isActive]="active[3]">
         <uxWizardStepCustomContent>
             <supplier-registration-step4-component *ngIf="active[3]"
-                                                   [registration]="registration"
+                                                   [supplierDTO]="supplierDTO"
                                                    [selection]="selection"
                                                    (onNext)="onNext($event)"
                                                    (gotoStep)="gotoStep($event)"
                                                    (onSuccess)="onSuccess($event)"
                                                    (onFailure)="onFailure($event)">
-
             </supplier-registration-step4-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
