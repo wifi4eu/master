@@ -3,24 +3,22 @@ package wifi4eu.wifi4eu.common.dto.model;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-/**
- * Created by rgarcita on 02/03/2017.
- */
 public class TimelineDTO {
 
     private Long timelineId;
     @NotNull
-    private String eventTitle;
-    private Date startDate;
-    private Date endDate;
+    private Long startDate;
+    private Long endDate;
+    private String event;
 
-    public TimelineDTO(){}
+    public TimelineDTO() {
+    }
 
-    public TimelineDTO(Long timelineId, String eventTitle, Date startDate, Date endDate) {
+    public TimelineDTO(Long timelineId, Long startDate, Long endDate, String event, String label, String subLabel, String styleClass) {
         this.timelineId = timelineId;
-        this.eventTitle = eventTitle;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.event = event;
     }
 
     public Long getTimelineId() {
@@ -31,27 +29,27 @@ public class TimelineDTO {
         this.timelineId = timelineId;
     }
 
-    public String getEventTitle() {
-        return eventTitle;
-    }
-
-    public void setEventTitle(String eventTitle) {
-        this.eventTitle = eventTitle;
-    }
-
-    public Date getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
     }
 }
