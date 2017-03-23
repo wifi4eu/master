@@ -194,5 +194,10 @@
   "surname.place":"Doe",
   "prefix.place":"+34",
   "phone.place":"123456789",
-  "email.place":"email@example.com"
+  "email.place":"email@example.com",
+  "logo.required": "Logo is required",
+  "check.municipalities": "You can check all the Municipalities which are in the programme.",
+  "access.point": "Access point",
+  "municipalities.awarded": "Municipalities awarded with voucher",
+  "municipalities.selected": "Municipalities that selected me"
 }

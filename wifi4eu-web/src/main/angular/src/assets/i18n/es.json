@@ -193,5 +193,10 @@
   "surname.place":"Doe",
   "prefix.place":"+34",
   "phone.place":"123456789",
-  "email.place":"email@example.com"
+  "email.place":"email@example.com",
+  "logo.required": "Logo es obligatorio",
+  "check.municipalities": "Puedes comprobar todos los Municipios que hay en el programa.",
+  "access.point": "Punto de acceso",
+  "municipalities.awarded": "Municipios asignados a proveedor",
+  "municipalities.selected": "Municipios que me han seleccionado"
 }

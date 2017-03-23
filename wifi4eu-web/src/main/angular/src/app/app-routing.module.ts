@@ -11,6 +11,7 @@ import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.compo
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
 import {SupplierPortalComponent} from "./+supplier-portal/supplier-portal.component";
 import {SupplierInstallationComponent} from "./+supplier-portal/installation/supplier-installation.component";
+import {SupplierMunicipalitiesComponent} from "./+supplier-portal/municipalities/supplier-municipalities.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -63,6 +64,9 @@ import {SupplierInstallationComponent} from "./+supplier-portal/installation/sup
         }, {
             path: 'supplier-registration',
             loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule'
+        }, {
+            path: 'supplier-portal/municipalities',
+            component: SupplierMunicipalitiesComponent
         }
     ], {useHash: true})],
     exports: [RouterModule]
