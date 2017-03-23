@@ -46,7 +46,6 @@ export class SupplierRegistrationComponentStep2 implements OnInit {
     }
 
     onMultiSelectChange(event) {
-        console.log(event);
         if (event.value.length > 0) {
             let country: NutsDTO = event.value[event.value.length - 1];
             this.nutsApi.findNutsByLevel(3).subscribe(
@@ -63,7 +62,6 @@ export class SupplierRegistrationComponentStep2 implements OnInit {
     }
 
     onSubmit(step: number) {
-        console.log(this.supplierDTO);
         this.onNext.emit(step);
     }
 

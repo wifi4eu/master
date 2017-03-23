@@ -24,7 +24,6 @@ export class SupplierRegistrationComponentStep3 {
 
     onSubmit(step: number) {
         this.supplierDTO.contactPersonDTO.phone = this.phonePrefix + this.supplierDTO.contactPersonDTO.phone;
-        console.log(this.supplierDTO);
         this.onNext.emit(step);
     }
 
