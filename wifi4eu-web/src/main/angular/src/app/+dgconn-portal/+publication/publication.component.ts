@@ -1,31 +1,35 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
 import {Call} from "../../shared/models/call-details.model";
-import {CallDTO, CallDTOBase} from '../../shared/swagger/model/CallDTO';
-import {CallApi} from '../../shared/swagger/api/CallApi';
+import {CallDTO, CallDTOBase} from "../../shared/swagger/model/CallDTO";
+import {CallApi} from "../../shared/swagger/api/CallApi";
+import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 
 @Component({
     templateUrl: 'publication.component.html', providers: [CallApi]
 })
 
-export class DgConnPublicationComponent {
+export class DgConnPublicationComponent implements OnInit {
     @Input('dgConnDetails') dgConnDetails: DgConnDetails;
     private display: boolean;
-    private calls: CallDTOBase[];
+    private calls: CallDTO[];
     private selectedCall: Call;
-    private originalCall: CallDTOBase;
+    private originalCall: CallDTO;
     private newElementForm: boolean;
 
-    constructor(private callApi: CallApi) {
+    constructor(private callApi: CallApi, private uxService: UxService) {
         this.display = false;
         this.dgConnDetails = new DgConnDetails();
+        this.selectedCall = new Call();
+        this.originalCall = new CallDTOBase();
+        this.newElementForm = false;
+    }
+
+    ngOnInit() {
         this.callApi.allCalls().subscribe(
             calls => this.calls = calls,
             error => console.log(error)
         );
-        this.selectedCall = new Call();
-        this.originalCall = new CallDTOBase();
-        this.newElementForm = false;
     }
 
     addNewElement() {
@@ -33,10 +37,6 @@ export class DgConnPublicationComponent {
         this.display = true;
         this.selectedCall = new Call();
         this.selectedCall.setCallId(null);
-        this.callApi.allCalls().subscribe(
-            calls => this.calls = calls,
-            error => console.log(error)
-        );
     }
 
     displayInfo(rowElement: number) {
@@ -53,21 +53,25 @@ export class DgConnPublicationComponent {
     cancelPublication() {
         this.newElementForm = false;
         this.display = false;
-        this.callApi.allCalls().subscribe(
-            calls => this.calls = calls,
-            error => console.log(error)
-        );
     }
 
     createPublication() {
         this.callApi.createCall(this.convertCallToDTO(this.selectedCall)).subscribe(
-            call => {
+            data => {
                 this.newElementForm = false;
                 this.display = false;
-                this.callApi.allCalls().subscribe(
-                    calls => this.calls = calls,
-                    error => console.log(error)
-                );
+                if (data == "error") {
+                    this.uxService.growl({
+                        severity: 'error',
+                        summary: 'ERROR',
+                    });
+                    console.log('ERROR: Could not login, with these user password');
+                } else if (data == "success") {
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: 'SUCCESS',
+                    });
+                }
             },
             error => console.log(error)
         );

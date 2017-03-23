@@ -1,9 +1,10 @@
-import {Component, OnInit, Output, EventEmitter} from "@angular/core";
+import {Component, enableProdMode, OnInit, Output, EventEmitter} from "@angular/core";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {UxService, UxLayoutLink, UxLayoutNotificationItem} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {CoreService} from "./core/core.service";
 import {UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 
+enableProdMode()
 
 @Component({selector: 'app-root', templateUrl: './app.component.html', styleUrls: ['./app.component.scss']})
 export class AppComponent implements OnInit {
