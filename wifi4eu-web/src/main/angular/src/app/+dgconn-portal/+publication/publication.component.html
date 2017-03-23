@@ -10,18 +10,14 @@
                 translate }}</a>
         </div>
     </div>
-    <p-dataTable [value]="calls" [rows]="5" [paginator]="true" [pageLinks]="3"
-                 [rowsPerPageOptions]="[5,10,20]">
-        <p-column field="event" header="{{ 'event.title' | translate }}"
-                  [sortable]="true"></p-column>
-        <p-column field="startDate" header="{{ 'start.date' | translate }}"
-                  [sortable]="true">
+    <p-dataTable [value]="calls" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]">
+        <p-column field="event" header="{{ 'event.title' | translate }}" [sortable]="true"></p-column>
+        <p-column field="startDate" header="{{ 'start.date' | translate }}" [sortable]="true">
             <template pTemplate="body" let-call="rowData">
                 <span>{{formatTimestamp(call.startDate)}}</span>
             </template>
         </p-column>
-        <p-column field="endDate" header="{{ 'end.date' | translate }}"
-                  [sortable]="true">
+        <p-column field="endDate" header="{{ 'end.date' | translate }}" [sortable]="true">
             <template pTemplate="body" let-call="rowData">
                 <span>{{formatTimestamp(call.endDate)}}</span>
             </template>
@@ -30,8 +26,7 @@
             <template pTemplate="body" let-element="rowData" let-rowElement="rowIndex">
                 <button type="button" class="btn" style="background: none; padding: 0;"
                         (click)="displayInfo(rowElement)">
-                    <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{ 'edit.button' | translate
-                    }}
+                    <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{ 'edit.button' | translate}}
                 </button>
             </template>
         </p-column>
@@ -75,7 +70,8 @@
                                 <label class="labelModal" for="startTime">{{'start.time' | translate }}</label>
                                 <input type="text" [(ngModel)]="selectedCall.startTime"
                                        class="form-control"
-                                       name="startTime" ngcontrol="startTime" maxlength="5" (keypress)="keyPress($event)"
+                                       name="startTime" ngcontrol="startTime" maxlength="5"
+                                       (keypress)="keyPress($event)"
                                        #startTime="ngModel" required>
                             </div>
                         </div>
