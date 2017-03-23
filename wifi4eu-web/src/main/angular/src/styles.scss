@@ -400,9 +400,15 @@ body {
   font-size: 16px;
 }
 
+.descriptionCountdown {
+  color: black;
+  font-size: 16px;
+  font-weight: normal;
+}
+
 .beneficiaryHr {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 5px !important;
+  margin-top: 29px !important;
   border: 0;
   border-top: 2px solid rgba(0, 0, 0, 0.1);
   background: none;
@@ -434,6 +440,10 @@ body {
   font-weight: bold;
 }
 
+.changePasswordModalNoTop {
+  margin-top: 0em;
+}
+
 .beneficiaryMayorModal {
   font-size: 21px;
   font-weight: bold;
@@ -456,7 +466,7 @@ body {
 }
 
 .labelModal {
-  margin-top: 1.2em;
+  margin-top: 1.2em !important;
 }
 
 .profileDialog {
@@ -512,7 +522,7 @@ body {
 
 .publish-button {
   background-color: #004494;
-  width: 15em;
+  width: 10em;
   margin-top: 2em;
   height: 50px;
   font-family: Verdana;
@@ -593,7 +603,7 @@ body {
 
 }
 
-.white {
+.white, .whiteNoInline {
   border: solid 1px #e3e3e3;
   background-color: white;
   color: $dark-grey !important;
@@ -619,4 +629,156 @@ body {
   font-weight: 100 !important;
   font-family: verdana;
   color: black;
+}
+
+.ui-dialog.ui-widget {
+  width: 50% !important;
+}
+
+.whiteNoInline {
+  padding-left: 2.5em;
+  margin-top: 0;
+}
+
+.whiteNoMargin {
+  margin-top: 0;
+}
+
+.whiteNoMargin .ui-datatable table th, .whiteNoMargin .ui-datatable table td {
+  padding-top: 1.55rem;
+  padding-bottom: 1.55rem;
+}
+
+.whiteNoMargin .ui-datatable {
+  border: solid 1px #e3e3e3;
+}
+
+.ui-column-title {
+  padding-left: 1.8em;
+}
+
+.ui-datatable table td {
+  padding-left: 2.5em;
+}
+
+.marginTopCountdown {
+  margin-top: 3em;
+}
+
+.subTitleCountdown {
+  margin-top: 3em;
+  font-size: 18px;
+  font-weight: bold;
+  color: $dark-blue;
+}
+
+@media only screen and (max-width: 772px) {
+  #app-header .right-content {
+    float: none;
+    padding: 0;
+    margin-top: 0;
+  }
+
+  .overlay-panel .header .profile .picture {
+    display: none;
+  }
+}
+
+#app-header .right-content {
+  margin-top: 0;
+}
+
+.headerButton {
+  background: white;
+  border: solid 1px grey;
+  padding: 0.3em 0.8em;
+  float: right;
+  margin-left: 0.4em;
+  margin-top: 0.5em;
+}
+
+#app-header {
+  height: 90px;
+}
+
+.wellcomeHeader {
+  position: relative;
+  float: left;
+  margin-top: 5%;
+}
+
+.ui-multiselect .ui-multiselect-label-container {
+  width: 25em;
+  height: 3em;
+  padding-top: 0.5em;
+}
+
+.ui-multiselect .ui-multiselect-trigger {
+  padding-top: 0.5em;
+}
+
+.ui-multiselect-panel .ui-multiselect-item {
+  padding: 0.425em 0.25em;
+}
+
+.marginSelect {
+  margin-top: 3em;
+}
+
+.ui-chkbox .ui-chkbox-box {
+  width: 24px;
+  height: 24px;
+  margin-top: 0;
+}
+
+.ui-multiselect-panel .ui-multiselect-item label {
+  margin-bottom: 0;
+}
+
+.ui-multiselect-header .ui-multiselect-filter-container {
+  width: 87%;
+}
+
+.ui-chkbox .ui-chkbox-icon {
+  font-size: 1.5em;
+  margin-top: 0.2em;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+  background: $dark-blue;
+  border: 1px solid $dark-blue;
+}
+
+ul.nav.nav-tabs li.active, ul.nav.nav-tabs li:hover, ul.nav.nav-tabs li.ui-state-default.ui-state-active, .ui-tabview.ui-tabview-top > .ui-tabview-nav li.active, .ui-tabview.ui-tabview-top > .ui-tabview-nav li:hover, .ui-tabview.ui-tabview-top > .ui-tabview-nav li.ui-state-default.ui-state-active {
+  background: #fff;
+}
+
+ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
+  padding: 0;
+}
+
+ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
+  margin-left: 1.5em;
+}
+
+.floatLeft {
+  float: left;
+  margin-top: 0;
+}
+
+.paddingInput {
+  padding: 1rem 1rem;
+}
+
+.marginCaptcha {
+  margin: 3em 0;
+}
+
+.progress-indicator {
+  padding-top: 5.3em;
+}
+
+#app-header .right-content {
+  float: right;
+  padding: 0.8rem;
 }

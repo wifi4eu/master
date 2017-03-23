@@ -1,8 +1,37 @@
 import {Component, ViewChild} from '@angular/core';
-import {TimelineDTO, TimelineDTOBase} from '../../swagger/model/TimelineDTO';
-import {CustomUxAccordionBoxComponent} from './custom-ux-accordion-box.component';
+import {TimelineDTO} from '../../swagger/model/TimelineDTO';
+import {CustomTimelineAccordionBoxComponent} from './custom-timeline-accordion-box.component';
 import {TimelineApi} from '../../swagger/api/TimelineApi';
-//import {TimelineElement} from "../../models/timeline-element.model";
+
+export class TimelineItem {
+    private date: string;
+    private label: string;
+    private styleClass: string;
+
+    public getDate() {
+        return this.date;
+    }
+
+    public setDate(value: string) {
+        this.date = value;
+    }
+
+    public getLabel() {
+        return this.label;
+    }
+
+    public setLabel(value: string) {
+        this.label = value;
+    }
+
+    public getStyleClass() {
+        return this.styleClass;
+    }
+
+    public setStyleClass(value: string) {
+        this.styleClass = value;
+    }
+}
 
 @Component({selector: 'timeline-component', templateUrl: 'timeline.component.html', providers: [TimelineApi]})
 export class TimelineComponent {
@@ -48,35 +77,5 @@ export class TimelineComponent {
             item.setStyleClass("");
         }
         return item;
-    }
-}
-
-export class TimelineItem {
-    private date: string;
-    private label: string;
-    private styleClass: string;
-
-    public getDate() {
-        return this.date;
-    }
-
-    public setDate(value: string) {
-        this.date = value;
-    }
-
-    public getLabel() {
-        return this.label;
-    }
-
-    public setLabel(value: string) {
-        this.label = value;
-    }
-
-    public getStyleClass() {
-        return this.styleClass;
-    }
-
-    public setStyleClass(value: string) {
-        this.styleClass = value;
     }
 }

@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.service.call.CallService;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @Controller
 @Api(value = "/call", description = "Call services")
 @RequestMapping("call")
@@ -36,10 +37,10 @@ public class CallResource {
     @ApiOperation(value = "Get call by callId")
     @RequestMapping(value = "/{callId}", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
-    public CallDTO getCall(@PathVariable("callId") final Long callId, final HttpServletResponse response) {
-        _log.info("getCall " + callId);
+    public CallDTO getCallById(@PathVariable("callId") final Long callId, final HttpServletResponse response) {
+        _log.info("getCallById " + callId);
 
-        return callService.getCall(callId);
+        return callService.getCallById(callId);
 
     }
 

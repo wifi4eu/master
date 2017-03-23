@@ -125,7 +125,7 @@
 
 
         <app.context.root>/wifi4eu</app.context.root>
-        <server.address>http://wifi4eu.everisdigitalchannels.com:7001</server.address>
+        <server.address>wifi4eu.everisdigitalchannels.com:7001</server.address>
 
     </properties>
 

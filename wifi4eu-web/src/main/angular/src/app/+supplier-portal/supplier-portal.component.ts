@@ -1,9 +1,9 @@
 import {Component} from "@angular/core";
 import {TimelineComponent} from '../shared/components/timeline/timeline.component';
-import {CustomUxAccordionBoxComponent} from "../shared/components/timeline/custom-ux-accordion-box.component";
+import {CustomTimelineAccordionBoxComponent} from "../shared/components/timeline/custom-timeline-accordion-box.component";
 
 @Component({templateUrl: 'supplier-portal.component.html'})
-export class SupplierPortal {
+export class SupplierPortalComponent {
     private display: boolean;
 
     constructor() {

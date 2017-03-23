@@ -5,8 +5,32 @@
         <ux-layout-app-main>
 
             <uxLayoutAppMainHeaderContainer>
+
                 <ux-layout-header appFullName="Wifi4EU Free Wifi for Europeans" appShortName="App"
-                                  [userInfos]="userInfos"></ux-layout-header>
+                                  [userInfos]="userInfos" [isCustomRightContent]="true" languageCodes="fr,en">
+
+                    <uxLayoutHeaderRightContent>
+                        <ux-language-selector></ux-language-selector>
+                        <div class="profile-wrapper" isCompact="false">
+
+                            <div class="left-panel">
+                                <div *ngIf="isOnline" class="user-infos">
+                                    <span class="wellcomeHeader">Welcome <strong
+                                            class="color-primary">Firstname</strong></span>
+                                    <button class="headerButton">Logout</button>
+                                </div>
+                                <div *ngIf="!isOnline" class="user-infos">
+                                    <strong class="color-primary">
+                                    </strong>
+                                    <button class="headerButton" routerLink="/login" routerLinkActive="active">Login
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </uxLayoutHeaderRightContent>
+
+                </ux-layout-header>
             </uxLayoutAppMainHeaderContainer>
 
             <uxLayoutAppMainNavBarContainer>
@@ -37,11 +61,23 @@
                         <ux-layout-nav-bar-action-item iconClass="fa-cog" contentClass="auto-width">
                             <ux-layout-nav-bar-action-item-settings></ux-layout-nav-bar-action-item-settings>
                         </ux-layout-nav-bar-action-item>
-
-                        <ux-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu" isOverlayPanel="true"
-                                                       userInfos="NAME Firstname"
-                                                       [links]="menuLinks"></ux-layout-nav-bar-action-item>
+                        <div *ngIf="isOnline">
+                            <ux-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
+                                                           isOverlayPanel="true"
+                                                           userInfos="NAME Firstname"
+                                                           [links]="menuLinks"></ux-layout-nav-bar-action-item>
+                        </div>
+                        <div *ngIf="!isOnline">
+                            <div class="clearfix"></div>
+                            <ux-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
+                                                           isOverlayPanel="true"
+                                                           [links]="menuLinks"
+                                                           userInfos="Login"
+                            >Log out
+                            </ux-layout-nav-bar-action-item>
+                        </div>
                     </ux-layout-nav-bar-actions>
+
                 </ux-layout-nav-bar>
             </uxLayoutAppMainNavBarContainer>
 
