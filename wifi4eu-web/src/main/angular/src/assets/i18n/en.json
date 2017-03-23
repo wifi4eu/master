@@ -189,5 +189,10 @@
   "address.required": "Address is required",
   "vat.required": "VAT is required",
   "bic.required": "BIC is required",
-  "logo.required": "Logo is required"
+  "logo.required": "Logo is required",
+  "name.place":"Jonh",
+  "surname.place":"Doe",
+  "prefix.place":"+34",
+  "phone.place":"123456789",
+  "email.place":"email@example.com"
 }

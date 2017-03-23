@@ -188,5 +188,10 @@
   "address.required": "La dirección es obligatioria",
   "vat.required": "VAT es obligatorio",
   "bic.required": "BIC es obligatorio",
-  "logo.required": "Logo es obligatorio"
+  "logo.required": "Logo es obligatorio",
+  "name.place":"Jonh",
+  "surname.place":"Doe",
+  "prefix.place":"+34",
+  "phone.place":"123456789",
+  "email.place":"email@example.com"
 }
