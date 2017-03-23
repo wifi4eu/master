@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
 import {Call} from "../../shared/models/call-details.model";
 import {CallDTOBase} from "../../shared/swagger/model/CallDTO";
@@ -8,7 +8,7 @@ import {CallApi} from "../../shared/swagger/api/CallApi";
     templateUrl: 'publication.component.html', providers: [CallApi]
 })
 
-export class DgConnPublicationComponent {
+export class DgConnPublicationComponent implements OnInit {
     @Input('dgConnDetails') dgConnDetails: DgConnDetails;
     private display: boolean;
     private calls: CallDTOBase[];
@@ -19,13 +19,16 @@ export class DgConnPublicationComponent {
     constructor(private callApi: CallApi) {
         this.display = false;
         this.dgConnDetails = new DgConnDetails();
+        this.selectedCall = new Call();
+        this.originalCall = new CallDTOBase();
+        this.newElementForm = false;
+    }
+
+    ngOnInit() {
         this.callApi.allCalls().subscribe(
             calls => this.calls = calls,
             error => console.log(error)
         );
-        this.selectedCall = new Call();
-        this.originalCall = new CallDTOBase();
-        this.newElementForm = false;
     }
 
     addNewElement() {
@@ -33,10 +36,6 @@ export class DgConnPublicationComponent {
         this.display = true;
         this.selectedCall = new Call();
         this.selectedCall.setCallId(null);
-        // this.callApi.allCalls().subscribe(
-        //     calls => this.calls = calls,
-        //     error => console.log(error)
-        // );
     }
 
     displayInfo(rowElement: number) {
@@ -53,10 +52,6 @@ export class DgConnPublicationComponent {
     cancelPublication() {
         this.newElementForm = false;
         this.display = false;
-        // this.callApi.allCalls().subscribe(
-        //     calls => this.calls = calls,
-        //     error => console.log(error)
-        // );
     }
 
     createPublication() {
@@ -64,10 +59,6 @@ export class DgConnPublicationComponent {
             call => {
                 this.newElementForm = false;
                 this.display = false;
-                // this.callApi.allCalls().subscribe(
-                //     calls => this.calls = calls,
-                //     error => console.log(error)
-                // );
             },
             error => console.log(error)
         );
