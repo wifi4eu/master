@@ -407,8 +407,8 @@ body {
 }
 
 .beneficiaryHr {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 5px !important;
+  margin-top: 29px !important;
   border: 0;
   border-top: 2px solid rgba(0, 0, 0, 0.1);
   background: none;
@@ -746,4 +746,17 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 
 ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   margin-left: 1.5em;
+}
+
+.floatLeft {
+  float: left;
+  margin-top: 0;
+}
+
+.paddingInput {
+  padding: 1rem 1rem;
+}
+
+.marginCaptcha {
+  margin: 3em 0;
 }

@@ -5,9 +5,9 @@
         <p>{{ 'contact.description' | translate }}</p>
     </div>
     <div class="container">
-        <div class="ui-g">
-            <hr class="beneficiaryHr">
-        </div>
+
+        <hr class="beneficiaryHr marginHr">
+
         <div class="ui-g">
             <div class="ui-g-2"></div>
             <div class="ui-g-9">
@@ -47,9 +47,9 @@
         </div>
     </div>
 
-    <div class="ui-g">
-        <hr class="beneficiaryHr">
-    </div>
+
+    <hr class="beneficiaryHr marginHr">
+
     <div class="ui-g">
         <div class="ui-g-2"></div>
         <div class="ui-g-9">
@@ -94,9 +94,8 @@
     </div>
 
 
-    <div class="ui-g">
-        <hr class="beneficiaryHr">
-    </div>
+    <hr class="beneficiaryHr marginHr">
+
     <div class="ui-g">
         <div class="ui-g-2"></div>
         <div class="ui-g-9">
@@ -112,39 +111,45 @@
         </div>
     </div>
 
-    <div class="ui-g">
-        <hr class="beneficiaryHr">
-    </div>
+
+    <hr class="beneficiaryHr marginHr">
+
     <div class="clearfix"></div>
 
     <div class="ui-g">
+        <div class="ui-g-2"></div>
         <div class="ui-g-1">
             <input type="checkbox" [(ngModel)]="legalChecks[0]">
         </div>
-        <div class="ui-g-11">{{ 'eu.requirements' | translate }}</div>
+        <div class="ui-g-7">{{ 'eu.requirements' | translate }}</div>
+        <div class="ui-g-2"></div>
     </div>
     <div class="ui-g">
+        <div class="ui-g-2"></div>
         <div class="ui-g-1">
             <input type="checkbox" [(ngModel)]="legalChecks[1]">
         </div>
-        <div class="ui-g-11">{{ 'submit.application' | translate }}</div>
+        <div class="ui-g-7">{{ 'submit.application' | translate }}</div>
+        <div class="ui-g-2"></div>
     </div>
 
     <div>
-        <span class="ui-g-3"></span>
-        <ng2-google-recaptcha class="ui-g-6" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu"
-                              (onCaptchaComplete)="onCaptchaComplete($event)"></ng2-google-recaptcha>
-        <span class="ui-g-3"></span>
+        <div class="ui-g">
+            <span class="ui-g-3"></span>
+            <ng2-google-recaptcha class="ui-g-6 marginCaptcha" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu"
+                                  (onCaptchaComplete)="onCaptchaComplete($event)"></ng2-google-recaptcha>
+            <span class="ui-g-3"></span>
+        </div>
     </div>
 
 
     <div class=" ui-g">
         <div class="ui-g-4"></div>
         <div class="ui-g-2" style="text-align: center !important">
-            <button type="button" class="btn">{{ 'cancel.button' | translate }}</button>
+            <button type="button" class=" btn-primary cancel-button">{{ 'cancel.button' | translate }}</button>
         </div>
         <div class="ui-g-2" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary" (click)="openModal()"
+            <button type="submit" class="btn  btn-primary publish-button" (click)="openModal()"
                     [disabled]="!legalChecks[0] || !legalChecks[1] || !successCaptcha">
                 {{ 'confirm.button' | translate}}
             </button>

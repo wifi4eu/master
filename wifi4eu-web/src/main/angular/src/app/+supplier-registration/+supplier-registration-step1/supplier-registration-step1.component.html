@@ -10,7 +10,7 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="name">{{ 'company.name' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.companyDTO.name"
+                        <input class="form-control paddingInput" type="text" [(ngModel)]="supplierDTO.companyDTO.name"
                                name="companyName"
                                ngcontrol="companyName"
                                #companyName="ngModel"
@@ -29,7 +29,8 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="address">{{ 'legal.address' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.companyDTO.address"
+                        <input class="form-control paddingInput" type="text"
+                               [(ngModel)]="supplierDTO.companyDTO.address"
                                name="legalAddress"
                                ngcontrol="legalAddress"
                                #legalAddress="ngModel"
@@ -48,7 +49,7 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="vat">{{ 'vat.label' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.companyDTO.vat"
+                        <input class="form-control paddingInput" type="text" [(ngModel)]="supplierDTO.companyDTO.vat"
                                name="vatNumber"
                                ngcontrol="vatNumber"
                                #vatNumber="ngModel"
@@ -67,7 +68,7 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="bic">{{ 'bic.label' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.companyDTO.bic"
+                        <input class="form-control paddingInput" type="text" [(ngModel)]="supplierDTO.companyDTO.bic"
                                name="bic"
                                ngcontrol="bic"
                                #bic="ngModel"
@@ -85,7 +86,8 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="bankAccount">{{ 'bank.account' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.companyDTO.accountNumber"
+                        <input class="form-control paddingInput" type="text"
+                               [(ngModel)]="supplierDTO.companyDTO.accountNumber"
                                name="bankAccount"
                                ngcontrol="bankAccount"
                                #bankAccount="ngModel"
@@ -105,7 +107,8 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="website">{{ 'company.web' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.companyDTO.website"
+                        <input class="form-control paddingInput" type="text"
+                               [(ngModel)]="supplierDTO.companyDTO.website"
                                name="companyWeb"
                                ngcontrol="companyWeb"
                                #companyWeb="ngModel"
@@ -124,7 +127,7 @@
                 <div class="ui-g-3"></div>
                 <div class="ui-g-6">
                     <div class="form-group">
-                        <label class="label floatLeft" for="companyLogo">{{ 'company.logo' | translate }}</label>
+                        <!--<label class="label floatLeft" for="companyLogo">{{ 'company.logo' | translate }}</label>-->
                         <!--<p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)"-->
                         <!--multiple="multiple" accept="image/*" maxFileSize="1000000">-->
                         <!--<ng-template pTemplate type="content">-->
@@ -140,12 +143,13 @@
             <div class="form-group ui-g">
                 <div class="ui-g-4"></div>
                 <div class="ui-g-2" style="text-align: center !important">
-                    <button type="button" class="btn">{{ 'cancel.button' | translate
+                    <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate
                         }}
                     </button>
                 </div>
                 <div class="ui-g-2" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary" [disabled]="!registrationForm.form.valid"
+                    <button type="submit" class="btn btn-primary publish-button"
+                            [disabled]="!registrationForm.form.valid"
                             (click)="onSubmit(1)">
                         {{ 'confirm.button' | translate }}
                     </button>

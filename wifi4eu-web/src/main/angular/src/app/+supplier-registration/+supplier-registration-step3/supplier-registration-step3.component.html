@@ -10,7 +10,8 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="name">{{ 'name.label' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.contactPersonDTO.name"
+                        <input class="form-control paddingInput" type="text"
+                               [(ngModel)]="supplierDTO.contactPersonDTO.name"
                                name="name"
                                ngcontrol="name"
                                #name="ngModel" required>
@@ -26,7 +27,8 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="surname">{{ 'surname.label' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="supplierDTO.contactPersonDTO.surname"
+                        <input class="form-control paddingInput" type="text"
+                               [(ngModel)]="supplierDTO.contactPersonDTO.surname"
                                name="surname"
                                ngcontrol="surname"
                                #surname="ngModel" required>
@@ -44,7 +46,7 @@
                     <div class="form-group">
 
                         <label class="label floatLeft" for="phonePrefix">{{ 'prefix.number' | translate }}</label>
-                        <input class="form-control" type="text" [(ngModel)]="phonePrefix"
+                        <input class="form-control paddingInput" type="text" [(ngModel)]="phonePrefix"
                                name="prefix" ngcontrol="prefix" #prefix="ngModel"
                                (keypress)="keyPressPrefix($event)" required>
                         <div class="alert alert-danger" [hidden]="prefix.valid || prefix.pristine">Prefix is
@@ -55,7 +57,8 @@
                 <div class="ui-g-3">
                     <div class="form-group">
                         <label class="label floatLeft" for="phoneNumber">{{ 'phone.number' | translate }}</label>
-                        <input class="form-control" type="number" [(ngModel)]="supplierDTO.contactPersonDTO.phone"
+                        <input class="form-control paddingInput" type="number"
+                               [(ngModel)]="supplierDTO.contactPersonDTO.phone"
                                name="phoneNumber" ngcontrol="phoneNumber" #phoneNumber="ngModel"
                                step="1" min="1" required>
                         <div class="alert alert-danger" [hidden]="phoneNumber.valid || phoneNumber.pristine">Phone is
@@ -70,7 +73,8 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="email">{{ 'email.label' | translate }}</label>
-                        <input class="form-control" type="email" [(ngModel)]="supplierDTO.contactPersonDTO.email"
+                        <input class="form-control paddingInput" type="email"
+                               [(ngModel)]="supplierDTO.contactPersonDTO.email"
                                name="email" ngcontrol="email" #email="ngModel" (keyup)="checkEmail()" required>
                         <div class="alert alert-danger" [hidden]="email.valid || email.pristine">Email is
                             required
@@ -84,7 +88,7 @@
                 <div class="ui-g-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="confirmEmail">{{ 'confirmemail.label' | translate }}</label>
-                        <input class="form-control" type="email" [(ngModel)]="confirmEmail"
+                        <input class="form-control paddingInput" type="email" [(ngModel)]="confirmEmail"
                                name="confirm" ngcontrol="confirm" #confirm="ngModel"
                                (keyup)="checkEmail()" required>
                         <div class="alert alert-danger" [hidden]="confirm.valid || confirm.pristine">Email is
@@ -99,10 +103,12 @@
             <div class="form-group ui-g">
                 <div class="ui-g-4"></div>
                 <div class="ui-g-2" style="text-align: center !important">
-                    <button type="button" class="btn" (click)="stepBack(2)">{{ 'back.button' | translate }}</button>
+                    <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(2)">{{ 'back.button' |
+                        translate }}
+                    </button>
                 </div>
                 <div class="ui-g-2" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary"
+                    <button type="submit" class="btn btn-primary publish-button"
                             [disabled]="!registrationForm.form.valid || checkEmail()"
                             (click)="onSubmit(3)">{{ 'confirm.button' | translate }}
                     </button>
