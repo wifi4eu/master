@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 //import {TimelineDTO, TimelineDTOBase} from '../../swagger/model/TimelineDTO';
-import {CustomUxAccordionBoxComponent} from './custom-ux-accordion-box.component';
+import {CustomTimelineAccordionBoxComponent} from './custom-timeline-accordion-box.component';
 import {TimelineApi} from '../../swagger/api/TimelineApi';
 import {TimelineElement} from "../../models/timeline-element.model";
 

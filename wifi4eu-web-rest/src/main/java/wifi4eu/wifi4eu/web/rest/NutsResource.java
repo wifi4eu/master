@@ -18,8 +18,9 @@ import java.util.List;
 /**
  * Created by rgarcita on 08/02/2017.
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @Controller
-@Api(value="/nuts",description = "NutsResource")
+@Api(value = "/nuts", description = "NutsResource")
 @RequestMapping("nuts")
 public class NutsResource {
 
@@ -28,8 +29,8 @@ public class NutsResource {
     @Autowired
     private LocationService locationService;
 
-    @ApiOperation(value="get all nuts")
-    @RequestMapping(method = RequestMethod.GET,produces = "application/JSON")
+    @ApiOperation(value = "get all nuts")
+    @RequestMapping(method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
     public List<NutsDTO> findAllNuts() {
         _log.info("findAllNuts");
@@ -37,8 +38,8 @@ public class NutsResource {
         return locationService.getAllNuts();
     }
 
-    @ApiOperation(value="get all nuts from level X")
-    @RequestMapping(value ="/{level}",method = RequestMethod.GET,produces = "application/JSON")
+    @ApiOperation(value = "get all nuts from level X")
+    @RequestMapping(value = "/{level}", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
     public List<NutsDTO> findNutsByLevel(@PathVariable("level") final Long level, final HttpServletResponse response) {
         _log.info("findNutsByLevel " + level);
@@ -53,8 +54,8 @@ public class NutsResource {
     @ResponseBody
     public ResponseDTO create(@RequestBody final NutsDTO nutsDTO, final HttpServletResponse response) {
 
-        ErrorDTO errorDTO = new ErrorDTO(0,"unexpected");
-        return new ResponseDTO(false,null,errorDTO);
+        ErrorDTO errorDTO = new ErrorDTO(0, "unexpected");
+        return new ResponseDTO(false, null, errorDTO);
 
     }
 

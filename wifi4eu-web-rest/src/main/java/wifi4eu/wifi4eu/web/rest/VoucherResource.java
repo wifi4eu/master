@@ -19,8 +19,9 @@ import java.util.List;
 /**
  * Created by rgarcita on 23/02/2017.
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @Controller
-@Api(value="/voucher",description = "VoucherResource")
+@Api(value = "/voucher", description = "VoucherResource")
 @RequestMapping("voucher")
 public class VoucherResource {
 
@@ -39,16 +40,16 @@ public class VoucherResource {
 
         try {
             resVoucherDTO = voucherService.create(voucherDTO);
-            return new ResponseDTO(true,resVoucherDTO,null);
-        }catch(Exception e){
-            ErrorDTO errorDTO = new ErrorDTO(0,e.getMessage());
-            return new ResponseDTO(false,null,errorDTO);
+            return new ResponseDTO(true, resVoucherDTO, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
         }
 
     }
 
-    @ApiOperation(value="get all vouchers by voucherId")
-    @RequestMapping(value ="/{voucherId}",method = RequestMethod.GET,produces = "application/JSON")
+    @ApiOperation(value = "get all vouchers by voucherId")
+    @RequestMapping(value = "/{voucherId}", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
     public VoucherDTO findByVoucherId(@PathVariable("voucherId") final Long voucherId, final HttpServletResponse response) {
         _log.info("findByVoucherId " + voucherId);
@@ -57,8 +58,8 @@ public class VoucherResource {
 
     }
 
-    @ApiOperation(value="get all vouchers for a specific call")
-    @RequestMapping(value ="/call/{callId}",method = RequestMethod.GET,produces = "application/JSON")
+    @ApiOperation(value = "get all vouchers for a specific call")
+    @RequestMapping(value = "/call/{callId}", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
     public List<VoucherDTO> findByCallId(@PathVariable("callId") final Long callId, final HttpServletResponse response) {
         _log.info("findByCall " + callId);
@@ -66,7 +67,6 @@ public class VoucherResource {
         return voucherService.findByCallId(callId);
 
     }
-
 
 
 }

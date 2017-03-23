@@ -62,6 +62,9 @@ import {SupplierMunicipalitiesComponent} from "./+supplier-portal/municipalities
             path: 'supplier-portal/installation',
             component: SupplierInstallationComponent
         }, {
+            path: 'supplier-registration',
+            loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule'
+        }, {
             path: 'supplier-portal/municipalities',
             component: SupplierMunicipalitiesComponent
         }
