@@ -115,7 +115,8 @@
                                 *ngIf="!newElementForm">{{'add.timeline' | translate }}
                         </button>
                         <button type="button" (click)="createPublication()" class="btn btn-primary publish-button"
-                                *ngIf="newElementForm">{{'add.timeline' | translate }}
+                                *ngIf="newElementForm" [disabled]="!publicationForm.form.valid">
+                            {{'add.timeline' | translate }}
                         </button>
                     </div>
                     <div class="ui-g-3"></div>

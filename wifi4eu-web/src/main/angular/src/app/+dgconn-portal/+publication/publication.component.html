@@ -116,9 +116,8 @@
                             translate }}
                         </button>
                         <button type="button" (click)="createPublication()" class="btn btn-primary publish-button"
-                                *ngIf="newElementForm">{{
-                            'add.publication' |
-                            translate }}
+                                *ngIf="newElementForm" [disabled]="!publicationForm.form.valid">
+                            {{ 'add.publication' | translate }}
                         </button>
                     </div>
                     <div class="ui-g-3"></div>
