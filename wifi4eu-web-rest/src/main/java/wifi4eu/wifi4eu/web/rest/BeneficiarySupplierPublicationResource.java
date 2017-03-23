@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.service.supplier.BeneficiarySupplierPublicationService;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @Controller
 @Api(value = "/beneficiarysupplierpublication", description = "BeneficiarySupplierPublication services")
 @RequestMapping("beneficiarysupplierpublication")

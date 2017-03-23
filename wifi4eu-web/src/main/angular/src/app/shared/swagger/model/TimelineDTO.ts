@@ -4,11 +4,11 @@ import {Type} from "class-transformer";
 export interface TimelineDTO {
     timelineId?: number;
 
-    eventTitle: string;
+    startDate: number;
 
-    startDate?: Date;
+    endDate?: number;
 
-    endDate?: Date;
+    event?: string;
 
 }
 
@@ -23,12 +23,12 @@ export class TimelineDTOBase  implements TimelineDTO{
     timelineId?:  number ;
 
 
-    eventTitle:  string ;
+    startDate:  number ;
 
-@Type(() => Date)
-    startDate?:  Date ;
 
-@Type(() => Date)
-    endDate?:  Date ;
+    endDate?:  number ;
+
+
+    event?:  string ;
 
 }

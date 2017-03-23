@@ -4,36 +4,31 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-/**
- * Created by rgarcita on 02/03/2017.
- */
 @Entity
-@Table(name="TIM_TIMELINE_T")
+@Table(name = "TIM_TIMELINE_T")
 public class Timeline {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="TIMELINE_ID")
+    @Column(name = "TIMELINE_ID")
     private Long timelineId;
 
-    @Column(name="EVENT_TITLE")
-    private String eventTitle;
+    @Column(name = "START_DATE")
+    private Long startDate;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name="START_DATE")
-    private Date startDate;
+    @Column(name = "END_DATE")
+    private Long endDate;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name="END_DATE")
-    private Date endDate;
+    @Column(name = "EVENT")
+    private String event;
 
-    public Timeline(){}
+    public Timeline() {
+    }
 
-    public Timeline(Long timelineId, String eventTitle, Date startDate, Date endDate) {
-        this.timelineId = timelineId;
-        this.eventTitle = eventTitle;
+    public Timeline(Long startDate, Long endDate, String event) {
         this.startDate = startDate;
         this.endDate = endDate;
+        this.event = event;
     }
 
     public Long getTimelineId() {
@@ -44,27 +39,27 @@ public class Timeline {
         this.timelineId = timelineId;
     }
 
-    public String getEventTitle() {
-        return eventTitle;
-    }
-
-    public void setEventTitle(String eventTitle) {
-        this.eventTitle = eventTitle;
-    }
-
-    public Date getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
 
   <localRepository>c:/project/.m2</localRepository>
@@ -31,37 +31,37 @@
       <username>USER</username>
       <password>PASSWORD</password>
     </server>
-	
+
     <server>
       <id>nexus-digit</id>
       <username>USER</username>
       <password>PASSWORD</password>
-    </server>    
-	
+    </server>
+
     <server>
       <id>nexus-digit-snapshots</id>
       <username>USER</username>
       <password>PASSWORD</password>
-    </server>    
+    </server>
 
     <server>
       <id>refapp</id>
       <username>USER</username>
       <password>PASSWORD</password>
-    </server>	
+    </server>
 
     <server>
       <id>refapp-snapshots</id>
       <username>USER</username>
       <password>PASSWORD</password>
-    </server>	
+    </server>
 
 
   </servers>
 
   <mirrors>
   </mirrors>
-  
+
   <profiles>
   <profile>
             <id>location-commission</id>
@@ -118,9 +118,9 @@
 					<url>https://webgate.ec.europa.eu/CITnet/nexus/content/repositories/refapp-snapshots</url>
                     <snapshots>
                         <enabled>true</enabled>
-                    </snapshots>					
-				</repository>	                
-                
+                    </snapshots>
+				</repository>
+
             </repositories>
 
             <pluginRepositories>
@@ -135,7 +135,7 @@
                     </snapshots>
                 </pluginRepository>
             </pluginRepositories>
-                                                
+
         </profile>
 
   </profiles>

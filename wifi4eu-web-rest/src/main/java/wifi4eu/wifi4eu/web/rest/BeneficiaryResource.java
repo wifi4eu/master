@@ -19,8 +19,9 @@ import javax.servlet.http.HttpServletResponse;
  * Created by rgarcita on 08/02/2017.
  */
 
+@CrossOrigin(origins = "http://localhost:4200")
 @Controller
-@Api(value="/beneficiary",description = "BeneficiaryResource")
+@Api(value = "/beneficiary", description = "BeneficiaryResource")
 @RequestMapping("beneficiary")
 public class BeneficiaryResource {
 
@@ -37,33 +38,33 @@ public class BeneficiaryResource {
 
         try {
             userService.create(beneficiaryDTO);
-            return new ResponseDTO(true,null,null);
-        }catch(Exception e){
-            ErrorDTO errorDTO = new ErrorDTO(0,e.getMessage());
-            return new ResponseDTO(false,null,errorDTO);
+            return new ResponseDTO(true, null, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
         }
 
     }
 
     @ApiOperation(value = "Update beneficiary information")
-    @RequestMapping(value="/{beneficiaryId}",method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/{beneficiaryId}", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO update(@RequestBody final BeneficiaryDTO beneficiaryDTO,@PathVariable("beneficiaryId") final Long beneficiaryId, final HttpServletResponse response){
+    public ResponseDTO update(@RequestBody final BeneficiaryDTO beneficiaryDTO, @PathVariable("beneficiaryId") final Long beneficiaryId, final HttpServletResponse response) {
 
         _log.info("beneficiary update");
 
         try {
             userService.update(beneficiaryDTO);
-            return new ResponseDTO(true,null,null);
-        }catch(Exception e){
-            ErrorDTO errorDTO = new ErrorDTO(0,e.getMessage());
-            return new ResponseDTO(false,null,errorDTO);
+            return new ResponseDTO(true, null, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
         }
 
     }
 
     @ApiOperation(value = "get legal Entity information")
-    @RequestMapping(value="/{legalEntityId}",method = RequestMethod.GET,produces = "application/json")
+    @RequestMapping(value = "/{legalEntityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public LegalEntityDTO getLegalEntity(@PathVariable("legalEntityId") final Long legalEntityId, final HttpServletResponse response) {
         _log.info("getLegalEntity: " + legalEntityId);

@@ -19,8 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by rgarcita on 15/02/2017.
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @Controller
-@Api(value="/user",description = "UserResource")
+@Api(value = "/user", description = "UserResource")
 @RequestMapping("user")
 public class UserResource {
 
@@ -31,7 +32,7 @@ public class UserResource {
     private UserService userService;
 
     @ApiOperation(value = "Service to do Login with a user email and SHA512 password")
-    @RequestMapping(value="login",method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = "login", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public String login(@RequestBody final UserDTO userDTO, final HttpServletResponse response) {
         _log.info("userDTO: " + userDTO.getEmail());
@@ -41,40 +42,39 @@ public class UserResource {
     }
 
     @ApiOperation(value = "Send forgot password mail with a link to reset password")
-    @RequestMapping(value="forgotpassword",method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "forgotpassword", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO forgotPassword(@RequestBody final String email, final HttpServletResponse response){
+    public ResponseDTO forgotPassword(@RequestBody final String email, final HttpServletResponse response) {
 
-        _log.info("forgot Password: "+ email);
+        _log.info("forgot Password: " + email);
 
         try {
             userService.forgotPassword(email);
-            return new ResponseDTO(true,null,null);
-        }catch(Exception e){
-            ErrorDTO errorDTO = new ErrorDTO(0,e.getMessage());
-            return new ResponseDTO(false,null,errorDTO);
+            return new ResponseDTO(true, null, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
         }
 
     }
 
     @ApiOperation(value = "Activate account or reset password")
-    @RequestMapping(value="activateaccount",method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "activateaccount", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO activateAccount(@RequestBody final ActivateAccountDTO activateAccountDTO, final HttpServletResponse response){
+    public ResponseDTO activateAccount(@RequestBody final ActivateAccountDTO activateAccountDTO, final HttpServletResponse response) {
 
         _log.info("activate Account: ");
 
         try {
             userService.activateAccount(activateAccountDTO);
-            return new ResponseDTO(true,null,null);
-        }catch(Exception e){
-            ErrorDTO errorDTO = new ErrorDTO(0,e.getMessage());
-            return new ResponseDTO(false,null,errorDTO);
+            return new ResponseDTO(true, null, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
         }
 
 
     }
-
 
 
 }
