@@ -14,8 +14,11 @@
                 <p class="beneficiaryMayor">{{ 'contact.person' | translate }}</p>
             </div>
 
-            <div class="ui-g-1"><i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
-            </div>
+            <a (click)="editStep(3)">
+                <div class="ui-g-1"><i class="fa fa-pencil" aria-hidden="true"></i>
+                    {{ 'edit.button' | translate }}
+                </div>
+            </a>
         </div>
         <div class="ui-g">
             <div class="ui-g-2"></div>
@@ -55,7 +58,9 @@
         <div class="ui-g-9">
             <p class="beneficiaryMayor">{{ 'company.details' | translate }}</p>
         </div>
-        <div class="ui-g-1"><i class="fa fa-pencil" aria-hidden="true"> {{ 'edit.button' | translate }}</i></div>
+        <a (click)="editStep(1)">
+            <div class="ui-g-1"><i class="fa fa-pencil" aria-hidden="true"> {{ 'edit.button' | translate }}</i></div>
+        </a>
     </div>
     <div class="ui-g">
         <div class="ui-g-2"></div>
@@ -102,8 +107,10 @@
         <div class="ui-g-9">
             <p class="beneficiaryMayor">{{ 'entity.support' | translate }}</p>
         </div>
-        <div class="ui-g-1"><i class="fa fa-pencil" aria-hidden="true"> </i>{{ 'edit.button' | translate }}
-        </div>
+        <a (click)="editStep(2)">
+            <div class="ui-g-1"><i class="fa fa-pencil" aria-hidden="true"> </i>{{ 'edit.button' | translate }}
+            </div>
+        </a>
     </div>
     <div class="ui-g">
         <div class="ui-g-2"></div>

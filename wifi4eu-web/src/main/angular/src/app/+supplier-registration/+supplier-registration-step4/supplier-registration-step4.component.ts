@@ -56,4 +56,8 @@ export class SupplierRegistrationComponentStep4 {
             }
         );
     }
+
+    editStep(step: number) {
+        this.gotoStep.emit(step);
+    }
 }
