@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
 import {Call} from "../../shared/models/call-details.model";
-import {CallDTOBase} from "../../shared/swagger/model/CallDTO";
+import {CallDTO, CallDTOBase} from "../../shared/swagger/model/CallDTO";
 import {CallApi} from "../../shared/swagger/api/CallApi";
+import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 
 @Component({
     templateUrl: 'publication.component.html', providers: [CallApi]
@@ -16,7 +17,7 @@ export class DgConnPublicationComponent implements OnInit {
     private originalCall: CallDTO;
     private newElementForm: boolean;
 
-    constructor(private callApi: CallApi) {
+    constructor(private callApi: CallApi, private uxService: UxService) {
         this.display = false;
         this.dgConnDetails = new DgConnDetails();
         this.selectedCall = new Call();
@@ -56,9 +57,21 @@ export class DgConnPublicationComponent implements OnInit {
 
     createPublication() {
         this.callApi.createCall(this.convertCallToDTO(this.selectedCall)).subscribe(
-            call => {
+            data => {
                 this.newElementForm = false;
                 this.display = false;
+                if (data == "error") {
+                    this.uxService.growl({
+                        severity: 'error',
+                        summary: 'ERROR',
+                    });
+                    console.log('ERROR: Could not login, with these user password');
+                } else if (data == "success") {
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: 'SUCCESS',
+                    });
+                }
             },
             error => console.log(error)
         );

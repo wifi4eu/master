@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {TimelineDTO} from '../../swagger/model/TimelineDTO';
+import {TimelineDTO, TimelineDTOBase} from '../../swagger/model/TimelineDTO';
 import {CustomTimelineAccordionBoxComponent} from './custom-timeline-accordion-box.component';
 import {TimelineApi} from '../../swagger/api/TimelineApi';
 
