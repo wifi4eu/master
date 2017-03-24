@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {TimelineComponent} from '../../shared/components/timeline/timeline.component';
 
 @Component({
     templateUrl: 'voucher.component.html',

@@ -1,9 +1,8 @@
 import {Component} from "@angular/core";
 import {SupplierDetails} from "../../shared/models/supplier-details.model";
 
-
 @Component({
-    templateUrl: 'supplier-profile.component.html'
+    templateUrl: 'profile.component.html'
 })
 
 export class SupplierProfileComponent {

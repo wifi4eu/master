@@ -1,4 +1,5 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component} from "@angular/core";
 
 @Component({templateUrl: 'beneficiary-portal.component.html'})
-export class BeneficiaryPortalComponent {}
+export class BeneficiaryPortalComponent {
+}
