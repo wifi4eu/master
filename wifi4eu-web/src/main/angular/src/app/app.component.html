@@ -7,10 +7,11 @@
             <uxLayoutAppMainHeaderContainer>
 
                 <ux-layout-header appFullName="Wifi4EU Free Wifi for Europeans" appShortName="App"
-                                  [userInfos]="userInfos" [isCustomRightContent]="true" languageCodes="fr,en">
+                                  [userInfos]="userInfos" [isCustomRightContent]="true">
 
                     <uxLayoutHeaderRightContent>
-                        <ux-language-selector></ux-language-selector>
+                        <ux-language-selector
+                                (languageChanged)="onLanguageChanged($event)"></ux-language-selector>
                         <div class="profile-wrapper" isCompact="false">
 
                             <div class="left-panel">
@@ -29,6 +30,7 @@
                             </div>
                         </div>
                     </uxLayoutHeaderRightContent>
+
 
                 </ux-layout-header>
             </uxLayoutAppMainHeaderContainer>

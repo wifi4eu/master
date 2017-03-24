@@ -1,7 +1,8 @@
-import {Component, enableProdMode, OnInit} from "@angular/core";
+import {Component, enableProdMode, OnInit, Output, EventEmitter} from "@angular/core";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {UxService, UxLayoutLink, UxLayoutNotificationItem} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {CoreService} from "./core/core.service";
+import {UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 
 enableProdMode()
 
@@ -10,8 +11,9 @@ export class AppComponent implements OnInit {
     menuLinks: Array<UxLayoutLink> = [];
     notifications: Array<UxLayoutNotificationItem> = [];
     userInfos: string = '';
+    @Output() private languageChanged: EventEmitter<UxLanguage> = new EventEmitter<UxLanguage>();
 
-    constructor(translateService: TranslateService, private coreService: CoreService, private uxService: UxService) {
+    constructor(private translate: TranslateService, translateService: TranslateService, private coreService: CoreService, private uxService: UxService,) {
         translateService.setDefaultLang('en');
         translateService.use('en');
 
@@ -25,6 +27,12 @@ export class AppComponent implements OnInit {
             ]
         })];
 
+    }
+
+    onLanguageChanged(language: UxLanguage) {
+        this.translate.use(language.code);
+        this.uxService.activeLanguage = language;
+        this.languageChanged.emit(language);
     }
 
     ngOnInit() {
