@@ -199,5 +199,6 @@
   "check.municipalities": "You can check all the Municipalities which are in the programme.",
   "access.point": "Access point",
   "municipalities.awarded": "Municipalities awarded with voucher",
-  "municipalities.selected": "Municipalities that selected me"
+  "municipalities.selected": "Municipalities that selected me",
+  "delete.button": "Delete"
 }
