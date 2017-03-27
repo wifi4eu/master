@@ -10,7 +10,7 @@ import {CoreService} from "./core/core.service";
 import {AppComponent} from "./app.component";
 import {AppRoutingModule} from "./app-routing.module";
 import {HomeComponent} from "./home/home.component";
-import {MapComponent} from "./+beneficiary-portal/+voucher/+map/map.component";
+import {MapComponent} from "./+dgconn-portal/+map/map.component";
 import {ActivationComponent} from "./+activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
@@ -33,9 +33,6 @@ export function translateFactory(http: Http) {
         LoginComponent,
         ForgotComponent,
         HelpdeskComponent,
-        DgConnPortalComponent,
-        DgConnTimelineComponent,
-        DgConnPublicationComponent,
         HelpdeskComponent
     ],
     exports: [
@@ -43,9 +40,6 @@ export function translateFactory(http: Http) {
         ActivationComponent,
         LoginComponent,
         ForgotComponent,
-        DgConnPortalComponent,
-        DgConnTimelineComponent,
-        DgConnPublicationComponent,
         HelpdeskComponent
     ],
     imports: [
