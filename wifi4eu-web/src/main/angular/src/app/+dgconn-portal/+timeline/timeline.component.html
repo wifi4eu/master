@@ -44,6 +44,15 @@
                 </button>
             </template>
         </p-column>
+        <p-column header="">
+            <template pTemplate="body" let-i="rowIndex">
+                <button type="button" class="btn" style="background: none; padding: 0;"
+                        (click)="deleteElement(i)">
+                    <i class="fa fa-trash-o" style="font-size: 17px; color: red;"></i> {{ 'delete.button' | translate
+                    }}
+                </button>
+            </template>
+        </p-column>
     </p-dataTable>
     <div class="right">
         <button type="submit" class="btn btn-primary publish-button"

@@ -1,8 +1,8 @@
 import {Component, Input} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
 import {TimelineElement} from "../../shared/models/timeline-element.model";
-import {TimelineDTO, TimelineDTOBase} from '../../shared/swagger/model/TimelineDTO';
-import {TimelineApi} from '../../shared/swagger/api/TimelineApi';
+import {TimelineDTO, TimelineDTOBase} from "../../shared/swagger/model/TimelineDTO";
+import {TimelineApi} from "../../shared/swagger/api/TimelineApi";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 
 @Component({
@@ -16,6 +16,7 @@ export class DgConnTimelineComponent {
     private selectedTimeline: TimelineElement;
     private originalTimeline: TimelineDTO;
     private newElementForm: boolean;
+
 
     constructor(private timelineApi: TimelineApi, private uxService: UxService) {
         this.display = false;
@@ -39,7 +40,7 @@ export class DgConnTimelineComponent {
             error => console.log(error)
         );
     }
-
+    
     displayInfo(rowElement: number) {
         this.timelineApi.allTimelines().subscribe(
             timelines => {
