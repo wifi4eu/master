@@ -5,13 +5,21 @@ import {SupplierInstallationComponent} from "./installation/supplier-installatio
 import {SupplierMunicipalitiesComponent} from "./municipalities/supplier-municipalities.component";
 import {SupplierProfileComponent} from "./profile/profile.component";
 import {SupplierPortalRoutingModule} from "./supplier-portal-routing.module";
+import {SupplierCountdownComponent} from "./countdown/supplier.countdown.component";
+import {TimerComponent} from "../shared/components/timer/timer.component";
 
 @NgModule({
     imports: [
-        SharedModule, SupplierPortalRoutingModule
+        SharedModule,
+        SupplierPortalRoutingModule
     ],
     declarations: [
-        SupplierPortalComponent, SupplierInstallationComponent, SupplierMunicipalitiesComponent, SupplierProfileComponent
+        SupplierPortalComponent,
+        SupplierInstallationComponent,
+        SupplierMunicipalitiesComponent,
+        SupplierProfileComponent,
+        SupplierCountdownComponent,
+        TimerComponent
     ],
     bootstrap: [SupplierPortalComponent]
 })
