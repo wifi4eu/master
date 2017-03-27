@@ -39,13 +39,23 @@ export class DgConnTimelineComponent {
             error => console.log(error)
         );
     }
-    
+
     displayInfo(rowElement: number) {
         this.timelineApi.allTimelines().subscribe(
             timelines => {
                 this.timelines = timelines;
                 this.selectedTimeline = this.convertDTOToTimelineElement(this.timelines[rowElement]);
                 this.display = true;
+            },
+            error => console.log(error)
+        );
+    }
+
+    deleteElement(rowElement: number) {
+        this.timelineApi.deleteTimeline(this.timelines[rowElement].timelineId).subscribe(
+            data => {
+                console.log("data: ", data);
+                console.log("this.timelines[rowElement]:", this.timelines[rowElement]);
             },
             error => console.log(error)
         );
