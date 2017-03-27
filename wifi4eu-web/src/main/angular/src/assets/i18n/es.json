@@ -199,5 +199,7 @@
   "check.municipalities": "Puedes comprobar todos los Municipios que hay en el programa.",
   "access.point": "Punto de acceso",
   "municipalities.awarded": "Municipios asignados a proveedor",
-  "municipalities.selected": "Municipios que me han seleccionado"
+  "municipalities.selected": "Municipios que me han seleccionado",
+  "voucher.competition": "Concurso de cupones",
+  "voucher.competition.desc": "Durante los próximas días, los alcaldes solicitarán cupones. Como proveedor, tendrás que esperar hasta que el concurso termine. Recibirás una notificación por email con el listado de municipios premiados."
 }
