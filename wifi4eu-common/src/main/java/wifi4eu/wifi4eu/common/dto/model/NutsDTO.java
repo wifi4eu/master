@@ -1,9 +1,11 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import java.util.List;
 import java.io.Serializable;
 
 /**
  * Created by rgarcita on 08/02/2017.
+ * Edited by rfguri on 27/03/2017.
  */
 public class NutsDTO implements Serializable {
 
@@ -14,12 +16,13 @@ public class NutsDTO implements Serializable {
     private String countryCode;
     private Long order;
     private Long sorting;
+    private List<SupplierDTO> suppliers;
 
-    public NutsDTO(){
+    public NutsDTO() {
 
     }
 
-    public NutsDTO(Long nutsId, String code, String name, Long level, String countryCode, Long order, Long sorting) {
+    public NutsDTO(Long nutsId, String code, String name, Long level, String countryCode, Long order, Long sorting, List<SupplierDTO> suppliers) {
         this.nutsId = nutsId;
         this.code = code;
         this.name = name;
@@ -27,6 +30,7 @@ public class NutsDTO implements Serializable {
         this.countryCode = countryCode;
         this.order = order;
         this.sorting = sorting;
+        this.suppliers = suppliers;
     }
 
     public Long getNutsId() {
@@ -83,5 +87,13 @@ public class NutsDTO implements Serializable {
 
     public void setSorting(Long sorting) {
         this.sorting = sorting;
+    }
+
+    public List<SupplierDTO> getSuppliers() {
+        return suppliers;
+    }
+
+    public void setSuppliers(List<SupplierDTO> suppliers) {
+        this.suppliers = suppliers;
     }
 }

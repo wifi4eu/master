@@ -1,13 +1,9 @@
 package wifi4eu.wifi4eu.entity.supplier;
 
+import wifi4eu.wifi4eu.entity.location.Nuts;
+
 import javax.persistence.*;
 import java.util.List;
-import javax.validation.constraints.NotNull;
-
-import wifi4eu.wifi4eu.common.dto.model.CompanyDTO;
-import wifi4eu.wifi4eu.common.dto.model.ContactPersonDTO;
-import wifi4eu.wifi4eu.entity.supplier.Installation;
-import wifi4eu.wifi4eu.entity.location.Nuts;
 
 @Entity
 @Table(name = "SUPP_SUPPLIER_T")
@@ -18,15 +14,35 @@ public class Supplier {
     @Column(name = "SUPPLIER_ID")
     private Long supplierId;
 
-    @Column(name = "COMPANY")
-    private CompanyDTO companyDTO;
+    @Column(name = "NAME")
+    private String name;
 
-    @OneToMany
-    @JoinColumn(name = "NUTS_ID", referencedColumnName = "SUPPLIER_ID")
-    private List<Nuts> supportedRegions;
+    @Column(name = "ADDRESS")
+    private String address;
 
-    @Column(name = "CONTACT_PERSON")
-    private ContactPersonDTO contactPersonDTO;
+    @Column(name = "VAT")
+    private String vat;
+
+    @Column(name = "BIC")
+    private String bic;
+
+    @Column(name = "ACCOUNT_NUMBER")
+    private String accountNumber;
+
+    @Column(name = "WEBSITE")
+    private String website;
+
+    @Column(name = "CONTACT_NAME")
+    private String contactName;
+
+    @Column(name = "CONTACT_SURNAME")
+    private String contactSurname;
+
+    @Column(name = "CONTACT_PHONE")
+    private String contactPhone;
+
+    @Column(name = "CONTACT_EMAIL")
+    private String contactEmail;
 
     @OneToMany
     @JoinColumn(name = "INSTALLATION_ID", referencedColumnName = "SUPPLIER_ID")
@@ -41,18 +57,29 @@ public class Supplier {
     @Column(name = "CREATE_DATE")
     private Long createDate;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "SUPP_SUPP_NUTS_T", joinColumns = @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id"), inverseJoinColumns = @JoinColumn(name = "nuts_id", referencedColumnName = "nuts_id"))
+    private List<Nuts> nuts;
+
     public Supplier() {
     }
 
-    public Supplier(Long supplierId, CompanyDTO companyDTO, List<Nuts> supportedRegions, ContactPersonDTO contactPersonDTO, List<Installation> installations, boolean legalCheck1, boolean legalCheck2, Long createDate) {
-        this.supplierId = supplierId;
-        this.companyDTO = companyDTO;
-        this.supportedRegions = supportedRegions;
-        this.contactPersonDTO = contactPersonDTO;
+    public Supplier(String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhone, String contactEmail, List<Installation> installations, boolean legalCheck1, boolean legalCheck2, Long createDate, List<Nuts> nuts) {
+        this.name = name;
+        this.address = address;
+        this.vat = vat;
+        this.bic = bic;
+        this.accountNumber = accountNumber;
+        this.website = website;
+        this.contactName = contactName;
+        this.contactSurname = contactSurname;
+        this.contactPhone = contactPhone;
+        this.contactEmail = contactEmail;
         this.installations = installations;
         this.legalCheck1 = legalCheck1;
         this.legalCheck2 = legalCheck2;
         this.createDate = createDate;
+        this.nuts = nuts;
     }
 
     public Long getSupplierId() {
@@ -63,28 +90,84 @@ public class Supplier {
         this.supplierId = supplierId;
     }
 
-    public CompanyDTO getCompanyDTO() {
-        return companyDTO;
+    public String getName() {
+        return name;
     }
 
-    public void setCompanyDTO(CompanyDTO companyDTO) {
-        this.companyDTO = companyDTO;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<Nuts> getSupportedRegions() {
-        return supportedRegions;
+    public String getAddress() {
+        return address;
     }
 
-    public void setSupportedRegions(List<Nuts> supportedRegions) {
-        this.supportedRegions = supportedRegions;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public ContactPersonDTO getContactPersonDTO() {
-        return contactPersonDTO;
+    public String getVat() {
+        return vat;
     }
 
-    public void setContactPersonDTO(ContactPersonDTO contactPersonDTO) {
-        this.contactPersonDTO = contactPersonDTO;
+    public void setVat(String vat) {
+        this.vat = vat;
+    }
+
+    public String getBic() {
+        return bic;
+    }
+
+    public void setBic(String bic) {
+        this.bic = bic;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getContactSurname() {
+        return contactSurname;
+    }
+
+    public void setContactSurname(String contactSurname) {
+        this.contactSurname = contactSurname;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
+
+    public String getContactEmail() {
+        return contactEmail;
+    }
+
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
     }
 
     public List<Installation> getInstallations() {
@@ -117,5 +200,13 @@ public class Supplier {
 
     public void setCreateDate(Long createDate) {
         this.createDate = createDate;
+    }
+
+    public List<Nuts> getNuts() {
+        return nuts;
+    }
+
+    public void setNuts(List<Nuts> nuts) {
+        this.nuts = nuts;
     }
 }

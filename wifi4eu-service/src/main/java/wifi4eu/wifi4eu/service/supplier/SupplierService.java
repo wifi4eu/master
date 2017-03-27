@@ -1,8 +1,6 @@
 package wifi4eu.wifi4eu.service.supplier;
 
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
@@ -11,10 +9,13 @@ import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 
 import java.util.List;
 
+/**
+ * Created by rfguri on 27/03/2017.
+ */
 @Service
 public class SupplierService {
 
-    Logger _log = LoggerFactory.getLogger(SupplierService.class);
+    private final static org.apache.log4j.Logger _log = org.apache.log4j.Logger.getLogger(SupplierService.class);
 
     @Autowired
     SupplierRepository supplierRepository;
