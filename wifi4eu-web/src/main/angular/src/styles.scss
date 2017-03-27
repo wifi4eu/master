@@ -526,7 +526,7 @@ body {
   margin-top: 2em;
   height: 50px;
   font-family: Verdana;
-  font-size: 20px;
+  font-size: 1.4em;
   font-weight: bold;
 }
 
@@ -538,8 +538,15 @@ body {
   margin-top: 2em;
   height: 50px;
   font-family: Verdana;
-  font-size: 20px;
+  font-size: 1.4em;
   font-weight: bold;
+}
+
+@media only screen and (max-width: 438px) {
+  .cancel-button, .publish-button {
+    font-size: 0.9em;
+  }
+
 }
 
 .containerTimeline {
@@ -705,6 +712,14 @@ body {
   position: relative;
   float: left;
   margin-top: 5%;
+}
+
+@media only screen and (min-width: 1024px) {
+  .ui-multiselect .ui-multiselect-label-container {
+    width: 100%;
+    height: 3em;
+    padding-top: 0.5em;
+  }
 }
 
 .ui-multiselect .ui-multiselect-label-container {
