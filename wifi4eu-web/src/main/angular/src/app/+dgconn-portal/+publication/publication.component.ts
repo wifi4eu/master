@@ -20,6 +20,10 @@ export class DgConnPublicationComponent implements OnInit {
     constructor(private callApi: CallApi, private uxService: UxService) {
         this.display = false;
         this.dgConnDetails = new DgConnDetails();
+        this.callApi.allCalls().subscribe(
+            calls => this.calls = calls,
+            error => console.log(error)
+        );
         this.selectedCall = new Call();
         this.originalCall = new CallDTOBase();
         this.newElementForm = false;
@@ -37,6 +41,10 @@ export class DgConnPublicationComponent implements OnInit {
         this.display = true;
         this.selectedCall = new Call();
         this.selectedCall.setCallId(null);
+        this.callApi.allCalls().subscribe(
+            calls => this.calls = calls,
+            error => console.log(error)
+        );
     }
 
     displayInfo(rowElement: number) {
@@ -55,6 +63,9 @@ export class DgConnPublicationComponent implements OnInit {
             data => {
                 console.log("data: ", data);
                 console.log("this.calls[rowElement]:", this.calls[rowElement]);
+                this.callApi.allCalls().subscribe(
+                    calls => this.calls = calls
+                );
             },
             error => console.log(error)
         );
@@ -68,22 +79,23 @@ export class DgConnPublicationComponent implements OnInit {
     createPublication() {
         this.callApi.createCall(this.convertCallToDTO(this.selectedCall)).subscribe(
             data => {
+                this.callApi.allCalls().subscribe(
+                    calls => {
+                        this.calls = calls;
+                        this.newElementForm = false;
+                        this.display = false;
+                    }, error => {
+                        console.log(error);
+                        this.newElementForm = false;
+                        this.display = false;
+                    }
+                );
+            },
+            error => {
+                console.log(error)
                 this.newElementForm = false;
                 this.display = false;
-                if (data == "error") {
-                    this.uxService.growl({
-                        severity: 'error',
-                        summary: 'ERROR',
-                    });
-                    console.log('ERROR: Could not login, with these user password');
-                } else if (data == "success") {
-                    this.uxService.growl({
-                        severity: 'success',
-                        summary: 'SUCCESS',
-                    });
-                }
-            },
-            error => console.log(error)
+            }
         );
     }
 
