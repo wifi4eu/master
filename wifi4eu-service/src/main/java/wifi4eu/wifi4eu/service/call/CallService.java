@@ -36,7 +36,7 @@ public class CallService {
         return callMapper.toDTO(callRepository.save(callMapper.toEntity(callDTO)));
     }
 
-    // @Transactional
+    @Transactional
     public CallDTO deleteCall(Long callId) {
         CallDTO callDTO = callMapper.toDTO(callRepository.findOne(callId));
         callRepository.delete(callId);
