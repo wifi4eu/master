@@ -50,6 +50,16 @@ export class DgConnPublicationComponent implements OnInit {
         );
     }
 
+    deleteElement(rowElement: number) {
+        this.callApi.deleteCall(this.calls[rowElement].callId).subscribe(
+            data => {
+                console.log("data: ", data);
+                console.log("this.calls[rowElement]:", this.calls[rowElement]);
+            },
+            error => console.log(error)
+        );
+    }
+
     cancelPublication() {
         this.newElementForm = false;
         this.display = false;
