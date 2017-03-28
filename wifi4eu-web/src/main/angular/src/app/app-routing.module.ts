@@ -1,7 +1,7 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
-import {MapComponent} from "./+beneficiary-portal/+voucher/+map/map.component";
+import {MapComponent} from "./+dgconn-portal/+map/map.component";
 import {ActivationComponent} from "./+activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
@@ -45,13 +45,7 @@ import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publicat
             component: HelpdeskComponent
         }, {
             path: 'dgconn-portal',
-            component: DgConnPortalComponent
-        }, {
-            path: 'dgconn-portal/timeline',
-            component: DgConnTimelineComponent
-        }, {
-            path: 'dgconn-portal/publication',
-            component: DgConnPublicationComponent
+            loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule'
         }, {
             path: 'supplier-registration',
             loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule'
