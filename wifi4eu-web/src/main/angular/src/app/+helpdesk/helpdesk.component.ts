@@ -70,5 +70,10 @@ export class HelpdeskComponent {
         this.issueSelectedOriginal.memberStateComments = issue.memberStateComments;
         this.issueSelectedOriginal.dgConnectComments = issue.dgConnectComments;
     }
+
+    formatTimestamp(timestamp) {
+        let date = new Date(timestamp);
+        return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + ((date.getMinutes() < 10) ? ("0" + date.getMinutes()) : date.getMinutes());
+    }
 }
 

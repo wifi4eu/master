@@ -11,7 +11,7 @@
         <p-column field="memberState" header="{{ 'memberState' | translate }}" [sortable]="false"></p-column>
         <p-column field="date" header="{{ 'dateandtime' | translate }}" [sortable]="true">
             <template pTemplate="body" let-issue="rowData">
-                <span>{{issue.date}}</span>
+                <span>{{formatTimestamp(issue.date)}}</span>
             </template>
         </p-column>
         <p-column field="assignedTo" header="{{ 'assignedTo' | translate }}" [sortable]="true"></p-column>
