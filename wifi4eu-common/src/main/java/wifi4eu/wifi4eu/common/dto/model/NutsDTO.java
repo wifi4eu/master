@@ -16,13 +16,12 @@ public class NutsDTO implements Serializable {
     private String countryCode;
     private Long order;
     private Long sorting;
-    private List<SupplierDTO> suppliers;
 
     public NutsDTO() {
 
     }
 
-    public NutsDTO(Long nutsId, String code, String name, Long level, String countryCode, Long order, Long sorting, List<SupplierDTO> suppliers) {
+    public NutsDTO(Long nutsId, String code, String name, Long level, String countryCode, Long order, Long sorting) {
         this.nutsId = nutsId;
         this.code = code;
         this.name = name;
@@ -30,7 +29,6 @@ public class NutsDTO implements Serializable {
         this.countryCode = countryCode;
         this.order = order;
         this.sorting = sorting;
-        this.suppliers = suppliers;
     }
 
     public Long getNutsId() {
@@ -88,12 +86,5 @@ public class NutsDTO implements Serializable {
     public void setSorting(Long sorting) {
         this.sorting = sorting;
     }
-
-    public List<SupplierDTO> getSuppliers() {
-        return suppliers;
-    }
-
-    public void setSuppliers(List<SupplierDTO> suppliers) {
-        this.suppliers = suppliers;
-    }
+    
 }

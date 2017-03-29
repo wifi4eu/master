@@ -44,10 +44,6 @@ public class Supplier {
     @Column(name = "CONTACT_EMAIL")
     private String contactEmail;
 
-    @OneToMany
-    @JoinColumn(name = "INSTALLATION_ID", referencedColumnName = "SUPPLIER_ID")
-    private List<Installation> installations;
-
     @Column(name = "LEGAL_CHECK1")
     private boolean legalCheck1;
 
@@ -57,14 +53,20 @@ public class Supplier {
     @Column(name = "CREATE_DATE")
     private Long createDate;
 
+    @Column(name = "NUTS_IDS")
+    private String nutsIds;
+
+    /*
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "SUPP_SUPP_NUTS_T", joinColumns = @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id"), inverseJoinColumns = @JoinColumn(name = "nuts_id", referencedColumnName = "nuts_id"))
     private List<Nuts> nuts;
+    */
 
     public Supplier() {
     }
 
-    public Supplier(String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhone, String contactEmail, List<Installation> installations, boolean legalCheck1, boolean legalCheck2, Long createDate, List<Nuts> nuts) {
+    public Supplier(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhone, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds) {
+        this.supplierId = supplierId;
         this.name = name;
         this.address = address;
         this.vat = vat;
@@ -75,11 +77,10 @@ public class Supplier {
         this.contactSurname = contactSurname;
         this.contactPhone = contactPhone;
         this.contactEmail = contactEmail;
-        this.installations = installations;
         this.legalCheck1 = legalCheck1;
         this.legalCheck2 = legalCheck2;
         this.createDate = createDate;
-        this.nuts = nuts;
+        this.nutsIds = nutsIds;
     }
 
     public Long getSupplierId() {
@@ -170,14 +171,6 @@ public class Supplier {
         this.contactEmail = contactEmail;
     }
 
-    public List<Installation> getInstallations() {
-        return installations;
-    }
-
-    public void setInstallations(List<Installation> installations) {
-        this.installations = installations;
-    }
-
     public boolean isLegalCheck1() {
         return legalCheck1;
     }
@@ -202,11 +195,11 @@ public class Supplier {
         this.createDate = createDate;
     }
 
-    public List<Nuts> getNuts() {
-        return nuts;
+    public String getNutsIds() {
+        return nutsIds;
     }
 
-    public void setNuts(List<Nuts> nuts) {
-        this.nuts = nuts;
+    public void setNutsIds(String nutsIds) {
+        this.nutsIds = nutsIds;
     }
 }

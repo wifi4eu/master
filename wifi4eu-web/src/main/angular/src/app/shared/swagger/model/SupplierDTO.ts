@@ -4,19 +4,33 @@ import {Type} from "class-transformer";
 export interface SupplierDTO {
     supplierId?: number;
 
-    companyDTO?: models.CompanyDTO;
+    name?: string;
 
-    supportedRegions?: Array<models.NutsDTO>;
+    address?: string;
 
-    contactPersonDTO?: models.ContactPersonDTO;
+    vat?: string;
 
-    installationDTOs?: Array<models.InstallationDTO>;
+    bic?: string;
+
+    accountNumber?: string;
+
+    website?: string;
+
+    contactName?: string;
+
+    contactSurname?: string;
+
+    contactPhone?: string;
+
+    contactEmail?: string;
 
     legalCheck1?: boolean;
 
     legalCheck2?: boolean;
 
     createDate?: number;
+
+    nutsIds?: string;
 
 }
 
@@ -30,17 +44,35 @@ export class SupplierDTOBase  implements SupplierDTO{
 
     supplierId?:  number ;
 
-    
-    companyDTO?:  models.CompanyDTOBase ;
 
-    @Type(() => models.NutsDTOBase)
-    supportedRegions?:  models.NutsDTOBase[] ;
+    name?:  string ;
 
-    
-    contactPersonDTO?:  models.ContactPersonDTOBase ;
 
-    @Type(() => models.InstallationDTOBase)
-    installationDTOs?:  models.InstallationDTOBase[] ;
+    address?:  string ;
+
+
+    vat?:  string ;
+
+
+    bic?:  string ;
+
+
+    accountNumber?:  string ;
+
+
+    website?:  string ;
+
+
+    contactName?:  string ;
+
+
+    contactSurname?:  string ;
+
+
+    contactPhone?:  string ;
+
+
+    contactEmail?:  string ;
 
 
     legalCheck1?:  boolean ;
@@ -50,5 +82,8 @@ export class SupplierDTOBase  implements SupplierDTO{
 
 
     createDate?:  number ;
+
+
+    nutsIds?:  string ;
 
 }

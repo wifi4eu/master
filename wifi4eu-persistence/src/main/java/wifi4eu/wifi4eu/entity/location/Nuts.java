@@ -36,7 +36,7 @@ public class Nuts {
     @Column(name = "SORTING")
     private Long sorting;
 
-    @ManyToMany(mappedBy = "nuts")
+    //@ManyToMany(mappedBy = "nuts")
     private List<Supplier> suppliers;
 
     public Nuts() {

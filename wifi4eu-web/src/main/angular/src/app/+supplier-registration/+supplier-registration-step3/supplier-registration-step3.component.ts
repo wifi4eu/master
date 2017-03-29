@@ -23,7 +23,7 @@ export class SupplierRegistrationComponentStep3 {
     }
 
     onSubmit(step: number) {
-        this.supplierDTO.contactPersonDTO.phone = this.phonePrefix + this.supplierDTO.contactPersonDTO.phone;
+        this.supplierDTO.contactPhone = this.phonePrefix + this.supplierDTO.contactPhone;
         this.onNext.emit(step);
     }
 
@@ -32,7 +32,7 @@ export class SupplierRegistrationComponentStep3 {
     }
 
     checkEmail() {
-        return this.supplierDTO.contactPersonDTO.email !== this.confirmEmail
+        return this.supplierDTO.contactEmail !== this.confirmEmail
     }
 
     keyPressPrefix(event: any) {

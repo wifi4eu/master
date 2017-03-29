@@ -7,7 +7,7 @@ import wifi4eu.wifi4eu.mapper.location.NutsMapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = NutsMapper.class)
+@Mapper(componentModel = "spring", uses = {NutsMapper.class})
 public interface SupplierMapper {
     SupplierDTO toDTO(Supplier entity);
 

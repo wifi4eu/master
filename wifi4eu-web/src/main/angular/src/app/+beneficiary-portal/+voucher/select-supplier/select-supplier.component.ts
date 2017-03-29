@@ -1,7 +1,5 @@
 import {Component} from "@angular/core";
 import {SupplierDTO, SupplierDTOBase} from "../../../shared/swagger/model/SupplierDTO";
-import {CompanyDTOBase} from "../../../shared/swagger/model/CompanyDTO";
-import {ContactPersonDTOBase} from "../../../shared/swagger/model/ContactPersonDTO";
 import {SupplierApi} from "../../../shared/swagger/api/SupplierApi";
 
 @Component({templateUrl: 'select-supplier.component.html', providers: [SupplierApi]})
@@ -18,8 +16,6 @@ export class SelectSupplierComponent {
             error => console.log(error)
         );
         this.selectedSupplier = new SupplierDTOBase();
-        this.selectedSupplier.companyDTO = new CompanyDTOBase();
-        this.selectedSupplier.contactPersonDTO = new ContactPersonDTOBase();
     }
 
     openModal() {
@@ -37,14 +33,7 @@ export class SelectSupplierComponent {
     }
 
     checkIfNull(suppliers: SupplierDTOBase[]) {
-        for (let i = 0; i++; i < suppliers.length) {
-            if (suppliers[i].contactPersonDTO == null) {
-                suppliers[i].contactPersonDTO = new ContactPersonDTOBase();
-            }
-            if (suppliers[i].companyDTO == null) {
-                suppliers[i].companyDTO = new CompanyDTOBase();
-            }
-        }
+
         return suppliers;
     }
 

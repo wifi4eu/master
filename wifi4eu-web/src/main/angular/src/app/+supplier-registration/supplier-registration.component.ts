@@ -1,6 +1,4 @@
 import {Component} from "@angular/core";
-import {CompanyDTOBase} from "../shared/swagger/model/CompanyDTO";
-import {ContactPersonDTOBase} from "../shared/swagger/model/ContactPersonDTO";
 import {SupplierDTOBase} from "../shared/swagger/model/SupplierDTO";
 
 @Component({templateUrl: 'supplier-registration.component.html'})
@@ -16,10 +14,6 @@ export class SupplierRegistrationComponent {
 
     constructor() {
         this.supplierDTO = new SupplierDTOBase();
-        this.supplierDTO.contactPersonDTO = new ContactPersonDTOBase();
-        this.supplierDTO.companyDTO = new CompanyDTOBase();
-        this.supplierDTO.installationDTOs = [];
-        this.supplierDTO.supportedRegions = [];
 
         this.selection = [true, false];
         this.completed = [false, false, false, false];

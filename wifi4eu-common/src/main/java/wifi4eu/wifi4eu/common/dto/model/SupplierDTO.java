@@ -15,16 +15,16 @@ public class SupplierDTO implements Serializable {
     private String contactSurname;
     private String contactPhone;
     private String contactEmail;
-    private List<InstallationDTO> installations;
     private boolean legalCheck1;
     private boolean legalCheck2;
     private Long createDate;
-    private List<NutsDTO> nuts;
+    private String nutsIds;
+    //private List<NutsDTO> nuts;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhone, String contactEmail, List<InstallationDTO> installations, boolean legalCheck1, boolean legalCheck2, Long createDate, List<NutsDTO> nuts) {
+    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhone, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds) {
         this.supplierId = supplierId;
         this.name = name;
         this.address = address;
@@ -36,11 +36,10 @@ public class SupplierDTO implements Serializable {
         this.contactSurname = contactSurname;
         this.contactPhone = contactPhone;
         this.contactEmail = contactEmail;
-        this.installations = installations;
         this.legalCheck1 = legalCheck1;
         this.legalCheck2 = legalCheck2;
         this.createDate = createDate;
-        this.nuts = nuts;
+        this.nutsIds = nutsIds;
     }
 
     public Long getSupplierId() {
@@ -131,13 +130,6 @@ public class SupplierDTO implements Serializable {
         this.contactEmail = contactEmail;
     }
 
-    public List<InstallationDTO> getInstallations() {
-        return installations;
-    }
-
-    public void setInstallations(List<InstallationDTO> installations) {
-        this.installations = installations;
-    }
 
     public boolean isLegalCheck1() {
         return legalCheck1;
@@ -163,11 +155,11 @@ public class SupplierDTO implements Serializable {
         this.createDate = createDate;
     }
 
-    public List<NutsDTO> getNuts() {
-        return nuts;
+    public String getNutsIds() {
+        return nutsIds;
     }
 
-    public void setNuts(List<NutsDTO> nuts) {
-        this.nuts = nuts;
+    public void setNutsIds(String nutsIds) {
+        this.nutsIds = nutsIds;
     }
 }

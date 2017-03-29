@@ -11,7 +11,7 @@
                     <div class="form-group">
                         <label class="label floatLeft" for="name">{{ 'name.label' | translate }}</label>
                         <input class="form-control paddingInput" type="text"
-                               [(ngModel)]="supplierDTO.contactPersonDTO.name"
+                               [(ngModel)]="supplierDTO.name"
                                placeholder="{{ 'name.place' | translate }}"
                                name="name"
                                ngcontrol="name"
@@ -29,7 +29,7 @@
                     <div class="form-group">
                         <label class="label floatLeft" for="surname">{{ 'surname.label' | translate }}</label>
                         <input class="form-control paddingInput" type="text"
-                               [(ngModel)]="supplierDTO.contactPersonDTO.surname"
+                               [(ngModel)]="supplierDTO.surname"
                                placeholder="{{ 'surname.place' | translate }}"
                                name="surname"
                                ngcontrol="surname"
@@ -61,7 +61,7 @@
                     <div class="form-group">
                         <label class="label floatLeft" for="phoneNumber">{{ 'phone.number' | translate }}</label>
                         <input class="form-control paddingInput" type="number"
-                               [(ngModel)]="supplierDTO.contactPersonDTO.phone"
+                               [(ngModel)]="supplierDTO.phone"
                                name="phoneNumber" ngcontrol="phoneNumber" #phoneNumber="ngModel"
                                placeholder="{{ 'phone.place' | translate }}"
                                step="1" min="1" required>
@@ -78,7 +78,7 @@
                     <div class="form-group">
                         <label class="label floatLeft" for="email">{{ 'email.label' | translate }}</label>
                         <input class="form-control paddingInput" type="email"
-                               [(ngModel)]="supplierDTO.contactPersonDTO.email"
+                               [(ngModel)]="supplierDTO.email"
                                placeholder="{{ 'email.place' | translate }}"
                                name="email" ngcontrol="email" #email="ngModel" (keyup)="checkEmail()" required>
                         <div class="alert alert-danger" [hidden]="email.valid || email.pristine">Email is

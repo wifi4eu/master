@@ -4,7 +4,7 @@ import {NutsApi} from "../../swagger/api/NutsApi";
 import {NutsDTOBase} from "../../swagger/model/NutsDTO";
 
 @Component({
-    selector: 'helpdesk-form-component', templateUrl: 'helpdesk-form.component.html', providers: [NutsApi]
+    selector: 'fts', templateUrl: 'helpdesk-form.component.html', providers: [NutsApi]
 })
 export class HelpdeskFormComponent {
 
