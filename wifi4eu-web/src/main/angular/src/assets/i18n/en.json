@@ -199,5 +199,22 @@
   "check.municipalities": "You can check all the Municipalities which are in the programme.",
   "access.point": "Access point",
   "municipalities.awarded": "Municipalities awarded with voucher",
-  "municipalities.selected": "Municipalities that selected me"
+  "municipalities.selected": "Municipalities that selected me",
+  "search.threedots": "Search...",
+  "portal": "Portal",
+  "topic": "Topic",
+  "memberState": "Member State",
+  "dateandtime": "Date and Time",
+  "assignedTo": "Assigned to",
+  "status": "Status",
+  "details": "Details",
+  "view": "View",
+  "resolve": "Resolve",
+  "issueDetails": "Issue details",
+  "from": "From",
+  "issueSummary": "Issue Summary",
+  "memberStateComments": "Member State Comments",
+  "dgConnectComments": "DG Connect Comments",
+  "setAsResolved": "Set as Resolved",
+  "keepAsPending": "Keep as Pending"
 }
