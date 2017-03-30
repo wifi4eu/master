@@ -91,7 +91,7 @@ public class SupplierService {
 
         //send activate account mail
 
-        userService.sendActivateAccountMail(userDTO);
+        //userService.sendActivateAccountMail(userDTO);
 
         _log.info("[f] create Supplier");
 
