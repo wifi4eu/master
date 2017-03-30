@@ -199,5 +199,6 @@
   "check.municipalities": "Puedes comprobar todos los Municipios que hay en el programa.",
   "access.point": "Punto de acceso",
   "municipalities.awarded": "Municipios asignados a proveedor",
-  "municipalities.selected": "Municipios que me han seleccionado"
+  "municipalities.selected": "Municipios que me han seleccionado",
+  "delete.button": "Eliminar"
 }
