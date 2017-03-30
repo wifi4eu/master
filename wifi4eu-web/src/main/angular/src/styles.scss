@@ -781,7 +781,7 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   margin-top: 0;
 }
 
-.paddingInput {
+.paddingInput, .ui-autocomplete .ui-widget {
   padding: 1rem 1rem;
 }
 
@@ -796,4 +796,8 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 #app-header .right-content {
   float: right;
   padding: 0.8rem;
+}
+
+.publish-buttonReview {
+  width: 14em;
 }
