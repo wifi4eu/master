@@ -22,6 +22,8 @@ export class SupplierRegistrationComponentStep2 implements OnInit {
 
     private provinces: NutsDTO[][];
 
+    @Input('regions') regions: NutsDTO[];
+
     constructor(private nutsApi: NutsApi) {
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();

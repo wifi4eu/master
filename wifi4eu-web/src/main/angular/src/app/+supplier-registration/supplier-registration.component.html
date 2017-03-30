@@ -10,23 +10,22 @@
             </supplier-registration-step1-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
-    <ux-wizard-step
-            label="{{ 'step2.supplier' | translate }}"
-            [isCompleted]="completed[1]"
-            [isActive]="active[1]">
+    <ux-wizard-step label="{{ 'step2.supplier' | translate }}"
+                    [isCompleted]="completed[1]"
+                    [isActive]="active[1]">
         <uxWizardStepCustomContent>
             <supplier-registration-step2-component *ngIf="active[1]"
                                                    [supplierDTO]="supplierDTO"
+                                                   [regions]="regions"
                                                    [selection]="selection"
                                                    (onNext)="onNext($event)"
                                                    (onBack)="onBack($event)">
             </supplier-registration-step2-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
-    <ux-wizard-step
-            label="{{ 'step3.supplier' | translate }}"
-            [isCompleted]="completed[2]"
-            [isActive]="active[2]">
+    <ux-wizard-step label="{{ 'step3.supplier' | translate }}"
+                    [isCompleted]="completed[2]"
+                    [isActive]="active[2]">
         <uxWizardStepCustomContent>
             <supplier-registration-step3-component *ngIf="active[2]"
                                                    [supplierDTO]="supplierDTO"
@@ -42,6 +41,7 @@
         <uxWizardStepCustomContent>
             <supplier-registration-step4-component *ngIf="active[3]"
                                                    [supplierDTO]="supplierDTO"
+                                                   [regions]="regions"
                                                    [selection]="selection"
                                                    (onNext)="onNext($event)"
                                                    (gotoStep)="gotoStep($event)"

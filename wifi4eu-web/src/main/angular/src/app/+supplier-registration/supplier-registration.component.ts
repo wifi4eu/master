@@ -1,5 +1,6 @@
 import {Component} from "@angular/core";
 import {SupplierDTOBase} from "../shared/swagger/model/SupplierDTO";
+import {NutsDTOBase, NutsDTO} from "../shared/swagger/model/NutsDTO";
 
 @Component({templateUrl: 'supplier-registration.component.html'})
 export class SupplierRegistrationComponent {
@@ -12,14 +13,19 @@ export class SupplierRegistrationComponent {
     private successRegistration: boolean;
     private failureRegistration: boolean;
 
+    private regions: NutsDTO[];
+
     constructor() {
         this.supplierDTO = new SupplierDTOBase();
+        this.supplierDTO.nutsIds = '';
 
         this.selection = [true, false];
         this.completed = [false, false, false, false];
         this.active = [true, false, false, false];
         this.successRegistration = false;
         this.failureRegistration = false;
+
+        this.regions = [];
     }
 
     onNext(step: number) {
