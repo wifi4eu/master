@@ -13,7 +13,8 @@ public class SupplierDTO implements Serializable {
     private String website;
     private String contactName;
     private String contactSurname;
-    private String contactPhone;
+    private String contactPhonePrefix;
+    private String contactPhoneNumber;
     private String contactEmail;
     private boolean legalCheck1;
     private boolean legalCheck2;
@@ -24,7 +25,7 @@ public class SupplierDTO implements Serializable {
     public SupplierDTO() {
     }
 
-    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhone, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds) {
+    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds) {
         this.supplierId = supplierId;
         this.name = name;
         this.address = address;
@@ -34,7 +35,8 @@ public class SupplierDTO implements Serializable {
         this.website = website;
         this.contactName = contactName;
         this.contactSurname = contactSurname;
-        this.contactPhone = contactPhone;
+        this.contactPhonePrefix = contactPhonePrefix;
+        this.contactPhoneNumber = contactPhoneNumber;
         this.contactEmail = contactEmail;
         this.legalCheck1 = legalCheck1;
         this.legalCheck2 = legalCheck2;
@@ -114,12 +116,20 @@ public class SupplierDTO implements Serializable {
         this.contactSurname = contactSurname;
     }
 
-    public String getContactPhone() {
-        return contactPhone;
+    public String getContactPhonePrefix() {
+        return contactPhonePrefix;
     }
 
-    public void setContactPhone(String contactPhone) {
-        this.contactPhone = contactPhone;
+    public void setContactPhonePrefix(String contactPhonePrefix) {
+        this.contactPhonePrefix = contactPhonePrefix;
+    }
+
+    public String getContactPhoneNumber() {
+        return contactPhoneNumber;
+    }
+
+    public void setContactPhoneNumber(String contactPhoneNumber) {
+        this.contactPhoneNumber = contactPhoneNumber;
     }
 
     public String getContactEmail() {
@@ -129,7 +139,6 @@ public class SupplierDTO implements Serializable {
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
     }
-
 
     public boolean isLegalCheck1() {
         return legalCheck1;

@@ -38,8 +38,11 @@ public class Supplier {
     @Column(name = "CONTACT_SURNAME")
     private String contactSurname;
 
-    @Column(name = "CONTACT_PHONE")
-    private String contactPhone;
+    @Column(name = "CONTACT_PHONE_PREFIX")
+    private String contactPhonePrefix;
+
+    @Column(name = "CONTACT_PHONE_NUMBER")
+    private String contactPhoneNumber;
 
     @Column(name = "CONTACT_EMAIL")
     private String contactEmail;
@@ -65,7 +68,7 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhone, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds) {
+    public Supplier(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds) {
         this.supplierId = supplierId;
         this.name = name;
         this.address = address;
@@ -75,7 +78,8 @@ public class Supplier {
         this.website = website;
         this.contactName = contactName;
         this.contactSurname = contactSurname;
-        this.contactPhone = contactPhone;
+        this.contactPhonePrefix = contactPhonePrefix;
+        this.contactPhoneNumber = contactPhoneNumber;
         this.contactEmail = contactEmail;
         this.legalCheck1 = legalCheck1;
         this.legalCheck2 = legalCheck2;
@@ -155,12 +159,20 @@ public class Supplier {
         this.contactSurname = contactSurname;
     }
 
-    public String getContactPhone() {
-        return contactPhone;
+    public String getContactPhonePrefix() {
+        return contactPhonePrefix;
     }
 
-    public void setContactPhone(String contactPhone) {
-        this.contactPhone = contactPhone;
+    public void setContactPhonePrefix(String contactPhonePrefix) {
+        this.contactPhonePrefix = contactPhonePrefix;
+    }
+
+    public String getContactPhoneNumber() {
+        return contactPhoneNumber;
+    }
+
+    public void setContactPhoneNumber(String contactPhoneNumber) {
+        this.contactPhoneNumber = contactPhoneNumber;
     }
 
     public String getContactEmail() {
