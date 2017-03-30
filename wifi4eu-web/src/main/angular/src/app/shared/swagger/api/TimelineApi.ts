@@ -39,6 +39,13 @@ export interface ITimelineApi {
      * @param body 
      */
     createTimeline<T extends models.ResponseDTO>(body?: models.TimelineDTO, c?: ClassType<T>): Observable<T>;
+    /**
+     * delete Timeline
+     * 
+     * @param c 
+     * @param body 
+     */
+    deleteTimeline<T extends models.ResponseDTO>(body?: number, c?: ClassType<T>): Observable<T>;
 
 }
 
@@ -105,6 +112,29 @@ export class TimelineApi implements ITimelineApi {
 
 
 
+
+    /**
+     * delete Timeline
+     * 
+     * @param c
+     * @param body 
+     */
+    deleteTimeline<T extends models.ResponseDTO>(body?: number, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.deleteTimelineWithHttpInfo(body)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
     /**
      * Get all the timeline entries
      * 
@@ -153,6 +183,36 @@ export class TimelineApi implements ITimelineApi {
 
         let requestOptions: RequestOptionsArgs = new RequestOptions({
             method: RequestMethod.Post,
+            headers: headers,
+            body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * delete Timeline
+     * 
+     * @param body 
+     */
+    private deleteTimelineWithHttpInfo(body?: number ): Observable<Response> {
+        const path = this.basePath + `/timeline`;
+
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+
+
+
+
+
+        headers.set('Content-Type', 'application/json');
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Delete,
             headers: headers,
             body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
             search: queryParameters,

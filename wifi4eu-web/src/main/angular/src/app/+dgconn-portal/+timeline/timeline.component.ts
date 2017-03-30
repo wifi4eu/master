@@ -1,8 +1,8 @@
 import {Component, Input} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
 import {TimelineElement} from "../../shared/models/timeline-element.model";
-import {TimelineDTO, TimelineDTOBase} from '../../shared/swagger/model/TimelineDTO';
-import {TimelineApi} from '../../shared/swagger/api/TimelineApi';
+import {TimelineDTO, TimelineDTOBase} from "../../shared/swagger/model/TimelineDTO";
+import {TimelineApi} from "../../shared/swagger/api/TimelineApi";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 
 @Component({
@@ -16,6 +16,7 @@ export class DgConnTimelineComponent {
     private selectedTimeline: TimelineElement;
     private originalTimeline: TimelineDTO;
     private newElementForm: boolean;
+
 
     constructor(private timelineApi: TimelineApi, private uxService: UxService) {
         this.display = false;
@@ -46,6 +47,16 @@ export class DgConnTimelineComponent {
                 this.timelines = timelines;
                 this.selectedTimeline = this.convertDTOToTimelineElement(this.timelines[rowElement]);
                 this.display = true;
+            },
+            error => console.log(error)
+        );
+    }
+
+    deleteElement(rowElement: number) {
+        this.timelineApi.deleteTimeline(this.timelines[rowElement].timelineId).subscribe(
+            data => {
+                console.log("data: ", data);
+                console.log("this.timelines[rowElement]:", this.timelines[rowElement]);
             },
             error => console.log(error)
         );
