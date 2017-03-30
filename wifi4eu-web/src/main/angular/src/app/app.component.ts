@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
     menuLinks: Array<UxLayoutLink> = [];
     notifications: Array<UxLayoutNotificationItem> = [];
     userInfos: string = '';
+    isOnline = false;
     @Output() private languageChanged: EventEmitter<UxLanguage> = new EventEmitter<UxLanguage>();
 
     constructor(private translate: TranslateService, translateService: TranslateService, private coreService: CoreService, private uxService: UxService,) {
