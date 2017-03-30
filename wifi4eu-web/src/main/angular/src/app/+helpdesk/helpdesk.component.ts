@@ -7,10 +7,10 @@ import {HelpdeskApi} from '../shared/swagger/api/HelpdeskApi'
 })
 
 export class HelpdeskComponent {
-    private issues: HelpdeskDTOBase[];
-    private selectedIssues: HelpdeskDTOBase[];
+    private issues: HelpdeskDTO[];
+    private selectedIssues: HelpdeskDTO[];
     private issueSelected: HelpdeskDTOBase;
-    private issueSelectedOriginal: HelpdeskDTOBase;
+    private issueSelectedOriginal: HelpdeskDTO;
     private display: boolean;
 
     constructor(private helpdeskApi: HelpdeskApi) {
@@ -19,7 +19,7 @@ export class HelpdeskComponent {
         this.display = false;
     }
 
-    viewIssueDetails(issue: HelpdeskDTOBase, rowIndex: number) {
+    viewIssueDetails(issue: HelpdeskDTO, rowIndex: number) {
         this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
         this.helpdeskApi.getHelpdeskIssue(this.issues[rowIndex].issueId).subscribe(helpdeskIssue => this.issueSelected = helpdeskIssue);
         this.makeIssueSelectedCopy(this.issueSelected);
@@ -56,7 +56,7 @@ export class HelpdeskComponent {
         this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
     }
 
-    makeIssueSelectedCopy(issue: HelpdeskDTOBase) {
+    makeIssueSelectedCopy(issue: HelpdeskDTO) {
         this.issueSelectedOriginal = new HelpdeskDTOBase();
         this.issueSelectedOriginal.issueId = issue.issueId;
         this.issueSelectedOriginal.portal = issue.portal;
@@ -69,11 +69,6 @@ export class HelpdeskComponent {
         this.issueSelectedOriginal.issueSummary = issue.issueSummary;
         this.issueSelectedOriginal.memberStateComments = issue.memberStateComments;
         this.issueSelectedOriginal.dgConnectComments = issue.dgConnectComments;
-    }
-
-    formatTimestamp(timestamp) {
-        let date = new Date(timestamp);
-        return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + ((date.getMinutes() < 10) ? ("0" + date.getMinutes()) : date.getMinutes());
     }
 }
 
