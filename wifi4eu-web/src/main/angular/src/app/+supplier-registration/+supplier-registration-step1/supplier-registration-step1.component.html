@@ -6,8 +6,8 @@
 
         <form (ngSubmit)="onSubmit(1)" #registrationForm="ngForm">
             <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="name">{{ 'company.name' | translate }}</label>
                         <input class="form-control paddingInput" type="text" id="name" name="name"
@@ -15,13 +15,13 @@
                         <div class="alert alert-danger" [hidden]="name.valid || name.pristine">
                             Company is required
                         </div>
-                        <div class="ui-g-3"></div>
+                        <div class="ui-lg-3"></div>
                     </div>
                 </div>
             </div>
             <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="address">{{ 'legal.address' | translate }}</label>
                         <input class="form-control paddingInput" type="text" id="address" name="address"
@@ -30,13 +30,13 @@
                         <div class="alert alert-danger" [hidden]="address.valid || address.pristine">
                             Address is required
                         </div>
-                        <div class="ui-g-3"></div>
+                        <div class="ui-lg-3"></div>
                     </div>
                 </div>
             </div>
             <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="vat">{{ 'vat.label' | translate }}</label>
                         <input class="form-control paddingInput" type="text" id="vat" name="vat"
@@ -44,26 +44,26 @@
                         <div class="alert alert-danger" [hidden]="vat.valid || vat.pristine">
                             VAT number is required
                         </div>
-                        <div class="ui-g-3"></div>
+                        <div class="ui-lg-3"></div>
                     </div>
                 </div>
             </div>
             <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="bic">{{ 'bic.label' | translate }}</label>
                         <input class="form-control paddingInput" type="text" id="bic" name="bic"
                                placeholder="000000000000" [(ngModel)]="supplierDTO.bic" #bic="ngModel" required>
                         <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">BIC is required
                         </div>
-                        <div class="ui-g-3"></div>
+                        <div class="ui-lg-3"></div>
                     </div>
                 </div>
             </div>
             <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="accountNumber">{{ 'bank.account' | translate }}</label>
                         <input class="form-control paddingInput" type="text" id="accountNumber" name="accountNumber"
@@ -72,13 +72,13 @@
                         <div class="alert alert-danger" [hidden]="accountNumber.valid || accountNumber.pristine">
                             Bank account is required
                         </div>
-                        <div class="ui-g-3"></div>
+                        <div class="ui-lg-3"></div>
                     </div>
                 </div>
             </div>
             <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="website">{{ 'company.web' | translate }}</label>
                         <input class="form-control paddingInput" type="text" id="website" name="website"
@@ -87,13 +87,13 @@
                         <div class="alert alert-danger" [hidden]="website.valid || website.pristine">
                             Company Web is required
                         </div>
-                        <div class="ui-g-3"></div>
                     </div>
                 </div>
+                <div class="ui-lg-3"></div>
             </div>
             <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <!--<label class="label floatLeft" for="companyLogo">{{ 'company.logo' | translate }}</label>-->
                         <!--<p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)"-->
@@ -104,23 +104,25 @@
                         <!--</ul>-->
                         <!--</ng-template>-->
                         <!--</p-fileUpload>-->
-                        <div class="ui-g-3"></div>
+                        <div class="ui-lg-3"></div>
                     </div>
                 </div>
             </div>
             <div class="form-group ui-g">
-                <div class="ui-g-4"></div>
-                <div class="ui-g-2" style="text-align: center !important">
-                    <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                    <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate
+                        }}
                     </button>
                 </div>
-                <div class="ui-g-2" style="text-align: center !important">
+                <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary publish-button"
                             [disabled]="!registrationForm.form.valid">
                         {{ 'confirm.button' | translate }}
                     </button>
                 </div>
-                <div class="ui-g-4"></div>
+                <div class="ui-lg-3"></div>
+
             </div>
         </form>
     </div>

@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.common.dto.model.TimelineDTO;
 import wifi4eu.wifi4eu.mapper.timeline.TimelineMapper;
 import wifi4eu.wifi4eu.repository.timeline.TimelineRepository;
 import wifi4eu.wifi4eu.service.call.CallService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,15 +29,19 @@ public class TimelineService {
     TimelineMapper timelineMapper;
 
 
-    public List<TimelineDTO> getAllTimelines(){
-
+    public List<TimelineDTO> getAllTimelines() {
         return timelineMapper.toDTOList(Lists.newArrayList(timelineRepository.findAll()));
     }
 
-    public TimelineDTO createTimeline(TimelineDTO timelineDTO){
-
+    public TimelineDTO createTimeline(TimelineDTO timelineDTO) {
         return timelineMapper.toDTO(timelineRepository.save(timelineMapper.toEntity(timelineDTO)));
+    }
 
+    // @Transactional
+    public TimelineDTO deleteTimeline(Long timelineId) {
+        TimelineDTO timelineDTO = timelineMapper.toDTO(timelineRepository.findOne(timelineId));
+        timelineRepository.delete(timelineId);
+        return timelineDTO;
     }
 
 }
