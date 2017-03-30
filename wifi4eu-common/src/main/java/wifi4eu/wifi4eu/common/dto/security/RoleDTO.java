@@ -4,7 +4,7 @@ import java.util.List;
 import java.io.Serializable;
 
 public class RoleDTO implements Serializable {
-    private Long roleId;
+    private long roleId;
     private String name;
 
     private List<RightDTO> rights;
@@ -22,11 +22,11 @@ public class RoleDTO implements Serializable {
         this.rights = rightDTOs;
     }
 
-    public Long getRoleId() {
+    public long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Long roleId) {
+    public void setRoleId(long roleId) {
         this.roleId = roleId;
     }
 

@@ -14,6 +14,10 @@ export interface UserDTO {
 
     roles?: Array<models.RoleDTO>;
 
+    userType?: number;
+
+    userTypeId?: number;
+
 }
 
 
@@ -40,5 +44,11 @@ export class UserDTOBase  implements UserDTO{
 
     @Type(() => models.RoleDTOBase)
     roles?:  models.RoleDTOBase[] ;
+
+
+    userType?:  number ;
+
+
+    userTypeId?:  number ;
 
 }

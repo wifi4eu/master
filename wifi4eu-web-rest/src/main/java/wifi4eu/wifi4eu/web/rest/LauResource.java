@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by rgarcita on 08/02/2017.
  */
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @Controller
 @Api(value = "/lau", description = "NutsResource")
 @RequestMapping("lau")

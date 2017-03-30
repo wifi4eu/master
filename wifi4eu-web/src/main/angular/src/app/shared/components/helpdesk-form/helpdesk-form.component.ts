@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {HelpdeskApi} from "../../swagger/api/HelpdeskApi";
-import {HelpdeskDTOBase} from "../../swagger/model/HelpdeskDTO";
+import {HelpdeskDTO, HelpdeskDTOBase} from "../../swagger/model/HelpdeskDTO";
 import {NutsApi} from "../../swagger/api/NutsApi";
 import {NutsDTOBase} from "../../swagger/model/NutsDTO";
 
@@ -9,7 +9,7 @@ import {NutsDTOBase} from "../../swagger/model/NutsDTO";
     selector: 'helpdesk-form-component', templateUrl: 'helpdesk-form.component.html', providers: [NutsApi, HelpdeskApi]
 })
 export class HelpdeskFormComponent {
-    private helpdeskIssue: HelpdeskDTOBase;
+    private helpdeskIssue: HelpdeskDTO;
     private expanded: boolean;
     private nuts: NutsDTOBase[];
 

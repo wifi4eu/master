@@ -1,36 +1,43 @@
 package wifi4eu.wifi4eu.entity.location;
 
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
+
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
  * Created by rgarcita on 08/02/2017.
+ * Edited by rfguri on 27/03/2017.
  */
 @Entity
-@Table(name="LOC_NUTS_T")
+@Table(name = "LOC_NUTS_T")
 public class Nuts {
 
     @Id
-    @Column(name="NUTS_ID")
+    @Column(name = "NUTS_ID")
     private Long nutsId;
 
-    @Column(name="NUTS_CODE")
+    @Column(name = "NUTS_CODE")
     private String code;
 
-    @Column(name="NUTS_LABEL")
+    @Column(name = "NUTS_LABEL")
     private String name;
 
-    @Column(name="NUTS_LEVEL")
+    @Column(name = "NUTS_LEVEL")
     private Long level;
 
-    @Column(name="COUNTRY_CODE")
+    @Column(name = "COUNTRY_CODE")
     private String countryCode;
 
-    @Column(name="\"_ORDER\"")
+    @Column(name = "\"_ORDER\"")
     private Long order;
 
-    @Column(name="SORTING")
+    @Column(name = "SORTING")
     private Long sorting;
+
+    //@ManyToMany(mappedBy = "nuts")
+    private List<Supplier> suppliers;
 
     public Nuts() {
     }
@@ -99,5 +106,13 @@ public class Nuts {
 
     public void setSorting(Long sorting) {
         this.sorting = sorting;
+    }
+
+    public List<Supplier> getSuppliers() {
+        return suppliers;
+    }
+
+    public void setSuppliers(List<Supplier> suppliers) {
+        this.suppliers = suppliers;
     }
 }

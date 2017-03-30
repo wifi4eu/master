@@ -13,7 +13,7 @@
 
 	<!-- <import resource="classpath:datasourceContext-hsql-db.xml"/> -->        <!-- HSQL MEM DB WITH SECURITY TABLES -->
 
-	<!--<import resource="classpath:spring-security.xml" />-->
+	<import resource="classpath:spring-security.xml" />
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />

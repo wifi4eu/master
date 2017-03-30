@@ -24,32 +24,31 @@
             <div class="ui-lg-2"></div>
             <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'name.label' | translate }}</div>
             <div class="ui-g-12 ui-md-12 ui-lg-7">
-                <p class="profileData">{{supplierDTO.contactPersonDTO.name}}</p>
+                <p class="profileData">{{supplierDTO.contactName}}</p>
             </div>
         </div>
         <div class="ui-g">
             <div class="ui-lg-2"></div>
             <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'surname.label' | translate }}</div>
             <div class="ui-g-12 ui-md-12 ui-lg-7">
-                <p class="profileData">{{supplierDTO.contactPersonDTO.surname}}</p>
+                <p class="profileData">{{upplierDTO.contactSurname}}</p>
             </div>
         </div>
         <div class="ui-g">
             <div class="ui-lg-2"></div>
             <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'phone.number' | translate }}</div>
             <div class="ui-g-12 ui-md-12 ui-lg-7">
-                <p class="profileData">{{supplierDTO.contactPersonDTO.phone}}</p>
+                <p class="profileData">{{supplierDTO.contactPhonePrefix}} {{supplierDTO.contactPhoneNumber}}</p>
             </div>
         </div>
         <div class="ui-g">
             <div class="ui-lg-2"></div>
             <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'email.modal' | translate }}</div>
             <div class="ui-g-12 ui-md-12 ui-lg-7">
-                <p class="profileData">{{supplierDTO.contactPersonDTO.email}}</p>
+                <p class="profileData">{{supplierDTO.contactEmail}}</p>
             </div>
         </div>
     </div>
-
 
     <hr class="beneficiaryHr marginHr">
 
@@ -67,28 +66,28 @@
         <div class="ui-lg-2"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'company.name' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7">
-            <p class="profileData">{{supplierDTO.companyDTO.name}}</p>
+            <p class="profileData">{{supplierDTO.name}}</p>
         </div>
     </div>
     <div class="ui-g">
         <div class="ui-lg-2"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'legal.address' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7">
-            <p class="profileData">{{supplierDTO.companyDTO.address}}</p>
+            <p class="profileData">{{supplierDTO.address}}</p>
         </div>
     </div>
     <div class="ui-g">
         <div class="ui-lg-2"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'vat.label' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7">
-            <p class="profileData">{{supplierDTO.companyDTO.vat}}</p>
+            <p class="profileData">{{supplierDTO.vat}}</p>
         </div>
     </div>
     <div class="ui-g">
         <div class="ui-lg-2"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'bic.label' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7">
-            <p class="profileData">{{supplierDTO.companyDTO.bic}}</p>
+            <p class="profileData">{{supplierDTO.bic}}</p>
         </div>
     </div>
     <div class="ui-g">
@@ -98,7 +97,6 @@
             <p class="profileData"></p>
         </div>
     </div>
-
 
     <hr class="beneficiaryHr marginHr">
 
@@ -118,11 +116,9 @@
     <div class="ui-g">
         <div class="ui-lg-2"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-3">
-            <p class="profileData" *ngFor="let region of supplierDTO.supportedRegions">{{region.name |
-                translate }}</p>
+            <p class="profileData" *ngFor="let region of regions">{{region.name}}</p>
         </div>
     </div>
-
 
     <hr class="beneficiaryHr marginHr">
 
@@ -175,7 +171,6 @@
 </div>
 
 <!--MODAL-->
-
 
 <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
           [draggable]="false" [closable]="true" [closeOnEscape]="true">

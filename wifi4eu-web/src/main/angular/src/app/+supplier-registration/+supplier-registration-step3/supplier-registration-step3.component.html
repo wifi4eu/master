@@ -4,20 +4,17 @@
         <p class="beneficiaryTitle labelModal">{{ 'step3.supplier' | translate }}</p>
         <p>{{ 'contact.description' | translate }}</p>
 
-        <form #registrationForm="ngForm">
+        <form (ngSubmit)="onSubmit(3)" #registrationForm="ngForm">
             <div class="ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
-                        <label class="label floatLeft" for="name">{{ 'name.label' | translate }}</label>
+                        <label class="label floatLeft" for="contactName">{{ 'name.label' | translate }}</label>
                         <input class="form-control paddingInput" type="text"
-                               [(ngModel)]="supplierDTO.contactPersonDTO.name"
-                               placeholder="{{ 'name.place' | translate }}"
-                               name="name"
-                               ngcontrol="name"
-                               #name="ngModel" required>
-                        <div class="alert alert-danger" [hidden]="name.valid || name.pristine">Name is
-                            required
+                               id="contactName" name="contactName" placeholder="{{ 'name.place' | translate }}"
+                               [(ngModel)]="supplierDTO.contactName" #contactName="ngModel" required>
+                        <div class="alert alert-danger" [hidden]="contactName.valid || contactName.pristine">
+                            Name is required
                         </div>
                         <div class="ui-lg-3"></div>
                     </div>
@@ -27,15 +24,12 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
-                        <label class="label floatLeft" for="surname">{{ 'surname.label' | translate }}</label>
+                        <label class="label floatLeft" for="contactSurname">{{ 'surname.label' | translate }}</label>
                         <input class="form-control paddingInput" type="text"
-                               [(ngModel)]="supplierDTO.contactPersonDTO.surname"
-                               placeholder="{{ 'surname.place' | translate }}"
-                               name="surname"
-                               ngcontrol="surname"
-                               #surname="ngModel" required>
-                        <div class="alert alert-danger" [hidden]="surname.valid || surname.pristine">Name is
-                            required
+                               id="contactSurname" name="contactSurname" placeholder="{{ 'surname.place' | translate }}"
+                               [(ngModel)]="supplierDTO.contactSurname" #contactSurname="ngModel" required>
+                        <div class="alert alert-danger" [hidden]="contactSurname.valid || contactSurname.pristine">
+                            Surname is required
                         </div>
                         <div class="ui-lg-3"></div>
                     </div>
@@ -46,26 +40,28 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-3">
                     <div class="form-group">
-                        <label class="label floatLeft" for="phonePrefix">{{ 'prefix.number' | translate }}</label>
-                        <input class="form-control paddingInput" type="text" [(ngModel)]="phonePrefix"
+                        <label class="label floatLeft" for="contactPhonePrefix">{{ 'prefix.number' | translate }}</label>
+                        <input class="form-control paddingInput" type="text"
+                               id="contactPhonePrefix" name="contactPhonePrefix"
                                placeholder="{{ 'prefix.place' | translate }}"
-                               name="prefix" ngcontrol="prefix" #prefix="ngModel"
+                               [(ngModel)]="supplierDTO.contactPhonePrefix" #contactPhonePrefix="ngModel"
                                (keypress)="keyPressPrefix($event)" required>
-                        <div class="alert alert-danger" [hidden]="prefix.valid || prefix.pristine">Prefix is
-                            required
+                        <div class="alert alert-danger"
+                             [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine">
+                            Prefix is required
                         </div>
                     </div>
                 </div>
                 <div class="ui-g-12 ui-md-12 ui-lg-3">
                     <div class="form-group">
-                        <label class="label floatLeft" for="phoneNumber">{{ 'phone.number' | translate }}</label>
+                        <label class="label floatLeft" for="contactPhoneNumber">{{ 'phone.number' | translate }}</label>
                         <input class="form-control paddingInput" type="number"
-                               [(ngModel)]="supplierDTO.contactPersonDTO.phone"
-                               name="phoneNumber" ngcontrol="phoneNumber" #phoneNumber="ngModel"
-                               placeholder="{{ 'phone.place' | translate }}"
-                               step="1" min="1" required>
-                        <div class="alert alert-danger" [hidden]="phoneNumber.valid || phoneNumber.pristine">Phone is
-                            required
+                               id="contactPhoneNumber" name="contactPhoneNumber"
+                               placeholder="{{ 'phone.place' | translate }}" step="1" min="1"
+                               [(ngModel)]="supplierDTO.contactPhoneNumber" #contactPhoneNumber="ngModel" required>
+                        <div class="alert alert-danger"
+                             [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine">
+                            Phone is required
                         </div>
 
                     </div>
@@ -77,13 +73,13 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
-                        <label class="label floatLeft" for="email">{{ 'email.label' | translate }}</label>
+                        <label class="label floatLeft" for="contactEmail">{{ 'email.label' | translate }}</label>
                         <input class="form-control paddingInput" type="email"
-                               [(ngModel)]="supplierDTO.contactPersonDTO.email"
-                               placeholder="{{ 'email.place' | translate }}"
-                               name="email" ngcontrol="email" #email="ngModel" (keyup)="checkEmail()" required>
-                        <div class="alert alert-danger" [hidden]="email.valid || email.pristine">Email is
-                            required
+                               id="contactEmail" name="contactEmail" placeholder="{{ 'email.place' | translate }}"
+                               [(ngModel)]="supplierDTO.contactEmail" #contactEmail="ngModel"
+                               (keyup)="checkEmail()" required>
+                        <div class="alert alert-danger" [hidden]="contactEmail.valid || contactEmail.pristine">
+                            Email is required
                         </div>
                         <div class="ui-lg-3"></div>
                     </div>
@@ -95,29 +91,25 @@
                     <div class="form-group">
                         <label class="label floatLeft" for="confirmEmail">{{ 'confirmemail.label' | translate }}</label>
                         <input class="form-control paddingInput" type="email" [(ngModel)]="confirmEmail"
-                               name="confirm" ngcontrol="confirm" #confirm="ngModel"
-                               placeholder="{{ 'email.place' | translate }}"
-                               (keyup)="checkEmail()" required>
-                        <div class="alert alert-danger" [hidden]="confirm.valid || confirm.pristine">Email is
-                            required
+                               id="confirm" name="confirm" ngcontrol="confirm" #confirm="ngModel"
+                               placeholder="{{ 'email.place' | translate }}" (keyup)="checkEmail()" required>
+                        <div class="alert alert-danger" [hidden]="confirm.valid || confirm.pristine">
+                            Email confirmation is required
                         </div>
                         <div class="ui-lg-3"></div>
                     </div>
                 </div>
             </div>
-
-
             <div class="form-group ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(2)">{{ 'back.button' |
-                        translate }}
+                    <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(2)">{{ 'back.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary publish-button"
-                            [disabled]="!registrationForm.form.valid || checkEmail()"
-                            (click)="onSubmit(3)">{{ 'confirm.button' | translate }}
+                            [disabled]="!registrationForm.form.valid || checkEmail()">
+                        {{ 'confirm.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-lg-3"></div>

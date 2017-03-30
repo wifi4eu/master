@@ -34,12 +34,17 @@ public class User {
     @JoinTable(name = "SEC_USER_ROLES_T", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private List<Role> roles;
 
+    @Column(name="USER_TYPE")
+    private long userType;
+
+    @Column(name="USER_TYPE_ID")
+    private long userTypeId;
 
     public User() {
 
     }
 
-    public User(long userId, String email, String password, String token, Date createDate, Date accessDate, List<Role> roles) {
+    public User(Long userId, String email, String password, String token, Date createDate, Date accessDate, List<Role> roles, long userType, long userTypeId) {
         this.userId = userId;
         this.email = email;
         this.password = password;
@@ -47,6 +52,8 @@ public class User {
         this.createDate = createDate;
         this.accessDate = accessDate;
         this.roles = roles;
+        this.userType = userType;
+        this.userTypeId = userTypeId;
     }
 
     public long getUserId() {
@@ -103,5 +110,21 @@ public class User {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public long getUserType() {
+        return userType;
+    }
+
+    public void setUserType(long userType) {
+        this.userType = userType;
+    }
+
+    public long getUserTypeId() {
+        return userTypeId;
+    }
+
+    public void setUserTypeId(long userTypeId) {
+        this.userTypeId = userTypeId;
     }
 }
