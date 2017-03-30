@@ -6,8 +6,8 @@
 
         <form #registrationForm="ngForm">
             <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="name">{{ 'name.label' | translate }}</label>
                         <input class="form-control paddingInput" type="text"
@@ -19,13 +19,13 @@
                         <div class="alert alert-danger" [hidden]="name.valid || name.pristine">Name is
                             required
                         </div>
-                        <div class="ui-g-3"></div>
+                        <div class="ui-lg-3"></div>
                     </div>
                 </div>
             </div>
             <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="surname">{{ 'surname.label' | translate }}</label>
                         <input class="form-control paddingInput" type="text"
@@ -37,16 +37,15 @@
                         <div class="alert alert-danger" [hidden]="surname.valid || surname.pristine">Name is
                             required
                         </div>
-                        <div class="ui-g-3"></div>
+                        <div class="ui-lg-3"></div>
                     </div>
                 </div>
             </div>
             <div class="ui-g">
 
-                <div class="ui-g-3"></div>
-                <div class="ui-g-3">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-3">
                     <div class="form-group">
-
                         <label class="label floatLeft" for="phonePrefix">{{ 'prefix.number' | translate }}</label>
                         <input class="form-control paddingInput" type="text" [(ngModel)]="phonePrefix"
                                placeholder="{{ 'prefix.place' | translate }}"
@@ -57,7 +56,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui-g-3">
+                <div class="ui-g-12 ui-md-12 ui-lg-3">
                     <div class="form-group">
                         <label class="label floatLeft" for="phoneNumber">{{ 'phone.number' | translate }}</label>
                         <input class="form-control paddingInput" type="number"
@@ -68,13 +67,15 @@
                         <div class="alert alert-danger" [hidden]="phoneNumber.valid || phoneNumber.pristine">Phone is
                             required
                         </div>
-                        <div class="ui-g-3"></div>
+
                     </div>
+
                 </div>
+                <div class="ui-lg-3"></div>
             </div>
             <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="email">{{ 'email.label' | translate }}</label>
                         <input class="form-control paddingInput" type="email"
@@ -84,13 +85,13 @@
                         <div class="alert alert-danger" [hidden]="email.valid || email.pristine">Email is
                             required
                         </div>
-                        <div class="ui-g-3"></div>
+                        <div class="ui-lg-3"></div>
                     </div>
                 </div>
             </div>
             <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="confirmEmail">{{ 'confirmemail.label' | translate }}</label>
                         <input class="form-control paddingInput" type="email" [(ngModel)]="confirmEmail"
@@ -100,26 +101,26 @@
                         <div class="alert alert-danger" [hidden]="confirm.valid || confirm.pristine">Email is
                             required
                         </div>
-                        <div class="ui-g-3"></div>
+                        <div class="ui-lg-3"></div>
                     </div>
                 </div>
             </div>
 
 
             <div class="form-group ui-g">
-                <div class="ui-g-4"></div>
-                <div class="ui-g-2" style="text-align: center !important">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                     <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(2)">{{ 'back.button' |
                         translate }}
                     </button>
                 </div>
-                <div class="ui-g-2" style="text-align: center !important">
+                <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary publish-button"
                             [disabled]="!registrationForm.form.valid || checkEmail()"
                             (click)="onSubmit(3)">{{ 'confirm.button' | translate }}
                     </button>
                 </div>
-                <div class="ui-g-4"></div>
+                <div class="ui-lg-3"></div>
             </div>
         </form>
     </div>
