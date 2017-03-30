@@ -200,5 +200,8 @@
   "access.point": "Access point",
   "municipalities.awarded": "Municipalities awarded with voucher",
   "municipalities.selected": "Municipalities that selected me",
+  "voucher.competition": "Voucher competition",
+  "voucher.competition.desc": "During the following days, the Mayors will be applying for vouchers. As a supplier, you will have to wait until the competition is over. You will recieve an e-mail notification with the list of awarded Municipalities.",
+  "municipalities.selected": "Municipalities that selected me",
   "delete.button": "Delete"
 }
