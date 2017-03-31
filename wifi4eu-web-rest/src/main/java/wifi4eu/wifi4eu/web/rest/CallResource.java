@@ -58,4 +58,17 @@ public class CallResource {
             return new ResponseDTO(false, null, errorDTO);
         }
     }
+
+    @ApiOperation(value = "delete Call")
+    @RequestMapping(method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseDTO deleteCall(@RequestBody final Long callId, final HttpServletResponse response) {
+        try {
+            CallDTO resCall = callService.deleteCall(callId);
+            return new ResponseDTO(true, resCall, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+    }
 }

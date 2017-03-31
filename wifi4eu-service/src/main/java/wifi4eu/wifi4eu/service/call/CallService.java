@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.CallDTO;
 import wifi4eu.wifi4eu.mapper.call.CallMapper;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,7 +25,6 @@ public class CallService {
 
 
     public List<CallDTO> getAllCalls() {
-
         return callMapper.toDTOList(Lists.newArrayList(callRepository.findAll()));
     }
 
@@ -33,9 +33,14 @@ public class CallService {
     }
 
     public CallDTO createCall(CallDTO callDTO) {
-
         return callMapper.toDTO(callRepository.save(callMapper.toEntity(callDTO)));
+    }
 
+    @Transactional
+    public CallDTO deleteCall(Long callId) {
+        CallDTO callDTO = callMapper.toDTO(callRepository.findOne(callId));
+        callRepository.delete(callId);
+        return callDTO;
     }
 
 }
