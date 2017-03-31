@@ -30,7 +30,7 @@ public class Nuts {
     @Column(name = "COUNTRY_CODE")
     private String countryCode;
 
-    @Column(name = "\"_ORDER\"")
+    @Column(name = "_ORDER")
     private Long order;
 
     @Column(name = "SORTING")

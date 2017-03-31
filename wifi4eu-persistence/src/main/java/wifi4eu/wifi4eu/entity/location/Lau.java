@@ -25,7 +25,7 @@ public class Lau {
     @Column(name="LAU2")
     private String lau2;
 
-    @Column(name="\"_CHANGE\"")
+    @Column(name="_CHANGE")
     private String change;
 
     @Column(name="NAME1")
