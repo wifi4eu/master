@@ -40,6 +40,13 @@ export interface ICallApi {
      */
     createCall<T extends models.ResponseDTO>(body?: models.CallDTO, c?: ClassType<T>): Observable<T>;
     /**
+     * delete Call
+     * 
+     * @param c 
+     * @param body 
+     */
+    deleteCall<T extends models.ResponseDTO>(body?: number, c?: ClassType<T>): Observable<T>;
+    /**
      * Get call by callId
      * 
      * @param c 
@@ -51,7 +58,7 @@ export interface ICallApi {
 
 @Injectable()
 export class CallApi implements ICallApi {
-    protected basePath = 'http://wifi4eu.everisdigitalchannels.com:7001/wifi4eu/api';
+    protected basePath = 'http://localhost:7001/wifi4eu/api';
     public defaultHeaders: Headers = new Headers();
     public configuration: Configuration = new Configuration();
 
@@ -99,6 +106,29 @@ export class CallApi implements ICallApi {
     createCall<T extends models.ResponseDTO>(body?: models.CallDTO, c?: ClassType<T>): Observable<T> {
         // noinspection TypeScriptValidateTypes
         return this.createCallWithHttpInfo(body)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
+     * delete Call
+     * 
+     * @param c
+     * @param body 
+     */
+    deleteCall<T extends models.ResponseDTO>(body?: number, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.deleteCallWithHttpInfo(body)
                 .map((response: Response) => {
                     if (response.status === 204) {
                         return undefined;
@@ -183,6 +213,36 @@ export class CallApi implements ICallApi {
 
         let requestOptions: RequestOptionsArgs = new RequestOptions({
             method: RequestMethod.Post,
+            headers: headers,
+            body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * delete Call
+     * 
+     * @param body 
+     */
+    private deleteCallWithHttpInfo(body?: number ): Observable<Response> {
+        const path = this.basePath + `/call`;
+
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+
+
+
+
+
+        headers.set('Content-Type', 'application/json');
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Delete,
             headers: headers,
             body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
             search: queryParameters,

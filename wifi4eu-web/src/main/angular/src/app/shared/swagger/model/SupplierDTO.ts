@@ -20,7 +20,9 @@ export interface SupplierDTO {
 
     contactSurname?: string;
 
-    contactPhone?: string;
+    contactPhonePrefix?: string;
+
+    contactPhoneNumber?: string;
 
     contactEmail?: string;
 
@@ -69,7 +71,10 @@ export class SupplierDTOBase  implements SupplierDTO{
     contactSurname?:  string ;
 
 
-    contactPhone?:  string ;
+    contactPhonePrefix?:  string ;
+
+
+    contactPhoneNumber?:  string ;
 
 
     contactEmail?:  string ;

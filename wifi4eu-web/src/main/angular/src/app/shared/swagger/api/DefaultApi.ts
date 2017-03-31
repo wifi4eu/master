@@ -36,7 +36,7 @@ export interface IDefaultApi {
 
 @Injectable()
 export class DefaultApi implements IDefaultApi {
-    protected basePath = 'http://wifi4eu.everisdigitalchannels.com:7001/wifi4eu/api';
+    protected basePath = 'http://localhost:7001/wifi4eu/api';
     public defaultHeaders: Headers = new Headers();
     public configuration: Configuration = new Configuration();
 
