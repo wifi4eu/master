@@ -125,22 +125,22 @@
 
 
         <app.context.root>/wifi4eu</app.context.root>
-        <server.address>wifi4eu.everisdigitalchannels.com:7001</server.address>
+        <server.address>localhost:7001</server.address>
 
     </properties>
 
 
     <profiles>
         <profile>
-            <id>TEST</id>
+            <id>DEV</id>
             <properties>
-                <server.address>testServer:port</server.address>
+                <server.address>wifi4eu.everisdigitalchannels.com:7001</server.address>
             </properties>
         </profile>
         <profile>
             <id>PROD</id>
             <properties>
-                <server.address>prodServer:port</server.address>
+                <server.address>wifi4eu.everisdigitalchannels.com:7001</server.address>
             </properties>
         </profile>
     </profiles>
