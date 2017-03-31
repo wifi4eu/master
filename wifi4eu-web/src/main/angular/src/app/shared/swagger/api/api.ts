@@ -1,5 +1,4 @@
 export * from './BeneficiaryApi';
-export * from './BeneficiarysupplierpublicationApi';
 export * from './CallApi';
 export * from './DefaultApi';
 export * from './HelpdeskApi';

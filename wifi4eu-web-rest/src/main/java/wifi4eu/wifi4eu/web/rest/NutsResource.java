@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by rgarcita on 08/02/2017.
  */
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @Controller
 @Api(value = "/nuts", description = "NutsResource")
 @RequestMapping("nuts")

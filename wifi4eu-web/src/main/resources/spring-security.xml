@@ -8,7 +8,9 @@
 
     <security:http use-expressions="true" create-session="stateless"
                    entry-point-ref="http403ForbiddenEntryPoint" authentication-manager-ref="authenticationManager">
-        <security:intercept-url pattern="/api/beneficiary/*" access="isAuthenticated()" />
+        <security:intercept-url pattern="/api/call" access="isAuthenticated()" />
+        <security:intercept-url pattern="/api/call/*" access="isAuthenticated()" />
+        <security:intercept-url pattern="/api/timeline" method="POST" access="isAuthenticated()" />
         <security:custom-filter after="PRE_AUTH_FILTER" ref="customFilter" />
     </security:http>
 

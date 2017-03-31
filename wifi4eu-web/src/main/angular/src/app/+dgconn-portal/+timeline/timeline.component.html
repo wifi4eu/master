@@ -30,7 +30,25 @@
             <template pTemplate="body" let-rowElement="rowIndex">
                 <button type="button" class="btn" style="background: none; padding: 0;"
                         (click)="displayInfo(rowElement)">
-                    <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{ 'edit.button' | translate
+                    <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i>
+                    {{ 'edit.button' | translate }}
+                </button>
+            </template>
+        </p-column>
+        <p-column header="{{ 'delete.button' | translate }}">
+            <template pTemplate="body" let-rowElement="rowIndex">
+                <button type="button" class="btn" style="background: none; padding: 0;"
+                        (click)="deleteElement(rowElement)">
+                    <i class="fa fa-trash-o" style="font-size: 17px; color: red;" aria-hidden="true"></i>
+                    {{ 'delete.button' | translate }}
+                </button>
+            </template>
+        </p-column>
+        <p-column header="">
+            <template pTemplate="body" let-i="rowIndex">
+                <button type="button" class="btn" style="background: none; padding: 0;"
+                        (click)="deleteElement(i)">
+                    <i class="fa fa-trash-o" style="font-size: 17px; color: red;"></i> {{ 'delete.button' | translate
                     }}
                 </button>
             </template>
@@ -63,10 +81,11 @@
                         <div class="ui-g-3">
                             <div class="form-group left">
                                 <label class="labelModal" for="startDate">{{'opening.date' | translate }}</label>
-                                <p-calendar [showIcon]="true" type="text" dateFormat="dd/mm/yy"
+                                <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"
+                                            [showIcon]="true" type="text" dateFormat="dd/mm/yy"
                                             [(ngModel)]="selectedTimeline.startDate" name="startDate"
-                                            ngcontrol="startDate"
-                                            #startDate="ngModel" onkeydown="return false" required></p-calendar>
+                                            ngcontrol="startDate" #startDate="ngModel" onkeydown="return false"
+                                            required></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-1"></div>
@@ -85,7 +104,8 @@
                         <div class="ui-g-3">
                             <div class="form-group left">
                                 <label class="labelModal" for="endDate">{{'closing.date' | translate }}</label>
-                                <p-calendar [showIcon]="true" type="text" dateFormat="dd/mm/yy"
+                                <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"
+                                            [showIcon]="true" type="text" dateFormat="dd/mm/yy"
                                             [(ngModel)]="selectedTimeline.endDate" name="endDate" ngcontrol="endDate"
                                             #endDate="ngModel" onkeydown="return false" required></p-calendar>
                             </div>

@@ -32,7 +32,6 @@ public class UserContext implements Serializable, UserDetails, Principal {
 
     private DetailedUser detailedUser;
 
-
     public UserContext(String username) {
         this.username = username;
     }

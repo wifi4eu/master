@@ -22,7 +22,7 @@ import java.util.List;
  * Created by rgarcita on 02/03/2017.
  */
 
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @Controller
 @Api(value = "/timeline", description = "Timeline services")
 @RequestMapping("timeline")
@@ -60,5 +60,18 @@ public class TimelineResource {
 
     }
 
+
+    @ApiOperation(value = "delete Timeline")
+    @RequestMapping(method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseDTO deleteTimeline(@RequestBody final Long timelineId, final HttpServletResponse response) {
+        try {
+            TimelineDTO resTimeline = timelineService.deleteTimeline(timelineId);
+            return new ResponseDTO(true, resTimeline, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+    }
 
 }

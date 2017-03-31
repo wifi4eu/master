@@ -5,45 +5,45 @@
         <p>{{ '' | translate }}</p>
     </div>
     <div class="ui-g">
-        <div class="ui-g-2"></div>
-        <div class="ui-g-4 marginSelect">
+        <div class="ui-lg-1"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-5 marginSelect">
             <p-multiSelect [options]="countries"
                            [(ngModel)]="selectedCountries"
                            (onChange)="onMultiSelectChange($event)">
             </p-multiSelect>
         </div>
-        <div class="ui-g-6 white">
+        <div class="ui-g-12 ui-md-12 ui-lg-5 white">
             <p-tabView *ngIf="selectedCountries.length > 0">
                 <p-tabPanel *ngFor="let country of selectedCountries;"
                             [header]="country.name">
                     <div class="ui-g">
-                        <div class="ui-g-12" *ngFor="let province of provinces[country.name];">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12" *ngFor="let province of provinces[country.name];">
                             <p-checkbox name="group1"
                                         [value]=province
                                         label={{province.name}}
-                                        [(ngModel)]="supplierDTO.supportedRegions">
+                                        [(ngModel)]="regions">
                             </p-checkbox>
                         </div>
                     </div>
                 </p-tabPanel>
             </p-tabView>
         </div>
+        <div class="ui-lg-1"></div>
     </div>
     <!-- Navigation buttons -->
     <div id="navigation-buttons" class="form-group ui-g">
-        <div class="ui-g-4"></div>
-        <!-- Back button -->
-        <div class="ui-g-2" style="text-align: center !important">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(1)">{{ 'back.button' |
                 translate }}
             </button>
         </div>
         <!-- Next button -->
-        <div class="ui-g-2" style="text-align: center !important">
+        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn btn-primary publish-button" (click)="onSubmit(2)">{{ 'next.button' |
                 translate }}
             </button>
         </div>
-        <div class="ui-g-4"></div>
+        <div class="ui-lg-3"></div>
     </div>
 </div>

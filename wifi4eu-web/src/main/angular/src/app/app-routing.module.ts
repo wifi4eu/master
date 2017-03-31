@@ -9,6 +9,7 @@ import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
+import {AppGuard} from "./app.guard";
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -24,7 +25,8 @@ import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publicat
             component: HomeComponent
         }, {
             path: 'map',
-            component: MapComponent
+            component: MapComponent,
+            canActivate: [AppGuard]
         }, {
             path: 'activation',
             component: ActivationComponent
