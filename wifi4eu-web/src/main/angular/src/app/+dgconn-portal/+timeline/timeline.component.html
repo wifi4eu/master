@@ -81,10 +81,11 @@
                         <div class="ui-g-3">
                             <div class="form-group left">
                                 <label class="labelModal" for="startDate">{{'opening.date' | translate }}</label>
-                                <p-calendar [showIcon]="true" type="text" dateFormat="dd/mm/yy"
+                                <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"
+                                            [showIcon]="true" type="text" dateFormat="dd/mm/yy"
                                             [(ngModel)]="selectedTimeline.startDate" name="startDate"
-                                            ngcontrol="startDate"
-                                            #startDate="ngModel" onkeydown="return false" required></p-calendar>
+                                            ngcontrol="startDate" #startDate="ngModel" onkeydown="return false"
+                                            required></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-1"></div>
@@ -103,7 +104,8 @@
                         <div class="ui-g-3">
                             <div class="form-group left">
                                 <label class="labelModal" for="endDate">{{'closing.date' | translate }}</label>
-                                <p-calendar [showIcon]="true" type="text" dateFormat="dd/mm/yy"
+                                <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"
+                                            [showIcon]="true" type="text" dateFormat="dd/mm/yy"
                                             [(ngModel)]="selectedTimeline.endDate" name="endDate" ngcontrol="endDate"
                                             #endDate="ngModel" onkeydown="return false" required></p-calendar>
                             </div>

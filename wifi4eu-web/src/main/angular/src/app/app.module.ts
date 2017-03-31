@@ -19,6 +19,7 @@ import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.compo
 import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
+import {AppGuard} from "./app.guard";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -56,7 +57,8 @@ export function translateFactory(http: Http) {
     ],
     providers: [
         UxService,
-        CoreService
+        CoreService,
+        AppGuard
     ],
     bootstrap: [AppComponent]
 })
