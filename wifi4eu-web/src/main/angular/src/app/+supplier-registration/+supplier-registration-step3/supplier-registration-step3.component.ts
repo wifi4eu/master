@@ -14,7 +14,6 @@ export class SupplierRegistrationComponentStep3 {
     @Output() onNext: EventEmitter<number>;
     @Output() onBack: EventEmitter<number>;
 
-    //private phonePrefix: string;
     private confirmEmail: string;
 
     constructor() {
@@ -23,7 +22,6 @@ export class SupplierRegistrationComponentStep3 {
     }
 
     onSubmit(step: number) {
-        //this.supplierDTO.contactPhone = this.phonePrefix + this.supplierDTO.contactPhone;
         this.onNext.emit(step);
     }
 
