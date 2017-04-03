@@ -40,7 +40,8 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-3">
                     <div class="form-group">
-                        <label class="label floatLeft" for="contactPhonePrefix">{{ 'prefix.number' | translate }}</label>
+                        <label class="label floatLeft" for="contactPhonePrefix">{{ 'prefix.number' | translate
+                            }}</label>
                         <input class="form-control paddingInput" type="text"
                                id="contactPhonePrefix" name="contactPhonePrefix"
                                placeholder="{{ 'prefix.place' | translate }}"
@@ -77,9 +78,9 @@
                         <input class="form-control paddingInput" type="email"
                                id="contactEmail" name="contactEmail" placeholder="{{ 'email.place' | translate }}"
                                [(ngModel)]="supplierDTO.contactEmail" #contactEmail="ngModel"
-                               (keyup)="checkEmail()" required>
+                               (keyup)="checkIfEmailMatches()" [pattern]="emailPattern" required>
                         <div class="alert alert-danger" [hidden]="contactEmail.valid || contactEmail.pristine">
-                            Email is required
+                            Valid email information is required
                         </div>
                         <div class="ui-lg-3"></div>
                     </div>
@@ -90,11 +91,15 @@
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="confirmEmail">{{ 'confirmemail.label' | translate }}</label>
-                        <input class="form-control paddingInput" type="email" [(ngModel)]="confirmEmail"
-                               id="confirm" name="confirm" ngcontrol="confirm" #confirm="ngModel"
-                               placeholder="{{ 'email.place' | translate }}" (keyup)="checkEmail()" required>
-                        <div class="alert alert-danger" [hidden]="confirm.valid || confirm.pristine">
-                            Email confirmation is required
+                        <input class="form-control paddingInput" type="email"
+                               id="confirmEmail" name="confirmEmail" placeholder="{{ 'email.place' | translate }}"
+                               [(ngModel)]="confirmEmailField" #confirmEmail="ngModel"
+                               (keyup)="checkIfEmailMatches()" [pattern]="emailPattern" required>
+                        <div class="alert alert-danger" [hidden]="confirmEmail.valid || confirmEmail.pristine">
+                            Valid email information is required
+                        </div>
+                        <div [hidden]="emailMatches || confirmEmail.pristine" class="alert alert-info">
+                            The email information must match
                         </div>
                         <div class="ui-lg-3"></div>
                     </div>
@@ -103,12 +108,13 @@
             <div class="form-group ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(2)">{{ 'back.button' | translate }}
+                    <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(2)">
+                        {{ 'back.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary publish-button"
-                            [disabled]="!registrationForm.form.valid || checkEmail()">
+                            [disabled]="!registrationForm.form.valid || !emailMatches">
                         {{ 'confirm.button' | translate }}
                     </button>
                 </div>
