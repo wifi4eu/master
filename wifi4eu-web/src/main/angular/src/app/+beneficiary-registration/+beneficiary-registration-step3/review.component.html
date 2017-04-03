@@ -149,7 +149,7 @@
         </div>
     </div>
     <div class="ui-g-1"></div>
-    <modal #modal>
+    <modal #modal *ngIf="displayConfirmingData">
         <modal-header [show-close]="true">
         </modal-header>
         <modal-body>
