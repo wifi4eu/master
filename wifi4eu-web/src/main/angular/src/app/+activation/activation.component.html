@@ -1,37 +1,33 @@
-<form (ngSubmit)="onSubmit()" #activatedForm="ngForm" *ngIf="activationDetails.token?.length > 0">
+<form (ngSubmit)="onSubmit()" #activatedForm="ngForm" *ngIf="forgotDetails.token?.length <= 0">
     <div class="form-group ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
 
-                <p class="h2 h2-title center beneficiaryTitle ">{{ 'select.newPassword' |
-                    translate }}</p>
-                <p>{{ 'select.password' | translate
-                    }}
-                </p>
+                <p class="h2 h2-title center beneficiaryTitle ">{{ 'select.newPassword' | translate }}</p>
+                <p>{{ 'select.password' | translate }}</p>
 
                 <label for="password" class="label floatLeft labelForgot">{{ 'password.label' | translate }}</label>
                 <input type="password" [(ngModel)]="activationDetails.password"
-                       class="form-control paddingInput" name="password"
+                       id="password" class="form-control paddingInput" name="password"
                        ngcontrol="activationDetails.password"
                        #password="ngModel" minlength="8"
                        (keyup)="checkPassword()" required>
-                <div [hidden]="password.valid || password.pristine"
-                     class="alert alert-danger">{{ 'password.required' |
-                    translate }}
+                <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+                    {{ 'password.required' | translate }}
                 </div>
 
-                <label for="confirmPassword" class="label floatLeft labelForgot">{{ 'confirmNewPassword.label' |
-                    translate }}</label>
+                <label for="confirmPassword" class="label floatLeft labelForgot">
+                    {{ 'confirmNewPassword.label' | translate }}
+                </label>
                 <input type="password"
                        [(ngModel)]="activationDetails.confirmPassword"
-                       class="form-control paddingInput" name="confirmPassword"
+                       id="confirmPassword" class="form-control paddingInput" name="confirmPassword"
                        ngcontrol="activationDetails.confirmPassword"
                        #confirmPassword="ngModel" minlength="8"
                        (keyup)="checkPassword()" required>
-                <div [hidden]="confirmPassword.valid || confirmPassword.pristine"
-                     class="alert alert-danger">{{ 'newPassword.required' |
-                    translate }}
+                <div [hidden]="confirmPassword.valid || confirmPassword.pristine" class="alert alert-danger">
+                    {{ 'newPassword.required' |translate }}
                 </div>
 
             </div>
@@ -41,14 +37,14 @@
     <div class="form-group ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate
-                }}
+            <button type="button" class="btn btn-primary cancel-button">
+                {{ 'cancel.button' | translate }}
             </button>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn btn-primary publish-button"
-                    [disabled]="!activatedForm.form.valid || !checkPassword()">{{
-                'confirm.button' | translate }}
+                    [disabled]="!activatedForm.form.valid || !checkPassword()">
+                {{ 'confirm.button' | translate }}
             </button>
         </div>
         <div class="ui-lg-3"></div>
