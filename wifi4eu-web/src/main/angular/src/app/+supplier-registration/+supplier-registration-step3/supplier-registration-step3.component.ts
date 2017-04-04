@@ -18,6 +18,7 @@ export class SupplierRegistrationComponentStep3 {
     private confirmEmailField: string;
     private emailMatches: boolean;
     private emailPattern: string = "[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?";
+    private confirmEmail: string;
 
     constructor() {
         this.onNext = new EventEmitter<number>();
@@ -25,7 +26,6 @@ export class SupplierRegistrationComponentStep3 {
     }
 
     onSubmit(step: number) {
-        //this.supplierDTO.contactPhone = this.phonePrefix + this.supplierDTO.contactPhone;
         this.onNext.emit(step);
     }
 

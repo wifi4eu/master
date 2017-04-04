@@ -44,9 +44,8 @@
                             }}</label>
                         <input class="form-control paddingInput" type="text"
                                id="contactPhonePrefix" name="contactPhonePrefix"
-                               placeholder="{{ 'prefix.place' | translate }}"
-                               [(ngModel)]="supplierDTO.contactPhonePrefix" #contactPhonePrefix="ngModel"
-                               (keypress)="keyPressPrefix($event)" required>
+                               placeholder="{{ 'prefix.place' | translate }}" pattern="(\+|00)[0-9]{2,3}"
+                               [(ngModel)]="supplierDTO.contactPhonePrefix" #contactPhonePrefix="ngModel" required>
                         <div class="alert alert-danger"
                              [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine">
                             Prefix is required
@@ -108,8 +107,8 @@
             <div class="form-group ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(2)">
-                        {{ 'back.button' | translate }}
+                    <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(2)">{{ 'back.button' |
+                        translate }}
                     </button>
                 </div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
