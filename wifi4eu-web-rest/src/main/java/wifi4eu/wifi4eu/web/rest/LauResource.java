@@ -7,11 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.entity.location.Lau;
 import wifi4eu.wifi4eu.service.location.LocationService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +18,7 @@ import java.util.List;
 /**
  * Created by rgarcita on 08/02/2017.
  */
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/lau", description = "NutsResource")
 @RequestMapping("lau")
