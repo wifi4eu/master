@@ -43,9 +43,10 @@ export interface IUserApi {
     /**
      * Service to do Login with a user email and SHA512 password
      * 
+     * @param c 
      * @param body 
      */
-    login(body?: models.UserDTO ): Observable<string>;
+    login<T extends models.ResponseDTO>(body?: models.UserDTO, c?: ClassType<T>): Observable<T>;
 
 }
 
@@ -113,21 +114,26 @@ export class UserApi implements IUserApi {
 
 
 
+
     /**
      * Service to do Login with a user email and SHA512 password
      * 
+     * @param c
      * @param body 
      */
-    public login(body?: models.UserDTO ): Observable<string> {
+    login<T extends models.ResponseDTO>(body?: models.UserDTO, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
         return this.loginWithHttpInfo(body)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json();
-                }
-            });
-    }
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
 
 
 

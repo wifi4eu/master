@@ -21,7 +21,8 @@ import java.util.List;
  * Created by rgarcita on 02/03/2017.
  */
 
-@CrossOrigin(origins = "http://localhost:4200")
+
+@CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/timeline", description = "Timeline services")
 @RequestMapping("timeline")
