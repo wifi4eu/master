@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 //@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/beneficiary", description = "BeneficiaryResource")
 @RequestMapping("beneficiary")

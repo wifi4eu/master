@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 //@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/call", description = "Call services")
 @RequestMapping("call")

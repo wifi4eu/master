@@ -15,7 +15,7 @@ import wifi4eu.wifi4eu.service.supplier.SupplierService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-
+//@CrossOrigin(origins = "*")
 @CrossOrigin
 @Controller
 @Api(value = "/supplier", description = "Supplier services")
