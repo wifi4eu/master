@@ -25,11 +25,11 @@ public class TempToken {
     @Column(name="USER_ID")
     private Long userId;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name="CREATE_DATE")
     private Date createDate;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name="EXPIRY_DATE")
     private Date expiryDate;
 
