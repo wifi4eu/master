@@ -23,21 +23,23 @@ export class LoginComponent {
         this.userApi.login(this.userDTO).subscribe(
             data => {
                 this.displayConfirmingData = false;
-                if (data == "error") {
-                    this.uxService.growl({
-                        severity: 'error',
-                        summary: 'ERROR',
-                        detail: 'Could not login, with these user password'
-                    });
-                    console.log('ERROR: Could not login, with these user password');
-                } else if (data == "success") {
+                if (data['success']) {
                     this.uxService.growl({
                         severity: 'success',
                         summary: 'SUCCESS',
                         detail: 'Login success'
+
                     });
                     console.log('SUCCESS: Login success');
                     this.router.navigateByUrl("beneficiary-portal/voucher")
+                } else {
+                    this.uxService.growl({
+                        severity: 'error',
+                        summary: 'ERROR',
+                        detail: 'Could not login, with these user and password'
+                    });
+                    console.log('ERROR: Could not login, with these user password');
+
                 }
             },
             error => {
