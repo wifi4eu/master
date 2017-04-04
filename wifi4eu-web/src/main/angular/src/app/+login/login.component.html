@@ -6,9 +6,9 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="email">Email</label>
-                <input type="email" [(ngModel)]="userDetails.beneficiary.email"
-                       class="form-control paddingInput"
+                <label for="email">Email</label>
+                <input type="email" [(ngModel)]="userDTO.email"
+                       class="form-control"
                        name="email" ngcontrol="email"
                        #email="ngModel" required>
                 <div [hidden]="email.valid || email.pristine"
@@ -25,8 +25,8 @@
             <div class="form-group">
                 <label class="label" for="password">Password</label>
                 <input type="password"
-                       [(ngModel)]="userDetails.beneficiary.password"
-                       class="form-control paddingInput"
+                       [(ngModel)]="userDTO.password"
+                       class="form-control"
                        name="password" ngcontrol="password"
                        #password="ngModel" required>
                 <div [hidden]="password.valid || password.pristine"

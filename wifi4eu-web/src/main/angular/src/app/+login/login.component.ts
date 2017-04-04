@@ -1,43 +1,45 @@
-import {Component, Input} from "@angular/core";
+import {Component} from "@angular/core";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {UserDetails} from "../shared/models/user-details.model";
-import {UserService} from "../shared/services/user.service";
+import {UserDTO, UserDTOBase} from "../shared/swagger/model/UserDTO";
 import {Router} from "@angular/router";
+import {UserApi} from "../shared/swagger/api/UserApi";
 @Component({
     selector: 'login-component',
     templateUrl: 'login.component.html',
-    providers: [UserService]
+    providers: [UserApi]
 })
 export class LoginComponent {
 
     displayConfirmingData: boolean = false;
 
-    @Input('userDetails') userDetails: UserDetails = new UserDetails();
+    userDTO: UserDTO = new UserDTOBase();
 
-    constructor(private userService: UserService, private uxService: UxService, private router: Router) {
+    constructor(private userApi: UserApi, private uxService: UxService, private router: Router) {
     }
 
     onSubmit() {
         this.displayConfirmingData = true;
 
-        this.userService.getUser(this.userDetails).subscribe(
+        this.userApi.login(this.userDTO).subscribe(
             data => {
                 this.displayConfirmingData = false;
-                if (data == "error") {
-                    this.uxService.growl({
-                        severity: 'error',
-                        summary: 'ERROR',
-                        detail: 'Could not login, with these user password'
-                    });
-                    console.log('ERROR: Could not login, with these user password');
-                } else if (data == "success") {
+                if (data['success']) {
                     this.uxService.growl({
                         severity: 'success',
                         summary: 'SUCCESS',
                         detail: 'Login success'
+
                     });
                     console.log('SUCCESS: Login success');
                     this.router.navigateByUrl("beneficiary-portal/voucher")
+                } else {
+                    this.uxService.growl({
+                        severity: 'error',
+                        summary: 'ERROR',
+                        detail: 'Could not login, with these user and password'
+                    });
+                    console.log('ERROR: Could not login, with these user password');
+
                 }
             },
             error => {
