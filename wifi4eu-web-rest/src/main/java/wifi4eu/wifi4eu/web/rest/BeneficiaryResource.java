@@ -11,6 +11,7 @@ import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -37,8 +38,8 @@ public class BeneficiaryResource {
     public ResponseDTO create(@RequestBody final BeneficiaryDTO beneficiaryDTO, final HttpServletResponse response) {
 
         try {
-            beneficiaryService.create(beneficiaryDTO);
-            return new ResponseDTO(true, null, null);
+            UserDTO userDTO = beneficiaryService.create(beneficiaryDTO);
+            return new ResponseDTO(true, userDTO, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);
