@@ -18,7 +18,6 @@ import java.util.List;
 /**
  * Created by rgarcita on 08/02/2017.
  */
-
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/nuts", description = "NutsResource")

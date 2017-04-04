@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by rgarcita on 08/02/2017.
  */
-
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/beneficiary", description = "BeneficiaryResource")
