@@ -1,15 +1,14 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.common.dto.model.RepresentativeDTO;
-import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.MayorMapper;
@@ -24,7 +23,6 @@ import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.service.security.UserService;
 
-import java.security.SecureRandom;
 import java.util.Date;
 import java.util.UUID;
 
@@ -70,22 +68,29 @@ public class BeneficiaryService {
     @Autowired
     MailService mailService;
 
+    @Autowired
+    UserService userService;
+
     @Transactional
-    public void create(BeneficiaryDTO beneficiaryDTO) {
+    public UserDTO create(BeneficiaryDTO beneficiaryDTO) {
 
         _log.info("Creating beneficiary...");
 
         String email;
+        boolean representative = false;
 
         /* check if it is a mayor or a representative */
-        email = (beneficiaryDTO.getRepresentativeDTO() != null && beneficiaryDTO.getRepresentativeDTO().getEmail() != null && !beneficiaryDTO.getRepresentativeDTO().getEmail().isEmpty()) ? beneficiaryDTO.getRepresentativeDTO().getEmail() : beneficiaryDTO.getMayorDTO().getEmail();
+        if(beneficiaryDTO.getRepresentativeDTO() != null && beneficiaryDTO.getRepresentativeDTO().getEmail() != null && !beneficiaryDTO.getRepresentativeDTO().getEmail().isEmpty()){
+            email = beneficiaryDTO.getRepresentativeDTO().getEmail();
+            representative = true;
+        }else{
+            email = beneficiaryDTO.getMayorDTO().getEmail();
+        }
 
-        /*
-        TODO: enable a validation to avoid user duplicity
         UserDTO persUserDTO = getUserByEmail(email);
 
-        if(persUserDTO != null) {
-        */
+        if(persUserDTO == null) {
+
             /* create userDTO*/
         UserDTO userDTO = new UserDTO();
         userDTO.setCreateDate(new Date());
@@ -105,44 +110,34 @@ public class BeneficiaryService {
         mayorDTO = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
 
             /* create representativeDTO if apply */
-        if (beneficiaryDTO.getRepresentativeDTO() != null) {
+        if (representative) {
             //it is a representative
             _log.info("create representant: " + beneficiaryDTO.getRepresentativeDTO().toString());
             RepresentativeDTO representativeDTO = beneficiaryDTO.getRepresentativeDTO();
             representativeDTO.setMayorId(mayorDTO.getMayorId());
-            representativeRepository.save(representativeMapper.toEntity(beneficiaryDTO.getRepresentativeDTO()));
+            representativeDTO = representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(beneficiaryDTO.getRepresentativeDTO())));
+            userDTO.setUserType(Constant.ROLE_REPRESENTATIVE);
+            userDTO.setUserTypeId(representativeDTO.getRepresentativeId());
+        }else {
+            //it is a mayor
+            userDTO.setUserType(Constant.ROLE_MAYOR);
+            userDTO.setUserTypeId(mayorDTO.getMayorId());
         }
-
 
         String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
         userDTO.setPassword(password);
         _log.info("create user: " + userDTO.toString());
         userDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
 
-            /* create a temporal token */
+        userService.sendActivateAccountMail(userDTO);
 
-        Date now = new Date();
+        return userDTO;
 
-        TempTokenDTO tempTokenDTO = new TempTokenDTO();
-        tempTokenDTO.setEmail(email);
-        tempTokenDTO.setUserId(userDTO.getUserId());
-        tempTokenDTO.setCreateDate(now);
-        tempTokenDTO.setExpiryDate(DateUtils.addHours(now,UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS));
-        SecureRandom secureRandom = new SecureRandom();
-        String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-","");
-        tempTokenDTO.setToken(token);
-        tempTokenDTO = tempTokenMapper.toDTO(securityTempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO)));
-
-        String subject = "Welcome to wifi4eu";
-        String msgBody = "You have successfully registered to wifi4eu, access to the next link and activate your account "+UserService.ACTIVATE_ACCOUNT_URL+tempTokenDTO.getToken();
-
-        mailService.sendEmail(email, MailService.FROM_ADDRESS, subject, msgBody);
-
-        /*
         }else{
-            _log.warn("trying to register twice");
+            _log.error("trying to register twice");
+            return null;
         }
-        */
+
     }
 
     @Transactional
