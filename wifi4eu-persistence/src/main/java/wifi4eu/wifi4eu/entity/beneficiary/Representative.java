@@ -6,44 +6,42 @@ import javax.persistence.*;
  * Created by rgarcita on 09/02/2017.
  */
 @Entity
-@Table(name="BEN_REP_T")
+@Table(name = "BEN_REP_T")
 public class Representative {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="REPRESENTATIVE_ID")
+    @Column(name = "REPRESENTATIVE_ID")
     private Long representativeId;
 
-    @Column(name="TREATMENT")
+    @Column(name = "TREATMENT")
     private String treatment;
 
-    @Column(name="NAME")
+    @Column(name = "NAME")
     private String name;
 
-    @Column(name="SURNAME")
+    @Column(name = "SURNAME")
     private String surname;
 
-    @Column(name="MUNICIPALITY_ROLE")
+    @Column(name = "MUNICIPALITY_ROLE")
     private String municipalityRole;
 
-    @Column(name="EMAIL")
+    @Column(name = "EMAIL")
     private String email;
 
-    private String mayorRepeatEmail;
-
-    @Column(name="MAYOR_ID")
+    @Column(name = "MAYOR_ID")
     private Long mayorId;
 
-    public Representative(){}
+    public Representative() {
+    }
 
-    public Representative(long representativeId, String treatment, String name, String surname, String municipalityRole, String email, String mayorRepeatEmail, long mayorId) {
+    public Representative(long representativeId, String treatment, String name, String surname, String municipalityRole, String email, long mayorId) {
         this.representativeId = representativeId;
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
         this.municipalityRole = municipalityRole;
         this.email = email;
-        this.mayorRepeatEmail = mayorRepeatEmail;
         this.mayorId = mayorId;
     }
 
@@ -93,14 +91,6 @@ public class Representative {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getMayorRepeatEmail() {
-        return mayorRepeatEmail;
-    }
-
-    public void setMayorRepeatEmail(String mayorRepeatEmail) {
-        this.mayorRepeatEmail = mayorRepeatEmail;
     }
 
     public long getMayorId() {

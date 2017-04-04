@@ -6,38 +6,36 @@ import javax.persistence.*;
  * Created by rgarcita on 09/02/2017.
  */
 @Entity
-@Table(name="BEN_MAY_T")
+@Table(name = "BEN_MAY_T")
 public class Mayor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="MAYOR_ID")
+    @Column(name = "MAYOR_ID")
     private Long mayorId;
 
-    @Column(name="TREATMENT")
+    @Column(name = "TREATMENT")
     private String treatment;
-    @Column(name="NAME")
+    @Column(name = "NAME")
     private String name;
-    @Column(name="SURNAME")
+    @Column(name = "SURNAME")
     private String surname;
-    @Column(name="EMAIL")
+    @Column(name = "EMAIL")
     private String email;
 
-    @Column(name="LEGAL_ENTITY_ID")
+    @Column(name = "LEGAL_ENTITY_ID")
     private Long legalEntityId;
 
-    private String repeatEmail;
+    public Mayor() {
+    }
 
-    public Mayor(){}
-
-    public Mayor(Long mayorId, String treatment, String name, String surname, String email, Long legalEntityId, String repeatEmail) {
+    public Mayor(Long mayorId, String treatment, String name, String surname, String email, Long legalEntityId) {
         this.mayorId = mayorId;
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.legalEntityId = legalEntityId;
-        this.repeatEmail = repeatEmail;
     }
 
     public Long getMayorId() {
@@ -79,15 +77,6 @@ public class Mayor {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getRepeatEmail() {
-        return repeatEmail;
-    }
-
-    public void setRepeatEmail(String repeatEmail) {
-        this.repeatEmail = repeatEmail;
-    }
-
 
     public Long getLegalEntityId() {
         return legalEntityId;

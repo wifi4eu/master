@@ -82,6 +82,7 @@
                     <div class="form-group">
                         <label class="label floatLeft" for="website">{{ 'company.web' | translate }}</label>
                         <input class="form-control paddingInput" type="text" id="website" name="website"
+                               [pattern]="webPattern"
                                placeholder="http://everis.com" [(ngModel)]="supplierDTO.website" #website="ngModel"
                                required>
                         <div class="alert alert-danger" [hidden]="website.valid || website.pristine">
