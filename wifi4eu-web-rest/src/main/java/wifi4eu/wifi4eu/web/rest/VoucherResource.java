@@ -20,7 +20,6 @@ import java.util.List;
  * Created by rgarcita on 23/02/2017.
  */
 @CrossOrigin(origins = "*")
-//@CrossOrigin(origins = "http://localhost:4200")
 @Controller
 @Api(value = "/voucher", description = "VoucherResource")
 @RequestMapping("voucher")

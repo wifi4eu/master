@@ -16,12 +16,7 @@ import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-<<<<<<< HEAD
-//@CrossOrigin(origins = "http://localhost:4200")
 @CrossOrigin(origins = "*")
-=======
-@CrossOrigin(origins = "http://localhost:4200")
->>>>>>> 5724206a41169b2aabf04520957857d22f950e21
 @Controller
 @Api(value = "/helpdesk", description = "Helpdesk services")
 @RequestMapping("helpdesk")

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @CrossOrigin(origins = "*")
-//@CrossOrigin(origins = "http://localhost:4200")
 @Controller
 @Api(description = "TestResource")
 @RequestMapping("test")
