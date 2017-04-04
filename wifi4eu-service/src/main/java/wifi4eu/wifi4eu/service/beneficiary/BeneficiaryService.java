@@ -78,7 +78,7 @@ public class BeneficiaryService {
         String email;
 
         /* check if it is a mayor or a representative */
-        email = beneficiaryDTO.getRepresentativeDTO() != null ? beneficiaryDTO.getRepresentativeDTO().getEmail() : beneficiaryDTO.getMayorDTO().getEmail();
+        email = (beneficiaryDTO.getRepresentativeDTO() != null && beneficiaryDTO.getRepresentativeDTO().getEmail() != null && !beneficiaryDTO.getRepresentativeDTO().getEmail().isEmpty()) ? beneficiaryDTO.getRepresentativeDTO().getEmail() : beneficiaryDTO.getMayorDTO().getEmail();
 
         /*
         TODO: enable a validation to avoid user duplicity
