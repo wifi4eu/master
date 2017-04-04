@@ -15,6 +15,9 @@ export class SupplierRegistrationComponentStep3 {
     @Output() onBack: EventEmitter<number>;
 
     //private phonePrefix: string;
+    private confirmEmailField: string;
+    private emailMatches: boolean;
+    private emailPattern: string = "[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?";
     private confirmEmail: string;
 
     constructor() {
@@ -23,7 +26,6 @@ export class SupplierRegistrationComponentStep3 {
     }
 
     onSubmit(step: number) {
-        //this.supplierDTO.contactPhone = this.phonePrefix + this.supplierDTO.contactPhone;
         this.onNext.emit(step);
     }
 
@@ -31,9 +33,17 @@ export class SupplierRegistrationComponentStep3 {
         this.onBack.emit(step);
     }
 
-    checkEmail() {
-        return this.supplierDTO.contactEmail !== this.confirmEmail
+    checkIfEmailMatches() {
+        this.emailMatches = false;
+        if (this.supplierDTO.contactEmail === this.confirmEmailField) {
+            this.emailMatches = true;
+        }
+        console.log("emailMatches", this.emailMatches);
     }
+
+    // checkEmail() {
+    //     return this.supplierDTO.contactEmail !== this.confirmEmailField;
+    // }
 
     keyPressPrefix(event: any) {
         const pattern = /[0-9\+]/;
