@@ -220,5 +220,6 @@
   "memberStateComments": "Member State Comments",
   "dgConnectComments": "DG Connect Comments",
   "setAsResolved": "Set as Resolved",
-  "keepAsPending": "Keep as Pending"
+  "keepAsPending": "Keep as Pending",
+  "login.title":"Login"
 }
