@@ -12,7 +12,6 @@ import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
-import wifi4eu.wifi4eu.service.security.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,8 +19,12 @@ import javax.servlet.http.HttpServletResponse;
  * Created by rgarcita on 08/02/2017.
  */
 
+<<<<<<< HEAD
 //@CrossOrigin(origins = "http://localhost:4200")
 @CrossOrigin(origins = "*")
+=======
+@CrossOrigin(origins = "http://localhost:4200")
+>>>>>>> 5724206a41169b2aabf04520957857d22f950e21
 @Controller
 @Api(value = "/beneficiary", description = "BeneficiaryResource")
 @RequestMapping("beneficiary")

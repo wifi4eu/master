@@ -10,7 +10,7 @@ import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 @Component({
     selector: 'review-component',
     templateUrl: 'review.component.html',
-    providers: [UserService,BeneficiaryApi]
+    providers: [UserService, BeneficiaryApi]
 })
 export class ReviewComponent {
     @Input('beneficiaryDTO') beneficiaryDTO: BeneficiaryDTOBase;
@@ -42,22 +42,24 @@ export class ReviewComponent {
     }
 
     onSubmit() {
-        this.displayConfirmingData = true;
 
+        this.displayConfirmingData = true;
         this.beneficiaryApi.create(this.beneficiaryDTO).subscribe(
-            user => {
-                this.displayConfirmingData = false;
-                this.onSuccess.emit(true);
+            data => {
+                if (data['success'] != true) {
+                    this.displayConfirmingData = false;
+                    this.onFailure.emit(true);
+                    return;
+                }
+                this.onSuccess.emit(true)
+
             },
             error => {
-                this.uxService.growl({
-                    severity: 'warn',
-                    summary: 'WARNING',
-                    detail: 'Could not get user, ignore this when NG is' + ' working in offline mode'
-                });
-                console.log('WARNING: Could not get user: ', error);
+                this.displayConfirmingData = false;
+                this.onFailure.emit(true);
             }
         );
+       
     }
 
     editStep(step: number) {

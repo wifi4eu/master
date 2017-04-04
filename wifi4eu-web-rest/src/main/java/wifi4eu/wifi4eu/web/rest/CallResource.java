@@ -16,8 +16,12 @@ import wifi4eu.wifi4eu.service.call.CallService;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+<<<<<<< HEAD
 //@CrossOrigin(origins = "http://localhost:4200")
 @CrossOrigin(origins = "*")
+=======
+@CrossOrigin(origins = "http://localhost:4200")
+>>>>>>> 5724206a41169b2aabf04520957857d22f950e21
 @Controller
 @Api(value = "/call", description = "Call services")
 @RequestMapping("call")

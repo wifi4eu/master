@@ -1,4 +1,4 @@
-<ux-wizard-steps [isCustomContent]="true" *ngIf="!successRegistration && !failureRegistration">
+<ux-wizard-steps [isCustomContent]="true" *ngIf="!(successRegistration || failureRegistration)">
     <ux-wizard-step label="{{ 'registration.entity.title' | translate }}"
                     [isCompleted]="completed[0]"
                     [isActive]="active[0]">
@@ -42,4 +42,3 @@
 </ux-wizard-steps>
 <success-component *ngIf="successRegistration"></success-component>
 <failure-component *ngIf="failureRegistration"></failure-component>
-r

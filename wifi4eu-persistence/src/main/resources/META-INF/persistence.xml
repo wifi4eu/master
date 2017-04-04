@@ -18,8 +18,7 @@
 
             <property name="eclipselink.deploy-on-startup" value="true"/>
             <property name="eclipselink.target-server" value="WebLogic_10"/>
-            <property name="eclipselink.target-database"
-                      value="org.eclipse.persistence.platform.database.oracle.Oracle11Platform"/>
+            <property name="eclipselink.target-database" value="auto"/>
             <property name="eclipselink.cache.shared.default" value="false"/>
             <property name="javax.persistence.schema-generation.database.action"
                       value="create"/>
