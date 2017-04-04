@@ -56,7 +56,12 @@ export class SupplierRegistrationComponentStep4 {
         this.supplierDTO.nutsIds = this.supplierDTO.nutsIds.slice(0, -1);
         this.supplierApi.createSupplier(this.supplierDTO).subscribe(
             data => {
-                this.onSuccess.emit(true);
+                if (data['success'] != true) {
+                    this.onFailure.emit(true);
+                    return;
+                }
+                this.onSuccess.emit(true)
+
             },
             error => {
                 this.onFailure.emit(true);
