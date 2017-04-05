@@ -20,7 +20,8 @@ import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {AppGuard} from "./app.guard";
-import {LocalStorageModule} from "angular-2-local-storage";
+import {LocalStorageModule} from 'angular-2-local-storage';
+import {SharedService} from "./shared/shared.service";
 
 
 export function translateFactory(http: Http) {
@@ -64,7 +65,8 @@ export function translateFactory(http: Http) {
     providers: [
         UxService,
         CoreService,
-        AppGuard
+        AppGuard,
+        SharedService
     ],
     bootstrap: [AppComponent]
 })
