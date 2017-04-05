@@ -1,17 +1,17 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {ActivationDetails} from "./activation-details.model";
-import {ActivationService} from "./activation.service";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {ActivatedRoute} from "@angular/router";
+import {UserApi} from "../shared/swagger/api/UserApi";
+import {ActivateAccountDTO, ActivateAccountDTOBase} from "../shared/swagger/model/ActivateAccountDTO";
 
-@Component({templateUrl: 'activation.component.html', providers: [ActivationService]})
+@Component({templateUrl: 'activation.component.html', providers: [UserApi]})
 export class ActivationComponent implements OnInit {
 
-    @Input('activationDetails') activationDetails: ActivationDetails;
+    @Input('activationDetails') activationDetails: ActivateAccountDTO;
+    private repeatPassword: string;
 
-    constructor(private activationService: ActivationService, private uxService: UxService, private route: ActivatedRoute) {
-        this.activationDetails = new ActivationDetails();
-
+    constructor(private userApi: UserApi, private uxService: UxService, private route: ActivatedRoute) {
+        this.activationDetails = new ActivateAccountDTOBase();
     }
 
     ngOnInit() {
@@ -19,11 +19,11 @@ export class ActivationComponent implements OnInit {
     }
 
     checkPassword() {
-        return this.activationDetails.password === this.activationDetails.confirmPassword;
+        return this.activationDetails.password === this.repeatPassword;
     }
 
     onSubmit() {
-        this.activationService.addNewPassword(this.activationDetails).subscribe(
+        this.userApi.activateAccount(this.activationDetails).subscribe(
             data => {
                 this.uxService.growl({
                     severity: 'success',

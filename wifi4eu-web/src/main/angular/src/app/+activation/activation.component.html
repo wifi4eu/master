@@ -21,9 +21,9 @@
                     {{ 'confirmNewPassword.label' | translate }}
                 </label>
                 <input type="password"
-                       [(ngModel)]="activationDetails.confirmPassword"
+                       [(ngModel)]="repeatPassword"
                        id="confirmPassword" class="form-control paddingInput" name="confirmPassword"
-                       ngcontrol="activationDetails.confirmPassword"
+                       ngcontrol="repeatPassword"
                        #confirmPassword="ngModel" minlength="8"
                        (keyup)="checkPassword()" required>
                 <div [hidden]="confirmPassword.valid || confirmPassword.pristine" class="alert alert-danger">
