@@ -8,9 +8,9 @@
                 <p>{{ 'select.password' | translate }}</p>
 
                 <label for="password" class="label floatLeft labelForgot">{{ 'password.label' | translate }}</label>
-                <input type="password" [(ngModel)]="activationDetails.password"
+                <input type="password" [(ngModel)]="activationDTO.password"
                        id="password" class="form-control paddingInput" name="password"
-                       ngcontrol="activationDetails.password"
+                       ngcontrol="activationDTO.password"
                        #password="ngModel" minlength="8"
                        (keyup)="checkPassword()" required>
                 <div [hidden]="password.valid || password.pristine" class="alert alert-danger">

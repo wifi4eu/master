@@ -7,23 +7,23 @@ import {ActivateAccountDTO, ActivateAccountDTOBase} from "../shared/swagger/mode
 @Component({templateUrl: 'activation.component.html', providers: [UserApi]})
 export class ActivationComponent implements OnInit {
 
-    @Input('activationDetails') activationDetails: ActivateAccountDTO;
+    @Input('activationDTO') activationDTO: ActivateAccountDTO;
     private repeatPassword: string;
 
     constructor(private userApi: UserApi, private uxService: UxService, private route: ActivatedRoute) {
-        this.activationDetails = new ActivateAccountDTOBase();
+        this.activationDTO = new ActivateAccountDTOBase();
     }
 
     ngOnInit() {
-        this.route.params.subscribe(params => this.activationDetails.token = params['token']);
+        this.route.params.subscribe(params => this.activationDTO.token = params['token']);
     }
 
     checkPassword() {
-        return this.activationDetails.password === this.repeatPassword;
+        return this.activationDTO.password === this.repeatPassword;
     }
 
     onSubmit() {
-        this.userApi.activateAccount(this.activationDetails).subscribe(
+        this.userApi.activateAccount(this.activationDTO).subscribe(
             data => {
                 this.uxService.growl({
                     severity: 'success',
