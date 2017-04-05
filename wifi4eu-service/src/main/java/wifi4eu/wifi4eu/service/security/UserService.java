@@ -1,7 +1,8 @@
 package wifi4eu.wifi4eu.service.security;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -26,7 +27,7 @@ import java.util.Date;
 @Service
 public class UserService {
 
-    private final static Logger _log = Logger.getLogger(UserService.class);
+    private final static Logger _log = LoggerFactory.getLogger(UserService.class);
 
     public final static int TIMEFRAME_ACTIVATE_ACCOUNT_HOURS = 2;
 
@@ -166,6 +167,8 @@ public class UserService {
 
     public void activateAccount(ActivateAccountDTO activateAccountDTO) {
 
+        _log.info("[i] activateAccount");
+
         TempTokenDTO tempTokenDTO = tempTokenMapper.toDTO(securityTempTokenRepository.findByToken(activateAccountDTO.getToken()));
 
         Date now = new Date();
@@ -173,6 +176,7 @@ public class UserService {
         /* check if the token exists */
         if (tempTokenDTO != null) {
             /* check if it is expired */
+            _log.info("tempToken is not null and expiryDate: " + tempTokenDTO.getExpiryDate());
             if (tempTokenDTO.getExpiryDate().after(now)) {
                 /* get user */
                 UserDTO userDTO = userMapper.toDTO(securityUserRepository.findByUserId(tempTokenDTO.getUserId()));

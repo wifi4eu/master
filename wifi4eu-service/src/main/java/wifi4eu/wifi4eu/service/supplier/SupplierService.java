@@ -1,27 +1,20 @@
 package wifi4eu.wifi4eu.service.supplier;
 
 import com.google.common.collect.Lists;
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
-import wifi4eu.wifi4eu.mapper.security.RoleMapper;
-import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
-import wifi4eu.wifi4eu.repository.security.SecurityRoleRepository;
-import wifi4eu.wifi4eu.repository.security.SecurityTempTokenRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.service.security.UserService;
-import wifi4eu.wifi4eu.util.MailService;
 
-import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +25,7 @@ import java.util.UUID;
 @Service
 public class SupplierService {
 
-    private final static Logger _log = Logger.getLogger(SupplierService.class);
+    private final static Logger _log = LoggerFactory.getLogger(SupplierService.class);
 
     @Autowired
     SupplierRepository supplierRepository;
@@ -69,33 +62,44 @@ public class SupplierService {
         // get supplier email
         String email = supplierDTO.getContactEmail();
 
+        UserDTO persUserDTO = getUserByEmail(email);
 
-        // create supplier user
-        UserDTO userDTO = new UserDTO();
-        userDTO.setCreateDate(new Date());
-        userDTO.setEmail(email);
-        userDTO.setUserType(Constant.ROLE_SUPPLIER);
+        if(persUserDTO == null) {
 
-        // create temporal password
-        String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
-        userDTO.setPassword(password);
-        _log.info("create user: " + userDTO.toString());
+            // create supplier user
+            UserDTO userDTO = new UserDTO();
+            userDTO.setCreateDate(new Date());
+            userDTO.setEmail(email);
+            userDTO.setUserType(Constant.ROLE_SUPPLIER);
+
+            // create temporal password
+            String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
+            userDTO.setPassword(password);
+            _log.info("create user: " + userDTO.toString());
 
 
-        //create supplier entity
-        SupplierDTO perSupplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+            //create supplier entity
+            SupplierDTO perSupplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
 
-        //link supplier and user and store user
-        userDTO.setUserTypeId(perSupplierDTO.getSupplierId());
-        userDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
+            //link supplier and user and store user
+            userDTO.setUserTypeId(perSupplierDTO.getSupplierId());
+            userDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
 
-        //send activate account mail
+            //send activate account mail
 
-        //userService.sendActivateAccountMail(userDTO);
+            userService.sendActivateAccountMail(userDTO);
 
-        _log.info("[f] create Supplier");
+            _log.info("[f] create Supplier");
 
-        return perSupplierDTO;
+            return perSupplierDTO;
+        }else{
+            _log.warn("trying to duplicate user");
+            return null;
+        }
+    }
+
+    private UserDTO getUserByEmail(String email){
+        return userMapper.toDTO(securityUserRepository.findByEmail(email));
     }
 
 }

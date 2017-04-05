@@ -19,11 +19,11 @@ public class User {
     @Column(name = "PASSWORD")
     private String password;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATE_DATE")
     private Date createDate;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "ACCESS_DATE")
     private Date accessDate;
 
