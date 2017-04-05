@@ -3,6 +3,7 @@ import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {UserDetails} from "../shared/models/user-details.model";
 import {UserService} from "../shared/services/user.service";
 import {Router} from "@angular/router";
+import {LocalStorageModule} from "angular-2-local-storage";
 @Component({
     selector: 'login-component',
     templateUrl: 'login.component.html',
@@ -14,7 +15,7 @@ export class LoginComponent {
 
     @Input('userDetails') userDetails: UserDetails = new UserDetails();
 
-    constructor(private userService: UserService, private uxService: UxService, private router: Router) {
+    constructor(private userService: UserService, private uxService: UxService, private router: Router, private localStorageModule: LocalStorageModule) {
     }
 
     onSubmit() {
