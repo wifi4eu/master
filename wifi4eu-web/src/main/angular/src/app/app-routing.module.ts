@@ -29,31 +29,40 @@ import {AppGuard} from "./app.guard";
             canActivate: [AppGuard]
         }, {
             path: 'activation',
-            component: ActivationComponent
+            component: ActivationComponent,
+            canActivate: [AppGuard]
         }, {
             path: 'login',
-            component: LoginComponent
+            component: LoginComponent,
+            canActivate: [AppGuard]
         }, {
             path: 'forgot',
-            component: ForgotComponent
+            component: ForgotComponent,
+            canActivate: [AppGuard]
         }, {
             path: 'registration',
-            loadChildren: 'app/+beneficiary-registration/registration.module#RegistrationModule'
+            loadChildren: 'app/+beneficiary-registration/registration.module#RegistrationModule',
+            canActivate: [AppGuard]
         }, {
             path: 'beneficiary-portal',
-            loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule'
+            loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule',
+            canActivate: [AppGuard]
         }, {
             path: 'helpdesk',
-            component: HelpdeskComponent
+            component: HelpdeskComponent,
+            canActivate: [AppGuard]
         }, {
             path: 'dgconn-portal',
-            loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule'
+            loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
+            canActivate: [AppGuard]
         }, {
             path: 'supplier-registration',
-            loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule'
+            loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule',
+            canActivate: [AppGuard]
         }, {
             path: 'supplier-portal',
-            loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule'
+            loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
+            canActivate: [AppGuard]
         }
     ], {useHash: true})],
     exports: [RouterModule]
