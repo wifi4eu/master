@@ -29,20 +29,16 @@ import {AppGuard} from "./app.guard";
             canActivate: [AppGuard]
         }, {
             path: 'activation',
-            component: ActivationComponent,
-            canActivate: [AppGuard]
+            component: ActivationComponent
         }, {
             path: 'login',
-            component: LoginComponent,
-            canActivate: [AppGuard]
+            component: LoginComponent
         }, {
             path: 'forgot',
-            component: ForgotComponent,
-            canActivate: [AppGuard]
+            component: ForgotComponent
         }, {
             path: 'registration',
-            loadChildren: 'app/+beneficiary-registration/registration.module#RegistrationModule',
-            canActivate: [AppGuard]
+            loadChildren: 'app/+beneficiary-registration/registration.module#RegistrationModule'
         }, {
             path: 'beneficiary-portal',
             loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule',
@@ -57,8 +53,7 @@ import {AppGuard} from "./app.guard";
             canActivate: [AppGuard]
         }, {
             path: 'supplier-registration',
-            loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule',
-            canActivate: [AppGuard]
+            loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule'
         }, {
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
