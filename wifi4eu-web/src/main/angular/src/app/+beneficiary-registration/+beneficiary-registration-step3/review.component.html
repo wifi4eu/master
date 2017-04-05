@@ -138,7 +138,7 @@
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-3" style="text-align: center !important">
                         <button type="submit" class="btn btn-primary publish-button publish-buttonReview"
-                                (click)="modal.open()"
+                                (click)="modal?.open()"
                                 [disabled]="!checkboxes[0] || !checkboxes[1] || !checkboxes[2] || !successCaptcha">
                             {{'submitregistration.button' | translate }}
                         </button>
@@ -149,7 +149,7 @@
         </div>
     </div>
     <div class="ui-g-1"></div>
-    <modal #modal *ngIf="displayConfirmingData">
+    <modal #modal>
         <modal-header [show-close]="true">
         </modal-header>
         <modal-body>

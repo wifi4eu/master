@@ -7,12 +7,15 @@ import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
 import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 
+
 @Component({
     selector: 'review-component',
     templateUrl: 'review.component.html',
     providers: [UserService, BeneficiaryApi]
 })
+
 export class ReviewComponent {
+
     @Input('beneficiaryDTO') beneficiaryDTO: BeneficiaryDTOBase;
     @Input('nutsDTO') nutsDTO: NutsDTOBase;
     @Input('lausDTO') lausDTO: LauDTOBase;
@@ -59,7 +62,7 @@ export class ReviewComponent {
                 this.onFailure.emit(true);
             }
         );
-       
+
     }
 
     editStep(step: number) {
