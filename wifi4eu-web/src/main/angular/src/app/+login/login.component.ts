@@ -3,6 +3,7 @@ import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {UserDTO, UserDTOBase} from "../shared/swagger/model/UserDTO";
 import {Router} from "@angular/router";
 import {UserApi} from "../shared/swagger/api/UserApi";
+import {LocalStorageModule} from "angular-2-local-storage";
 @Component({
     selector: 'login-component',
     templateUrl: 'login.component.html',
@@ -10,11 +11,12 @@ import {UserApi} from "../shared/swagger/api/UserApi";
 })
 export class LoginComponent {
 
-    displayConfirmingData: boolean = false;
+    private displayConfirmingData: boolean;
+    private userDTO: UserDTO;
 
-    userDTO: UserDTO = new UserDTOBase();
-
-    constructor(private userApi: UserApi, private uxService: UxService, private router: Router) {
+    constructor(private userApi: UserApi, private uxService: UxService, private router: Router, private localStorageModule: LocalStorageModule) {
+    this.displayConfirmingData = false;
+    this.userDTO = new UserDTOBase();
     }
 
     onSubmit() {
