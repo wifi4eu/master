@@ -22,8 +22,8 @@ public class Helpdesk {
     @Column(name = "MEMBER_STATE")
     private String memberState;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATE_DATE")
     private Date date;
 
     @Column(name = "ASSIGNED_TO")
