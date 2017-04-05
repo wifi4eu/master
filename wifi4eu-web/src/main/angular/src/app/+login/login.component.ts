@@ -49,9 +49,9 @@ export class LoginComponent {
                 this.uxService.growl({
                     severity: 'warn',
                     summary: 'WARNING',
-                    detail: 'Could not get countries, ignore this when NG is working in offline mode'
+                    detail: 'Could not login, ignore this when NG is working in offline mode'
                 });
-                console.log('WARNING: Could not get countries', error);
+                console.log('WARNING: Could not login', error);
             }
         );
     }
