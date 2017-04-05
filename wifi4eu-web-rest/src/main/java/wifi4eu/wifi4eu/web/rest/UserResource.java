@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
@@ -79,9 +80,10 @@ public class UserResource {
     @ApiOperation(value = "Service to resend email with a link to activate account")
     @RequestMapping(value = "resendemail", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO resendEmail(@RequestBody final UserDTO userDTO, final HttpServletResponse response) {
+    public ResponseDTO resendEmail(@RequestBody final BeneficiaryDTO beneficiaryDTO, final HttpServletResponse response) {
+        _log.info("Resend email...");
         try {
-            userService.sendActivateAccountMail(userDTO);
+            userService.resendEmail(beneficiaryDTO);
             return new ResponseDTO(true, null, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());

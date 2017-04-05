@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
@@ -52,12 +53,36 @@ public class UserService {
 
         UserDTO persUserDTO = getUserByEmail(userDTO.getEmail());
 
-
         if (persUserDTO != null && userDTO.getPassword().equals(persUserDTO.getPassword())) {
 
             return new ResponseDTO(true, persUserDTO, null);
         } else {
             return new ResponseDTO(false, null, new ErrorDTO(0, "can't login"));
+        }
+    }
+
+    public void resendEmail(BeneficiaryDTO beneficiaryDTO) {
+        if (beneficiaryDTO != null) {
+
+            String email;
+
+            if (beneficiaryDTO.getRepresentativeDTO().getEmail() != null) {
+                email = beneficiaryDTO.getRepresentativeDTO().getEmail();
+                beneficiaryDTO.setRepresented(true);
+            } else {
+                email = beneficiaryDTO.getMayorDTO().getEmail();
+            }
+
+            UserDTO userDTO = getUserByEmail(email);
+
+            if (userDTO != null) {
+                sendActivateAccountMail(userDTO);
+            } else {
+                _log.error("Trying to resend activation account email with an unregistered user");
+            }
+
+        } else {
+            _log.error("Trying to resend activation account email with an unregistered beneficiary");
         }
     }
 
