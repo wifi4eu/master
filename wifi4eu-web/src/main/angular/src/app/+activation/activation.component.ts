@@ -2,14 +2,14 @@ import {Component, Input, OnInit} from "@angular/core";
 import {ActivationDetails} from "./activation-details.model";
 import {ActivationService} from "./activation.service";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({templateUrl: 'activation.component.html', providers: [ActivationService]})
 export class ActivationComponent implements OnInit {
 
     @Input('activationDetails') activationDetails: ActivationDetails;
 
-    constructor(private activationService: ActivationService, private uxService: UxService, private route: ActivatedRoute) {
+    constructor(private activationService: ActivationService, private uxService: UxService, private route: ActivatedRoute, private router: Router) {
         this.activationDetails = new ActivationDetails();
 
     }
@@ -31,6 +31,7 @@ export class ActivationComponent implements OnInit {
                     detail: 'User activation success'
                 });
                 console.log('SUCCESS: User activation success');
+                this.router.navigateByUrl("/login");
             },
             error => {
                 this.uxService.growl({
