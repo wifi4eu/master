@@ -17,38 +17,50 @@ export class SupplierRegistrationComponentStep2 implements OnInit {
     @Output() onNext: EventEmitter<number>;
     @Output() onBack: EventEmitter<number>;
 
-    private countries: SelectItem[];
-    private selectedCountries: NutsDTO[];
+    @Input('nuts0') nuts0: NutsDTO[];
+    @Input('nuts3') nuts3: NutsDTO[];
 
+    private allCountries: SelectItem[];
+    private selectedCountries: SelectItem[];
     private provinces: NutsDTO[][];
-
-    @Input('regions') regions: NutsDTO[];
+    
 
     constructor(private nutsApi: NutsApi) {
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();
 
-        this.countries = [];
+        this.allCountries = [];
         this.selectedCountries = [];
-
         this.provinces = [];
     }
 
     ngOnInit() {
+        //load all countries
         this.nutsApi.findNutsByLevel(0).subscribe(
             (nuts: NutsDTO[]) => {
                 for (let nut of nuts) {
-                    this.countries.push({
+                    this.allCountries.push({
                         label: ' ' + nut.name,
                         value: nut
                     });
                 }
             }
         );
+        //load selected countries
+        for (let nut of this.nuts0) {
+            this.selectedCountries.push({
+                label: ' ' + nut.name,
+                value: nut
+            });
+        }
     }
 
     onMultiSelectChange(event) {
         if (event.value.length > 0) {
+            this.nuts0 = [];
+            for(let nut of event.value){
+                this.nuts0.push(nut);
+            }
             let country: NutsDTO = event.value[event.value.length - 1];
             this.nutsApi.findNutsByLevel(3).subscribe(
                 (nuts: NutsDTO[]) => {
