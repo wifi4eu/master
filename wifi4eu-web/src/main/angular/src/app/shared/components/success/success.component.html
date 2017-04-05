@@ -5,8 +5,8 @@
         <br>
         <p>{{ 'submitregistration.success.text.part1' | translate }}<br>{{ 'submitregistration.success.text.part2' |
             translate }}</p>
-        <p>{{ 'submitregistration.success.resendconfirm.part1' | translate }} <u><b>{{
-            'submitregistration.success.resendconfirm.part2' | translate }}</b></u></p>
+        <p>{{ 'submitregistration.success.resendconfirm.part1' | translate }} <a (click)="onClick()">{{
+            'submitregistration.success.resendconfirm.part2' | translate }}</a></p>
         <br>
         <button class="btn btn-primary" routerLink="/home" routerLinkActive="active">{{ 'backtohome.button' | translate
             }}
