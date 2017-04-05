@@ -220,5 +220,6 @@
   "memberStateComments": "Comentarios del Member State",
   "dgConnectComments": "Comentarios de DG Connect",
   "setAsResolved": "Marcar como resuelto",
-  "keepAsPending": "Dejar pendiente"
+  "keepAsPending": "Dejar pendiente",
+  "login.title": "Entrar"
 }

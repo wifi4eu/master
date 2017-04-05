@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by rgarcita on 15/02/2017.
  */
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/user", description = "UserResource")
 @RequestMapping("user")
@@ -34,9 +33,9 @@ public class UserResource {
     @ApiOperation(value = "Service to do Login with a user email and SHA512 password")
     @RequestMapping(value = "login", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public String login(@RequestBody final UserDTO userDTO, final HttpServletResponse response) {
+    public ResponseDTO login(@RequestBody final UserDTO userDTO, final HttpServletResponse response) {
         _log.info("userDTO: " + userDTO.getEmail());
-        String result = userService.login(userDTO);
+        ResponseDTO result = userService.login(userDTO);
         _log.info("result: " + result);
         return result;
     }

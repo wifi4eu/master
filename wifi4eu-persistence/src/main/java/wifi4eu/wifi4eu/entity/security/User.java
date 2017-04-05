@@ -5,50 +5,46 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="SEC_USERS_T")
+@Table(name = "SEC_USERS_T")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="USER_ID")
+    @Column(name = "USER_ID")
     private Long userId;
 
-    @Column(name="EMAIL")
+    @Column(name = "EMAIL")
     private String email;
 
-    @Column(name="PASSWORD")
+    @Column(name = "PASSWORD")
     private String password;
 
-    @Column(name="TOKEN")
-    private String token;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name="CREATE_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATE_DATE")
     private Date createDate;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name="ACCESS_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "ACCESS_DATE")
     private Date accessDate;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "SEC_USER_ROLES_T", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private List<Role> roles;
 
-    @Column(name="USER_TYPE")
+    @Column(name = "USER_TYPE")
     private long userType;
 
-    @Column(name="USER_TYPE_ID")
+    @Column(name = "USER_TYPE_ID")
     private long userTypeId;
 
     public User() {
 
     }
 
-    public User(Long userId, String email, String password, String token, Date createDate, Date accessDate, List<Role> roles, long userType, long userTypeId) {
+    public User(Long userId, String email, String password, Date createDate, Date accessDate, List<Role> roles, long userType, long userTypeId) {
         this.userId = userId;
         this.email = email;
         this.password = password;
-        this.token = token;
         this.createDate = createDate;
         this.accessDate = accessDate;
         this.roles = roles;
@@ -78,14 +74,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public Date getCreateDate() {

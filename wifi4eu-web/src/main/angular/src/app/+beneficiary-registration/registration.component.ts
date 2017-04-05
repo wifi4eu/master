@@ -39,7 +39,7 @@ export class RegistrationComponent {
             this.nutsDTO = this.legalEntityComponent.nutsDTO;
             this.lausDTO = this.legalEntityComponent.lausDTO;
             this.beneficiaryDTO.legalEntityDTO.countryCode = this.nutsDTO.countryCode;
-            this.beneficiaryDTO.legalEntityDTO.municipalityCode = this.lausDTO.nuts3;
+            this.beneficiaryDTO.legalEntityDTO.municipalityCode = this.lausDTO.lau2;
         }
         this.completed[step - 1] = true;
         this.active[step - 1] = false;

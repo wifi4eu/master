@@ -1,8 +1,8 @@
 import {Component, Input, EventEmitter, Output} from "@angular/core";
-import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
-import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {NutsDTOBase, NutsDTO} from "../../shared/swagger/model/NutsDTO";
+import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
+import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
+import {NutsDTO} from "../../shared/swagger/model/NutsDTO";
 
 @Component({
     selector: 'supplier-registration-step4-component',
@@ -56,7 +56,12 @@ export class SupplierRegistrationComponentStep4 {
         this.supplierDTO.nutsIds = this.supplierDTO.nutsIds.slice(0, -1);
         this.supplierApi.createSupplier(this.supplierDTO).subscribe(
             data => {
-                this.onSuccess.emit(true);
+                if (data['success'] != true) {
+                    this.onFailure.emit(true);
+                    return;
+                }
+                this.onSuccess.emit(true)
+
             },
             error => {
                 this.onFailure.emit(true);

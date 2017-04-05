@@ -6,7 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     templateUrl: 'forgot.component.html',
-    providers: [ForgotService, UxService]
+    providers: [ForgotService]
 })
 export class ForgotComponent implements OnInit {
 
@@ -32,7 +32,7 @@ export class ForgotComponent implements OnInit {
                     summary: 'SUCCESS',
                     detail: 'forgot password success'
                 });
-                console.log('SUCCESS: User activation success');            
+                console.log('SUCCESS: User activation success');
             },
             error => {
                 this.uxService.growl({
@@ -50,14 +50,14 @@ export class ForgotComponent implements OnInit {
         this.forgotService.addNewPassword(this.forgotDetails).subscribe(
             data => {
                 console.log(data);
-                if(data != null){
+                if (data != null) {
                     this.uxService.growl({
                         severity: 'error',
                         summary: 'ERROR',
                         detail: 'Could not change user password'
                     });
                     console.log('ERROR: Could not change user password');
-                }else{
+                } else {
                     this.uxService.growl({
                         severity: 'success',
                         summary: 'SUCCESS',
