@@ -76,4 +76,17 @@ public class UserResource {
     }
 
 
+    @ApiOperation(value = "Service to resend email with a link to activate account")
+    @RequestMapping(value = "resendemail", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO resendEmail(@RequestBody final UserDTO userDTO, final HttpServletResponse response) {
+        try {
+            userService.sendActivateAccountMail(userDTO);
+            return new ResponseDTO(true, null, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+    }
+
 }
