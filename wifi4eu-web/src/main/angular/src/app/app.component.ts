@@ -1,20 +1,24 @@
-import {Component, enableProdMode, OnInit, Output, EventEmitter} from "@angular/core";
+import {Component, enableProdMode, Output, EventEmitter} from "@angular/core";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {UxService, UxLayoutLink, UxLayoutNotificationItem} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {CoreService} from "./core/core.service";
 import {UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import {LocalStorageService} from "angular-2-local-storage";
+import {UserDTO} from "./shared/swagger/model/UserDTO";
+import {SharedService} from "./shared/shared.service";
+import {Router} from "@angular/router";
+
 
 enableProdMode()
 
 @Component({selector: 'app-root', templateUrl: './app.component.html', styleUrls: ['./app.component.scss']})
-export class AppComponent implements OnInit {
-    menuLinks: Array<UxLayoutLink> = [];
-    notifications: Array<UxLayoutNotificationItem> = [];
-    userInfos: string = '';
-    isOnline = false;
+export class AppComponent {
+    private menuLinks: Array<UxLayoutLink>;
+    private user: UserDTO;
+
     @Output() private languageChanged: EventEmitter<UxLanguage> = new EventEmitter<UxLanguage>();
 
-    constructor(private translate: TranslateService, translateService: TranslateService, private coreService: CoreService, private uxService: UxService,) {
+    constructor(private router: Router, private translate: TranslateService, translateService: TranslateService, private coreService: CoreService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService) {
         translateService.setDefaultLang('en');
         translateService.use('en');
 
@@ -28,6 +32,13 @@ export class AppComponent implements OnInit {
             ]
         })];
 
+        this.updateHeader();
+        this.sharedService.changeEmitted.subscribe(() => this.updateHeader());
+    }
+
+    updateHeader() {
+        let u = this.localStorage.get('user');
+        this.user = u ? JSON.parse(u.toString()) : null;
     }
 
     onLanguageChanged(language: UxLanguage) {
@@ -36,30 +47,10 @@ export class AppComponent implements OnInit {
         this.languageChanged.emit(language);
     }
 
-    ngOnInit() {
-        /*this
-         .coreService
-         .getUserDetails()
-         .subscribe((userDetails : any) => {
-         let userName = userDetails.domainUsername;
-         let department = userDetails.departmentNumber;
-         let buffer : string[] = [userDetails.firstName, userDetails.lastName];
-         if (userName != null) {
-         buffer.push('(' + userName + ')');
-         }
-         if (department != null) {
-         buffer.push(department);
-         }
-         this.userInfos = buffer.join(' ');
-
-         }, error => {
-         this
-         .uxService
-         .growl({severity: 'warn', summary: 'WARNING', detail: 'Could not get user details, ignore this when NG is working in offline mode'});
-         console.log('WARNING : Could not get user details, ignore this when NG is working in offline ' +
-         'mode');
-         this.userInfos = 'Name Firstname';
-         });*/
+    onLogout() {
+        this.localStorage.remove('user');
+        this.updateHeader();
+        this.router.navigateByUrl("home");
     }
 
 }
