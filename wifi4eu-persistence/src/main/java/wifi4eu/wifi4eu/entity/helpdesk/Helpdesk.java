@@ -23,7 +23,7 @@ public class Helpdesk {
     private String memberState;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "DATE")
+    @Column(name = "CREATE_DATE")
     private Date date;
 
     @Column(name = "ASSIGNED_TO")
