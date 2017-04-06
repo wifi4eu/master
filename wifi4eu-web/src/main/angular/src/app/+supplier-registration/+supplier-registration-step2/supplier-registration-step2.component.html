@@ -9,7 +9,7 @@
         <div class="ui-g-12 ui-md-12 ui-lg-5 marginSelect">
             <!-- select countries -->
             <p-multiSelect [options]="allCountries"
-                           [(ngModel)]="nuts0"
+                           [(ngModel)]="selectedCountries"
                            (onChange)="onMultiSelectChange($event)">
             </p-multiSelect>
         </div>
