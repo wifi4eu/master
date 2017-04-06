@@ -45,8 +45,15 @@ export class LoginComponent {
                         case 1:
                             this.router.navigateByUrl("supplier-portal");
                             break;
-                        default:
+                        case 2:
+                        case 3:
                             this.router.navigateByUrl("beneficiary-portal/voucher");
+                            break;
+                        case 5:
+                            this.router.navigateByUrl("dgconn-portal");
+                            break;
+                        default:
+                            this.router.navigateByUrl("home");
                             break;
                     }
 
