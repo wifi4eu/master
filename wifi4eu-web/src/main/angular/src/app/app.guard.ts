@@ -35,8 +35,6 @@ export class AppGuard implements CanActivate {
     }
 
     canActivateBeneficiary() {
-        console.log("ActivateBeneficiary");
-        console.log(this.user);
         if (this.user === null) {
             return false;
         }
@@ -44,8 +42,6 @@ export class AppGuard implements CanActivate {
     }
 
     canActivateSupplier() {
-        console.log("ActivateSupplier");
-        console.log(this.user);
         if (this.user === null) {
             return false;
         }
@@ -53,8 +49,6 @@ export class AppGuard implements CanActivate {
     }
 
     canActivateMemberState() {
-        console.log("ActivateMemberState");
-        console.log(this.user);
         if (this.user === null) {
             return false;
         }
@@ -62,8 +56,6 @@ export class AppGuard implements CanActivate {
     }
 
     canActivateDgConn() {
-        console.log("ActivateDgConn");
-        console.log(this.user);
         if (this.user === null) {
             return false;
         }
