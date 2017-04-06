@@ -62,28 +62,20 @@ export class DgConnTimelineComponent {
         );
     }
 
-    cancelPublication() {
+    cancelTimeline() {
         this.newElementForm = false;
         this.display = false;
     }
 
-    createPublication() {
+    createTimeline() {
         this.timelineApi.createTimeline(this.convertTimelineElementToDTO(this.selectedTimeline)).subscribe(
             data => {
                 this.newElementForm = false;
                 this.display = false;
-                if (data == "error") {
-                    this.uxService.growl({
-                        severity: 'error',
-                        summary: 'ERROR',
-                    });
-                    console.log('ERROR: Could not login, with these user password');
-                } else if (data == "success") {
-                    this.uxService.growl({
-                        severity: 'success',
-                        summary: 'SUCCESS',
-                    });
-                }
+                this.timelineApi.allTimelines().subscribe(
+                    timelines => this.timelines = timelines,
+                    error => console.log(error)
+                );
             },
             error => console.log(error)
         );

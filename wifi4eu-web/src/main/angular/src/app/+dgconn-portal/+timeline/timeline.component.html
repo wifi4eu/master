@@ -44,7 +44,7 @@
                 </button>
             </template>
         </p-column>
-        <p-column header="">
+        <!--<p-column header="">
             <template pTemplate="body" let-i="rowIndex">
                 <button type="button" class="btn" style="background: none; padding: 0;"
                         (click)="deleteElement(i)">
@@ -52,19 +52,21 @@
                     }}
                 </button>
             </template>
-        </p-column>
+        </p-column>-->
     </p-dataTable>
+    <!--
     <div class="right">
         <button type="submit" class="btn btn-primary publish-button"
                 [disabled]="">{{ 'publish.button' | translate }}
         </button>
     </div>
+    -->
     <!--MODALS BELOW-->
     <div class="container font">
         <div class="ui-g-1"></div>
         <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
                   [draggable]="false" [closable]="false" [closeOnEscape]="false">
-            <button type="button" (click)="cancelPublication()" class="closeButton">X</button>
+            <button type="button" (click)="cancelTimeline()" class="closeButton">X</button>
             <p class="beneficiaryMayorModal">{{'publication.call' | translate }}</p>
             <form (ngSubmit)="onSubmit()" #publicationForm="ngForm">
                 <div class="containerTimeline center">
@@ -125,16 +127,16 @@
                 <div class="form-group ui-g">
                     <div class="ui-g-3"></div>
                     <div class="ui-g-2" style="text-align: center !important">
-                        <button type="button" (click)="cancelPublication()" class="btn btn-primary cancel-button">
+                        <button type="button" (click)="cancelTimeline()" class="btn btn-primary cancel-button">
                             {{'cancel.button' | translate}}
                         </button>
                     </div>
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
-                        <button type="button" (click)="createPublication()" class="btn btn-primary publish-button"
+                        <button type="button" (click)="createTimeline()" class="btn btn-primary publish-button"
                                 *ngIf="!newElementForm">{{'add.timeline' | translate }}
                         </button>
-                        <button type="button" (click)="createPublication()" class="btn btn-primary publish-button"
+                        <button type="button" (click)="createTimeline()" class="btn btn-primary publish-button"
                                 *ngIf="newElementForm" [disabled]="!publicationForm.form.valid">
                             {{'add.timeline' | translate }}
                         </button>
