@@ -24,6 +24,7 @@ import {Ng2GoogleRecaptchaModule} from "ng2-google-recaptcha";
 import {SuccessComponent} from "./components/success/success.component";
 import {FailureComponent} from "./components/failure/failure.component";
 import {HelpdeskFormComponent} from "../shared/components/helpdesk-form/helpdesk-form.component";
+import {TimerComponent} from "../shared/components/timer/timer.component";
 
 export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions) {
     return new UxHttp(backend, defaultOptions);
@@ -55,6 +56,7 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         SuccessComponent,
         FailureComponent,
         HelpdeskFormComponent,
+        TimerComponent,
         APP_DIRECTIVES
     ],
     exports: [
@@ -78,7 +80,8 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         CustomTimelineAccordionBoxComponent,
         SuccessComponent,
         FailureComponent,
-        HelpdeskFormComponent
+        HelpdeskFormComponent,
+        TimerComponent
     ],
     providers: [
         {

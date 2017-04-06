@@ -5,7 +5,6 @@ import {BeneficiaryPortalRoutingModule} from './beneficiary-portal-routing.modul
 import {BeneficiaryPortalComponent} from './beneficiary-portal.component';
 import {BeneficiaryProfileComponent} from './+profile/profile.component';
 import {VoucherComponent} from "../+beneficiary-portal/+voucher/voucher.component";
-import {TimerComponent} from "../shared/components/timer/timer.component";
 import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplier.component";
 
 @NgModule({
@@ -14,7 +13,6 @@ import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplie
     ],
     declarations: [
         VoucherComponent,
-        TimerComponent,
         BeneficiaryPortalComponent,
         BeneficiaryProfileComponent,
         SelectSupplierComponent

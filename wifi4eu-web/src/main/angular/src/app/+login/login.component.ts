@@ -30,7 +30,8 @@ export class LoginComponent {
             response => {
                 this.displayConfirmingData = false;
                 if (response['success']) {
-                    this.localStorage.set('user', JSON.stringify(response['data']));
+                    let user: UserDTO = response['data'];
+                    this.localStorage.set('user', JSON.stringify(user));
                     this.uxService.growl({
                         severity: 'success',
                         summary: 'SUCCESS',
@@ -39,7 +40,16 @@ export class LoginComponent {
                     });
                     console.log('SUCCESS: Login success');
                     this.sharedService.emitChange();
-                    this.router.navigateByUrl("beneficiary-portal/voucher")
+                    console.log(user.userType);
+                    switch (user.userType) {
+                        case 1:
+                            this.router.navigateByUrl("supplier-portal");
+                            break;
+                        default:
+                            this.router.navigateByUrl("beneficiary-portal/voucher");
+                            break;
+                    }
+
                 } else {
                     this.uxService.growl({
                         severity: 'error',
