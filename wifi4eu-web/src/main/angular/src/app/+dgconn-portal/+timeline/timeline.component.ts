@@ -40,7 +40,7 @@ export class DgConnTimelineComponent {
             error => console.log(error)
         );
     }
-    
+
     displayInfo(rowElement: number) {
         this.timelineApi.allTimelines().subscribe(
             timelines => {
@@ -55,8 +55,10 @@ export class DgConnTimelineComponent {
     deleteElement(rowElement: number) {
         this.timelineApi.deleteTimeline(this.timelines[rowElement].timelineId).subscribe(
             data => {
-                console.log("data: ", data);
-                console.log("this.timelines[rowElement]:", this.timelines[rowElement]);
+                this.timelineApi.allTimelines().subscribe(
+                    timelines => this.timelines = timelines,
+                    error => console.log(error)
+                );
             },
             error => console.log(error)
         );

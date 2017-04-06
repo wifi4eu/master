@@ -61,8 +61,6 @@ export class DgConnPublicationComponent implements OnInit {
     deleteElement(rowElement: number) {
         this.callApi.deleteCall(this.calls[rowElement].callId).subscribe(
             data => {
-                console.log("data: ", data);
-                console.log("this.calls[rowElement]:", this.calls[rowElement]);
                 this.callApi.allCalls().subscribe(
                     calls => this.calls = calls
                 );
