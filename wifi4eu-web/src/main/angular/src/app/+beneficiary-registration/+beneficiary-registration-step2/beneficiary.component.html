@@ -237,7 +237,7 @@
         <!-- Next button -->
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn btn-primary publish-button"
-                    [disabled]="!beneficiaryForm.valid || allEmailsMatch()"
+                    [disabled]="!beneficiaryForm.valid || !allEmailsMatch()"
                     (click)="onSubmit(2)">{{ 'next.button' | translate }}
             </button>
         </div>
