@@ -7,21 +7,24 @@
     <div class="ui-g">
         <div class="ui-lg-1"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-5 marginSelect">
-            <p-multiSelect [options]="countries"
+            <!-- select countries -->
+            <p-multiSelect [options]="allCountries"
                            [(ngModel)]="selectedCountries"
                            (onChange)="onMultiSelectChange($event)">
             </p-multiSelect>
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-5 white">
-            <p-tabView *ngIf="selectedCountries.length > 0">
-                <p-tabPanel *ngFor="let country of selectedCountries;"
+            <!-- select country to display communes -->
+            <p-tabView *ngIf="nuts0.length > 0">
+                <p-tabPanel *ngFor="let country of nuts0;"
                             [header]="country.name">
                     <div class="ui-g">
+                        <!-- communes list -->
                         <div class="ui-g-12 ui-md-12 ui-lg-12" *ngFor="let province of provinces[country.name];">
                             <p-checkbox name="group1"
                                         [value]=province
                                         label={{province.name}}
-                                        [(ngModel)]="regions">
+                                        [(ngModel)]="nuts3">
                             </p-checkbox>
                         </div>
                     </div>

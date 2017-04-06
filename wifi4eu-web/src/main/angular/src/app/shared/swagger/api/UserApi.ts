@@ -47,6 +47,13 @@ export interface IUserApi {
      * @param body 
      */
     login<T extends models.ResponseDTO>(body?: models.UserDTO, c?: ClassType<T>): Observable<T>;
+    /**
+     * Service to resend email with a link to activate account
+     * 
+     * @param c 
+     * @param body 
+     */
+    resendEmail<T extends models.ResponseDTO>(body?: models.BeneficiaryDTO, c?: ClassType<T>): Observable<T>;
 
 }
 
@@ -137,6 +144,29 @@ export class UserApi implements IUserApi {
 
 
 
+
+    /**
+     * Service to resend email with a link to activate account
+     * 
+     * @param c
+     * @param body 
+     */
+    resendEmail<T extends models.ResponseDTO>(body?: models.BeneficiaryDTO, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.resendEmailWithHttpInfo(body)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
     /**
      * Activate account or reset password
      * 
@@ -204,6 +234,36 @@ export class UserApi implements IUserApi {
      */
     private loginWithHttpInfo(body?: models.UserDTO ): Observable<Response> {
         const path = this.basePath + `/user/login`;
+
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+
+
+
+
+
+        headers.set('Content-Type', 'application/json');
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Post,
+            headers: headers,
+            body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * Service to resend email with a link to activate account
+     * 
+     * @param body 
+     */
+    private resendEmailWithHttpInfo(body?: models.BeneficiaryDTO ): Observable<Response> {
+        const path = this.basePath + `/user/resendemail`;
 
 
         let queryParameters = new URLSearchParams();

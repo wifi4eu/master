@@ -1,29 +1,29 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {ActivationDetails} from "./activation-details.model";
-import {ActivationService} from "./activation.service";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {ActivatedRoute, Router} from "@angular/router";
+import {UserApi} from "../shared/swagger/api/UserApi";
+import {ActivateAccountDTO, ActivateAccountDTOBase} from "../shared/swagger/model/ActivateAccountDTO";
 
-@Component({templateUrl: 'activation.component.html', providers: [ActivationService]})
+@Component({templateUrl: 'activation.component.html', providers: [UserApi]})
 export class ActivationComponent implements OnInit {
 
-    @Input('activationDetails') activationDetails: ActivationDetails;
+    @Input('activationDTO') activationDTO: ActivateAccountDTO;
+    private repeatPassword: string;
 
-    constructor(private activationService: ActivationService, private uxService: UxService, private route: ActivatedRoute, private router: Router) {
-        this.activationDetails = new ActivationDetails();
-
+    constructor(private userApi: UserApi, private uxService: UxService, private route: ActivatedRoute, private router: Router) {
+        this.activationDTO = new ActivateAccountDTOBase();
     }
 
     ngOnInit() {
-        this.route.params.subscribe(params => this.activationDetails.token = params['token']);
+        this.route.params.subscribe(params => this.activationDTO.token = params['token']);
     }
 
     checkPassword() {
-        return this.activationDetails.password === this.activationDetails.confirmPassword;
+        return this.activationDTO.password === this.repeatPassword;
     }
 
     onSubmit() {
-        this.activationService.addNewPassword(this.activationDetails).subscribe(
+        this.userApi.activateAccount(this.activationDTO).subscribe(
             data => {
                 this.uxService.growl({
                     severity: 'success',
@@ -37,9 +37,9 @@ export class ActivationComponent implements OnInit {
                 this.uxService.growl({
                     severity: 'warn',
                     summary: 'WARNING',
-                    detail: 'Could not get countries, ignore this when NG is working in offline mode'
+                    detail: 'Could not get activate account, ignore this when NG is working in offline mode'
                 });
-                console.log('WARNING: Could not get countries', error);
+                console.log('WARNING: Could not get activate account', error);
             }
         );
     }

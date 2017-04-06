@@ -1,9 +1,11 @@
-import {Component} from "@angular/core";
+import {Component, EventEmitter, Output} from "@angular/core";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {UserDTO, UserDTOBase} from "../shared/swagger/model/UserDTO";
 import {Router} from "@angular/router";
 import {UserApi} from "../shared/swagger/api/UserApi";
-import {LocalStorageModule} from "angular-2-local-storage";
+import {LocalStorageService} from 'angular-2-local-storage';
+import {SharedService} from "../shared/shared.service";
+
 @Component({
     selector: 'login-component',
     templateUrl: 'login.component.html',
@@ -14,18 +16,21 @@ export class LoginComponent {
     private displayConfirmingData: boolean;
     private userDTO: UserDTO;
 
-    constructor(private userApi: UserApi, private uxService: UxService, private router: Router, private localStorageModule: LocalStorageModule) {
-    this.displayConfirmingData = false;
-    this.userDTO = new UserDTOBase();
+    @Output() onUpdateHeader: EventEmitter<boolean>;
+
+    constructor(private userApi: UserApi, private uxService: UxService, private router: Router, private localStorage: LocalStorageService, private sharedService: SharedService) {
+        this.displayConfirmingData = false;
+        this.userDTO = new UserDTOBase();
     }
 
     onSubmit() {
         this.displayConfirmingData = true;
 
         this.userApi.login(this.userDTO).subscribe(
-            data => {
+            response => {
                 this.displayConfirmingData = false;
-                if (data['success']) {
+                if (response['success']) {
+                    this.localStorage.set('user', JSON.stringify(response['data']));
                     this.uxService.growl({
                         severity: 'success',
                         summary: 'SUCCESS',
@@ -33,6 +38,7 @@ export class LoginComponent {
 
                     });
                     console.log('SUCCESS: Login success');
+                    this.sharedService.emitChange();
                     this.router.navigateByUrl("beneficiary-portal/voucher")
                 } else {
                     this.uxService.growl({
