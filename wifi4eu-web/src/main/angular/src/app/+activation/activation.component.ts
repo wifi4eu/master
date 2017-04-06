@@ -2,12 +2,12 @@ import {Component, Input, OnInit} from "@angular/core";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserApi} from "../shared/swagger/api/UserApi";
-import {ActivateAccountDTO, ActivateAccountDTOBase} from "../shared/swagger/model/ActivateAccountDTO";
+import {ActivateAccountDTOBase} from "../shared/swagger/model/ActivateAccountDTO";
 
 @Component({templateUrl: 'activation.component.html', providers: [UserApi]})
 export class ActivationComponent implements OnInit {
 
-    @Input('activationDTO') activationDTO: ActivateAccountDTO;
+    @Input('activationDTO') activationDTO: ActivateAccountDTOBase;
     private repeatPassword: string;
 
     constructor(private userApi: UserApi, private uxService: UxService, private route: ActivatedRoute, private router: Router) {

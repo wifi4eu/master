@@ -58,7 +58,7 @@ export interface ICallApi {
 
 @Injectable()
 export class CallApi implements ICallApi {
-    protected basePath = 'http://localhost:7001/wifi4eu/api';
+    protected basePath = 'http://wifi4eu.everisdigitalchannels.com:7001/wifi4eu/api';
     public defaultHeaders: Headers = new Headers();
     public configuration: Configuration = new Configuration();
 
