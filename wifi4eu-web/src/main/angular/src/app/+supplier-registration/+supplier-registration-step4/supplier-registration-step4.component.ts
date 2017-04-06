@@ -25,7 +25,8 @@ export class SupplierRegistrationComponentStep4 {
     @Output() onSuccess: EventEmitter<boolean>;
     @Output() onFailure: EventEmitter<boolean>;
 
-    @Input('regions') regions: NutsDTO[];
+    @Input('nuts0') nuts0: NutsDTO[];
+    @Input('nuts3') nuts3: NutsDTO[];
 
     constructor(private supplierApi: SupplierApi, private uxService: UxService) {
         this.legalChecks = [false, false];
@@ -50,8 +51,11 @@ export class SupplierRegistrationComponentStep4 {
     onSubmit() {
         this.supplierDTO.legalCheck1 = this.legalChecks[0];
         this.supplierDTO.legalCheck2 = this.legalChecks[1];
-        for (let region of this.regions) {
-            this.supplierDTO.nutsIds += '' + region.nutsId.toString() + ',';
+        for (let country of this.nuts0) {
+            this.supplierDTO.nutsIds += '' + country.code.toString() + ',';
+        }
+        for (let regions of this.nuts3) {
+            this.supplierDTO.nutsIds += '' + regions.code.toString() + ',';
         }
         this.supplierDTO.nutsIds = this.supplierDTO.nutsIds.slice(0, -1);
         this.supplierApi.createSupplier(this.supplierDTO).subscribe(

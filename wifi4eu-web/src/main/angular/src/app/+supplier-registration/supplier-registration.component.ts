@@ -13,7 +13,10 @@ export class SupplierRegistrationComponent {
     private successRegistration: boolean;
     private failureRegistration: boolean;
 
-    private regions: NutsDTO[];
+    private nuts0: NutsDTO[];
+    private nuts3: NutsDTO[];
+
+    private provinces: NutsDTO[][];
 
     constructor() {
         this.supplierDTO = new SupplierDTOBase();
@@ -25,7 +28,9 @@ export class SupplierRegistrationComponent {
         this.successRegistration = false;
         this.failureRegistration = false;
 
-        this.regions = [];
+        this.nuts0 = [];
+        this.nuts3 = [];
+        this.provinces = [];
     }
 
     onNext(step: number) {
