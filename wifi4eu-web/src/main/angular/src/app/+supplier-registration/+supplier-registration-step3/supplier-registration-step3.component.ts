@@ -38,12 +38,7 @@ export class SupplierRegistrationComponentStep3 {
         if (this.supplierDTO.contactEmail === this.confirmEmailField) {
             this.emailMatches = true;
         }
-        console.log("emailMatches", this.emailMatches);
     }
-
-    // checkEmail() {
-    //     return this.supplierDTO.contactEmail !== this.confirmEmailField;
-    // }
 
     keyPressPrefix(event: any) {
         const pattern = /[0-9\+]/;

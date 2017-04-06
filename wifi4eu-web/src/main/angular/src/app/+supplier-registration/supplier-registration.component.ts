@@ -16,6 +16,8 @@ export class SupplierRegistrationComponent {
     private nuts0: NutsDTO[];
     private nuts3: NutsDTO[];
 
+    private provinces: NutsDTO[][];
+
     constructor() {
         this.supplierDTO = new SupplierDTOBase();
         this.supplierDTO.nutsIds = '';
@@ -28,6 +30,7 @@ export class SupplierRegistrationComponent {
 
         this.nuts0 = [];
         this.nuts3 = [];
+        this.provinces = [];
     }
 
     onNext(step: number) {
