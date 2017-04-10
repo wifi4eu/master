@@ -58,4 +58,13 @@ public class SupplierResource {
             return new ResponseDTO(false, null, errorDTO);
         }
     }
+
+    @ApiOperation(value = "Get selected by supplierId")
+    @RequestMapping(value = "/{supplierId}", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public List<CallDTO> getSelectedMeBySupplierId(@PathVariable("supplierId") final Long supplierId, final HttpServletResponse response) {
+        _log.info("getSelectedBy " + supplierId);
+
+        return supplierService.getSelectedMe(supplierId);
+    }
 }
