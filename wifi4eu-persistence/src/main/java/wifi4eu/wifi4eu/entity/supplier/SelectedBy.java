@@ -23,12 +23,6 @@ public class SelectedBy {
     @Column(name = "PUBLICATION_ID")
     private Long publicationId;
 
-    /*
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "SUPP_SUPP_NUTS_T", joinColumns = @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id"), inverseJoinColumns = @JoinColumn(name = "nuts_id", referencedColumnName = "nuts_id"))
-    private List<Nuts> nuts;
-    */
-
     public SelectedBy() {
     }
 
