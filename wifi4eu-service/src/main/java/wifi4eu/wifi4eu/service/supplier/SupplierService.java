@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
+import wifi4eu.wifi4eu.mapper.location.NutsMapper;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
@@ -42,6 +43,9 @@ public class SupplierService {
 
     @Autowired
     SupplierMapper supplierMapper;
+
+    @Autowired
+    NutsMapper nutsMapper;
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -104,7 +108,7 @@ public class SupplierService {
     }
 
     public List<NutsDTO> getSelectedMe(Long supplierId) {
-        return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findSelectedMeBySupplierId(supplierId)));
+        return nutsMapper.toDTOList(Lists.newArrayList(supplierRepository.findSelectedMeBySupplierId(supplierId)));
     }
 
 }

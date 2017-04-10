@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -62,7 +63,7 @@ public class SupplierResource {
     @ApiOperation(value = "Get selected by supplierId")
     @RequestMapping(value = "/{supplierId}", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
-    public List<CallDTO> getSelectedMeBySupplierId(@PathVariable("supplierId") final Long supplierId, final HttpServletResponse response) {
+    public List<NutsDTO> getSelectedMeBySupplierId(@PathVariable("supplierId") final Long supplierId, final HttpServletResponse response) {
         _log.info("getSelectedBy " + supplierId);
 
         return supplierService.getSelectedMe(supplierId);
