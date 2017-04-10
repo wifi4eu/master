@@ -60,7 +60,7 @@ public class SupplierResource {
     }
 
     @ApiOperation(value = "Get selected by supplierId")
-    @RequestMapping(value = "/getSelectedBy/{supplierId}", method = RequestMethod.GET, produces = "application/JSON")
+    @RequestMapping(value = "/{supplierId}", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
     public List<CallDTO> getSelectedMeBySupplierId(@PathVariable("supplierId") final Long supplierId, final HttpServletResponse response) {
         _log.info("getSelectedBy " + supplierId);
