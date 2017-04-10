@@ -32,10 +32,19 @@ public class SelectedBy {
     public SelectedBy() {
     }
 
-    public SelectedBy(Long supplierId, Long beneficiaryId, Long publicationId) {
+    public SelectedBy(Long selectedById, Long supplierId, Long beneficiaryId, Long publicationId) {
+        this.selectedById = selectedById;
         this.supplierId = supplierId;
         this.beneficiaryId = beneficiaryId;
         this.publicationId = publicationId;
+    }
+
+    public Long getSelectedById() {
+        return selectedById;
+    }
+
+    public void setSelectedById(Long selectedById) {
+        this.selectedById = selectedById;
     }
 
     public Long getSupplierId() {
