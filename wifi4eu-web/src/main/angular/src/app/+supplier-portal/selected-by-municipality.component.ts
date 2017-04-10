@@ -9,7 +9,9 @@ export class SelectedByMunicipalityComponent {
     private user: UserDTO;
 
     constructor(private localStorage: LocalStorageService) {
-        this.localStorage.get('user');
+        let u = this.localStorage.get('user');
+        this.user = u ? JSON.parse(u.toString()) : null;
+
     }
 
 
