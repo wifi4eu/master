@@ -1,10 +1,12 @@
 <p class="subTitleCountdown">{{ 'municipalities.selected' | translate }}</p>
 <div class="whiteNoMargin">
-    <p-dataTable [value]="issues" [(selection)]="selectedIssues">
+    <p-dataTable [value]="issues" [(selection)]="selectedIssues" *ngFor="let awarded of awardedMunicipalities">
         <p-column field="portal" header="{{ 'municipality.label' | translate }}"
-                  [sortable]="false"></p-column>
+                  [sortable]="false">{{awarded.name}}
+        </p-column>
         <p-column field="portal" header="{{ 'country.label' | translate }}"
-                  [sortable]="false"></p-column>
+                  [sortable]="false">{{awarded.countryCode}}
+        </p-column>
         <p-column field="portal" header="{{ 'access.point' | translate }}"
                   [sortable]="false"></p-column>
     </p-dataTable>
