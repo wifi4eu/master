@@ -5,6 +5,7 @@ import {SupplierInstallationComponent} from "./installation/supplier-installatio
 import {SupplierMunicipalitiesComponent} from "./municipalities/supplier-municipalities.component";
 import {SupplierProfileComponent} from "./profile/profile.component";
 import {SupplierPortalRoutingModule} from "./supplier-portal-routing.module";
+import {AwardedMunicipalitiesComponent} from "./awarded-municipalities.component";
 
 @NgModule({
     imports: [
@@ -16,6 +17,7 @@ import {SupplierPortalRoutingModule} from "./supplier-portal-routing.module";
         SupplierInstallationComponent,
         SupplierMunicipalitiesComponent,
         SupplierProfileComponent,
+        AwardedMunicipalitiesComponent
     ],
     bootstrap: [SupplierPortalComponent]
 })
