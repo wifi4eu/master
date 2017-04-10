@@ -1,12 +1,15 @@
 import {Component} from "@angular/core";
+import {UserDTO} from "../shared/swagger/model/UserDTO";
+import {LocalStorageService} from "angular-2-local-storage";
 
 @Component({
     selector: 'selected-by-municipality', templateUrl: 'selected-by-municipality.component.html', providers: []
 })
 export class SelectedByMunicipalityComponent {
-    constructor() {
-        
+    private user: UserDTO;
 
+    constructor(private localStorage: LocalStorageService) {
+        this.localStorage.get('user');
     }
 
 
