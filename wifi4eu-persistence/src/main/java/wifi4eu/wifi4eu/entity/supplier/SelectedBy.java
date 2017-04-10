@@ -7,7 +7,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "SUPP_SELECTEDBY_T")
-public class SelectedByID {
+public class SelectedBy {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "SELECTEDBY_ID")
+    private Long selectedById;
 
     @Column(name = "SUPPLIER_ID")
     private Long supplierId;
@@ -24,10 +29,10 @@ public class SelectedByID {
     private List<Nuts> nuts;
     */
 
-    public SelectedByID() {
+    public SelectedBy() {
     }
 
-    public SelectedByID(Long supplierId, Long beneficiaryId, Long publicationId) {
+    public SelectedBy(Long supplierId, Long beneficiaryId, Long publicationId) {
         this.supplierId = supplierId;
         this.beneficiaryId = beneficiaryId;
         this.publicationId = publicationId;
