@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
@@ -65,7 +64,7 @@ public class SupplierService {
 
         UserDTO persUserDTO = getUserByEmail(email);
 
-        if (persUserDTO == null) {
+        if(persUserDTO == null) {
 
             // create supplier user
             UserDTO userDTO = new UserDTO();
@@ -93,18 +92,14 @@ public class SupplierService {
             _log.info("[f] create Supplier");
 
             return perSupplierDTO;
-        } else {
+        }else{
             _log.warn("trying to duplicate user");
             return null;
         }
     }
 
-    private UserDTO getUserByEmail(String email) {
+    private UserDTO getUserByEmail(String email){
         return userMapper.toDTO(securityUserRepository.findByEmail(email));
-    }
-
-    public List<NutsDTO> getSelectedMe(Long supplierId) {
-        return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findSelectedMeBySupplierId(supplierId)));
     }
 
 }
