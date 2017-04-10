@@ -46,6 +46,10 @@ export class BeneficiaryComponent {
     }
 
     allEmailsMatch() {
-        return !this.representativeEmailMatches || !this.mayorEmailMatches;
+        if (this.selection[0]) {
+            return this.mayorEmailMatches;
+        } else {
+            return this.representativeEmailMatches && this.mayorEmailMatches;
+        }
     }
 }
