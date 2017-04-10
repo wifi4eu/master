@@ -33,17 +33,7 @@
             </div>
             <div class="ui-g-2"></div>
             <div class="ui-g-5">
-                <p class="subTitleCountdown">{{ 'municipalities.selected' | translate }}</p>
-                <div class="whiteNoMargin">
-                    <p-dataTable [value]="issues" [(selection)]="selectedIssues">
-                        <p-column field="portal" header="{{ 'municipality.label' | translate }}"
-                                  [sortable]="false"></p-column>
-                        <p-column field="portal" header="{{ 'country.label' | translate }}"
-                                  [sortable]="false"></p-column>
-                        <p-column field="portal" header="{{ 'access.point' | translate }}"
-                                  [sortable]="false"></p-column>
-                    </p-dataTable>
-                </div>
+                <selected-by-municipality></selected-by-municipality>
             </div>
         </div>
     </form>
