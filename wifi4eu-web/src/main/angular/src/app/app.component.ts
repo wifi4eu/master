@@ -15,6 +15,7 @@ enableProdMode()
 export class AppComponent {
     private menuLinks: Array<UxLayoutLink>;
     private user: UserDTO;
+    private profileUrl;
 
     @Output() private languageChanged: EventEmitter<UxLanguage> = new EventEmitter<UxLanguage>();
 
