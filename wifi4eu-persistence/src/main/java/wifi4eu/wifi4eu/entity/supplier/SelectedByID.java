@@ -7,13 +7,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "SUPP_SELECTEDBY_T")
-public class SelectedBy {
+public class SelectedByID {
 
-    @Id
     @Column(name = "SUPPLIER_ID")
     private Long supplierId;
 
-    @Id
     @Column(name = "BENEFICIARY_ID")
     private Long beneficiaryId;
 
@@ -26,10 +24,10 @@ public class SelectedBy {
     private List<Nuts> nuts;
     */
 
-    public SelectedBy() {
+    public SelectedByID() {
     }
 
-    public SelectedBy(Long supplierId, Long beneficiaryId, Long publicationId) {
+    public SelectedByID(Long supplierId, Long beneficiaryId, Long publicationId) {
         this.supplierId = supplierId;
         this.beneficiaryId = beneficiaryId;
         this.publicationId = publicationId;
