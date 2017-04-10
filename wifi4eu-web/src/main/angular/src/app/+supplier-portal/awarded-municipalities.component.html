@@ -1,0 +1,6 @@
+<p-dataTable [value]="issues" [(selection)]="selectedIssues">
+    <p-column field="portal" header="{{ 'municipality.label' | translate }}"
+              [sortable]="false"></p-column>
+    <p-column field="portal" header="{{ 'country.label' | translate }}"
+              [sortable]="false"></p-column>
+</p-dataTable>
