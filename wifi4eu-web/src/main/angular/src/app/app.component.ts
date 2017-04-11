@@ -1,6 +1,6 @@
 import {Component, enableProdMode, Output, EventEmitter} from "@angular/core";
 import {TranslateService} from "ng2-translate/ng2-translate";
-import {UxService, UxLayoutLink, UxLayoutNotificationItem} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {UxService, UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {CoreService} from "./core/core.service";
 import {UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import {LocalStorageService} from "angular-2-local-storage";
@@ -15,6 +15,9 @@ enableProdMode()
 export class AppComponent {
     private menuLinks: Array<UxLayoutLink>;
     private user: UserDTO;
+    private visibility: boolean[];
+
+    private children: UxLayoutLink[][];
 
     @Output() private languageChanged: EventEmitter<UxLanguage> = new EventEmitter<UxLanguage>();
 
@@ -22,16 +25,9 @@ export class AppComponent {
         translateService.setDefaultLang('en');
         translateService.use('en');
 
-        this.menuLinks = [new UxLayoutLink({
-            label: 'Wifi4EU',
-            children: [
-                new UxLayoutLink({label: 'Free Wi-Fi for Europeans', url: 'home'}),
-                new UxLayoutLink({label: 'Registration', url: 'registration'}),
-                new UxLayoutLink({label: 'Beneficiary Portal', url: 'beneficiary-portal'}),
-                new UxLayoutLink({label: 'DGConnect Portal', url: 'dgconn-portal'})
-            ]
-        })];
-
+        this.visibility = [false, false, false, false, false];
+        this.children = [];
+        this.initChildren();
         this.updateHeader();
         this.sharedService.changeEmitted.subscribe(() => this.updateHeader());
     }
@@ -39,6 +35,14 @@ export class AppComponent {
     updateHeader() {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
+        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
+
+        let i = (this.user) ? this.user.userType : 0;
+
+        this.menuLinks = [new UxLayoutLink({
+            label: 'Wifi4EU',
+            children: this.children[i]
+        })];
     }
 
     onLanguageChanged(language: UxLanguage) {
@@ -51,6 +55,68 @@ export class AppComponent {
         this.localStorage.remove('user');
         this.updateHeader();
         this.router.navigateByUrl("home");
+    }
+
+    initChildren() {
+        this.children[0] = [
+            new UxLayoutLink({
+                label: 'Beneficiary Registration',
+                url: 'registration'
+            }),
+            new UxLayoutLink({
+                label: 'Supplier Registration',
+                url: '/supplier-registration'
+            })
+        ];
+        this.children[1] = [
+            new UxLayoutLink({
+                label: 'Supplier Registration',
+                url: '/supplier-registration'
+            }),
+            new UxLayoutLink({
+                label: 'Supplier Portal',
+                url: '/supplier-portal'
+            })
+        ];
+        this.children[2] = [
+            new UxLayoutLink({
+                label: 'Beneficiary Registration',
+                url: '/registration'
+            }),
+            new UxLayoutLink({
+                label: 'Beneficiary Portal',
+                url: '/beneficiary-portal'
+            })
+        ];
+        this.children[3] = [
+            new UxLayoutLink({
+                label: 'Beneficiary Registration',
+                url: '/registration'
+            }),
+            new UxLayoutLink({
+                label: 'Beneficiary Portal',
+                url: '/beneficiary-portal'
+            })
+        ];
+        this.children[4] = [
+            new UxLayoutLink({
+                label: 'Member State Portal',
+                url: '#'
+            })
+        ];
+        this.children[5] = [
+            new UxLayoutLink({
+                label: 'DGConnect Portal',
+                url: 'dgconn-portal'
+            })
+        ];
+
+        console.log("Cildren 0", this.children[0]);
+        console.log("Cildren 1", this.children[1]);
+        console.log("Cildren 2", this.children[2]);
+        console.log("Cildren 3", this.children[3]);
+        console.log("Cildren 4", this.children[4]);
+        console.log("Cildren 5", this.children[5]);
     }
 
 }
