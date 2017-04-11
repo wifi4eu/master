@@ -10,8 +10,8 @@
                         <div class="profile-wrapper" isCompact="false">
                             <div class="left-panel">
                                 <div *ngIf="user" class="user-infos">
-                                    <span class="wellcomeHeader">Logged in as <strong
-                                            class="color-primary">{{user.email}}</strong></span>
+                                    <span class="wellcomeHeader">Logged in as <a [routerLink]="profileUrl"><strong
+                                            class="color-primary">{{user.email}}</strong></a></span>
                                     <button (click)="onLogout()" class="headerButton">Logout</button>
                                 </div>
                                 <div *ngIf="!user" class="user-infos">
