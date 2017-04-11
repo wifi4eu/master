@@ -41,12 +41,13 @@ export class AppComponent {
     updateHeader() {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
-        console.log(this.user.userType);
-        if (this.user.userType == 1) {
-            this.profileUrl = "/supplier-portal/profile";
-        }
-        else if (this.user.userType == 2 || this.user.userType == 3) {
-            this.profileUrl = "/beneficiary-portal/profile";
+        if (this.user != null) {
+            if (this.user.userType == 1) {
+                this.profileUrl = "/supplier-portal/profile";
+            }
+            else if (this.user.userType == 2 || this.user.userType == 3) {
+                this.profileUrl = "/beneficiary-portal/profile";
+            }
         } else {
             this.profileUrl = "";
         }
