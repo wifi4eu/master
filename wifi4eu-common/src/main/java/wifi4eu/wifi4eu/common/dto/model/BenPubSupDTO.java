@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class BenPubSupDTO implements Serializable {
+    private Long benPubSubId;
     private Long beneficiaryId;
     private Long publicationId;
     private boolean awarded;
@@ -12,11 +13,20 @@ public class BenPubSupDTO implements Serializable {
     public BenPubSupDTO() {
     }
 
-    public BenPubSupDTO(Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId) {
+    public BenPubSupDTO(Long benPubSubId, Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId) {
+        this.benPubSubId = benPubSubId;
         this.beneficiaryId = beneficiaryId;
         this.publicationId = publicationId;
         this.awarded = awarded;
         this.supplierId = supplierId;
+    }
+
+    public Long getBenPubSubId() {
+        return benPubSubId;
+    }
+
+    public void setBenPubSubId(Long benPubSubId) {
+        this.benPubSubId = benPubSubId;
     }
 
     public Long getBeneficiaryId() {

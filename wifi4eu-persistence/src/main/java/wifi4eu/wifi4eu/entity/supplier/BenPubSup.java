@@ -6,6 +6,10 @@ import javax.persistence.*;
 @Table(name = "SUPP_BENPUBSUP_T")
 public class BenPubSup {
 
+    @Id
+    @Column(name = "BENPUBSUP_ID")
+    private Long benPubSubId;
+
     @Column(name = "BENEFICIARY_ID")
     private Long beneficiaryId;
 
@@ -21,11 +25,20 @@ public class BenPubSup {
     public BenPubSup() {
     }
 
-    public BenPubSup(Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId) {
+    public BenPubSup(Long benPubSubId, Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId) {
+        this.benPubSubId = benPubSubId;
         this.beneficiaryId = beneficiaryId;
         this.publicationId = publicationId;
         this.awarded = awarded;
         this.supplierId = supplierId;
+    }
+
+    public Long getBenPubSubId() {
+        return benPubSubId;
+    }
+
+    public void setBenPubSubId(Long benPubSubId) {
+        this.benPubSubId = benPubSubId;
     }
 
     public Long getBeneficiaryId() {
