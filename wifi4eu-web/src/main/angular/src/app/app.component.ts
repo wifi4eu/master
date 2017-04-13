@@ -110,13 +110,6 @@ export class AppComponent {
                 url: 'dgconn-portal'
             })
         ];
-
-        console.log("Cildren 0", this.children[0]);
-        console.log("Cildren 1", this.children[1]);
-        console.log("Cildren 2", this.children[2]);
-        console.log("Cildren 3", this.children[3]);
-        console.log("Cildren 4", this.children[4]);
-        console.log("Cildren 5", this.children[5]);
     }
 
 }
