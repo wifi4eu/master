@@ -7,14 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
+import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
-import wifi4eu.wifi4eu.mapper.location.NutsMapper;
+import wifi4eu.wifi4eu.mapper.supplier.BenPubSupMapper;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
+import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.security.UserService;
 
 import java.util.Date;
@@ -36,7 +39,13 @@ public class SupplierService {
     SecurityUserRepository securityUserRepository;
 
     @Autowired
+    BenPubSupRepository benPubSupRepository;
+
+    @Autowired
     UserService userService;
+
+    @Autowired
+    BeneficiaryService beneficiaryService;
 
     @Autowired
     UserMapper userMapper;
@@ -45,7 +54,7 @@ public class SupplierService {
     SupplierMapper supplierMapper;
 
     @Autowired
-    NutsMapper nutsMapper;
+    BenPubSupMapper benPubSupMapper;
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -107,8 +116,16 @@ public class SupplierService {
         return userMapper.toDTO(securityUserRepository.findByEmail(email));
     }
 
-    public List<NutsDTO> getSelectedMe(Long supplierId) {
-        return nutsMapper.toDTOList(Lists.newArrayList(supplierRepository.findSelectedMeBySupplierId(supplierId)));
+    public List<LegalEntityDTO> getSelectedMe(Long supplierId) {
+        List<BenPubSupDTO> benPubSupDTOList = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findSelectedMeBySupplierId(supplierId)));
+        List<LegalEntityDTO> legalEntityDTOList = Lists.newArrayList();
+
+        for (BenPubSupDTO benPubSupDTO : benPubSupDTOList) {
+            if (benPubSupDTO != null) {
+                legalEntityDTOList.add(beneficiaryService.getLegalEntity(benPubSupDTO.getBeneficiaryId()));
+            }
+        }
+        return legalEntityDTOList;
     }
 
 }
