@@ -23,6 +23,7 @@ export class AppComponent {
         translateService.setDefaultLang('en');
         translateService.use('en');
 
+        this.profileUrl = "";
 
         this.menuLinks = [new UxLayoutLink({
             label: 'Wifi4EU',
@@ -41,18 +42,22 @@ export class AppComponent {
     updateHeader() {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
-        if (this.user != null) {
-            if (this.user.userType == 1) {
-                this.profileUrl = "/supplier-portal/profile";
-            }
-            else if (this.user.userType == 2 || this.user.userType == 3) {
-                this.profileUrl = "/beneficiary-portal/profile";
-            }
-        } else {
-            this.profileUrl = "";
-        }
-        console.log("Profile URL:", this.profileUrl);
 
+        if (this.user != null) {
+            switch(this.user.userType) {
+                case 1:
+                    this.profileUrl = "/supplier-portal/profile";
+                    break;
+                case 2:
+                    this.profileUrl = "/beneficiary-portal/profile";
+                    break;
+                case 3:
+                    this.profileUrl = "/beneficiary-portal/profile";
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     onLanguageChanged(language: UxLanguage) {
