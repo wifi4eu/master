@@ -6,6 +6,7 @@ import {SupplierMunicipalitiesComponent} from "./municipalities/supplier-municip
 import {SupplierProfileComponent} from "./profile/profile.component";
 import {SupplierPortalRoutingModule} from "./supplier-portal-routing.module";
 import {SelectedByMunicipalityComponent} from "./selected-by-municipality.component";
+import {AwardedMunicipalitiesComponent} from "./awarded-municipalities.component";
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import {SelectedByMunicipalityComponent} from "./selected-by-municipality.compon
         SupplierInstallationComponent,
         SupplierMunicipalitiesComponent,
         SupplierProfileComponent,
-        SelectedByMunicipalityComponent
+        SelectedByMunicipalityComponent,
+        AwardedMunicipalitiesComponent
     ],
     bootstrap: [SupplierPortalComponent]
 })
