@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
-import {HelpdeskDTO, HelpdeskDTOBase} from '../shared/swagger/model/HelpdeskDTO';
-import {HelpdeskApi} from '../shared/swagger/api/HelpdeskApi'
+import {HelpdeskDTO, HelpdeskDTOBase} from "../shared/swagger/model/HelpdeskDTO";
+import {HelpdeskApi} from "../shared/swagger/api/HelpdeskApi";
 
 @Component({
     templateUrl: 'helpdesk.component.html', providers: [HelpdeskApi]
@@ -13,16 +13,18 @@ export class HelpdeskComponent {
     private issueSelectedOriginal: HelpdeskDTO;
     private display: boolean;
 
+
     constructor(private helpdeskApi: HelpdeskApi) {
         this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
         this.issueSelected = new HelpdeskDTOBase();
         this.display = false;
+
     }
 
     viewIssueDetails(issue: HelpdeskDTO, rowIndex: number) {
         this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
         this.helpdeskApi.getHelpdeskIssue(this.issues[rowIndex].issueId).subscribe(helpdeskIssue => this.issueSelected = helpdeskIssue);
-        this.makeIssueSelectedCopy(this.issueSelected);
+        var makeIssueSelectedCopy = this.issues.slice(0, this.issues.length);
         this.display = true;
     }
 
@@ -56,19 +58,5 @@ export class HelpdeskComponent {
         this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
     }
 
-    makeIssueSelectedCopy(issue: HelpdeskDTO) {
-        this.issueSelectedOriginal = new HelpdeskDTOBase();
-        this.issueSelectedOriginal.issueId = issue.issueId;
-        this.issueSelectedOriginal.portal = issue.portal;
-        this.issueSelectedOriginal.topic = issue.topic;
-        this.issueSelectedOriginal.memberState = issue.memberState;
-        this.issueSelectedOriginal.date = issue.date;
-        this.issueSelectedOriginal.assignedTo = issue.assignedTo;
-        this.issueSelectedOriginal.status = issue.status;
-        this.issueSelectedOriginal.from = issue.from;
-        this.issueSelectedOriginal.issueSummary = issue.issueSummary;
-        this.issueSelectedOriginal.memberStateComments = issue.memberStateComments;
-        this.issueSelectedOriginal.dgConnectComments = issue.dgConnectComments;
-    }
 }
 
