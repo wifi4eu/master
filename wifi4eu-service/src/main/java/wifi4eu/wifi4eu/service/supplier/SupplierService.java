@@ -118,7 +118,6 @@ public class SupplierService {
 
     public List<LegalEntityDTO> getAwardedMunicipalities() {
         List<BenPubSupDTO> benPubSupDTOList = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findAllByAwarded(true)));
-        //List<BenPubSupDTO> benPubSupDTOList = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findSelectedMeBySupplierId(supplierId)));
         List<LegalEntityDTO> legalEntityDTOList = Lists.newArrayList();
 
         for (BenPubSupDTO benPubSupDTO : benPubSupDTOList) {
