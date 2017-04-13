@@ -1,11 +1,18 @@
 <p class="subTitleCountdown">{{ 'municipalities.selected' | translate }}</p>
 <div class="whiteNoMargin">
-    <p-dataTable [value]="issues" [(selection)]="selectedIssues">
-        <p-column field="portal" header="{{ 'municipality.label' | translate }}"
-                  [sortable]="false"></p-column>
-        <p-column field="portal" header="{{ 'country.label' | translate }}"
-                  [sortable]="false"></p-column>
-        <p-column field="portal" header="{{ 'access.point' | translate }}"
-                  [sortable]="false"></p-column>
+    <p-dataTable [value]="municipalities">
+        <p-column field="municipalityCode" header="{{ 'municipality.label' | translate }}"
+                  [sortable]="false">
+        </p-column>
+        <p-column field="countryCode" header="{{ 'country.label' | translate }}"
+                  [sortable]="false">
+        </p-column>
+        <p-column header="{{ 'access.point' | translate }}">
+            <template pTemplate="body" let-issue="rowData" let-rowIndex="rowIndex">
+                <button type="button" class="btn" style="background: none; padding: 0;">
+                    <i class="fa fa-2x fa-eye" style="font-size: 20px;"></i> {{ 'view' | translate }}
+                </button>
+            </template>
+        </p-column>
     </p-dataTable>
 </div>

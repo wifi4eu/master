@@ -2,6 +2,7 @@ import {Component} from "@angular/core";
 import {UserDTO} from "../shared/swagger/model/UserDTO";
 import {LocalStorageService} from "angular-2-local-storage";
 import {SupplierApi} from "../shared/swagger/api/SupplierApi";
+import {LegalEntityDTO} from "../shared/swagger/model/LegalEntityDTO";
 
 @Component({
     selector: 'selected-by-municipality',
@@ -10,10 +11,20 @@ import {SupplierApi} from "../shared/swagger/api/SupplierApi";
 })
 export class SelectedByMunicipalityComponent {
     private user: UserDTO;
+    private municipalities: LegalEntityDTO[];
 
     constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi) {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
+
+        this.supplierApi.getSelectedMeBySupplierId(1).subscribe(
+            data => {
+                this.municipalities = data;
+            },
+            error => {
+                console.log(error);
+            }
+        );
     }
 
 
