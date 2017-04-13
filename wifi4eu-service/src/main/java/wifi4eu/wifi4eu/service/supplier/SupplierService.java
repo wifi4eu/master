@@ -119,11 +119,13 @@ public class SupplierService {
     public List<LegalEntityDTO> getSelectedMe(Long supplierId) {
         List<BenPubSupDTO> benPubSupDTOList = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findSelectedMeBySupplierId(supplierId)));
         List<LegalEntityDTO> legalEntityDTOList = Lists.newArrayList();
+
         for (BenPubSupDTO benPubSupDTO : benPubSupDTOList) {
-            legalEntityDTOList.add(beneficiaryService.getLegalEntity(benPubSupDTO.getBeneficiaryId()));
+            if (benPubSupDTO != null) {
+                legalEntityDTOList.add(beneficiaryService.getLegalEntity(benPubSupDTO.getBeneficiaryId()));
+            }
         }
         return legalEntityDTOList;
-        //return nutsMapper.toDTOList(Lists.newArrayList(supplierRepository.findSelectedMeBySupplierId(supplierId)));
     }
 
 }
