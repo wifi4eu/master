@@ -128,4 +128,16 @@ public class SupplierService {
         return legalEntityDTOList;
     }
 
+    public List<LegalEntityDTO> getAwardedMunicipalities() {
+        List<BenPubSupDTO> benPubSupDTOList = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findAllByAwarded(true)));
+        List<LegalEntityDTO> legalEntityDTOList = Lists.newArrayList();
+
+        for (BenPubSupDTO benPubSupDTO : benPubSupDTOList) {
+            if (benPubSupDTO != null) {
+                legalEntityDTOList.add(beneficiaryService.getLegalEntity(benPubSupDTO.getBeneficiaryId()));
+            }
+        }
+        return legalEntityDTOList;
+    }
+
 }

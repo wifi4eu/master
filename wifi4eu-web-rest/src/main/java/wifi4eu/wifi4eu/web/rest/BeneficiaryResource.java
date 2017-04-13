@@ -13,8 +13,10 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
+import wifi4eu.wifi4eu.service.supplier.SupplierService;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by rgarcita on 08/02/2017.
@@ -29,6 +31,9 @@ public class BeneficiaryResource {
 
     @Autowired
     private BeneficiaryService beneficiaryService;
+
+    @Autowired
+    private SupplierService supplierService;
 
     @ApiOperation(value = "create Beneficiary")
     @RequestMapping(method = RequestMethod.POST)
@@ -69,6 +74,15 @@ public class BeneficiaryResource {
     public LegalEntityDTO getLegalEntity(@PathVariable("legalEntityId") final Long legalEntityId, final HttpServletResponse response) {
         _log.info("getLegalEntity: " + legalEntityId);
         return beneficiaryService.getLegalEntity(legalEntityId);
+    }
+
+    @ApiOperation(value = "Get awarded legal entities")
+    @RequestMapping(value = "/awarded", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public List<LegalEntityDTO> getAwardedMunicipalities() {
+        _log.info("get awarded municipalities");
+
+        return supplierService.getAwardedMunicipalities();
     }
 
 }
