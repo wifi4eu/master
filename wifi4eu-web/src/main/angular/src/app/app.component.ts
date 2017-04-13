@@ -1,6 +1,6 @@
 import {Component, enableProdMode, Output, EventEmitter} from "@angular/core";
 import {TranslateService} from "ng2-translate/ng2-translate";
-import {UxService, UxLayoutLink, UxLayoutNotificationItem} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {UxService, UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {CoreService} from "./core/core.service";
 import {UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import {LocalStorageService} from "angular-2-local-storage";
@@ -15,12 +15,14 @@ enableProdMode()
 export class AppComponent {
     private menuLinks: Array<UxLayoutLink>;
     private user: UserDTO;
+    private profileUrl: string;
 
     @Output() private languageChanged: EventEmitter<UxLanguage> = new EventEmitter<UxLanguage>();
 
     constructor(private router: Router, private translate: TranslateService, translateService: TranslateService, private coreService: CoreService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService) {
         translateService.setDefaultLang('en');
         translateService.use('en');
+
 
         this.menuLinks = [new UxLayoutLink({
             label: 'Wifi4EU',
@@ -39,6 +41,18 @@ export class AppComponent {
     updateHeader() {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
+        if (this.user != null) {
+            if (this.user.userType == 1) {
+                this.profileUrl = "/supplier-portal/profile";
+            }
+            else if (this.user.userType == 2 || this.user.userType == 3) {
+                this.profileUrl = "/beneficiary-portal/profile";
+            }
+        } else {
+            this.profileUrl = "";
+        }
+        console.log("Profile URL:", this.profileUrl);
+
     }
 
     onLanguageChanged(language: UxLanguage) {
