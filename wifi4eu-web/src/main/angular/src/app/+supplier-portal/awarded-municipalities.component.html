@@ -1,6 +1,6 @@
-<p-dataTable [value]="issues" [(selection)]="selectedIssues">
-    <p-column field="portal" header="{{ 'municipality.label' | translate }}"
+<p-dataTable [value]="municipalities">
+    <p-column field="municipalityCode" header="{{ 'municipality.label' | translate }}"
               [sortable]="false"></p-column>
-    <p-column field="portal" header="{{ 'country.label' | translate }}"
+    <p-column field="countryCode" header="{{ 'country.label' | translate }}"
               [sortable]="false"></p-column>
 </p-dataTable>
