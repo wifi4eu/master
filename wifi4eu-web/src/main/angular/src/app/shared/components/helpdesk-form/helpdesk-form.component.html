@@ -1,47 +1,76 @@
-<div class="ui-g-1"></div>
-<div class="ui-g-10">
-    <div class="ui-g-12 center">
+<div class="clearfix"></div>
+<div class="container">
+    <p class="center">
         Problems with your registration? Please click here to <a (click)="expanded = true">contact the Help-Desk</a>
-    </div>
-    <div id="helpdesk-form" class="ui-g-12" [hidden]="!expanded">
-        <br>
-        <hr class="ui-g-12 center">
-        <br>
-        <div class="ui-g-1"></div>
-        <form class="ui-g-10" (ngSubmit)="sendIssue()" #issueForm="ngForm">
-            <label for="problem_type">Select type of problem from the list</label><br>
-            <select class="form-control" name="problem_type" id="problem_type" [(ngModel)]="helpdeskIssue.topic"
-                    required>
-                <option value="Login">Login</option>
-                <option value="Registration">Registration</option>
-                <option value="Password">Password</option>
-                <option value="Other">Other</option>
-            </select><br><br>
-            <label for="problem_desc">Describe the problem</label><br>
-            <textarea id="problem_desc" name="problem_desc" class="ui-g-12" [(ngModel)]="helpdeskIssue.issueSummary"
-                      required></textarea><br><br>
-            <label for="from">Your email</label><br>
-            <input id="from" class="ui-g-12" type="email" name="from" #from="ngModel" [(ngModel)]="helpdeskIssue.from"
-                   required><br><br>
-            <label for="problem_country">Country</label><br>
-            <select class="form-control" name="problem_country" id="problem_country"
-                    [(ngModel)]="helpdeskIssue.memberState">
-                <option selected disabled>Select</option>
-                <option *ngFor="let nut of nuts" [value]="nut.name">{{nut.name}}</option>
-            </select><br><br>
-            <div class="form-group ui-g">
-                <div class="ui-g-4"></div>
-                <div class="ui-g-2" style="text-align: center !important">
-                    <button type="button" class="btn">{{ 'cancel.button' | translate }}</button>
+    </p>
+    <div id="helpdesk-form" [hidden]="!expanded">
+
+        <hr class="center" style="padding-bottom: 2em; margin-top: 2em !important;">
+        <form (ngSubmit)="sendIssue()" #issueForm="ngForm">
+            <div class="ui-g">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
+                    <label for="problem_type" class="label floatLeft">Select type of problem from the list</label>
+                    <select class="form-control paddingInput" name="problem_type" id="problem_type"
+                            style="padding: 1.6em;"
+                            [(ngModel)]="helpdeskIssue.topic"
+                            required>
+                        <option value="Login">Login</option>
+                        <option value="Registration">Registration</option>
+                        <option value="Password">Password</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
-                <div class="ui-g-2" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary" [disabled]="!issueForm.form.valid">Send message
+                <div class="ui-lg-3"></div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
+                    <label for="problem_desc" class="label floatLeft">Describe the problem</label><br/>
+                    <textarea id="problem_desc" name="problem_desc" class="paddingInput" style="width:100%;"
+                              [(ngModel)]="helpdeskIssue.issueSummary"
+                              required></textarea>
+                </div>
+                <div class="ui-lg-3"></div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
+                    <label for="from" class="label floatLeft">Your email</label><br/>
+                    <input id="from" type="email" name="from" #from="ngModel" class="paddingInput" style="width:100%;"
+                           [(ngModel)]="helpdeskIssue.from"
+                           required>
+                </div>
+                <div class="ui-lg-3"></div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-12 ui-md-12 ui-lg-6">
+                    <label for="problem_country" class="label floatLeft">Country</label>
+                    <select class="form-control paddingInput" name="problem_country" id="problem_country"
+                            style="padding: 1.6em;"
+                            [(ngModel)]="helpdeskIssue.memberState">
+                        <option selected disabled>Select</option>
+                        <option *ngFor="let nut of nuts" [value]="nut.name">{{nut.name}}</option>
+                    </select>
+                </div>
+                <div class="ui-lg-3"></div>
+            </div>
+
+            <div class="form-group ui-g">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                    <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}
                     </button>
                 </div>
-                <div class="ui-g-4"></div>
+                <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                    <button type="submit" class="btn btn-primary publish-button" [disabled]="!issueForm.form.valid">Send
+                        message
+                    </button>
+                </div>
+                <div class="ui-lg-3"></div>
             </div>
         </form>
         <div class="ui-g-1"></div>
     </div>
 </div>
-<div class="ui-g-1"></div>
