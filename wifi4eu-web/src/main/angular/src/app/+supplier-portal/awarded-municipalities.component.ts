@@ -18,14 +18,14 @@ export class AwardedMunicipalitiesComponent {
         this.user = u ? JSON.parse(u.toString()) : null;
 
 
-        // this.supplierApi.getAwardedMunicipalities().subscribe(
-        //     data => {
-        //         this.municipalities = data;
-        //     },
-        //     error => {
-        //         console.log(error);
-        //     }
-        // );
+        this.supplierApi.getAwardedMunicipalities().subscribe(
+            data => {
+                this.municipalities = data;
+            },
+            error => {
+                console.log(error);
+            }
+        );
 
 
     }
