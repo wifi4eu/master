@@ -15,7 +15,10 @@ enableProdMode()
 export class AppComponent {
     private menuLinks: Array<UxLayoutLink>;
     private user: UserDTO;
+    private visibility: boolean[];
     private profileUrl: string;
+
+    private children: UxLayoutLink[][];
 
     @Output() private languageChanged: EventEmitter<UxLanguage> = new EventEmitter<UxLanguage>();
 
@@ -35,6 +38,9 @@ export class AppComponent {
             ]
         })];
 
+        this.visibility = [false, false, false, false, false];
+        this.children = [];
+        this.initChildren();
         this.updateHeader();
         this.sharedService.changeEmitted.subscribe(() => this.updateHeader());
     }
@@ -58,6 +64,15 @@ export class AppComponent {
                     break;
             }
         }
+        
+        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
+
+        let i = (this.user) ? this.user.userType : 0;
+
+        this.menuLinks = [new UxLayoutLink({
+            label: 'Wifi4EU',
+            children: this.children[i]
+        })];
     }
 
     onLanguageChanged(language: UxLanguage) {
@@ -70,6 +85,61 @@ export class AppComponent {
         this.localStorage.remove('user');
         this.updateHeader();
         this.router.navigateByUrl("home");
+    }
+
+    initChildren() {
+        this.children[0] = [
+            new UxLayoutLink({
+                label: 'Beneficiary Registration',
+                url: 'registration'
+            }),
+            new UxLayoutLink({
+                label: 'Supplier Registration',
+                url: '/supplier-registration'
+            })
+        ];
+        this.children[1] = [
+            new UxLayoutLink({
+                label: 'Supplier Registration',
+                url: '/supplier-registration'
+            }),
+            new UxLayoutLink({
+                label: 'Supplier Portal',
+                url: '/supplier-portal'
+            })
+        ];
+        this.children[2] = [
+            new UxLayoutLink({
+                label: 'Beneficiary Registration',
+                url: '/registration'
+            }),
+            new UxLayoutLink({
+                label: 'Beneficiary Portal',
+                url: '/beneficiary-portal'
+            })
+        ];
+        this.children[3] = [
+            new UxLayoutLink({
+                label: 'Beneficiary Registration',
+                url: '/registration'
+            }),
+            new UxLayoutLink({
+                label: 'Beneficiary Portal',
+                url: '/beneficiary-portal'
+            })
+        ];
+        this.children[4] = [
+            new UxLayoutLink({
+                label: 'Member State Portal',
+                url: '#'
+            })
+        ];
+        this.children[5] = [
+            new UxLayoutLink({
+                label: 'DGConnect Portal',
+                url: 'dgconn-portal'
+            })
+        ];
     }
 
 }
