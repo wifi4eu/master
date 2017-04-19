@@ -12,11 +12,12 @@ public class InstallationDTO implements Serializable {
     private String serialNumber;
     private String productName;
     private String modelNumber;
+    private Long supplierId;
 
     public InstallationDTO() {
     }
 
-    public InstallationDTO(Long installationId, String nip, Long outdoorPrice, Long indoorPrice, String accessPointName, String serialNumber, String productName, String modelNumber) {
+    public InstallationDTO(Long installationId, String nip, Long outdoorPrice, Long indoorPrice, String accessPointName, String serialNumber, String productName, String modelNumber, Long supplierId) {
         this.installationId = installationId;
         this.nip = nip;
         this.outdoorPrice = outdoorPrice;
@@ -25,6 +26,7 @@ public class InstallationDTO implements Serializable {
         this.serialNumber = serialNumber;
         this.productName = productName;
         this.modelNumber = modelNumber;
+        this.supplierId = supplierId;
     }
 
     public Long getInstallationId() {
@@ -89,5 +91,13 @@ public class InstallationDTO implements Serializable {
 
     public void setModelNumber(String modelNumber) {
         this.modelNumber = modelNumber;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
     }
 }

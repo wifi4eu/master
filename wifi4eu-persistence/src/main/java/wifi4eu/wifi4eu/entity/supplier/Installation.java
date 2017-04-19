@@ -33,10 +33,13 @@ public class Installation {
     @Column(name = "MODEL_NUMBER")
     private String modelNumber;
 
+    @Column(name = "SUPPLIER_ID")
+    private Long supplierId;
+
     public Installation() {
     }
 
-    public Installation(Long installationId, String nip, Long outdoorPrice, Long indoorPrice, String accessPointName, String serialNumber, String productName, String modelNumber) {
+    public Installation(Long installationId, String nip, Long outdoorPrice, Long indoorPrice, String accessPointName, String serialNumber, String productName, String modelNumber, Long supplierId) {
         this.installationId = installationId;
         this.nip = nip;
         this.outdoorPrice = outdoorPrice;
@@ -45,6 +48,7 @@ public class Installation {
         this.serialNumber = serialNumber;
         this.productName = productName;
         this.modelNumber = modelNumber;
+        this.supplierId = supplierId;
     }
 
     public Long getInstallationId() {
@@ -109,5 +113,13 @@ public class Installation {
 
     public void setModelNumber(String modelNumber) {
         this.modelNumber = modelNumber;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
     }
 }
