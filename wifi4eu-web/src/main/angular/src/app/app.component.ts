@@ -16,6 +16,7 @@ export class AppComponent {
     private menuLinks: Array<UxLayoutLink>;
     private user: UserDTO;
     private visibility: boolean[];
+    private profileUrl: string;
 
     private children: UxLayoutLink[][];
 
@@ -24,6 +25,18 @@ export class AppComponent {
     constructor(private router: Router, private translate: TranslateService, translateService: TranslateService, private coreService: CoreService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService) {
         translateService.setDefaultLang('en');
         translateService.use('en');
+
+        this.profileUrl = "";
+
+        this.menuLinks = [new UxLayoutLink({
+            label: 'Wifi4EU',
+            children: [
+                new UxLayoutLink({label: 'Free Wi-Fi for Europeans', url: 'home'}),
+                new UxLayoutLink({label: 'Registration', url: 'registration'}),
+                new UxLayoutLink({label: 'Beneficiary Portal', url: 'beneficiary-portal'}),
+                new UxLayoutLink({label: 'DGConnect Portal', url: 'dgconn-portal'})
+            ]
+        })];
 
         this.visibility = [false, false, false, false, false];
         this.children = [];
@@ -35,6 +48,23 @@ export class AppComponent {
     updateHeader() {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
+
+        if (this.user != null) {
+            switch(this.user.userType) {
+                case 1:
+                    this.profileUrl = "/supplier-portal/profile";
+                    break;
+                case 2:
+                    this.profileUrl = "/beneficiary-portal/profile";
+                    break;
+                case 3:
+                    this.profileUrl = "/beneficiary-portal/profile";
+                    break;
+                default:
+                    break;
+            }
+        }
+        
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
         let i = (this.user) ? this.user.userType : 0;
