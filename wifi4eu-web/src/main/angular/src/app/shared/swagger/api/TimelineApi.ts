@@ -45,7 +45,7 @@ export interface ITimelineApi {
      * @param c 
      * @param body 
      */
-    deleteTimeline<T extends models.ResponseDTO>(body?: number, c?: ClassType<T>): Observable<T>;
+    deleteTimeline<T extends models.ResponseDTO>(body?: models.TimelineDTO, c?: ClassType<T>): Observable<T>;
 
 }
 
@@ -119,7 +119,7 @@ export class TimelineApi implements ITimelineApi {
      * @param c
      * @param body 
      */
-    deleteTimeline<T extends models.ResponseDTO>(body?: number, c?: ClassType<T>): Observable<T> {
+    deleteTimeline<T extends models.ResponseDTO>(body?: models.TimelineDTO, c?: ClassType<T>): Observable<T> {
         // noinspection TypeScriptValidateTypes
         return this.deleteTimelineWithHttpInfo(body)
                 .map((response: Response) => {
@@ -197,7 +197,7 @@ export class TimelineApi implements ITimelineApi {
      * 
      * @param body 
      */
-    private deleteTimelineWithHttpInfo(body?: number ): Observable<Response> {
+    private deleteTimelineWithHttpInfo(body?: models.TimelineDTO ): Observable<Response> {
         const path = this.basePath + `/timeline`;
 
 

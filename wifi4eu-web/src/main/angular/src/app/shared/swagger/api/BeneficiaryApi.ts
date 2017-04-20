@@ -34,6 +34,12 @@ export interface IBeneficiaryApi {
      */
     create<T extends models.ResponseDTO>(body?: models.BeneficiaryDTO, c?: ClassType<T>): Observable<T>;
     /**
+     * Get awarded legal entities
+     * 
+     * @param c 
+     */
+    getAwardedMunicipalities<T extends models.LegalEntityDTO>(c?: ClassType<T>): Observable<T[]>;
+    /**
      * get legal Entity information
      * 
      * @param c 
@@ -84,6 +90,28 @@ export class BeneficiaryApi implements IBeneficiaryApi {
                         return undefined;
                     } else if (c) {
                         return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
+     * Get awarded legal entities
+     * 
+     * @param c
+     */
+    getAwardedMunicipalities<T extends models.LegalEntityDTO>(c?: ClassType<T>): Observable<T[]> {
+
+        return this.getAwardedMunicipalitiesWithHttpInfo()
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserializeArray(c, response.text());
                     } else {
                         return response.json();
                     }
@@ -162,6 +190,33 @@ export class BeneficiaryApi implements IBeneficiaryApi {
             method: RequestMethod.Post,
             headers: headers,
             body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * Get awarded legal entities
+     * 
+     */
+    private getAwardedMunicipalitiesWithHttpInfo(): Observable<Response> {
+        const path = this.basePath + `/beneficiary/awarded`;
+
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
             search: queryParameters,
             responseType: ResponseContentType.Json
         });

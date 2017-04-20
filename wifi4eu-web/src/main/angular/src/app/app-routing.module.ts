@@ -50,7 +50,7 @@ import {AppGuard} from "./app.guard";
         }, {
             path: 'dgconn-portal',
             loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
-            canActivate: [AppGuard]
+            // canActivate: [AppGuard]
         }, {
             path: 'supplier-registration',
             loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule'

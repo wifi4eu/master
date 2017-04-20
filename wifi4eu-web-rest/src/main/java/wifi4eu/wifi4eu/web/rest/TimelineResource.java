@@ -63,9 +63,9 @@ public class TimelineResource {
     @ApiOperation(value = "delete Timeline")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseDTO deleteTimeline(@RequestBody final Long timelineId, final HttpServletResponse response) {
+    public ResponseDTO deleteTimeline(@RequestBody final TimelineDTO timelineDTO, final HttpServletResponse response) {
         try {
-            TimelineDTO resTimeline = timelineService.deleteTimeline(timelineId);
+            TimelineDTO resTimeline = timelineService.deleteTimeline(timelineDTO);
             return new ResponseDTO(true, resTimeline, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());

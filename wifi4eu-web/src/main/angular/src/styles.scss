@@ -551,7 +551,7 @@ body {
 }
 
 .containerTimeline {
-  width: 53em;
+  //width: 53em;
   background-color: rgba(215, 215, 215, 0.1);
   border: solid 1px #cecece;
   padding: 0 1em;
@@ -664,7 +664,6 @@ body {
 .ui-column-title {
   padding-left: 1.8em;
 }
-
 
 /*
 .ui-datatable table td {
@@ -806,11 +805,12 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   width: 14em;
 }
 
-.requirementSubitle{
+.requirementSubitle {
   font-size: 1.3em;
   color: $dark-blue;
-}s
+}
 
+s
 .labelForgot {
   margin-top: 2em;
 }
