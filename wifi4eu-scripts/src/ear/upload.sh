@@ -23,7 +23,6 @@ while kill -0 $PID 2> /dev/null; do
     sleep 1
 done
 printf "]"
-echo -e "\n"
 OUT=$?
 if [ $OUT = 0 ]; then
     echo "[INFO] Successfully uploaded wifi4eu.ear"
