@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
+import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -66,6 +67,14 @@ public class BeneficiaryResource {
             return new ResponseDTO(false, null, errorDTO);
         }
 
+    }
+
+    @ApiOperation(value = "Select supplier")
+    @RequestMapping(value = "/{beneficiaryId}/publication/{publicationId}/supplier", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public BenPubSupDTO selectSupplier(@PathVariable("beneficiaryId") final Long beneficiaryId, @PathVariable("publicationId") final Long publicationId, final HttpServletResponse response) {
+        _log.info("beneficiary Select supplier | beneficiaryId: " + beneficiaryId + " , publicationId: " + publicationId);
+        return beneficiaryService.selectSupplier(beneficiaryId, publicationId);
     }
 
     @ApiOperation(value = "get legal Entity information")
