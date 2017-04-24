@@ -12,8 +12,6 @@ export class DgConnTimelineComponent {
     private event: string;
     private startDate: Date;
     private endDate: Date;
-    private startTime: Date;
-    private endTime: Date;
     private display: boolean;
     private timelines: TimelineDTO[];
     private timeline: TimelineDTO;
@@ -30,6 +28,9 @@ export class DgConnTimelineComponent {
     }
 
     addNewElement() {
+        this.event = '';
+        this.startDate = null;
+        this.endDate = null;
         this.newElementForm = true;
         this.display = true;
         this.timelineApi.allTimelines().subscribe(
@@ -66,8 +67,6 @@ export class DgConnTimelineComponent {
 
     createTimeline() {
         let timeline = (this.timeline) ? this.timeline : new TimelineDTOBase();
-        this.startDate.setHours(this.startTime.getHours(), this.startTime.getMinutes());
-        this.endDate.setHours(this.endTime.getHours(), this.endTime.getMinutes());
         timeline.event = this.event;
         timeline.startDate = this.startDate.getTime();
         timeline.endDate = this.endDate.getTime();
@@ -83,9 +82,15 @@ export class DgConnTimelineComponent {
             },
             error => console.log(error)
         );
-
         this.timeline = null;
 
+    }
+
+    checkDate() {
+        console.log("startDate:", this.startDate);
+        console.log("endDate:", this.endDate);
+        console.log(this.startDate < this.endDate);
+        return this.startDate < this.endDate;
     }
 
 

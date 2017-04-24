@@ -28,9 +28,9 @@
             </template>
         </p-column>
         <p-column header="{{ 'edit.button' | translate }}">
-            <template pTemplate="body" let-rowElement="rowIndex">
+            <template pTemplate="body" let-timeline="rowData" let-rowElement="rowIndex">
                 <button type="button" class="btn" style="background: none; padding: 0;"
-                        (click)="displayInfo(rowData)">
+                        (click)="displayInfo(timeline)">
                     <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i>
                     {{ 'edit.button' | translate }}
                 </button>
@@ -85,9 +85,8 @@
                             <div class="form-group left">
                                 <label class="labelModal" for="startDate">{{'opening.date' | translate }}</label>
                                 <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"
-                                            [showIcon]="true" type="text" dateFormat="dd/mm/yy"
-                                            [(ngModel)]="startDate" name="startDate"
-                                            onkeydown="return false"
+                                            [showIcon]="true" type="text" dateFormat="dd/mm/yy" [(ngModel)]="startDate"
+                                            name="startDate" onkeydown="return false"
                                             required></p-calendar>
                             </div>
                         </div>
@@ -97,7 +96,7 @@
                                 <label class="labelModal" for="startTime">{{'start.time' | translate }}</label>
                                 <p-calendar [monthNavigator]="false" timeFormat="HH:mm:ss" [timeOnly]="true"
                                             [showIcon]="true" type="text"
-                                            [(ngModel)]="startTime" name="startTime"
+                                            [(ngModel)]="startDate" name="startTime"
                                             onkeydown="return false"
                                             required></p-calendar>
                             </div>
@@ -120,7 +119,7 @@
                                 <label class="labelModal" for="endTime">{{'end.time' | translate }}</label>
                                 <p-calendar timeFormat="HH:mm:ss" [timeOnly]="true"
                                             [showIcon]="true" type="text"
-                                            [(ngModel)]="endTime" name="endTime"
+                                            [(ngModel)]="endDate" name="endTime"
                                             onkeydown="return false"
                                             required></p-calendar>
                             </div>
@@ -138,10 +137,11 @@
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
                         <button type="button" (click)="createTimeline()" class="btn btn-primary publish-button"
+                                [disabled]="!(checkDate() && publicationForm.form.valid)"
                                 *ngIf="!newElementForm">{{'timeline.change' | translate }}
                         </button>
                         <button type="button" (click)="createTimeline()" class="btn btn-primary publish-button"
-                                *ngIf="newElementForm" [disabled]="!publicationForm.form.valid">
+                                *ngIf="newElementForm" [disabled]="!(checkDate() && publicationForm.form.valid)">
                             {{'add.timeline' | translate }}
                         </button>
                     </div>
