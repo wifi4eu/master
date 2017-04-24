@@ -2,7 +2,7 @@ import {Component} from "@angular/core";
 import {SupplierDTO, SupplierDTOBase} from "../../../shared/swagger/model/SupplierDTO";
 import {SupplierApi} from "../../../shared/swagger/api/SupplierApi";
 
-@Component({templateUrl: 'select-supplier.component.html', providers: [SupplierApi]})
+@Component({selector: 'select-supplier-component', templateUrl: 'select-supplier.component.html', providers: [SupplierApi]})
 export class SelectSupplierComponent {
     private suppliers: SupplierDTO[];
     private selectedSuppliers: SupplierDTO[];
