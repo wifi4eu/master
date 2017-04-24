@@ -70,9 +70,9 @@ public class BeneficiaryResource {
     }
 
     @ApiOperation(value = "Apply for voucher")
-    @RequestMapping(value = "/{beneficiaryId}/apply/{publicationId}", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/{beneficiaryId}/apply", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO apply(@PathVariable("beneficiaryId") final Long beneficiaryId, @PathVariable("publicationId") final Long publicationId, final HttpServletResponse response) {
+    public ResponseDTO apply(@PathVariable("beneficiaryId") final Long beneficiaryId, @RequestBody final Long publicationId, final HttpServletResponse response) {
 
         _log.info("beneficiary apply for voucher | beneficiaryId: " + beneficiaryId + " publicationId: " + publicationId);
 
