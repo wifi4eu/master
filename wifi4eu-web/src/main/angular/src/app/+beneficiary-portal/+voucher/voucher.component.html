@@ -14,7 +14,8 @@
         </div>
         <br>
         <div class="ui-g-12 center">
-            <timer-component *ngIf="!competitionOpen" (timerEvent)="beginCompetition()"></timer-component>
+            <timer-component (timerEvent)="beginCompetition()"
+                             [expirationTimestamp]="currentCall.startDate"></timer-component>
         </div>
     </div>
     <!-- competition Open, display apply button -->
@@ -96,4 +97,6 @@
             <span class="ui-g-4"></span>
         </div>
     </div>
+    <!-- user had already applied -->
+    <select-supplier-component *ngSwitchCase="4"></select-supplier-component>
 </div>
