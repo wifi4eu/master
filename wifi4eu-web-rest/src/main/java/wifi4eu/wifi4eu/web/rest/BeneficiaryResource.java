@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
+import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -66,6 +67,31 @@ public class BeneficiaryResource {
             return new ResponseDTO(false, null, errorDTO);
         }
 
+    }
+
+    @ApiOperation(value = "Apply for voucher")
+    @RequestMapping(value = "/{beneficiaryId}/apply/{publicationId}", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO apply(@PathVariable("beneficiaryId") final Long beneficiaryId, @PathVariable("publicationId") final Long publicationId, final HttpServletResponse response) {
+
+        _log.info("beneficiary apply for voucher | beneficiaryId: " + beneficiaryId + " publicationId: " + publicationId);
+
+        try {
+            beneficiaryService.apply(beneficiaryId, publicationId);
+            return new ResponseDTO(true, null, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+
+    }
+
+    @ApiOperation(value = "Check if applied for voucher")
+    @RequestMapping(value = "/{beneficiaryId}/checkApplied/{publicationId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public BenPubSupDTO findIfApplied(@PathVariable("beneficiaryId") final Long beneficiaryId, @PathVariable("publicationId") final Long publicationId, final HttpServletResponse response) {
+        _log.info("Check if applied for voucher | beneficiaryId: " + beneficiaryId + " publicationId: " + publicationId);
+        return beneficiaryService.findIfApplied(beneficiaryId, publicationId);
     }
 
     @ApiOperation(value = "get legal Entity information")
