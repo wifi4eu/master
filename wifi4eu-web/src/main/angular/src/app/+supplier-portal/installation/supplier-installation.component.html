@@ -14,9 +14,9 @@
         <p>{{ 'bidding.countdown' | translate }}</p>
     </div>
     <div class="ui-g-12 whiteNoInline">
-        <p>{{ 'nip.countdown' | translate }}:<strong></strong></p>
-        <p>{{ 'outdoor.access' | translate }}:<strong></strong></p>
-        <p>{{ 'indoor.access' | translate }}:<strong></strong></p>
+        <p>{{ 'nip.countdown' | translate }}:<strong> {{bidding.nip}}</strong></p>
+        <p>{{ 'outdoor.access' | translate }}:<strong> {{bidding.outdoorPrice}}</strong></p>
+        <p>{{ 'indoor.access' | translate }}:<strong> {{bidding.indoorPrice}}</strong></p>
     </div>
 
     <div class="clearfix"></div>
@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="marginTop countdownTable">
-        <p-dataTable [value]="issues" [(selection)]="selectedIssues" [rows]="10" [paginator]="true"
+        <p-dataTable [value]="installations" [(selection)]="selectedInstallations" [rows]="10" [paginator]="true"
                      [pageLinks]="3" [rowsPerPageOptions]="[10,20,50,100]" [globalFilter]="gb">
             <p-column field="portal" header="{{ 'accesPoint.name' | translate }}" [sortable]="false"></p-column>
             <p-column field="portal" header="{{ 'sn.countdown' | translate }}" [sortable]="true"></p-column>
