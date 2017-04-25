@@ -8,14 +8,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
+import wifi4eu.wifi4eu.common.dto.model.InstallationDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.mapper.supplier.BenPubSupMapper;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
+import wifi4eu.wifi4eu.mapper.supplier.InstallationMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
+import wifi4eu.wifi4eu.repository.supplier.InstallationRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.security.UserService;
@@ -42,6 +45,9 @@ public class SupplierService {
     BenPubSupRepository benPubSupRepository;
 
     @Autowired
+    InstallationRepository installationRepository;
+
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -55,6 +61,9 @@ public class SupplierService {
 
     @Autowired
     BenPubSupMapper benPubSupMapper;
+
+    @Autowired
+    InstallationMapper installationMapper;
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -138,6 +147,14 @@ public class SupplierService {
             }
         }
         return legalEntityDTOList;
+    }
+
+    public InstallationDTO createInstallation(InstallationDTO installationDTO) {
+        return installationMapper.toDTO(installationRepository.save(installationMapper.toEntity(installationDTO)));
+    }
+
+    public InstallationDTO getInstallationBySupplierId(Long supplierId) {
+        return installationMapper.toDTO(installationRepository.findInstallationBySupplierId(supplierId));
     }
 
 }
