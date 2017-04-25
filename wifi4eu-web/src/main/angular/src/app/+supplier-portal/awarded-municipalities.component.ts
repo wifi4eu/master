@@ -1,14 +1,13 @@
 import {Component} from "@angular/core";
 import {LocalStorageService} from "angular-2-local-storage";
 import {UserDTO} from "../shared/swagger/model/UserDTO";
-import {SupplierApi} from "../shared/swagger/api/SupplierApi";
 import {LegalEntityDTO} from "../+beneficiary-registration/+beneficiary-registration-step3/legalEntityDTO.model";
 import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
 
 @Component({
     selector: 'awarded-municipalities',
     templateUrl: 'awarded-municipalities.component.html',
-    providers: [SupplierApi]
+    providers: [BeneficiaryApi]
 })
 export class AwardedMunicipalitiesComponent {
     private user: UserDTO;
