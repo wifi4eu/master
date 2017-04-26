@@ -4,8 +4,8 @@ import {SupplierApi} from "../../../shared/swagger/api/SupplierApi";
 
 @Component({templateUrl: 'select-supplier.component.html', providers: [SupplierApi]})
 export class SelectSupplierComponent {
-    private suppliers: SupplierDTO[];
-    private selectedSuppliers: SupplierDTO[];
+    private suppliers: SupplierDTOBase[];
+    private selectedSuppliers: SupplierDTOBase[];
     private selectedSupplier: SupplierDTOBase;
     private display: boolean;
 
