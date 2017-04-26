@@ -6,27 +6,19 @@ import java.util.List;
 public class InstallationDTO implements Serializable {
     private Long installationId;
     private String nip;
-    private Long outdoorPrice;
-    private Long indoorPrice;
-    private String accessPointName;
-    private String serialNumber;
-    private String productName;
-    private String modelNumber;
-    private Long supplierId;
+    private Double outdoorPrice;
+    private Double indoorPrice;
+    private List<AccessPointDTO> accessPoints;
 
     public InstallationDTO() {
     }
 
-    public InstallationDTO(Long installationId, String nip, Long outdoorPrice, Long indoorPrice, String accessPointName, String serialNumber, String productName, String modelNumber, Long supplierId) {
+    public InstallationDTO(Long installationId, String nip, Double outdoorPrice, Double indoorPrice, List<AccessPointDTO> accessPoints) {
         this.installationId = installationId;
         this.nip = nip;
         this.outdoorPrice = outdoorPrice;
         this.indoorPrice = indoorPrice;
-        this.accessPointName = accessPointName;
-        this.serialNumber = serialNumber;
-        this.productName = productName;
-        this.modelNumber = modelNumber;
-        this.supplierId = supplierId;
+        this.accessPoints = accessPoints;
     }
 
     public Long getInstallationId() {
@@ -45,59 +37,27 @@ public class InstallationDTO implements Serializable {
         this.nip = nip;
     }
 
-    public Long getOutdoorPrice() {
+    public Double getOutdoorPrice() {
         return outdoorPrice;
     }
 
-    public void setOutdoorPrice(Long outdoorPrice) {
+    public void setOutdoorPrice(Double outdoorPrice) {
         this.outdoorPrice = outdoorPrice;
     }
 
-    public Long getIndoorPrice() {
+    public Double getIndoorPrice() {
         return indoorPrice;
     }
 
-    public void setIndoorPrice(Long indoorPrice) {
+    public void setIndoorPrice(Double indoorPrice) {
         this.indoorPrice = indoorPrice;
     }
 
-    public String getAccessPointName() {
-        return accessPointName;
+    public List<AccessPointDTO> getAccessPoints() {
+        return accessPoints;
     }
 
-    public void setAccessPointName(String accessPointName) {
-        this.accessPointName = accessPointName;
-    }
-
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getModelNumber() {
-        return modelNumber;
-    }
-
-    public void setModelNumber(String modelNumber) {
-        this.modelNumber = modelNumber;
-    }
-
-    public Long getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(Long supplierId) {
-        this.supplierId = supplierId;
+    public void setAccessPoints(List<AccessPointDTO> accessPoints) {
+        this.accessPoints = accessPoints;
     }
 }

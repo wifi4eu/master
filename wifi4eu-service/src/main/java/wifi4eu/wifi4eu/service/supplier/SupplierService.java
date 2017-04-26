@@ -7,16 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
-import wifi4eu.wifi4eu.common.dto.model.InstallationDTO;
-import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
-import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
+import wifi4eu.wifi4eu.mapper.supplier.AccessPointMapper;
 import wifi4eu.wifi4eu.mapper.supplier.BenPubSupMapper;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
 import wifi4eu.wifi4eu.mapper.supplier.InstallationMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
+import wifi4eu.wifi4eu.repository.supplier.AccessPointRepository;
 import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
 import wifi4eu.wifi4eu.repository.supplier.InstallationRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
@@ -48,6 +47,9 @@ public class SupplierService {
     InstallationRepository installationRepository;
 
     @Autowired
+    AccessPointRepository accessPointRepository;
+
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -64,6 +66,9 @@ public class SupplierService {
 
     @Autowired
     InstallationMapper installationMapper;
+
+    @Autowired
+    AccessPointMapper accessPointMapper;
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -153,8 +158,12 @@ public class SupplierService {
         return installationMapper.toDTO(installationRepository.save(installationMapper.toEntity(installationDTO)));
     }
 
-    public InstallationDTO getInstallationBySupplierId(Long supplierId) {
-        return installationMapper.toDTO(installationRepository.findInstallationBySupplierId(supplierId));
+    public InstallationDTO getInstallationById(Long installationId) {
+        return installationMapper.toDTO(installationRepository.findOne(installationId));
+    }
+
+    public List<AccessPointDTO> getAccessPointsByInstallation(Long installationId) {
+        return accessPointMapper.toDTOList(Lists.newArrayList(accessPointRepository.findByInstallationId(installationId)));
     }
 
 }

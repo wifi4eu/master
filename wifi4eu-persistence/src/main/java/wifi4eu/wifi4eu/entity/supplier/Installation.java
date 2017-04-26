@@ -8,7 +8,6 @@ import java.util.List;
 public class Installation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "INSTALLATION_ID")
     private Long installationId;
 
@@ -16,39 +15,19 @@ public class Installation {
     private String nip;
 
     @Column(name = "OUTDOOR_PRICE")
-    private Long outdoorPrice;
+    private Double outdoorPrice;
 
     @Column(name = "INDOOR_PRICE")
-    private Long indoorPrice;
-
-    @Column(name = "ACCESS_POINT_NAME")
-    private String accessPointName;
-
-    @Column(name = "SERIAL_NUMBER")
-    private String serialNumber;
-
-    @Column(name = "PRODUCT_NAME")
-    private String productName;
-
-    @Column(name = "MODEL_NUMBER")
-    private String modelNumber;
-
-    @Column(name = "SUPPLIER_ID")
-    private Long supplierId;
+    private Double indoorPrice;
 
     public Installation() {
     }
 
-    public Installation(Long installationId, String nip, Long outdoorPrice, Long indoorPrice, String accessPointName, String serialNumber, String productName, String modelNumber, Long supplierId) {
+    public Installation(Long installationId, String nip, Double outdoorPrice, Double indoorPrice) {
         this.installationId = installationId;
         this.nip = nip;
         this.outdoorPrice = outdoorPrice;
         this.indoorPrice = indoorPrice;
-        this.accessPointName = accessPointName;
-        this.serialNumber = serialNumber;
-        this.productName = productName;
-        this.modelNumber = modelNumber;
-        this.supplierId = supplierId;
     }
 
     public Long getInstallationId() {
@@ -67,59 +46,19 @@ public class Installation {
         this.nip = nip;
     }
 
-    public Long getOutdoorPrice() {
+    public Double getOutdoorPrice() {
         return outdoorPrice;
     }
 
-    public void setOutdoorPrice(Long outdoorPrice) {
+    public void setOutdoorPrice(Double outdoorPrice) {
         this.outdoorPrice = outdoorPrice;
     }
 
-    public Long getIndoorPrice() {
+    public Double getIndoorPrice() {
         return indoorPrice;
     }
 
-    public void setIndoorPrice(Long indoorPrice) {
+    public void setIndoorPrice(Double indoorPrice) {
         this.indoorPrice = indoorPrice;
-    }
-
-    public String getAccessPointName() {
-        return accessPointName;
-    }
-
-    public void setAccessPointName(String accessPointName) {
-        this.accessPointName = accessPointName;
-    }
-
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getModelNumber() {
-        return modelNumber;
-    }
-
-    public void setModelNumber(String modelNumber) {
-        this.modelNumber = modelNumber;
-    }
-
-    public Long getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(Long supplierId) {
-        this.supplierId = supplierId;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.AccessPointDTO;
 import wifi4eu.wifi4eu.common.dto.model.InstallationDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
@@ -70,12 +71,16 @@ public class SupplierResource {
         return supplierService.getSelectedMe(supplierId);
     }
 
-    @ApiOperation(value = "Get installation by supplierId")
-    @RequestMapping(value = "/{supplierId}/installation", method = RequestMethod.GET, produces = "application/JSON")
+    @ApiOperation(value = "Get installation by installationId")
+    @RequestMapping(value = "/{installationId}/installation", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
-    public InstallationDTO getInstallationBySupplierId(@PathVariable("supplierId") final Long supplierId, final HttpServletResponse response) {
-        _log.info("Get installation by supplierId " + supplierId);
+    public InstallationDTO getInstallationById(@PathVariable("installationId") final Long installationId, final HttpServletResponse response) {
+        _log.info("Get installation by installationId " + installationId);
 
-        return supplierService.getInstallationBySupplierId(supplierId);
+        InstallationDTO installationDTO = supplierService.getInstallationById(installationId);
+        if (installationDTO != null) {
+            installationDTO.setAccessPoints(supplierService.getAccessPointsByInstallation(installationId));
+        }
+        return installationDTO;
     }
 }
