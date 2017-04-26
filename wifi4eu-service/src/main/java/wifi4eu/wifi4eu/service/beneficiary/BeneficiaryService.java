@@ -194,7 +194,7 @@ public class BeneficiaryService {
         return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
     }
 
-    public BenPubSupDTO findIfApplied(Long beneficiaryId, Long publicationId) {
+    public BenPubSupDTO findByBeneficiaryIdAndPublicationId(Long beneficiaryId, Long publicationId) {
         BenPubSupDTO benPubSupDTO = benPubSupMapper.toDTO(benPubSupRepository.findByBeneficiaryIdAndPublicationId(beneficiaryId, publicationId));
         return benPubSupDTO;
     }

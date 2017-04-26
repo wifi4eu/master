@@ -86,12 +86,12 @@ public class BeneficiaryResource {
 
     }
 
-    @ApiOperation(value = "Check if applied for voucher")
+    @ApiOperation(value = "find by BeneficiaryId and PublicationId")
     @RequestMapping(value = "/{beneficiaryId}/checkApplied/{publicationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public BenPubSupDTO findIfApplied(@PathVariable("beneficiaryId") final Long beneficiaryId, @PathVariable("publicationId") final Long publicationId, final HttpServletResponse response) {
-        _log.info("Check if applied for voucher | beneficiaryId: " + beneficiaryId + " publicationId: " + publicationId);
-        return beneficiaryService.findIfApplied(beneficiaryId, publicationId);
+    public BenPubSupDTO findByBeneficiaryIdAndPublicationId(@PathVariable("beneficiaryId") final Long beneficiaryId, @PathVariable("publicationId") final Long publicationId, final HttpServletResponse response) {
+        _log.info("find by BeneficiaryId and PublicationId | beneficiaryId: " + beneficiaryId + " publicationId: " + publicationId);
+        return beneficiaryService.findByBeneficiaryIdAndPublicationId(beneficiaryId, publicationId);
     }
 
     @ApiOperation(value = "get legal Entity information")
