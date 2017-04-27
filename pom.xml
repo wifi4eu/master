@@ -67,6 +67,7 @@
         <commons-lang.version>2.6</commons-lang.version>
         <ehcache.version>2.6.10</ehcache.version>
         <junit.version>4.12</junit.version>
+        <guava.version>21.0</guava.version>
 
         <servlet-api.version>2.5</servlet-api.version>
         <jsp-api.version>2.2</jsp-api.version>
@@ -396,6 +397,19 @@
                 <version>${ecas.client.version}</version>
             </dependency>
 
+            <!-- Guava cache -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <!-- JWT -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>0.7.0</version>
+            </dependency>
 
             <dependency>
                 <groupId>io.swagger</groupId>

@@ -48,6 +48,20 @@ export interface IUserApi {
      */
     login<T extends models.ResponseDTO>(body?: models.UserDTO, c?: ClassType<T>): Observable<T>;
     /**
+     * Service to logout
+     * 
+     * @param c 
+     * @param body 
+     */
+    logout<T extends models.ResponseDTO>(body?: string, c?: ClassType<T>): Observable<T>;
+    /**
+     * Service to refresh the Authentication token
+     * 
+     * @param c 
+     * @param body 
+     */
+    refreshToken<T extends models.ResponseDTO>(body?: string, c?: ClassType<T>): Observable<T>;
+    /**
      * Service to resend email with a link to activate account
      * 
      * @param c 
@@ -131,6 +145,52 @@ export class UserApi implements IUserApi {
     login<T extends models.ResponseDTO>(body?: models.UserDTO, c?: ClassType<T>): Observable<T> {
         // noinspection TypeScriptValidateTypes
         return this.loginWithHttpInfo(body)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
+     * Service to logout
+     * 
+     * @param c
+     * @param body 
+     */
+    logout<T extends models.ResponseDTO>(body?: string, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.logoutWithHttpInfo(body)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
+     * Service to refresh the Authentication token
+     * 
+     * @param c
+     * @param body 
+     */
+    refreshToken<T extends models.ResponseDTO>(body?: string, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.refreshTokenWithHttpInfo(body)
                 .map((response: Response) => {
                     if (response.status === 204) {
                         return undefined;
@@ -234,6 +294,66 @@ export class UserApi implements IUserApi {
      */
     private loginWithHttpInfo(body?: models.UserDTO ): Observable<Response> {
         const path = this.basePath + `/user/login`;
+
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+
+
+
+
+
+        headers.set('Content-Type', 'application/json');
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Post,
+            headers: headers,
+            body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * Service to logout
+     * 
+     * @param body 
+     */
+    private logoutWithHttpInfo(body?: string ): Observable<Response> {
+        const path = this.basePath + `/user/logout`;
+
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+
+
+
+
+
+        headers.set('Content-Type', 'application/json');
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Post,
+            headers: headers,
+            body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * Service to refresh the Authentication token
+     * 
+     * @param body 
+     */
+    private refreshTokenWithHttpInfo(body?: string ): Observable<Response> {
+        const path = this.basePath + `/user/refresh`;
 
 
         let queryParameters = new URLSearchParams();

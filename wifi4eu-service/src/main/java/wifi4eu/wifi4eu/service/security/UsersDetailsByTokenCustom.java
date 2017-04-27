@@ -8,9 +8,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.Assert;
 
 public class UsersDetailsByTokenCustom <T extends Authentication> implements AuthenticationUserDetailsService<T>, InitializingBean {
-    private DBUserDetailsServiceCustom userDetailsServiceCustom = null;
+    private CacheUserDetailsServiceCustom userDetailsServiceCustom = null;
 
-    public UsersDetailsByTokenCustom(DBUserDetailsServiceCustom userDetailsServiceCustom) {
+    public UsersDetailsByTokenCustom(CacheUserDetailsServiceCustom userDetailsServiceCustom) {
         Assert.notNull(userDetailsServiceCustom, "userDetailsServiceCustom cannot be null.");
         this.userDetailsServiceCustom = userDetailsServiceCustom;
     }
@@ -20,10 +20,10 @@ public class UsersDetailsByTokenCustom <T extends Authentication> implements Aut
     }
 
     public UserDetails loadUserDetails(T authentication) throws UsernameNotFoundException {
-        return userDetailsServiceCustom.loadUserByUsername((String) authentication.getCredentials());
+        return userDetailsServiceCustom.loadUserByHash((String) authentication.getPrincipal());
     }
 
-    public void setUserDetailsService(DBUserDetailsServiceCustom aUserDetailsService) {
+    public void setUserDetailsService(CacheUserDetailsServiceCustom aUserDetailsService) {
         this.userDetailsServiceCustom = aUserDetailsService;
     }
 }
