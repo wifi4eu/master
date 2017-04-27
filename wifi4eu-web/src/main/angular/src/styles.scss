@@ -665,7 +665,6 @@ body {
   padding-left: 1.8em;
 }
 
-
 /*
 .ui-datatable table td {
   padding-left: 2.5em;
@@ -806,11 +805,17 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   width: 14em;
 }
 
-.requirementSubitle{
+.requirementSubitle {
   font-size: 1.3em;
   color: $dark-blue;
-}s
+}
 
+s
 .labelForgot {
   margin-top: 2em;
+}
+
+.supplier-portalButton {
+  width: 21em;
+  font-size: 1em;
 }

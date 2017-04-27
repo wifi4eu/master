@@ -221,5 +221,6 @@
   "dgConnectComments": "DG Connect Comments",
   "setAsResolved": "Set as Resolved",
   "keepAsPending": "Keep as Pending",
-  "login.title":"Login"
+  "login.title":"Login",
+  "button.addInstallationInfo": "Add installation information"
 }
