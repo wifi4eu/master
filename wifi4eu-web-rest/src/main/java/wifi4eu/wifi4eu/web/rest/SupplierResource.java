@@ -14,6 +14,7 @@ import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.entity.supplier.AccessPoint;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -82,5 +83,19 @@ public class SupplierResource {
             installationDTO.setAccessPoints(supplierService.getAccessPointsByInstallation(installationId));
         }
         return installationDTO;
+    }
+
+    @ApiOperation(value = "create access point")
+    @RequestMapping(value = "/accessPoint", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO createAccessPoint(@RequestBody final AccessPointDTO accessPointDTO, final HttpServletResponse response) {
+        try {
+            _log.info("----> AccessPointDTO: " + accessPointDTO);
+            AccessPointDTO resAccessPoint = supplierService.createAccessPoint(accessPointDTO);
+            return new ResponseDTO(true, resAccessPoint, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
     }
 }

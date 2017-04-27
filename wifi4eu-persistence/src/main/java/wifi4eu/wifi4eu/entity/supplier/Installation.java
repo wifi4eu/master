@@ -14,20 +14,12 @@ public class Installation {
     @Column(name = "NIP")
     private String nip;
 
-    @Column(name = "OUTDOOR_PRICE")
-    private Double outdoorPrice;
-
-    @Column(name = "INDOOR_PRICE")
-    private Double indoorPrice;
-
     public Installation() {
     }
 
-    public Installation(Long installationId, String nip, Double outdoorPrice, Double indoorPrice) {
+    public Installation(Long installationId, String nip) {
         this.installationId = installationId;
         this.nip = nip;
-        this.outdoorPrice = outdoorPrice;
-        this.indoorPrice = indoorPrice;
     }
 
     public Long getInstallationId() {
@@ -44,21 +36,5 @@ public class Installation {
 
     public void setNip(String nip) {
         this.nip = nip;
-    }
-
-    public Double getOutdoorPrice() {
-        return outdoorPrice;
-    }
-
-    public void setOutdoorPrice(Double outdoorPrice) {
-        this.outdoorPrice = outdoorPrice;
-    }
-
-    public Double getIndoorPrice() {
-        return indoorPrice;
-    }
-
-    public void setIndoorPrice(Double indoorPrice) {
-        this.indoorPrice = indoorPrice;
     }
 }

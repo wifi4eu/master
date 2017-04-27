@@ -166,4 +166,8 @@ public class SupplierService {
         return accessPointMapper.toDTOList(Lists.newArrayList(accessPointRepository.findByInstallationId(installationId)));
     }
 
+    public AccessPointDTO createAccessPoint(AccessPointDTO accessPointDTO) {
+        return accessPointMapper.toDTO(accessPointRepository.save(accessPointMapper.toEntity(accessPointDTO)));
+    }
+
 }
