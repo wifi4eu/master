@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskCommentDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -31,7 +33,17 @@ public class HelpdeskResource {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<HelpdeskDTO> allHelpdeskIssues() {
-        return helpdeskService.getAllHelpdeskIssues();
+        List<HelpdeskDTO> issues = helpdeskService.getAllHelpdeskIssues();
+        if (issues != null) {
+            for (int i = 0; i < issues.size(); i++) {
+                issues.get(i).setComments(helpdeskService.getHelpdeskIssueComments(issues.get(i).getIssueId()));
+//                List<HelpdeskCommentDTO> comments = helpdeskService.getHelpdeskIssueComments(issues.get(i).getIssueId());
+//                if (comments != null) {
+//                    issues.get(i).setComments(comments);
+//                }
+            }
+        }
+        return issues;
     }
 
     @ApiOperation(value = "Get helpdesk issue by issueId")
@@ -39,8 +51,9 @@ public class HelpdeskResource {
     @ResponseBody
     public HelpdeskDTO getHelpdeskIssue(@PathVariable("issueId") final Long issueId, final HttpServletResponse response) {
         _log.info("getHelpdeskIssue " + issueId);
-
-        return helpdeskService.getHelpdeskIssue(issueId);
+        HelpdeskDTO issue = helpdeskService.getHelpdeskIssue(issueId);
+        issue.setComments(helpdeskService.getHelpdeskIssueComments(issueId));
+        return issue;
 
     }
 
