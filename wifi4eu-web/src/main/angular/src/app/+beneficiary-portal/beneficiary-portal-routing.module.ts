@@ -7,7 +7,7 @@ import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplie
 @NgModule({
     imports: [RouterModule.forChild([
         {
-            path: 'voucher',
+            path: '',
             component: VoucherComponent,
         }, {
             path: 'profile',

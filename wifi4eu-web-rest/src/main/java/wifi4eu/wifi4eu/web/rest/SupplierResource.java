@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.AccessPointDTO;
+import wifi4eu.wifi4eu.common.dto.model.InstallationDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.entity.supplier.AccessPoint;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -67,5 +70,32 @@ public class SupplierResource {
         _log.info("getSelectedBy " + supplierId);
 
         return supplierService.getSelectedMe(supplierId);
+    }
+
+    @ApiOperation(value = "Get installation by installationId")
+    @RequestMapping(value = "/{installationId}/installation", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public InstallationDTO getInstallationById(@PathVariable("installationId") final Long installationId, final HttpServletResponse response) {
+        _log.info("Get installation by installationId " + installationId);
+
+        InstallationDTO installationDTO = supplierService.getInstallationById(installationId);
+        if (installationDTO != null) {
+            installationDTO.setAccessPoints(supplierService.getAccessPointsByInstallation(installationId));
+        }
+        return installationDTO;
+    }
+
+    @ApiOperation(value = "create access point")
+    @RequestMapping(value = "/accessPoint", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO createAccessPoint(@RequestBody final AccessPointDTO accessPointDTO, final HttpServletResponse response) {
+        try {
+            _log.info("----> AccessPointDTO: " + accessPointDTO);
+            AccessPointDTO resAccessPoint = supplierService.createAccessPoint(accessPointDTO);
+            return new ResponseDTO(true, resAccessPoint, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
     }
 }

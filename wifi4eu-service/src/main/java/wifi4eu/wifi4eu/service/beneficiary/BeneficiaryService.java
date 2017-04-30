@@ -5,7 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
+import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
+import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
+import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+import wifi4eu.wifi4eu.common.dto.model.RepresentativeDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.MayorMapper;
@@ -185,12 +189,14 @@ public class BeneficiaryService {
         return userMapper.toDTO(securityUserRepository.findByEmail(email));
     }
 
-    public BenPubSupDTO selectSupplier(Long supplierId, Long beneficiaryId, Long publicationId) {
+    public BenPubSupDTO apply(Long beneficiaryId, Long publicationId) {
+        BenPubSupDTO benPubSupDTO = new BenPubSupDTO(null, beneficiaryId, publicationId, false, null);
+        return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
+    }
+
+    public BenPubSupDTO findByBeneficiaryIdAndPublicationId(Long beneficiaryId, Long publicationId) {
         BenPubSupDTO benPubSupDTO = benPubSupMapper.toDTO(benPubSupRepository.findByBeneficiaryIdAndPublicationId(beneficiaryId, publicationId));
-        if (benPubSupDTO != null) {
-            benPubSupDTO.setSupplierId(supplierId);
-            return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
-        }
         return benPubSupDTO;
     }
+
 }

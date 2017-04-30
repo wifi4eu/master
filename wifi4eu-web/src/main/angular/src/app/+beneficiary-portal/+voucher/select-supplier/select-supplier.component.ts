@@ -4,7 +4,7 @@ import {SupplierApi} from "../../../shared/swagger/api/SupplierApi";
 import {BeneficiaryApi} from "../../../shared/swagger/api/BeneficiaryApi";
 import {LocalStorageService} from "angular-2-local-storage";
 
-@Component({templateUrl: 'select-supplier.component.html', providers: [SupplierApi, BeneficiaryApi]})
+@Component({selector: 'select-supplier-component', templateUrl: 'select-supplier.component.html', providers: [SupplierApi]})
 export class SelectSupplierComponent {
     private suppliers: SupplierDTOBase[];
     private selectedSuppliers: SupplierDTOBase[];
