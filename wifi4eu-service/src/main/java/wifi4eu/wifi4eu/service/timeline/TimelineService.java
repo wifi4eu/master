@@ -5,12 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.common.dto.model.CallDTO;
 import wifi4eu.wifi4eu.common.dto.model.TimelineDTO;
 import wifi4eu.wifi4eu.mapper.timeline.TimelineMapper;
 import wifi4eu.wifi4eu.repository.timeline.TimelineRepository;
-import wifi4eu.wifi4eu.service.call.CallService;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,8 +16,7 @@ import java.util.List;
  */
 @Service
 public class TimelineService {
-
-    Logger _log = LoggerFactory.getLogger(CallService.class);
+    private final static Logger _log = LoggerFactory.getLogger(TimelineService.class);
 
     @Autowired
     TimelineRepository timelineRepository;
@@ -38,9 +34,9 @@ public class TimelineService {
     }
 
     // @Transactional
-    public TimelineDTO deleteTimeline(Long timelineId) {
-        TimelineDTO timelineDTO = timelineMapper.toDTO(timelineRepository.findOne(timelineId));
-        timelineRepository.delete(timelineId);
+    public TimelineDTO deleteTimeline(TimelineDTO timelineDTO) {
+        _log.info("luciaaaaaaaaaaa:::::::::::::::::::::::::::::::::::::::" + timelineDTO.getTimelineId().toString());
+        timelineRepository.delete(timelineDTO.getTimelineId());
         return timelineDTO;
     }
 

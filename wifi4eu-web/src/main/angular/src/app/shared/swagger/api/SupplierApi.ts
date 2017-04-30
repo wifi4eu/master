@@ -40,6 +40,13 @@ export interface ISupplierApi {
      */
     createSupplier<T extends models.ResponseDTO>(body?: models.SupplierDTO, c?: ClassType<T>): Observable<T>;
     /**
+     * Get selected by supplierId
+     * 
+     * @param c 
+     * @param supplierId 
+     */
+    getSelectedMeBySupplierId<T extends models.LegalEntityDTO>(supplierId: number, c?: ClassType<T>): Observable<T[]>;
+    /**
      * Get supplier by supplierId
      * 
      * @param c 
@@ -104,6 +111,29 @@ export class SupplierApi implements ISupplierApi {
                         return undefined;
                     } else if (c) {
                         return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
+     * Get selected by supplierId
+     * 
+     * @param c
+     * @param supplierId 
+     */
+    getSelectedMeBySupplierId<T extends models.LegalEntityDTO>(supplierId: number, c?: ClassType<T>): Observable<T[]> {
+
+        return this.getSelectedMeBySupplierIdWithHttpInfo(supplierId)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserializeArray(c, response.text());
                     } else {
                         return response.json();
                     }
@@ -185,6 +215,40 @@ export class SupplierApi implements ISupplierApi {
             method: RequestMethod.Post,
             headers: headers,
             body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * Get selected by supplierId
+     * 
+     * @param supplierId 
+     */
+    private getSelectedMeBySupplierIdWithHttpInfo(supplierId: number ): Observable<Response> {
+        const path = this.basePath + `/supplier/selectedBy/${supplierId}`;
+//        .replace('{' + 'supplierId' + '}', String(supplierId));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'supplierId' is not null or undefined
+        if (supplierId === null || supplierId === undefined) {
+            throw new Error('Required parameter supplierId was null or undefined when calling getSelectedMeBySupplierId.');
+        }
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
             search: queryParameters,
             responseType: ResponseContentType.Json
         });
