@@ -57,10 +57,18 @@
           <groupId>javax.transaction</groupId>
           <artifactId>jta</artifactId>
       </dependency>
-
       <dependency>
           <groupId>jotm</groupId>
           <artifactId>jotm</artifactId>
+      </dependency>
+      <dependency>
+	  <groupId>javax.resource</groupId>
+	  <artifactId>connector-api</artifactId>
+	  <version>1.5</version>
+      </dependency>
+
+
+<!--
           <exclusions>
               <exclusion>
                   <groupId>javax.resource</groupId>
@@ -71,8 +79,7 @@
                   <artifactId>jta</artifactId>
               </exclusion>
           </exclusions>
-      </dependency>
-
+-->
       <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>wifi4eu-common</artifactId>
