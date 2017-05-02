@@ -199,4 +199,13 @@ public class BeneficiaryService {
         return benPubSupDTO;
     }
 
+    public BenPubSupDTO selectSupplier(Long supplierId, Long beneficiaryId, Long publicationId) {
+        BenPubSupDTO benPubSupDTO = benPubSupMapper.toDTO(benPubSupRepository.findByBeneficiaryIdAndPublicationId(beneficiaryId, publicationId));
+        if (benPubSupDTO != null) {
+            benPubSupDTO.setSupplierId(supplierId);
+            return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
+        }
+        return benPubSupDTO;
+    }
+
 }

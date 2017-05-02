@@ -51,7 +51,7 @@ export class VoucherComponent {
     }
 
     checkIfAlreadyApplied() {
-        this.beneficiaryApi.findIfApplied(this.user.userTypeId, this.currentCall.callId).subscribe(
+        this.beneficiaryApi.findByBeneficiaryIdAndPublicationId(this.user.userTypeId, this.currentCall.callId).subscribe(
             call => {
                 if (call != null) {
                     this.voucherCompetitionState = 4;
