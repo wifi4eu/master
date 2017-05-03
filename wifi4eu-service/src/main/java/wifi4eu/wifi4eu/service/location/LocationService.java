@@ -52,4 +52,10 @@ public class LocationService {
         return lauMapper.toDTOList(Lists.newArrayList(locationLauRepository.findByCountryCode(countryCode)));
     }
 
+    public List<LauDTO> getLauByNuts3(String nuts3){
+        if(_log.isDebugEnabled()) {
+            _log.debug("Get LAU from NUTS3: " + nuts3);
+        }
+        return lauMapper.toDTOList(Lists.newArrayList(locationLauRepository.findByNuts3(nuts3)));
+    }
 }

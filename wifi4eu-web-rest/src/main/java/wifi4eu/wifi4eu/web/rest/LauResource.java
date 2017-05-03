@@ -39,6 +39,16 @@ public class LauResource {
         return locationService.getLauByCountryCode(countryCode);
     }
 
+    @ApiOperation(value = "get Lau by NUTS3 i.e: ES513")
+    @RequestMapping(value = "/nuts3/{nuts3}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<LauDTO> findLauByNuts3(@PathVariable("nuts3") final String nuts3, final HttpServletResponse response) {
+        if (_log.isDebugEnabled()) {
+            _log.debug("findLauByNuts3: " + nuts3);
+        }
+        return locationService.getLauByNuts3(nuts3);
+    }
+
     @ApiOperation(value = "create LAU")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
