@@ -1,5 +1,24 @@
 <timeline-component></timeline-component>
 <div [ngSwitch]="voucherCompetitionState">
+    <!-- no competition created, display warning -->
+    <div *ngSwitchCase="-1">
+        <div class="ui-g-12">
+            <span class="ui-g-2"></span>
+            <ux-alert class="ui-g-8" styleClass="alert-info">{{ 'voucher.noCompetitionPart1' | translate}}<b>{{
+                'voucher.noCompetitionPart2' | translate}}</b></ux-alert>
+            <span class="ui-g-2"></span>
+        </div>
+        <div class="center">
+            <img src="assets/images/notification.png" alt="">
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-4"></div>
+            <div class="ui-g-4">
+                <p class="labelModal">{{ 'voucher.emailNotification' | translate}}</p>
+            </div>
+            <div class="ui-g-4"></div>
+        </div>
+    </div>
     <!-- no competition active, display timer -->
     <div *ngSwitchCase="0">
         <div class="ui-g-12 center">
@@ -14,7 +33,8 @@
         </div>
         <br>
         <div class="ui-g-12 center">
-            <timer-component *ngIf="!competitionOpen" (timerEvent)="beginCompetition()"></timer-component>
+            <timer-component (timerEvent)="beginCompetition()"
+                             [expirationTimestamp]="currentCall.startDate"></timer-component>
         </div>
     </div>
     <!-- competition Open, display apply button -->
@@ -96,4 +116,6 @@
             <span class="ui-g-4"></span>
         </div>
     </div>
+    <!-- user had already applied -->
+    <select-supplier-component *ngSwitchCase="4"></select-supplier-component>
 </div>

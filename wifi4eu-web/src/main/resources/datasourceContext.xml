@@ -15,9 +15,9 @@
     <context:load-time-weaver/>
     <tx:annotation-driven/>
 
-    <jee:jndi-lookup id="${jndi.datasource.name}" jndi-name="${jndi.datasource.name}"/>
+    <jee:jndi-lookup id="${jndi.datasource.name}" jndi-name="jdbc/${jndi.datasource.name}" expected-type="javax.sql.DataSource"/>
 
-    <bean id="transactionManager" class="org.springframework.transaction.jta.WebLogicJtaTransactionManager"/>
+    <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager"/>
 
     <bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -36,5 +36,4 @@
 
     <jpa:repositories base-package="wifi4eu.wifi4eu.repository"/>    
 
-  
 </beans>

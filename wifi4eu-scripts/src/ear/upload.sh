@@ -8,6 +8,8 @@ EAR=${TARGET}/wifi4eu.ear
 if [ ! -f ${PEM} ]; then
   echo "[INFO] Copying wifi4eu-test.pem into ~/.ssh directory"
   cp ${DIR}/wifi4eu-test.pem ~/.ssh/
+  echo "[INFO] Changing permissions to wifi4eu-test.pem"
+  chmod 400 ~/.ssh//wifi4eu-test.pem
   echo "[INFO] Adding rules to ~/.ssh/config"
   echo -e "Host *wifi4eu.everisdigitalchannels.com\nIdentityFile ~/.ssh/wifi4eu-test.pem\nUser ec2-user" >> ~/.ssh/config
 fi
@@ -23,6 +25,7 @@ while kill -0 $PID 2> /dev/null; do
     sleep 1
 done
 printf "]"
+echo -e "\n"
 OUT=$?
 if [ $OUT = 0 ]; then
     echo "[INFO] Successfully uploaded wifi4eu.ear"

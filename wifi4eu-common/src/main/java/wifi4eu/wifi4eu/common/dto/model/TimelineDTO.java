@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 public class TimelineDTO {
 
@@ -14,7 +13,7 @@ public class TimelineDTO {
     public TimelineDTO() {
     }
 
-    public TimelineDTO(Long timelineId, Long startDate, Long endDate, String event, String label, String subLabel, String styleClass) {
+    public TimelineDTO(Long timelineId, Long startDate, Long endDate, String event) {
         this.timelineId = timelineId;
         this.startDate = startDate;
         this.endDate = endDate;

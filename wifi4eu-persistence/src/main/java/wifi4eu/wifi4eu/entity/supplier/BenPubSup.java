@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class BenPubSup {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "BENPUBSUP_ID")
     private Long benPubSubId;
 
