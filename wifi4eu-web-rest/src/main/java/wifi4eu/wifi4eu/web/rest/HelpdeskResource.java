@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,8 @@ import java.util.List;
 public class HelpdeskResource {
 
     Logger _log = LoggerFactory.getLogger(HelpdeskResource.class);
+
+    private static final String CSV_FILE_NAME = "issues.csv";
 
     @Autowired
     private HelpdeskService helpdeskService;
@@ -79,5 +82,15 @@ public class HelpdeskResource {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);
         }
+    }
+
+    @ApiOperation(value = "Get helpdesk issue by issueId")
+    @RequestMapping(value = "/export")
+    @ResponseBody
+    public FileSystemResource exportHelpdeskIssues(final HttpServletResponse response) {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename="issues.csv");
+
+        return new FileSystemResource(helpdeskService.exportHelpdeskIssues());
     }
 }
