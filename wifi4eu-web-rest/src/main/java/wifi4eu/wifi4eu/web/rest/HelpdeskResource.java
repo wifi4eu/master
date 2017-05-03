@@ -37,10 +37,6 @@ public class HelpdeskResource {
         if (issues != null) {
             for (int i = 0; i < issues.size(); i++) {
                 issues.get(i).setComments(helpdeskService.getHelpdeskIssueComments(issues.get(i).getIssueId()));
-//                List<HelpdeskCommentDTO> comments = helpdeskService.getHelpdeskIssueComments(issues.get(i).getIssueId());
-//                if (comments != null) {
-//                    issues.get(i).setComments(comments);
-//                }
             }
         }
         return issues;
@@ -65,6 +61,20 @@ public class HelpdeskResource {
         try {
             HelpdeskDTO resHelpdesk = helpdeskService.createHelpdeskIssue(helpdeskDTO);
             return new ResponseDTO(true, resHelpdesk, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+    }
+
+    @ApiOperation(value = "create helpdesk comment")
+    @RequestMapping(value = "/comment", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO createHelpdeskComment(@RequestBody final HelpdeskCommentDTO helpdeskCommentDTO, final HttpServletResponse response) {
+        try {
+            HelpdeskCommentDTO resHelpdeskComment = helpdeskService.createHelpdeskComment(helpdeskCommentDTO);
+            return new ResponseDTO(true, resHelpdeskComment, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);

@@ -43,6 +43,10 @@ public class HelpdeskService {
         return helpdeskMapper.toDTO(helpdeskRepository.save(helpdeskMapper.toEntity(helpdeskDTO)));
     }
 
+    public HelpdeskCommentDTO createHelpdeskComment(HelpdeskCommentDTO helpdeskCommentDTO) {
+        return helpdeskCommentMapper.toDTO(helpdeskCommentRepository.save(helpdeskCommentMapper.toEntity(helpdeskCommentDTO)));
+    }
+
     public List<HelpdeskCommentDTO> getHelpdeskIssueComments(Long issueId) {
         return helpdeskCommentMapper.toDTOList(Lists.newArrayList(helpdeskCommentRepository.findByIssueId(issueId)));
     }
