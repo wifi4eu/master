@@ -222,5 +222,8 @@
   "setAsResolved": "Set as Resolved",
   "keepAsPending": "Keep as Pending",
   "login.title":"Login",
+  "voucher.noCompetitionPart1":"Your identity has ",
+  "voucher.noCompetitionPart2":"to be verified from your Member State",
+  "voucher.emailNotification":"You will soon receive an e-mail notification as soon as the process is completed."
   "button.addInstallationInfo": "Add installation information"
 }

@@ -222,5 +222,7 @@
   "setAsResolved": "Marcar como resuelto",
   "keepAsPending": "Dejar pendiente",
   "login.title": "Entrar",
-  "button.addInstallationInfo": "Añadir información de instalación"
+  "voucher.noCompetitionPart1": "Tu identidad tiene que",
+  "voucher.noCompetitionPart2": "ser verificada por su Miembro de Estado",
+  "voucher.emailNotification":"Recibirás un email tan pronto como el proceso esté completado."
 }
