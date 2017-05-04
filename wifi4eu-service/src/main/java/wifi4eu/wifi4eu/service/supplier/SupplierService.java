@@ -21,6 +21,7 @@ import wifi4eu.wifi4eu.repository.supplier.InstallationRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.security.UserService;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
 
 import java.util.Date;
 import java.util.List;
@@ -109,9 +110,13 @@ public class SupplierService {
 
             //create supplier entity
             //Supplier sup = supplierMapper.toEntity(supplierDTO);
-            //Supplier sup2 = new Supplier();
+            Supplier sup2 = new Supplier();
+            sup2.setSupplierId(supplierDTO.getSupplierId());
+            sup2.setName(supplierDTO.getName());
 
-            _log.info("");
+            _log.info("Supplier guardado: ");
+            _log.info(sup2.getName());
+
             SupplierDTO perSupplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
 
             //link supplier and user and store user

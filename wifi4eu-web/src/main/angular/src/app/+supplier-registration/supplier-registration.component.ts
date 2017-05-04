@@ -94,8 +94,4 @@ export class SupplierRegistrationComponent {
             reader.readAsBinaryString(event);
         }
     }
-
-    saveBinaryString(reader : FileReader) {
-        
-    }
 }
