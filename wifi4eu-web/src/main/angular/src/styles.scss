@@ -810,9 +810,16 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   color: $dark-blue;
 }
 
-s
 .labelForgot {
   margin-top: 2em;
+}
+
+.ui-fileupload button[icon="fa-upload"], .ui-fileupload button[icon="fa-close"] {
+  display: none;
+}
+
+.ui-fileupload .ui-fileupload-buttonbar {
+  text-align: right;
 }
 
 .supplier-portalButton {

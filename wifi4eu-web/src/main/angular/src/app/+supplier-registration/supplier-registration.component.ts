@@ -18,6 +18,8 @@ export class SupplierRegistrationComponent {
 
     private provinces: NutsDTO[][];
 
+    private supplierTempLogo : any;
+
     constructor() {
         this.supplierDTO = new SupplierDTOBase();
         this.supplierDTO.nutsIds = '';
@@ -72,5 +74,24 @@ export class SupplierRegistrationComponent {
 
     onFailure(value: boolean) {
         this.failureRegistration = value;
+    }
+
+    onLogoSubmit(event : any) {
+        console.log("event emitter onlogosubmit");
+        if (event) {
+            console.log(event);
+            this.supplierTempLogo = event;
+
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                console.log("on load savin to DTO");
+                console.log(typeof reader.result);
+                console.log(reader.result);
+
+                this.supplierDTO.binaryLogo = reader.result;
+            };
+            
+            reader.readAsBinaryString(event);
+        }
     }
 }

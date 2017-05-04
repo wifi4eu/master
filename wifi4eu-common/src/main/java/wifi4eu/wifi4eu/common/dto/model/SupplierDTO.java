@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.common.dto.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.sql.Blob;
 
 public class SupplierDTO implements Serializable {
     private Long supplierId;
@@ -21,11 +22,12 @@ public class SupplierDTO implements Serializable {
     private Long createDate;
     private String nutsIds;
     //private List<NutsDTO> nuts;
+    private String binaryLogo;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds) {
+    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds, String binaryLogo) {
         this.supplierId = supplierId;
         this.name = name;
         this.address = address;
@@ -42,6 +44,7 @@ public class SupplierDTO implements Serializable {
         this.legalCheck2 = legalCheck2;
         this.createDate = createDate;
         this.nutsIds = nutsIds;
+        this.binaryLogo = binaryLogo;
     }
 
     public Long getSupplierId() {
@@ -170,5 +173,13 @@ public class SupplierDTO implements Serializable {
 
     public void setNutsIds(String nutsIds) {
         this.nutsIds = nutsIds;
+    }
+
+    public String getBinaryLogo() {
+        return binaryLogo;
+    }
+
+    public void setLogo(String binaryLogo) {
+        this.binaryLogo = binaryLogo;
     }
 }
