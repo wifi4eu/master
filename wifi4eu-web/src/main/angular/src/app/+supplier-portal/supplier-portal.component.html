@@ -4,7 +4,7 @@
     <div *ngSwitchCase="0">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
-            <h2 class="ui-g-8">{{ 'voucher.timeleft.title' | translate}}</h2>
+            <h2 class="ui-g-8 beneficiaryMayor">{{ 'voucher.timeleft.title' | translate}}</h2>
             <span class="ui-g-2"></span>
         </div>
         <div class="ui-g-12 center">
@@ -17,6 +17,35 @@
             <timer-component *ngIf="!competitionOpen" (timerEvent)="beginCompetition()"></timer-component>
         </div>
     </div>
+
+    <hr class="beneficiaryHr">
+    <div class="ui-g-12 center">
+        <span class="ui-g-2"></span>
+        <h2 class="ui-g-8 beneficiaryMayor">{{ 'voucher.whats.next' | translate}}</h2>
+        <span class="ui-g-2"></span>
+    </div>
+    <div class="ui-g-12 center">
+        <span class="ui-g-2"></span>
+        <span class="ui-g-8">{{ 'voucher.steps' | translate}}</span>
+        <span class="ui-g-2"></span>
+    </div>
+    <div class="ui-g-12 center">
+        <div class="ui-g-3"></div>
+        <div class="ui-g-2">
+            <img src="assets/images/apply.png" alt="">
+            <p><span class="dotSteps">1.</span>{{ 'voucher.supplierStep1' | translate}}</p>
+        </div>
+        <div class="ui-g-2">
+            <img src="assets/images/supplier.png" alt="">
+            <p><span class="dotSteps">2.</span>{{ 'voucher.supplierStep2' | translate}}</p>
+        </div>
+        <div class="ui-g-2">
+            <img src="assets/images/notificationVoucher.png" alt="">
+            <p><span class="dotSteps">3.</span>{{ 'voucher.supplierStep3' | translate}}</p>
+        </div>
+        <div class="ui-g-3"></div>
+
+    </div>
     <!-- competition Open, display info -->
     <div *ngSwitchCase="1">
         <div class="ui-g-12 center">
@@ -27,7 +56,7 @@
         <br>
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
-            <h2 class="ui-g-8">{{ 'voucher.competition' | translate}}</h2>
+            <h2 class="ui-g-8 beneficiaryMayor">{{ 'voucher.competition' | translate}}</h2>
             <span class="ui-g-2"></span>
         </div>
         <div class="ui-g-12 center">
