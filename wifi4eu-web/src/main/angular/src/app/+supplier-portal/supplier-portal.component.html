@@ -33,7 +33,7 @@
         </div>
         <br>
         <div class="ui-g-12 center">
-            <timer-component *ngIf="!competitionOpen" (timerEvent)="beginCompetition()"></timer-component>
+            <timer-component *ngIf="!competitionOpen" (timerEvent)="beginCompetition()" [expirationTimestamp]="currentCall.startDate"></timer-component>
         </div>
     </div>
 

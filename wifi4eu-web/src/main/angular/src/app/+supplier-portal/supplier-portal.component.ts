@@ -5,7 +5,7 @@ import {UserDTO} from "../shared/swagger/model/UserDTO";
 import {LocalStorageService} from "angular-2-local-storage";
 import {CallApi} from "../shared/swagger/api/CallApi";
 
-@Component({templateUrl: 'supplier-portal.component.html', providers:  [BeneficiaryApi, CallApi]})
+@Component({templateUrl: 'supplier-portal.component.html', providers: [BeneficiaryApi, CallApi]})
 export class SupplierPortalComponent {
     private voucherCompetitionState: number;
     private currentCall: CallDTOBase;
@@ -28,7 +28,7 @@ export class SupplierPortalComponent {
         );
     }
 
-     beginCompetition() {
+    beginCompetition() {
         this.voucherCompetitionState = 1;
     }
 }

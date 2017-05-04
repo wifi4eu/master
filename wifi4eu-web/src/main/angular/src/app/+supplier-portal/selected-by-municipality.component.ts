@@ -17,14 +17,18 @@ export class SelectedByMunicipalityComponent {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
 
-        this.supplierApi.getSelectedMeBySupplierId(1).subscribe(
-            data => {
-                this.municipalities = data;
-            },
-            error => {
-                console.log(error);
-            }
-        );
+        if (this.user != null) {
+            this.supplierApi.getSelectedMeBySupplierId(this.user.userTypeId).subscribe(
+                data => {
+                    this.municipalities = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+        } else {
+            this.municipalities = [];
+        }
     }
 
 
