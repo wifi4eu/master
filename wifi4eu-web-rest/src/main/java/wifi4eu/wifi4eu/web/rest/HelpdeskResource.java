@@ -89,7 +89,7 @@ public class HelpdeskResource {
     @ResponseBody
     public FileSystemResource exportHelpdeskIssues(final HttpServletResponse response) {
         response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename="issues.csv");
+        response.setHeader("Content-Disposition", "attachment; filename='"+CSV_FILE_NAME+"'");
 
         return new FileSystemResource(helpdeskService.exportHelpdeskIssues());
     }
