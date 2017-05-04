@@ -224,9 +224,11 @@
   "login.title": "Entrar",
   "voucher.noCompetitionPart1": "Tu identidad tiene que",
   "voucher.noCompetitionPart2": "ser verificada por su Miembro de Estado",
-  "voucher.emailNotification":"Recibirás un email tan pronto como el proceso esté completado.",
-  "voucher.supplierStep1": "Los alcaldes solicitarán un bono",
-  "voucher.supplierStep2": "Proveedor seleccionado por el alcalde",
-  "voucher.supplierStep3": "Comprueba si has sido seleccionado"
-
+  "voucher.emailNotification": "Recibirás un email tan pronto como el proceso esté completado.",
+  "whats.next": "¿Qué es lo siguiente?",
+  "voucher.steps": "Deberías seguir éstos pasos:",
+  "voucher.step1": "Aplicar para vale",
+  "voucher.step2": "Seleccionar un distribuidor",
+  "voucher.step3": "Comprobación de la isntalación",
+  "voucher.step4": "Pago del vale"
 }
