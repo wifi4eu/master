@@ -60,8 +60,8 @@ public class Supplier {
     @Column(name = "NUTS_IDS")
     private String nutsIds;
 
-    //@Column(name = "LOGO")
-    //private Blob logo;
+    @Column(name = "LOGO")
+    private String logo;
 
     /*
     @ManyToMany(cascade = CascadeType.ALL)
@@ -219,11 +219,11 @@ public class Supplier {
         this.nutsIds = nutsIds;
     }
 
-    /*public Blob getLogo() {
+    public String getLogo() {
         return logo;
-    }*/
+    }
 
-    /*public void setLogo(Blob logo) {
+    public void setLogo(String logo) {
         this.logo = logo;
-    }*/
+    }
 }
