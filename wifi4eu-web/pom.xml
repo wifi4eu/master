@@ -85,7 +85,7 @@
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
                                         <argument>/c</argument>
-                                        <argument>"ng build"</argument>
+                                        <argument>"ng build --base-href /wifi4eu/"</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
