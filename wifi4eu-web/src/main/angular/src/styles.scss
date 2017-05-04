@@ -453,7 +453,7 @@ body {
 
 .profileData {
   font-weight: bold;
-  margin-top: 0;
+  //margin-top: 0;
 }
 
 .beneficiaryProfileI {
@@ -813,4 +813,14 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 s
 .labelForgot {
   margin-top: 2em;
+}
+
+.supplier-portalButton {
+  width: 21em;
+  font-size: 1em;
+}
+
+.dotSteps{
+  font-weight: bold;
+  color: $dark-blue;
 }

@@ -31,10 +31,11 @@
                         <p>{{ 'email.label' | translate }}</p>
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
+                        <p class="profileData">{{selectedSupplier.contactName}}</p>
+                        <p class="profileData">{{selectedSupplier.contactSurname}}</p>
+                        <p class="profileData">
+                            {{selectedSupplier.contactPhonePrefix}} {{selectedSupplier.contactPhoneNumber}}</p>
+                        <p class="profileData">{{selectedSupplier.contactEmail}}</p>
                     </div>
                 </div>
                 <hr class="beneficiaryHr">
@@ -62,10 +63,10 @@
                         <p>{{ 'logo.label' | translate }}</p>
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
+                        <p class="profileData">{{selectedSupplier.name}}</p>
+                        <p class="profileData">{{selectedSupplier.address}}</p>
+                        <p class="profileData">{{selectedSupplier.vat}}</p>
+                        <p class="profileData">{{selectedSupplier.bic}}</p>
                         <p class="profileData"></p>
                     </div>
                 </div>
@@ -90,8 +91,8 @@
 
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
+                        <p class="profileData">{{selectedSupplier.nutsIds}}</p>
+                        <p class="profileData">{{selectedNuts.name1}}</p>
 
                     </div>
                 </div>

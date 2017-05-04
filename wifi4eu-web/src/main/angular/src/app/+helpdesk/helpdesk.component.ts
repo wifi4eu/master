@@ -10,7 +10,6 @@ export class HelpdeskComponent {
     private issues: HelpdeskDTO[];
     private selectedIssues: HelpdeskDTO[];
     private issueSelected: HelpdeskDTOBase;
-    private issueSelectedOriginal: HelpdeskDTO;
     private display: boolean;
 
 

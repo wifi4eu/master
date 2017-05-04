@@ -27,10 +27,11 @@
     </p-dataTable>
     <div class="right">
         <button type="submit" class="btn btn-primary" (click)="resolveIssues()">{{ 'resolve' | translate }}</button>
+        <button type="button" class="btn btn-primary" (click)="createNewComment()">Click</button>
     </div>
     <br>
     <!--MODAL Displayed -->
-    <p-dialog [(visible)]="display" [modal]="true" [resizable]="false" [draggable]="false" [closable]="false"
+    <p-dialog [(visible)]="display" [modal]="true" [draggable]="false" [closable]="false"
               [closeOnEscape]="false">
         <button type="button" class="closeButton" (click)="cancel()">X</button>
         <h2 style="font-weight: bold;color: #254872; margin-bottom: 10px">{{ 'issueDetails' | translate }}</h2>
@@ -56,20 +57,30 @@
                 <span class="ui-g-6"></span>
             </div>
             <div class="form-group">
-                <label class="ui-g-12" for="issueSummary" style="margin: 0;">{{ 'issueSummary' | translate }}:</label>
+                <label class="ui-g-12" for="issueSummary" style="margin: 0;">{{ 'issueSummary' | translate
+                    }}:</label>
                 <textarea id="issueSummary" class="ui-g-12" disabled [(ngModel)]="issueSelected.issueSummary">{{issueSelected.issueSummary}}</textarea>
             </div>
-            <div class="form-group">
-                <label class="ui-g-12" for="memberStateComments" style="margin: 0;">{{ 'memberStateComments' | translate
-                    }}:</label>
-                <textarea id="memberStateComments" class="ui-g-12" [(ngModel)]="issueSelected.memberStateComments">{{issueSelected.memberStateComments}}</textarea>
-            </div>
+            <!--<div class="form-group">-->
+            <!--<label class="ui-g-12" for="memberStateComments" style="margin: 0;">{{ 'memberStateComments' |-->
+            <!--translate}}:</label>-->
+            <!--<div *ngFor="let comment of issueSelected.comments; let i = index">-->
+            <!--<textarea class="ui-g-12" disabled [(ngModel)]="issueSelected.comments[i].comment">{{comment.comment}}</textarea>-->
+            <!--</div>-->
+            <!--</div>-->
         </div>
+        <h2 style="font-weight: bold;color: #254872; margin-bottom: 10px">{{ 'comments' | translate }}</h2>
         <div class="ui-g-12" style="background: #F5F5F5;border: 1px solid #C1C1C1;">
-            <div class="form-group">
-                <label class="ui-g-12" for="dgConnectComments" style="margin: 0;">{{ 'dgConnectComments' | translate
-                    }}:</label>
-                <textarea id="dgConnectComments" class="ui-g-12" [(ngModel)]="issueSelected.dgConnectComments">{{issueSelected.dgConnectComments}}</textarea>
+            <div class="form-group ui-g-12" *ngFor="let comment of issueSelected.comments; let i = index">
+                <!--<label class="ui-g-12" for="dgConnectComments" style="margin: 0;">{{ 'dgConnectComments' | translate }}:</label>-->
+                <div style="padding-bottom: 0;">
+                    <span class="ui-g-12">{{ 'by' | translate }}: <b>{{comment.type}}</b></span>
+                </div>
+                <div style="padding-bottom: 0;">
+                    <span class="ui-g-12">{{ 'dateandtime' | translate }}: <b>{{comment.commentDate}}</b></span>
+                </div>
+                <textarea class="ui-g-12" disabled>{{comment.comment}}</textarea>
+                <br><br>
             </div>
         </div>
         <div class="ui-g-12" style="margin-top: 20px;">

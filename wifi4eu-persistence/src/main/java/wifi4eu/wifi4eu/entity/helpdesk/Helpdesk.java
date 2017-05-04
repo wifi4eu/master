@@ -38,16 +38,10 @@ public class Helpdesk {
     @Column(name = "ISSUE_SUMMARY")
     private String issueSummary;
 
-    @Column(name = "MEMBER_STATE_COMMENTS")
-    private String memberStateComments;
-
-    @Column(name = "DG_CONNECT_COMMENTS")
-    private String dgConnectComments;
-
     public Helpdesk() {
     }
 
-    public Helpdesk(Long issueId, String portal, String topic, String memberState, Date date, String assignedTo, String status, String from, String issueSummary, String memberStateComments, String dgConnectComments) {
+    public Helpdesk(Long issueId, String portal, String topic, String memberState, Date date, String assignedTo, String status, String from, String issueSummary) {
         this.issueId = issueId;
         this.portal = portal;
         this.topic = topic;
@@ -57,8 +51,6 @@ public class Helpdesk {
         this.status = status;
         this.from = from;
         this.issueSummary = issueSummary;
-        this.memberStateComments = memberStateComments;
-        this.dgConnectComments = dgConnectComments;
     }
 
     public Long getIssueId() {
@@ -131,21 +123,5 @@ public class Helpdesk {
 
     public void setIssueSummary(String issueSummary) {
         this.issueSummary = issueSummary;
-    }
-
-    public String getMemberStateComments() {
-        return memberStateComments;
-    }
-
-    public void setMemberStateComments(String memberStateComments) {
-        this.memberStateComments = memberStateComments;
-    }
-
-    public String getDgConnectComments() {
-        return dgConnectComments;
-    }
-
-    public void setDgConnectComments(String dgConnectComments) {
-        this.dgConnectComments = dgConnectComments;
     }
 }
