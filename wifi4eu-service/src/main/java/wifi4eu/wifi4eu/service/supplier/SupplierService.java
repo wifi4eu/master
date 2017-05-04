@@ -93,6 +93,7 @@ public class SupplierService {
         UserDTO persUserDTO = getUserByEmail(email);
 
         if (persUserDTO == null) {
+            _log.info("Nom: " + supplierDTO.getName());
 
             // create supplier user
             UserDTO userDTO = new UserDTO();
@@ -107,6 +108,10 @@ public class SupplierService {
 
 
             //create supplier entity
+            //Supplier sup = supplierMapper.toEntity(supplierDTO);
+            //Supplier sup2 = new Supplier();
+
+            _log.info("");
             SupplierDTO perSupplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
 
             //link supplier and user and store user
@@ -115,7 +120,7 @@ public class SupplierService {
 
             //send activate account mail
 
-            userService.sendActivateAccountMail(userDTO);
+            //userService.sendActivateAccountMail(userDTO);
 
             _log.info("[f] create Supplier");
 

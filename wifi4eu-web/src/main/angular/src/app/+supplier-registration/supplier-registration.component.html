@@ -6,7 +6,8 @@
             <supplier-registration-step1-component *ngIf="active[0]"
                                                    [supplierDTO]="supplierDTO"
                                                    (onNext)="onNext($event)"
-                                                   (onBack)="onBack($event)">
+                                                   (onBack)="onBack($event)"
+                                                   (onLogoSubmit)="onLogoSubmit($event)">
             </supplier-registration-step1-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
@@ -46,6 +47,7 @@
                                                    [nuts0]="nuts0"
                                                    [nuts3]="nuts3"
                                                    [selection]="selection"
+                                                   [supplierTempLogo]="supplierTempLogo"
                                                    (onNext)="onNext($event)"
                                                    (gotoStep)="gotoStep($event)"
                                                    (onSuccess)="onSuccess($event)"

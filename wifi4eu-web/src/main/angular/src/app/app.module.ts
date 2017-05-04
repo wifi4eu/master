@@ -23,7 +23,6 @@ import {AppGuard} from "./app.guard";
 import {LocalStorageModule} from 'angular-2-local-storage';
 import {SharedService} from "./shared/shared.service";
 
-
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
 }

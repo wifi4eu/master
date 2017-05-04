@@ -96,15 +96,14 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
-                        <!--<label class="label floatLeft" for="companyLogo">{{ 'company.logo' | translate }}</label>-->
-                        <!--<p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)"-->
-                        <!--multiple="multiple" accept="image/*" maxFileSize="1000000">-->
-                        <!--<ng-template pTemplate type="content">-->
-                        <!--<ul *ngIf="uploadedFiles.length">-->
-                        <!--<li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>-->
-                        <!--</ul>-->
-                        <!--</ng-template>-->
-                        <!--</p-fileUpload>-->
+                        <label class="label floatLeft" for="companyLogo">{{ 'company.logo' | translate }}</label>
+                        <p-fileUpload name="demo[]" (onSelect)="onSelect($event)" accept="image/*" maxFileSize="1000000">
+                            <template pTemplate type="content">
+                                <ul *ngIf="uploadedFiles.length">
+                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                </ul>
+                            </template>
+                        </p-fileUpload>
                         <div class="ui-lg-3"></div>
                     </div>
                 </div>

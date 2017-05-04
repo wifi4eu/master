@@ -4,6 +4,7 @@ import wifi4eu.wifi4eu.entity.location.Nuts;
 
 import javax.persistence.*;
 import java.util.List;
+import java.sql.Blob;
 
 @Entity
 @Table(name = "SUPP_SUPPLIER_T")
@@ -58,6 +59,9 @@ public class Supplier {
 
     @Column(name = "NUTS_IDS")
     private String nutsIds;
+
+    //@Column(name = "LOGO")
+    //private Blob logo;
 
     /*
     @ManyToMany(cascade = CascadeType.ALL)
@@ -214,4 +218,12 @@ public class Supplier {
     public void setNutsIds(String nutsIds) {
         this.nutsIds = nutsIds;
     }
+
+    /*public Blob getLogo() {
+        return logo;
+    }*/
+
+    /*public void setLogo(Blob logo) {
+        this.logo = logo;
+    }*/
 }
