@@ -34,7 +34,7 @@ export class SupplierProfileComponent {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
         if (this.user != null) {
-            this.supplierApi.getSupplierById(this.user.userId).subscribe(
+            this.supplierApi.getSupplierById(this.user.userTypeId).subscribe(
                 response => {
                     this.selectedSupplier = response;
 
