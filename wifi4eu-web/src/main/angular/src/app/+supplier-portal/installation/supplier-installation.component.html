@@ -45,3 +45,91 @@
         <div class="ui-g-6"></div>
     </div>
 </div>
+
+
+<!--MODAL Displayed -->
+    <p-dialog [(visible)]="displayModal" [modal]="true" [draggable]="false" [closable]="false"
+              [closeOnEscape]="false">
+        <button type="button" class="closeButton" (click)="closeModal()">X</button>
+        <h2 style="font-weight: bold;color: #254872; margin-bottom: 10px; text-align:center">{{ 'button.addInstallationInfo' | translate }}</h2>
+        <div class="ui-g-12" style="background: #F5F5F5;border: 1px solid #C1C1C1; margin-bottom: 20px;">
+            <form (ngSubmit)="onSubmit()" #installationForm="ngForm">
+                <div class="ui-g">
+                    <div class="ui-g-12" style="padding-bottom:0.2em !important;">
+                        <div class="form-group">
+                            <div class="ui-g">
+                                <div class="ui-g-1"></div>
+                                <div class="ui-g-6">
+                                    <div class="form-group">
+                                        <label class="labelModal left" for="accessPoint">{{ 'access.point' | translate }}</label>
+                                        <input type="text" [(ngModel)]="newAccessPoint.name"
+                                            class="form-control beneficiaryProfileI"
+                                            name="name"
+                                            ngcontrol="name"
+                                            #name="ngModel" required>
+                                    </div> 
+                                </div> 
+                                <div class="ui-g-1"></div>        
+                            </div>
+                            <div class="ui-g">
+                                <div class="ui-g-1"></div>
+                                <div class="ui-g-6">
+                                    <div class="form-group">
+                                        <label class="labelModal left" for="serialNumber">{{ 'sn.countdown' | translate }}</label>
+                                        <input type="text" [(ngModel)]="newAccessPoint.serialNumber"
+                                            class="form-control beneficiaryProfileI"
+                                            name="serialNumber"
+                                            ngcontrol="serialNumber"
+                                            #serialNumber="ngModel" required>
+                                    </div>  
+                                </div> 
+                                <div class="ui-g-1"></div>           
+                            </div>
+                            <div class="ui-g">
+                                <div class="ui-g-1"></div>
+                                <div class="ui-g-6">
+                                    <div class="form-group">
+                                        <label class="labelModal left" for="productName">{{ 'product.number' | translate }}</label>
+                                        <input type="text" [(ngModel)]="newAccessPoint.productName"
+                                            class="form-control beneficiaryProfileI"
+                                            name="productName"
+                                            ngcontrol="productName"
+                                            #productName="ngModel" required>
+                                    </div>    
+                                </div> 
+                                <div class="ui-g-1"></div>   
+                            </div>
+                            <div class="ui-g">
+                                <div class="ui-g-1"></div>
+                                <div class="ui-g-6">
+                                    <div class="form-group">
+                                        <label class="labelModal left" for="modelNumber">{{ 'product.model' | translate }}</label>
+                                        <input type="text" [(ngModel)]="newAccessPoint.modelNumber"
+                                            class="form-control beneficiaryProfileI"
+                                            name="modelNumber"
+                                            ngcontrol="modelNumber"
+                                            #modelNumber="ngModel" required>
+                                    </div> 
+                                </div> 
+                                <div class="ui-g-1"></div>            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6" style="text-align: center !important">
+                        <button type="button" (click)="closeModal()" class="btn btn-primary publish-button">{{
+                            'cancel.button' |
+                            translate }}
+                        </button>
+                        <button type="button" (click)="createInstallation()" class="btn btn-primary publish-button"
+                                [disabled]="!installationForm.form.valid">
+                            {{ 'change' | translate }}
+                        </button>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+            </form>
+        </div>
+    </p-dialog>
