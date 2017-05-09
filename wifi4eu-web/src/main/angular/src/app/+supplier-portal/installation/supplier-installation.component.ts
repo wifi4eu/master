@@ -10,10 +10,13 @@ export class SupplierInstallationComponent {
     private installation: InstallationDTOBase;
     private selectedAccesPoints: AccessPointDTOBase[];
     private installationId: number;
-    private user;
+    private user: string;
+    private displayModal: boolean;
+    private newAccessPoint: AccessPointDTOBase;
 
     constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi) {
         // The 'installationId' is hardcoded right now, but we should delete this next statement when we can.
+        this.newAccessPoint = new AccessPointDTOBase();
         this.installationId = 4;
         this.installation = new InstallationDTOBase();
         let u = this.localStorage.get('user');
@@ -30,6 +33,26 @@ export class SupplierInstallationComponent {
                 }
             );
         }
+    }
+    addNewElement(){
+        this.displayModal = true;
+    }
+
+    closeModal(){
+        this.displayModal = false;
+        this.newAccessPoint = new AccessPointDTOBase();
+    }
+
+    createInstallation(){
+        this.supplierApi.createAccessPoint(this.newAccessPoint).subscribe(
+            response => {
+                this.installation.accessPoints.push(response);
+                this.displayModal = false;
+                this.newAccessPoint = new AccessPointDTOBase();
+            }, error => {
+                console.log(error);
+            }
+        );
     }
 }
 
