@@ -1,14 +1,15 @@
 package wifi4eu.wifi4eu.service.security;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
@@ -50,15 +51,14 @@ public class UserService {
     @Autowired
     MailService mailService;
 
-    public ResponseDTO login(UserDTO userDTO) {
+    public UserDTO login(UserDTO userDTO) {
 
         UserDTO persUserDTO = getUserByEmail(userDTO.getEmail());
 
         if (persUserDTO != null && userDTO.getPassword().equals(persUserDTO.getPassword())) {
-
-            return new ResponseDTO(true, persUserDTO, null);
+            return persUserDTO;
         } else {
-            return new ResponseDTO(false, null, new ErrorDTO(0, "can't login"));
+            throw new UsernameNotFoundException("Can't login");
         }
     }
 
