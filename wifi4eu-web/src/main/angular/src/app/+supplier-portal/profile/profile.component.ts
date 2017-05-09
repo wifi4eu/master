@@ -84,14 +84,18 @@ export class SupplierProfileComponent {
         this.display = true;
     }
 
+    emptyModal(){
+        this.selectedSupplierData = Object.assign({}, this.supplierData);
+        console.log("SE EJECUTA EMPTYMODEL");
+    }
+
     displayContactModal() {
         this.displayContact = true;
-        this.selectedSupplierData = Object.assign({}, this.supplierData);
+        
     }
 
     displayCompanyModal() {
         this.displayCompany = true;
-        this.selectedSupplierData = Object.assign({}, this.supplierData);
     }
 
     displayLegalModal() {
@@ -101,7 +105,6 @@ export class SupplierProfileComponent {
     }
 
     closeModal() {
-        this.selectedSupplierData = Object.assign({}, this.supplierData);
         this.display = false;
         this.displayLegal = false;
         this.displayCompany = false;

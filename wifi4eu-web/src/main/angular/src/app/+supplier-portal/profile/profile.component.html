@@ -16,7 +16,7 @@
                         <p class="beneficiaryMayor">{{ 'contact.person' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="displayContactModal()" class="edit"> <i class="fa fa-pencil"
+                        <a (click)="displayContactModal(); emptyModal()" class="edit"> <i class="fa fa-pencil"
                                                                             aria-hidden="true"></i> {{ 'edit.button' |
                             translate
                             }}
@@ -48,7 +48,7 @@
                         <p class="beneficiaryMayor">{{ 'company.details' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="displayCompanyModal()"><i class="fa fa-pencil"
+                        <a (click)="displayCompanyModal(); emptyModal()"><i class="fa fa-pencil"
                                                               aria-hidden="true"></i> {{ 'edit.button' | translate }}
                         </a>
                     </div>
@@ -79,7 +79,7 @@
                         <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="displayLegalModal()"><i class="fa fa-pencil"
+                        <a (click)="displayLegalModal(); emptyModal()"><i class="fa fa-pencil"
                                                             aria-hidden="true"></i> {{ 'edit.button' | translate }}</a>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="false" [closeOnEscape]="false">
-        <button type="button" (click)="closeModal()" class="closeButton">X</button>
+        <button type="button" (click)="closeModal(); emptyModal()" class="closeButton">X</button>
         <p class="beneficiaryMayorModal">{{'beneficiaryProfile.password' | translate }}</p>
         <form #profileForm="ngForm">
             <div class="form-group profileDialog">
@@ -180,7 +180,7 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayCompany" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="false" [closeOnEscape]="false">
-        <button type="button" (click)="closeModal()" class="closeButton">X</button>
+        <button type="button" (click)="closeModal(); emptyModal()" class="closeButton">X</button>
         <p class="beneficiaryMayor center">{{ 'company.details' | translate }}</p>
         <form (ngSubmit)="onSubmit()" #profileFormCompany="ngForm">
             <div class="form-group ui-g">
@@ -267,11 +267,11 @@
             <div class="form-group">
                 <div style="text-align: center !important">
                     <button type="button" class="btn btn-primary changePasswordModalNoTop"
-                            (click)="closeModal()">{{
+                            (click)="closeModal(); emptyModal()">{{
                         'cancel.button' | translate }}
                     </button>
                     <button type="button" class="btn btn-primary changePasswordModalNoTop"
-                            [disabled]="!profileFormCompany.form.valid" (click)="saveSupplierChanges()">{{
+                            [disabled]="!profileFormCompany.form.valid" (click)="saveSupplierChanges(); emptyModal()">{{
                         'change' | translate }}
                     </button>
                 </div>
@@ -284,7 +284,7 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayContact" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="false" [closeOnEscape]="false">
-        <button type="button" (click)="closeModal()" class="closeButton">X</button>
+        <button type="button" (click)="closeModal(); emptyModal()" class="closeButton">X</button>
         <p class="beneficiaryMayor center">{{ 'contact.person' | translate }}</p>
         <form (ngSubmit)="onSubmit()" #profileFormContact="ngForm">
             <div class="form-group ui-g">
@@ -370,11 +370,11 @@
             <div class="form-group">
                 <div style="text-align: center !important">
                     <button type="button" class="btn btn-primary changePasswordModalNoTop"
-                            (click)="closeModal()">{{
+                            (click)="closeModal(); emptyModal()">{{
                         'cancel.button' | translate }}
                     </button>
                     <button type="button" class="btn btn-primary changePasswordModalNoTop"
-                            [disabled]="!profileFormContact.form.valid" (click)="saveSupplierChanges()">{{
+                            [disabled]="!profileFormContact.form.valid" (click)="saveSupplierChanges(); emptyModal()">{{
                         'change' | translate }}
                     </button>
                 </div>
@@ -390,7 +390,7 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="false" [closeOnEscape]="false">
-        <button type="button" (click)="closeModal()" class="closeButton">X</button>
+        <button type="button" (click)="closeModal(); emptyModal()" class="closeButton">X</button>
         <p class="beneficiaryMayor center">{{ 'legalentity.label' | translate }}</p>
         <form (ngSubmit)="onSubmit()" #profileFormLegal="ngForm">
             <div class="form-group ui-g">
