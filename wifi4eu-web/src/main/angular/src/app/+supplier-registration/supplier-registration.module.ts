@@ -7,10 +7,11 @@ import {SupplierRegistrationComponentStep2} from "./+supplier-registration-step2
 import {SupplierRegistrationComponentStep3} from "./+supplier-registration-step3/supplier-registration-step3.component";
 import {SupplierRegistrationComponentStep4} from "./+supplier-registration-step4/supplier-registration-step4.component";
 import {SupplierRegistrationRoutingModule} from "./supplier-registration-routing.module";
+import {FileUploadModule} from 'primeng/primeng';
 
 @NgModule({
     imports: [
-        SharedModule, SupplierRegistrationRoutingModule, Ng2GoogleRecaptchaModule
+        SharedModule, SupplierRegistrationRoutingModule, Ng2GoogleRecaptchaModule, FileUploadModule
     ],
     declarations: [
         SupplierRegistrationComponent, SupplierRegistrationComponentStep1, SupplierRegistrationComponentStep2, SupplierRegistrationComponentStep3, SupplierRegistrationComponentStep4

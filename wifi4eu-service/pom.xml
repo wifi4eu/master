@@ -2,12 +2,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
-                             
+
     <modelVersion>4.0.0</modelVersion>
     <parent>
-      <groupId>wifi4eu.wifi4eu</groupId>
-      <version>0.0.1-SNAPSHOT</version>        
-      <artifactId>wifi4eu</artifactId>
+        <groupId>wifi4eu.wifi4eu</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+        <artifactId>wifi4eu</artifactId>
     </parent>
     <artifactId>wifi4eu-service</artifactId>
     <packaging>jar</packaging>
@@ -15,81 +15,80 @@
     <name>wifi4eu service module</name>
 
 
-  <dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </dependency>
 
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-beans</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-expression</artifactId>
-      </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
 
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-aop</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-core</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-jdbc</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-tx</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-context-support</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-context</artifactId>
-      </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
 
-      <dependency>
-          <groupId>org.springframework.security</groupId>
-          <artifactId>spring-security-core</artifactId>
-      </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
 
-      <dependency>
-          <groupId>org.mapstruct</groupId>
-          <artifactId>mapstruct</artifactId>
-      </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
 
-      <!-- JWT -->
-      <dependency>
-          <groupId>io.jsonwebtoken</groupId>
-          <artifactId>jjwt</artifactId>
-      </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
 
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>wifi4eu-common</artifactId>
-        <version>${project.version}</version>        
-      </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>wifi4eu-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>wifi4eu-persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>wifi4eu-persistence</artifactId>
-        <version>${project.version}</version>        
-      </dependency>
-
-
-  </dependencies>
-
-
+        <dependency>
+            <groupId>net.sf.supercsv</groupId>
+            <artifactId>super-csv</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
-
         <plugins>
             <plugin>
                 <groupId>org.bsc.maven</groupId>
@@ -121,8 +120,6 @@
                 </dependencies>
             </plugin>
         </plugins>
-
     </build>
-
 
 </project>

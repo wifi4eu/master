@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
 import {TimelineElement} from "../../shared/models/timeline-element.model";
 import {TimelineDTO, TimelineDTOBase} from "../../shared/swagger/model/TimelineDTO";
@@ -9,14 +9,14 @@ import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
     templateUrl: 'timeline.component.html', providers: [TimelineApi]
 })
 
-export class DgConnTimelineComponent {
+export class DgConnTimelineComponent implements OnInit {
     @Input('dgConnDetails') dgConnDetails: DgConnDetails;
+
     private display: boolean;
     private timelines: TimelineDTO[];
     private selectedTimeline: TimelineElement;
     private originalTimeline: TimelineDTO;
     private newElementForm: boolean;
-
 
     constructor(private timelineApi: TimelineApi, private uxService: UxService) {
         this.display = false;
@@ -30,6 +30,13 @@ export class DgConnTimelineComponent {
         this.newElementForm = false;
     }
 
+    ngOnInit() {
+        this.timelineApi.allTimelines().subscribe(
+            timelines => this.timelines = timelines,
+            error => console.log(error)
+        );
+    }
+
     addNewElement() {
         this.newElementForm = true;
         this.display = true;
@@ -41,11 +48,12 @@ export class DgConnTimelineComponent {
         );
     }
 
+
     displayInfo(rowElement: number) {
         this.timelineApi.allTimelines().subscribe(
-            timelines => {
-                this.timelines = timelines;
-                this.selectedTimeline = this.convertDTOToTimelineElement(this.timelines[rowElement]);
+            calls => {
+                this.timelines = calls;
+                this.selectedTimeline = this.convertDTOToTimeline(this.timelines[rowElement]);
                 this.display = true;
             },
             error => console.log(error)
@@ -53,11 +61,10 @@ export class DgConnTimelineComponent {
     }
 
     deleteElement(rowElement: number) {
-        this.timelineApi.deleteTimeline(this.timelines[rowElement].timelineId).subscribe(
+        this.timelineApi.deleteTimeline(this.timelines[rowElement]).subscribe(
             data => {
                 this.timelineApi.allTimelines().subscribe(
-                    timelines => this.timelines = timelines,
-                    error => console.log(error)
+                    timelines => this.timelines = timelines
                 );
             },
             error => console.log(error)
@@ -70,41 +77,50 @@ export class DgConnTimelineComponent {
     }
 
     createTimeline() {
-        this.timelineApi.createTimeline(this.convertTimelineElementToDTO(this.selectedTimeline)).subscribe(
+        this.timelineApi.createTimeline(this.convertTimelineToDTO(this.selectedTimeline)).subscribe(
             data => {
-                this.newElementForm = false;
-                this.display = false;
                 this.timelineApi.allTimelines().subscribe(
-                    timelines => this.timelines = timelines,
-                    error => console.log(error)
+                    timelines => {
+                        this.timelines = timelines;
+                        this.newElementForm = false;
+                        this.display = false;
+                    }, error => {
+                        console.log(error);
+                        this.newElementForm = false;
+                        this.display = false;
+                    }
                 );
             },
-            error => console.log(error)
+            error => {
+                console.log(error)
+                this.newElementForm = false;
+                this.display = false;
+            }
         );
     }
 
-    convertTimelineElementToDTO(call: TimelineElement) {
+    convertTimelineToDTO(timeline: TimelineElement) {
         let dto = new TimelineDTOBase();
-        dto.timelineId = call.getTimelineId();
-        let startDate = new Date(call.getStartDate());
+        dto.timelineId = timeline.getTimelineId();
+        let startDate = new Date(timeline.getStartDate());
         if (startDate != null) {
-            let startTime = call.getStartTime().split(":");
+            let startTime = timeline.getStartTime().split(":");
             startDate.setHours(parseInt(startTime[0]));
             startDate.setMinutes(parseInt(startTime[1]));
             dto.startDate = startDate.getTime();
         }
-        let endDate = new Date(call.getEndDate());
+        let endDate = new Date(timeline.getEndDate());
         if (endDate != null) {
-            let endTime = call.getEndTime().split(":");
+            let endTime = timeline.getEndTime().split(":");
             endDate.setHours(parseInt(endTime[0]));
             endDate.setMinutes(parseInt(endTime[1]));
             dto.endDate = endDate.getTime();
         }
-        dto.event = call.getEvent();
+        dto.event = timeline.getEvent();
         return dto;
     }
 
-    convertDTOToTimelineElement(dto: TimelineDTOBase) {
+    convertDTOToTimeline(dto: TimelineDTOBase) {
         let timeline = new TimelineElement();
         timeline.setTimelineId(dto.timelineId);
         timeline.setStartDate(new Date(dto.startDate));
@@ -119,17 +135,5 @@ export class DgConnTimelineComponent {
         return timeline;
     }
 
-    formatTimestamp(timestamp) {
-        let date = new Date(timestamp);
-        return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + ((date.getMinutes() < 10) ? ("0" + date.getMinutes()) : date.getMinutes());
-    }
 
-    keyPress(event: any) {
-        const pattern = /[0-9\:]/;
-        let inputChar = String.fromCharCode(event.charCode);
-
-        if (!pattern.test(inputChar)) {
-            event.preventDefault();
-        }
-    }
 }

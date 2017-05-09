@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.common.dto.model;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 public class HelpdeskDTO {
 
@@ -15,13 +16,12 @@ public class HelpdeskDTO {
     private String status;
     private String from;
     private String issueSummary;
-    private String memberStateComments;
-    private String dgConnectComments;
+    private List<HelpdeskCommentDTO> comments;
 
     public HelpdeskDTO() {
     }
 
-    public HelpdeskDTO(Long issueId, String portal, String topic, String memberState, Date date, String assignedTo, String status, String from, String issueSummary, String memberStateComments, String dgConnectComments) {
+    public HelpdeskDTO(Long issueId, String portal, String topic, String memberState, Date date, String assignedTo, String status, String from, String issueSummary, List<HelpdeskCommentDTO> comments) {
         this.issueId = issueId;
         this.portal = portal;
         this.topic = topic;
@@ -31,8 +31,7 @@ public class HelpdeskDTO {
         this.status = status;
         this.from = from;
         this.issueSummary = issueSummary;
-        this.memberStateComments = memberStateComments;
-        this.dgConnectComments = dgConnectComments;
+        this.comments = comments;
     }
 
     public Long getIssueId() {
@@ -107,19 +106,11 @@ public class HelpdeskDTO {
         this.issueSummary = issueSummary;
     }
 
-    public String getMemberStateComments() {
-        return memberStateComments;
+    public List<HelpdeskCommentDTO> getComments() {
+        return comments;
     }
 
-    public void setMemberStateComments(String memberStateComments) {
-        this.memberStateComments = memberStateComments;
-    }
-
-    public String getDgConnectComments() {
-        return dgConnectComments;
-    }
-
-    public void setDgConnectComments(String dgConnectComments) {
-        this.dgConnectComments = dgConnectComments;
+    public void setComments(List<HelpdeskCommentDTO> comments) {
+        this.comments = comments;
     }
 }

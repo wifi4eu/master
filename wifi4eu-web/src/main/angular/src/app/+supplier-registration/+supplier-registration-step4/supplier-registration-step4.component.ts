@@ -1,4 +1,4 @@
-import {Component, Input, EventEmitter, Output} from "@angular/core";
+import {Component, Input, EventEmitter, Output, OnInit } from "@angular/core";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
 import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
@@ -10,7 +10,7 @@ import {NutsDTO} from "../../shared/swagger/model/NutsDTO";
     providers: [SupplierApi]
 })
 
-export class SupplierRegistrationComponentStep4 {
+export class SupplierRegistrationComponentStep4 implements OnInit {
     @Input('supplierDTO') supplierDTO: SupplierDTOBase;
 
     @Input('selection') selection: boolean[];
@@ -27,6 +27,9 @@ export class SupplierRegistrationComponentStep4 {
 
     @Input('nuts0') nuts0: NutsDTO[];
     @Input('nuts3') nuts3: NutsDTO[];
+    @Input('supplierTempLogo') supplierTempLogo: any;
+
+    private supplierDataUrlLogo : FileReader = new FileReader();
 
     constructor(private supplierApi: SupplierApi, private uxService: UxService) {
         this.legalChecks = [false, false];
@@ -40,6 +43,10 @@ export class SupplierRegistrationComponentStep4 {
         this.onFailure = new EventEmitter<boolean>();
     }
 
+    ngOnInit() {
+        this.supplierDataUrlLogo.readAsDataURL(this.supplierTempLogo);
+    }
+
     openModal() {
         this.display = true;
     }
@@ -49,6 +56,8 @@ export class SupplierRegistrationComponentStep4 {
     }
 
     onSubmit() {
+        console.log("on submit");
+        console.log(this.supplierDTO);
         this.supplierDTO.legalCheck1 = this.legalChecks[0];
         this.supplierDTO.legalCheck2 = this.legalChecks[1];
         for (let country of this.nuts0) {
@@ -60,6 +69,8 @@ export class SupplierRegistrationComponentStep4 {
         this.supplierDTO.nutsIds = this.supplierDTO.nutsIds.slice(0, -1);
         this.supplierApi.createSupplier(this.supplierDTO).subscribe(
             data => {
+                console.log("data response");
+                console.log(data);
                 if (data['success'] != true) {
                     this.onFailure.emit(true);
                     return;

@@ -7,18 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
-import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
-import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
+import wifi4eu.wifi4eu.mapper.supplier.AccessPointMapper;
 import wifi4eu.wifi4eu.mapper.supplier.BenPubSupMapper;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
+import wifi4eu.wifi4eu.mapper.supplier.InstallationMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
+import wifi4eu.wifi4eu.repository.supplier.AccessPointRepository;
 import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
+import wifi4eu.wifi4eu.repository.supplier.InstallationRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.security.UserService;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
 
 import java.util.Date;
 import java.util.List;
@@ -42,6 +45,12 @@ public class SupplierService {
     BenPubSupRepository benPubSupRepository;
 
     @Autowired
+    InstallationRepository installationRepository;
+
+    @Autowired
+    AccessPointRepository accessPointRepository;
+
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -55,6 +64,12 @@ public class SupplierService {
 
     @Autowired
     BenPubSupMapper benPubSupMapper;
+
+    @Autowired
+    InstallationMapper installationMapper;
+
+    @Autowired
+    AccessPointMapper accessPointMapper;
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -79,6 +94,7 @@ public class SupplierService {
         UserDTO persUserDTO = getUserByEmail(email);
 
         if (persUserDTO == null) {
+            _log.info("Nom: " + supplierDTO.getName());
 
             // create supplier user
             UserDTO userDTO = new UserDTO();
@@ -93,6 +109,14 @@ public class SupplierService {
 
 
             //create supplier entity
+            //Supplier sup = supplierMapper.toEntity(supplierDTO);
+            Supplier sup2 = new Supplier();
+            sup2.setSupplierId(supplierDTO.getSupplierId());
+            sup2.setName(supplierDTO.getName());
+
+            _log.info("Supplier guardado: ");
+            _log.info(sup2.getName());
+
             SupplierDTO perSupplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
 
             //link supplier and user and store user
@@ -101,7 +125,7 @@ public class SupplierService {
 
             //send activate account mail
 
-            userService.sendActivateAccountMail(userDTO);
+            //userService.sendActivateAccountMail(userDTO);
 
             _log.info("[f] create Supplier");
 
@@ -138,6 +162,22 @@ public class SupplierService {
             }
         }
         return legalEntityDTOList;
+    }
+
+    public InstallationDTO createInstallation(InstallationDTO installationDTO) {
+        return installationMapper.toDTO(installationRepository.save(installationMapper.toEntity(installationDTO)));
+    }
+
+    public InstallationDTO getInstallationById(Long installationId) {
+        return installationMapper.toDTO(installationRepository.findOne(installationId));
+    }
+
+    public List<AccessPointDTO> getAccessPointsByInstallation(Long installationId) {
+        return accessPointMapper.toDTOList(Lists.newArrayList(accessPointRepository.findByInstallationId(installationId)));
+    }
+
+    public AccessPointDTO createAccessPoint(AccessPointDTO accessPointDTO) {
+        return accessPointMapper.toDTO(accessPointRepository.save(accessPointMapper.toEntity(accessPointDTO)));
     }
 
 }
