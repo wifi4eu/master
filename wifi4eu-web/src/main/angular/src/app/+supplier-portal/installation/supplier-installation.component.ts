@@ -10,7 +10,7 @@ export class SupplierInstallationComponent {
     private installation: InstallationDTOBase;
     private selectedAccesPoints: AccessPointDTOBase[];
     private installationId: number;
-    private user;
+    private user: string;
 
     constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi) {
         // The 'installationId' is hardcoded right now, but we should delete this next statement when we can.
