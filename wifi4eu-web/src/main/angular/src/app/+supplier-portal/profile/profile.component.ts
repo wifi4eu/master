@@ -8,6 +8,7 @@ import {LocalStorageService} from "angular-2-local-storage";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {UserDTO} from "../../shared/swagger/model/UserDTO";
 
 @Component({
     templateUrl: 'profile.component.html', providers: [SupplierApi, LauApi, NutsApi]
@@ -23,7 +24,7 @@ export class SupplierProfileComponent {
     private displayContact: boolean;
     private displayCompany: boolean;
     private displayLegal: boolean;
-    private user;
+    private user: UserDTO;
     private nutsModalInitial: NutsDTOBase;
     private lausModalInitial: NutsDTOBase;
     private nutsSuggestions: NutsDTOBase[];
@@ -35,7 +36,6 @@ export class SupplierProfileComponent {
         this.displayContact = false;
         this.displayCompany = false;
         this.displayLegal = false;
-        this.user;
         this.supplierData = new SupplierDTOBase();
         this.nutsCountry = new NutsDTOBase();
         this.lauMunicipality = new LauDTOBase();
@@ -84,13 +84,13 @@ export class SupplierProfileComponent {
         this.display = true;
     }
 
-    emptyModal(){
+    emptyModal() {
         this.selectedSupplierData = Object.assign({}, this.supplierData);
     }
 
     displayContactModal() {
         this.displayContact = true;
-        
+
     }
 
     displayCompanyModal() {
@@ -131,7 +131,6 @@ export class SupplierProfileComponent {
                 });
                 console.log('WARNING: Could not get nuts', error);
             }
-
         );
 
     }
