@@ -149,31 +149,32 @@ public class BeneficiaryService {
 
     }
 
-    @Transactional
-    public void update(BeneficiaryDTO beneficiaryDTO) {
-
+    public BeneficiaryDTO update(BeneficiaryDTO beneficiaryDTO) {
+        BeneficiaryDTO updatedBeneficiaryDTO = null;
         if (beneficiaryDTO != null) {
-
+            updatedBeneficiaryDTO = new BeneficiaryDTO();
             String email;
-
             if (beneficiaryDTO.getRepresentativeDTO() != null) {
                 email = beneficiaryDTO.getRepresentativeDTO().getEmail();
                 beneficiaryDTO.setRepresented(true);
+                updatedBeneficiaryDTO.setRepresented(true);
+                updatedBeneficiaryDTO.setRepresentativeDTO(representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(beneficiaryDTO.getRepresentativeDTO()))));
+                updatedBeneficiaryDTO.setMayorDTO(mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(beneficiaryDTO.getMayorDTO()))));
             } else {
                 email = beneficiaryDTO.getMayorDTO().getEmail();
+                updatedBeneficiaryDTO.setRepresented(false);
+                updatedBeneficiaryDTO.setRepresentativeDTO(null);
+                updatedBeneficiaryDTO.setMayorDTO(mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(beneficiaryDTO.getMayorDTO()))));
             }
+            updatedBeneficiaryDTO.setLegalEntityDTO(beneficiaryDTO.getLegalEntityDTO());
 
             UserDTO userDTO = getUserByEmail(email);
-
             if (userDTO != null) {
-
                 /* TODO: update data */
-
+                userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
             }
-
         }
-
-
+        return updatedBeneficiaryDTO;
     }
 
     public LegalEntityDTO getLegalEntity(Long legalEntityId) {
@@ -206,6 +207,14 @@ public class BeneficiaryService {
             return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
         }
         return benPubSupDTO;
+    }
+
+    public MayorDTO getMayorById(Long mayorId) {
+        return mayorMapper.toDTO(mayorRepository.findOne(mayorId));
+    }
+
+    public RepresentativeDTO getRepresentativeById(Long representativeId) {
+        return representativeMapper.toDTO(representativeRepository.findOne(representativeId));
     }
 
 }
