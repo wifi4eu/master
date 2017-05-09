@@ -821,3 +821,44 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 .ui-fileupload .ui-fileupload-buttonbar {
   text-align: right;
 }
+
+.abac--container {
+    border: 1px solid #d9d9d9;
+    padding: 1rem 2rem;
+    margin: 4rem 0;
+    background-color: white;
+}
+.abac--container .abac--exporter {
+    margin: 0 0 1rem 0;
+    padding: 1rem 0;
+}
+.abac--container .abac--validator--group {
+  margin: 2rem 0;
+  border: 1px solid #d9d9d9;
+  padding: 0 1rem 1rem 1rem;
+  background-color: #fefefe;
+}
+.abac--container .abac--validator--group .abac--validator--voucher {
+    border-left: 4px solid #bfbfbf;
+    padding-left: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 1.2rem;
+}
+.abac--container .abac--validator--group .abac--validator--voucher p {
+  margin-top: 0;
+}
+.abac--container .abac--validator--group .abac--validator {
+  margin-bottom: 2rem;
+}
+.abac--container .abac--exporter i {
+  font-size: 1.5rem;
+}
+.abac--container .abac--exporter i, .abac--container .abac--validator i {
+  float: right;
+}
+.abac--container .abac--exporter i.fa-times, .abac--container .abac--validator i.fa-times {
+  color: red;
+}
+.abac--container .abac--exporter i.fa-check, .abac--container .abac--validator i.fa-check {
+  color: green;
+}

@@ -22,6 +22,7 @@ import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {AppGuard} from "./app.guard";
 import {LocalStorageModule} from 'angular-2-local-storage';
 import {SharedService} from "./shared/shared.service";
+import {AbacComponent} from "./+abac/abac.component";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -36,14 +37,16 @@ export function translateFactory(http: Http) {
         LoginComponent,
         ForgotComponent,
         HelpdeskComponent,
-        HelpdeskComponent
+        HelpdeskComponent,
+        AbacComponent
     ],
     exports: [
         MapComponent,
         ActivationComponent,
         LoginComponent,
         ForgotComponent,
-        HelpdeskComponent
+        HelpdeskComponent,
+        AbacComponent
     ],
     imports: [
         CoreModule,

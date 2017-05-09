@@ -10,6 +10,7 @@ import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
 import {AppGuard} from "./app.guard";
+import {AbacComponent} from "./+abac/abac.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -58,6 +59,9 @@ import {AppGuard} from "./app.guard";
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
             canActivate: [AppGuard]
+        }, {
+            path: 'abac',
+            component: AbacComponent
         }
     ], {useHash: true})],
     exports: [RouterModule]

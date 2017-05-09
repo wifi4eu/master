@@ -1,0 +1,33 @@
+<div class="ui-g">
+	<div class="ui-lg-3"></div>
+	<div class="ui-lg-6 abac--container">
+		<h1>Abac</h1>
+		<div class="abac--exporter">
+			<p>Export Suppliers and Beneficiaries information.
+				<i class="fa fa-check" aria-hidden="true" [hidden]="true"></i>
+				<i class="fa fa-times" aria-hidden="true" [hidden]="true"></i>
+				<i class="fa fa-spinner" aria-hidden="true" [hidden]="true"></i>
+			</p>
+			<button class="btn btn-primary" (click)="onExportButton()">
+				Export
+            </button>
+		</div>
+		<div class="abac--validator--group">
+			<div class="abac--validator">
+				<p>Inform Abac validations results
+					<i class="fa fa-check" aria-hidden="true" [hidden]="true"></i>
+					<i class="fa fa-times" aria-hidden="true" [hidden]="true"></i>
+					<i class="fa fa-spinner" aria-hidden="true" [hidden]="true"></i>
+				</p>
+				<input type="file" id="abacValidationFile" (change)="onFileChange($event)" accept=".json,application/json">
+			</div>
+			<div class="abac--validator--voucher">
+				<p>Get the confirmation voucher</p>
+				<button class="btn btn-success" [disabled]="!isAbacValidationSuccessful">
+					Get the Voucher
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="ui-lg-3"></div>
+</div>
