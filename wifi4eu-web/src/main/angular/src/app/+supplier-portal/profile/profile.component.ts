@@ -40,6 +40,9 @@ export class SupplierProfileComponent {
         this.nutsCountry = new NutsDTOBase();
         this.lauMunicipality = new LauDTOBase();
 
+        this.selectedSupplierData = new SupplierDTOBase();
+        this.emptyModal();
+
         let u = this.localStorage.get('user');
 
         this.user = u ? JSON.parse(u.toString()) : null;
@@ -75,9 +78,6 @@ export class SupplierProfileComponent {
             );
         }
 
-        this.selectedSupplierData = new SupplierDTOBase();
-        this.selectedSupplierData = Object.assign({}, this.supplierData);
-
     }
 
     openModal() {
@@ -86,7 +86,6 @@ export class SupplierProfileComponent {
 
     emptyModal(){
         this.selectedSupplierData = Object.assign({}, this.supplierData);
-        console.log("SE EJECUTA EMPTYMODEL");
     }
 
     displayContactModal() {
