@@ -10,7 +10,7 @@ export class SupplierInstallationComponent {
     private installation: InstallationDTOBase;
     private selectedAccesPoints: AccessPointDTOBase[];
     private installationId: number;
-    private user;
+    private user: string;
     private displayModal: boolean;
     private newAccessPoint: AccessPointDTOBase;
 
@@ -26,7 +26,6 @@ export class SupplierInstallationComponent {
                 installation => {
                     if (installation != null) {
                         this.installation = installation;
-                        console.log(this.installation);
                     }
                 },
                 error => {
