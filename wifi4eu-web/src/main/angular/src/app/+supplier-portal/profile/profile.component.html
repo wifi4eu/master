@@ -16,7 +16,7 @@
                         <p class="beneficiaryMayor">{{ 'contact.person' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="displayContactModal()" class="edit"> <i class="fa fa-pencil"
+                        <a (click)=" emptyModal(); displayContactModal()" class="edit"> <i class="fa fa-pencil"
                                                                             aria-hidden="true"></i> {{ 'edit.button' |
                             translate
                             }}
@@ -31,11 +31,12 @@
                         <p>{{ 'email.label' | translate }}</p>
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData">{{selectedSupplier.contactName}}</p>
-                        <p class="profileData">{{selectedSupplier.contactSurname}}</p>
+                        <p class="profileData">{{supplierData.contactName}}</p>
+                        <p class="profileData">{{supplierData.contactSurname}}</p>
                         <p class="profileData">
-                            {{selectedSupplier.contactPhonePrefix}} {{selectedSupplier.contactPhoneNumber}}</p>
-                        <p class="profileData">{{selectedSupplier.contactEmail}}</p>
+                            {{supplierData.contactPhonePrefix}} {{supplierData.contactPhoneNumber}}
+                        </p>
+                        <p class="profileData">{{supplierData.contactEmail}}</p>
                     </div>
                 </div>
                 <hr class="beneficiaryHr">
@@ -47,7 +48,7 @@
                         <p class="beneficiaryMayor">{{ 'company.details' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="displayCompanyModal()"><i class="fa fa-pencil"
+                        <a (click)=" emptyModal(); displayCompanyModal()"><i class="fa fa-pencil"
                                                               aria-hidden="true"></i> {{ 'edit.button' | translate }}
                         </a>
                     </div>
@@ -63,11 +64,11 @@
                         <p>{{ 'logo.label' | translate }}</p>
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData">{{selectedSupplier.name}}</p>
-                        <p class="profileData">{{selectedSupplier.address}}</p>
-                        <p class="profileData">{{selectedSupplier.vat}}</p>
-                        <p class="profileData">{{selectedSupplier.bic}}</p>
-                        <p class="profileData"></p>
+                        <p class="profileData">{{supplierData.name}}</p>
+                        <p class="profileData">{{supplierData.address}}</p>
+                        <p class="profileData">{{supplierData.vat}}</p>
+                        <p class="profileData">{{supplierData.bic}}</p>
+                        <p class="profileData">{{supplierData.binaryLogo}}</p>
                     </div>
                 </div>
                 <hr class="beneficiaryHr">
@@ -78,7 +79,7 @@
                         <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="displayLegalModal()"><i class="fa fa-pencil"
+                        <a (click)=" emptyModal(); displayLegalModal()"><i class="fa fa-pencil"
                                                             aria-hidden="true"></i> {{ 'edit.button' | translate }}</a>
                     </div>
                 </div>
@@ -91,8 +92,8 @@
 
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData">{{selectedSupplier.nutsIds}}</p>
-                        <p class="profileData">{{selectedNuts.name1}}</p>
+                        <p class="profileData">{{nutsCountry.name}}</p>
+                        <p class="profileData">{{lauMunicipality.name1}}</p>
 
                     </div>
                 </div>
@@ -121,7 +122,8 @@
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="true">
+              [draggable]="false" [closable]="false" [closeOnEscape]="false">
+        <button type="button" (click)="emptyModal(); closeModal()" class="closeButton">X</button>
         <p class="beneficiaryMayorModal">{{'beneficiaryProfile.password' | translate }}</p>
         <form #profileForm="ngForm">
             <div class="form-group profileDialog">
@@ -158,7 +160,7 @@
                 </div>
                 <div class="form-group">
                     <div style="text-align: center !important">
-                        <button type="submit" class="btn btn-primary changePasswordModalNoTop"
+                        <button type="button" class="btn btn-primary changePasswordModalNoTop"
                                 (click)="closeModal()">{{
                             'cancel.button' | translate }}
                         </button>
@@ -177,19 +179,20 @@
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayCompany" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="true">
+              [draggable]="false" [closable]="false" [closeOnEscape]="false">
+        <button type="button" (click)="emptyModal(); closeModal()" class="closeButton">X</button>
         <p class="beneficiaryMayor center">{{ 'company.details' | translate }}</p>
-        <form (ngSubmit)="onSubmit()" #profileForm="ngForm">
+        <form (ngSubmit)="onSubmit()" #profileFormCompany="ngForm">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="company">{{ 'company.name' | translate }}</label>
-                        <input type="text" [(ngModel)]="supplierDetails.company"
+                        <label for="name">{{ 'company.name' | translate }}</label>
+                        <input type="text" [(ngModel)]="selectedSupplierData.name"
                                class="form-control"
-                               name="name" ngcontrol="company" #company="ngModel"
+                               name="name" ngcontrol="name" #name="ngModel"
                                required>
-                        <div [hidden]="company.valid || company.pristine"
+                        <div [hidden]="name.valid || name.pristine"
                              class="alert alert-danger">{{'company.required' | translate }}
                         </div>
                     </div>
@@ -202,7 +205,7 @@
                     <div class="form-group">
                         <label for="address">{{ 'legal.address' | translate
                             }}</label>
-                        <input type="email" [(ngModel)]="supplierDetails.address"
+                        <input type="text" [(ngModel)]="selectedSupplierData.address"
                                class="form-control"
                                name="address" ngcontrol="address" #address="ngModel"
                                required>
@@ -218,7 +221,7 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="vat">{{ 'vat.label' | translate }}</label>
-                        <input type="text" [(ngModel)]="supplierDetails.vat"
+                        <input type="text" [(ngModel)]="selectedSupplierData.vat"
                                class="form-control"
                                name="vat" ngcontrol="vat" #vat="ngModel"
                                required>
@@ -234,7 +237,7 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="bic">{{ 'bic.label' | translate }}</label>
-                        <input type="text" [(ngModel)]="supplierDetails.bic"
+                        <input type="text" [(ngModel)]="selectedSupplierData.bic"
                                class="form-control"
                                name="bic" ngcontrol="bic" #bic="ngModel"
                                required>
@@ -249,12 +252,12 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="logo">{{ 'logo.label' | translate }}</label>
-                        <input type="" [(ngModel)]="supplierDetails.logo"
+                        <label for="binaryLogo">{{ 'logo.label' | translate }}</label>
+                        <input type="" [(ngModel)]="selectedSupplierData.binaryLogo"
                                class="form-control"
-                               name="logo" ngcontrol="logo" #logo="ngModel"
+                               name="binaryLogo" ngcontrol="binaryLogo" #binaryLogo="ngModel"
                                required>
-                        <div [hidden]="logo.valid || logo.pristine"
+                        <div [hidden]="binaryLogo.valid || binaryLogo.pristine"
                              class="alert alert-danger">{{'logo.required' | translate }}
                         </div>
                     </div>
@@ -263,12 +266,12 @@
             </div>
             <div class="form-group">
                 <div style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary changePasswordModalNoTop"
-                            (click)="closeModal()">{{
+                    <button type="button" class="btn btn-primary changePasswordModalNoTop"
+                            (click)="emptyModal(); closeModal()">{{
                         'cancel.button' | translate }}
                     </button>
-                    <button type="" class="btn btn-primary changePasswordModalNoTop"
-                            [disabled]="!profileForm.form.valid">{{
+                    <button type="button" class="btn btn-primary changePasswordModalNoTop"
+                            [disabled]="!profileFormCompany.form.valid" (click)=" emptyModal(); saveSupplierChanges()">{{
                         'change' | translate }}
                     </button>
                 </div>
@@ -280,20 +283,21 @@
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayContact" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="true">
+              [draggable]="false" [closable]="false" [closeOnEscape]="false">
+        <button type="button" (click)="emptyModal(); closeModal()" class="closeButton">X</button>
         <p class="beneficiaryMayor center">{{ 'contact.person' | translate }}</p>
-        <form (ngSubmit)="onSubmit()" #profileForm="ngForm">
+        <form (ngSubmit)="onSubmit()" #profileFormContact="ngForm">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="name">{{ 'name.label' | translate }}</label>
-                        <input type="text" [(ngModel)]="supplierDetails.name"
+                        <label for="contactName">{{ 'name.label' | translate }}</label>
+                        <input type="text" [(ngModel)]="selectedSupplierData.contactName"
                                class="form-control"
-                               name="name" ngcontrol="name" #name="ngModel"
+                               name="contactName" ngcontrol="contactName" #contactName="ngModel"
                                required>
-                        <div [hidden]="name.valid || name.pristine"
-                             class="alert alert-danger">{{ 'name.required' | translate }}
+                        <div [hidden]="contactName.valid || contactName.pristine" class="alert alert-danger">{{
+                            'name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -303,13 +307,13 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="surname">{{ 'surname.label' | translate
+                        <label for="contactSurname">{{ 'surname.label' | translate
                             }}</label>
-                        <input type="text" [(ngModel)]="supplierDetails.surname"
+                        <input type="text" [(ngModel)]="selectedSupplierData.contactSurname"
                                class="form-control"
-                               name="surname" ngcontrol="surname" #surname="ngModel"
+                               name="contactSurname" ngcontrol="contactSurname" #contactSurname="ngModel"
                                required>
-                        <div [hidden]="surname.valid || surname.pristine"
+                        <div [hidden]="contactSurname.valid || contactSurname.pristine"
                              class="alert alert-danger">{{ 'surname.required' | translate }}
                         </div>
                     </div>
@@ -318,26 +322,41 @@
             </div>
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
-                <div class="ui-g-10">
+                <div class="ui-g-10" style="padding:0.5em 0">
                     <div class="form-group">
-                        <label for="phoneNumber">{{ 'phone.number' | translate }}</label>
-                        <input type="text" [(ngModel)]="supplierDetails.phone"
-                               class="form-control"
-                               name="phoneNumber" ngcontrol="phoneNumber" #phoneNumber="ngModel"
-                               required>
-                        <div [hidden]="phoneNumber.valid || phoneNumber.pristine"
-                             class="alert alert-danger">{{ 'phone.required' | translate }}
+                        <div class="ui-g-5">
+                            <label for="contactPhonePrefix">{{ 'prefix.number' | translate }}</label>
+                            <input type="text" [(ngModel)]="selectedSupplierData.contactPhonePrefix"
+                                   class="form-control"
+                                   name="contactPhonePrefix" ngcontrol="contactPhonePrefix"
+                                   #contactPhonePrefix="ngModel"
+                                   required>
+                            <div [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine"
+                                 class="alert alert-danger">{{ 'phone.required' | translate }}
+                            </div>
+                        </div>
+                        <div class="ui-g-5">
+                            <label for="contactPhoneNumber">{{ 'phone.number' | translate }}</label>
+                            <input type="text" [(ngModel)]="selectedSupplierData.contactPhoneNumber"
+                                   class="form-control"
+                                   name="contactPhoneNumber" ngcontrol="contactPhoneNumber"
+                                   #contactPhoneNumber="ngModel"
+                                   required>
+                            <div [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine"
+                                 class="alert alert-danger">{{ 'phone.required' | translate }}
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
             </div>
+
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="email">{{ 'email.label' | translate }}</label>
-                        <input type="text" [(ngModel)]="supplierDetails.email"
+                        <input type="text" [(ngModel)]="selectedSupplierData.contactEmail"
                                class="form-control"
                                name="email" ngcontrol="email" #email="ngModel"
                                required>
@@ -350,12 +369,12 @@
             </div>
             <div class="form-group">
                 <div style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary changePasswordModalNoTop"
-                            (click)="closeModal()">{{
+                    <button type="button" class="btn btn-primary changePasswordModalNoTop"
+                            (click)="emptyModal(); closeModal()">{{
                         'cancel.button' | translate }}
                     </button>
-                    <button type="" class="btn btn-primary changePasswordModalNoTop"
-                            [disabled]="!profileForm.form.valid">{{
+                    <button type="button" class="btn btn-primary changePasswordModalNoTop"
+                            [disabled]="!profileFormContact.form.valid" (click)="emptyModal(); saveSupplierChanges()">{{
                         'change' | translate }}
                     </button>
                 </div>
@@ -370,21 +389,30 @@
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="true">
+              [draggable]="false" [closable]="false" [closeOnEscape]="false">
+        <button type="button" (click)="emptyModal(); closeModal()" class="closeButton">X</button>
         <p class="beneficiaryMayor center">{{ 'legalentity.label' | translate }}</p>
-        <form (ngSubmit)="onSubmit()" #profileForm="ngForm">
+        <form (ngSubmit)="onSubmit()" #profileFormLegal="ngForm">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
-                    <div class="form-group">
-                        <label for="country">{{ 'country.label' | translate }}</label>
-                        <input type="text" [(ngModel)]="supplierDetails.country"
-                               class="form-control"
-                               name="country" ngcontrol="country" #country="ngModel"
-                               required>
-                        <div [hidden]="country.valid || country.pristine"
-                             class="alert alert-danger">{{ 'country.required' | translate }}
-                        </div>
+                    <label class="label floatLeft" for="country">{{ 'country.label' | translate }}</label>
+                    <div class="clearfix"></div>
+                    <p-autoComplete id="country"
+                                    class="form-control"
+                                    name="country"
+                                    field="name"
+                                    placeholder="Spain"
+                                    ngcontrol="country"
+                                    #country="ngModel"
+                                    [(ngModel)]="nutsCountry"
+                                    [suggestions]="nutsSuggestions"
+                                    [size]="30"
+                                    [minLength]="1"
+                                    (completeMethod)="filterNuts($event)"
+                                    required>
+                    </p-autoComplete>
+                    <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -393,14 +421,27 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="municipality">{{ 'municipality.label' | translate
+                        <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate
                             }}</label>
-                        <input type="email" [(ngModel)]="supplierDetails.municipality"
-                               class="form-control"
-                               name="municipality" ngcontrol="municipality" #municipality="ngModel"
-                               required>
+                        <div class="clearfix"></div>
+                        <p-autoComplete id="municipality"
+                                        class="form-control"
+                                        name="municipality"
+                                        field="name1"
+                                        placeholder="Barcelona"
+                                        ngcontrol="municipality"
+                                        #municipality="ngModel"
+                                        [(ngModel)]="lauMunicipality"
+                                        [suggestions]="lausSuggestions"
+                                        [size]="30"
+                                        [minLength]="1"
+                                        (keyup)="onKeyUp($event)"
+                                        (completeMethod)="filterLaus($event)"
+                                        required>
+                        </p-autoComplete>
                         <div [hidden]="municipality.valid || municipality.pristine"
-                             class="alert alert-danger">{{ 'municipality.required' | translate }}
+                             class="alert alert-danger">Municipality is
+                            required
                         </div>
                     </div>
                 </div>
@@ -409,12 +450,12 @@
 
             <div class="form-group">
                 <div style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary changePasswordModalNoTop"
+                    <button type="button" class="btn btn-primary changePasswordModalNoTop"
                             (click)="closeModal()">{{
                         'cancel.button' | translate }}
                     </button>
-                    <button type="" class="btn btn-primary changePasswordModalNoTop"
-                            [disabled]="!profileForm.form.valid">{{
+                    <button type="button" class="btn btn-primary changePasswordModalNoTop"
+                            [disabled]="!profileFormLegal.form.valid" (click)="saveSupplierChanges()">{{
                         'change' | translate }}
                     </button>
                 </div>
