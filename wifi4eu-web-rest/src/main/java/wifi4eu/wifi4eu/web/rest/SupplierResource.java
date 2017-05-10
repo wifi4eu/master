@@ -98,4 +98,17 @@ public class SupplierResource {
             return new ResponseDTO(false, null, errorDTO);
         }
     }
+
+    @ApiOperation(value = "save supplier")
+    @RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO saveSupplier(@RequestBody final SupplierDTO supplierDTO, final HttpServletResponse response) {
+        try {
+            SupplierDTO resSupplier = supplierService.saveSupplier(supplierDTO);
+            return new ResponseDTO(true, resSupplier, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+    }
 }

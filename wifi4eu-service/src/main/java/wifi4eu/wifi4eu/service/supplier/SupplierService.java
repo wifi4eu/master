@@ -180,4 +180,8 @@ public class SupplierService {
         return accessPointMapper.toDTO(accessPointRepository.save(accessPointMapper.toEntity(accessPointDTO)));
     }
 
+    public SupplierDTO saveSupplier(SupplierDTO supplierDTO) {
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+    }
+
 }
