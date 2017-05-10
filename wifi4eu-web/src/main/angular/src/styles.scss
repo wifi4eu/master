@@ -853,3 +853,13 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   float: right;
   color: $darkish-blue;
 }
+
+.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow{
+  overflow: auto;
+  max-height: 40em;
+}
+
+.ui-widget textarea{
+  font-size: 1.2em;
+  color: $dark-blue;
+}
