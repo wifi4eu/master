@@ -1,15 +1,21 @@
 <p class="subTitleCountdown">{{ 'municipalities.selected' | translate }}</p>
 <div class="whiteNoMargin">
     <p-dataTable [value]="municipalities">
-        <p-column field="municipalityCode" header="{{ 'municipality.label' | translate }}"
-                  [sortable]="false">
+        <p-column field="municipalityCode" header="{{ 'municipality.label' | translate }}" [sortable]="false">
+            <template pTemplate="body" let-rowIndex="rowIndex">
+                <span>{{municipalitiesNames[rowIndex]}}</span>
+            </template>
         </p-column>
-        <p-column field="countryCode" header="{{ 'country.label' | translate }}"
-                  [sortable]="false">
+        <p-column field="countryCode" header="{{ 'country.label' | translate }}" [sortable]="false">
+            <template pTemplate="body" let-rowIndex="rowIndex">
+                <span>{{countryNames[rowIndex]}}</span>
+            </template>
         </p-column>
         <p-column header="{{ 'access.point' | translate }}">
-            <template pTemplate="body" let-issue="rowData" let-rowIndex="rowIndex">
-                <button type="button" class="btn" routerLink="/supplier-portal/installation/{{installationIds[rowIndex]}}" routerLinkActive="active" style="background: none; padding: 0;">
+            <template pTemplate="body" let-rowIndex="rowIndex">
+                <button type="button" class="btn"
+                        routerLink="/supplier-portal/installation/{{installationIds[rowIndex]}}"
+                        routerLinkActive="active" style="background: none; padding: 0;">
                     <i class="fa fa-2x fa-eye" style="font-size: 20px;"></i> {{ 'view' | translate }}
                 </button>
             </template>
