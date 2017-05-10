@@ -26,18 +26,19 @@
         </p-column>
     </p-dataTable>
     <div class="right">
-        <button type="submit" class="btn btn-primary" (click)="resolveIssues()">{{ 'resolve' | translate }}</button>
-        <button type="button" class="btn btn-primary" (click)="createNewComment()">Click</button>
+        <button type="submit" class="btn btn-primary cancel-button" (click)="resolveIssues()">{{ 'resolve' | translate }}</button>
+        <button type="button" class="btn btn-primary publish-button" (click)="createNewComment()">Click</button>
     </div>
     <br>
+</div>
     <!--MODAL Displayed -->
-    <p-dialog [(visible)]="display" [modal]="true" [draggable]="false" [closable]="false"
+    <p-dialog class="modalScroll" [(visible)]="display" [modal]="true" [draggable]="false" [closable]="false" [responsive]="true"
               [closeOnEscape]="false">
         <button type="button" class="closeButton" (click)="cancel()">X</button>
-        <h2 style="font-weight: bold;color: #254872; margin-bottom: 10px">{{ 'issueDetails' | translate }}</h2>
-        <div class="ui-g-12" style="background: #F5F5F5;border: 1px solid #C1C1C1; margin-bottom: 20px">
+        <h2 class="beneficiaryTitle labelModal supplier">{{ 'issueDetails' | translate }}</h2>
+        <div   class="ui-g-12" style="background: #F5F5F5;border: 1px solid #C1C1C1; margin-bottom: 20px">
             <div>
-                <span class="ui-g-12">{{ 'assignedTo' | translate }}:
+                <span class="label floatLeft ui-g-12">{{ 'assignedTo' | translate }}:
                     <select [(ngModel)]="issueSelected.assignedTo" name="assignedTo">
                         <option [selected]="issueSelected.assignedTo == 'Member State'">Member State</option>
                         <option [selected]="issueSelected.assignedTo == 'DG Connect'">DG Connect</option>
@@ -45,19 +46,19 @@
                 </span>
             </div>
             <div style="padding-bottom: 0;">
-                <span class="ui-g-6">{{ 'from' | translate }}: <b>{{issueSelected.from}}</b></span>
-                <span class="ui-g-6">{{ 'memberState' | translate }}: <b>{{issueSelected.memberState}}</b></span>
+                <span class="label floatLeft ui-g-6">{{ 'from' | translate }}: <b>{{issueSelected.from}}</b></span>
+                <span class="label floatLeft ui-g-6">{{ 'memberState' | translate }}: <b>{{issueSelected.memberState}}</b></span>
             </div>
             <div style="padding-top: 0; padding-bottom: 0;">
-                <span class="ui-g-6">{{ 'topic' | translate }}: <b>{{issueSelected.topic}}</b></span>
-                <span class="ui-g-6">{{ 'dateandtime' | translate }}: <b>{{issueSelected.date}}</b></span>
+                <span class="label floatLeft ui-g-6">{{ 'topic' | translate }}: <b>{{issueSelected.topic}}</b></span>
+                <span class="label floatLeft ui-g-6">{{ 'dateandtime' | translate }}: <b>{{issueSelected.date}}</b></span>
             </div>
             <div style="padding-top: 0;">
-                <span class="ui-g-6">{{ 'portal' | translate }}: <b>{{issueSelected.portal}}</b></span>
-                <span class="ui-g-6"></span>
+                <span class="label floatLeft ui-g-6">{{ 'portal' | translate }}: <b>{{issueSelected.portal}}</b></span>
+                <span class="label floatLeft ui-g-6"></span>
             </div>
             <div class="form-group">
-                <label class="ui-g-12" for="issueSummary" style="margin: 0;">{{ 'issueSummary' | translate
+                <label class="label floatLeft ui-g-12" for="issueSummary" style="margin: 0;">{{ 'issueSummary' | translate
                     }}:</label>
                 <textarea id="issueSummary" class="ui-g-12" disabled [(ngModel)]="issueSelected.issueSummary">{{issueSelected.issueSummary}}</textarea>
             </div>
@@ -69,17 +70,17 @@
             <!--</div>-->
             <!--</div>-->
         </div>
-        <h2 style="font-weight: bold;color: #254872; margin-bottom: 10px">{{ 'comments' | translate }}</h2>
+        <h2 class="beneficiaryTitle labelModal supplier">{{ 'comments' | translate }}</h2>
         <div class="ui-g-12" style="background: #F5F5F5;border: 1px solid #C1C1C1;">
             <div class="form-group ui-g-12" *ngFor="let comment of issueSelected.comments; let i = index">
                 <!--<label class="ui-g-12" for="dgConnectComments" style="margin: 0;">{{ 'dgConnectComments' | translate }}:</label>-->
                 <div style="padding-bottom: 0;">
-                    <span class="ui-g-12">{{ 'by' | translate }}: <b>{{comment.type}}</b></span>
+                    <span class="label floatLeft ui-g-12">{{ 'by' | translate }}: <b>{{comment.type}}</b></span>
                 </div>
                 <div style="padding-bottom: 0;">
-                    <span class="ui-g-12">{{ 'dateandtime' | translate }}: <b>{{comment.commentDate}}</b></span>
+                    <span class="label floatLeft ui-g-12">{{ 'dateandtime' | translate }}: <b>{{comment.commentDate}}</b></span>
                 </div>
-                <textarea class="ui-g-12" disabled>{{comment.comment}}</textarea>
+                <textarea class="label floatLeft ui-g-12" disabled>{{comment.comment}}</textarea>
                 <br><br>
             </div>
         </div>
@@ -89,9 +90,8 @@
                         (click)="cancel()">{{ 'cancel.button' | translate }}</button>
             </span>
             <span style="float: right;">
-                <button type="button" class="btn btn-primary" (click)="setAsResolved()" style="margin-right: 15px;">{{ 'setAsResolved' | translate }}</button>
-                <button type="button" class="btn btn-primary" (click)="keepAsPending()">{{ 'keepAsPending' | translate }}</button>
+                <button type="button" class="btn btn-primary publish-button" (click)="setAsResolved()" style="margin-right: 15px;">{{ 'setAsResolved' | translate }}</button>
+                <button type="button" class="btn btn-primary cancel-button" (click)="keepAsPending()">{{ 'keepAsPending' | translate }}</button>
             </span>
         </div>
     </p-dialog>
-</div>
