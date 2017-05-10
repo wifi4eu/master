@@ -14,7 +14,7 @@
         <p-column header="{{ 'access.point' | translate }}">
             <template pTemplate="body" let-rowIndex="rowIndex">
                 <button type="button" class="btn"
-                        routerLink="/supplier-portal/installation/{{installationIds[rowIndex]}}"
+                        [routerLink]="['/supplier-portal/installation', installationIds[rowIndex]]"
                         routerLinkActive="active" style="background: none; padding: 0;">
                     <i class="fa fa-2x fa-eye" style="font-size: 20px;"></i> {{ 'view' | translate }}
                 </button>

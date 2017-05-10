@@ -3,6 +3,7 @@ import {InstallationDTOBase} from "../../shared/swagger/model/InstallationDTO";
 import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
 import {LocalStorageService} from "angular-2-local-storage";
 import {AccessPointDTOBase} from "../../shared/swagger/model/AccessPointDTO";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({templateUrl: 'supplier-installation.component.html', providers: [SupplierApi]})
 
@@ -14,36 +15,34 @@ export class SupplierInstallationComponent {
     private displayModal: boolean;
     private newAccessPoint: AccessPointDTOBase;
 
-    constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi) {
-        // The 'installationId' is hardcoded right now, but we should delete this next statement when we can.
+    constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private route: ActivatedRoute) {
         this.newAccessPoint = new AccessPointDTOBase();
-        this.installationId = 4;
+        this.route.params.subscribe(params => this.installationId = params['id']);
         this.installation = new InstallationDTOBase();
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
-        if (this.user != null) {
-            this.supplierApi.getInstallationById(this.installationId).subscribe(
-                installation => {
-                    if (installation != null) {
-                        this.installation = installation;
-                    }
-                },
-                error => {
-                    console.log(error);
+        this.supplierApi.getInstallationById(this.installationId).subscribe(
+            installation => {
+                if (installation != null) {
+                    this.installation = installation;
                 }
-            );
-        }
+            },
+            error => {
+                console.log(error);
+            }
+        );
     }
-    addNewElement(){
+
+    addNewElement() {
         this.displayModal = true;
     }
 
-    closeModal(){
+    closeModal() {
         this.displayModal = false;
         this.newAccessPoint = new AccessPointDTOBase();
     }
 
-    createInstallation(){
+    createInstallation() {
         this.supplierApi.createAccessPoint(this.newAccessPoint).subscribe(
             response => {
                 this.installation.accessPoints.push(response);
