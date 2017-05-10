@@ -228,5 +228,10 @@
   "button.addInstallationInfo": "Add installation information",
   "voucher.supplierStep1": "Mayors will apply for a voucher",
   "voucher.supplierStep2": "Mayor's select supplier",
-  "voucher.supplierStep3": "Check out if you have been selected"
+  "voucher.supplierStep3": "Check out if you have been selected",
+  "voucher.municipalities": "Municipalities",
+  "voucher.request":"Request",
+  "voucher.assigned": "Assigned vouchers",
+  "voucher.downloadData": "Download data",
+  "voucher.simulation": "Simulation mode"
 }

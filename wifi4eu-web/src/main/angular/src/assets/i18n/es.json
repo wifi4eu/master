@@ -227,5 +227,10 @@
   "voucher.emailNotification": "Recibirás un email tan pronto como el proceso esté completado.",
   "voucher.supplierStep1": "Los alcaldes solicitarán un bono",
   "voucher.supplierStep2": "Proveedor seleccionado por el alcalde",
-  "voucher.supplierStep3": "Comprueba si has sido seleccionado"
+  "voucher.supplierStep3": "Comprueba si has sido seleccionado",
+  "voucher.municipalities": "Municipios",
+  "voucher.request":"Petición",
+  "voucher.assigned": "Tickets asignados",
+  "voucher.downloadData": "Descargar",
+  "voucher.simulation": "Modo simulación"
 }
