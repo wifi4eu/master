@@ -831,3 +831,25 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   font-weight: bold;
   color: $dark-blue;
 }
+.headerTableVoucher{
+  border-bottom: solid 1px $grey;
+  background-color: white;
+  padding: 0.5em 2em 0.4em !important;
+
+}
+
+.headerTableVoucher .voucherTitle{
+  font-size: 19px;
+  font-weight: bold;
+}
+
+
+.headerTableVoucher .voucherSubtitle{
+  font-size: 14px;
+  font-style: italic;
+}
+
+.downloadData{
+  float: right;
+  color: $darkish-blue;
+}
