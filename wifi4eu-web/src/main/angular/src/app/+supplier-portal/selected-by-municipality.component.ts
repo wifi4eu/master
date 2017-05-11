@@ -49,7 +49,7 @@ export class SelectedByMunicipalityComponent {
                     for (let i = 0; i < this.municipalities.length; i++) {
                         this.beneficiaryApi.findByBeneficiaryIdAndPublicationId(this.municipalities[i].legalEntityId, this.currentCall.callId).subscribe(
                             (result: BenPubSupDTO) => {
-                                this.installationIds[i] = result.benPubSubId;
+                                this.installationIds.push(result.benPubSubId);
                             }, error => {
                                 console.log(error);
                             }
