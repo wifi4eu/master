@@ -105,26 +105,16 @@ public class SupplierService {
             // create temporal password
             String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
             userDTO.setPassword(password);
-            _log.info("create user: " + userDTO.toString());
 
-
-            //create supplier entity
-            //Supplier sup = supplierMapper.toEntity(supplierDTO);
-            Supplier sup2 = new Supplier();
-            sup2.setSupplierId(supplierDTO.getSupplierId());
-            sup2.setName(supplierDTO.getName());
-
-            _log.info("Supplier guardado: ");
-            _log.info(sup2.getName());
-
-            SupplierDTO perSupplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+            Supplier supTemp = supplierMapper.toEntity(supplierDTO);
+            Supplier savedSupplier = supplierRepository.save(supTemp);
+            SupplierDTO perSupplierDTO = supplierMapper.toDTO(savedSupplier);
 
             //link supplier and user and store user
             userDTO.setUserTypeId(perSupplierDTO.getSupplierId());
             userDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
 
             //send activate account mail
-
             //userService.sendActivateAccountMail(userDTO);
 
             _log.info("[f] create Supplier");

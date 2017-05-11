@@ -3,12 +3,9 @@ package wifi4eu.wifi4eu.mapper.supplier;
 import org.mapstruct.Mapper;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
-import wifi4eu.wifi4eu.mapper.location.NutsMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {NutsMapper.class})
+@Mapper(componentModel = "spring")
 public interface SupplierMapper {
     SupplierDTO toDTO(Supplier entity);
 

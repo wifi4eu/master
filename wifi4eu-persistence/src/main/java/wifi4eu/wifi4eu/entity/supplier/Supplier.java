@@ -60,8 +60,8 @@ public class Supplier {
     @Column(name = "NUTS_IDS")
     private String nutsIds;
 
-    @Column(name = "LOGO")
-    private String logo;
+    @Column(name = "BINARY_LOGO")
+    private String binaryLogo;
 
     /*
     @ManyToMany(cascade = CascadeType.ALL)
@@ -72,7 +72,7 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds) {
+    public Supplier(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds, String binaryLogo) {
         this.supplierId = supplierId;
         this.name = name;
         this.address = address;
@@ -89,6 +89,7 @@ public class Supplier {
         this.legalCheck2 = legalCheck2;
         this.createDate = createDate;
         this.nutsIds = nutsIds;
+        this.binaryLogo = binaryLogo;
     }
 
     public Long getSupplierId() {
@@ -219,11 +220,11 @@ public class Supplier {
         this.nutsIds = nutsIds;
     }
 
-    public String getLogo() {
-        return logo;
+    public String getBinaryLogo() {
+        return binaryLogo;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public void setBinaryLogo(String binaryLogo) {
+        this.binaryLogo = binaryLogo;
     }
 }

@@ -97,7 +97,7 @@
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="companyLogo">{{ 'company.logo' | translate }}</label>
-                        <p-fileUpload name="demo[]" (onSelect)="onSelect($event)" accept="image/*" maxFileSize="1000000">
+                        <p-fileUpload name="logo[]" (onSelect)="onSelect($event)" accept="image/*" maxFileSize="3145728">
                             <template pTemplate type="content">
                                 <ul *ngIf="uploadedFiles.length">
                                     <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
