@@ -863,3 +863,29 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   font-size: 1.2em;
   color: $dark-blue;
 }
+
+.voucherLabel{
+    font-size: 1.2em;
+    color: #5c5c5c;
+    text-align: left;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.voucherButtons{
+    background-color: #004494;
+    width: 16em;
+    font-family: Verdana;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+
+.autoComplete{
+    width: 13em;
+    display: inline-block;
+}
+
+.twoLines{
+  width: 3em;
+}
