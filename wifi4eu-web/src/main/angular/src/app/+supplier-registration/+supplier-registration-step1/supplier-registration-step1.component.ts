@@ -21,13 +21,7 @@ export class SupplierRegistrationComponentStep1 {
     }
 
     onSelect(event) {
-		console.log("onSelect: ");
-		console.log(event);
-        console.log(event.files);
         if (event && event.files && event.files.length > 0) {
-            console.log(event.files.length);
-            console.log(event.files["0"]);
-
             this.onLogoSubmit.emit(event.files["0"]);
         }
 	}

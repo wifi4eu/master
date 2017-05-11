@@ -44,7 +44,10 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
     }
 
     ngOnInit() {
-        this.supplierDataUrlLogo.readAsDataURL(this.supplierTempLogo);
+        console.log(this.supplierDataUrlLogo.result);
+        if (this.supplierTempLogo) {
+            this.supplierDataUrlLogo.readAsDataURL(this.supplierTempLogo);
+        }
     }
 
     openModal() {
@@ -56,8 +59,6 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
     }
 
     onSubmit() {
-        console.log("on submit");
-        console.log(this.supplierDTO);
         this.supplierDTO.legalCheck1 = this.legalChecks[0];
         this.supplierDTO.legalCheck2 = this.legalChecks[1];
         for (let country of this.nuts0) {
@@ -69,8 +70,6 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
         this.supplierDTO.nutsIds = this.supplierDTO.nutsIds.slice(0, -1);
         this.supplierApi.createSupplier(this.supplierDTO).subscribe(
             data => {
-                console.log("data response");
-                console.log(data);
                 if (data['success'] != true) {
                     this.onFailure.emit(true);
                     return;

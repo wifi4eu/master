@@ -179,7 +179,7 @@ public class SupplierDTO implements Serializable {
         return binaryLogo;
     }
 
-    public void setLogo(String binaryLogo) {
+    public void setBinaryLogo(String binaryLogo) {
         this.binaryLogo = binaryLogo;
     }
 }
