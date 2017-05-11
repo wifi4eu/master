@@ -49,16 +49,19 @@ public class UserResource {
     public ResponseDTO login(@RequestBody final UserDTO userDTO, final HttpServletResponse response) {
         ResponseDTO result;
         _log.info("userDTO: " + userDTO.getEmail());
-        try{
+        try {
             UserDTO user = userService.login(userDTO);
 
             String token = AuthJWTokenizer.encode(user.getEmail());
             sessionCache.userSessionCache.put(token, user);
-            result = new ResponseDTO(true, token, null);
 
-        } catch (UnsupportedEncodingException ex){
+            user.setPassword(""); // Remove password
+
+            result = new ResponseDTO(true, user, null);
+            response.addHeader("token", token);
+        } catch (UnsupportedEncodingException ex) {
             result = new ResponseDTO(false, null, new ErrorDTO(0, "Error in encoding JWT"));
-        }catch (UsernameNotFoundException ex){
+        } catch (UsernameNotFoundException ex) {
             result = new ResponseDTO(false, null, new ErrorDTO(0, "can't login"));
         }
         _log.info("result: " + result);
@@ -71,30 +74,30 @@ public class UserResource {
     public ResponseDTO refreshToken(@RequestBody final String oldToken, final HttpServletResponse response) throws UnsupportedEncodingException {
         ResponseDTO result = null;
 
+        try {
+            //decode old hash to generate new one
+            AuthJWTokenizer.decode(oldToken);
+
+        } catch (ExpiredJwtException ex) {
+
+            //Invalidate previous hash session
+            UserDTO user = null;
             try {
-                //decode old hash to generate new one
-                AuthJWTokenizer.decode(oldToken);
 
-            } catch (ExpiredJwtException ex) {
+                user = sessionCache.userSessionCache.get(oldToken);
+                sessionCache.userSessionCache.invalidate(oldToken);
 
-                //Invalidate previous hash session
-                UserDTO user = null;
-                try {
+                //Create new token and add it
+                String token = AuthJWTokenizer.encode(user.getEmail());
+                sessionCache.userSessionCache.put(token, user);
 
-                    user = sessionCache.userSessionCache.get(oldToken);
-                    sessionCache.userSessionCache.invalidate(oldToken);
+                result = new ResponseDTO(true, token, null);
 
-                    //Create new token and add it
-                    String token = AuthJWTokenizer.encode(user.getEmail());
-                    sessionCache.userSessionCache.put(token, user);
-
-                    result = new ResponseDTO(true, token, null);
-
-                } catch (ExecutionException | CacheLoader.InvalidCacheLoadException e) {
-                    result = new ResponseDTO(false, null, new ErrorDTO(0, "Error getting the user: " + e.getMessage()));
-                }
-
+            } catch (ExecutionException | CacheLoader.InvalidCacheLoadException e) {
+                result = new ResponseDTO(false, null, new ErrorDTO(0, "Error getting the user: " + e.getMessage()));
             }
+
+        }
 
         _log.info("result: " + result);
         return result;
