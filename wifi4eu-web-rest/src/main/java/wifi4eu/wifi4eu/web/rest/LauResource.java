@@ -60,5 +60,14 @@ public class LauResource {
         return new ResponseDTO(false, null, errorDTO);
     }
 
+    @ApiOperation(value = "get Lau by LAU2 i.e: 08019")
+    @RequestMapping(value = "/lau2/{lau2}", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public LauDTO findLauByLau2(@PathVariable("lau2") final String lau2, final HttpServletResponse response) {
+        if (_log.isDebugEnabled()) {
+            _log.debug("findLauByLau2: " + lau2);
+        }
+        return locationService.getLauByLau2(lau2);
+    }
 
 }
