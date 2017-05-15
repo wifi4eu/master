@@ -38,17 +38,29 @@ export class HelpdeskComponent {
     setAsResolved() {
         this.display = false;
         this.issueSelected.status = "Resolved";
-        this.helpdeskApi.createHelpdeskIssue(this.issueSelected).subscribe();
+        this.helpdeskApi.createHelpdeskIssue(this.issueSelected).subscribe(
+            data => {
+                this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
+            },
+            error => {
+                console.log(error);
+            }
+        );
         this.issueSelected = new HelpdeskDTOBase();
-        this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
     }
 
     keepAsPending() {
         this.display = false;
         this.issueSelected.status = "Pending";
-        this.helpdeskApi.createHelpdeskIssue(this.issueSelected).subscribe();
+        this.helpdeskApi.createHelpdeskIssue(this.issueSelected).subscribe(
+            data => {
+                this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
+            },
+            error => {
+                console.log(error);
+            }
+        );
         this.issueSelected = new HelpdeskDTOBase();
-        this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
     }
 
     cancel() {
