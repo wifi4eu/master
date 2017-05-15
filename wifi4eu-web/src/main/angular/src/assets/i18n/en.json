@@ -236,5 +236,7 @@
   "voucher.simulation": "Simulation mode",
   "voucher.simulate": "Simulate vouchers",
   "voucher.amountVoucher": "Amount of vouchers",
-  "voucher.cancelAssignment": "Cancel assignment"
+  "voucher.cancelAssignment": "Cancel assignment",
+  "voucher.totalMember": "Total Member States",
+  "voucher.totalRequest": "Total Request"
 }
