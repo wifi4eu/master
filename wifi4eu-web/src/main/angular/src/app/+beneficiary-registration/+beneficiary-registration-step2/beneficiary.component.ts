@@ -11,12 +11,17 @@ export class BeneficiaryComponent {
     @Output() onNext: EventEmitter<number>;
     @Output() onBack: EventEmitter<number>;
 
-    private mayorEmailMatches: boolean = false;
-    private representativeEmailMatches: boolean = false;
+    private mayorEmailMatches: boolean;
+    private representativeEmailMatches: boolean;
 
     constructor() {
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();
+    }
+
+    ngOnInit() {
+        this.checkIfMayorEmailMatches();
+        this.checkIfRepresentativeEmailMatches();
     }
 
     onToggleRadio() {

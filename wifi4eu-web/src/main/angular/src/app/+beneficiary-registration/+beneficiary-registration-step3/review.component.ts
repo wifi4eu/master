@@ -35,7 +35,6 @@ export class ReviewComponent {
         this.gotoStep = new EventEmitter<number>();
         this.onSuccess = new EventEmitter<boolean>();
         this.onFailure = new EventEmitter<boolean>();
-
         this.userDetails = new UserDetails();
 
         this.displayConfirmingData = false;
@@ -45,8 +44,10 @@ export class ReviewComponent {
     }
 
     onSubmit() {
-
         this.displayConfirmingData = true;
+        this.beneficiaryDTO.legalEntityDTO.legalCheckbox1 = this.checkboxes[0];
+        this.beneficiaryDTO.legalEntityDTO.legalCheckbox2 = this.checkboxes[1];
+        this.beneficiaryDTO.legalEntityDTO.legalCheckbox3 = this.checkboxes[2];
         this.beneficiaryApi.create(this.beneficiaryDTO).subscribe(
             data => {
                 if (data['success'] != true) {
@@ -55,14 +56,12 @@ export class ReviewComponent {
                     return;
                 }
                 this.onSuccess.emit(true)
-
             },
             error => {
                 this.displayConfirmingData = false;
                 this.onFailure.emit(true);
             }
         );
-
     }
 
     editStep(step: number) {
