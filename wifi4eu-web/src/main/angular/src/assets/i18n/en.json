@@ -233,5 +233,10 @@
   "voucher.request":"Request",
   "voucher.assigned": "Assigned vouchers",
   "voucher.downloadData": "Download data",
-  "voucher.simulation": "Simulation mode"
+  "voucher.simulation": "Simulation mode",
+  "voucher.simulate": "Simulate vouchers",
+  "voucher.amountVoucher": "Amount of vouchers",
+  "voucher.cancelAssignment": "Cancel assignment",
+  "voucher.totalMember": "Total Member States",
+  "voucher.totalRequest": "Total Request"
 }
