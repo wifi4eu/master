@@ -15,7 +15,7 @@ import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 
 export class DgConnVoucherComponent {
 
- @Input('beneficiaryDTO') beneficiaryDTO: BeneficiaryDTOBase;
+    @Input('beneficiaryDTO') beneficiaryDTO: BeneficiaryDTOBase;
     @Input('nutsDTO') nutsDTO: NutsDTOBase;
     @Input('lausDTO') lausDTO: NutsDTOBase;
 
@@ -26,9 +26,6 @@ export class DgConnVoucherComponent {
 
     constructor(private http: Http, private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService) {
     }
-
-
-
 
     onKeyUp(event) {
         // Check if key pressed is a ascii printable letter
