@@ -11,8 +11,8 @@
     <!--<security:intercept-url pattern="/api/call" access="isAuthenticated()" />
     <security:intercept-url pattern="/api/call/*" access="isAuthenticated()" />-->
 
-        <security:intercept-url pattern="/api/timeline" method="GET" access="isAuthenticated()" />
-        <security:intercept-url pattern="/api/timeline" method="POST" access="isAuthenticated()" />
+        <!--<security:intercept-url pattern="/api/timeline" method="GET" access="isAuthenticated()" />-->
+        <!--<security:intercept-url pattern="/api/timeline" method="POST" access="isAuthenticated()" />-->
         <security:custom-filter after="PRE_AUTH_FILTER" ref="customFilter" />
         
     </security:http>
