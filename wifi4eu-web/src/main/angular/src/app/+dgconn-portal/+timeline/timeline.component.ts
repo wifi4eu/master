@@ -1,70 +1,63 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
-import {TimelineElement} from "../../shared/models/timeline-element.model";
 import {TimelineDTO, TimelineDTOBase} from "../../shared/swagger/model/TimelineDTO";
 import {TimelineApi} from "../../shared/swagger/api/TimelineApi";
-import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 
 @Component({
     templateUrl: 'timeline.component.html', providers: [TimelineApi]
 })
 
-export class DgConnTimelineComponent implements OnInit {
+export class DgConnTimelineComponent {
     @Input('dgConnDetails') dgConnDetails: DgConnDetails;
-
+    private event: string;
+    private startDate: Date;
+    private endDate: Date;
+    private startTime: Date;
+    private endTime: Date;
     private display: boolean;
     private timelines: TimelineDTO[];
-    private selectedTimeline: TimelineElement;
-    private originalTimeline: TimelineDTO;
+    private timeline: TimelineDTO;
     private newElementForm: boolean;
 
-    constructor(private timelineApi: TimelineApi, private uxService: UxService) {
+    constructor(private timelineApi: TimelineApi) {
         this.display = false;
         this.dgConnDetails = new DgConnDetails();
         this.timelineApi.allTimelines().subscribe(
             timelines => this.timelines = timelines,
             error => console.log(error)
         );
-        this.selectedTimeline = new TimelineElement();
-        this.originalTimeline = new TimelineDTOBase();
         this.newElementForm = false;
     }
 
-    ngOnInit() {
-        this.timelineApi.allTimelines().subscribe(
-            timelines => this.timelines = timelines,
-            error => console.log(error)
-        );
-    }
-
     addNewElement() {
+        this.event = '';
+        this.startDate = null;
+        this.endDate = null;
         this.newElementForm = true;
         this.display = true;
-        this.selectedTimeline = new TimelineElement();
-        this.selectedTimeline.setTimelineId(null);
         this.timelineApi.allTimelines().subscribe(
             timelines => this.timelines = timelines,
             error => console.log(error)
         );
     }
 
-
-    displayInfo(rowElement: number) {
-        this.timelineApi.allTimelines().subscribe(
-            calls => {
-                this.timelines = calls;
-                this.selectedTimeline = this.convertDTOToTimeline(this.timelines[rowElement]);
-                this.display = true;
-            },
-            error => console.log(error)
-        );
+    displayInfo(rowData: TimelineDTO) {
+        this.timeline = rowData;
+        this.event = rowData.event;
+        this.startTime = new Date(rowData.startDate);
+        this.endTime = new Date(rowData.endDate);
+        this.startDate = new Date(rowData.startDate);
+        this.endDate = new Date(rowData.endDate);
+        this.display = true;
     }
 
-    deleteElement(rowElement: number) {
-        this.timelineApi.deleteTimeline(this.timelines[rowElement]).subscribe(
+    deleteElement(rowData: number) {
+        console.log("rowData:", rowData);
+        this.timelineApi.deleteTimeline(this.timelines[rowData]).subscribe(
             data => {
                 this.timelineApi.allTimelines().subscribe(
-                    timelines => this.timelines = timelines
+                    timelines => this.timelines = timelines,
+                    error => console.log(error)
                 );
             },
             error => console.log(error)
@@ -77,63 +70,46 @@ export class DgConnTimelineComponent implements OnInit {
     }
 
     createTimeline() {
-        this.timelineApi.createTimeline(this.convertTimelineToDTO(this.selectedTimeline)).subscribe(
+        let timeline = (this.timeline) ? this.timeline : new TimelineDTOBase();
+        timeline.event = this.event;
+        let finalStartDate = this.startDate;
+        finalStartDate.setHours(this.startTime.getHours());
+        finalStartDate.setMinutes(this.startTime.getMinutes());
+        timeline.startDate = finalStartDate.getTime();
+        let finalEndDate = this.endDate;
+        finalEndDate.setHours(this.endTime.getHours());
+        finalEndDate.setMinutes(this.endTime.getMinutes());
+        timeline.endDate = finalEndDate.getTime();
+
+        this.timelineApi.createTimeline(timeline).subscribe(
             data => {
-                this.timelineApi.allTimelines().subscribe(
-                    timelines => {
-                        this.timelines = timelines;
-                        this.newElementForm = false;
-                        this.display = false;
-                    }, error => {
-                        console.log(error);
-                        this.newElementForm = false;
-                        this.display = false;
-                    }
-                );
-            },
-            error => {
-                console.log(error)
                 this.newElementForm = false;
                 this.display = false;
-            }
+                this.timelineApi.allTimelines().subscribe(
+                    timelines => this.timelines = timelines,
+                    error => console.log(error)
+                );
+            },
+            error => console.log(error)
         );
+        this.timeline = null;
+
     }
 
-    convertTimelineToDTO(timeline: TimelineElement) {
-        let dto = new TimelineDTOBase();
-        dto.timelineId = timeline.getTimelineId();
-        let startDate = new Date(timeline.getStartDate());
-        if (startDate != null) {
-            let startTime = timeline.getStartTime().split(":");
-            startDate.setHours(parseInt(startTime[0]));
-            startDate.setMinutes(parseInt(startTime[1]));
-            dto.startDate = startDate.getTime();
-        }
-        let endDate = new Date(timeline.getEndDate());
-        if (endDate != null) {
-            let endTime = timeline.getEndTime().split(":");
-            endDate.setHours(parseInt(endTime[0]));
-            endDate.setMinutes(parseInt(endTime[1]));
-            dto.endDate = endDate.getTime();
-        }
-        dto.event = timeline.getEvent();
-        return dto;
-    }
-
-    convertDTOToTimeline(dto: TimelineDTOBase) {
-        let timeline = new TimelineElement();
-        timeline.setTimelineId(dto.timelineId);
-        timeline.setStartDate(new Date(dto.startDate));
-        timeline.setEndDate(new Date(dto.endDate));
-        if (dto.startDate != null) {
-            timeline.setStartTime(timeline.getStartDate().getHours() + ":" + ((timeline.getStartDate().getMinutes() < 10) ? ("0" + timeline.getStartDate().getMinutes()) : timeline.getStartDate().getMinutes()));
-        }
-        if (dto.endDate != null) {
-            timeline.setEndTime(timeline.getEndDate().getHours() + ":" + ((timeline.getEndDate().getMinutes() < 10) ? ("0" + timeline.getEndDate().getMinutes()) : timeline.getEndDate().getMinutes()));
-        }
-        timeline.setEvent(dto.event);
-        return timeline;
+    checkDate() {
+        console.log("startDate:", this.startDate);
+        console.log("endDate:", this.endDate);
+        console.log(this.startDate < this.endDate);
+        return this.startDate < this.endDate;
     }
 
 
+    keyPress(event: any) {
+        const pattern = /[0-9\:]/;
+        let inputChar = String.fromCharCode(event.charCode);
+
+        if (!pattern.test(inputChar)) {
+            event.preventDefault();
+        }
+    }
 }
