@@ -1,68 +1,65 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
-import {Call} from "../../shared/models/call-details.model";
 import {CallDTO, CallDTOBase} from "../../shared/swagger/model/CallDTO";
 import {CallApi} from "../../shared/swagger/api/CallApi";
-import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 
 @Component({
     templateUrl: 'publication.component.html', providers: [CallApi]
 })
 
-export class DgConnPublicationComponent implements OnInit {
+export class DgConnPublicationComponent {
     @Input('dgConnDetails') dgConnDetails: DgConnDetails;
+    private event: string;
+    private startDate: Date;
+    private endDate: Date;
+    private startTime: Date;
+    private endTime: Date;
     private display: boolean;
     private calls: CallDTO[];
-    private selectedCall: Call;
-    private originalCall: CallDTO;
+    private call: CallDTO;
     private newElementForm: boolean;
 
-    constructor(private callApi: CallApi, private uxService: UxService) {
+    constructor(private callApi: CallApi) {
         this.display = false;
         this.dgConnDetails = new DgConnDetails();
         this.callApi.allCalls().subscribe(
             calls => this.calls = calls,
             error => console.log(error)
         );
-        this.selectedCall = new Call();
-        this.originalCall = new CallDTOBase();
         this.newElementForm = false;
     }
 
-    ngOnInit() {
-        this.callApi.allCalls().subscribe(
-            calls => this.calls = calls,
-            error => console.log(error)
-        );
-    }
-
     addNewElement() {
+        this.event = '';
+        this.startDate = null;
+        this.endDate = null;
+        this.startTime = null;
+        this.endTime = null;
         this.newElementForm = true;
         this.display = true;
-        this.selectedCall = new Call();
-        this.selectedCall.setCallId(null);
         this.callApi.allCalls().subscribe(
             calls => this.calls = calls,
             error => console.log(error)
         );
     }
 
-    displayInfo(rowElement: number) {
-        this.callApi.allCalls().subscribe(
-            calls => {
-                this.calls = calls;
-                this.selectedCall = this.convertDTOToCall(this.calls[rowElement]);
-                this.display = true;
-            },
-            error => console.log(error)
-        );
+    displayInfo(rowData: CallDTO) {
+        this.call = rowData;
+        this.event = rowData.event;
+        this.startTime = new Date(rowData.startDate);
+        this.endTime = new Date(rowData.endDate);
+        this.startDate = new Date(rowData.startDate);
+
+        this.endDate = new Date(rowData.endDate);
+        this.display = true;
     }
 
-    deleteElement(rowElement: number) {
-        this.callApi.deleteCall(this.calls[rowElement].callId).subscribe(
+    deleteElement(rowData: number) {
+        this.callApi.deleteCall(this.calls[rowData].callId).subscribe(
             data => {
                 this.callApi.allCalls().subscribe(
-                    calls => this.calls = calls
+                    calls => this.calls = calls,
+                    error => console.log(error)
                 );
             },
             error => console.log(error)
@@ -75,7 +72,19 @@ export class DgConnPublicationComponent implements OnInit {
     }
 
     createPublication() {
-        this.callApi.createCall(this.convertCallToDTO(this.selectedCall)).subscribe(
+        let call = (this.call) ? this.call : new CallDTOBase();
+        call.event = this.event;
+        let finalStartDate = this.startDate;
+        finalStartDate.setHours(this.startTime.getHours());
+        finalStartDate.setMinutes(this.startTime.getMinutes());
+        call.startDate = finalStartDate.getTime();
+
+        let finalEndDate = this.endDate;
+        finalEndDate.setHours(this.endTime.getHours());
+        finalEndDate.setMinutes(this.endTime.getMinutes());
+        call.endDate = finalEndDate.getTime();
+
+        this.callApi.createCall(call).subscribe(
             data => {
                 this.callApi.allCalls().subscribe(
                     calls => {
@@ -95,47 +104,11 @@ export class DgConnPublicationComponent implements OnInit {
                 this.display = false;
             }
         );
+        this.call = null;
     }
 
-    convertCallToDTO(call: Call) {
-        let dto = new CallDTOBase();
-        dto.callId = call.getCallId();
-        let startDate = new Date(call.getStartDate());
-        if (startDate != null) {
-            let startTime = call.getStartTime().split(":");
-            startDate.setHours(parseInt(startTime[0]));
-            startDate.setMinutes(parseInt(startTime[1]));
-            dto.startDate = startDate.getTime();
-        }
-        let endDate = new Date(call.getEndDate());
-        if (endDate != null) {
-            let endTime = call.getEndTime().split(":");
-            endDate.setHours(parseInt(endTime[0]));
-            endDate.setMinutes(parseInt(endTime[1]));
-            dto.endDate = endDate.getTime();
-        }
-        dto.event = call.getEvent();
-        return dto;
-    }
-
-    convertDTOToCall(dto: CallDTOBase) {
-        let call = new Call();
-        call.setCallId(dto.callId);
-        call.setStartDate(new Date(dto.startDate));
-        call.setEndDate(new Date(dto.endDate));
-        if (dto.startDate != null) {
-            call.setStartTime(call.getStartDate().getHours() + ":" + ((call.getStartDate().getMinutes() < 10) ? ("0" + call.getStartDate().getMinutes()) : call.getStartDate().getMinutes()));
-        }
-        if (dto.endDate != null) {
-            call.setEndTime(call.getEndDate().getHours() + ":" + ((call.getEndDate().getMinutes() < 10) ? ("0" + call.getEndDate().getMinutes()) : call.getEndDate().getMinutes()));
-        }
-        call.setEvent(dto.event);
-        return call;
-    }
-
-    formatTimestamp(timestamp) {
-        let date = new Date(timestamp);
-        return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + ((date.getMinutes() < 10) ? ("0" + date.getMinutes()) : date.getMinutes());
+    checkDate() {
+        return this.startDate < this.endDate;
     }
 
     keyPress(event: any) {
