@@ -65,4 +65,11 @@ public class LocationService {
         }
         return lauMapper.toDTO(locationLauRepository.findByLau2(lau2));
     }
+
+    public NutsDTO getNutsByCode(String code) {
+        if(_log.isDebugEnabled()) {
+            _log.debug("Get NUTS with code: " + code);
+        }
+        return nutsMapper.toDTO(locationNutsRepository.findByCode(code));
+    }
 }

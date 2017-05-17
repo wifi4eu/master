@@ -39,7 +39,7 @@ public class NutsResource {
     }
 
     @ApiOperation(value = "get all nuts from level X")
-    @RequestMapping(value = "/{level}", method = RequestMethod.GET, produces = "application/JSON")
+    @RequestMapping(value = "/level/{level}", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
     public List<NutsDTO> findNutsByLevel(@PathVariable("level") final Long level, final HttpServletResponse response) {
         _log.info("findNutsByLevel " + level);
@@ -47,6 +47,16 @@ public class NutsResource {
         return locationService.getNutsByLevel(level);
 
     }
+
+    @ApiOperation(value = "get nuts by code")
+    @RequestMapping(value = "/code/{code}", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public NutsDTO findNutsByCode(@PathVariable("code") final String code, final HttpServletResponse response) {
+        _log.info("findNutsByCode " + code);
+
+        return locationService.getNutsByCode(code);
+
+    }    
 
     @ApiOperation(value = "create Nuts")
     @RequestMapping(method = RequestMethod.POST)

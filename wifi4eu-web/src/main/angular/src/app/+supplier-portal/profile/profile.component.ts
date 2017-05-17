@@ -1,4 +1,5 @@
 import {Component, Input, Output, EventEmitter} from "@angular/core";
+import {SelectItem} from "primeng/primeng";
 import {SupplierDetails} from "../../shared/models/supplier-details.model";
 import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
 import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
@@ -6,17 +7,16 @@ import {LauApi} from "../../shared/swagger/api/LauApi";
 import {NutsApi} from "../../shared/swagger/api/NutsApi";
 import {LocalStorageService} from "angular-2-local-storage";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
-import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
+import {NutsDTO, NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {UserDTO} from "../../shared/swagger/model/UserDTO";
+import {ResponseDTO} from "../../shared/swagger/model/ResponseDTO";
 
 @Component({
     templateUrl: 'profile.component.html', providers: [SupplierApi, LauApi, NutsApi]
 })
 
 export class SupplierProfileComponent {
-    private nutsCountry: NutsDTOBase;
-    private lauMunicipality: LauDTOBase;
     private supplierData: SupplierDTOBase;
     private selectedSupplierData: SupplierDTOBase;
     private supplierDetails: SupplierDetails;
@@ -25,10 +25,14 @@ export class SupplierProfileComponent {
     private displayCompany: boolean;
     private displayLegal: boolean;
     private user: UserDTO;
-    private nutsModalInitial: NutsDTOBase;
-    private lausModalInitial: NutsDTOBase;
-    private nutsSuggestions: NutsDTOBase[];
-    private lausSuggestions: LauDTOBase[];
+    private countries: NutsDTO[];
+    private provinces: NutsDTO[];
+    private selectedCountries: NutsDTO[];
+    private selectedProvinces: NutsDTO[];
+    private allCountries: SelectItem[];
+    
+    private supplierTempLogo : any;
+    private uploadedFiles: any[] = [];
 
     constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService) {
         this.supplierDetails = new SupplierDetails();
@@ -37,70 +41,79 @@ export class SupplierProfileComponent {
         this.displayCompany = false;
         this.displayLegal = false;
         this.supplierData = new SupplierDTOBase();
-        this.nutsCountry = new NutsDTOBase();
-        this.lauMunicipality = new LauDTOBase();
+        this.countries = [];
+        this.provinces = [];
+        this.selectedCountries = [];
+        this.selectedProvinces = [];
+        this.allCountries = [];
 
         this.selectedSupplierData = new SupplierDTOBase();
-        this.emptyModal();
+        this.selectedSupplierData = Object.assign({}, this.supplierData);
 
         let u = this.localStorage.get('user');
-
         this.user = u ? JSON.parse(u.toString()) : null;
+    }
 
+    ngOnInit() {
         if (this.user != null) {
             this.supplierApi.getSupplierById(this.user.userTypeId).subscribe(
                 response => {
                     this.supplierData = response;
                     let partNuts = this.supplierData.nutsIds.split(",");
-                    this.nutsApi.findNutsByLevel(0).subscribe(
-                        (nuts: NutsDTOBase[]) => {
-                            for (let i = 0; i < nuts.length; i++) {
-                                if (partNuts[0] == nuts[i].countryCode) {
-                                    this.nutsCountry = nuts[i];
-                                    break;
+                    for (let i = 0; i < partNuts.length; i++) {
+                        this.nutsApi.findNutsByCode(partNuts[i]).subscribe(
+                            (nuts: NutsDTO) => {
+                                if (nuts.level == 0) {
+                                    this.countries.push(nuts);
+                                } else if (nuts.level == 3) {
+                                    this.provinces.push(nuts);
                                 }
                             }
-                        }
-                    );
-                    this.lauApi.findLauByNuts3(partNuts[1]).subscribe(
-                        result => {
-                            let laus = result;
-                            this.lauMunicipality = laus[0];
-                        },
-                        error => {
-                            console.log(error);
-                        }
-                    );
-                },
-                error => {
+                        )
+                    }
+                }, error => {
                     console.log(error);
                 }
             );
         }
-
+        this.nutsApi.findNutsByLevel(0).subscribe(
+            (nuts: NutsDTO[]) => {
+                for (let nut of nuts) {
+                    let selectedItem = {
+                        label: ' ' + nut.name,
+                        value: nut
+                    };
+                    this.allCountries.push(selectedItem);
+                }
+            }
+        );
     }
 
     openModal() {
         this.display = true;
     }
 
-    emptyModal() {
-        this.selectedSupplierData = Object.assign({}, this.supplierData);
-    }
-
     displayContactModal() {
+        this.selectedSupplierData = Object.assign({}, this.supplierData);
+        this.selectedCountries = this.countries;
+        this.selectedProvinces = this.provinces;
         this.displayContact = true;
-
     }
 
     displayCompanyModal() {
+        this.selectedSupplierData = Object.assign({}, this.supplierData);
+        this.selectedCountries = this.countries;
+        this.selectedProvinces = this.provinces;
         this.displayCompany = true;
     }
 
     displayLegalModal() {
-        this.nutsModalInitial = this.nutsCountry;
-        this.lausModalInitial = this.lauMunicipality;
+        this.selectedSupplierData = Object.assign({}, this.supplierData);
+        this.selectedCountries = this.countries;
+        this.selectedProvinces = this.provinces;
         this.displayLegal = true;
+        console.log(this.selectedCountries);
+        console.log(this.allCountries);
     }
 
     closeModal() {
@@ -108,69 +121,19 @@ export class SupplierProfileComponent {
         this.displayLegal = false;
         this.displayCompany = false;
         this.displayContact = false;
-        this.nutsCountry = this.nutsModalInitial;
-        this.lauMunicipality = this.lausModalInitial;
-
+        this.selectedCountries = this.countries;
+        this.selectedProvinces = this.provinces;
+        this.selectedSupplierData = Object.assign({}, this.supplierData);
     }
 
     checkPassword() {
         return this.supplierDetails.newPassword === this.supplierDetails.repeatNewPassword;
     }
 
-    filterNuts(event) {
-        this.nutsApi.findNutsByLevel(0).subscribe(
-            nuts => {
-                this.nutsSuggestions = this.filterCountries(event.query, nuts)
-            },
-
-            error => {
-                this.uxService.growl({
-                    severity: 'warn',
-                    summary: 'WARNING',
-                    detail: 'Could not get nuts, ignore this when NG is working in offline mode'
-                });
-                console.log('WARNING: Could not get nuts', error);
-            }
-        );
-
-    }
-
-    filterCountries(query, nuts: NutsDTOBase[]) {
-        let filteredNuts: NutsDTOBase[] = [];
-        for (let i = 0; i < nuts.length; i++) {
-            let nut = nuts[i];
-            nut.name = nut.name.toLowerCase();
-            if (nut.name.indexOf(query.toLowerCase()) == 0) {
-                nut.name = nut.name.charAt(0).toUpperCase() + nut.name.slice(1);
-                filteredNuts.push(nut);
-            }
-        }
-        return filteredNuts;
-    }
-
-    filterLaus(event) {
-        this.lauApi.findLauByCountryCode(this.nutsCountry.countryCode).subscribe(
-            laus => this.lausSuggestions = this.filterMunicipalities(event.query, laus)
-        );
-    }
-
-    filterMunicipalities(query, laus: LauDTOBase[]) {
-        let filteredLaus: LauDTOBase[] = [];
-        for (let i = 0; i < laus.length; i++) {
-            let lau = laus[i];
-            if (lau.name1 != null) {
-                if (lau.name1.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-                    filteredLaus.push(lau);
-                }
-            }
-        }
-        return filteredLaus;
-    }
-
     saveSupplierChanges() {
         this.supplierApi.saveSupplier(this.selectedSupplierData).subscribe(
-            savedSupplier => {
-                this.supplierData = savedSupplier;
+            (savedSupplier: ResponseDTO) => {
+                this.supplierData = savedSupplier.data;
                 this.display = false;
                 this.displayLegal = false;
                 this.displayCompany = false;
@@ -179,5 +142,42 @@ export class SupplierProfileComponent {
                 console.log(error);
             }
         );
+    }
+
+    onSelect(event) {
+        if (event && event.files && event.files.length > 0) {
+            if (event) {
+                this.supplierTempLogo = event.files["0"];
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    this.selectedSupplierData.logo = reader.result;
+                };
+                reader.readAsDataURL(event);
+            }
+        }
+	}
+
+    onMultiSelectChange(event) {
+        if (event.value.length > 0) {
+            let country: NutsDTO = event.value[event.value.length - 1];
+
+            if(this.selectedCountries.length > 0){
+                this.selectedCountries.splice(0,this.selectedCountries.length);
+            }
+            for(let country of event.value){
+                this.selectedCountries.push(country);
+            }
+
+            this.nutsApi.findNutsByLevel(3).subscribe(
+                (nuts: NutsDTO[]) => {
+                    this.provinces[country.name.toUpperCase()] = [];
+                    for (let nut of nuts) {
+                        if (country.countryCode === nut.countryCode) {
+                            this.provinces[country.name.toUpperCase()].push(nut);
+                        }
+                    }
+                }
+            );
+        }
     }
 }
