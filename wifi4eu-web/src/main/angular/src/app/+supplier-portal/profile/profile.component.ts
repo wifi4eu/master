@@ -30,9 +30,12 @@ export class SupplierProfileComponent {
     private selectedCountries: NutsDTO[];
     private selectedProvinces: NutsDTO[];
     private allCountries: SelectItem[];
-    
-    private supplierTempLogo : any;
+    private supplierTempLogo: any;
     private uploadedFiles: any[] = [];
+    private nutsCountry: NutsDTOBase;
+    private lauMunicipality: LauDTOBase;
+    private nutsModalInitial: NutsDTOBase;
+    private lausModalInitial: LauDTOBase;
 
     constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService) {
         this.supplierDetails = new SupplierDetails();
@@ -151,16 +154,16 @@ export class SupplierProfileComponent {
                 reader.readAsDataURL(event);
             }
         }
-	}
+    }
 
     onMultiSelectChange(event) {
         if (event.value.length > 0) {
             let country: NutsDTO = event.value[event.value.length - 1];
 
-            if(this.selectedCountries.length > 0){
-                this.selectedCountries.splice(0,this.selectedCountries.length);
+            if (this.selectedCountries.length > 0) {
+                this.selectedCountries.splice(0, this.selectedCountries.length);
             }
-            for(let country of event.value){
+            for (let country of event.value) {
                 this.selectedCountries.push(country);
             }
 
@@ -175,21 +178,6 @@ export class SupplierProfileComponent {
                 }
             );
         }
-    }
-
-    saveSupplierChanges() {
-        this.updateNutsAndLau();
-        this.supplierApi.saveSupplier(this.selectedSupplierData).subscribe(
-            (savedSupplier: ResponseDTO) => {
-                this.supplierData = savedSupplier.data;
-                this.display = false;
-                this.displayLegal = false;
-                this.displayCompany = false;
-                this.displayContact = false;
-            }, error => {
-                console.log(error);
-            }
-        );
     }
 
     updateNutsAndLau() {

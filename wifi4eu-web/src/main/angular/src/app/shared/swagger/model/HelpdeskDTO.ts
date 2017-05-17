@@ -20,9 +20,7 @@ export interface HelpdeskDTO {
 
     issueSummary?: string;
 
-    memberStateComments?: string;
-
-    dgConnectComments?: string;
+    comments?: Array<models.HelpdeskCommentDTO>;
 
 }
 
@@ -60,10 +58,7 @@ export class HelpdeskDTOBase  implements HelpdeskDTO{
 
     issueSummary?:  string ;
 
-
-    memberStateComments?:  string ;
-
-
-    dgConnectComments?:  string ;
+    @Type(() => models.HelpdeskCommentDTOBase)
+    comments?:  models.HelpdeskCommentDTOBase[] ;
 
 }

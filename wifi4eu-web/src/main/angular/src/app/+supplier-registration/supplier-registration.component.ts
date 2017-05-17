@@ -18,7 +18,7 @@ export class SupplierRegistrationComponent {
 
     private provinces: NutsDTO[][];
 
-    private supplierTempLogo : any;
+    private supplierTempLogo: any;
 
     constructor() {
         this.supplierDTO = new SupplierDTOBase();
@@ -76,15 +76,15 @@ export class SupplierRegistrationComponent {
         this.failureRegistration = value;
     }
 
-    onLogoSubmit(event : any) {
+    onLogoSubmit(event: any) {
         if (event) {
             this.supplierTempLogo = event;
 
             let reader = new FileReader();
             reader.onload = (e) => {
-                this.supplierDTO.binaryLogo = reader.result;
+                this.supplierDTO.logo = reader.result;
             };
-            
+
             reader.readAsDataURL(event);
         }
     }

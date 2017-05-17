@@ -51,7 +51,7 @@ export interface ITimelineApi {
 
 @Injectable()
 export class TimelineApi implements ITimelineApi {
-    protected basePath = 'http://localhost:7001/wifi4eu/api';
+    protected basePath = 'http://localhost:8080/wifi4eu/api';
     public defaultHeaders: Headers = new Headers();
     public configuration: Configuration = new Configuration();
 
