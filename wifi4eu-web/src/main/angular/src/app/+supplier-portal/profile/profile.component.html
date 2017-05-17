@@ -66,7 +66,7 @@
                         <p class="profileData">{{supplierData.address}}</p>
                         <p class="profileData">{{supplierData.vat}}</p>
                         <p class="profileData">{{supplierData.bic}}</p>
-                        <p class="profileData">{{supplierData.binaryLogo}}</p>
+                        <p class="profileData"><img [src]="supplierData.logo" height="150"></p>
                     </div>
                 </div>
                 <hr class="beneficiaryHr">
@@ -85,13 +85,23 @@
 
                 <div class="ui-g">
                     <div class="ui-g-4">
-                        <p>{{ 'country.label' | translate }}</p>
-                        <p>{{ 'municipality.label' | translate }}</p>
+                        <p>{{ 'countries.label' | translate }}</p>
+                        <p>{{ 'provinces.label' | translate }}</p>
 
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData">{{nutsCountry.name}}</p>
-                        <p class="profileData">{{lauMunicipality.name1}}</p>
+                        <p class="profileData">
+                            <ng-container *ngFor="let country of countries; let i = index">
+                                <b *ngIf="i == 0">{{country.name}}</b>
+                                <b *ngIf="i > 0">, {{country.name}}</b>
+                            </ng-container>
+                        </p>
+                        <p class="profileData">
+                            <ng-container *ngFor="let province of provinces; let i = index">
+                                <b *ngIf="i == 0">{{province.name}}</b>
+                                <b *ngIf="i > 0">, {{province.name}}</b>
+                            </ng-container>
+                        </p>
 
                     </div>
                 </div>
@@ -230,9 +240,16 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="binaryLogo">{{ 'logo.label' | translate }}</label>
-                        <input [(ngModel)]="selectedSupplierData.binaryLogo" class="form-control"
-                               name="binaryLogo" ngcontrol="binaryLogo" #binaryLogo="ngModel" required>
-                        <div [hidden]="binaryLogo.valid || binaryLogo.pristine" class="alert alert-danger">{{ 'logo.required' | translate }}</div>
+                        <p-fileUpload name="logo[]" (onSelect)="onSelect($event)" accept="image/*" maxFileSize="3145728">
+                            <template pTemplate type="content">
+                                <ul *ngIf="uploadedFiles.length">
+                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                </ul>
+                            </template>
+                        </p-fileUpload>
+                        <!--<input [(ngModel)]="selectedSupplierData.binaryLogo" class="form-control"
+                               name="binaryLogo" ngcontrol="binaryLogo" #binaryLogo="ngModel" required>-->
+                        <!--<div [hidden]="binaryLogo.valid || binaryLogo.pristine" class="alert alert-danger">{{ 'logo.required' | translate }}</div>-->
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -265,9 +282,7 @@
                                class="form-control"
                                name="contactName" ngcontrol="contactName" #contactName="ngModel"
                                required>
-                        <div [hidden]="contactName.valid || contactName.pristine" class="alert alert-danger">{{
-                            'name.required' | translate }}
-                        </div>
+                        <div [hidden]="contactName.valid || contactName.pristine" class="alert alert-danger">{{ 'name.required' | translate }}</div>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -325,13 +340,9 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="email">{{ 'email.label' | translate }}</label>
-                        <input type="text" [(ngModel)]="selectedSupplierData.contactEmail"
-                               class="form-control"
-                               name="email" ngcontrol="email" #email="ngModel"
-                               required>
-                        <div [hidden]="email.valid || email.pristine"
-                             class="alert alert-danger">{{ 'email.required' | translate }}
-                        </div>
+                        <input type="text" [(ngModel)]="selectedSupplierData.contactEmail" class="form-control" 
+                        name="email" ngcontrol="email" #email="ngModel" required>
+                        <div [hidden]="email.valid || email.pristine" class="alert alert-danger">{{ 'email.required' | translate }}</div>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -357,7 +368,7 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false"
+    <!--<p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="false" [closeOnEscape]="false">
         <button type="button" (click)="closeModal()" class="closeButton">X</button>
         <p class="beneficiaryMayor center">{{ 'legalentity.label' | translate }}</p>
@@ -426,5 +437,12 @@
                 </div>
             </div>
         </form>
+    </p-dialog>-->
+    <p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="true" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+        <button type="button" (click)="closeModal()" class="closeButton">X</button>
+        <div class="ui-g-12 ui-md-12 ui-lg-5 marginSelect">
+            <p-multiSelect [options]="allCountries" [(ngModel)]="selectedCountries" (onChange)="onMultiSelectChange($event)"></p-multiSelect>
+        </div>
+        <!--<p-multiSelect [options]="allCountries" dataKey="name" [(ngModel)]="selectedCountries" (onChange)="onMultiSelectChange($event)"></p-multiSelect>-->
     </p-dialog>
 </div>
