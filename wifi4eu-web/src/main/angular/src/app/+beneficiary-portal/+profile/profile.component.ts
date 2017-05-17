@@ -1,7 +1,6 @@
 import {Component} from "@angular/core";
 import {ProfileService} from "./profile.service";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {BeneficiaryDetails} from "../../shared/models/beneficiary-details.model";
 import {LocalStorageService} from "angular-2-local-storage";
 import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
@@ -13,11 +12,13 @@ import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 import {NutsApi} from "../../shared/swagger/api/NutsApi";
 import {LauApi} from "../../shared/swagger/api/LauApi";
 import {ResponseDTO} from "../../shared/swagger/model/ResponseDTO";
+import {UserApi} from "../../shared/swagger/api/UserApi";
+import {BeneficiaryDetails} from "../../shared/models/beneficiary-details.model";
 
 @Component({
     selector: 'beneficiary-profile-component',
     templateUrl: 'profile.component.html',
-    providers: [ProfileService, BeneficiaryApi, NutsApi, LauApi]
+    providers: [ProfileService, BeneficiaryApi, NutsApi, LauApi, UserApi]
 })
 export class BeneficiaryProfileComponent {
     private beneficiary: BeneficiaryDTOBase;
@@ -29,13 +30,19 @@ export class BeneficiaryProfileComponent {
     private mayorEmailMatches: boolean;
     private user;
     private beneficiaryDetails: BeneficiaryDetails;
+    private newPassword: string;
+    private repeatNewPassword: string;
+    private currentPassword: string;
     private countryNuts: NutsDTOBase;
     private municipalityLau: LauDTOBase;
     private nutsSuggestions: NutsDTOBase[];
     private lauSuggestions: LauDTOBase[];
 
-    constructor(private profileService: ProfileService, private uxService: UxService, private localStorage: LocalStorageService, private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private lauApi: LauApi) {
+    constructor(private profileService: ProfileService, private uxService: UxService, private localStorage: LocalStorageService, private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private lauApi: LauApi, private userApi: UserApi) {
         this.beneficiaryDetails = new BeneficiaryDetails();
+        // this.newPassword = "";
+        // this.repeatNewPassword = "";
+        // this.currentPassword = "";
         this.beneficiary = new BeneficiaryDTOBase();
         this.beneficiary.mayorDTO = new MayorDTOBase();
         this.beneficiary.representativeDTO = new RepresentativeDTOBase();
@@ -127,21 +134,22 @@ export class BeneficiaryProfileComponent {
                     );
                     break;
             }
+            console.log(this.user);
         }
     }
 
-    onSubmit() {
-        // TODO - In a real application, make a request to a remote url with the query
-        // and return results, for demo we get it at client side.
-        this.profileService.changePassword(this.beneficiaryDetails).subscribe(data => console.log(data), error => {
-            this.uxService.growl({
-                severity: 'warn',
-                summary: 'WARNING',
-                detail: 'Could not change password, ignore this when NG is working in offline mode'
-            });
-            console.log('WARNING: Could not change password');
-        });
-    }
+    // onSubmit() {
+    //     // TODO - In a real application, make a request to a remote url with the query
+    //     // and return results, for demo we get it at client side.
+    //     this.profileService.changePassword(this.beneficiaryDetails).subscribe(data => console.log(data), error => {
+    //         this.uxService.growl({
+    //             severity: 'warn',
+    //             summary: 'WARNING',
+    //             detail: 'Could not change password, ignore this when NG is working in offline mode'
+    //         });
+    //         console.log('WARNING: Could not change password');
+    //     });
+    // }
 
     updateInfo() {
         this.beneficiaryApi.update(this.user.userTypeId, this.beneficiaryModal).subscribe(
@@ -234,11 +242,18 @@ export class BeneficiaryProfileComponent {
         return filteredLaus;
     }
 
+    emptyModal() {
+        this.beneficiaryDetails.currentPassword = "";
+        this.beneficiaryDetails.newPassword = "";
+        this.beneficiaryDetails.repeatNewPassword = "";
+    }
+
     closeModal() {
         this.displayPassword = false;
         this.displayLegal = false;
         this.displayMayor = false;
         this.displayRepresentative = false;
+        this.emptyModal();
     }
 
     copyModalData() {
@@ -261,5 +276,39 @@ export class BeneficiaryProfileComponent {
         if (this.beneficiaryModal.mayorDTO.email === this.beneficiaryModal.mayorDTO.repeatEmail) {
             this.mayorEmailMatches = true;
         }
+    }
+
+
+    changePassword() {
+        let passwords: string = '{"currentPassword" : "' + this.beneficiaryDetails.currentPassword + '", "newPassword" : "' + this.beneficiaryDetails.newPassword + '"}';
+
+        this.userApi.changePassword(this.user.userId, passwords).subscribe(
+            (response: ResponseDTO) => {
+                if (response.success == true) {
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: 'SUCCESS',
+                        detail: 'Password changed succesfully!'
+                    });
+                    this.user = response.data;
+                    this.closeModal();
+
+                } else {
+                    this.uxService.growl({
+                        severity: 'warn',
+                        summary: 'WARNING',
+                        detail: response.data
+                    });
+                    this.emptyModal();
+                }
+            }, error => {
+                console.log(error);
+                this.uxService.growl({
+                    severity: 'warn',
+                    summary: 'WARNING',
+                    detail: 'Contact your administrator'
+                });
+            }
+        )
     }
 }

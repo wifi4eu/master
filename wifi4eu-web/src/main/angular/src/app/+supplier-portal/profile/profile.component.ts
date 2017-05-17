@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from "@angular/core";
+import {Component} from "@angular/core";
 import {SupplierDetails} from "../../shared/models/supplier-details.model";
 import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
 import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
@@ -9,9 +9,11 @@ import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {UserDTO} from "../../shared/swagger/model/UserDTO";
+import {ResponseDTO} from "../../shared/swagger/model/ResponseDTO";
+import {UserApi} from "../../shared/swagger/api/UserApi";
 
 @Component({
-    templateUrl: 'profile.component.html', providers: [SupplierApi, LauApi, NutsApi]
+    templateUrl: 'profile.component.html', providers: [SupplierApi, LauApi, NutsApi, UserApi]
 })
 
 export class SupplierProfileComponent {
@@ -30,7 +32,7 @@ export class SupplierProfileComponent {
     private nutsSuggestions: NutsDTOBase[];
     private lausSuggestions: LauDTOBase[];
 
-    constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService) {
+    constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService, private userApi: UserApi) {
         this.supplierDetails = new SupplierDetails();
         this.display = false;
         this.displayContact = false;
@@ -110,6 +112,7 @@ export class SupplierProfileComponent {
         this.displayContact = false;
         this.nutsCountry = this.nutsModalInitial;
         this.lauMunicipality = this.lausModalInitial;
+        this.emptyPasswordModal();
 
     }
 
@@ -179,5 +182,44 @@ export class SupplierProfileComponent {
                 console.log(error);
             }
         );
+    }
+
+    emptyPasswordModal() {
+        this.supplierDetails.currentPassword = "";
+        this.supplierDetails.newPassword = "";
+        this.supplierDetails.repeatNewPassword = "";
+    }
+
+    changePassword() {
+        let passwords: string = '{"currentPassword" : "' + this.supplierDetails.currentPassword + '", "newPassword" : "' + this.supplierDetails.newPassword + '"}';
+
+        this.userApi.changePassword(this.user.userId, passwords).subscribe(
+            (response: ResponseDTO) => {
+                if (response.success == true) {
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: 'SUCCESS',
+                        detail: 'Password changed succesfully!'
+                    });
+                    this.user = response.data;
+                    this.closeModal();
+
+                } else {
+                    this.uxService.growl({
+                        severity: 'warn',
+                        summary: 'WARNING',
+                        detail: response.data
+                    });
+                    this.emptyPasswordModal();
+                }
+            }, error => {
+                console.log(error);
+                this.uxService.growl({
+                    severity: 'warn',
+                    summary: 'WARNING',
+                    detail: 'Contact your administrator'
+                });
+            }
+        )
     }
 }

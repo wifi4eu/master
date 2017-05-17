@@ -1,7 +1,5 @@
 package wifi4eu.wifi4eu.service.security;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -198,5 +196,13 @@ public class UserService {
         return userMapper.toDTO(securityUserRepository.findByEmail(email));
     }
 
+
+    public UserDTO getUserById(long userId) {
+        return userMapper.toDTO(securityUserRepository.findOne(userId));
+    }
+
+    public UserDTO saveUser(UserDTO userDTO) {
+        return userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
+    }
 
 }
