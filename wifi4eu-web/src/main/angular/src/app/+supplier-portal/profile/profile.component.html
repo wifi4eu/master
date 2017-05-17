@@ -77,7 +77,8 @@
                         <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="displayLegalModal()"> <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}</a>
+                        <a (click)="displayLegalModal()"> 
+                            <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}</a>
                     </div>
                 </div>
 
@@ -348,12 +349,13 @@
             </div>
             <div class="form-group">
                 <div style="text-align: center !important">
-                    <button type="button" class="btn btn-primary changePasswordModalNoTop" (click)="closeModal()">
-                        {{'cancel.button' | translate }}
+                    <button type="button" class="btn btn-primary changePasswordModalNoTop"
+                            (click)="closeModal()">{{
+                        'cancel.button' | translate }}
                     </button>
-                    <button type="button" class="btn btn-primary changePasswordModalNoTop" 
-                        [disabled]="!profileFormContact.form.valid" (click)="saveSupplierChanges()">
-                        {{ 'change' | translate }}
+                    <button type="button" class="btn btn-primary changePasswordModalNoTop"
+                            [disabled]="!profileFormContact.form.valid" (click)="saveSupplierChanges()">{{
+                        'change' | translate }}
                     </button>
                 </div>
             </div>

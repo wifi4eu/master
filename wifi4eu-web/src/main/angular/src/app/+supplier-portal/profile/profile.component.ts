@@ -41,12 +41,8 @@ export class SupplierProfileComponent {
         this.displayCompany = false;
         this.displayLegal = false;
         this.supplierData = new SupplierDTOBase();
-        this.countries = [];
-        this.provinces = [];
-        this.selectedCountries = [];
-        this.selectedProvinces = [];
-        this.allCountries = [];
-
+        this.nutsCountry = new NutsDTOBase();
+        this.lauMunicipality = new LauDTOBase();
         this.selectedSupplierData = new SupplierDTOBase();
         this.selectedSupplierData = Object.assign({}, this.supplierData);
 
@@ -95,22 +91,22 @@ export class SupplierProfileComponent {
 
     displayContactModal() {
         this.selectedSupplierData = Object.assign({}, this.supplierData);
-        this.selectedCountries = this.countries;
-        this.selectedProvinces = this.provinces;
+        this.nutsModalInitial = this.nutsCountry;
+        this.lausModalInitial = this.lauMunicipality;
         this.displayContact = true;
     }
 
     displayCompanyModal() {
         this.selectedSupplierData = Object.assign({}, this.supplierData);
-        this.selectedCountries = this.countries;
-        this.selectedProvinces = this.provinces;
+        this.nutsModalInitial = this.nutsCountry;
+        this.lausModalInitial = this.lauMunicipality;
         this.displayCompany = true;
     }
 
     displayLegalModal() {
         this.selectedSupplierData = Object.assign({}, this.supplierData);
-        this.selectedCountries = this.countries;
-        this.selectedProvinces = this.provinces;
+        this.nutsModalInitial = this.nutsCountry;
+        this.lausModalInitial = this.lauMunicipality;
         this.displayLegal = true;
         console.log(this.selectedCountries);
         console.log(this.allCountries);
@@ -121,8 +117,8 @@ export class SupplierProfileComponent {
         this.displayLegal = false;
         this.displayCompany = false;
         this.displayContact = false;
-        this.selectedCountries = this.countries;
-        this.selectedProvinces = this.provinces;
+        this.nutsCountry = this.nutsModalInitial;
+        this.lauMunicipality = this.lausModalInitial;
         this.selectedSupplierData = Object.assign({}, this.supplierData);
     }
 
@@ -179,5 +175,26 @@ export class SupplierProfileComponent {
                 }
             );
         }
+    }
+
+    saveSupplierChanges() {
+        this.updateNutsAndLau();
+        this.supplierApi.saveSupplier(this.selectedSupplierData).subscribe(
+            (savedSupplier: ResponseDTO) => {
+                this.supplierData = savedSupplier.data;
+                this.display = false;
+                this.displayLegal = false;
+                this.displayCompany = false;
+                this.displayContact = false;
+            }, error => {
+                console.log(error);
+            }
+        );
+    }
+
+    updateNutsAndLau() {
+        this.selectedSupplierData.nutsIds = "";
+        this.selectedSupplierData.nutsIds += this.nutsCountry.countryCode;
+        this.selectedSupplierData.nutsIds += "," + this.lauMunicipality.lau2;
     }
 }
