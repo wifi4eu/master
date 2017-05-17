@@ -9,6 +9,7 @@ import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {UserDTO} from "../../shared/swagger/model/UserDTO";
+import {ResponseDTO} from "../../shared/swagger/model/ResponseDTO";
 
 @Component({
     templateUrl: 'profile.component.html', providers: [SupplierApi, LauApi, NutsApi]
@@ -39,12 +40,10 @@ export class SupplierProfileComponent {
         this.supplierData = new SupplierDTOBase();
         this.nutsCountry = new NutsDTOBase();
         this.lauMunicipality = new LauDTOBase();
-
         this.selectedSupplierData = new SupplierDTOBase();
-        this.emptyModal();
+        this.selectedSupplierData = Object.assign({}, this.supplierData);
 
         let u = this.localStorage.get('user');
-
         this.user = u ? JSON.parse(u.toString()) : null;
 
         if (this.user != null) {
@@ -84,20 +83,22 @@ export class SupplierProfileComponent {
         this.display = true;
     }
 
-    emptyModal() {
-        this.selectedSupplierData = Object.assign({}, this.supplierData);
-    }
-
     displayContactModal() {
+        this.selectedSupplierData = Object.assign({}, this.supplierData);
+        this.nutsModalInitial = this.nutsCountry;
+        this.lausModalInitial = this.lauMunicipality;
         this.displayContact = true;
-
     }
 
     displayCompanyModal() {
+        this.selectedSupplierData = Object.assign({}, this.supplierData);
+        this.nutsModalInitial = this.nutsCountry;
+        this.lausModalInitial = this.lauMunicipality;
         this.displayCompany = true;
     }
 
     displayLegalModal() {
+        this.selectedSupplierData = Object.assign({}, this.supplierData);
         this.nutsModalInitial = this.nutsCountry;
         this.lausModalInitial = this.lauMunicipality;
         this.displayLegal = true;
@@ -110,7 +111,7 @@ export class SupplierProfileComponent {
         this.displayContact = false;
         this.nutsCountry = this.nutsModalInitial;
         this.lauMunicipality = this.lausModalInitial;
-
+        this.selectedSupplierData = Object.assign({}, this.supplierData);
     }
 
     checkPassword() {
@@ -168,9 +169,10 @@ export class SupplierProfileComponent {
     }
 
     saveSupplierChanges() {
+        this.updateNutsAndLau();
         this.supplierApi.saveSupplier(this.selectedSupplierData).subscribe(
-            savedSupplier => {
-                this.supplierData = savedSupplier;
+            (savedSupplier: ResponseDTO) => {
+                this.supplierData = savedSupplier.data;
                 this.display = false;
                 this.displayLegal = false;
                 this.displayCompany = false;
@@ -179,5 +181,11 @@ export class SupplierProfileComponent {
                 console.log(error);
             }
         );
+    }
+
+    updateNutsAndLau() {
+        this.selectedSupplierData.nutsIds = "";
+        this.selectedSupplierData.nutsIds += this.nutsCountry.countryCode;
+        this.selectedSupplierData.nutsIds += "," + this.lauMunicipality.lau2;
     }
 }
