@@ -11,6 +11,7 @@ import {NutsDTO, NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {UserDTO} from "../../shared/swagger/model/UserDTO";
 import {ResponseDTO} from "../../shared/swagger/model/ResponseDTO";
+import {UserApi} from "../../shared/swagger/api/UserApi";
 
 @Component({
     templateUrl: 'profile.component.html', providers: [SupplierApi, LauApi, NutsApi, UserApi]
