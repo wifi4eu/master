@@ -86,14 +86,9 @@ export class BeneficiaryProfileComponent {
                                                 }
                                             }
                                         );
-                                        this.lauApi.findLauByNuts3(this.beneficiary.legalEntityDTO.municipalityCode).subscribe(
-                                            (lau: LauDTOBase[]) => {
-                                                for (let i = 0; i < lau.length; i++) {
-                                                    if (this.beneficiary.legalEntityDTO.municipalityCode == lau[i].nuts3) {
-                                                        this.municipalityLau = lau[i];
-                                                        break;
-                                                    }
-                                                }
+                                        this.lauApi.findLauByLau2(this.beneficiary.legalEntityDTO.municipalityCode).subscribe(
+                                            (lau: LauDTOBase) => {
+                                                this.municipalityLau = lau;
                                                 this.copyModalData();
                                             }
                                         );
@@ -116,13 +111,32 @@ export class BeneficiaryProfileComponent {
                                 this.beneficiary.representativeDTO = representative;
                                 this.beneficiaryApi.getMayorById(this.beneficiary.representativeDTO.mayorId).subscribe(
                                     mayor => {
-                                        this.beneficiary.mayorDTO = mayor;
-                                        this.beneficiaryApi.getLegalEntity(this.beneficiary.mayorDTO.legalEntityId).subscribe(
-                                            entity => {
-                                                this.beneficiary.legalEntityDTO = entity;
-                                                this.copyModalData();
-                                            }
-                                        );
+                                        if (mayor != null) {
+                                            this.beneficiary.mayorDTO = mayor;
+                                            this.beneficiaryApi.getLegalEntity(this.beneficiary.mayorDTO.legalEntityId).subscribe(
+                                                entity => {
+                                                    this.beneficiary.legalEntityDTO = entity;
+                                                    this.nutsApi.findNutsByLevel(0).subscribe(
+                                                        (nuts: NutsDTOBase[]) => {
+                                                            for (let i = 0; i < nuts.length; i++) {
+                                                                if (this.beneficiary.legalEntityDTO.countryCode == nuts[i].countryCode) {
+                                                                    this.countryNuts = nuts[i];
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+                                                    );
+                                                    this.lauApi.findLauByLau2(this.beneficiary.legalEntityDTO.municipalityCode).subscribe(
+                                                        (lau: LauDTOBase) => {
+                                                            this.municipalityLau = lau;
+                                                            this.copyModalData();
+                                                        }
+                                                    );
+                                                }
+                                            );
+                                        } else {
+                                            this.beneficiary = new BeneficiaryDTOBase();
+                                        }
                                     }
                                 );
                             } else {
@@ -134,27 +148,12 @@ export class BeneficiaryProfileComponent {
                     );
                     break;
             }
-            console.log(this.user);
         }
     }
-
-    // onSubmit() {
-    //     // TODO - In a real application, make a request to a remote url with the query
-    //     // and return results, for demo we get it at client side.
-    //     this.profileService.changePassword(this.beneficiaryDetails).subscribe(data => console.log(data), error => {
-    //         this.uxService.growl({
-    //             severity: 'warn',
-    //             summary: 'WARNING',
-    //             detail: 'Could not change password, ignore this when NG is working in offline mode'
-    //         });
-    //         console.log('WARNING: Could not change password');
-    //     });
-    // }
 
     updateInfo() {
         this.beneficiaryApi.update(this.user.userTypeId, this.beneficiaryModal).subscribe(
             (beneficiary: ResponseDTO) => {
-                console.log(beneficiary);
                 this.beneficiary = beneficiary.data;
                 this.closeModal();
             }, error => {
@@ -165,7 +164,7 @@ export class BeneficiaryProfileComponent {
 
     updateLegalEntity() {
         this.beneficiaryModal.legalEntityDTO.countryCode = this.countryNuts.countryCode;
-        this.beneficiaryModal.legalEntityDTO.municipalityCode = this.municipalityLau.nuts3;
+        this.beneficiaryModal.legalEntityDTO.municipalityCode = this.municipalityLau.lau2;
         this.updateInfo();
     }
 
