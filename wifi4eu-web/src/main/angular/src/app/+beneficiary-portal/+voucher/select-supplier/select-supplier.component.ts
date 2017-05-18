@@ -1,10 +1,12 @@
 import {Component} from "@angular/core";
+import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {SupplierDTO, SupplierDTOBase} from "../../../shared/swagger/model/SupplierDTO";
 import {SupplierApi} from "../../../shared/swagger/api/SupplierApi";
 import {BeneficiaryApi} from "../../../shared/swagger/api/BeneficiaryApi";
+import {CallApi} from "../../../shared/swagger/api/CallApi";
 import {LocalStorageService} from "angular-2-local-storage";
 
-@Component({selector: 'select-supplier-component', templateUrl: 'select-supplier.component.html', providers: [SupplierApi]})
+@Component({selector: 'select-supplier-component', templateUrl: 'select-supplier.component.html', providers: [SupplierApi, BeneficiaryApi, CallApi]})
 export class SelectSupplierComponent {
     private suppliers: SupplierDTOBase[];
     private selectedSuppliers: SupplierDTOBase[];
@@ -13,16 +15,28 @@ export class SelectSupplierComponent {
     private publicationId;
     private user;
 
-    constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private beneficiaryApi: BeneficiaryApi) {
+    constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private beneficiaryApi: BeneficiaryApi, private callApi: CallApi, private uxService: UxService) {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
-        // The Publication Call id is hardcoded now, but we should remove it later.
-        this.publicationId = 201;
+        this.publicationId = -1;
         this.selectedSupplier = new SupplierDTOBase();
         this.display = false;
         this.supplierApi.allSuppliers().subscribe(
             suppliers => this.suppliers = suppliers,
             error => console.log(error)
+        );
+        this.callApi.allCalls().subscribe(
+            calls => {
+                for (let i = 0; i < calls.length; i++) {
+                    if (i == (calls.length -1)) {
+                        this.publicationId = calls[i].callId;
+                    }
+                }
+            },
+            error => {
+                console.log(error);
+                this.publicationId = -1;
+            }
         );
     }
 
@@ -44,7 +58,11 @@ export class SelectSupplierComponent {
         if (this.user != null) {
             this.beneficiaryApi.selectSupplier(this.user.userTypeId, this.publicationId, this.selectedSupplier.supplierId).subscribe(
                 data => {
-                    console.log(data);
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: 'SUCCESS',
+                        detail: 'You selected ' + this.selectedSupplier.name + ' as your supplier.'
+                    });
                     this.display = false;
                 }, error => {
                     console.log(error);

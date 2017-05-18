@@ -2,22 +2,6 @@
 <div class="container">
     <p class="Modalh1Confirmation">{{ 'select.supplier' | translate }}</p>
     <p class="ModalpConfirmation">{{ 'one.supplier' | translate }}</p>
-    <!--<form action="">-->
-    <!--<div class="ui-g-12 white">-->
-    <!--<div class="ui-g-5">-->
-    <!--<p>{{ 'country.label' | translate }}</p><input type="text" placeholder="Prefilled">-->
-    <!--</div>-->
-
-    <!--<div class="ui-g-5">-->
-    <!--<p> {{ 'municipality.label' | translate }}</p> <input type="text" placeholder="Prefilled">-->
-    <!--</div>-->
-
-    <!--<div class="ui-g-2">-->
-    <!--<button (click)="openModal()" class="btn btn-primary">{{ 'search.button' | translate }}-->
-    <!--</button>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</form>-->
     <div class="clearfix"></div>
     <div class="marginTop">
         <p-dataTable [value]="suppliers" [(selection)]="selectedSuppliers" [rows]="10" [paginator]="true"
@@ -45,13 +29,6 @@
                 </template>
             </p-column>
         </p-dataTable>
-    </div>
-    <div class="form-group ui-g">
-        <div class="ui-g-4"></div>
-        <div class="ui-g-4" style="text-align: center !important">
-            <button type="button" class="btn btn-primary publish-button" (click)="selectSupplier()">Select</button>
-        </div>
-        <div class="ui-g-4"></div>
     </div>
 </div>
 <!--MODAL BELOW-->
@@ -123,7 +100,9 @@
             </div>
         </div>
 
+        <div class="ui-g-12">
+            <button type="button" class="btn btn-primary publish-button" (click)="selectSupplier()">{{ 'select.supplier' | translate }}</button>
+        </div>
+
     </p-dialog>
 </div>
-
-
