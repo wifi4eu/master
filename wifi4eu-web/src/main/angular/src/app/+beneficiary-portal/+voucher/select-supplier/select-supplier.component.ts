@@ -21,7 +21,7 @@ export class SelectSupplierComponent {
         this.selectedSupplier = new SupplierDTOBase();
         this.display = false;
         this.supplierApi.allSuppliers().subscribe(
-            suppliers => this.suppliers = this.checkIfNull(suppliers),
+            suppliers => this.suppliers = suppliers,
             error => console.log(error)
         );
     }
@@ -38,10 +38,6 @@ export class SelectSupplierComponent {
     viewSupplierDetails(rowIndex: number) {
         this.selectedSupplier = this.suppliers[rowIndex];
         this.display = true;
-    }
-
-    checkIfNull(suppliers: SupplierDTOBase[]) {
-        return suppliers;
     }
 
     selectSupplier() {
