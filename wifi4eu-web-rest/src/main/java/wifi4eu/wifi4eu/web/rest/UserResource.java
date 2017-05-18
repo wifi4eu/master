@@ -1,15 +1,12 @@
 package wifi4eu.wifi4eu.web.rest;
 
 import com.google.common.cache.CacheLoader;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +19,11 @@ import wifi4eu.wifi4eu.common.security.UserSessionCache;
 import wifi4eu.wifi4eu.service.security.AuthJWTokenizer;
 import wifi4eu.wifi4eu.service.security.UserService;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.servlet.http.HttpServletResponse;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ExecutionException;
 
@@ -172,4 +173,40 @@ public class UserResource {
         }
     }
 
+
+    @ApiOperation(value = "Service to change password of a user")
+    @RequestMapping(value = "/changePassword/{userId}", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO changePassword(@PathVariable("userId") final long userId, @RequestBody final String passwords, final HttpServletResponse response) {
+        JsonReader jsonReader = Json.createReader(new StringReader(passwords));
+        JsonObject jsonPasswords = jsonReader.readObject();
+        jsonReader.close();
+
+        String currentPassword = jsonPasswords.getString("currentPassword");
+        String newPassword = jsonPasswords.getString("newPassword");
+
+        try {
+            UserDTO userDTO = userService.getUserById(userId);
+            if (userDTO != null) {
+                System.out.println("userDTO.getPassword: " + userDTO.getPassword());
+                if (userDTO.getPassword().equals(currentPassword)) {
+                    userDTO.setPassword(newPassword);
+                    UserDTO updatedUserDTO = userService.saveUser(userDTO);
+                    return new ResponseDTO(true, updatedUserDTO, null);
+                } else {
+                    return new ResponseDTO(false, "Password doesn't match.", null);
+                }
+            } else {
+                return new ResponseDTO(false, "Any user has been found with the ID '" + userId + "'.", null);
+            }
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+    }
+
 }
+
+
+
+

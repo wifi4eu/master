@@ -13,7 +13,7 @@ import {UserDTO} from "../../shared/swagger/model/UserDTO";
 import {ResponseDTO} from "../../shared/swagger/model/ResponseDTO";
 
 @Component({
-    templateUrl: 'profile.component.html', providers: [SupplierApi, LauApi, NutsApi]
+    templateUrl: 'profile.component.html', providers: [SupplierApi, LauApi, NutsApi, UserApi]
 })
 
 export class SupplierProfileComponent {
@@ -37,7 +37,7 @@ export class SupplierProfileComponent {
     private nutsModalInitial: NutsDTOBase;
     private lausModalInitial: LauDTOBase;
 
-    constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService) {
+    constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService, private userApi: UserApi) {
         this.supplierDetails = new SupplierDetails();
         this.display = false;
         this.displayContact = false;
@@ -184,5 +184,44 @@ export class SupplierProfileComponent {
         this.selectedSupplierData.nutsIds = "";
         this.selectedSupplierData.nutsIds += this.nutsCountry.countryCode;
         this.selectedSupplierData.nutsIds += "," + this.lauMunicipality.lau2;
+    }
+
+    emptyPasswordModal() {
+        this.supplierDetails.currentPassword = "";
+        this.supplierDetails.newPassword = "";
+        this.supplierDetails.repeatNewPassword = "";
+    }
+
+    changePassword() {
+        let passwords: string = '{"currentPassword" : "' + this.supplierDetails.currentPassword + '", "newPassword" : "' + this.supplierDetails.newPassword + '"}';
+
+        this.userApi.changePassword(this.user.userId, passwords).subscribe(
+            (response: ResponseDTO) => {
+                if (response.success == true) {
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: 'SUCCESS',
+                        detail: 'Password changed succesfully!'
+                    });
+                    this.user = response.data;
+                    this.closeModal();
+
+                } else {
+                    this.uxService.growl({
+                        severity: 'warn',
+                        summary: 'WARNING',
+                        detail: response.data
+                    });
+                    this.emptyPasswordModal();
+                }
+            }, error => {
+                console.log(error);
+                this.uxService.growl({
+                    severity: 'warn',
+                    summary: 'WARNING',
+                    detail: 'Contact your administrator'
+                });
+            }
+        )
     }
 }

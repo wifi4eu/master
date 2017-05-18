@@ -125,14 +125,14 @@
     </div>
 </div>
 <!--MODALS BELOW-->
-
+<div class="center">{{ 'home.footer.update' | translate }}</div>
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="false" [closeOnEscape]="false">
         <button type="button" (click)="closeModal()" class="closeButton">X</button>
         <p class="beneficiaryMayorModal">{{'beneficiaryProfile.password' | translate }}</p>
-        <form #profileForm="ngForm">
+        <form (ngSubmit)="changePassword()" #profileForm="ngForm">
             <div class="form-group profileDialog">
                 <label class="labelModal" for="currentPassword">{{ 'currentPassword.label' | translate }}</label>
                 <input type="password" [(ngModel)]="supplierDetails.currentPassword"
@@ -167,11 +167,10 @@
                 </div>
                 <div class="form-group">
                     <div style="text-align: center !important">
-                        <button type="button" class="btn btn-primary changePasswordModalNoTop"
-                                (click)="closeModal()">{{
+                        <button type="button" class="btn btn-primary changePasswordModal" (click)="closeModal()">{{
                             'cancel.button' | translate }}
                         </button>
-                        <button type="submit" class="btn btn-primary changePasswordModalNoTop"
+                        <button type="submit" class="btn btn-primary changePasswordModal"
                                 [disabled]="!profileForm.form.valid || !checkPassword()">{{
                             'change' | translate }}
                         </button>
