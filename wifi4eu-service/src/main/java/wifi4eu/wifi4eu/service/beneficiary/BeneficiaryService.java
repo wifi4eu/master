@@ -166,7 +166,7 @@ public class BeneficiaryService {
                 updatedBeneficiaryDTO.setRepresentativeDTO(null);
                 updatedBeneficiaryDTO.setMayorDTO(mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(beneficiaryDTO.getMayorDTO()))));
             }
-            updatedBeneficiaryDTO.setLegalEntityDTO(beneficiaryDTO.getLegalEntityDTO());
+            updatedBeneficiaryDTO.setLegalEntityDTO(legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(beneficiaryDTO.getLegalEntityDTO()))));
 
             UserDTO userDTO = getUserByEmail(email);
             if (userDTO != null) {
