@@ -82,71 +82,66 @@ public class BeneficiaryService {
 
     @Transactional
     public UserDTO create(BeneficiaryDTO beneficiaryDTO) {
-
         _log.info("Creating beneficiary...");
+        UserDTO userDTO = new UserDTO();
+        LegalEntityDTO legalEntityDTO = beneficiaryDTO.getLegalEntityDTO();
+        MayorDTO mayorDTO = beneficiaryDTO.getMayorDTO();
+        RepresentativeDTO representativeDTO = beneficiaryDTO.getRepresentativeDTO();
+        boolean represented = false;
 
-        String email;
-        boolean representative = false;
+        /* create LegalEntityDTO */
+        _log.info("create legalEntity: " + legalEntityDTO.toString());
+        legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(legalEntityDTO)));
+        _log.info("created legalEntity: " + legalEntityDTO.toString());
 
-        /* check if it is a mayor or a representative */
-        if (beneficiaryDTO.getRepresentativeDTO() != null && beneficiaryDTO.getRepresentativeDTO().getEmail() != null && !beneficiaryDTO.getRepresentativeDTO().getEmail().isEmpty()) {
-            email = beneficiaryDTO.getRepresentativeDTO().getEmail();
-            representative = true;
-        } else {
-            email = beneficiaryDTO.getMayorDTO().getEmail();
+        if (representativeDTO != null && representativeDTO.getEmail() != null && !representativeDTO.getEmail().isEmpty()) {
+            represented = true;
         }
 
-        UserDTO persUserDTO = getUserByEmail(email);
-
-        if (persUserDTO == null) {
-
-            /* create userDTO*/
-            UserDTO userDTO = new UserDTO();
-            userDTO.setCreateDate(new Date());
-            userDTO.setEmail(email);
-
-            /* create LegalEntityDTO */
-            _log.info("create legalEntity: " + beneficiaryDTO.getLegalEntityDTO().toString());
-            LegalEntityDTO legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(beneficiaryDTO.getLegalEntityDTO())));
-
-            _log.info("created legalEntity: " + legalEntityDTO.toString());
-
-            /* create Mayor DTO */
-            MayorDTO mayorDTO = beneficiaryDTO.getMayorDTO();
+        String mayorMail = mayorDTO.getEmail();
+        UserDTO mayorUserDTO = getUserByEmail(mayorMail);
+        if (mayorUserDTO == null) {
             mayorDTO.setLegalEntityId(legalEntityDTO.getLegalEntityId());
-
-            _log.info("create mayor: " + mayorDTO.toString());
             mayorDTO = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
-
-            /* create representativeDTO if apply */
-            if (representative) {
-                //it is a representative
-                _log.info("create representant: " + beneficiaryDTO.getRepresentativeDTO().toString());
-                RepresentativeDTO representativeDTO = beneficiaryDTO.getRepresentativeDTO();
-                representativeDTO.setMayorId(mayorDTO.getMayorId());
-                representativeDTO = representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(beneficiaryDTO.getRepresentativeDTO())));
-                userDTO.setUserType(Constant.ROLE_REPRESENTATIVE);
-                userDTO.setUserTypeId(representativeDTO.getRepresentativeId());
-            } else {
-                //it is a mayor
-                userDTO.setUserType(Constant.ROLE_MAYOR);
-                userDTO.setUserTypeId(mayorDTO.getMayorId());
-            }
-
+            mayorUserDTO = new UserDTO();
+            mayorUserDTO.setEmail(mayorMail);
+            mayorUserDTO.setCreateDate(new Date());
+            mayorUserDTO.setUserType(Constant.ROLE_MAYOR);
+            mayorUserDTO.setUserTypeId(mayorDTO.getMayorId());
             String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
-            userDTO.setPassword(password);
-            _log.info("create user: " + userDTO.toString());
-            userDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
+            mayorUserDTO.setPassword(password);
+            _log.info("create mayor user: " + mayorUserDTO.toString());
+            mayorUserDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(mayorUserDTO)));
+            userService.sendActivateAccountMail(mayorUserDTO);
 
-            userService.sendActivateAccountMail(userDTO);
-
-            return userDTO;
-
+            if (represented) {
+                String representativeMail = beneficiaryDTO.getRepresentativeDTO().getEmail();
+                UserDTO representativeUserDTO = getUserByEmail(representativeMail);
+                if (representativeUserDTO == null) {
+                    representativeDTO.setMayorId(mayorDTO.getMayorId());
+                    representativeDTO = representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(representativeDTO)));
+                    representativeUserDTO = new UserDTO();
+                    representativeUserDTO.setEmail(representativeMail);
+                    representativeUserDTO.setCreateDate(new Date());
+                    representativeUserDTO.setUserType(Constant.ROLE_REPRESENTATIVE);
+                    representativeUserDTO.setUserTypeId(representativeDTO.getRepresentativeId());
+                    password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
+                    representativeUserDTO.setPassword(password);
+                    _log.info("create representative user: " + representativeUserDTO.toString());
+                    representativeUserDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(representativeUserDTO)));
+                    userService.sendActivateAccountMail(representativeUserDTO);
+                    return representativeUserDTO;
+                } else {
+                    _log.error("trying to register the representative twice");
+                    return null;
+                }
+            } else {
+                return mayorUserDTO;
+            }
         } else {
-            _log.error("trying to register twice");
+            _log.error("trying to register the mayor twice");
             return null;
         }
-
     }
 
     public BeneficiaryDTO update(BeneficiaryDTO beneficiaryDTO) {
