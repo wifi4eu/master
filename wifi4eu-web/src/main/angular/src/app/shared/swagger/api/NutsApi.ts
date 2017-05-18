@@ -40,6 +40,13 @@ export interface INutsApi {
      */
     findAllNuts<T extends models.NutsDTO>(c?: ClassType<T>): Observable<T[]>;
     /**
+     * get nuts by code
+     * 
+     * @param c 
+     * @param code 
+     */
+    findNutsByCode<T extends models.NutsDTO>(code: string, c?: ClassType<T>): Observable<T>;
+    /**
      * get all nuts from level X
      * 
      * @param c 
@@ -51,7 +58,7 @@ export interface INutsApi {
 
 @Injectable()
 export class NutsApi implements INutsApi {
-    protected basePath = 'http://localhost:7001/wifi4eu/api';
+    protected basePath = 'http://localhost:8080/wifi4eu/api';
     public defaultHeaders: Headers = new Headers();
     public configuration: Configuration = new Configuration();
 
@@ -104,6 +111,29 @@ export class NutsApi implements INutsApi {
                         return undefined;
                     } else if (c) {
                         return deserializeArray(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
+     * get nuts by code
+     * 
+     * @param c
+     * @param code 
+     */
+    findNutsByCode<T extends models.NutsDTO>(code: string, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.findNutsByCodeWithHttpInfo(code)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
                     } else {
                         return response.json();
                     }
@@ -193,12 +223,46 @@ export class NutsApi implements INutsApi {
     }
 
     /**
+     * get nuts by code
+     * 
+     * @param code 
+     */
+    private findNutsByCodeWithHttpInfo(code: string ): Observable<Response> {
+        const path = this.basePath + `/nuts/code/${code}`;
+//        .replace('{' + 'code' + '}', String(code));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'code' is not null or undefined
+        if (code === null || code === undefined) {
+            throw new Error('Required parameter code was null or undefined when calling findNutsByCode.');
+        }
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
      * get all nuts from level X
      * 
      * @param level 
      */
     private findNutsByLevelWithHttpInfo(level: number ): Observable<Response> {
-        const path = this.basePath + `/nuts/${level}`;
+        const path = this.basePath + `/nuts/level/${level}`;
 //        .replace('{' + 'level' + '}', String(level));  
 // not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
 // (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)

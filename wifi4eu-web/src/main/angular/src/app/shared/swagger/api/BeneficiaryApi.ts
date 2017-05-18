@@ -27,12 +27,28 @@ export interface IBeneficiaryApi {
 
 
     /**
+     * Apply for voucher
+     * 
+     * @param c 
+     * @param beneficiaryId 
+     * @param body 
+     */
+    apply<T extends models.ResponseDTO>(beneficiaryId: number, body?: number, c?: ClassType<T>): Observable<T>;
+    /**
      * create Beneficiary
      * 
      * @param c 
      * @param body 
      */
     create<T extends models.ResponseDTO>(body?: models.BeneficiaryDTO, c?: ClassType<T>): Observable<T>;
+    /**
+     * find by BeneficiaryId and PublicationId
+     * 
+     * @param c 
+     * @param beneficiaryId 
+     * @param publicationId 
+     */
+    findByBeneficiaryIdAndPublicationId<T extends models.BenPubSupDTO>(beneficiaryId: number, publicationId: number, c?: ClassType<T>): Observable<T>;
     /**
      * Get awarded legal entities
      * 
@@ -47,6 +63,29 @@ export interface IBeneficiaryApi {
      */
     getLegalEntity<T extends models.LegalEntityDTO>(legalEntityId: number, c?: ClassType<T>): Observable<T>;
     /**
+     * get mayor by id
+     * 
+     * @param c 
+     * @param mayorId 
+     */
+    getMayorById<T extends models.MayorDTO>(mayorId: number, c?: ClassType<T>): Observable<T>;
+    /**
+     * get representative by id
+     * 
+     * @param c 
+     * @param representativeId 
+     */
+    getRepresentativeById<T extends models.RepresentativeDTO>(representativeId: number, c?: ClassType<T>): Observable<T>;
+    /**
+     * Select supplier
+     * 
+     * @param c 
+     * @param beneficiaryId 
+     * @param publicationId 
+     * @param body 
+     */
+    selectSupplier<T extends models.ResponseDTO>(beneficiaryId: number, publicationId: number, body?: number, c?: ClassType<T>): Observable<T>;
+    /**
      * Update beneficiary information
      * 
      * @param c 
@@ -59,7 +98,7 @@ export interface IBeneficiaryApi {
 
 @Injectable()
 export class BeneficiaryApi implements IBeneficiaryApi {
-    protected basePath = 'http://localhost:7001/wifi4eu/api';
+    protected basePath = 'http://localhost:8080/wifi4eu/api';
     public defaultHeaders: Headers = new Headers();
     public configuration: Configuration = new Configuration();
 
@@ -77,6 +116,30 @@ export class BeneficiaryApi implements IBeneficiaryApi {
 
 
     /**
+     * Apply for voucher
+     * 
+     * @param c
+     * @param beneficiaryId 
+     * @param body 
+     */
+    apply<T extends models.ResponseDTO>(beneficiaryId: number, body?: number, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.applyWithHttpInfo(beneficiaryId, body)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
      * create Beneficiary
      * 
      * @param c
@@ -85,6 +148,30 @@ export class BeneficiaryApi implements IBeneficiaryApi {
     create<T extends models.ResponseDTO>(body?: models.BeneficiaryDTO, c?: ClassType<T>): Observable<T> {
         // noinspection TypeScriptValidateTypes
         return this.createWithHttpInfo(body)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
+     * find by BeneficiaryId and PublicationId
+     * 
+     * @param c
+     * @param beneficiaryId 
+     * @param publicationId 
+     */
+    findByBeneficiaryIdAndPublicationId<T extends models.BenPubSupDTO>(beneficiaryId: number, publicationId: number, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.findByBeneficiaryIdAndPublicationIdWithHttpInfo(beneficiaryId, publicationId)
                 .map((response: Response) => {
                     if (response.status === 204) {
                         return undefined;
@@ -145,6 +232,77 @@ export class BeneficiaryApi implements IBeneficiaryApi {
 
 
     /**
+     * get mayor by id
+     * 
+     * @param c
+     * @param mayorId 
+     */
+    getMayorById<T extends models.MayorDTO>(mayorId: number, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.getMayorByIdWithHttpInfo(mayorId)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
+     * get representative by id
+     * 
+     * @param c
+     * @param representativeId 
+     */
+    getRepresentativeById<T extends models.RepresentativeDTO>(representativeId: number, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.getRepresentativeByIdWithHttpInfo(representativeId)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
+     * Select supplier
+     * 
+     * @param c
+     * @param beneficiaryId 
+     * @param publicationId 
+     * @param body 
+     */
+    selectSupplier<T extends models.ResponseDTO>(beneficiaryId: number, publicationId: number, body?: number, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.selectSupplierWithHttpInfo(beneficiaryId, publicationId, body)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
      * Update beneficiary information
      * 
      * @param c
@@ -166,6 +324,43 @@ export class BeneficiaryApi implements IBeneficiaryApi {
         }
 
 
+
+    /**
+     * Apply for voucher
+     * 
+     * @param beneficiaryId 
+     * @param body 
+     */
+    private applyWithHttpInfo(beneficiaryId: number,  body?: number ): Observable<Response> {
+        const path = this.basePath + `/beneficiary/${beneficiaryId}/apply`;
+//        .replace('{' + 'beneficiaryId' + '}', String(beneficiaryId));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'beneficiaryId' is not null or undefined
+        if (beneficiaryId === null || beneficiaryId === undefined) {
+            throw new Error('Required parameter beneficiaryId was null or undefined when calling apply.');
+        }
+
+
+
+
+
+        headers.set('Content-Type', 'application/json');
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Post,
+            headers: headers,
+            body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
 
     /**
      * create Beneficiary
@@ -190,6 +385,47 @@ export class BeneficiaryApi implements IBeneficiaryApi {
             method: RequestMethod.Post,
             headers: headers,
             body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * find by BeneficiaryId and PublicationId
+     * 
+     * @param beneficiaryId 
+     * @param publicationId 
+     */
+    private findByBeneficiaryIdAndPublicationIdWithHttpInfo(beneficiaryId: number,  publicationId: number ): Observable<Response> {
+        const path = this.basePath + `/beneficiary/${beneficiaryId}/checkApplied/${publicationId}`;
+//        .replace('{' + 'beneficiaryId' + '}', String(beneficiaryId)) 
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)//        .replace('{' + 'publicationId' + '}', String(publicationId));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'beneficiaryId' is not null or undefined
+        if (beneficiaryId === null || beneficiaryId === undefined) {
+            throw new Error('Required parameter beneficiaryId was null or undefined when calling findByBeneficiaryIdAndPublicationId.');
+        }
+        // verify required parameter 'publicationId' is not null or undefined
+        if (publicationId === null || publicationId === undefined) {
+            throw new Error('Required parameter publicationId was null or undefined when calling findByBeneficiaryIdAndPublicationId.');
+        }
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
             search: queryParameters,
             responseType: ResponseContentType.Json
         });
@@ -251,6 +487,118 @@ export class BeneficiaryApi implements IBeneficiaryApi {
         let requestOptions: RequestOptionsArgs = new RequestOptions({
             method: RequestMethod.Get,
             headers: headers,
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * get mayor by id
+     * 
+     * @param mayorId 
+     */
+    private getMayorByIdWithHttpInfo(mayorId: number ): Observable<Response> {
+        const path = this.basePath + `/beneficiary/mayor/${mayorId}`;
+//        .replace('{' + 'mayorId' + '}', String(mayorId));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'mayorId' is not null or undefined
+        if (mayorId === null || mayorId === undefined) {
+            throw new Error('Required parameter mayorId was null or undefined when calling getMayorById.');
+        }
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * get representative by id
+     * 
+     * @param representativeId 
+     */
+    private getRepresentativeByIdWithHttpInfo(representativeId: number ): Observable<Response> {
+        const path = this.basePath + `/beneficiary/representative/${representativeId}`;
+//        .replace('{' + 'representativeId' + '}', String(representativeId));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'representativeId' is not null or undefined
+        if (representativeId === null || representativeId === undefined) {
+            throw new Error('Required parameter representativeId was null or undefined when calling getRepresentativeById.');
+        }
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * Select supplier
+     * 
+     * @param beneficiaryId 
+     * @param publicationId 
+     * @param body 
+     */
+    private selectSupplierWithHttpInfo(beneficiaryId: number,  publicationId: number,  body?: number ): Observable<Response> {
+        const path = this.basePath + `/beneficiary/${beneficiaryId}/publication/${publicationId}/supplier`;
+//        .replace('{' + 'beneficiaryId' + '}', String(beneficiaryId)) 
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)//        .replace('{' + 'publicationId' + '}', String(publicationId));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'beneficiaryId' is not null or undefined
+        if (beneficiaryId === null || beneficiaryId === undefined) {
+            throw new Error('Required parameter beneficiaryId was null or undefined when calling selectSupplier.');
+        }
+        // verify required parameter 'publicationId' is not null or undefined
+        if (publicationId === null || publicationId === undefined) {
+            throw new Error('Required parameter publicationId was null or undefined when calling selectSupplier.');
+        }
+
+
+
+
+
+        headers.set('Content-Type', 'application/json');
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Put,
+            headers: headers,
+            body: body == null ? '' : /*JSON.stringify*/classToPlain(body), // https://github.com/angular/angular/issues/10612
             search: queryParameters,
             responseType: ResponseContentType.Json
         });

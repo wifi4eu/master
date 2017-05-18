@@ -40,12 +40,26 @@ export interface ILauApi {
      * @param countryCode 
      */
     findLauByCountryCode<T extends models.LauDTO>(countryCode: string, c?: ClassType<T>): Observable<T[]>;
+    /**
+     * get Lau by LAU2 i.e: 08019
+     * 
+     * @param c 
+     * @param lau2 
+     */
+    findLauByLau2<T extends models.LauDTO>(lau2: string, c?: ClassType<T>): Observable<T>;
+    /**
+     * get Lau by NUTS3 i.e: ES513
+     * 
+     * @param c 
+     * @param nuts3 
+     */
+    findLauByNuts3<T extends models.LauDTO>(nuts3: string, c?: ClassType<T>): Observable<T[]>;
 
 }
 
 @Injectable()
 export class LauApi implements ILauApi {
-    protected basePath = 'http://localhost:7001/wifi4eu/api';
+    protected basePath = 'http://localhost:8080/wifi4eu/api';
     public defaultHeaders: Headers = new Headers();
     public configuration: Configuration = new Configuration();
 
@@ -107,6 +121,52 @@ export class LauApi implements ILauApi {
 
 
 
+
+    /**
+     * get Lau by LAU2 i.e: 08019
+     * 
+     * @param c
+     * @param lau2 
+     */
+    findLauByLau2<T extends models.LauDTO>(lau2: string, c?: ClassType<T>): Observable<T> {
+        // noinspection TypeScriptValidateTypes
+        return this.findLauByLau2WithHttpInfo(lau2)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserialize(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
+
+    /**
+     * get Lau by NUTS3 i.e: ES513
+     * 
+     * @param c
+     * @param nuts3 
+     */
+    findLauByNuts3<T extends models.LauDTO>(nuts3: string, c?: ClassType<T>): Observable<T[]> {
+
+        return this.findLauByNuts3WithHttpInfo(nuts3)
+                .map((response: Response) => {
+                    if (response.status === 204) {
+                        return undefined;
+                    } else if (c) {
+                        return deserializeArray(c, response.text());
+                    } else {
+                        return response.json();
+                    }
+                });
+        }
+
+
+
     /**
      * create LAU
      * 
@@ -153,6 +213,74 @@ export class LauApi implements ILauApi {
         // verify required parameter 'countryCode' is not null or undefined
         if (countryCode === null || countryCode === undefined) {
             throw new Error('Required parameter countryCode was null or undefined when calling findLauByCountryCode.');
+        }
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * get Lau by LAU2 i.e: 08019
+     * 
+     * @param lau2 
+     */
+    private findLauByLau2WithHttpInfo(lau2: string ): Observable<Response> {
+        const path = this.basePath + `/lau/lau2/${lau2}`;
+//        .replace('{' + 'lau2' + '}', String(lau2));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'lau2' is not null or undefined
+        if (lau2 === null || lau2 === undefined) {
+            throw new Error('Required parameter lau2 was null or undefined when calling findLauByLau2.');
+        }
+
+
+
+
+
+
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
+            search: queryParameters,
+            responseType: ResponseContentType.Json
+        });
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * get Lau by NUTS3 i.e: ES513
+     * 
+     * @param nuts3 
+     */
+    private findLauByNuts3WithHttpInfo(nuts3: string ): Observable<Response> {
+        const path = this.basePath + `/lau/nuts3/${nuts3}`;
+//        .replace('{' + 'nuts3' + '}', String(nuts3));  
+// not needed as long as the Angular2Typescript language generates the path as TypeScript template string 
+// (https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'nuts3' is not null or undefined
+        if (nuts3 === null || nuts3 === undefined) {
+            throw new Error('Required parameter nuts3 was null or undefined when calling findLauByNuts3.');
         }
 
 

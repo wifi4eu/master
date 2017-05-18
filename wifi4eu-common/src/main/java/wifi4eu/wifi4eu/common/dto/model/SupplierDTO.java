@@ -22,12 +22,12 @@ public class SupplierDTO implements Serializable {
     private Long createDate;
     private String nutsIds;
     //private List<NutsDTO> nuts;
-    private String binaryLogo;
+    private String logo;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds, String binaryLogo) {
+    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds, String logo) {
         this.supplierId = supplierId;
         this.name = name;
         this.address = address;
@@ -44,7 +44,7 @@ public class SupplierDTO implements Serializable {
         this.legalCheck2 = legalCheck2;
         this.createDate = createDate;
         this.nutsIds = nutsIds;
-        this.binaryLogo = binaryLogo;
+        this.logo = logo;
     }
 
     public Long getSupplierId() {
@@ -175,11 +175,11 @@ public class SupplierDTO implements Serializable {
         this.nutsIds = nutsIds;
     }
 
-    public String getBinaryLogo() {
-        return binaryLogo;
+    public String getLogo() {
+        return logo;
     }
 
-    public void setBinaryLogo(String binaryLogo) {
-        this.binaryLogo = binaryLogo;
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 }

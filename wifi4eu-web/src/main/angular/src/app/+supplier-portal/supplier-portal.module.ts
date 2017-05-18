@@ -7,11 +7,13 @@ import {SupplierProfileComponent} from "./profile/profile.component";
 import {SupplierPortalRoutingModule} from "./supplier-portal-routing.module";
 import {SelectedByMunicipalityComponent} from "./selected-by-municipality.component";
 import {AwardedMunicipalitiesComponent} from "./awarded-municipalities.component";
+import {FileUploadModule} from 'primeng/primeng';
 
 @NgModule({
     imports: [
         SharedModule,
-        SupplierPortalRoutingModule
+        SupplierPortalRoutingModule,
+        FileUploadModule
     ],
     declarations: [
         SupplierPortalComponent,
