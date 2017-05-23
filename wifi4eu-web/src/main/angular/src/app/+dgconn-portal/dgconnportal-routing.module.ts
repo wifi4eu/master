@@ -4,7 +4,6 @@ import {DgConnPortalComponent} from "./dgconnportal.component";
 import {DgConnTimelineComponent} from "./+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+publication/publication.component";
 import {DgConnVoucherComponent} from "./+voucher/voucher.component";
-import {DgConnFirstReportComponent} from "./+statistics/first-report/firstReport.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -21,8 +20,9 @@ import {DgConnFirstReportComponent} from "./+statistics/first-report/firstReport
             path: 'voucher',
             component: DgConnVoucherComponent
         }, {
-            path: 'statistics/first-report',
-            component: DgConnFirstReportComponent
+            path: 'statistics',
+            loadChildren: 'app/+dgconn-portal/+statistics/statistics.module#DgConnPortalStatisticsModule',
+            // canActivate: [AppGuard]
         }
     ])],
     exports: [RouterModule]

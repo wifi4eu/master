@@ -7,7 +7,8 @@ import {SupplierProfileComponent} from "./profile/profile.component";
 import {SupplierPortalRoutingModule} from "./supplier-portal-routing.module";
 import {SelectedByMunicipalityComponent} from "./selected-by-municipality.component";
 import {AwardedMunicipalitiesComponent} from "./awarded-municipalities.component";
-import {FileUploadModule} from 'primeng/primeng';
+import {FileUploadModule} from "primeng/primeng";
+
 
 @NgModule({
     imports: [
@@ -21,7 +22,7 @@ import {FileUploadModule} from 'primeng/primeng';
         SupplierMunicipalitiesComponent,
         SupplierProfileComponent,
         SelectedByMunicipalityComponent,
-        AwardedMunicipalitiesComponent
+        AwardedMunicipalitiesComponent,
     ],
     bootstrap: [SupplierPortalComponent]
 })

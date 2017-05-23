@@ -486,7 +486,7 @@ body {
   box-shadow: 0 2px 4px 0 rgba(163, 163, 163, 0.5);
 }
 
-.dashboardItem:hover {
+.dashboardItem:hover, .statisticItem:hover {
   box-shadow: 0 2px 16px 0 rgba(128, 128, 128, 0.5);
 }
 
@@ -887,4 +887,16 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 
 .twoLines {
   width: 3em;
+}
+
+.marginTopStats {
+  margin-top: 4% !important;
+}
+
+.paddingStats {
+  padding-bottom: 1.2em;
+}
+
+.statisticItem {
+  padding: 1.2em;
 }
