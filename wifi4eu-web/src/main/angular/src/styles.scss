@@ -486,7 +486,7 @@ body {
   box-shadow: 0 2px 4px 0 rgba(163, 163, 163, 0.5);
 }
 
-.dashboardItem:hover {
+.dashboardItem:hover, .statisticItem:hover {
   box-shadow: 0 2px 16px 0 rgba(128, 128, 128, 0.5);
 }
 
@@ -827,65 +827,76 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   font-size: 1em;
 }
 
-.dotSteps{
+.dotSteps {
   font-weight: bold;
   color: $dark-blue;
 }
-.headerTableVoucher{
+
+.headerTableVoucher {
   border-bottom: solid 1px $grey;
   background-color: white;
   padding: 0.5em 2em 0.4em !important;
 
 }
 
-.headerTableVoucher .voucherTitle{
+.headerTableVoucher .voucherTitle {
   font-size: 19px;
   font-weight: bold;
 }
 
-
-.headerTableVoucher .voucherSubtitle{
+.headerTableVoucher .voucherSubtitle {
   font-size: 14px;
   font-style: italic;
 }
 
-.downloadData{
+.downloadData {
   float: right;
   color: $darkish-blue;
 }
 
-.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow{
+.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow {
   overflow: auto;
   max-height: 40em;
 }
 
-.ui-widget textarea{
+.ui-widget textarea {
   font-size: 1.2em;
   color: $dark-blue;
 }
 
-.voucherLabel{
-    font-size: 1.2em;
-    color: #5c5c5c;
-    text-align: left;
-    margin: 0 !important;
-    padding: 0 !important;
+.voucherLabel {
+  font-size: 1.2em;
+  color: #5c5c5c;
+  text-align: left;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-.voucherButtons{
-    background-color: #004494;
-    width: 16em;
-    font-family: Verdana;
-    font-size: 1.4em;
-    font-weight: bold;
+.voucherButtons {
+  background-color: #004494;
+  width: 16em;
+  font-family: Verdana;
+  font-size: 1.4em;
+  font-weight: bold;
 }
 
-
-.autoComplete{
-    width: 13em;
-    display: inline-block;
+.autoComplete {
+  width: 13em;
+  display: inline-block;
 }
 
-.twoLines{
+.twoLines {
   width: 3em;
+}
+
+.marginTopStats {
+  margin-top: 4% !important;
+}
+
+.paddingStats {
+  padding-bottom: 1.2em;
+}
+
+.statisticItem {
+  padding: 1.2em;
 }

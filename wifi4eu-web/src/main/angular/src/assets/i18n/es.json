@@ -237,5 +237,14 @@
   "voucher.amountVoucher": "Cantidad de tickets",
   "voucher.cancelAssignment": "Cancelar asignación",
   "voucher.totalMember": "Estado total de los miembros",
-  "voucher.totalRequest": "Peticiones totales"
+  "voucher.totalRequest": "Peticiones totales",
+  "report1.title": "Miembros de estado con menor tasa de aplicación",
+  "report2.title": "Municipios no registrados",
+  "report3.title": "Tickets no asignados",
+  "report4.title": "Routers declarados",
+  "report5.title": "Velocidad de conexión declarada",
+  "report6.title": "Soporte solicitado",
+  "report7.title": "Punto de interrupción de registro",
+  "report8.title": "Punto de interrupción de registro",
+  "report9.title": "Rendimiento del proveedor"
 }
