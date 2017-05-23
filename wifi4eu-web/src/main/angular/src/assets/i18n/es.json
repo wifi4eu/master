@@ -237,5 +237,8 @@
   "voucher.amountVoucher": "Cantidad de tickets",
   "voucher.cancelAssignment": "Cancelar asignación",
   "voucher.totalMember": "Estado total de los miembros",
-  "voucher.totalRequest": "Peticiones totales"
+  "voucher.totalRequest": "Peticiones totales",
+  "stats.downloadData": " Descargar información",
+  "applications": "Aplicaciones",
+  "verifications": "Verificaciones"
 }

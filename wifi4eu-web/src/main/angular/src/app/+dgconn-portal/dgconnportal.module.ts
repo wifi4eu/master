@@ -5,13 +5,14 @@ import {DgConnPortalComponent} from "./dgconnportal.component";
 import {DgConnTimelineComponent} from "./+timeline/timeline.component";
 import {DgConnVoucherComponent} from "./+voucher/voucher.component";
 import {DgConnPublicationComponent} from "./+publication/publication.component";
+import {DgConnFirstReportComponent} from "./+statistics/first-report/firstReport.component";
 
 @NgModule({
     imports: [
         SharedModule, DgConnectPortalRoutingModule
     ],
     declarations: [
-        DgConnPortalComponent, DgConnTimelineComponent, DgConnPublicationComponent, DgConnVoucherComponent
+        DgConnPortalComponent, DgConnTimelineComponent, DgConnPublicationComponent, DgConnVoucherComponent, DgConnFirstReportComponent
     ],
     bootstrap: [DgConnPortalComponent]
 })
