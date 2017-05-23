@@ -17,10 +17,10 @@ import {DgConnStatisticsComponent} from "./+statistics/statistics.component";
         }, {
             path: 'publication',
             component: DgConnPublicationComponent
-        },{
+        }, {
             path: 'voucher',
             component: DgConnVoucherComponent
-        },{
+        }, {
             path: 'statistics',
             component: DgConnStatisticsComponent
         }
