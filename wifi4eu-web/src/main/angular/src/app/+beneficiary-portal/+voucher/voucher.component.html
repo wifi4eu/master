@@ -149,5 +149,5 @@
         </div>
     </div>
     <!-- user had already applied -->
-    <select-supplier-component *ngSwitchCase="4"></select-supplier-component>
+    <select-supplier-component *ngSwitchCase="4" [publicationId]="currentCall.callId" [municipalityId]="myMunicipality.legalEntityId"></select-supplier-component>
 </div>

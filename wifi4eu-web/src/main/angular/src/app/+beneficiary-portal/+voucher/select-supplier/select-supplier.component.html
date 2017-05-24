@@ -4,20 +4,18 @@
     <p class="ModalpConfirmation">{{ 'one.supplier' | translate }}</p>
     <div class="clearfix"></div>
     <div class="marginTop">
-        <p-dataTable [value]="suppliers" [(selection)]="selectedSuppliers" [rows]="10" [paginator]="true"
-                     [pageLinks]="3"
-                     [rowsPerPageOptions]="[10,20,50,100]" [globalFilter]="gb">
+        <p-dataTable [value]="suppliers" [(selection)]="selectedSuppliers" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,50,100]" [globalFilter]="gb">
             <p-column selectionMode="multiple"></p-column>
             <p-column field="supplierId" header="{{ 'number' | translate }}" [sortable]="true"></p-column>
-            <p-column header="{{ 'image' | translate }}" [sortable]="false">
-                <template pTemplate="body">
-                    <img width="85" src="http://www.smartblog.es/wp-content/uploads/2016/04/logo-de-Vodafone.jpg">
+            <p-column field="logo" header="{{ 'image' | translate }}" [sortable]="false">
+                <template pTemplate="body" let-supplier="rowData">
+                    <img width="85" height="45" [src]="supplier.logo">
                 </template>
             </p-column>
             <p-column field="name" header="{{ 'company.name' | translate }}" [sortable]="true"></p-column>
             <p-column field="createDate" header="{{ 'registered.date' | translate }}" [sortable]="true">
                 <template pTemplate="body" let-supplier="rowData">
-                    <span>{{formatTimestamp(supplier.createDate)}}</span>
+                    <span>{{supplier.createDate | date: 'dd/MM/yyyy HH:mm'}}</span>
                 </template>
             </p-column>
             <p-column header="{{ 'label.details' | translate }}">
@@ -33,8 +31,7 @@
 </div>
 <!--MODAL BELOW-->
 <div class="font container supplier">
-    <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="false">
+    <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="true" [closeOnEscape]="false">
         <div class="ui-g-12">
             <div class="ui-g-12">
                 <div class="beneficiaryMayorModal left">{{ 'company.details' | translate }}</div>

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
+import wifi4eu.wifi4eu.common.dto.model.InstallationDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.common.dto.model.RepresentativeDTO;
@@ -17,12 +18,14 @@ import wifi4eu.wifi4eu.mapper.beneficiary.RepresentativeMapper;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
 import wifi4eu.wifi4eu.mapper.supplier.BenPubSupMapper;
+import wifi4eu.wifi4eu.mapper.supplier.InstallationMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.LegalEntityRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.MayorRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.RepresentativeRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityTempTokenRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
+import wifi4eu.wifi4eu.repository.supplier.InstallationRepository;
 import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.service.security.UserService;
 
@@ -57,6 +60,9 @@ public class BeneficiaryService {
     BenPubSupRepository benPubSupRepository;
 
     @Autowired
+    InstallationRepository installationRepository;
+
+    @Autowired
     UserMapper userMapper;
 
     @Autowired
@@ -73,6 +79,9 @@ public class BeneficiaryService {
 
     @Autowired
     BenPubSupMapper benPubSupMapper;
+
+    @Autowired
+    InstallationMapper installationMapper;
 
     @Autowired
     MailService mailService;
@@ -187,7 +196,14 @@ public class BeneficiaryService {
 
     public BenPubSupDTO apply(Long beneficiaryId, Long publicationId) {
         BenPubSupDTO benPubSupDTO = new BenPubSupDTO(null, beneficiaryId, publicationId, false, null);
-        return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
+        benPubSupDTO = benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
+        // If the 'BenPubSup' has been created correctly, we need to create a new 'Installation' as well.
+        if (benPubSupDTO != null) {
+            InstallationDTO installationDTO = new InstallationDTO();
+            installationDTO.setInstallationId(benPubSupDTO.getBenPubSubId());
+            installationRepository.save(installationMapper.toEntity(installationDTO));
+        }
+        return benPubSupDTO;
     }
 
     public BenPubSupDTO findByBeneficiaryIdAndPublicationId(Long beneficiaryId, Long publicationId) {
