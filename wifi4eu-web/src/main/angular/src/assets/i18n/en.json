@@ -239,13 +239,7 @@
   "voucher.cancelAssignment": "Cancel assignment",
   "voucher.totalMember": "Total Member States",
   "voucher.totalRequest": "Total Request",
-  "report1.title": "Member states with lowest application rate",
-  "report2.title": "Non-Registered Municipalities",
-  "report3.title": "Non-Assigned Vouchers",
-  "report4.title": "Routers declared",
-  "report5.title": "Network speed declared",
-  "report6.title": "Helpdesk request",
-  "report7.title": "Registration break-point",
-  "report8.title": "Resgitration break-point",
-  "report9.title": "Supplier performance"
+  "stats.downloadData": "Download Data",
+  "applications": "Applications",
+  "verifications": "Verifications"
 }
