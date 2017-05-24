@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 
 @Component({
-    templateUrl: 'suppiler-municipalities.component.html'
+    templateUrl: 'supplier-municipalities.component.html'
 })
 
 export class SupplierMunicipalitiesComponent {

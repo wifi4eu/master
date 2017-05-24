@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {SupplierDTO, SupplierDTOBase} from "../../../shared/swagger/model/SupplierDTO";
 import {SupplierApi} from "../../../shared/swagger/api/SupplierApi";
@@ -12,41 +12,23 @@ export class SelectSupplierComponent {
     private selectedSuppliers: SupplierDTOBase[];
     private selectedSupplier: SupplierDTOBase;
     private display: boolean;
-    private publicationId;
     private user;
+    @Input('publicationId') private publicationId;
+    @Input('municipalityId') private municipalityId;
 
     constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private beneficiaryApi: BeneficiaryApi, private callApi: CallApi, private uxService: UxService) {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
-        this.publicationId = -1;
         this.selectedSupplier = new SupplierDTOBase();
         this.display = false;
         this.supplierApi.allSuppliers().subscribe(
             suppliers => this.suppliers = suppliers,
             error => console.log(error)
         );
-        this.callApi.allCalls().subscribe(
-            calls => {
-                for (let i = 0; i < calls.length; i++) {
-                    if (i == (calls.length -1)) {
-                        this.publicationId = calls[i].callId;
-                    }
-                }
-            },
-            error => {
-                console.log(error);
-                this.publicationId = -1;
-            }
-        );
     }
 
     openModal() {
         this.display = true;
-    }
-
-    formatTimestamp(timestamp) {
-        let date = new Date(timestamp);
-        return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + ((date.getMinutes() < 10) ? ("0" + date.getMinutes()) : date.getMinutes());
     }
 
     viewSupplierDetails(rowIndex: number) {
@@ -56,7 +38,7 @@ export class SelectSupplierComponent {
 
     selectSupplier() {
         if (this.user != null) {
-            this.beneficiaryApi.selectSupplier(this.user.userTypeId, this.publicationId, this.selectedSupplier.supplierId).subscribe(
+            this.beneficiaryApi.selectSupplier(this.municipalityId, this.publicationId, this.selectedSupplier.supplierId).subscribe(
                 data => {
                     this.uxService.growl({
                         severity: 'success',

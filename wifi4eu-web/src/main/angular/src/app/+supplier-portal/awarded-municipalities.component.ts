@@ -25,7 +25,9 @@ export class AwardedMunicipalitiesComponent {
 
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
+    }
 
+    ngOnInit() {
         this.beneficiaryApi.getAwardedMunicipalities().subscribe(
             (data: LegalEntityDTO[]) => {
                 this.municipalities = data;
@@ -43,9 +45,9 @@ export class AwardedMunicipalitiesComponent {
                             this.countryNames.push("");
                         }
                     );
-                    this.lauApi.findLauByNuts3(this.municipalities[i].municipalityCode).subscribe(
-                        (result: LauDTOBase[]) => {
-                            this.municipalitiesNames.push(result[0].name1);
+                    this.lauApi.findLauByLau2(this.municipalities[i].municipalityCode).subscribe(
+                        (result: LauDTOBase) => {
+                            this.municipalitiesNames.push(result.name1);
                         },
                         error => {
                             console.log(error);
