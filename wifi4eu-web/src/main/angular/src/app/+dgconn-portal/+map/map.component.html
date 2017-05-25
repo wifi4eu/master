@@ -1,39 +1,18 @@
 <div id="map">
-    <div id="HomeButton"></div>
-    <div id="combos">
-        <select id="sltCountries" onchange="fillCombos(sltNUTs1,0,this.value)" disabled>
-            <option selected value="">Countries</option>
-        </select>
-        <select id="sltNUTs1" onchange="fillCombos(sltNUTs2,1,this.value)" disabled>
-            <option selected value="">NUTS1</option>
-        </select>
-        <select id="sltNUTs2" onchange="fillCombos(sltNUTs3,2,this.value)" disabled>
-            <option selected value="">NUTS2</option>
-        </select>
-        <select id="sltNUTs3" onchange="fillCombos(sltCommunes,3,this.value)" disabled>
-            <option selected value="">NUTS3</option>
-        </select>
-        <select id="sltCommunes" onchange="fillCombos(null,4,this.value)" disabled>
-            <option selected value="">Communes</option>
-        </select>
-    </div>
-    <div id="otherOptions">
-        <hr/>
-        <input type="button" id="zoomNuts1" value="Zoom to NUTS1" onclick="zoomTo(1)"/>
-        <input type="button" id="zoomNuts2" value="Zoom to NUTS2" onclick="zoomTo(2)"/>
-        <input type="button" id="zoomNuts3" value="Zoom to NUTS3" onclick="zoomTo(3)"/>
-        <input type="button" id="zoomCommunes" value="Zoom to Communes" onclick="zoomTo(4)"/>
-        <hr/>
-        <input type="text" id="communeID" value="BE421004"/> <input type="button"
-                                                                    onclick="zoomToCommune(communeID.value)"
-                                                                    value="Zoom and center to Communes"> (For
-        multiple, separate by coma)
-        <hr/>
+</div>
 
-        <textarea type="text" id="popupText" style="width: 300px; height: 50px;">This will appear on the popup when clicking in a commune, including <em><strong>HTML tags</strong></em></textarea>
-        <hr/>
-        <div>
-            Visible communes: <span id="visibleCommunes"></span>
-        </div>
+<div class="marginTopStats"></div>
+<div class="row tableTitle">
+    <div class="col-md-10">
+        <h2 class="h2Table">{{ 'report1.title' | translate }}</h2>
+    </div>
+    <div class="col-md-2">
+        <a (click)="addNewElement()" class="edit editTable"><i class="fa fa-download" aria-hidden="true"></i>{{'stats.downloadData' | translate }}</a>
     </div>
 </div>
+<p-dataTable [value]="tableData" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]">
+    <p-column field="name" header="{{ 'memberState' | translate }}" [sortable]="true"></p-column>
+    <p-column field="municipalities" header="{{ 'applications' | translate }}" [sortable]="true"></p-column>
+    <p-column field="requests" header="{{ 'verifications' | translate }}" [sortable]="true"></p-column>
+    <p-column field="awarded" header="{{ 'voucher.dashboard' | translate }}" [sortable]="true"></p-column>
+</p-dataTable>
