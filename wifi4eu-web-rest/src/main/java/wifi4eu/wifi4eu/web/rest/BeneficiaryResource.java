@@ -51,6 +51,15 @@ public class BeneficiaryResource {
 
     }
 
+    @ApiOperation(value = "Get legal entities")
+    @RequestMapping(method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public List<LegalEntityDTO> getLegalEntities() {
+        _log.info("get legal entities");
+        return beneficiaryService.getLegalEntities();
+    }
+
+
     @ApiOperation(value = "Update beneficiary information")
     @RequestMapping(value = "/{beneficiaryId}", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody

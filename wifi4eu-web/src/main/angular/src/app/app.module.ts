@@ -22,6 +22,7 @@ import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {AppGuard} from "./app.guard";
 import {LocalStorageModule} from 'angular-2-local-storage';
 import {SharedService} from "./shared/shared.service";
+import {ChartsModule} from "ng2-charts";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -59,7 +60,8 @@ export function translateFactory(http: Http) {
         LocalStorageModule.withConfig({
             prefix: 'wifi4eu',
             storageType: 'localStorage'
-        })
+        }),
+        ChartsModule
     ],
     providers: [
         UxService,

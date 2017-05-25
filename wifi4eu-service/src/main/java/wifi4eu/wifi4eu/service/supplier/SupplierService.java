@@ -71,6 +71,7 @@ public class SupplierService {
     @Autowired
     AccessPointMapper accessPointMapper;
 
+
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
     }
