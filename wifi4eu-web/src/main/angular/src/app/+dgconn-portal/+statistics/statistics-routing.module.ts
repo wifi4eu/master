@@ -1,6 +1,6 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
-import {DgConnFirstReportComponent} from "./first-report/firstReport.component";
+import {DgConnFirstReportComponent} from "./first-report/first-report.component";
 import {DgConnStatisticsComponent} from "./statistics.component";
 
 

@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
+import com.google.common.collect.Lists;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.service.security.UserService;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -179,6 +181,11 @@ public class BeneficiaryService {
             }
         }
         return updatedBeneficiaryDTO;
+    }
+
+    public List<LegalEntityDTO> getLegalEntities() {
+        List<LegalEntityDTO> legalEntityDTOList = legalEntityMapper.toDTOList(Lists.newArrayList(legalEntityRepository.findAll()));
+        return legalEntityDTOList;
     }
 
     public LegalEntityDTO getLegalEntity(Long legalEntityId) {
