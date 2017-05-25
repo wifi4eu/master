@@ -1,14 +1,16 @@
 import {Component} from "@angular/core";
 import {LegalEntityDTO} from "../../../shared/swagger/model/LegalEntityDTO";
 import {BeneficiaryApi} from "../../../shared/swagger/api/BeneficiaryApi";
+import {HelpdeskApi} from "../../../shared/swagger/api/HelpdeskApi";
+import {HelpdeskDTO} from "../../../shared/swagger/model/HelpdeskDTO";
 
-@Component({templateUrl: 'first-report.component.html', providers: [BeneficiaryApi]})
-export class DgConnFirstReportComponent {
+@Component({templateUrl: 'second-report.component.html', providers: [HelpdeskApi]})
+export class DgConnSecondReportComponent {
     // Doughnut
     public doughnutChartLabels: string[] = [];
     public doughnutChartData: number[] = [];
     public doughnutChartType: string = 'doughnut';
-    private legalEntities: LegalEntityDTO[];
+    private helpdeskIssues: HelpdeskDTO[];
     private dataReady: boolean = false;
 
     // events
@@ -20,36 +22,37 @@ export class DgConnFirstReportComponent {
         console.log(e);
     }
 
-    constructor(private beneficiaryApi: BeneficiaryApi) {
-        this.getLegalEntities();
+    constructor(private helpdeskApi: HelpdeskApi) {
+        this.getHelpdesk()
     }
 
-
-    getLegalEntities() {
-        this.beneficiaryApi.getLegalEntities().subscribe(
+    getHelpdesk() {
+        this.helpdeskApi.allHelpdeskIssues().subscribe(
             data => {
-                this.legalEntities = data;
+                this.helpdeskIssues = data;
                 let countriesCountArray = [];
-                this.legalEntities.forEach((legalEntity: LegalEntityDTO) => {
-                    if (countriesCountArray[legalEntity.countryCode]) {
-                        countriesCountArray[legalEntity.countryCode] += 1;
+                this.helpdeskIssues.forEach((helpdesk: HelpdeskDTO) => {
+                    if (countriesCountArray[helpdesk.memberState]) {
+                        countriesCountArray[helpdesk.memberState] += 1;
                     }
                     else {
-                        countriesCountArray[legalEntity.countryCode] = 1;
+                        countriesCountArray[helpdesk.memberState] = 1
                     }
-                });
-
+                })
                 for (let countryInfo in countriesCountArray) {
                     this.doughnutChartLabels.push(countryInfo);
-                    this.doughnutChartData.push(countriesCountArray[countryInfo]);
+                    this.doughnutChartData.push(countriesCountArray[countryInfo])
                 }
                 this.dataReady = true;
             },
+
+
             error => {
                 error => console.log(error);
             }
         );
     }
+
 }
 
 
