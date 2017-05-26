@@ -60,8 +60,11 @@ import {AppGuard} from "./app.guard";
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
             canActivate: [AppGuard]
         }, {
-            path: '**',
+            path: 'notfound',
             component: NotFoundComponent
+        }, {
+            path: '**',
+            redirectTo: 'notfound'
         }
     ], {useHash: true})],
     exports: [RouterModule]
