@@ -9,6 +9,7 @@ import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
 import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
+import {NotFoundComponent} from "./not-found/not-found.component"
 import {AppGuard} from "./app.guard";
 
 @NgModule({
@@ -50,7 +51,7 @@ import {AppGuard} from "./app.guard";
         }, {
             path: 'dgconn-portal',
             loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
-            // canActivate: [AppGuard]
+            canActivate: [AppGuard]
         }, {
             path: 'supplier-registration',
             loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule'
@@ -58,6 +59,12 @@ import {AppGuard} from "./app.guard";
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
             canActivate: [AppGuard]
+        }, {
+            path: 'notfound',
+            component: NotFoundComponent
+        }, {
+            path: '**',
+            redirectTo: 'notfound'
         }
     ], {useHash: true})],
     exports: [RouterModule]
