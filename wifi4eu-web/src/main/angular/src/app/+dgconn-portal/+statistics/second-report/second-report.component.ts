@@ -7,14 +7,9 @@ import {setFlagsFromString} from "v8";
 
 @Component({templateUrl: 'second-report.component.html', providers: [HelpdeskApi]})
 export class DgConnSecondReportComponent {
-    // Doughnut
-    // public doughnutChartLabels: string[] = [];
-    // public doughnutChartData: number[] = [];
-    // public doughnutChartType: string = 'doughnut';
     private helpdeskIssues: HelpdeskDTO[];
     private dataReady: boolean = false;
     private totalIssues: Array<any> = [];
-    //private pendingIssues: Array<any> = [];
     private pendingIssueArray: Array<any> = [];
 
 
