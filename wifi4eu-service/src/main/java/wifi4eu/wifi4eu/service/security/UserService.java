@@ -189,7 +189,7 @@ public class UserService {
 
     }
 
-    private UserDTO getUserByEmail(String email) {
+    public UserDTO getUserByEmail(String email) {
         return userMapper.toDTO(securityUserRepository.findByEmail(email));
     }
 

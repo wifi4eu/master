@@ -53,9 +53,6 @@ public class BeneficiaryService {
     RepresentativeRepository representativeRepository;
 
     @Autowired
-    SecurityUserRepository securityUserRepository;
-
-    @Autowired
     SecurityTempTokenRepository securityTempTokenRepository;
 
     @Autowired
@@ -63,9 +60,6 @@ public class BeneficiaryService {
 
     @Autowired
     InstallationRepository installationRepository;
-
-    @Autowired
-    UserMapper userMapper;
 
     @Autowired
     LegalEntityMapper legalEntityMapper;
@@ -110,7 +104,7 @@ public class BeneficiaryService {
         }
 
         String mayorMail = mayorDTO.getEmail();
-        UserDTO mayorUserDTO = getUserByEmail(mayorMail);
+        UserDTO mayorUserDTO = userService.getUserByEmail(mayorMail);
         if (mayorUserDTO == null) {
             mayorDTO.setLegalEntityId(legalEntityDTO.getLegalEntityId());
             mayorDTO = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
@@ -122,12 +116,12 @@ public class BeneficiaryService {
             String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
             mayorUserDTO.setPassword(password);
             _log.info("create mayor user: " + mayorUserDTO.toString());
-            mayorUserDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(mayorUserDTO)));
+            mayorUserDTO = userService.saveUser(mayorUserDTO);
             userService.sendActivateAccountMail(mayorUserDTO);
 
             if (represented) {
                 String representativeMail = beneficiaryDTO.getRepresentativeDTO().getEmail();
-                UserDTO representativeUserDTO = getUserByEmail(representativeMail);
+                UserDTO representativeUserDTO = userService.getUserByEmail(representativeMail);
                 if (representativeUserDTO == null) {
                     representativeDTO.setMayorId(mayorDTO.getMayorId());
                     representativeDTO = representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(representativeDTO)));
@@ -139,7 +133,7 @@ public class BeneficiaryService {
                     password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
                     representativeUserDTO.setPassword(password);
                     _log.info("create representative user: " + representativeUserDTO.toString());
-                    representativeUserDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(representativeUserDTO)));
+                    representativeUserDTO = userService.saveUser(representativeUserDTO);
                     userService.sendActivateAccountMail(representativeUserDTO);
                     return representativeUserDTO;
                 } else {
@@ -174,10 +168,10 @@ public class BeneficiaryService {
             }
             updatedBeneficiaryDTO.setLegalEntityDTO(legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(beneficiaryDTO.getLegalEntityDTO()))));
 
-            UserDTO userDTO = getUserByEmail(email);
+            UserDTO userDTO = userService.getUserByEmail(email);
             if (userDTO != null) {
                 /* TODO: update data */
-                userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
+                userDTO = userService.saveUser(userDTO);
             }
         }
         return updatedBeneficiaryDTO;
@@ -195,10 +189,6 @@ public class BeneficiaryService {
         _log.info("legalEntityDTO: " + legalEntityDTO);
 
         return legalEntityDTO;
-    }
-
-    private UserDTO getUserByEmail(String email) {
-        return userMapper.toDTO(securityUserRepository.findByEmail(email));
     }
 
     public BenPubSupDTO apply(Long beneficiaryId, Long publicationId) {
