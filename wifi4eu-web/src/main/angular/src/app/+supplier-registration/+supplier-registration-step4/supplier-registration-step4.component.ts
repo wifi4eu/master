@@ -68,7 +68,6 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
             this.supplierDTO.nutsIds += '' + regions.code.toString() + ',';
         }
         this.supplierDTO.nutsIds = this.supplierDTO.nutsIds.slice(0, -1);
-        this.supplierDTO.createDate = new Date();
         this.supplierApi.createSupplier(this.supplierDTO).subscribe(
             data => {
                 if (data['success'] != true) {

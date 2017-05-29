@@ -79,6 +79,9 @@ public class SupplierService {
 
         _log.info("[i] create Supplier");
 
+        // set the create date
+        supplierDTO.setCreateDate(new Date());
+
         /*
             TODO: enable a validation to avoid user duplicity
         */
