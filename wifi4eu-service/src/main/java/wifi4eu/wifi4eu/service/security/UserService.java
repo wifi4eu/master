@@ -51,7 +51,8 @@ public class UserService {
         UserDTO persUserDTO = getUserByEmail(userDTO.getEmail());
 
         if (persUserDTO != null && userDTO.getPassword().equals(persUserDTO.getPassword())) {
-            return persUserDTO;
+            persUserDTO.setAccessDate(new Date());
+            return saveUser(persUserDTO);
         } else {
             throw new UsernameNotFoundException("Can't login");
         }
