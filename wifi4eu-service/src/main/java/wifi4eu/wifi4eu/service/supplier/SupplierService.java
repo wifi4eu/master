@@ -39,9 +39,6 @@ public class SupplierService {
     SupplierRepository supplierRepository;
 
     @Autowired
-    SecurityUserRepository securityUserRepository;
-
-    @Autowired
     BenPubSupRepository benPubSupRepository;
 
     @Autowired
@@ -55,9 +52,6 @@ public class SupplierService {
 
     @Autowired
     BeneficiaryService beneficiaryService;
-
-    @Autowired
-    UserMapper userMapper;
 
     @Autowired
     SupplierMapper supplierMapper;
@@ -85,6 +79,9 @@ public class SupplierService {
 
         _log.info("[i] create Supplier");
 
+        // set the create date
+        supplierDTO.setCreateDate(new Date());
+
         /*
             TODO: enable a validation to avoid user duplicity
         */
@@ -92,7 +89,7 @@ public class SupplierService {
         // get supplier email
         String email = supplierDTO.getContactEmail();
 
-        UserDTO persUserDTO = getUserByEmail(email);
+        UserDTO persUserDTO = userService.getUserByEmail(email);
 
         if (persUserDTO == null) {
             _log.info("Nom: " + supplierDTO.getName());
@@ -113,10 +110,10 @@ public class SupplierService {
 
             //link supplier and user and store user
             userDTO.setUserTypeId(perSupplierDTO.getSupplierId());
-            userDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
+            userDTO = userService.saveUser(userDTO);
 
             //send activate account mail
-            //userService.sendActivateAccountMail(userDTO);
+            userService.sendActivateAccountMail(userDTO);
 
             _log.info("[f] create Supplier");
 
@@ -125,10 +122,6 @@ public class SupplierService {
             _log.warn("trying to duplicate user");
             return null;
         }
-    }
-
-    private UserDTO getUserByEmail(String email) {
-        return userMapper.toDTO(securityUserRepository.findByEmail(email));
     }
 
     public List<LegalEntityDTO> getSelectedMe(Long supplierId) {

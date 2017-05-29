@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.sql.Blob;
 
@@ -19,7 +20,7 @@ public class SupplierDTO implements Serializable {
     private String contactEmail;
     private boolean legalCheck1;
     private boolean legalCheck2;
-    private Long createDate;
+    private Date createDate;
     private String nutsIds;
     //private List<NutsDTO> nuts;
     private String logo;
@@ -27,7 +28,7 @@ public class SupplierDTO implements Serializable {
     public SupplierDTO() {
     }
 
-    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds, String logo) {
+    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Date createDate, String nutsIds, String logo) {
         this.supplierId = supplierId;
         this.name = name;
         this.address = address;
@@ -159,11 +160,11 @@ public class SupplierDTO implements Serializable {
         this.legalCheck2 = legalCheck2;
     }
 
-    public Long getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Long createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
