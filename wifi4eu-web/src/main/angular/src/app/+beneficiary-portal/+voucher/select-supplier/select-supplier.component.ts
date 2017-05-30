@@ -9,7 +9,7 @@ import {LocalStorageService} from "angular-2-local-storage";
 @Component({selector: 'select-supplier-component', templateUrl: 'select-supplier.component.html', providers: [SupplierApi, BeneficiaryApi, CallApi]})
 export class SelectSupplierComponent {
     private suppliers: SupplierDTOBase[];
-    private selectedSuppliers: SupplierDTOBase[];
+    //private selectedSuppliers: SupplierDTOBase[];
     private selectedSupplier: SupplierDTOBase;
     private display: boolean;
     private user;
@@ -37,20 +37,28 @@ export class SelectSupplierComponent {
     }
 
     selectSupplier() {
-        if (this.user != null) {
-            this.beneficiaryApi.selectSupplier(this.municipalityId, this.publicationId, this.selectedSupplier.supplierId).subscribe(
-                data => {
-                    this.uxService.growl({
-                        severity: 'success',
-                        summary: 'SUCCESS',
-                        detail: 'You selected ' + this.selectedSupplier.name + ' as your supplier.'
-                    });
-                    this.display = false;
-                }, error => {
-                    console.log(error);
-                    this.display = false;
-                }
-            );
+        if (this.selectedSupplier.supplierId == null) {
+            this.uxService.growl({
+                severity: 'warn',
+                summary: 'WARNING',
+                detail: 'You have to select a supplier first.'
+            });
+        } else {
+            if (this.user != null) {
+                this.beneficiaryApi.selectSupplier(this.municipalityId, this.publicationId, this.selectedSupplier.supplierId).subscribe(
+                    data => {
+                        this.uxService.growl({
+                            severity: 'success',
+                            summary: 'SUCCESS',
+                            detail: 'You selected ' + this.selectedSupplier.name + ' as your supplier.'
+                        });
+                        this.display = false;
+                    }, error => {
+                        console.log(error);
+                        this.display = false;
+                    }
+                );
+            }
         }
     }
 

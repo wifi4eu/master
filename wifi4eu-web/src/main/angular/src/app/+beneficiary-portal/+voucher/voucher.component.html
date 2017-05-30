@@ -1,7 +1,7 @@
 <timeline-component></timeline-component>
 <div [ngSwitch]="voucherCompetitionState">
     <!-- no competition created, display warning -->
-    <div *ngSwitchCase="-1">
+    <div *ngSwitchCase="0">
         <div class="ui-g-12">
             <span class="ui-g-2"></span>
             <ux-alert class="ui-g-8" styleClass="alert-info">{{ 'voucher.noCompetitionPart1' | translate}}<b>{{
@@ -19,9 +19,8 @@
             <div class="ui-g-4"></div>
         </div>
     </div>
-
     <!-- no competition active, display timer -->
-    <div *ngSwitchCase="0">
+    <div *ngSwitchCase="1">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
             <h2 class="ui-g-8 beneficiaryMayor">{{ 'voucher.timeleft.title' | translate}}</h2>
@@ -34,8 +33,7 @@
         </div>
         <br>
         <div class="ui-g-12">
-            <timer-component (timerEvent)="beginCompetition()"
-                             [expirationTimestamp]="currentCall.startDate"></timer-component>
+            <timer-component (timerEvent)="checkIfAlreadyApplied()" [expirationTimestamp]="currentCall.startDate"></timer-component>
         </div>
 
         <hr class="beneficiaryHr">
@@ -67,10 +65,9 @@
                 <p><span class="dotSteps">4.</span>{{ 'voucher.step4' | translate}}</p>
             </div>
         </div>
-
     </div>
     <!-- competition Open, display apply button -->
-    <div *ngSwitchCase="1">
+    <div *ngSwitchCase="2">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
             <ux-alert class="ui-g-8" styleClass="alert-info">{{ 'voucher.statusmessage4' | translate}}</ux-alert>
@@ -97,7 +94,7 @@
         </div>
     </div>
     <!-- user has applied for voucher -->
-    <div *ngSwitchCase="2">
+    <div *ngSwitchCase="3">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
             <ux-alert class="ui-g-8" styleClass="alert-success">{{ 'voucher.statusmessage5' | translate}}</ux-alert>
@@ -116,8 +113,10 @@
             <span class="ui-g-4"></span>
         </div>
     </div>
-    <!-- user rejected -->
-    <div *ngSwitchCase="3">
+    <!-- user had already applied -->
+    <select-supplier-component *ngSwitchCase="4" [publicationId]="currentCall.callId" [municipalityId]="myMunicipality.legalEntityId"></select-supplier-component>
+    <!-- a problem occurred -->
+    <div *ngSwitchCase="-1">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
             <ux-alert class="ui-g-8" styleClass="alert-danger">{{ 'voucher.statusmessage3' | translate}}</ux-alert>
@@ -142,12 +141,10 @@
         </div>
         <div class="ui-g-12 center">
             <span class="ui-g-4"></span>
-            <button class="btn btn-primary ui-g-4" routerLink="/home" routerLinkActive="active">{{ 'voucher.backhome' |
-                translate}}
+            <button class="btn btn-primary ui-g-4" routerLink="/home" routerLinkActive="active">
+                {{ 'voucher.backhome' | translate}}
             </button>
             <span class="ui-g-4"></span>
         </div>
     </div>
-    <!-- user had already applied -->
-    <select-supplier-component *ngSwitchCase="4" [publicationId]="currentCall.callId" [municipalityId]="myMunicipality.legalEntityId"></select-supplier-component>
 </div>

@@ -17,27 +17,13 @@ export class VoucherComponent {
     private user: UserDTO;
     private currentCall: CallDTOBase;
     private myMunicipality: LegalEntityDTO;
+    private errorCause: string;
 
     constructor(private localStorage: LocalStorageService, private beneficiaryApi: BeneficiaryApi, private callApi: CallApi) {
-        this.voucherCompetitionState = -1;
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
         this.currentCall = new CallDTOBase();
         this.myMunicipality = new LegalEntityDTOBase();
-        
-        this.callApi.allCalls().subscribe(
-            calls => {
-                this.currentCall = calls[0];
-                if (this.currentCall != null) {
-                    this.voucherCompetitionState = 0;
-                }
-            },
-            error => {
-                console.log(error);
-                this.currentCall = null;
-                this.voucherCompetitionState = 3;
-            }
-        );
     }
 
     ngOnInit() {
@@ -48,59 +34,78 @@ export class VoucherComponent {
                         this.beneficiaryApi.getMayorById(representative.mayorId).subscribe(
                             (mayor: MayorDTOBase) => {
                                 this.beneficiaryApi.getLegalEntity(mayor.legalEntityId).subscribe(
-                                    entity => this.myMunicipality = entity,
+                                    entity => {
+                                        this.myMunicipality = entity;
+                                        this.checkForCalls();
+                                    },
                                     error => {
                                         console.log(error);
                                         this.myMunicipality = null;
-                                        this.voucherCompetitionState = 3;
+                                        this.voucherCompetitionState = -1;
+                                        this.errorCause = "beneficiaryportal.municipalitynotfound";
                                     }
                                 );
                             }, error => {
                                 console.log(error);
                                 this.myMunicipality = null;
-                                this.voucherCompetitionState = 3;
+                                this.voucherCompetitionState = -1;
+                                this.errorCause = "beneficiaryportal.municipalitynotfound";
                             }
                         );
                     }, error => {
                         console.log(error);
                         this.myMunicipality = null;
-                        this.voucherCompetitionState = 3;
+                        this.voucherCompetitionState = -1;
+                        this.errorCause = "beneficiaryportal.municipalitynotfound";
                     }
                 );
             } else if (this.user.userType == 2) {
                 this.beneficiaryApi.getMayorById(this.user.userTypeId).subscribe(
                     (mayor: MayorDTOBase) => {
                         this.beneficiaryApi.getLegalEntity(mayor.legalEntityId).subscribe(
-                            entity => this.myMunicipality = entity,
+                            entity => {
+                                this.myMunicipality = entity;
+                                this.checkForCalls();
+                            },
                             error => {
                                 console.log(error);
                                 this.myMunicipality = null;
-                                this.voucherCompetitionState = 3;
+                                this.voucherCompetitionState = -1;
+                                this.errorCause = "beneficiaryportal.municipalitynotfound";
                             }
                         );
                     }, error => {
                         console.log(error);
                         this.myMunicipality = null;
-                        this.voucherCompetitionState = 3;
+                        this.voucherCompetitionState = -1;
+                        this.errorCause = "beneficiaryportal.municipalitynotfound";
                     }
                 );
             }
         }
     }
 
-    beginCompetition() {
-        this.voucherCompetitionState = 1;
-        this.checkIfAlreadyApplied();
-    }
-
-    applyForVoucher() {
-        this.beneficiaryApi.apply(this.myMunicipality.legalEntityId, this.currentCall.callId).subscribe(
-            data => {
-                this.voucherCompetitionState = 2;
+    checkForCalls() {
+        this.callApi.allCalls().subscribe(
+            calls => {
+                this.currentCall = calls[0];
+                if (this.currentCall != null) {
+                    // First, check if the call has already began
+                    if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
+                        this.checkIfAlreadyApplied();
+                    } else {
+                        // The competition hasn't started, display the timer
+                        this.voucherCompetitionState = 1;
+                    }
+                } else {
+                    // Display "no competition active" message
+                    this.voucherCompetitionState = 0;
+                }
             },
             error => {
                 console.log(error);
-                this.voucherCompetitionState = 3;
+                this.currentCall = null;
+                this.voucherCompetitionState = 0;
             }
         );
     }
@@ -110,12 +115,29 @@ export class VoucherComponent {
             call => {
                 if (call != null) {
                     this.voucherCompetitionState = 4;
+                } else {
+                    this.voucherCompetitionState = 2;
                 }
             },
             error => {
                 console.log(error);
-                this.voucherCompetitionState = 3;
+                this.voucherCompetitionState = -1;
+                this.errorCause = "beneficiaryportal.couldntcheckifapplied";
             }
         );
     }
+
+    applyForVoucher() {
+        this.beneficiaryApi.apply(this.myMunicipality.legalEntityId, this.currentCall.callId).subscribe(
+            data => {
+                this.voucherCompetitionState = 3;
+            },
+            error => {
+                console.log(error);
+                this.voucherCompetitionState = -1;
+                this.errorCause = "beneficiaryportal.errorapplying";
+            }
+        );
+    }
+    
 }
