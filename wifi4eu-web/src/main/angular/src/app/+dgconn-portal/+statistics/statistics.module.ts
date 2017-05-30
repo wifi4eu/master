@@ -5,6 +5,7 @@ import {DgConnStatisticsComponent} from "./statistics.component";
 import {StatisticsPortalRoutingModule} from "./statistics-routing.module";
 import {ChartsModule} from "ng2-charts";
 import {DgConnSecondReportComponent} from "./second-report/second-report.component";
+import {DgConnThirdReportComponent} from "./third-report/third-report.component";
 
 
 @NgModule({
@@ -12,7 +13,7 @@ import {DgConnSecondReportComponent} from "./second-report/second-report.compone
         SharedModule, StatisticsPortalRoutingModule, ChartsModule
     ],
     declarations: [
-        DgConnFirstReportComponent, DgConnStatisticsComponent, DgConnSecondReportComponent
+        DgConnFirstReportComponent, DgConnStatisticsComponent, DgConnSecondReportComponent, DgConnThirdReportComponent
     ]
 })
 export class DgConnPortalStatisticsModule {
