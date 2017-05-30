@@ -8,11 +8,11 @@ export class AppGuard implements CanActivate {
     private user: UserDTO;
 
     constructor(private localStorage: LocalStorageService, private router: Router) {
-        let u = this.localStorage.get('user');
-        this.user = u ? JSON.parse(u.toString()) : null;
     }
 
     canActivate(route: ActivatedRouteSnapshot) {
+        let u = this.localStorage.get('user');
+        this.user = u ? JSON.parse(u.toString()) : null;
         let allow = false;
         switch (route.url[0].path) {
             case "map":
