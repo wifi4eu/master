@@ -51,20 +51,10 @@
         <p><span class="voucherTitle">{{ 'voucher.dashboard' | translate }}</span> | <span class="voucherSubtitle">{{ 'voucher.simulation' | translate }}</span><a class="downloadData"><i class="fa fa-download" aria-hidden="true"></i> {{'voucher.downloadData' | translate}}</a></p>
     </div>
     <p-dataTable [value]="calls" [rows]="5" [paginator]="true" [pageLinks]="13" [rowsPerPageOptions]="[5,10,20]">
-            <p-column field="event" header="{{ 'event.title' | translate }}" [sortable]="true">
-
-            </p-column>
-            <p-column field="" header="{{ 'memberState' | translate }}" [sortable]="true">
-
-            </p-column>
-            <p-column field="" header="{{ 'voucher.municipalities' | translate }}" [sortable]="true">
-                
-            </p-column>
-            <p-column field="" header="{{ 'voucher.request' | translate }}" [sortable]="true">
-            
-            </p-column>
-            <p-column field="" header="{{ 'voucher.assigned' | translate }}" [sortable]="true">
-            
-            </p-column>
+            <p-column field="event" header="{{ 'event.title' | translate }}" [sortable]="true"></p-column>
+            <p-column field="" header="{{ 'memberState' | translate }}" [sortable]="true"></p-column>
+            <p-column field="" header="{{ 'voucher.municipalities' | translate }}" [sortable]="true"></p-column>
+            <p-column field="" header="{{ 'voucher.request' | translate }}" [sortable]="true"></p-column>
+            <p-column field="" header="{{ 'voucher.assigned' | translate }}" [sortable]="true"></p-column>
     </p-dataTable>
 </div>

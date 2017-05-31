@@ -5,68 +5,40 @@
             <h2 class="h2Table">{{ 'timeline.label' | translate }}</h2>
         </div>
         <div class="col-md-2">
-            <a (click)="addNewElement()" class="edit editTable"><img
-                    src="assets/images/add-circle-outline-material-icons-regular.png" alt="">{{'newEvent.label' |
-                translate }}</a>
+            <a (click)="addNewElement()" class="edit editTable"><img src="assets/images/add-circle-outline-material-icons-regular.png" alt="">{{'newEvent.label' | translate }}</a>
         </div>
     </div>
-    <p-dataTable [value]="timelines" [rows]="5" [paginator]="true" [pageLinks]="3"
-                 [rowsPerPageOptions]="[5,10,20]">
-        <p-column field="event" header="{{ 'event.title' | translate }}"
-                  [sortable]="true">
-        </p-column>
-        <p-column field="startDate" header="{{ 'start.date' | translate }}"
-                  [sortable]="true">
+    <p-dataTable [value]="timelines" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]">
+        <p-column field="event" header="{{ 'event.title' | translate }}" [sortable]="true"></p-column>
+        <p-column field="startDate" header="{{ 'start.date' | translate }}" [sortable]="true">
             <template pTemplate="body" let-timeline="rowData">
                 <span>{{timeline.startDate | date: 'dd/MM/yyyy HH:mm'}}</span>
             </template>
         </p-column>
-        <p-column field="endDate" header="{{ 'end.date' | translate }}"
-                  [sortable]="true">
+        <p-column field="endDate" header="{{ 'end.date' | translate }}" [sortable]="true">
             <template pTemplate="body" let-timeline="rowData">
                 <span>{{timeline.endDate | date: 'dd/MM/yyyy HH:mm'}}</span>
             </template>
         </p-column>
         <p-column header="{{ 'edit.button' | translate }}">
             <template pTemplate="body" let-timeline="rowData" let-rowElement="rowIndex">
-                <button type="button" class="btn" style="background: none; padding: 0;"
-                        (click)="displayInfo(timeline)">
-                    <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i>
-                    {{ 'edit.button' | translate }}
+                <button type="button" class="btn" style="background: none; padding: 0;" (click)="displayInfo(timeline)">
+                    <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{ 'edit.button' | translate }}
                 </button>
             </template>
         </p-column>
         <p-column header="{{ 'delete.button' | translate }}">
             <template pTemplate="body" let-rowElement="rowIndex">
-                <button type="button" class="btn" style="background: none; padding: 0;"
-                        (click)="deleteElement(rowElement)">
-                    <i class="fa fa-trash-o" style="font-size: 17px; color: red;" aria-hidden="true"></i>
-                    {{ 'delete.button' | translate }}
+                <button type="button" class="btn" style="background: none; padding: 0;" (click)="deleteElement(rowElement)">
+                    <i class="fa fa-trash-o" style="font-size: 17px; color: red;" aria-hidden="true"></i> {{ 'delete.button' | translate }}
                 </button>
             </template>
         </p-column>
-        <!--<p-column header="">
-            <template pTemplate="body" let-i="rowIndex">
-                <button type="button" class="btn" style="background: none; padding: 0;"
-                        (click)="deleteElement(i)">
-                    <i class="fa fa-trash-o" style="font-size: 17px; color: red;"></i> {{ 'delete.button' | translate
-                    }}
-                </button>
-            </template>
-        </p-column>-->
     </p-dataTable>
-    <!--
-    <div class="right">
-        <button type="submit" class="btn btn-primary publish-button"
-                [disabled]="">{{ 'publish.button' | translate }}
-        </button>
-    </div>
-    -->
     <!--MODALS BELOW-->
     <div class="container font">
         <div class="ui-g-1"></div>
-        <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
-                  [draggable]="false" [closable]="false" [closeOnEscape]="false">
+        <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
             <button type="button" (click)="cancelTimeline()" class="closeButton">X</button>
             <p class="beneficiaryMayorModal">{{'publication.call' | translate }}</p>
             <form (ngSubmit)="onSubmit()" #publicationForm="ngForm">
@@ -75,8 +47,7 @@
                         <div class="ui-g-12">
                             <div class="form-group left">
                                 <label class="labelModal" for="event">{{'labelModal.timeline' | translate }}</label>
-                                <input type="text" [(ngModel)]="event" id="event" class="form-control"
-                                       name="event" required>
+                                <input type="text" [(ngModel)]="event" id="event" class="form-control" name="event" required>
                             </div>
                         </div>
                     </div>
@@ -84,21 +55,16 @@
                         <div class="ui-g-3">
                             <div class="form-group left">
                                 <label class="labelModal" for="startDate">{{'opening.date' | translate }}</label>
-                                <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"
-                                            [showIcon]="true" type="text" dateFormat="dd/mm/yy" [(ngModel)]="startDate"
-                                            name="startDate" onkeydown="return false"
-                                            required></p-calendar>
+                                <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027" [showIcon]="true" type="text"
+                                            dateFormat="dd/mm/yy" [(ngModel)]="startDate" name="startDate" onkeydown="return false" required></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-1"></div>
                         <div class="ui-g-2">
                             <div class="form-group left">
                                 <label class="labelModal" for="startTime">{{'start.time' | translate }}</label>
-                                <p-calendar [monthNavigator]="false" timeFormat="HH:mm:ss" [timeOnly]="true"
-                                            [showIcon]="true" type="text"
-                                            [(ngModel)]="startTime" name="startTime"
-                                            onkeydown="return false"
-                                            required></p-calendar>
+                                <p-calendar [monthNavigator]="false" timeFormat="HH:mm:ss" [timeOnly]="true" [showIcon]="true" type="text"
+                                            [(ngModel)]="startTime" name="startTime" onkeydown="return false" required></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-6"></div>
@@ -107,21 +73,16 @@
                         <div class="ui-g-3">
                             <div class="form-group left">
                                 <label class="labelModal" for="endDate">{{'closing.date' | translate }}</label>
-                                <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"
-                                            [showIcon]="true" type="text" dateFormat="dd/mm/yy"
-                                            [(ngModel)]="endDate" name="endDate" onkeydown="return false"
-                                            required></p-calendar>
+                                <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027" [showIcon]="true" type="text"
+                                            dateFormat="dd/mm/yy" [(ngModel)]="endDate" name="endDate" onkeydown="return false" required></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-1"></div>
                         <div class="ui-g-2">
                             <div class="form-group left">
                                 <label class="labelModal" for="endTime">{{'end.time' | translate }}</label>
-                                <p-calendar timeFormat="HH:mm:ss" [timeOnly]="true"
-                                            [showIcon]="true" type="text"
-                                            [(ngModel)]="endTime" name="endTime"
-                                            onkeydown="return false"
-                                            required></p-calendar>
+                                <p-calendar timeFormat="HH:mm:ss" [timeOnly]="true" [showIcon]="true" type="text"
+                                            [(ngModel)]="endTime" name="endTime" onkeydown="return false" required></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-6"></div>
@@ -137,12 +98,10 @@
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
                         <button type="button" (click)="createTimeline()" class="btn btn-primary publish-button"
-                                [disabled]="!publicationForm.form.valid"
-                                *ngIf="!newElementForm">{{'timeline.change' | translate }}
+                                *ngIf="!newElementForm" [disabled]="!(publicationForm.form.valid && checkDate())">{{'timeline.change' | translate }}
                         </button>
                         <button type="button" (click)="createTimeline()" class="btn btn-primary publish-button"
-                                *ngIf="newElementForm" [disabled]="!publicationForm.form.valid">
-                            {{'add.timeline' | translate }}
+                                *ngIf="newElementForm" [disabled]="!(publicationForm.form.valid && checkDate())">{{'add.timeline' | translate }}
                         </button>
                     </div>
                     <div class="ui-g-3"></div>

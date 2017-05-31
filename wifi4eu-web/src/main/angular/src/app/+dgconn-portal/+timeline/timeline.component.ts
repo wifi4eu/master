@@ -27,6 +27,10 @@ export class DgConnTimelineComponent {
             error => console.log(error)
         );
         this.newElementForm = false;
+        this.startDate = new Date();
+        this.endDate = new Date();
+        this.startTime = new Date();
+        this.endTime = new Date();
     }
 
     addNewElement() {
@@ -93,23 +97,16 @@ export class DgConnTimelineComponent {
             error => console.log(error)
         );
         this.timeline = null;
-
     }
 
     checkDate() {
-        console.log("startDate:", this.startDate);
-        console.log("endDate:", this.endDate);
-        console.log(this.startDate < this.endDate);
-        return this.startDate < this.endDate;
+        let finalStartDate = this.startDate;
+        finalStartDate.setHours(this.startTime.getHours());
+        finalStartDate.setMinutes(this.startTime.getMinutes());
+        let finalEndDate = this.endDate;
+        finalEndDate.setHours(this.endTime.getHours());
+        finalEndDate.setMinutes(this.endTime.getMinutes());
+        return finalStartDate < finalEndDate;
     }
-
-
-    keyPress(event: any) {
-        const pattern = /[0-9\:]/;
-        let inputChar = String.fromCharCode(event.charCode);
-
-        if (!pattern.test(inputChar)) {
-            event.preventDefault();
-        }
-    }
+    
 }

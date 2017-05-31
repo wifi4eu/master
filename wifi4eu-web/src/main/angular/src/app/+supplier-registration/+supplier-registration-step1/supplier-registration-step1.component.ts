@@ -8,12 +8,9 @@ import {FileUploadModule} from 'primeng/primeng';
 })
 export class SupplierRegistrationComponentStep1 {
     @Input('supplierDTO') supplierDTO: SupplierDTOBase;
-
     @Output() onNext = new EventEmitter<number>();
     @Output() onLogoSubmit = new EventEmitter<any>();
-
-    //private webPattern: string = "@^(http\:\/\/|https\:\/\/)?([a-z0-9][a-z0-9\-]*\.)+[a-z0-9][a-z0-9\-]*$@i";
-    private webPattern: string = "(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})";
+    private webPattern: string = "((www\\.)|(https?:\/\/(www\\.)?))[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)+";
     private uploadedFiles: any[] = [];
 
     onSubmit(step: number) {

@@ -2,8 +2,9 @@ import {Component, Output, ViewChild} from '@angular/core';
 import {CallDTOBase} from "../../shared/swagger/model/CallDTO";
 import {LegalEntityDTO, LegalEntityDTOBase} from "../../shared/swagger/model/LegalEntityDTO";
 import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
-import {UserDTO} from "../../shared/swagger/model/UserDTO";
+import {BenPubSupDTOBase} from "../../shared/swagger/model/BenPubSupDTO";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
+import {UserDTO} from "../../shared/swagger/model/UserDTO";
 import {RepresentativeDTOBase} from "../../shared/swagger/model/RepresentativeDTO";
 import {LocalStorageService} from "angular-2-local-storage";
 import {CallApi} from "../../shared/swagger/api/CallApi";
@@ -112,10 +113,16 @@ export class VoucherComponent {
 
     checkIfAlreadyApplied() {
         this.beneficiaryApi.findByBeneficiaryIdAndPublicationId(this.myMunicipality.legalEntityId, this.currentCall.callId).subscribe(
-            call => {
-                if (call != null) {
-                    this.voucherCompetitionState = 4;
+            (request: BenPubSupDTOBase) => {
+                if (request != null) {
+                    if (request.awarded) {
+                        // Display 'Select supplier' screen.
+                        this.voucherCompetitionState = 4;
+                    } else {
+                        this.voucherCompetitionState = 3;
+                    }
                 } else {
+                    // The user hasn't applied yet, display the "Apply for Voucher" button.
                     this.voucherCompetitionState = 2;
                 }
             },
