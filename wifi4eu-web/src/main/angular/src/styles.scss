@@ -661,10 +661,6 @@ body {
   border: solid 1px #e3e3e3;
 }
 
-.ui-column-title {
-  padding-left: 1.8em;
-}
-
 /*
 .ui-datatable table td {
   padding-left: 2.5em;
@@ -899,4 +895,8 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 
 .statisticItem {
   padding: 1.2em;
+}
+
+.ui-column-title, .ui-cell-data {
+  padding-left: 1.8em;
 }
