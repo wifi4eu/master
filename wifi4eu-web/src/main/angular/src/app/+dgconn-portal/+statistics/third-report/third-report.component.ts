@@ -4,6 +4,7 @@ import {SupplierDTO} from "../../../shared/swagger/model/SupplierDTO";
 import {splitAtColon} from "@angular/compiler/src/util";
 import {forEach} from "@angular/router/src/utils/collection";
 
+
 @Component({templateUrl: 'third-report.component.html', providers: [SupplierApi]})
 export class DgConnThirdReportComponent {
     // Doughnut
@@ -37,7 +38,7 @@ export class DgConnThirdReportComponent {
                 this.suppliers.forEach((supplier: SupplierDTO) => {
 
                     let nutsIds = supplier.nutsIds;
-                    if (nutsIds && nutsIds.length > 0) {
+                    if (nutsIds && nutsIds.length > 0 && nutsIds.includes(";")) {
                         let r = nutsIds.split(';');
                         let labels = r[0].split(',');
                         for (let i = 0; i < labels.length; i++) {
