@@ -38,7 +38,6 @@ export class ReviewComponent {
         this.userDetails = new UserDetails();
 
         this.displayConfirmingData = false;
-        this.confirmingData = true;
         this.successCaptcha = false;
         this.checkboxes = [false, false, false];
     }
@@ -50,12 +49,12 @@ export class ReviewComponent {
         this.beneficiaryDTO.legalEntityDTO.legalCheckbox3 = this.checkboxes[2];
         this.beneficiaryApi.create(this.beneficiaryDTO).subscribe(
             data => {
-                if (data['success'] != true) {
-                    this.displayConfirmingData = false;
+                this.displayConfirmingData = false;
+                if (data['success'] && data['data'] != null) {
+                    this.onSuccess.emit(true);
+                } else {
                     this.onFailure.emit(true);
-                    return;
                 }
-                this.onSuccess.emit(true)
             },
             error => {
                 this.displayConfirmingData = false;
