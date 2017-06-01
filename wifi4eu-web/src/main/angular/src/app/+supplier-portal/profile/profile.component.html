@@ -16,7 +16,7 @@
                         <p class="beneficiaryMayor">{{ 'contact.person' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="displayContactModal()" class="edit"> 
+                        <a (click)="displayContactModal()" class="edit">
                             <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
                         </a>
                     </div>
@@ -46,7 +46,7 @@
                         <p class="beneficiaryMayor">{{ 'company.details' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="displayCompanyModal()"> 
+                        <a (click)="displayCompanyModal()">
                             <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
                         </a>
                     </div>
@@ -77,7 +77,7 @@
                         <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="displayLegalModal()"> 
+                        <a (click)="displayLegalModal()">
                             <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}</a>
                     </div>
                 </div>
@@ -85,8 +85,8 @@
 
                 <div class="ui-g">
                     <div class="ui-g-4">
-                        <p>{{ 'countries.label' | translate }}</p>
-                        <p>{{ 'provinces.label' | translate }}</p>
+                        <p>{{ 'country.label' | translate }}</p>
+                        <p>{{ 'municipality.label' | translate }}</p>
 
                     </div>
                     <div class="ui-g-8">
@@ -194,8 +194,11 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="name">{{ 'company.name' | translate }}</label>
-                        <input type="text" [(ngModel)]="selectedSupplierData.name" class="form-control" name="name" ngcontrol="name" #name="ngModel" required>
-                        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">{{'company.required' | translate }}</div>
+                        <input type="text" [(ngModel)]="selectedSupplierData.name" class="form-control" name="name"
+                               ngcontrol="name" #name="ngModel" required>
+                        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">{{'company.required' |
+                            translate }}
+                        </div>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -206,8 +209,11 @@
                     <div class="form-group">
                         <label for="address">{{ 'legal.address' | translate
                             }}</label>
-                        <input type="text" [(ngModel)]="selectedSupplierData.address" class="form-control" name="address" ngcontrol="address" #address="ngModel" required>
-                        <div [hidden]="address.valid || address.pristine" class="alert alert-danger">{{'address.required' | translate }}</div>
+                        <input type="text" [(ngModel)]="selectedSupplierData.address" class="form-control"
+                               name="address" ngcontrol="address" #address="ngModel" required>
+                        <div [hidden]="address.valid || address.pristine" class="alert alert-danger">
+                            {{'address.required' | translate }}
+                        </div>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -217,8 +223,11 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="vat">{{ 'vat.label' | translate }}</label>
-                        <input type="text" [(ngModel)]="selectedSupplierData.vat" class="form-control" name="vat" ngcontrol="vat" #vat="ngModel" required>
-                        <div [hidden]="vat.valid || vat.pristine" class="alert alert-danger">{{'vat.required' | translate }}</div>
+                        <input type="text" [(ngModel)]="selectedSupplierData.vat" class="form-control" name="vat"
+                               ngcontrol="vat" #vat="ngModel" required>
+                        <div [hidden]="vat.valid || vat.pristine" class="alert alert-danger">{{'vat.required' |
+                            translate }}
+                        </div>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -228,8 +237,11 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="bic">{{ 'bic.label' | translate }}</label>
-                        <input type="text" [(ngModel)]="selectedSupplierData.bic" class="form-control" name="bic" ngcontrol="bic" #bic="ngModel" required>
-                        <div [hidden]="bic.valid || bic.pristine" class="alert alert-danger">{{'bic.required' | translate }}</div>
+                        <input type="text" [(ngModel)]="selectedSupplierData.bic" class="form-control" name="bic"
+                               ngcontrol="bic" #bic="ngModel" required>
+                        <div [hidden]="bic.valid || bic.pristine" class="alert alert-danger">{{'bic.required' |
+                            translate }}
+                        </div>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -239,7 +251,8 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="binaryLogo">{{ 'logo.label' | translate }}</label>
-                        <p-fileUpload name="logo[]" (onSelect)="onSelect($event)" accept="image/*" maxFileSize="3145728">
+                        <p-fileUpload name="logo[]" (onSelect)="onSelect($event)" accept="image/*"
+                                      maxFileSize="3145728">
                             <template pTemplate type="content">
                                 <ul *ngIf="uploadedFiles.length">
                                     <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
@@ -255,8 +268,11 @@
             </div>
             <div class="form-group">
                 <div style="text-align: center !important">
-                    <button type="button" class="btn btn-primary changePasswordModalNoTop" (click)="closeModal()">{{ 'cancel.button' | translate }}</button>
-                    <button type="button" class="btn btn-primary changePasswordModalNoTop" [disabled]="!profileFormCompany.form.valid" (click)="saveSupplierChanges()">
+                    <button type="button" class="btn btn-primary changePasswordModalNoTop" (click)="closeModal()">{{
+                        'cancel.button' | translate }}
+                    </button>
+                    <button type="button" class="btn btn-primary changePasswordModalNoTop"
+                            [disabled]="!profileFormCompany.form.valid" (click)="saveSupplierChanges()">
                         {{ 'change' | translate }}
                     </button>
                 </div>
@@ -281,7 +297,9 @@
                                class="form-control"
                                name="contactName" ngcontrol="contactName" #contactName="ngModel"
                                required>
-                        <div [hidden]="contactName.valid || contactName.pristine" class="alert alert-danger">{{ 'name.required' | translate }}</div>
+                        <div [hidden]="contactName.valid || contactName.pristine" class="alert alert-danger">{{
+                            'name.required' | translate }}
+                        </div>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -339,9 +357,11 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="email">{{ 'email.label' | translate }}</label>
-                        <input type="text" [(ngModel)]="selectedSupplierData.contactEmail" class="form-control" 
-                        name="email" ngcontrol="email" #email="ngModel" required>
-                        <div [hidden]="email.valid || email.pristine" class="alert alert-danger">{{ 'email.required' | translate }}</div>
+                        <input type="text" [(ngModel)]="selectedSupplierData.contactEmail" class="form-control"
+                               name="email" ngcontrol="email" #email="ngModel" required>
+                        <div [hidden]="email.valid || email.pristine" class="alert alert-danger">{{ 'email.required' |
+                            translate }}
+                        </div>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -437,10 +457,12 @@
             </div>
         </form>
     </p-dialog>-->
-    <p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="true" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="true" [draggable]="false"
+              [closable]="false" [closeOnEscape]="false">
         <button type="button" (click)="closeModal()" class="closeButton">X</button>
         <div class="ui-g-12 ui-md-12 ui-lg-5 marginSelect">
-            <p-multiSelect [options]="allCountries" [(ngModel)]="selectedCountries" (onChange)="onMultiSelectChange($event)"></p-multiSelect>
+            <p-multiSelect [options]="allCountries" [(ngModel)]="selectedCountries"
+                           (onChange)="onMultiSelectChange($event)"></p-multiSelect>
         </div>
         <!--<p-multiSelect [options]="allCountries" dataKey="name" [(ngModel)]="selectedCountries" (onChange)="onMultiSelectChange($event)"></p-multiSelect>-->
     </p-dialog>
