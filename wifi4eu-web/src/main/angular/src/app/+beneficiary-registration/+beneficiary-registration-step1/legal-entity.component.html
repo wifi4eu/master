@@ -63,7 +63,8 @@
                                 [minLength]="1"
                                 (keyup)="onKeyUp($event)"
                                 (completeMethod)="filterLaus($event)"
-                                required>
+                                required
+                                [disabled]="!isValidNutsSeleted()">
                 </p-autoComplete>
                 <div [hidden]="municipality.valid || municipality.pristine"
                      class="alert alert-danger">Municipality is
@@ -139,7 +140,7 @@
             <button type="button" class="btn btn-primary cancel-button">{{ 'back.button' | translate }}</button>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary publish-button" [disabled]="!entityForm.form.valid"
+            <button type="submit" class="btn btn-primary publish-button" [disabled]="!(isValidNutsLausSelection() && entityForm.form.valid)"
                     (click)="onSubmit(1)">{{
                 'next.button' |
                 translate }}

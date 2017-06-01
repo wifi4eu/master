@@ -76,7 +76,17 @@ export class EntityComponent {
 
     filterLaus(event) {
         this.lauApi.findLauByCountryCode(this.nutsDTO.countryCode).subscribe(
-            laus => this.lausSuggestions = this.filterMunicipalities(event.query, laus)
+            laus => {
+                this.lausSuggestions = this.filterMunicipalities(event.query, laus)
+            },
+            error => {
+                this.uxService.growl({
+                    severity: 'warn',
+                    summary: 'WARNING',
+                    detail: 'Could not get LAU, ignore this when NG is working in offline mode'
+                });
+                console.log('WARNING: Could not get nuts', error);
+            }
         );
     }
 
@@ -92,5 +102,17 @@ export class EntityComponent {
             }
         }
         return filteredLaus;
+    }
+
+    isValidNutsLausSelection() {
+        let isValid = true;
+        if (!(typeof this.nutsDTO === 'object') || !(typeof this.lausDTO === 'object')) {
+            isValid = false;
+        }
+        return isValid; 
+    }
+
+    isValidNutsSeleted() {
+        return typeof this.nutsDTO === 'object';
     }
 }
