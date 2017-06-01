@@ -240,5 +240,7 @@
   "voucher.totalRequest": "Peticiones totales",
   "stats.downloadData": " Descargar información",
   "applications": "Aplicaciones",
-  "verifications": "Verificaciones"
+  "verifications": "Verificaciones",
+  "voucher.whats.next": "Qué es lo siguiente?",
+  "voucher.steps": "Deberías seguir éstos pasos:"
 }

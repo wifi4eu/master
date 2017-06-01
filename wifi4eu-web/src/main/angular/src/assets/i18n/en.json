@@ -241,5 +241,7 @@
   "voucher.totalRequest": "Total Request",
   "stats.downloadData": "Download Data",
   "applications": "Applications",
-  "verifications": "Verifications"
+  "verifications": "Verifications",
+  "voucher.whats.next": "What's next?",
+  "voucher.steps": "You should follow this steps:"
 }
