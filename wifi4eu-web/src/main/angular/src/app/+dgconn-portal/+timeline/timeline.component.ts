@@ -27,16 +27,14 @@ export class DgConnTimelineComponent {
             error => console.log(error)
         );
         this.newElementForm = false;
-        this.startDate = new Date();
-        this.endDate = new Date();
-        this.startTime = new Date();
-        this.endTime = new Date();
     }
 
     addNewElement() {
         this.event = '';
         this.startDate = null;
         this.endDate = null;
+        this.startTime = null;
+        this.endTime = null;
         this.newElementForm = true;
         this.display = true;
         this.timelineApi.allTimelines().subscribe(
@@ -48,11 +46,16 @@ export class DgConnTimelineComponent {
     displayInfo(rowData: TimelineDTO) {
         this.timeline = rowData;
         this.event = rowData.event;
-        this.startTime = new Date(rowData.startDate);
-        this.endTime = new Date(rowData.endDate);
         this.startDate = new Date(rowData.startDate);
         this.endDate = new Date(rowData.endDate);
+        this.startTime = new Date(rowData.startDate);
+        this.endTime = new Date(rowData.endDate);
+        this.newElementForm = false;
         this.display = true;
+        this.timelineApi.allTimelines().subscribe(
+            timelines => this.timelines = timelines,
+            error => console.log(error)
+        );
     }
 
     deleteElement(rowData: number) {
@@ -100,13 +103,16 @@ export class DgConnTimelineComponent {
     }
 
     checkDate() {
-        let finalStartDate = this.startDate;
-        finalStartDate.setHours(this.startTime.getHours());
-        finalStartDate.setMinutes(this.startTime.getMinutes());
-        let finalEndDate = this.endDate;
-        finalEndDate.setHours(this.endTime.getHours());
-        finalEndDate.setMinutes(this.endTime.getMinutes());
-        return finalStartDate < finalEndDate;
+        if (this.startDate && this.startDate) {
+            let finalStartDate = this.startDate;
+            finalStartDate.setHours(this.startTime.getHours());
+            finalStartDate.setMinutes(this.startTime.getMinutes());
+            let finalEndDate = this.endDate;
+            finalEndDate.setHours(this.endTime.getHours());
+            finalEndDate.setMinutes(this.endTime.getMinutes());
+            return finalStartDate < finalEndDate;
+        }
+        return false;
     }
     
 }
