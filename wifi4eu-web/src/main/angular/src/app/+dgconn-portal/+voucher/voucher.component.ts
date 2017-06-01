@@ -3,6 +3,7 @@ import {DgConnDetails} from "../dgconnportal-details.model";
 import {Http} from "@angular/http";
 import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {DgconnApi} from "../../shared/swagger/api/DgconnApi";
 import {LauApi} from "../../shared/swagger/api/LauApi";
 import {NutsApi} from "../../shared/swagger/api/NutsApi";
 import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
@@ -10,7 +11,7 @@ import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 
 @Component({
     templateUrl: 'voucher.component.html',
-    providers: [LauApi, NutsApi]
+    providers: [LauApi, NutsApi, DgconnApi]
 })
 
 export class DgConnVoucherComponent {
@@ -24,7 +25,7 @@ export class DgConnVoucherComponent {
     private nutsSuggestions: NutsDTOBase[];
     private lausSuggestions: LauDTOBase[];
 
-    constructor(private http: Http, private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService) {
+    constructor(private http: Http, private lauApi: LauApi, private nutsApi: NutsApi, private dgconnApi: DgconnApi, private uxService: UxService) {
     }
 
     onKeyUp(event) {
@@ -70,5 +71,17 @@ export class DgConnVoucherComponent {
             }
         }
         return filteredNuts;
+    }
+
+    simulateDistribution() {
+        this.dgconnApi.distribute().subscribe(
+            response => {
+                this.uxService.growl({
+                    severity: 'success',
+                    summary: 'SUCCESS',
+                    detail: 'Simulation of voucher distribution successful'
+                });
+            }, error => console.log(error)
+        );
     }
 }
