@@ -145,9 +145,8 @@
                     <button class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button>
                 </div>
                 <div class="ui-g-12 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary publish-button publish-buttonReview"
-                            (click)="modal?.open()"
-                            [disabled]="!checkboxes[0] || !checkboxes[1] || !checkboxes[2] || !successCaptcha">
+                    <button type="submit" class="btn btn-primary publish-button publish-buttonReview" 
+                        [disabled]="!checkboxes[0] || !checkboxes[1] || !checkboxes[2] || !successCaptcha">
                         {{'submitregistration.button' | translate }}
                     </button>
                 </div>
@@ -156,16 +155,9 @@
         </form>
     </div>
 
-    <modal #modal>
-        <modal-header [show-close]="true">
-        </modal-header>
-        <modal-body>
-            <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
-            <h1 class="Modalh1Confirmation">Confirming Data, please wait...</h1>
-            <p class="ModalpConfirmation">Your registration to Wifi4EU is in the process of being submitted.<br>Please
-                don't
-                close this window.</p>
-        </modal-body>
-        <modal-footer></modal-footer>
-    </modal>
+    <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+        <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+        <h1 class="Modalh1Confirmation">Confirming Data, please wait...</h1>
+        <p class="ModalpConfirmation">Your registration to Wifi4EU is in the process of being submitted.<br>Please don'tclose this window.</p>
+    </p-dialog>
 </div>
