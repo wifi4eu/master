@@ -111,6 +111,12 @@
         <version>${project.version}</version>        
       </dependency>
 
+      <dependency>
+          <groupId>com.google.code.gson</groupId>
+          <artifactId>gson</artifactId>
+          <version>2.7</version>
+      </dependency>
+
   </dependencies>
 
 
@@ -134,7 +140,7 @@
                         <springmvc>true</springmvc>
                         <locations>wifi4eu.wifi4eu.web.rest</locations>
                         <schemes>http</schemes>
-                        <host>${server.address}${app.context.root}</host>                        
+                        <host>${server.address}${app.context.root}</host>
                         <basePath>/api</basePath>
                         <info>
                             <title>API</title>
@@ -142,6 +148,11 @@
                             <description>API Swagger description</description>
                         </info>
                         <swaggerDirectory>${basedir}/target/generated-sources/swagger</swaggerDirectory>
+                        <securityDefinitions>
+                            <securityDefinition>
+                                <json>/securityDefinition.json</json>
+                            </securityDefinition>
+                        </securityDefinitions>
                     </apiSource>
                 </apiSources>
             </configuration>            

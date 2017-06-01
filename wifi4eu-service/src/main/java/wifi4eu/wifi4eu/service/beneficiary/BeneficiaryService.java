@@ -27,6 +27,7 @@ import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.service.security.UserService;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -51,9 +52,6 @@ public class BeneficiaryService {
     SecurityUserRepository securityUserRepository;
 
     @Autowired
-    SecurityTempTokenRepository securityTempTokenRepository;
-
-    @Autowired
     BenPubSupRepository benPubSupRepository;
 
     @Autowired
@@ -69,13 +67,7 @@ public class BeneficiaryService {
     RepresentativeMapper representativeMapper;
 
     @Autowired
-    TempTokenMapper tempTokenMapper;
-
-    @Autowired
     BenPubSupMapper benPubSupMapper;
-
-    @Autowired
-    MailService mailService;
 
     @Autowired
     UserService userService;
@@ -190,7 +182,7 @@ public class BeneficiaryService {
     }
 
     public BenPubSupDTO apply(Long beneficiaryId, Long publicationId) {
-        BenPubSupDTO benPubSupDTO = new BenPubSupDTO(null, beneficiaryId, publicationId, false, null);
+        BenPubSupDTO benPubSupDTO = new BenPubSupDTO(null, beneficiaryId, publicationId, false, null, false, false, "");
         return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
     }
 
@@ -206,6 +198,10 @@ public class BeneficiaryService {
             return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
         }
         return benPubSupDTO;
+    }
+
+    public List<BenPubSupDTO> findByPublicationId(long publicationId) {
+        return benPubSupMapper.toDTOList(benPubSupRepository.findByPublicationId(publicationId));
     }
 
 }

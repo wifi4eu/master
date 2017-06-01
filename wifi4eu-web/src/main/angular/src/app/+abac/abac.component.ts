@@ -1,49 +1,129 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { AbacApi } from "../shared/swagger/api/AbacApi";
+import { CallApi } from "../shared/swagger/api/CallApi";
 import * as FileSaver from 'file-saver';
 
 @Component({
 	templateUrl: 'abac.component.html',
-	providers: [AbacApi]
+	providers: [AbacApi, CallApi]
 })
-export class AbacComponent {
+export class AbacComponent implements OnInit {
 	private isExportSuccessful : boolean = false;
-	private isAbacValidationSuccessful : boolean = false;
+	private isImportSuccessful : boolean = false;
 
-	private hasRequestedExport : boolean = false;
-	private hasSubmitedForValidation : boolean = false;
-	
-	private isLoading : boolean = false;
+	private showExportIcon : boolean = false;
+	private showImportIcon : boolean = false;
 
-	constructor(private abacApi : AbacApi){}
+	private isExportLoading : boolean = false;
+	private isImportLoading : boolean = false;
+
+	private publications : Array<Object> = [];
+	private tableAppliers : any;
+
+	private exportErrorMessage : string;
+	private importErrorMessage : string;
+
+	constructor(private abacApi : AbacApi, private callApi : CallApi){}
+
+	ngOnInit() {
+		this.getAllPublications();
+	}
+
+	getAllPublications() {
+		this.callApi.allCalls().subscribe(
+            data => {
+				for (let i = 0; i < data.length; i++) {
+					this.publications.push({
+						key: data[i].callId,
+						value: data[i].event
+					});
+				}
+			},
+            error => {
+				console.log("Failed to present current publications");
+            }
+		);
+	}
 
 	onExportButton() {
-		console.log("onExportButton");
+		this.isExportLoading = true;
+		this.isExportSuccessful = false;
+		this.showExportIcon = false;
+		this.exportErrorMessage = "";
+
 		this.abacApi.exportAbacInformation().subscribe(
             data => {
-				console.log("on Data");
-				console.log(data);
-				let blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-				FileSaver.saveAs(blob, "abacExportInformation.json");  
+				if (data['success']) {
+					let blob = new Blob([data['data']], { type: 'application/json' });
+					FileSaver.saveAs(blob, "abacExportInformation.json");  
+
+					this.isExportLoading = false;
+					this.isExportSuccessful = true;
+					this.showExportIcon = true;
+				} else {
+					this.exportErrorMessage = data['error']['errorMessage'];
+					this.isExportLoading = false;
+					this.isExportSuccessful = false;
+					this.showExportIcon = true;
+				}
             },
             error => {
-				console.log("on error received");
-				console.log(error);
+				this.isExportLoading = false;
+				this.isExportSuccessful = false;
+				this.showExportIcon = true;
+				console.log("Could not export. Contact your administrator");
             }
         );
 	}
 
-	onGetVoucherButton() {
-		console.log("onGetVoucherButton");
+	onPublicationChange(selectedKey) {
+		this.abacApi.getPublicationAppliersInfo(selectedKey).subscribe(
+            data => {
+				console.log(data);
+				if (data && data['success']) {
+					this.tableAppliers = JSON.parse(data['data']);
+					console.log(this.tableAppliers);
+				}
+            },
+            error => {
+				console.log("Error. Contact your administrator");
+            }
+        );
 	}
 
-	onFileChange(event) {
-		console.log("onFileChange");
-		console.log(event);
+	onFileSelection(event) {
 		if(event && event.target && event.target.files && event.target.files.length == 1) {
+			this.isImportLoading = true;
+			this.isImportSuccessful = false;
+			this.showImportIcon = false;
+			this.importErrorMessage = "";
+
 			let file : File = event.target.files["0"];
-			console.log(file.name);
-			//TODO Do something
+			
+			let reader = new FileReader();
+			reader.onload = (e) => {
+				this.abacApi.importAbacInformation(reader.result).subscribe(
+					data => {
+						if (data['success']) {
+							this.isImportLoading = false;
+							this.isImportSuccessful = true;
+							this.showImportIcon = true;
+						} else {
+							this.importErrorMessage = data['error']['errorMessage'];
+							this.isImportLoading = false;
+							this.isImportSuccessful = false;
+							this.showImportIcon = true;
+						}
+					},
+					error => {
+						this.isImportLoading = false;
+						this.isImportSuccessful = false;
+						this.showImportIcon = true;
+					}
+				);
+            };
+
+			reader.readAsText(file);
 		}
 	}
 

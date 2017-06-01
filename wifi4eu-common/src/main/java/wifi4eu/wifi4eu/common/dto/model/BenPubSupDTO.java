@@ -9,16 +9,22 @@ public class BenPubSupDTO implements Serializable {
     private Long publicationId;
     private boolean awarded;
     private Long supplierId;
+    private boolean budgetCommited;
+    private boolean budgetLinked;
+    private String lastAbacMessage;
 
     public BenPubSupDTO() {
     }
 
-    public BenPubSupDTO(Long benPubSubId, Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId) {
+    public BenPubSupDTO(Long benPubSubId, Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId, boolean budgetCommited, boolean budgetLinked, String lastAbacMessage) {
         this.benPubSubId = benPubSubId;
         this.beneficiaryId = beneficiaryId;
         this.publicationId = publicationId;
         this.awarded = awarded;
         this.supplierId = supplierId;
+        this.budgetCommited = budgetCommited;
+        this.budgetLinked = budgetLinked;
+        this.lastAbacMessage = lastAbacMessage;
     }
 
     public Long getBenPubSubId() {
@@ -60,4 +66,16 @@ public class BenPubSupDTO implements Serializable {
     public void setSupplierId(Long supplierId) {
         this.supplierId = supplierId;
     }
+
+    public boolean isBudgetCommited() { return budgetCommited; }
+
+    public boolean isBudgetLinked() { return budgetLinked; }
+
+    public String getLastAbacMessage() { return lastAbacMessage; }
+
+    public void setBudgetCommited(boolean budgetCommited) { this.budgetCommited = budgetCommited; }
+
+    public void setBudgetLinked(boolean budgetCommited) { this.budgetCommited = budgetCommited; }
+
+    public void setLastAbacMessage(String lastAbacMessage) { this.lastAbacMessage = lastAbacMessage; }
 }

@@ -832,25 +832,13 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
     margin: 0 0 1rem 0;
     padding: 1rem 0;
 }
-.abac--container .abac--validator--group {
-  margin: 2rem 0;
-  border: 1px solid #d9d9d9;
-  padding: 0 1rem 1rem 1rem;
-  background-color: #fefefe;
+.abac--container .abac--validator {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border-top: 1px solid #ccc;
+    padding-top: 2rem;
 }
-.abac--container .abac--validator--group .abac--validator--voucher {
-    border-left: 4px solid #bfbfbf;
-    padding-left: 1rem;
-    padding-top: 0.5rem;
-    padding-bottom: 1.2rem;
-}
-.abac--container .abac--validator--group .abac--validator--voucher p {
-  margin-top: 0;
-}
-.abac--container .abac--validator--group .abac--validator {
-  margin-bottom: 2rem;
-}
-.abac--container .abac--exporter i {
+.abac--container .abac--exporter i, .abac--container .abac--validator i {
   font-size: 1.5rem;
 }
 .abac--container .abac--exporter i, .abac--container .abac--validator i {
@@ -861,4 +849,20 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 }
 .abac--container .abac--exporter i.fa-check, .abac--container .abac--validator i.fa-check {
   color: green;
+}
+.abac--container .error--message {
+  color: red;
+}
+.abac--table {
+    margin-bottom: 30rem
+}
+.abac--table h1 {
+    border-bottom: 1px solid #ccc;
+}
+.abac--table--container {
+    margin-top: 2rem;
+    margin: 2rem 0;
+}
+.abac--table--container .publication--selector {
+      margin-bottom: 3rem;
 }

@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.service.security;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import wifi4eu.wifi4eu.util.MailService;
 
 import java.security.SecureRandom;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by rgarcita on 09/02/2017.
@@ -198,5 +200,7 @@ public class UserService {
         return userMapper.toDTO(securityUserRepository.findByEmail(email));
     }
 
-
+    public List<UserDTO> getAllUsers() {
+        return userMapper.toDTOList(Lists.newArrayList(securityUserRepository.findAll()));
+    }
 }
