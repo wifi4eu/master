@@ -94,11 +94,6 @@ public class BeneficiaryService {
         RepresentativeDTO representativeDTO = beneficiaryDTO.getRepresentativeDTO();
         boolean represented = false;
 
-        /* create LegalEntityDTO */
-        _log.info("create legalEntity: " + legalEntityDTO.toString());
-        legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(legalEntityDTO)));
-        _log.info("created legalEntity: " + legalEntityDTO.toString());
-
         if (representativeDTO != null && representativeDTO.getEmail() != null && !representativeDTO.getEmail().isEmpty()) {
             represented = true;
         }
@@ -106,23 +101,26 @@ public class BeneficiaryService {
         String mayorMail = mayorDTO.getEmail();
         UserDTO mayorUserDTO = userService.getUserByEmail(mayorMail);
         if (mayorUserDTO == null) {
-            mayorDTO.setLegalEntityId(legalEntityDTO.getLegalEntityId());
-            mayorDTO = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
-            mayorUserDTO = new UserDTO();
-            mayorUserDTO.setEmail(mayorMail);
-            mayorUserDTO.setCreateDate(new Date());
-            mayorUserDTO.setUserType(Constant.ROLE_MAYOR);
-            mayorUserDTO.setUserTypeId(mayorDTO.getMayorId());
-            String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
-            mayorUserDTO.setPassword(password);
-            _log.info("create mayor user: " + mayorUserDTO.toString());
-            mayorUserDTO = userService.saveUser(mayorUserDTO);
-            userService.sendActivateAccountMail(mayorUserDTO);
-
             if (represented) {
                 String representativeMail = beneficiaryDTO.getRepresentativeDTO().getEmail();
                 UserDTO representativeUserDTO = userService.getUserByEmail(representativeMail);
                 if (representativeUserDTO == null) {
+                    /* create LegalEntityDTO */
+                    _log.info("create legalEntity: " + legalEntityDTO.toString());
+                    legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(legalEntityDTO)));
+                    _log.info("created legalEntity: " + legalEntityDTO.toString());
+                    mayorDTO.setLegalEntityId(legalEntityDTO.getLegalEntityId());
+                    mayorDTO = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
+                    mayorUserDTO = new UserDTO();
+                    mayorUserDTO.setEmail(mayorMail);
+                    mayorUserDTO.setCreateDate(new Date());
+                    mayorUserDTO.setUserType(Constant.ROLE_MAYOR);
+                    mayorUserDTO.setUserTypeId(mayorDTO.getMayorId());
+                    String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
+                    mayorUserDTO.setPassword(password);
+                    _log.info("create mayor user: " + mayorUserDTO.toString());
+                    mayorUserDTO = userService.saveUser(mayorUserDTO);
+                    userService.sendActivateAccountMail(mayorUserDTO);
                     representativeDTO.setMayorId(mayorDTO.getMayorId());
                     representativeDTO = representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(representativeDTO)));
                     representativeUserDTO = new UserDTO();
@@ -141,6 +139,22 @@ public class BeneficiaryService {
                     return null;
                 }
             } else {
+                /* create LegalEntityDTO */
+                _log.info("create legalEntity: " + legalEntityDTO.toString());
+                legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(legalEntityDTO)));
+                _log.info("created legalEntity: " + legalEntityDTO.toString());
+                mayorDTO.setLegalEntityId(legalEntityDTO.getLegalEntityId());
+                mayorDTO = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
+                mayorUserDTO = new UserDTO();
+                mayorUserDTO.setEmail(mayorMail);
+                mayorUserDTO.setCreateDate(new Date());
+                mayorUserDTO.setUserType(Constant.ROLE_MAYOR);
+                mayorUserDTO.setUserTypeId(mayorDTO.getMayorId());
+                String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
+                mayorUserDTO.setPassword(password);
+                _log.info("create mayor user: " + mayorUserDTO.toString());
+                mayorUserDTO = userService.saveUser(mayorUserDTO);
+                userService.sendActivateAccountMail(mayorUserDTO);
                 return mayorUserDTO;
             }
         } else {
@@ -183,11 +197,8 @@ public class BeneficiaryService {
     }
 
     public LegalEntityDTO getLegalEntity(Long legalEntityId) {
-
         LegalEntityDTO legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.findOne(legalEntityId));
-
         _log.info("legalEntityDTO: " + legalEntityDTO);
-
         return legalEntityDTO;
     }
 

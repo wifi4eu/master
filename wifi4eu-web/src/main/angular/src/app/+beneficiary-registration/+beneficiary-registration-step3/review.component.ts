@@ -50,11 +50,12 @@ export class ReviewComponent {
         this.beneficiaryDTO.legalEntityDTO.legalCheckbox3 = this.checkboxes[2];
         this.beneficiaryApi.create(this.beneficiaryDTO).subscribe(
             data => {
-                if (data['success'] != true) {
+                if (data['success'] != true || data['data'] == null) {
                     this.displayConfirmingData = false;
                     this.onFailure.emit(true);
                     return;
                 }
+                this.displayConfirmingData = false;
                 this.onSuccess.emit(true)
             },
             error => {
