@@ -50,21 +50,21 @@ export class AppComponent {
         this.user = u ? JSON.parse(u.toString()) : null;
 
         if (this.user != null) {
-            switch(this.user.userType) {
+            switch (this.user.userType) {
                 case 1:
                     this.profileUrl = "/supplier-portal/profile";
                     break;
                 case 2:
                     this.profileUrl = "/beneficiary-portal/profile";
                     break;
-                case 3:
-                    this.profileUrl = "/beneficiary-portal/profile";
+                case 5:
+                    this.profileUrl = "/dgconn-portal";
                     break;
                 default:
                     break;
             }
         }
-        
+
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
         let i = (this.user) ? this.user.userType : 0;
