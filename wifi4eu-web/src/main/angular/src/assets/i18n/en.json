@@ -41,6 +41,8 @@
   "submitregistration.success.text.part2": "Once you click the link in the email, your email address is verified and you will be redirected to Login page.",
   "submitregistration.success.resendconfirm.part1": "Haven't you recieved any e-mail?",
   "submitregistration.success.resendconfirm.part2": "Re-send confirmation.",
+  "submitregistration.failure.title": "Something went wrong with the registration.",
+  "submitregistration.failure.text.part1": "Please, try again in a few minutes or contact Helpdesk.",
   "backtohome.button": "Back to the Homepage",
   "voucher.statusmessage1": "Your identity has to be verified from your Member State.",
   "voucher.statusmessage2": "Your application for voucher competition has been accepted.",

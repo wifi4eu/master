@@ -41,6 +41,8 @@
   "submitregistration.success.text.part2": "Cuando haga clic en el email, su direcció de correo electrónico será verificada, y se le redirigirá a la página para identificarse.",
   "submitregistration.success.resendconfirm.part1": "¿No ha recibido ningún email?",
   "submitregistration.success.resendconfirm.part2": "Haga clic aquí para reenviar el email de confirmación.",
+  "submitregistration.failure.title": "Algo ha ido mal durante el registro.",
+  "submitregistration.failure.text.part1": "Por favor, prueba de nuevo en unos minutos o contacta con Helpdesk.",
   "backtohome.button": "Volver a la página principal",
   "home.part1.title": "WI-FI GRATIS PARA LOS EUROPEOS",
   "home.part1.text1": "La Comisión Europea desea promocionar la conectividad Wi-Fi gratis para los ciudadanos y visitantes en espacios públicos como parques, plazas, edificios públicos, bibliotecas, centros de salud y museos por todo europa mediante WiFi4EU.",
