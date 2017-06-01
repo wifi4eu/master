@@ -5,7 +5,7 @@
             <h2 class="h2Table">{{ 'timeline.label' | translate }}</h2>
         </div>
         <div class="col-md-2">
-            <a (click)="addNewElement()" class="edit editTable"><img src="assets/images/add-circle-outline-material-icons-regular.png" alt="">{{'newEvent.label' | translate }}</a>
+            <a (click)="addNewElement()" class="edit editTable"><img src="assets/images/add-circle-outline-material-icons-regular.png" alt=""> {{'newEvent.label' | translate }}</a>
         </div>
     </div>
     <p-dataTable [value]="timelines" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]">
