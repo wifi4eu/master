@@ -105,11 +105,7 @@ export class EntityComponent {
     }
 
     isValidNutsLausSelection() {
-        let isValid = true;
-        if (!(typeof this.nutsDTO === 'object') || !(typeof this.lausDTO === 'object')) {
-            isValid = false;
-        }
-        return isValid; 
+        return ((typeof this.nutsDTO === 'object') || (typeof this.lausDTO === 'object'));
     }
 
     isValidNutsSeleted() {
