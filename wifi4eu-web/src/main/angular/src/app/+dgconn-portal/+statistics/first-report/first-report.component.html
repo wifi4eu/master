@@ -3,7 +3,7 @@
 <div class="container">
     <div class="marginTopStats"></div>
 
-    <div style="display: block">
+    <div class="center" style="display: block; width: 60%;">
         <canvas *ngIf="dataReady" baseChart
                 [data]="doughnutChartData"
                 [labels]="doughnutChartLabels"
@@ -13,7 +13,7 @@
     </div>
 
     <!--TABLE BELOW-->
-    <div class="marginTopStats"></div>
+    <!--<div class="marginTopStats"></div>
     <div class="row tableTitle">
         <div class="col-md-10">
             <h2 class="h2Table">{{ 'report1.title' | translate }}</h2>
@@ -38,5 +38,5 @@
         <p-column field="" header="{{ 'voucher.dashboard' | translate }}"
                   [sortable]="true">
         </p-column>
-    </p-dataTable>
+    </p-dataTable>-->
 </div>
