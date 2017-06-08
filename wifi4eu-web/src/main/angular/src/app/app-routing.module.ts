@@ -25,10 +25,6 @@ import {AppGuard} from "./app.guard";
             path: 'home',
             component: HomeComponent
         }, {
-            path: 'map',
-            component: MapComponent,
-            canActivate: [AppGuard]
-        }, {
             path: 'activation',
             component: ActivationComponent
         }, {
