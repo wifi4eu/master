@@ -13,6 +13,7 @@ export class BeneficiaryComponent {
 
     private mayorEmailMatches: boolean;
     private representativeEmailMatches: boolean;
+    private emailsAreNotRepeated: boolean;
 
     constructor() {
         this.onNext = new EventEmitter<number>();
@@ -45,8 +46,12 @@ export class BeneficiaryComponent {
 
     checkIfRepresentativeEmailMatches() {
         this.representativeEmailMatches = false;
+        this.emailsAreNotRepeated = true;
         if (this.beneficiaryDTO.representativeDTO.email === this.beneficiaryDTO.representativeDTO.mayorRepeatEmail) {
             this.representativeEmailMatches = true;
+            if (this.beneficiaryDTO.mayorDTO.email === this.beneficiaryDTO.representativeDTO.email) {
+                this.emailsAreNotRepeated = false;
+            }
         }
     }
 
@@ -54,7 +59,7 @@ export class BeneficiaryComponent {
         if (this.selection[0]) {
             return this.mayorEmailMatches;
         } else {
-            return this.representativeEmailMatches && this.mayorEmailMatches;
+            return this.representativeEmailMatches && this.mayorEmailMatches && this.emailsAreNotRepeated;
         }
     }
 }
