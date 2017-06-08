@@ -21,8 +21,26 @@ export class EntityComponent {
 
     private nutsSuggestions: NutsDTOBase[];
     private lausSuggestions: LauDTOBase[];
+    private avaialableNuts: NutsDTOBase[];
+    private availableLaus: LauDTOBase[];
+
+    private readyMunicipalities: boolean = false;
+    private placeholderMunicipality: string = 'Barcelona';
 
     constructor(private http: Http, private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService) {
+        this.nutsApi.findNutsByLevel(0).subscribe(
+            nuts => {
+                this.avaialableNuts = nuts;
+            },
+            error => {
+                this.uxService.growl({
+                    severity: 'warn',
+                    summary: 'WARNING',
+                    detail: 'Could not get nuts, ignore this when NG is working in offline mode'
+                });
+                console.log('WARNING: Could not get nuts', error);
+            }
+        );
     }
 
     onSubmit(step: number) {
@@ -46,19 +64,7 @@ export class EntityComponent {
     }
 
     filterNuts(event) {
-        this.nutsApi.findNutsByLevel(0).subscribe(
-            nuts => {
-                this.nutsSuggestions = this.filterCountries(event.query, nuts)
-            },
-            error => {
-                this.uxService.growl({
-                    severity: 'warn',
-                    summary: 'WARNING',
-                    detail: 'Could not get nuts, ignore this when NG is working in offline mode'
-                });
-                console.log('WARNING: Could not get nuts', error);
-            }
-        );
+        this.nutsSuggestions = this.filterCountries(event.query, this.avaialableNuts);
     }
 
     filterCountries(query, nuts: NutsDTOBase[]) {
@@ -74,10 +80,15 @@ export class EntityComponent {
         return filteredNuts;
     }
 
-    filterLaus(event) {
+    selectCountry(event) {
+        this.readyMunicipalities = false;
+        this.lausDTO = null;
+        this.placeholderMunicipality = 'Loading municipalities...';
         this.lauApi.findLauByCountryCode(this.nutsDTO.countryCode).subscribe(
             laus => {
-                this.lausSuggestions = this.filterMunicipalities(event.query, laus)
+                this.availableLaus = laus;
+                this.readyMunicipalities = true;
+                this.placeholderMunicipality = '';
             },
             error => {
                 this.uxService.growl({
@@ -88,6 +99,10 @@ export class EntityComponent {
                 console.log('WARNING: Could not get nuts', error);
             }
         );
+    }
+
+    filterLaus(event) {
+        this.lausSuggestions = this.filterMunicipalities(event.query, this.availableLaus);
     }
 
     filterMunicipalities(query, laus: LauDTOBase[]) {
@@ -109,6 +124,6 @@ export class EntityComponent {
     }
 
     isValidNutsSeleted() {
-        return typeof this.nutsDTO === 'object';
+        return (typeof this.nutsDTO === 'object') && this.readyMunicipalities;
     }
 }
