@@ -1,4 +1,3 @@
-<timeline-component></timeline-component>
 <div class="clearfix"></div>
 <div class="container">
     <p class="Modalh1Confirmation">{{ 'municipalities.list' | translate }}</p>
@@ -23,12 +22,28 @@
             <div class="ui-g-5 ">
                 <p class="subTitleCountdown">{{ 'municipalities.awarded' | translate }}</p>
                 <div class="whiteNoMargin">
-                    <awarded-municipalities></awarded-municipalities>
+                    <p-dataTable [value]="awardedMunicipalities">
+                        <p-column field="municipalityName" header="{{ 'municipality.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="countryName" header="{{ 'country.label' | translate }}" [sortable]="false"></p-column>
+                    </p-dataTable>
                 </div>
             </div>
             <div class="ui-g-2"></div>
             <div class="ui-g-5">
-                <selected-by-municipality></selected-by-municipality>
+                <p class="subTitleCountdown">{{ 'municipalities.selected' | translate }}</p>
+                <div class="whiteNoMargin">
+                    <p-dataTable [value]="selectedMeMunicipalities">
+                        <p-column field="municipalityName" header="{{ 'municipality.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="countryName" header="{{ 'country.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="installationId" header="{{ 'access.point' | translate }}">
+                            <template pTemplate="body" let-rowData="rowData">
+                                <button type="button" class="btn" [routerLink]="['/supplier-portal/installation', rowData.installationId]" routerLinkActive="active" style="background: none; padding: 0;">
+                                    <i class="fa fa-2x fa-eye" style="font-size: 20px;"></i> {{ 'view' | translate }}
+                                </button>
+                            </template>
+                        </p-column>
+                    </p-dataTable>
+                </div>
             </div>
         </div>
     </form>
