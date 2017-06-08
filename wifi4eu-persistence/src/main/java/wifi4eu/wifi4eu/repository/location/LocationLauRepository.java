@@ -11,5 +11,5 @@ import wifi4eu.wifi4eu.entity.location.Lau;
 public interface LocationLauRepository extends CrudRepository<Lau, Long> {
     Iterable<Lau> findByCountryCode(String countryCode);
     Iterable<Lau> findByNuts3(String nuts3);
-    Lau findByLau2(String lau2);
+    Lau findByLau2AndCountryCode(String lau2, String countryCode);
 }
