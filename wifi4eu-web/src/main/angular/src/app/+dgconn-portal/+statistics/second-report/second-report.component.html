@@ -28,17 +28,9 @@
         </div>
     </div>
     <p-dataTable [value]="" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]">
-        <p-column field="" header="{{ 'memberState' | translate }}"
-                  [sortable]="true">
-        </p-column>
-        <p-column field="" header="{{ 'applications' | translate }}"
-                  [sortable]="true">
-        </p-column>
-        <p-column field="" header="{{ 'verifications' | translate }}"
-                  [sortable]="true">
-        </p-column>
-        <p-column field="" header="{{ 'voucher.dashboard' | translate }}"
-                  [sortable]="true">
-        </p-column>
+        <p-column field="" header="{{ 'memberState' | translate }}" [sortable]="true"></p-column>
+        <p-column field="" header="{{ 'applications' | translate }}" [sortable]="true"></p-column>
+        <p-column field="" header="{{ 'verifications' | translate }}" [sortable]="true"></p-column>
+        <p-column field="" header="{{ 'voucher.dashboard' | translate }}" [sortable]="true"></p-column>
     </p-dataTable>
 </div>
