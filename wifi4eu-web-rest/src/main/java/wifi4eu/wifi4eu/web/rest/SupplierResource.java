@@ -110,4 +110,14 @@ public class SupplierResource {
             return new ResponseDTO(false, null, errorDTO);
         }
     }
+
+    @ApiOperation(value = "Get legal entity by installation id")
+    @RequestMapping(value = "/legalEntityByInstallation/{installationId}", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public LegalEntityDTO getLegalEntityByInstallationId(@PathVariable("installationId") final Long installationId, final HttpServletResponse response) {
+        _log.info("getLegalEntityByInstallationId " + installationId);
+
+        return supplierService.getLegalEntityByInstallationId(installationId);
+
+    }
 }

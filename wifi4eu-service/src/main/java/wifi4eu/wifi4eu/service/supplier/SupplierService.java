@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
+import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
 import wifi4eu.wifi4eu.mapper.supplier.AccessPointMapper;
 import wifi4eu.wifi4eu.mapper.supplier.BenPubSupMapper;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
 import wifi4eu.wifi4eu.mapper.supplier.InstallationMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
+import wifi4eu.wifi4eu.repository.beneficiary.LegalEntityRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 import wifi4eu.wifi4eu.repository.supplier.AccessPointRepository;
 import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
@@ -48,6 +50,9 @@ public class SupplierService {
     AccessPointRepository accessPointRepository;
 
     @Autowired
+    LegalEntityRepository legalEntityRepository;
+
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -64,6 +69,9 @@ public class SupplierService {
 
     @Autowired
     AccessPointMapper accessPointMapper;
+
+    @Autowired
+    LegalEntityMapper legalEntityMapper;
 
 
     public List<SupplierDTO> getAllSuppliers() {
@@ -166,6 +174,15 @@ public class SupplierService {
 
     public SupplierDTO saveSupplier(SupplierDTO supplierDTO) {
         return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+    }
+
+    public LegalEntityDTO getLegalEntityByInstallationId(Long installationId) {
+        BenPubSupDTO benPubSupDTO = benPubSupMapper.toDTO(benPubSupRepository.findOne(installationId));
+        LegalEntityDTO legalEntityDTO = new LegalEntityDTO();
+        if (benPubSupDTO != null) {
+            legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.findOne(benPubSupDTO.getBeneficiaryId()));
+        }
+        return legalEntityDTO;
     }
 
 }

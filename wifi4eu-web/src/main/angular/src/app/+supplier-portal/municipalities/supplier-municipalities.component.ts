@@ -1,9 +1,114 @@
-import {Component} from "@angular/core";
+import {Component, Input} from "@angular/core";
+import {LocalStorageService} from "angular-2-local-storage";
+import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
+import {CallApi} from "../../shared/swagger/api/CallApi";
+import {DgconnApi} from "../../shared/swagger/api/DgconnApi";
+import {LauApi} from "../../shared/swagger/api/LauApi";
+import {NutsApi} from "../../shared/swagger/api/NutsApi";
+import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
+import {BenPubSupDTO} from "../../shared/swagger/model/BenPubSupDTO";
+import {CallDTOBase} from "../../shared/swagger/model/CallDTO";
+import {LauDTO} from "../../shared/swagger/model/LauDTO";
+import {LegalEntityDTO} from "../../shared/swagger/model/LegalEntityDTO";
+import {NutsDTO} from "../../shared/swagger/model/NutsDTO";
+import {UserDTO} from "../../shared/swagger/model/UserDTO";
 
-@Component({
-    templateUrl: 'supplier-municipalities.component.html'
-})
-
+@Component({selector: 'supplier-municipalities-component', templateUrl: 'supplier-municipalities.component.html', providers: [SupplierApi, BeneficiaryApi, CallApi, NutsApi, LauApi, DgconnApi]})
 export class SupplierMunicipalitiesComponent {
+    private user: UserDTO;
+    private awardedMunicipalities: AwardedMunicipality[];
+    private selectedMeMunicipalities: AwardedMunicipality[];
 
+    constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private beneficiaryApi: BeneficiaryApi, private callApi: CallApi, private nutsApi: NutsApi, private lauApi: LauApi, private dgconnApi: DgconnApi) {
+        this.awardedMunicipalities = [];
+        this.selectedMeMunicipalities = [];
+
+        let u = this.localStorage.get('user');
+        this.user = u ? JSON.parse(u.toString()) : null;
+    }
+
+    ngOnInit() {
+        if (this.user != null) {
+            this.beneficiaryApi.getAwardedMunicipalities().subscribe(
+                (municipalities: LegalEntityDTO[]) => {
+                    for (let i = 0; i < municipalities.length; i++) {
+                        let municipality = municipalities[i];
+                        let awardedMunicipality = new AwardedMunicipality();
+                        this.lauApi.findLauByLau2AndCountryCode(municipality.municipalityCode, municipality.countryCode).subscribe(
+                            (lau: LauDTO) => {
+                                awardedMunicipality.setMunicipalityName(lau.name1);
+                                this.nutsApi.findNutsByCode(municipality.countryCode).subscribe(
+                                    (nut: NutsDTO) => {
+                                        nut.name = nut.name.charAt(0).toUpperCase() + nut.name.slice(1).toLowerCase();
+                                        awardedMunicipality.setCountryName(nut.name);
+                                        this.awardedMunicipalities.push(awardedMunicipality);
+                                    }
+                                );
+                            }
+                        );
+                    }
+                }
+            );
+            this.callApi.allCalls().subscribe(
+                calls => {
+                    let currentCall = calls[0];
+                    this.supplierApi.getSelectedMeBySupplierId(this.user.userTypeId).subscribe(
+                        (municipalities: LegalEntityDTO[]) => {
+                            for (let i = 0; i < municipalities.length; i++) {
+                                let municipality = municipalities[i];
+                                this.beneficiaryApi.findByBeneficiaryIdAndPublicationId(municipality.legalEntityId, currentCall.callId).subscribe(
+                                    (installation: BenPubSupDTO) => {
+                                        let selectedMunicipality = new AwardedMunicipality();
+                                        selectedMunicipality.setInstallationId(installation.benPubSubId);
+                                        this.lauApi.findLauByLau2AndCountryCode(municipality.municipalityCode, municipality.countryCode).subscribe(
+                                            (lau: LauDTO) => {
+                                                selectedMunicipality.setMunicipalityName(lau.name1);
+                                                this.nutsApi.findNutsByCode(municipality.countryCode).subscribe(
+                                                    (nut: NutsDTO) => {
+                                                        nut.name = nut.name.charAt(0).toUpperCase() + nut.name.slice(1).toLowerCase();
+                                                        selectedMunicipality.setCountryName(nut.name);
+                                                        this.selectedMeMunicipalities.push(selectedMunicipality);
+                                                    }
+                                                );
+                                            }
+                                        );
+                                    }
+                                );
+                            }
+                        }
+                    );
+                }
+            );
+        }
+    }
+}
+
+export class AwardedMunicipality {
+    private municipalityName: string;
+    private countryName: string;
+    private installationId: number;
+
+    public getMunicipalityName() {
+        return this.municipalityName;
+    }
+
+    public setMunicipalityName(value: string) {
+        this.municipalityName = value;
+    }
+
+    public getCountryName() {
+        return this.countryName;
+    }
+
+    public setCountryName(value: string) {
+        this.countryName = value;
+    }
+
+    public getInstallationId() {
+        return this.installationId;
+    }
+
+    public setInstallationId(value: number) {
+        this.installationId = value;
+    }
 }

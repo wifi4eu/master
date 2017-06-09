@@ -14,9 +14,6 @@ import {SupplierProfileComponent} from "./profile/profile.component";
             path: 'installation/:id',
             component: SupplierInstallationComponent,
         }, {
-            path: 'municipalities',
-            component: SupplierMunicipalitiesComponent,
-        }, {
             path: 'profile',
             component: SupplierProfileComponent,
         }
