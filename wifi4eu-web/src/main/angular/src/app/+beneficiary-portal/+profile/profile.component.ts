@@ -40,9 +40,6 @@ export class BeneficiaryProfileComponent {
 
     constructor(private profileService: ProfileService, private uxService: UxService, private localStorage: LocalStorageService, private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private lauApi: LauApi, private userApi: UserApi) {
         this.beneficiaryDetails = new BeneficiaryDetails();
-        // this.newPassword = "";
-        // this.repeatNewPassword = "";
-        // this.currentPassword = "";
         this.beneficiary = new BeneficiaryDTOBase();
         this.beneficiary.mayorDTO = new MayorDTOBase();
         this.beneficiary.representativeDTO = new RepresentativeDTOBase();
@@ -79,14 +76,17 @@ export class BeneficiaryProfileComponent {
                                         this.nutsApi.findNutsByLevel(0).subscribe(
                                             (nuts: NutsDTOBase[]) => {
                                                 for (let i = 0; i < nuts.length; i++) {
-                                                    if (this.beneficiary.legalEntityDTO.countryCode == nuts[i].countryCode) {
-                                                        this.countryNuts = nuts[i];
+                                                    let nut = nuts[i];
+                                                    nut.name = nut.name.toLowerCase();
+                                                    nut.name = nut.name.charAt(0).toUpperCase() + nut.name.slice(1);
+                                                    if (this.beneficiary.legalEntityDTO.countryCode == nut.countryCode) {
+                                                        this.countryNuts = nut;
                                                         break;
                                                     }
                                                 }
                                             }
                                         );
-                                        this.lauApi.findLauByLau2(this.beneficiary.legalEntityDTO.municipalityCode).subscribe(
+                                        this.lauApi.findLauByLau2AndCountryCode(this.beneficiary.legalEntityDTO.municipalityCode, this.beneficiary.legalEntityDTO.countryCode).subscribe(
                                             (lau: LauDTOBase) => {
                                                 this.municipalityLau = lau;
                                                 this.copyModalData();
@@ -119,14 +119,17 @@ export class BeneficiaryProfileComponent {
                                                     this.nutsApi.findNutsByLevel(0).subscribe(
                                                         (nuts: NutsDTOBase[]) => {
                                                             for (let i = 0; i < nuts.length; i++) {
-                                                                if (this.beneficiary.legalEntityDTO.countryCode == nuts[i].countryCode) {
-                                                                    this.countryNuts = nuts[i];
+                                                                let nut = nuts[i];
+                                                                nut.name = nut.name.toLowerCase();
+                                                                nut.name = nut.name.charAt(0).toUpperCase() + nut.name.slice(1);
+                                                                if (this.beneficiary.legalEntityDTO.countryCode == nut.countryCode) {
+                                                                    this.countryNuts = nut;
                                                                     break;
                                                                 }
                                                             }
                                                         }
                                                     );
-                                                    this.lauApi.findLauByLau2(this.beneficiary.legalEntityDTO.municipalityCode).subscribe(
+                                                    this.lauApi.findLauByLau2AndCountryCode(this.beneficiary.legalEntityDTO.municipalityCode, this.beneficiary.legalEntityDTO.countryCode).subscribe(
                                                         (lau: LauDTOBase) => {
                                                             this.municipalityLau = lau;
                                                             this.copyModalData();

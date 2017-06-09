@@ -9,10 +9,7 @@ import {RepresentativeDTOBase} from "../../shared/swagger/model/RepresentativeDT
 import {LocalStorageService} from "angular-2-local-storage";
 import {CallApi} from "../../shared/swagger/api/CallApi";
 
-@Component({
-    templateUrl: 'voucher.component.html',
-    providers: [BeneficiaryApi, CallApi]
-})
+@Component({templateUrl: 'voucher.component.html', providers: [BeneficiaryApi, CallApi]})
 export class VoucherComponent {
     private voucherCompetitionState: number;
     private user: UserDTO;

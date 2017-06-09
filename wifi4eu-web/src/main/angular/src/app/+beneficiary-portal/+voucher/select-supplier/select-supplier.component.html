@@ -20,8 +20,7 @@
             </p-column>
             <p-column header="{{ 'label.details' | translate }}">
                 <template pTemplate="body" let-supplier="rowData" let-rowIndex="rowIndex">
-                    <button type="button" class="btn" style="background: none; padding: 0;"
-                            (click)="viewSupplierDetails(rowIndex)">
+                    <button type="button" class="btn" style="background: none; padding: 0;" (click)="viewSupplierDetails(rowIndex)">
                         <i class="fa fa-2x fa-eye" style="font-size: 20px;"></i> {{ 'view' | translate }}
                     </button>
                 </template>
@@ -64,7 +63,7 @@
                     <p class="profileData">{{selectedSupplier.address}}</p>
                 </div>
                 <div class="ui-g-12">
-                    <p class="profileData">{{selectedSupplier.website}}</p>
+                    <p class="profileData"><a [href]="selectedSupplier.website" target="_BLANK">{{selectedSupplier.website}}</a></p>
                 </div>
             </div>
             <div class="ui-g-2">
