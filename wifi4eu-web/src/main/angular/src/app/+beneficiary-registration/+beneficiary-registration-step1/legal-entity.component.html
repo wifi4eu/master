@@ -35,10 +35,10 @@
                                 [size]="30"
                                 [minLength]="1"
                                 (completeMethod)="filterNuts($event)"
+                                (onSelect)="selectCountry($event)"
                                 required>
                 </p-autoComplete>
-                <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required
-                </div>
+                <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required</div>
             </div>
         </div>
         <div class="ui-lg-3"></div>
@@ -47,14 +47,13 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate
-                    }}</label>
+                <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate }}</label>
                 <div class="clearfix"></div>
                 <p-autoComplete id="municipality"
                                 class="form-control"
                                 name="municipality"
                                 field="name1"
-                                placeholder="Barcelona"
+                                [placeholder]="placeholderMunicipality"
                                 ngcontrol="municipality"
                                 #municipality="ngModel"
                                 [(ngModel)]="lausDTO"
@@ -66,10 +65,7 @@
                                 required
                                 [disabled]="!isValidNutsSeleted()">
                 </p-autoComplete>
-                <div [hidden]="municipality.valid || municipality.pristine"
-                     class="alert alert-danger">Municipality is
-                    required
-                </div>
+                <div [hidden]="municipality.valid || municipality.pristine" class="alert alert-danger">Municipality is required</div>
             </div>
         </div>
         <div class="ui-lg-3"></div>
@@ -89,9 +85,7 @@
                        #address="ngModel"
                        [(ngModel)]="beneficiaryDTO.legalEntityDTO.address"
                        required>
-                <div [hidden]="address.valid || address.pristine"
-                     class="alert alert-danger">Address is required
-                </div>
+                <div [hidden]="address.valid || address.pristine" class="alert alert-danger">Address is required</div>
             </div>
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-1">
@@ -106,9 +100,7 @@
                        #number="ngModel"
                        [(ngModel)]="beneficiaryDTO.legalEntityDTO.addressNum"
                        required>
-                <div [hidden]="number.valid || number.pristine"
-                     class="alert alert-danger">Address is required
-                </div>
+                <div [hidden]="number.valid || number.pristine" class="alert alert-danger">Address is required</div>
             </div>
         </div>
         <div class="ui-lg-3"></div>
@@ -127,9 +119,7 @@
                        #postalCode="ngModel"
                        [(ngModel)]="beneficiaryDTO.legalEntityDTO.postalCode"
                        required>
-                <div class="alert alert-danger" [hidden]="postalCode.valid || postalCode.pristine">Postal code is
-                    required
-                </div>
+                <div class="alert alert-danger" [hidden]="postalCode.valid || postalCode.pristine">Postal code is required</div>
             </div>
         </div>
         <div class="ui-lg-3"></div>
@@ -140,10 +130,8 @@
             <button type="button" class="btn btn-primary cancel-button">{{ 'back.button' | translate }}</button>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary publish-button" [disabled]="!(isValidNutsLausSelection() && entityForm.form.valid)"
-                    (click)="onSubmit(1)">{{
-                'next.button' |
-                translate }}
+            <button type="submit" class="btn btn-primary publish-button" [disabled]="!(isValidNutsLausSelection() && entityForm.form.valid)" (click)="onSubmit(1)">
+                {{ 'next.button' | translate }}
             </button>
         </div>
         <div class="ui-lg-3"></div>
