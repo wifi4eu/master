@@ -1,12 +1,17 @@
 package wifi4eu.wifi4eu.web.filter;
 
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.io.output.TeeOutputStream;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.OncePerRequestFilter;
 import wifi4eu.wifi4eu.common.dto.audit.AuditDataDTO;
+import wifi4eu.wifi4eu.common.dto.security.UserDTO;
+import wifi4eu.wifi4eu.common.security.UserSessionCache;
 import wifi4eu.wifi4eu.service.audit.AuditService;
+import wifi4eu.wifi4eu.service.security.AuthJWTokenizer;
+import wifi4eu.wifi4eu.service.security.UserService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -14,13 +19,17 @@ import java.io.*;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class AuditFilter extends OncePerRequestFilter {
 
     private static final Logger logger = Logger.getLogger(AuditFilter.class);
 
     @Autowired
-    AuditService auditService;
+    private AuditService auditService;
+
+    @Autowired
+    private UserSessionCache sessionCache;
 
     @Override
     protected String getAlreadyFilteredAttributeName() {
@@ -41,11 +50,14 @@ public class AuditFilter extends OncePerRequestFilter {
             BufferedResponseWrapper bufferedResponse = new BufferedResponseWrapper(httpServletResponse);
 
             filterChain.doFilter (bufferedRequest, bufferedResponse);
-            //TODO
-            Long userId = 0L;
 
-            AuditDataDTO auditDataDTO = new AuditDataDTO(httpServletRequest.getPathInfo(), httpServletRequest.getMethod(), bufferedRequest.getRequestBody(), bufferedResponse.getContent(), userId);
-            auditService.createAuditData(auditDataDTO);
+            if(bufferedRequest.getServletPath().contains("api")) {
+
+                Long userId = getUserDetails(bufferedRequest);
+
+                AuditDataDTO auditDataDTO = new AuditDataDTO(httpServletRequest.getPathInfo(), httpServletRequest.getMethod(), bufferedRequest.getRequestBody(), bufferedResponse.getContent(), userId);
+                auditService.createAuditData(auditDataDTO);
+            }
 
             bufferedResponse.finish();
 
@@ -64,6 +76,42 @@ public class AuditFilter extends OncePerRequestFilter {
         }
         return typeSafeRequestMap;
     }*/
+
+    private Long getUserDetails(HttpServletRequest request) {
+
+        Long id = null;    //If the user is not authenticated, the id is null
+        String auth = request.getHeader("Authorization");
+
+        if(auth != null ){
+            String cleanToken = auth.substring(7);
+            String hashEmail = "";
+            try{
+
+                hashEmail = (String) AuthJWTokenizer.decode(cleanToken).get("email");
+
+            } catch (ExpiredJwtException ex){
+
+                logger.info("JWT expired: " + ex.getMessage());
+                hashEmail = (String) ex.getClaims().get("email");
+
+            } catch (UnsupportedEncodingException ex){
+                logger.warn(ex.getMessage(), ex);
+            }
+
+            try {
+
+                UserDTO user = sessionCache.userSessionCache.get(cleanToken);
+                id = user.getUserId();
+                
+            }catch (ExecutionException ex){
+                logger.info(ex.getMessage());
+            }
+
+        }
+
+        return id;
+
+    }
 
 
     private static final class BufferedRequestWrapper extends HttpServletRequestWrapper {
