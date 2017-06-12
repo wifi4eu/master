@@ -21,7 +21,7 @@ public class UserRetrieverHelper {
     private UserSessionCache sessionCache;
 
     public Long getUserId(String token) {
-        Long id = null;
+        Long id = 0L;
         String hashEmail = "";
         try{
 
