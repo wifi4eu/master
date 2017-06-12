@@ -255,9 +255,6 @@
                                 </ul>
                             </template>
                         </p-fileUpload>
-                        <!--<input [(ngModel)]="selectedSupplierData.binaryLogo" class="form-control"
-                               name="binaryLogo" ngcontrol="binaryLogo" #binaryLogo="ngModel" required>-->
-                        <!--<div [hidden]="binaryLogo.valid || binaryLogo.pristine" class="alert alert-danger">{{ 'logo.required' | translate }}</div>-->
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -378,88 +375,4 @@
 
         </form>
     </p-dialog>
-</div>
-
-
-<div class="container font">
-    <div class="ui-g-1"></div>
-    <!--<p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="false" [closeOnEscape]="false">
-        <button type="button" (click)="closeModal()" class="closeButton">X</button>
-        <p class="beneficiaryMayor center">{{ 'legalentity.label' | translate }}</p>
-        <form (ngSubmit)="onSubmit()" #profileFormLegal="ngForm">
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <label class="label floatLeft" for="country">{{ 'country.label' | translate }}</label>
-                    <div class="clearfix"></div>
-                    <p-autoComplete id="country"
-                                    class="form-control"
-                                    name="country"
-                                    field="name"
-                                    placeholder="Spain"
-                                    ngcontrol="country"
-                                    #country="ngModel"
-                                    [(ngModel)]="nutsCountry"
-                                    [suggestions]="nutsSuggestions"
-                                    [size]="30"
-                                    [minLength]="1"
-                                    (completeMethod)="filterNuts($event)"
-                                    required>
-                    </p-autoComplete>
-                    <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <div class="form-group">
-                        <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate
-                            }}</label>
-                        <div class="clearfix"></div>
-                        <p-autoComplete id="municipality"
-                                        class="form-control"
-                                        name="municipality"
-                                        field="name1"
-                                        placeholder="Barcelona"
-                                        ngcontrol="municipality"
-                                        #municipality="ngModel"
-                                        [(ngModel)]="lauMunicipality"
-                                        [suggestions]="lausSuggestions"
-                                        [size]="30"
-                                        [minLength]="1"
-                                        (completeMethod)="filterLaus($event)"
-                                        required>
-                        </p-autoComplete>
-                        <div [hidden]="municipality.valid || municipality.pristine"
-                             class="alert alert-danger">Municipality is
-                            required
-                        </div>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
-
-            <div class="form-group">
-                <div style="text-align: center !important">
-                    <button type="button" class="btn btn-primary changePasswordModalNoTop" (click)="closeModal()">{{ 'cancel.button' | translate }}
-                    </button>
-                    <button type="button" class="btn btn-primary changePasswordModalNoTop" [disabled]="!profileFormLegal.form.valid" (click)="saveSupplierChanges()">
-                        {{ 'change' | translate }}
-                    </button>
-                </div>
-            </div>
-        </form>
-    </p-dialog>-->
-    <!--<p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="true" [draggable]="false"-->
-    <!--[closable]="false" [closeOnEscape]="false">-->
-    <!--<button type="button" (click)="closeModal()" class="closeButton">X</button>-->
-    <!--<div class="ui-g-12 ui-md-12 ui-lg-5 marginSelect">-->
-    <!--<p-multiSelect [options]="allCountries" [(ngModel)]="selectedCountries"-->
-    <!--(onChange)="onMultiSelectChange($event)"></p-multiSelect>-->
-    <!--</div>-->
-    <!--&lt;!&ndash;<p-multiSelect [options]="allCountries" dataKey="name" [(ngModel)]="selectedCountries" (onChange)="onMultiSelectChange($event)"></p-multiSelect>&ndash;&gt;-->
-    <!--</p-dialog>-->
 </div>
