@@ -49,6 +49,10 @@ export class SupplierProfileComponent {
         this.lauMunicipality = new LauDTOBase();
         this.selectedSupplierData = new SupplierDTOBase();
         this.selectedSupplierData = Object.assign({}, this.supplierData);
+        this.allCountries = [];
+        this.countries = [];
+        this.provinces = [];
+
 
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
@@ -144,15 +148,17 @@ export class SupplierProfileComponent {
         );
     }
 
+
     onSelect(event) {
         if (event && event.files && event.files.length > 0) {
             if (event) {
-                this.supplierTempLogo = event.files["0"];
+                this.supplierTempLogo = event.files[0];
                 let reader = new FileReader();
+
                 reader.onload = (e) => {
                     this.selectedSupplierData.logo = reader.result;
                 };
-                reader.readAsDataURL(event);
+                reader.readAsDataURL(event.files[0]);
             }
         }
     }
