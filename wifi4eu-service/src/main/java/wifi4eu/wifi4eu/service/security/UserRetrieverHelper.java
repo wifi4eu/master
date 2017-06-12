@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.service.security;
 
 
+import com.google.common.cache.CacheLoader;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,8 @@ public class UserRetrieverHelper {
 
         }catch (ExecutionException ex){
             logger.info(ex.getMessage());
+        }catch (CacheLoader.InvalidCacheLoadException ex){
+            logger.warn(ex.getMessage());
         }
 
         return id;
