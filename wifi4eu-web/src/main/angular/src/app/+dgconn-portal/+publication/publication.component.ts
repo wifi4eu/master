@@ -49,9 +49,13 @@ export class DgConnPublicationComponent {
         this.startTime = new Date(rowData.startDate);
         this.endTime = new Date(rowData.endDate);
         this.startDate = new Date(rowData.startDate);
-
         this.endDate = new Date(rowData.endDate);
+        this.newElementForm = false;
         this.display = true;
+        this.callApi.allCalls().subscribe(
+            calls => this.calls = calls,
+            error => console.log(error)
+        );
     }
 
     deleteElement(rowData: number) {
@@ -78,7 +82,6 @@ export class DgConnPublicationComponent {
         finalStartDate.setHours(this.startTime.getHours());
         finalStartDate.setMinutes(this.startTime.getMinutes());
         call.startDate = finalStartDate.getTime();
-
         let finalEndDate = this.endDate;
         finalEndDate.setHours(this.endTime.getHours());
         finalEndDate.setMinutes(this.endTime.getMinutes());
@@ -108,6 +111,15 @@ export class DgConnPublicationComponent {
     }
 
     checkDate() {
-        return this.startDate < this.endDate;
+        if (this.startDate && this.startDate) {
+            let finalStartDate = this.startDate;
+            finalStartDate.setHours(this.startTime.getHours());
+            finalStartDate.setMinutes(this.startTime.getMinutes());
+            let finalEndDate = this.endDate;
+            finalEndDate.setHours(this.endTime.getHours());
+            finalEndDate.setMinutes(this.endTime.getMinutes());
+            return finalStartDate < finalEndDate;
+        }
+        return false;
     }
 }

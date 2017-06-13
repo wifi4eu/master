@@ -59,7 +59,6 @@ export class DgConnTimelineComponent {
     }
 
     deleteElement(rowData: number) {
-        console.log("rowData:", rowData);
         this.timelineApi.deleteTimeline(this.timelines[rowData]).subscribe(
             data => {
                 this.timelineApi.allTimelines().subscribe(
@@ -90,14 +89,23 @@ export class DgConnTimelineComponent {
 
         this.timelineApi.createTimeline(timeline).subscribe(
             data => {
-                this.newElementForm = false;
-                this.display = false;
                 this.timelineApi.allTimelines().subscribe(
-                    timelines => this.timelines = timelines,
-                    error => console.log(error)
+                    timelines => {
+                        this.timelines = timelines;
+                        this.newElementForm = false;
+                        this.display = false;
+                    }, error => {
+                        console.log(error);
+                        this.newElementForm = false;
+                        this.display = false;
+                    }
                 );
             },
-            error => console.log(error)
+            error => {
+                console.log(error)
+                this.newElementForm = false;
+                this.display = false;
+            }
         );
         this.timeline = null;
     }
@@ -114,5 +122,4 @@ export class DgConnTimelineComponent {
         }
         return false;
     }
-    
 }
