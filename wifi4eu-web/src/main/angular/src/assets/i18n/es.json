@@ -244,5 +244,9 @@
   "applications": "Aplicaciones",
   "verifications": "Verificaciones",
   "voucher.whats.next": "Qué es lo siguiente?",
-  "voucher.steps": "Deberías seguir éstos pasos:"
+  "voucher.steps": "Deberías seguir éstos pasos:",
+  "report1.title": "Entidades registradas",
+  "report2.title": "Proveedores registrados",
+  "report3.title": "Creación de Help-Desk",
+  "report4.title": "Municipios premiados"
 }

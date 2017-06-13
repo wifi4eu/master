@@ -245,5 +245,9 @@
   "applications": "Applications",
   "verifications": "Verifications",
   "voucher.whats.next": "What's next?",
-  "voucher.steps": "You should follow this steps:"
+  "voucher.steps": "You should follow this steps:",
+  "report1.title": "Legal entity registrations",
+  "report2.title": "Supplier registrations",
+  "report3.title": "Help-Desk creation",
+  "report4.title": "Awarded municipalities"
 }
