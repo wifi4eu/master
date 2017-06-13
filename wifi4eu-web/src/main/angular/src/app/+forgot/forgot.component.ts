@@ -11,6 +11,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class ForgotComponent implements OnInit {
 
     private forgotDetails: ForgotDetails;
+    private forgotUrl: string;
+    private compareURls;
 
     constructor(private forgotService: ForgotService, private uxService: UxService, private route: ActivatedRoute, private router: Router) {
     }
@@ -18,6 +20,8 @@ export class ForgotComponent implements OnInit {
     ngOnInit() {
         this.forgotDetails = new ForgotDetails();
         this.route.params.subscribe(params => this.forgotDetails.token = params['token']);
+        this.forgotUrl = window.location.href;
+        this.compareURls = this.forgotUrl.includes("forgot;token=");
     }
 
     checkPassword() {
