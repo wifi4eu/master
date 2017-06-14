@@ -2,6 +2,7 @@ import {Component, Input, EventEmitter, OnInit, Output} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
 import {Http} from "@angular/http";
 import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
+import {TranslateService} from "ng2-translate/ng2-translate";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {DgconnApi} from "../../shared/swagger/api/DgconnApi";
 import {LauApi} from "../../shared/swagger/api/LauApi";
@@ -9,6 +10,7 @@ import {NutsApi} from "../../shared/swagger/api/NutsApi";
 import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 import {ResponseDTO} from "../../shared/swagger/model/ResponseDTO";
+import {Observable} from 'rxjs/Rx';
 
 declare var esri : any;
 export var countryInformation : any;
@@ -33,7 +35,10 @@ export class DgConnVoucherComponent {
     private externalCountriesData : any;
     private mapTableData;
 
-    constructor(private http: Http, private lauApi: LauApi, private nutsApi: NutsApi, private dgconnApi: DgconnApi, private uxService: UxService) {
+    private totalCountries = 0;
+    private totalRequests = 0;
+
+    constructor(private http: Http, private lauApi: LauApi, private nutsApi: NutsApi, private dgconnApi: DgconnApi, private uxService: UxService, private translate: TranslateService) {
         this.loadMapInformation();
         this.mapTableData = [];
     }
@@ -44,8 +49,10 @@ export class DgConnVoucherComponent {
                 countryInformation = JSON.parse(data.data);
                 for (var property in countryInformation) {
                     this.mapTableData.push(countryInformation[property]);
+                    this.totalRequests += countryInformation[property]["requests"];
                 }
                 this.loadMap();
+                this.totalCountries = this.mapTableData.length;
             }
         );
     }
@@ -67,11 +74,10 @@ export class DgConnVoucherComponent {
             };
             
             var templateCustomContent = function(value) {
-                var outputString = "Municipalites: %m <br /> Requests: %r <br /> Awarded: %a";
+                let outputString = "Municipalities: %m <br /> Requests: %r <br /> Assigned Vouchers: %a";
                 if (value && value.attributes && value.attributes.NUTS_ID && countryInformation[value.attributes.NUTS_ID]) {
                     outputString = outputString.replace("%m", countryInformation[value.attributes.NUTS_ID].municipalities);
-                    outputString = outputString.replace("%r", countryInformation[value.attributes.NUTS_ID].requests);
-                    outputString = outputString.replace("%a", countryInformation[value.attributes.NUTS_ID].awarded);
+                    outputString = outputString.replace("%r", countryInformation[value.attributes.NUTS_ID].requests);outputString = outputString.replace("%a", countryInformation[value.attributes.NUTS_ID].awarded);
                 } else {
                     outputString = "Data not available";
                 }

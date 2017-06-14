@@ -254,5 +254,6 @@
   "report1.title": "Legal entity registrations",
   "report2.title": "Supplier registrations",
   "report3.title": "Help-Desk creation",
-  "report4.title": "Awarded municipalities"
+  "report4.title": "Awarded municipalities",
+  "totalCountries": "Total Countries"
 }
