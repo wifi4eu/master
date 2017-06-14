@@ -77,12 +77,12 @@ export class DgConnTimelineComponent {
 
     createTimeline() {
         let timeline = (this.timeline) ? this.timeline : new TimelineDTOBase();
-        timeline.event = this.event;
         let finalStartDate = this.startDate;
+        let finalEndDate = this.endDate;
+        timeline.event = this.event;
         finalStartDate.setHours(this.startTime.getHours());
         finalStartDate.setMinutes(this.startTime.getMinutes());
         timeline.startDate = finalStartDate.getTime();
-        let finalEndDate = this.endDate;
         finalEndDate.setHours(this.endTime.getHours());
         finalEndDate.setMinutes(this.endTime.getMinutes());
         timeline.endDate = finalEndDate.getTime();
@@ -113,9 +113,9 @@ export class DgConnTimelineComponent {
     checkDate() {
         if (this.startDate && this.startDate) {
             let finalStartDate = this.startDate;
+            let finalEndDate = this.endDate;
             finalStartDate.setHours(this.startTime.getHours());
             finalStartDate.setMinutes(this.startTime.getMinutes());
-            let finalEndDate = this.endDate;
             finalEndDate.setHours(this.endTime.getHours());
             finalEndDate.setMinutes(this.endTime.getMinutes());
             return finalStartDate < finalEndDate;

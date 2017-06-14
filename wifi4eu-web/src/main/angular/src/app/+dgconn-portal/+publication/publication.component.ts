@@ -77,12 +77,12 @@ export class DgConnPublicationComponent {
 
     createPublication() {
         let call = (this.call) ? this.call : new CallDTOBase();
-        call.event = this.event;
         let finalStartDate = this.startDate;
+        let finalEndDate = this.endDate;
+        call.event = this.event;
         finalStartDate.setHours(this.startTime.getHours());
         finalStartDate.setMinutes(this.startTime.getMinutes());
         call.startDate = finalStartDate.getTime();
-        let finalEndDate = this.endDate;
         finalEndDate.setHours(this.endTime.getHours());
         finalEndDate.setMinutes(this.endTime.getMinutes());
         call.endDate = finalEndDate.getTime();
@@ -113,9 +113,9 @@ export class DgConnPublicationComponent {
     checkDate() {
         if (this.startDate && this.startDate) {
             let finalStartDate = this.startDate;
+            let finalEndDate = this.endDate;
             finalStartDate.setHours(this.startTime.getHours());
             finalStartDate.setMinutes(this.startTime.getMinutes());
-            let finalEndDate = this.endDate;
             finalEndDate.setHours(this.endTime.getHours());
             finalEndDate.setMinutes(this.endTime.getMinutes());
             return finalStartDate < finalEndDate;
