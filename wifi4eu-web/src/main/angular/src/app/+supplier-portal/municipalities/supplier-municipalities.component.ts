@@ -17,11 +17,17 @@ import {UserDTO} from "../../shared/swagger/model/UserDTO";
 export class SupplierMunicipalitiesComponent {
     private user: UserDTO;
     private awardedMunicipalities: AwardedMunicipality[];
+    private filteredAwardedMunicipalities: AwardedMunicipality[];
     private selectedMeMunicipalities: AwardedMunicipality[];
+    private filteredSelectedMeMunicipalities: AwardedMunicipality[];
+    private filterInput: string = '';
+    private filtering: boolean = false;
 
     constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private beneficiaryApi: BeneficiaryApi, private callApi: CallApi, private nutsApi: NutsApi, private lauApi: LauApi, private dgconnApi: DgconnApi) {
         this.awardedMunicipalities = [];
+        this.filteredAwardedMunicipalities = [];
         this.selectedMeMunicipalities = [];
+        this.filteredAwardedMunicipalities = [];
 
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
@@ -79,6 +85,28 @@ export class SupplierMunicipalitiesComponent {
                     );
                 }
             );
+        }
+    }
+
+    filterSearch() {
+        this.filteredAwardedMunicipalities = [];
+        this.filteredSelectedMeMunicipalities = [];
+        if (this.filterInput != null && this.filterInput != '') {
+            this.filtering = true;
+            for (let i = 0; i < this.awardedMunicipalities.length; i++) {
+                if (this.awardedMunicipalities[i].getCountryName().toLowerCase().includes(this.filterInput.toLowerCase()) ||
+                    this.awardedMunicipalities[i].getMunicipalityName().toLowerCase().includes(this.filterInput.toLowerCase())) {
+                    this.filteredAwardedMunicipalities.push(this.awardedMunicipalities[i]);
+                }
+            }
+            for (let i = 0; i < this.selectedMeMunicipalities.length; i++) {
+                if (this.selectedMeMunicipalities[i].getCountryName().toLowerCase().includes(this.filterInput.toLowerCase()) ||
+                    this.selectedMeMunicipalities[i].getMunicipalityName().toLowerCase().includes(this.filterInput.toLowerCase())) {
+                    this.filteredSelectedMeMunicipalities.push(this.selectedMeMunicipalities[i]);
+                }
+            }
+        } else {
+            this.filtering = false;
         }
     }
 }

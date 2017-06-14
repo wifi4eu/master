@@ -4,17 +4,11 @@
     <p class="ModalpConfirmation">{{ 'check.municipalities' | translate }}</p>
     <form action="">
         <div class="ui-g-12 white">
-            <div class="ui-g-5">
-                <p>{{ 'country.label' | translate }}</p><input type="text">
+            <div class="ui-g-10">
+                <p>{{ 'filtermunicipalities.label' | translate }}:</p><input type="text" [(ngModel)]="filterInput" name="filterInput">
             </div>
-
-            <div class="ui-g-5">
-                <p> {{ 'province.label' | translate }}</p> <input type="text">
-            </div>
-
             <div class="ui-g-2">
-                <button (click)="openModal()" class="btn btn-primary">{{ 'search.button' | translate }}
-                </button>
+                <button (click)="filterSearch()" class="btn btn-primary">{{ 'search.button' | translate }}</button>
             </div>
         </div>
 
@@ -22,7 +16,11 @@
             <div class="ui-g-5 ">
                 <p class="subTitleCountdown">{{ 'municipalities.awarded' | translate }}</p>
                 <div class="whiteNoMargin">
-                    <p-dataTable [value]="awardedMunicipalities">
+                    <p-dataTable [value]="awardedMunicipalities" *ngIf="!filtering">
+                        <p-column field="municipalityName" header="{{ 'municipality.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="countryName" header="{{ 'country.label' | translate }}" [sortable]="false"></p-column>
+                    </p-dataTable>
+                    <p-dataTable [value]="filteredAwardedMunicipalities" *ngIf="filtering">
                         <p-column field="municipalityName" header="{{ 'municipality.label' | translate }}" [sortable]="false"></p-column>
                         <p-column field="countryName" header="{{ 'country.label' | translate }}" [sortable]="false"></p-column>
                     </p-dataTable>
@@ -32,7 +30,18 @@
             <div class="ui-g-5">
                 <p class="subTitleCountdown">{{ 'municipalities.selected' | translate }}</p>
                 <div class="whiteNoMargin">
-                    <p-dataTable [value]="selectedMeMunicipalities">
+                    <p-dataTable [value]="selectedMeMunicipalities" *ngIf="!filtering">
+                        <p-column field="municipalityName" header="{{ 'municipality.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="countryName" header="{{ 'country.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="installationId" header="{{ 'access.point' | translate }}">
+                            <template pTemplate="body" let-rowData="rowData">
+                                <button type="button" class="btn" [routerLink]="['/supplier-portal/installation', rowData.installationId]" routerLinkActive="active" style="background: none; padding: 0;">
+                                    <i class="fa fa-2x fa-eye" style="font-size: 20px;"></i> {{ 'view' | translate }}
+                                </button>
+                            </template>
+                        </p-column>
+                    </p-dataTable>
+                    <p-dataTable [value]="filteredSelectedMeMunicipalities" *ngIf="filtering">
                         <p-column field="municipalityName" header="{{ 'municipality.label' | translate }}" [sortable]="false"></p-column>
                         <p-column field="countryName" header="{{ 'country.label' | translate }}" [sortable]="false"></p-column>
                         <p-column field="installationId" header="{{ 'access.point' | translate }}">
