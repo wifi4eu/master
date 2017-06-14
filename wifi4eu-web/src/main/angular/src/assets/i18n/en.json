@@ -250,5 +250,9 @@
   "suppPortal.outdoor": "Outdoor",
   "suppPortal.indoor": "Indoor",
   "loging.error.wrongpassword": "Could not login with these credentials. Make sure you typed your password correctly.",
-  "filtermunicipalities.label": "Filter by municipality/country name"
+  "filtermunicipalities.label": "Filter by municipality/country name",
+  "report1.title": "Legal entity registrations",
+  "report2.title": "Supplier registrations",
+  "report3.title": "Help-Desk creation",
+  "report4.title": "Awarded municipalities"
 }

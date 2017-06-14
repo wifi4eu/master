@@ -249,5 +249,9 @@
   "suppPortal.outdoor": "Exterior",
   "suppPortal.indoor": "Interior",
   "loging.error.wrongpassword": "No se ha podido acceder a tu cuenta con estos credenciales. Asegúrate de que has escrito bien la contraseña.",
-  "filtermunicipalities.label": "Buscar por nombre de municipio/país"
+  "filtermunicipalities.label": "Buscar por nombre de municipio/país",
+  "report1.title": "Entidades registradas",
+  "report2.title": "Proveedores registrados",
+  "report3.title": "Creación de Help-Desk",
+  "report4.title": "Municipios premiados"
 }
