@@ -244,5 +244,8 @@
   "applications": "Aplicaciones",
   "verifications": "Verificaciones",
   "voucher.whats.next": "Qué es lo siguiente?",
-  "voucher.steps": "Deberías seguir éstos pasos:"
+  "voucher.steps": "Deberías seguir éstos pasos:",
+  "suppPortal.outIndoor": "Exterior/Interior",
+  "suppPortal.outdoor": "Exterior",
+  "suppPortal.indoor": "Interior"
 }

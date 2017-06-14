@@ -26,15 +26,20 @@ public class AccessPoint {
     @Column(name = "INSTALLATION_ID")
     private Long installationId;
 
-    public AccessPoint() {
+    @Column(name = "INDOOR")
+    private Boolean indoor;
+
+    public AccessPoint(){
+
     }
 
-    public AccessPoint(String name, String serialNumber, String productName, String modelNumber, Long installationId) {
+    public AccessPoint(String name, String serialNumber, String productName, String modelNumber, Long installationId, Boolean indoor) {
         this.name = name;
         this.serialNumber = serialNumber;
         this.productName = productName;
         this.modelNumber = modelNumber;
         this.installationId = installationId;
+        this.indoor = indoor;
     }
 
     public Long getAccessPointId() {
@@ -83,5 +88,13 @@ public class AccessPoint {
 
     public void setInstallationId(Long installationId) {
         this.installationId = installationId;
+    }
+
+    public Boolean getIndoor() {
+        return indoor;
+    }
+
+    public void setIndoor(Boolean indoor) {
+        this.indoor = indoor;
     }
 }
