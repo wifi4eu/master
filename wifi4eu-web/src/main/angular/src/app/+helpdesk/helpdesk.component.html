@@ -1,9 +1,8 @@
 <div class="container">
     <div class="ui-widget-header" style="padding:5px 10px; margin-top: 15px;">
-        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-        <input #gb type="text" pInputText size="50" placeholder="{{ 'search.threedots' | translate }}">
+        <p><a class="downloadData" (click)="helpdeskTable.exportCSV()"><i class="fa fa-download" aria-hidden="true"></i> {{'voucher.downloadData' | translate}}</a></p>
     </div>
-    <p-dataTable [value]="issues" [(selection)]="selectedIssues" [rows]="10" [paginator]="true"
+    <p-dataTable #helpdeskTable [value]="issues" [(selection)]="selectedIssues" [rows]="10" [paginator]="true"
                  [pageLinks]="3" [rowsPerPageOptions]="[10,20,50,100]" [globalFilter]="gb">
         <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
         <p-column field="portal" header="{{ 'portal' | translate }}" [sortable]="true"></p-column>
@@ -27,7 +26,6 @@
     </p-dataTable>
     <div class="right">
         <button type="submit" class="btn btn-primary cancel-button" (click)="resolveIssues()">{{ 'resolve' | translate }}</button>
-        <button type="button" class="btn btn-primary publish-button" (click)="createNewComment()">Click</button>
     </div>
     <br>
 </div>
@@ -51,7 +49,7 @@
             </div>
             <div style="padding-top: 0; padding-bottom: 0;">
                 <span class="label floatLeft ui-g-6">{{ 'topic' | translate }}: <b>{{issueSelected.topic}}</b></span>
-                <span class="label floatLeft ui-g-6">{{ 'dateandtime' | translate }}: <b>{{issueSelected.date}}</b></span>
+                <span class="label floatLeft ui-g-6">{{ 'dateandtime' | translate }}: <b>{{issueSelected.date | date: 'dd/MM/yyyy HH:mm'}}</b></span>
             </div>
             <div style="padding-top: 0;">
                 <span class="label floatLeft ui-g-6">{{ 'portal' | translate }}: <b>{{issueSelected.portal}}</b></span>
