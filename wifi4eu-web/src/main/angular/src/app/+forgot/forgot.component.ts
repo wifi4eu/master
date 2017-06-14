@@ -12,7 +12,7 @@ export class ForgotComponent implements OnInit {
 
     private forgotDetails: ForgotDetails;
     private forgotUrl: string;
-    private compareURls;
+    private compareURls: boolean;
 
     constructor(private forgotService: ForgotService, private uxService: UxService, private route: ActivatedRoute, private router: Router) {
     }
