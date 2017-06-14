@@ -245,6 +245,9 @@
   "verifications": "Verificaciones",
   "voucher.whats.next": "Qué es lo siguiente?",
   "voucher.steps": "Deberías seguir éstos pasos:",
+  "suppPortal.outIndoor": "Exterior/Interior",
+  "suppPortal.outdoor": "Exterior",
+  "suppPortal.indoor": "Interior",
   "loging.error.wrongpassword": "No se ha podido acceder a tu cuenta con estos credenciales. Asegúrate de que has escrito bien la contraseña.",
   "filtermunicipalities.label": "Buscar por nombre de municipio/país"
 }
