@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Output} from "@angular/core";
+import {TranslateService} from "ng2-translate/ng2-translate";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {UserDTO, UserDTOBase} from "../shared/swagger/model/UserDTO";
 import {Router} from "@angular/router";
@@ -18,7 +19,7 @@ export class LoginComponent {
 
     @Output() onUpdateHeader: EventEmitter<boolean>;
 
-    constructor(private userApi: UserApi, private uxService: UxService, private router: Router, private localStorage: LocalStorageService, private sharedService: SharedService) {
+    constructor(private userApi: UserApi, private uxService: UxService, private router: Router, private localStorage: LocalStorageService, private sharedService: SharedService, private translate: TranslateService) {
         this.displayConfirmingData = false;
         this.userDTO = new UserDTOBase();
     }
@@ -36,7 +37,6 @@ export class LoginComponent {
                         severity: 'success',
                         summary: 'SUCCESS',
                         detail: 'Login success'
-
                     });
                     console.log('SUCCESS: Login success');
                     this.sharedService.emitChange();
@@ -58,10 +58,16 @@ export class LoginComponent {
                     }
 
                 } else {
+                    let detailTranslation = 'Could not login, with these user and password';
+                    this.translate.get('loging.error.wrongpassword').subscribe(
+                        (res: string) => {
+                            detailTranslation = res;
+                        }
+                    );
                     this.uxService.growl({
                         severity: 'error',
                         summary: 'ERROR',
-                        detail: 'Could not login, with these user and password'
+                        detail: detailTranslation
                     });
                     console.log('ERROR: Could not login, with these user password');
 

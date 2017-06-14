@@ -79,13 +79,13 @@ export class SupplierRegistrationComponent {
     onLogoSubmit(event: any) {
         if (event) {
             this.supplierTempLogo = event;
-
             let reader = new FileReader();
             reader.onload = (e) => {
                 this.supplierDTO.logo = reader.result;
             };
-
             reader.readAsDataURL(event);
+        } else {
+            this.supplierTempLogo = null;
         }
     }
 }

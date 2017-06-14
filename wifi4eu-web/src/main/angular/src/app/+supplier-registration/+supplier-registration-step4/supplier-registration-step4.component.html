@@ -14,9 +14,7 @@
         </div>
         <div class="ui-g-1 ui-md-1 ui-lg-1">
             <a (click)="editStep(3)">
-                <i class="fa fa-pencil" aria-hidden="true"></i>
-                {{ 'edit.button' | translate }}
-
+                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
             </a>
         </div>
     </div>
@@ -52,7 +50,7 @@
         </div>
         <div class="ui-g-1 ui-md-1 ui-lg-1">
             <a (click)="editStep(1)">
-                <i class="fa fa-pencil" aria-hidden="true"> {{ 'edit.button' | translate }}</i>
+                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
             </a>
         </div>
     </div>
@@ -94,9 +92,8 @@
             <p class="beneficiaryMayor">{{ 'entity.support' | translate }}</p>
         </div>
         <div class="ui-g-1 ui-md-1 ui-lg-1">
-            <a (click)="editStep(2)"><i class="fa fa-pencil" aria-hidden="true"> </i>{{ 'edit.button' |
-                translate }}
-
+            <a (click)="editStep(2)">
+                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
             </a>
         </div>
         <div class="ui-g-1 ui-md-1"></div>
@@ -115,16 +112,18 @@
     <div class="ui-g" style="text-align: left;">
         <span class="ui-lg-1"></span>
         <div class="ui-g-10 ui-md-10 ui-lg-10">
-            <label class="ui-g-12 ui-md-12 ui-lg-12"></label> <input type="checkbox" [(ngModel)]="legalChecks[0]">
-            {{ 'eu.requirements' | translate }}
+            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_1"><input type="checkbox" id="check_1" [(ngModel)]="legalChecks[0]"> 
+                {{ 'eu.requirements' | translate }}
+            </label>
         </div>
         <div class="ui-lg-1"></div>
     </div>
     <div class="ui-g" style="text-align: left;">
         <span class="ui-lg-1"></span>
         <div class="ui-g-10 ui-md-10 ui-lg-10">
-            <label class="ui-g-12 ui-md-12 ui-lg-12"></label><input type="checkbox" [(ngModel)]="legalChecks[1]">{{
-            'submit.application' | translate }}
+            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_2"><input type="checkbox" id="check_2" [(ngModel)]="legalChecks[1]"> 
+                {{ 'submit.application' | translate }}
+            </label>
         </div>
 
         <div class="ui-lg-1"></div>
