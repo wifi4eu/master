@@ -22,12 +22,16 @@ export class SupplierRegistrationComponentStep2 implements OnInit {
     private allCountries: SelectItem[];
     private selectedCountries: NutsDTO[];
 
+    private regionsSelected: boolean;
+
     constructor(private nutsApi: NutsApi) {
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();
 
         this.allCountries = [];
         this.selectedCountries = [];
+
+        this.regionsSelected = false;
     }
 
     ngOnInit() {
@@ -45,38 +49,41 @@ export class SupplierRegistrationComponentStep2 implements OnInit {
                 }
             }
         );
-/*
-        for(let country of this.nuts0){
-            this.selectedCountries.push({
-                        label: ' ' + country.name,
-                        value: country
-                    });
-        }
-*/
-        console.log(this.allCountries, this.nuts0, this.selectedCountries);
     }
 
     onMultiSelectChange(event) {
-        if (event.value.length > 0) {
-            let country: NutsDTO = event.value[event.value.length - 1];
-            //update this.nuts0 values with the selected countries in multiselect input
-            if(this.nuts0.length>0){
-                this.nuts0.splice(0,this.nuts0.length);
-            }
-            for(let country of event.value){
-                this.nuts0.push(country);
-            }
-            //retrieve nuts3 (Communes) level for selected nuts0 (Countries)
-            this.nutsApi.findNutsByLevel(3).subscribe(
-                (nuts: NutsDTO[]) => {
-                    this.provinces[country.name.toUpperCase()] = [];
-                    for (let nut of nuts) {
-                        if (country.countryCode === nut.countryCode) {
-                            this.provinces[country.name.toUpperCase()].push(nut);
+        this.nuts0.splice(0,this.nuts0.length);
+        for (let country of event.value) {
+            this.nuts0.push(country);
+            if (!this.provinces[country.name.toUpperCase()]) {
+                this.provinces[country.name.toUpperCase()] = [];
+                this.nutsApi.findNutsByLevel(3).subscribe(
+                    (nuts: NutsDTO[]) => {
+                        for (let nut of nuts) {
+                            if (country.countryCode === nut.countryCode) {
+                                this.provinces[country.name.toUpperCase()].push(nut);
+                            }
                         }
                     }
+                );
+            }
+        }
+        this.checkIfRegionsSelected();
+    }
+
+    checkIfRegionsSelected() {
+        this.regionsSelected = false;
+        for (let region of this.nuts3) {
+            let regionCountrySelected = false;
+            for (let country of this.nuts0) {
+                if (region.countryCode == country.countryCode) {
+                    this.regionsSelected = true;
+                    regionCountrySelected = true;
                 }
-            );
+            }
+            if (!regionCountrySelected) {
+                this.nuts3.splice(this.nuts3.indexOf(region), 1);
+            }
         }
     }
 

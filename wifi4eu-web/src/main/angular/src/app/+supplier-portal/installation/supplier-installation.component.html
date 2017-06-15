@@ -2,9 +2,8 @@
 <div class="clearfix"></div>
 <div class="container">
     <div class="marginTop">
-        <a class="edit" routerLink="/supplier-portal" routerLinkActive="active"><i class="fa fa-arrow-left"
-                                                                                   aria-hidden="true"></i> {{
-            'municipalities.list' | translate }}</a>
+        <a class="edit" routerLink="/supplier-portal" routerLinkActive="active"><i class="fa fa-arrow-left" aria-hidden="true"></i> 
+            {{ 'municipalities.list' | translate }}</a>
         <div class="marginTopCountdown">
             <p class="subtitle-home">{{municipalityName}}</p>
             <p class="edit"><i class="fa fa-info-circle" aria-hidden="true"></i> {{ 'about.municipality' | translate }}
@@ -36,16 +35,10 @@
             <p-column field="modelNumber" header="{{ 'product.model' | translate }}" [sortable]="true"></p-column>
             <p-column header="{{ 'suppPortal.outIndoor' | translate }}">
                 <template pTemplate="body" let-ap="rowData">
-                   <span *ngIf="ap.indoor">
-                       Indoor
-                   </span>
-                    <span *ngIf="!ap.indoor">
-                       Outdoor
-                   </span>
+                   <span *ngIf="ap.indoor">Indoor</span>
+                   <span *ngIf="!ap.indoor">Outdoor</span>
                 </template>
             </p-column>
-
-
         </p-dataTable>
     </div>
     <div class="ui-g">
@@ -74,11 +67,9 @@
                             <div class="ui-g-1"></div>
                             <div class="ui-g-6">
                                 <div class="form-group">
-                                    <label class="labelModal left" for="accessPoint">{{ 'access.point' | translate
-                                        }}</label>
-                                    <input type="text" [(ngModel)]="newAccessPoint.name"
-                                           class="form-control beneficiaryProfileI"
-                                           name="name" ngcontrol="name" #name="ngModel" required>
+                                    <label class="labelModal left" for="accessPoint">{{ 'access.point' | translate }}</label>
+                                    <input type="text" [(ngModel)]="newAccessPoint.name" class="form-control beneficiaryProfileI"
+                                        name="name" ngcontrol="name" #name="ngModel" required>
                                 </div>
                             </div>
                             <div class="ui-g-1"></div>
@@ -87,12 +78,9 @@
                             <div class="ui-g-1"></div>
                             <div class="ui-g-6">
                                 <div class="form-group">
-                                    <label class="labelModal left" for="serialNumber">{{ 'sn.countdown' | translate
-                                        }}</label>
-                                    <input type="text" [(ngModel)]="newAccessPoint.serialNumber"
-                                           class="form-control beneficiaryProfileI"
-                                           name="serialNumber" ngcontrol="serialNumber" #serialNumber="ngModel"
-                                           required>
+                                    <label class="labelModal left" for="serialNumber">{{ 'sn.countdown' | translate }}</label>
+                                    <input type="text" [(ngModel)]="newAccessPoint.serialNumber" class="form-control beneficiaryProfileI"
+                                        name="serialNumber" ngcontrol="serialNumber" #serialNumber="ngModel" required>
                                 </div>
                             </div>
                             <div class="ui-g-1"></div>
@@ -103,9 +91,8 @@
                                 <div class="form-group">
                                     <label class="labelModal left" for="productName">{{ 'product.number' | translate
                                         }}</label>
-                                    <input type="text" [(ngModel)]="newAccessPoint.productName"
-                                           class="form-control beneficiaryProfileI"
-                                           name="productName" ngcontrol="productName" #productName="ngModel" required>
+                                    <input type="text" [(ngModel)]="newAccessPoint.productName" class="form-control beneficiaryProfileI"
+                                        name="productName" ngcontrol="productName" #productName="ngModel" required>
                                 </div>
                             </div>
                             <div class="ui-g-1"></div>
@@ -116,9 +103,8 @@
                                 <div class="form-group">
                                     <label class="labelModal left" for="modelNumber">{{ 'product.model' | translate
                                         }}</label>
-                                    <input type="text" [(ngModel)]="newAccessPoint.modelNumber"
-                                           class="form-control beneficiaryProfileI"
-                                           name="modelNumber" ngcontrol="modelNumber" #modelNumber="ngModel" required>
+                                    <input type="text" [(ngModel)]="newAccessPoint.modelNumber" class="form-control beneficiaryProfileI"
+                                        name="modelNumber" ngcontrol="modelNumber" #modelNumber="ngModel" required>
                                 </div>
                             </div>
                             <div class="ui-g-1"></div>
@@ -127,10 +113,8 @@
                             <div class="ui-g-1"></div>
                             <div class="ui-g-6">
                                 <div class="form-group">
-                                    <label class="labelModal left" for="outIndoor">{{ 'suppPortal.outIndoor' | translate
-                                        }}</label>
-                                    <select class="form-control" name="outIndoor" id="treatment"
-                                            [(ngModel)]="newAccessPoint.indoor" required>
+                                    <label class="labelModal left" for="outIndoor">{{ 'suppPortal.outIndoor' | translate }}</label>
+                                    <select class="form-control" name="outIndoor" id="treatment" [(ngModel)]="newAccessPoint.indoor" required>
                                         <option value="false">{{ 'suppPortal.outdoor' | translate }}</option>
                                         <option value="true">{{ 'suppPortal.indoor' | translate }}</option>
                                     </select>
@@ -147,8 +131,7 @@
                     <button type="button" (click)="closeModal()" class="btn btn-primary publish-button">
                         {{ 'cancel.button' | translate }}
                     </button>
-                    <button type="button" (click)="createInstallation()" class="btn btn-primary publish-button"
-                            [disabled]="!installationForm.form.valid">
+                    <button type="button" (click)="createInstallation()" class="btn btn-primary publish-button" [disabled]="!installationForm.form.valid">
                         {{ 'change' | translate }}
                     </button>
                 </div>
