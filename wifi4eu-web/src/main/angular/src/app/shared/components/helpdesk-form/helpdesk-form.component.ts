@@ -1,9 +1,10 @@
-import {Component} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {HelpdeskApi} from "../../swagger/api/HelpdeskApi";
 import {HelpdeskDTO, HelpdeskDTOBase} from "../../swagger/model/HelpdeskDTO";
 import {NutsApi} from "../../swagger/api/NutsApi";
 import {NutsDTOBase} from "../../swagger/model/NutsDTO";
+import {ResponseDTO} from "../../swagger/model/ResponseDTO";
 
 @Component({
     selector: 'helpdesk-form-component', templateUrl: 'helpdesk-form.component.html', providers: [NutsApi, HelpdeskApi]
@@ -11,10 +12,13 @@ import {NutsDTOBase} from "../../swagger/model/NutsDTO";
 export class HelpdeskFormComponent {
     private helpdeskIssue: HelpdeskDTO;
     private expanded: boolean;
+    private success: boolean;
     private nuts: NutsDTOBase[];
+    @Input('portal') portal: string;
 
     constructor(private uxService: UxService, private nutsApi: NutsApi, private helpdeskApi: HelpdeskApi) {
         this.helpdeskIssue = new HelpdeskDTOBase();
+        this.expanded = false;
         this.expanded = false;
         this.nutsApi.findNutsByLevel(0).subscribe(
             nuts => {
@@ -32,11 +36,22 @@ export class HelpdeskFormComponent {
     }
 
     sendIssue() {
-        console.log(this.helpdeskIssue);
-        this.helpdeskIssue.portal = "Beneficiary";
+        this.helpdeskIssue.portal = this.portal;
         this.helpdeskIssue.date = new Date();
         this.helpdeskIssue.assignedTo = "Member State";
         this.helpdeskIssue.status = "Pending";
-        this.helpdeskApi.createHelpdeskIssue(this.helpdeskIssue).subscribe();
+        this.helpdeskApi.createHelpdeskIssue(this.helpdeskIssue).subscribe(
+            (issue: ResponseDTO) => {
+                if (issue.success) {
+                    this.success = true;
+                }
+            }, error => {
+                this.uxService.growl({
+                    severity: 'error',
+                    summary: 'ERROR',
+                    detail: 'An error occurred when sending your issue. Please try again.'
+                });
+            }
+        );
     }
 }

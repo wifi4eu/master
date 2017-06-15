@@ -3,18 +3,16 @@
     <p class="center">
         Problems with your registration? Please click here to <a (click)="expanded = true">contact the Help-Desk</a>
     </p>
-    <div id="helpdesk-form" [hidden]="!expanded">
-
+    <br>
+    <br>
+    <div id="helpdesk-form" *ngIf="expanded">
         <hr class="center" style="padding-bottom: 2em; margin-top: 2em !important;">
-        <form (ngSubmit)="sendIssue()" #issueForm="ngForm">
+        <form *ngIf="!success" (ngSubmit)="sendIssue()" #issueForm="ngForm">
             <div class="ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
-                    <label for="problem_type" class="label floatLeft">Select type of problem from the list</label>
-                    <select class="form-control paddingInput" name="problem_type" id="problem_type"
-                            style="padding: 1.6em;"
-                            [(ngModel)]="helpdeskIssue.topic"
-                            required>
+                    <label for="topic" class="label floatLeft">Select type of problem from the list</label>
+                    <select class="form-control" name="topic" id="topic" [(ngModel)]="helpdeskIssue.topic" required>
                         <option value="Login">Login</option>
                         <option value="Registration">Registration</option>
                         <option value="Password">Password</option>
@@ -27,9 +25,7 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <label for="problem_desc" class="label floatLeft">Describe the problem</label><br/>
-                    <textarea id="problem_desc" name="problem_desc" class="paddingInput" style="width:100%;"
-                              [(ngModel)]="helpdeskIssue.issueSummary"
-                              required></textarea>
+                    <textarea id="problem_desc" name="problem_desc" class="form-control" [(ngModel)]="helpdeskIssue.issueSummary" required></textarea>
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -37,9 +33,7 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <label for="from" class="label floatLeft">Your email</label><br/>
-                    <input id="from" type="email" name="from" #from="ngModel" class="paddingInput" style="width:100%;"
-                           [(ngModel)]="helpdeskIssue.from"
-                           required>
+                    <input id="from" type="email" name="from" #from="ngModel" class="form-control" [(ngModel)]="helpdeskIssue.from" required>
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -47,9 +41,7 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <label for="problem_country" class="label floatLeft">Country</label>
-                    <select class="form-control paddingInput" name="problem_country" id="problem_country"
-                            style="padding: 1.6em;"
-                            [(ngModel)]="helpdeskIssue.memberState">
+                    <select class="form-control" name="problem_country" id="problem_country" [(ngModel)]="helpdeskIssue.memberState">
                         <option selected disabled>Select</option>
                         <option *ngFor="let nut of nuts" [value]="nut.name">{{nut.name}}</option>
                     </select>
@@ -60,17 +52,19 @@
             <div class="form-group ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}
-                    </button>
+                    <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button>
                 </div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary publish-button" [disabled]="!issueForm.form.valid">Send
-                        message
-                    </button>
+                    <button type="submit" class="btn btn-primary publish-button" [disabled]="!issueForm.form.valid">Send message</button>
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
         </form>
+        <div *ngIf="success">
+            <p class="center">
+                <b>Your issue was sent successfully sent to your Member State! We'll contact you as soon as possible to give you a solution to your problem.</b>
+            </p>
+        </div>
         <div class="ui-g-1"></div>
     </div>
 </div>
