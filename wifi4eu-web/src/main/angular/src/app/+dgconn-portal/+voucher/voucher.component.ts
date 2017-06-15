@@ -35,8 +35,8 @@ export class DgConnVoucherComponent {
     private externalCountriesData : any;
     private mapTableData;
 
-    private totalCountries;
-    private totalRequests;
+    private totalCountries: number;
+    private totalRequests: number;
 
     constructor(private http: Http, private lauApi: LauApi, private nutsApi: NutsApi, private dgconnApi: DgconnApi, private uxService: UxService, private translate: TranslateService) {
         this.mapTableData = [];
