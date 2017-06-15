@@ -64,6 +64,7 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
         for (let country of this.nuts0) {
             this.supplierDTO.nutsIds += '' + country.code.toString() + ',';
         }
+        this.supplierDTO.nutsIds += ';';
         for (let regions of this.nuts3) {
             this.supplierDTO.nutsIds += '' + regions.code.toString() + ',';
         }

@@ -119,7 +119,6 @@
     </div>
 </div>
 <!--MODALS BELOW-->
-<div class="center">{{ 'home.footer.update' | translate }}</div>
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
@@ -129,26 +128,21 @@
         <form (ngSubmit)="changePassword()" #profileForm="ngForm">
             <div class="form-group profileDialog">
                 <label class="labelModal" for="currentPassword">{{ 'currentPassword.label' | translate }}</label>
-                <input type="password" [(ngModel)]="supplierDetails.currentPassword"
-                       class="form-control beneficiaryProfileI"
+                <input type="password" [(ngModel)]="supplierDetails.currentPassword" class="form-control beneficiaryProfileI"
                        name="currentPassword" ngcontrol="currentPassword" #currentPassword="ngModel" required>
                 <div [hidden]="currentPassword.valid || currentPassword.pristine" class="alert alert-danger">
                     {{ 'password.required' | translate }}
                 </div>
                 <a class="forgotPassword" routerLink="/forgot">Forgot password?</a><br>
                 <label class="labelModal" for="newPassword">{{ 'password.label' | translate }}</label>
-                <input type="password" [(ngModel)]="supplierDetails.newPassword"
-                       class="form-control beneficiaryProfileI"
-                       name="newPassword" ngcontrol="newPassword" #newPassword="ngModel" (keyup)="checkPassword()"
-                       required>
+                <input type="password" [(ngModel)]="supplierDetails.newPassword" class="form-control beneficiaryProfileI"
+                       name="newPassword" ngcontrol="newPassword" #newPassword="ngModel" (keyup)="checkPassword()" required>
                 <div [hidden]="newPassword.valid || newPassword.pristine" class="alert alert-danger">
                     {{ 'password.required' | translate }}
                 </div>
                 <label class="labelModal" for="repeatNewPassword">{{ 'confirmNewPassword.label' | translate }}</label>
-                <input type="password" [(ngModel)]="supplierDetails.repeatNewPassword"
-                       class="form-control beneficiaryProfileI"
-                       name="repeatNewPassword" ngcontrol="repeatNewPassword" #repeatNewPassword="ngModel"
-                       (keyup)="checkPassword()" required>
+                <input type="password" [(ngModel)]="supplierDetails.repeatNewPassword" class="form-control beneficiaryProfileI"
+                       name="repeatNewPassword" ngcontrol="repeatNewPassword" #repeatNewPassword="ngModel" (keyup)="checkPassword()" required>
                 <div [hidden]="repeatNewPassword.valid || repeatNewPassword.pristine" class="alert alert-danger">
                     {{'newPassword.required' | translate }}
                 </div>
@@ -157,8 +151,7 @@
                         <button type="button" class="btn btn-primary changePasswordModal" (click)="closeModal()">
                             {{ 'cancel.button' | translate }}
                         </button>
-                        <button type="submit" class="btn btn-primary changePasswordModal"
-                                [disabled]="!profileForm.form.valid || !checkPassword()">
+                        <button type="submit" class="btn btn-primary changePasswordModal" [disabled]="!profileForm.form.valid || !checkPassword()">
                             {{ 'change' | translate }}
                         </button>
                     </div>
@@ -301,8 +294,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="contactSurname">{{ 'surname.label' | translate
-                            }}</label>
+                        <label for="contactSurname">{{ 'surname.label' | translate }}</label>
                         <input type="text" [(ngModel)]="selectedSupplierData.contactSurname" class="form-control"
                                name="contactSurname" ngcontrol="contactSurname" #contactSurname="ngModel" required>
                         <div [hidden]="contactSurname.valid || contactSurname.pristine" class="alert alert-danger">
@@ -318,23 +310,17 @@
                     <div class="form-group">
                         <div class="ui-g-5">
                             <label for="contactPhonePrefix">{{ 'prefix.number' | translate }}</label>
-                            <input type="text" [(ngModel)]="selectedSupplierData.contactPhonePrefix"
-                                   class="form-control"
-                                   name="contactPhonePrefix" ngcontrol="contactPhonePrefix"
-                                   #contactPhonePrefix="ngModel" required>
-                            <div [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine"
-                                 class="alert alert-danger">
+                            <input type="text" [(ngModel)]="selectedSupplierData.contactPhonePrefix" class="form-control"
+                                name="contactPhonePrefix" ngcontrol="contactPhonePrefix" #contactPhonePrefix="ngModel" required>
+                            <div [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine" class="alert alert-danger">
                                 {{ 'phone.required' | translate }}
                             </div>
                         </div>
                         <div class="ui-g-5">
                             <label for="contactPhoneNumber">{{ 'phone.number' | translate }}</label>
-                            <input type="text" [(ngModel)]="selectedSupplierData.contactPhoneNumber"
-                                   class="form-control"
-                                   name="contactPhoneNumber" ngcontrol="contactPhoneNumber"
-                                   #contactPhoneNumber="ngModel" required>
-                            <div [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine"
-                                 class="alert alert-danger">
+                            <input type="text" [(ngModel)]="selectedSupplierData.contactPhoneNumber" class="form-control"
+                                name="contactPhoneNumber" ngcontrol="contactPhoneNumber" #contactPhoneNumber="ngModel" required>
+                            <div [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine" class="alert alert-danger">
                                 {{ 'phone.required' | translate }}
                             </div>
                         </div>
@@ -368,8 +354,6 @@
                     </button>
                 </div>
             </div>
-
-
         </form>
     </p-dialog>
 </div>

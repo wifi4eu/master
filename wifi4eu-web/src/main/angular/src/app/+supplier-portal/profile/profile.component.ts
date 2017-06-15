@@ -76,8 +76,6 @@ export class SupplierProfileComponent {
                         this.nutsApi.findNutsByCode(partNuts[i]).subscribe(
                             (nuts: NutsDTO) => {
                                 if (nuts.level == 0) {
-                                    //nuts.name = nuts.name.toLowerCase();
-                                    //nuts.name = nuts.name.charAt(0).toUpperCase() + nuts.name.slice(1);
                                     this.countries.push(nuts);
                                     let countryName = nuts.name.toLowerCase();
                                     countryName = countryName.charAt(0).toUpperCase() + countryName.slice(1);
