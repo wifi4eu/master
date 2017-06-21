@@ -254,5 +254,10 @@
   "report2.title": "Proveedores registrados",
   "report3.title": "Creación de Help-Desk",
   "report4.title": "Municipios premiados",
-  "totalCountries": "Núm. total de países"
+  "totalCountries": "Núm. total de países",
+  "beneficiaryportal.couldntcheckifapplied": " La aplicación no ha podido verificar si ha pedido un ticket",
+  "beneficiaryportal.municipalitynotfound": "La aplicación no ha podido encontrar su municipio",
+  "beneficiaryportal.errorapplying": "Ha habido un error cuando intentaba pedir un ticket",
+  "supplierportal.suppliernotfound": "La aplicación no ha podido enocntrar la información de su proveedor",
+  "supplierportal.couldntgetselectedmunicipalities": "La aplicación no ha podido encontrar los municipios que lo han seleccionado"
 }
