@@ -254,5 +254,7 @@
   "report2.title": "Proveedores registrados",
   "report3.title": "Creación de Help-Desk",
   "report4.title": "Municipios premiados",
-  "totalCountries": "Núm. total de países"
+  "totalCountries": "Núm. total de países",
+  "charts.totalPending": "Tickets pendientes",
+  "charts.totalIssues": "Tickets totales"
 }
