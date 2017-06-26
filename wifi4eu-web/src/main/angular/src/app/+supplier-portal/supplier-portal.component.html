@@ -61,7 +61,8 @@
         </div>
         <br>
         <div class="ui-g-12 center">
-            <timer-component (timerEvent)="checkIfSelected()" [expirationTimestamp]="currentCall.startDate"></timer-component>
+            <timer-component (timerEvent)="checkIfSelected()"
+                             [expirationTimestamp]="currentCall.startDate"></timer-component>
         </div>
 
         <hr class="beneficiaryHr">
@@ -145,7 +146,7 @@
     <div *ngSwitchCase="-1">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
-            <ux-alert class="ui-g-8" styleClass="alert-danger">{{errorCause}}</ux-alert>
+            <ux-alert class="ui-g-8" styleClass="alert-danger">{{errorCause | translate}}</ux-alert>
             <span class="ui-g-2"></span>
         </div>
         <br>
