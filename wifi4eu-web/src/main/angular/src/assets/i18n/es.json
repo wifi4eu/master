@@ -259,5 +259,8 @@
   "beneficiaryportal.municipalitynotfound": "La aplicación no ha podido encontrar su municipio",
   "beneficiaryportal.errorapplying": "Ha habido un error cuando intentaba pedir un ticket",
   "supplierportal.suppliernotfound": "La aplicación no ha podido enocntrar la información de su proveedor",
-  "supplierportal.couldntgetselectedmunicipalities": "La aplicación no ha podido encontrar los municipios que lo han seleccionado"
+  "supplierportal.couldntgetselectedmunicipalities": "La aplicación no ha podido encontrar los municipios que lo han seleccionado",
+  "totalCountries": "Núm. total de países",
+  "charts.totalPending": "Tickets pendientes",
+  "charts.totalIssues": "Tickets totales"
 }

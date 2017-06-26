@@ -260,5 +260,8 @@
   "beneficiaryportal.municipalitynotfound": "The application couldn't find your municipality",
   "beneficiaryportal.errorapplying": "An error occurred when trying to apply for a voucher",
   "supplierportal.suppliernotfound": "The application could not find your supplier data",
-  "supplierportal.couldntgetselectedmunicipalities": "The application could not get the data of the municipalities that selected you"
+  "supplierportal.couldntgetselectedmunicipalities": "The application could not get the data of the municipalities that selected you",
+  "totalCountries": "Total Countries",
+  "charts.totalPending": "Pending Issues",
+  "charts.totalIssues": "Total Issues"
 }
