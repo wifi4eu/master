@@ -13,6 +13,7 @@ export class DgConnThirdReportComponent {
     public doughnutChartType: string = 'doughnut';
     private suppliers: SupplierDTO[];
     private dataReady: boolean = false;
+    public tableData;
 
 
     // events
@@ -26,6 +27,7 @@ export class DgConnThirdReportComponent {
 
     constructor(private supplierApi: SupplierApi) {
         this.getAllSuppliers();
+        this.tableData = [];
     }
 
     getAllSuppliers() {
@@ -55,6 +57,11 @@ export class DgConnThirdReportComponent {
                 for (let countryInfo in countriesCountArray) {
                     this.doughnutChartLabels.push(countryInfo);
                     this.doughnutChartData.push(countriesCountArray[countryInfo]);
+                    let item = {
+                        label: countryInfo,
+                        value: countriesCountArray[countryInfo]
+                    };
+                    this.tableData.push(item);
                 }
 
                 this.dataReady = true;
