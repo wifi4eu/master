@@ -1,8 +1,10 @@
 import {Component} from "@angular/core";
+import {SelectItem} from 'primeng/primeng';
+import {NutsApi} from "../shared/swagger/api/NutsApi";
 import {SupplierDTOBase} from "../shared/swagger/model/SupplierDTO";
 import {NutsDTOBase, NutsDTO} from "../shared/swagger/model/NutsDTO";
 
-@Component({templateUrl: 'supplier-registration.component.html'})
+@Component({templateUrl: 'supplier-registration.component.html', providers: [NutsApi]})
 export class SupplierRegistrationComponent {
 
     private supplierDTO: SupplierDTOBase;
@@ -12,15 +14,15 @@ export class SupplierRegistrationComponent {
     private active: boolean[];
     private successRegistration: boolean;
     private failureRegistration: boolean;
-
+    
     private nuts0: NutsDTO[];
-    private nuts3: NutsDTO[];
-
-    private provinces: NutsDTO[][];
+    private nuts3: NutsDTO[][];
+    private allCountries: SelectItem[];
+    private allRegions: SelectItem[][];
 
     private supplierTempLogo: any;
 
-    constructor() {
+    constructor(private nutsApi: NutsApi) {
         this.supplierDTO = new SupplierDTOBase();
         this.supplierDTO.nutsIds = '';
 
@@ -32,7 +34,35 @@ export class SupplierRegistrationComponent {
 
         this.nuts0 = [];
         this.nuts3 = [];
-        this.provinces = [];
+        this.allCountries = [];
+        this.allRegions = [];
+
+        this.nutsApi.findNutsByLevel(0).subscribe(
+            (countries: NutsDTO[]) => {
+                for (let country of countries) {
+                    let selectCountry = {
+                        label: ' ' + country.name,
+                        value: country
+                    };
+                    this.allCountries.push(selectCountry);
+                    if (!this.nuts3[country.name]) {
+                        this.nuts3[country.name] = [];
+                    }
+                    this.allRegions[country.name] = [];
+                    this.nutsApi.findCountryRegions(country.countryCode).subscribe(
+                        (regions: NutsDTO[]) => {
+                            for (let region of regions) {
+                                let selectRegion = {
+                                    label: ' ' + region.name,
+                                    value: region
+                                }
+                                this.allRegions[country.name].push(selectRegion);
+                            }
+                        }
+                    );
+                }
+            }
+        );
     }
 
     onNext(step: number) {

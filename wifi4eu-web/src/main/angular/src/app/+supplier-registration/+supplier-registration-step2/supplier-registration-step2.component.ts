@@ -9,80 +9,51 @@ import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
     templateUrl: 'supplier-registration-step2.component.html',
     providers: [NutsApi]
 })
-export class SupplierRegistrationComponentStep2 implements OnInit {
+export class SupplierRegistrationComponentStep2 {
     @Input('supplierDTO') supplierDTO: SupplierDTOBase;
-    @Input('selection') selection: boolean[];
-    @Input('nuts0') nuts0: NutsDTO[];
-    @Input('nuts3') nuts3: NutsDTO[];
-    @Input('provinces') provinces: NutsDTO[][];
-
+    @Input('nuts0') private nuts0: NutsDTO[];
+    @Input('nuts3') private nuts3: NutsDTO[][];
     @Output() onNext: EventEmitter<number>;
     @Output() onBack: EventEmitter<number>;
-
-    private allCountries: SelectItem[];
-    private selectedCountries: NutsDTO[];
-
+    @Input('allCountries') private allCountries: SelectItem[];
+    @Input('allRegions') private allRegions: SelectItem[][];
     private regionsSelected: boolean;
 
     constructor(private nutsApi: NutsApi) {
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();
-
-        this.allCountries = [];
-        this.selectedCountries = [];
-
-        this.regionsSelected = false;
-    }
-
-    ngOnInit() {
-        this.nutsApi.findNutsByLevel(0).subscribe(
-            (nuts: NutsDTO[]) => {
-                for (let nut of nuts) {
-                    let selectedItem = {
-                        label: ' ' + nut.name,
-                        value: nut
-                    };
-                    this.allCountries.push(selectedItem);
-                    if(this.nuts0.some(function(e) {return e.name == nut.name;})){
-                        this.selectedCountries.push(selectedItem.value);
+        if (!this.allCountries) {
+            this.nutsApi.findNutsByLevel(0).subscribe(
+                (countries: NutsDTO[]) => {
+                    for (let country of countries) {
+                        let selectCountry = {
+                            label: ' ' + country.name,
+                            value: country
+                        };
+                        this.allCountries.push(selectCountry);
                     }
+                    this.checkIfRegionsSelected();
                 }
-            }
-        );
-    }
-
-    onMultiSelectChange(event) {
-        this.nuts0.splice(0,this.nuts0.length);
-        for (let country of event.value) {
-            this.nuts0.push(country);
-            if (!this.provinces[country.name.toUpperCase()]) {
-                this.provinces[country.name.toUpperCase()] = [];
-                this.nutsApi.findNutsByLevel(3).subscribe(
-                    (nuts: NutsDTO[]) => {
-                        for (let nut of nuts) {
-                            if (country.countryCode === nut.countryCode) {
-                                this.provinces[country.name.toUpperCase()].push(nut);
-                            }
-                        }
-                    }
-                );
-            }
+            );
+        } else {
+            this.checkIfRegionsSelected();
         }
-        this.checkIfRegionsSelected();
     }
 
     checkIfRegionsSelected() {
         this.regionsSelected = false;
-        for (let region of this.nuts3) {
-            let regionCountrySelected = false;
-            for (let country of this.nuts0) {
-                if (region.countryCode == country.countryCode) {
-                    this.regionsSelected = true;
-                    regionCountrySelected = true;
+        for (let country of this.allCountries) {
+            let countryFound = false;
+            for (let selectedCountry of this.nuts0) {
+                if (selectedCountry.countryCode == country.value.countryCode) {
+                    if (this.nuts3[country.value.name].length > 0) {
+                        this.regionsSelected = true;
+                    }
+                    countryFound = true;
                 }
             }
-            if (!regionCountrySelected) {
-                this.nuts3.splice(this.nuts3.indexOf(region), 1);
+            if (!countryFound) {
+                this.nuts3[country.value.name] = [];
             }
         }
     }
