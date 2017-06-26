@@ -72,4 +72,9 @@ public class LocationService {
         }
         return nutsMapper.toDTO(locationNutsRepository.findByCode(code));
     }
+
+    public List<NutsDTO> getCountryRegions(String countryCode) {
+        _log.debug("Get regions from " + countryCode);
+        return nutsMapper.toDTOList(Lists.newArrayList(locationNutsRepository.findByLevelAndCountryCode(new Long(3), countryCode)));
+    }
 }

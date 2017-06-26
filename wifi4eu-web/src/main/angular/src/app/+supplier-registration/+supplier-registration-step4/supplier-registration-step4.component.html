@@ -99,9 +99,16 @@
         <div class="ui-g-1 ui-md-1"></div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">
-            <p class="profileData" *ngFor="let country of nuts0">{{country.name}}</p>
-            <p class="profileData" *ngFor="let region of nuts3">{{region.name}}</p>
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+            <p-tabView *ngIf="nuts0.length > 0">
+                <p-tabPanel *ngFor="let country of nuts0;" [header]="country.name">
+                    <div class="ui-g">
+                        <p-dataTable [value]="nuts3[country.name]" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,30,40,50]">
+                            <p-column field="name" [sortable]="true"></p-column>
+                        </p-dataTable>
+                    </div>
+                </p-tabPanel>
+            </p-tabView>
         </div>
     </div>
 

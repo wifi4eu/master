@@ -26,7 +26,7 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
     @Output() onFailure: EventEmitter<boolean>;
 
     @Input('nuts0') nuts0: NutsDTO[];
-    @Input('nuts3') nuts3: NutsDTO[];
+    @Input('nuts3') nuts3: NutsDTO[][];
     @Input('supplierTempLogo') supplierTempLogo: any;
 
     private supplierDataUrlLogo : FileReader = new FileReader();
@@ -61,6 +61,7 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
     onSubmit() {
         this.supplierDTO.legalCheck1 = this.legalChecks[0];
         this.supplierDTO.legalCheck2 = this.legalChecks[1];
+        /*
         for (let country of this.nuts0) {
             this.supplierDTO.nutsIds += '' + country.code.toString() + ',';
         }
@@ -69,6 +70,7 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
             this.supplierDTO.nutsIds += '' + regions.code.toString() + ',';
         }
         this.supplierDTO.nutsIds = this.supplierDTO.nutsIds.slice(0, -1);
+        */
         this.supplierApi.createSupplier(this.supplierDTO).subscribe(
             data => {
                 if (data['success'] != true) {
