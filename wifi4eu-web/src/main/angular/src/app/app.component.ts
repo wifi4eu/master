@@ -84,7 +84,7 @@ export class AppComponent {
     onLogout() {
         this.localStorage.remove('user');
         this.updateHeader();
-        this.router.navigateByUrl("home");
+        this.router.navigateByUrl("login");
     }
 
     initChildren() {
