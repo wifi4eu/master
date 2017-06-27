@@ -38,9 +38,7 @@ export class LoginComponent {
                         summary: 'SUCCESS',
                         detail: 'Login success'
                     });
-                    console.log('SUCCESS: Login success');
                     this.sharedService.emitChange();
-                    console.log(user.userType);
                     switch (user.userType) {
                         case 1:
                             this.router.navigateByUrl("supplier-portal");
