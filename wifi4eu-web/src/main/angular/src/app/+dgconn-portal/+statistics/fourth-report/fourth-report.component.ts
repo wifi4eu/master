@@ -10,6 +10,8 @@ export class DgConnFourthReportComponent {
     public doughnutChartType: string = 'doughnut';
     private dataReady: boolean = false;
     private legalEntities: LegalEntityDTO[];
+    public tableData;
+
 
     // events
     public chartClicked(e: any): void {
@@ -37,10 +39,15 @@ export class DgConnFourthReportComponent {
                         countriesCountArray[legalEntity.countryCode] = 1;
                     }
                 });
-
+                this.tableData = [];
                 for (let countryInfo in countriesCountArray) {
                     this.doughnutChartLabels.push(countryInfo);
                     this.doughnutChartData.push(countriesCountArray[countryInfo]);
+                    let item = {
+                        label: countryInfo,
+                        value: countriesCountArray[countryInfo]
+                    };
+                    this.tableData.push(item);
                 }
                 this.dataReady = true;
             },
