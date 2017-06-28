@@ -262,5 +262,7 @@
   "supplierportal.couldntgetselectedmunicipalities": "La aplicación no ha podido encontrar los municipios que lo han seleccionado",
   "totalCountries": "Núm. total de países",
   "charts.totalPending": "Tickets pendientes",
-  "charts.totalIssues": "Tickets totales"
+  "charts.totalIssues": "Tickets totales",
+  "expand.label": "Expandir",
+  "hide.label": "Esconder"
 }

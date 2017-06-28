@@ -263,5 +263,7 @@
   "supplierportal.couldntgetselectedmunicipalities": "The application could not get the data of the municipalities that selected you",
   "totalCountries": "Total Countries",
   "charts.totalPending": "Pending Issues",
-  "charts.totalIssues": "Total Issues"
+  "charts.totalIssues": "Total Issues",
+  "expand.label" : "Expand",
+  "hide.label" : "Hide timeline"
 }
