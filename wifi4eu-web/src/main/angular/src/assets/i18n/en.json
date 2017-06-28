@@ -261,6 +261,8 @@
   "supplierportal.couldntgetselectedmunicipalities": "The application could not get the data of the municipalities that selected you",
   "charts.totalPending": "Pending Issues",
   "charts.totalIssues": "Total Issues",
+  "expand.label" : "Expand",
+  "hide.label" : "Hide timeline",
   "helpdeskform.clickhere.label1": "Problems with your registration? Please click here to",
   "helpdeskform.clickhere.label2": "contact the Help-Desk.",
   "helpdeskform.selectproblemtype": "Select type of problem from the list",
