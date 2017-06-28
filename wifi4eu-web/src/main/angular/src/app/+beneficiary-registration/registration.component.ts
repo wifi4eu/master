@@ -1,6 +1,6 @@
 import {Component, ViewChild} from "@angular/core";
 import {BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
-import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
+import {NutsDTO, NutsDTOBase} from "../shared/swagger/model/NutsDTO";
 import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 import {LegalEntityDTOBase} from "../shared/swagger/model/LegalEntityDTO";
 import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
@@ -14,6 +14,8 @@ export class RegistrationComponent {
     private beneficiaryDTO: BeneficiaryDTOBase;
     private nutsDTO: NutsDTOBase;
     private lausDTO: LauDTOBase;
+    private allCountries: NutsDTO[];
+    private allMunicipalities: NutsDTO[][];
 
     private selection: boolean[];
     private completed: boolean[];
@@ -32,6 +34,9 @@ export class RegistrationComponent {
         this.active = [true, false, false];
         this.successRegistration = false;
         this.failureRegistration = false;
+
+        this.allCountries = [];
+        this.allMunicipalities = [];
     }
 
     onNext(step: number) {
@@ -40,6 +45,8 @@ export class RegistrationComponent {
             this.lausDTO = this.legalEntityComponent.lausDTO;
             this.beneficiaryDTO.legalEntityDTO.countryCode = this.nutsDTO.countryCode;
             this.beneficiaryDTO.legalEntityDTO.municipalityCode = this.lausDTO.lau2;
+            this.allCountries = this.legalEntityComponent.allCountries;
+            this.allMunicipalities = this.legalEntityComponent.allMunicipalities;
         }
         this.completed[step - 1] = true;
         this.active[step - 1] = false;
