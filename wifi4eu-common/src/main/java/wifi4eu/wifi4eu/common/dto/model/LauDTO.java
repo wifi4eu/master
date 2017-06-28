@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class LauDTO implements Serializable {
 
     private Long lauId;
+    private String countryCode;
     private String nuts3;
     private String lau1;
     private String lau2;
@@ -20,8 +21,9 @@ public class LauDTO implements Serializable {
     public LauDTO() {
     }
 
-    public LauDTO(Long lauId, String nuts3, String lau1, String lau2, String change, String name1, String name2, long pop, long area) {
+    public LauDTO(Long lauId, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, long pop, long area) {
         this.lauId = lauId;
+        this.countryCode = countryCode;
         this.nuts3 = nuts3;
         this.lau1 = lau1;
         this.lau2 = lau2;
@@ -38,6 +40,14 @@ public class LauDTO implements Serializable {
 
     public void setLauId(Long lauId) {
         this.lauId = lauId;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     public String getNuts3() {

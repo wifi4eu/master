@@ -35,7 +35,7 @@
                                 [size]="30"
                                 [minLength]="1"
                                 (completeMethod)="filterNuts($event)"
-                                (onSelect)="selectCountry($event)"
+                                (onSelect)="selectCountry()"
                                 required>
                 </p-autoComplete>
                 <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required</div>
@@ -60,7 +60,6 @@
                                 [suggestions]="lausSuggestions"
                                 [size]="30"
                                 [minLength]="1"
-                                (keyup)="onKeyUp($event)"
                                 (completeMethod)="filterLaus($event)"
                                 required
                                 [disabled]="!isValidNutsSeleted()">

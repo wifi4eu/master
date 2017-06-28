@@ -260,9 +260,18 @@
   "beneficiaryportal.errorapplying": "Ha habido un error cuando intentaba pedir un ticket",
   "supplierportal.suppliernotfound": "La aplicación no ha podido enocntrar la información de su proveedor",
   "supplierportal.couldntgetselectedmunicipalities": "La aplicación no ha podido encontrar los municipios que lo han seleccionado",
-  "totalCountries": "Núm. total de países",
   "charts.totalPending": "Tickets pendientes",
   "charts.totalIssues": "Tickets totales",
-  "expand.label": "Expandir",
-  "hide.label": "Esconder"
+  "helpdeskform.clickhere.label1": "¿Problemas con el registro? Haz clic aquí para",
+  "helpdeskform.clickhere.label2": "contactar con el Helpdesk.",
+  "helpdeskform.selectproblemtype": "Selecciona el tipo de problema de la lista",
+  "helpdeskform.problemtype.option1": "Acceso",
+  "helpdeskform.problemtype.option2": "Registro",
+  "helpdeskform.problemtype.option3": "Contraseña",
+  "helpdeskform.problemtype.option4": "Otro",
+  "helpdeskform.describeproblem": "Describe el problema",
+  "helpdeskform.youremail": "Tu dirección de email",
+  "helpdeskform.sendmessage": "Enviar",
+  "helpdeskform.success": "¡Tu incidencia ha sido enviada correctamente a tu 'Member State'! Nos pondremos en contacto contigo tan pronto como sea posible para solucionar tu problema.",
+  "close.label": "Cerrar"
 }

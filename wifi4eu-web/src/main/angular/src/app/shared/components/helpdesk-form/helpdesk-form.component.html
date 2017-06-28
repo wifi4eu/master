@@ -1,7 +1,7 @@
 <div class="clearfix"></div>
 <div class="container">
     <p class="center">
-        Problems with your registration? Please click here to <a (click)="expanded = true">contact the Help-Desk</a>
+        {{ 'helpdeskform.clickhere.label1' | translate }} <a (click)="expanded = true">{{ 'helpdeskform.clickhere.label2' | translate }}</a>
     </p>
     <br>
     <br>
@@ -13,12 +13,12 @@
             <div class="ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
-                    <label for="topic" class="label floatLeft">Select type of problem from the list</label>
+                    <label for="topic" class="label floatLeft">{{ 'helpdeskform.selectproblemtype' | translate }}</label>
                     <select class="form-control" name="topic" id="topic" [(ngModel)]="helpdeskIssue.topic" required>
-                        <option value="Login">Login</option>
-                        <option value="Registration">Registration</option>
-                        <option value="Password">Password</option>
-                        <option value="Other">Other</option>
+                        <option value="Login">{{ 'helpdeskform.problemtype.option1' | translate }}</option>
+                        <option value="Registration">{{ 'helpdeskform.problemtype.option2' | translate }}</option>
+                        <option value="Password">{{ 'helpdeskform.problemtype.option3' | translate }}</option>
+                        <option value="Other">{{ 'helpdeskform.problemtype.option4' | translate }}</option>
                     </select>
                 </div>
                 <div class="ui-lg-3"></div>
@@ -26,7 +26,7 @@
             <div class="ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
-                    <label for="problem_desc" class="label floatLeft">Describe the problem</label><br/>
+                    <label for="problem_desc" class="label floatLeft">{{ 'helpdeskform.describeproblem' | translate }}</label><br/>
                     <textarea id="problem_desc" name="problem_desc" class="form-control"
                               [(ngModel)]="helpdeskIssue.issueSummary" required></textarea>
                 </div>
@@ -35,7 +35,7 @@
             <div class="ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
-                    <label for="from" class="label floatLeft">Your email</label><br/>
+                    <label for="from" class="label floatLeft">{{ 'helpdeskform.youremail' | translate }}</label><br/>
                     <input id="from" type="email" name="from" #from="ngModel" class="form-control"
                            [(ngModel)]="helpdeskIssue.from" required>
                 </div>
@@ -44,7 +44,7 @@
             <div class="ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
-                    <label for="problem_country" class="label floatLeft">Country</label>
+                    <label for="problem_country" class="label floatLeft">{{ 'country.label' | translate }}</label>
                     <select class="form-control" name="problem_country" id="problem_country"
                             [(ngModel)]="helpdeskIssue.memberState">
                         <option selected disabled>Select</option>
@@ -57,23 +57,17 @@
             <div class="form-group ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button (click)="expanded = false" class="right" class="btn btn-primary publish-button">Close
-                    </button>
+                    <button (click)="expanded = false" class="right" class="btn btn-primary publish-button">{{ 'close.label' | translate }}</button>
                 </div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary publish-button" [disabled]="!issueForm.form.valid">Send
-                        message
-                    </button>
+                    <button type="submit" class="btn btn-primary publish-button" [disabled]="!issueForm.form.valid">{{ 'helpdeskform.sendmessage' | translate }}</button>
                 </div>
 
                 <div class="ui-lg-3"></div>
             </div>
         </form>
         <div *ngIf="success">
-            <p class="center">
-                <b>Your issue was sent successfully sent to your Member State! We'll contact you as soon as possible to
-                    give you a solution to your problem.</b>
-            </p>
+            <p class="center"><b>{{ 'helpdeskform.success' | translate }}</b></p>
         </div>
         <div class="ui-g-1"></div>
     </div>
