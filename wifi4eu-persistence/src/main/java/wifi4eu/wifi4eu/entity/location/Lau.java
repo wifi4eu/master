@@ -42,8 +42,9 @@ public class Lau {
 
     public Lau(){}
 
-    public Lau(Long lauId, String nuts3, String lau1, String lau2, String change, String name1, String name2, long pop, long area) {
+    public Lau(Long lauId, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, long pop, long area) {
         this.lauId = lauId;
+        this.countryCode = countryCode;
         this.nuts3 = nuts3;
         this.lau1 = lau1;
         this.lau2 = lau2;
