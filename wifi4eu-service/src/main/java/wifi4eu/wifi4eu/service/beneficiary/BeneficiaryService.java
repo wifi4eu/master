@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
+import com.google.common.collect.Lists;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
+import wifi4eu.wifi4eu.common.dto.model.InstallationDTO;
 import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.common.dto.model.RepresentativeDTO;
@@ -17,12 +19,14 @@ import wifi4eu.wifi4eu.mapper.beneficiary.RepresentativeMapper;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
 import wifi4eu.wifi4eu.mapper.supplier.BenPubSupMapper;
+import wifi4eu.wifi4eu.mapper.supplier.InstallationMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.LegalEntityRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.MayorRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.RepresentativeRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityTempTokenRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
+import wifi4eu.wifi4eu.repository.supplier.InstallationRepository;
 import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.service.security.UserService;
 
@@ -52,10 +56,13 @@ public class BeneficiaryService {
     SecurityUserRepository securityUserRepository;
 
     @Autowired
+    SecurityTempTokenRepository securityTempTokenRepository;
+
+    @Autowired
     BenPubSupRepository benPubSupRepository;
 
     @Autowired
-    UserMapper userMapper;
+    InstallationRepository installationRepository;
 
     @Autowired
     LegalEntityMapper legalEntityMapper;
@@ -70,120 +77,127 @@ public class BeneficiaryService {
     BenPubSupMapper benPubSupMapper;
 
     @Autowired
+    InstallationMapper installationMapper;
+
+    @Autowired
+    MailService mailService;
+
+    @Autowired
     UserService userService;
 
     @Transactional
     public UserDTO create(BeneficiaryDTO beneficiaryDTO) {
-
         _log.info("Creating beneficiary...");
+        UserDTO userDTO = new UserDTO();
+        LegalEntityDTO legalEntityDTO = beneficiaryDTO.getLegalEntityDTO();
+        MayorDTO mayorDTO = beneficiaryDTO.getMayorDTO();
+        RepresentativeDTO representativeDTO = beneficiaryDTO.getRepresentativeDTO();
+        boolean represented = false;
+        UserDTO mayorUserDTO = null;
+        UserDTO representativeUserDTO = null;
+        String mayorMail = mayorDTO.getEmail();
+        String representativeMail = "";
 
-        String email;
-        boolean representative = false;
-
-        /* check if it is a mayor or a representative */
-        if (beneficiaryDTO.getRepresentativeDTO() != null && beneficiaryDTO.getRepresentativeDTO().getEmail() != null && !beneficiaryDTO.getRepresentativeDTO().getEmail().isEmpty()) {
-            email = beneficiaryDTO.getRepresentativeDTO().getEmail();
-            representative = true;
-        } else {
-            email = beneficiaryDTO.getMayorDTO().getEmail();
+        if (representativeDTO != null && representativeDTO.getEmail() != null && !representativeDTO.getEmail().isEmpty()) {
+            represented = true;
+            representativeMail = representativeDTO.getEmail();
+            representativeUserDTO = userService.getUserByEmail(representativeMail);
         }
+        mayorUserDTO = userService.getUserByEmail(mayorMail);
 
-        UserDTO persUserDTO = getUserByEmail(email);
-
-        if (persUserDTO == null) {
-
-            /* create userDTO*/
-            UserDTO userDTO = new UserDTO();
-            userDTO.setCreateDate(new Date());
-            userDTO.setEmail(email);
-
-            /* create LegalEntityDTO */
-            _log.info("create legalEntity: " + beneficiaryDTO.getLegalEntityDTO().toString());
-            LegalEntityDTO legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(beneficiaryDTO.getLegalEntityDTO())));
-
+        if (mayorUserDTO == null && representativeUserDTO == null) {
+            // create LegalEntityDTO
+            _log.info("create legalEntity: " + legalEntityDTO.toString());
+            legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(legalEntityDTO)));
             _log.info("created legalEntity: " + legalEntityDTO.toString());
 
-            /* create Mayor DTO */
-            MayorDTO mayorDTO = beneficiaryDTO.getMayorDTO();
+            // create mayor
             mayorDTO.setLegalEntityId(legalEntityDTO.getLegalEntityId());
-
-            _log.info("create mayor: " + mayorDTO.toString());
             mayorDTO = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
-
-            /* create representativeDTO if apply */
-            if (representative) {
-                //it is a representative
-                _log.info("create representant: " + beneficiaryDTO.getRepresentativeDTO().toString());
-                RepresentativeDTO representativeDTO = beneficiaryDTO.getRepresentativeDTO();
-                representativeDTO.setMayorId(mayorDTO.getMayorId());
-                representativeDTO = representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(beneficiaryDTO.getRepresentativeDTO())));
-                userDTO.setUserType(Constant.ROLE_REPRESENTATIVE);
-                userDTO.setUserTypeId(representativeDTO.getRepresentativeId());
-            } else {
-                //it is a mayor
-                userDTO.setUserType(Constant.ROLE_MAYOR);
-                userDTO.setUserTypeId(mayorDTO.getMayorId());
-            }
-
+            mayorUserDTO = new UserDTO();
+            mayorUserDTO.setEmail(mayorMail);
+            mayorUserDTO.setCreateDate(new Date());
+            mayorUserDTO.setUserType(Constant.ROLE_MAYOR);
+            mayorUserDTO.setUserTypeId(mayorDTO.getMayorId());
             String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
-            userDTO.setPassword(password);
-            _log.info("create user: " + userDTO.toString());
-            userDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
+            mayorUserDTO.setPassword(password);
+            _log.info("create mayor user: " + mayorUserDTO.toString());
+            mayorUserDTO = userService.saveUser(mayorUserDTO);
+            userService.sendActivateAccountMail(mayorUserDTO);
 
-            userService.sendActivateAccountMail(userDTO);
-
-            return userDTO;
-
+            if (represented) {
+                // create representative
+                representativeDTO.setMayorId(mayorDTO.getMayorId());
+                representativeDTO = representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(representativeDTO)));
+                representativeUserDTO = new UserDTO();
+                representativeUserDTO.setEmail(representativeMail);
+                representativeUserDTO.setCreateDate(new Date());
+                representativeUserDTO.setUserType(Constant.ROLE_REPRESENTATIVE);
+                representativeUserDTO.setUserTypeId(representativeDTO.getRepresentativeId());
+                password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
+                representativeUserDTO.setPassword(password);
+                _log.info("create representative user: " + representativeUserDTO.toString());
+                representativeUserDTO = userService.saveUser(representativeUserDTO);
+                userService.sendActivateAccountMail(representativeUserDTO);
+                return representativeUserDTO;
+            } else {
+                return mayorUserDTO;
+            }
         } else {
-            _log.error("trying to register twice");
+            _log.error("trying to register the mayor/representative twice");
             return null;
         }
-
     }
 
-    @Transactional
-    public void update(BeneficiaryDTO beneficiaryDTO) {
-
+    public BeneficiaryDTO update(BeneficiaryDTO beneficiaryDTO) {
+        BeneficiaryDTO updatedBeneficiaryDTO = null;
         if (beneficiaryDTO != null) {
-
+            updatedBeneficiaryDTO = new BeneficiaryDTO();
             String email;
-
             if (beneficiaryDTO.getRepresentativeDTO() != null) {
                 email = beneficiaryDTO.getRepresentativeDTO().getEmail();
                 beneficiaryDTO.setRepresented(true);
+                updatedBeneficiaryDTO.setRepresented(true);
+                updatedBeneficiaryDTO.setRepresentativeDTO(representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(beneficiaryDTO.getRepresentativeDTO()))));
+                updatedBeneficiaryDTO.setMayorDTO(mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(beneficiaryDTO.getMayorDTO()))));
             } else {
                 email = beneficiaryDTO.getMayorDTO().getEmail();
+                updatedBeneficiaryDTO.setRepresented(false);
+                updatedBeneficiaryDTO.setRepresentativeDTO(null);
+                updatedBeneficiaryDTO.setMayorDTO(mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(beneficiaryDTO.getMayorDTO()))));
             }
+            updatedBeneficiaryDTO.setLegalEntityDTO(legalEntityMapper.toDTO(legalEntityRepository.save(legalEntityMapper.toEntity(beneficiaryDTO.getLegalEntityDTO()))));
 
-            UserDTO userDTO = getUserByEmail(email);
-
+            UserDTO userDTO = userService.getUserByEmail(email);
             if (userDTO != null) {
-
                 /* TODO: update data */
-
+                userDTO = userService.saveUser(userDTO);
             }
-
         }
+        return updatedBeneficiaryDTO;
+    }
 
-
+    public List<LegalEntityDTO> getLegalEntities() {
+        List<LegalEntityDTO> legalEntityDTOList = legalEntityMapper.toDTOList(Lists.newArrayList(legalEntityRepository.findAll()));
+        return legalEntityDTOList;
     }
 
     public LegalEntityDTO getLegalEntity(Long legalEntityId) {
-
         LegalEntityDTO legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.findOne(legalEntityId));
-
         _log.info("legalEntityDTO: " + legalEntityDTO);
-
         return legalEntityDTO;
     }
 
-    private UserDTO getUserByEmail(String email) {
-        return userMapper.toDTO(securityUserRepository.findByEmail(email));
-    }
-
     public BenPubSupDTO apply(Long beneficiaryId, Long publicationId) {
-        BenPubSupDTO benPubSupDTO = new BenPubSupDTO(null, beneficiaryId, publicationId, false, null, false, false, "");
-        return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
+        BenPubSupDTO benPubSupDTO = new BenPubSupDTO(null, beneficiaryId, publicationId, false, null, false, false, "", new Date());
+        benPubSupDTO = benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
+        // If the 'BenPubSup' has been created correctly, we need to create a new 'Installation' as well.
+        if (benPubSupDTO != null) {
+            InstallationDTO installationDTO = new InstallationDTO();
+            installationDTO.setInstallationId(benPubSupDTO.getBenPubSubId());
+            installationRepository.save(installationMapper.toEntity(installationDTO));
+        }
+        return benPubSupDTO;
     }
 
     public BenPubSupDTO findByBeneficiaryIdAndPublicationId(Long beneficiaryId, Long publicationId) {
@@ -198,6 +212,14 @@ public class BeneficiaryService {
             return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
         }
         return benPubSupDTO;
+    }
+
+    public MayorDTO getMayorById(Long mayorId) {
+        return mayorMapper.toDTO(mayorRepository.findOne(mayorId));
+    }
+
+    public RepresentativeDTO getRepresentativeById(Long representativeId) {
+        return representativeMapper.toDTO(representativeRepository.findOne(representativeId));
     }
 
     public List<BenPubSupDTO> findByPublicationId(long publicationId) {

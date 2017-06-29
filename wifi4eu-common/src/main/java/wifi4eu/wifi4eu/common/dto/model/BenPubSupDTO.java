@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class BenPubSupDTO implements Serializable {
@@ -12,11 +13,12 @@ public class BenPubSupDTO implements Serializable {
     private boolean budgetCommited;
     private boolean budgetLinked;
     private String lastAbacMessage;
+    private Date date;
 
     public BenPubSupDTO() {
     }
 
-    public BenPubSupDTO(Long benPubSubId, Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId, boolean budgetCommited, boolean budgetLinked, String lastAbacMessage) {
+    public BenPubSupDTO(Long benPubSubId, Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId, boolean budgetCommited, boolean budgetLinked, String lastAbacMessage, Date date) {
         this.benPubSubId = benPubSubId;
         this.beneficiaryId = beneficiaryId;
         this.publicationId = publicationId;
@@ -25,6 +27,7 @@ public class BenPubSupDTO implements Serializable {
         this.budgetCommited = budgetCommited;
         this.budgetLinked = budgetLinked;
         this.lastAbacMessage = lastAbacMessage;
+        this.date = date;
     }
 
     public Long getBenPubSubId() {
@@ -78,4 +81,12 @@ public class BenPubSupDTO implements Serializable {
     public void setBudgetLinked(boolean budgetCommited) { this.budgetCommited = budgetCommited; }
 
     public void setLastAbacMessage(String lastAbacMessage) { this.lastAbacMessage = lastAbacMessage; }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

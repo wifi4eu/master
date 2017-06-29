@@ -6,7 +6,6 @@
         </div>
     </div>
 
-
     <div class="ui-g-6">
         <hr class="beneficiaryHr">
         <div class="ui-g">
@@ -17,8 +16,7 @@
                     </div>
                     <div class="ui-g-2">
                         <a (click)="mayorEdit()" class="edit">{{ 'edit.button' | translate }} <i class="fa fa-pencil"
-                                                                                                 aria-hidden="true"></i>
-                        </a>
+                                                                                                 aria-hidden="true"></i></a>
                     </div>
                 </div>
                 <div class="ui-g">
@@ -29,10 +27,13 @@
                         <p>{{ 'email.label' | translate }}</p>
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
+                        <p class="profileData" *ngIf="beneficiary.mayorDTO.treatment == 'mr'">{{ 'treatment.option1' |
+                            translate }}</p>
+                        <p class="profileData" *ngIf="beneficiary.mayorDTO.treatment == 'ms'">{{ 'treatment.option2' |
+                            translate }}</p>
+                        <p class="profileData">{{beneficiary.mayorDTO.name}}</p>
+                        <p class="profileData">{{beneficiary.mayorDTO.surname}}</p>
+                        <p class="profileData">{{beneficiary.mayorDTO.email}}</p>
                     </div>
                 </div>
                 <hr class="beneficiaryHr">
@@ -44,31 +45,29 @@
                         <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="legalEntity()">{{ 'edit.button' | translate }} <i class="fa fa-pencil"
-                                                                                      aria-hidden="true"></i></a>
+                        <a (click)="legalEntityEdit()">{{ 'edit.button' | translate }} <i class="fa fa-pencil"
+                                                                                          aria-hidden="true"></i></a>
                     </div>
                 </div>
-
-
                 <div class="ui-g">
                     <div class="ui-g-4">
                         <p>{{ 'country.label' | translate }}</p>
                         <p>{{ 'municipality.label' | translate }}</p>
                         <p>{{ 'address.label' | translate }}</p>
-                        <p>{{ 'callId.label' | translate }}</p>
                         <p>{{ 'postal-code.label' | translate }}</p>
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
+                        <p class="profileData">{{countryNuts.name}}</p>
+                        <p class="profileData">{{municipalityLau.name1}}</p>
+                        <p class="profileData">{{beneficiary.legalEntityDTO.address}},
+                            {{beneficiary.legalEntityDTO.addressNum}}</p>
+                        <p class="profileData">{{beneficiary.legalEntityDTO.postalCode}}</p>
                     </div>
                 </div>
                 <hr class="beneficiaryHr">
             </div>
-            <div class="ui-g-12" *ngIf="beneficiaryDetails.emailRepresentative != ''">
+
+            <div class="ui-g-12" *ngIf="beneficiary.represented">
                 <div class="ui-g">
                     <div class="ui-g-10">
                         <p class="beneficiaryMayor">{{ 'representativedetails.title' | translate }}</p>
@@ -78,8 +77,6 @@
                                                                                              aria-hidden="true"></i></a>
                     </div>
                 </div>
-
-
                 <div class="ui-g">
                     <div class="ui-g-4">
                         <p>{{ 'treatment.label' | translate }}</p>
@@ -89,11 +86,14 @@
                         <p>{{ 'email.label' | translate }}</p>
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
-                        <p class="profileData"></p>
+                        <p class="profileData" *ngIf="beneficiary.representativeDTO.treatment == 'mr'">{{
+                            'treatment.option1' | translate }}</p>
+                        <p class="profileData" *ngIf="beneficiary.representativeDTO.treatment == 'ms'">{{
+                            'treatment.option2' | translate }}</p>
+                        <p class="profileData">{{beneficiary.representativeDTO.name}}</p>
+                        <p class="profileData">{{beneficiary.representativeDTO.municipalityRole}}</p>
+                        <p class="profileData">{{beneficiary.representativeDTO.surname}}</p>
+                        <p class="profileData">{{beneficiary.representativeDTO.email}}</p>
                     </div>
                 </div>
             </div>
@@ -106,8 +106,7 @@
                 <div class="ui-g-8 button-content">
                     <p>{{ 'beneficiaryProfile.text' | translate }}</p>
                     <div style="text-align: center !important">
-                        <button type="button" (click)="changingPassword()"
-                                class="btn btn-primary changePassword">
+                        <button type="button" (click)="changingPassword()" class="btn btn-primary changePassword">
                             {{'beneficiaryProfile.password' | translate }}
                         </button>
                     </div>
@@ -117,54 +116,45 @@
     </div>
 </div>
 <!--MODALS BELOW-->
-<div class="center">{{ 'home.footer.update' | translate }}</div>
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="true">
+    <p-dialog [(visible)]="displayPassword" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+              [closable]="true" [closeOnEscape]="true">
         <p class="beneficiaryMayorModal">{{'beneficiaryProfile.password' | translate }}</p>
-        <form (ngSubmit)="onSubmit()" #profileForm="ngForm">
+        <form (ngSubmit)="changePassword()" #profileForm="ngForm">
             <div class="form-group profileDialog">
                 <label class="labelModal" for="currentPassword">{{ 'currentPassword.label' | translate }}</label>
                 <input type="password" [(ngModel)]="beneficiaryDetails.currentPassword"
                        class="form-control beneficiaryProfileI"
-                       name="currentPassword"
-                       ngcontrol="currentPassword"
-                       #currentPassword="ngModel" required>
-                <div [hidden]="currentPassword.valid || currentPassword.pristine"
-                     class="alert alert-danger">{{
-                    'password.required'
-                    | translate }}
+                       name="currentPassword" ngcontrol="currentPassword" #currentPassword="ngModel" required>
+                <div [hidden]="currentPassword.valid || currentPassword.pristine" class="alert alert-danger">
+                    {{ 'password.required' | translate }}
                 </div>
                 <a class="forgotPassword" routerLink="/forgot">Forgot password?</a><br>
                 <label class="labelModal" for="newPassword">{{ 'password.label' | translate }}</label>
                 <input type="password" [(ngModel)]="beneficiaryDetails.newPassword"
                        class="form-control beneficiaryProfileI"
-                       name="newPassword"
-                       ngcontrol="newPassword"
-                       #newPassword="ngModel" (keyup)="checkPassword()" required>
-                <div [hidden]="newPassword.valid || newPassword.pristine"
-                     class="alert alert-danger">{{
-                    'password.required'
-                    | translate }}
+                       name="newPassword" ngcontrol="newPassword" #newPassword="ngModel" (keyup)="checkPassword()"
+                       required>
+                <div [hidden]="newPassword.valid || newPassword.pristine" class="alert alert-danger">
+                    {{ 'password.required' | translate }}
                 </div>
                 <label class="labelModal" for="repeatNewPassword">{{ 'confirmNewPassword.label' | translate }}</label>
                 <input type="password" [(ngModel)]="beneficiaryDetails.repeatNewPassword"
                        class="form-control beneficiaryProfileI"
-                       name="repeatNewPassword" ngcontrol="repeatNewPassword"
-                       #repeatNewPassword="ngModel" (keyup)="checkPassword()" required>
-                <div [hidden]="repeatNewPassword.valid || repeatNewPassword.pristine"
-                     class="alert alert-danger">{{'newPassword.required' | translate }}
+                       name="repeatNewPassword" ngcontrol="repeatNewPassword" #repeatNewPassword="ngModel"
+                       (keyup)="checkPassword()" required>
+                <div [hidden]="repeatNewPassword.valid || repeatNewPassword.pristine" class="alert alert-danger">
+                    {{'newPassword.required' | translate }}
                 </div>
                 <div class="form-group">
                     <div style="text-align: center !important">
-                        <button type="submit" class="btn btn-primary changePasswordModal"
-                                [disabled]="!profileForm.form.valid">{{
-                            'cancel.button' | translate }}
+                        <button type="button" class="btn btn-primary changePasswordModal" (click)="closeModal()">
+                            {{ 'cancel.button' | translate }}
                         </button>
                         <button type="submit" class="btn btn-primary changePasswordModal"
-                                [disabled]="!profileForm.form.valid || !checkPassword()">{{
-                            'change' | translate }}
+                                [disabled]="!profileForm.form.valid || !checkPassword()">
+                            {{ 'change' | translate }}
                         </button>
                     </div>
                 </div>
@@ -176,26 +166,16 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog styleClass="pepe" [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="true">
-
-        <form (ngSubmit)="onSubmit()" #entityForm="ngForm">
+    <p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+              [closable]="true" [closeOnEscape]="true">
+        <form (ngSubmit)="updateLegalEntity()" #editLegalEntityForm="ngForm">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="country">{{ 'country.label' | translate }}</label>
-                        <p-autoComplete [(ngModel)]="entityDetails.country"
-                                        [suggestions]="countrySuggestions"
-                                        (completeMethod)="filterCountry($event)"
-                                        field="name"
-                                        [size]="30" [minLength]="1" class="form-control"
-                                        name="country" ngcontrol="country"
-                                        #country="ngModel" required disabled>
-                        </p-autoComplete>
-                        <div [hidden]="country.valid || country.pristine"
-                             class="alert alert-danger">Country is required
-                        </div>
+                        <input type="text" id="country" class="form-control" name="country" ngcontrol="country"
+                               #country="ngModel" [(ngModel)]="countryNuts.name" required disabled>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -204,21 +184,10 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="municipality">{{ 'municipality.label' | translate
-                            }}</label>
-                        <p-autoComplete [(ngModel)]="entityDetails.municipality"
-                                        [suggestions]="municipalitySuggestions"
-                                        (completeMethod)="filterMunicipality($event)"
-                                        field="NAME_1"
-                                        [size]="30" [minLength]="1" class="form-control"
-                                        name="municipality" ngcontrol="municipality"
-                                        #municipality="ngModel"
-                                        (keydown)="checkCountry()" required disabled>
-                        </p-autoComplete>
-                        <div [hidden]="municipality.valid || municipality.pristine"
-                             class="alert alert-danger">Municipality is
-                            required
-                        </div>
+                        <label for="municipality">{{ 'municipality.label' | translate }}</label>
+                        <input type="text" id="municipality" class="form-control" name="municipality"
+                               ngcontrol="municipality"
+                               #municipality="ngModel" [(ngModel)]="municipalityLau.name1" required disabled>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -228,24 +197,21 @@
                 <div class="ui-g-7">
                     <div class="form-group">
                         <label for="address">{{ 'address.label' | translate }}</label>
-                        <input type="text" [(ngModel)]="entityDetails.address"
-                               class="form-control"
-                               name="address" ngcontrol="address" #address="ngModel"
-                               required>
-                        <div [hidden]="address.valid || address.pristine"
-                             class="alert alert-danger">Address is required
+                        <input type="text" id="address" class="form-control" name="address" ngcontrol="address"
+                               #address="ngModel" [(ngModel)]="beneficiaryModal.legalEntityDTO.address" required>
+                        <div [hidden]="address.valid || address.pristine" class="alert alert-danger">
+                            Address is required
                         </div>
                     </div>
                 </div>
                 <div class="ui-g-3">
                     <div class="form-group">
-                        <label for="callId">{{ 'callId.label' | translate }}</label>
-                        <input type="entityDetails.callId" min="1" [(ngModel)]="entityDetails.callId"
-                               class="form-control"
-                               name="callId" ngcontrol="callId" #callId="ngModel"
-                               required>
-                        <div [hidden]="callId.valid || callId.pristine"
-                             class="alert alert-danger">Address is required
+                        <label for="addressNum">{{ 'number.label' | translate }}</label>
+                        <input type="number" id="addressNum" class="form-control" name="addressNum"
+                               ngcontrol="addressNum"
+                               #addressNum="ngModel" [(ngModel)]="beneficiaryModal.legalEntityDTO.addressNum" required>
+                        <div [hidden]="addressNum.valid || addressNum.pristine" class="alert alert-danger">
+                            Address number is required
                         </div>
                     </div>
                 </div>
@@ -255,15 +221,11 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="postalCode">{{ 'postal-code.label' | translate
-                            }}</label>
-                        <input type="text" [(ngModel)]="entityDetails.postalCode"
-                               class="form-control"
-                               name="postalCode" ngcontrol="postalCode"
-                               #postalCode="ngModel" required>
-                        <div [hidden]="postalCode.valid || postalCode.pristine"
-                             class="alert alert-danger">Postal code is
-                            required
+                        <label for="postalCode">{{ 'postal-code.label' | translate }}</label>
+                        <input type="text" id="postalCode" class="form-control" name="postalCode" ngcontrol="postalCode"
+                               #postalCode="ngModel" [(ngModel)]="beneficiaryModal.legalEntityDTO.postalCode" required>
+                        <div [hidden]="postalCode.valid || postalCode.pristine" class="alert alert-danger">
+                            Postal code is required
                         </div>
                     </div>
                 </div>
@@ -272,12 +234,14 @@
             <div class="form-group ui-g">
                 <div class="ui-g-4"></div>
                 <div class="ui-g-2" style="text-align: center !important">
-                    <button type="button" class="btn">{{ 'back.button' | translate }}</button>
+                    <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+                        {{ 'cancel.button' | translate }}
+                    </button>
                 </div>
                 <div class="ui-g-2" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary"
-                            [disabled]="!entityForm.form.valid">{{ 'next.button' |
-                        translate }}
+                    <button type="submit" class="btn btn-primary publish-button"
+                            [disabled]="!editLegalEntityForm.form.valid">
+                        {{ 'confirm.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-4"></div>
@@ -289,207 +253,165 @@
 
 <div class="container-font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayMayor" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="true">
-        <div>
-            <div class="ui-g">
-                <div class="ui-g-7 center" style="text-align: center !important">
-                    <hr>
-                </div>
-            </div>
-            <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
-                    <h3>{{ 'mayordetails.title' | translate }}</h3>
-                </div>
-                <div class="ui-g-3"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-3">
-                    <label for="treatment">{{ 'treatment.label' | translate
-                        }}</label>
-                    <select class="form-control" name="treatment" id="treatment"
-                            [(ngModel)]="beneficiaryDetails.treatment"
-                            required>
-                        <option value="mr">{{ 'treatment.option1' | translate }}
-                        </option>
-                        <option value="ms">{{ 'treatment.option2' | translate }}
-                        </option>
-                    </select>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
-                    <label for="name">{{ 'name.label' | translate }}</label>
-                    <input class="form-control" type="text" name="name" id="name"
-                           [(ngModel)]="beneficiaryDetails.name"
-                           required>
-                </div>
-                <div class="ui-g-3"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
-                    <label for="surname">{{ 'surname.label' | translate }}</label>
-                    <input class="form-control" type="text" name="surname"
-                           id="surname"
-                           [(ngModel)]="beneficiaryDetails.surname" required>
-                </div>
-                <div class="ui-g-3"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
-                    <label for="email">{{ 'email.label' | translate }}</label>
-                    <input class="form-control" type="email" name="email" id="email"
-                           [(ngModel)]="beneficiaryDetails.email"
-                           (keyup)="checkIfMayorEmailMatches()" required disabled>
-                    <label for="email" class="field-desc"
-                           style="margin-top: 10px;color: gray;">{{
-                        'email.fielddesc' |
-                        translate }}</label>
-                </div>
-                <div class="ui-g-3"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
-                    <label for="confirmemail">{{ 'confirmemail.label' | translate
-                        }}</label>
-                    <input class="form-control" type="email" name="confirmemail"
-                           id="confirmemail" ngcontrol="confirmemail"
-                           #confirmemail="ngModel"
-                           [(ngModel)]="beneficiaryDetails.confirmEmail" (keyup)="checkIfMayorEmailMatches()" required>
-                    <div [hidden]="mayorEmailMatches || confirmemail.pristine"
-                         class="alert alert-info">The email
-                        information must
-                        match
+    <p-dialog [(visible)]="displayMayor" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+              [closable]="false" [closeOnEscape]="false">
+        <button type="button" class="closeButton" (click)="closeModal()">X</button>
+        <form (ngSubmit)="updateInfo()" #editMayorForm="ngForm">
+            <div class="containerTimeline">
+                <div class="ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <h3>{{ 'mayordetails.title' | translate }}</h3>
                     </div>
+                    <div class="ui-g-3"></div>
                 </div>
-                <div class="ui-g-3"></div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-3">
+                        <label for="treatment">{{ 'treatment.label' | translate }}</label>
+                        <select class="form-control" name="treatment" id="treatment"
+                                ngcontrol="treatment" #treatment="ngModel"
+                                [(ngModel)]="beneficiaryModal.mayorDTO.treatment" required>
+                            <option value="mr">{{ 'treatment.option1' | translate }}</option>
+                            <option value="ms">{{ 'treatment.option2' | translate }}</option>
+                        </select>
+                    </div>
+                    <div class="ui-g-1"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <label for="name">{{ 'name.label' | translate }}</label>
+                        <input class="form-control" type="text" name="name" id="name"
+                               ngcontrol="name" #name="ngModel" [(ngModel)]="beneficiaryModal.mayorDTO.name" required>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <label for="surname">{{ 'surname.label' | translate }}</label>
+                        <input class="form-control" type="text" name="surname" id="surname"
+                               ngcontrol="surname" #surname="ngModel" [(ngModel)]="beneficiaryModal.mayorDTO.surname"
+                               required>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <label for="email">{{ 'email.label' | translate }}</label>
+                        <input class="form-control" type="email" name="email" id="email"
+                               ngcontrol="email" #email="ngModel" [(ngModel)]="beneficiaryModal.mayorDTO.email" required
+                               disabled>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-4"></div>
+                    <div class="ui-g-2" style="text-align: center !important">
+                        <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">{{
+                            'cancel.button' | translate }}
+                        </button>
+                    </div>
+                    <div class="ui-g-2" style="text-align: center !important">
+                        <button type="submit" class="btn btn-primary publish-button"
+                                [disabled]="!editMayorForm.form.valid || !mayorEmailMatches">
+                            {{ 'confirm.button' | translate }}
+                        </button>
+                    </div>
+                    <div class="ui-g-4"></div>
+                </div>
             </div>
-        </div>
-
-
+        </form>
     </p-dialog>
-
 </div>
 
 
-<div class="container-font">
+<div class="container-font" *ngIf="beneficiary.represented">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayRepresentative" [modal]="true" [responsive]="true"
-              [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="true">
-        <div>
-            <!--<div class="ui-g">-->
-            <!--<div class="ui-g-7 center" style="text-align: center !important">-->
-            <!--<hr>-->
-            <!--</div>-->
-            <!--</div>-->
-            <div class="ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
-                    <h3>{{ 'representativedetails.title' | translate }}</h3>
-                </div>
-                <div class="ui-g-3"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-1">
-                    <label for="treatment_representative">{{ 'treatment.label' |
-                        translate }}</label>
-                    <select class="form-control" name="treatment_representative"
-                            id="treatment_representative"
-                            [(ngModel)]="beneficiaryDetails.treatmentRepresentative"
-                            [required]="beneficiaryDetails.representativeSelected">
-                        <option value="mr">{{ 'treatment.option1' | translate }}
-                        </option>
-                        <option value="ms">{{ 'treatment.option2' | translate }}
-                        </option>
-                    </select>
-                </div>
-                <div class="ui-g-3"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
-                    <label for="name_representative">{{ 'name.label' | translate
-                        }}</label>
-                    <input class="form-control" type="text"
-                           name="name_representative" id="name_representative"
-                           [(ngModel)]="beneficiaryDetails.nameRepresentative"
-                           [required]="beneficiaryDetails.representativeSelected">
-                </div>
-                <div class="ui-g-3"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
-                    <label for="surname_representative">{{ 'surname.label' |
-                        translate }}</label>
-                    <input class="form-control" type="text"
-                           name="surname_representative" id="surname_representative"
-                           [(ngModel)]="beneficiaryDetails.surnameRepresentative"
-                           [required]="beneficiaryDetails.representativeSelected">
-                </div>
-                <div class="ui-g-3"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
-                    <label for="role_municipality">{{ 'role.label' | translate
-                        }}</label>
-                    <input class="form-control" type="text" name="role_municipality"
-                           id="role_municipality"
-                           [(ngModel)]="beneficiaryDetails.roleRepresentative"
-                           [required]="beneficiaryDetails.representativeSelected" disabled>
-                </div>
-                <div class="ui-g-3"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
-                    <label for="email_representative">{{ 'email.label' | translate
-                        }}</label>
-                    <input class="form-control" type="email"
-                           name="email-representative" id="email_representative"
-                           [(ngModel)]="beneficiaryDetails.emailRepresentative"
-                           (keyup)="checkIfRepresentativeEmailMatches()"
-                           [required]="beneficiaryDetails.representativeSelected" disabled>
-                    <label for="email_representative" class="field-desc"
-                           style="margin-top: 10px;color: gray;">{{
-                        'email.fielddesc' | translate }}</label>
-                </div>
-                <div class="ui-g-3"></div>
-            </div>
-            <div class="form-group ui-g">
-                <div class="ui-g-3"></div>
-                <div class="ui-g-6">
-                    <label for="confirmemail_representative">{{ 'confirmemail.label'
-                        | translate }}</label>
-                    <input class="form-control" type="email"
-                           name="confirmemail_representative"
-                           id="confirmemail_representative" ngcontrol="confirmemail_representative"
-                           #confirmemail_representative="ngModel"
-                           [(ngModel)]="beneficiaryDetails.confirmEmailRepresentative"
-                           (keyup)="checkIfRepresentativeEmailMatches()"
-                           [required]="beneficiaryDetails.representativeSelected">
-                    <div [hidden]="representativeEmailMatches || confirmemail_representative.pristine"
-                         class="alert alert-info">The email
-                        information must
-                        match
+    <p-dialog [(visible)]="displayRepresentative" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false" [closable]="false" [closeOnEscape]="false">
+        <button type="button" class="closeButton" (click)="closeModal()">X</button>
+        <form (ngSubmit)="updateInfo()" #editRepresentativeForm="ngForm">
+            <div class="containerTimeline">
+                <div class="ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <h3>{{ 'mayordetails.title' | translate }}</h3>
                     </div>
+                    <div class="ui-g-3"></div>
                 </div>
-                <div class="ui-g-3"></div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-3">
+                        <label for="treatment">{{ 'treatment.label' | translate }}</label>
+                        <select class="form-control" name="treatment" id="treatment" ngcontrol="treatment"
+                                #treatment="ngModel" [(ngModel)]="beneficiaryModal.representativeDTO.treatment"
+                                required>
+                            <option value="mr">{{ 'treatment.option1' | translate }}</option>
+                            <option value="ms">{{ 'treatment.option2' | translate }}</option>
+                        </select>
+                    </div>
+                    <div class="ui-g-1"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <label for="name">{{ 'name.label' | translate }}</label>
+                        <input class="form-control" type="text" name="name" id="name" ngcontrol="name"
+                               #name="ngModel" [(ngModel)]="beneficiaryModal.representativeDTO.name" required>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <label for="surname">{{ 'surname.label' | translate }}</label>
+                        <input class="form-control" type="text" name="surname" id="surname" ngcontrol="surname"
+                               #surname="ngModel" [(ngModel)]="beneficiaryModal.representativeDTO.surname" required>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <label for="municipalityRole">{{ 'role.label' | translate }}</label>
+                        <input class="form-control" type="text" name="municipalityRole" id="municipalityRole"
+                               ngcontrol="municipalityRole"
+                               #municipalityRole="ngModel"
+                               [(ngModel)]="beneficiaryModal.representativeDTO.municipalityRole" required>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <label for="email">{{ 'email.label' | translate }}</label>
+                        <input class="form-control" type="text" name="email" id="email" ngcontrol="email"
+                               #email="ngModel" [(ngModel)]="beneficiaryModal.representativeDTO.email" required
+                               disabled>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-4"></div>
+                    <div class="ui-g-2" style="text-align: center !important">
+                        <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">{{
+                            'cancel.button' | translate }}
+                        </button>
+                    </div>
+                    <div class="ui-g-2" style="text-align: center !important">
+                        <button type="submit" class="btn btn-primary publish-button"
+                                [disabled]="!editRepresentativeForm.form.valid || !mayorEmailMatches">
+                            {{ 'confirm.button' | translate }}
+                        </button>
+                    </div>
+                    <div class="ui-g-4"></div>
+                </div>
             </div>
-        </div>
-
-
+        </form>
     </p-dialog>
-
 </div>
+
 

@@ -55,8 +55,7 @@
                         <label class="label floatLeft" for="bic">{{ 'bic.label' | translate }}</label>
                         <input class="form-control paddingInput" type="text" id="bic" name="bic"
                                placeholder="000000000000" [(ngModel)]="supplierDTO.bic" #bic="ngModel" required>
-                        <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">BIC is required
-                        </div>
+                        <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">BIC is required</div>
                         <div class="ui-lg-3"></div>
                     </div>
                 </div>
@@ -67,8 +66,7 @@
                     <div class="form-group">
                         <label class="label floatLeft" for="accountNumber">{{ 'bank.account' | translate }}</label>
                         <input class="form-control paddingInput" type="text" id="accountNumber" name="accountNumber"
-                               placeholder="000000000000000000" [(ngModel)]="supplierDTO.accountNumber"
-                               #accountNumber="ngModel" required>
+                               placeholder="000000000000000000" [(ngModel)]="supplierDTO.accountNumber" #accountNumber="ngModel" required>
                         <div class="alert alert-danger" [hidden]="accountNumber.valid || accountNumber.pristine">
                             Bank account is required
                         </div>
@@ -81,10 +79,8 @@
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="website">{{ 'company.web' | translate }}</label>
-                        <input class="form-control paddingInput" type="text" id="website" name="website"
-                               [pattern]="webPattern"
-                               placeholder="http://everis.com" [(ngModel)]="supplierDTO.website" #website="ngModel"
-                               required>
+                        <input class="form-control paddingInput" type="text" id="website" name="website" [pattern]="webPattern"
+                               placeholder="http://everis.com" [(ngModel)]="supplierDTO.website" #website="ngModel" required>
                         <div class="alert alert-danger" [hidden]="website.valid || website.pristine">
                             Company Web is required
                         </div>
@@ -97,32 +93,34 @@
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
                         <label class="label floatLeft" for="companyLogo">{{ 'company.logo' | translate }}</label>
-                        <p-fileUpload name="demo[]" (onSelect)="onSelect($event)" accept="image/*" maxFileSize="1000000">
-                            <template pTemplate type="content">
-                                <ul *ngIf="uploadedFiles.length">
-                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-                                </ul>
-                            </template>
-                        </p-fileUpload>
-                        <div class="ui-lg-3"></div>
+                        <br>
+                        <div class="ui-g-12">
+                            <input #logoInput class="ui-g-8" type="file" (change)="onSelect($event)" accept="image/*">
+                            <span class="ui-g-2"></span>
+                        </div>
+                        <br>
+                        <div *ngIf="isLogoUploaded" class="ui-g-12" style="border: 1px solid #D5D5D5; background: #ffffff;">
+                            <img *ngIf="isLogoUploaded" [src]="logoUrl.result" class="ui-g-3">
+                            <span class="ui-g-1"></span>
+                            <span class="ui-g-4">{{logoFile.name}}<br>{{logoFile.size}} KB
+                            </span>
+                            <span class="ui-g-1"></span>
+                            <button type="button" class="ui-g-3 btn btn-primary" (click)="clearLogoFile()">Clear</button>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="form-group ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate
-                        }}
-                    </button>
+                    <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button>
                 </div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary publish-button"
-                            [disabled]="!registrationForm.form.valid">
+                    <button type="submit" class="btn btn-primary publish-button" [disabled]="!registrationForm.form.valid">
                         {{ 'confirm.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-lg-3"></div>
-
             </div>
         </form>
     </div>

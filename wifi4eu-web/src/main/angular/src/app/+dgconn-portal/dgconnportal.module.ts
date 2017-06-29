@@ -3,6 +3,7 @@ import {SharedModule} from "../shared/shared.module";
 import {DgConnectPortalRoutingModule} from "./dgconnportal-routing.module";
 import {DgConnPortalComponent} from "./dgconnportal.component";
 import {DgConnTimelineComponent} from "./+timeline/timeline.component";
+import {DgConnVoucherComponent} from "./+voucher/voucher.component";
 import {DgConnPublicationComponent} from "./+publication/publication.component";
 
 @NgModule({
@@ -10,7 +11,7 @@ import {DgConnPublicationComponent} from "./+publication/publication.component";
         SharedModule, DgConnectPortalRoutingModule
     ],
     declarations: [
-        DgConnPortalComponent, DgConnTimelineComponent, DgConnPublicationComponent
+        DgConnPortalComponent, DgConnTimelineComponent, DgConnPublicationComponent, DgConnVoucherComponent
     ],
     bootstrap: [DgConnPortalComponent]
 })

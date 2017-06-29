@@ -12,6 +12,8 @@ export class DgConnTimelineComponent {
     private event: string;
     private startDate: Date;
     private endDate: Date;
+    private startTime: Date;
+    private endTime: Date;
     private display: boolean;
     private timelines: TimelineDTO[];
     private timeline: TimelineDTO;
@@ -31,6 +33,8 @@ export class DgConnTimelineComponent {
         this.event = '';
         this.startDate = null;
         this.endDate = null;
+        this.startTime = null;
+        this.endTime = null;
         this.newElementForm = true;
         this.display = true;
         this.timelineApi.allTimelines().subscribe(
@@ -44,11 +48,17 @@ export class DgConnTimelineComponent {
         this.event = rowData.event;
         this.startDate = new Date(rowData.startDate);
         this.endDate = new Date(rowData.endDate);
+        this.startTime = new Date(rowData.startDate);
+        this.endTime = new Date(rowData.endDate);
+        this.newElementForm = false;
         this.display = true;
+        this.timelineApi.allTimelines().subscribe(
+            timelines => this.timelines = timelines,
+            error => console.log(error)
+        );
     }
 
     deleteElement(rowData: number) {
-        console.log("rowData:", rowData);
         this.timelineApi.deleteTimeline(this.timelines[rowData]).subscribe(
             data => {
                 this.timelineApi.allTimelines().subscribe(
@@ -67,39 +77,49 @@ export class DgConnTimelineComponent {
 
     createTimeline() {
         let timeline = (this.timeline) ? this.timeline : new TimelineDTOBase();
+        let finalStartDate = this.startDate;
+        let finalEndDate = this.endDate;
         timeline.event = this.event;
-        timeline.startDate = this.startDate.getTime();
-        timeline.endDate = this.endDate.getTime();
+        finalStartDate.setHours(this.startTime.getHours());
+        finalStartDate.setMinutes(this.startTime.getMinutes());
+        timeline.startDate = finalStartDate.getTime();
+        finalEndDate.setHours(this.endTime.getHours());
+        finalEndDate.setMinutes(this.endTime.getMinutes());
+        timeline.endDate = finalEndDate.getTime();
 
         this.timelineApi.createTimeline(timeline).subscribe(
             data => {
-                this.newElementForm = false;
-                this.display = false;
                 this.timelineApi.allTimelines().subscribe(
-                    timelines => this.timelines = timelines,
-                    error => console.log(error)
+                    timelines => {
+                        this.timelines = timelines;
+                        this.newElementForm = false;
+                        this.display = false;
+                    }, error => {
+                        console.log(error);
+                        this.newElementForm = false;
+                        this.display = false;
+                    }
                 );
             },
-            error => console.log(error)
+            error => {
+                console.log(error)
+                this.newElementForm = false;
+                this.display = false;
+            }
         );
         this.timeline = null;
-
     }
 
     checkDate() {
-        console.log("startDate:", this.startDate);
-        console.log("endDate:", this.endDate);
-        console.log(this.startDate < this.endDate);
-        return this.startDate < this.endDate;
-    }
-
-
-    keyPress(event: any) {
-        const pattern = /[0-9\:]/;
-        let inputChar = String.fromCharCode(event.charCode);
-
-        if (!pattern.test(inputChar)) {
-            event.preventDefault();
+        if (this.startDate && this.startDate) {
+            let finalStartDate = this.startDate;
+            let finalEndDate = this.endDate;
+            finalStartDate.setHours(this.startTime.getHours());
+            finalStartDate.setMinutes(this.startTime.getMinutes());
+            finalEndDate.setHours(this.endTime.getHours());
+            finalEndDate.setMinutes(this.endTime.getMinutes());
+            return finalStartDate < finalEndDate;
         }
+        return false;
     }
 }

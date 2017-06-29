@@ -34,6 +34,8 @@ export interface SupplierDTO {
 
     nutsIds?: string;
 
+    logo?: string;
+
 }
 
 
@@ -90,5 +92,8 @@ export class SupplierDTOBase  implements SupplierDTO{
 
 
     nutsIds?:  string ;
+
+
+    logo?:  string ;
 
 }

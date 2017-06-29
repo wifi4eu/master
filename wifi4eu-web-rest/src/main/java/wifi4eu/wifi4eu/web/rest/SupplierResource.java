@@ -14,7 +14,6 @@ import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.entity.supplier.AccessPoint;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -97,5 +96,28 @@ public class SupplierResource {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);
         }
+    }
+
+    @ApiOperation(value = "save supplier")
+    @RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO saveSupplier(@RequestBody final SupplierDTO supplierDTO, final HttpServletResponse response) {
+        try {
+            SupplierDTO resSupplier = supplierService.saveSupplier(supplierDTO);
+            return new ResponseDTO(true, resSupplier, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+    }
+
+    @ApiOperation(value = "Get legal entity by installation id")
+    @RequestMapping(value = "/legalEntityByInstallation/{installationId}", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public LegalEntityDTO getLegalEntityByInstallationId(@PathVariable("installationId") final Long installationId, final HttpServletResponse response) {
+        _log.info("getLegalEntityByInstallationId " + installationId);
+
+        return supplierService.getLegalEntityByInstallationId(installationId);
+
     }
 }

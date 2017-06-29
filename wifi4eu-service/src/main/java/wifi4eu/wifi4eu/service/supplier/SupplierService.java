@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
+import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
 import wifi4eu.wifi4eu.mapper.supplier.AccessPointMapper;
 import wifi4eu.wifi4eu.mapper.supplier.BenPubSupMapper;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
 import wifi4eu.wifi4eu.mapper.supplier.InstallationMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
+import wifi4eu.wifi4eu.repository.beneficiary.LegalEntityRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 import wifi4eu.wifi4eu.repository.supplier.AccessPointRepository;
 import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
@@ -39,9 +41,6 @@ public class SupplierService {
     SupplierRepository supplierRepository;
 
     @Autowired
-    SecurityUserRepository securityUserRepository;
-
-    @Autowired
     BenPubSupRepository benPubSupRepository;
 
     @Autowired
@@ -51,13 +50,13 @@ public class SupplierService {
     AccessPointRepository accessPointRepository;
 
     @Autowired
+    LegalEntityRepository legalEntityRepository;
+
+    @Autowired
     UserService userService;
 
     @Autowired
     BeneficiaryService beneficiaryService;
-
-    @Autowired
-    UserMapper userMapper;
 
     @Autowired
     SupplierMapper supplierMapper;
@@ -70,6 +69,10 @@ public class SupplierService {
 
     @Autowired
     AccessPointMapper accessPointMapper;
+
+    @Autowired
+    LegalEntityMapper legalEntityMapper;
+
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -84,6 +87,9 @@ public class SupplierService {
 
         _log.info("[i] create Supplier");
 
+        // set the create date
+        supplierDTO.setCreateDate(new Date());
+
         /*
             TODO: enable a validation to avoid user duplicity
         */
@@ -91,7 +97,7 @@ public class SupplierService {
         // get supplier email
         String email = supplierDTO.getContactEmail();
 
-        UserDTO persUserDTO = getUserByEmail(email);
+        UserDTO persUserDTO = userService.getUserByEmail(email);
 
         if (persUserDTO == null) {
             _log.info("Nom: " + supplierDTO.getName());
@@ -105,27 +111,17 @@ public class SupplierService {
             // create temporal password
             String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
             userDTO.setPassword(password);
-            _log.info("create user: " + userDTO.toString());
 
-
-            //create supplier entity
-            //Supplier sup = supplierMapper.toEntity(supplierDTO);
-            Supplier sup2 = new Supplier();
-            sup2.setSupplierId(supplierDTO.getSupplierId());
-            sup2.setName(supplierDTO.getName());
-
-            _log.info("Supplier guardado: ");
-            _log.info(sup2.getName());
-
-            SupplierDTO perSupplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+            Supplier supTemp = supplierMapper.toEntity(supplierDTO);
+            Supplier savedSupplier = supplierRepository.save(supTemp);
+            SupplierDTO perSupplierDTO = supplierMapper.toDTO(savedSupplier);
 
             //link supplier and user and store user
             userDTO.setUserTypeId(perSupplierDTO.getSupplierId());
-            userDTO = userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
+            userDTO = userService.saveUser(userDTO);
 
             //send activate account mail
-
-            //userService.sendActivateAccountMail(userDTO);
+            userService.sendActivateAccountMail(userDTO);
 
             _log.info("[f] create Supplier");
 
@@ -134,10 +130,6 @@ public class SupplierService {
             _log.warn("trying to duplicate user");
             return null;
         }
-    }
-
-    private UserDTO getUserByEmail(String email) {
-        return userMapper.toDTO(securityUserRepository.findByEmail(email));
     }
 
     public List<LegalEntityDTO> getSelectedMe(Long supplierId) {
@@ -178,6 +170,19 @@ public class SupplierService {
 
     public AccessPointDTO createAccessPoint(AccessPointDTO accessPointDTO) {
         return accessPointMapper.toDTO(accessPointRepository.save(accessPointMapper.toEntity(accessPointDTO)));
+    }
+
+    public SupplierDTO saveSupplier(SupplierDTO supplierDTO) {
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+    }
+
+    public LegalEntityDTO getLegalEntityByInstallationId(Long installationId) {
+        BenPubSupDTO benPubSupDTO = benPubSupMapper.toDTO(benPubSupRepository.findOne(installationId));
+        LegalEntityDTO legalEntityDTO = new LegalEntityDTO();
+        if (benPubSupDTO != null) {
+            legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.findOne(benPubSupDTO.getBeneficiaryId()));
+        }
+        return legalEntityDTO;
     }
 
 }

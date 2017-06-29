@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
-import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
-import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
-import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
@@ -53,6 +50,15 @@ public class BeneficiaryResource {
 
     }
 
+    @ApiOperation(value = "Get legal entities")
+    @RequestMapping(method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public List<LegalEntityDTO> getLegalEntities() {
+        _log.info("get legal entities");
+        return beneficiaryService.getLegalEntities();
+    }
+
+
     @ApiOperation(value = "Update beneficiary information")
     @RequestMapping(value = "/{beneficiaryId}", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
@@ -61,8 +67,8 @@ public class BeneficiaryResource {
         _log.info("beneficiary update");
 
         try {
-            beneficiaryService.update(beneficiaryDTO);
-            return new ResponseDTO(true, null, null);
+            BeneficiaryDTO updatedBeneficiaryDTO = beneficiaryService.update(beneficiaryDTO);
+            return new ResponseDTO(true, updatedBeneficiaryDTO, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);
@@ -110,6 +116,22 @@ public class BeneficiaryResource {
         _log.info("get awarded municipalities");
 
         return supplierService.getAwardedMunicipalities();
+    }
+
+    @ApiOperation(value = "get mayor by id")
+    @RequestMapping(value = "/mayor/{mayorId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public MayorDTO getMayorById(@PathVariable("mayorId") final Long mayorId, final HttpServletResponse response) {
+        _log.info("getMayorById: " + mayorId);
+        return beneficiaryService.getMayorById(mayorId);
+    }
+
+    @ApiOperation(value = "get representative by id")
+    @RequestMapping(value = "/representative/{representativeId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public RepresentativeDTO getRepresentativeById(@PathVariable("representativeId") final Long representativeId, final HttpServletResponse response) {
+        _log.info("getRepresentativeById: " + representativeId);
+        return beneficiaryService.getRepresentativeById(representativeId);
     }
 
     @ApiOperation(value = "Select supplier")

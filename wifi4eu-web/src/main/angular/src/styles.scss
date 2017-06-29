@@ -453,7 +453,6 @@ body {
 
 .profileData {
   font-weight: bold;
-  margin-top: 0;
 }
 
 .beneficiaryProfileI {
@@ -486,7 +485,7 @@ body {
   box-shadow: 0 2px 4px 0 rgba(163, 163, 163, 0.5);
 }
 
-.dashboardItem:hover {
+.dashboardItem:hover, .statisticItem:hover {
   box-shadow: 0 2px 16px 0 rgba(128, 128, 128, 0.5);
 }
 
@@ -661,10 +660,6 @@ body {
   border: solid 1px #e3e3e3;
 }
 
-.ui-column-title {
-  padding-left: 1.8em;
-}
-
 /*
 .ui-datatable table td {
   padding-left: 2.5em;
@@ -822,47 +817,93 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   text-align: right;
 }
 
-.abac--container {
-    border: 1px solid #d9d9d9;
-    padding: 1rem 2rem;
-    margin: 4rem 0;
-    background-color: white;
+.supplier-portalButton {
+  width: 21em;
+  font-size: 1em;
 }
-.abac--container .abac--exporter {
-    margin: 0 0 1rem 0;
-    padding: 1rem 0;
+
+.dotSteps {
+  font-weight: bold;
+  color: $dark-blue;
 }
-.abac--container .abac--validator {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    border-top: 1px solid #ccc;
-    padding-top: 2rem;
+
+.headerTableVoucher {
+  border-bottom: solid 1px $grey;
+  background-color: white;
+  padding: 0.5em 2em 0.4em !important;
+
 }
-.abac--container .abac--exporter i, .abac--container .abac--validator i {
-  font-size: 1.5rem;
+
+.headerTableVoucher .voucherTitle {
+  font-size: 19px;
+  font-weight: bold;
 }
-.abac--container .abac--exporter i, .abac--container .abac--validator i {
+
+.headerTableVoucher .voucherSubtitle {
+  font-size: 14px;
+  font-style: italic;
+}
+
+.downloadData {
   float: right;
+  color: $darkish-blue;
 }
-.abac--container .abac--exporter i.fa-times, .abac--container .abac--validator i.fa-times {
-  color: red;
+
+.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow {
+  overflow: auto;
+  max-height: 40em;
 }
-.abac--container .abac--exporter i.fa-check, .abac--container .abac--validator i.fa-check {
-  color: green;
+
+.ui-widget textarea {
+  font-size: 1.2em;
+  color: $dark-blue;
 }
-.abac--container .error--message {
-  color: red;
+
+.voucherLabel {
+  font-size: 1.2em;
+  color: #5c5c5c;
+  text-align: left;
+  margin: 0 !important;
+  padding: 0 !important;
 }
-.abac--table {
-    margin-bottom: 30rem
+
+.voucherButtons {
+  background-color: #004494;
+  width: 16em;
+  font-family: Verdana;
+  font-size: 1.4em;
+  font-weight: bold;
 }
-.abac--table h1 {
-    border-bottom: 1px solid #ccc;
+
+.autoComplete {
+  width: 13em;
+  display: inline-block;
 }
-.abac--table--container {
-    margin-top: 2rem;
-    margin: 2rem 0;
+
+.twoLines {
+  width: 3em;
 }
-.abac--table--container .publication--selector {
-      margin-bottom: 3rem;
+
+.marginTopStats {
+  margin-top: 4% !important;
+}
+
+.paddingStats {
+  padding-bottom: 1.2em;
+}
+
+.statisticItem {
+  padding: 1.2em;
+}
+
+.ui-column-title, .ui-cell-data {
+  padding-left: 1.8em;
+}
+
+.maxWidth {
+  max-width: 21em;
+}
+
+.right {
+  float: right;
 }

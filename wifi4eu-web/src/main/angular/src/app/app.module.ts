@@ -19,10 +19,12 @@ import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.compo
 import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
 import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
+import {NotFoundComponent} from "./not-found/not-found.component"
 import {AppGuard} from "./app.guard";
 import {LocalStorageModule} from 'angular-2-local-storage';
 import {SharedService} from "./shared/shared.service";
 import {AbacComponent} from "./+abac/abac.component";
+import {ChartsModule} from "ng2-charts";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -39,6 +41,7 @@ export function translateFactory(http: Http) {
         HelpdeskComponent,
         HelpdeskComponent,
         AbacComponent
+        NotFoundComponent
     ],
     exports: [
         MapComponent,
@@ -47,13 +50,15 @@ export function translateFactory(http: Http) {
         ForgotComponent,
         HelpdeskComponent,
         AbacComponent
+        HelpdeskComponent,
+        NotFoundComponent
     ],
     imports: [
         CoreModule,
         BrowserModule,
         TranslateModule.forRoot({
             provide: TranslateLoader,
-            useFactory: translateFactory,
+            useFactory: translateFactory,   
             deps: [Http]
         }),
         AppRoutingModule,
@@ -62,7 +67,8 @@ export function translateFactory(http: Http) {
         LocalStorageModule.withConfig({
             prefix: 'wifi4eu',
             storageType: 'localStorage'
-        })
+        }),
+        ChartsModule
     ],
     providers: [
         UxService,

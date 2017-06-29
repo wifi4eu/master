@@ -52,4 +52,29 @@ public class LocationService {
         return lauMapper.toDTOList(Lists.newArrayList(locationLauRepository.findByCountryCode(countryCode)));
     }
 
+    public List<LauDTO> getLauByNuts3(String nuts3){
+        if(_log.isDebugEnabled()) {
+            _log.debug("Get LAU from NUTS3: " + nuts3);
+        }
+        return lauMapper.toDTOList(Lists.newArrayList(locationLauRepository.findByNuts3(nuts3)));
+    }
+
+    public LauDTO getLauByLau2AndCountryCode(String lau2, String countryCode) {
+        if (_log.isDebugEnabled()) {
+            _log.debug("Get LAU from LAU2: " + lau2 + " and Country Code: " + countryCode);
+        }
+        return lauMapper.toDTO(locationLauRepository.findByLau2AndCountryCode(lau2, countryCode));
+    }
+
+    public NutsDTO getNutsByCode(String code) {
+        if(_log.isDebugEnabled()) {
+            _log.debug("Get NUTS with code: " + code);
+        }
+        return nutsMapper.toDTO(locationNutsRepository.findByCode(code));
+    }
+
+    public List<NutsDTO> getCountryRegions(String countryCode) {
+        _log.debug("Get regions from " + countryCode);
+        return nutsMapper.toDTOList(Lists.newArrayList(locationNutsRepository.findByLevelAndCountryCode(new Long(3), countryCode)));
+    }
 }

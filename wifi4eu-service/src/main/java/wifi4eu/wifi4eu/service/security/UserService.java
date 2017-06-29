@@ -5,11 +5,10 @@ import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
@@ -29,14 +28,11 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final static Logger _log = LoggerFactory.getLogger(UserService.class);
-
     public final static int TIMEFRAME_ACTIVATE_ACCOUNT_HOURS = 2;
-
-    public final static String RESET_PASS_URL = "http://wifi4eu.everisdigitalchannels.com:7001/wifi4eu/#/forgot;token=";
-    public final static String ACTIVATE_ACCOUNT_URL = "http://wifi4eu.everisdigitalchannels.com:7001/wifi4eu/#/activation;token=";
-
-
+    public final static String BASE_URL = "http://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/";
+    public final static String RESET_PASS_URL = BASE_URL + "forgot;token=";
+    public final static String ACTIVATE_ACCOUNT_URL = BASE_URL + "activation;token=";
+    private final static Logger _log = LoggerFactory.getLogger(UserService.class);
     @Autowired
     SecurityUserRepository securityUserRepository;
 
@@ -52,15 +48,15 @@ public class UserService {
     @Autowired
     MailService mailService;
 
-    public ResponseDTO login(UserDTO userDTO) {
+    public UserDTO login(UserDTO userDTO) {
 
         UserDTO persUserDTO = getUserByEmail(userDTO.getEmail());
 
         if (persUserDTO != null && userDTO.getPassword().equals(persUserDTO.getPassword())) {
-
-            return new ResponseDTO(true, persUserDTO, null);
+            persUserDTO.setAccessDate(new Date());
+            return saveUser(persUserDTO);
         } else {
-            return new ResponseDTO(false, null, new ErrorDTO(0, "can't login"));
+            throw new UsernameNotFoundException("Can't login");
         }
     }
 
@@ -196,8 +192,17 @@ public class UserService {
 
     }
 
-    private UserDTO getUserByEmail(String email) {
+    public UserDTO getUserByEmail(String email) {
         return userMapper.toDTO(securityUserRepository.findByEmail(email));
+    }
+
+
+    public UserDTO getUserById(long userId) {
+        return userMapper.toDTO(securityUserRepository.findOne(userId));
+    }
+
+    public UserDTO saveUser(UserDTO userDTO) {
+        return userMapper.toDTO(securityUserRepository.save(userMapper.toEntity(userDTO)));
     }
 
     public List<UserDTO> getAllUsers() {

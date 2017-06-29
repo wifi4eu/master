@@ -2,7 +2,7 @@ import {Component, enableProdMode, Output, EventEmitter} from "@angular/core";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {UxService, UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {CoreService} from "./core/core.service";
-import {UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import {UxLanguage, UxEuLanguages} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import {LocalStorageService} from "angular-2-local-storage";
 import {UserDTO} from "./shared/swagger/model/UserDTO";
 import {SharedService} from "./shared/shared.service";
@@ -20,11 +20,20 @@ export class AppComponent {
 
     private children: UxLayoutLink[][];
 
-    @Output() private languageChanged: EventEmitter<UxLanguage> = new EventEmitter<UxLanguage>();
+    @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
 
-    constructor(private router: Router, private translate: TranslateService, translateService: TranslateService, private coreService: CoreService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService) {
+    constructor(private router: Router, private translateService: TranslateService, private coreService: CoreService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService) {
         translateService.setDefaultLang('en');
-        translateService.use('en');
+        let language = this.localStorage.get('lang');
+        if (language) {
+            this.translateService.use(language.toString());
+            this.uxService.activeLanguage = UxEuLanguages.languagesByCode [language.toString()];
+            this.selectedLanguage = UxEuLanguages.languagesByCode [language.toString()];
+        } else {
+            translateService.use('en');
+            this.uxService.activeLanguage = UxEuLanguages.languagesByCode ['en'];
+            this.selectedLanguage = UxEuLanguages.languagesByCode ['en'];
+        }
 
         this.profileUrl = "";
 
@@ -50,21 +59,21 @@ export class AppComponent {
         this.user = u ? JSON.parse(u.toString()) : null;
 
         if (this.user != null) {
-            switch(this.user.userType) {
+            switch (this.user.userType) {
                 case 1:
                     this.profileUrl = "/supplier-portal/profile";
                     break;
                 case 2:
                     this.profileUrl = "/beneficiary-portal/profile";
                     break;
-                case 3:
-                    this.profileUrl = "/beneficiary-portal/profile";
+                case 5:
+                    this.profileUrl = "/dgconn-portal";
                     break;
                 default:
                     break;
             }
         }
-        
+
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
         let i = (this.user) ? this.user.userType : 0;
@@ -76,15 +85,15 @@ export class AppComponent {
     }
 
     onLanguageChanged(language: UxLanguage) {
-        this.translate.use(language.code);
+        this.translateService.use(language.code);
         this.uxService.activeLanguage = language;
-        this.languageChanged.emit(language);
+        this.localStorage.set('lang', language.code);
     }
 
     onLogout() {
         this.localStorage.remove('user');
         this.updateHeader();
-        this.router.navigateByUrl("home");
+        this.router.navigateByUrl("login");
     }
 
     initChildren() {

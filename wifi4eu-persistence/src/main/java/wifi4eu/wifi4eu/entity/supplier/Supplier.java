@@ -1,10 +1,7 @@
 package wifi4eu.wifi4eu.entity.supplier;
 
-import wifi4eu.wifi4eu.entity.location.Nuts;
-
 import javax.persistence.*;
-import java.util.List;
-import java.sql.Blob;
+import java.util.Date;
 
 @Entity
 @Table(name = "SUPP_SUPPLIER_T")
@@ -55,7 +52,7 @@ public class Supplier {
     private boolean legalCheck2;
 
     @Column(name = "CREATE_DATE")
-    private Long createDate;
+    private Date createDate;
 
     @Column(name = "NUTS_IDS")
     private String nutsIds;
@@ -72,7 +69,7 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Long createDate, String nutsIds) {
+    public Supplier(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Date createDate, String nutsIds, String logo) {
         this.supplierId = supplierId;
         this.name = name;
         this.address = address;
@@ -89,6 +86,7 @@ public class Supplier {
         this.legalCheck2 = legalCheck2;
         this.createDate = createDate;
         this.nutsIds = nutsIds;
+        this.logo = logo;
     }
 
     public Long getSupplierId() {
@@ -203,11 +201,11 @@ public class Supplier {
         this.legalCheck2 = legalCheck2;
     }
 
-    public Long getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Long createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 

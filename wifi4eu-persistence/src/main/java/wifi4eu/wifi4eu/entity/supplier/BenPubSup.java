@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.entity.supplier;
 
 import javax.persistence.*;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "SUPP_BENPUBSUP_T")
@@ -32,10 +34,13 @@ public class BenPubSup {
     @Column(name = "LAST_ABAC_MESSAGE")
     private String lastAbacMessage;
 
+    @Column(name = "DATE")
+    private Date date;
+
     public BenPubSup() {
     }
 
-    public BenPubSup(Long benPubSubId, Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId, boolean budgetCommited, boolean budgetLinked, String lastAbacMessage) {
+    public BenPubSup(Long benPubSubId, Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId, boolean budgetCommited, boolean budgetLinked, String lastAbacMessage,  Date date) {
         this.benPubSubId = benPubSubId;
         this.beneficiaryId = beneficiaryId;
         this.publicationId = publicationId;
@@ -44,42 +49,47 @@ public class BenPubSup {
         this.budgetCommited = budgetCommited;
         this.budgetLinked = budgetLinked;
         this.lastAbacMessage = lastAbacMessage;
+        this.date = date;
     }
 
     public Long getBenPubSubId() {
         return benPubSubId;
     }
 
-    public void setBenPubSubId(Long benPubSubId) {
-        this.benPubSubId = benPubSubId;
-    }
-
     public Long getBeneficiaryId() {
         return beneficiaryId;
-    }
-
-    public void setBeneficiaryId(Long beneficiaryId) {
-        this.beneficiaryId = beneficiaryId;
     }
 
     public Long getPublicationId() {
         return publicationId;
     }
 
-    public void setPublicationId(Long publicationId) {
-        this.publicationId = publicationId;
-    }
-
     public boolean isAwarded() {
         return awarded;
     }
 
-    public void setAwarded(boolean awarded) {
-        this.awarded = awarded;
-    }
-
     public Long getSupplierId() {
         return supplierId;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setBenPubSubId(Long benPubSubId) {
+        this.benPubSubId = benPubSubId;
+    }
+
+    public void setBeneficiaryId(Long beneficiaryId) {
+        this.beneficiaryId = beneficiaryId;
+    }
+
+    public void setPublicationId(Long publicationId) {
+        this.publicationId = publicationId;
+    }
+
+    public void setAwarded(boolean awarded) {
+        this.awarded = awarded;
     }
 
     public void setSupplierId(Long supplierId) {
@@ -98,4 +108,8 @@ public class BenPubSup {
 
     public void setLastAbacMessage(String lastAbacMessage) { this.lastAbacMessage = lastAbacMessage; }
 
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

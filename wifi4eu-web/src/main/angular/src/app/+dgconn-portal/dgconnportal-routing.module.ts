@@ -1,8 +1,9 @@
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import {NgModule} from "@angular/core";
+import {RouterModule} from "@angular/router";
 import {DgConnPortalComponent} from "./dgconnportal.component";
 import {DgConnTimelineComponent} from "./+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+publication/publication.component";
+import {DgConnVoucherComponent} from "./+voucher/voucher.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -15,7 +16,14 @@ import {DgConnPublicationComponent} from "./+publication/publication.component";
         }, {
             path: 'publication',
             component: DgConnPublicationComponent
-        },
+        }, {
+            path: 'voucher',
+            component: DgConnVoucherComponent
+        }, {
+            path: 'statistics',
+            loadChildren: 'app/+dgconn-portal/+statistics/statistics.module#DgConnPortalStatisticsModule',
+            // canActivate: [AppGuard]
+        }
     ])],
     exports: [RouterModule]
 })

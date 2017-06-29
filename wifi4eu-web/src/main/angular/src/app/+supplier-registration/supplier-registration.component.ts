@@ -1,8 +1,10 @@
 import {Component} from "@angular/core";
+import {SelectItem} from 'primeng/primeng';
+import {NutsApi} from "../shared/swagger/api/NutsApi";
 import {SupplierDTOBase} from "../shared/swagger/model/SupplierDTO";
 import {NutsDTOBase, NutsDTO} from "../shared/swagger/model/NutsDTO";
 
-@Component({templateUrl: 'supplier-registration.component.html'})
+@Component({templateUrl: 'supplier-registration.component.html', providers: [NutsApi]})
 export class SupplierRegistrationComponent {
 
     private supplierDTO: SupplierDTOBase;
@@ -12,15 +14,15 @@ export class SupplierRegistrationComponent {
     private active: boolean[];
     private successRegistration: boolean;
     private failureRegistration: boolean;
-
+    
     private nuts0: NutsDTO[];
-    private nuts3: NutsDTO[];
+    private nuts3: NutsDTO[][];
+    private allCountries: SelectItem[];
+    private allRegions: SelectItem[][];
 
-    private provinces: NutsDTO[][];
+    private supplierTempLogo: any;
 
-    private supplierTempLogo : any;
-
-    constructor() {
+    constructor(private nutsApi: NutsApi) {
         this.supplierDTO = new SupplierDTOBase();
         this.supplierDTO.nutsIds = '';
 
@@ -32,7 +34,35 @@ export class SupplierRegistrationComponent {
 
         this.nuts0 = [];
         this.nuts3 = [];
-        this.provinces = [];
+        this.allCountries = [];
+        this.allRegions = [];
+
+        this.nutsApi.findNutsByLevel(0).subscribe(
+            (countries: NutsDTO[]) => {
+                for (let country of countries) {
+                    let selectCountry = {
+                        label: ' ' + country.name,
+                        value: country
+                    };
+                    this.allCountries.push(selectCountry);
+                    if (!this.nuts3[country.name]) {
+                        this.nuts3[country.name] = [];
+                    }
+                    this.allRegions[country.name] = [];
+                    this.nutsApi.findCountryRegions(country.countryCode).subscribe(
+                        (regions: NutsDTO[]) => {
+                            for (let region of regions) {
+                                let selectRegion = {
+                                    label: ' ' + region.name,
+                                    value: region
+                                }
+                                this.allRegions[country.name].push(selectRegion);
+                            }
+                        }
+                    );
+                }
+            }
+        );
     }
 
     onNext(step: number) {
@@ -76,22 +106,16 @@ export class SupplierRegistrationComponent {
         this.failureRegistration = value;
     }
 
-    onLogoSubmit(event : any) {
-        console.log("event emitter onlogosubmit");
+    onLogoSubmit(event: any) {
         if (event) {
-            console.log(event);
             this.supplierTempLogo = event;
-
             let reader = new FileReader();
             reader.onload = (e) => {
-                console.log("on load savin to DTO");
-                console.log(typeof reader.result);
-                console.log(reader.result);
-
-                this.supplierDTO.binaryLogo = reader.result;
+                this.supplierDTO.logo = reader.result;
             };
-            
-            reader.readAsBinaryString(event);
+            reader.readAsDataURL(event);
+        } else {
+            this.supplierTempLogo = null;
         }
     }
 }
