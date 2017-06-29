@@ -23,6 +23,7 @@ import {NotFoundComponent} from "./not-found/not-found.component"
 import {AppGuard} from "./app.guard";
 import {LocalStorageModule} from 'angular-2-local-storage';
 import {SharedService} from "./shared/shared.service";
+import {AbacComponent} from "./+abac/abac.component";
 import {ChartsModule} from "ng2-charts";
 
 export function translateFactory(http: Http) {
@@ -38,6 +39,7 @@ export function translateFactory(http: Http) {
         LoginComponent,
         ForgotComponent,
         HelpdeskComponent,
+        AbacComponent
         NotFoundComponent
     ],
     exports: [
@@ -46,6 +48,7 @@ export function translateFactory(http: Http) {
         LoginComponent,
         ForgotComponent,
         HelpdeskComponent,
+        AbacComponent
         NotFoundComponent
     ],
     imports: [

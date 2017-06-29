@@ -53,6 +53,9 @@ public class BeneficiaryService {
     RepresentativeRepository representativeRepository;
 
     @Autowired
+    SecurityUserRepository securityUserRepository;
+
+    @Autowired
     SecurityTempTokenRepository securityTempTokenRepository;
 
     @Autowired
@@ -69,9 +72,6 @@ public class BeneficiaryService {
 
     @Autowired
     RepresentativeMapper representativeMapper;
-
-    @Autowired
-    TempTokenMapper tempTokenMapper;
 
     @Autowired
     BenPubSupMapper benPubSupMapper;
@@ -189,7 +189,7 @@ public class BeneficiaryService {
     }
 
     public BenPubSupDTO apply(Long beneficiaryId, Long publicationId) {
-        BenPubSupDTO benPubSupDTO = new BenPubSupDTO(null, beneficiaryId, publicationId, false, null, new Date());
+        BenPubSupDTO benPubSupDTO = new BenPubSupDTO(null, beneficiaryId, publicationId, false, null, false, false, "", new Date());
         benPubSupDTO = benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
         // If the 'BenPubSup' has been created correctly, we need to create a new 'Installation' as well.
         if (benPubSupDTO != null) {
@@ -220,6 +220,10 @@ public class BeneficiaryService {
 
     public RepresentativeDTO getRepresentativeById(Long representativeId) {
         return representativeMapper.toDTO(representativeRepository.findOne(representativeId));
+    }
+
+    public List<BenPubSupDTO> findByPublicationId(long publicationId) {
+        return benPubSupMapper.toDTOList(benPubSupRepository.findByPublicationId(publicationId));
     }
 
 }
