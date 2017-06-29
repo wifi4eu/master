@@ -39,7 +39,7 @@ export function translateFactory(http: Http) {
         LoginComponent,
         ForgotComponent,
         HelpdeskComponent,
-        AbacComponent
+        AbacComponent,
         NotFoundComponent
     ],
     exports: [
@@ -48,7 +48,7 @@ export function translateFactory(http: Http) {
         LoginComponent,
         ForgotComponent,
         HelpdeskComponent,
-        AbacComponent
+        AbacComponent,
         NotFoundComponent
     ],
     imports: [
