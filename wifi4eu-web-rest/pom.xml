@@ -111,12 +111,6 @@
         <version>${project.version}</version>        
       </dependency>
 
-      <dependency>
-          <groupId>com.google.code.gson</groupId>
-          <artifactId>gson</artifactId>
-          <version>2.7</version>
-      </dependency>
-
   </dependencies>
 
 
@@ -148,11 +142,6 @@
                             <description>API Swagger description</description>
                         </info>
                         <swaggerDirectory>${basedir}/target/generated-sources/swagger</swaggerDirectory>
-                        <securityDefinitions>
-                            <securityDefinition>
-                                <json>/securityDefinition.json</json>
-                            </securityDefinition>
-                        </securityDefinitions>
                     </apiSource>
                 </apiSources>
             </configuration>            
