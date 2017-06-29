@@ -24,11 +24,11 @@ export class AppComponent {
 
     constructor(private router: Router, private translateService: TranslateService, private coreService: CoreService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService) {
         translateService.setDefaultLang('en');
-        let language = this.localStorage.get('lang').toString();
-        if (language && language.length == 2) {
-            this.translateService.use(language);
-            this.uxService.activeLanguage = UxEuLanguages.languagesByCode [language];
-            this.selectedLanguage = UxEuLanguages.languagesByCode [language];
+        let language = this.localStorage.get('lang');
+        if (language) {
+            this.translateService.use(language.toString());
+            this.uxService.activeLanguage = UxEuLanguages.languagesByCode [language.toString()];
+            this.selectedLanguage = UxEuLanguages.languagesByCode [language.toString()];
         } else {
             translateService.use('en');
             this.uxService.activeLanguage = UxEuLanguages.languagesByCode ['en'];
