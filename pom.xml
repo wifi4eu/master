@@ -19,6 +19,7 @@
         <module>wifi4eu-web-rest</module>
         <module>wifi4eu-web</module>
         <module>wifi4eu-ear</module>
+        <module>wifi4eu-abac</module>
     </modules>
 
 
