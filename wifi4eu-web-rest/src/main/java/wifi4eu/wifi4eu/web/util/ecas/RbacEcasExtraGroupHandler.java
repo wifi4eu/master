@@ -28,7 +28,7 @@ public class RbacEcasExtraGroupHandler extends AbstractUserDetailsExtraGroupHand
 
         final SecurityService securityService = currentWebApplicationContext.getBean(SecurityService.class);
 
-        return securityService.getSecurityUserRoles(Long.parseLong(detailedAuthenticationSuccess.getUid()));
+        return securityService.getSecurityUserRoles(detailedAuthenticationSuccess.getEmail());
     }
 
 
