@@ -11,7 +11,7 @@ export class SupplierRegistrationComponentStep1 {
     @Input('supplierDTO') supplierDTO: SupplierDTOBase;
     @Output() onNext = new EventEmitter<number>();
     @Output() onLogoSubmit = new EventEmitter<any>();
-    private webPattern: string = "((www\\.)|(https?:\/\/(www\\.)?))[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)+";
+    private webPattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\/\/([wW][wW][wW]\\.)?))[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)+";
     private isLogoUploaded: boolean = false;
     private logoUrl: FileReader = new FileReader();
     private logoFile: File;
