@@ -22,6 +22,9 @@ export class SupplierRegistrationComponentStep2 {
     constructor(private nutsApi: NutsApi) {
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();
+    }
+
+    ngOnInit() {
         if (!this.allCountries) {
             this.nutsApi.findNutsByLevel(0).subscribe(
                 (countries: NutsDTO[]) => {
