@@ -51,11 +51,11 @@ public class SecurityService {
     // GET RBAC roles entries for Spring Security mapped roles
     // -------------------------------------------------------
 
-    public List<String> getSecurityUserRoles(Long userId) {
+    public List<String> getSecurityUserRoles(String userEmail) {
         List<String> roles = new ArrayList<>();
 
         try {
-            User user = securityUserRepository.findByUserId(userId);
+            User user = securityUserRepository.findByEmail(userEmail);
 
             if (user.getRoles() != null) {
                 for (Role role : user.getRoles()) {
@@ -70,7 +70,7 @@ public class SecurityService {
             }
 
         } catch(Exception e) {
-            logger.info("USER : " + userId + " NOT FOUND IN USER TABLE, providing default role....");
+            logger.info("USER : " + userEmail + " NOT FOUND IN USER TABLE, providing default role....");
         } finally {
             roles.add("ROLE_RIGHT_right.default");
         }
