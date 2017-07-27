@@ -94,9 +94,11 @@
                     <div class="form-group">
                         <label class="label floatLeft" for="companyLogo">{{ 'company.logo' | translate }}</label>
                         <br>
-                        <div class="ui-g-12">
-                            <input #logoInput class="ui-g-8" type="file" (change)="onSelect($event)" accept="image/*">
-                            <span class="ui-g-2"></span>
+                        <div class="ui-g-12 left">
+                            <div class="fileUpload btn btn-primary">
+                                <span>{{ 'upload.logo' | translate }}</span>
+                                <input #logoInput id="uploadBtn" type="file" class="upload" (change)="onSelect($event)" accept="image/*" />
+                            </div>
                         </div>
                         <br>
                         <div *ngIf="isLogoUploaded" class="ui-g-12" style="border: 1px solid #D5D5D5; background: #ffffff;">
