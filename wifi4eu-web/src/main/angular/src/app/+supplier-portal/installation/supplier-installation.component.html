@@ -27,8 +27,7 @@
         </div>
     </div>
     <div class="marginTop countdownTable">
-        <p-dataTable [value]="installation.accessPoints" [(selection)]="selectedAccesPoints" [rows]="10"
-                     [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,50,100]">
+        <p-dataTable [value]="installation.accessPoints" [(selection)]="selectedAccesPoints" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,50,100]">
             <p-column field="name" header="{{ 'accesPoint.name' | translate }}" [sortable]="false"></p-column>
             <p-column field="serialNumber" header="{{ 'sn.countdown' | translate }}" [sortable]="true"></p-column>
             <p-column field="productName" header="{{ 'product.number' | translate }}" [sortable]="false"></p-column>
@@ -53,12 +52,8 @@
 
 
 <!--MODAL Displayed -->
-<p-dialog [(visible)]="displayModal" [modal]="true" [draggable]="false" [closable]="false"
-          [closeOnEscape]="false">
-    <button type="button" class="closeButton" (click)="closeModal()">X</button>
-    <h2 style="font-weight: bold;color: #254872; margin-bottom: 10px; text-align:center">{{ 'button.addInstallationInfo'
-        | translate }}</h2>
-    <div class="ui-g-12" style="background: #F5F5F5;border: 1px solid #C1C1C1; margin-bottom: 20px;">
+<p-dialog [(visible)]="displayModal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="true" [closeOnEscape]="true" (onAfterHide)="closeModal()">
+    <h2 style="font-weight: bold;color: #254872; margin-bottom: 10px; text-align:center">{{ 'button.addInstallationInfo' | translate }}</h2>
         <form (ngSubmit)="onSubmit()" #installationForm="ngForm">
             <div class="ui-g">
                 <div class="ui-g-12" style="padding-bottom:0.2em !important;">
@@ -69,7 +64,7 @@
                                 <div class="form-group">
                                     <label class="labelModal left" for="accessPoint">{{ 'access.point' | translate }}</label>
                                     <input type="text" [(ngModel)]="newAccessPoint.name" class="form-control beneficiaryProfileI"
-                                        name="name" ngcontrol="name" #name="ngModel" required>
+                                        name="name" ngcontrol="name" #name="ngModel" maxlength="250" required>
                                 </div>
                             </div>
                             <div class="ui-g-1"></div>
@@ -80,7 +75,7 @@
                                 <div class="form-group">
                                     <label class="labelModal left" for="serialNumber">{{ 'sn.countdown' | translate }}</label>
                                     <input type="text" [(ngModel)]="newAccessPoint.serialNumber" class="form-control beneficiaryProfileI"
-                                        name="serialNumber" ngcontrol="serialNumber" #serialNumber="ngModel" required>
+                                        name="serialNumber" ngcontrol="serialNumber" #serialNumber="ngModel" maxlength="250" required>
                                 </div>
                             </div>
                             <div class="ui-g-1"></div>
@@ -92,7 +87,7 @@
                                     <label class="labelModal left" for="productName">{{ 'product.number' | translate
                                         }}</label>
                                     <input type="text" [(ngModel)]="newAccessPoint.productName" class="form-control beneficiaryProfileI"
-                                        name="productName" ngcontrol="productName" #productName="ngModel" required>
+                                        name="productName" ngcontrol="productName" #productName="ngModel" maxlength="250" required>
                                 </div>
                             </div>
                             <div class="ui-g-1"></div>
@@ -104,7 +99,7 @@
                                     <label class="labelModal left" for="modelNumber">{{ 'product.model' | translate
                                         }}</label>
                                     <input type="text" [(ngModel)]="newAccessPoint.modelNumber" class="form-control beneficiaryProfileI"
-                                        name="modelNumber" ngcontrol="modelNumber" #modelNumber="ngModel" required>
+                                        name="modelNumber" ngcontrol="modelNumber" #modelNumber="ngModel" maxlength="250" required>
                                 </div>
                             </div>
                             <div class="ui-g-1"></div>
@@ -138,5 +133,4 @@
                 <div class="ui-g-3"></div>
             </div>
         </form>
-    </div>
 </p-dialog>
