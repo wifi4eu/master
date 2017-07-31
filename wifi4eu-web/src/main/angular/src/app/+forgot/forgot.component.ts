@@ -7,7 +7,7 @@ import {UserApi} from "../shared/swagger/api/UserApi";
 
 @Component({
     templateUrl: 'forgot.component.html',
-    providers: [ForgotService, UserApi]
+    providers: [UserApi]
 })
 export class ForgotComponent implements OnInit {
 
@@ -15,7 +15,7 @@ export class ForgotComponent implements OnInit {
     private forgotUrl: string;
     private compareURls: boolean;
 
-    constructor(private forgotService: ForgotService, private uxService: UxService, private route: ActivatedRoute, private router: Router, private userApi: UserApi) {
+    constructor(private uxService: UxService, private route: ActivatedRoute, private router: Router, private userApi: UserApi) {
     }
 
     ngOnInit() {
@@ -32,7 +32,7 @@ export class ForgotComponent implements OnInit {
     onSendEmail() {
         this.userApi.forgotPassword(this.forgotDetails.email).subscribe(
             data => {
-                if (data['success'] && data['data'] != null) {
+                if (data['success']) {
                     this.uxService.growl({
                         severity: 'success',
                         summary: 'SUCCESS',
@@ -56,56 +56,31 @@ export class ForgotComponent implements OnInit {
                 console.log('WARNING: Could not add new password', error);
             }
         );
-
-        this.forgotService.sendEmail(this.forgotDetails.email).subscribe(
-            data => {
-                this.uxService.growl({
-                    severity: 'success',
-                    summary: 'SUCCESS',
-                    detail: 'forgot password success'
-                });
-                console.log('SUCCESS: User activation success');
-            },
-            error => {
-                this.uxService.growl({
-                    severity: 'warn',
-                    summary: 'WARNING',
-                    detail: 'Could not add new password, ignore this when' +
-                    ' NG is working in offline mode'
-                });
-                console.log('WARNING: Could not add new password', error);
-            }
-        );
-
     }
 
     onNewPassword() {
-        this.forgotService.addNewPassword(this.forgotDetails).subscribe(
+        this.userApi.activateAccount(this.forgotDetails).subscribe(
             data => {
-                console.log(data);
-                if (data != null) {
-                    this.uxService.growl({
-                        severity: 'error',
-                        summary: 'ERROR',
-                        detail: 'Could not change user password'
-                    });
-                    console.log('ERROR: Could not change user password');
-                } else {
+                if (data['success']) {
                     this.uxService.growl({
                         severity: 'success',
                         summary: 'SUCCESS',
-                        detail: 'User has changed password'
+                        detail: 'Password changed succesfully! Now you can login with your new password.'
                     });
-                    console.log('SUCCESS: User has changed password');
-                    this.router.navigateByUrl("/login")
+                    console.log('SUCCESS: Change password success');
+                } else {
+                    this.uxService.growl({
+                        severity: 'warn',
+                        summary: 'WARNING',
+                        detail: 'The password could not be changed. Please, try again later.'
+                    });
+                    console.log('ERROR: Could not change password. ');
                 }
-            },
-            error => {
+            }, error => {
                 this.uxService.growl({
                     severity: 'warn',
                     summary: 'WARNING',
-                    detail: 'Could not add new password, ignore this when' +
-                    ' NG is working in offline mode'
+                    detail: 'Could not add new password, ignore this when NG is working in offline mode.'
                 });
                 console.log('WARNING: Could not add new password', error);
             }
