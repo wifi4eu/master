@@ -59,11 +59,11 @@ public class LocationService {
         return lauMapper.toDTOList(Lists.newArrayList(locationLauRepository.findByNuts3(nuts3)));
     }
 
-    public LauDTO getLauByLau2(String lau2) {
+    public LauDTO getLauByLau2AndCountryCode(String lau2, String countryCode) {
         if (_log.isDebugEnabled()) {
-            _log.debug("Get LAU from LAU2: " + lau2);
+            _log.debug("Get LAU from LAU2: " + lau2 + " and Country Code: " + countryCode);
         }
-        return lauMapper.toDTO(locationLauRepository.findByLau2(lau2));
+        return lauMapper.toDTO(locationLauRepository.findByLau2AndCountryCode(lau2, countryCode));
     }
 
     public NutsDTO getNutsByCode(String code) {
@@ -71,5 +71,10 @@ public class LocationService {
             _log.debug("Get NUTS with code: " + code);
         }
         return nutsMapper.toDTO(locationNutsRepository.findByCode(code));
+    }
+
+    public List<NutsDTO> getCountryRegions(String countryCode) {
+        _log.debug("Get regions from " + countryCode);
+        return nutsMapper.toDTOList(Lists.newArrayList(locationNutsRepository.findByLevelAndCountryCode(new Long(3), countryCode)));
     }
 }

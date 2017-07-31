@@ -56,6 +56,16 @@ public class NutsResource {
 
         return locationService.getNutsByCode(code);
 
+    }
+
+    @ApiOperation(value = "get country regions")
+    @RequestMapping(value = "/countryRegions/{countryCode}", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public List<NutsDTO> findCountryRegions(@PathVariable("countryCode") final String countryCode, final HttpServletResponse response) {
+        if (_log.isDebugEnabled()) {
+            _log.debug("find country regions: " + countryCode);
+        }
+        return locationService.getCountryRegions(countryCode);
     }    
 
     @ApiOperation(value = "create Nuts")

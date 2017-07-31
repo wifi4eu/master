@@ -55,6 +55,9 @@ public class SupplierResource {
         try {
             _log.info("----> SupplierDTO: " + supplierDTO);
             SupplierDTO resSupplier = supplierService.createSupplier(supplierDTO);
+            if (resSupplier == null) {
+                return new ResponseDTO(false, null, null);
+            }
             return new ResponseDTO(true, resSupplier, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
@@ -109,5 +112,15 @@ public class SupplierResource {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);
         }
+    }
+
+    @ApiOperation(value = "Get legal entity by installation id")
+    @RequestMapping(value = "/legalEntityByInstallation/{installationId}", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public LegalEntityDTO getLegalEntityByInstallationId(@PathVariable("installationId") final Long installationId, final HttpServletResponse response) {
+        _log.info("getLegalEntityByInstallationId " + installationId);
+
+        return supplierService.getLegalEntityByInstallationId(installationId);
+
     }
 }

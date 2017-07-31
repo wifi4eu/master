@@ -17,10 +17,10 @@
         <uxWizardStepCustomContent>
             <supplier-registration-step2-component *ngIf="active[1]"
                                                    [supplierDTO]="supplierDTO"
-                                                   [provinces]="provinces"
                                                    [nuts0]="nuts0"
                                                    [nuts3]="nuts3"
-                                                   [selection]="selection"
+                                                   [allCountries]="allCountries"
+                                                   [allRegions]="allRegions"
                                                    (onNext)="onNext($event)"
                                                    (onBack)="onBack($event)">
             </supplier-registration-step2-component>
@@ -59,4 +59,4 @@
 
 <success-component *ngIf="successRegistration"></success-component>
 <failure-component *ngIf="failureRegistration"></failure-component>
-<helpdesk-form-component></helpdesk-form-component>
+<helpdesk-form-component portal="Supplier"></helpdesk-form-component>

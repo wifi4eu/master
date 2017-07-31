@@ -59,7 +59,6 @@ export class DgConnTimelineComponent {
     }
 
     deleteElement(rowData: number) {
-        console.log("rowData:", rowData);
         this.timelineApi.deleteTimeline(this.timelines[rowData]).subscribe(
             data => {
                 this.timelineApi.allTimelines().subscribe(
@@ -78,26 +77,35 @@ export class DgConnTimelineComponent {
 
     createTimeline() {
         let timeline = (this.timeline) ? this.timeline : new TimelineDTOBase();
-        timeline.event = this.event;
         let finalStartDate = this.startDate;
+        let finalEndDate = this.endDate;
+        timeline.event = this.event;
         finalStartDate.setHours(this.startTime.getHours());
         finalStartDate.setMinutes(this.startTime.getMinutes());
         timeline.startDate = finalStartDate.getTime();
-        let finalEndDate = this.endDate;
         finalEndDate.setHours(this.endTime.getHours());
         finalEndDate.setMinutes(this.endTime.getMinutes());
         timeline.endDate = finalEndDate.getTime();
 
         this.timelineApi.createTimeline(timeline).subscribe(
             data => {
-                this.newElementForm = false;
-                this.display = false;
                 this.timelineApi.allTimelines().subscribe(
-                    timelines => this.timelines = timelines,
-                    error => console.log(error)
+                    timelines => {
+                        this.timelines = timelines;
+                        this.newElementForm = false;
+                        this.display = false;
+                    }, error => {
+                        console.log(error);
+                        this.newElementForm = false;
+                        this.display = false;
+                    }
                 );
             },
-            error => console.log(error)
+            error => {
+                console.log(error)
+                this.newElementForm = false;
+                this.display = false;
+            }
         );
         this.timeline = null;
     }
@@ -105,14 +113,13 @@ export class DgConnTimelineComponent {
     checkDate() {
         if (this.startDate && this.startDate) {
             let finalStartDate = this.startDate;
+            let finalEndDate = this.endDate;
             finalStartDate.setHours(this.startTime.getHours());
             finalStartDate.setMinutes(this.startTime.getMinutes());
-            let finalEndDate = this.endDate;
             finalEndDate.setHours(this.endTime.getHours());
             finalEndDate.setMinutes(this.endTime.getMinutes());
             return finalStartDate < finalEndDate;
         }
         return false;
     }
-    
 }

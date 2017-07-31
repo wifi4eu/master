@@ -6,21 +6,24 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.OncePerRequestFilter;
 import wifi4eu.wifi4eu.common.dto.audit.AuditDataDTO;
+import wifi4eu.wifi4eu.common.security.UserSessionCache;
 import wifi4eu.wifi4eu.service.audit.AuditService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+
+import wifi4eu.wifi4eu.service.security.UserRetrieverHelper;
 
 public class AuditFilter extends OncePerRequestFilter {
 
     private static final Logger logger = Logger.getLogger(AuditFilter.class);
 
     @Autowired
-    AuditService auditService;
+    private AuditService auditService;
+
+    @Autowired
+    private UserRetrieverHelper userRetrieverHelper;
 
     @Override
     protected String getAlreadyFilteredAttributeName() {
@@ -41,11 +44,22 @@ public class AuditFilter extends OncePerRequestFilter {
             BufferedResponseWrapper bufferedResponse = new BufferedResponseWrapper(httpServletResponse);
 
             filterChain.doFilter (bufferedRequest, bufferedResponse);
-            //TODO
-            Long userId = 0L;
 
-            AuditDataDTO auditDataDTO = new AuditDataDTO(httpServletRequest.getPathInfo(), httpServletRequest.getMethod(), bufferedRequest.getRequestBody(), bufferedResponse.getContent(), userId);
-            auditService.createAuditData(auditDataDTO);
+            if(bufferedRequest.getServletPath().contains("api")) {
+
+                String auth = bufferedRequest.getHeader("Authorization");
+
+                Long userId = 0L; //If user is not logged in, userId = 0
+
+                if(auth != null ) {
+                    String cleanToken = auth.substring(7);
+
+                    userId = userRetrieverHelper.getUserId(cleanToken);
+                }
+
+                AuditDataDTO auditDataDTO = new AuditDataDTO(httpServletRequest.getPathInfo(), httpServletRequest.getMethod(), bufferedRequest.getRequestBody(), bufferedResponse.getContent(), userId);
+                auditService.createAuditData(auditDataDTO);
+            }
 
             bufferedResponse.finish();
 
@@ -64,6 +78,7 @@ public class AuditFilter extends OncePerRequestFilter {
         }
         return typeSafeRequestMap;
     }*/
+
 
 
     private static final class BufferedRequestWrapper extends HttpServletRequestWrapper {

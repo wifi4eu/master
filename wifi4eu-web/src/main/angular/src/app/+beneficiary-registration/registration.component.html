@@ -7,6 +7,8 @@
                                     [beneficiaryDTO]="beneficiaryDTO"
                                     [nutsDTO]="nutsDTO"
                                     [lausDTO]="lausDTO"
+                                    [allCountries]="allCountries"
+                                    [allMunicipalities]="allMunicipalities"
                                     (onNext)="onNext($event)"
                                     (onBack)="onBack($event)">
             </legal-entity-component>
@@ -42,3 +44,4 @@
 </ux-wizard-steps>
 <success-component [beneficiaryDTO]="beneficiaryDTO" *ngIf="successRegistration"></success-component>
 <failure-component *ngIf="failureRegistration"></failure-component>
+<helpdesk-form-component portal="Beneficiary"></helpdesk-form-component>
