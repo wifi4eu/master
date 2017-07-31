@@ -15,8 +15,7 @@
                         <p class="beneficiaryMayor">{{ 'mayor.details' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="mayorEdit()" class="edit">{{ 'edit.button' | translate }} <i class="fa fa-pencil"
-                                                                                                 aria-hidden="true"></i></a>
+                        <a (click)="mayorEdit()" class="edit">{{ 'edit.button' | translate }} <i class="fa fa-pencil" aria-hidden="true"></i></a>
                     </div>
                 </div>
                 <div class="ui-g">
@@ -45,8 +44,7 @@
                         <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="legalEntityEdit()">{{ 'edit.button' | translate }} <i class="fa fa-pencil"
-                                                                                          aria-hidden="true"></i></a>
+                        <a (click)="legalEntityEdit()">{{ 'edit.button' | translate }} <i class="fa fa-pencil" aria-hidden="true"></i></a>
                     </div>
                 </div>
                 <div class="ui-g">
@@ -73,8 +71,7 @@
                         <p class="beneficiaryMayor">{{ 'representativedetails.title' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
-                        <a (click)="representativeEdit()">{{ 'edit.button' | translate }} <i class="fa fa-pencil"
-                                                                                             aria-hidden="true"></i></a>
+                        <a (click)="representativeEdit()">{{ 'edit.button' | translate }} <i class="fa fa-pencil" aria-hidden="true"></i></a>
                     </div>
                 </div>
                 <div class="ui-g">
@@ -86,10 +83,8 @@
                         <p>{{ 'email.label' | translate }}</p>
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData" *ngIf="beneficiary.representativeDTO.treatment == 'mr'">{{
-                            'treatment.option1' | translate }}</p>
-                        <p class="profileData" *ngIf="beneficiary.representativeDTO.treatment == 'ms'">{{
-                            'treatment.option2' | translate }}</p>
+                        <p class="profileData" *ngIf="beneficiary.representativeDTO.treatment == 'mr'">{{ 'treatment.option1' | translate }}</p>
+                        <p class="profileData" *ngIf="beneficiary.representativeDTO.treatment == 'ms'">{{ 'treatment.option2' | translate }}</p>
                         <p class="profileData">{{beneficiary.representativeDTO.name}}</p>
                         <p class="profileData">{{beneficiary.representativeDTO.municipalityRole}}</p>
                         <p class="profileData">{{beneficiary.representativeDTO.surname}}</p>
@@ -118,8 +113,7 @@
 <!--MODALS BELOW-->
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayPassword" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
-              [closable]="true" [closeOnEscape]="true">
+    <p-dialog [(visible)]="displayPassword" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="true" [closeOnEscape]="true" (onAfterHide)="emptyModal()">
         <p class="beneficiaryMayorModal">{{'beneficiaryProfile.password' | translate }}</p>
         <form (ngSubmit)="changePassword()" #profileForm="ngForm">
             <div class="form-group profileDialog">
@@ -166,8 +160,7 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
-              [closable]="true" [closeOnEscape]="true">
+    <p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="true" [closeOnEscape]="true">
         <form (ngSubmit)="updateLegalEntity()" #editLegalEntityForm="ngForm">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
@@ -185,8 +178,7 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="municipality">{{ 'municipality.label' | translate }}</label>
-                        <input type="text" id="municipality" class="form-control" name="municipality"
-                               ngcontrol="municipality"
+                        <input type="text" id="municipality" class="form-control" name="municipality" ngcontrol="municipality"
                                #municipality="ngModel" [(ngModel)]="municipalityLau.name1" required disabled>
                     </div>
                 </div>
@@ -207,8 +199,7 @@
                 <div class="ui-g-3">
                     <div class="form-group">
                         <label for="addressNum">{{ 'number.label' | translate }}</label>
-                        <input type="number" id="addressNum" class="form-control" name="addressNum"
-                               ngcontrol="addressNum"
+                        <input type="number" id="addressNum" class="form-control" name="addressNum" ngcontrol="addressNum"
                                #addressNum="ngModel" [(ngModel)]="beneficiaryModal.legalEntityDTO.addressNum" required>
                         <div [hidden]="addressNum.valid || addressNum.pristine" class="alert alert-danger">
                             Address number is required
@@ -232,19 +223,19 @@
                 <div class="ui-g-1"></div>
             </div>
             <div class="form-group ui-g">
-                <div class="ui-g-4"></div>
+                <div class="ui-g-3"></div>
                 <div class="ui-g-2" style="text-align: center !important">
                     <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
                         {{ 'cancel.button' | translate }}
                     </button>
                 </div>
+                <div class="ui-g-2" style="text-align: center !important"></div>
                 <div class="ui-g-2" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary publish-button"
-                            [disabled]="!editLegalEntityForm.form.valid">
+                    <button type="submit" class="btn btn-primary publish-button" [disabled]="!editLegalEntityForm.form.valid">
                         {{ 'confirm.button' | translate }}
                     </button>
                 </div>
-                <div class="ui-g-4"></div>
+                <div class="ui-g-3"></div>
             </div>
         </form>
     </p-dialog>
@@ -253,88 +244,8 @@
 
 <div class="container-font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayMayor" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
-              [closable]="false" [closeOnEscape]="false">
-        <button type="button" class="closeButton" (click)="closeModal()">X</button>
+    <p-dialog [(visible)]="displayMayor" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="true" [closeOnEscape]="true">
         <form (ngSubmit)="updateInfo()" #editMayorForm="ngForm">
-            <div class="containerTimeline">
-                <div class="ui-g">
-                    <div class="ui-g-3"></div>
-                    <div class="ui-g-6">
-                        <h3>{{ 'mayordetails.title' | translate }}</h3>
-                    </div>
-                    <div class="ui-g-3"></div>
-                </div>
-                <div class="form-group ui-g">
-                    <div class="ui-g-3"></div>
-                    <div class="ui-g-3">
-                        <label for="treatment">{{ 'treatment.label' | translate }}</label>
-                        <select class="form-control" name="treatment" id="treatment"
-                                ngcontrol="treatment" #treatment="ngModel"
-                                [(ngModel)]="beneficiaryModal.mayorDTO.treatment" required>
-                            <option value="mr">{{ 'treatment.option1' | translate }}</option>
-                            <option value="ms">{{ 'treatment.option2' | translate }}</option>
-                        </select>
-                    </div>
-                    <div class="ui-g-1"></div>
-                </div>
-                <div class="form-group ui-g">
-                    <div class="ui-g-3"></div>
-                    <div class="ui-g-6">
-                        <label for="name">{{ 'name.label' | translate }}</label>
-                        <input class="form-control" type="text" name="name" id="name"
-                               ngcontrol="name" #name="ngModel" [(ngModel)]="beneficiaryModal.mayorDTO.name" required>
-                    </div>
-                    <div class="ui-g-3"></div>
-                </div>
-                <div class="form-group ui-g">
-                    <div class="ui-g-3"></div>
-                    <div class="ui-g-6">
-                        <label for="surname">{{ 'surname.label' | translate }}</label>
-                        <input class="form-control" type="text" name="surname" id="surname"
-                               ngcontrol="surname" #surname="ngModel" [(ngModel)]="beneficiaryModal.mayorDTO.surname"
-                               required>
-                    </div>
-                    <div class="ui-g-3"></div>
-                </div>
-                <div class="form-group ui-g">
-                    <div class="ui-g-3"></div>
-                    <div class="ui-g-6">
-                        <label for="email">{{ 'email.label' | translate }}</label>
-                        <input class="form-control" type="email" name="email" id="email"
-                               ngcontrol="email" #email="ngModel" [(ngModel)]="beneficiaryModal.mayorDTO.email" required
-                               disabled>
-                    </div>
-                    <div class="ui-g-3"></div>
-                </div>
-                <div class="form-group ui-g">
-                    <div class="ui-g-4"></div>
-                    <div class="ui-g-2" style="text-align: center !important">
-                        <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">{{
-                            'cancel.button' | translate }}
-                        </button>
-                    </div>
-                    <div class="ui-g-2" style="text-align: center !important">
-                        <button type="submit" class="btn btn-primary publish-button"
-                                [disabled]="!editMayorForm.form.valid || !mayorEmailMatches">
-                            {{ 'confirm.button' | translate }}
-                        </button>
-                    </div>
-                    <div class="ui-g-4"></div>
-                </div>
-            </div>
-        </form>
-    </p-dialog>
-</div>
-
-
-<div class="container-font" *ngIf="beneficiary.represented">
-    <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayRepresentative" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="false" [closeOnEscape]="false">
-        <button type="button" class="closeButton" (click)="closeModal()">X</button>
-        <form (ngSubmit)="updateInfo()" #editRepresentativeForm="ngForm">
-            <div class="containerTimeline">
                 <div class="ui-g">
                     <div class="ui-g-3"></div>
                     <div class="ui-g-6">
@@ -347,8 +258,77 @@
                     <div class="ui-g-3">
                         <label for="treatment">{{ 'treatment.label' | translate }}</label>
                         <select class="form-control" name="treatment" id="treatment" ngcontrol="treatment"
-                                #treatment="ngModel" [(ngModel)]="beneficiaryModal.representativeDTO.treatment"
-                                required>
+                                #treatment="ngModel" [(ngModel)]="beneficiaryModal.mayorDTO.treatment" required>
+                            <option value="mr">{{ 'treatment.option1' | translate }}</option>
+                            <option value="ms">{{ 'treatment.option2' | translate }}</option>
+                        </select>
+                    </div>
+                    <div class="ui-g-1"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <label for="name">{{ 'name.label' | translate }}</label>
+                        <input class="form-control" type="text" name="name" id="name" ngcontrol="name"
+                               #name="ngModel" [(ngModel)]="beneficiaryModal.mayorDTO.name" required>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <label for="surname">{{ 'surname.label' | translate }}</label>
+                        <input class="form-control" type="text" name="surname" id="surname" ngcontrol="surname"
+                               #surname="ngModel" [(ngModel)]="beneficiaryModal.mayorDTO.surname" required>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <label for="email">{{ 'email.label' | translate }}</label>
+                        <input class="form-control" type="email" name="email" id="email" ngcontrol="email"
+                               #email="ngModel" [(ngModel)]="beneficiaryModal.mayorDTO.email" required disabled>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-2" style="text-align: center !important">
+                        <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+                            {{ 'cancel.button' | translate }}
+                        </button>
+                    </div>
+                    <div class="ui-g-2"></div>
+                    <div class="ui-g-2" style="text-align: center !important">
+                        <button type="submit" class="btn btn-primary publish-button" [disabled]="!editMayorForm.form.valid">
+                            {{ 'confirm.button' | translate }}
+                        </button>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+        </form>
+    </p-dialog>
+</div>
+
+
+<div class="container-font" *ngIf="beneficiary.represented">
+    <div class="ui-g-1"></div>
+    <p-dialog [(visible)]="displayRepresentative" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="true" [closeOnEscape]="true">
+        <form (ngSubmit)="updateInfo()" #editRepresentativeForm="ngForm">
+                <div class="ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-6">
+                        <h3>{{ 'mayordetails.title' | translate }}</h3>
+                    </div>
+                    <div class="ui-g-3"></div>
+                </div>
+                <div class="form-group ui-g">
+                    <div class="ui-g-3"></div>
+                    <div class="ui-g-3">
+                        <label for="treatment">{{ 'treatment.label' | translate }}</label>
+                        <select class="form-control" name="treatment" id="treatment" ngcontrol="treatment"
+                                #treatment="ngModel" [(ngModel)]="beneficiaryModal.representativeDTO.treatment" required>
                             <option value="mr">{{ 'treatment.option1' | translate }}</option>
                             <option value="ms">{{ 'treatment.option2' | translate }}</option>
                         </select>
@@ -389,27 +369,25 @@
                     <div class="ui-g-6">
                         <label for="email">{{ 'email.label' | translate }}</label>
                         <input class="form-control" type="text" name="email" id="email" ngcontrol="email"
-                               #email="ngModel" [(ngModel)]="beneficiaryModal.representativeDTO.email" required
-                               disabled>
+                               #email="ngModel" [(ngModel)]="beneficiaryModal.representativeDTO.email" required disabled>
                     </div>
                     <div class="ui-g-3"></div>
                 </div>
                 <div class="form-group ui-g">
-                    <div class="ui-g-4"></div>
+                    <div class="ui-g-3"></div>
                     <div class="ui-g-2" style="text-align: center !important">
-                        <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">{{
-                            'cancel.button' | translate }}
+                        <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+                            {{ 'cancel.button' | translate }}
                         </button>
                     </div>
+                    <div class="ui-g-2"></div>
                     <div class="ui-g-2" style="text-align: center !important">
-                        <button type="submit" class="btn btn-primary publish-button"
-                                [disabled]="!editRepresentativeForm.form.valid || !mayorEmailMatches">
+                        <button type="submit" class="btn btn-primary publish-button" [disabled]="!editRepresentativeForm.form.valid">
                             {{ 'confirm.button' | translate }}
                         </button>
                     </div>
-                    <div class="ui-g-4"></div>
+                    <div class="ui-g-3"></div>
                 </div>
-            </div>
         </form>
     </p-dialog>
 </div>
