@@ -44,9 +44,9 @@
     </div>
     <div id="map"></div>
     <div class="headerTableVoucher">
-        <p><span class="voucherTitle">{{ 'voucher.dashboard' | translate }}</span> | <span class="voucherSubtitle">{{ 'voucher.simulation' | translate }}</span><a class="downloadData"><i class="fa fa-download" aria-hidden="true"></i> {{'voucher.downloadData' | translate}}</a></p>
+        <p><span class="voucherTitle">{{ 'voucher.dashboard' | translate }}</span> | <span class="voucherSubtitle">{{ 'voucher.simulation' | translate }}</span><a class="downloadData" (click)="mapTable.exportCSV()"><i class="fa fa-download" aria-hidden="true"></i> {{'voucher.downloadData' | translate}}</a></p>
     </div>
-    <p-dataTable [value]="mapTableData" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
+    <p-dataTable #mapTable [value]="mapTableData" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
             <p-column field="name" header="{{ 'country.label' | translate }}" [sortable]="true"></p-column>
             <p-column field="municipalities" header="{{ 'voucher.municipalities' | translate }}" [sortable]="true"></p-column>
             <p-column field="requests" header="{{ 'voucher.request' | translate }}" [sortable]="true"></p-column>
