@@ -14,8 +14,15 @@ export class SupplierRegistrationComponentStep1 {
     private webPattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\/\/([wW][wW][wW]\\.)?))[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)+";
     private isLogoUploaded: boolean = false;
     private logoUrl: FileReader = new FileReader();
-    private logoFile: File;
+    @Input('logoFile') logoFile: File;
     @ViewChild('logoInput') logoInput: any;
+
+    ngOnInit() {
+        if (this.logoFile) {
+            this.isLogoUploaded = true;
+            this.logoUrl.readAsDataURL(this.logoFile);
+        }
+    }
 
     onSubmit(step: number) {
         this.onNext.emit(step);

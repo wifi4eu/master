@@ -20,7 +20,7 @@ export class SupplierRegistrationComponent {
     private allCountries: SelectItem[];
     private allRegions: SelectItem[][];
 
-    private supplierTempLogo: any;
+    private logoFile: any;
 
     constructor(private nutsApi: NutsApi) {
         this.supplierDTO = new SupplierDTOBase();
@@ -108,14 +108,14 @@ export class SupplierRegistrationComponent {
 
     onLogoSubmit(event: any) {
         if (event) {
-            this.supplierTempLogo = event;
+            this.logoFile = event;
             let reader = new FileReader();
             reader.onload = (e) => {
                 this.supplierDTO.logo = reader.result;
             };
             reader.readAsDataURL(event);
         } else {
-            this.supplierTempLogo = null;
+            this.logoFile = null;
         }
     }
 }
