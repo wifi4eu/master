@@ -60,6 +60,9 @@ public class Supplier {
     @Column(name = "LOGO")
     private String logo;
 
+    @Column(name="ABAC_STATUS")
+    private Boolean abacStatus;
+
     /*
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "SUPP_SUPP_NUTS_T", joinColumns = @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id"), inverseJoinColumns = @JoinColumn(name = "nuts_id", referencedColumnName = "nuts_id"))
@@ -69,7 +72,7 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Date createDate, String nutsIds, String logo) {
+    public Supplier(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Date createDate, String nutsIds, String logo, Boolean abacStatus) {
         this.supplierId = supplierId;
         this.name = name;
         this.address = address;
@@ -87,6 +90,7 @@ public class Supplier {
         this.createDate = createDate;
         this.nutsIds = nutsIds;
         this.logo = logo;
+        this.abacStatus = abacStatus;
     }
 
     public Long getSupplierId() {
@@ -223,5 +227,13 @@ public class Supplier {
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public Boolean getAbacStatus() {
+        return abacStatus;
+    }
+
+    public void setAbacStatus(Boolean abacStatus) {
+        this.abacStatus = abacStatus;
     }
 }
