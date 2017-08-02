@@ -189,7 +189,7 @@ public class BeneficiaryService {
     }
 
     public BenPubSupDTO apply(Long beneficiaryId, Long publicationId) {
-        BenPubSupDTO benPubSupDTO = new BenPubSupDTO(null, beneficiaryId, publicationId, false, null, false, false, "", new Date());
+        BenPubSupDTO benPubSupDTO = new BenPubSupDTO(null, beneficiaryId, publicationId, false, null, false, false, "", new Date(), false);
         benPubSupDTO = benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
         // If the 'BenPubSup' has been created correctly, we need to create a new 'Installation' as well.
         if (benPubSupDTO != null) {

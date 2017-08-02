@@ -36,38 +36,26 @@
 					<option *ngFor="let pub of publications; let i = index" value="{{ pub.key }}">
 						{{ pub.value }}
 					</option>
-					
 				</select>
 			</div>
-			<div class="abac--table--results" *ngIf="tableAppliers">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>Beneficiary</th>
-							<th>Supplier</th>
-							<th>Budged Commited</th>
-							<th>Budged Linked</th>
-							<th>Awarded</th>
-							<th>Last Abac Operation Message</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr *ngFor="let applier of tableAppliers">
-							<td>{{ applier.beneficiaryName }}</td>
-							<td *ngIf="applier.supplierName">
-								{{ applier.supplierName }}
-							</td>
-							<td *ngIf="!applier.supplierName">
-								<i>Not selected</i>
-							</td>
-							<td>{{ applier.isBudgedCommited }}</td>
-							<td>{{ applier.isBudgedLinked }}</td>
-							<td>{{ applier.isAwarded }}</td>
-							<td>{{ applier.lastAbacMessage }}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+			<p-dataTable [value]="tableAppliers" *ngIf="tableAppliers">
+				<p-column field="beneficiaryName" header="{{ 'beneficiary.label' | translate }}" [sortable]="false"></p-column>
+				<p-column field="supplierName" header="{{ 'supplier.label' | translate }}" [sortable]="false"></p-column>
+				<p-column field="isBudgedCommited" header="{{ 'isBudgedCommited.label' | translate }}" [sortable]="false"></p-column>
+				<p-column field="isBudgedLinked" header="{{ 'isBudgedLinked.label' | translate }}" [sortable]="false"></p-column>
+				<p-column field="isAwarded" header="{{ 'isAwarded.label' | translate }}" [sortable]="false"></p-column>
+				<p-column field="lastAbacMessage" header="{{ 'lastAbacMessage.label' | translate }}" [sortable]="false"></p-column>
+				<p-column field="abacStatus" header="{{ 'abacStatus.label' | translate }}" [sortable]="false">
+					<template pTemplate="body" let-rowData="rowData">
+						<span *ngIf="rowData">
+							<b class="info-abacStatus">READY</b> <div class="green-abacStatus"></div>
+						</span>
+						<span *ngIf="!rowData">
+							<b class="info-abacStatus">NOT READY</b> <div class="red-abacStatus"></div>
+						</span>
+					</template>
+				</p-column>
+			</p-dataTable>
 		</div>
 	</div>
 	<div class="ui-lg-2"></div>

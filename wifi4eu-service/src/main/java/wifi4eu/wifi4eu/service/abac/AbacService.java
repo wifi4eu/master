@@ -170,6 +170,7 @@ public class AbacService {
             if (publicationAppliers != null && !publicationAppliers.isEmpty()) {
 
                 for (BenPubSupDTO applier : publicationAppliers) {
+                    applier = updateAbacStatus(applier);
                     JsonObject applierJSON = new JsonObject();
                     String beneficiaryName = "";
                     String supplierName = "";
@@ -211,6 +212,7 @@ public class AbacService {
                     applierJSON.addProperty("isBudgedLinked", applier.isBudgetLinked());
                     applierJSON.addProperty("isAwarded", applier.isAwarded());
                     applierJSON.addProperty("lastAbacMessage", applier.getLastAbacMessage());
+                    applierJSON.addProperty("abacStatus", applier.isAbacStatus());
 
                     resultJSON.add(applierJSON);
                 }
@@ -328,6 +330,7 @@ public class AbacService {
                 }
 
                 benPubSub.setLastAbacMessage(message);
+                benPubSub = updateAbacStatus(benPubSub);
 
                 //-- Save new state
                 benPubSub = benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSub)));
@@ -443,6 +446,17 @@ public class AbacService {
 
         _log.info("[F] fillApplierInformation");
         return applierInformation;
+    }
+
+    private BenPubSupDTO updateAbacStatus(BenPubSupDTO benPubSupDTO) {
+        LegalEntityDTO legalEntityDto = legalEntityMapper.toDTO(legalEntityRepository.findOne(benPubSupDTO.getBeneficiaryId()));
+        SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(benPubSupDTO.getSupplierId()));
+        if (legalEntityDto.isAbacStatus() && supplierDTO.isAbacStatus()) {
+            benPubSupDTO.setAbacStatus(true);
+        } else {
+            benPubSupDTO.setAbacStatus(false);
+        }
+        return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
     }
 
 }

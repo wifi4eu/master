@@ -924,3 +924,24 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
     opacity: 0;
     filter: alpha(opacity=0);
 }
+
+.info-abacStatus {
+    display: table-cell;
+    padding-right: 0.7em;
+}
+
+.red-abacStatus {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background: red;
+    display: table-cell;
+}
+
+.green-abacStatus {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background: green;
+    display: table-cell;
+}
