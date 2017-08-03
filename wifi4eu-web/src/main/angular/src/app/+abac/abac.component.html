@@ -40,18 +40,27 @@
 			</div>
 			<p-dataTable [value]="tableAppliers" *ngIf="tableAppliers">
 				<p-column field="beneficiaryName" header="{{ 'beneficiary.label' | translate }}" [sortable]="false"></p-column>
-				<p-column field="supplierName" header="{{ 'supplier.label' | translate }}" [sortable]="false"></p-column>
+				<p-column field="supplierName" header="{{ 'supplier.label' | translate }}" [sortable]="false">
+					<template pTemplate="body" let-applier="rowData">
+						<span *ngIf="applier.supplierName">
+							{{applier.supplierName}}
+						</span>
+						<span *ngIf="!applier.supplierName">
+							<b><i>Not selected</i></b>
+						</span>
+					</template>
+				</p-column>
 				<p-column field="isBudgedCommited" header="{{ 'isBudgedCommited.label' | translate }}" [sortable]="false"></p-column>
 				<p-column field="isBudgedLinked" header="{{ 'isBudgedLinked.label' | translate }}" [sortable]="false"></p-column>
 				<p-column field="isAwarded" header="{{ 'isAwarded.label' | translate }}" [sortable]="false"></p-column>
 				<p-column field="lastAbacMessage" header="{{ 'lastAbacMessage.label' | translate }}" [sortable]="false"></p-column>
 				<p-column field="abacStatus" header="{{ 'abacStatus.label' | translate }}" [sortable]="false">
-					<template pTemplate="body" let-rowData="rowData">
-						<span *ngIf="rowData">
-							<b class="info-abacStatus">READY</b> <div class="green-abacStatus"></div>
+					<template pTemplate="body" let-applier="rowData">
+						<span *ngIf="applier.abacStatus">
+							<div class="green-abacStatus"></div> <b class="info-abacStatus">READY</b>
 						</span>
-						<span *ngIf="!rowData">
-							<b class="info-abacStatus">NOT READY</b> <div class="red-abacStatus"></div>
+						<span *ngIf="!applier.abacStatus">
+							<div class="red-abacStatus"></div> <b class="info-abacStatus">NOT READY</b>
 						</span>
 					</template>
 				</p-column>
