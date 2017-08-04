@@ -195,7 +195,7 @@ public class AbacService {
                         }
                     }
 
-                    if (applier.getSupplierId() > 0) {
+                    if (applier.getSupplierId() != null) {
                         SupplierDTO supplier = supplierMapper.toDTO(supplierRepository.findOne(applier.getSupplierId()));
 
                         if (supplier != null) {
@@ -416,7 +416,7 @@ public class AbacService {
             }
         }
 
-        if (applier.getSupplierId() > 0) {
+        if (applier.getSupplierId() != null) {
             SupplierDTO supplier = supplierMapper.toDTO(supplierRepository.findOne(applier.getSupplierId()));
 
             if (supplier != null) {
@@ -450,6 +450,10 @@ public class AbacService {
 
     private BenPubSupDTO updateAbacStatus(BenPubSupDTO benPubSupDTO) {
         LegalEntityDTO legalEntityDto = legalEntityMapper.toDTO(legalEntityRepository.findOne(benPubSupDTO.getBeneficiaryId()));
+        if (benPubSupDTO.getSupplierId() == null) {
+            benPubSupDTO.setAbacStatus(false);
+            return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
+        }
         SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(benPubSupDTO.getSupplierId()));
         if (legalEntityDto.isAbacStatus() && supplierDTO.isAbacStatus()) {
             benPubSupDTO.setAbacStatus(true);
