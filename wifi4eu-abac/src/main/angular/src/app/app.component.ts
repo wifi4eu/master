@@ -30,6 +30,7 @@ export class AppComponent {
         }
         window.alert(abacResponse['message']);
       }, error => {
+        console.log(error);
         window.alert('Something went wrong');
       }
     );
@@ -49,6 +50,7 @@ export class AppComponent {
             }
             window.alert(abacResponse['message']);
           }, error => {
+            console.log(error);
             window.alert('Something went wrong');
           }
         );
