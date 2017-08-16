@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
+        <artifactId>wifi4eu</artifactId>
         <groupId>wifi4eu.wifi4eu</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <artifactId>wifi4eu</artifactId>
     </parent>
 
     <artifactId>wifi4eu-abac</artifactId>
