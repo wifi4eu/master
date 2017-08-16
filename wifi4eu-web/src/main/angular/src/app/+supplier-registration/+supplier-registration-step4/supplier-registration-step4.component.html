@@ -5,7 +5,6 @@
         <p>{{ 'contact.description' | translate }}</p>
     </div>
 
-
     <hr class="beneficiaryHr marginHr">
 
     <div class="ui-g">
@@ -14,35 +13,26 @@
         </div>
         <div class="ui-g-1 ui-md-1 ui-lg-1">
             <a (click)="editStep(3)">
-                <i class="fa fa-pencil" aria-hidden="true"></i>
-                {{ 'edit.button' | translate }}
-
+                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
             </a>
         </div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'name.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7">
-            <p class="profileData">{{supplierDTO.contactName}}</p>
-        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplierDTO.contactName}}</b></div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'surname.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7">
-            <p class="profileData">{{supplierDTO.contactSurname}}</p>
-        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplierDTO.contactSurname}}</b></div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'phone.number' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7">
-            <p class="profileData">{{supplierDTO.contactPhonePrefix}} {{supplierDTO.contactPhoneNumber}}</p>
-        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplierDTO.contactPhonePrefix}} {{supplierDTO.contactPhoneNumber}}</b></div>
     </div>
-    <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'email.modal' | translate }}</div>
-    <div class="ui-g-12 ui-md-12 ui-lg-7">
-        <p class="profileData">{{supplierDTO.contactEmail}}</p>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'email.modal' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplierDTO.contactEmail}}</b></div>
     </div>
-
 
     <hr class="beneficiaryHr marginHr">
 
@@ -52,39 +42,33 @@
         </div>
         <div class="ui-g-1 ui-md-1 ui-lg-1">
             <a (click)="editStep(1)">
-                <i class="fa fa-pencil" aria-hidden="true"> {{ 'edit.button' | translate }}</i>
+                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
             </a>
         </div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'company.name' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7">
-            <p class="profileData">{{supplierDTO.name}}</p>
-        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplierDTO.name}}</b></div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'legal.address' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7">
-            <p class="profileData">{{supplierDTO.address}}</p>
-        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplierDTO.address}}</b></div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'vat.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7">
-            <p class="profileData">{{supplierDTO.vat}}</p>
-        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplierDTO.vat}}</b></div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'bic.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7">
-            <p class="profileData">{{supplierDTO.bic}}</p>
-        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplierDTO.bic}}</b></div>
     </div>
-    <div class="ui-g" *ngIf="supplierTempLogo">
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'bank.account' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplierDTO.accountNumber}}</b></div>
+    </div>
+    <div class="ui-g" *ngIf="logoUrl">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'logo.label' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7">
-            <img src="{{supplierDataUrlLogo.result}}" alt="logo" height="60">
-        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7"><img src="{{logoUrl.result}}" alt="logo" height="60"></div>
     </div>
 
     <hr class="beneficiaryHr marginHr">
@@ -94,17 +78,23 @@
             <p class="beneficiaryMayor">{{ 'entity.support' | translate }}</p>
         </div>
         <div class="ui-g-1 ui-md-1 ui-lg-1">
-            <a (click)="editStep(2)"><i class="fa fa-pencil" aria-hidden="true"> </i>{{ 'edit.button' |
-                translate }}
-
+            <a (click)="editStep(2)">
+                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
             </a>
         </div>
         <div class="ui-g-1 ui-md-1"></div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">
-            <p class="profileData" *ngFor="let country of nuts0">{{country.name}}</p>
-            <p class="profileData" *ngFor="let region of nuts3">{{region.name}}</p>
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+            <p-tabView *ngIf="nuts0.length > 0">
+                <p-tabPanel *ngFor="let country of nuts0;" [header]="country.name">
+                    <div class="ui-g">
+                        <p-dataTable [value]="nuts3[country.name]" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,30,40,50]">
+                            <p-column field="name" [sortable]="true"></p-column>
+                        </p-dataTable>
+                    </div>
+                </p-tabPanel>
+            </p-tabView>
         </div>
     </div>
 
@@ -115,16 +105,18 @@
     <div class="ui-g" style="text-align: left;">
         <span class="ui-lg-1"></span>
         <div class="ui-g-10 ui-md-10 ui-lg-10">
-            <label class="ui-g-12 ui-md-12 ui-lg-12"></label> <input type="checkbox" [(ngModel)]="legalChecks[0]">
-            {{ 'eu.requirements' | translate }}
+            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_1"><input type="checkbox" id="check_1" [(ngModel)]="legalChecks[0]"> 
+                {{ 'eu.requirements' | translate }}
+            </label>
         </div>
         <div class="ui-lg-1"></div>
     </div>
     <div class="ui-g" style="text-align: left;">
         <span class="ui-lg-1"></span>
         <div class="ui-g-10 ui-md-10 ui-lg-10">
-            <label class="ui-g-12 ui-md-12 ui-lg-12"></label><input type="checkbox" [(ngModel)]="legalChecks[1]">{{
-            'submit.application' | translate }}
+            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_2"><input type="checkbox" id="check_2" [(ngModel)]="legalChecks[1]"> 
+                {{ 'submit.application' | translate }}
+            </label>
         </div>
 
         <div class="ui-lg-1"></div>
@@ -134,9 +126,7 @@
         <div class="ui-g">
             <div class="ui-lg-4 ui-md-4"></div>
             <div class="ui-g-12 ui-md-4 ui-lg-4">
-                <ng2-google-recaptcha class="ui-g-6 marginCaptcha"
-                                      siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu"
-                                      (onCaptchaComplete)="onCaptchaComplete($event)"></ng2-google-recaptcha>
+                <ng2-google-recaptcha class="ui-g-6 marginCaptcha" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu" (onCaptchaComplete)="onCaptchaComplete($event)"></ng2-google-recaptcha>
             </div>
             <div class="ui-lg-4 ui-md-4"></div>
         </div>
@@ -150,8 +140,7 @@
             </button>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn  btn-primary publish-button" (click)="openModal()"
-                    [disabled]="!legalChecks[0] || !legalChecks[1] || !successCaptcha">
+            <button type="submit" class="btn  btn-primary publish-button" (click)="openModal()" [disabled]="!legalChecks[0] || !legalChecks[1] || !successCaptcha">
                 {{ 'confirm.button' | translate}}
             </button>
         </div>
@@ -162,8 +151,7 @@
 </div>
 <!--MODAL-->
 
-<p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
-          [draggable]="false" [closable]="true" [closeOnEscape]="true">
+<p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="true" [closeOnEscape]="true">
     <p class="beneficiaryMayor">{{ 'requirements.head' | translate }}</p>
 
     <p class="requirementSubitle">Requirement 1</p>
@@ -182,8 +170,6 @@
         dolor molestie, bibendum nisl quis, mollis risus. Quisque ullamcorper odio ante, tristique cursus arcu dignissim
         ac. </p>
     <div class="ui-g-2" style="text-align: center !important">
-        <button type="submit" class="btn btn-primary publish-button" (click)="onSubmit()">{{ 'confirm.button' |
-            translate }}
-        </button>
+        <button type="submit" class="btn btn-primary publish-button" (click)="onSubmit()">{{ 'confirm.button' | translate }}</button>
     </div>
 </p-dialog>

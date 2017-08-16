@@ -2,11 +2,9 @@
 <div class="supplier"></div>
 <div class="container">
     <div class="ui-g">
-        <div class="ui-g-4  voucherLabel"><p>{{ 'voucher.totalMember' | translate }}:<b>28</b></p></div> 
+        <div class="ui-g-4  voucherLabel"><p>{{ 'totalCountries' | translate }}: <b>{{totalCountries}}</b></p></div> 
         <div class="ui-g-4  voucherLabel">
-            <div class="ui-g-4">
-                {{ 'country.label' | translate }}
-            </div>
+            <div class="ui-g-4">{{ 'country.label' | translate }}</div>
             <div class="ui-g-8">
                 <p-autoComplete  id="country"
                                     class="form-control autoComplete"
@@ -31,11 +29,9 @@
         </div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-4 voucherLabel"><p>{{ 'voucher.totalRequest' | translate }}:<b>1.827.461</b></p></div>
+        <div class="ui-g-4 voucherLabel"><p>{{ 'voucher.totalRequest' | translate }}: <b>{{totalRequests}}</b></p></div>
         <div class="ui-g-4 voucherLabel">
-            <div class="ui-g-4">
-                {{ 'voucher.amountVoucher' | translate }}
-            </div>
+            <div class="ui-g-4">{{ 'voucher.amountVoucher' | translate }}</div>
             <div class="ui-g-8">
                 <input type="text" name="" class="paddingInput" value="">
             </div>
@@ -48,10 +44,10 @@
     </div>
     <div id="map"></div>
     <div class="headerTableVoucher">
-        <p><span class="voucherTitle">{{ 'voucher.dashboard' | translate }}</span> | <span class="voucherSubtitle">{{ 'voucher.simulation' | translate }}</span><a class="downloadData"><i class="fa fa-download" aria-hidden="true"></i> {{'voucher.downloadData' | translate}}</a></p>
+        <p><span class="voucherTitle">{{ 'voucher.dashboard' | translate }}</span> | <span class="voucherSubtitle">{{ 'voucher.simulation' | translate }}</span><a class="downloadData" (click)="mapTable.exportCSV()"><i class="fa fa-download" aria-hidden="true"></i> {{'voucher.downloadData' | translate}}</a></p>
     </div>
-    <p-dataTable [value]="mapTableData" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
-            <p-column field="name" header="{{ 'memberState' | translate }}" [sortable]="true"></p-column>
+    <p-dataTable #mapTable [value]="mapTableData" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
+            <p-column field="name" header="{{ 'country.label' | translate }}" [sortable]="true"></p-column>
             <p-column field="municipalities" header="{{ 'voucher.municipalities' | translate }}" [sortable]="true"></p-column>
             <p-column field="requests" header="{{ 'voucher.request' | translate }}" [sortable]="true"></p-column>
             <p-column field="awarded" header="{{ 'voucher.assigned' | translate }}" [sortable]="true"></p-column>

@@ -35,7 +35,7 @@
                                 [size]="30"
                                 [minLength]="1"
                                 (completeMethod)="filterNuts($event)"
-                                (onSelect)="selectCountry($event)"
+                                (onSelect)="selectCountry()"
                                 required>
                 </p-autoComplete>
                 <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required</div>
@@ -60,7 +60,6 @@
                                 [suggestions]="lausSuggestions"
                                 [size]="30"
                                 [minLength]="1"
-                                (keyup)="onKeyUp($event)"
                                 (completeMethod)="filterLaus($event)"
                                 required
                                 [disabled]="!isValidNutsSeleted()">
@@ -127,7 +126,7 @@
     <div class="form-group ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="button" class="btn btn-primary cancel-button">{{ 'back.button' | translate }}</button>
+            <a href="#/home"><button type="button" class="btn btn-primary cancel-button">{{ 'back.button' | translate }}</button></a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn btn-primary publish-button" [disabled]="!(isValidNutsLausSelection() && entityForm.form.valid)" (click)="onSubmit(1)">

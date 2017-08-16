@@ -9,17 +9,20 @@ public class AccessPointDTO implements Serializable {
     private String productName;
     private String modelNumber;
     private Long installationId;
+    private Boolean indoor;
 
     public AccessPointDTO() {
     }
 
-    public AccessPointDTO(Long accessPointId, String name, String serialNumber, String productName, String modelNumber, Long installationId) {
+    public AccessPointDTO(Long accessPointId, String name, String serialNumber, String productName, String modelNumber, Long installationId, Boolean indoor) {
+
         this.accessPointId = accessPointId;
         this.name = name;
         this.serialNumber = serialNumber;
         this.productName = productName;
         this.modelNumber = modelNumber;
         this.installationId = installationId;
+        this.indoor = indoor;
     }
 
     public Long getAccessPointId() {
@@ -69,4 +72,14 @@ public class AccessPointDTO implements Serializable {
     public void setInstallationId(Long installationId) {
         this.installationId = installationId;
     }
+
+    public Boolean getIndoor() {
+        return indoor;
+    }
+
+    public void setIndoor(Boolean indoor) {
+        this.indoor = indoor;
+    }
+
+
 }

@@ -12,4 +12,5 @@ import wifi4eu.wifi4eu.entity.security.Role;
 public interface LocationNutsRepository extends CrudRepository<Nuts, Long> {
     Iterable<Nuts> findByLevel(Long level);
     Nuts findByCode(String code);
+    Iterable<Nuts> findByLevelAndCountryCode(Long level, String countryCode);
 }

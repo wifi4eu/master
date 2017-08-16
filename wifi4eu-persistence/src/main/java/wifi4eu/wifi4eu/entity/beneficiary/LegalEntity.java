@@ -38,9 +38,12 @@ public class LegalEntity {
     @Column(name="LEGAL_CHECKBOX_3")
     private Boolean legalCheckbox3;
 
+    @Column(name="ABAC_STATUS")
+    private Boolean abacStatus;
+
     public LegalEntity(){}
 
-    public LegalEntity(Long legalEntityId, String countryCode, String municipalityCode, String address, String addressNum, String postalCode, Boolean legalCheckbox1, Boolean legalCheckbox2, Boolean legalCheckbox3) {
+    public LegalEntity(Long legalEntityId, String countryCode, String municipalityCode, String address, String addressNum, String postalCode, Boolean legalCheckbox1, Boolean legalCheckbox2, Boolean legalCheckbox3, Boolean abacStatus) {
         this.legalEntityId = legalEntityId;
         this.countryCode = countryCode;
         this.municipalityCode = municipalityCode;
@@ -50,6 +53,7 @@ public class LegalEntity {
         this.legalCheckbox1 = legalCheckbox1;
         this.legalCheckbox2 = legalCheckbox2;
         this.legalCheckbox3 = legalCheckbox3;
+        this.abacStatus = abacStatus;
     }
 
     public long getLegalEntityId() {
@@ -122,5 +126,13 @@ public class LegalEntity {
 
     public void setLegalCheckbox3(Boolean legalCheckbox3) {
         this.legalCheckbox3 = legalCheckbox3;
+    }
+
+    public Boolean getAbacStatus() {
+        return abacStatus;
+    }
+
+    public void setAbacStatus(Boolean abacStatus) {
+        this.abacStatus = abacStatus;
     }
 }
