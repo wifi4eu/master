@@ -16,6 +16,7 @@ export class DgConnSecondReportComponent {
     public lineChartData: Array<any> = [];
     public lineChartLabels: Array<any> = [];
     public lineChartType: string = 'line';
+    public tableData;
 
 
     // events
@@ -33,6 +34,7 @@ export class DgConnSecondReportComponent {
         this.totalIssues = [];
         this.pendingIssueArray = [];
         this.getHelpdesk();
+        this.tableData = [];
     }
 
     getHelpdesk() {
@@ -65,6 +67,12 @@ export class DgConnSecondReportComponent {
                     let total = {data: this.totalIssues, label: 'Total Issues'};
                     let pending = {data: this.pendingIssueArray, label: 'Pending Issues'};
                     this.lineChartData = [total, pending];
+                    let item = {
+                        label: countryInfo,
+                        pending: pendingCountArray[countryInfo],
+                        value: countriesCountArray[countryInfo]
+                    };
+                    this.tableData.push(item);
                 }
                 this.dataReady = true;
             },

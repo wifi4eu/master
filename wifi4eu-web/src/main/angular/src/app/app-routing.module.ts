@@ -1,16 +1,14 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
-import {MapComponent} from "./+dgconn-portal/+map/map.component";
 import {ActivationComponent} from "./+activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
-import {DgConnPortalComponent} from "./+dgconn-portal/dgconnportal.component";
-import {DgConnTimelineComponent} from "./+dgconn-portal/+timeline/timeline.component";
-import {DgConnPublicationComponent} from "./+dgconn-portal/+publication/publication.component";
 import {NotFoundComponent} from "./not-found/not-found.component"
 import {AppGuard} from "./app.guard";
+import {AbacComponent} from "./+abac/abac.component";
+import {EcasComponent} from "./+ecas/ecas.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -55,6 +53,12 @@ import {AppGuard} from "./app.guard";
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
             canActivate: [AppGuard]
+        }, {
+            path: 'abac',
+            component: AbacComponent
+        }, {
+            path: 'ecas',
+            component: EcasComponent
         }, {
             path: 'notfound',
             component: NotFoundComponent

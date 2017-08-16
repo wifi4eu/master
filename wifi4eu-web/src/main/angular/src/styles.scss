@@ -453,11 +453,9 @@ body {
 
 .profileData {
   font-weight: bold;
-  //margin-top: 0;
 }
 
 .beneficiaryProfileI {
-  width: 32em;
   height: 3em;
 }
 
@@ -901,6 +899,49 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   padding-left: 1.8em;
 }
 
-.maxWidth{
+.maxWidth {
   max-width: 21em;
+}
+
+.right {
+  float: right;
+}
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.info-abacStatus {
+    display: table-cell;
+    padding-left: 0.7em;
+}
+
+.red-abacStatus {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background: red;
+    display: table-cell;
+}
+
+.green-abacStatus {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background: green;
+    display: table-cell;
 }

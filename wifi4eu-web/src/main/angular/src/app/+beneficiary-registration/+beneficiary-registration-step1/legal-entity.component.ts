@@ -1,11 +1,10 @@
 import {Component, Input, Output, EventEmitter} from "@angular/core";
-import {Http} from "@angular/http";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {LauApi} from "../../shared/swagger/api/LauApi";
 import {NutsApi} from "../../shared/swagger/api/NutsApi";
 import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
-import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
-import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
+import {NutsDTO, NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
+import {LauDTO, LauDTOBase} from "../../shared/swagger/model/LauDTO";
 
 @Component({
     selector: 'legal-entity-component',
@@ -16,31 +15,36 @@ export class EntityComponent {
     @Input('beneficiaryDTO') beneficiaryDTO: BeneficiaryDTOBase;
     @Input('nutsDTO') nutsDTO: NutsDTOBase;
     @Input('lausDTO') lausDTO: NutsDTOBase;
+    @Input('allCountries') allCountries: NutsDTO[];
+    @Input('allMunicipalities') allMunicipalities: NutsDTO[][];
 
     @Output() onNext = new EventEmitter<number>();
 
     private nutsSuggestions: NutsDTOBase[];
     private lausSuggestions: LauDTOBase[];
-    private avaialableNuts: NutsDTOBase[];
-    private availableLaus: LauDTOBase[];
 
     private readyMunicipalities: boolean = false;
     private placeholderMunicipality: string = 'Barcelona';
 
-    constructor(private http: Http, private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService) {
-        this.nutsApi.findNutsByLevel(0).subscribe(
-            nuts => {
-                this.avaialableNuts = nuts;
-            },
-            error => {
-                this.uxService.growl({
-                    severity: 'warn',
-                    summary: 'WARNING',
-                    detail: 'Could not get nuts, ignore this when NG is working in offline mode'
-                });
-                console.log('WARNING: Could not get nuts', error);
-            }
-        );
+    constructor(private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService) {
+    }
+
+    ngOnInit() {
+        if (this.allCountries == null || this.allCountries.length <= 0) {
+            this.nutsApi.findNutsByLevel(0).subscribe(
+                (countries: NutsDTO[]) => {
+                    this.allCountries = [];
+                    this.allMunicipalities = [];
+                    for (let country of countries) {
+                        this.allCountries.push(country);
+                    }
+                }
+            );
+        }
+        if (this.nutsDTO != null && this.lausDTO != null) {
+            this.readyMunicipalities = true;
+            this.placeholderMunicipality = '';
+        }
     }
 
     onSubmit(step: number) {
@@ -64,7 +68,8 @@ export class EntityComponent {
     }
 
     filterNuts(event) {
-        this.nutsSuggestions = this.filterCountries(event.query, this.avaialableNuts);
+        this.nutsSuggestions = this.filterCountries(event.query, this.allCountries);
+        this.checkIfCountryIsWritten();
     }
 
     filterCountries(query, nuts: NutsDTOBase[]) {
@@ -73,36 +78,81 @@ export class EntityComponent {
             let nut = nuts[i];
             nut.name = nut.name.toLowerCase();
             if (nut.name.indexOf(query.toLowerCase()) == 0) {
-                nut.name = nut.name.charAt(0).toUpperCase() + nut.name.slice(1);
+                nut.name = this.formatCountryName(nut.name);
                 filteredNuts.push(nut);
             }
         }
         return filteredNuts;
     }
 
-    selectCountry(event) {
-        this.readyMunicipalities = false;
+    checkIfCountryIsWritten() {
         this.lausDTO = null;
-        this.placeholderMunicipality = 'Loading municipalities...';
-        this.lauApi.findLauByCountryCode(this.nutsDTO.countryCode).subscribe(
-            laus => {
-                this.availableLaus = laus;
+        if (typeof this.nutsDTO === "string") {
+            let name: string = this.nutsDTO;
+            for (let country of this.allCountries) {
+                if (this.formatCountryName(name) == this.formatCountryName(country.name)) {
+                    this.nutsDTO = country;
+                    this.selectCountry();
+                }
+            }
+        }
+    }
+
+    formatCountryName(name) {
+        return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
+    }
+
+    selectCountry() {
+        this.lausDTO = null;
+        if (this.allMunicipalities[this.formatCountryName(this.nutsDTO.name)]) {
+            if (this.allMunicipalities[this.formatCountryName(this.nutsDTO.name)].length > 0) {
                 this.readyMunicipalities = true;
                 this.placeholderMunicipality = '';
-            },
-            error => {
-                this.uxService.growl({
-                    severity: 'warn',
-                    summary: 'WARNING',
-                    detail: 'Could not get LAU, ignore this when NG is working in offline mode'
-                });
-                console.log('WARNING: Could not get nuts', error);
+            } else {
+                this.readyMunicipalities = false;
+                this.placeholderMunicipality = 'Loading municipalities...';
             }
-        );
+        } else {
+            this.allMunicipalities[this.formatCountryName(this.nutsDTO.name)] = [];
+            this.readyMunicipalities = false;
+            this.placeholderMunicipality = 'Loading municipalities...';
+            this.lauApi.findLauByCountryCode(this.nutsDTO.countryCode).subscribe(
+                (laus: LauDTO[]) => {
+                    if (laus.length > 0) {
+                        if (laus[0].countryCode == this.nutsDTO.countryCode) {
+                            this.allMunicipalities[this.formatCountryName(this.nutsDTO.name)] = laus;
+                            this.readyMunicipalities = true;
+                            this.placeholderMunicipality = '';
+                        } else {
+                            for (let country of this.allCountries) {
+                                if (laus[0].countryCode == country.countryCode) {
+                                    this.allMunicipalities[this.formatCountryName(country.name)] = laus;
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        this.uxService.growl({
+                            severity: 'warn',
+                            summary: 'WARNING',
+                            detail: 'Could not find any LAU for this country'
+                        });
+                    }
+                },
+                error => {
+                    this.uxService.growl({
+                        severity: 'warn',
+                        summary: 'WARNING',
+                        detail: 'Could not get LAU, ignore this when NG is working in offline mode'
+                    });
+                    console.log('WARNING: Could not get nuts', error);
+                }
+            );
+        }
     }
 
     filterLaus(event) {
-        this.lausSuggestions = this.filterMunicipalities(event.query, this.availableLaus);
+        this.lausSuggestions = this.filterMunicipalities(event.query, this.allMunicipalities[this.nutsDTO.name]);
     }
 
     filterMunicipalities(query, laus: LauDTOBase[]) {
@@ -120,7 +170,7 @@ export class EntityComponent {
     }
 
     isValidNutsLausSelection() {
-        return ((typeof this.nutsDTO === 'object') || (typeof this.lausDTO === 'object'));
+        return ((typeof this.nutsDTO === 'object') && (typeof this.lausDTO === 'object' && this.lausDTO != null));
     }
 
     isValidNutsSeleted() {

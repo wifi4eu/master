@@ -20,12 +20,16 @@ export class SupplierInstallationComponent {
     private displayModal: boolean;
     private newAccessPoint: AccessPointDTOBase;
     private municipalityName: string = '';
+    private outdoorCount: number;
+    private indoorCount: number;
 
     constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private lauApi: LauApi, private route: ActivatedRoute) {
         this.route.params.subscribe(params => this.installationId = params['id']);
         this.installation = new InstallationDTOBase();
         this.newAccessPoint = new AccessPointDTOBase();
         this.newAccessPoint.installationId = this.installationId;
+        this.outdoorCount = 0;
+        this.indoorCount = 0;
 
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
@@ -34,6 +38,13 @@ export class SupplierInstallationComponent {
             installation => {
                 if (installation != null) {
                     this.installation = installation;
+                    for (let i = 0; i < this.installation.accessPoints.length; i++) {
+                        if (this.installation.accessPoints[i].indoor) {
+                            this.indoorCount++;
+                        } else {
+                            this.outdoorCount++;
+                        }
+                    }
                     this.supplierApi.getLegalEntityByInstallationId(this.installationId).subscribe(
                         (municipality: LegalEntityDTO) => {
                             this.lauApi.findLauByLau2AndCountryCode(municipality.municipalityCode, municipality.countryCode).subscribe(
@@ -63,11 +74,18 @@ export class SupplierInstallationComponent {
 
     createInstallation() {
         this.supplierApi.createAccessPoint(this.newAccessPoint).subscribe(
-            (response : ResponseDTO) => {
+            (response: ResponseDTO) => {
                 this.installation.accessPoints.push(response.data);
                 this.displayModal = false;
                 this.newAccessPoint = new AccessPointDTOBase();
                 this.newAccessPoint.installationId = this.installationId;
+
+                if (response.data.indoor) {
+                    this.indoorCount++;
+                } else {
+                    this.outdoorCount++;
+                }
+
             }, error => {
                 console.log(error);
             }

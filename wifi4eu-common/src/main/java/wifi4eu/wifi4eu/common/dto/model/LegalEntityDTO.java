@@ -15,10 +15,12 @@ public class LegalEntityDTO implements Serializable {
     private boolean legalCheckbox2;
     private boolean legalCheckbox3;
 
+    private boolean abacStatus;
+
     public LegalEntityDTO() {
     }
 
-    public LegalEntityDTO(long legalEntityId, String countryCode, String municipalityCode, String address, String addressNum, String postalCode, boolean legalCheckbox1, boolean legalCheckbox2, boolean legalCheckbox3) {
+    public LegalEntityDTO(long legalEntityId, String countryCode, String municipalityCode, String address, String addressNum, String postalCode, boolean legalCheckbox1, boolean legalCheckbox2, boolean legalCheckbox3, boolean abacStatus) {
         this.legalEntityId = legalEntityId;
         this.countryCode = countryCode;
         this.municipalityCode = municipalityCode;
@@ -28,6 +30,7 @@ public class LegalEntityDTO implements Serializable {
         this.legalCheckbox1 = legalCheckbox1;
         this.legalCheckbox2 = legalCheckbox2;
         this.legalCheckbox3 = legalCheckbox3;
+        this.abacStatus = abacStatus;
     }
 
     public long getLegalEntityId() {
@@ -100,6 +103,14 @@ public class LegalEntityDTO implements Serializable {
 
     public void setLegalCheckbox3(boolean legalCheckbox3) {
         this.legalCheckbox3 = legalCheckbox3;
+    }
+
+    public boolean isAbacStatus() {
+        return abacStatus;
+    }
+
+    public void setAbacStatus(boolean abacStatus) {
+        this.abacStatus = abacStatus;
     }
 
     public String toString() {

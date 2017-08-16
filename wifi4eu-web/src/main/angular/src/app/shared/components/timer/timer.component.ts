@@ -13,11 +13,13 @@ export class TimerComponent {
 
     ngOnInit() {
         this.currentTimestamp = new Date().getTime();
-        Observable.interval(500).map((x) => {
+        let subscription = Observable.interval(500).map((x) => {
         }).subscribe((x) => {
             this.currentTimestamp = new Date().getTime();
             this.toEpoch(this.expirationTimestamp - this.currentTimestamp);
-            this.checkIfFinished(this.expirationTimestamp - this.currentTimestamp);
+            if (this.checkIfFinished(this.expirationTimestamp - this.currentTimestamp)) {
+                subscription.unsubscribe();
+            }
         });
     }
 
@@ -34,6 +36,8 @@ export class TimerComponent {
     checkIfFinished(remaining: number) {
         if (remaining <= 0) {
             this.timerEvent.emit();
+            return true;
         }
+        return false;
     }
 }
