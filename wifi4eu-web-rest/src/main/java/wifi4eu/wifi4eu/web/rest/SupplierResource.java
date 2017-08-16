@@ -55,6 +55,9 @@ public class SupplierResource {
         try {
             _log.info("----> SupplierDTO: " + supplierDTO);
             SupplierDTO resSupplier = supplierService.createSupplier(supplierDTO);
+            if (resSupplier == null) {
+                return new ResponseDTO(false, null, null);
+            }
             return new ResponseDTO(true, resSupplier, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());

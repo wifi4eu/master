@@ -26,9 +26,9 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
 
     @Input('nuts0') nuts0: NutsDTO[];
     @Input('nuts3') nuts3: NutsDTO[][];
-    @Input('supplierTempLogo') supplierTempLogo: any;
+    @Input('logoFile') logoFile: File;
 
-    private supplierDataUrlLogo : FileReader = new FileReader();
+    private logoUrl : FileReader = new FileReader();
 
     constructor(private supplierApi: SupplierApi, private uxService: UxService) {
         this.legalChecks = [false, false];
@@ -43,8 +43,8 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
     }
 
     ngOnInit() {
-        if (this.supplierTempLogo) {
-            this.supplierDataUrlLogo.readAsDataURL(this.supplierTempLogo);
+        if (this.logoFile) {
+            this.logoUrl.readAsDataURL(this.logoFile);
         }
     }
 
@@ -81,8 +81,7 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
                     this.onFailure.emit(true);
                     return;
                 }
-                this.onSuccess.emit(true)
-
+                this.onSuccess.emit(true);
             },
             error => {
                 this.onFailure.emit(true);

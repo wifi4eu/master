@@ -17,6 +17,8 @@
 
     <extraGroupHandler>wifi4eu.wifi4eu.web.util.ecas.RbacEcasExtraGroupHandler</extraGroupHandler>
 
+    <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
+    <assuranceLevel>${ecas.config.assuranceLevel}</assuranceLevel>
     <!--
     <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
     <applicationServer>weblogic</applicationServer>

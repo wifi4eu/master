@@ -5,6 +5,7 @@
         <uxWizardStepCustomContent>
             <supplier-registration-step1-component *ngIf="active[0]"
                                                    [supplierDTO]="supplierDTO"
+                                                   [logoFile]="logoFile"
                                                    (onNext)="onNext($event)"
                                                    (onBack)="onBack($event)"
                                                    (onLogoSubmit)="onLogoSubmit($event)">
@@ -47,7 +48,7 @@
                                                    [nuts0]="nuts0"
                                                    [nuts3]="nuts3"
                                                    [selection]="selection"
-                                                   [supplierTempLogo]="supplierTempLogo"
+                                                   [logoFile]="logoFile"
                                                    (onNext)="onNext($event)"
                                                    (gotoStep)="gotoStep($event)"
                                                    (onSuccess)="onSuccess($event)"

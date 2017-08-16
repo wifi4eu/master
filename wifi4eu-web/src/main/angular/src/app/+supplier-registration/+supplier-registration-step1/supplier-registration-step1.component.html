@@ -92,11 +92,13 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <div class="form-group">
-                        <label class="label floatLeft" for="companyLogo">{{ 'company.logo' | translate }}</label>
+                        <label class="label floatLeft" for="uploadBtn">{{ 'company.logo' | translate }}</label>
                         <br>
-                        <div class="ui-g-12">
-                            <input #logoInput class="ui-g-8" type="file" (change)="onSelect($event)" accept="image/*">
-                            <span class="ui-g-2"></span>
+                        <div class="ui-g-12 left">
+                            <div class="fileUpload btn btn-primary">
+                                <span>{{ 'upload.logo' | translate }}</span>
+                                <input #logoInput id="uploadBtn" type="file" class="upload" (change)="onSelect($event)" accept="image/*" />
+                            </div>
                         </div>
                         <br>
                         <div *ngIf="isLogoUploaded" class="ui-g-12" style="border: 1px solid #D5D5D5; background: #ffffff;">
@@ -113,7 +115,7 @@
             <div class="form-group ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button>
+                    <a href="#/home"><button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button></a>
                 </div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary publish-button" [disabled]="!registrationForm.form.valid">

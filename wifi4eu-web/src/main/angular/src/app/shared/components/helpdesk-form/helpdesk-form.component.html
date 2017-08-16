@@ -36,8 +36,7 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <label for="from" class="label floatLeft">{{ 'helpdeskform.youremail' | translate }}</label><br/>
-                    <input id="from" type="email" name="from" #from="ngModel" class="form-control"
-                           [(ngModel)]="helpdeskIssue.from" required>
+                    <input id="from" type="email" name="from" #from="ngModel" class="form-control" [(ngModel)]="helpdeskIssue.from" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$" required>
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -45,8 +44,7 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <label for="problem_country" class="label floatLeft">{{ 'country.label' | translate }}</label>
-                    <select class="form-control" name="problem_country" id="problem_country"
-                            [(ngModel)]="helpdeskIssue.memberState">
+                    <select class="form-control" name="problem_country" id="problem_country" [(ngModel)]="helpdeskIssue.memberState" required>
                         <option selected disabled>Select</option>
                         <option *ngFor="let nut of nuts" [value]="nut.name">{{nut.name}}</option>
                     </select>

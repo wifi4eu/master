@@ -56,7 +56,6 @@ export class BeneficiaryProfileComponent {
         this.displayLegal = false;
         this.displayMayor = false;
         this.displayRepresentative = false;
-        this.mayorEmailMatches = false;
 
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
@@ -269,17 +268,8 @@ export class BeneficiaryProfileComponent {
                 this.beneficiaryModal.representativeDTO.mayorRepeatEmail = this.beneficiaryModal.representativeDTO.email;
             }
             this.beneficiaryModal.represented = this.beneficiary.represented;
-            this.mayorEmailMatches = true;
         }
     }
-
-    checkIfMayorEmailMatches() {
-        this.mayorEmailMatches = false;
-        if (this.beneficiaryModal.mayorDTO.email === this.beneficiaryModal.mayorDTO.repeatEmail) {
-            this.mayorEmailMatches = true;
-        }
-    }
-
 
     changePassword() {
         let passwords: string = '{"currentPassword" : "' + this.beneficiaryDetails.currentPassword + '", "newPassword" : "' + this.beneficiaryDetails.newPassword + '"}';

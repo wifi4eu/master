@@ -14,11 +14,12 @@ public class BenPubSupDTO implements Serializable {
     private boolean budgetLinked;
     private String lastAbacMessage;
     private Date date;
+    private boolean abacStatus;
 
     public BenPubSupDTO() {
     }
 
-    public BenPubSupDTO(Long benPubSubId, Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId, boolean budgetCommited, boolean budgetLinked, String lastAbacMessage, Date date) {
+    public BenPubSupDTO(Long benPubSubId, Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId, boolean budgetCommited, boolean budgetLinked, String lastAbacMessage, Date date, boolean abacStatus) {
         this.benPubSubId = benPubSubId;
         this.beneficiaryId = beneficiaryId;
         this.publicationId = publicationId;
@@ -28,6 +29,7 @@ public class BenPubSupDTO implements Serializable {
         this.budgetLinked = budgetLinked;
         this.lastAbacMessage = lastAbacMessage;
         this.date = date;
+        this.abacStatus = abacStatus;
     }
 
     public Long getBenPubSubId() {
@@ -88,5 +90,13 @@ public class BenPubSupDTO implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public boolean isAbacStatus() {
+        return abacStatus;
+    }
+
+    public void setAbacStatus(boolean abacStatus) {
+        this.abacStatus = abacStatus;
     }
 }

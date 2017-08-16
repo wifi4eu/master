@@ -24,11 +24,12 @@ public class SupplierDTO implements Serializable {
     private String nutsIds;
     //private List<NutsDTO> nuts;
     private String logo;
+    private boolean abacStatus;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Date createDate, String nutsIds, String logo) {
+    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Date createDate, String nutsIds, String logo, boolean abacStatus) {
         this.supplierId = supplierId;
         this.name = name;
         this.address = address;
@@ -46,6 +47,7 @@ public class SupplierDTO implements Serializable {
         this.createDate = createDate;
         this.nutsIds = nutsIds;
         this.logo = logo;
+        this.abacStatus = abacStatus;
     }
 
     public Long getSupplierId() {
@@ -182,5 +184,13 @@ public class SupplierDTO implements Serializable {
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public boolean isAbacStatus() {
+        return abacStatus;
+    }
+
+    public void setAbacStatus(boolean abacStatus) {
+        this.abacStatus = abacStatus;
     }
 }

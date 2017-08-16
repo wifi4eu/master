@@ -170,6 +170,7 @@ public class AbacService {
             if (publicationAppliers != null && !publicationAppliers.isEmpty()) {
 
                 for (BenPubSupDTO applier : publicationAppliers) {
+                    applier = updateAbacStatus(applier);
                     JsonObject applierJSON = new JsonObject();
                     String beneficiaryName = "";
                     String supplierName = "";
@@ -194,7 +195,7 @@ public class AbacService {
                         }
                     }
 
-                    if (applier.getSupplierId() > 0) {
+                    if (applier.getSupplierId() != null) {
                         SupplierDTO supplier = supplierMapper.toDTO(supplierRepository.findOne(applier.getSupplierId()));
 
                         if (supplier != null) {
@@ -211,6 +212,7 @@ public class AbacService {
                     applierJSON.addProperty("isBudgedLinked", applier.isBudgetLinked());
                     applierJSON.addProperty("isAwarded", applier.isAwarded());
                     applierJSON.addProperty("lastAbacMessage", applier.getLastAbacMessage());
+                    applierJSON.addProperty("abacStatus", applier.isAbacStatus());
 
                     resultJSON.add(applierJSON);
                 }
@@ -241,40 +243,15 @@ public class AbacService {
         result.setSuccess(true);
 
         if (!importedJSON.isJsonNull() && importedJSON.has("publications")) {
-            JsonArray publications = importedJSON.getAsJsonArray("publications");
-
-            for (JsonElement publicationElement : publications) {
-                if (!publicationElement.isJsonNull() && publicationElement.isJsonObject()) {
-                    JsonObject publication = publicationElement.getAsJsonObject();
-
-                    if (!publication.isJsonNull() && publication.has("appliers")) {
-                        JsonArray publicationAppliers = publication.getAsJsonArray("appliers");
-
-                        if (!publicationAppliers.isJsonNull() && publicationAppliers.isJsonArray()) {
-                            for (JsonElement beneficiaryElement : publicationAppliers) {
-                                if (!beneficiaryElement.isJsonNull() && beneficiaryElement.isJsonObject()) {
-                                    JsonObject beneficiary = beneficiaryElement.getAsJsonObject();
-
-                                    if (!beneficiary.isJsonNull() && beneficiary.isJsonObject() && beneficiary.has("benPubSubId")
-                                            && beneficiary.has("status")) {
-                                        long benPubSubId = beneficiary.get("benPubSubId").getAsLong();
-                                        JsonObject status = beneficiary.getAsJsonObject("status");
-
-                                        updateBenPubSubInformation(benPubSubId, status);
-                                    } else {
-                                        return getErrorResponseDTO(500, "Malformed input JSON");
-                                    }
-                                } else {
-                                    return getErrorResponseDTO(500, "Malformed input JSON");
-                                }
-                            }
-                        } else {
-                            return getErrorResponseDTO(500, "Malformed input JSON");
-                        }
-                    } else {
+            if (importedJSON.get("publications").isJsonArray()) {
+                JsonArray publications = importedJSON.getAsJsonArray("publications");
+                for (int i = 0; i < publications.size(); i++) {
+                    if (!parsePublication(publications.get(i))) {
                         return getErrorResponseDTO(500, "Malformed input JSON");
                     }
-                } else {
+                }
+            } else if (importedJSON.get("publications").isJsonObject()) {
+                if (!parsePublication(importedJSON.get("publications"))) {
                     return getErrorResponseDTO(500, "Malformed input JSON");
                 }
             }
@@ -284,6 +261,43 @@ public class AbacService {
 
         _log.info("[F] parseAbacImportJSON");
         return result;
+    }
+
+    private boolean parsePublication(JsonElement publicationElement) {
+        if (!publicationElement.isJsonNull() && publicationElement.isJsonObject()) {
+            JsonObject publication = publicationElement.getAsJsonObject();
+            if (publication.get("appliers").isJsonArray()) {
+                JsonArray publicationAppliers = publication.getAsJsonArray("appliers");
+                for (int i = 0; i < publicationAppliers.size(); i++) {
+                    if (!parsePublicationApplier(publicationAppliers.get(i))) {
+                        return false;
+                    }
+                }
+            } else if (publication.get("appliers").isJsonObject()) {
+                if (!parsePublicationApplier(publication.get("appliers"))) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean parsePublicationApplier(JsonElement beneficiaryElement) {
+        if (!beneficiaryElement.isJsonNull() && beneficiaryElement.isJsonObject()) {
+            JsonObject beneficiary = beneficiaryElement.getAsJsonObject();
+            if (!beneficiary.isJsonNull() && beneficiary.isJsonObject() && beneficiary.has("benPubSubId") && beneficiary.has("status")) {
+                long benPubSubId = beneficiary.get("benPubSubId").getAsLong();
+                JsonObject status = beneficiary.getAsJsonObject("status");
+                updateBenPubSubInformation(benPubSubId, status);
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -328,6 +342,7 @@ public class AbacService {
                 }
 
                 benPubSub.setLastAbacMessage(message);
+                benPubSub = updateAbacStatus(benPubSub);
 
                 //-- Save new state
                 benPubSub = benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSub)));
@@ -413,7 +428,7 @@ public class AbacService {
             }
         }
 
-        if (applier.getSupplierId() > 0) {
+        if (applier.getSupplierId() != null) {
             SupplierDTO supplier = supplierMapper.toDTO(supplierRepository.findOne(applier.getSupplierId()));
 
             if (supplier != null) {
@@ -443,6 +458,21 @@ public class AbacService {
 
         _log.info("[F] fillApplierInformation");
         return applierInformation;
+    }
+
+    private BenPubSupDTO updateAbacStatus(BenPubSupDTO benPubSupDTO) {
+        LegalEntityDTO legalEntityDto = legalEntityMapper.toDTO(legalEntityRepository.findOne(benPubSupDTO.getBeneficiaryId()));
+        if (benPubSupDTO.getSupplierId() == null) {
+            benPubSupDTO.setAbacStatus(false);
+            return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
+        }
+        SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(benPubSupDTO.getSupplierId()));
+        if (legalEntityDto.isAbacStatus() && supplierDTO.isAbacStatus()) {
+            benPubSupDTO.setAbacStatus(true);
+        } else {
+            benPubSupDTO.setAbacStatus(false);
+        }
+        return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
     }
 
 }

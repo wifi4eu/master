@@ -102,7 +102,7 @@
         <ecas.config.renew>false</ecas.config.renew>
         <ecas.config.server.element/>
         <ecas.config.validate.load_test_specific/>
-        <ecas.config.base.url/>
+        <ecas.config.base.url>https://webgate.ec.europa.eu</ecas.config.base.url>
         <ecas.config.strength>PASSWORD</ecas.config.strength>
         <ecas.config.test.certificate.element/>
 
@@ -116,6 +116,8 @@
         <eclipselink.logging.level.sql>FINE</eclipselink.logging.level.sql>
         <eclipselink.logging.parameters>true</eclipselink.logging.parameters>
         <server.address>localhost:8080</server.address>
+        <server.prod.address>wifi4eu.everisdigitalchannels.com</server.prod.address>
+        <server.prod.port>8080</server.prod.port>
 
     </properties>
 
@@ -130,7 +132,7 @@
         <profile>
             <id>PROD</id>
             <properties>
-                <server.address>wifi4eu.everisdigitalchannels.com:8080</server.address>
+                <server.address>${server.prod.address}:${server.prod.port}</server.address>
             </properties>
         </profile>
     </profiles>
@@ -507,6 +509,7 @@
         <dependency>
             <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
             <artifactId>ecas-weblogic-10.3-authprovider</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
