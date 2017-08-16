@@ -34,6 +34,9 @@ export class DgConnVoucherComponent {
     private map: any;
     private externalCountriesData: any;
     private mapTableData;
+    
+    private totalCountries = 0;
+    private totalRequests = 0;
 
     private totalCountries: number;
     private totalRequests: number;
@@ -54,6 +57,7 @@ export class DgConnVoucherComponent {
                     this.mapTableData.push(countryInformation[property]);
                     this.totalRequests += countryInformation[property]["requests"];
                 }
+                this.totalCountries = this.mapTableData.length;
                 this.loadMap();
                 this.totalCountries = this.mapTableData.length;
             }
