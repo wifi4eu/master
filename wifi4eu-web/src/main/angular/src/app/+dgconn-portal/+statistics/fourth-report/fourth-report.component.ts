@@ -1,3 +1,6 @@
+/**
+ * Created by lviverof on 14/06/2017.
+ */
 import {Component} from "@angular/core";
 import {LegalEntityDTO} from "../../../shared/swagger/model/LegalEntityDTO";
 import {BeneficiaryApi} from "../../../shared/swagger/api/BeneficiaryApi";
@@ -8,7 +11,6 @@ export class DgConnFourthReportComponent {
     public doughnutChartLabels: string[] = [];
     public doughnutChartData: number[] = [];
     public doughnutChartType: string = 'doughnut';
-    private dataReady: boolean = false;
     private legalEntities: LegalEntityDTO[];
     public tableData;
 
@@ -23,10 +25,11 @@ export class DgConnFourthReportComponent {
     }
 
     constructor(private beneficiaryApi: BeneficiaryApi) {
-        this.getAwardedMunicipalities();
+        this.getLegalEntities();
     }
 
-    getAwardedMunicipalities() {
+
+    getLegalEntities() {
         this.beneficiaryApi.getAwardedMunicipalities().subscribe(
             data => {
                 this.legalEntities = data;
@@ -54,6 +57,8 @@ export class DgConnFourthReportComponent {
             error => {
                 error => console.log(error);
             }
-        )
+        );
     }
 }
+
+
