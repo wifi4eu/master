@@ -11,6 +11,7 @@ export class DgConnFourthReportComponent {
     public doughnutChartLabels: string[] = [];
     public doughnutChartData: number[] = [];
     public doughnutChartType: string = 'doughnut';
+    public dataReady: boolean;
     private legalEntities: LegalEntityDTO[];
     public tableData;
 
