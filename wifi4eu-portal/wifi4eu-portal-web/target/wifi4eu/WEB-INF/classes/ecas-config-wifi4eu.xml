@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<client-config
+        xmlns="https://ecas.ec.europa.eu/cas/schemas/client-config/ecas/"
+        xmlns:cas="https://ecas.ec.europa.eu/cas/schemas/client-config/cas/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://ecas.ec.europa.eu/cas/schemas/client-config/ecas/ https://ecas.ec.europa.eu/cas/schemas/client-config/ecas/
+                           https://ecas.ec.europa.eu/cas/schemas/client-config/cas/ https://ecas.ec.europa.eu/cas/schemas/client-config/cas/">
+
+    <!--<httpRedirector>eu.europa.ec.digitb3.mvc.web.security.ecas.HttpRedirectorSupport</httpRedirector>-->
+
+    <!--<serviceResolver>eu.cec.digit.ecas.client.resolver.service.ReverseProxyAwareServiceResolver</serviceResolver>-->
+
+
+    <serverContextPath>/wifi4eu</serverContextPath>
+
+    <requestingUserDetails>true</requestingUserDetails>
+
+    <extraGroupHandler>wifi4eu.wifi4eu.web.util.ecas.RbacEcasExtraGroupHandler</extraGroupHandler>
+
+    <ecasBaseUrl>https://webgate.ec.europa.eu</ecasBaseUrl>
+    <assuranceLevel>LOW</assuranceLevel>
+    <!--
+    <ecasBaseUrl>https://webgate.ec.europa.eu</ecasBaseUrl>
+    <applicationServer>weblogic</applicationServer>
+
+    <acceptStrengths>
+        <strength>PASSWORD</strength>
+    </acceptStrengths>
+
+    <cas:renew>false</cas:renew>
+    <assuranceLevel>LOW</assuranceLevel>
+
+
+    
+
+    
+    -->
+
+</client-config>
