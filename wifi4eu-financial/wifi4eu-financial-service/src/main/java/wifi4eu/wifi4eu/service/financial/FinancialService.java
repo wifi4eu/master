@@ -1,36 +1,23 @@
 package wifi4eu.wifi4eu.service.financial;
 
-import javax.servlet.http.HttpServletResponse;
-
-import wifi4eu.wifi4eu.service.eu.europa.ec.budg.abac.legal_entity.v2.LegalEntitySearchRequestType;
-import wifi4eu.wifi4eu.service.eu.europa.ec.budg.abac.legal_entity.v2.LegalEntitySearchType;
-import wifi4eu.wifi4eu.service.eu.europa.ec.budg.abac.legal_entity.v2.LegalEntitySearchRequestType;
-import wifi4eu.wifi4eu.service.eu.europa.ec.budg.abac.legal_entity.service.es.sync.v2.LegalEntity;
-import wifi4eu.wifi4eu.service.eu.europa.ec.budg.abac.legal_entity.v2.*;
-import wifi4eu.wifi4eu.service.eu.europa.ec.budg.abac.message.v1.MessageHeaderType;
-import wifi4eu.wifi4eu.service.eu.europa.ec.budg.abac.search_criterion.v1.*;
+import abac.legal_entity.v2.*;
+import abac.legal_entity.v2.LegalEntitySearchRequestType;
+import abac.legal_entity.service.es.sync.v2.LegalEntity;
+import abac.search_criterion.v1.*;
+import abac.message.v1.MessageHeaderType;
 
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
-import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by lviverof on 29/08/2017.
