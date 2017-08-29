@@ -15,9 +15,9 @@ export class AbacComponent {
 
 
 	constructor(private http: Http) {
-		this.importUrl = 'api/importJson';
-		this.exportUrl = 'api/exportJson';
-		this.exportEnabled = true;
+		this.importUrl = 'api/financial/importJson';
+		this.exportUrl = 'api/financial/exportJson';
+		this.exportEnabled = false;
 	}
 
 	exportJson() {
@@ -43,6 +43,7 @@ export class AbacComponent {
 		if (event && event.target && event.target.files && event.target.files.length == 1) {
 			this.jsonFile = event.target.files['0'];
 			let reader = new FileReader();
+			console.log("IN");
 
 			reader.onload = (e) => {
 				this.http.post(this.importUrl, reader.result).subscribe(
@@ -53,6 +54,7 @@ export class AbacComponent {
 						console.log("OK!");
 						console.log("Response: ", response);
 						console.log(typeof response);
+
 						// }
 						// window.alert(abacResponse['message']);
 					}, error => {
