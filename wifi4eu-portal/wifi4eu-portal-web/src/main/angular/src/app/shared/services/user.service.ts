@@ -36,7 +36,7 @@ export class UserService {
     getUser(user: UserDetails): Observable<Object> {
         let email512 = CryptoJS.SHA512(user.beneficiary.email);
         let password512 = CryptoJS.SHA512(user.beneficiary.password);
-        let token = CryptoJS.SHA512(email512 + password512 + 'Wifi4EU').toString();
+        let token = CryptoJS.SHA512(email512.toString() + password512.toString() + 'Wifi4EU').toString();
 
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});

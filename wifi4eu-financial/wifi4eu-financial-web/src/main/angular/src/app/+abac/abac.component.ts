@@ -1,130 +1,71 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { AbacApi } from "../shared/swagger/api/AbacApi";
-import { CallApi } from "../shared/swagger/api/CallApi";
+import {Component} from '@angular/core';
+import {Http, Response, Headers, RequestOptions} from "@angular/http";
+import {Observable} from "rxjs";
 import * as FileSaver from 'file-saver';
 
+
 @Component({
-	templateUrl: 'abac.component.html',
-	providers: [AbacApi, CallApi]
+	templateUrl: './abac.component.html'
 })
-export class AbacComponent implements OnInit {
-	private isExportSuccessful : boolean = false;
-	private isImportSuccessful : boolean = false;
+export class AbacComponent {
+	private importUrl: string;
+	private exportUrl: string;
+	private exportEnabled: boolean;
+	private jsonFile: File;
 
-	private showExportIcon : boolean = false;
-	private showImportIcon : boolean = false;
 
-	private isExportLoading : boolean = false;
-	private isImportLoading : boolean = false;
-
-	private publications : Array<Object> = [];
-	private tableAppliers : any;
-
-	private exportErrorMessage : string;
-	private importErrorMessage : string;
-
-	constructor(private abacApi : AbacApi, private callApi : CallApi){}
-
-	ngOnInit() {
-		this.getAllPublications();
+	constructor(private http: Http) {
+		this.importUrl = 'api/importJson';
+		this.exportUrl = 'api/exportJson';
+		this.exportEnabled = true;
 	}
 
-	getAllPublications() {
-		this.callApi.allCalls().subscribe(
-            data => {
-				for (let i = 0; i < data.length; i++) {
-					this.publications.push({
-						key: data[i].callId,
-						value: data[i].event
-					});
+	exportJson() {
+		this.http.get(this.exportUrl).subscribe(
+			response => {
+				let abacResponse = JSON.parse(response['_body']);
+				if (abacResponse['success'] & abacResponse!['success']) {
+
+					let blob = new Blob([abacResponse['data']], {type: 'application/json'});
+					FileSaver.saveAs(blob, 'export.json');
 				}
-			},
-            error => {
-				console.log("Failed to present current publications");
-            }
+				window.alert(abacResponse['message']);
+			}, error => {
+				console.log(error);
+				window.alert('Something went wrong');
+			}
 		);
-	}
 
-	onExportButton() {
-		this.isExportLoading = true;
-		this.isExportSuccessful = false;
-		this.showExportIcon = false;
-		this.exportErrorMessage = "";
-
-		this.abacApi.exportAbacInformation().subscribe(
-            data => {
-				if (data['success']) {
-					let blob = new Blob([data['data']], { type: 'application/json' });
-					FileSaver.saveAs(blob, "abacExportInformation.json");  
-
-					this.isExportLoading = false;
-					this.isExportSuccessful = true;
-					this.showExportIcon = true;
-				} else {
-					this.exportErrorMessage = data['error']['errorMessage'];
-					this.isExportLoading = false;
-					this.isExportSuccessful = false;
-					this.showExportIcon = true;
-				}
-            },
-            error => {
-				this.isExportLoading = false;
-				this.isExportSuccessful = false;
-				this.showExportIcon = true;
-				console.log("Could not export. Contact your administrator");
-            }
-        );
-	}
-
-	onPublicationChange(selectedKey) {
-		this.abacApi.getPublicationAppliersInfo(selectedKey).subscribe(
-            data => {
-				console.log(data);
-				if (data && data['success']) {
-					this.tableAppliers = JSON.parse(data['data']);
-					console.log(this.tableAppliers);
-				}
-            },
-            error => {
-				console.log("Error. Contact your administrator");
-            }
-        );
 	}
 
 	onFileSelection(event) {
-		if(event && event.target && event.target.files && event.target.files.length == 1) {
-			this.isImportLoading = true;
-			this.isImportSuccessful = false;
-			this.showImportIcon = false;
-			this.importErrorMessage = "";
-
-			let file : File = event.target.files["0"];
-			
+		this.exportEnabled = false;
+		if (event && event.target && event.target.files && event.target.files.length == 1) {
+			this.jsonFile = event.target.files['0'];
 			let reader = new FileReader();
+
 			reader.onload = (e) => {
-				this.abacApi.importAbacInformation(reader.result).subscribe(
-					data => {
-						if (data['success']) {
-							this.isImportLoading = false;
-							this.isImportSuccessful = true;
-							this.showImportIcon = true;
-						} else {
-							this.importErrorMessage = data['error']['errorMessage'];
-							this.isImportLoading = false;
-							this.isImportSuccessful = false;
-							this.showImportIcon = true;
-						}
-					},
-					error => {
-						this.isImportLoading = false;
-						this.isImportSuccessful = false;
-						this.showImportIcon = true;
+				this.http.post(this.importUrl, reader.result).subscribe(
+					response => {
+						// let abacResponse = JSON.parse(response['_body']);
+						// if (abacResponse['success']) {
+						this.exportEnabled = true;
+						console.log("OK!");
+						console.log("Response: ", response);
+						console.log(typeof response);
+						// }
+						// window.alert(abacResponse['message']);
+					}, error => {
+						console.log(error);
+						window.alert('Something went wrong');
+						console.log("Crash 2");
 					}
 				);
-            };
-
-			reader.readAsText(file);
+			};
+			reader.readAsText(this.jsonFile);
 		}
 	}
-
 }
+
+
+

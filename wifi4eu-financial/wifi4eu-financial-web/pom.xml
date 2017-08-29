@@ -84,7 +84,7 @@
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
                                         <argument>/c</argument>
-                                        <argument>"ng build --base-href /wifi4eu/"</argument>
+                                        <argument>"ng build --base-href /wifi4eu-financial/"</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -97,7 +97,7 @@
 
 
     <build>
-        <finalName>wifi4eu</finalName>
+        <finalName>wifi4eu-financial</finalName>
         <plugins>
             <plugin>
                 <groupId>io.swagger</groupId>
@@ -110,7 +110,8 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${basedir}/../wifi4eu-financial-web-rest/target/generated-sources/swagger/swagger.json
+                            <inputSpec>
+                                ${basedir}/../wifi4eu-financial-web-rest/target/generated-sources/swagger/swagger.json
                             </inputSpec>
                             <language>wifi4eu.wifi4eu.codegen.TypescriptClientCodegen</language>
                             <output>${basedir}/src/main/angular/src/app/shared/swagger</output>
