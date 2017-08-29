@@ -110,6 +110,11 @@
         <artifactId>wifi4eu-service</artifactId>
         <version>${project.version}</version>        
       </dependency>
+      <dependency>
+          <groupId>wifi4eu.wifi4eu</groupId>
+          <artifactId>wifi4eu-financial-service</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+      </dependency>
 
   </dependencies>
 

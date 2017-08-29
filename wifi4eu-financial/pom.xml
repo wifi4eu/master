@@ -17,9 +17,9 @@
         <artifactId>wifi4eu</artifactId>
     </parent>
 
-    <properties>
-        <jndi.datasource.name>wififoreu_financial</jndi.datasource.name>
-    </properties>
+    <!--<properties>-->
+    <!--<jndi.datasource.name>wififoreu_financial</jndi.datasource.name>-->
+    <!--</properties>-->
 
     <modules>
         <module>wifi4eu-financial-persistence</module>
@@ -28,7 +28,7 @@
         <module>wifi4eu-financial-web-rest</module>
         <module>wifi4eu-financial-web</module>
         <module>wifi4eu-financial-ear</module>
-        <module>wifi4eu-abac</module>
+
     </modules>
 
 </project>
