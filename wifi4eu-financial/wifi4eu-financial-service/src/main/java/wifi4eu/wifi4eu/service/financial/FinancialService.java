@@ -1,10 +1,10 @@
 package wifi4eu.wifi4eu.service.financial;
 
-import abac.legal_entity.v2.*;
-import abac.legal_entity.v2.LegalEntitySearchRequestType;
-import abac.legal_entity.service.es.sync.v2.LegalEntity;
-import abac.search_criterion.v1.*;
-import abac.message.v1.MessageHeaderType;
+import eu.europa.ec.budg.abac.legal_entity.v2.LegalEntitySearchCriteriaType;
+import eu.europa.ec.budg.abac.legal_entity.v2.LegalEntitySearchRequestType;
+import eu.europa.ec.budg.abac.legal_entity.service.es.sync.v2.LegalEntity;
+import eu.europa.ec.budg.abac.legal_entity.v2.LegalEntitySearchResponseType;
+import eu.europa.ec.budg.abac.message.v1.MessageHeaderType;
 
 
 import org.json.JSONArray;
@@ -18,6 +18,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 
 import org.springframework.stereotype.Service;
+import eu.europa.ec.budg.abac.search_criterion.v1.*;
 
 /**
  * Created by lviverof on 29/08/2017.

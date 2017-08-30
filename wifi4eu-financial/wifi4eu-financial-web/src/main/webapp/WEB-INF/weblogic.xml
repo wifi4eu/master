@@ -18,7 +18,7 @@
     <debug>true</debug>
         <compress-html-template>true</compress-html-template>
         <optimize-java-expression>true</optimize-java-expression>
-      
+
         <precompile>true</precompile>
         <precompile-continue>true</precompile-continue>
         <backward-compatible>false</backward-compatible>

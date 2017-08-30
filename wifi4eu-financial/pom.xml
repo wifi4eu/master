@@ -17,9 +17,9 @@
         <artifactId>wifi4eu</artifactId>
     </parent>
 
-    <!--<properties>-->
-    <!--<jndi.datasource.name>wififoreu_financial</jndi.datasource.name>-->
-    <!--</properties>-->
+    <properties>
+    <jndi.datasource.name>wififoreu_financial</jndi.datasource.name>
+    </properties>
 
     <modules>
         <module>wifi4eu-financial-persistence</module>
