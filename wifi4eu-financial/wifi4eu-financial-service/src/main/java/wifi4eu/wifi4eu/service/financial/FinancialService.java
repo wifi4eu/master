@@ -31,29 +31,13 @@ import eu.europa.ec.budg.abac.search_criterion.v1.*;
 public class FinancialService {
 
 
-    public String importJson(String jsonStringFile) {
+    public boolean importJson(String jsonStringFile) {
         System.out.println("Start Import JSON 2");
         JSONObject json = new JSONObject(jsonStringFile);
-//        if (!checkJsonFileFormat(json)) {
-//            return new ResponseAbac(false, null, "The JSON file you imported doesn't have the correct format.");
-//        }
-        String xml = XML.toString(json);
-        File file = new File("C:\\test-abac.xml");
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            out.write(xml.getBytes());
-            out.flush();
-            out.close();
-        } catch (java.io.IOException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-//            return new ResponseAbac(true, e.getMessage(), "Something went wrong during the import process.");
+        if (!checkJsonFileFormat(json)) {
+            return false;
         }
-//        return new ResponseAbac(true, xml, "Import succesful!");
-        return "{\"version\":\"0.0.1\",\"createTime\":1503299572754,\"publications\":[{\"publicationId\":1701,\"appliers\":[{\"benPubSubId\":11701,\"beneficiary\":{\"mayorId\":7251,\"treatment\":\"ms\",\"name\":\"e\",\"surname\":\"e\",\"email\":\"priscilla.p.barros@gmail.com\",\"legalEntity\":{\"legalEntityId\":7251,\"countryCode\":\"ES\",\"municipalityCode\":\"01022\",\"address\":\"e\",\"addressNum\":\"1\",\"postalCode\":\"122\"},\"user\":{\"userId\":7253,\"email\":\"priscilla.p.barros@gmail.com\",\"createDate\":1501834958000,\"userType\":2,\"userTypeId\":7252}},\"supplier\":false,\"status\":{\"budgetCommited\":false,\"budgedLinked\":false,\"approved\":false}}]}]}";
+        return true;
     }
 
     public String exportJson() {
@@ -157,19 +141,266 @@ public class FinancialService {
 
     public boolean checkJsonFileFormat(JSONObject json) {
         try {
-            boolean correct = true;
             JSONArray publications = json.getJSONArray("publications");
             for (int i = 0; i < publications.length(); i++) {
                 JSONObject publication = publications.getJSONObject(i);
                 JSONArray appliers = publication.getJSONArray("appliers");
                 for (int j = 0; j < appliers.length(); j++) {
                     JSONObject applier = appliers.getJSONObject(j);
-                    if (!applier.has("benPubSubId") || !applier.has("beneficiary") || !applier.has("supplier") || !applier.has("status")) {
-                        correct = false;
+                    if (applier.has("benPubSubId")) {
+                        if (applier.get("benPubSubId").toString() == null || applier.get("benPubSubId").toString().trim().isEmpty()) {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                    if (applier.has("beneficiary")) {
+                        JSONObject benef = applier.getJSONObject("beneficiary");
+                        if (benef.has("mayorId")) {
+                            if (benef.get("mayorId") == null || benef.get("mayorId").toString().trim().isEmpty()) {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                        if (benef.has("treatment")) {
+                            if (benef.get("treatment") == null || benef.get("treatment").toString().trim().isEmpty()) {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                        if (benef.has("name")) {
+                            if (benef.get("name") == null || benef.get("name").toString().trim().isEmpty()) {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                        if (benef.has("surname")) {
+                            if (benef.get("surname") == null || benef.get("surname").toString().trim().isEmpty()) {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                        if (benef.has("email")) {
+                            if (benef.get("email") == null || benef.get("email").toString().trim().isEmpty()) {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                        if (benef.has("legalEntity")) {
+                            JSONObject entity = benef.getJSONObject("legalEntity");
+                            if (entity.has("legalEntityId")) {
+                                if (entity.get("legalEntityId") == null || entity.get("legalEntityId").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (entity.has("countryCode")) {
+                                if (entity.get("countryCode") == null || entity.get("countryCode").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (entity.has("municipalityCode")) {
+                                if (entity.get("municipalityCode") == null || entity.get("municipalityCode").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (entity.has("address")) {
+                                if (entity.get("address") == null || entity.get("address").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (entity.has("addressNum")) {
+                                if (entity.get("addressNum") == null || entity.get("addressNum").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (entity.has("postalCode")) {
+                                if (entity.get("postalCode") == null || entity.get("postalCode").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                        if (benef.has("user")) {
+                            JSONObject user = benef.getJSONObject("user");
+                            if (user.has("userId")) {
+                                if (user.get("userId") == null || user.get("userId").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (user.has("email")) {
+                                if (user.get("email") == null || user.get("email").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (user.has("createDate")) {
+                                if (user.get("createDate") == null || user.get("createDate").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (user.has("userType")) {
+                                if (user.get("userType") == null || user.get("userType").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (user.has("userTypeId")) {
+                                if (user.get("userTypeId") == null || user.get("userTypeId").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                    if (applier.has("supplier")) {
+                        if (!applier.isNull("supplier")) {
+                            JSONObject supplier = applier.getJSONObject("supplier");
+                            if (supplier.has("supplierId")) {
+                                if (supplier.get("supplierId") == null || supplier.get("supplierId").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (supplier.has("name")) {
+                                if (supplier.get("name") == null || supplier.get("name").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (supplier.has("address")) {
+                                if (supplier.get("address") == null || supplier.get("address").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (supplier.has("vat")) {
+                                if (supplier.get("vat") == null || supplier.get("vat").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (supplier.has("bic")) {
+                                if (supplier.get("bic") == null || supplier.get("bic").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (supplier.has("accountNumber")) {
+                                if (supplier.get("accountNumber") == null || supplier.get("accountNumber").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (supplier.has("contactName")) {
+                                if (supplier.get("contactName") == null || supplier.get("contactName").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (supplier.has("contactSurname")) {
+                                if (supplier.get("contactSurname") == null || supplier.get("contactSurname").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (supplier.has("contactPhonePrefix")) {
+                                if (supplier.get("contactPhonePrefix") == null || supplier.get("contactPhonePrefix").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (supplier.has("contactPhoneNumber")) {
+                                if (supplier.get("contactPhoneNumber") == null || supplier.get("contactPhoneNumber").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (supplier.has("contactEmail")) {
+                                if (supplier.get("contactEmail") == null || supplier.get("contactEmail").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                            if (supplier.has("nutsIds")) {
+                                if (supplier.get("nutsIds") == null || supplier.get("nutsIds").toString().trim().isEmpty()) {
+                                    return false;
+                                }
+                            } else {
+                                return false;
+                            }
+                        }
+                    } else {
+                        return false;
+                    }
+                    if (applier.has("status")) {
+                        JSONObject status = applier.getJSONObject("status");
+                        if (status.has("budgetCommited")) {
+                            if (status.get("budgetCommited") == null || status.get("budgetCommited").toString().trim().isEmpty()) {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                        if (status.has("budgetLinked")) {
+                            if (status.get("budgetLinked") == null || status.get("budgetLinked").toString().trim().isEmpty()) {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                        if (status.has("approved")) {
+                            if (status.get("approved") == null || status.get("approved").toString().trim().isEmpty()) {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
                     }
                 }
             }
-            return correct;
+            return true;
         } catch (JSONException e) {
             return false;
         }

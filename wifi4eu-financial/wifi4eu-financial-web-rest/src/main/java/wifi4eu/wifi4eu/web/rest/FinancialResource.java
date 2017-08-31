@@ -30,7 +30,7 @@ public class FinancialResource {
     @ApiOperation(value = "Import JSON file.")
     @RequestMapping(value = "/importJson", method = RequestMethod.POST, produces = "application/JSON")
     @ResponseBody
-    public String importJson(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
+    public ResponseDTO importJson(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
         _log.info("importJson");
         return financialService.importJson(jsonStringFile);
     }
