@@ -18,7 +18,8 @@
     </parent>
 
     <properties>
-    <jndi.datasource.name>wififoreu_financial</jndi.datasource.name>
+        <app.context.root>/wifi4eu-financial</app.context.root>
+        <!--<jndi.datasource.name>wififoreu-financial</jndi.datasource.name>-->
     </properties>
 
     <modules>
