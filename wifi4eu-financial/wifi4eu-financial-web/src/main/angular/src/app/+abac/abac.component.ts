@@ -54,7 +54,7 @@ export class AbacComponent {
             			console.log("OK");
             			console.log(response);
 					}, error => {
-            			console.log("pringao");
+            			console.log("Error");
             			console.log(error);
 					}
 				);
