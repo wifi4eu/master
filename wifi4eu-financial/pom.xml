@@ -19,7 +19,7 @@
 
     <properties>
         <app.context.root>/wifi4eu-financial</app.context.root>
-        <!--<jndi.datasource.name>wififoreu-financial</jndi.datasource.name>-->
+        <jndi.datasource.name>wififoreu-financial</jndi.datasource.name>
     </properties>
 
     <modules>
