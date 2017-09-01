@@ -16,9 +16,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import eu.europa.ec.budg.abac.search_criterion.v1.*;
+import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
+import wifi4eu.wifi4eu.common.dto.model.CallDTO;
+import wifi4eu.wifi4eu.mapper.call.CallMapper;
+import wifi4eu.wifi4eu.repository.call.CallRepository;
 
 /**
  * Created by lviverof on 29/08/2017.
@@ -29,14 +35,19 @@ import eu.europa.ec.budg.abac.search_criterion.v1.*;
 
 @Service
 public class FinancialService {
+    @Autowired
+    CallRepository callRepository;
 
+    @Autowired
+    CallMapper callMapper;
 
     public boolean importJson(String jsonStringFile) {
-        System.out.println("Start Import JSON 2");
+        System.out.println("Start Import JSON");
         JSONObject json = new JSONObject(jsonStringFile);
         if (!checkJsonFileFormat(json)) {
             return false;
         }
+        uploadDataToDB(json);
         return true;
     }
 
@@ -282,8 +293,8 @@ public class FinancialService {
                         return false;
                     }
                     if (applier.has("supplier")) {
-                        if (!applier.isNull("supplier")) {
-                            JSONObject supplier = applier.getJSONObject("supplier");
+                        JSONObject supplier = applier.getJSONObject("supplier");
+                        if (supplier.length() > 0) {
                             if (supplier.has("supplierId")) {
                                 if (supplier.get("supplierId") == null || supplier.get("supplierId").toString().trim().isEmpty()) {
                                     return false;
@@ -381,8 +392,8 @@ public class FinancialService {
                         } else {
                             return false;
                         }
-                        if (status.has("budgetLinked")) {
-                            if (status.get("budgetLinked") == null || status.get("budgetLinked").toString().trim().isEmpty()) {
+                        if (status.has("budgedLinked")) {
+                            if (status.get("budgedLinked") == null || status.get("budgedLinked").toString().trim().isEmpty()) {
                                 return false;
                             }
                         } else {
@@ -402,6 +413,26 @@ public class FinancialService {
             }
             return true;
         } catch (JSONException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean uploadDataToDB(JSONObject json) {
+        try {
+            JSONArray publications = json.getJSONArray("publications");
+            for (int i = 0; i < publications.length(); i++) {
+                JSONObject publication = publications.getJSONObject(i);
+                CallDTO callDTO = new CallDTO();
+                callDTO.setCallId(publication.getLong("publicationId"));
+                callDTO.setEvent("JSON Test");
+                callDTO.setStartDate(new Date().getTime() /  1000);
+                callDTO.setEndDate(new Date().getTime() / 1000 + 1000);
+                callMapper.toDTO(callRepository.save(callMapper.toEntity(callDTO)));
+            }
+            return true;
+        } catch (JSONException e) {
+            System.err.println(e.getMessage());
             return false;
         }
     }

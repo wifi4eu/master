@@ -3,6 +3,7 @@ import {Http, Response, Headers, RequestOptions} from "@angular/http";
 import {Observable} from "rxjs";
 import * as FileSaver from 'file-saver';
 import {FinancialApi} from "../shared/swagger/api/FinancialApi";
+import {ResponseDTO} from "../shared/swagger/model/ResponseDTO";
 
 
 @Component({
@@ -45,17 +46,20 @@ export class AbacComponent {
         if (event && event.target && event.target.files && event.target.files.length == 1) {
             this.jsonFile = event.target.files['0'];
             let reader = new FileReader();
-            console.log("IN");
 
             reader.onload = (e) => {
             	this.financialApi.importJson(reader.result).subscribe(
-            		response => {
-                        this.exportEnabled = true;
-            			console.log("OK");
-            			console.log(response);
+					(response : ResponseDTO) => {
+						if (response.success) {
+                            this.exportEnabled = true;
+                            window.alert("Import succesful!");
+                        } else {
+                            window.alert("Import failed!");
+						}
 					}, error => {
             			console.log("Error");
             			console.log(error);
+                        window.alert("Import failed! Make sure that the file you are uploading has the correct format.");
 					}
 				);
             };

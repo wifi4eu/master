@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.financial.FinancialService;
 
@@ -32,7 +33,11 @@ public class FinancialResource {
     @ResponseBody
     public ResponseDTO importJson(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
         _log.info("importJson");
-        return financialService.importJson(jsonStringFile);
+        if (financialService.importJson(jsonStringFile)) {
+            return new ResponseDTO(true, "Import succesful!", null);
+        } else {
+            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Import failed"));
+        }
     }
 
     @ApiOperation(value = "Export JSON file.")
