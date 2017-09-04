@@ -21,10 +21,20 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import eu.europa.ec.budg.abac.search_criterion.v1.*;
-import wifi4eu.wifi4eu.common.dto.model.BenPubSupDTO;
-import wifi4eu.wifi4eu.common.dto.model.CallDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.security.UserDTO;
+import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
+import wifi4eu.wifi4eu.mapper.beneficiary.MayorMapper;
 import wifi4eu.wifi4eu.mapper.call.CallMapper;
+import wifi4eu.wifi4eu.mapper.security.UserMapper;
+import wifi4eu.wifi4eu.mapper.supplier.BenPubSupMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
+import wifi4eu.wifi4eu.repository.beneficiary.LegalEntityRepository;
+import wifi4eu.wifi4eu.repository.beneficiary.MayorRepository;
 import wifi4eu.wifi4eu.repository.call.CallRepository;
+import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
+import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
+import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 
 /**
  * Created by lviverof on 29/08/2017.
@@ -40,6 +50,36 @@ public class FinancialService {
 
     @Autowired
     CallMapper callMapper;
+
+    @Autowired
+    LegalEntityRepository legalEntityRepository;
+
+    @Autowired
+    LegalEntityMapper legalEntityMapper;
+
+    @Autowired
+    MayorRepository mayorRepository;
+
+    @Autowired
+    MayorMapper mayorMapper;
+
+    @Autowired
+    SecurityUserRepository userRepository;
+
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    SupplierRepository supplierRepository;
+
+    @Autowired
+    SupplierMapper supplierMapper;
+
+    @Autowired
+    BenPubSupRepository benPubSupRepository;
+
+    @Autowired
+    BenPubSupMapper benPubSupMapper;
 
     public boolean importJson(String jsonStringFile) {
         System.out.println("Start Import JSON");
@@ -428,7 +468,66 @@ public class FinancialService {
                 callDTO.setEvent("JSON Test");
                 callDTO.setStartDate(new Date().getTime() /  1000);
                 callDTO.setEndDate(new Date().getTime() / 1000 + 1000);
-                callMapper.toDTO(callRepository.save(callMapper.toEntity(callDTO)));
+                callRepository.save(callMapper.toEntity(callDTO));
+                JSONArray appliers = publication.getJSONArray("appliers");
+                for (int j = 0; j < appliers.length(); j++) {
+                    JSONObject applier = appliers.getJSONObject(j);
+                    BenPubSupDTO benPubSupDTO = new BenPubSupDTO();
+                    benPubSupDTO.setBenPubSubId(applier.getLong("benPubSubId"));
+                    JSONObject benef = applier.getJSONObject("beneficiary");
+                    MayorDTO mayorDTO = new MayorDTO();
+                    mayorDTO.setMayorId(benef.getLong("mayorId"));
+                    mayorDTO.setTreatment(benef.getString("treatment"));
+                    mayorDTO.setName(benef.getString("name"));
+                    mayorDTO.setSurname(benef.getString("surname"));
+                    mayorDTO.setEmail(benef.getString("email"));
+                    JSONObject legalEntity = benef.getJSONObject("legalEntity");
+                    LegalEntityDTO legalEntityDTO = new LegalEntityDTO();
+                    legalEntityDTO.setLegalEntityId(legalEntity.getInt("legalEntityId"));
+                    legalEntityDTO.setCountryCode(legalEntity.getString("countryCode"));
+                    legalEntityDTO.setMunicipalityCode(legalEntity.getString("municipalityCode"));
+                    legalEntityDTO.setAddress(legalEntity.getString("address"));
+                    legalEntityDTO.setAddressNum(legalEntity.getString("addressNum"));
+                    legalEntityDTO.setPostalCode(legalEntity.getString("postalCode"));
+                    legalEntityRepository.save(legalEntityMapper.toEntity(legalEntityDTO));
+                    mayorDTO.setLegalEntityId(legalEntityDTO.getLegalEntityId());
+                    mayorRepository.save(mayorMapper.toEntity(mayorDTO));
+                    JSONObject user = benef.getJSONObject("user");
+                    UserDTO userDTO = new UserDTO();
+                    userDTO.setUserId(user.getLong("userId"));
+                    userDTO.setEmail(user.getString("email"));
+                    userDTO.setCreateDate(new Date(user.getLong("createDate")));
+                    userDTO.setUserType(user.getLong("userType"));
+                    userDTO.setUserTypeId(user.getLong("userTypeId"));
+                    userRepository.save(userMapper.toEntity(userDTO));
+                    JSONObject supplier = applier.getJSONObject("supplier");
+                    SupplierDTO supplierDTO = new SupplierDTO();
+                    supplierDTO.setSupplierId(supplier.getLong("supplierId"));
+                    supplierDTO.setName(supplier.getString("name"));
+                    supplierDTO.setAddress(supplier.getString("address"));
+                    supplierDTO.setVat(supplier.getString("vat"));
+                    supplierDTO.setBic(supplier.getString("bic"));
+                    supplierDTO.setAccountNumber(supplier.getString("accountNumber"));
+                    supplierDTO.setContactName(supplier.getString("contactName"));
+                    supplierDTO.setContactSurname(supplier.getString("contactSurname"));
+                    supplierDTO.setContactPhonePrefix(supplier.getString("contactPhonePrefix"));
+                    supplierDTO.setContactPhoneNumber(supplier.getString("contactPhoneNumber"));
+                    supplierDTO.setContactEmail(supplier.getString("contactEmail"));
+                    supplierDTO.setNutsIds(supplier.getString("nutsIds"));
+                    supplierRepository.save(supplierMapper.toEntity(supplierDTO));
+                    JSONObject benPubSup = applier.getJSONObject("status");
+                    benPubSupDTO.setBudgetCommited(benPubSup.getBoolean("budgetCommited"));
+                    benPubSupDTO.setBudgetLinked(benPubSup.getBoolean("budgedLinked"));
+                    benPubSupDTO.setAwarded(benPubSup.getBoolean("approved"));
+                    benPubSupDTO.setBeneficiaryId(legalEntity.getLong("legalEntityId"));
+                    benPubSupDTO.setPublicationId(publication.getLong("publicationId"));
+                    benPubSupDTO.setSupplierId(supplier.getLong("supplierId"));
+                    benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO));
+
+
+
+
+                }
             }
             return true;
         } catch (JSONException e) {
