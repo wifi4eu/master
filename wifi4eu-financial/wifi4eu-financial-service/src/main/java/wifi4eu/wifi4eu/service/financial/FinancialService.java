@@ -523,10 +523,6 @@ public class FinancialService {
                     benPubSupDTO.setPublicationId(publication.getLong("publicationId"));
                     benPubSupDTO.setSupplierId(supplier.getLong("supplierId"));
                     benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO));
-
-
-
-
                 }
             }
             return true;
