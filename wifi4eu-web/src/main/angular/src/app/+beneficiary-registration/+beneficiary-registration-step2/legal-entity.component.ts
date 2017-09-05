@@ -19,6 +19,7 @@ export class EntityComponent {
     @Input('allMunicipalities') allMunicipalities: NutsDTO[][];
 
     @Output() onNext = new EventEmitter<number>();
+    @Output() onBack = new EventEmitter<number>();
 
     private nutsSuggestions: NutsDTOBase[];
     private lausSuggestions: LauDTOBase[];
@@ -167,6 +168,9 @@ export class EntityComponent {
             }
         }
         return filteredLaus;
+    }
+    stepBack(step: number) {
+        this.onBack.emit(step);
     }
 
     isValidNutsLausSelection() {

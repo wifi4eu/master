@@ -17,24 +17,24 @@
 <!-- Beneficiary Form -->
 <form #beneficiaryForm="ngForm">
     <!-- Mayor -->
-    <div id="mayor">
         <!-- Role selector -->
         <div id="role-selector" class="form-group ui-g">
             <div class="ui-lg-3"></div>
             <div class="ui-g-12 ui-md-12 ui-lg-3 center" style="text-align: center !important">
                 <label>
-                    <input type="radio" name="mayorOption" class="paddingInput" value="mayor" [checked]="selection[0]" (click)="onToggleRadio()"> 
+                    <input type="radio" name="mayorOption" class="paddingInput" value="mayor" [checked]="selection[0]" (click)="onToggleRadio()">
                     {{ 'immayor.option' | translate }}
                 </label>
             </div>
             <div class="ui-g-12 ui-md-12 ui-lg-3 center" style="text-align: center !important">
                 <label>
-                    <input type="radio" name="representativeOption" class="paddingInput" value="representative" [checked]="selection[1]" (click)="onToggleRadio()"> 
+                    <input type="radio" name="representativeOption" class="paddingInput" value="representative" [checked]="selection[1]" (click)="onToggleRadio()">
                     {{ 'imrepresentative.option' | translate }}
                 </label>
             </div>
             <div class="ui-lg-3"></div>
         </div>
+      <div id="mayor" *ngIf="selection[0]">
         <!-- Separator -->
         <div id="mayor-separator" class="form-group ui-g">
             <div class="ui-g-12 ui-md-12 ui-lg-7 center" style="text-align: center !important">
@@ -199,11 +199,11 @@
     <div id="navigation-buttons" class="form-group ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(1)">{{ 'back.button' | translate }}</button>
+            <a href="#/home"><button type="button" class="btn btn-primary cancel-button">{{ 'back.button' | translate }}</button></a>
         </div>
         <!-- Next button -->
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary publish-button" [disabled]="!beneficiaryForm.valid || !allEmailsMatch()" (click)="onSubmit(2)">
+            <button type="submit" class="btn btn-primary publish-button" [disabled]="!beneficiaryForm.valid || !allEmailsMatch()" (click)="onSubmit(1)">
                 {{ 'next.button' | translate }}
             </button>
         </div>

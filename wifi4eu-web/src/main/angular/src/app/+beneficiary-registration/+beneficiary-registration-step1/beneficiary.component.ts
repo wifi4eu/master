@@ -9,7 +9,6 @@ export class BeneficiaryComponent {
     @Input('selection') selection: boolean[];
 
     @Output() onNext: EventEmitter<number>;
-    @Output() onBack: EventEmitter<number>;
 
     private mayorEmailMatches: boolean;
     private representativeEmailMatches: boolean;
@@ -17,7 +16,6 @@ export class BeneficiaryComponent {
 
     constructor() {
         this.onNext = new EventEmitter<number>();
-        this.onBack = new EventEmitter<number>();
     }
 
     ngOnInit() {
@@ -32,11 +30,6 @@ export class BeneficiaryComponent {
     onSubmit(step: number) {
         this.onNext.emit(step);
     }
-
-    stepBack(step: number) {
-        this.onBack.emit(step);
-    }
-
     checkIfMayorEmailMatches() {
         this.mayorEmailMatches = false;
         if (this.beneficiaryDTO.mayorDTO.email === this.beneficiaryDTO.mayorDTO.repeatEmail) {
