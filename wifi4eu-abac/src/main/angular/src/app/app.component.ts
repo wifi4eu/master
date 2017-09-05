@@ -31,7 +31,7 @@ export class AppComponent {
           let blob = new Blob([abacResponse['data']], {type: 'application/json'});
           FileSaver.saveAs(blob, 'export.json');
         }
-        window.alert(abacResponse['message']);
+        window.alert(JSON.stringify(abacResponse));
       }, error => {
         console.log(error);
         window.alert('Something went wrong');
