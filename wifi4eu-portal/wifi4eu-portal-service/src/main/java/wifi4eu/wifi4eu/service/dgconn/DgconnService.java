@@ -31,12 +31,19 @@ public class DgconnService {
     @Autowired
     LegalEntityRepository legalEntityRepository;
 
-    public List<BenPubSupDTO> distribute() {
+    public List<BenPubSupDTO> distribute(int amountVoucher) {
         List<BenPubSupDTO> benPubSupDTOList = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findAll()));
+        int awarded = 0;
         for (int i = 0; i < benPubSupDTOList.size(); i++) {
+            if (awarded == amountVoucher) {
+                break;
+            }
             BenPubSupDTO benPubSupDTO = benPubSupDTOList.get(i);
-            benPubSupDTO.setAwarded(true);
-            benPubSupDTOList.set(i, benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO))));
+            if (!benPubSupDTO.isAwarded()) {
+                benPubSupDTO.setAwarded(true);
+                benPubSupDTOList.set(i, benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO))));
+                awarded++;
+            }
         }
         return benPubSupDTOList;
     }

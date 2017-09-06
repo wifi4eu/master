@@ -38,6 +38,8 @@ export class DgConnVoucherComponent {
     private totalCountries: number;
     private totalRequests: number;
 
+    private amountVoucher: number;
+
     constructor(private http: Http, private lauApi: LauApi, private nutsApi: NutsApi, private dgconnApi: DgconnApi, private uxService: UxService, private translate: TranslateService) {
         this.mapTableData = [];
         this.totalCountries = 0;
@@ -152,7 +154,15 @@ export class DgConnVoucherComponent {
     }
 
     simulateDistribution() {
-        this.dgconnApi.distribute().subscribe(
+        if (this.amountVoucher == null || this.amountVoucher < 1) {
+            this.uxService.growl({
+                severity: 'warn',
+                summary: 'WARNING',
+                detail: 'You have to choose an amount of vouchers before proceeding.'
+            });
+            return;
+        }
+        this.dgconnApi.distribute(this.amountVoucher).subscribe(
             response => {
                 this.uxService.growl({
                     severity: 'success',
