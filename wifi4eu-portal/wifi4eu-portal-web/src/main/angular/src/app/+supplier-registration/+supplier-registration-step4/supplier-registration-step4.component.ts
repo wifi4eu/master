@@ -11,24 +11,21 @@ import {NutsDTO} from "../../shared/swagger/model/NutsDTO";
 })
 
 export class SupplierRegistrationComponentStep4 implements OnInit {
-    @Input('supplierDTO') supplierDTO: SupplierDTOBase;
-    @Input('selection') selection: boolean[];
-
     private legalChecks: boolean[];
     private successCaptcha: boolean;
     private display: boolean;
-
+    private isLogoUploaded: boolean = false;
+    private logoUrl : FileReader = new FileReader();
+    @Input('supplierDTO') supplierDTO: SupplierDTOBase;
+    @Input('selection') selection: boolean[];
+    @Input('nuts0') nuts0: NutsDTO[];
+    @Input('nuts3') nuts3: NutsDTO[][];
+    @Input('logoFile') logoFile: File;
     @Output() onNext: EventEmitter<number>;
     @Output() onBack: EventEmitter<number>;
     @Output() gotoStep: EventEmitter<number>;
     @Output() onSuccess: EventEmitter<boolean>;
     @Output() onFailure: EventEmitter<boolean>;
-
-    @Input('nuts0') nuts0: NutsDTO[];
-    @Input('nuts3') nuts3: NutsDTO[][];
-    @Input('logoFile') logoFile: File;
-
-    private logoUrl : FileReader = new FileReader();
 
     constructor(private supplierApi: SupplierApi, private uxService: UxService) {
         this.legalChecks = [false, false];
@@ -44,6 +41,7 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
 
     ngOnInit() {
         if (this.logoFile) {
+            this.isLogoUploaded = true;
             this.logoUrl.readAsDataURL(this.logoFile);
         }
     }
