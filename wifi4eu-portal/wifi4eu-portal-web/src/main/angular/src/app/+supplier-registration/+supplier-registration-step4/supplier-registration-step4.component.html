@@ -66,7 +66,7 @@
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'bank.account' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplierDTO.accountNumber}}</b></div>
     </div>
-    <div class="ui-g" *ngIf="logoUrl">
+    <div class="ui-g" *ngIf="isLogoUploaded">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'logo.label' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><img src="{{logoUrl.result}}" alt="logo" height="60"></div>
     </div>
