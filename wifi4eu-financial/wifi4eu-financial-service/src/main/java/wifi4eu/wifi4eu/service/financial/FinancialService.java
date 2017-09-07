@@ -117,7 +117,9 @@ public class FinancialService {
                     jsonWriter.endObject();
                     jsonWriter.key("supplier");
                     jsonWriter.object();
-                    jsonWriter = writeJsonSupplier(jsonWriter, applier.getSupplierId());
+                    if (applier.getSupplierId() != null) {
+                        jsonWriter = writeJsonSupplier(jsonWriter, applier.getSupplierId());
+                    }
                     jsonWriter.endObject();
                     jsonWriter.key("status");
                     jsonWriter.object();
@@ -448,27 +450,33 @@ public class FinancialService {
                     userDTO.setUserTypeId(user.getLong("userTypeId"));
                     userRepository.save(userMapper.toEntity(userDTO));
                     JSONObject supplier = applier.getJSONObject("supplier");
-                    SupplierDTO supplierDTO = new SupplierDTO();
-                    supplierDTO.setSupplierId(supplier.getLong("supplierId"));
-                    supplierDTO.setName(supplier.getString("name"));
-                    supplierDTO.setAddress(supplier.getString("address"));
-                    supplierDTO.setVat(supplier.getString("vat"));
-                    supplierDTO.setBic(supplier.getString("bic"));
-                    supplierDTO.setAccountNumber(supplier.getString("accountNumber"));
-                    supplierDTO.setContactName(supplier.getString("contactName"));
-                    supplierDTO.setContactSurname(supplier.getString("contactSurname"));
-                    supplierDTO.setContactPhonePrefix(supplier.getString("contactPhonePrefix"));
-                    supplierDTO.setContactPhoneNumber(supplier.getString("contactPhoneNumber"));
-                    supplierDTO.setContactEmail(supplier.getString("contactEmail"));
-                    supplierDTO.setNutsIds(supplier.getString("nutsIds"));
-                    supplierRepository.save(supplierMapper.toEntity(supplierDTO));
+                    if (supplier.length() > 0) {
+                        SupplierDTO supplierDTO = new SupplierDTO();
+                        supplierDTO.setSupplierId(supplier.getLong("supplierId"));
+                        supplierDTO.setName(supplier.getString("name"));
+                        supplierDTO.setAddress(supplier.getString("address"));
+                        supplierDTO.setVat(supplier.getString("vat"));
+                        supplierDTO.setBic(supplier.getString("bic"));
+                        supplierDTO.setAccountNumber(supplier.getString("accountNumber"));
+                        supplierDTO.setContactName(supplier.getString("contactName"));
+                        supplierDTO.setContactSurname(supplier.getString("contactSurname"));
+                        supplierDTO.setContactPhonePrefix(supplier.getString("contactPhonePrefix"));
+                        supplierDTO.setContactPhoneNumber(supplier.getString("contactPhoneNumber"));
+                        supplierDTO.setContactEmail(supplier.getString("contactEmail"));
+                        supplierDTO.setNutsIds(supplier.getString("nutsIds"));
+                        supplierRepository.save(supplierMapper.toEntity(supplierDTO));
+                    }
                     JSONObject benPubSup = applier.getJSONObject("status");
                     benPubSupDTO.setBudgetCommited(benPubSup.getBoolean("budgetCommited"));
                     benPubSupDTO.setBudgetLinked(benPubSup.getBoolean("budgedLinked"));
                     benPubSupDTO.setAwarded(benPubSup.getBoolean("approved"));
                     benPubSupDTO.setBeneficiaryId(legalEntity.getLong("legalEntityId"));
                     benPubSupDTO.setPublicationId(publication.getLong("publicationId"));
-                    benPubSupDTO.setSupplierId(supplier.getLong("supplierId"));
+                    if (supplier.length() > 0) {
+                        benPubSupDTO.setSupplierId(supplier.getLong("supplierId"));
+                    } else {
+                        benPubSupDTO.setSupplierId(null);
+                    }
                     benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO));
                 }
             }
@@ -526,30 +534,32 @@ public class FinancialService {
 
     public JSONWriter writeJsonSupplier(JSONWriter writer, long supplierId) {
         SupplierDTO supplier = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
-        writer.key("supplierId");
-        writer.value(supplier.getSupplierId());
-        writer.key("name");
-        writer.value(supplier.getName());
-        writer.key("address");
-        writer.value(supplier.getAddress());
-        writer.key("vat");
-        writer.value(supplier.getVat());
-        writer.key("bic");
-        writer.value(supplier.getBic());
-        writer.key("accountNumber");
-        writer.value(supplier.getAccountNumber());
-        writer.key("contactName");
-        writer.value(supplier.getContactName());
-        writer.key("contactSurname");
-        writer.value(supplier.getContactSurname());
-        writer.key("contactPhonePrefix");
-        writer.value(supplier.getContactPhonePrefix());
-        writer.key("contactPhoneNumber");
-        writer.value(supplier.getContactPhoneNumber());
-        writer.key("contactEmail");
-        writer.value(supplier.getContactEmail());
-        writer.key("nutsIds");
-        writer.value(supplier.getNutsIds());
+        if (supplier != null) {
+            writer.key("supplierId");
+            writer.value(supplier.getSupplierId());
+            writer.key("name");
+            writer.value(supplier.getName());
+            writer.key("address");
+            writer.value(supplier.getAddress());
+            writer.key("vat");
+            writer.value(supplier.getVat());
+            writer.key("bic");
+            writer.value(supplier.getBic());
+            writer.key("accountNumber");
+            writer.value(supplier.getAccountNumber());
+            writer.key("contactName");
+            writer.value(supplier.getContactName());
+            writer.key("contactSurname");
+            writer.value(supplier.getContactSurname());
+            writer.key("contactPhonePrefix");
+            writer.value(supplier.getContactPhonePrefix());
+            writer.key("contactPhoneNumber");
+            writer.value(supplier.getContactPhoneNumber());
+            writer.key("contactEmail");
+            writer.value(supplier.getContactEmail());
+            writer.key("nutsIds");
+            writer.value(supplier.getNutsIds());
+        }
         return writer;
     }
 
