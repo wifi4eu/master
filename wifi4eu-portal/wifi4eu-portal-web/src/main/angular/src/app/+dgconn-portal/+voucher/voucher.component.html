@@ -23,7 +23,7 @@
         <div class="ui-g-4 voucherLabel">
             <div class="ui-g-4">{{ 'voucher.amountVoucher' | translate }}</div>
             <div class="ui-g-8">
-                <input type="text" name="" class="paddingInput" value="">
+                <input id="amountVoucher" name="amountVoucher" class="paddingInput" type="number" step="1" min="1" [(ngModel)]="amountVoucher">
             </div>
         </div>
         <div class="ui-g-4">
