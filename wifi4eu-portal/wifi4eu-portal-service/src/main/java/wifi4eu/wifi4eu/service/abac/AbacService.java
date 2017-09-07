@@ -418,7 +418,7 @@ public class AbacService {
                     userJSON.addProperty("userTypeId", user.getUserTypeId());
                 }
 
-                mayorJSON.addProperty("mayorId", mayorDto.getLegalEntityId());
+                mayorJSON.addProperty("mayorId", mayorDto.getMayorId());
                 mayorJSON.addProperty("treatment", mayorDto.getTreatment());
                 mayorJSON.addProperty("name", mayorDto.getName());
                 mayorJSON.addProperty("surname", mayorDto.getSurname());

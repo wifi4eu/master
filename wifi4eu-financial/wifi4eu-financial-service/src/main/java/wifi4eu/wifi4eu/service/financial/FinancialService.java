@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.service.financial;
 
+import com.google.common.collect.Lists;
 import eu.europa.ec.budg.abac.legal_entity.v2.LegalEntitySearchCriteriaType;
 import eu.europa.ec.budg.abac.legal_entity.v2.LegalEntitySearchRequestType;
 import eu.europa.ec.budg.abac.legal_entity.service.es.sync.v2.LegalEntity;
@@ -7,22 +8,21 @@ import eu.europa.ec.budg.abac.legal_entity.v2.LegalEntitySearchResponseType;
 import eu.europa.ec.budg.abac.message.v1.MessageHeaderType;
 
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.XML;
+import org.json.*;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import eu.europa.ec.budg.abac.search_criterion.v1.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
+import wifi4eu.wifi4eu.entity.supplier.BenPubSup;
 import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.MayorMapper;
 import wifi4eu.wifi4eu.mapper.call.CallMapper;
@@ -39,9 +39,6 @@ import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 /**
  * Created by lviverof on 29/08/2017.
  */
-
-//@Autowired
-//private FinancialRepository financialRepository;
 
 @Service
 public class FinancialService {
@@ -92,102 +89,52 @@ public class FinancialService {
     }
 
     public String exportJson() {
-
-        /*Lucia*/
-
         try {
-
-            // preparar el objeto a enviar
-
-            System.out.println("IN!");
-
-            LegalEntitySearchRequestType lesrt = new LegalEntitySearchRequestType();
-            MessageHeaderType mHType = new MessageHeaderType();
-            LegalEntitySearchCriteriaType searchCriteria = new LegalEntitySearchCriteriaType();
-            TextCriterionType txtCriterionType = new TextCriterionType();
-            DateCriterionType dateCriterionT = new DateCriterionType();
-            NumberCriterionType numCriterionT = new NumberCriterionType();
-            IndicatorCriterionType indicCriterionT = new IndicatorCriterionType();
-            OracleTextCriterionType oracleTxtCritT = new OracleTextCriterionType();
-//            TextCriterionOperatorType txtCritOperT = new TextCriterionOperatorType();
-//
-//            txtCriterionType.setOperator(txtCritOperT);
-//            txtCriterionType.setSort();
-//            txtCriterionType.setValue();
-//            txtCriterionType.setValue2();
-
-            searchCriteria.setRegistrationCountryCode(txtCriterionType);
-            searchCriteria.setRegistrationDate(dateCriterionT);
-            searchCriteria.setRegistrationNumber(txtCriterionType);
-            searchCriteria.setCurrentWorkflowLevel(numCriterionT);
-            searchCriteria.setRegistrationNumber(txtCriterionType);
-            searchCriteria.setAnyDocumentIssuingCountryCode(txtCriterionType);
-            searchCriteria.setAcronym(txtCriterionType);
-            searchCriteria.setAbacKey(txtCriterionType);
-            searchCriteria.setAccountGroupCode(txtCriterionType);
-            searchCriteria.setAnyDocumentNumber(txtCriterionType);
-            searchCriteria.setBirthCountryCode(txtCriterionType);
-            searchCriteria.setBlockedFlag(indicCriterionT);
-            searchCriteria.setWholeName(oracleTxtCritT);
-            searchCriteria.setVat(txtCriterionType);
-            searchCriteria.setResponsibleUsers(txtCriterionType);
-            searchCriteria.setRegistrationAuth(txtCriterionType);
-            searchCriteria.setPassportIssuingCountryCode(txtCriterionType);
-            searchCriteria.setPassportNumber(txtCriterionType);
-            searchCriteria.setOtherDocumentNumber(txtCriterionType);
-            searchCriteria.setOfficialName(oracleTxtCritT);
-            searchCriteria.setOfficialAddressStreetNr(txtCriterionType);
-            searchCriteria.setOfficialAddressPostCode(txtCriterionType);
-
-            System.out.println("MIDDLE IN!");
-
-            lesrt.setSearchCriteria(searchCriteria);
-            lesrt.setStartIndex(0);
-            lesrt.setBlockingSize(100);
-            lesrt.setMessageHeader(mHType);
-            lesrt.setDebug(true);
-
-            // lanzar la petición
-
-            LegalEntity le = new LegalEntity();
-            LegalEntitySearchResponseType leSearchResponse = le.getLegalEntitySOAP().search(lesrt);
-
-
-            // getters del response
-
-            System.out.println("row count: " + leSearchResponse.getRowCount());
-            leSearchResponse.getLegalEntitySearchChoiceGroup();
-
-            System.out.println("OK.");
-
-
-        /*End Lucia*/
-
-            File file = new File("C:\\test-abac.xml");
-
-            System.out.println("IN DAVID CODE!");
-
-            if (!file.exists()) {
-//                return new ResponseAbac(false, null, "The file cannot be exported.");
-                return "{\"test\":\"" + leSearchResponse.getRowCount() + "\",\"version\":\"0.0.1\",\"createTime\":1503299572754,\"publications\":[{\"publicationId\":1701,\"appliers\":[{\"benPubSubId\":11701,\"beneficiary\":{\"mayorId\":7251,\"treatment\":\"ms\",\"name\":\"e\",\"surname\":\"e\",\"email\":\"priscilla.p.barros@gmail.com\",\"legalEntity\":{\"legalEntityId\":7251,\"countryCode\":\"ES\",\"municipalityCode\":\"01022\",\"address\":\"e\",\"addressNum\":\"1\",\"postalCode\":\"122\"},\"user\":{\"userId\":7253,\"email\":\"priscilla.p.barros@gmail.com\",\"createDate\":1501834958000,\"userType\":2,\"userTypeId\":7252}},\"supplier\":false,\"status\":{\"budgetCommited\":false,\"budgedLinked\":false,\"approved\":false}}]}]}";
-
+            Writer writer = new StringWriter();
+            JSONWriter jsonWriter = new JSONWriter(writer);
+            List<CallDTO> calls = callMapper.toDTOList(Lists.newArrayList(callRepository.findAll()));
+            jsonWriter.object();
+            jsonWriter.key("version");
+            jsonWriter.value("0.0.1");
+            jsonWriter.key("createTime");
+            jsonWriter.value(new Date().getTime());
+            jsonWriter.key("publications");
+            jsonWriter.array();
+            for (CallDTO call : calls) {
+                jsonWriter.object();
+                jsonWriter.key("publicationId");
+                jsonWriter.value(call.getCallId());
+                List<BenPubSupDTO> appliers = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findByPublicationId(call.getCallId())));
+                jsonWriter.key("appliers");
+                jsonWriter.array();
+                for (BenPubSupDTO applier : appliers) {
+                    jsonWriter.object();
+                    jsonWriter.key("benPubSubId");
+                    jsonWriter.value(applier.getBenPubSubId());
+                    jsonWriter.key("beneficiary");
+                    jsonWriter.object();
+                    jsonWriter = writeJsonBeneficiary(jsonWriter, applier.getBeneficiaryId());
+                    jsonWriter.endObject();
+                    jsonWriter.key("supplier");
+                    jsonWriter.object();
+                    jsonWriter = writeJsonSupplier(jsonWriter, applier.getSupplierId());
+                    jsonWriter.endObject();
+                    jsonWriter.key("status");
+                    jsonWriter.object();
+                    jsonWriter = writeJsonStatus(jsonWriter, applier);
+                    jsonWriter.endObject();
+                    jsonWriter.endObject();
+                }
+                jsonWriter.endArray();
+                jsonWriter.endObject();
             }
-            byte[] encoded = Files.readAllBytes(file.toPath());
-            String content = new String(encoded, Charset.defaultCharset());
-            JSONObject jsonObject = XML.toJSONObject(content);
-//            return new ResponseAbac(true, jsonObject.toString(), "Export succesful!");
-            System.out.println("IN MIDDLE DAVID CODE!");
-            return "{\"test\":\"" + leSearchResponse.getRowCount() + "\",\"version\":\"0.0.1\",\"createTime\":1503299572754,\"publications\":[{\"publicationId\":1701,\"appliers\":[{\"benPubSubId\":11701,\"beneficiary\":{\"mayorId\":7251,\"treatment\":\"ms\",\"name\":\"e\",\"surname\":\"e\",\"email\":\"priscilla.p.barros@gmail.com\",\"legalEntity\":{\"legalEntityId\":7251,\"countryCode\":\"ES\",\"municipalityCode\":\"01022\",\"address\":\"e\",\"addressNum\":\"1\",\"postalCode\":\"122\"},\"user\":{\"userId\":7253,\"email\":\"priscilla.p.barros@gmail.com\",\"createDate\":1501834958000,\"userType\":2,\"userTypeId\":7252}},\"supplier\":false,\"status\":{\"budgetCommited\":false,\"budgedLinked\":false,\"approved\":false}}]}]}";
-
+            jsonWriter.endArray();
+            jsonWriter.endObject();
+            return writer.toString();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println(e.getMessage());
-//            return new ResponseAbac(false, e.getMessage(), "Something went wrong during the export process.");
-            System.out.println("END DAVID CODE!");
-            return "{\"test\":\"" + e.getMessage() + "\",\"version\":\"0.0.1\",\"createTime\":1503299572754,\"publications\":[{\"publicationId\":1701,\"appliers\":[{\"benPubSubId\":11701,\"beneficiary\":{\"mayorId\":7251,\"treatment\":\"ms\",\"name\":\"e\",\"surname\":\"e\",\"email\":\"priscilla.p.barros@gmail.com\",\"legalEntity\":{\"legalEntityId\":7251,\"countryCode\":\"ES\",\"municipalityCode\":\"01022\",\"address\":\"e\",\"addressNum\":\"1\",\"postalCode\":\"122\"},\"user\":{\"userId\":7253,\"email\":\"priscilla.p.barros@gmail.com\",\"createDate\":1501834958000,\"userType\":2,\"userTypeId\":7252}},\"supplier\":false,\"status\":{\"budgetCommited\":false,\"budgedLinked\":false,\"approved\":false}}]}]}";
-
+            return "";
         }
-
     }
 
     public boolean checkJsonFileFormat(JSONObject json) {
@@ -532,4 +479,87 @@ public class FinancialService {
         }
     }
 
+    public JSONWriter writeJsonBeneficiary(JSONWriter writer, long beneficiaryId) {
+        LegalEntityDTO legalEntity = legalEntityMapper.toDTO(legalEntityRepository.findOne(beneficiaryId));
+        MayorDTO mayor = mayorMapper.toDTO(mayorRepository.findByLegalEntityId(legalEntity.getLegalEntityId()));
+        UserDTO user = userMapper.toDTO(userRepository.findByUserTypeId(mayor.getMayorId()));
+        writer.key("mayorId");
+        writer.value(mayor.getMayorId());
+        writer.key("treatment");
+        writer.value(mayor.getTreatment());
+        writer.key("name");
+        writer.value(mayor.getName());
+        writer.key("surname");
+        writer.value(mayor.getSurname());
+        writer.key("email");
+        writer.value(mayor.getEmail());
+        writer.key("legalEntity");
+        writer.object();
+        writer.key("legalEntityId");
+        writer.value(legalEntity.getLegalEntityId());
+        writer.key("countryCode");
+        writer.value(legalEntity.getCountryCode());
+        writer.key("municipalityCode");
+        writer.value(legalEntity.getMunicipalityCode());
+        writer.key("address");
+        writer.value(legalEntity.getAddress());
+        writer.key("addressNum");
+        writer.value(legalEntity.getAddressNum());
+        writer.key("postalCode");
+        writer.value(legalEntity.getPostalCode());
+        writer.endObject();
+        writer.key("user");
+        writer.object();
+        writer.key("userId");
+        writer.value(user.getUserId());
+        writer.key("email");
+        writer.value(user.getEmail());
+        writer.key("createDate");
+        writer.value(user.getCreateDate().getTime());
+        writer.key("userType");
+        writer.value(user.getUserType());
+        writer.key("userTypeId");
+        writer.value(user.getUserTypeId());
+        writer.endObject();
+        return writer;
+    }
+
+    public JSONWriter writeJsonSupplier(JSONWriter writer, long supplierId) {
+        SupplierDTO supplier = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
+        writer.key("supplierId");
+        writer.value(supplier.getSupplierId());
+        writer.key("name");
+        writer.value(supplier.getName());
+        writer.key("address");
+        writer.value(supplier.getAddress());
+        writer.key("vat");
+        writer.value(supplier.getVat());
+        writer.key("bic");
+        writer.value(supplier.getBic());
+        writer.key("accountNumber");
+        writer.value(supplier.getAccountNumber());
+        writer.key("contactName");
+        writer.value(supplier.getContactName());
+        writer.key("contactSurname");
+        writer.value(supplier.getContactSurname());
+        writer.key("contactPhonePrefix");
+        writer.value(supplier.getContactPhonePrefix());
+        writer.key("contactPhoneNumber");
+        writer.value(supplier.getContactPhoneNumber());
+        writer.key("contactEmail");
+        writer.value(supplier.getContactEmail());
+        writer.key("nutsIds");
+        writer.value(supplier.getNutsIds());
+        return writer;
+    }
+
+    public JSONWriter writeJsonStatus(JSONWriter writer, BenPubSupDTO applier) {
+        writer.key("budgetCommited");
+        writer.value(applier.isBudgetCommited());
+        writer.key("budgetLinked");
+        writer.value(applier.isBudgetLinked());
+        writer.key("approved");
+        writer.value(applier.isAwarded());
+        return writer;
+    }
 }
