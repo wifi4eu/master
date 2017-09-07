@@ -41,10 +41,17 @@ public class FinancialResource {
     }
 
     @ApiOperation(value = "Export JSON file.")
-    @RequestMapping(value = "/exportJson", method = RequestMethod.POST, produces = "application/JSON")
+    @RequestMapping(value = "/exportJson", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
-    public String exportJson(final HttpServletResponse response) {
+    public ResponseDTO exportJson(final HttpServletResponse response) {
         _log.info("exportJson");
-        return financialService.exportJson();
+        String result = financialService.exportJson();
+        System.out.println("---TEST---");
+        System.out.println(result);
+        if (!result.isEmpty()) {
+            return new ResponseDTO(true, result, null);
+        } else {
+            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Import failed"));
+        }
     }
 }
