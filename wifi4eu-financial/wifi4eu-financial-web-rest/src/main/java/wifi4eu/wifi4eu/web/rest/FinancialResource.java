@@ -46,8 +46,6 @@ public class FinancialResource {
     public ResponseDTO exportJson(final HttpServletResponse response) {
         _log.info("exportJson");
         String result = financialService.exportJson();
-        System.out.println("---TEST---");
-        System.out.println(result);
         if (!result.isEmpty()) {
             return new ResponseDTO(true, result, null);
         } else {
