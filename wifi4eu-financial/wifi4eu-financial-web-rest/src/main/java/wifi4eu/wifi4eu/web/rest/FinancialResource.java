@@ -41,7 +41,7 @@ public class FinancialResource {
     }
 
     @ApiOperation(value = "Export JSON file.")
-    @RequestMapping(value = "/exportJson", method = RequestMethod.POST, produces = "application/JSON")
+    @RequestMapping(value = "/exportJson", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
     public String exportJson(final HttpServletResponse response) {
         _log.info("exportJson");

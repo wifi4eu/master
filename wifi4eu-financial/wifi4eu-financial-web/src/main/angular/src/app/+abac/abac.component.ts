@@ -67,35 +67,6 @@ export class AbacComponent {
         }
     }
 
-	// onFileSelection(event) {
-	// 	this.exportEnabled = false;
-	// 	if (event && event.target && event.target.files && event.target.files.length == 1) {
-	// 		this.jsonFile = event.target.files['0'];
-	// 		let reader = new FileReader();
-	// 		console.log("IN");
-    //
-	// 		reader.onload = (e) => {
-	// 			this.http.post(this.importUrl, reader.result).subscribe(
-	// 				response => {
-	// 					// let abacResponse = JSON.parse(response['_body']);
-	// 					// if (abacResponse['success']) {
-	// 					this.exportEnabled = true;
-	// 					console.log("OK!");
-	// 					console.log("Response: ", response);
-	// 					console.log(typeof response);
-    //
-	// 					// }
-	// 					// window.alert(abacResponse['message']);
-	// 				}, error => {
-	// 					console.log(error);
-	// 					window.alert('Something went wrong');
-	// 					console.log("Crash 2");
-	// 				}
-	// 			);
-	// 		};
-	// 		reader.readAsText(this.jsonFile);
-	// 	}
-	// }
 }
 
 
