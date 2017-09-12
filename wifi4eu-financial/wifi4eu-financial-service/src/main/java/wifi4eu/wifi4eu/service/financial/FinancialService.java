@@ -1,35 +1,20 @@
 package wifi4eu.wifi4eu.service.financial;
 
+import com.google.common.collect.Lists;
 import eu.europa.ec.budg.abac.ares_document.v1.AresDocumentsType;
-import eu.europa.ec.budg.abac.legal_entity.service.es.async.v1.LegalEntityPort;
-import eu.europa.ec.budg.abac.legal_entity.service.es.sync.v2.LegalEntity;
 import eu.europa.ec.budg.abac.legal_entity.v2.*;
-import eu.europa.ec.budg.abac.legal_entity_bank_account_link.v1.LegalEntityBankAccountLinkType;
 import eu.europa.ec.budg.abac.message.v1.BusinessRuleMessageResponseType;
-import eu.europa.ec.budg.abac.message.v1.MessageHeaderType;
-
-
 import eu.europa.ec.budg.abac.workflow.v1.VisaType;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.XML;
-
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.math.BigInteger;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-
+import org.json.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import eu.europa.ec.budg.abac.search_criterion.v1.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
-import wifi4eu.wifi4eu.entity.supplier.BenPubSup;
 import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.MayorMapper;
 import wifi4eu.wifi4eu.mapper.call.CallMapper;
