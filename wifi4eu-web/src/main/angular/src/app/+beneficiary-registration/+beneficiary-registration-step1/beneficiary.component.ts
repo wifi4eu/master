@@ -25,6 +25,12 @@ export class BeneficiaryComponent {
 
     onToggleRadio() {
         this.selection[0] = [this.selection[1], this.selection[1] = this.selection[0]][0]
+        if(this.selection[1]){
+          this.beneficiaryDTO.represented = true;
+        }
+        else{
+          this.beneficiaryDTO.represented = false;
+        }
     }
 
     onSubmit(step: number) {
