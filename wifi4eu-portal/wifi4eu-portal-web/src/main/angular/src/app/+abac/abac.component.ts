@@ -55,7 +55,7 @@ export class AbacComponent implements OnInit {
             data => {
 				if (data['success']) {
 					let blob = new Blob([data['data']], { type: 'application/json' });
-					FileSaver.saveAs(blob, "abacExportInformation.json");  
+					FileSaver.saveAs(blob, "portal_abac_export.json");
 
 					this.isExportLoading = false;
 					this.isExportSuccessful = true;

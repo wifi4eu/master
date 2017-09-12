@@ -72,17 +72,29 @@ public class BenPubSupDTO implements Serializable {
         this.supplierId = supplierId;
     }
 
-    public boolean isBudgetCommited() { return budgetCommited; }
+    public boolean isBudgetCommited() {
+        return budgetCommited;
+    }
 
-    public boolean isBudgetLinked() { return budgetLinked; }
+    public void setBudgetCommited(boolean budgetCommited) {
+        this.budgetCommited = budgetCommited;
+    }
 
-    public String getLastAbacMessage() { return lastAbacMessage; }
+    public boolean isBudgetLinked() {
+        return budgetLinked;
+    }
 
-    public void setBudgetCommited(boolean budgetCommited) { this.budgetCommited = budgetCommited; }
+    public void setBudgetLinked(boolean budgetLinked) {
+        this.budgetLinked = budgetLinked;
+    }
 
-    public void setBudgetLinked(boolean budgetCommited) { this.budgetCommited = budgetCommited; }
+    public String getLastAbacMessage() {
+        return lastAbacMessage;
+    }
 
-    public void setLastAbacMessage(String lastAbacMessage) { this.lastAbacMessage = lastAbacMessage; }
+    public void setLastAbacMessage(String lastAbacMessage) {
+        this.lastAbacMessage = lastAbacMessage;
+    }
 
     public Date getDate() {
         return date;
