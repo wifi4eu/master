@@ -18,12 +18,9 @@ public class LegalEntitySync {
     public static String leSearch() throws IOException {
         try {
 
-//         SEARCH SERVICE LEGAL ENTITY
-
             LegalEntity le = new LegalEntity();
 
             LegalEntitySearchRequestType lesrt = new LegalEntitySearchRequestType();
-
 
             LegalEntitySearchResponseType leSearchResponse = le.getLegalEntitySOAP().search(lesrt);
 
