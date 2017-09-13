@@ -4,4 +4,16 @@
     <p>Click on one of the buttons below to import/export your JSON file and communicate with ABAC.</p>
     <input type="file" (change)="onFileSelection($event)" accept=".json,application/json">
     <button (click)="exportJson()" [disabled]="!exportEnabled">Export</button>
+
+    <br>
+
+    <button (click)="leSearch()" [disabled]="exportEnabled">Search Legal Entity (Sync)</button>
+    <br>
+    <button (click)="bcSearch()" [disabled]="exportEnabled">Search Budgetary Commitment (Sync)</button>
+    <br>
+    <button (click)="leCreate()" [disabled]="exportEnabled">Create Legal Entity (Async)</button>
+    <br>
+    <button (click)="bcCreate()" [disabled]="exportEnabled">Create Budgetary Commitment (Async)</button>
+    <br>
+
 </div>

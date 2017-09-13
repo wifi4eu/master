@@ -2,14 +2,21 @@ package wifi4eu.wifi4eu.service.financial;
 
 import com.google.common.collect.Lists;
 import eu.europa.ec.budg.abac.ares_document.v1.AresDocumentsType;
+import eu.europa.ec.budg.abac.budgetary_commitment_level1.service.es.sync.v1.BudgetaryCommitmentLevel1;
+import eu.europa.ec.budg.abac.budgetary_commitment_level1.v1.BudgetaryCommitmentLevel1SearchRequestType;
+import eu.europa.ec.budg.abac.budgetary_commitment_level1.v1.BudgetaryCommitmentLevel1SearchResponseType;
+import eu.europa.ec.budg.abac.budgetary_commitment_level2.service.es.async.v1.BudgetaryCommitmentLevel2;
+import eu.europa.ec.budg.abac.budgetary_commitment_level2.v1.BudgetaryCommitmentLevel2CreateRequestType;
 import eu.europa.ec.budg.abac.legal_entity.v2.*;
 import eu.europa.ec.budg.abac.message.v1.BusinessRuleMessageResponseType;
 import eu.europa.ec.budg.abac.workflow.v1.VisaType;
+
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+
 import org.json.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,176 +90,6 @@ public class FinancialService {
     public String exportJson() {
         try {
 
-            // CREATE SERVICE
-
-            System.out.println("IN!");
-
-            LegalEntityCreateRequestType lecrt = new LegalEntityCreateRequestType();
-            LegalEntityCheckCreateRequestType leccrt = new LegalEntityCheckCreateRequestType();
-            EuropeanParliamentMemberCreateType epmct = new EuropeanParliamentMemberCreateType();
-            ExStaffMemberCreateType esmct = new ExStaffMemberCreateType();
-            PrivatePersonCreateType ppct = new PrivatePersonCreateType();
-            StaffMemberCreateType smct = new StaffMemberCreateType();
-            PublicLawBodyCreateType publiclbct = new PublicLawBodyCreateType();
-            PrivateLawBodyCreateType privatelbct = new PrivateLawBodyCreateType();
-            VisaType vt = new VisaType();
-            AresDocumentsType aresDocType = new AresDocumentsType();
-            IdentificationDocumentType identDocType = new IdentificationDocumentType();
-            LegalEntityCreateType.LegalEntityBankAccountLinks lEBankAccountLink = new LegalEntityCreateType.LegalEntityBankAccountLinks();
-            BigInteger bigInteger = null;
-
-
-//          EX STAFF MEMBER
-            esmct.setNupNumber("SetNupNumber");
-            esmct.setAccountGroupCode("AccountGroupCode");
-            esmct.setAresDocuments(aresDocType);
-            esmct.setBirthCity("Spain");
-            esmct.setBirthCountryCode("ES");
-            esmct.setBudgetCompanyCode("ES");
-            esmct.setBusinessName("BusinessName");
-            esmct.setDriverLicense(identDocType);
-            esmct.setDuplicateCheckBypassFlag(false);
-            esmct.setFirstName("Testing");
-            esmct.setIdentityCard(identDocType);
-            esmct.setIsACustomerOnly(true);
-            esmct.setIsSelfEmployed(true);
-            esmct.setLanguageCode("ES");
-            esmct.setLegalEntityBankAccountLinks(lEBankAccountLink);
-            esmct.setLightValidationFlag(true);
-
-//          EUROPEAN PARLIAMENT MEMBER
-            epmct.setIdentityCard(identDocType);
-            epmct.setLegalEntityBankAccountLinks(lEBankAccountLink);
-            epmct.setFirstName("Testing Dos");
-            epmct.setLanguageCode("ES");
-            epmct.setIsACustomerOnly(true);
-            epmct.setDuplicateCheckBypassFlag(false);
-
-//          PRIVATE PERSON
-            ppct.setBusinessName("Private Person");
-            ppct.setFirstName("Testing Tres");
-            ppct.setIdentityCard(identDocType);
-            ppct.setLanguageCode("EN");
-            ppct.setVatNumber("00000000000001");
-
-//          STAFF MEMBER
-            smct.setIdentityCard(identDocType);
-            smct.setLanguageCode("ES");
-            smct.setDuplicateCheckBypassFlag(false);
-            smct.setPersonalId(bigInteger);
-            smct.setAccountGroupCode("Wifi4EU");
-
-//          PUBLIC LAW BODY
-            publiclbct.setAccountGroupCode("wifi4eu");
-            publiclbct.setAcronym("wifi para todos");
-            publiclbct.setIsACustomerOnly(false);
-            publiclbct.setLanguageCode("EN");
-            publiclbct.setLegalFormCode("ALLRIGHT");
-
-//          PRIVATE LAW BODY
-            privatelbct.setAccountGroupCode("wifi4eu..");
-            privatelbct.setAcronym("wifi para todos!");
-            privatelbct.setIsACustomerOnly(false);
-            privatelbct.setLanguageCode("ES");
-            privatelbct.setLegalFormCode("ALLRIGHT2");
-
-//          VISA
-            vt.setActionCode("ACCEPT?");
-            vt.setAgentId("Visa Agent ID");
-            vt.setCommentText("OK. Up to date.");
-            vt.setPersonId("Person ID");
-            vt.setSignature("Signed...");
-
-//          LEGAL ENTITY CREATE REQUEST TYPE
-            lecrt.setEuropeanParliamentMember(epmct);
-            lecrt.setExStaffMember(esmct);
-            lecrt.setPrivatePerson(ppct);
-            lecrt.setStaffMember(smct);
-            lecrt.setPublicLawBody(publiclbct);
-            lecrt.setPrivateLawBody(privatelbct);
-            lecrt.setVisa(vt);
-
-
-            System.out.println("PRINTING HASHCODE------------------------------" + lecrt.hashCode());
-
-            //lanzar la petición al servicio
-
-            eu.europa.ec.budg.abac.legal_entity.service.es.async.v1.LegalEntity leAsync = new eu.europa.ec.budg.abac.legal_entity.service.es.async.v1.LegalEntity();
-
-
-            BusinessRuleMessageResponseType bRMRT = leAsync.getLegalEntitySOAP().create(lecrt);
-
-            System.out.println("PRINTING BUSINESSRKULEMESSAGERESPONSETYPE------------------------------" + bRMRT);
-            System.out.println("PRINTING MESSAGE HEADER ---------------------------------------" + bRMRT.getMessageHeader());
-            System.out.println("PRINTING MESSAGE FAULT------------------------------" + bRMRT.getMessageFault());
-            System.out.println("PRINTING BUSSINESS RULE REJECTION LIST ------------------------------" + bRMRT.getBusinessRuleRejectionList());
-            System.out.println("PRINTING BUSINES RULE REJECTION RETURN CODE ------------------------------------------" + bRMRT.getBusinessRuleRejectionReturnCode());
-
-//            LegalEntitySearchResponseType leSearchResponse = le.getLegalEntitySOAP().cre(aresDocType);
-
-
-            // SEARCH SERVICE
-            // preparar el objeto a enviar
-
-            System.out.println("IN!");
-//            LegalEntity le = new LegalEntity();
-//
-//            LegalEntitySearchRequestType lesrt = new LegalEntitySearchRequestType();
-//            MessageHeaderType mHType = new MessageHeaderType();
-//            LegalEntitySearchCriteriaType searchCriteria = new LegalEntitySearchCriteriaType();
-//            TextCriterionType txtCriterionType = new TextCriterionType();
-//            DateCriterionType dateCriterionT = new DateCriterionType();
-//            NumberCriterionType numCriterionT = new NumberCriterionType();
-//            IndicatorCriterionType indicCriterionT = new IndicatorCriterionType();
-//            OracleTextCriterionType oracleTxtCritT = new OracleTextCriterionType();
-//
-//            searchCriteria.setRegistrationCountryCode(txtCriterionType);
-//            searchCriteria.setRegistrationDate(dateCriterionT);
-//            searchCriteria.setRegistrationNumber(txtCriterionType);
-//            searchCriteria.setCurrentWorkflowLevel(numCriterionT);
-//            searchCriteria.setRegistrationNumber(txtCriterionType);
-//            searchCriteria.setAnyDocumentIssuingCountryCode(txtCriterionType);
-//            searchCriteria.setAcronym(txtCriterionType);
-//            searchCriteria.setAbacKey(txtCriterionType);
-//            searchCriteria.setAccountGroupCode(txtCriterionType);
-//            searchCriteria.setAnyDocumentNumber(txtCriterionType);
-//            searchCriteria.setBirthCountryCode(txtCriterionType);
-//            searchCriteria.setBlockedFlag(indicCriterionT);
-//            searchCriteria.setWholeName(oracleTxtCritT);
-//            searchCriteria.setVat(txtCriterionType);
-//            searchCriteria.setResponsibleUsers(txtCriterionType);
-//            searchCriteria.setRegistrationAuth(txtCriterionType);
-//            searchCriteria.setPassportIssuingCountryCode(txtCriterionType);
-//            searchCriteria.setPassportNumber(txtCriterionType);
-//            searchCriteria.setOtherDocumentNumber(txtCriterionType);
-//            searchCriteria.setOfficialName(oracleTxtCritT);
-//            searchCriteria.setOfficialAddressStreetNr(txtCriterionType);
-//            searchCriteria.setOfficialAddressPostCode(txtCriterionType);
-//
-//            System.out.println("MIDDLE IN!");
-//
-//            lesrt.setSearchCriteria(searchCriteria);
-//            lesrt.setStartIndex(0);
-//            lesrt.setBlockingSize(100);
-//            lesrt.setMessageHeader(mHType);
-//            lesrt.setDebug(true);
-//
-//            // lanzar la petición
-//            System.out.println("READY TO GO!");
-//            LegalEntity le = new LegalEntity();
-//
-//            LegalEntitySearchResponseType leSearchResponse = le.getLegalEntitySOAP().search(lesrt);
-//
-//
-//            // getters del response
-//
-//            System.out.println("row count: " + leSearchResponse.getRowCount());
-//            leSearchResponse.getLegalEntitySearchChoiceGroup();
-
-            System.out.println("OK.");
-
-
-        /*End Lucia*/
 
 //            File file = new File("C:\\test-abac.xml");
 //
