@@ -448,7 +448,7 @@ public class AbacService {
         }
 
         statusJSON.addProperty("budgetCommited", applier.isBudgetCommited());
-        statusJSON.addProperty("budgedLinked", applier.isBudgetLinked());
+        statusJSON.addProperty("budgetLinked", applier.isBudgetLinked());
         statusJSON.addProperty("approved", applier.isAwarded());
 
         applierInformation.addProperty("benPubSubId", applier.getBenPubSubId());

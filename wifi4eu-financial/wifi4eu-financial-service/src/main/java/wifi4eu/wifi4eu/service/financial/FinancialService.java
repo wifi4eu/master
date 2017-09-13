@@ -1,22 +1,13 @@
 package wifi4eu.wifi4eu.service.financial;
 
 import com.google.common.collect.Lists;
-import eu.europa.ec.budg.abac.ares_document.v1.AresDocumentsType;
-import eu.europa.ec.budg.abac.budgetary_commitment_level1.service.es.sync.v1.BudgetaryCommitmentLevel1;
-import eu.europa.ec.budg.abac.budgetary_commitment_level1.v1.BudgetaryCommitmentLevel1SearchRequestType;
-import eu.europa.ec.budg.abac.budgetary_commitment_level1.v1.BudgetaryCommitmentLevel1SearchResponseType;
-import eu.europa.ec.budg.abac.budgetary_commitment_level2.service.es.async.v1.BudgetaryCommitmentLevel2;
-import eu.europa.ec.budg.abac.budgetary_commitment_level2.v1.BudgetaryCommitmentLevel2CreateRequestType;
-import eu.europa.ec.budg.abac.legal_entity.v2.*;
-import eu.europa.ec.budg.abac.message.v1.BusinessRuleMessageResponseType;
-import eu.europa.ec.budg.abac.workflow.v1.VisaType;
-
+import com.google.gson.*;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
-
 import org.json.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,64 +74,64 @@ public class FinancialService {
         if (!checkJsonFileFormat(json)) {
             return false;
         }
-        uploadDataToDB(json);
-        return true;
+        return uploadDataToDB(jsonStringFile);
     }
 
     public String exportJson() {
+        Gson gson = new GsonBuilder().create();
+        Writer writer = new StringWriter();
         try {
-
-
-//            File file = new File("C:\\test-abac.xml");
-//
-//            System.out.println("IN DAVID CODE!");
-//
-//            if (!file.exists()) {
-////                return new ResponseAbac(false, null, "The file cannot be exported.");
-//                return "{\"test\":\"" + leSearchResponse.getRowCount() + "\",\"version\":\"0.0.1\",\"createTime\":1503299572754,\"publications\":[{\"publicationId\":1701,\"appliers\":[{\"benPubSubId\":11701,\"beneficiary\":{\"mayorId\":7251,\"treatment\":\"ms\",\"name\":\"e\",\"surname\":\"e\",\"email\":\"priscilla.p.barros@gmail.com\",\"legalEntity\":{\"legalEntityId\":7251,\"countryCode\":\"ES\",\"municipalityCode\":\"01022\",\"address\":\"e\",\"addressNum\":\"1\",\"postalCode\":\"122\"},\"user\":{\"userId\":7253,\"email\":\"priscilla.p.barros@gmail.com\",\"createDate\":1501834958000,\"userType\":2,\"userTypeId\":7252}},\"supplier\":false,\"status\":{\"budgetCommited\":false,\"budgedLinked\":false,\"approved\":false}}]}]}";
-//
-//            }
-//            byte[] encoded = Files.readAllBytes(file.toPath());
-//            String content = new String(encoded, Charset.defaultCharset());
-//            JSONObject jsonObject = XML.toJSONObject(content);
-////            return new ResponseAbac(true, jsonObject.toString(), "Export succesful!");
-//            System.out.println("IN MIDDLE DAVID CODE!");
-//            return "{\"test\":\"" + leSearchResponse.getRowCount() + "\",\"version\":\"0.0.1\",\"createTime\":1503299572754,\"publications\":[{\"publicationId\":1701,\"appliers\":[{\"benPubSubId\":11701,\"beneficiary\":{\"mayorId\":7251,\"treatment\":\"ms\",\"name\":\"e\",\"surname\":\"e\",\"email\":\"priscilla.p.barros@gmail.com\",\"legalEntity\":{\"legalEntityId\":7251,\"countryCode\":\"ES\",\"municipalityCode\":\"01022\",\"address\":\"e\",\"addressNum\":\"1\",\"postalCode\":\"122\"},\"user\":{\"userId\":7253,\"email\":\"priscilla.p.barros@gmail.com\",\"createDate\":1501834958000,\"userType\":2,\"userTypeId\":7252}},\"supplier\":false,\"status\":{\"budgetCommited\":false,\"budgedLinked\":false,\"approved\":false}}]}]}";
-//
-            Writer writer = new StringWriter();
-            JSONWriter jsonWriter = new JSONWriter(writer);
+            JsonWriter jsonWriter = gson.newJsonWriter(writer);
+            jsonWriter.beginObject();
+            jsonWriter.name("version").value("0.0.1");
+            jsonWriter.name("createTime").value(new Date().getTime());
+            jsonWriter.name("publications").beginArray();
             List<CallDTO> calls = callMapper.toDTOList(Lists.newArrayList(callRepository.findAll()));
-            jsonWriter.object();
-            jsonWriter.key("version");
-            jsonWriter.value("0.0.1");
-            jsonWriter.key("createTime");
-            jsonWriter.value(new Date().getTime());
-            jsonWriter.key("publications");
-            jsonWriter.array();
             for (CallDTO call : calls) {
-                jsonWriter.object();
-                jsonWriter.key("publicationId");
-                jsonWriter.value(call.getCallId());
+                jsonWriter.beginObject();
+                jsonWriter.name("publicationId").value(call.getCallId());
+                jsonWriter.name("appliers").beginArray();
                 List<BenPubSupDTO> appliers = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findByPublicationId(call.getCallId())));
-                jsonWriter.key("appliers");
-                jsonWriter.array();
                 for (BenPubSupDTO applier : appliers) {
-                    jsonWriter.object();
-                    jsonWriter.key("benPubSubId");
-                    jsonWriter.value(applier.getBenPubSubId());
-                    jsonWriter.key("beneficiary");
-                    jsonWriter.object();
-                    jsonWriter = writeJsonBeneficiary(jsonWriter, applier.getBeneficiaryId());
-                    jsonWriter.endObject();
-                    jsonWriter.key("supplier");
-                    jsonWriter.object();
+                    LegalEntityDTO legalEntity = legalEntityMapper.toDTO(legalEntityRepository.findOne(applier.getBeneficiaryId()));
+                    MayorDTO mayor = mayorMapper.toDTO(mayorRepository.findByLegalEntityId(legalEntity.getLegalEntityId()));
+                    UserDTO user = userMapper.toDTO(userRepository.findByUserTypeId(mayor.getMayorId()));
+                    jsonWriter.beginObject();
+                    jsonWriter.name("benPubSubId").value(applier.getBenPubSubId());
+                    jsonWriter.name("beneficiary");
+                    JsonObject mayorJson = gson.toJsonTree(mayor).getAsJsonObject();
+                    mayorJson.remove("legalEntityId");
+                    JsonObject entityJson = gson.toJsonTree(legalEntity).getAsJsonObject();
+                    entityJson.remove("legalCheckbox1");
+                    entityJson.remove("legalCheckbox2");
+                    entityJson.remove("legalCheckbox3");
+                    entityJson.remove("abacStatus");
+                    mayorJson.add("legalEntity", entityJson);
+                    JsonObject userJson = gson.toJsonTree(user).getAsJsonObject();
+                    userJson.remove("password");
+                    userJson.remove("accessDate");
+                    userJson.remove("roles");
+                    mayorJson.add("user", userJson);
+                    jsonWriter.jsonValue(mayorJson.toString());
+                    jsonWriter.name("supplier");
                     if (applier.getSupplierId() != null) {
-                        jsonWriter = writeJsonSupplier(jsonWriter, applier.getSupplierId());
+                        SupplierDTO supplier = supplierMapper.toDTO(supplierRepository.findOne(applier.getSupplierId()));
+                        JsonObject supplierJson = gson.toJsonTree(supplier).getAsJsonObject();
+                        supplierJson.remove("legalCheck1");
+                        supplierJson.remove("legalCheck2");
+                        supplierJson.remove("createDate");
+                        supplierJson.remove("logo");
+                        supplierJson.remove("abacStatus");
+                        jsonWriter.jsonValue(supplierJson.toString());
+                    } else {
+                        jsonWriter.beginObject();
+                        jsonWriter.endObject();
                     }
-                    jsonWriter.endObject();
-                    jsonWriter.key("status");
-                    jsonWriter.object();
-                    jsonWriter = writeJsonStatus(jsonWriter, applier);
+                    jsonWriter.name("status");
+                    jsonWriter.beginObject();
+                    jsonWriter.name("budgetCommited").value(applier.isBudgetCommited());
+                    jsonWriter.name("budgetLinked").value(applier.isBudgetLinked());
+                    jsonWriter.name("approved").value(applier.isAwarded());
                     jsonWriter.endObject();
                     jsonWriter.endObject();
                 }
@@ -149,10 +140,11 @@ public class FinancialService {
             }
             jsonWriter.endArray();
             jsonWriter.endObject();
+            System.out.println(writer.toString());
             return writer.toString();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            return "";
+            return e.getLocalizedMessage();
         }
     }
 
@@ -424,169 +416,47 @@ public class FinancialService {
         }
     }
 
-    public boolean uploadDataToDB(JSONObject json) {
-        try {
-            JSONArray publications = json.getJSONArray("publications");
-            for (int i = 0; i < publications.length(); i++) {
-                JSONObject publication = publications.getJSONObject(i);
-                CallDTO callDTO = new CallDTO();
-                callDTO.setCallId(publication.getLong("publicationId"));
-                callDTO.setEvent("JSON Test");
-                callDTO.setStartDate(new Date().getTime() / 1000);
-                callDTO.setEndDate(new Date().getTime() / 1000 + 1000);
-                callRepository.save(callMapper.toEntity(callDTO));
-                JSONArray appliers = publication.getJSONArray("appliers");
-                for (int j = 0; j < appliers.length(); j++) {
-                    JSONObject applier = appliers.getJSONObject(j);
-                    BenPubSupDTO benPubSupDTO = new BenPubSupDTO();
-                    benPubSupDTO.setBenPubSubId(applier.getLong("benPubSubId"));
-                    JSONObject benef = applier.getJSONObject("beneficiary");
-                    MayorDTO mayorDTO = new MayorDTO();
-                    mayorDTO.setMayorId(benef.getLong("mayorId"));
-                    mayorDTO.setTreatment(benef.getString("treatment"));
-                    mayorDTO.setName(benef.getString("name"));
-                    mayorDTO.setSurname(benef.getString("surname"));
-                    mayorDTO.setEmail(benef.getString("email"));
-                    JSONObject legalEntity = benef.getJSONObject("legalEntity");
-                    LegalEntityDTO legalEntityDTO = new LegalEntityDTO();
-                    legalEntityDTO.setLegalEntityId(legalEntity.getInt("legalEntityId"));
-                    legalEntityDTO.setCountryCode(legalEntity.getString("countryCode"));
-                    legalEntityDTO.setMunicipalityCode(legalEntity.getString("municipalityCode"));
-                    legalEntityDTO.setAddress(legalEntity.getString("address"));
-                    legalEntityDTO.setAddressNum(legalEntity.getString("addressNum"));
-                    legalEntityDTO.setPostalCode(legalEntity.getString("postalCode"));
-                    legalEntityRepository.save(legalEntityMapper.toEntity(legalEntityDTO));
-                    mayorDTO.setLegalEntityId(legalEntityDTO.getLegalEntityId());
-                    mayorRepository.save(mayorMapper.toEntity(mayorDTO));
-                    JSONObject user = benef.getJSONObject("user");
-                    UserDTO userDTO = new UserDTO();
-                    userDTO.setUserId(user.getLong("userId"));
-                    userDTO.setEmail(user.getString("email"));
-                    userDTO.setCreateDate(new Date(user.getLong("createDate")));
-                    userDTO.setUserType(user.getLong("userType"));
-                    userDTO.setUserTypeId(user.getLong("userTypeId"));
-                    userRepository.save(userMapper.toEntity(userDTO));
-                    JSONObject supplier = applier.getJSONObject("supplier");
-                    if (supplier.length() > 0) {
-                        SupplierDTO supplierDTO = new SupplierDTO();
-                        supplierDTO.setSupplierId(supplier.getLong("supplierId"));
-                        supplierDTO.setName(supplier.getString("name"));
-                        supplierDTO.setAddress(supplier.getString("address"));
-                        supplierDTO.setVat(supplier.getString("vat"));
-                        supplierDTO.setBic(supplier.getString("bic"));
-                        supplierDTO.setAccountNumber(supplier.getString("accountNumber"));
-                        supplierDTO.setContactName(supplier.getString("contactName"));
-                        supplierDTO.setContactSurname(supplier.getString("contactSurname"));
-                        supplierDTO.setContactPhonePrefix(supplier.getString("contactPhonePrefix"));
-                        supplierDTO.setContactPhoneNumber(supplier.getString("contactPhoneNumber"));
-                        supplierDTO.setContactEmail(supplier.getString("contactEmail"));
-                        supplierDTO.setNutsIds(supplier.getString("nutsIds"));
-                        supplierRepository.save(supplierMapper.toEntity(supplierDTO));
-                    }
-                    JSONObject benPubSup = applier.getJSONObject("status");
-                    benPubSupDTO.setBudgetCommited(benPubSup.getBoolean("budgetCommited"));
-                    benPubSupDTO.setBudgetLinked(benPubSup.getBoolean("budgedLinked"));
-                    benPubSupDTO.setAwarded(benPubSup.getBoolean("approved"));
-                    benPubSupDTO.setBeneficiaryId(legalEntity.getLong("legalEntityId"));
-                    benPubSupDTO.setPublicationId(publication.getLong("publicationId"));
-                    if (supplier.length() > 0) {
-                        benPubSupDTO.setSupplierId(supplier.getLong("supplierId"));
-                    } else {
-                        benPubSupDTO.setSupplierId(null);
-                    }
-                    benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO));
+    public boolean uploadDataToDB(String jsonString) {
+        Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, TimestampTypeAdapter.getTimestampTypeAdapter()).create();
+        JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
+        JsonArray publications = json.getAsJsonArray("publications");
+        for (int i = 0; i < publications.size(); i++) {
+            JsonObject publication = publications.get(i).getAsJsonObject();
+            CallDTO callDTO = new CallDTO();
+            callDTO.setCallId(publication.getAsJsonPrimitive("publicationId").getAsLong());
+            callDTO.setEvent("Gson Test");
+            callDTO.setStartDate(new Date().getTime() /  1000);
+            callDTO.setEndDate(new Date().getTime() / 1000 + 1000);
+            JsonArray appliers = publication.getAsJsonArray("appliers");
+            callRepository.save(callMapper.toEntity(callDTO));
+            for (int j = 0; j < appliers.size(); j++) {
+                JsonObject applier = appliers.get(j).getAsJsonObject();
+                BenPubSupDTO benPubSupDTO = new BenPubSupDTO();
+                benPubSupDTO.setBenPubSubId(applier.getAsJsonPrimitive("benPubSubId").getAsLong());
+                JsonObject beneficiary = applier.getAsJsonObject("beneficiary");
+                MayorDTO mayorDTO = gson.fromJson(beneficiary, MayorDTO.class);
+                JsonObject entity = beneficiary.getAsJsonObject("legalEntity");
+                LegalEntityDTO legalEntityDTO = gson.fromJson(entity, LegalEntityDTO.class);
+                JsonObject user = beneficiary.getAsJsonObject("user");
+                UserDTO userDTO = gson.fromJson(user, UserDTO.class);
+                JsonObject supplier = applier.getAsJsonObject("supplier");
+                SupplierDTO supplierDTO = gson.fromJson(supplier, SupplierDTO.class);
+                benPubSupDTO.setPublicationId(callDTO.getCallId());
+                benPubSupDTO.setBeneficiaryId(legalEntityDTO.getLegalEntityId());
+                benPubSupDTO.setAwarded(applier.getAsJsonObject("status").getAsJsonPrimitive("approved").getAsBoolean());
+                benPubSupDTO.setBudgetCommited(applier.getAsJsonObject("status").getAsJsonPrimitive("budgetCommited").getAsBoolean());
+                benPubSupDTO.setBudgetLinked(applier.getAsJsonObject("status").getAsJsonPrimitive("budgetLinked").getAsBoolean());
+                mayorDTO.setLegalEntityId(legalEntityDTO.getLegalEntityId());
+                legalEntityRepository.save(legalEntityMapper.toEntity(legalEntityDTO));
+                mayorRepository.save(mayorMapper.toEntity(mayorDTO));
+                userRepository.save(userMapper.toEntity(userDTO));
+                if (supplierDTO != null) {
+                    benPubSupDTO.setSupplierId(supplierDTO.getSupplierId());
+                    supplierRepository.save(supplierMapper.toEntity(supplierDTO));
                 }
+                benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO));
             }
-            return true;
-        } catch (JSONException e) {
-            System.err.println(e.getMessage());
-            return false;
         }
-    }
-
-    public JSONWriter writeJsonBeneficiary(JSONWriter writer, long beneficiaryId) {
-        LegalEntityDTO legalEntity = legalEntityMapper.toDTO(legalEntityRepository.findOne(beneficiaryId));
-        MayorDTO mayor = mayorMapper.toDTO(mayorRepository.findByLegalEntityId(legalEntity.getLegalEntityId()));
-        UserDTO user = userMapper.toDTO(userRepository.findByUserTypeId(mayor.getMayorId()));
-        writer.key("mayorId");
-        writer.value(mayor.getMayorId());
-        writer.key("treatment");
-        writer.value(mayor.getTreatment());
-        writer.key("name");
-        writer.value(mayor.getName());
-        writer.key("surname");
-        writer.value(mayor.getSurname());
-        writer.key("email");
-        writer.value(mayor.getEmail());
-        writer.key("legalEntity");
-        writer.object();
-        writer.key("legalEntityId");
-        writer.value(legalEntity.getLegalEntityId());
-        writer.key("countryCode");
-        writer.value(legalEntity.getCountryCode());
-        writer.key("municipalityCode");
-        writer.value(legalEntity.getMunicipalityCode());
-        writer.key("address");
-        writer.value(legalEntity.getAddress());
-        writer.key("addressNum");
-        writer.value(legalEntity.getAddressNum());
-        writer.key("postalCode");
-        writer.value(legalEntity.getPostalCode());
-        writer.endObject();
-        writer.key("user");
-        writer.object();
-        writer.key("userId");
-        writer.value(user.getUserId());
-        writer.key("email");
-        writer.value(user.getEmail());
-        writer.key("createDate");
-        writer.value(user.getCreateDate().getTime());
-        writer.key("userType");
-        writer.value(user.getUserType());
-        writer.key("userTypeId");
-        writer.value(user.getUserTypeId());
-        writer.endObject();
-        return writer;
-    }
-
-    public JSONWriter writeJsonSupplier(JSONWriter writer, long supplierId) {
-        SupplierDTO supplier = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
-        if (supplier != null) {
-            writer.key("supplierId");
-            writer.value(supplier.getSupplierId());
-            writer.key("name");
-            writer.value(supplier.getName());
-            writer.key("address");
-            writer.value(supplier.getAddress());
-            writer.key("vat");
-            writer.value(supplier.getVat());
-            writer.key("bic");
-            writer.value(supplier.getBic());
-            writer.key("accountNumber");
-            writer.value(supplier.getAccountNumber());
-            writer.key("contactName");
-            writer.value(supplier.getContactName());
-            writer.key("contactSurname");
-            writer.value(supplier.getContactSurname());
-            writer.key("contactPhonePrefix");
-            writer.value(supplier.getContactPhonePrefix());
-            writer.key("contactPhoneNumber");
-            writer.value(supplier.getContactPhoneNumber());
-            writer.key("contactEmail");
-            writer.value(supplier.getContactEmail());
-            writer.key("nutsIds");
-            writer.value(supplier.getNutsIds());
-        }
-        return writer;
-    }
-
-    public JSONWriter writeJsonStatus(JSONWriter writer, BenPubSupDTO applier) {
-        writer.key("budgetCommited");
-        writer.value(applier.isBudgetCommited());
-        writer.key("budgetLinked");
-        writer.value(applier.isBudgetLinked());
-        writer.key("approved");
-        writer.value(applier.isAwarded());
-        return writer;
+        return true;
     }
 }
