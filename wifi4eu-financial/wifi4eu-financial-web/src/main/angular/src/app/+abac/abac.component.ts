@@ -132,6 +132,23 @@ export class AbacComponent {
     }
 
 
+    lcCreate() {
+        this.financialApi.lcCreate().subscribe(
+            (response: ResponseDTO) => {
+                if (response.success) {
+                    window.alert("LC Create OK!");
+                } else {
+                    window.alert("LC Create KO!");
+                }
+                console.log(response);
+            }, error => {
+                console.log(error);
+                window.alert("");
+            }
+        )
+
+    }
+
 }
 
 
