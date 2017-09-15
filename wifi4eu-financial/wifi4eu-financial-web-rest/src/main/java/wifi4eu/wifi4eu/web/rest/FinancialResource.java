@@ -116,6 +116,8 @@ public class FinancialResource {
     }
 
 
+
+
     @ApiOperation(value = "BC Create.")
     @RequestMapping(value = "/bcCreate", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
@@ -123,6 +125,26 @@ public class FinancialResource {
         _log.info("bcCreate");
         try {
             String result = BudgetaryCommitmentAsync.bcCreate();
+
+            if (!result.isEmpty()) {
+                return new ResponseDTO(true, result, null);
+            } else {
+                return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Can not connect to mock"));
+            }
+
+        } catch (IOException e) {
+            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, e.getStackTrace().toString()));
+        }
+
+    }
+
+    @ApiOperation(value = "LC Create.")
+    @RequestMapping(value = "/lcCreate", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public ResponseDTO lcCreate(final HttpServletResponse response) {
+        _log.info("lcCreate");
+        try {
+            String result = LegalCommitmentAsync.lcCreate();
 
             if (!result.isEmpty()) {
                 return new ResponseDTO(true, result, null);

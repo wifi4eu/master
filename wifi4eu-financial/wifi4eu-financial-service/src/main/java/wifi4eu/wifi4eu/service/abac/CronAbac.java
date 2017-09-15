@@ -3,17 +3,21 @@ package wifi4eu.wifi4eu.service.abac;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import wifi4eu.wifi4eu.service.financial.*;
 
+import java.io.IOException;
 import java.util.Date;
 
 @Component
 @EnableScheduling
 public class CronAbac {
-    int counter = 0;
+    @Scheduled(cron = "*/10 * * * * ?")
+    public void abacService5() {
+        try {
+            LegalCommitmentAsync.lcCreate();
 
-    @Scheduled(fixedRate = 5000)
-    public void test() {
-        System.out.println("Hello! The time is " + new Date().toString() + ", and the counter is at " + counter);
-        counter += 5;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
