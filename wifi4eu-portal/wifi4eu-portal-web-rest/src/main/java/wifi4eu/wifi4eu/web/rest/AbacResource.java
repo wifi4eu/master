@@ -30,11 +30,9 @@ public class AbacResource {
     @ResponseBody
     public ResponseDTO exportAbacInformation(HttpServletResponse response) {
         _log.info("exportAbacInformation");
-
-        response.setHeader("Content-Disposition", "form-data; name=\"abacExportInformation.json\"; filename=\"abacExportInformation.json\"");
+        response.setHeader("Content-Disposition", "form-data; name=\"portal_abac_export.json\"; filename=\"portal_abac_export.json\"");
         response.setHeader("Content-Type", "application/json;charset=ISO-8859-1");
         response.setHeader("Pragma", "no-cache");
-
         return abacService.exportAbacInformation();
     }
 

@@ -484,8 +484,8 @@ public class FinancialService {
                         supplierRepository.save(supplierMapper.toEntity(supplierDTO));
                     }
                     JSONObject benPubSup = applier.getJSONObject("status");
-                    benPubSupDTO.setBudgetCommited(benPubSup.getBoolean("budgetCommited"));
-                    benPubSupDTO.setBudgetLinked(benPubSup.getBoolean("budgedLinked"));
+                    //benPubSupDTO.setBudgetCommited(benPubSup.getBoolean("budgetCommited"));
+                    //benPubSupDTO.setBudgetLinked(benPubSup.getBoolean("budgedLinked"));
                     benPubSupDTO.setAwarded(benPubSup.getBoolean("approved"));
                     benPubSupDTO.setBeneficiaryId(legalEntity.getLong("legalEntityId"));
                     benPubSupDTO.setPublicationId(publication.getLong("publicationId"));
@@ -582,9 +582,9 @@ public class FinancialService {
 
     public JSONWriter writeJsonStatus(JSONWriter writer, BenPubSupDTO applier) {
         writer.key("budgetCommited");
-        writer.value(applier.isBudgetCommited());
+        //writer.value(applier.isBudgetCommited());
         writer.key("budgetLinked");
-        writer.value(applier.isBudgetLinked());
+        //writer.value(applier.isBudgetLinked());
         writer.key("approved");
         writer.value(applier.isAwarded());
         return writer;

@@ -2,9 +2,6 @@ package wifi4eu.wifi4eu.entity.beneficiary;
 
 import javax.persistence.*;
 
-/**
- * Created by rgarcita on 09/02/2017.
- */
 @Entity
 @Table(name="BEN_LGE_T")
 public class LegalEntity {

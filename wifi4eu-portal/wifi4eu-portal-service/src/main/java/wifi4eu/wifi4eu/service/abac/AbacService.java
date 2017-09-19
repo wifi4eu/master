@@ -1,8 +1,7 @@
 package wifi4eu.wifi4eu.service.abac;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+import com.google.common.collect.Lists;
+import com.google.gson.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,18 +10,19 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
+import wifi4eu.wifi4eu.mapper.location.LauMapper;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
 import wifi4eu.wifi4eu.mapper.supplier.BenPubSupMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.LegalEntityRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.MayorRepository;
+import wifi4eu.wifi4eu.repository.location.LocationLauRepository;
 import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.mapper.beneficiary.MayorMapper;
-import com.google.gson.JsonObject;
 
 import java.util.Date;
 
@@ -34,7 +34,7 @@ import java.util.List;
 @Service
 public class AbacService {
     private final static Logger _log = Logger.getLogger(AbacService.class);
-    private final static String _version = "0.0.1";
+    private final static String _version = "0.0.2";
 
     @Autowired
     private MayorRepository mayorRepository;
@@ -72,52 +72,92 @@ public class AbacService {
     @Autowired
     private BenPubSupMapper benPubSupMapper;
 
+    @Autowired
+    private LocationLauRepository locationLauRepository;
+
+    @Autowired
+    private LauMapper lauMapper;
+
     /**
      * Returns a JSON with the current status of the publications and appliers
      * @return
      */
     public ResponseDTO exportAbacInformation() {
-        _log.info("Creating exportAbacInformation...");
-
         ResponseDTO result = new ResponseDTO();
-        result.setSuccess(true);
-
-        JsonObject resultJSON = new JsonObject();
-        JsonArray publicationsArrayJSON = new JsonArray();
-
-        List<CallDTO> publicatons = callService.getAllCalls();
-
-        if (publicatons != null && !publicatons.isEmpty()) {
-            for (CallDTO publication : publicatons) {
-                JsonObject publicationJSON = new JsonObject();
-                JsonArray publicationAppliersJSON = new JsonArray();
-
-                List<BenPubSupDTO> publicationAppliers = beneficiaryService.findByPublicationId(publication.getCallId());
-                if (publicationAppliers != null && !publicationAppliers.isEmpty()) {
-                    for (BenPubSupDTO applier : publicationAppliers) {
-                        JsonObject applierJSON = fillApplierInformation(applier);
-
-                        if(applierJSON != null) {
-                            publicationAppliersJSON.add(applierJSON);
+        Gson gson = new GsonBuilder().create();
+        JsonParser parser = new JsonParser();
+        JsonObject resultJson = new JsonObject();
+        List<CallDTO> calls = callService.getAllCalls();
+        JsonArray callsJsonArray = new JsonArray();
+        List<Long> exportedApplications = Lists.newArrayList();
+        if (calls != null && !calls.isEmpty()) {
+            for (CallDTO call : calls) {
+                JsonObject callJson =  parser.parse(gson.toJson(call)).getAsJsonObject();
+                JsonArray applicationsJsonArray = new JsonArray();
+                List<BenPubSupDTO> applications = beneficiaryService.findByPublicationId(call.getCallId());
+                if (applications != null && !applications.isEmpty()) {
+                    for (BenPubSupDTO application : applications) {
+                        JsonObject applicationJson = new JsonObject();
+                        applicationJson.addProperty("benPubSubId", application.getBenPubSubId());
+                        JsonObject legalEntityJson = null;
+                        LegalEntityDTO legalEntity = legalEntityMapper.toDTO(legalEntityRepository.findOne(application.getBeneficiaryId()));
+                        if (legalEntity != null) {
+                            legalEntityJson =  parser.parse(gson.toJson(legalEntity)).getAsJsonObject();
+                        }
+                        JsonObject mayorJson = null;
+                        MayorDTO mayor = mayorMapper.toDTO(mayorRepository.findByLegalEntityId(application.getBeneficiaryId()));
+                        if (mayor != null) {
+                            mayorJson =  parser.parse(gson.toJson(mayor)).getAsJsonObject();
+                        }
+                        JsonObject userJson = null;
+                        UserDTO user = userMapper.toDTO(securityUserRepository.findByUserTypeId(mayor.getMayorId()));
+                        if (user != null) {
+                            userJson =  parser.parse(gson.toJson(user)).getAsJsonObject();
+                            userJson.remove("password");
+                        }
+                        JsonObject supplierJson = new JsonObject();
+                        if (application.getSupplierId() != null) {
+                            SupplierDTO supplier = supplierMapper.toDTO(supplierRepository.findOne(application.getSupplierId()));
+                            supplierJson =  parser.parse(gson.toJson(supplier)).getAsJsonObject();
+                            supplierJson.remove("logo");
+                        }
+                        if (legalEntityJson != null && mayorJson != null && userJson != null) {
+                            JsonObject beneficiaryJson = new JsonObject();
+                            beneficiaryJson.add("legalEntity", legalEntityJson);
+                            beneficiaryJson.add("mayor", mayorJson);
+                            beneficiaryJson.add("user", userJson);
+                            applicationJson.add("beneficiary", beneficiaryJson);
+                            applicationJson.addProperty("awarded", application.isAwarded());
+                            applicationJson.add("supplier", supplierJson);
+                            applicationJson.addProperty("date", application.getDate().getTime());
+                            applicationsJsonArray.add(applicationJson);
+                            exportedApplications.add(application.getBenPubSubId());
                         }
                     }
                 }
-
-                publicationJSON.addProperty("publicationId", publication.getCallId());
-                publicationJSON.add("appliers", publicationAppliersJSON);
-
-                publicationsArrayJSON.add(publicationJSON);
+                callJson.add("applications", applicationsJsonArray);
+                callsJsonArray.add(callJson);
             }
         }
-
-        resultJSON.addProperty("version", _version);
-        resultJSON.addProperty("createTime", new Date().getTime());
-        resultJSON.add("publications", publicationsArrayJSON);
-
-        result.setData(resultJSON.toString());
-
-        _log.info("Finished exportAbacInformation.");
+        resultJson.addProperty("version", _version);
+        resultJson.addProperty("createTime", new Date().getTime());
+        resultJson.add("calls", callsJsonArray);
+        updateApplicationExportDates(exportedApplications);
+        result.setSuccess(true);
+        result.setData(resultJson.toString());
+        result.setError(null);
         return result;
+    }
+
+    private void updateApplicationExportDates(List<Long> ids) {
+        for (Long id : ids) {
+            BenPubSupDTO application = benPubSupMapper.toDTO(benPubSupRepository.findOne(id));
+            long exportDate = new Date().getTime();
+            application.setLefExport(exportDate);
+            application.setBcExport(exportDate);
+            application.setLcExport(exportDate);
+            benPubSupRepository.save(benPubSupMapper.toEntity(application));
+        }
     }
 
     /**
@@ -158,76 +198,64 @@ public class AbacService {
      * @return
      */
     public ResponseDTO getPublicationAppliersInfo(long publicationId) {
-        _log.info("[I] getPublicationAppliersInfo");
-
         ResponseDTO result = new ResponseDTO();
-        result.setSuccess(true);
-        JsonArray resultJSON = new JsonArray();
-
-        if (publicationId > 0 ) {
-            List<BenPubSupDTO> publicationAppliers = benPubSupMapper.toDTOList(benPubSupRepository.findByPublicationId(publicationId));
-
-            if (publicationAppliers != null && !publicationAppliers.isEmpty()) {
-
-                for (BenPubSupDTO applier : publicationAppliers) {
-                    applier = updateAbacStatus(applier);
-                    JsonObject applierJSON = new JsonObject();
-                    String beneficiaryName = "";
-                    String supplierName = "";
-
-                    if (applier.getBeneficiaryId() > 0) {
-                        LegalEntityDTO legalEntityDto = legalEntityMapper.toDTO(legalEntityRepository.findOne(applier.getBeneficiaryId()));
-
-                        if (legalEntityDto != null) {
-                            MayorDTO mayorDto = mayorMapper.toDTO(mayorRepository.findByLegalEntityId(legalEntityDto.getLegalEntityId()));
-
-                            if (mayorDto != null) {
-                                if (mayorDto.getName().length() > 0) {
-                                    beneficiaryName = mayorDto.getName();
-                                }
-
-                                if (mayorDto.getSurname().length() > 0) {
-                                    beneficiaryName += " " + mayorDto.getSurname();
-                                }
-
-                                beneficiaryName = beneficiaryName.trim();
-                            }
+        List<BenPubSupDTO> publicationAppliers = benPubSupMapper.toDTOList(benPubSupRepository.findByPublicationId(publicationId));
+        JsonArray resultJson = new JsonArray();
+        if (publicationAppliers != null && !publicationAppliers.isEmpty()) {
+            for (BenPubSupDTO applier : publicationAppliers) {
+                JsonObject applierJson = new JsonObject();
+                long legalEntityId = 0;
+                String municipalityName = null;
+                long mayorId = 0;
+                String mayorName = null;
+                long supplierId = 0;
+                String supplierName = null;
+                if (applier.getBeneficiaryId() != null) {
+                    LegalEntityDTO legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.findOne(applier.getBeneficiaryId()));
+                    if (legalEntityDTO != null) {
+                        legalEntityId = legalEntityDTO.getLegalEntityId();
+                        municipalityName = lauMapper.toDTO(locationLauRepository.findByLau2AndCountryCode(legalEntityDTO.getMunicipalityCode(), legalEntityDTO.getCountryCode())).getName1();
+                        MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.findByLegalEntityId(legalEntityDTO.getLegalEntityId()));
+                        if (mayorDTO != null) {
+                            mayorId = mayorDTO.getMayorId();
+                            mayorName = mayorDTO.getName();
                         }
                     }
-
-                    if (applier.getSupplierId() != null) {
-                        SupplierDTO supplier = supplierMapper.toDTO(supplierRepository.findOne(applier.getSupplierId()));
-
-                        if (supplier != null) {
-                            supplierName = supplier.getName();
-                        }
-                    }
-
-                    //-- Fill the object
-                    applierJSON.addProperty("beneficiaryId", applier.getBeneficiaryId());
-                    applierJSON.addProperty("beneficiaryName", beneficiaryName);
-                    applierJSON.addProperty("supplierId", applier.getSupplierId());
-                    applierJSON.addProperty("supplierName", supplierName);
-                    applierJSON.addProperty("isBudgedCommited", applier.isBudgetCommited());
-                    applierJSON.addProperty("isBudgedLinked", applier.isBudgetLinked());
-                    applierJSON.addProperty("isAwarded", applier.isAwarded());
-                    applierJSON.addProperty("lastAbacMessage", applier.getLastAbacMessage());
-                    applierJSON.addProperty("abacStatus", applier.isAbacStatus());
-
-                    resultJSON.add(applierJSON);
                 }
-
-            } else {
-                return getErrorResponseDTO(500, "The JSON file is not at its last version. Please, generate a new version of the JSON file.");
+                if (applier.getSupplierId() != null) {
+                    SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(applier.getSupplierId()));
+                    if (supplierDTO != null) {
+                        supplierId = supplierDTO.getSupplierId();
+                        supplierName = supplierDTO.getName();
+                    }
+                }
+                applierJson.addProperty("legalEntityId", legalEntityId);
+                applierJson.addProperty("municipalityName", municipalityName);
+                applierJson.addProperty("mayorId", mayorId);
+                applierJson.addProperty("mayorName", mayorName);
+                applierJson.addProperty("voucherAwarded", applier.isAwarded());
+                applierJson.addProperty("supplierId", supplierId);
+                applierJson.addProperty("supplierName", supplierName);
+                applierJson.addProperty("lefExportDate", applier.getLefExport());
+                applierJson.addProperty("lefImportDate", applier.getLefImport());
+                applierJson.addProperty("lefStatus", applier.getLefStatus());
+                applierJson.addProperty("bcExportDate", applier.getBcExport());
+                applierJson.addProperty("bcImportDate", applier.getBcImport());
+                applierJson.addProperty("bcStatus", applier.getBcStatus());
+                applierJson.addProperty("lcExportDate", applier.getLcExport());
+                applierJson.addProperty("lcImportDate", applier.getLcImport());
+                applierJson.addProperty("lcStatus", applier.getLcStatus());
+                applierJson.addProperty("lastAbacMessage", applier.getLastAbacMessage());
+                resultJson.add(applierJson);
             }
-
+            result.setSuccess(true);
+            result.setData(resultJson.toString());
+            result.setError(null);
         } else {
-            return getErrorResponseDTO(500, "The JSON file is not at its last version. Please, generate a new version of the JSON file.");
+            result.setSuccess(false);
+            result.setData(null);
+            result.setError(new ErrorDTO(200, "NoAppliersForPublication"));
         }
-
-        result.setData(resultJSON.toString());
-
-        _log.info("[F] getPublicationAppliersInfo");
         return result;
     }
 
@@ -322,21 +350,25 @@ public class AbacService {
                 String message = status.get("message").getAsString();
 
                 if (action.equalsIgnoreCase("budget_commitment")) {
-                    benPubSub.setBudgetCommited(actionResult);
+                    //benPubSub.setBudgetCommited(actionResult);
                 } else if (action.equalsIgnoreCase("budged_link_commitment")) {
                     //-- Check if the budget was commited before set to linked
+                    /*
                     if (benPubSub.isBudgetCommited()) {
                         benPubSub.setBudgetLinked(actionResult);
                     } else {
                         return getErrorResponseDTO(500, "Can not set Awarded before budget_commitment && budged_link_commitment for " + benPubSubId);
                     }
+                    */
                 } else if (action.equalsIgnoreCase("beneficiary_approval")) {
                     //-- Check if the budget was commited && linked before set to awarded
+                    /*
                     if (benPubSub.isBudgetCommited() && benPubSub.isBudgetLinked()) {
                         benPubSub.setAwarded(actionResult); //-- Awarded is the last step, when the installation is successful
                     } else {
                         return getErrorResponseDTO(500, "Can not set Awarded before budget_commitment && budged_link_commitment for " + benPubSubId);
                     }
+                    */
                 } else {
                     return getErrorResponseDTO(500, "Action: " + action + "not found for " + benPubSubId);
                 }
@@ -447,8 +479,8 @@ public class AbacService {
             }
         }
 
-        statusJSON.addProperty("budgetCommited", applier.isBudgetCommited());
-        statusJSON.addProperty("budgedLinked", applier.isBudgetLinked());
+        //statusJSON.addProperty("budgetCommited", applier.isBudgetCommited());
+        //statusJSON.addProperty("budgedLinked", applier.isBudgetLinked());
         statusJSON.addProperty("approved", applier.isAwarded());
 
         applierInformation.addProperty("benPubSubId", applier.getBenPubSubId());
@@ -463,15 +495,17 @@ public class AbacService {
     private BenPubSupDTO updateAbacStatus(BenPubSupDTO benPubSupDTO) {
         LegalEntityDTO legalEntityDto = legalEntityMapper.toDTO(legalEntityRepository.findOne(benPubSupDTO.getBeneficiaryId()));
         if (benPubSupDTO.getSupplierId() == null) {
-            benPubSupDTO.setAbacStatus(false);
+            //benPubSupDTO.setAbacStatus(false);
             return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
         }
         SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(benPubSupDTO.getSupplierId()));
+        /*
         if (legalEntityDto.isAbacStatus() && supplierDTO.isAbacStatus()) {
             benPubSupDTO.setAbacStatus(true);
         } else {
             benPubSupDTO.setAbacStatus(false);
         }
+        */
         return benPubSupMapper.toDTO(benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO)));
     }
 

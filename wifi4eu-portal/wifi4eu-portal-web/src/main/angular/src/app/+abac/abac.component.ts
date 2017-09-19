@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { AbacApi } from "../shared/swagger/api/AbacApi";
 import { CallApi } from "../shared/swagger/api/CallApi";
 import * as FileSaver from 'file-saver';
+import {ResponseDTO} from "../shared/swagger/model/ResponseDTO";
 
 @Component({
 	templateUrl: 'abac.component.html',
@@ -78,12 +79,9 @@ export class AbacComponent implements OnInit {
 
 	onPublicationChange(selectedKey) {
 		this.abacApi.getPublicationAppliersInfo(selectedKey).subscribe(
-            data => {
+			(data : ResponseDTO) => {
 				console.log(data);
-				if (data && data['success']) {
-					this.tableAppliers = JSON.parse(data['data']);
-					console.log(this.tableAppliers);
-				}
+				this.tableAppliers = JSON.parse(data.data);
             },
             error => {
 				console.log("Error. Contact your administrator");
