@@ -55,26 +55,26 @@
 				</p-column>
 				<p-column field="lefStatus" header="LEF Validated">
 					<template pTemplate="body" let-applier="rowData">
-						<i class="fa fa-check" aria-hidden="true" *ngIf="applier.lefStatus == 1" title="Exported: {{applier.lefExport | date:'short'}}
-Imported: {{applier.lefImport | date:'short'}}"></i>
-						<i class="fa fa-times" aria-hidden="true" *ngIf="applier.lefStatus == 0" title="Exported: {{applier.lefExport | date:'short'}}
-Imported: {{applier.lefImport | date:'short'}}"></i>
+						<i class="fa fa-check" aria-hidden="true" *ngIf="applier.lefStatus == 1" title="Exported: {{applier.lefExportDate | date:'short'}}
+Imported: {{applier.lefImportDate | date:'short'}}"></i>
+						<i class="fa fa-times" aria-hidden="true" *ngIf="applier.lefStatus == 0" title="Exported: {{applier.lefExportDate | date:'short'}}
+Imported: {{applier.lefImportDate | date:'short'}}"></i>
 					</template>
 				</p-column>
 				<p-column field="bcStatus" header="BC Validated">
 					<template pTemplate="body" let-applier="rowData">
-						<i class="fa fa-check" aria-hidden="true" *ngIf="applier.bcStatus == 1" title="Exported: {{applier.bcExport | date:'short'}}
-Imported: {{applier.bcImport | date:'short'}}"></i>
-						<i class="fa fa-times" aria-hidden="true" *ngIf="applier.bcStatus == 0" title="Exported: {{applier.bcExport | date:'short'}}
-Imported: {{applier.bcImport | date:'short'}}"></i>
+						<i class="fa fa-check" aria-hidden="true" *ngIf="applier.bcStatus == 1" title="Exported: {{applier.bcExportDate | date:'short'}}
+Imported: {{applier.bcImportDate | date:'short'}}"></i>
+						<i class="fa fa-times" aria-hidden="true" *ngIf="applier.bcStatus == 0" title="Exported: {{applier.bcExportDate | date:'short'}}
+Imported: {{applier.bcImportDate | date:'short'}}"></i>
 					</template>
 				</p-column>
 				<p-column field="lcStatus" header="LC Validated">
 					<template pTemplate="body" let-applier="rowData">
-						<i class="fa fa-check" aria-hidden="true" *ngIf="applier.lcStatus == 1" title="Exported: {{applier.lcExport | date:'short'}}
-Imported: {{applier.lcImport | date:'short'}}"></i>
-						<i class="fa fa-times" aria-hidden="true" *ngIf="applier.lcStatus == 0" title="Exported: {{applier.lcExport | date:'short'}}
-Imported: {{applier.lcImport | date:'short'}}"></i>
+						<i class="fa fa-check" aria-hidden="true" *ngIf="applier.lcStatus == 1" title="Exported: {{applier.lcExportDate | date:'short'}}
+Imported: {{applier.lcImportDate | date:'short'}}"></i>
+						<i class="fa fa-times" aria-hidden="true" *ngIf="applier.lcStatus == 0" title="Exported: {{applier.lcExportDate | date:'short'}}
+Imported: {{applier.lcImportDate | date:'short'}}"></i>
 					</template>
 				</p-column>
 				<!--<p-column field="lastAbacMessage" header="Last ABAC Message"></p-column>-->

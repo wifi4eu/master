@@ -2,6 +2,8 @@ package wifi4eu.wifi4eu.service.abac;
 
 import com.google.common.collect.Lists;
 import com.google.gson.*;
+import java.util.Date;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,10 +25,6 @@ import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.mapper.beneficiary.MayorMapper;
-
-import java.util.Date;
-
-import java.util.List;
 
 /**
  * Created by jmagrinc on 08/05/2017.
@@ -78,10 +76,6 @@ public class AbacService {
     @Autowired
     private LauMapper lauMapper;
 
-    /**
-     * Returns a JSON with the current status of the publications and appliers
-     * @return
-     */
     public ResponseDTO exportAbacInformation() {
         ResponseDTO result = new ResponseDTO();
         Gson gson = new GsonBuilder().create();
@@ -89,7 +83,6 @@ public class AbacService {
         JsonObject resultJson = new JsonObject();
         List<CallDTO> calls = callService.getAllCalls();
         JsonArray callsJsonArray = new JsonArray();
-        List<Long> exportedApplications = Lists.newArrayList();
         if (calls != null && !calls.isEmpty()) {
             for (CallDTO call : calls) {
                 JsonObject callJson =  parser.parse(gson.toJson(call)).getAsJsonObject();
@@ -131,7 +124,11 @@ public class AbacService {
                             applicationJson.add("supplier", supplierJson);
                             applicationJson.addProperty("date", application.getDate().getTime());
                             applicationsJsonArray.add(applicationJson);
-                            exportedApplications.add(application.getBenPubSubId());
+                            long exportDate = new Date().getTime();
+                            application.setLefExport(exportDate);
+                            application.setBcExport(exportDate);
+                            application.setLcExport(exportDate);
+                            benPubSupRepository.save(benPubSupMapper.toEntity(application));
                         }
                     }
                 }
@@ -142,22 +139,10 @@ public class AbacService {
         resultJson.addProperty("version", _version);
         resultJson.addProperty("createTime", new Date().getTime());
         resultJson.add("calls", callsJsonArray);
-        updateApplicationExportDates(exportedApplications);
         result.setSuccess(true);
         result.setData(resultJson.toString());
         result.setError(null);
         return result;
-    }
-
-    private void updateApplicationExportDates(List<Long> ids) {
-        for (Long id : ids) {
-            BenPubSupDTO application = benPubSupMapper.toDTO(benPubSupRepository.findOne(id));
-            long exportDate = new Date().getTime();
-            application.setLefExport(exportDate);
-            application.setBcExport(exportDate);
-            application.setLcExport(exportDate);
-            benPubSupRepository.save(benPubSupMapper.toEntity(application));
-        }
     }
 
     /**

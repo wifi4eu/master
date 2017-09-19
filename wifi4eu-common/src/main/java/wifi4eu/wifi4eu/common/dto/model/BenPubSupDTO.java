@@ -43,6 +43,20 @@ public class BenPubSupDTO implements Serializable {
         this.lastAbacMessage = lastAbacMessage;
     }
 
+    public static BenPubSupDTO createNewApplication() {
+        BenPubSupDTO benPubSupDTO = new BenPubSupDTO();
+        benPubSupDTO.lefExport = Long.valueOf(0);
+        benPubSupDTO.lefImport = Long.valueOf(0);
+        benPubSupDTO.lefStatus = 0;
+        benPubSupDTO.bcExport = Long.valueOf(0);
+        benPubSupDTO.bcImport = Long.valueOf(0);
+        benPubSupDTO.bcStatus = 0;
+        benPubSupDTO.lcExport = Long.valueOf(0);
+        benPubSupDTO.lcImport = Long.valueOf(0);
+        benPubSupDTO.lcStatus = 0;
+        return benPubSupDTO;
+    }
+
     public Long getBenPubSubId() {
         return benPubSubId;
     }

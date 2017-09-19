@@ -1,26 +1,13 @@
 package wifi4eu.wifi4eu.service.financial;
 
 import com.google.common.collect.Lists;
-import eu.europa.ec.budg.abac.ares_document.v1.AresDocumentsType;
-import eu.europa.ec.budg.abac.budgetary_commitment_level1.service.es.sync.v1.BudgetaryCommitmentLevel1;
-import eu.europa.ec.budg.abac.budgetary_commitment_level1.v1.BudgetaryCommitmentLevel1SearchRequestType;
-import eu.europa.ec.budg.abac.budgetary_commitment_level1.v1.BudgetaryCommitmentLevel1SearchResponseType;
-import eu.europa.ec.budg.abac.budgetary_commitment_level2.service.es.async.v1.BudgetaryCommitmentLevel2;
-import eu.europa.ec.budg.abac.budgetary_commitment_level2.v1.BudgetaryCommitmentLevel2CreateRequestType;
-import eu.europa.ec.budg.abac.legal_entity.v2.*;
-import eu.europa.ec.budg.abac.message.v1.BusinessRuleMessageResponseType;
-import eu.europa.ec.budg.abac.workflow.v1.VisaType;
-
-import java.io.StringWriter;
-import java.io.Writer;
-import java.math.BigInteger;
+import com.google.gson.*;
 import java.util.Date;
 import java.util.List;
-
-import org.json.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.MayorMapper;
@@ -41,6 +28,8 @@ import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 
 @Service
 public class FinancialService {
+    private final static String _version = "0.0.2";
+
     @Autowired
     CallRepository callRepository;
 
@@ -77,516 +66,70 @@ public class FinancialService {
     @Autowired
     BenPubSupMapper benPubSupMapper;
 
-    public boolean importJson(String jsonStringFile) {
-        System.out.println("Start Import JSON");
-        JSONObject json = new JSONObject(jsonStringFile);
-        if (!checkJsonFileFormat(json)) {
-            return false;
+    public boolean importJson(String jsonString) {
+        Gson gson = new GsonBuilder().create();
+        JsonParser parser = new JsonParser();
+        JsonObject resultJson = parser.parse(jsonString).getAsJsonObject();
+        JsonArray callsJsonArray = resultJson.getAsJsonArray("calls");
+        for (int i = 0; i < callsJsonArray.size(); i++) {
+            JsonObject callJson = callsJsonArray.get(i).getAsJsonObject();
+            CallDTO call = gson.fromJson(callJson, CallDTO.class);
+            JsonArray applicationsJsonArray = callJson.getAsJsonArray("applications");
+            for (int j = 0; j < applicationsJsonArray.size(); j++) {
+                JsonObject applicationJson = applicationsJsonArray.get(j).getAsJsonObject();
+                BenPubSupDTO application = BenPubSupDTO.createNewApplication();
+                application.setBenPubSubId(applicationJson.get("benPubSubId").getAsLong());
+                JsonObject beneficiary = applicationJson.getAsJsonObject("beneficiary");
+                LegalEntityDTO legalEntity = gson.fromJson(beneficiary.getAsJsonObject("legalEntity"), LegalEntityDTO.class);
+                MayorDTO mayor = gson.fromJson(beneficiary.getAsJsonObject("mayor"), MayorDTO.class);
+                UserDTO user = gson.fromJson(beneficiary.getAsJsonObject("user"), UserDTO.class);
+                SupplierDTO supplier = gson.fromJson(applicationJson.getAsJsonObject("supplier"), SupplierDTO.class);
+                application.setAwarded(applicationJson.get("awarded").getAsBoolean());
+                application.setDate(new Date(applicationJson.get("date").getAsLong()));
+                application.setPublicationId(call.getCallId());
+                application.setBeneficiaryId(legalEntity.getLegalEntityId());
+                legalEntityRepository.save(legalEntityMapper.toEntity(legalEntity));
+                mayorRepository.save(mayorMapper.toEntity(mayor));
+                userRepository.save(userMapper.toEntity(user));
+                if (supplier.getSupplierId() != null) {
+                    application.setSupplierId(supplier.getSupplierId());
+                    supplierRepository.save(supplierMapper.toEntity(supplier));
+                }
+                Long importDate = new Date().getTime();
+                application.setLefImport(importDate);
+                application.setBcImport(importDate);
+                application.setLcImport(importDate);
+                benPubSupRepository.save(benPubSupMapper.toEntity(application));
+            }
+            callRepository.save(callMapper.toEntity(call));
         }
-        uploadDataToDB(json);
         return true;
     }
 
-    public String exportJson() {
-        try {
-
-
-//            File file = new File("C:\\test-abac.xml");
-//
-//            System.out.println("IN DAVID CODE!");
-//
-//            if (!file.exists()) {
-////                return new ResponseAbac(false, null, "The file cannot be exported.");
-//                return "{\"test\":\"" + leSearchResponse.getRowCount() + "\",\"version\":\"0.0.1\",\"createTime\":1503299572754,\"publications\":[{\"publicationId\":1701,\"appliers\":[{\"benPubSubId\":11701,\"beneficiary\":{\"mayorId\":7251,\"treatment\":\"ms\",\"name\":\"e\",\"surname\":\"e\",\"email\":\"priscilla.p.barros@gmail.com\",\"legalEntity\":{\"legalEntityId\":7251,\"countryCode\":\"ES\",\"municipalityCode\":\"01022\",\"address\":\"e\",\"addressNum\":\"1\",\"postalCode\":\"122\"},\"user\":{\"userId\":7253,\"email\":\"priscilla.p.barros@gmail.com\",\"createDate\":1501834958000,\"userType\":2,\"userTypeId\":7252}},\"supplier\":false,\"status\":{\"budgetCommited\":false,\"budgedLinked\":false,\"approved\":false}}]}]}";
-//
-//            }
-//            byte[] encoded = Files.readAllBytes(file.toPath());
-//            String content = new String(encoded, Charset.defaultCharset());
-//            JSONObject jsonObject = XML.toJSONObject(content);
-////            return new ResponseAbac(true, jsonObject.toString(), "Export succesful!");
-//            System.out.println("IN MIDDLE DAVID CODE!");
-//            return "{\"test\":\"" + leSearchResponse.getRowCount() + "\",\"version\":\"0.0.1\",\"createTime\":1503299572754,\"publications\":[{\"publicationId\":1701,\"appliers\":[{\"benPubSubId\":11701,\"beneficiary\":{\"mayorId\":7251,\"treatment\":\"ms\",\"name\":\"e\",\"surname\":\"e\",\"email\":\"priscilla.p.barros@gmail.com\",\"legalEntity\":{\"legalEntityId\":7251,\"countryCode\":\"ES\",\"municipalityCode\":\"01022\",\"address\":\"e\",\"addressNum\":\"1\",\"postalCode\":\"122\"},\"user\":{\"userId\":7253,\"email\":\"priscilla.p.barros@gmail.com\",\"createDate\":1501834958000,\"userType\":2,\"userTypeId\":7252}},\"supplier\":false,\"status\":{\"budgetCommited\":false,\"budgedLinked\":false,\"approved\":false}}]}]}";
-//
-            Writer writer = new StringWriter();
-            JSONWriter jsonWriter = new JSONWriter(writer);
-            List<CallDTO> calls = callMapper.toDTOList(Lists.newArrayList(callRepository.findAll()));
-            jsonWriter.object();
-            jsonWriter.key("version");
-            jsonWriter.value("0.0.1");
-            jsonWriter.key("createTime");
-            jsonWriter.value(new Date().getTime());
-            jsonWriter.key("publications");
-            jsonWriter.array();
-            for (CallDTO call : calls) {
-                jsonWriter.object();
-                jsonWriter.key("publicationId");
-                jsonWriter.value(call.getCallId());
-                List<BenPubSupDTO> appliers = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findByPublicationId(call.getCallId())));
-                jsonWriter.key("appliers");
-                jsonWriter.array();
-                for (BenPubSupDTO applier : appliers) {
-                    jsonWriter.object();
-                    jsonWriter.key("benPubSubId");
-                    jsonWriter.value(applier.getBenPubSubId());
-                    jsonWriter.key("beneficiary");
-                    jsonWriter.object();
-                    jsonWriter = writeJsonBeneficiary(jsonWriter, applier.getBeneficiaryId());
-                    jsonWriter.endObject();
-                    jsonWriter.key("supplier");
-                    jsonWriter.object();
-                    if (applier.getSupplierId() != null) {
-                        jsonWriter = writeJsonSupplier(jsonWriter, applier.getSupplierId());
-                    }
-                    jsonWriter.endObject();
-                    jsonWriter.key("status");
-                    jsonWriter.object();
-                    jsonWriter = writeJsonStatus(jsonWriter, applier);
-                    jsonWriter.endObject();
-                    jsonWriter.endObject();
-                }
-                jsonWriter.endArray();
-                jsonWriter.endObject();
+    public ResponseDTO exportAbacInformation() {
+        ResponseDTO result = new ResponseDTO();
+        Gson gson = new GsonBuilder().create();
+        JsonParser parser = new JsonParser();
+        JsonObject resultJson = new JsonObject();
+        List<BenPubSupDTO> applications = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findAll()));
+        JsonArray applicationsJsonArray = new JsonArray();
+        if (applications != null && !applications.isEmpty()) {
+            for (BenPubSupDTO application : applications) {
+                long exportDate = new Date().getTime();
+                application.setLefExport(exportDate);
+                application.setBcExport(exportDate);
+                application.setLcExport(exportDate);
+                benPubSupRepository.save(benPubSupMapper.toEntity(application));
+                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
+                applicationsJsonArray.add(applicationJson);
             }
-            jsonWriter.endArray();
-            jsonWriter.endObject();
-            return writer.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
         }
-    }
-
-    public boolean checkJsonFileFormat(JSONObject json) {
-        try {
-            JSONArray publications = json.getJSONArray("publications");
-            for (int i = 0; i < publications.length(); i++) {
-                JSONObject publication = publications.getJSONObject(i);
-                JSONArray appliers = publication.getJSONArray("appliers");
-                for (int j = 0; j < appliers.length(); j++) {
-                    JSONObject applier = appliers.getJSONObject(j);
-                    if (applier.has("benPubSubId")) {
-                        if (applier.get("benPubSubId").toString() == null || applier.get("benPubSubId").toString().trim().isEmpty()) {
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
-                    if (applier.has("beneficiary")) {
-                        JSONObject benef = applier.getJSONObject("beneficiary");
-                        if (benef.has("mayorId")) {
-                            if (benef.get("mayorId") == null || benef.get("mayorId").toString().trim().isEmpty()) {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                        if (benef.has("treatment")) {
-                            if (benef.get("treatment") == null || benef.get("treatment").toString().trim().isEmpty()) {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                        if (benef.has("name")) {
-                            if (benef.get("name") == null || benef.get("name").toString().trim().isEmpty()) {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                        if (benef.has("surname")) {
-                            if (benef.get("surname") == null || benef.get("surname").toString().trim().isEmpty()) {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                        if (benef.has("email")) {
-                            if (benef.get("email") == null || benef.get("email").toString().trim().isEmpty()) {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                        if (benef.has("legalEntity")) {
-                            JSONObject entity = benef.getJSONObject("legalEntity");
-                            if (entity.has("legalEntityId")) {
-                                if (entity.get("legalEntityId") == null || entity.get("legalEntityId").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (entity.has("countryCode")) {
-                                if (entity.get("countryCode") == null || entity.get("countryCode").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (entity.has("municipalityCode")) {
-                                if (entity.get("municipalityCode") == null || entity.get("municipalityCode").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (entity.has("address")) {
-                                if (entity.get("address") == null || entity.get("address").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (entity.has("addressNum")) {
-                                if (entity.get("addressNum") == null || entity.get("addressNum").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (entity.has("postalCode")) {
-                                if (entity.get("postalCode") == null || entity.get("postalCode").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                        if (benef.has("user")) {
-                            JSONObject user = benef.getJSONObject("user");
-                            if (user.has("userId")) {
-                                if (user.get("userId") == null || user.get("userId").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (user.has("email")) {
-                                if (user.get("email") == null || user.get("email").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (user.has("createDate")) {
-                                if (user.get("createDate") == null || user.get("createDate").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (user.has("userType")) {
-                                if (user.get("userType") == null || user.get("userType").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (user.has("userTypeId")) {
-                                if (user.get("userTypeId") == null || user.get("userTypeId").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
-                    if (applier.has("supplier")) {
-                        JSONObject supplier = applier.getJSONObject("supplier");
-                        if (supplier.length() > 0) {
-                            if (supplier.has("supplierId")) {
-                                if (supplier.get("supplierId") == null || supplier.get("supplierId").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (supplier.has("name")) {
-                                if (supplier.get("name") == null || supplier.get("name").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (supplier.has("address")) {
-                                if (supplier.get("address") == null || supplier.get("address").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (supplier.has("vat")) {
-                                if (supplier.get("vat") == null || supplier.get("vat").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (supplier.has("bic")) {
-                                if (supplier.get("bic") == null || supplier.get("bic").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (supplier.has("accountNumber")) {
-                                if (supplier.get("accountNumber") == null || supplier.get("accountNumber").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (supplier.has("contactName")) {
-                                if (supplier.get("contactName") == null || supplier.get("contactName").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (supplier.has("contactSurname")) {
-                                if (supplier.get("contactSurname") == null || supplier.get("contactSurname").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (supplier.has("contactPhonePrefix")) {
-                                if (supplier.get("contactPhonePrefix") == null || supplier.get("contactPhonePrefix").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (supplier.has("contactPhoneNumber")) {
-                                if (supplier.get("contactPhoneNumber") == null || supplier.get("contactPhoneNumber").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (supplier.has("contactEmail")) {
-                                if (supplier.get("contactEmail") == null || supplier.get("contactEmail").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                            if (supplier.has("nutsIds")) {
-                                if (supplier.get("nutsIds") == null || supplier.get("nutsIds").toString().trim().isEmpty()) {
-                                    return false;
-                                }
-                            } else {
-                                return false;
-                            }
-                        }
-                    } else {
-                        return false;
-                    }
-                    if (applier.has("status")) {
-                        JSONObject status = applier.getJSONObject("status");
-                        if (status.has("budgetCommited")) {
-                            if (status.get("budgetCommited") == null || status.get("budgetCommited").toString().trim().isEmpty()) {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                        if (status.has("budgedLinked")) {
-                            if (status.get("budgedLinked") == null || status.get("budgedLinked").toString().trim().isEmpty()) {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                        if (status.has("approved")) {
-                            if (status.get("approved") == null || status.get("approved").toString().trim().isEmpty()) {
-                                return false;
-                            }
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        } catch (JSONException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean uploadDataToDB(JSONObject json) {
-        try {
-            JSONArray publications = json.getJSONArray("publications");
-            for (int i = 0; i < publications.length(); i++) {
-                JSONObject publication = publications.getJSONObject(i);
-                CallDTO callDTO = new CallDTO();
-                callDTO.setCallId(publication.getLong("publicationId"));
-                callDTO.setEvent("JSON Test");
-                callDTO.setStartDate(new Date().getTime() / 1000);
-                callDTO.setEndDate(new Date().getTime() / 1000 + 1000);
-                callRepository.save(callMapper.toEntity(callDTO));
-                JSONArray appliers = publication.getJSONArray("appliers");
-                for (int j = 0; j < appliers.length(); j++) {
-                    JSONObject applier = appliers.getJSONObject(j);
-                    BenPubSupDTO benPubSupDTO = new BenPubSupDTO();
-                    benPubSupDTO.setBenPubSubId(applier.getLong("benPubSubId"));
-                    JSONObject benef = applier.getJSONObject("beneficiary");
-                    MayorDTO mayorDTO = new MayorDTO();
-                    mayorDTO.setMayorId(benef.getLong("mayorId"));
-                    mayorDTO.setTreatment(benef.getString("treatment"));
-                    mayorDTO.setName(benef.getString("name"));
-                    mayorDTO.setSurname(benef.getString("surname"));
-                    mayorDTO.setEmail(benef.getString("email"));
-                    JSONObject legalEntity = benef.getJSONObject("legalEntity");
-                    LegalEntityDTO legalEntityDTO = new LegalEntityDTO();
-                    legalEntityDTO.setLegalEntityId(legalEntity.getInt("legalEntityId"));
-                    legalEntityDTO.setCountryCode(legalEntity.getString("countryCode"));
-                    legalEntityDTO.setMunicipalityCode(legalEntity.getString("municipalityCode"));
-                    legalEntityDTO.setAddress(legalEntity.getString("address"));
-                    legalEntityDTO.setAddressNum(legalEntity.getString("addressNum"));
-                    legalEntityDTO.setPostalCode(legalEntity.getString("postalCode"));
-                    legalEntityRepository.save(legalEntityMapper.toEntity(legalEntityDTO));
-                    mayorDTO.setLegalEntityId(legalEntityDTO.getLegalEntityId());
-                    mayorRepository.save(mayorMapper.toEntity(mayorDTO));
-                    JSONObject user = benef.getJSONObject("user");
-                    UserDTO userDTO = new UserDTO();
-                    userDTO.setUserId(user.getLong("userId"));
-                    userDTO.setEmail(user.getString("email"));
-                    userDTO.setCreateDate(new Date(user.getLong("createDate")));
-                    userDTO.setUserType(user.getLong("userType"));
-                    userDTO.setUserTypeId(user.getLong("userTypeId"));
-                    userRepository.save(userMapper.toEntity(userDTO));
-                    JSONObject supplier = applier.getJSONObject("supplier");
-                    if (supplier.length() > 0) {
-                        SupplierDTO supplierDTO = new SupplierDTO();
-                        supplierDTO.setSupplierId(supplier.getLong("supplierId"));
-                        supplierDTO.setName(supplier.getString("name"));
-                        supplierDTO.setAddress(supplier.getString("address"));
-                        supplierDTO.setVat(supplier.getString("vat"));
-                        supplierDTO.setBic(supplier.getString("bic"));
-                        supplierDTO.setAccountNumber(supplier.getString("accountNumber"));
-                        supplierDTO.setContactName(supplier.getString("contactName"));
-                        supplierDTO.setContactSurname(supplier.getString("contactSurname"));
-                        supplierDTO.setContactPhonePrefix(supplier.getString("contactPhonePrefix"));
-                        supplierDTO.setContactPhoneNumber(supplier.getString("contactPhoneNumber"));
-                        supplierDTO.setContactEmail(supplier.getString("contactEmail"));
-                        supplierDTO.setNutsIds(supplier.getString("nutsIds"));
-                        supplierRepository.save(supplierMapper.toEntity(supplierDTO));
-                    }
-                    JSONObject benPubSup = applier.getJSONObject("status");
-                    //benPubSupDTO.setBudgetCommited(benPubSup.getBoolean("budgetCommited"));
-                    //benPubSupDTO.setBudgetLinked(benPubSup.getBoolean("budgedLinked"));
-                    benPubSupDTO.setAwarded(benPubSup.getBoolean("approved"));
-                    benPubSupDTO.setBeneficiaryId(legalEntity.getLong("legalEntityId"));
-                    benPubSupDTO.setPublicationId(publication.getLong("publicationId"));
-                    if (supplier.length() > 0) {
-                        benPubSupDTO.setSupplierId(supplier.getLong("supplierId"));
-                    } else {
-                        benPubSupDTO.setSupplierId(null);
-                    }
-                    benPubSupRepository.save(benPubSupMapper.toEntity(benPubSupDTO));
-                }
-            }
-            return true;
-        } catch (JSONException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public JSONWriter writeJsonBeneficiary(JSONWriter writer, long beneficiaryId) {
-        LegalEntityDTO legalEntity = legalEntityMapper.toDTO(legalEntityRepository.findOne(beneficiaryId));
-        MayorDTO mayor = mayorMapper.toDTO(mayorRepository.findByLegalEntityId(legalEntity.getLegalEntityId()));
-        UserDTO user = userMapper.toDTO(userRepository.findByUserTypeId(mayor.getMayorId()));
-        writer.key("mayorId");
-        writer.value(mayor.getMayorId());
-        writer.key("treatment");
-        writer.value(mayor.getTreatment());
-        writer.key("name");
-        writer.value(mayor.getName());
-        writer.key("surname");
-        writer.value(mayor.getSurname());
-        writer.key("email");
-        writer.value(mayor.getEmail());
-        writer.key("legalEntity");
-        writer.object();
-        writer.key("legalEntityId");
-        writer.value(legalEntity.getLegalEntityId());
-        writer.key("countryCode");
-        writer.value(legalEntity.getCountryCode());
-        writer.key("municipalityCode");
-        writer.value(legalEntity.getMunicipalityCode());
-        writer.key("address");
-        writer.value(legalEntity.getAddress());
-        writer.key("addressNum");
-        writer.value(legalEntity.getAddressNum());
-        writer.key("postalCode");
-        writer.value(legalEntity.getPostalCode());
-        writer.endObject();
-        writer.key("user");
-        writer.object();
-        writer.key("userId");
-        writer.value(user.getUserId());
-        writer.key("email");
-        writer.value(user.getEmail());
-        writer.key("createDate");
-        writer.value(user.getCreateDate().getTime());
-        writer.key("userType");
-        writer.value(user.getUserType());
-        writer.key("userTypeId");
-        writer.value(user.getUserTypeId());
-        writer.endObject();
-        return writer;
-    }
-
-    public JSONWriter writeJsonSupplier(JSONWriter writer, long supplierId) {
-        SupplierDTO supplier = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
-        if (supplier != null) {
-            writer.key("supplierId");
-            writer.value(supplier.getSupplierId());
-            writer.key("name");
-            writer.value(supplier.getName());
-            writer.key("address");
-            writer.value(supplier.getAddress());
-            writer.key("vat");
-            writer.value(supplier.getVat());
-            writer.key("bic");
-            writer.value(supplier.getBic());
-            writer.key("accountNumber");
-            writer.value(supplier.getAccountNumber());
-            writer.key("contactName");
-            writer.value(supplier.getContactName());
-            writer.key("contactSurname");
-            writer.value(supplier.getContactSurname());
-            writer.key("contactPhonePrefix");
-            writer.value(supplier.getContactPhonePrefix());
-            writer.key("contactPhoneNumber");
-            writer.value(supplier.getContactPhoneNumber());
-            writer.key("contactEmail");
-            writer.value(supplier.getContactEmail());
-            writer.key("nutsIds");
-            writer.value(supplier.getNutsIds());
-        }
-        return writer;
-    }
-
-    public JSONWriter writeJsonStatus(JSONWriter writer, BenPubSupDTO applier) {
-        writer.key("budgetCommited");
-        //writer.value(applier.isBudgetCommited());
-        writer.key("budgetLinked");
-        //writer.value(applier.isBudgetLinked());
-        writer.key("approved");
-        writer.value(applier.isAwarded());
-        return writer;
+        resultJson.addProperty("version", _version);
+        resultJson.addProperty("createTime", new Date().getTime());
+        resultJson.add("applications", applicationsJsonArray);
+        result.setSuccess(true);
+        result.setData(resultJson.toString());
+        result.setError(null);
+        return result;
     }
 }
