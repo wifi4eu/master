@@ -23,7 +23,6 @@ public class CallService {
     @Autowired
     CallMapper callMapper;
 
-
     public List<CallDTO> getAllCalls() {
         return callMapper.toDTOList(Lists.newArrayList(callRepository.findAll()));
     }

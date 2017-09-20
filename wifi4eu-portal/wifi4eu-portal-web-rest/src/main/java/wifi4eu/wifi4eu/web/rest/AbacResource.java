@@ -40,7 +40,8 @@ public class AbacResource {
     @RequestMapping(value = "/importAbacInformation", method = RequestMethod.POST, produces = "application/JSON")
     @ResponseBody
     public ResponseDTO importAbacInformation(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
-        return abacService.processAbacInformation(jsonStringFile);
+        return abacService.importAbacInformation(jsonStringFile);
+        //return abacService.processAbacInformation(jsonStringFile);
     }
 
     @ApiOperation(value = "Returns information about the state of the applications for a given Publication")

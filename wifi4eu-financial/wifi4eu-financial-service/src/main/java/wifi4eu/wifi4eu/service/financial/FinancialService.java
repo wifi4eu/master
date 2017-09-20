@@ -66,7 +66,8 @@ public class FinancialService {
     @Autowired
     BenPubSupMapper benPubSupMapper;
 
-    public boolean importJson(String jsonString) {
+    public ResponseDTO importAbacInformation(String jsonString) {
+        ResponseDTO result = new ResponseDTO();
         Gson gson = new GsonBuilder().create();
         JsonParser parser = new JsonParser();
         JsonObject resultJson = parser.parse(jsonString).getAsJsonObject();
@@ -103,7 +104,10 @@ public class FinancialService {
             }
             callRepository.save(callMapper.toEntity(call));
         }
-        return true;
+        result.setSuccess(true);
+        result.setData("Succesful import");
+        result.setError(null);
+        return result;
     }
 
     public ResponseDTO exportAbacInformation() {

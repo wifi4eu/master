@@ -31,15 +31,11 @@ public class FinancialResource {
 
 
     @ApiOperation(value = "Import JSON file.")
-    @RequestMapping(value = "/importJson", method = RequestMethod.POST, produces = "application/JSON")
+    @RequestMapping(value = "/importAbacInformation", method = RequestMethod.POST, produces = "application/JSON")
     @ResponseBody
-    public ResponseDTO importJson(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
+    public ResponseDTO importAbacInformation(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
         _log.info("importJson");
-        if (financialService.importJson(jsonStringFile)) {
-            return new ResponseDTO(true, "Import succesful!", null);
-        } else {
-            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Import failed"));
-        }
+        return financialService.importAbacInformation(jsonStringFile);
     }
 
     @ApiOperation(value = "Export JSON file.")
