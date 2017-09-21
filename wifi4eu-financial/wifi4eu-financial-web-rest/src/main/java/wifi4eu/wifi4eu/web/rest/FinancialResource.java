@@ -31,28 +31,19 @@ public class FinancialResource {
 
 
     @ApiOperation(value = "Import JSON file.")
-    @RequestMapping(value = "/importJson", method = RequestMethod.POST, produces = "application/JSON")
+    @RequestMapping(value = "/importAbacInformation", method = RequestMethod.POST, produces = "application/JSON")
     @ResponseBody
-    public ResponseDTO importJson(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
+    public ResponseDTO importAbacInformation(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
         _log.info("importJson");
-        if (financialService.importJson(jsonStringFile)) {
-            return new ResponseDTO(true, "Import succesful!", null);
-        } else {
-            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Import failed"));
-        }
+        return financialService.importAbacInformation(jsonStringFile);
     }
 
     @ApiOperation(value = "Export JSON file.")
-    @RequestMapping(value = "/exportJson", method = RequestMethod.GET, produces = "application/JSON")
+    @RequestMapping(value = "/exportAbacInformation", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
-    public ResponseDTO exportJson(final HttpServletResponse response) {
-        _log.info("exportJson");
-        String result = financialService.exportJson();
-        if (!result.isEmpty()) {
-            return new ResponseDTO(true, result, null);
-        } else {
-            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Import failed"));
-        }
+    public ResponseDTO exportAbacInformation(final HttpServletResponse response) {
+        _log.info("exportAbacInformation");
+        return financialService.exportAbacInformation();
     }
 
     @ApiOperation(value = "LE Search.")

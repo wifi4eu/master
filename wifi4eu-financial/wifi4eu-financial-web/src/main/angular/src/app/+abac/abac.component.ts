@@ -20,7 +20,7 @@ export class AbacComponent {
     }
 
     exportJson() {
-        this.financialApi.exportJson().subscribe(
+        this.financialApi.exportAbacInformation().subscribe(
             (response: ResponseDTO) => {
                 if (response.success) {
                     let blob = new Blob([response.data], {type: 'application/json'});
@@ -43,7 +43,7 @@ export class AbacComponent {
             let reader = new FileReader();
 
             reader.onload = (e) => {
-                this.financialApi.importJson(reader.result).subscribe(
+                this.financialApi.importAbacInformation(reader.result).subscribe(
                     (response: ResponseDTO) => {
                         if (response.success) {
                             this.exportEnabled = true;

@@ -16,10 +16,13 @@ public class Mayor {
 
     @Column(name = "TREATMENT")
     private String treatment;
+
     @Column(name = "NAME")
     private String name;
+
     @Column(name = "SURNAME")
     private String surname;
+
     @Column(name = "EMAIL")
     private String email;
 

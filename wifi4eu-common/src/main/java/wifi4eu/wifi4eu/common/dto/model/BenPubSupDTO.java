@@ -2,34 +2,59 @@ package wifi4eu.wifi4eu.common.dto.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 public class BenPubSupDTO implements Serializable {
     private Long benPubSubId;
     private Long beneficiaryId;
     private Long publicationId;
-    private boolean awarded;
     private Long supplierId;
-    private boolean budgetCommited;
-    private boolean budgetLinked;
-    private String lastAbacMessage;
+    private boolean awarded;
     private Date date;
-    private boolean abacStatus;
+    private Long lefExport;
+    private Long lefImport;
+    private int lefStatus;
+    private Long bcExport;
+    private Long bcImport;
+    private int bcStatus;
+    private Long lcExport;
+    private Long lcImport;
+    private int lcStatus;
+    private String lastAbacMessage;
 
     public BenPubSupDTO() {
     }
 
-    public BenPubSupDTO(Long benPubSubId, Long beneficiaryId, Long publicationId, boolean awarded, Long supplierId, boolean budgetCommited, boolean budgetLinked, String lastAbacMessage, Date date, boolean abacStatus) {
+    public BenPubSupDTO(Long benPubSubId, Long beneficiaryId, Long publicationId, Long supplierId, boolean awarded, Date date, Long lefExport, Long lefImport, int lefStatus, Long bcExport, Long bcImport, int bcStatus, Long lcExport, Long lcImport, int lcStatus, String lastAbacMessage) {
         this.benPubSubId = benPubSubId;
         this.beneficiaryId = beneficiaryId;
         this.publicationId = publicationId;
-        this.awarded = awarded;
         this.supplierId = supplierId;
-        this.budgetCommited = budgetCommited;
-        this.budgetLinked = budgetLinked;
-        this.lastAbacMessage = lastAbacMessage;
+        this.awarded = awarded;
         this.date = date;
-        this.abacStatus = abacStatus;
+        this.lefExport = lefExport;
+        this.lefImport = lefImport;
+        this.lefStatus = lefStatus;
+        this.bcExport = bcExport;
+        this.bcImport = bcImport;
+        this.bcStatus = bcStatus;
+        this.lcExport = lcExport;
+        this.lcImport = lcImport;
+        this.lcStatus = lcStatus;
+        this.lastAbacMessage = lastAbacMessage;
+    }
+
+    public static BenPubSupDTO createNewApplication() {
+        BenPubSupDTO benPubSupDTO = new BenPubSupDTO();
+        benPubSupDTO.lefExport = Long.valueOf(0);
+        benPubSupDTO.lefImport = Long.valueOf(0);
+        benPubSupDTO.lefStatus = 0;
+        benPubSupDTO.bcExport = Long.valueOf(0);
+        benPubSupDTO.bcImport = Long.valueOf(0);
+        benPubSupDTO.bcStatus = 0;
+        benPubSupDTO.lcExport = Long.valueOf(0);
+        benPubSupDTO.lcImport = Long.valueOf(0);
+        benPubSupDTO.lcStatus = 0;
+        return benPubSupDTO;
     }
 
     public Long getBenPubSubId() {
@@ -56,14 +81,6 @@ public class BenPubSupDTO implements Serializable {
         this.publicationId = publicationId;
     }
 
-    public boolean isAwarded() {
-        return awarded;
-    }
-
-    public void setAwarded(boolean awarded) {
-        this.awarded = awarded;
-    }
-
     public Long getSupplierId() {
         return supplierId;
     }
@@ -72,28 +89,12 @@ public class BenPubSupDTO implements Serializable {
         this.supplierId = supplierId;
     }
 
-    public boolean isBudgetCommited() {
-        return budgetCommited;
+    public boolean isAwarded() {
+        return awarded;
     }
 
-    public void setBudgetCommited(boolean budgetCommited) {
-        this.budgetCommited = budgetCommited;
-    }
-
-    public boolean isBudgetLinked() {
-        return budgetLinked;
-    }
-
-    public void setBudgetLinked(boolean budgetLinked) {
-        this.budgetLinked = budgetLinked;
-    }
-
-    public String getLastAbacMessage() {
-        return lastAbacMessage;
-    }
-
-    public void setLastAbacMessage(String lastAbacMessage) {
-        this.lastAbacMessage = lastAbacMessage;
+    public void setAwarded(boolean awarded) {
+        this.awarded = awarded;
     }
 
     public Date getDate() {
@@ -104,11 +105,83 @@ public class BenPubSupDTO implements Serializable {
         this.date = date;
     }
 
-    public boolean isAbacStatus() {
-        return abacStatus;
+    public Long getLefExport() {
+        return lefExport;
     }
 
-    public void setAbacStatus(boolean abacStatus) {
-        this.abacStatus = abacStatus;
+    public void setLefExport(Long lefExport) {
+        this.lefExport = lefExport;
+    }
+
+    public Long getLefImport() {
+        return lefImport;
+    }
+
+    public void setLefImport(Long lefImport) {
+        this.lefImport = lefImport;
+    }
+
+    public int getLefStatus() {
+        return lefStatus;
+    }
+
+    public void setLefStatus(int lefStatus) {
+        this.lefStatus = lefStatus;
+    }
+
+    public Long getBcExport() {
+        return bcExport;
+    }
+
+    public void setBcExport(Long bcExport) {
+        this.bcExport = bcExport;
+    }
+
+    public Long getBcImport() {
+        return bcImport;
+    }
+
+    public void setBcImport(Long bcImport) {
+        this.bcImport = bcImport;
+    }
+
+    public int getBcStatus() {
+        return bcStatus;
+    }
+
+    public void setBcStatus(int bcStatus) {
+        this.bcStatus = bcStatus;
+    }
+
+    public Long getLcExport() {
+        return lcExport;
+    }
+
+    public void setLcExport(Long lcExport) {
+        this.lcExport = lcExport;
+    }
+
+    public Long getLcImport() {
+        return lcImport;
+    }
+
+    public void setLcImport(Long lcImport) {
+        this.lcImport = lcImport;
+    }
+
+    public int getLcStatus() {
+        return lcStatus;
+    }
+
+    public void setLcStatus(int lcStatus) {
+        this.lcStatus = lcStatus;
+    }
+
+    public String getLastAbacMessage() {
+        return lastAbacMessage;
+    }
+
+    public void setLastAbacMessage(String lastAbacMessage) {
+        this.lastAbacMessage = lastAbacMessage;
     }
 }
