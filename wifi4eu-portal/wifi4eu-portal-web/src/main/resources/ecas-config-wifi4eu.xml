@@ -19,8 +19,10 @@
 
     <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
     <assuranceLevel>${ecas.config.assuranceLevel}</assuranceLevel>
+    <serverProtocol>http</serverProtocol>
+    <cas:serverName>${server.prod.address}</cas:serverName>
+    <serverPort>${server.prod.port}</serverPort>
     <!--
-    <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
     <applicationServer>weblogic</applicationServer>
 
     <acceptStrengths>
@@ -28,7 +30,6 @@
     </acceptStrengths>
 
     <cas:renew>${ecas.config.renew}</cas:renew>
-    <assuranceLevel>${ecas.config.assuranceLevel}</assuranceLevel>
 
 
     ${ecas.config.validate.load_test_specific}

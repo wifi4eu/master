@@ -96,7 +96,7 @@
         <ecas.config.renew>false</ecas.config.renew>
         <ecas.config.server.element/>
         <ecas.config.validate.load_test_specific/>
-        <ecas.config.base.url>https://webgate.ec.europa.eu</ecas.config.base.url>
+        <ecas.config.base.url>https://ecas.acceptance.ec.europa.eu</ecas.config.base.url>
         <ecas.config.strength>PASSWORD</ecas.config.strength>
         <ecas.config.test.certificate.element/>
 
