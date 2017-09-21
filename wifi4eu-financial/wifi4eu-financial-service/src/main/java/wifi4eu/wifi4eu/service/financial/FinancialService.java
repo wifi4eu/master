@@ -22,49 +22,45 @@ import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 
-/**
- * Created by lviverof on 29/08/2017.
- */
-
 @Service
 public class FinancialService {
     private final static String _version = "0.0.2";
 
     @Autowired
-    CallRepository callRepository;
+    private BenPubSupMapper benPubSupMapper;
 
     @Autowired
-    CallMapper callMapper;
+    private BenPubSupRepository benPubSupRepository;
 
     @Autowired
-    LegalEntityRepository legalEntityRepository;
+    private CallMapper callMapper;
 
     @Autowired
-    LegalEntityMapper legalEntityMapper;
+    private CallRepository callRepository;
 
     @Autowired
-    MayorRepository mayorRepository;
+    private LegalEntityMapper legalEntityMapper;
 
     @Autowired
-    MayorMapper mayorMapper;
+    private LegalEntityRepository legalEntityRepository;
 
     @Autowired
-    SecurityUserRepository userRepository;
+    private MayorMapper mayorMapper;
 
     @Autowired
-    UserMapper userMapper;
+    private MayorRepository mayorRepository;
 
     @Autowired
-    SupplierRepository supplierRepository;
+    private UserMapper userMapper;
 
     @Autowired
-    SupplierMapper supplierMapper;
+    private SecurityUserRepository userRepository;
 
     @Autowired
-    BenPubSupRepository benPubSupRepository;
+    private SupplierMapper supplierMapper;
 
     @Autowired
-    BenPubSupMapper benPubSupMapper;
+    private SupplierRepository supplierRepository;
 
     public ResponseDTO importAbacInformation(String jsonString) {
         ResponseDTO result = new ResponseDTO();
@@ -136,4 +132,5 @@ public class FinancialService {
         result.setError(null);
         return result;
     }
+
 }

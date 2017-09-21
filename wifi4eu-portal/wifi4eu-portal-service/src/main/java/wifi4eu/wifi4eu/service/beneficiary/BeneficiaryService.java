@@ -16,27 +16,19 @@ import wifi4eu.wifi4eu.common.dto.security.UserDTO;
 import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.MayorMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.RepresentativeMapper;
-import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
-import wifi4eu.wifi4eu.mapper.security.UserMapper;
 import wifi4eu.wifi4eu.mapper.supplier.BenPubSupMapper;
 import wifi4eu.wifi4eu.mapper.supplier.InstallationMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.LegalEntityRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.MayorRepository;
 import wifi4eu.wifi4eu.repository.beneficiary.RepresentativeRepository;
-import wifi4eu.wifi4eu.repository.security.SecurityTempTokenRepository;
-import wifi4eu.wifi4eu.repository.security.SecurityUserRepository;
 import wifi4eu.wifi4eu.repository.supplier.BenPubSupRepository;
 import wifi4eu.wifi4eu.repository.supplier.InstallationRepository;
-import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.service.security.UserService;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by rgarcita on 29/03/2017.
- */
 
 @Service
 public class BeneficiaryService {
@@ -44,46 +36,37 @@ public class BeneficiaryService {
     private final static Logger _log = Logger.getLogger(BeneficiaryService.class);
 
     @Autowired
-    LegalEntityRepository legalEntityRepository;
+    private BenPubSupMapper benPubSupMapper;
 
     @Autowired
-    MayorRepository mayorRepository;
+    private BenPubSupRepository benPubSupRepository;
 
     @Autowired
-    RepresentativeRepository representativeRepository;
+    private InstallationMapper installationMapper;
 
     @Autowired
-    SecurityUserRepository securityUserRepository;
+    private InstallationRepository installationRepository;
 
     @Autowired
-    SecurityTempTokenRepository securityTempTokenRepository;
+    private LegalEntityMapper legalEntityMapper;
 
     @Autowired
-    BenPubSupRepository benPubSupRepository;
+    private LegalEntityRepository legalEntityRepository;
 
     @Autowired
-    InstallationRepository installationRepository;
+    private MayorMapper mayorMapper;
 
     @Autowired
-    LegalEntityMapper legalEntityMapper;
+    private MayorRepository mayorRepository;
 
     @Autowired
-    MayorMapper mayorMapper;
+    private RepresentativeMapper representativeMapper;
 
     @Autowired
-    RepresentativeMapper representativeMapper;
+    private RepresentativeRepository representativeRepository;
 
     @Autowired
-    BenPubSupMapper benPubSupMapper;
-
-    @Autowired
-    InstallationMapper installationMapper;
-
-    @Autowired
-    MailService mailService;
-
-    @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Transactional
     public UserDTO create(BeneficiaryDTO beneficiaryDTO) {
