@@ -26,16 +26,21 @@ public class Mayor {
     @Column(name = "LEGAL_ENTITY_ID")
     private Long legalEntityId;
 
+    @Column(name = "STATUS")
+    private String status;
+
+
     public Mayor() {
     }
 
-    public Mayor(Long mayorId, String treatment, String name, String surname, String email, Long legalEntityId) {
+    public Mayor(Long mayorId, String treatment, String name, String surname, String email, Long legalEntityId, String status) {
         this.mayorId = mayorId;
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.legalEntityId = legalEntityId;
+        this.status = status;
     }
 
     public Long getMayorId() {
@@ -84,5 +89,13 @@ public class Mayor {
 
     public void setLegalEntityId(Long legalEntityId) {
         this.legalEntityId = legalEntityId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
