@@ -1,22 +1,49 @@
-package wifi4eu.wifi4eu.common.dto.model;
+package wifi4eu.wifi4eu.entity;
 
-public class LauDTO {
+import javax.persistence.*;
+
+@Entity
+@Table(name = "laus")
+public class Lau {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int lauId;
+
+    @Column(name = "country_code")
     private String countryCode;
+
+    @Column(name = "nuts3")
     private String nuts3;
+
+    @Column(name = "lau1")
     private String lau1;
+
+    @Column(name = "lau2")
     private String lau2;
+
+    @Column(name = "_change")
     private String change;
+
+    @Column(name = "name1")
     private String name1;
+
+    @Column(name = "name2")
     private String name2;
+
+    @Column(name = "pop")
     private int pop;
+
+    @Column(name = "area")
     private int area;
+
+    @Column(name = "physical_address")
     private String physicalAddress;
 
-    public LauDTO() {
+    public Lau() {
     }
 
-    public LauDTO(int lauId, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, int pop, int area, String physicalAddress) {
+    public Lau(int lauId, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, int pop, int area, String physicalAddress) {
         this.lauId = lauId;
         this.countryCode = countryCode;
         this.nuts3 = nuts3;

@@ -4,7 +4,7 @@ import {UxService, UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons"
 import {CoreService} from "./core/core.service";
 import {UxLanguage, UxEuLanguages} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import {LocalStorageService} from "angular-2-local-storage";
-import {UserDTO} from "./shared/swagger/model/UserDTO";
+// import {UserDTO} from "./shared/swagger/model/UserDTO";
 import {SharedService} from "./shared/shared.service";
 import {Router} from "@angular/router";
 
@@ -14,7 +14,7 @@ enableProdMode()
 @Component({selector: 'app-root', templateUrl: './app.component.html', styleUrls: ['./app.component.scss']})
 export class AppComponent {
     private menuLinks: Array<UxLayoutLink>;
-    private user: UserDTO;
+    // private user: UserDTO;
     private visibility: boolean[];
     private profileUrl: string;
 
@@ -56,27 +56,28 @@ export class AppComponent {
 
     updateHeader() {
         let u = this.localStorage.get('user');
-        this.user = u ? JSON.parse(u.toString()) : null;
+        // this.user = u ? JSON.parse(u.toString()) : null;
 
-        if (this.user != null) {
-            switch (this.user.userType) {
-                case 1:
-                    this.profileUrl = "/supplier-portal/profile";
-                    break;
-                case 2:
-                    this.profileUrl = "/beneficiary-portal/profile";
-                    break;
-                case 5:
-                    this.profileUrl = "/dgconn-portal";
-                    break;
-                default:
-                    break;
-            }
-        }
+        // if (this.user != null) {
+        //     switch (this.user.userType) {
+        //         case 1:
+        //             this.profileUrl = "/supplier-portal/profile";
+        //             break;
+        //         case 2:
+        //             this.profileUrl = "/beneficiary-portal/profile";
+        //             break;
+        //         case 5:
+        //             this.profileUrl = "/dgconn-portal";
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        // }
 
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
-        let i = (this.user) ? this.user.userType : 0;
+        // let i = (this.user) ? this.user.userType : 0;
+        let i = 0;
 
         this.menuLinks = [new UxLayoutLink({
             label: 'Wifi4EU',

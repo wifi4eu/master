@@ -1,18 +1,37 @@
-package wifi4eu.wifi4eu.common.dto.model;
+package wifi4eu.wifi4eu.entity;
 
-public class NutsDTO {
+import javax.persistence.*;
+
+@Entity
+@Table(name = "nuts")
+public class Nuts {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int nutsId;
+
+    @Column(name = "code")
     private String code;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "level")
     private int level;
+
+    @Column(name = "country_code")
     private String countryCode;
+
+    @Column(name = "order")
     private int order;
+
+    @Column(name = "sorting")
     private int sorting;
 
-    public NutsDTO() {
+    public Nuts() {
     }
 
-    public NutsDTO(int nutsId, String code, String name, int level, String countryCode, int order, int sorting) {
+    public Nuts(int nutsId, String code, String name, int level, String countryCode, int order, int sorting) {
         this.nutsId = nutsId;
         this.code = code;
         this.name = name;

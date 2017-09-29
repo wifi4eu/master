@@ -1,15 +1,28 @@
-package wifi4eu.wifi4eu.common.dto.model;
+package wifi4eu.wifi4eu.entity;
 
-public class CallDTO {
+import javax.persistence.*;
+
+@Entity
+@Table(name = "calls")
+public class Call {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     int id;
+
+    @Column(name = "event")
     String event;
+
+    @Column(name = "start_date")
     long startDate;
+
+    @Column(name = "end_date")
     long endDate;
 
-    public CallDTO() {
+    public Call() {
     }
 
-    public CallDTO(int id, String event, long startDate, long endDate) {
+    public Call(int id, String event, long startDate, long endDate) {
         this.id = id;
         this.event = event;
         this.startDate = startDate;

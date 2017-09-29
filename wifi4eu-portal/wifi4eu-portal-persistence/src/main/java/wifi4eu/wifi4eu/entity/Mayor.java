@@ -1,15 +1,28 @@
-package wifi4eu.wifi4eu.common.dto.model;
+package wifi4eu.wifi4eu.entity;
 
-public class MayorDTO {
+import javax.persistence.*;
+
+@Entity
+@Table(name = "mayors")
+public class Mayor {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     int id;
+
+    @Column(name = "name")
     String name;
+
+    @Column(name = "surname")
     String surname;
+
+    @Column(name = "email")
     String email;
 
-    public MayorDTO() {
+    public Mayor() {
     }
 
-    public MayorDTO(int id, String name, String surname, String email) {
+    public Mayor(int id, String name, String surname, String email) {
         this.id = id;
         this.name = name;
         this.surname = surname;

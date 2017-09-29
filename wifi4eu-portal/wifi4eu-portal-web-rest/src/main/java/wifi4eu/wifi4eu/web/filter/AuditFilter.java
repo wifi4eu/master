@@ -13,7 +13,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
 
-import wifi4eu.wifi4eu.service.security.UserRetrieverHelper;
+//import wifi4eu.wifi4eu.service.security.UserRetrieverHelper;
 
 public class AuditFilter extends OncePerRequestFilter {
 
@@ -23,7 +23,7 @@ public class AuditFilter extends OncePerRequestFilter {
     private AuditService auditService;
 
     @Autowired
-    private UserRetrieverHelper userRetrieverHelper;
+//    private UserRetrieverHelper userRetrieverHelper;
 
     @Override
     protected String getAlreadyFilteredAttributeName() {
@@ -54,7 +54,7 @@ public class AuditFilter extends OncePerRequestFilter {
                 if(auth != null ) {
                     String cleanToken = auth.substring(7);
 
-                    userId = userRetrieverHelper.getUserId(cleanToken);
+//                    userId = userRetrieverHelper.getUserId(cleanToken);
                 }
 
                 AuditDataDTO auditDataDTO = new AuditDataDTO(httpServletRequest.getPathInfo(), httpServletRequest.getMethod(), bufferedRequest.getRequestBody(), bufferedResponse.getContent(), userId);
