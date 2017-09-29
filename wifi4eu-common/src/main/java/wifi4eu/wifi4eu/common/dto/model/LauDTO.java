@@ -17,12 +17,12 @@ public class LauDTO implements Serializable {
     private String name2;
     private long pop;
     private long area;
-    private String physical_address;
+    private String physicalAddress;
 
     public LauDTO() {
     }
 
-    public LauDTO(Long lauId, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, long pop, long area, String physical_address) {
+    public LauDTO(Long lauId, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, long pop, long area, String physicalAddress) {
         this.lauId = lauId;
         this.countryCode = countryCode;
         this.nuts3 = nuts3;
@@ -33,7 +33,7 @@ public class LauDTO implements Serializable {
         this.name2 = name2;
         this.pop = pop;
         this.area = area;
-        this.physical_address = physical_address;
+        this.physicalAddress = physicalAddress;
     }
 
     public Long getLauId() {
@@ -116,11 +116,11 @@ public class LauDTO implements Serializable {
         this.area = area;
     }
 
-    public String getPhysical_address() {
-        return physical_address;
+    public String getPhysicalAddress() {
+        return physicalAddress;
     }
 
-    public void setPhysical_address(String physical_address) {
-        this.physical_address = physical_address;
+    public void setPhysicalAddress(String physicalAddress) {
+        this.physicalAddress = physicalAddress;
     }
 }
