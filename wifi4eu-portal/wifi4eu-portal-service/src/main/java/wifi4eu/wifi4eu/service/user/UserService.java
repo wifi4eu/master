@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.service;
+package wifi4eu.wifi4eu.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import wifi4eu.wifi4eu.mapper.UserMapper;
