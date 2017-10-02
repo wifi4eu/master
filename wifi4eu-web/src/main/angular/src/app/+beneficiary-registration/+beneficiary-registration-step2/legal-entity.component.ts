@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter} from "@angular/core";
-import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {UxService, UxTabComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {LauApi} from "../../shared/swagger/api/LauApi";
 import {NutsApi} from "../../shared/swagger/api/NutsApi";
 import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
@@ -17,19 +17,32 @@ export class EntityComponent {
     @Input('lausDTO') lausDTO: NutsDTOBase;
     @Input('allCountries') allCountries: NutsDTO[];
     @Input('allMunicipalities') allMunicipalities: NutsDTO[][];
+    @Input() tabs: Array<UxTabComponent> = [];
 
     @Output() onNext = new EventEmitter<number>();
+    @Output() onBack = new EventEmitter<number>();
 
     private nutsSuggestions: NutsDTOBase[];
     private lausSuggestions: LauDTOBase[];
 
+    private uxTab: UxTabComponent = new UxTabComponent;
     private readyMunicipalities: boolean = false;
     private placeholderMunicipality: string = 'Barcelona';
 
     constructor(private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService) {
     }
 
+    addMayorTab(index: number) {
+      this.uxTab = new UxTabComponent;
+      this.uxTab.label = "Mayor " + index.toString();
+      //this.uxTab.isClosable = true;
+      this.tabs.push(this.uxTab);
+    }
+
     ngOnInit() {
+
+        this.addMayorTab(1);
+
         if (this.allCountries == null || this.allCountries.length <= 0) {
             this.nutsApi.findNutsByLevel(0).subscribe(
                 (countries: NutsDTO[]) => {
@@ -49,6 +62,15 @@ export class EntityComponent {
 
     onSubmit(step: number) {
         this.onNext.emit(step);
+    }
+    addTab() {
+      this.uxTab = new UxTabComponent;
+      for(let i = 2; i < this.tabs.length + 2; i++){
+        this.uxTab.label = "Mayor " + i;
+      }
+      this.tabs.push(this.uxTab);
+      console.log(this.tabs);
+
     }
 
     onKeyUp(event) {
@@ -167,6 +189,9 @@ export class EntityComponent {
             }
         }
         return filteredLaus;
+    }
+    stepBack(step: number) {
+        this.onBack.emit(step);
     }
 
     isValidNutsLausSelection() {
