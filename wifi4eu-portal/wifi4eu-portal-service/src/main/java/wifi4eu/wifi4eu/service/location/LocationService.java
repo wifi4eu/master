@@ -44,6 +44,10 @@ public class LocationService {
         _log.debug("Get all NUTS");
         return nutsMapper.toDTOList(Lists.newArrayList(locationNutsRepository.findAll()));
     }
+	public List<LauDTO> getAllLaus(){
+		_log.debug("Get all Laus");
+		return lauMapper.toDTOList(Lists.newArrayList(locationLauRepository.findAll()));
+	}
 
     public List<LauDTO> getLauByCountryCode(String countryCode){
         if(_log.isDebugEnabled()) {
@@ -76,5 +80,9 @@ public class LocationService {
     public List<NutsDTO> getCountryRegions(String countryCode) {
         _log.debug("Get regions from " + countryCode);
         return nutsMapper.toDTOList(Lists.newArrayList(locationNutsRepository.findByLevelAndCountryCode(new Long(3), countryCode)));
+    }
+
+	public LauDTO saveLau(LauDTO lauDTO) {
+		return lauMapper.toDTO(locationLauRepository.save(lauMapper.toEntity(lauDTO)));
     }
 }

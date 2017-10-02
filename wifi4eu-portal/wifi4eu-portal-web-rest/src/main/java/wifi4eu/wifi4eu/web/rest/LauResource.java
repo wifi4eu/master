@@ -39,6 +39,14 @@ public class LauResource {
         return locationService.getLauByCountryCode(countryCode);
     }
 
+	@ApiOperation(value = "Get laus list")
+	@RequestMapping(value = "/laus", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public List<LauDTO> getAllLaus() {
+        _log.info("get laus list");
+        return locationService.getAllLaus();
+    }
+
     @ApiOperation(value = "get Lau by NUTS3 i.e: ES513")
     @RequestMapping(value = "/nuts3/{nuts3}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -68,6 +76,19 @@ public class LauResource {
             _log.debug("find Lau By LAU2: " + lau2 + " and country code: " + countryCode);
         }
         return locationService.getLauByLau2AndCountryCode(lau2, countryCode);
+    }
+
+	@ApiOperation(value = "save LAU")
+	@RequestMapping(value = "/save", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO save(@RequestBody final LauDTO lauDTO, final HttpServletResponse response) {
+		try {
+            LauDTO resLau = locationService.saveLau(lauDTO);
+            return new ResponseDTO(true, resLau, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
     }
 
 }

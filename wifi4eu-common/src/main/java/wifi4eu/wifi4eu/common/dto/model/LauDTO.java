@@ -17,7 +17,7 @@ public class LauDTO implements Serializable {
     private String name2;
     private long pop;
     private long area;
-    private String physicalAddress;
+	private String physicalAddress;
 
     public LauDTO() {
     }
@@ -33,7 +33,7 @@ public class LauDTO implements Serializable {
         this.name2 = name2;
         this.pop = pop;
         this.area = area;
-        this.physicalAddress = physicalAddress;
+		this.physicalAddress = physicalAddress;
     }
 
     public Long getLauId() {
@@ -115,8 +115,8 @@ public class LauDTO implements Serializable {
     public void setArea(long area) {
         this.area = area;
     }
-
-    public String getPhysicalAddress() {
+	
+	public String getPhysicalAddress() {
         return physicalAddress;
     }
 

@@ -27,35 +27,33 @@ export class DgConnFirstReportComponent {
 
 
     getLegalEntities() {
-        this.beneficiaryApi.getLegalEntities().subscribe(
-            data => {
-                this.legalEntities = data;
-                let countriesCountArray = [];
-                this.legalEntities.forEach((legalEntity: LegalEntityDTO) => {
-                    if (countriesCountArray[legalEntity.countryCode]) {
-                        countriesCountArray[legalEntity.countryCode] += 1;
-                    }
-                    else {
+         this.beneficiaryApi.getLegalEntities().subscribe(
+             data => {
+                 this.legalEntities = data;
+                 let countriesCountArray = [];
+                 this.legalEntities.forEach((legalEntity: LegalEntityDTO) => {
+                     if (countriesCountArray[legalEntity.countryCode]) {
+                         countriesCountArray[legalEntity.countryCode] += 1;
+                     }
+                     else {
                         countriesCountArray[legalEntity.countryCode] = 1;
-                    }
-                });
-                this.tableData = [];
-                for (let countryInfo in countriesCountArray) {
-                    this.doughnutChartLabels.push(countryInfo);
-                    this.doughnutChartData.push(countriesCountArray[countryInfo]);
-                    let item = {
-                        label: countryInfo,
-                        value: countriesCountArray[countryInfo]
-                    };
-                    this.tableData.push(item);
-                }
-                this.dataReady = true;
-            },
-            error => {
-                error => console.log(error);
-            }
-        );
+                     }
+                 });
+                 this.tableData = [];
+                 for (let countryInfo in countriesCountArray) {
+                     this.doughnutChartLabels.push(countryInfo);
+                     this.doughnutChartData.push(countriesCountArray[countryInfo]);
+                     let item = {
+                         label: countryInfo,
+                         value: countriesCountArray[countryInfo]
+                     };
+                     this.tableData.push(item);
+                 }
+                 this.dataReady = true;
+             },
+             error => {
+                 error => console.log(error);
+             }
+         );
     }
 }
-
-
