@@ -1,4 +1,4 @@
-import {Component, Input, EventEmitter, Output, OnInit } from "@angular/core";
+import {Component, Input, EventEmitter, Output, OnInit} from "@angular/core";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
 import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
@@ -15,7 +15,7 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
     private successCaptcha: boolean;
     private display: boolean;
     private isLogoUploaded: boolean = false;
-    private logoUrl : FileReader = new FileReader();
+    private logoUrl: FileReader = new FileReader();
     @Input('supplierDTO') supplierDTO: SupplierDTOBase;
     @Input('selection') selection: boolean[];
     @Input('nuts0') nuts0: NutsDTO[];
@@ -95,7 +95,7 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
         this.uxService.growl({
             severity: 'warn',
             summary: 'WARNING',
-            detail: 'I`m a testing growl, I`m doing nothing'
+            detail: 'Another user has already registered in this municipality'
         });
     }
 }
