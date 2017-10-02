@@ -176,4 +176,14 @@ export class EntityComponent {
     isValidNutsSeleted() {
         return (typeof this.nutsDTO === 'object') && this.readyMunicipalities;
     }
+
+    municipalityDuplicated() {
+        this.uxService.growl({
+            severity: 'warn',
+            summary: 'WARNING',
+            detail: 'I`m a testing growl, I`m doing nothing'
+        });
+
+
+    }
 }
