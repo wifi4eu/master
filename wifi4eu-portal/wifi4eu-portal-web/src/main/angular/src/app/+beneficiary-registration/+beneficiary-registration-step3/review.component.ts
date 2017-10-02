@@ -71,4 +71,13 @@ export class ReviewComponent {
         this.successCaptcha = response.success;
     }
 
+    duplicatedLau() {
+        this.uxService.growl({
+            severity: 'warn',
+            summary: 'WARNING',
+            detail: 'I`m a testing growl, I`m doing nothing'
+        });
+
+
+    }
 }
