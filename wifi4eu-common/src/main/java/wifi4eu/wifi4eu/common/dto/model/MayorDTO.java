@@ -12,16 +12,19 @@ public class MayorDTO {
     private String email;
     private String repeatEmail;
     private long legalEntityId;
+    private String status;
 
-    public MayorDTO(){}
+    public MayorDTO() {
+    }
 
-    public MayorDTO(long mayorId, String treatment, String name, String surname, String email, String repeatEmail) {
+    public MayorDTO(long mayorId, String treatment, String name, String surname, String email, String repeatEmail, String status) {
         this.mayorId = mayorId;
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.repeatEmail = repeatEmail;
+        this.status = status;
     }
 
     public long getMayorId() {
@@ -78,5 +81,13 @@ public class MayorDTO {
 
     public void setLegalEntityId(long legalEntityId) {
         this.legalEntityId = legalEntityId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

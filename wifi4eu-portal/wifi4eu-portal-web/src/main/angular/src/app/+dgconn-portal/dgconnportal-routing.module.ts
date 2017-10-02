@@ -4,6 +4,7 @@ import {DgConnPortalComponent} from "./dgconnportal.component";
 import {DgConnTimelineComponent} from "./+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+publication/publication.component";
 import {DgConnVoucherComponent} from "./+voucher/voucher.component";
+import {DgConnRegistrationsComponent} from "./+registrations/registrations.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -23,7 +24,12 @@ import {DgConnVoucherComponent} from "./+voucher/voucher.component";
             path: 'statistics',
             loadChildren: 'app/+dgconn-portal/+statistics/statistics.module#DgConnPortalStatisticsModule',
             // canActivate: [AppGuard]
+        }, {
+            path: 'registrations',
+            component: DgConnRegistrationsComponent
         }
+
+
     ])],
     exports: [RouterModule]
 })
