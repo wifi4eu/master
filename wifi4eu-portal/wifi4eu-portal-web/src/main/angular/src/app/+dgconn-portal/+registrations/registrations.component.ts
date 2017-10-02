@@ -22,16 +22,16 @@ export class DgConnRegistrationsComponent {
     private users: Array<Object>;
     status: SelectItem[];
     selectStatus: any[];
-    private finalStatus: String;
-    private mayorId: number;
+    private finalStatus: Array<String> = new Array<String>();
 
 
     constructor(private beneficiaryApi: BeneficiaryApi, private lauApi: LauApi) {
+
         this.selectStatus = [];
         this.status = [];
         this.status.push({label: 'Undefined', value: {id: 1, name: 'Undefined', code: 'UF'}});
         this.status.push({label: 'Active', value: {id: 2, name: 'Active', code: 'OK'}});
-        this.status.push({label: 'Declined', value: {id: 3, name: 'London', code: 'KO'}});
+        this.status.push({label: 'Declined', value: {id: 3, name: 'Declined', code: 'KO'}});
         this.users = [];
 
 
@@ -52,6 +52,9 @@ export class DgConnRegistrationsComponent {
                                         type: 2,
                                         mayor: mayor
                                     };
+
+                                    this.finalStatus.push(mayor.status);
+
                                     for (let i = 0; i < this.users.length; i++) {
                                         if (this.users[i]['nuts'] == tableRow['nuts']) {
                                             let editedRow = this.users[i];
@@ -92,6 +95,9 @@ export class DgConnRegistrationsComponent {
                                                 type: 3,
                                                 representative: representatives
                                             };
+
+                                            this.finalStatus.push(representatives.status);
+
                                             for (let i = 0; i < this.users.length; i++) {
                                                 if (this.users[i]['nuts'] == tableRow['nuts']) {
                                                     let editedRow = this.users[i];
@@ -122,7 +128,7 @@ export class DgConnRegistrationsComponent {
             updatedMayor.status = this.selectStatus[index]['code'];
             this.beneficiaryApi.saveMayor(updatedMayor).subscribe(
                 result => {
-                    console.log("ok");
+
                 }
             ), error => {
                 console.log(error);
@@ -133,7 +139,7 @@ export class DgConnRegistrationsComponent {
             updatedRepresentative.status = this.selectStatus[index]['code'];
             this.beneficiaryApi.saveRepresentative(updatedRepresentative).subscribe(
                 result => {
-                    console.log("ok");
+
                 }
             ), error => {
                 console.log(error);

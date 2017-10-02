@@ -13,7 +13,7 @@
             <ng-template let-user="rowData" let-index="rowIndex" pTemplate="body">
                 <p-dropdown (onChange)="uploadData(user, index)" [options]="status" [(ngModel)]="selectStatus[index]"
                             placeholder="Select a status"></p-dropdown>
-                <p>Selected City: {{selectStatus ? selectStatus.name : 'none'}}</p>
+                <p>Current Status: {{this.finalStatus[index]}}</p>
             </ng-template>
         </p-column>
         <p-column field="duplicated" header="Duplicated">
