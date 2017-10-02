@@ -11,11 +11,11 @@ public class ThreadMessage {
     int id;
 
     @ManyToOne
-    @JoinColumn(name = "thread", table = "threads")
+    @JoinColumn(name = "thread")
     Thread thread;
 
     @ManyToOne
-    @JoinColumn(name = "author", table = "users")
+    @JoinColumn(name = "author")
     User author;
 
     @Column(name = "message")

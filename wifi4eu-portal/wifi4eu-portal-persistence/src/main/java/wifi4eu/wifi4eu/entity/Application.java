@@ -11,11 +11,11 @@ public class Application {
     int id;
 
     @ManyToOne
-    @JoinColumn(name = "call", table = "calls")
-    Application call;
+    @JoinColumn(name = "call")
+    Call call;
 
     @ManyToOne
-    @JoinColumn(name = "registration", table = "registrations")
+    @JoinColumn(name = "registration")
     Registration registration;
 
     @Column(name = "supplier")
@@ -57,7 +57,7 @@ public class Application {
     public Application() {
     }
 
-    public Application(int id, Application call, Registration registration, int supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus) {
+    public Application(int id, Call call, Registration registration, int supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus) {
         this.id = id;
         this.call = call;
         this.registration = registration;
@@ -83,11 +83,11 @@ public class Application {
         this.id = id;
     }
 
-    public Application getCall() {
+    public Call getCall() {
         return call;
     }
 
-    public void setCall(Application call) {
+    public void setCall(Call call) {
         this.call = call;
     }
 
