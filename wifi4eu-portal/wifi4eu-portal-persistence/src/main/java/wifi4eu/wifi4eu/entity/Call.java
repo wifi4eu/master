@@ -8,32 +8,32 @@ public class Call {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    int id;
+    Integer id;
 
     @Column(name = "event")
     String event;
 
     @Column(name = "start_date")
-    long startDate;
+    Long startDate;
 
     @Column(name = "end_date")
-    long endDate;
+    Long endDate;
 
     public Call() {
     }
 
-    public Call(int id, String event, long startDate, long endDate) {
+    public Call(Integer id, String event, Long startDate, Long endDate) {
         this.id = id;
         this.event = event;
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -45,19 +45,19 @@ public class Call {
         this.event = event;
     }
 
-    public long getStartDate() {
+    public Long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(long startDate) {
+    public void setStartDate(Long startDate) {
         this.startDate = startDate;
     }
 
-    public long getEndDate() {
+    public Long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(long endDate) {
+    public void setEndDate(Long endDate) {
         this.endDate = endDate;
     }
 }

@@ -8,7 +8,7 @@ public class Mayor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    int id;
+    Integer id;
 
     @Column(name = "name")
     String name;
@@ -22,18 +22,18 @@ public class Mayor {
     public Mayor() {
     }
 
-    public Mayor(int id, String name, String surname, String email) {
+    public Mayor(Integer id, String name, String surname, String email) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -8,7 +8,7 @@ public class Lau {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int lauId;
+    private Integer lauId;
 
     @Column(name = "country_code")
     private String countryCode;
@@ -32,10 +32,10 @@ public class Lau {
     private String name2;
 
     @Column(name = "pop")
-    private int pop;
+    private Integer pop;
 
     @Column(name = "area")
-    private int area;
+    private Integer area;
 
     @Column(name = "physical_address")
     private String physicalAddress;
@@ -43,7 +43,7 @@ public class Lau {
     public Lau() {
     }
 
-    public Lau(int lauId, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, int pop, int area, String physicalAddress) {
+    public Lau(Integer lauId, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, Integer pop, Integer area, String physicalAddress) {
         this.lauId = lauId;
         this.countryCode = countryCode;
         this.nuts3 = nuts3;
@@ -57,11 +57,11 @@ public class Lau {
         this.physicalAddress = physicalAddress;
     }
 
-    public int getLauId() {
+    public Integer getLauId() {
         return lauId;
     }
 
-    public void setLauId(int lauId) {
+    public void setLauId(Integer lauId) {
         this.lauId = lauId;
     }
 
@@ -121,19 +121,19 @@ public class Lau {
         this.name2 = name2;
     }
 
-    public int getPop() {
+    public Integer getPop() {
         return pop;
     }
 
-    public void setPop(int pop) {
+    public void setPop(Integer pop) {
         this.pop = pop;
     }
 
-    public int getArea() {
+    public Integer getArea() {
         return area;
     }
 
-    public void setArea(int area) {
+    public void setArea(Integer area) {
         this.area = area;
     }
 

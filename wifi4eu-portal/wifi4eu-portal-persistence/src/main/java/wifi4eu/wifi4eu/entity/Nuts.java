@@ -8,7 +8,7 @@ public class Nuts {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int nutsId;
+    private Integer nutsId;
 
     @Column(name = "code")
     private String code;
@@ -17,21 +17,21 @@ public class Nuts {
     private String name;
 
     @Column(name = "level")
-    private int level;
+    private Integer level;
 
     @Column(name = "country_code")
     private String countryCode;
 
     @Column(name = "order")
-    private int order;
+    private Integer order;
 
     @Column(name = "sorting")
-    private int sorting;
+    private Integer sorting;
 
     public Nuts() {
     }
 
-    public Nuts(int nutsId, String code, String name, int level, String countryCode, int order, int sorting) {
+    public Nuts(Integer nutsId, String code, String name, Integer level, String countryCode, Integer order, Integer sorting) {
         this.nutsId = nutsId;
         this.code = code;
         this.name = name;
@@ -41,11 +41,11 @@ public class Nuts {
         this.sorting = sorting;
     }
 
-    public int getNutsId() {
+    public Integer getNutsId() {
         return nutsId;
     }
 
-    public void setNutsId(int nutsId) {
+    public void setNutsId(Integer nutsId) {
         this.nutsId = nutsId;
     }
 
@@ -65,11 +65,11 @@ public class Nuts {
         this.name = name;
     }
 
-    public int getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(Integer level) {
         this.level = level;
     }
 
@@ -81,19 +81,19 @@ public class Nuts {
         this.countryCode = countryCode;
     }
 
-    public int getOrder() {
+    public Integer getOrder() {
         return order;
     }
 
-    public void setOrder(int order) {
+    public void setOrder(Integer order) {
         this.order = order;
     }
 
-    public int getSorting() {
+    public Integer getSorting() {
         return sorting;
     }
 
-    public void setSorting(int sorting) {
+    public void setSorting(Integer sorting) {
         this.sorting = sorting;
     }
 }

@@ -8,21 +8,21 @@ public class Registration {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    int id;
+    Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user", table = "users")
+    @JoinColumn(name = "user")
     User user;
 
     @ManyToOne
-    @JoinColumn(name = "municipality", table = "municipalities")
+    @JoinColumn(name = "municipality")
     Municipality municipality;
 
     @Column(name = "role")
     String role;
 
     @ManyToOne
-    @JoinColumn(name = "thread", table = "threads")
+    @JoinColumn(name = "thread")
     Thread thread;
 
     public Registration() {
@@ -35,11 +35,11 @@ public class Registration {
         this.thread = thread;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

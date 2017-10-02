@@ -1,4 +1,7 @@
-package wifi4eu.wifi4eu.entity;
+package wifi4eu.wifi4eu.entity.application;
+
+import wifi4eu.wifi4eu.entity.Call;
+import wifi4eu.wifi4eu.entity.Registration;
 
 import javax.persistence.*;
 
@@ -8,7 +11,7 @@ public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    int id;
+    Integer id;
 
     @ManyToOne
     @JoinColumn(name = "call")
@@ -19,45 +22,45 @@ public class Application {
     Registration registration;
 
     @Column(name = "supplier")
-    int supplierId;
+    Integer supplierId;
 
     @Column(name = "voucher_awarded")
     boolean voucherAwarded;
 
     @Column(name = "date")
-    long date;
+    Long date;
 
     @Column(name = "lef_export")
-    long lefExport;
+    Long lefExport;
 
     @Column(name = "lef_import")
-    long lefImport;
+    Long lefImport;
 
     @Column(name = "lef_status")
-    int lefStatus;
+    Integer lefStatus;
 
     @Column(name = "bc_export")
-    long bcExport;
+    Long bcExport;
 
     @Column(name = "bc_import")
-    long bcImport;
+    Long bcImport;
 
     @Column(name = "bc_status")
-    int bcStatus;
+    Integer bcStatus;
 
     @Column(name = "lc_export")
-    long lcExport;
+    Long lcExport;
 
     @Column(name = "lc_import")
-    long lcImport;
+    Long lcImport;
 
     @Column(name = "lc_status")
-    int lcStatus;
+    Integer lcStatus;
 
     public Application() {
     }
 
-    public Application(int id, Call call, Registration registration, int supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus) {
+    public Application(Integer id, Call call, Registration registration, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus) {
         this.id = id;
         this.call = call;
         this.registration = registration;
@@ -75,11 +78,11 @@ public class Application {
         this.lcStatus = lcStatus;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -99,11 +102,11 @@ public class Application {
         this.registration = registration;
     }
 
-    public int getSupplierId() {
+    public Integer getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(int supplierId) {
+    public void setSupplierId(Integer supplierId) {
         this.supplierId = supplierId;
     }
 
@@ -115,83 +118,83 @@ public class Application {
         this.voucherAwarded = voucherAwarded;
     }
 
-    public long getDate() {
+    public Long getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(Long date) {
         this.date = date;
     }
 
-    public long getLefExport() {
+    public Long getLefExport() {
         return lefExport;
     }
 
-    public void setLefExport(long lefExport) {
+    public void setLefExport(Long lefExport) {
         this.lefExport = lefExport;
     }
 
-    public long getLefImport() {
+    public Long getLefImport() {
         return lefImport;
     }
 
-    public void setLefImport(long lefImport) {
+    public void setLefImport(Long lefImport) {
         this.lefImport = lefImport;
     }
 
-    public int getLefStatus() {
+    public Integer getLefStatus() {
         return lefStatus;
     }
 
-    public void setLefStatus(int lefStatus) {
+    public void setLefStatus(Integer lefStatus) {
         this.lefStatus = lefStatus;
     }
 
-    public long getBcExport() {
+    public Long getBcExport() {
         return bcExport;
     }
 
-    public void setBcExport(long bcExport) {
+    public void setBcExport(Long bcExport) {
         this.bcExport = bcExport;
     }
 
-    public long getBcImport() {
+    public Long getBcImport() {
         return bcImport;
     }
 
-    public void setBcImport(long bcImport) {
+    public void setBcImport(Long bcImport) {
         this.bcImport = bcImport;
     }
 
-    public int getBcStatus() {
+    public Integer getBcStatus() {
         return bcStatus;
     }
 
-    public void setBcStatus(int bcStatus) {
+    public void setBcStatus(Integer bcStatus) {
         this.bcStatus = bcStatus;
     }
 
-    public long getLcExport() {
+    public Long getLcExport() {
         return lcExport;
     }
 
-    public void setLcExport(long lcExport) {
+    public void setLcExport(Long lcExport) {
         this.lcExport = lcExport;
     }
 
-    public long getLcImport() {
+    public Long getLcImport() {
         return lcImport;
     }
 
-    public void setLcImport(long lcImport) {
+    public void setLcImport(Long lcImport) {
         this.lcImport = lcImport;
     }
 
-    public int getLcStatus() {
+    public Integer getLcStatus() {
         return lcStatus;
     }
 
-    public void setLcStatus(int lcStatus) {
+    public void setLcStatus(Integer lcStatus) {
         this.lcStatus = lcStatus;
     }
 }

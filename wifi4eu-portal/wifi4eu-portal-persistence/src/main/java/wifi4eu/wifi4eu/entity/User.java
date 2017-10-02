@@ -8,7 +8,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    int id;
+    Integer id;
 
     @Column(name = "name")
     String name;
@@ -23,10 +23,10 @@ public class User {
     String password;
 
     @Column(name = "create_date")
-    long createDate;
+    Long createDate;
 
     @Column(name = "access_date")
-    long accessDate;
+    Long accessDate;
 
     @Column(name = "verified")
     boolean verified;
@@ -34,7 +34,7 @@ public class User {
     public User() {
     }
 
-    public User(int id, String name, String surname, String email, String password, long createDate, long accessDate, boolean verified) {
+    public User(Integer id, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -45,11 +45,11 @@ public class User {
         this.verified = verified;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -85,19 +85,19 @@ public class User {
         this.password = password;
     }
 
-    public long getCreateDate() {
+    public Long getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(long createDate) {
+    public void setCreateDate(Long createDate) {
         this.createDate = createDate;
     }
 
-    public long getAccessDate() {
+    public Long getAccessDate() {
         return accessDate;
     }
 
-    public void setAccessDate(long accessDate) {
+    public void setAccessDate(Long accessDate) {
         this.accessDate = accessDate;
     }
 

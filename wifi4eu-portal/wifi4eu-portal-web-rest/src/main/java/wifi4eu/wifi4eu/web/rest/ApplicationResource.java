@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.service.ApplicationService;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
 
 @CrossOrigin(origins = "*")
 @Controller

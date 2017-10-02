@@ -8,7 +8,7 @@ public class Thread {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    int id;
+    Integer id;
 
     @Column(name = "title")
     String title;
@@ -16,16 +16,16 @@ public class Thread {
     public Thread() {
     }
 
-    public Thread(int id, String title) {
+    public Thread(Integer id, String title) {
         this.id = id;
         this.title = title;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

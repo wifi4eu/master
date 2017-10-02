@@ -8,7 +8,7 @@ public class ThreadMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    int id;
+    Integer id;
 
     @ManyToOne
     @JoinColumn(name = "thread")
@@ -24,18 +24,18 @@ public class ThreadMessage {
     public ThreadMessage() {
     }
 
-    public ThreadMessage(int id, Thread thread, User author, String message) {
+    public ThreadMessage(Integer id, Thread thread, User author, String message) {
         this.id = id;
         this.thread = thread;
         this.author = author;
         this.message = message;
     }
 
-    public int get() {
+    public Integer get() {
         return id;
     }
 
-    public void set(int id) {
+    public void set(Integer id) {
         this.id = id;
     }
 

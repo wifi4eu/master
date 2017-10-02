@@ -8,30 +8,30 @@ public class Representation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    int id;
+    Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "municipality", table = "municipalities")
+    @JoinColumn(name = "municipality")
     Municipality municipality;
 
     @ManyToOne
-    @JoinColumn(name = "mayor", table = "mayors")
+    @JoinColumn(name = "mayor")
     Mayor mayor;
 
     public Representation() {
     }
 
-    public Representation(int id, Municipality municipality, Mayor mayor) {
+    public Representation(Integer id, Municipality municipality, Mayor mayor) {
         this.id = id;
         this.municipality = municipality;
         this.mayor = mayor;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

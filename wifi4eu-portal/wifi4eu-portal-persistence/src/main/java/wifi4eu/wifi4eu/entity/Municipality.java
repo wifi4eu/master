@@ -8,7 +8,7 @@ public class Municipality {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    int id;
+    Integer id;
 
     @Column(name = "name")
     String name;
@@ -17,24 +17,24 @@ public class Municipality {
     String address;
 
     @OneToOne
-    @JoinColumn(name = "lau", table = "laus")
+    @JoinColumn(name = "lau")
     Lau lau;
 
     public Municipality() {
     }
 
-    public Municipality(int id, String name, String address, Lau lau) {
+    public Municipality(Integer id, String name, String address, Lau lau) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.lau = lau;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
