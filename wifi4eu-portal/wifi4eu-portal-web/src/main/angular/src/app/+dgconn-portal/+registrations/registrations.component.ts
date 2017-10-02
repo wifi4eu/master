@@ -20,8 +20,8 @@ export class DgConnRegistrationsComponent {
     private mayors: MayorDTO[];
     private representatives: RepresentativeDTO[];
     private users: Array<Object>;
-    status: SelectItem[];
-    selectStatus: any[];
+    private status: SelectItem[];
+    private selectStatus: any[];
     private finalStatus: Array<String> = new Array<String>();
 
 
