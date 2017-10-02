@@ -36,6 +36,7 @@ export class DgConnListMayorComponent {
         modifiedLau.physicalAddress = this.address;
         this.lauApi.save(modifiedLau).subscribe(
             lau => {
+                modifiedLau = lau;
             }
         );
         this.display = false;
