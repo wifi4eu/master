@@ -75,7 +75,7 @@ export class ReviewComponent {
         this.uxService.growl({
             severity: 'warn',
             summary: 'WARNING',
-            detail: 'I`m a testing growl, I`m doing nothing'
+            detail: 'Another user has already registered in this municipality'
         });
 
 
