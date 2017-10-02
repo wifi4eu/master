@@ -71,4 +71,13 @@ export class ReviewComponent {
         this.successCaptcha = response.success;
     }
 
+    duplicatedLau() {
+        this.uxService.growl({
+            severity: 'warn',
+            summary: 'WARNING',
+            detail: 'Another user has already registered in this municipality'
+        });
+
+
+    }
 }

@@ -176,4 +176,6 @@ export class EntityComponent {
     isValidNutsSeleted() {
         return (typeof this.nutsDTO === 'object') && this.readyMunicipalities;
     }
+
+
 }
