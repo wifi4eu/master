@@ -857,7 +857,9 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   font-size: 1.2em;
   color: $dark-blue;
 }
-
+.ui-column-title, .ui-cell-data{
+    padding-left: initial !important;
+}
 .voucherLabel {
   font-size: 1.2em;
   color: #5c5c5c;

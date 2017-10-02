@@ -2,7 +2,8 @@ import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {DgConnPortalComponent} from "./dgconnportal.component";
 import {DgConnTimelineComponent} from "./+timeline/timeline.component";
-import {DgConnPublicationComponent} from "./+publication/publication.component";
+import { DgConnPublicationComponent } from "./+publication/publication.component";
+import { DgConnListMayorComponent } from "./+mayors-list/mayors-list.component";
 import {DgConnVoucherComponent} from "./+voucher/voucher.component";
 
 @NgModule({
@@ -23,6 +24,9 @@ import {DgConnVoucherComponent} from "./+voucher/voucher.component";
             path: 'statistics',
             loadChildren: 'app/+dgconn-portal/+statistics/statistics.module#DgConnPortalStatisticsModule',
             // canActivate: [AppGuard]
+        }, {
+            path: 'mayors-list',
+            component: DgConnListMayorComponent
         }
     ])],
     exports: [RouterModule]

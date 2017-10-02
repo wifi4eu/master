@@ -182,6 +182,22 @@ public class BeneficiaryService {
         return legalEntityDTOList;
     }
 
+	public List<MayorDTO> getMayors() {
+        List<MayorDTO> getMayorsDTOList = mayorMapper.toDTOList(Lists.newArrayList(mayorRepository.findAll()));
+        return getMayorsDTOList;
+    }
+
+	public List<RepresentativeDTO> getRepresentatives() {
+        List<RepresentativeDTO> getRepresentativeDTOList = representativeMapper.toDTOList(Lists.newArrayList(representativeRepository.findAll()));
+        return getRepresentativeDTOList;
+    }
+
+	 public MayorDTO getMayorLegalId(Long legalEntityId) {
+        MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.findOne(legalEntityId));
+        _log.info("legalEntityDTO: " + mayorDTO);
+        return mayorDTO;
+    }
+
     public LegalEntityDTO getLegalEntity(Long legalEntityId) {
         LegalEntityDTO legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.findOne(legalEntityId));
         _log.info("legalEntityDTO: " + legalEntityDTO);

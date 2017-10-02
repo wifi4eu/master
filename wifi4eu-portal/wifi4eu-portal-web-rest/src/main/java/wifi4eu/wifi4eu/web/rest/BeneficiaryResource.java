@@ -51,13 +51,30 @@ public class BeneficiaryResource {
     }
 
     @ApiOperation(value = "Get legal entities")
-    @RequestMapping(method = RequestMethod.GET, produces = "application/JSON")
+	@RequestMapping(value = "/legalEntities", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
     public List<LegalEntityDTO> getLegalEntities() {
         _log.info("get legal entities");
         return beneficiaryService.getLegalEntities();
     }
 
+    //MayorsList
+    @ApiOperation(value = "Get mayors list")
+	@RequestMapping(value = "/mayors", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public List<MayorDTO> getMayors() {
+        _log.info("get mayors list");
+        return beneficiaryService.getMayors();
+    }
+
+    //RepresentativeList
+    @ApiOperation(value = "Get representative list")
+	@RequestMapping(value = "/representatives", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public List<RepresentativeDTO> getRepresentatives() {
+        _log.info("get representative list");
+        return beneficiaryService.getRepresentatives();
+    }
 
     @ApiOperation(value = "Update beneficiary information")
     @RequestMapping(value = "/{beneficiaryId}", method = RequestMethod.POST, produces = "application/json")
