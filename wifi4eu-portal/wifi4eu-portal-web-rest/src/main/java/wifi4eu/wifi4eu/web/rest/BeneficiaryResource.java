@@ -50,6 +50,26 @@ public class BeneficiaryResource {
 
     }
 
+    //MayorsList
+
+    @ApiOperation(value = "Get mayors list")
+    @RequestMapping(value = "/mayors", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public List<MayorDTO> getMayors() {
+        _log.info("get mayors list");
+        return beneficiaryService.getMayors();
+    }
+
+    //RepresentativeList
+
+    @ApiOperation(value = "Get representative list")
+    @RequestMapping(value = "/representatives", method = RequestMethod.GET, produces = "application/JSON")
+    @ResponseBody
+    public List<RepresentativeDTO> getRepresentatives() {
+        _log.info("get representative list");
+        return beneficiaryService.getRepresentatives();
+    }
+
     @ApiOperation(value = "Get legal entities")
     @RequestMapping(method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
@@ -74,6 +94,36 @@ public class BeneficiaryResource {
             return new ResponseDTO(false, null, errorDTO);
         }
 
+    }
+
+    @ApiOperation(value = "Save mayor information")
+    @RequestMapping(value = "/saveMayor", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO saveMayor(@RequestBody final MayorDTO mayorDTO, final HttpServletResponse response) {
+        _log.info("mayor update");
+
+        try {
+            MayorDTO updatedMayor = beneficiaryService.saveMayor(mayorDTO);
+            return new ResponseDTO(true, updatedMayor, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+    }
+
+    @ApiOperation(value = "Save representative information")
+    @RequestMapping(value = "/saveRepresentative", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO saveRepresentative(@RequestBody final RepresentativeDTO representativeDTO, final HttpServletResponse response) {
+        _log.info("representative update");
+
+        try {
+            RepresentativeDTO updatedRepresentative = beneficiaryService.saveRepresentative(representativeDTO);
+            return new ResponseDTO(true, updatedRepresentative, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
     }
 
     @ApiOperation(value = "Apply for voucher")

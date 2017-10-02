@@ -32,10 +32,13 @@ public class Representative {
     @Column(name = "MAYOR_ID")
     private Long mayorId;
 
+    @Column(name = "STATUS")
+    private String status;
+
     public Representative() {
     }
 
-    public Representative(long representativeId, String treatment, String name, String surname, String municipalityRole, String email, long mayorId) {
+    public Representative(long representativeId, String treatment, String name, String surname, String municipalityRole, String email, long mayorId, String status) {
         this.representativeId = representativeId;
         this.treatment = treatment;
         this.name = name;
@@ -43,6 +46,7 @@ public class Representative {
         this.municipalityRole = municipalityRole;
         this.email = email;
         this.mayorId = mayorId;
+        this.status = status;
     }
 
     public long getRepresentativeId() {
@@ -99,5 +103,13 @@ public class Representative {
 
     public void setMayorId(long mayorId) {
         this.mayorId = mayorId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

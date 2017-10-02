@@ -14,10 +14,12 @@ public class RepresentativeDTO {
     private String email;
     private String mayorRepeatEmail;
     private long mayorId;
+    private String status;
 
-    public RepresentativeDTO(){}
+    public RepresentativeDTO() {
+    }
 
-    public RepresentativeDTO(long representativeId, String treatment, String name, String surname, String municipalityRole, String email, String mayorRepeatEmail, long mayorId) {
+    public RepresentativeDTO(long representativeId, String treatment, String name, String surname, String municipalityRole, String email, String mayorRepeatEmail, long mayorId, String status) {
         this.representativeId = representativeId;
         this.treatment = treatment;
         this.name = name;
@@ -26,6 +28,7 @@ public class RepresentativeDTO {
         this.email = email;
         this.mayorRepeatEmail = mayorRepeatEmail;
         this.mayorId = mayorId;
+        this.status = status;
     }
 
     public long getRepresentativeId() {
@@ -90,5 +93,13 @@ public class RepresentativeDTO {
 
     public void setMayorId(Long mayorId) {
         this.mayorId = mayorId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

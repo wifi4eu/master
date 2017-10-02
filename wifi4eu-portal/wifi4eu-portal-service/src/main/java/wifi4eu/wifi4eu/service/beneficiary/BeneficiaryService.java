@@ -13,6 +13,7 @@ import wifi4eu.wifi4eu.common.dto.model.LegalEntityDTO;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.common.dto.model.RepresentativeDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
+import wifi4eu.wifi4eu.entity.beneficiary.Representative;
 import wifi4eu.wifi4eu.mapper.beneficiary.LegalEntityMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.MayorMapper;
 import wifi4eu.wifi4eu.mapper.beneficiary.RepresentativeMapper;
@@ -165,6 +166,18 @@ public class BeneficiaryService {
         return legalEntityDTOList;
     }
 
+    public List<MayorDTO> getMayors() {
+        List<MayorDTO> getMayorsDTOList = mayorMapper.toDTOList(Lists.newArrayList(mayorRepository.findAll()));
+        return getMayorsDTOList;
+
+    }
+
+
+    public List<RepresentativeDTO> getRepresentatives() {
+        List<RepresentativeDTO> getRepresentativeDTOList = representativeMapper.toDTOList(Lists.newArrayList(representativeRepository.findAll()));
+        return getRepresentativeDTOList;
+    }
+
     public LegalEntityDTO getLegalEntity(Long legalEntityId) {
         LegalEntityDTO legalEntityDTO = legalEntityMapper.toDTO(legalEntityRepository.findOne(legalEntityId));
         _log.info("legalEntityDTO: " + legalEntityDTO);
@@ -214,4 +227,12 @@ public class BeneficiaryService {
         return benPubSupMapper.toDTOList(benPubSupRepository.findByPublicationId(publicationId));
     }
 
+
+    public MayorDTO saveMayor(MayorDTO mayorDTO) {
+        return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
+    }
+
+    public RepresentativeDTO saveRepresentative(RepresentativeDTO representativeDTO) {
+        return representativeMapper.toDTO(representativeRepository.save(representativeMapper.toEntity(representativeDTO)));
+    }
 }
