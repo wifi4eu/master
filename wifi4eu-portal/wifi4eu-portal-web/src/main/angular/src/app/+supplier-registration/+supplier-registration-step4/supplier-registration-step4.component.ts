@@ -90,4 +90,12 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
     editStep(step: number) {
         this.gotoStep.emit(step);
     }
+
+    duplicatedLau() {
+        this.uxService.growl({
+            severity: 'warn',
+            summary: 'WARNING',
+            detail: 'I`m a testing growl, I`m doing nothing'
+        });
+    }
 }
