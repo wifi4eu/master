@@ -1,0 +1,145 @@
+<div class="ui-g">
+    <div class="ui-g-3"></div>
+    <div class="ui-g-6" style="text-align: center !important">
+        <div id="component-title">
+            <h3 class="beneficiaryTitle labelModal">{{ 'registration.entity.title' | translate }}</h3>
+        </div>
+    </div>
+    <div class="ui-g-3"></div>
+</div>
+<div class="ui-g">
+    <div class="ui-lg-3"></div>
+    <div class="ui-g-12 ui-md-12 ui-lg-6" style="text-align: center !important">
+        <div id="component-subtitle">
+            <h6>{{ 'registration.step1.instructions' | translate }}</h6>
+        </div>
+    </div>
+    <div class="ui-lg-3"></div>
+</div>
+<form #entityForm="ngForm">
+    <div class="form-group ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="form-group">
+                <label class="label floatLeft" for="country">{{ 'country.label' | translate }}</label>
+                <div class="clearfix"></div>
+                <p-autoComplete id="country"
+                                class="form-control"
+                                name="country"
+                                field="name"
+                                placeholder="Espanya"
+                                ngcontrol="country"
+                                #country="ngModel"
+                                [(ngModel)]="nutsDTO"
+                                [suggestions]="nutsSuggestions"
+                                [size]="30"
+                                [minLength]="1"
+                                (completeMethod)="filterNuts($event)"
+                                (onSelect)="selectCountry()"
+                                required>
+                </p-autoComplete>
+                <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required</div>
+            </div>
+        </div>
+        <div class="ui-lg-3"></div>
+    </div>
+    <div class="form-group ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="form-group">
+                <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate }}</label>
+                <div class="clearfix"></div>
+                <p-autoComplete id="municipality"
+                                class="form-control"
+                                name="municipality"
+                                field="name1"
+                                [placeholder]="placeholderMunicipality"
+                                ngcontrol="municipality"
+                                #municipality="ngModel"
+                                [(ngModel)]="lausDTO"
+                                [suggestions]="lausSuggestions"
+                                [size]="30"
+                                [minLength]="1"
+                                (completeMethod)="filterLaus($event)"
+                                required
+                                [disabled]="!isValidNutsSeleted()">
+                </p-autoComplete>
+                <div [hidden]="municipality.valid || municipality.pristine" class="alert alert-danger">Municipality is
+                    required
+                </div>
+            </div>
+        </div>
+        <div class="ui-lg-3"></div>
+    </div>
+    <div class="form-group ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-5">
+            <div class="form-group">
+                <label class="label floatLeft" for="address">{{ 'address.label' | translate }}</label>
+                <input id="address"
+                       type="text"
+                       class="form-control paddingInput"
+                       name="address"
+                       min="1"
+                       placeholder="Diagonal"
+                       ngcontrol="address"
+                       #address="ngModel"
+                       [(ngModel)]="beneficiaryDTO.legalEntityDTO.address"
+                       required>
+                <div [hidden]="address.valid || address.pristine" class="alert alert-danger">Address is required</div>
+            </div>
+        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-1">
+            <div class="form-group">
+                <label class="label floatLeft" for="number">{{ 'number.label' | translate }}</label>
+                <input id="number"
+                       type="number"
+                       class="form-control paddingInput"
+                       name="number"
+                       placeholder="605"
+                       ngcontrol="number"
+                       #number="ngModel"
+                       [(ngModel)]="beneficiaryDTO.legalEntityDTO.addressNum"
+                       required>
+                <div [hidden]="number.valid || number.pristine" class="alert alert-danger">Address is required</div>
+            </div>
+        </div>
+        <div class="ui-lg-3"></div>
+    </div>
+    <div class="form-group ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="form-group">
+                <label class="label floatLeft" for="postalCode">{{ 'postal-code.label' | translate }}</label>
+                <input id="postalCode"
+                       type="text"
+                       class="form-control paddingInput"
+                       name="postalCode"
+                       placeholder="08022"
+                       ngcontrol="postalCode"
+                       #postalCode="ngModel"
+                       [(ngModel)]="beneficiaryDTO.legalEntityDTO.postalCode"
+                       required>
+                <div class="alert alert-danger" [hidden]="postalCode.valid || postalCode.pristine">Postal code is
+                    required
+                </div>
+            </div>
+        </div>
+        <div class="ui-lg-3"></div>
+    </div>
+    <div class="form-group ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+            <a href="#/home">
+                <button type="button" class="btn btn-primary cancel-button">{{ 'back.button' | translate }}</button>
+            </a>
+        </div>
+        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+            <button type="submit" class="btn btn-primary publish-button"
+                    [disabled]="!(isValidNutsLausSelection() && entityForm.form.valid)" (click)="onSubmit(1)">
+                {{ 'next.button' | translate }}
+            </button>
+        </div>
+        <div class="ui-lg-3"></div>
+    </div>
+</form>

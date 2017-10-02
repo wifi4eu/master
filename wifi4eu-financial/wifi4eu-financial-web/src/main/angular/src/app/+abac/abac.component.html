@@ -1,0 +1,7 @@
+<div class="clearfix"></div>
+<div class="container font" style="margin-top: 5em;">
+    <h1 class="beneficiaryTitle">WiFi4EU Abac Test</h1>
+    <p>Click on one of the buttons below to import/export your JSON file and communicate with ABAC.</p>
+    <input type="file" (change)="onFileSelection($event)" accept=".json,application/json">
+    <button (click)="exportJson()" [disabled]="!exportEnabled">Export</button>
+</div>

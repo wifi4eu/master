@@ -13,13 +13,8 @@
 
     <modules>
         <module>wifi4eu-common</module>
-        <module>wifi4eu-persistence</module>
-        <module>wifi4eu-service</module>
-        <module>wifi4eu-web-rest-swagger</module>
-        <module>wifi4eu-web-rest</module>
-        <module>wifi4eu-web</module>
-        <module>wifi4eu-ear</module>
-        <module>wifi4eu-abac</module>
+        <module>wifi4eu-portal</module>
+        <module>wifi4eu-financial</module>
     </modules>
 
 
@@ -64,7 +59,6 @@
         <jdk.version>1.7</jdk.version>
         <javaee-api.version>7.0</javaee-api.version>
         <joda-time.version>2.9.1</joda-time.version>
-        <guava.version>18.0</guava.version>
         <tika.version>1.2</tika.version>
         <commons-lang.version>2.6</commons-lang.version>
         <ehcache.version>2.6.10</ehcache.version>
@@ -102,7 +96,7 @@
         <ecas.config.renew>false</ecas.config.renew>
         <ecas.config.server.element/>
         <ecas.config.validate.load_test_specific/>
-        <ecas.config.base.url>https://webgate.ec.europa.eu</ecas.config.base.url>
+        <ecas.config.base.url>https://ecas.acceptance.ec.europa.eu</ecas.config.base.url>
         <ecas.config.strength>PASSWORD</ecas.config.strength>
         <ecas.config.test.certificate.element/>
 
