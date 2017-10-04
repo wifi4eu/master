@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.entity.supplier;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "suppliers")
@@ -46,10 +47,13 @@ public class Supplier {
     @Column(name = "logo")
     private String logo;
 
+    @OneToMany(mappedBy = "supplier")
+    private List<SuppliedRegion> suppliedRegions;
+
     public Supplier() {
     }
 
-    public Supplier(Integer id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo) {
+    public Supplier(Integer id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, List<SuppliedRegion> suppliedRegions) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -63,6 +67,7 @@ public class Supplier {
         this.contactPhoneNumber = contactPhoneNumber;
         this.contactEmail = contactEmail;
         this.logo = logo;
+        this.suppliedRegions = suppliedRegions;
     }
 
     public Integer getId() {
@@ -167,5 +172,13 @@ public class Supplier {
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public List<SuppliedRegion> getSuppliedRegions() {
+        return suppliedRegions;
+    }
+
+    public void setSuppliedRegions(List<SuppliedRegion> suppliedRegions) {
+        this.suppliedRegions = suppliedRegions;
     }
 }

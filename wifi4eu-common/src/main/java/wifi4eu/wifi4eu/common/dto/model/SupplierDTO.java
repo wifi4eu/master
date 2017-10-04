@@ -1,11 +1,8 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
-import java.sql.Blob;
 
-public class SupplierDTO implements Serializable {
+public class SupplierDTO {
     private int id;
     private String name;
     private String address;

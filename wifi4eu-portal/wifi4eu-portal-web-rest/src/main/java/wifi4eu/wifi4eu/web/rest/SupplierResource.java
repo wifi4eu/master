@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -68,5 +69,20 @@ public class SupplierResource {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);
         }
+    }
+
+    @ApiOperation(value = "Testing...")
+    @RequestMapping(value = "/testRegions", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public List<SuppliedRegionDTO> testRegions() {
+        _log.info("testRegions");
+        List<SuppliedRegionDTO> regions = supplierService.getAllSuppliedRegions();
+        for (SuppliedRegionDTO region : regions) {
+            System.out.println("REGION");
+            System.out.println("--------");
+            System.out.println(region.getId() + " | " + region.getRegionId() + " | " + region.getSupplierId());
+        }
+        return regions;
     }
 }

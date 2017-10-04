@@ -29,6 +29,7 @@ public class HelpdeskCommentResource {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<HelpdeskCommentDTO> allHelpdeskComments() {
+        _log.info("allHelpdeskComments");
         return helpdeskService.getAllHelpdeskComments();
     }
 
