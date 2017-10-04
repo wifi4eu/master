@@ -41,7 +41,7 @@ public class HelpdeskIssue {
     public HelpdeskIssue() {
     }
 
-    public HelpdeskIssue(Integer id, String fromEmail, String assignedTo, String topic, String portal, String memberState, String summary, Long createDate, Integer status) {
+    public HelpdeskIssue(Integer id, String fromEmail, String assignedTo, String topic, String portal, String memberState, String summary, Long createDate, Integer status, List<HelpdeskComment> comments) {
         this.id = id;
         this.fromEmail = fromEmail;
         this.assignedTo = assignedTo;
@@ -51,6 +51,7 @@ public class HelpdeskIssue {
         this.summary = summary;
         this.createDate = createDate;
         this.status = status;
+        this.comments = comments;
     }
 
     public Integer getId() {

@@ -30,39 +30,7 @@ public class HelpdeskService {
     HelpdeskCommentRepository helpdeskCommentRepository;
 
     public List<HelpdeskIssueDTO> getAllHelpdeskIssues() {
-        List<HelpdeskIssue> issues = Lists.newArrayList(helpdeskIssueRepository.findAll());
-        for (HelpdeskIssue issue: issues) {
-            System.out.println("--ISSUE--");
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            System.out.println("ID: " + issue.getId());
-            System.out.println("Assigned to: " + issue.getAssignedTo());
-            System.out.println("Creation date: " + new Date(issue.getCreateDate()));
-            System.out.println("From: " + issue.getFromEmail());
-            System.out.println("Topic: " + issue.getTopic());
-            System.out.println("Portal: " + issue.getPortal());
-            System.out.println("Member State: " + issue.getMemberState());
-            System.out.println("Summary: " + issue.getSummary());
-            System.out.println("Status: " + issue.getStatus());
-            System.out.println("-COMMENTS-");
-            List<HelpdeskComment> comments = issue.getComments();
-            for (HelpdeskComment comment : comments) {
-                System.out.println("···················");
-                System.out.println("ID: " + comment.getId());
-                System.out.println("From: " + comment.getFromEmail());
-                System.out.println("Date: " + new Date(comment.getCreateDate()));
-                System.out.println("Comment: " + comment.getComment());
-                System.out.println("···················");
-            }
-            System.out.println("Status: " + issue.getStatus());
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        }
-        List<HelpdeskIssueDTO> issues2 = helpdeskIssueMapper.toDTOList(Lists.newArrayList(helpdeskIssueRepository.findAll()));
-//        for (int i = 0; i < issues.size(); i++) {
-//            HelpdeskIssueDTO issue = issues.get(i);
-//            issue.setComments(helpdeskCommentMapper.toDTOList(Lists.newArrayList(helpdeskCommentRepository.findByIssue(helpdeskIssueMapper.toEntity(issue)))));
-//            issues.set(i, issue);
-//        }
-        return issues2;
+        return helpdeskIssueMapper.toDTOList(Lists.newArrayList(helpdeskIssueRepository.findAll()));
     }
 
     public HelpdeskIssueDTO getHelpdeskIssueById(int helpdeskIssueId) {
