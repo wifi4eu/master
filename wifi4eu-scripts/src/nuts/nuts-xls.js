@@ -69,7 +69,7 @@ var extractLauJson = function(){
           });
 
           jsonfile.writeFile(sheetName+'.sql', lauSql, function (err) {
-            console.error("error creating lau.sql");
+            console.error("error creating location.sql");
           });
 
           lauJson = lauJson.concat(wsJson);
@@ -126,8 +126,8 @@ var transformLauXlsToJson = function(){
   extractLauJson();
 
   if(lauJson != null){
-    jsonfile.writeFile('lau.json', lauJson, function (err) {
-      console.error("error creating lau.json");
+    jsonfile.writeFile('location.json', lauJson, function (err) {
+      console.error("error creating location.json");
     });
   }
 
@@ -154,8 +154,8 @@ var transformLauXlsToSql = function (){
 
 
 
-      jsonfile.writeFile('lau.sql', lauSql, function (err) {
-        console.error("error creating lau.sql");
+      jsonfile.writeFile('location.sql', lauSql, function (err) {
+        console.error("error creating location.sql");
       });
     }
     console.log('[f] transformLauXlsToSql');

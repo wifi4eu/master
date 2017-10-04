@@ -6,7 +6,7 @@ import java.util.List;
 import java.sql.Blob;
 
 public class SupplierDTO implements Serializable {
-    private Long supplierId;
+    private int id;
     private String name;
     private String address;
     private String vat;
@@ -18,19 +18,14 @@ public class SupplierDTO implements Serializable {
     private String contactPhonePrefix;
     private String contactPhoneNumber;
     private String contactEmail;
-    private boolean legalCheck1;
-    private boolean legalCheck2;
-    private Date createDate;
-    private String nutsIds;
-    //private List<NutsDTO> nuts;
     private String logo;
-    private boolean abacStatus;
+    private List<SuppliedRegionDTO> suppliedRegions;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Date createDate, String nutsIds, String logo, boolean abacStatus) {
-        this.supplierId = supplierId;
+    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, List<SuppliedRegionDTO> suppliedRegions) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.vat = vat;
@@ -42,20 +37,16 @@ public class SupplierDTO implements Serializable {
         this.contactPhonePrefix = contactPhonePrefix;
         this.contactPhoneNumber = contactPhoneNumber;
         this.contactEmail = contactEmail;
-        this.legalCheck1 = legalCheck1;
-        this.legalCheck2 = legalCheck2;
-        this.createDate = createDate;
-        this.nutsIds = nutsIds;
         this.logo = logo;
-        this.abacStatus = abacStatus;
+        this.suppliedRegions = suppliedRegions;
     }
 
-    public Long getSupplierId() {
-        return supplierId;
+    public int getId() {
+        return id;
     }
 
-    public void setSupplierId(Long supplierId) {
-        this.supplierId = supplierId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -146,38 +137,6 @@ public class SupplierDTO implements Serializable {
         this.contactEmail = contactEmail;
     }
 
-    public boolean isLegalCheck1() {
-        return legalCheck1;
-    }
-
-    public void setLegalCheck1(boolean legalCheck1) {
-        this.legalCheck1 = legalCheck1;
-    }
-
-    public boolean isLegalCheck2() {
-        return legalCheck2;
-    }
-
-    public void setLegalCheck2(boolean legalCheck2) {
-        this.legalCheck2 = legalCheck2;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public String getNutsIds() {
-        return nutsIds;
-    }
-
-    public void setNutsIds(String nutsIds) {
-        this.nutsIds = nutsIds;
-    }
-
     public String getLogo() {
         return logo;
     }
@@ -186,11 +145,11 @@ public class SupplierDTO implements Serializable {
         this.logo = logo;
     }
 
-    public boolean isAbacStatus() {
-        return abacStatus;
+    public List<SuppliedRegionDTO> getSuppliedRegions() {
+        return suppliedRegions;
     }
 
-    public void setAbacStatus(boolean abacStatus) {
-        this.abacStatus = abacStatus;
+    public void setSuppliedRegions(List<SuppliedRegionDTO> suppliedRegions) {
+        this.suppliedRegions = suppliedRegions;
     }
 }

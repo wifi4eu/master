@@ -1,7 +1,7 @@
 package wifi4eu.wifi4eu.entity.application;
 
-import wifi4eu.wifi4eu.entity.Call;
-import wifi4eu.wifi4eu.entity.Registration;
+import wifi4eu.wifi4eu.entity.call.Call;
+import wifi4eu.wifi4eu.entity.registration.Registration;
 
 import javax.persistence.*;
 

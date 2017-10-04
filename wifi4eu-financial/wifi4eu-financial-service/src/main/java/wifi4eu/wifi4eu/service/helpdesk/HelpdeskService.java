@@ -13,7 +13,7 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskCommentDTO;
-import wifi4eu.wifi4eu.common.dto.model.HelpdeskDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskCommentMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskMapper;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskCommentRepository;
@@ -43,15 +43,15 @@ public class HelpdeskService {
     @Autowired
     HelpdeskCommentMapper helpdeskCommentMapper;
 
-    public List<HelpdeskDTO> getAllHelpdeskIssues() {
+    public List<HelpdeskIssueDTO> getAllHelpdeskIssues() {
         return helpdeskMapper.toDTOList(Lists.newArrayList(helpdeskRepository.findAll()));
     }
 
-    public HelpdeskDTO getHelpdeskIssue(Long issueId) {
+    public HelpdeskIssueDTO getHelpdeskIssue(Long issueId) {
         return helpdeskMapper.toDTO(helpdeskRepository.findOne(issueId));
     }
 
-    public HelpdeskDTO createHelpdeskIssue(HelpdeskDTO helpdeskDTO) {
+    public HelpdeskIssueDTO createHelpdeskIssue(HelpdeskIssueDTO helpdeskDTO) {
         return helpdeskMapper.toDTO(helpdeskRepository.save(helpdeskMapper.toEntity(helpdeskDTO)));
     }
 
@@ -64,7 +64,7 @@ public class HelpdeskService {
     }
 
     public File exportHelpdeskIssues() {
-        List<HelpdeskDTO> issues = helpdeskMapper.toDTOList(Lists.newArrayList(helpdeskRepository.findAll()));
+        List<HelpdeskIssueDTO> issues = helpdeskMapper.toDTOList(Lists.newArrayList(helpdeskRepository.findAll()));
         File csv = new File(CSV_FILE_NAME);
 
         ICsvBeanWriter beanWriter = null;
@@ -85,7 +85,7 @@ public class HelpdeskService {
             String[] header = {"issueId", "portal", "topic", "memberState", "date", "assignedTo", "status", "from", "issueSummary"};
             beanWriter.writeHeader(header);
 
-            for (HelpdeskDTO issue : issues) {
+            for (HelpdeskIssueDTO issue : issues) {
                 _log.info("Issue summary:");
                 _log.info(issue.getIssueSummary());
 

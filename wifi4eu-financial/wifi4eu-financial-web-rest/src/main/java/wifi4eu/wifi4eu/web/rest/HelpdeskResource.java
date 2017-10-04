@@ -10,13 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskCommentDTO;
-import wifi4eu.wifi4eu.common.dto.model.HelpdeskDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -35,8 +34,8 @@ public class HelpdeskResource {
     @ApiOperation(value = "Get all the helpdesk entries")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<HelpdeskDTO> allHelpdeskIssues() {
-        List<HelpdeskDTO> issues = helpdeskService.getAllHelpdeskIssues();
+    public List<HelpdeskIssueDTO> allHelpdeskIssues() {
+        List<HelpdeskIssueDTO> issues = helpdeskService.getAllHelpdeskIssues();
         if (issues != null) {
             for (int i = 0; i < issues.size(); i++) {
                 issues.get(i).setComments(helpdeskService.getHelpdeskIssueComments(issues.get(i).getIssueId()));
@@ -48,9 +47,9 @@ public class HelpdeskResource {
     @ApiOperation(value = "Get helpdesk issue by issueId")
     @RequestMapping(value = "/{issueId}", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
-    public HelpdeskDTO getHelpdeskIssue(@PathVariable("issueId") final Long issueId, final HttpServletResponse response) {
+    public HelpdeskIssueDTO getHelpdeskIssue(@PathVariable("issueId") final Long issueId, final HttpServletResponse response) {
         _log.info("getHelpdeskIssue " + issueId);
-        HelpdeskDTO issue = helpdeskService.getHelpdeskIssue(issueId);
+        HelpdeskIssueDTO issue = helpdeskService.getHelpdeskIssue(issueId);
         issue.setComments(helpdeskService.getHelpdeskIssueComments(issueId));
         return issue;
 
@@ -60,9 +59,9 @@ public class HelpdeskResource {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO createHelpdeskIssue(@RequestBody final HelpdeskDTO helpdeskDTO, final HttpServletResponse response) {
+    public ResponseDTO createHelpdeskIssue(@RequestBody final HelpdeskIssueDTO helpdeskDTO, final HttpServletResponse response) {
         try {
-            HelpdeskDTO resHelpdesk = helpdeskService.createHelpdeskIssue(helpdeskDTO);
+            HelpdeskIssueDTO resHelpdesk = helpdeskService.createHelpdeskIssue(helpdeskDTO);
             return new ResponseDTO(true, resHelpdesk, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());

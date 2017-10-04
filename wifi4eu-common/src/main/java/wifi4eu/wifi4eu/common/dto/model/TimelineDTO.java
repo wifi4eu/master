@@ -1,54 +1,60 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-import javax.validation.constraints.NotNull;
-
 public class TimelineDTO {
-
-    private Long timelineId;
-    @NotNull
-    private Long startDate;
-    private Long endDate;
-    private String event;
+    int id;
+    int callId;
+    String description;
+    long startDate;
+    long endDate;
 
     public TimelineDTO() {
     }
 
-    public TimelineDTO(Long timelineId, Long startDate, Long endDate, String event) {
-        this.timelineId = timelineId;
+    public TimelineDTO(int id, int callId, String description, long startDate, long endDate) {
+        this.id = id;
+        this.callId = callId;
+        this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.event = event;
     }
 
-    public Long getTimelineId() {
-        return timelineId;
+    public int getId() {
+        return id;
     }
 
-    public void setTimelineId(Long timelineId) {
-        this.timelineId = timelineId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public Long getStartDate() {
+    public int getCallId() {
+        return callId;
+    }
+
+    public void setCallId(int callId) {
+        this.callId = callId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Long startDate) {
+    public void setStartDate(long startDate) {
         this.startDate = startDate;
     }
 
-    public Long getEndDate() {
+    public long getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Long endDate) {
+    public void setEndDate(long endDate) {
         this.endDate = endDate;
-    }
-
-    public String getEvent() {
-        return event;
-    }
-
-    public void setEvent(String event) {
-        this.event = event;
     }
 }

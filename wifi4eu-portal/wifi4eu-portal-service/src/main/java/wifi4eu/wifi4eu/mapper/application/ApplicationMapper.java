@@ -8,13 +8,8 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ApplicationMapper {
-
     ApplicationDTO toDTO(Application entity);
-
     Application toEntity(ApplicationDTO vo);
-
     List<ApplicationDTO> toDTOList(List<Application> list);
-
     List<Application> toEntityList(List<ApplicationDTO> list);
-
 }

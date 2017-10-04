@@ -1,41 +1,45 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-import javax.validation.constraints.NotNull;
-import java.util.Date;
-
 public class HelpdeskCommentDTO {
-
-    private Long commentId;
-    private String type;
+    private int id;
+    private int issueId;
+    private String fromEmail;
     private String comment;
-    private Date commentDate;
-    private Long issueId;
+    private long createDate;
 
     public HelpdeskCommentDTO() {
     }
 
-    public HelpdeskCommentDTO(Long commentId, String type, String comment, Date commentDate, Long issueId) {
-        this.commentId = commentId;
-        this.type = type;
+    public HelpdeskCommentDTO(int id, int issueId, String fromEmail, String comment, long createDate) {
+        this.id = id;
+        this.issueId = issueId;
+        this.fromEmail = fromEmail;
         this.comment = comment;
-        this.commentDate = commentDate;
+        this.createDate = createDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIssueId() {
+        return issueId;
+    }
+
+    public void setIssueId(int issueId) {
         this.issueId = issueId;
     }
 
-    public Long getCommentId() {
-        return commentId;
+    public String getFromEmail() {
+        return fromEmail;
     }
 
-    public void setCommentId(Long commentId) {
-        this.commentId = commentId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    public void setFromEmail(String fromEmail) {
+        this.fromEmail = fromEmail;
     }
 
     public String getComment() {
@@ -46,19 +50,11 @@ public class HelpdeskCommentDTO {
         this.comment = comment;
     }
 
-    public Date getCommentDate() {
-        return commentDate;
+    public long getCreateDate() {
+        return createDate;
     }
 
-    public void setCommentDate(Date commentDate) {
-        this.commentDate = commentDate;
-    }
-
-    public Long getIssueId() {
-        return issueId;
-    }
-
-    public void setIssueId(Long issueId) {
-        this.issueId = issueId;
+    public void setCreateDate(long createDate) {
+        this.createDate = createDate;
     }
 }
