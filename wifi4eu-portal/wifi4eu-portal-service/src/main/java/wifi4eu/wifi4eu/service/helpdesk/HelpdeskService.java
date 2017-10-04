@@ -5,11 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskCommentDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
+import wifi4eu.wifi4eu.entity.helpdesk.HelpdeskComment;
+import wifi4eu.wifi4eu.entity.helpdesk.HelpdeskIssue;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskCommentMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskCommentRepository;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskIssueRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,13 +30,39 @@ public class HelpdeskService {
     HelpdeskCommentRepository helpdeskCommentRepository;
 
     public List<HelpdeskIssueDTO> getAllHelpdeskIssues() {
-        List<HelpdeskIssueDTO> issues = helpdeskIssueMapper.toDTOList(Lists.newArrayList(helpdeskIssueRepository.findAll()));
+        List<HelpdeskIssue> issues = Lists.newArrayList(helpdeskIssueRepository.findAll());
+        for (HelpdeskIssue issue: issues) {
+            System.out.println("--ISSUE--");
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            System.out.println("ID: " + issue.getId());
+            System.out.println("Assigned to: " + issue.getAssignedTo());
+            System.out.println("Creation date: " + new Date(issue.getCreateDate()));
+            System.out.println("From: " + issue.getFromEmail());
+            System.out.println("Topic: " + issue.getTopic());
+            System.out.println("Portal: " + issue.getPortal());
+            System.out.println("Member State: " + issue.getMemberState());
+            System.out.println("Summary: " + issue.getSummary());
+            System.out.println("Status: " + issue.getStatus());
+            System.out.println("-COMMENTS-");
+            List<HelpdeskComment> comments = issue.getComments();
+            for (HelpdeskComment comment : comments) {
+                System.out.println("···················");
+                System.out.println("ID: " + comment.getId());
+                System.out.println("From: " + comment.getFromEmail());
+                System.out.println("Date: " + new Date(comment.getCreateDate()));
+                System.out.println("Comment: " + comment.getComment());
+                System.out.println("···················");
+            }
+            System.out.println("Status: " + issue.getStatus());
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        }
+        List<HelpdeskIssueDTO> issues2 = helpdeskIssueMapper.toDTOList(Lists.newArrayList(helpdeskIssueRepository.findAll()));
 //        for (int i = 0; i < issues.size(); i++) {
 //            HelpdeskIssueDTO issue = issues.get(i);
 //            issue.setComments(helpdeskCommentMapper.toDTOList(Lists.newArrayList(helpdeskCommentRepository.findByIssue(helpdeskIssueMapper.toEntity(issue)))));
 //            issues.set(i, issue);
 //        }
-        return issues;
+        return issues2;
     }
 
     public HelpdeskIssueDTO getHelpdeskIssueById(int helpdeskIssueId) {

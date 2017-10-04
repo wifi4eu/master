@@ -10,7 +10,7 @@ public class HelpdeskComment {
     @Column(name = "id")
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "issue")
     private HelpdeskIssue issue;
 

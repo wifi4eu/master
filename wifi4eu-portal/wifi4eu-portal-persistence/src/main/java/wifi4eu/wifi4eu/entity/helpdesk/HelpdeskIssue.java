@@ -35,6 +35,9 @@ public class HelpdeskIssue {
     @Column(name = "status")
     private Integer status;
 
+    @OneToMany(mappedBy = "issue")
+    private List<HelpdeskComment> comments;
+
     public HelpdeskIssue() {
     }
 
@@ -122,5 +125,11 @@ public class HelpdeskIssue {
         this.status = status;
     }
 
+    public List<HelpdeskComment> getComments() {
+        return comments;
+    }
 
+    public void setComments(List<HelpdeskComment> comments) {
+        this.comments = comments;
+    }
 }
