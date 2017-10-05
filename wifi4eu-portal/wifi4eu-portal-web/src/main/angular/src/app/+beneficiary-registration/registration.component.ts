@@ -14,8 +14,8 @@ export class RegistrationComponent {
     @ViewChild(EntityComponent) legalEntityComponent: EntityComponent;
 
     private beneficiaryDTO: BeneficiaryDTOBase;
-    private nutsDTO: NutsDTOBase;
-    private lausDTO: LauDTOBase;
+    private nutsDTO: NutsDTOBase[];
+    private lausDTO: LauDTOBase[];
     private allCountries: NutsDTO[];
     private allMunicipalities: NutsDTO[][];
 
@@ -46,6 +46,10 @@ export class RegistrationComponent {
         this.allBeneficiaries = [];
         this.allBeneficiaries.push(this.beneficiaryDTO);
 
+        this.nutsDTO = [];
+        this.nutsDTO.push(new NutsDTOBase());
+        this.lausDTO = [];
+        this.lausDTO.push(new LauDTOBase());
     }
 
     onNext(step: number) {

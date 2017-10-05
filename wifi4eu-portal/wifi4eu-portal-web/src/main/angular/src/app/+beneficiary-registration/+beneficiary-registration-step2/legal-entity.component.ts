@@ -16,8 +16,8 @@ import {RepresentativeDTOBase} from "../../shared/swagger/model/RepresentativeDT
 })
 export class EntityComponent {
     @Input('allBeneficiaries') allBeneficiaries: BeneficiaryDTOBase[];
-    @Input('nutsDTO') nutsDTO: NutsDTOBase;
-    @Input('lausDTO') lausDTO: NutsDTOBase;
+    @Input('nutsDTO') nutsDTO: NutsDTOBase[];
+    @Input('lausDTO') lausDTO: LauDTOBase[];
     @Input('allCountries') allCountries: NutsDTO[];
     @Input('allMunicipalities') allMunicipalities: NutsDTO[][];
     @Input() accordionBoxes: UxAccordionBoxesComponent;
@@ -68,6 +68,7 @@ export class EntityComponent {
     onSubmit(step: number) {
         this.onNext.emit(step);
     }
+
     addAccordionBox() {
         this.beneficiaryDTO = new BeneficiaryDTOBase();
 
@@ -77,28 +78,31 @@ export class EntityComponent {
 
         this.allBeneficiaries.push(this.beneficiaryDTO);
 
+        this.nutsDTO.push(new NutsDTOBase());
+        this.lausDTO.push(new LauDTOBase());
+
         this.addMunicipalityAccordionBox();
     }
 
-    onKeyUp(event) {
-        // Check if key pressed is a ascii printable letter
-        if (event.keyCode > 64 && event.keyCode < 91) {
-            if (typeof this.nutsDTO === "string") {
-                let name: string = this.nutsDTO;
-                let nuts = this.nutsSuggestions;
-                for (let i = 0; i < nuts.length; i++) {
-                    let nut = nuts[i];
-                    if (nut.name.toLowerCase().indexOf(name.toLowerCase()) == 0) {
-                        this.nutsDTO = nut;
-                    }
-                }
-            }
-        }
-    }
+    // onKeyUp(event) {
+    //     // Check if key pressed is a ascii printable letter
+    //     if (event.keyCode > 64 && event.keyCode < 91) {
+    //         if (typeof this.nutsDTO === "string") {
+    //             let name: string = this.nutsDTO;
+    //             let nuts = this.nutsSuggestions;
+    //             for (let i = 0; i < nuts.length; i++) {
+    //                 let nut = nuts[i];
+    //                 if (nut.name.toLowerCase().indexOf(name.toLowerCase()) == 0) {
+    //                     this.nutsDTO = nut;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
-    filterNuts(event) {
+    filterNuts(event, index: number) {
         this.nutsSuggestions = this.filterCountries(event.query, this.allCountries);
-        this.checkIfCountryIsWritten();
+        this.checkIfCountryIsWritten(index);
     }
 
     filterCountries(query, nuts: NutsDTOBase[]) {
@@ -114,14 +118,15 @@ export class EntityComponent {
         return filteredNuts;
     }
 
-    checkIfCountryIsWritten() {
-        this.lausDTO = null;
-        if (typeof this.nutsDTO === "string") {
-            let name: string = this.nutsDTO;
+    checkIfCountryIsWritten(index) {
+        this.lausDTO[index] = null;
+        let nuts = this.nutsDTO[index];
+        if (typeof nuts === "string") {
+            let name: string = nuts;
             for (let country of this.allCountries) {
                 if (this.formatCountryName(name) == this.formatCountryName(country.name)) {
-                    this.nutsDTO = country;
-                    this.selectCountry();
+                    this.nutsDTO[index] = country;
+                    this.selectCountry(index);
                 }
             }
         }
@@ -131,10 +136,10 @@ export class EntityComponent {
         return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
     }
 
-    selectCountry() {
-        this.lausDTO = null;
-        if (this.allMunicipalities[this.formatCountryName(this.nutsDTO.name)]) {
-            if (this.allMunicipalities[this.formatCountryName(this.nutsDTO.name)].length > 0) {
+    selectCountry(index: number) {
+        this.lausDTO[index] = null;
+        if (this.allMunicipalities[this.formatCountryName(this.nutsDTO[index].name)]) {
+            if (this.allMunicipalities[this.formatCountryName(this.nutsDTO[index].name)].length > 0) {
                 this.readyMunicipalities = true;
                 this.placeholderMunicipality = '';
             } else {
@@ -142,14 +147,14 @@ export class EntityComponent {
                 this.placeholderMunicipality = 'Loading municipalities...';
             }
         } else {
-            this.allMunicipalities[this.formatCountryName(this.nutsDTO.name)] = [];
+            this.allMunicipalities[this.formatCountryName(this.nutsDTO[index].name)] = [];
             this.readyMunicipalities = false;
             this.placeholderMunicipality = 'Loading municipalities...';
-            this.lauApi.findLauByCountryCode(this.nutsDTO.countryCode).subscribe(
+            this.lauApi.findLauByCountryCode(this.nutsDTO[index].countryCode).subscribe(
                 (laus: LauDTO[]) => {
                     if (laus.length > 0) {
-                        if (laus[0].countryCode == this.nutsDTO.countryCode) {
-                            this.allMunicipalities[this.formatCountryName(this.nutsDTO.name)] = laus;
+                        if (laus[0].countryCode == this.nutsDTO[index].countryCode) {
+                            this.allMunicipalities[this.formatCountryName(this.nutsDTO[index].name)] = laus;
                             this.readyMunicipalities = true;
                             this.placeholderMunicipality = '';
                         } else {
@@ -180,8 +185,8 @@ export class EntityComponent {
         }
     }
 
-    filterLaus(event) {
-        this.lausSuggestions = this.filterMunicipalities(event.query, this.allMunicipalities[this.nutsDTO.name]);
+    filterLaus(event, index) {
+        this.lausSuggestions = this.filterMunicipalities(event.query, this.allMunicipalities[this.nutsDTO[index].name]);
     }
 
     filterMunicipalities(query, laus: LauDTOBase[]) {
@@ -197,6 +202,7 @@ export class EntityComponent {
         }
         return filteredLaus;
     }
+
     stepBack(step: number) {
         this.onBack.emit(step);
     }

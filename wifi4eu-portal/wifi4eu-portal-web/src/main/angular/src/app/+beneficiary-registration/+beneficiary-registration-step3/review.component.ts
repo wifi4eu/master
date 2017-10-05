@@ -17,8 +17,8 @@ import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 export class ReviewComponent {
 
     @Input('allBeneficiaries') allBeneficiaries: BeneficiaryDTOBase[];
-    @Input('nutsDTO') nutsDTO: NutsDTOBase;
-    @Input('lausDTO') lausDTO: LauDTOBase;
+    @Input('nutsDTO') nutsDTO: NutsDTOBase[];
+    @Input('lausDTO') lausDTO: LauDTOBase[];
     @Input('selection') selection: boolean[];
 
     @Output() gotoStep: EventEmitter<number>;

@@ -37,7 +37,7 @@
             </span>
             <span class="ui-lg-1"></span>
         </div>
-        <div *ngFor="let beneficiary of allBeneficiaries">
+        <div *ngFor="let beneficiary of allBeneficiaries; let i = index">
             <div id="mayor_details" class="ui-g-12 ui-md-12 ui-lg-12">
                 <hr>
                 <span class="ui-lg-1"></span>
@@ -55,7 +55,7 @@
                 </div>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'surname.label' | translate }}</span>
-                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{allBeneficiaries[0].mayorDTO.surname}}</b></span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{beneficiary.mayorDTO.surname}}</b></span>
                 </div>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'email.label' | translate }}</span>
@@ -81,11 +81,11 @@
                     </div>-->
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'country.label' | translate }}</span>
-                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>PENE</b></span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{nutsDTO[i].name}}</b></span>
                 </div>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'municipality.label' | translate }}</span>
-                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>CULO</b></span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{lausDTO[i].name2}}</b></span>
                 </div>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'address.label' | translate }}</span>
