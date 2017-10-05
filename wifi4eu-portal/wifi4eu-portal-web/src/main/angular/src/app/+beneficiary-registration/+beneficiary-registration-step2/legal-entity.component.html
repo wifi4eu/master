@@ -143,186 +143,192 @@
 
 <ng-container *ngIf="beneficiaryDTO.represented">
 <div class="ui-g-10">
-  <ux-tabs [tabs]="tabs">
-    <form #entityForm="ngForm">
-      <div class="form-group ui-g">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <div class="form-group">
-                <label class="label floatLeft" for="country">{{ 'country.label' | translate }}</label>
-                <div class="clearfix"></div>
-                <p-autoComplete id="country"
-                                class="form-control"
-                                name="country"
-                                field="name"
-                                placeholder="Espanya"
-                                ngcontrol="country"
-                                #country="ngModel"
-                                [(ngModel)]="nutsDTO"
-                                [suggestions]="nutsSuggestions"
-                                [size]="30"
-                                [minLength]="1"
-                                (completeMethod)="filterNuts($event)"
-                                (onSelect)="selectCountry()"
-                                required>
-                </p-autoComplete>
-                <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required</div>
-            </div>
-        </div>
-        <div class="ui-lg-3"></div>
-    </div>
-    <div class="form-group ui-g">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <div class="form-group">
-                <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate }}</label>
-                <div class="clearfix"></div>
-                <p-autoComplete id="municipality"
-                                class="form-control"
-                                name="municipality"
-                                field="name1"
-                                [placeholder]="placeholderMunicipality"
-                                ngcontrol="municipality"
-                                #municipality="ngModel"
-                                [(ngModel)]="lausDTO"
-                                [suggestions]="lausSuggestions"
-                                [size]="30"
-                                [minLength]="1"
-                                (completeMethod)="filterLaus($event)"
-                                required
-                                [disabled]="!isValidNutsSeleted()">
-                </p-autoComplete>
-                <div [hidden]="municipality.valid || municipality.pristine" class="alert alert-danger">Municipality is required</div>
-            </div>
-        </div>
-        <div class="ui-lg-3"></div>
-    </div>
-    <div class="form-group ui-g">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-5">
-            <div class="form-group">
-                <label class="label floatLeft" for="address">{{ 'address.label' | translate }}</label>
-                <input id="address"
-                       type="text"
-                       class="form-control paddingInput"
-                       name="address"
-                       min="1"
-                       placeholder="Diagonal"
-                       ngcontrol="address"
-                       #address="ngModel"
-                       [(ngModel)]="beneficiaryDTO.legalEntityDTO.address"
-                       required>
-                <div [hidden]="address.valid || address.pristine" class="alert alert-danger">Address is required</div>
-            </div>
-        </div>
-        <div class="ui-g-12 ui-md-12 ui-lg-1">
-            <div class="form-group">
-                <label class="label floatLeft" for="number">{{ 'number.label' | translate }}</label>
-                <input id="number"
-                       type="number"
-                       class="form-control paddingInput"
-                       name="number"
-                       placeholder="605"
-                       ngcontrol="number"
-                       #number="ngModel"
-                       [(ngModel)]="beneficiaryDTO.legalEntityDTO.addressNum"
-                       required>
-                <div [hidden]="number.valid || number.pristine" class="alert alert-danger">Address is required</div>
-            </div>
-        </div>
-        <div class="ui-lg-3"></div>
-    </div>
-    <div class="form-group ui-g">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <div class="form-group">
-                <label class="label floatLeft" for="postalCode">{{ 'postal-code.label' | translate }}</label>
-                <input id="postalCode"
-                       type="text"
-                       class="form-control paddingInput"
-                       name="postalCode"
-                       placeholder="08022"
-                       ngcontrol="postalCode"
-                       #postalCode="ngModel"
-                       [(ngModel)]="beneficiaryDTO.legalEntityDTO.postalCode"
-                       required>
-                <div class="alert alert-danger" [hidden]="postalCode.valid || postalCode.pristine">Postal code is required</div>
-            </div>
-        </div>
-        <div class="ui-lg-3"></div>
-    </div>
-    <!--Mayor-->
-    <div id="mayor">
-      <!-- Separator -->
-      <div id="mayor-separator" class="form-group ui-g">
-          <div class="ui-g-12 ui-md-12 ui-lg-7 center" style="text-align: center !important">
-              <hr>
-          </div>
-      </div>
-      <!-- Title -->
-      <div id="mayor-title" class="form-group ui-g">
-          <div class="ui-lg-3"></div>
-          <div class="ui-g-12 ui-md-12 ui-lg-6">
-              <h3>{{ 'mayordetails.title' | translate }}</h3>
-          </div>
-          <div class="ui-lg-3"></div>
-      </div>
-      <!-- Mayor treatment -->
-      <div id="mayor-treatment" class="form-group ui-g">
-          <div class="ui-lg-3"></div>
-          <div class="ui-g-12 ui-md-12 ui-lg-3">
-              <label class="label floatLeft" for="treatment">{{ 'treatment.label' | translate }}</label>
-              <select class="form-control" name="treatment" id="treatment" [(ngModel)]="beneficiaryDTO.mayorDTO.treatment" required>
-                  <option value="mr">{{ 'treatment.option1' | translate }}</option>
-                  <option value="ms">{{ 'treatment.option2' | translate }}</option>
-              </select>
-          </div>
-          <div class="ui-lg-1"></div>
-      </div>
-      <!-- Mayor name -->
-      <div id="mayor-name" class="form-group ui-g">
-          <div class="ui-lg-3"></div>
-          <div class="ui-g-12 ui-md-12 ui-lg-6">
-              <label class="label floatLeft" for="name">{{ 'name.label' | translate }}</label>
-              <input class="form-control paddingInput" type="text" name="name" id="name" [(ngModel)]="beneficiaryDTO.mayorDTO.name" required>
-          </div>
-          <div class="ui-lg-3"></div>
-      </div>
-      <!-- Mayor last name -->
-      <div id="mayor-last-name" class="form-group ui-g">
-          <div class="ui-lg-3"></div>
-          <div class="ui-g-12 ui-md-12 ui-lg-6">
-              <label class="label floatLeft" for="surname">{{ 'surname.label' | translate }}</label>
-              <input class="form-control paddingInput" type="text" name="surname" id="surname" [(ngModel)]="beneficiaryDTO.mayorDTO.surname" required>
-          </div>
-          <div class="ui-lg-3"></div>
-      </div>
-      <!-- Mayor email -->
-      <div id="mayor-email" class="form-group ui-g">
-          <div class="ui-lg-3"></div>
-          <div class="ui-g-12 ui-md-12 ui-lg-6">
-              <label class="label floatLeft" for="email">{{ 'email.label' | translate }}</label>
-              <input class="form-control paddingInput" type="email" name="email" id="email"
-                     ngcontrol="email" #email="ngModel" [(ngModel)]="beneficiaryDTO.mayorDTO.email"
-                     (keyup)="checkIfMayorEmailMatches()" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
-              <label for="email" class="field-desc" style="margin-top: 10px;color: gray;">{{ 'email.fielddesc' | translate }}</label>
-          </div>
-          <div class="ui-lg-3"></div>
-      </div>
-      <!-- Mayor confirmation email -->
-      <div id="mayor-confirm-email" class="form-group ui-g">
-          <div class="ui-lg-3"></div>
-          <div class="ui-g-12 ui-md-12 ui-lg-6">
-              <label class="label floatLeft" for="confirmemail">{{ 'confirmemail.label' | translate }}</label>
-              <input class="form-control paddingInput" type="email" name="confirmemail" id="confirmemail"
-                     ngcontrol="confirmemail" #confirmemail="ngModel" [(ngModel)]="beneficiaryDTO.mayorDTO.repeatEmail"
-                     (keyup)="checkIfMayorEmailMatches()" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
-              <div [hidden]="mayorEmailMatches || confirmemail.pristine" class="alert alert-info">The email information must match.</div>
-          </div>
-          <div class="ui-lg-3"></div>
-      </div>
-    </div>
-    <div class="form-group ui-g">
+
+<ux-accordion-boxes>
+    <ux-accordion-box *ngFor="let item of accordionBoxItems">
+            <form #entityForm="ngForm">
+                    <div class="form-group ui-g">
+                      <div class="ui-lg-3"></div>
+                      <div class="ui-g-12 ui-md-12 ui-lg-6">
+                          <div class="form-group">
+                              <label class="label floatLeft" for="country">{{ 'country.label' | translate }}</label>
+                              <div class="clearfix"></div>
+                              <p-autoComplete id="country"
+                                              class="form-control"
+                                              name="country"
+                                              field="name"
+                                              placeholder="Espanya"
+                                              ngcontrol="country"
+                                              #country="ngModel"
+                                              [(ngModel)]="nutsDTO"
+                                              [suggestions]="nutsSuggestions"
+                                              [size]="30"
+                                              [minLength]="1"
+                                              (completeMethod)="filterNuts($event)"
+                                              (onSelect)="selectCountry()"
+                                              required>
+                              </p-autoComplete>
+                              <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required</div>
+                          </div>
+                      </div>
+                      <div class="ui-lg-3"></div>
+                  </div>
+                  <div class="form-group ui-g">
+                      <div class="ui-lg-3"></div>
+                      <div class="ui-g-12 ui-md-12 ui-lg-6">
+                          <div class="form-group">
+                              <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate }}</label>
+                              <div class="clearfix"></div>
+                              <p-autoComplete id="municipality"
+                                              class="form-control"
+                                              name="municipality"
+                                              field="name1"
+                                              [placeholder]="placeholderMunicipality"
+                                              ngcontrol="municipality"
+                                              #municipality="ngModel"
+                                              [(ngModel)]="lausDTO"
+                                              [suggestions]="lausSuggestions"
+                                              [size]="30"
+                                              [minLength]="1"
+                                              (completeMethod)="filterLaus($event)"
+                                              required
+                                              [disabled]="!isValidNutsSeleted()">
+                              </p-autoComplete>
+                              <div [hidden]="municipality.valid || municipality.pristine" class="alert alert-danger">Municipality is required</div>
+                          </div>
+                      </div>
+                      <div class="ui-lg-3"></div>
+                  </div>
+                  <div class="form-group ui-g">
+                      <div class="ui-lg-3"></div>
+                      <div class="ui-g-12 ui-md-12 ui-lg-5">
+                          <div class="form-group">
+                              <label class="label floatLeft" for="address">{{ 'address.label' | translate }}</label>
+                              <input id="address"
+                                     type="text"
+                                     class="form-control paddingInput"
+                                     name="address"
+                                     min="1"
+                                     placeholder="Diagonal"
+                                     ngcontrol="address"
+                                     #address="ngModel"
+                                     [(ngModel)]="beneficiaryDTO.legalEntityDTO.address"
+                                     required>
+                              <div [hidden]="address.valid || address.pristine" class="alert alert-danger">Address is required</div>
+                          </div>
+                      </div>
+                      <div class="ui-g-12 ui-md-12 ui-lg-1">
+                          <div class="form-group">
+                              <label class="label floatLeft" for="number">{{ 'number.label' | translate }}</label>
+                              <input id="number"
+                                     type="number"
+                                     class="form-control paddingInput"
+                                     name="number"
+                                     placeholder="605"
+                                     ngcontrol="number"
+                                     #number="ngModel"
+                                     [(ngModel)]="beneficiaryDTO.legalEntityDTO.addressNum"
+                                     required>
+                              <div [hidden]="number.valid || number.pristine" class="alert alert-danger">Address is required</div>
+                          </div>
+                      </div>
+                      <div class="ui-lg-3"></div>
+                  </div>
+                  <div class="form-group ui-g">
+                      <div class="ui-lg-3"></div>
+                      <div class="ui-g-12 ui-md-12 ui-lg-6">
+                          <div class="form-group">
+                              <label class="label floatLeft" for="postalCode">{{ 'postal-code.label' | translate }}</label>
+                              <input id="postalCode"
+                                     type="text"
+                                     class="form-control paddingInput"
+                                     name="postalCode"
+                                     placeholder="08022"
+                                     ngcontrol="postalCode"
+                                     #postalCode="ngModel"
+                                     [(ngModel)]="beneficiaryDTO.legalEntityDTO.postalCode"
+                                     required>
+                              <div class="alert alert-danger" [hidden]="postalCode.valid || postalCode.pristine">Postal code is required</div>
+                          </div>
+                      </div>
+                      <div class="ui-lg-3"></div>
+                  </div>
+                  <!--Mayor-->
+                  <div id="mayor">
+                    <!-- Separator -->
+                    <div id="mayor-separator" class="form-group ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-7 center" style="text-align: center !important">
+                            <hr>
+                        </div>
+                    </div>
+                    <!-- Title -->
+                    <div id="mayor-title" class="form-group ui-g">
+                        <div class="ui-lg-3"></div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <h3>{{ 'mayordetails.title' | translate }}</h3>
+                        </div>
+                        <div class="ui-lg-3"></div>
+                    </div>
+                    <!-- Mayor treatment -->
+                    <div id="mayor-treatment" class="form-group ui-g">
+                        <div class="ui-lg-3"></div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-3">
+                            <label class="label floatLeft" for="treatment">{{ 'treatment.label' | translate }}</label>
+                            <select class="form-control" name="treatment" id="treatment" [(ngModel)]="beneficiaryDTO.mayorDTO.treatment" required>
+                                <option value="mr">{{ 'treatment.option1' | translate }}</option>
+                                <option value="ms">{{ 'treatment.option2' | translate }}</option>
+                            </select>
+                        </div>
+                        <div class="ui-lg-1"></div>
+                    </div>
+                    <!-- Mayor name -->
+                    <div id="mayor-name" class="form-group ui-g">
+                        <div class="ui-lg-3"></div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <label class="label floatLeft" for="name">{{ 'name.label' | translate }}</label>
+                            <input class="form-control paddingInput" type="text" name="name" id="name" [(ngModel)]="beneficiaryDTO.mayorDTO.name" required>
+                        </div>
+                        <div class="ui-lg-3"></div>
+                    </div>
+                    <!-- Mayor last name -->
+                    <div id="mayor-last-name" class="form-group ui-g">
+                        <div class="ui-lg-3"></div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <label class="label floatLeft" for="surname">{{ 'surname.label' | translate }}</label>
+                            <input class="form-control paddingInput" type="text" name="surname" id="surname" [(ngModel)]="beneficiaryDTO.mayorDTO.surname" required>
+                        </div>
+                        <div class="ui-lg-3"></div>
+                    </div>
+                    <!-- Mayor email -->
+                    <div id="mayor-email" class="form-group ui-g">
+                        <div class="ui-lg-3"></div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <label class="label floatLeft" for="email">{{ 'email.label' | translate }}</label>
+                            <input class="form-control paddingInput" type="email" name="email" id="email"
+                                   ngcontrol="email" #email="ngModel" [(ngModel)]="beneficiaryDTO.mayorDTO.email"
+                                   (keyup)="checkIfMayorEmailMatches()" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
+                            <label for="email" class="field-desc" style="margin-top: 10px;color: gray;">{{ 'email.fielddesc' | translate }}</label>
+                        </div>
+                        <div class="ui-lg-3"></div>
+                    </div>
+                    <!-- Mayor confirmation email -->
+                    <div id="mayor-confirm-email" class="form-group ui-g">
+                        <div class="ui-lg-3"></div>
+                        <div class="ui-g-12 ui-md-12 ui-lg-6">
+                            <label class="label floatLeft" for="confirmemail">{{ 'confirmemail.label' | translate }}</label>
+                            <input class="form-control paddingInput" type="email" name="confirmemail" id="confirmemail"
+                                   ngcontrol="confirmemail" #confirmemail="ngModel" [(ngModel)]="beneficiaryDTO.mayorDTO.repeatEmail"
+                                   (keyup)="checkIfMayorEmailMatches()" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
+                            <div [hidden]="mayorEmailMatches || confirmemail.pristine" class="alert alert-info">The email information must match.</div>
+                        </div>
+                        <div class="ui-lg-3"></div>
+                    </div>
+                  </div>
+                </form>
+    </ux-accordion-box>
+</ux-accordion-boxes>
+
+<div class="form-group ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(1)">{{ 'back.button' | translate }}</button>
@@ -333,12 +339,9 @@
             </button>
         </div>
         <div class="ui-lg-3"></div>
-    </div>
-  </form>
-    <router-outlet></router-outlet>
-  </ux-tabs>
+</div>
 </div>
 <div class="ui-g-2">
-  <button type="button" class="btn btn-primary btn-addTab" (click)="addTab()" icon="fa-check">Add Mayor</button>
+  <button type="button" class="btn btn-primary btn-addTab" (click)="addAccordionBox()" icon="fa-check">Add Municipality</button>
 </div>
 </ng-container>
