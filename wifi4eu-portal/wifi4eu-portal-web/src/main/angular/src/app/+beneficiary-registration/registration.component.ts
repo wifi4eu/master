@@ -5,10 +5,12 @@ import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 import {LegalEntityDTOBase} from "../shared/swagger/model/LegalEntityDTO";
 import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
 import {RepresentativeDTOBase} from "../shared/swagger/model/RepresentativeDTO";
+import {BeneficiaryComponent} from "./+beneficiary-registration-step1/beneficiary.component";
 import {EntityComponent} from "./+beneficiary-registration-step2/legal-entity.component";
 
 @Component({templateUrl: 'registration.component.html'})
 export class RegistrationComponent {
+    @ViewChild(BeneficiaryComponent) beneficiaryEntity: BeneficiaryComponent;
     @ViewChild(EntityComponent) legalEntityComponent: EntityComponent;
 
     private beneficiaryDTO: BeneficiaryDTOBase;
@@ -40,14 +42,13 @@ export class RegistrationComponent {
     }
 
     onNext(step: number) {
-        if (step == 1) {
-            this.nutsDTO = this.legalEntityComponent.nutsDTO;
-            this.lausDTO = this.legalEntityComponent.lausDTO;
-            this.beneficiaryDTO.legalEntityDTO.countryCode = this.nutsDTO.countryCode;
-            this.beneficiaryDTO.legalEntityDTO.municipalityCode = this.lausDTO.lau2;
-            this.allCountries = this.legalEntityComponent.allCountries;
-            this.allMunicipalities = this.legalEntityComponent.allMunicipalities;
-        }
+        // if (step == 2) {
+        //     this.lausDTO = this.legalEntityComponent.lausDTO;
+        //     this.beneficiaryDTO.legalEntityDTO.countryCode = this.nutsDTO.countryCode;
+        //     this.beneficiaryDTO.legalEntityDTO.municipalityCode = this.lausDTO.lau2;
+        //     this.allCountries = this.legalEntityComponent.allCountries;
+        //     this.allMunicipalities = this.legalEntityComponent.allMunicipalities;
+        // }
         this.completed[step - 1] = true;
         this.active[step - 1] = false;
         this.active[step] = true;
