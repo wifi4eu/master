@@ -5,7 +5,7 @@ import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 import {LegalEntityDTOBase} from "../shared/swagger/model/LegalEntityDTO";
 import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
 import {RepresentativeDTOBase} from "../shared/swagger/model/RepresentativeDTO";
-import {EntityComponent} from "./+beneficiary-registration-step1/legal-entity.component";
+import {EntityComponent} from "./+beneficiary-registration-step2/legal-entity.component";
 
 @Component({templateUrl: 'registration.component.html'})
 export class RegistrationComponent {
