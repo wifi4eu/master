@@ -14,8 +14,8 @@ export class RegistrationComponent {
     @ViewChild(EntityComponent) legalEntityComponent: EntityComponent;
 
     private beneficiaryDTO: BeneficiaryDTOBase;
-    private nutsDTO: NutsDTOBase;
-    private lausDTO: LauDTOBase;
+    private nutsDTO: NutsDTOBase[];
+    private lausDTO: LauDTOBase[];
     private allCountries: NutsDTO[];
     private allMunicipalities: NutsDTO[][];
 
@@ -25,8 +25,11 @@ export class RegistrationComponent {
     private successRegistration: boolean;
     private failureRegistration: boolean;
 
+    private allBeneficiaries: BeneficiaryDTOBase[];
+
     constructor() {
         this.beneficiaryDTO = new BeneficiaryDTOBase();
+
         this.beneficiaryDTO.legalEntityDTO = new LegalEntityDTOBase();
         this.beneficiaryDTO.mayorDTO = new MayorDTOBase();
         this.beneficiaryDTO.representativeDTO = new RepresentativeDTOBase();
@@ -39,19 +42,22 @@ export class RegistrationComponent {
 
         this.allCountries = [];
         this.allMunicipalities = [];
+
+        this.allBeneficiaries = [];
+        this.allBeneficiaries.push(this.beneficiaryDTO);
+
+        this.nutsDTO = [];
+        this.nutsDTO.push(new NutsDTOBase());
+        this.lausDTO = [];
+        this.lausDTO.push(new LauDTOBase());
     }
 
     onNext(step: number) {
-        // if (step == 2) {
-        //     this.lausDTO = this.legalEntityComponent.lausDTO;
-        //     this.beneficiaryDTO.legalEntityDTO.countryCode = this.nutsDTO.countryCode;
-        //     this.beneficiaryDTO.legalEntityDTO.municipalityCode = this.lausDTO.lau2;
-        //     this.allCountries = this.legalEntityComponent.allCountries;
-        //     this.allMunicipalities = this.legalEntityComponent.allMunicipalities;
-        // }
         this.completed[step - 1] = true;
         this.active[step - 1] = false;
         this.active[step] = true;
+
+        console.log(this.allBeneficiaries);
     }
 
     gotoStep(step: number) {

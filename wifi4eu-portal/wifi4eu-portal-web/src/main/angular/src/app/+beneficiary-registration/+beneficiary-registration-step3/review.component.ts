@@ -16,9 +16,9 @@ import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 
 export class ReviewComponent {
 
-    @Input('beneficiaryDTO') beneficiaryDTO: BeneficiaryDTOBase;
-    @Input('nutsDTO') nutsDTO: NutsDTOBase;
-    @Input('lausDTO') lausDTO: LauDTOBase;
+    @Input('allBeneficiaries') allBeneficiaries: BeneficiaryDTOBase[];
+    @Input('nutsDTO') nutsDTO: NutsDTOBase[];
+    @Input('lausDTO') lausDTO: LauDTOBase[];
     @Input('selection') selection: boolean[];
 
     @Output() gotoStep: EventEmitter<number>;
@@ -43,11 +43,12 @@ export class ReviewComponent {
     }
 
     onSubmit() {
+        // TODO - NEED TO ITERATE OVER EVERY BENEFICIARY
         this.displayConfirmingData = true;
-        this.beneficiaryDTO.legalEntityDTO.legalCheckbox1 = this.checkboxes[0];
-        this.beneficiaryDTO.legalEntityDTO.legalCheckbox2 = this.checkboxes[1];
-        this.beneficiaryDTO.legalEntityDTO.legalCheckbox3 = this.checkboxes[2];
-        this.beneficiaryApi.create(this.beneficiaryDTO).subscribe(
+        this.allBeneficiaries[0].legalEntityDTO.legalCheckbox1 = this.checkboxes[0];
+        this.allBeneficiaries[0].legalEntityDTO.legalCheckbox2 = this.checkboxes[1];
+        this.allBeneficiaries[0].legalEntityDTO.legalCheckbox3 = this.checkboxes[2];
+        this.beneficiaryApi.create(this.allBeneficiaries[0]).subscribe(
             data => {
                 this.displayConfirmingData = false;
                 if (data['success'] && data['data'] != null) {

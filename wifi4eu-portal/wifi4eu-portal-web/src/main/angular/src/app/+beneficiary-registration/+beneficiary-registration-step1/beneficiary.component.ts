@@ -5,7 +5,7 @@ import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
     selector: 'beneficiary-component', templateUrl: 'beneficiary.component.html'
 })
 export class BeneficiaryComponent {
-    @Input('beneficiaryDTO') beneficiaryDTO: BeneficiaryDTOBase;
+    @Input('allBeneficiaries') allBeneficiaries: BeneficiaryDTOBase[];
     @Input('selection') selection: boolean[];
 
     @Output() onNext: EventEmitter<number>;
@@ -24,12 +24,12 @@ export class BeneficiaryComponent {
     }
 
     onToggleRadio() {
-        this.selection[0] = [this.selection[1], this.selection[1] = this.selection[0]][0]
+        this.selection[0] = [this.selection[1], this.selection[1] = this.selection[0]][0];
         if(this.selection[1]){
-          this.beneficiaryDTO.represented = true;
+            this.allBeneficiaries[0].represented = true;
         }
         else{
-          this.beneficiaryDTO.represented = false;
+            this.allBeneficiaries[0].represented = false;
         }
     }
 
@@ -38,7 +38,7 @@ export class BeneficiaryComponent {
     }
     checkIfMayorEmailMatches() {
         this.mayorEmailMatches = false;
-        if (this.beneficiaryDTO.mayorDTO.email === this.beneficiaryDTO.mayorDTO.repeatEmail) {
+        if (this.allBeneficiaries[0].mayorDTO.email === this.allBeneficiaries[0].mayorDTO.repeatEmail) {
             this.mayorEmailMatches = true;
         }
     }
@@ -46,9 +46,9 @@ export class BeneficiaryComponent {
     checkIfRepresentativeEmailMatches() {
         this.representativeEmailMatches = false;
         this.emailsAreNotRepeated = true;
-        if (this.beneficiaryDTO.representativeDTO.email === this.beneficiaryDTO.representativeDTO.mayorRepeatEmail) {
+        if (this.allBeneficiaries[0].representativeDTO.email === this.allBeneficiaries[0].representativeDTO.mayorRepeatEmail) {
             this.representativeEmailMatches = true;
-            if (this.beneficiaryDTO.mayorDTO.email === this.beneficiaryDTO.representativeDTO.email) {
+            if (this.allBeneficiaries[0].mayorDTO.email === this.allBeneficiaries[0].representativeDTO.email) {
                 this.emailsAreNotRepeated = false;
             }
         }

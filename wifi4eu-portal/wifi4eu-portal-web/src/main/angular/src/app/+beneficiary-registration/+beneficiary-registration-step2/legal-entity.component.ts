@@ -1,10 +1,13 @@
 import {Component, Input, Output, EventEmitter} from "@angular/core";
-import {UxService, UxTabComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {UxService, UxAccordionBoxesComponent, UxAccordionBoxComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {LauApi} from "../../shared/swagger/api/LauApi";
 import {NutsApi} from "../../shared/swagger/api/NutsApi";
 import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
 import {NutsDTO, NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {LauDTO, LauDTOBase} from "../../shared/swagger/model/LauDTO";
+import {LegalEntityDTOBase} from "../../shared/swagger/model/LegalEntityDTO";
+import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
+import {RepresentativeDTOBase} from "../../shared/swagger/model/RepresentativeDTO";
 
 @Component({
     selector: 'legal-entity-component',
@@ -12,36 +15,38 @@ import {LauDTO, LauDTOBase} from "../../shared/swagger/model/LauDTO";
     providers: [LauApi, NutsApi]
 })
 export class EntityComponent {
-    @Input('beneficiaryDTO') beneficiaryDTO: BeneficiaryDTOBase;
-    @Input('nutsDTO') nutsDTO: NutsDTOBase;
-    @Input('lausDTO') lausDTO: NutsDTOBase;
+    @Input('allBeneficiaries') allBeneficiaries: BeneficiaryDTOBase[];
+    @Input('nutsDTO') nutsDTO: NutsDTOBase[];
+    @Input('lausDTO') lausDTO: LauDTOBase[];
     @Input('allCountries') allCountries: NutsDTO[];
     @Input('allMunicipalities') allMunicipalities: NutsDTO[][];
-    @Input() tabs: Array<UxTabComponent> = [];
+    @Input() accordionBoxes: UxAccordionBoxesComponent;
+    @Input() accordionBoxItems: UxAccordionBoxComponent[];
 
     @Output() onNext = new EventEmitter<number>();
     @Output() onBack = new EventEmitter<number>();
 
+    private beneficiaryDTO: BeneficiaryDTOBase;
+
     private nutsSuggestions: NutsDTOBase[];
     private lausSuggestions: LauDTOBase[];
 
-    private uxTab: UxTabComponent = new UxTabComponent;
     private readyMunicipalities: boolean = false;
     private placeholderMunicipality: string = 'Barcelona';
 
     constructor(private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService) {
     }
 
-    addMayorTab(index: number) {
-      this.uxTab = new UxTabComponent;
-      this.uxTab.label = "Mayor " + index.toString();
-      //this.uxTab.isClosable = true;
-      this.tabs.push(this.uxTab);
+    addMunicipalityAccordionBox() {
+        this.accordionBoxItems.push(new UxAccordionBoxComponent(this.accordionBoxes));
     }
 
     ngOnInit() {
 
-        this.addMayorTab(1);
+        this.accordionBoxes = new UxAccordionBoxesComponent();
+        this.accordionBoxItems = [];
+
+        this.addMunicipalityAccordionBox();
 
         if (this.allCountries == null || this.allCountries.length <= 0) {
             this.nutsApi.findNutsByLevel(0).subscribe(
@@ -63,35 +68,41 @@ export class EntityComponent {
     onSubmit(step: number) {
         this.onNext.emit(step);
     }
-    addTab() {
-      this.uxTab = new UxTabComponent;
-      for(let i = 2; i < this.tabs.length + 2; i++){
-        this.uxTab.label = "Mayor " + i;
-      }
-      this.tabs.push(this.uxTab);
-      console.log(this.tabs);
 
+    addAccordionBox() {
+        this.beneficiaryDTO = new BeneficiaryDTOBase();
+
+        this.beneficiaryDTO.legalEntityDTO = new LegalEntityDTOBase();
+        this.beneficiaryDTO.mayorDTO = new MayorDTOBase();
+        this.beneficiaryDTO.representativeDTO = this.allBeneficiaries[0].representativeDTO;
+
+        this.allBeneficiaries.push(this.beneficiaryDTO);
+
+        this.nutsDTO.push(new NutsDTOBase());
+        this.lausDTO.push(new LauDTOBase());
+
+        this.addMunicipalityAccordionBox();
     }
 
-    onKeyUp(event) {
-        // Check if key pressed is a ascii printable letter
-        if (event.keyCode > 64 && event.keyCode < 91) {
-            if (typeof this.nutsDTO === "string") {
-                let name: string = this.nutsDTO;
-                let nuts = this.nutsSuggestions;
-                for (let i = 0; i < nuts.length; i++) {
-                    let nut = nuts[i];
-                    if (nut.name.toLowerCase().indexOf(name.toLowerCase()) == 0) {
-                        this.nutsDTO = nut;
-                    }
-                }
-            }
-        }
-    }
+    // onKeyUp(event) {
+    //     // Check if key pressed is a ascii printable letter
+    //     if (event.keyCode > 64 && event.keyCode < 91) {
+    //         if (typeof this.nutsDTO === "string") {
+    //             let name: string = this.nutsDTO;
+    //             let nuts = this.nutsSuggestions;
+    //             for (let i = 0; i < nuts.length; i++) {
+    //                 let nut = nuts[i];
+    //                 if (nut.name.toLowerCase().indexOf(name.toLowerCase()) == 0) {
+    //                     this.nutsDTO = nut;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
-    filterNuts(event) {
+    filterNuts(event, index: number) {
         this.nutsSuggestions = this.filterCountries(event.query, this.allCountries);
-        this.checkIfCountryIsWritten();
+        this.checkIfCountryIsWritten(index);
     }
 
     filterCountries(query, nuts: NutsDTOBase[]) {
@@ -107,14 +118,15 @@ export class EntityComponent {
         return filteredNuts;
     }
 
-    checkIfCountryIsWritten() {
-        this.lausDTO = null;
-        if (typeof this.nutsDTO === "string") {
-            let name: string = this.nutsDTO;
+    checkIfCountryIsWritten(index) {
+        this.lausDTO[index] = null;
+        let nuts = this.nutsDTO[index];
+        if (typeof nuts === "string") {
+            let name: string = nuts;
             for (let country of this.allCountries) {
                 if (this.formatCountryName(name) == this.formatCountryName(country.name)) {
-                    this.nutsDTO = country;
-                    this.selectCountry();
+                    this.nutsDTO[index] = country;
+                    this.selectCountry(index);
                 }
             }
         }
@@ -124,10 +136,10 @@ export class EntityComponent {
         return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase()
     }
 
-    selectCountry() {
-        this.lausDTO = null;
-        if (this.allMunicipalities[this.formatCountryName(this.nutsDTO.name)]) {
-            if (this.allMunicipalities[this.formatCountryName(this.nutsDTO.name)].length > 0) {
+    selectCountry(index: number) {
+        this.lausDTO[index] = null;
+        if (this.allMunicipalities[this.formatCountryName(this.nutsDTO[index].name)]) {
+            if (this.allMunicipalities[this.formatCountryName(this.nutsDTO[index].name)].length > 0) {
                 this.readyMunicipalities = true;
                 this.placeholderMunicipality = '';
             } else {
@@ -135,14 +147,14 @@ export class EntityComponent {
                 this.placeholderMunicipality = 'Loading municipalities...';
             }
         } else {
-            this.allMunicipalities[this.formatCountryName(this.nutsDTO.name)] = [];
+            this.allMunicipalities[this.formatCountryName(this.nutsDTO[index].name)] = [];
             this.readyMunicipalities = false;
             this.placeholderMunicipality = 'Loading municipalities...';
-            this.lauApi.findLauByCountryCode(this.nutsDTO.countryCode).subscribe(
+            this.lauApi.findLauByCountryCode(this.nutsDTO[index].countryCode).subscribe(
                 (laus: LauDTO[]) => {
                     if (laus.length > 0) {
-                        if (laus[0].countryCode == this.nutsDTO.countryCode) {
-                            this.allMunicipalities[this.formatCountryName(this.nutsDTO.name)] = laus;
+                        if (laus[0].countryCode == this.nutsDTO[index].countryCode) {
+                            this.allMunicipalities[this.formatCountryName(this.nutsDTO[index].name)] = laus;
                             this.readyMunicipalities = true;
                             this.placeholderMunicipality = '';
                         } else {
@@ -173,8 +185,8 @@ export class EntityComponent {
         }
     }
 
-    filterLaus(event) {
-        this.lausSuggestions = this.filterMunicipalities(event.query, this.allMunicipalities[this.nutsDTO.name]);
+    filterLaus(event, index) {
+        this.lausSuggestions = this.filterMunicipalities(event.query, this.allMunicipalities[this.nutsDTO[index].name]);
     }
 
     filterMunicipalities(query, laus: LauDTOBase[]) {
@@ -190,6 +202,7 @@ export class EntityComponent {
         }
         return filteredLaus;
     }
+
     stepBack(step: number) {
         this.onBack.emit(step);
     }
