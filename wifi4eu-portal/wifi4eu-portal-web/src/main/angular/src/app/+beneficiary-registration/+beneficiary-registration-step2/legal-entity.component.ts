@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter} from "@angular/core";
-import {UxService, UxTabComponent, UxAccordionBoxesComponent,UxAccordionBoxComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {UxService, UxAccordionBoxesComponent, UxAccordionBoxComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {LauApi} from "../../shared/swagger/api/LauApi";
 import {NutsApi} from "../../shared/swagger/api/NutsApi";
 import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
