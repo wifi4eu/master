@@ -4,7 +4,7 @@
                     [isActive]="active[0]">
         <uxWizardStepCustomContent>
             <beneficiary-component *ngIf="active[0]"
-                                   [beneficiaryDTO]="beneficiaryDTO"
+                                   [allBeneficiaries]="allBeneficiaries"
                                    [selection]="selection"
                                    (onNext)="onNext($event)"
                                    (onBack)="onBack($event)">
@@ -16,7 +16,7 @@
                     [isActive]="active[1]">
         <uxWizardStepCustomContent>
             <legal-entity-component *ngIf="active[1]"
-                                    [beneficiaryDTO]="beneficiaryDTO"
+                                    [allBeneficiaries]="allBeneficiaries"
                                     [nutsDTO]="nutsDTO"
                                     [lausDTO]="lausDTO"
                                     [allCountries]="allCountries"
@@ -31,7 +31,7 @@
                     [isActive]="active[2]">
         <uxWizardStepCustomContent>
             <review-component *ngIf="active[2]"
-                              [beneficiaryDTO]="beneficiaryDTO"
+                              [allBeneficiaries]="allBeneficiaries"
                               [nutsDTO]="nutsDTO"
                               [lausDTO]="lausDTO"
                               [selection]="selection"

@@ -5,6 +5,9 @@ import {NutsApi} from "../../shared/swagger/api/NutsApi";
 import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
 import {NutsDTO, NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {LauDTO, LauDTOBase} from "../../shared/swagger/model/LauDTO";
+import {LegalEntityDTOBase} from "../../shared/swagger/model/LegalEntityDTO";
+import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
+import {RepresentativeDTOBase} from "../../shared/swagger/model/RepresentativeDTO";
 
 @Component({
     selector: 'legal-entity-component',
@@ -12,7 +15,7 @@ import {LauDTO, LauDTOBase} from "../../shared/swagger/model/LauDTO";
     providers: [LauApi, NutsApi]
 })
 export class EntityComponent {
-    @Input('beneficiaryDTO') beneficiaryDTO: BeneficiaryDTOBase;
+    @Input('allBeneficiaries') allBeneficiaries: BeneficiaryDTOBase[];
     @Input('nutsDTO') nutsDTO: NutsDTOBase;
     @Input('lausDTO') lausDTO: NutsDTOBase;
     @Input('allCountries') allCountries: NutsDTO[];
@@ -23,6 +26,8 @@ export class EntityComponent {
     @Output() onNext = new EventEmitter<number>();
     @Output() onBack = new EventEmitter<number>();
 
+    private beneficiaryDTO: BeneficiaryDTOBase;
+
     private nutsSuggestions: NutsDTOBase[];
     private lausSuggestions: LauDTOBase[];
 
@@ -32,8 +37,7 @@ export class EntityComponent {
     constructor(private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService) {
     }
 
-    addMunicipalityAccBox() {
-
+    addMunicipalityAccordionBox() {
         this.accordionBoxItems.push(new UxAccordionBoxComponent(this.accordionBoxes));
     }
 
@@ -42,7 +46,7 @@ export class EntityComponent {
         this.accordionBoxes = new UxAccordionBoxesComponent();
         this.accordionBoxItems = [];
 
-        this.addMunicipalityAccBox();
+        this.addMunicipalityAccordionBox();
 
         if (this.allCountries == null || this.allCountries.length <= 0) {
             this.nutsApi.findNutsByLevel(0).subscribe(
@@ -65,9 +69,15 @@ export class EntityComponent {
         this.onNext.emit(step);
     }
     addAccordionBox() {
+        this.beneficiaryDTO = new BeneficiaryDTOBase();
 
-      this.addMunicipalityAccBox();
+        this.beneficiaryDTO.legalEntityDTO = new LegalEntityDTOBase();
+        this.beneficiaryDTO.mayorDTO = new MayorDTOBase();
+        this.beneficiaryDTO.representativeDTO = this.allBeneficiaries[0].representativeDTO;
 
+        this.allBeneficiaries.push(this.beneficiaryDTO);
+
+        this.addMunicipalityAccordionBox();
     }
 
     onKeyUp(event) {
