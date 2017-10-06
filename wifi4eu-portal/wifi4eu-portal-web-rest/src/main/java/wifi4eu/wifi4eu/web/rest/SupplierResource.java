@@ -73,7 +73,6 @@ public class SupplierResource {
 
     @ApiOperation(value = "Testing...")
     @RequestMapping(value = "/testRegions", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public List<SuppliedRegionDTO> testRegions() {
         _log.info("testRegions");

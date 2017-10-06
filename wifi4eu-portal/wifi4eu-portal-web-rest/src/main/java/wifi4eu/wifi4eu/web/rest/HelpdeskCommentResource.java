@@ -70,4 +70,12 @@ public class HelpdeskCommentResource {
             return new ResponseDTO(false, null, errorDTO);
         }
     }
+
+    @ApiOperation(value = "Test helpdesk comments")
+    @RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<HelpdeskCommentDTO> testComments() {
+        _log.info("testComments");
+        return helpdeskService.testComments();
+    }
 }
