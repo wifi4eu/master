@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.mapper.helpdesk;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskCommentDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
 import wifi4eu.wifi4eu.entity.helpdesk.HelpdeskComment;
@@ -12,6 +13,7 @@ import java.util.List;
 public interface HelpdeskIssueMapper {
     HelpdeskIssueDTO toDTO(HelpdeskIssue entity);
     HelpdeskIssue toEntity(HelpdeskIssueDTO vo);
+    @Mapping(source = "entity.issue.id", target = "issueId")
     HelpdeskCommentDTO toDTO(HelpdeskComment entity);
     HelpdeskComment toEntity(HelpdeskCommentDTO vo);
     List<HelpdeskIssueDTO> toDTOList(List<HelpdeskIssue> list);
