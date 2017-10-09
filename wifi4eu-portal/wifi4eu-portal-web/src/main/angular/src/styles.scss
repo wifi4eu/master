@@ -422,6 +422,10 @@ body {
   background-color: white;
 }
 
+.discussion-content {
+  padding-bottom: 18px;
+}
+
 .changePassword {
   margin-top: 0.5em;
   width: 71%;
@@ -429,6 +433,11 @@ body {
   padding-bottom: 15px;
   font-size: 1.2em;
   font-weight: bold;
+}
+
+.discussionButton {
+  width: 100%;
+  margin-top: 0em;
 }
 
 .changePasswordModal {
