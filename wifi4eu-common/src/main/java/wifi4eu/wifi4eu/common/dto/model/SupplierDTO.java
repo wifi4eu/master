@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 import java.sql.Blob;
@@ -25,11 +26,12 @@ public class SupplierDTO implements Serializable {
     //private List<NutsDTO> nuts;
     private String logo;
     private boolean abacStatus;
+    private String status;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Date createDate, String nutsIds, String logo, boolean abacStatus) {
+    public SupplierDTO(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Date createDate, String nutsIds, String logo, boolean abacStatus, String status) {
         this.supplierId = supplierId;
         this.name = name;
         this.address = address;
@@ -48,6 +50,7 @@ public class SupplierDTO implements Serializable {
         this.nutsIds = nutsIds;
         this.logo = logo;
         this.abacStatus = abacStatus;
+        this.status = status;
     }
 
     public Long getSupplierId() {
@@ -192,5 +195,13 @@ public class SupplierDTO implements Serializable {
 
     public void setAbacStatus(boolean abacStatus) {
         this.abacStatus = abacStatus;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

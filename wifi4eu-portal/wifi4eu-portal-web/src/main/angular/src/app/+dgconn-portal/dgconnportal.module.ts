@@ -5,15 +5,16 @@ import {DgConnPortalComponent} from "./dgconnportal.component";
 import {DgConnListMayorComponent} from "./+mayors-list/mayors-list.component";
 import {DgConnTimelineComponent} from "./+timeline/timeline.component";
 import {DgConnVoucherComponent} from "./+voucher/voucher.component";
-import { DgConnPublicationComponent } from "./+publication/publication.component";
-import { DgConnRegistrationsComponent } from "./+registrations/registrations.component";
+import {DgConnPublicationComponent} from "./+publication/publication.component";
+import {DgConnRegistrationsComponent} from "./+registrations/registrations.component";
+import {DgConnSupplierRegistrationsComponent} from "./+supplier-registrations/supplier-registrations.component";
 
 @NgModule({
     imports: [
         SharedModule, DgConnectPortalRoutingModule
     ],
     declarations: [
-        DgConnPortalComponent, DgConnTimelineComponent, DgConnPublicationComponent, DgConnVoucherComponent, DgConnListMayorComponent, DgConnRegistrationsComponent
+        DgConnPortalComponent, DgConnTimelineComponent, DgConnPublicationComponent, DgConnVoucherComponent, DgConnListMayorComponent, DgConnRegistrationsComponent, DgConnSupplierRegistrationsComponent
     ],
     bootstrap: [DgConnPortalComponent]
 })

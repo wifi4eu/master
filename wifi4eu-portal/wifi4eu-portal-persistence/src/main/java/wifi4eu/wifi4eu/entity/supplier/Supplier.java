@@ -60,8 +60,11 @@ public class Supplier {
     @Column(name = "LOGO")
     private String logo;
 
-    @Column(name="ABAC_STATUS")
+    @Column(name = "ABAC_STATUS")
     private Boolean abacStatus;
+
+    @Column(name = "STATUS")
+    private String status;
 
     /*
     @ManyToMany(cascade = CascadeType.ALL)
@@ -72,7 +75,7 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Date createDate, String nutsIds, String logo, Boolean abacStatus) {
+    public Supplier(Long supplierId, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, boolean legalCheck1, boolean legalCheck2, Date createDate, String nutsIds, String logo, Boolean abacStatus, String status) {
         this.supplierId = supplierId;
         this.name = name;
         this.address = address;
@@ -91,6 +94,7 @@ public class Supplier {
         this.nutsIds = nutsIds;
         this.logo = logo;
         this.abacStatus = abacStatus;
+        this.status = status;
     }
 
     public Long getSupplierId() {
@@ -235,5 +239,13 @@ public class Supplier {
 
     public void setAbacStatus(Boolean abacStatus) {
         this.abacStatus = abacStatus;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

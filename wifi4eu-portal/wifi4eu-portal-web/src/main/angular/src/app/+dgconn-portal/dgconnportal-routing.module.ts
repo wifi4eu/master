@@ -6,6 +6,7 @@ import { DgConnPublicationComponent } from "./+publication/publication.component
 import { DgConnListMayorComponent } from "./+mayors-list/mayors-list.component";
 import {DgConnVoucherComponent} from "./+voucher/voucher.component";
 import {DgConnRegistrationsComponent} from "./+registrations/registrations.component";
+import {DgConnSupplierRegistrationsComponent} from "./+supplier-registrations/supplier-registrations.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -30,6 +31,9 @@ import {DgConnRegistrationsComponent} from "./+registrations/registrations.compo
         }, {
             path: 'mayors-list',
             component: DgConnListMayorComponent
+        }, {
+            path: 'supplier-registrations',
+            component: DgConnSupplierRegistrationsComponent
         }
 
     ])],
