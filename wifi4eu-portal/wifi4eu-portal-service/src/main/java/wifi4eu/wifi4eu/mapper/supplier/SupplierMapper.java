@@ -19,6 +19,10 @@ public interface SupplierMapper {
             @Mapping(source = "entity.region.nutsId", target = "regionId")
     })
     SuppliedRegionDTO toDTO(SuppliedRegion entity);
+    @Mappings({
+            @Mapping(source = "vo.supplierId", target = "supplier.id"),
+            @Mapping(source = "vo.regionId", target = "region.nutsId")
+    })
     SuppliedRegion toEntity(SuppliedRegionDTO vo);
     List<SupplierDTO> toDTOList(List<Supplier> list);
     List<Supplier> toEntityList(List<SupplierDTO> list);

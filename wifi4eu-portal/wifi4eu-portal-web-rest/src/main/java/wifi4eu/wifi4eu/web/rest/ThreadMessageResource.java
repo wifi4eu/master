@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @CrossOrigin(origins = "*")
 @Controller
-@Api(value = "/threadMessage", description = "ThreadMessage object REST API services")
-@RequestMapping("threadMessage")
+@Api(value = "/thread/messages", description = "ThreadMessage object REST API services")
+@RequestMapping("thread/messages")
 public class ThreadMessageResource {
 }

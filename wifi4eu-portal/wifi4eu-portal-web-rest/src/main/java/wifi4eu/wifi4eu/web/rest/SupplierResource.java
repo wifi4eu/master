@@ -70,18 +70,4 @@ public class SupplierResource {
             return new ResponseDTO(false, null, errorDTO);
         }
     }
-
-    @ApiOperation(value = "Testing...")
-    @RequestMapping(value = "/testRegions", method = RequestMethod.GET)
-    @ResponseBody
-    public List<SuppliedRegionDTO> testRegions() {
-        _log.info("testRegions");
-        List<SuppliedRegionDTO> regions = supplierService.getAllSuppliedRegions();
-        for (SuppliedRegionDTO region : regions) {
-            System.out.println("REGION");
-            System.out.println("--------");
-            System.out.println(region.getId() + " | " + region.getRegionId() + " | " + region.getSupplierId());
-        }
-        return regions;
-    }
 }
