@@ -7,7 +7,8 @@ import javax.persistence.*;
 public class AuditData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "audit_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "audit_seq")
     @Column(name="AUDIT_DATA_ID")
     Long auditDataId;
 

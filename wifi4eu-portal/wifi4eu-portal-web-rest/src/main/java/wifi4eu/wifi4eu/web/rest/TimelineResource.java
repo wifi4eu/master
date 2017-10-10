@@ -69,5 +69,4 @@ public class TimelineResource {
             return new ResponseDTO(false, null, errorDTO);
         }
     }
-
 }

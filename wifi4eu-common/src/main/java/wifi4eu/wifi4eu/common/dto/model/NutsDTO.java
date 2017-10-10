@@ -1,7 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 public class NutsDTO {
-    private int nutsId;
+    private int id;
     private String code;
     private String label;
     private int level;
@@ -12,8 +12,8 @@ public class NutsDTO {
     public NutsDTO() {
     }
 
-    public NutsDTO(int nutsId, String code, String label, int level, String countryCode, int order, int sorting) {
-        this.nutsId = nutsId;
+    public NutsDTO(int id, String code, String label, int level, String countryCode, int order, int sorting) {
+        this.id = id;
         this.code = code;
         this.label = label;
         this.level = level;
@@ -22,12 +22,12 @@ public class NutsDTO {
         this.sorting = sorting;
     }
 
-    public int getNutsId() {
-        return nutsId;
+    public int getId() {
+        return id;
     }
 
-    public void setNutsId(int nutsId) {
-        this.nutsId = nutsId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCode() {

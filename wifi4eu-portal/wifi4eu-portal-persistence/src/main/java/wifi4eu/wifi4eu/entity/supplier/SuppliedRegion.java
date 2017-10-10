@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Table(name = "supplied_regions")
 public class SuppliedRegion {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "supplied_region_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "supplied_region_seq")
     @Column(name = "id")
     Integer id;
 

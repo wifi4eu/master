@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.entity.application;
 
 import wifi4eu.wifi4eu.entity.call.Call;
 import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
 
 import javax.persistence.*;
 
@@ -9,20 +10,22 @@ import javax.persistence.*;
 @Table(name = "applications")
 public class Application {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "application_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "application_seq")
     @Column(name = "id")
     Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "call")
+    @JoinColumn(name = "call_id")
     Call call;
 
     @ManyToOne
     @JoinColumn(name = "registration")
     Registration registration;
 
-    @Column(name = "supplier")
-    Integer supplierId;
+    @ManyToOne
+    @JoinColumn(name = "supplier")
+    Supplier supplier;
 
     @Column(name = "voucher_awarded")
     boolean voucherAwarded;
@@ -60,11 +63,11 @@ public class Application {
     public Application() {
     }
 
-    public Application(Integer id, Call call, Registration registration, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus) {
+    public Application(Integer id, Call call, Registration registration, Supplier supplier, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus) {
         this.id = id;
         this.call = call;
         this.registration = registration;
-        this.supplierId = supplierId;
+        this.supplier = supplier;
         this.voucherAwarded = voucherAwarded;
         this.date = date;
         this.lefExport = lefExport;
@@ -102,12 +105,12 @@ public class Application {
         this.registration = registration;
     }
 
-    public Integer getSupplierId() {
-        return supplierId;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
-    public void setSupplierId(Integer supplierId) {
-        this.supplierId = supplierId;
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 
     public boolean isVoucherAwarded() {

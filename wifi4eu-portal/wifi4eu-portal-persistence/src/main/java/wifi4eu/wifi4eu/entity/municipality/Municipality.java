@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Table(name = "municipalities")
 public class Municipality {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "municipality_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "municipality_seq")
     @Column(name = "id")
     Integer id;
 
@@ -19,7 +20,7 @@ public class Municipality {
     String address;
 
     @OneToOne
-    @JoinColumn(name = "location")
+    @JoinColumn(name = "lau")
     Lau lau;
 
     public Municipality() {

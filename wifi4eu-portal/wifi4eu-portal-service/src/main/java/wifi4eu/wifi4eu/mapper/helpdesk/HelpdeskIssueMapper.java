@@ -15,6 +15,7 @@ public interface HelpdeskIssueMapper {
     HelpdeskIssue toEntity(HelpdeskIssueDTO vo);
     @Mapping(source = "entity.issue.id", target = "issueId")
     HelpdeskCommentDTO toDTO(HelpdeskComment entity);
+    @Mapping(source = "vo.issueId", target = "issue.id")
     HelpdeskComment toEntity(HelpdeskCommentDTO vo);
     List<HelpdeskIssueDTO> toDTOList(List<HelpdeskIssue> list);
     List<HelpdeskIssue> toEntityList(List<HelpdeskIssueDTO> list);

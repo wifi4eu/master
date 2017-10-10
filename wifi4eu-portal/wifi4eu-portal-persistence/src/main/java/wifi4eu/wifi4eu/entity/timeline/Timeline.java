@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Table(name = "timelines")
 public class Timeline {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "timeline_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "timeline_seq")
     @Column(name = "id")
     Integer id;
 

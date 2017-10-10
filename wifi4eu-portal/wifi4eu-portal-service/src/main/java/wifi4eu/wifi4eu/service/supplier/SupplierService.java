@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,7 +36,24 @@ public class SupplierService {
     }
 
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
-        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+        if (supplierDTO.getSuppliedRegions().isEmpty()) {
+            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+        } else {
+            Integer supplierId = supplierDTO.getId();
+            List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
+            List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
+            if (supplierId == 0) {
+                supplierDTO.setSuppliedRegions(null);
+                supplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+                supplierId = supplierDTO.getId();
+            }
+            for (SuppliedRegionDTO region: originalRegions) {
+                region.setSupplierId(supplierId);
+                correctRegions.add(region);
+            }
+            supplierDTO.setSuppliedRegions(correctRegions);
+            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+        }
     }
 
     public SupplierDTO deleteSupplier(int supplierId) {

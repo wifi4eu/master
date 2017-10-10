@@ -12,9 +12,13 @@ import java.util.List;
 public interface SuppliedRegionMapper {
     @Mappings({
             @Mapping(source = "entity.supplier.id", target = "supplierId"),
-            @Mapping(source = "entity.region.nutsId", target = "regionId")
+            @Mapping(source = "entity.region.id", target = "regionId")
     })
     SuppliedRegionDTO toDTO(SuppliedRegion entity);
+    @Mappings({
+            @Mapping(source = "vo.supplierId", target = "supplier.id"),
+            @Mapping(source = "vo.regionId", target = "region.id")
+    })
     SuppliedRegion toEntity(SuppliedRegionDTO vo);
     List<SuppliedRegionDTO> toDTOList(List<SuppliedRegion> list);
     List<SuppliedRegion> toEntityList(List<SuppliedRegionDTO> list);

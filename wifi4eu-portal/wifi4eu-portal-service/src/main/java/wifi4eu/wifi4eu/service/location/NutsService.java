@@ -21,6 +21,10 @@ public class NutsService {
         return nutsMapper.toDTOList(Lists.newArrayList(nutsRepository.findAll()));
     }
 
+    public NutsDTO getNutsById(int nutsId) {
+        return nutsMapper.toDTO(nutsRepository.findOne(nutsId));
+    }
+
     public NutsDTO getNutsByCode(String code) {
         return nutsMapper.toDTO(nutsRepository.findByCode(code));
     }

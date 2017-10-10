@@ -6,9 +6,10 @@ import javax.persistence.*;
 @Table(name = "laus")
 public class Lau {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "lau_seq", initialValue = 9999999, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lau_seq")
     @Column(name = "id")
-    private Integer lauId;
+    private Integer id;
 
     @Column(name = "country_code")
     private String countryCode;
@@ -43,8 +44,8 @@ public class Lau {
     public Lau() {
     }
 
-    public Lau(Integer lauId, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, Integer pop, Integer area, String physicalAddress) {
-        this.lauId = lauId;
+    public Lau(Integer id, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, Integer pop, Integer area, String physicalAddress) {
+        this.id = id;
         this.countryCode = countryCode;
         this.nuts3 = nuts3;
         this.lau1 = lau1;
@@ -57,12 +58,12 @@ public class Lau {
         this.physicalAddress = physicalAddress;
     }
 
-    public Integer getLauId() {
-        return lauId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setLauId(Integer lauId) {
-        this.lauId = lauId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCountryCode() {

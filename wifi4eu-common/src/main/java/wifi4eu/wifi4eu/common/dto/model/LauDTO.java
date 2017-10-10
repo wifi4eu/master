@@ -1,7 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 public class LauDTO {
-    private int lauId;
+    private int id;
     private String countryCode;
     private String nuts3;
     private String lau1;
@@ -16,8 +16,8 @@ public class LauDTO {
     public LauDTO() {
     }
 
-    public LauDTO(int lauId, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, int pop, int area, String physicalAddress) {
-        this.lauId = lauId;
+    public LauDTO(int id, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, int pop, int area, String physicalAddress) {
+        this.id = id;
         this.countryCode = countryCode;
         this.nuts3 = nuts3;
         this.lau1 = lau1;
@@ -30,12 +30,12 @@ public class LauDTO {
         this.physicalAddress = physicalAddress;
     }
 
-    public int getLauId() {
-        return lauId;
+    public int getId() {
+        return id;
     }
 
-    public void setLauId(int lauId) {
-        this.lauId = lauId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCountryCode() {

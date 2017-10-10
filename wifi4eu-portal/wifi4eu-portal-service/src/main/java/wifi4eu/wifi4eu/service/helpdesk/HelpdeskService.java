@@ -11,6 +11,7 @@ import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskCommentRepository;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskIssueRepository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +38,24 @@ public class HelpdeskService {
     }
 
     public HelpdeskIssueDTO createHelpdeskIssue(HelpdeskIssueDTO helpdeskIssueDTO) {
-        return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
+        if (helpdeskIssueDTO.getComments().isEmpty()) {
+            return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
+        } else {
+            Integer helpdeskIssueId = helpdeskIssueDTO.getId();
+            List<HelpdeskCommentDTO> originalComments = helpdeskIssueDTO.getComments();
+            List<HelpdeskCommentDTO> correctComments = new ArrayList<>();
+            if (helpdeskIssueId == 0) {
+                helpdeskIssueDTO.setComments(null);
+                helpdeskIssueDTO = helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
+                helpdeskIssueId = helpdeskIssueDTO.getId();
+            }
+            for (HelpdeskCommentDTO comment: originalComments) {
+                comment.setIssueId(helpdeskIssueId);
+                correctComments.add(comment);
+            }
+            helpdeskIssueDTO.setComments(correctComments);
+            return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
+        }
     }
 
     public HelpdeskIssueDTO deleteHelpdeskIssue(int helpdeskIssueId) {

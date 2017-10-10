@@ -30,6 +30,14 @@ public class NutsResource {
         return nutsService.getAllNuts();
     }
 
+    @ApiOperation(value = "get nuts by specific id")
+    @RequestMapping(value = "/{nutsId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public NutsDTO getNutsById(@PathVariable("nutsId") final Integer nutsId) {
+        _log.info("getNutsById " + nutsId);
+        return nutsService.getNutsById(nutsId);
+    }
+
     @ApiOperation(value = "get nuts by code")
     @RequestMapping(value = "/code/{code}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
