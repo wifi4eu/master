@@ -1,10 +1,7 @@
-import {Component, Input} from "@angular/core";
-import {DgConnDetails} from "../dgconnportal-details.model";
-import {CallDTO, CallDTOBase} from "../../shared/swagger/model/CallDTO";
-import {CallApi} from "../../shared/swagger/api/CallApi";
+import {Component} from "@angular/core";
 
 @Component({
-    templateUrl: 'discussion.component.html', providers: [CallApi]
+    templateUrl: 'discussion.component.html'
 })
 
 export class DgConnDiscussionComponent {
