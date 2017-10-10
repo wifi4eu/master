@@ -282,5 +282,12 @@
   "recentConversations.text": "Tus conversaciones recientes se mostrarán abajo",
   "noRecentConversations.text": "No hay conversaciones aún.",
   "startConversations.text": "Empezar conversación",
-  "newMessage.button": "Nuevo mensaje"
+  "newMessage.button": "Nuevo mensaje",
+  "newMediation.button": "Nueva mediación",
+  "mediationRequest.title": "Petición de mediación",
+  "mediationRequest.text": "WIFI4EU intervendrá en la conversación para ayudar a resolver los problemas con la Entidad Legal.",
+  "mediationRequest.selectText": "Por favor, seleccione su razón para solicitar la mediación de la lista",
+  "sendMessage.title": "Nueva conversación",
+  "sendMessage.sendto": "Enviar a:",
+  "sendMessage.subject": "Asunto:"
 }

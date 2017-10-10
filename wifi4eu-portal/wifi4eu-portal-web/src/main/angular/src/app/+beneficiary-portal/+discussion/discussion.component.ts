@@ -8,11 +8,13 @@ export class DiscussionComponent {
     private displayMessage: boolean;
     private message: string;
     private messageList: string[];
+    private displayMediation: boolean;
 
     constructor() {
         this.displayMessage = false;
         this.message = "";
         this.messageList = [];
+        this.displayMediation = false;
     }
 
     newMessage() {
@@ -28,5 +30,10 @@ export class DiscussionComponent {
 
     closeModal() {
         this.displayMessage = false;
+        this.displayMediation = false;
+    }
+
+    newMediation() {
+        this.displayMediation = true;
     }
 }
