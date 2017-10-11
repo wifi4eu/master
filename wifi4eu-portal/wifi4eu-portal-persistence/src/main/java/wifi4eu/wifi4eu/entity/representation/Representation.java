@@ -12,15 +12,15 @@ public class Representation {
     @SequenceGenerator(name = "representation_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "representation_seq")
     @Column(name = "id")
-    Integer id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "municipality")
-    Municipality municipality;
+    private Municipality municipality;
 
     @ManyToOne
     @JoinColumn(name = "mayor")
-    Mayor mayor;
+    private Mayor mayor;
 
     public Representation() {
     }

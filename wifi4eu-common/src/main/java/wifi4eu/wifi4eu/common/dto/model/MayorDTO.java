@@ -1,10 +1,10 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 public class MayorDTO {
-    int id;
-    String name;
-    String surname;
-    String email;
+    private int id;
+    private String name;
+    private String surname;
+    private String email;
 
     public MayorDTO() {
     }

@@ -11,20 +11,20 @@ public class Timeline {
     @SequenceGenerator(name = "timeline_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "timeline_seq")
     @Column(name = "id")
-    Integer id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "call_id")
-    Call call;
+    private Call call;
 
     @Column(name = "description")
-    String description;
+    private String description;
 
     @Column(name = "start_date")
-    Long startDate;
+    private Long startDate;
 
     @Column(name = "end_date")
-    Long endDate;
+    private Long endDate;
 
     public Timeline() {
     }

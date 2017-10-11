@@ -11,15 +11,15 @@ public class SuppliedRegion {
     @SequenceGenerator(name = "supplied_region_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "supplied_region_seq")
     @Column(name = "id")
-    Integer id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "supplier")
-    Supplier supplier;
+    private Supplier supplier;
 
     @ManyToOne
     @JoinColumn(name = "region")
-    Nuts region;
+    private Nuts region;
 
     public SuppliedRegion() {
     }

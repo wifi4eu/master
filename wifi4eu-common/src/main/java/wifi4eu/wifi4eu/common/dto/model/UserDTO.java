@@ -1,14 +1,14 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 public class UserDTO {
-    int id;
-    String name;
-    String surname;
-    String email;
-    String password;
-    long createDate;
-    long accessDate;
-    boolean verified;
+    private int id;
+    private String name;
+    private String surname;
+    private String email;
+    private String password;
+    private long createDate;
+    private long accessDate;
+    private boolean verified;
 
     public UserDTO() {
     }

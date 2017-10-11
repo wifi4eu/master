@@ -6,31 +6,31 @@ import javax.persistence.*;
 @Table(name = "users")
 public class User {
     @Id
-    @SequenceGenerator(name = "user_seq", allocationSize = 1)
+    @SequenceGenerator(name = "user_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @Column(name = "id")
-    Integer id;
+    private Integer id;
 
     @Column(name = "name")
-    String name;
+    private String name;
 
     @Column(name = "surname")
-    String surname;
+    private String surname;
 
     @Column(name = "email")
-    String email;
+    private String email;
 
     @Column(name = "password")
-    String password;
+    private String password;
 
     @Column(name = "create_date")
-    Long createDate;
+    private Long createDate;
 
     @Column(name = "access_date")
-    Long accessDate;
+    private Long accessDate;
 
     @Column(name = "verified")
-    boolean verified;
+    private boolean verified;
 
     public User() {
     }

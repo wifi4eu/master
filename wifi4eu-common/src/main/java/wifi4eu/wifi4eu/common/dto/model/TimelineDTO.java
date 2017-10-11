@@ -1,11 +1,11 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 public class TimelineDTO {
-    int id;
-    int callId;
-    String description;
-    long startDate;
-    long endDate;
+    private int id;
+    private int callId;
+    private String description;
+    private long startDate;
+    private long endDate;
 
     public TimelineDTO() {
     }

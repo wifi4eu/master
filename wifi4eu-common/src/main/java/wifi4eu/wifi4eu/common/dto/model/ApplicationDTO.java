@@ -1,21 +1,21 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 public class ApplicationDTO {
-    int id;
-    int callId;
-    int registrationId;
-    int supplierId;
-    boolean voucherAwarded;
-    long date;
-    long lefExport;
-    long lefImport;
-    int lefStatus;
-    long bcExport;
-    long bcImport;
-    int bcStatus;
-    long lcExport;
-    long lcImport;
-    int lcStatus;
+    private int id;
+    private int callId;
+    private int registrationId;
+    private int supplierId;
+    private boolean voucherAwarded;
+    private long date;
+    private long lefExport;
+    private long lefImport;
+    private int lefStatus;
+    private long bcExport;
+    private long bcImport;
+    private int bcStatus;
+    private long lcExport;
+    private long lcImport;
+    private int lcStatus;
 
     public ApplicationDTO() {
     }

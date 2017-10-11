@@ -11,18 +11,18 @@ public class ThreadMessage {
     @SequenceGenerator(name = "thread_message_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "thread_message_seq")
     @Column(name = "id")
-    Integer id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "thread")
-    Thread thread;
+    private Thread thread;
 
     @ManyToOne
     @JoinColumn(name = "author")
-    User author;
+    private User author;
 
     @Column(name = "message")
-    String message;
+    private String message;
 
     public ThreadMessage() {
     }

@@ -10,24 +10,24 @@ public class AuditData {
     @SequenceGenerator(name = "audit_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "audit_seq")
     @Column(name="AUDIT_DATA_ID")
-    Long auditDataId;
+    private Long auditDataId;
 
     @Column(name="REQUEST_ENDPOINT")
-    String requestEndpoint;
+    private String requestEndpoint;
 
     @Column(name="REQUEST_METHOD")
-    String requestMethod;
+    private String requestMethod;
 
     @Lob
     @Column(name="REQUEST_BODY")
-    String requestBody;
+    private String requestBody;
 
     @Lob
     @Column(name="RESPONSE_BODY")
-    String responseBody;
+    private String responseBody;
 
     @Column(name = "USER_ID")
-    Long userId;
+    private Long userId;
 
     public AuditData(){}
 

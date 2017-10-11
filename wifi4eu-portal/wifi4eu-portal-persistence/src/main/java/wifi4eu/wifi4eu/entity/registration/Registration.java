@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.entity.registration;
 
-import wifi4eu.wifi4eu.entity.thread.Thread;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
@@ -13,31 +12,26 @@ public class Registration {
     @SequenceGenerator(name = "registration_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "registration_seq")
     @Column(name = "id")
-    Integer id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "user")
-    User user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "municipality")
-    Municipality municipality;
+    private Municipality municipality;
 
     @Column(name = "role")
-    String role;
-
-    @ManyToOne
-    @JoinColumn(name = "thread")
-    Thread thread;
+    private String role;
 
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, Thread thread) {
+    public Registration(User user, Municipality municipality, String role) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
-        this.thread = thread;
     }
 
     public Integer getId() {
@@ -70,13 +64,5 @@ public class Registration {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public Thread getThread() {
-        return thread;
-    }
-
-    public void setThread(Thread thread) {
-        this.thread = thread;
     }
 }

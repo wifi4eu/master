@@ -1,21 +1,19 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 public class RegistrationDTO {
-    int id;
-    int userId;
-    int municipalityId;
-    String role;
-    int threadId;
+    private int id;
+    private int userId;
+    private int municipalityId;
+    private String role;
 
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int threadId) {
+    public RegistrationDTO(int id, int userId, int municipalityId, String role) {
         this.id = id;
         this.userId = userId;
         this.municipalityId = municipalityId;
         this.role = role;
-        this.threadId = threadId;
     }
 
     public int getId() {
@@ -48,13 +46,5 @@ public class RegistrationDTO {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public int getThreadId() {
-        return threadId;
-    }
-
-    public void setThreadId(int threadId) {
-        this.threadId = threadId;
     }
 }

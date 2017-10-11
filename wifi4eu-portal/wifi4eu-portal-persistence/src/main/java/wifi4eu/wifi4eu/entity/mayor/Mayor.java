@@ -9,16 +9,16 @@ public class Mayor {
     @SequenceGenerator(name = "mayor_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mayor_seq")
     @Column(name = "id")
-    Integer id;
+    private Integer id;
 
     @Column(name = "name")
-    String name;
+    private String name;
 
     @Column(name = "surname")
-    String surname;
+    private String surname;
 
     @Column(name = "email")
-    String email;
+    private String email;
 
     public Mayor() {
     }

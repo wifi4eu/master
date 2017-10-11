@@ -9,16 +9,16 @@ public class Call {
     @SequenceGenerator(name = "call_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "call_seq")
     @Column(name = "id")
-    Integer id;
+    private Integer id;
 
     @Column(name = "event")
-    String event;
+    private String event;
 
     @Column(name = "start_date")
-    Long startDate;
+    private Long startDate;
 
     @Column(name = "end_date")
-    Long endDate;
+    private Long endDate;
 
     public Call() {
     }

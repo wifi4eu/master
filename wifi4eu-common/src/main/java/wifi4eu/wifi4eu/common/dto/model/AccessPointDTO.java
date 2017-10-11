@@ -1,21 +1,18 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-import java.io.Serializable;
-
-public class AccessPointDTO implements Serializable {
-    private Long accessPointId;
+public class AccessPointDTO {
+    private int accessPointId;
     private String name;
     private String serialNumber;
     private String productName;
     private String modelNumber;
-    private Long installationId;
-    private Boolean indoor;
+    private int installationId;
+    private boolean indoor;
 
     public AccessPointDTO() {
     }
 
-    public AccessPointDTO(Long accessPointId, String name, String serialNumber, String productName, String modelNumber, Long installationId, Boolean indoor) {
-
+    public AccessPointDTO(int accessPointId, String name, String serialNumber, String productName, String modelNumber, int installationId, boolean indoor) {
         this.accessPointId = accessPointId;
         this.name = name;
         this.serialNumber = serialNumber;
@@ -25,11 +22,11 @@ public class AccessPointDTO implements Serializable {
         this.indoor = indoor;
     }
 
-    public Long getAccessPointId() {
+    public int getAccessPointId() {
         return accessPointId;
     }
 
-    public void setAccessPointId(Long accessPointId) {
+    public void setAccessPointId(int accessPointId) {
         this.accessPointId = accessPointId;
     }
 
@@ -65,21 +62,19 @@ public class AccessPointDTO implements Serializable {
         this.modelNumber = modelNumber;
     }
 
-    public Long getInstallationId() {
+    public int getInstallationId() {
         return installationId;
     }
 
-    public void setInstallationId(Long installationId) {
+    public void setInstallationId(int installationId) {
         this.installationId = installationId;
     }
 
-    public Boolean getIndoor() {
+    public boolean isIndoor() {
         return indoor;
     }
 
-    public void setIndoor(Boolean indoor) {
+    public void setIndoor(boolean indoor) {
         this.indoor = indoor;
     }
-
-
 }

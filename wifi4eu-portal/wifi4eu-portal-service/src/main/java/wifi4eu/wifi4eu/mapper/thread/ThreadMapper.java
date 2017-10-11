@@ -12,7 +12,9 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ThreadMapper {
+    @Mapping(source = "entity.municipality.id", target = "municipalityId")
     ThreadDTO toDTO(Thread entity);
+    @Mapping(source = "vo.municipalityId", target = "municipality.id")
     Thread toEntity(ThreadDTO vo);
     @Mappings({
             @Mapping(source = "entity.thread.id", target = "threadId"),

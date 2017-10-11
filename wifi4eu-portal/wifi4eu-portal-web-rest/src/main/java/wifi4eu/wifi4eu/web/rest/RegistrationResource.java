@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.RepresentationDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.service.representation.RepresentationService;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
 
 import java.util.List;
 
@@ -21,49 +21,49 @@ import java.util.List;
 @RequestMapping("registration")
 public class RegistrationResource {
     @Autowired
-    private RepresentationService representationService;
+    private RegistrationService registrationService;
 
-    Logger _log = LoggerFactory.getLogger(RepresentationResource.class);
+    Logger _log = LoggerFactory.getLogger(RegistrationResource.class);
 
-    @ApiOperation(value = "Get all the representations")
+    @ApiOperation(value = "Get all the registrations")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<RepresentationDTO> allRepresentations() {
-        _log.info("allRepresentations");
-        return representationService.getAllRepresentations();
+    public List<RegistrationDTO> allRegistrations() {
+        _log.info("allRegistrations");
+        return registrationService.getAllRegistrations();
     }
 
-    @ApiOperation(value = "Get representation by specific id")
-    @RequestMapping(value = "/{representationId}", method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "Get registration by specific id")
+    @RequestMapping(value = "/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public RepresentationDTO getRepresentationById(@PathVariable("representationId") final Integer representationId) {
-        _log.info("getRepresentationById: " + representationId);
-        return representationService.getRepresentationById(representationId);
+    public RegistrationDTO getRegistrationById(@PathVariable("registrationId") final Integer registrationId) {
+        _log.info("getRegistrationById: " + registrationId);
+        return registrationService.getRegistrationById(registrationId);
     }
 
-    @ApiOperation(value = "Create representation")
+    @ApiOperation(value = "Create registration")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO createRepresentation(@RequestBody final RepresentationDTO representationDTO) {
+    public ResponseDTO createRegistration(@RequestBody final RegistrationDTO registrationDTO) {
         try {
-            _log.info("createRepresentation");
-            RepresentationDTO resRepresentation = representationService.createRepresentation(representationDTO);
-            return new ResponseDTO(true, resRepresentation, null);
+            _log.info("createRegistration");
+            RegistrationDTO resRegistration = registrationService.createRegistration(registrationDTO);
+            return new ResponseDTO(true, resRegistration, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);
         }
     }
 
-    @ApiOperation(value = "Delete representation by specific id")
+    @ApiOperation(value = "Delete registration by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseDTO deleteRepresentation(@RequestBody final Integer representationId) {
+    public ResponseDTO deleteRegistration(@RequestBody final Integer registrationId) {
         try {
-            _log.info("deleteRepresentation: " + representationId);
-            RepresentationDTO resRepresentation = representationService.deleteRepresentation(representationId);
-            return new ResponseDTO(true, resRepresentation, null);
+            _log.info("deleteRegistration: " + registrationId);
+            RegistrationDTO resRegistration = registrationService.deleteRegistration(registrationId);
+            return new ResponseDTO(true, resRegistration, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);

@@ -1,9 +1,9 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 public class RepresentationDTO {
-    int id;
-    int municipalityId;
-    int mayorId;
+    private int id;
+    private int municipalityId;
+    private int mayorId;
 
     public RepresentationDTO() {
     }

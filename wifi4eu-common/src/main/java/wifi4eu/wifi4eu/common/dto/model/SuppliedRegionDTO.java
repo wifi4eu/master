@@ -1,9 +1,9 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 public class SuppliedRegionDTO {
-    int id;
-    int supplierId;
-    int regionId;
+    private int id;
+    private int supplierId;
+    private int regionId;
 
     public SuppliedRegionDTO() {
     }

@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.entity.thread;
 
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,10 +12,14 @@ public class Thread {
     @SequenceGenerator(name = "thread_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "thread_seq")
     @Column(name = "id")
-    Integer id;
+    private Integer id;
 
     @Column(name = "title")
-    String title;
+    private String title;
+
+    @OneToOne
+    @JoinColumn(name = "municipality")
+    private Municipality municipality;
 
     @OneToMany(mappedBy = "thread")
     private List<ThreadMessage> messages;
@@ -21,11 +27,10 @@ public class Thread {
     public Thread() {
     }
 
-
-
-    public Thread(Integer id, String title, List<ThreadMessage> messages) {
+    public Thread(Integer id, String title, Municipality municipality, List<ThreadMessage> messages) {
         this.id = id;
         this.title = title;
+        this.municipality = municipality;
         this.messages = messages;
     }
 
@@ -43,6 +48,14 @@ public class Thread {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Municipality getMunicipality() {
+        return municipality;
+    }
+
+    public void setMunicipality(Municipality municipality) {
+        this.municipality = municipality;
     }
 
     public List<ThreadMessage> getMessages() {

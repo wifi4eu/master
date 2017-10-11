@@ -1,10 +1,10 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 public class ThreadMessageDTO {
-    int id;
-    int threadId;
-    int authorId;
-    String message;
+    private int id;
+    private int threadId;
+    private int authorId;
+    private String message;
 
     public ThreadMessageDTO() {
     }

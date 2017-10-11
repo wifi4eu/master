@@ -13,52 +13,52 @@ public class Application {
     @SequenceGenerator(name = "application_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "application_seq")
     @Column(name = "id")
-    Integer id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "call_id")
-    Call call;
+    private Call call;
 
     @ManyToOne
     @JoinColumn(name = "registration")
-    Registration registration;
+    private Registration registration;
 
     @ManyToOne
     @JoinColumn(name = "supplier")
-    Supplier supplier;
+    private Supplier supplier;
 
     @Column(name = "voucher_awarded")
-    boolean voucherAwarded;
+    private boolean voucherAwarded;
 
     @Column(name = "date")
-    Long date;
+    private Long date;
 
     @Column(name = "lef_export")
-    Long lefExport;
+    private Long lefExport;
 
     @Column(name = "lef_import")
-    Long lefImport;
+    private Long lefImport;
 
     @Column(name = "lef_status")
-    Integer lefStatus;
+    private Integer lefStatus;
 
     @Column(name = "bc_export")
-    Long bcExport;
+    private Long bcExport;
 
     @Column(name = "bc_import")
-    Long bcImport;
+    private Long bcImport;
 
     @Column(name = "bc_status")
-    Integer bcStatus;
+    private Integer bcStatus;
 
     @Column(name = "lc_export")
-    Long lcExport;
+    private Long lcExport;
 
     @Column(name = "lc_import")
-    Long lcImport;
+    private Long lcImport;
 
     @Column(name = "lc_status")
-    Integer lcStatus;
+    private Integer lcStatus;
 
     public Application() {
     }

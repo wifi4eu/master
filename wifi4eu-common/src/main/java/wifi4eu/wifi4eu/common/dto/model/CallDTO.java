@@ -1,10 +1,10 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 public class CallDTO {
-    int id;
-    String event;
-    long startDate;
-    long endDate;
+    private int id;
+    private String event;
+    private long startDate;
+    private long endDate;
 
     public CallDTO() {
     }
