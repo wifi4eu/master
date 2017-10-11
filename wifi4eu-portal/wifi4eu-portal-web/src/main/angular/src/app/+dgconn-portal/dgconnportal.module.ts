@@ -15,7 +15,7 @@ import {DgConnSupplierRegistrationsComponent} from "./+supplier-registrations/su
         SharedModule, DgConnectPortalRoutingModule
     ],
     declarations: [
-        DgConnPortalComponent, DgConnTimelineComponent, DgConnPublicationComponent, DgConnVoucherComponent, DgConnListMayorComponent, DgConnSupplierRegsitrationsComponent, DgConnRegistrationsComponent, DgConnDiscussionComponent
+        DgConnPortalComponent, DgConnTimelineComponent, DgConnPublicationComponent, DgConnVoucherComponent, DgConnListMayorComponent, DgConnSupplierRegistrationsComponent, DgConnRegistrationsComponent, DgConnDiscussionComponent
     ],
     bootstrap: [DgConnPortalComponent]
 })

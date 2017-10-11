@@ -7,6 +7,7 @@ import {DgConnListMayorComponent} from "./+mayors-list/mayors-list.component";
 import {DgConnVoucherComponent} from "./+voucher/voucher.component";
 import {DgConnRegistrationsComponent} from "./+registrations/registrations.component";
 import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
+import {DgConnSupplierRegistrationsComponent} from "./+supplier-registrations/supplier-registrations.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
