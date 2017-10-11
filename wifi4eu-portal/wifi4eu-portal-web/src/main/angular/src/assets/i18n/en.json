@@ -278,5 +278,20 @@
   "helpdeskform.success": "Your issue was sent successfully sent to your Member State! We'll contact you as soon as possible to give you a solution to your problem.",
   "close.label": "Close",
   "expand.label": "Expand",
-  "hide.label": "Hide"
+  "hide.label": "Hide",
+  "legalEntity.issues": "My Legal Entity issues",
+  "lEissues.warning": "The Mayor(s) listed below applied with the same Legal Entity as you. Please, start a conversation to solve the issue. If no agreement is reached, you can ask WIFI4EU to intervene and mediate the conversation.",
+  "othersMayors.title": "Other Mayor(s) applying",
+  "recentConversations.title": "Recent conversations",
+  "recentConversations.text": "Your recent conversations are displayed below",
+  "noRecentConversations.text": "No conversations yet.",
+  "startConversations.text": "Start conversation",
+  "newMessage.button": "New message",
+  "newMediation.button": "New mediation",
+  "mediationRequest.title": "Mediation request",
+  "mediationRequest.text": "WIFI4EU will intervene in the conversation to help the part solve their issues with the Legal Entity.",
+  "mediationRequest.selectText": "Please, select your reason for requesting mediation from the list",
+  "sendMessage.title": "New conversation",
+  "sendMessage.sendto": "Send to:",
+  "sendMessage.subject": "Subject:"
 }
