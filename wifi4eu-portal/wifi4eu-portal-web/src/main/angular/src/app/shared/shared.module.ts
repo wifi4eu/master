@@ -21,6 +21,7 @@ import {
 import {APP_DIRECTIVES} from "./components/index";
 import {TimelineComponent} from "./components/timeline/timeline.component";
 import {CustomTimelineAccordionBoxComponent} from "./components/timeline/custom-timeline-accordion-box.component";
+import {CustomBeneficiaryAccordionBoxComponent} from "./components/beneficiary-registration/custom-beneficiary-accordion-box.component";
 import {Ng2GoogleRecaptchaModule} from "ng2-google-recaptcha";
 import {SuccessComponent} from "./components/success/success.component";
 import {FailureComponent} from "./components/failure/failure.component";
@@ -55,6 +56,7 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         UxSearchInputComponent,
         TimelineComponent,
         CustomTimelineAccordionBoxComponent,
+        CustomBeneficiaryAccordionBoxComponent,
         SuccessComponent,
         FailureComponent,
         HelpdeskFormComponent,
@@ -81,6 +83,7 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         DropdownModule,
         TimelineComponent,
         CustomTimelineAccordionBoxComponent,
+        CustomBeneficiaryAccordionBoxComponent,
         SuccessComponent,
         FailureComponent,
         HelpdeskFormComponent,

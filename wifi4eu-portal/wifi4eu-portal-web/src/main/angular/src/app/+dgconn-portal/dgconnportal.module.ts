@@ -7,6 +7,7 @@ import {DgConnTimelineComponent} from "./+timeline/timeline.component";
 import {DgConnVoucherComponent} from "./+voucher/voucher.component";
 import {DgConnPublicationComponent} from "./+publication/publication.component";
 import {DgConnRegistrationsComponent} from "./+registrations/registrations.component";
+import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 import {DgConnSupplierRegistrationsComponent} from "./+supplier-registrations/supplier-registrations.component";
 
 @NgModule({
@@ -14,7 +15,7 @@ import {DgConnSupplierRegistrationsComponent} from "./+supplier-registrations/su
         SharedModule, DgConnectPortalRoutingModule
     ],
     declarations: [
-        DgConnPortalComponent, DgConnTimelineComponent, DgConnPublicationComponent, DgConnVoucherComponent, DgConnListMayorComponent, DgConnRegistrationsComponent, DgConnSupplierRegistrationsComponent
+        DgConnPortalComponent, DgConnTimelineComponent, DgConnPublicationComponent, DgConnVoucherComponent, DgConnListMayorComponent, DgConnSupplierRegsitrationsComponent, DgConnRegistrationsComponent, DgConnDiscussionComponent
     ],
     bootstrap: [DgConnPortalComponent]
 })
