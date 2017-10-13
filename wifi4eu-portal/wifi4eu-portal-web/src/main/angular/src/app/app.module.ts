@@ -1,4 +1,5 @@
-import {BrowserModule} from "@angular/platform-browser";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {NgModule} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {Http} from "@angular/http";
@@ -53,6 +54,7 @@ export function translateFactory(http: Http) {
     imports: [
         CoreModule,
         BrowserModule,
+        BrowserAnimationsModule,
         TranslateModule.forRoot({
             provide: TranslateLoader,
             useFactory: translateFactory,

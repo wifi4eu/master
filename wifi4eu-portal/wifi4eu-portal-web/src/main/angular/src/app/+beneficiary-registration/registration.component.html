@@ -1,0 +1,47 @@
+<ux-wizard-steps [isCustomContent]="true" *ngIf="!(successRegistration || failureRegistration)">
+    <ux-wizard-step label="{{ 'registration.beneficiary.title' | translate }}"
+                    [isCompleted]="completed[0]"
+                    [isActive]="active[0]">
+        <uxWizardStepCustomContent>
+            <beneficiary-component *ngIf="active[0]"
+                                   [allBeneficiaries]="allBeneficiaries"
+                                   [selection]="selection"
+                                   (onNext)="onNext($event)"
+                                   (onBack)="onBack($event)">
+            </beneficiary-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'registration.entity.title' | translate }}"
+                    [isCompleted]="completed[1]"
+                    [isActive]="active[1]">
+        <uxWizardStepCustomContent>
+            <legal-entity-component *ngIf="active[1]"
+                                    [allBeneficiaries]="allBeneficiaries"
+                                    [nutsDTO]="nutsDTO"
+                                    [lausDTO]="lausDTO"
+                                    [allCountries]="allCountries"
+                                    [allMunicipalities]="allMunicipalities"
+                                    (onNext)="onNext($event)"
+                                    (onBack)="onBack($event)">
+            </legal-entity-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'registration.review.title' | translate }}"
+                    [isCompleted]="completed[2]"
+                    [isActive]="active[2]">
+        <uxWizardStepCustomContent>
+            <review-component *ngIf="active[2]"
+                              [allBeneficiaries]="allBeneficiaries"
+                              [nutsDTO]="nutsDTO"
+                              [lausDTO]="lausDTO"
+                              [selection]="selection"
+                              (onNext)="onNext($event)"
+                              (gotoStep)="gotoStep($event)"
+                              (onSuccess)="onSuccess($event)"
+                              (onFailure)="onFailure($event)"></review-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+</ux-wizard-steps>
+<success-component [beneficiaryDTO]="beneficiaryDTO" *ngIf="successRegistration"></success-component>
+<failure-component *ngIf="failureRegistration"></failure-component>
+<helpdesk-form-component portal="Beneficiary"></helpdesk-form-component>
