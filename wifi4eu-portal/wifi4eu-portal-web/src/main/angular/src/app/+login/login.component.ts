@@ -33,11 +33,19 @@ export class LoginComponent {
                 if (response['success']) {
                     let user: UserDTO = response['data'];
                     this.localStorage.set('user', JSON.stringify(user));
+                    let msgLogin = "";
+                    this.translate.get('loging.success').subscribe(
+                        (res: string) => {
+                            msgLogin = res;
+                        }
+                    );
+
                     this.uxService.growl({
                         severity: 'success',
                         summary: 'SUCCESS',
-                        detail: 'Login success'
+                        detail: msgLogin
                     });
+
                     this.sharedService.emitChange();
                     switch (user.userType) {
                         case 1:
