@@ -1,19 +1,18 @@
 <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
 
-    <h3 class="center beneficiaryTitle labelModal">{{ 'login.title' | translate }}</h3>
+    <h3 class="center beneficiaryTitle labelModal">{{ 'login.title.label' | translate }}</h3>
 
     <div class="form-group ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">{{ 'email.title' | translate }}</label>
                 <input type="email" [(ngModel)]="userDTO.email"
                        class="form-control"
                        name="email" ngcontrol="email"
                        #email="ngModel" required>
                 <div [hidden]="email.valid || email.pristine"
-                     class="alert alert-danger">Email is
-                    required
+                     class="alert alert-danger">{{ 'email.valid' | translate }}
                 </div>
             </div>
         </div>
@@ -23,15 +22,14 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="password">Password</label>
+                <label class="label" for="password">{{ 'password.title' | translate }}</label>
                 <input type="password"
                        [(ngModel)]="userDTO.password"
                        class="form-control"
                        name="password" ngcontrol="password"
                        #password="ngModel" required>
                 <div [hidden]="password.valid || password.pristine"
-                     class="alert alert-danger">Password is
-                    required
+                     class="alert alert-danger">{{ 'password.valid' | translate }}
                 </div>
             </div>
         </div>
@@ -41,7 +39,7 @@
         <div class="ui-g-4"></div>
         <div class="ui-g-4" style="text-align: center !important">
             <button type="submit" class="btn btn-primary publish-button"
-                    [disabled]="!loginForm.form.valid">Login
+                    [disabled]="!loginForm.form.valid">{{ 'login.title.button' | translate }}
             </button>
         </div>
         <div class="ui-g-4"></div>

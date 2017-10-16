@@ -4,12 +4,12 @@
     <h2 class="beneficiaryTitle">Discussion table</h2>
     <br>
     <p-dataTable [value]="" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]">
-        <p-column field="event" header="Municipality" [sortable]="true"></p-column>
-        <p-column field="startDate" header="Nº Members"></p-column>
-        <p-column field="startDate" header="Message"></p-column>
-        <p-column field="startDate" header="Nº Messages"></p-column>
-        <p-column field="startDate" header="Mediation"></p-column>
-        <p-column field="startDate" header="Support"></p-column>
+        <p-column field="event" header="{{ 'municipallity.label' | translate }}" [sortable]="true"></p-column>
+        <p-column field="startDate" header="{{ 'members.label' | translate }}"></p-column>
+        <p-column field="startDate" header="{{ 'message.label' | translate }}"></p-column>
+        <p-column field="startDate" header="{{ 'numbermessage.label' | translate }}"></p-column>
+        <p-column field="startDate" header="{{ 'mediation.label' | translate }}"></p-column>
+        <p-column field="startDate" header="{{ 'support.label' | translate }}"></p-column>
 
     </p-dataTable>
 

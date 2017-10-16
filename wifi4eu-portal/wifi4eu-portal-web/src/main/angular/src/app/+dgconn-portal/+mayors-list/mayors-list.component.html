@@ -5,7 +5,7 @@
     <p-dataTable [value]="laus" [rows]="5" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [editable]="true"
                  [responsive]="true">
         <p-column field="lauId" header="LauId" [sortable]="true"></p-column>
-        <p-column field="countryCode" header="CtryCode" [sortable]="true"></p-column>
+        <p-column field="countryCode" header="{{ 'country.label' | translate }}" [sortable]="true"></p-column>
         <p-column field="nuts3" header="Nuts3" [sortable]="true"></p-column>
         <p-column field="lau1" header="Lau1" [sortable]="true"></p-column>
         <p-column field="lau2" header="Lau2" [sortable]="true"></p-column>
@@ -14,7 +14,7 @@
         <p-column field="name2" header="Name2" [sortable]="true"></p-column>
         <p-column field="pop" header="Pop" [sortable]="true"></p-column>
         <p-column field="area" header="Area" [sortable]="true"></p-column>
-        <p-column field="physicalAddress" header="Address" [sortable]="true">
+        <p-column field="physicalAddress" header="{{ 'address.label' | translate }}" [sortable]="true">
             <template pTemplate="body" let-laus="rowData" let-i="rowIndex">
                 <span>{{ laus.physicalAddress }}</span>
                 <button type="button" class="btn" style="background: none; padding: 0;" (click)="edit(i)">
