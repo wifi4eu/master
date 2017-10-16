@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`SEQUENCE` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `treatment` VARCHAR(45) NULL,
   `name` VARCHAR(255) NULL,
   `surname` VARCHAR(255) NULL,
   `email` VARCHAR(255) NULL,
@@ -191,7 +192,20 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`suppliers` (
   `contact_phone_number` VARCHAR(255) NULL,
   `contact_email` VARCHAR(255) NULL,
   `logo` LONGTEXT NULL,
+  `user` INT NULL,
   PRIMARY KEY (`id`))
+  INDEX `fk_suppliers_users_idx` (`user` ASC),
+
+  CONSTRAINT `fk_suppliers_users`
+
+    FOREIGN KEY (`user`)
+
+    REFERENCES `wifi4eu-new`.`users` (`id`)
+
+    ON DELETE NO ACTION
+
+    ON UPDATE NO ACTION)
+
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
