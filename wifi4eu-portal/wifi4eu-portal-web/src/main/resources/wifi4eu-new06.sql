@@ -193,19 +193,13 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`suppliers` (
   `contact_email` VARCHAR(255) NULL,
   `logo` LONGTEXT NULL,
   `user` INT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
   INDEX `fk_suppliers_users_idx` (`user` ASC),
-
   CONSTRAINT `fk_suppliers_users`
-
     FOREIGN KEY (`user`)
-
     REFERENCES `wifi4eu-new`.`users` (`id`)
-
     ON DELETE NO ACTION
-
     ON UPDATE NO ACTION)
-
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
