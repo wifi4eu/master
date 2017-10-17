@@ -20,7 +20,6 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
     private isLogoUploaded: boolean = false;
     private logoUrl: FileReader = new FileReader();
     private userDTO: UserDTO[];
-    private userDTOBase: UserDTOBase;
     @Input('supplierDTO') supplierDTO: SupplierDTOBase;
     @Input('selection') selection: boolean[];
     @Input('nuts0') nuts0: NutsDTO[];
@@ -57,12 +56,11 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
 
 
     private onCaptchaComplete(response: any) {
-        // this.successCaptcha = response.success;
+        this.successCaptcha = response.success;
     }
 
     onSubmit() {
-        // this.supplierDTO.legalCheck1 = this.legalChecks[0];
-        // this.supplierDTO.legalCheck2 = this.legalChecks[1];
+
 
         for (let country of this.nuts0) {
             for (let i = 0; i < this.nuts3[country.label].length; i++) {
@@ -72,13 +70,20 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
             }
         }
 
+        this.supplierDTO.legalCheck1 = this.legalChecks[0];
+        this.supplierDTO.legalCheck2 = this.legalChecks[1];
+
         let user = new UserDTOBase();
         user.name = this.supplierDTO.contactName;
         user.email = this.supplierDTO.contactEmail;
         user.surname = this.supplierDTO.contactSurname;
+        user.type = 1;
 
         this.userApi.createUser(user).subscribe(
-            data => {
+            (data: UserDTOBase) => {
+
+                this.supplierDTO.userId = data.id;
+
                 this.supplierApi.createSupplier(this.supplierDTO).subscribe(
                     data => {
                         if (data['success'] != true) {

@@ -29,13 +29,16 @@ public class User {
     @Column(name = "access_date")
     private Long accessDate;
 
+    @Column(name = "type")
+    private Integer type;
+
     @Column(name = "verified")
     private boolean verified;
 
     public User() {
     }
 
-    public User(Integer id, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified) {
+    public User(Integer id, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified, Integer type) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -44,6 +47,7 @@ public class User {
         this.createDate = createDate;
         this.accessDate = accessDate;
         this.verified = verified;
+        this.type = type;
     }
 
     public Integer getId() {
@@ -108,5 +112,13 @@ public class User {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }
