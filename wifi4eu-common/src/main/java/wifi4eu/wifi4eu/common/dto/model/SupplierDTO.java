@@ -17,11 +17,14 @@ public class SupplierDTO {
     private String contactEmail;
     private String logo;
     private List<SuppliedRegionDTO> suppliedRegions;
+    private int userId;
+    private boolean legalCheck1;
+    private boolean legalCheck2;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, List<SuppliedRegionDTO> suppliedRegions) {
+    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, List<SuppliedRegionDTO> suppliedRegions, int userId, boolean legalCheck1, boolean legalCheck2) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -36,6 +39,9 @@ public class SupplierDTO {
         this.contactEmail = contactEmail;
         this.logo = logo;
         this.suppliedRegions = suppliedRegions;
+        this.userId = userId;
+        this.legalCheck1 = legalCheck1;
+        this.legalCheck2 = legalCheck2;
     }
 
     public int getId() {
@@ -148,5 +154,29 @@ public class SupplierDTO {
 
     public void setSuppliedRegions(List<SuppliedRegionDTO> suppliedRegions) {
         this.suppliedRegions = suppliedRegions;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public boolean isLegalCheck1() {
+        return legalCheck1;
+    }
+
+    public void setLegalCheck1(boolean legalCheck1) {
+        this.legalCheck1 = legalCheck1;
+    }
+
+    public boolean isLegalCheck2() {
+        return legalCheck2;
+    }
+
+    public void setLegalCheck2(boolean legalCheck2) {
+        this.legalCheck2 = legalCheck2;
     }
 }

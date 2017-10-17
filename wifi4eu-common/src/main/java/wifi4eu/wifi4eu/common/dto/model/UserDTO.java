@@ -8,12 +8,13 @@ public class UserDTO {
     private String password;
     private long createDate;
     private long accessDate;
+    private int type;
     private boolean verified;
 
     public UserDTO() {
     }
 
-    public UserDTO(int id, String name, String surname, String email, String password, long createDate, long accessDate, boolean verified) {
+    public UserDTO(int id, String name, String surname, String email, String password, long createDate, long accessDate, boolean verified, int type) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -22,6 +23,7 @@ public class UserDTO {
         this.createDate = createDate;
         this.accessDate = accessDate;
         this.verified = verified;
+        this.type = type;
     }
 
     public int getId() {
@@ -86,5 +88,13 @@ public class UserDTO {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

@@ -48,13 +48,22 @@ public class Supplier {
     @Column(name = "logo")
     private String logo;
 
+    @Column(name = "user_id")
+    private int userId;
+
+    @Column(name = "legalCheck1")
+    private boolean legalCheck1;
+
+    @Column(name = "legalCheck2")
+    private boolean legalCheck2;
+
     @OneToMany(mappedBy = "supplier")
     private List<SuppliedRegion> suppliedRegions;
 
     public Supplier() {
     }
 
-    public Supplier(Integer id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, List<SuppliedRegion> suppliedRegions) {
+    public Supplier(Integer id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, Integer userId, boolean legalCheck1, boolean legalCheck2, List<SuppliedRegion> suppliedRegions) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -69,6 +78,8 @@ public class Supplier {
         this.contactEmail = contactEmail;
         this.logo = logo;
         this.suppliedRegions = suppliedRegions;
+        this.legalCheck1 = legalCheck1;
+        this.legalCheck2 = legalCheck2;
     }
 
     public Integer getId() {
@@ -181,5 +192,21 @@ public class Supplier {
 
     public void setSuppliedRegions(List<SuppliedRegion> suppliedRegions) {
         this.suppliedRegions = suppliedRegions;
+    }
+
+    public boolean isLegalCheck1() {
+        return legalCheck1;
+    }
+
+    public void setLegalCheck1(boolean legalCheck1) {
+        this.legalCheck1 = legalCheck1;
+    }
+
+    public boolean isLegalCheck2() {
+        return legalCheck2;
+    }
+
+    public void setLegalCheck2(boolean legalCheck2) {
+        this.legalCheck2 = legalCheck2;
     }
 }

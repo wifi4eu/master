@@ -36,4 +36,8 @@ public class NutsService {
     public List<NutsDTO> getNutsByCountryCode(String countryCode) {
         return nutsMapper.toDTOList(Lists.newArrayList(nutsRepository.findByCountryCode(countryCode)));
     }
+
+    public List<NutsDTO> getNutsByCountryCodeAndLevel(String countryCode, Integer level) {
+        return nutsMapper.toDTOList(Lists.newArrayList(nutsRepository.findByCountryCodeAndLevel(countryCode, level)));
+    }
 }

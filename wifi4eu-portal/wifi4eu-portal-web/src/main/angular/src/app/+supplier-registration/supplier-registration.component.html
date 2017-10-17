@@ -1,0 +1,63 @@
+<ux-wizard-steps [isCustomContent]="true">
+    <ux-wizard-step label="{{ 'step1.supplier' | translate }}"
+                    [isCompleted]="completed[0]"
+                    [isActive]="active[0]">
+        <uxWizardStepCustomContent>
+            <supplier-registration-step1-component *ngIf="active[0]"
+                                                   [supplierDTO]="supplierDTO"
+                                                   [logoFile]="logoFile"
+                                                   (onNext)="onNext($event)"
+                                                   (onBack)="onBack($event)"
+                                                   (onLogoSubmit)="onLogoSubmit($event)">
+            </supplier-registration-step1-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'step2.supplier' | translate }}"
+                    [isCompleted]="completed[1]"
+                    [isActive]="active[1]">
+        <uxWizardStepCustomContent>
+            <supplier-registration-step2-component *ngIf="active[1]"
+                                                   [supplierDTO]="supplierDTO"
+                                                   [nuts0]="nuts0"
+                                                   [nuts3]="nuts3"
+                                                   [allCountries]="allCountries"
+                                                   [allRegions]="allRegions"
+                                                   (onNext)="onNext($event)"
+                                                   (onBack)="onBack($event)">
+            </supplier-registration-step2-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'step3.supplier' | translate }}"
+                    [isCompleted]="completed[2]"
+                    [isActive]="active[2]">
+        <uxWizardStepCustomContent>
+            <supplier-registration-step3-component *ngIf="active[2]"
+                                                   [supplierDTO]="supplierDTO"
+                                                   [selection]="selection"
+                                                   (onNext)="onNext($event)"
+                                                   (onBack)="onBack($event)">
+            </supplier-registration-step3-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'step4.supplier' | translate }}"
+                    [isCompleted]="completed[3]"
+                    [isActive]="active[3]">
+        <uxWizardStepCustomContent>
+            <supplier-registration-step4-component *ngIf="active[3]"
+                                                   [supplierDTO]="supplierDTO"
+                                                   [nuts0]="nuts0"
+                                                   [nuts3]="nuts3"
+                                                   [selection]="selection"
+                                                   [logoFile]="logoFile"
+                                                   (onNext)="onNext($event)"
+                                                   (gotoStep)="gotoStep($event)"
+                                                   (onSuccess)="onSuccess($event)"
+                                                   (onFailure)="onFailure($event)">
+            </supplier-registration-step4-component>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+</ux-wizard-steps>
+
+<success-component *ngIf="successRegistration"></success-component>
+<failure-component *ngIf="failureRegistration"></failure-component>
+<helpdesk-form-component portal="Supplier"></helpdesk-form-component>
