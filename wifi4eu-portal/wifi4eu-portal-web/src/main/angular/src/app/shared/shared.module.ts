@@ -23,6 +23,8 @@ import {
 // import {CustomTimelineAccordionBoxComponent} from "./components/timeline/custom-timeline-accordion-box.component";
 import {CustomBeneficiaryAccordionBoxComponent} from "./components/beneficiary-registration/custom-beneficiary-accordion-box.component";
 import {Ng2GoogleRecaptchaModule} from "ng2-google-recaptcha";
+import {SuccessComponent} from "./components/success/success.component"
+import {FailureComponent} from "./components/failure/failure.component";
 // import {SuccessComponent} from "./components/success/success.component";
 // import {FailureComponent} from "./components/failure/failure.component";
 // import {HelpdeskFormComponent} from "../shared/components/helpdesk-form/helpdesk-form.component";
@@ -53,8 +55,9 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
     declarations: [
         UX_DIRECTIVES,
         UxLanguageSelectorComponent,
-        UxSearchInputComponent
-        // UxSearchInputComponent,
+        UxSearchInputComponent,
+        SuccessComponent,
+        FailureComponent
         // TimelineComponent,
         // CustomTimelineAccordionBoxComponent,
         // SuccessComponent,
@@ -79,8 +82,9 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         CalendarModule,
         MultiSelectModule,
         TabMenuModule,
-        TabViewModule
-        // TabViewModule,
+        TabViewModule,
+        SuccessComponent,
+        FailureComponent
         // TimelineComponent,
         // CustomTimelineAccordionBoxComponent,
         // SuccessComponent,
