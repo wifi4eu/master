@@ -47,6 +47,9 @@ import {NotFoundComponent} from "./not-found/not-found.component"
         //     loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
         //     canActivate: [AppGuard]
         }, {
+            path: 'beneficiary-registration',
+            loadChildren: 'app/+beneficiary-registration/beneficiary-registration.module#BeneficiaryRegistrationModule'
+        }, {
             path: 'supplier-registration',
             loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule'
         // }, {

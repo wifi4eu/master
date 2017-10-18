@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.common.dto.model;
 
 public class UserDTO {
     private int id;
+    private String treatment;
     private String name;
     private String surname;
     private String email;
@@ -14,8 +15,9 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(int id, String name, String surname, String email, String password, long createDate, long accessDate, boolean verified, int type) {
+    public UserDTO(int id, String treatment, String name, String surname, String email, String password, long createDate, long accessDate, boolean verified, int type) {
         this.id = id;
+        this.treatment = treatment;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -32,6 +34,14 @@ public class UserDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTreatment() {
+        return treatment;
+    }
+
+    public void setTreatment(String treatment) {
+        this.treatment = treatment;
     }
 
     public String getName() {

@@ -1,0 +1,19 @@
+<ux-wizard-steps [isCustomContent]="true" *ngIf="!(successRegistration || failureRegistration)">
+    <ux-wizard-step label="{{ 'registration.beneficiary.title' | translate }}" [isCompleted]="completed[0]" [isActive]="active[0]">
+        <uxWizardStepCustomContent>
+            <beneficiary-registration-step1 [users]="users" [mayors]="mayors" [representing]="representing"
+                                            (onNext)="navigateTo(2, $event)"></beneficiary-registration-step1>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'registration.beneficiary.title' | translate }}" [isCompleted]="completed[1]" [isActive]="active[1]">
+        <uxWizardStepCustomContent>
+            <beneficiary-registration-step2 [municipalities]="municipalities" [users]="users" [mayors]="mayors" [representing]="representing"
+                                            (onNext)="navigateTo(2, $event)"></beneficiary-registration-step2>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'registration.beneficiary.title' | translate }}" [isCompleted]="completed[2]" [isActive]="active[2]">
+        <uxWizardStepCustomContent>
+            <beneficiary-registration-step3></beneficiary-registration-step3>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+</ux-wizard-steps>
