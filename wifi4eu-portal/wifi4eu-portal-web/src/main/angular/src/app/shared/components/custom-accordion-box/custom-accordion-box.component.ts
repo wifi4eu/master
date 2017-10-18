@@ -30,10 +30,10 @@ export class CustomAccordionBoxComponent extends UxAccordionBoxComponent {
     toggle() {
         super.toggle();
         if (this.isExpanded) {
-            this.label = 'Hide';
+            this.label = 'hide.label';
             this.expandHideClass = 'fa fa-2x fa-chevron-up';
         } else {
-            this.label = 'Expand';
+            this.label = 'expand.label';
             this.expandHideClass = 'fa fa-2x fa-chevron-down';
         }
     }
