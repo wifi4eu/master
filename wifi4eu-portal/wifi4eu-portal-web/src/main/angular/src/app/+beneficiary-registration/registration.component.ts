@@ -43,6 +43,9 @@ export class RegistrationComponent {
         this.allCountries = [];
         this.allMunicipalities = [];
 
+        this.nutsDTO = [];
+        this.lausDTO = [];
+
         this.allBeneficiaries = [];
         this.allBeneficiaries.push(this.beneficiaryDTO);
 

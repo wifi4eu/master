@@ -31,12 +31,12 @@
                                     placeholder="Espanya"
                                     ngcontrol="country"
                                     #country="ngModel"
-                                    [(ngModel)]="nutsDTO"
+                                    [(ngModel)]="nutsDTO[0]"
                                     [suggestions]="nutsSuggestions"
                                     [size]="30"
                                     [minLength]="1"
-                                    (completeMethod)="filterNuts($event)"
-                                    (onSelect)="selectCountry()"
+                                    (completeMethod)="filterNuts($event, 0)"
+                                    (onSelect)="selectCountry(0)"
                                     required>
                     </p-autoComplete>
                     <div [hidden]="country.valid || country.pristine" class="alert alert-danger">Country is required
