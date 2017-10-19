@@ -29,7 +29,7 @@ import java.util.List;
 public class UserService {
 
     public final static int TIMEFRAME_ACTIVATE_ACCOUNT_HOURS = 2;
-    public final static String BASE_URL = "http://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/";
+    public final static String BASE_URL = "http://wifi4eudev.azurewebsites.net/wifi4eu/#/";
     public final static String RESET_PASS_URL = BASE_URL + "forgot;token=";
     public final static String ACTIVATE_ACCOUNT_URL = BASE_URL + "activation;token=";
     private final static Logger _log = LoggerFactory.getLogger(UserService.class);
