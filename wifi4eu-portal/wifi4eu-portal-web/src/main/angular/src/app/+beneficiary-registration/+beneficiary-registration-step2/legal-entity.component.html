@@ -59,7 +59,7 @@
                                     ngcontrol="municipality"
                                     #municipality="ngModel"
                                     [(ngModel)]="lausDTO[0]"
-                                    [suggestions]="Barcelona"
+                                    [suggestions]="lausSuggestions"
                                     [size]="30"
                                     [minLength]="1"
                                     (completeMethod)="filterLaus($event, 0)"
