@@ -96,8 +96,11 @@ public class SupplierService {
 
         // get supplier email
         String email = supplierDTO.getContactEmail();
+        _log.info("email: " + email);
 
         UserDTO persUserDTO = userService.getUserByEmail(email);
+
+        _log.info("persUserDTO: " + persUserDTO);
 
         if (persUserDTO == null) {
             _log.info("Nom: " + supplierDTO.getName());
