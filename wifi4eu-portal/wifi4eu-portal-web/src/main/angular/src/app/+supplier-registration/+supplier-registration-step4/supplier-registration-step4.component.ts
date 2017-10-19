@@ -85,6 +85,7 @@ export class SupplierRegistrationComponentStep4 implements OnInit {
                 this.onFailure.emit(true);
             }
         );
+        return false;
     }
 
     editStep(step: number) {

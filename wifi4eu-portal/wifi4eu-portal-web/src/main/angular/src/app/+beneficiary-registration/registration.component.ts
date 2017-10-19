@@ -49,6 +49,10 @@ export class RegistrationComponent {
         this.allBeneficiaries = [];
         this.allBeneficiaries.push(this.beneficiaryDTO);
 
+        this.nutsDTO = [];
+        this.nutsDTO.push(new NutsDTOBase());
+        this.lausDTO = [];
+        this.lausDTO.push(new LauDTOBase());
     }
 
     onNext(step: number) {

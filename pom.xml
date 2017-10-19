@@ -123,6 +123,12 @@
                 <server.address>wifi4eu.everisdigitalchannels.com:8080</server.address>
             </properties>
         </profile>
+	<profile>
+	   <id>AZUREDEV</id>
+	   <properties>
+		<server.address>wifi4eudev.azurewebsites.net</server.address>
+	   </properties>
+	</profile>
         <profile>
             <id>PROD</id>
             <properties>

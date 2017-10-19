@@ -16,7 +16,7 @@ import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 export class EntityComponent {
     @Input('allBeneficiaries') allBeneficiaries: BeneficiaryDTOBase[];
     @Input('nutsDTO') nutsDTO: NutsDTOBase[];
-    @Input('lausDTO') lausDTO: NutsDTOBase[];
+    @Input('lausDTO') lausDTO: LauDTOBase[];
     @Input('allCountries') allCountries: NutsDTO[];
     @Input('allMunicipalities') allMunicipalities: NutsDTO[][];
     @Input() accordionBoxes: UxAccordionBoxesComponent;
@@ -78,6 +78,9 @@ export class EntityComponent {
         this.beneficiaryDTO.representativeDTO = this.allBeneficiaries[0].representativeDTO;
 
         this.allBeneficiaries.push(this.beneficiaryDTO);
+
+        this.nutsDTO.push(new NutsDTOBase());
+        this.lausDTO.push(new LauDTOBase());
 
         this.addMunicipalityAccordionBox();
     }

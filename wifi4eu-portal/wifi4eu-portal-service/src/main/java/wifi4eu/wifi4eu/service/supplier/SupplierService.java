@@ -96,8 +96,11 @@ public class SupplierService {
 
         // get supplier email
         String email = supplierDTO.getContactEmail();
+        _log.info("email: " + email);
 
         UserDTO persUserDTO = userService.getUserByEmail(email);
+
+        _log.info("persUserDTO: " + persUserDTO);
 
         if (persUserDTO == null) {
             _log.info("Nom: " + supplierDTO.getName());
@@ -120,8 +123,10 @@ public class SupplierService {
             userDTO.setUserTypeId(perSupplierDTO.getSupplierId());
             userDTO = userService.saveUser(userDTO);
 
-            //send activate account mail
-            userService.sendActivateAccountMail(userDTO);
+            if(userDTO != null && perSupplierDTO != null){
+                //send activate account mail
+                userService.sendActivateAccountMail(userDTO); 
+            }
 
             _log.info("[f] create Supplier");
 
