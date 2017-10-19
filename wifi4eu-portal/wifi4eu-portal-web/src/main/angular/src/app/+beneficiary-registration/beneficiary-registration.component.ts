@@ -8,7 +8,7 @@ import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
 import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 
 @Component({
-    selector: 'beneficiary-registration.component', templateUrl: 'beneficiary-registration.component.html'
+    selector: 'beneficiary-registration', templateUrl: 'beneficiary-registration.component.html'
 })
 
 export class BeneficiaryRegistrationComponent {
@@ -16,15 +16,23 @@ export class BeneficiaryRegistrationComponent {
     private failureRegistration: boolean = false;
     private completed: boolean[] = [false, false, false];
     private active: boolean[] = [true, false, false];
+    private representing: boolean = false;
+    private initialUser: UserDTOBase = new UserDTOBase();
     private users: UserDTOBase[] = [];
-    private mayors: MayorDTOBase[] = [];
     private municipalities: MunicipalityDTOBase[] = [];
+    private mayors: MayorDTOBase[] = [];
     private representations: RepresentationDTOBase[] = [];
     private registrations: RegistrationDTOBase[] = [];
-    private representing: boolean = false;
 
-    navigateTo(step: number, representing: boolean) {
-        this.representing = representing;
+    navigate(step: number) {
+        console.log("this.representing");
+        console.log(this.representing);
+        console.log("this.initialUser");
+        console.log(this.initialUser);
+        console.log("this.users");
+        console.log(this.users);
+        console.log("this.municipalities");
+        console.log(this.municipalities);
         switch (step) {
             case 1:
                 this.completed = [false, false, false];
