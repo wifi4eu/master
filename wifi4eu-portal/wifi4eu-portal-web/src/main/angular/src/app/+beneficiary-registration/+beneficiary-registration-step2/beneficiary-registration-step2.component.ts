@@ -30,8 +30,6 @@ export class BeneficiaryRegistrationStep2Component implements OnInit {
     private nutsSuggestions: NutsDTOBase[] = [];
     private lausSuggestions: LauDTOBase[] = [];
     @Output() onNext: EventEmitter<any>;
-    hinjaku: string[] = ['hinjaku', 'manukaga', 'muda, muda'];
-    selection: string = '';
 
     constructor(private nutsApi: NutsApi, private lauApi: LauApi, private uxService: UxService) {
         this.onNext = new EventEmitter<any>();
