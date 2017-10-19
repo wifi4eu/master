@@ -13,10 +13,11 @@
             <span class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: left;">
                 <p class="ui-g-11 ui-md-11 ui-lg-11 beneficiaryMayor">{{ 'representativedetails.title' | translate }}</p>
                 <a class="ui-g-1 ui-md-1 ui-lg-1" (click)="editStep(2)">{{ 'edit.button' | translate }} <i
-                        class="fa fa-pencil" aria-hidden="true"></i></a>
+                    class="fa fa-pencil" aria-hidden="true"></i></a>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'treatment.label' | translate }}</span>
-                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{allBeneficiaries[0].representativeDTO.treatment}}</b></span>
+                    <span
+                        class="ui-g-12 ui-md-12 ui-lg-8"><b>{{allBeneficiaries[0].representativeDTO.treatment}}</b></span>
                 </div>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'name.label' | translate }}</span>
@@ -24,27 +25,30 @@
                 </div>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'surname.label' | translate }}</span>
-                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{allBeneficiaries[0].representativeDTO.surname}}</b></span>
+                    <span
+                        class="ui-g-12 ui-md-12 ui-lg-8"><b>{{allBeneficiaries[0].representativeDTO.surname}}</b></span>
                 </div>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'role.label' | translate }}</span>
-                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{allBeneficiaries[0].representativeDTO.municipalityRole}}</b></span>
+                    <span
+                        class="ui-g-12 ui-md-12 ui-lg-8"><b>{{allBeneficiaries[0].representativeDTO.municipalityRole}}</b></span>
                 </div>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'email.label' | translate }}</span>
-                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{allBeneficiaries[0].representativeDTO.mayorRepeatEmail}}</b></span>
+                    <span
+                        class="ui-g-12 ui-md-12 ui-lg-8"><b>{{allBeneficiaries[0].representativeDTO.mayorRepeatEmail}}</b></span>
                 </div>
             </span>
             <span class="ui-lg-1"></span>
         </div>
-        <div *ngFor="let beneficiary of allBeneficiaries">
+        <div *ngFor="let beneficiary of allBeneficiaries; let i = index">
             <div id="mayor_details" class="ui-g-12 ui-md-12 ui-lg-12">
                 <hr>
                 <span class="ui-lg-1"></span>
                 <span class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: left;">
                 <p class="ui-g-11 ui-md-11 ui-lg-11 beneficiaryMayor">{{ 'mayordetails.title' | translate }}</p>
                 <a class="ui-g-1 ui-md-1 ui-lg-1" (click)="editStep(2)">{{ 'edit.button' | translate }} <i
-                        class="fa fa-pencil" aria-hidden="true"></i></a>
+                    class="fa fa-pencil" aria-hidden="true"></i></a>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'treatment.label' | translate }}</span>
                     <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{beneficiary.mayorDTO.treatment}}</b></span>
@@ -70,23 +74,15 @@
                 <span class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: left;">
                 <p class="ui-g-11 ui-md-11 ui-lg-11 beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
                 <a class="ui-g-1 ui-md-1 ui-lg-1" (click)="editStep(1)">{{ 'edit.button' | translate }} <i
-                        class="fa fa-pencil" aria-hidden="true"></i></a>
-                    <!--<div>
+                    class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <div>
                         <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'country.label' | translate }}</span>
-                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{nutsDTO.name}}</b></span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{nutsDTO[i].name}}</b></span>
                     </div>
                     <div>
                         <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'municipality.label' | translate }}</span>
-                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{lausDTO.name1}}</b></span>
-                    </div>-->
-                <div>
-                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'country.label' | translate }}</span>
-                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>PENE</b></span>
-                </div>
-                <div>
-                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'municipality.label' | translate }}</span>
-                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>CULO</b></span>
-                </div>
+                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{lausDTO[i].name1}}</b></span>
+                    </div>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'address.label' | translate }}</span>
                     <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{beneficiary.legalEntityDTO.address}}</b></span>
