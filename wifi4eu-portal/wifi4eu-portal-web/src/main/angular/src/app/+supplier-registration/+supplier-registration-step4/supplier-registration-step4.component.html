@@ -136,23 +136,23 @@
             <div class="ui-lg-4 ui-md-4"></div>
         </div>
     </div>
-
-
-    <div class=" ui-g">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="button" class=" btn-primary cancel-button">{{ 'cancel.button' | translate }}
-            </button>
+    
+    <form (ngSubmit)="onSubmit()" #supplierRegForm="ngForm">
+        <div class=" ui-g">
+            <div class="ui-lg-3"></div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                <button type="button" class=" btn-primary cancel-button">{{ 'cancel.button' | translate }}
+                </button>
+            </div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                <button type="submit" class="btn  btn-primary publish-button"
+                        [disabled]="!legalChecks[0] || !legalChecks[1] || !successCaptcha">
+                    {{ 'confirm.button' | translate}}
+                </button>
+            </div>
+            <div class="ui-lg-3"></div>
         </div>
-        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn  btn-primary publish-button" (click)="submit();"
-                    [disabled]="!legalChecks[0] || !legalChecks[1] || !successCaptcha">
-                {{ 'confirm.button' | translate}}
-            </button>
-        </div>
-        <div class="ui-lg-3"></div>
-    </div>
-
+    </form>
 
 </div>
 <!--MODAL-->

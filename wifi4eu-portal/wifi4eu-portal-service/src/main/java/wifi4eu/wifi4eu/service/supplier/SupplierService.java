@@ -123,8 +123,10 @@ public class SupplierService {
             userDTO.setUserTypeId(perSupplierDTO.getSupplierId());
             userDTO = userService.saveUser(userDTO);
 
-            //send activate account mail
-            userService.sendActivateAccountMail(userDTO);
+            if(userDTO != null && perSupplierDTO != null){
+                //send activate account mail
+                userService.sendActivateAccountMail(userDTO); 
+            }
 
             _log.info("[f] create Supplier");
 
