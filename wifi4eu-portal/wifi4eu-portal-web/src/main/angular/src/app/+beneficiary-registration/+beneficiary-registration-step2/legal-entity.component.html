@@ -58,11 +58,11 @@
                                     [placeholder]="placeholderMunicipality"
                                     ngcontrol="municipality"
                                     #municipality="ngModel"
-                                    [(ngModel)]="lausDTO"
-                                    [suggestions]="lausSuggestions"
+                                    [(ngModel)]="lausDTO[0]"
+                                    [suggestions]="Barcelona"
                                     [size]="30"
                                     [minLength]="1"
-                                    (completeMethod)="filterLaus($event)"
+                                    (completeMethod)="filterLaus($event, 0)"
                                     required
                                     [disabled]="!isValidNutsSeleted()">
                     </p-autoComplete>

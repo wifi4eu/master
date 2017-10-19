@@ -79,9 +79,6 @@ export class EntityComponent {
 
         this.allBeneficiaries.push(this.beneficiaryDTO);
 
-        this.nutsDTO.push(new NutsDTOBase());
-        this.lausDTO.push(new LauDTOBase());
-
         this.addMunicipalityAccordionBox();
     }
 
