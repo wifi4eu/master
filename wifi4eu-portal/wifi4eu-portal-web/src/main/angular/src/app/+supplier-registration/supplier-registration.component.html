@@ -51,13 +51,13 @@
                                                    [logoFile]="logoFile"
                                                    (onNext)="onNext($event)"
                                                    (gotoStep)="gotoStep($event)"
-                                                   (onSuccess)="onSuccess($event)"
-                                                   (onFailure)="onFailure($event)">
+            (onSuccess)="onSuccess($event)"
+            (onFailure)="onFailure($event)">
             </supplier-registration-step4-component>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
 </ux-wizard-steps>
 
-<success-component *ngIf="successRegistration"></success-component>
-<failure-component *ngIf="failureRegistration"></failure-component>
-<helpdesk-form-component portal="Supplier"></helpdesk-form-component>
+<!--<success-component *ngIf="successRegistration"></success-component>-->
+<!--<failure-component *ngIf="failureRegistration"></failure-component>-->
+<!--<helpdesk-form-component portal="Supplier"></helpdesk-form-component>-->
