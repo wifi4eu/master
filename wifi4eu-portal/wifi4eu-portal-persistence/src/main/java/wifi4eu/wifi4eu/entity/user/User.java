@@ -11,6 +11,9 @@ public class User {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "treatment")
+    private String treatment;
+
     @Column(name = "name")
     private String name;
 
@@ -38,8 +41,9 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified, Integer type) {
+    public User(Integer id, String treatment, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified, Integer type) {
         this.id = id;
+        this.treatment = treatment;
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -56,6 +60,14 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTreatment() {
+        return treatment;
+    }
+
+    public void setTreatment(String treatment) {
+        this.treatment = treatment;
     }
 
     public String getName() {
