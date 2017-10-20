@@ -69,4 +69,12 @@ public class RepresentationResource {
             return new ResponseDTO(false, null, errorDTO);
         }
     }
+
+    @ApiOperation(value = "Get representation by mayor id")
+    @RequestMapping(value = "/{mayorId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public RepresentationDTO getRepresentationByMayorId(@PathVariable("mayorId") final Integer mayorId) {
+        _log.info("getRepresentationByMayorId: " + mayorId);
+        return representationService.getRepresentationByMayorId(mayorId);
+    }
 }

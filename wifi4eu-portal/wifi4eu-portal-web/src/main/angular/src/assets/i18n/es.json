@@ -289,5 +289,8 @@
   "mediationRequest.selectText": "Por favor, seleccione su razón para solicitar la mediación de la lista",
   "sendMessage.title": "Nueva conversación",
   "sendMessage.sendto": "Enviar a:",
-  "sendMessage.subject": "Asunto:"
+  "sendMessage.subject": "Asunto:",
+  "newMediation.text": "Pedir a WIFI4EU que medie la conversación.",
+  "add.repply": "Responder",
+  "discussion.growl": "Su solicitud de mediación se ha enviado con éxito. El servicio de mediación WIFI4EU pronto intervendrá en esta conversación."
 }

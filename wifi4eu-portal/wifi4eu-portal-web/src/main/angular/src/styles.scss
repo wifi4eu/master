@@ -467,6 +467,10 @@ body {
   font-weight: bold;
 }
 
+.profileDataDiscussion {
+  margin-top: 0;
+}
+
 .beneficiaryProfileI {
   height: 3em;
 }
@@ -978,6 +982,9 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 
 .backgroundMessage {
   background: #CCCCCC;
+  padding-left: 2em;
+  padding-bottom: 6em;
+  min-height: 100%;
 }
 
 .selectDiscussion {
@@ -987,6 +994,7 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 
 .paddingMessages {
   padding-left: 2.2em;
+  height: 100%;
 }
 
 .arrow_box {
@@ -997,7 +1005,7 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 
 .arrow_box:after, .arrow_box:before {
   right: 100%;
-  top: 50%;
+  top: 15%;
   border: solid transparent;
   content: " ";
   height: 0;
@@ -1024,10 +1032,44 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   height: 14em
 }
 
-.widthMax{
+.widthMax {
   width: 100%;
 }
 
 .success-failure-icon {
   font-size: 300%;
+}
+
+.beneficiaryContent .header {
+  background: #fff;
+  border-bottom: none;
+}
+
+.beneficiaryContent .content {
+  padding-bottom: 0;
+}
+
+.beneficiaryContent .fa-times {
+  display: none;
+}
+
+.discussion-content .ui-g-12 {
+  padding: 0em;
+}
+
+.beneficiaryContent .p-dialog .ui-dialog {
+  overflow: hidden !important;
+}
+
+.messageDiv {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  width: 100%;
+  border: none;
+  height: 100%;
+  background-color: transparent;
+}
+
+.beneficiaryContent .box .content {
+  padding-top: 0;
 }

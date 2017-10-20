@@ -38,4 +38,8 @@ public class RepresentationService {
             return null;
         }
     }
+
+    public RepresentationDTO getRepresentationByMayorId(int mayorId) {
+        return representationMapper.toDTO(representationRepository.findOne(mayorId));
+    }
 }

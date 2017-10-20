@@ -1,0 +1,191 @@
+<div class="clearfix"></div>
+<br>
+<div class="container font beneficiaryContent">
+
+    <div class="ui-g-12" *ngIf="showAlert">
+        <span class="ui-g-2"></span>
+        <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussion.growl' | translate}}</ux-alert>
+        <span class="ui-g-2"></span>
+    </div>
+    <p class="beneficiaryTitle marginTop">{{ 'legalEntity.issues' | translate }}</p>
+    <p>{{ 'lEissues.warning' | translate }}</p>
+    <p class="beneficiaryMayor marginTopCountdown">{{ 'legalentity.label' | translate }}</p>
+    <hr class="beneficiaryHr">
+    <!--<div class="button-content">-->
+    <ux-accordion-boxes>
+        <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="ui-g-3">
+                        <p class="profileDataDiscussion">{{ 'country.label' | translate }}</p>
+                        <p>{{ 'municipality.label' | translate }}</p>
+                        <p>{{ 'address.label' | translate }}</p>
+                        <p>{{ 'number.label' | translate }}</p>
+                        <p>{{ 'postal-code.label' | translate }}</p>
+                    </div>
+                    <div class="ui-g-9">
+                        <p class="profileDataDiscussion profileData">{{lau.countryCode}}</p>
+                        <p class="profileData">{{lau.name1}}</p>
+                        <p class="profileData">{{municipality.address}}</p>
+                        <p class="profileData">{{number}}</p>
+                        <p class="profileData">{{postalCode}}</p>
+                    </div>
+                </div>
+            </div>
+        </custom-accordion-box>
+    </ux-accordion-boxes>
+    <!--</div>-->
+    <p class="beneficiaryMayor marginTopCountdown">{{ 'othersMayors.title' | translate }}</p>
+    <hr class="beneficiaryHr">
+    <!--<div class="button-content">-->
+    <ux-accordion-boxes>
+        <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="ui-g-3">
+                        <p class="profileDataDiscussion">{{ 'name.label' | translate }}</p>
+                        <p>{{ 'surname.label' | translate }}</p>
+                    </div>
+                    <div class="ui-g-9">
+                        <p class="profileData profileDataDiscussion">{{mayor.name}}</p>
+                        <p class="profileData">{{mayor.surname}}</p>
+                    </div>
+                </div>
+            </div>
+        </custom-accordion-box>
+    </ux-accordion-boxes>
+    <!--</div>-->
+    <hr class="beneficiaryHr">
+    <p class="beneficiaryMayor marginTopCountdown">{{ 'recentConversations.title' | translate }}</p>
+    <p>{{ 'recentConversations.text' | translate }}</p>
+
+
+    <div *ngIf="messageList.length < 1" class="ui-g button-content discussion-content">
+        <div class="ui-g-12 noPadding">
+            <div class="ui-g-8">
+                <p>{{'noRecentConversations.text' | translate }}</p>
+            </div>
+            <div class="ui-g-4">
+                <button type="button" (click)="newMessage()" class="btn btn-primary changePassword discussionButton">
+                    {{'startConversations.text' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="messageList.length > 0">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="ui-g-9"></div>
+                <div class="ui-g-3">
+                    <div>
+                        <button type="button" (click)="newMessage()"
+                                class="btn btn-primary changePassword discussionButton"><i class="fa fa-plus"
+                                                                                           aria-hidden="true"></i>
+                            {{'add.repply' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="discussion-content">
+            <div *ngFor="let message of messageList; let i = index"
+                 class="ui-g discussion-content">
+                <div class="ui-g-12">
+                    <div class="ui-g-3 backgroundMessage">
+                        <p class="authorMessage">Mayor One</p>
+                        <p class="authorTime">20/10/2017</p>
+                        <p class="authorTime">09:15 AM</p>
+                    </div>
+                    <div class="ui-g-9 paddingMessages arrow_box">
+                        <textarea disabled="disabled" class="messageDiv">{{message}}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="ui-g-9"></div>
+                <div class="ui-g-3">
+
+                    <button type="button" (click)="newMediation()"
+                            class="btn btn-primary changePassword discussionButton" [disabled]="mediationButton">
+                        {{'newMediation.button' | translate }}
+                    </button>
+                    <p class="right">{{'newMediation.text' | translate }}</p>
+                </div>
+            </div>
+        </div>
+
+
+    </ng-container>
+</div>
+
+<!--MODALS BELOW-->
+
+<div class="container font">
+    <div class="ui-g-1"></div>
+    <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false" [resizable]="false" [draggable]="false"
+              [closeOnEscape]="true">
+        <div class="beneficiaryTitle center hiddenScroll"> {{ 'sendMessage.title' | translate }}</div>
+        <form #messagesForm="ngForm">
+            <div class="form-group profileDialog">
+                <div class="form-group">
+                    <p>{{ 'sendMessage.title' | translate }}</p>
+                    <input type="text" name="sendTo" class="form-control widthMax" [(ngModel)]="subject"
+                           disabled="disabled" placeholder="First Mayor, Second Mayor, Third Mayor">
+
+                    <br>
+                    <p>{{ 'sendMessage.subject' | translate }}</p>
+                    <textarea rows="10" cols="20" [(ngModel)]="message"
+                              class="form-control widthMax"
+                              name="newMessage" required></textarea>
+                    <div style="text-align: center !important">
+                        <button type="button" class="btn btn-primary changePasswordModal cancel-button"
+                                (click)="closeModal()">
+                            {{ 'cancel.button' | translate }}
+                        </button>
+                        <button type="submit" class="btn btn-primary changePasswordModal publish-button"
+                                (click)="sendMessage()">
+                            {{ 'helpdeskform.sendmessage' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>
+
+
+<div class="container font">
+    <div class="ui-g-1"></div>
+    <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+              [closeOnEscape]="true">
+        <form #messagesForm="ngForm">
+            <div class="form-group profileDialog">
+
+                <div class="beneficiaryTitle"> {{ 'mediationRequest.title' | translate }}</div>
+                <p>{{ 'mediationRequest.text' | translate }}</p>
+                <br>
+                <p>{{ 'mediationRequest.selectText' | translate }}</p>
+                <select class="selectDiscussion">
+                    <option value="option1">Option 1</option>
+                    <option value="option2">Option 2</option>
+                    <option value="option3">Option 3</option>
+                </select>
+                <div class="form-group">
+                    <div style="text-align: center !important">
+                        <button type="button" class="btn btn-primary changePasswordModal cancel-button"
+                                (click)="closeModal()">
+                            {{ 'cancel.button' | translate }}
+                        </button>
+                        <button type="submit" class="btn btn-primary changePasswordModal publish-button"
+                                (click)="askMediation(); closeModal()">
+                            {{ 'helpdeskform.sendmessage' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</div>

@@ -34,9 +34,9 @@ import {NotFoundComponent} from "./not-found/not-found.component"
         // }, {
         //     path: 'registration',
         //     loadChildren: 'app/+beneficiary-registration/registration.module#RegistrationModule'
-        // }, {
-        //     path: 'beneficiary-portal',
-        //     loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule',
+        }, {
+            path: 'beneficiary-portal',
+            loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule',
         //     canActivate: [AppGuard]
         // }, {
         //     path: 'helpdesk',
