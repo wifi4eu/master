@@ -25,7 +25,9 @@ export class BeneficiaryRegistrationStep1Component implements OnInit {
 
     ngOnInit() {
         this.mayorUser = new UserDTOBase();
+        this.mayorUser.type = 2;
         this.representativeUser = new UserDTOBase();
+        this.representativeUser.type = 3;
     }
 
     checkRepresentative(option: boolean) {

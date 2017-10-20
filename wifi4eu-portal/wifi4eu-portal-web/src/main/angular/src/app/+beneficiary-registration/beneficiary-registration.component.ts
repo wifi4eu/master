@@ -1,14 +1,12 @@
 import {Component} from "@angular/core";
 import {UserDTOBase} from "../shared/swagger/model/UserDTO";
-import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
 import {MunicipalityDTOBase} from "../shared/swagger/model/MunicipalityDTO";
-import {RepresentationDTOBase} from "../shared/swagger/model/RepresentationDTO";
 import {RegistrationDTOBase} from "../shared/swagger/model/RegistrationDTO";
-import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
-import {LauDTOBase} from "../shared/swagger/model/LauDTO";
+import {BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
+import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
 
 @Component({
-    selector: 'beneficiary-registration', templateUrl: 'beneficiary-registration.component.html'
+    selector: 'beneficiary-registration', templateUrl: 'beneficiary-registration.component.html', providers: [BeneficiaryApi]
 })
 
 export class BeneficiaryRegistrationComponent {
@@ -20,9 +18,11 @@ export class BeneficiaryRegistrationComponent {
     private initialUser: UserDTOBase = new UserDTOBase();
     private users: UserDTOBase[] = [];
     private municipalities: MunicipalityDTOBase[] = [];
-    private mayors: MayorDTOBase[] = [];
-    private representations: RepresentationDTOBase[] = [];
     private registrations: RegistrationDTOBase[] = [];
+    private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
+
+    constructor(private beneficiaryApi: BeneficiaryApi) {
+    }
 
     navigate(step: number) {
         console.log("this.representing");
@@ -49,6 +49,23 @@ export class BeneficiaryRegistrationComponent {
         }
     }
 
-    completeRegistration() {
+    submitRegistration() {
+        this.finalBeneficiary.representing = this.representing;
+        this.finalBeneficiary.users = [];
+        this.finalBeneficiary.municipalities = [];
+        this.finalBeneficiary.users.push(this.initialUser);
+        for (let user of this.users) {
+            this.finalBeneficiary.users.push(user);
+        }
+        for (let municipality of this.municipalities) {
+            this.finalBeneficiary.municipalities.push(municipality);
+        }
+        this.beneficiaryApi.submitBeneficiaryRegistration(this.finalBeneficiary).subscribe(
+            data => {
+                console.log(data);
+            }, error => {
+                console.log(error);
+            }
+        );
     }
 }

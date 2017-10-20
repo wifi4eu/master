@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label class="label floatLeft" for="country">{{ 'country.label' | translate }}</label>
                     <div class="clearfix"></div>
-                    <p-autoComplete id="country" class="form-control" name="country" placeholder="Espanya" field="label"
+                    <p-autoComplete id="country" class="form-control" name="country" placeholder="Loading..." field="label" ngcontrol="country"
                                     [(ngModel)]="spain" disabled [suggestions]="nutsSuggestions" (completeMethod)="filterNuts($event)" forceSelection="true" required>
                     </p-autoComplete>
                     <!--<div [hidden="country.valid || country.pristine" class="alert alert-danger">Country is required</div>-->
@@ -36,7 +36,7 @@
                 <div class="form-group">
                     <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate }}</label>
                     <div class="clearfix"></div>
-                    <p-autoComplete id="municipality" class="form-control" name="municipality" placeholder="Barcelona" field="name1" [(ngModel)]="barcelona" disabled required>
+                    <p-autoComplete id="municipality" class="form-control" name="municipality" placeholder="Loading..." field="name1" ngcontrol="municipality" [(ngModel)]="barcelona" disabled required>
                     </p-autoComplete>
                     <!--<div [hidden]="municipality.valid || municipality.pristine" class="alert alert-danger">Municipality is required</div>-->
                 </div>
@@ -94,7 +94,7 @@
                             <div class="form-group">
                                 <label class="label floatLeft" [for]="'country-'+i">{{ 'country.label' | translate }}</label>
                                 <div class="clearfix"></div>
-                                <p-autoComplete [id]="'country-'+i" class="form-control" [name]="'country-'+i" placeholder="Espanya" field="label" ngcontrol="'country-'+i"
+                                <p-autoComplete [id]="'country-'+i" class="form-control" [name]="'country-'+i" placeholder="Loading..." field="label" ngcontrol="'country-'+i"
                                                 [(ngModel)]="spain" disabled [suggestions]="nutsSuggestions" (completeMethod)="filterNuts($event)" forceSelection="true" required>
                                 </p-autoComplete>
                                 <!--<div [hidden="country.valid || country.pristine" class="alert alert-danger">Country is required</div>-->
@@ -108,7 +108,7 @@
                             <div class="form-group">
                                 <label class="label floatLeft" [for]="'municipality-'+i">{{ 'municipality.label' | translate }}</label>
                                 <div class="clearfix"></div>
-                                <p-autoComplete [id]="'municipality-'+i" class="form-control" [name]="'municipality-'+i" placeholder="Barcelona" field="name1" ngcontrol="'municipality-'+i"
+                                <p-autoComplete [id]="'municipality-'+i" class="form-control" [name]="'municipality-'+i" placeholder="Loading..." field="name1" ngcontrol="'municipality-'+i"
                                                 [(ngModel)]="barcelona" disabled required>
                                 </p-autoComplete>
                                 <!--<div [hidden]="municipality.valid || municipality.pristine" class="alert alert-danger">Municipality is required</div>-->
