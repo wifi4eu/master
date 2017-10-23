@@ -1,5 +1,5 @@
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE', 'BELGIQUE-BELGIË ', '0', 'BE', '1', '1');
+VALUES ('BE', 'BELGIQUE-BELGIË', '0', 'BE', '1', '1');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('BE1', 'RÉGION DE BRUXELLES-CAPITALE / BRUSSELS HOOFDSTEDELIJK GEWEST', '1', 'BE', '1', '2');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
@@ -299,7 +299,7 @@ VALUES ('DKZZ', 'Extra-Regio NUTS 2', '2', 'DK', '4', '149');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('DKZZZ', 'Extra-Regio NUTS 3', '3', 'DK', '4', '150');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE', 'DEUTSCHLAND ', '0', 'DE', '5', '151');
+VALUES ('DE', 'DEUTSCHLAND', '0', 'DE', '5', '151');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('DE1', 'BADEN-WÜRTTEMBERG', '1', 'DE', '5', '152');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
@@ -1419,7 +1419,7 @@ VALUES ('ELZZ', 'Extra-Regio NUTS 2', '2', 'EL', '8', '708');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('ELZZZ', 'Extra-Regio NUTS 3', '3', 'EL', '8', '709');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES', 'ESPAÑA ', '0', 'ES', '9', '710');
+VALUES ('ES', 'ESPAÑA', '0', 'ES', '9', '710');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('ES1', 'NOROESTE', '1', 'ES', '9', '711');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
@@ -2383,7 +2383,7 @@ VALUES ('MTZZ', 'Extra-Regio NUTS 2', '2', 'MT', '18', '1190');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('MTZZZ', 'Extra-Regio NUTS 3', '3', 'MT', '18', '1191');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL', 'NEDERLAND ', '0', 'NL', '19', '1192');
+VALUES ('NL', 'NEDERLAND', '0', 'NL', '19', '1192');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('NL1', 'NOORD-NEDERLAND', '1', 'NL', '19', '1193');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)

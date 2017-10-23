@@ -21,6 +21,15 @@ public class Municipality {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "address_num")
+    private String addressNum;
+
+    @Column(name = "postal_code")
+    private String postalCode;
+
+    @Column(name = "country")
+    private String country;
+
     @OneToOne
     @JoinColumn(name = "lau")
     private Lau lau;
@@ -31,10 +40,13 @@ public class Municipality {
     public Municipality() {
     }
 
-    public Municipality(Integer id, String name, String address, Lau lau, List<Registration> registrations) {
+    public Municipality(Integer id, String name, String address, String addressNum, String postalCode, String country, Lau lau, List<Registration> registrations) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.addressNum = addressNum;
+        this.postalCode = postalCode;
+        this.country = country;
         this.lau = lau;
         this.registrations = registrations;
     }
@@ -61,6 +73,30 @@ public class Municipality {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getAddressNum() {
+        return addressNum;
+    }
+
+    public void setAddressNum(String addressNum) {
+        this.addressNum = addressNum;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public Lau getLau() {

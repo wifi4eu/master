@@ -25,6 +25,7 @@ import {Ng2GoogleRecaptchaModule} from "ng2-google-recaptcha";
 import {SuccessComponent} from "./components/success/success.component"
 import {FailureComponent} from "./components/failure/failure.component";
 import {CustomAccordionBoxComponent} from "./components/custom-accordion-box/custom-accordion-box.component";
+import {CustomWizardStepsComponent} from "./components/custom-wizard-steps/custom-wizard-steps";
 // import {SuccessComponent} from "./components/success/success.component";
 // import {FailureComponent} from "./components/failure/failure.component";
 // import {HelpdeskFormComponent} from "../shared/components/helpdesk-form/helpdesk-form.component";
@@ -58,7 +59,8 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         UxSearchInputComponent,
         SuccessComponent,
         FailureComponent,
-        CustomAccordionBoxComponent
+        CustomAccordionBoxComponent,
+        CustomWizardStepsComponent
         // TimelineComponent,
         // CustomTimelineAccordionBoxComponent,
         // SuccessComponent,
@@ -86,7 +88,8 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         TabViewModule,
         SuccessComponent,
         FailureComponent,
-        CustomAccordionBoxComponent
+        CustomAccordionBoxComponent,
+        CustomWizardStepsComponent
         // TimelineComponent,
         // CustomTimelineAccordionBoxComponent,
         // SuccessComponent,

@@ -70,7 +70,10 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`municipalities` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
-  `address` VARCHAR(500) NULL,
+  `address` VARCHAR(255) NULL,
+  `address_num` VARCHAR(255) NULL,
+  `postal_code` VARCHAR(255) NULL,
+  `country` VARCHAR(255) NULL,
   `lau` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_municipalities_laus1_idx` (`lau` ASC),
