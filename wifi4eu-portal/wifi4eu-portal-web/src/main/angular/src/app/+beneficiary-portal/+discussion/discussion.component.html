@@ -12,7 +12,7 @@
     <p class="beneficiaryMayor marginTopCountdown">{{ 'legalentity.label' | translate }}</p>
     <hr class="beneficiaryHr">
     <!--<div class="button-content">-->
-    <ux-accordion-boxes>
+    <ux-accordion-boxes *ngIf="!loaded">
         <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
             <div class="ui-g">
                 <div class="ui-g-12">
@@ -24,11 +24,11 @@
                         <p>{{ 'postal-code.label' | translate }}</p>
                     </div>
                     <div class="ui-g-9">
-                        <p class="profileDataDiscussion profileData">{{lau.countryCode}}</p>
-                        <p class="profileData">{{lau.name1}}</p>
-                        <p class="profileData">{{municipality.address}}</p>
-                        <p class="profileData">{{number}}</p>
-                        <p class="profileData">{{postalCode}}</p>
+                        <!--<p class="profileDataDiscussion profileData">{{municipality.country}}</p>-->
+                        <!--<p class="profileData">{{municipality.name}}</p>-->
+                        <!--<p class="profileData">{{municipality.address}}</p>-->
+                        <!--<p class="profileData">{{municipality.addressNum}}</p>-->
+                        <!--<p class="profileData">{{municipality.postalCode}}</p>-->
                     </div>
                 </div>
             </div>
@@ -47,8 +47,8 @@
                         <p>{{ 'surname.label' | translate }}</p>
                     </div>
                     <div class="ui-g-9">
-                        <p class="profileData profileDataDiscussion">{{mayor.name}}</p>
-                        <p class="profileData">{{mayor.surname}}</p>
+                        <p class="profileData profileDataDiscussion">{{name}}</p>
+                        <p class="profileData">{{surname}}</p>
                     </div>
                 </div>
             </div>
@@ -92,7 +92,7 @@
                  class="ui-g discussion-content">
                 <div class="ui-g-12">
                     <div class="ui-g-3 backgroundMessage">
-                        <p class="authorMessage">Mayor One</p>
+                        <p class="authorMessage">{{mayor.name}} {{mayor.surname}}</p>
                         <p class="authorTime">20/10/2017</p>
                         <p class="authorTime">09:15 AM</p>
                     </div>
@@ -168,11 +168,11 @@
                 <p>{{ 'mediationRequest.text' | translate }}</p>
                 <br>
                 <p>{{ 'mediationRequest.selectText' | translate }}</p>
-                <select class="selectDiscussion">
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
-                </select>
+                <!--<select class="selectDiscussion">-->
+                <!--<option value="option1">Option 1</option>-->
+                <!--<option value="option2">Option 2</option>-->
+                <!--<option value="option3">Option 3</option>-->
+                <!--</select>-->
                 <div class="form-group">
                     <div style="text-align: center !important">
                         <button type="button" class="btn btn-primary changePasswordModal cancel-button"

@@ -7,17 +7,23 @@ public class MunicipalityDTO {
     private String name;
     private String address;
     private int lauId;
+    private String postalCode;
+    private String country;
+    private int addressNum;
     private List<RegistrationDTO> registrations;
 
     public MunicipalityDTO() {
     }
 
-    public MunicipalityDTO(int id, String name, String address, int lauId, List<RegistrationDTO> registrations) {
+    public MunicipalityDTO(int id, String name, String address, int lauId, List<RegistrationDTO> registrations, String postalCode, String country, int addressNum) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.lauId = lauId;
         this.registrations = registrations;
+        this.country = country;
+        this.postalCode = postalCode;
+        this.addressNum = addressNum;
     }
 
     public int getId() {
@@ -58,5 +64,29 @@ public class MunicipalityDTO {
 
     public void setRegistrations(List<RegistrationDTO> registrations) {
         this.registrations = registrations;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public int getAddressNum() {
+        return addressNum;
+    }
+
+    public void setAddressNum(int addressNum) {
+        this.addressNum = addressNum;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

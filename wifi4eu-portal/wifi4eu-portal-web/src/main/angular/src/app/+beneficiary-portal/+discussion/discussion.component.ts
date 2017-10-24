@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
@@ -9,6 +9,7 @@ import {MayorApi} from "app/shared/swagger/api/MayorApi";
 import {RepresentationDTOBase} from "../../shared/swagger/model/RepresentationDTO";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
+import {Timestamp} from "rxjs/Rx";
 
 @Component({
     selector: 'discussion-component',
@@ -16,9 +17,9 @@ import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
     providers: [MunicipalityApi, LauApi, RepresentationApi, MayorApi]
 })
 export class DiscussionComponent {
-    private displayMessage: boolean;
+    // private displayMessage: boolean;
     private showAccordion: boolean;
-    // private representation: RepresentationDTOBase;
+    private representation: RepresentationDTOBase;
     private user: UserDTOBase;
     private message: string;
     private subject: string;
@@ -30,12 +31,17 @@ export class DiscussionComponent {
     private lau: LauDTOBase;
     private mediationButton: boolean;
     private showAlert: boolean;
+    private loaded: boolean;
+    private name: string;
+    private surname: string;
 
-    private postalCode: string;
-    private number: string;
+    private date: number;
+
+    @Input('displayMessage') displayMessage: boolean;
 
 
     constructor(private municipalityApi: MunicipalityApi, private lauApi: LauApi, private representationApi: RepresentationApi, private mayorApi: MayorApi) {
+        this.municipality = new MunicipalityDTOBase();
         this.displayMessage = false;
         this.message = "";
         this.subject = "";
@@ -43,59 +49,54 @@ export class DiscussionComponent {
         this.displayMediation = false;
         this.showAccordion = false;
         this.mediationButton = false;
-
-        // this.thread.municipalityId
-
-        this.municipality = new MunicipalityDTOBase();
-        this.municipality.lauId = 1;
-        this.municipality.address = "Diagonal";
-
-        this.mayor = new MayorDTOBase();
-        this.mayor.name = "John";
-        this.mayor.surname = "Smith";
+        this.loaded = false;
 
         this.lau = new LauDTOBase();
-        this.lau.name1 = "Barcelona";
-        this.lau.countryCode = "Spain";
-
-        this.postalCode = "08022";
-        this.number = "605";
 
         this.showAlert = false;
 
+        this.name = "";
+        this.surname = "";
 
-        /*
-        this.municipalityApi.getMunicipalityById(2).subscribe(
-            data => {
-                this.municipality = data;
-                this.representationApi.getRepresentationByMayorId(2).subscribe(
-                    representation => {
-                        this.representation = representation;
-                        this.mayorApi.getMayorById(this.representation.mayorId).subscribe(
-                            mayor => {
-                                this.mayor = mayor;
-                            }, error3 => {
-                                console.log(error3);
-                            }
-                        );
+        //this.thread.municipalityId
 
-                    }, error2 => {
-                        console.log(error2);
-                    }
-                );
+    }
 
-
-            }, error => {
-                console.log(error);
-            }
-        );
-        */
+    ngOnInit() {
+        // this.municipalityApi.getMunicipalityById(10).subscribe(
+        //     data => {
+        //         this.municipality = data;
+        //         this.representationApi.getRepresentationByMayorId(this.municipality.id).subscribe(
+        //             representation => {
+        //                 this.representation = representation;
+        //                 this.mayorApi.getMayorById(this.representation.mayorId).subscribe(
+        //                     mayor => {
+        //                         this.mayor.name = this.name;
+        //                         this.mayor.surname = this.surname;
+        //                         this.mayor = mayor;
+        //                         this.loaded = true;
+        //
+        //                     }, error3 => {
+        //                         console.log(error3);
+        //                     }
+        //                 );
+        //
+        //             }, error2 => {
+        //                 console.log(error2);
+        //             }
+        //         );
+        //
+        //
+        //     }, error => {
+        //         console.log(error);
+        //     }
+        // );
     }
 
     newMessage() {
         this.displayMessage = true;
         this.message = "";
-        this.subject = "";
+
     }
 
     sendMessage() {
