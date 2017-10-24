@@ -43,7 +43,7 @@ public class RepresentationService {
         return representationMapper.toDTO(representationRepository.findOne(mayorId));
     }
 
-    public RepresentationDTO getRepresentationByMunicipalityId(int municipalityId) {
-        return representationMapper.toDTO(representationRepository.findOne(municipalityId));
+    public List<RepresentationDTO> getRepresentationByMunicipalityId(int municipalityId) {
+        return representationMapper.toDTOList(Lists.newArrayList(representationRepository.findByMunicipalityId(municipalityId)));
     }
 }

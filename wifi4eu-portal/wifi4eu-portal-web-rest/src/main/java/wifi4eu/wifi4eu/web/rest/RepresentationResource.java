@@ -81,7 +81,7 @@ public class RepresentationResource {
     @ApiOperation(value = "Get representation by municipality id")
     @RequestMapping(value = "/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public RepresentationDTO getRepresentationByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
+    public List<RepresentationDTO> getRepresentationByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
         _log.info("getRepresentationByMunicipalityId: " + municipalityId);
         return representationService.getRepresentationByMunicipalityId(municipalityId);
     }

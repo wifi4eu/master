@@ -69,4 +69,12 @@ public class ThreadResource {
             return new ResponseDTO(false, null, errorDTO);
         }
     }
+
+    @ApiOperation(value = "Get thread by municipality id")
+    @RequestMapping(value = "/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<ThreadDTO> getThreadBymMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
+        _log.info("getThreadByMunicipalityId: " + municipalityId);
+        return threadService.getThreadByMunicipalityId(municipalityId);
+    }
 }

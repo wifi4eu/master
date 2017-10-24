@@ -12,7 +12,7 @@
     <p class="beneficiaryMayor marginTopCountdown">{{ 'legalentity.label' | translate }}</p>
     <hr class="beneficiaryHr">
     <!--<div class="button-content">-->
-    <ux-accordion-boxes *ngIf="!loaded">
+    <ux-accordion-boxes>
         <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
             <div class="ui-g">
                 <div class="ui-g-12">
@@ -40,7 +40,7 @@
     <!--<div class="button-content">-->
     <ux-accordion-boxes>
         <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
-            <div class="ui-g">
+            <div class="ui-g" *ngFor="let representation of representationList; let i = index">
                 <div class="ui-g-12">
                     <div class="ui-g-3">
                         <p class="profileDataDiscussion">{{ 'name.label' | translate }}</p>
@@ -72,7 +72,7 @@
             </div>
         </div>
     </div>
-    <ng-container *ngIf="messageList.length > 0">
+    <ng-container *ngIf="messagesOnDB.length > 0">
         <div class="ui-g">
             <div class="ui-g-12">
                 <div class="ui-g-9"></div>
@@ -88,16 +88,15 @@
             </div>
         </div>
         <div class="discussion-content">
-            <div *ngFor="let message of messageList; let i = index"
-                 class="ui-g discussion-content">
+            <div class="ui-g discussion-content" *ngFor="let messages of messagesOnDB">
                 <div class="ui-g-12">
                     <div class="ui-g-3 backgroundMessage">
-                        <p class="authorMessage">{{name}} {{surname}}</p>
+                        <p class="authorMessage">{{messagesOnDB.authorId}}</p>
                         <p class="authorTime">20/10/2017</p>
                         <p class="authorTime">09:15 AM</p>
                     </div>
                     <div class="ui-g-9 paddingMessages arrow_box">
-                        <textarea disabled="disabled" class="messageDiv">{{message}}</textarea>
+                        <textarea disabled="disabled" class="messageDiv">{{messagesOnDB.message}}</textarea>
                     </div>
                 </div>
             </div>
