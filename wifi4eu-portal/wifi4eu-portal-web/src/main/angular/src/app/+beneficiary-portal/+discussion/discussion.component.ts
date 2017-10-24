@@ -17,7 +17,7 @@ import {Timestamp} from "rxjs/Rx";
     providers: [MunicipalityApi, LauApi, RepresentationApi, MayorApi]
 })
 export class DiscussionComponent {
-    // private displayMessage: boolean;
+    private displayMessage: boolean;
     private showAccordion: boolean;
     private representation: RepresentationDTOBase;
     private user: UserDTOBase;
@@ -36,8 +36,8 @@ export class DiscussionComponent {
     private surname: string;
 
     private date: number;
-
-    @Input('displayMessage') displayMessage: boolean;
+    //
+    // @Input('displayMessage') displayMessage: boolean;
 
 
     constructor(private municipalityApi: MunicipalityApi, private lauApi: LauApi, private representationApi: RepresentationApi, private mayorApi: MayorApi) {
@@ -54,43 +54,35 @@ export class DiscussionComponent {
         this.lau = new LauDTOBase();
 
         this.showAlert = false;
-
-        this.name = "";
-        this.surname = "";
-
-        //this.thread.municipalityId
-
     }
 
     ngOnInit() {
-        // this.municipalityApi.getMunicipalityById(10).subscribe(
-        //     data => {
-        //         this.municipality = data;
-        //         this.representationApi.getRepresentationByMayorId(this.municipality.id).subscribe(
-        //             representation => {
-        //                 this.representation = representation;
-        //                 this.mayorApi.getMayorById(this.representation.mayorId).subscribe(
-        //                     mayor => {
-        //                         this.mayor.name = this.name;
-        //                         this.mayor.surname = this.surname;
-        //                         this.mayor = mayor;
-        //                         this.loaded = true;
-        //
-        //                     }, error3 => {
-        //                         console.log(error3);
-        //                     }
-        //                 );
-        //
-        //             }, error2 => {
-        //                 console.log(error2);
-        //             }
-        //         );
-        //
-        //
-        //     }, error => {
-        //         console.log(error);
-        //     }
-        // );
+        this.municipalityApi.getMunicipalityById(10).subscribe(
+            data => {
+                this.municipality = data;
+
+                this.representationApi.getRepresentationByMunicipalityId(this.municipality.id).subscribe(
+                    representation => {
+                        this.representation = representation;
+                        this.mayorApi.getMayorById(this.representation.mayorId).subscribe(
+                            mayor => {
+                                this.mayor = mayor;
+                                this.loaded = true;
+
+                            }, error3 => {
+                                console.log(error3);
+                            }
+                        );
+
+                    }, error2 => {
+                        console.log(error2);
+                    }
+                );
+
+            }, error => {
+                console.log(error);
+            }
+        );
     }
 
     newMessage() {
