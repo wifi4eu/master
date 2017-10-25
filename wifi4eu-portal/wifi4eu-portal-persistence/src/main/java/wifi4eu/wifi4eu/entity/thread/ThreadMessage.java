@@ -24,14 +24,18 @@ public class ThreadMessage {
     @Column(name = "message")
     private String message;
 
+    @Column(name = "create_date")
+    private int createDate;
+
     public ThreadMessage() {
     }
 
-    public ThreadMessage(Integer id, Thread thread, User author, String message) {
+    public ThreadMessage(Integer id, Thread thread, User author, String message, Integer createDate) {
         this.id = id;
         this.thread = thread;
         this.author = author;
         this.message = message;
+        this.createDate = createDate;
     }
 
     public Integer get() {
@@ -64,5 +68,13 @@ public class ThreadMessage {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(int createDate) {
+        this.createDate = createDate;
     }
 }

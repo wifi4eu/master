@@ -72,7 +72,8 @@
             </div>
         </div>
     </div>
-    <ng-container *ngIf="messagesOnDB.length > 0">
+    <!--*ngIf="!messagesOnDB"-->
+    <ng-container>
         <div class="ui-g">
             <div class="ui-g-12">
                 <div class="ui-g-9"></div>
@@ -88,12 +89,12 @@
             </div>
         </div>
         <div class="discussion-content">
-            <div class="ui-g discussion-content" *ngFor="let messages of messagesOnDB">
+            <div class="ui-g discussion-content">
                 <div class="ui-g-12">
                     <div class="ui-g-3 backgroundMessage">
-                        <p class="authorMessage">{{messagesOnDB.authorId}}</p>
-                        <p class="authorTime">20/10/2017</p>
-                        <p class="authorTime">09:15 AM</p>
+                        <p class="authorMessage">{{user.name}} {{user.surname}}</p>
+                        <p class="authorTime">{{messagesOnDB.createDate}}</p>
+                        <p class="authorTime"></p>
                     </div>
                     <div class="ui-g-9 paddingMessages arrow_box">
                         <textarea disabled="disabled" class="messageDiv">{{messagesOnDB.message}}</textarea>

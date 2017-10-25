@@ -11,12 +11,15 @@ import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
 import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
 import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
 import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
+import {isEmpty} from "rxjs/operator/isEmpty";
+import {UserApi} from "../../shared/swagger/api/UserApi";
+import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 
 
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
-    providers: [MunicipalityApi, LauApi, RepresentationApi, MayorApi, ThreadApi, ThreadmessagesApi]
+    providers: [MunicipalityApi, LauApi, RepresentationApi, MayorApi, ThreadApi, ThreadmessagesApi, UserApi]
 })
 export class DiscussionComponent {
     private displayMessage: boolean;
@@ -33,8 +36,14 @@ export class DiscussionComponent {
     private showAlert: boolean;
     private thread: any [];
     private messagesOnDB: ThreadMessageDTOBase;
+    private messagesBoolean: boolean;
+    private user: UserDTOBase;
+    private timestamp: Date;
+    private date: String;
+    private hour: Date;
 
-    constructor(private municipalityApi: MunicipalityApi, private lauApi: LauApi, private representationApi: RepresentationApi, private mayorApi: MayorApi, private threadmessagesApi: ThreadmessagesApi, private threadApi: ThreadApi) {
+
+    constructor(private municipalityApi: MunicipalityApi, private lauApi: LauApi, private representationApi: RepresentationApi, private mayorApi: MayorApi, private threadmessagesApi: ThreadmessagesApi, private threadApi: ThreadApi, private userApi: UserApi) {
         this.municipality = new MunicipalityDTOBase();
         this.displayMessage = false;
         this.message = "";
@@ -45,7 +54,9 @@ export class DiscussionComponent {
         this.mediationButton = false;
         this.representationList = [];
         this.mayor = new MayorDTOBase();
+        this.user = new UserDTOBase();
         this.thread = [];
+        this.messagesBoolean = true;
 
         this.lau = new LauDTOBase();
         this.showAlert = false;
@@ -63,8 +74,32 @@ export class DiscussionComponent {
                             this.threadmessagesApi.getThreadMessageById(this.thread[i].id).subscribe(
                                 threadMessages => {
                                     this.messagesOnDB = threadMessages;
-                                    console.log("THREAD MESSAGES::::::::::", threadMessages);
 
+                                    // var timestamp = 1301090400,
+                                    this.timestamp = new Date(this.messagesOnDB.createDate * 1000);
+                                    console.log(this.timestamp);
+                                    this.date = this.timestamp.toUTCString();
+
+                                    console.log("DATE::::::::::::::::::::::::", this.date);
+
+                                    //     ,
+                                    // datevalues = [
+                                    //     date.getFullYear(),
+                                    //     date.getMonth()+1,
+                                    //     date.getDate(),
+                                    //     date.getHours(),
+                                    //     date.getMinutes(),
+                                    //     date.getSeconds(),
+                                    // ];
+                                    //
+                                    console.log("THREAD MESSAGES::::::::::", this.messagesOnDB);
+                                    this.userApi.getUserById(this.messagesOnDB.authorId).subscribe(
+                                        user => {
+                                            this.user = user;
+                                        }, error6 => {
+                                            console.log(error6)
+                                        }
+                                    );
                                 }, error5 => {
                                     console.log(error5);
                                 }
