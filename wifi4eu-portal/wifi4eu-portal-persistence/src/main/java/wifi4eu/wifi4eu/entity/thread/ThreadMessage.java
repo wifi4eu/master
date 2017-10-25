@@ -25,12 +25,12 @@ public class ThreadMessage {
     private String message;
 
     @Column(name = "create_date")
-    private int createDate;
+    private Long createDate;
 
     public ThreadMessage() {
     }
 
-    public ThreadMessage(Integer id, Thread thread, User author, String message, Integer createDate) {
+    public ThreadMessage(Integer id, Thread thread, User author, String message, Long createDate) {
         this.id = id;
         this.thread = thread;
         this.author = author;
@@ -70,11 +70,11 @@ public class ThreadMessage {
         this.message = message;
     }
 
-    public int getCreateDate() {
+    public Long getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(int createDate) {
+    public void setCreateDate(Long createDate) {
         this.createDate = createDate;
     }
 }

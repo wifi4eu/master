@@ -1,137 +1,75 @@
-import {Component, Input} from "@angular/core";
+import {Component} from "@angular/core";
 
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {LauApi} from "app/shared/swagger";
-import {RepresentationApi} from "../../shared/swagger/api/RepresentationApi";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
-import {MayorApi} from "app/shared/swagger/api/MayorApi";
-import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
 import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
-import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
-import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
-import {isEmpty} from "rxjs/operator/isEmpty";
 import {UserApi} from "../../shared/swagger/api/UserApi";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
+import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
+import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
+import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
+import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
+import {ResponseDTO} from "../../shared/swagger/model/ResponseDTO";
+import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 
 
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
-    providers: [MunicipalityApi, LauApi, RepresentationApi, MayorApi, ThreadApi, ThreadmessagesApi, UserApi]
+    providers: [UserApi, RegistrationApi, MunicipalityApi, ThreadApi, ThreadmessagesApi]
 })
 export class DiscussionComponent {
-    private displayMessage: boolean;
-    private showAccordion: boolean;
-    private message: string;
-    private subject: string;
-    private messageList: string[];
-    private representationList: any[];
-    private displayMediation: boolean;
-    private municipality: MunicipalityDTOBase;
-    private mayor: MayorDTOBase;
-    private lau: LauDTOBase;
-    private mediationButton: boolean;
-    private showAlert: boolean;
-    private thread: any [];
-    private messagesOnDB: ThreadMessageDTOBase;
-    private messagesBoolean: boolean;
-    private user: UserDTOBase;
-    private timestamp: Date;
-    private date: String;
-    private hour: Date;
+    private user: UserDTOBase = new UserDTOBase();
+    private users: UserDTOBase[] = [];
+    private municipality: MunicipalityDTOBase = new MunicipalityDTOBase();
+    private registrations: RegistrationDTOBase[] = [];
+    private thread: ThreadDTOBase = new ThreadDTOBase();
+    private displayMessage: boolean = false;
+    private displayMediation: boolean = false;
+    private mediationButton: boolean = false;
+    private showAlert: boolean = false;
+    private message: string = "";
 
 
-    constructor(private municipalityApi: MunicipalityApi, private lauApi: LauApi, private representationApi: RepresentationApi, private mayorApi: MayorApi, private threadmessagesApi: ThreadmessagesApi, private threadApi: ThreadApi, private userApi: UserApi) {
-        this.municipality = new MunicipalityDTOBase();
-        this.displayMessage = false;
-        this.message = "";
-        this.subject = "";
-        this.messageList = [];
-        this.displayMediation = false;
-        this.showAccordion = false;
-        this.mediationButton = false;
-        this.representationList = [];
-        this.mayor = new MayorDTOBase();
-        this.user = new UserDTOBase();
-        this.thread = [];
-        this.messagesBoolean = true;
-
-        this.lau = new LauDTOBase();
-        this.showAlert = false;
+    constructor(private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private userApi: UserApi, private uxService: UxService) {
+        this.thread.messages = [];
     }
 
     ngOnInit() {
-        this.municipalityApi.getMunicipalityById(10).subscribe(
-            data => {
-                this.municipality = data;
-
-                this.threadApi.getThreadBymMunicipalityId(this.municipality.id).subscribe(
-                    thread => {
-                        this.thread = thread;
-                        for (let i = 0; i < this.thread.length; i++) {
-                            this.threadmessagesApi.getThreadMessageById(this.thread[i].id).subscribe(
-                                threadMessages => {
-                                    this.messagesOnDB = threadMessages;
-
-                                    // var timestamp = 1301090400,
-                                    this.timestamp = new Date(this.messagesOnDB.createDate * 1000);
-                                    console.log(this.timestamp);
-                                    this.date = this.timestamp.toUTCString();
-
-                                    console.log("DATE::::::::::::::::::::::::", this.date);
-
-                                    //     ,
-                                    // datevalues = [
-                                    //     date.getFullYear(),
-                                    //     date.getMonth()+1,
-                                    //     date.getDate(),
-                                    //     date.getHours(),
-                                    //     date.getMinutes(),
-                                    //     date.getSeconds(),
-                                    // ];
-                                    //
-                                    console.log("THREAD MESSAGES::::::::::", this.messagesOnDB);
-                                    this.userApi.getUserById(this.messagesOnDB.authorId).subscribe(
-                                        user => {
-                                            this.user = user;
-                                        }, error6 => {
-                                            console.log(error6)
-                                        }
-                                    );
+        this.userApi.getUserById(100).subscribe(
+            (user: UserDTOBase) => {
+                this.user = user;
+                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                    (registrations: RegistrationDTOBase[]) => {
+                        this.registrations = registrations;
+                        for (let registration of registrations) {
+                            this.userApi.getUserById(registration.userId).subscribe(
+                                (user: UserDTOBase) => {
+                                    this.users.push(user);
                                 }, error5 => {
                                     console.log(error5);
                                 }
                             );
-
                         }
-                    }, error4 => {
-                        console.log(error4);
-                    }
-                );
-
-                this.representationApi.getRepresentationByMunicipalityId(this.municipality.id).subscribe(
-                    representation => {
-                        this.representationList = representation;
-
-                        for (let i = 0; i < this.representationList.length; i++) {
-                            this.mayorApi.getMayorById(this.representationList[i].mayorId).subscribe(
-                                mayor => {
-                                    this.mayor = mayor;
-
-                                }, error3 => {
-                                    console.log(error3);
-                                }
-                            );
-                        }
-                    }
-                    ,
-                    error2 => {
+                        this.municipalityApi.getMunicipalityById(registrations[0].municipalityId).subscribe(
+                            (municipality: MunicipalityDTOBase) => {
+                                this.municipality = municipality;
+                                this.threadApi.getThreadByMunicipalityId(this.municipality.id).subscribe(
+                                    (thread: ThreadDTOBase) => {
+                                        this.thread = thread;
+                                    }, error4 => {
+                                        console.log(error4);
+                                    }
+                                );
+                            }, error3 => {
+                                console.log(error3);
+                            }
+                        );
+                    }, error2 => {
                         console.log(error2);
                     }
                 );
-
             }, error => {
                 console.log(error);
             }
@@ -142,12 +80,41 @@ export class DiscussionComponent {
     newMessage() {
         this.displayMessage = true;
         this.message = "";
-
     }
 
     sendMessage() {
-        this.messageList.push(this.message);
-        this.displayMessage = false;
+        let newMessage = new ThreadMessageDTOBase();
+        newMessage.createDate = new Date().getTime();
+        newMessage.message = this.message;
+        newMessage.authorId = this.user.id;
+        newMessage.threadId = this.thread.id;
+        this.threadMessagesApi.createThreadMessage(newMessage).subscribe(
+            (response: ResponseDTO) => {
+                if (response.success) {
+                    this.thread.messages.push(response.data);
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: 'SUCCESS',
+                        detail: 'The message was successfully sent!'
+                    });
+                } else {
+                    this.uxService.growl({
+                        severity: 'error',
+                        summary: 'ERROR',
+                        detail: 'The message could not be successfully sent.'
+                    });
+                }
+                this.displayMessage = false;
+            }, error => {
+                console.log(error);
+                this.uxService.growl({
+                    severity: 'error',
+                    summary: 'ERROR',
+                    detail: 'Something went wrong while trying to send the message.'
+                });
+                this.displayMessage = false;
+            }
+        );
     }
 
 
@@ -164,6 +131,14 @@ export class DiscussionComponent {
         this.mediationButton = true;
         this.showAlert = true;
         window.scrollTo(0, 0)
+    }
+
+    displayAuthorData(authorId: number, field: string) {
+        for (let user of this.users) {
+            if (user.id = authorId) {
+                return user[field];
+            }
+        }
     }
 
 }

@@ -66,8 +66,8 @@ public class ThreadService {
         }
     }
 
-    public List<ThreadDTO> getThreadByMunicipalityId(int municipalityId) {
-        return threadMapper.toDTOList(Lists.newArrayList(threadRepository.findByMunicipalityId(municipalityId)));
+    public ThreadDTO getThreadByMunicipalityId(int municipalityId) {
+        return threadMapper.toDTO(threadRepository.findByMunicipalityId(municipalityId));
     }
 
 }

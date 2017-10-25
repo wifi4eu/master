@@ -5,12 +5,12 @@ public class ThreadMessageDTO {
     private int threadId;
     private int authorId;
     private String message;
-    private int createDate;
+    private long createDate;
 
     public ThreadMessageDTO() {
     }
 
-    public ThreadMessageDTO(int id, int threadId, int authorId, String message, int createDate) {
+    public ThreadMessageDTO(int id, int threadId, int authorId, String message, long createDate) {
         this.id = id;
         this.threadId = threadId;
         this.authorId = authorId;
@@ -50,11 +50,11 @@ public class ThreadMessageDTO {
         this.message = message;
     }
 
-    public int getCreateDate() {
+    public long getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(int createDate) {
+    public void setCreateDate(long createDate) {
         this.createDate = createDate;
     }
 }

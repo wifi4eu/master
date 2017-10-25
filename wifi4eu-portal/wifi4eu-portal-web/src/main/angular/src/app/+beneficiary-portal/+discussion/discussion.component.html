@@ -40,15 +40,15 @@
     <!--<div class="button-content">-->
     <ux-accordion-boxes>
         <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
-            <div class="ui-g" *ngFor="let representation of representationList; let i = index">
+            <div class="ui-g" *ngFor="let currentUser of users">
                 <div class="ui-g-12">
                     <div class="ui-g-3">
                         <p class="profileDataDiscussion">{{ 'name.label' | translate }}</p>
                         <p>{{ 'surname.label' | translate }}</p>
                     </div>
                     <div class="ui-g-9">
-                        <p class="profileData profileDataDiscussion">{{mayor.name}}</p>
-                        <p class="profileData">{{mayor.surname}}</p>
+                        <p class="profileData profileDataDiscussion">{{currentUser.name}}</p>
+                        <p class="profileData">{{currentUser.surname}}</p>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
     <p>{{ 'recentConversations.text' | translate }}</p>
 
 
-    <div *ngIf="messageList.length < 1" class="ui-g button-content discussion-content">
+    <div *ngIf="thread.messages.length < 1" class="ui-g button-content discussion-content">
         <div class="ui-g-12 noPadding">
             <div class="ui-g-8">
                 <p>{{'noRecentConversations.text' | translate }}</p>
@@ -72,32 +72,32 @@
             </div>
         </div>
     </div>
-    <!--*ngIf="!messagesOnDB"-->
-    <ng-container>
+    <ng-container *ngIf="thread.messages.length > 0">
         <div class="ui-g">
             <div class="ui-g-12">
                 <div class="ui-g-9"></div>
                 <div class="ui-g-3">
                     <div>
                         <button type="button" (click)="newMessage()"
-                                class="btn btn-primary changePassword discussionButton"><i class="fa fa-plus"
-                                                                                           aria-hidden="true"></i>
+                                class="btn btn-primary changePassword discussionButton">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
                             {{'add.repply' | translate }}
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="discussion-content">
+        <div class="discussion-content" *ngFor="let currentMessage of thread.messages">
             <div class="ui-g discussion-content">
                 <div class="ui-g-12">
                     <div class="ui-g-3 backgroundMessage">
-                        <p class="authorMessage">{{user.name}} {{user.surname}}</p>
-                        <p class="authorTime">{{messagesOnDB.createDate}}</p>
-                        <p class="authorTime"></p>
+                        <p class="authorMessage">{{displayAuthorData(currentMessage.authorId, "name")}}
+                            {{displayAuthorData(currentMessage.authorId, "surname")}}</p>
+                        <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
+                        <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
                     </div>
                     <div class="ui-g-9 paddingMessages arrow_box">
-                        <textarea disabled="disabled" class="messageDiv">{{messagesOnDB.message}}</textarea>
+                        <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
                     </div>
                 </div>
             </div>
@@ -125,9 +125,12 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false" [resizable]="false" [draggable]="false"
+    <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false"
+              [resizable]="false" [draggable]="false"
               [closeOnEscape]="true">
-        <div class="beneficiaryTitle center hiddenScroll"> {{ 'sendMessage.title' | translate }}</div>
+        <div class="beneficiaryTitle center hiddenScroll"> {{ 'sendMessage.title' |
+            translate }}
+        </div>
         <form #messagesForm="ngForm">
             <div class="form-group profileDialog">
                 <div class="form-group">
@@ -159,7 +162,8 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+    <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false"
               [closeOnEscape]="true">
         <form #messagesForm="ngForm">
             <div class="form-group profileDialog">

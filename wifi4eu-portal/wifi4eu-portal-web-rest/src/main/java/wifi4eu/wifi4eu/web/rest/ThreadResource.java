@@ -70,10 +70,10 @@ public class ThreadResource {
         }
     }
 
-    @ApiOperation(value = "Get thread by municipality id")
+    @ApiOperation(value = "Get thread by specific municipality id")
     @RequestMapping(value = "/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<ThreadDTO> getThreadBymMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
+    public ThreadDTO getThreadByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
         _log.info("getThreadByMunicipalityId: " + municipalityId);
         return threadService.getThreadByMunicipalityId(municipalityId);
     }
