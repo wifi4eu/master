@@ -1,28 +1,21 @@
 import {Component, Input, Output, EventEmitter} from "@angular/core";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 
 @Component({
     selector: 'beneficiary-registration-step3', templateUrl: 'beneficiary-registration-step3.component.html'
 })
 
 export class BeneficiaryRegistrationStep3Component {
-    @Input('initialUser') initialUser: UserDTOBase;
-    @Output() initialUserChange: EventEmitter<UserDTOBase>;
-    @Input('municipalities') municipalities: MunicipalityDTOBase[];
-    @Output() municipalitiesChange: EventEmitter<MunicipalityDTOBase[]>;
-    @Input('users') users: UserDTOBase[];
-    @Output() usersChange: EventEmitter<UserDTOBase[]>;
-    @Input('representing') representing: boolean;
-    @Output() onNext: EventEmitter<any>;
-    @Output() onBack: EventEmitter<any>;
-    @Output() onEdit: EventEmitter<number>;
+    @Input('initialUser') private initialUser: UserDTOBase;
+    @Input('municipalities') private municipalities: MunicipalityDTOBase[];
+    @Input('users') private users: UserDTOBase[];
+    @Input('representing') private representing: boolean;
+    @Output() private onNext: EventEmitter<any>;
+    @Output() private onBack: EventEmitter<any>;
+    @Output() private onEdit: EventEmitter<number>;
 
-    constructor(private uxService: UxService) {
-        this.initialUserChange = new EventEmitter<UserDTOBase>();
-        this.municipalitiesChange = new EventEmitter<MunicipalityDTOBase[]>();
-        this.usersChange = new EventEmitter<UserDTOBase[]>();
+    constructor() {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
         this.onEdit = new EventEmitter<any>();

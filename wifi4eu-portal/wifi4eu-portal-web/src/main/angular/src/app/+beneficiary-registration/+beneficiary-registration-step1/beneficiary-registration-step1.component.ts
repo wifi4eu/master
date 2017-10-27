@@ -7,11 +7,11 @@ import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux
 })
 
 export class BeneficiaryRegistrationStep1Component implements OnInit {
-    @Input('initialUser') initialUser: UserDTOBase;
-    @Output() initialUserChange: EventEmitter<UserDTOBase>;
-    @Input('representing') representing: boolean;
-    @Output() representingChange: EventEmitter<boolean>;
-    @Output() onNext: EventEmitter<any>;
+    @Input('initialUser') private initialUser: UserDTOBase;
+    @Output() private initialUserChange: EventEmitter<UserDTOBase>;
+    @Input('representing') private representing: boolean;
+    @Output() private representingChange: EventEmitter<boolean>;
+    @Output() private onNext: EventEmitter<any>;
     private mayorUser: UserDTOBase;
     private representativeUser: UserDTOBase;
     private mayorEmails: string[] = ['', ''];

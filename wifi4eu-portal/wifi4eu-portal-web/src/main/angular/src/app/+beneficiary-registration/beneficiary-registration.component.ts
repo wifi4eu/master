@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {UserDTOBase} from "../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../shared/swagger/model/MunicipalityDTO";
-import {RegistrationDTOBase} from "../shared/swagger/model/RegistrationDTO";
+//import {RegistrationDTOBase} from "../shared/swagger/model/RegistrationDTO";
 import {BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
 import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
 
@@ -18,21 +18,13 @@ export class BeneficiaryRegistrationComponent {
     private initialUser: UserDTOBase = new UserDTOBase();
     private users: UserDTOBase[] = [];
     private municipalities: MunicipalityDTOBase[] = [];
-    private registrations: RegistrationDTOBase[] = [];
+    //private registrations: RegistrationDTOBase[] = [];
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
 
     constructor(private beneficiaryApi: BeneficiaryApi) {
     }
 
     navigate(step: number) {
-        console.log("this.representing");
-        console.log(this.representing);
-        console.log("this.initialUser");
-        console.log(this.initialUser);
-        console.log("this.users");
-        console.log(this.users);
-        console.log("this.municipalities");
-        console.log(this.municipalities);
         switch (step) {
             case 1:
                 this.completed = [false, false, false];

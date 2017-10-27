@@ -13,7 +13,7 @@
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'registration.review.title' | translate }}" [isCompleted]="completed[2]" [isActive]="active[2]">
         <uxWizardStepCustomContent>
-            <beneficiary-registration-step3 [(initialUser)]="initialUser" [(municipalities)]="municipalities" [(users)]="users" [representing]="representing"
+            <beneficiary-registration-step3 [initialUser]="initialUser" [municipalities]="municipalities" [users]="users" [representing]="representing"
                                             (onNext)="submitRegistration()" (onBack)="navigate(2)" (onEdit)="navigate($event)"></beneficiary-registration-step3>
         </uxWizardStepCustomContent>
     </ux-wizard-step>

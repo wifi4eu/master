@@ -14,13 +14,13 @@ import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux
 })
 
 export class BeneficiaryRegistrationStep2Component implements OnInit {
-    @Input('municipalities') municipalities: MunicipalityDTOBase[];
-    @Output() municipalitiesChange: EventEmitter<MunicipalityDTOBase[]>;
-    @Input('users') users: UserDTOBase[];
-    @Output() usersChange: EventEmitter<UserDTOBase[]>;
-    @Input('representing') representing: boolean;
-    @Output() onNext: EventEmitter<any>;
-    @Output() onBack: EventEmitter<any>;
+    @Input('municipalities') private municipalities: MunicipalityDTOBase[];
+    @Output() private municipalitiesChange: EventEmitter<MunicipalityDTOBase[]>;
+    @Input('users') private users: UserDTOBase[];
+    @Output() private usersChange: EventEmitter<UserDTOBase[]>;
+    @Input('representing') private representing: boolean;
+    @Output() private onNext: EventEmitter<any>;
+    @Output() private onBack: EventEmitter<any>;
     private allNuts: NutsDTOBase[] = [];
     private allLaus: LauDTOBase[][] = [];
     private nutsSuggestions: NutsDTOBase[] = [];
