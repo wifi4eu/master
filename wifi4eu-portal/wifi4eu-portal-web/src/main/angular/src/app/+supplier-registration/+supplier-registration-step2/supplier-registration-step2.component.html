@@ -1,42 +1,44 @@
-<div class="clearfix"></div>
+<!-- Title -->
+<div id="step2-title" class="ui-g">
+    <div class="ui-g-12 center">
+        <div id="component-title">
+            <h3 class="beneficiaryTitle labelModal">{{ 'step2.supplier' | translate }}</h3>
+        </div>
+    </div>
+</div>
+<!-- Supplier Region select -->
 <div class="container">
-    <div class="center">
-        <p class="beneficiaryTitle labelModal">{{ 'step2.supplier' | translate }}</p>
+<div class="ui-g">
+    <div class="ui-lg-1"></div>
+    <div class="ui-g-12 ui-md-12 ui-lg-5 marginSelect">
+        <!-- select countries -->
+        <p-multiSelect [options]="allCountriesSelect" [(ngModel)]="selectedCountries" (onChange)="checkIfRegionsSelected()"></p-multiSelect>
     </div>
-    <div class="ui-g">
-        <div class="ui-lg-1"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-5 marginSelect">
-            <!-- select countries -->
-            <p-multiSelect [options]="allCountries" [(ngModel)]="nuts0" (onChange)="checkIfRegionsSelected()">
-            </p-multiSelect>
-        </div>
-        <div class="ui-g-12 ui-md-12 ui-lg-5 white">
-            <!-- select country to display communes -->
-            <p-tabView *ngIf="allCountries.length > 0">
-                <p-tabPanel *ngFor="let country of nuts0;" [header]="country.label">
-                    <div class="ui-g">
-                        <p-multiSelect [options]="allRegions[country.label]" [(ngModel)]="nuts3[country.label]"
-                                       (onChange)="checkIfRegionsSelected()">
-                        </p-multiSelect>
-                    </div>
-                </p-tabPanel>
-            </p-tabView>
-        </div>
-        <div class="ui-lg-1"></div>
+    <div class="ui-g-12 ui-md-12 ui-lg-5 white">
+        <!-- select regions from specific country -->
+        <p-tabView>
+            <p-tabPanel *ngFor="let country of selectedCountries;" [header]="country.label">
+                <div class="ui-g">
+                    <p-multiSelect [options]="allRegionsSelect[country.label]" [(ngModel)]="selectedRegions[country.label]" (onChange)="checkIfRegionsSelected()">
+                    </p-multiSelect>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
     </div>
-    <div id="navigation-buttons" class="form-group ui-g">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="button" class="btn btn-primary cancel-button" (click)="stepBack(1)">
-                {{ 'back.button' | translate }}
-            </button>
-        </div>
-        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary publish-button" (click)="onSubmit(2)"
-                    [disabled]="!regionsSelected">
-                {{ 'next.button' | translate }}
-            </button>
-        </div>
-        <div class="ui-lg-3"></div>
+    <div class="ui-lg-1"></div>
+</div>
+</div>
+<div id="navigation-buttons" class="form-group ui-g">
+    <div class="ui-lg-3"></div>
+    <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+        <button type="button" class="btn btn-primary cancel-button" (click)="back()">
+            {{ 'back.button' | translate }}
+        </button>
     </div>
+    <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+        <button type="submit" class="btn btn-primary publish-button" (click)="submit()" [disabled]="!areRegionsSelected">
+            {{ 'next.button' | translate }}
+        </button>
+    </div>
+    <div class="ui-lg-3"></div>
 </div>

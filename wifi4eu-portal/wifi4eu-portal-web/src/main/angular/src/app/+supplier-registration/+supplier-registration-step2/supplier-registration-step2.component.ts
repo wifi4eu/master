@@ -1,71 +1,77 @@
-import {Component, Input, EventEmitter, Output, OnInit} from "@angular/core";
-import {SelectItem} from 'primeng/primeng';
-import {NutsApi} from "../../shared/swagger/api/NutsApi";
-import {NutsDTO} from "../../shared/swagger/model/NutsDTO";
-import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
+import {Component, Input, Output, EventEmitter} from "@angular/core";
+import {SelectItem} from "primeng/primeng";
+import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 
 @Component({
-    selector: 'supplier-registration-step2-component',
-    templateUrl: 'supplier-registration-step2.component.html',
-    providers: [NutsApi]
+    selector: 'supplier-registration-step2', templateUrl: 'supplier-registration-step2.component.html'
 })
-export class SupplierRegistrationComponentStep2 {
-    @Input('supplierDTO') supplierDTO: SupplierDTOBase;
-    @Input('nuts0') private nuts0: NutsDTO[];
-    @Input('nuts3') private nuts3: NutsDTO[][];
-    @Output() onNext: EventEmitter<number>;
-    @Output() onBack: EventEmitter<number>;
-    @Input('allCountries') private allCountries: SelectItem[];
-    @Input('allRegions') private allRegions: SelectItem[][];
-    private regionsSelected: boolean;
 
-    constructor(private nutsApi: NutsApi) {
+export class SupplierRegistrationStep2Component {
+    @Input('selectedCountriesNames') private selectedCountriesNames: string[];
+    @Output() private selectedCountriesNamesChange: EventEmitter<string[]>;
+    @Input('selectedRegions') private selectedRegions: NutsDTOBase[][];
+    @Output() private selectedRegionsChange: EventEmitter<NutsDTOBase[][]>;
+    @Input('allCountriesSelect') private allCountriesSelect: SelectItem[];
+    @Input('allRegionsSelect') private allRegionsSelect: SelectItem[][];
+    @Output() private onNext: EventEmitter<any>;
+    @Output() private onBack: EventEmitter<any>;
+    private selectedCountries: NutsDTOBase[] = [];
+    private areRegionsSelected: boolean = false;
+
+    constructor() {
+        this.selectedRegionsChange = new EventEmitter<NutsDTOBase[][]>();
+        this.selectedCountriesNamesChange = new EventEmitter<string[]>();
         this.onNext = new EventEmitter<number>();
         this.onBack = new EventEmitter<number>();
     }
 
-    ngOnInit() {
-        if (!this.allCountries) {
-            this.nutsApi.getNutsByLevel(0).subscribe(
-                (countries: NutsDTO[]) => {
-                    for (let country of countries) {
-                        let selectCountry = {
-                            label: ' ' + country.label,
-                            value: country
-                        };
-                        this.allCountries.push(selectCountry);
-                    }
-                    this.checkIfRegionsSelected();
-                }
-            );
-        } else {
-            this.checkIfRegionsSelected();
-        }
-    }
-
     checkIfRegionsSelected() {
-        this.regionsSelected = false;
-        for (let country of this.allCountries) {
+        this.areRegionsSelected = false;
+        for (let country of this.allCountriesSelect) {
             let countryFound = false;
-            for (let selectedCountry of this.nuts0) {
+            for (let selectedCountry of this.selectedCountries) {
                 if (selectedCountry.countryCode == country.value.countryCode) {
-                    if (this.nuts3[country.value.label].length > 0) {
-                        this.regionsSelected = true;
+                    if (this.selectedRegions[country.value.label].length > 0) {
+                        this.areRegionsSelected = true;
                     }
                     countryFound = true;
                 }
             }
             if (!countryFound) {
-                this.nuts3[country.value.label] = [];
+                this.selectedRegions[country.value.label] = [];
             }
         }
     }
 
-    onSubmit(step: number) {
-        this.onNext.emit(step);
+    cleanEmptyRegions() {
+        this.selectedCountriesNames = [];
+        let countriesToRemove: number[] = [];
+        let removedCount = 0;
+        for (let selectedCountry of this.selectedCountries) {
+            if (this.selectedRegions[selectedCountry.label].length == 0) {
+                countriesToRemove.push(this.selectedCountries.indexOf(selectedCountry));
+            } else {
+                this.selectedCountriesNames.push(selectedCountry.label);
+            }
+        }
+        for (let index of countriesToRemove) {
+            console.log(this.selectedCountries);
+            this.selectedCountries.splice(index - removedCount, 1);
+            removedCount++;
+        }
     }
 
-    stepBack(step: number) {
-        this.onBack.emit(step);
+    submit() {
+        this.cleanEmptyRegions();
+        this.selectedCountriesNamesChange.emit(this.selectedCountriesNames);
+        this.selectedRegionsChange.emit(this.selectedRegions);
+        this.onNext.emit();
+    }
+
+    back() {
+        this.cleanEmptyRegions();
+        this.selectedCountriesNamesChange.emit(this.selectedCountriesNames);
+        this.selectedRegionsChange.emit(this.selectedRegions);
+        this.onBack.emit();
     }
 }

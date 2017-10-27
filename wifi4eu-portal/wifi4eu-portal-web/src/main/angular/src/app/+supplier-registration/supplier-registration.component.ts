@@ -1,77 +1,62 @@
 import {Component} from "@angular/core";
 import {SelectItem} from 'primeng/primeng';
-import {NutsApi} from "../shared/swagger/api/NutsApi";
 import {SupplierDTOBase} from "../shared/swagger/model/SupplierDTO";
-import {NutsDTOBase, NutsDTO} from "../shared/swagger/model/NutsDTO";
+import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
+import {SuppliedRegionDTOBase} from "../shared/swagger/model/SuppliedRegionDTO";
+import {NutsApi} from "../shared/swagger/api/NutsApi";
+import {SupplierApi} from "../shared/swagger/api/SupplierApi";
+import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 
-@Component({templateUrl: 'supplier-registration.component.html', providers: [NutsApi]})
+@Component({
+    selector: 'supplier-registration', templateUrl: 'supplier-registration.component.html', providers: [NutsApi, SupplierApi]
+})
+
 export class SupplierRegistrationComponent {
+    private successRegistration: boolean = false;
+    private failureRegistration: boolean = false;
+    private completed: boolean[] = [false, false, false, false];
+    private active: boolean[] = [true, false, false, false];
+    private supplier: SupplierDTOBase = new SupplierDTOBase();
+    private selectedCountriesNames: string[] = [];
+    private selectedRegions: NutsDTOBase[][] = [];
+    private allCountriesSelect: SelectItem[] = [];
+    private allRegionsSelect: SelectItem[][] = [];
+    private logoUrl: FileReader = new FileReader();
 
-    private supplierDTO: SupplierDTOBase;
-
-    private selection: boolean[];
-    private completed: boolean[];
-    private active: boolean[];
-    private successRegistration: boolean;
-    private failureRegistration: boolean;
-
-    private nuts0: NutsDTO[];
-    private nuts3: NutsDTO[][];
-    private allCountries: SelectItem[];
-    private allRegions: SelectItem[][];
-
-    private logoFile: any;
-
-    constructor(private nutsApi: NutsApi) {
-        this.supplierDTO = new SupplierDTOBase();
-        this.supplierDTO.suppliedRegions = [];
-
-        this.selection = [true, false];
-        this.completed = [false, false, false, false];
-        this.active = [true, false, false, false];
-        this.successRegistration = false;
-        this.failureRegistration = false;
-
-        this.nuts0 = [];
-        this.nuts3 = [];
-        this.allCountries = [];
-        this.allRegions = [];
-
+    constructor(private nutsApi: NutsApi, private supplierApi: SupplierApi, private uxService: UxService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
-            (countries: NutsDTO[]) => {
+            (countries: NutsDTOBase[]) => {
                 for (let country of countries) {
                     let selectCountry = {
-                        label: ' ' + country.label,
+                        label: country.label,
                         value: country
                     };
-                    this.allCountries.push(selectCountry);
-                    if (!this.nuts3[country.label]) {
-                        this.nuts3[country.label] = [];
-                    }
-                    this.allRegions[country.label] = [];
+                    this.allCountriesSelect.push(selectCountry);
+                    this.allRegionsSelect[country.label] = [];
+                    this.selectedRegions[country.label] = [];
                     this.nutsApi.getNutsByCountryCodeAndLevel(country.countryCode, 3).subscribe(
-                        (regions: NutsDTO[]) => {
+                        (regions: NutsDTOBase[]) => {
                             for (let region of regions) {
                                 let selectRegion = {
-                                    label: ' ' + region.label,
+                                    label: region.label,
                                     value: region
-                                }
-                                this.allRegions[country.label].push(selectRegion);
+                                };
+                                this.allRegionsSelect[country.label].push(selectRegion);
                             }
+                        }, error => {
+                            console.log(error);
+                            // growl the error here
                         }
                     );
                 }
+            }, error => {
+                console.log(error);
+                // growl the error here
             }
         );
     }
 
-    onNext(step: number) {
-        this.completed[step - 1] = true;
-        this.active[step - 1] = false;
-        this.active[step] = true;
-    }
-
-    gotoStep(step: number) {
+    navigate(step: number) {
         switch (step) {
             case 1:
                 this.completed = [false, false, false, false];
@@ -89,33 +74,23 @@ export class SupplierRegistrationComponent {
                 this.completed = [true, true, true, false];
                 this.active = [false, false, false, true];
                 break;
-        }
+        };
     }
 
-    onBack(step: number) {
-        this.completed[step - 1] = false;
-        this.active[step - 1] = true;
-        this.active[step] = false;
-    }
-
-    // onSuccess(value: boolean) {
-    //     this.successRegistration = value;
-    // }
-    //
-    // onFailure(value: boolean) {
-    //     this.failureRegistration = value;
-    // }
-
-    onLogoSubmit(event: any) {
-        if (event) {
-            this.logoFile = event;
-            let reader = new FileReader();
-            reader.onload = (e) => {
-                this.supplierDTO.logo = reader.result;
-            };
-            reader.readAsDataURL(event);
-        } else {
-            this.logoFile = null;
+    submitRegistration() {
+        for (let selectedCountry in this.selectedRegions) {
+            for (let selectedRegion of this.selectedRegions[selectedCountry]) {
+                let suppliedRegion = new SuppliedRegionDTOBase();
+                suppliedRegion.regionId = selectedRegion.id;
+                this.supplier.suppliedRegions.push(suppliedRegion);
+            }
         }
+        this.supplierApi.createSupplier(this.supplier).subscribe(
+            data => {
+                console.log(data);
+            }, error => {
+                console.log(error);
+            }
+        );
     }
 }
