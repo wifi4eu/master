@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, EventEmitter, Input, Output, OnInit} from "@angular/core";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 
 @Component({
@@ -8,22 +7,27 @@ import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux
 })
 
 export class BeneficiaryRegistrationStep1Component implements OnInit {
-    @Input('users') users: UserDTOBase[];
-    @Input('mayors') mayors: MayorDTOBase[];
+    @Input('initialUser') initialUser: UserDTOBase;
+    @Output() initialUserChange: EventEmitter<UserDTOBase>;
     @Input('representing') representing: boolean;
+    @Output() representingChange: EventEmitter<boolean>;
+    @Output() onNext: EventEmitter<any>;
     private mayorUser: UserDTOBase;
     private representativeUser: UserDTOBase;
     private mayorEmails: string[] = ['', ''];
     private representativeEmails: string[] = ['', ''];
-    @Output() onNext: EventEmitter<any>;
 
     constructor(private uxService: UxService) {
+        this.initialUserChange = new EventEmitter<UserDTOBase>();
+        this.representingChange = new EventEmitter<boolean>();
         this.onNext = new EventEmitter<any>();
     }
 
     ngOnInit() {
         this.mayorUser = new UserDTOBase();
+        this.mayorUser.type = 2;
         this.representativeUser = new UserDTOBase();
+        this.representativeUser.type = 3;
     }
 
     checkRepresentative(option: boolean) {
@@ -38,19 +42,14 @@ export class BeneficiaryRegistrationStep1Component implements OnInit {
             } else {
                 emailsUnmatch = true;
             }
-            this.users[0] = this.representativeUser;
+            this.initialUser = this.representativeUser;
         } else {
             if (this.mayorEmails[0].length > 0 && this.mayorEmails[0] == this.mayorEmails[1]) {
                 this.mayorUser.email = this.mayorEmails[0];
             } else {
                 emailsUnmatch = true;
             }
-            let mayor = new MayorDTOBase();
-            mayor.name = this.mayorUser.name;
-            mayor.surname = this.mayorUser.surname;
-            mayor.email = this.mayorUser.email;
-            this.users[0] = this.mayorUser;
-            this.mayors[0] = mayor;
+            this.initialUser = this.mayorUser;
         }
         if (emailsUnmatch) {
             this.uxService.growl({
@@ -59,7 +58,9 @@ export class BeneficiaryRegistrationStep1Component implements OnInit {
                 detail: 'The email inputs must match.'
             });
         } else {
-            this.onNext.emit(this.representing);
+            this.initialUserChange.emit(this.initialUser);
+            this.representingChange.emit(this.representing);
+            this.onNext.emit();
         }
     }
 }

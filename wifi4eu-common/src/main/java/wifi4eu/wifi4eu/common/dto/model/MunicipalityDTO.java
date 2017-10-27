@@ -6,24 +6,24 @@ public class MunicipalityDTO {
     private int id;
     private String name;
     private String address;
-    private int lauId;
+    private String addressNum;
     private String postalCode;
     private String country;
-    private int addressNum;
+    private int lauId;
     private List<RegistrationDTO> registrations;
 
     public MunicipalityDTO() {
     }
 
-    public MunicipalityDTO(int id, String name, String address, int lauId, List<RegistrationDTO> registrations, String postalCode, String country, int addressNum) {
+    public MunicipalityDTO(int id, String name, String address, String addressNum, String postalCode, String country, int lauId, List<RegistrationDTO> registrations) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.addressNum = addressNum;
+        this.postalCode = postalCode;
+        this.country = country;
         this.lauId = lauId;
         this.registrations = registrations;
-        this.country = country;
-        this.postalCode = postalCode;
-        this.addressNum = addressNum;
     }
 
     public int getId() {
@@ -50,6 +50,30 @@ public class MunicipalityDTO {
         this.address = address;
     }
 
+    public String getAddressNum() {
+        return addressNum;
+    }
+
+    public void setAddressNum(String addressNum) {
+        this.addressNum = addressNum;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public int getLauId() {
         return lauId;
     }
@@ -64,29 +88,5 @@ public class MunicipalityDTO {
 
     public void setRegistrations(List<RegistrationDTO> registrations) {
         this.registrations = registrations;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public int getAddressNum() {
-        return addressNum;
-    }
-
-    public void setAddressNum(int addressNum) {
-        this.addressNum = addressNum;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 }
