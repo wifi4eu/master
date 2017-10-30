@@ -1,106 +1,120 @@
 import {Component} from "@angular/core";
-import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
+
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {LauApi} from "app/shared/swagger";
-import {RepresentationApi} from "../../shared/swagger/api/RepresentationApi";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
-import {MayorApi} from "app/shared/swagger/api/MayorApi";
-import {RepresentationDTOBase} from "../../shared/swagger/model/RepresentationDTO";
+import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
+import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
+import {UserApi} from "../../shared/swagger/api/UserApi";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
+import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
+import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
+import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
+import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
+import {ResponseDTO} from "../../shared/swagger/model/ResponseDTO";
+import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
+
 
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
-    providers: [MunicipalityApi, LauApi, RepresentationApi, MayorApi]
+    providers: [UserApi, RegistrationApi, MunicipalityApi, ThreadApi, ThreadmessagesApi]
 })
 export class DiscussionComponent {
-    private displayMessage: boolean;
-    private showAccordion: boolean;
-    // private representation: RepresentationDTOBase;
-    private user: UserDTOBase;
-    private message: string;
-    private subject: string;
-    private messageList: string[];
-    private displayMediation: boolean;
-    private thread: ThreadDTOBase;
-    private municipality: MunicipalityDTOBase;
-    private mayor: MayorDTOBase;
-    private lau: LauDTOBase;
-    private mediationButton: boolean;
-    private showAlert: boolean;
-
-    private postalCode: string;
-    private number: string;
+    private user: UserDTOBase = new UserDTOBase();
+    private users: UserDTOBase[] = [];
+    private municipality: MunicipalityDTOBase = new MunicipalityDTOBase();
+    private registrations: RegistrationDTOBase[] = [];
+    private thread: ThreadDTOBase = new ThreadDTOBase();
+    private displayMessage: boolean = false;
+    private displayMediation: boolean = false;
+    private mediationButton: boolean = false;
+    private showAlert: boolean = false;
+    private message: string = "";
 
 
-    constructor(private municipalityApi: MunicipalityApi, private lauApi: LauApi, private representationApi: RepresentationApi, private mayorApi: MayorApi) {
-        this.displayMessage = false;
-        this.message = "";
-        this.subject = "";
-        this.messageList = [];
-        this.displayMediation = false;
-        this.showAccordion = false;
-        this.mediationButton = false;
+    constructor(private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private userApi: UserApi, private uxService: UxService) {
+        this.thread.messages = [];
+    }
 
-        // this.thread.municipalityId
-
-        this.municipality = new MunicipalityDTOBase();
-        this.municipality.lauId = 1;
-        this.municipality.address = "Diagonal";
-
-        this.mayor = new MayorDTOBase();
-        this.mayor.name = "John";
-        this.mayor.surname = "Smith";
-
-        this.lau = new LauDTOBase();
-        this.lau.name1 = "Barcelona";
-        this.lau.countryCode = "Spain";
-
-        this.postalCode = "08022";
-        this.number = "605";
-
-        this.showAlert = false;
-
-
-        /*
-        this.municipalityApi.getMunicipalityById(2).subscribe(
-            data => {
-                this.municipality = data;
-                this.representationApi.getRepresentationByMayorId(2).subscribe(
-                    representation => {
-                        this.representation = representation;
-                        this.mayorApi.getMayorById(this.representation.mayorId).subscribe(
-                            mayor => {
-                                this.mayor = mayor;
+    ngOnInit() {
+        this.userApi.getUserById(100).subscribe(
+            (user: UserDTOBase) => {
+                this.user = user;
+                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                    (registrations: RegistrationDTOBase[]) => {
+                        this.registrations = registrations;
+                        for (let registration of registrations) {
+                            this.userApi.getUserById(registration.userId).subscribe(
+                                (user: UserDTOBase) => {
+                                    this.users.push(user);
+                                }, error5 => {
+                                    console.log(error5);
+                                }
+                            );
+                        }
+                        this.municipalityApi.getMunicipalityById(registrations[0].municipalityId).subscribe(
+                            (municipality: MunicipalityDTOBase) => {
+                                this.municipality = municipality;
+                                this.threadApi.getThreadByMunicipalityId(this.municipality.id).subscribe(
+                                    (thread: ThreadDTOBase) => {
+                                        this.thread = thread;
+                                    }, error4 => {
+                                        console.log(error4);
+                                    }
+                                );
                             }, error3 => {
                                 console.log(error3);
                             }
                         );
-
                     }, error2 => {
                         console.log(error2);
                     }
                 );
-
-
             }, error => {
                 console.log(error);
             }
         );
-        */
+
     }
 
     newMessage() {
         this.displayMessage = true;
         this.message = "";
-        this.subject = "";
     }
 
     sendMessage() {
-        this.messageList.push(this.message);
-        this.displayMessage = false;
+        let newMessage = new ThreadMessageDTOBase();
+        newMessage.createDate = new Date().getTime();
+        newMessage.message = this.message;
+        newMessage.authorId = this.user.id;
+        newMessage.threadId = this.thread.id;
+        this.threadMessagesApi.createThreadMessage(newMessage).subscribe(
+            (response: ResponseDTO) => {
+                if (response.success) {
+                    this.thread.messages.push(response.data);
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: 'SUCCESS',
+                        detail: 'The message was successfully sent!'
+                    });
+                } else {
+                    this.uxService.growl({
+                        severity: 'error',
+                        summary: 'ERROR',
+                        detail: 'The message could not be successfully sent.'
+                    });
+                }
+                this.displayMessage = false;
+            }, error => {
+                console.log(error);
+                this.uxService.growl({
+                    severity: 'error',
+                    summary: 'ERROR',
+                    detail: 'Something went wrong while trying to send the message.'
+                });
+                this.displayMessage = false;
+            }
+        );
     }
 
 
@@ -117,6 +131,14 @@ export class DiscussionComponent {
         this.mediationButton = true;
         this.showAlert = true;
         window.scrollTo(0, 0)
+    }
+
+    displayAuthorData(authorId: number, field: string) {
+        for (let user of this.users) {
+            if (user.id = authorId) {
+                return user[field];
+            }
+        }
     }
 
 }

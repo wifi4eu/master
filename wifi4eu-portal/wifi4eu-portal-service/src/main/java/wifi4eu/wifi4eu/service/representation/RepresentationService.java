@@ -42,4 +42,8 @@ public class RepresentationService {
     public RepresentationDTO getRepresentationByMayorId(int mayorId) {
         return representationMapper.toDTO(representationRepository.findOne(mayorId));
     }
+
+    public List<RepresentationDTO> getRepresentationByMunicipalityId(int municipalityId) {
+        return representationMapper.toDTOList(Lists.newArrayList(representationRepository.findByMunicipalityId(municipalityId)));
+    }
 }

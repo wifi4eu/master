@@ -26,6 +26,20 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`SEQUENCE` (
   PRIMARY KEY (`SEQ_NAME`)
 );
 
+
+-- -----------------------------------------------------
+-- Table `wifi4eu-new`.`audit_data_t`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `audit_data_t` (
+  `AUDIT_DATA_ID` int(11) NOT NULL,
+  `REQUEST_ENDPOINT` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REQUEST_METHOD` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `REQUEST_BODY` blob,
+  `RESPONSE_BODY` blob,
+  `USER_ID` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
 -- -----------------------------------------------------
 -- Table `wifi4eu-new`.`users`
 -- -----------------------------------------------------

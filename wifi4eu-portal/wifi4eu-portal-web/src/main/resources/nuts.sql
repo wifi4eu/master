@@ -868,235 +868,6 @@ INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('DEA17', 'Oberhausen, Kreisfreie Stadt', '3', 'DE', '5', '434');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('DEA18', 'Remscheid, Kreisfreie Stadt', '3', 'DE', '5', '435');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA19', 'Solingen, Kreisfreie Stadt', '3', 'DE', '5', '436');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1A', 'Wuppertal, Kreisfreie Stadt', '3', 'DE', '5', '437');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1B', 'Kleve', '3', 'DE', '5', '438');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1C', 'Mettmann', '3', 'DE', '5', '439');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1D', 'Rhein-Kreis Neuss', '3', 'DE', '5', '440');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1E', 'Viersen', '3', 'DE', '5', '441');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1F', 'Wesel', '3', 'DE', '5', '442');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA2', 'Köln', '2', 'DE', '5', '443');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA22', 'Bonn, Kreisfreie Stadt', '3', 'DE', '5', '444');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA23', 'Köln, Kreisfreie Stadt', '3', 'DE', '5', '445');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA24', 'Leverkusen, Kreisfreie Stadt', '3', 'DE', '5', '446');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA26', 'Düren', '3', 'DE', '5', '447');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA27', 'Rhein-Erft-Kreis', '3', 'DE', '5', '448');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA28', 'Euskirchen', '3', 'DE', '5', '449');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA29', 'Heinsberg', '3', 'DE', '5', '450');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA2A', 'Oberbergischer Kreis', '3', 'DE', '5', '451');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA2B', 'Rheinisch-Bergischer Kreis', '3', 'DE', '5', '452');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA2C', 'Rhein-Sieg-Kreis', '3', 'DE', '5', '453');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA2D', 'Städteregion Aachen', '3', 'DE', '5', '454');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA3', 'Münster', '2', 'DE', '5', '455');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA31', 'Bottrop, Kreisfreie Stadt', '3', 'DE', '5', '456');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA32', 'Gelsenkirchen, Kreisfreie Stadt', '3', 'DE', '5', '457');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA33', 'Münster, Kreisfreie Stadt', '3', 'DE', '5', '458');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA34', 'Borken', '3', 'DE', '5', '459');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA35', 'Coesfeld', '3', 'DE', '5', '460');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA36', 'Recklinghausen', '3', 'DE', '5', '461');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA37', 'Steinfurt', '3', 'DE', '5', '462');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA38', 'Warendorf', '3', 'DE', '5', '463');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA4', 'Detmold', '2', 'DE', '5', '464');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA41', 'Bielefeld, Kreisfreie Stadt', '3', 'DE', '5', '465');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA42', 'Gütersloh', '3', 'DE', '5', '466');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA43', 'Herford', '3', 'DE', '5', '467');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA44', 'Höxter', '3', 'DE', '5', '468');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA45', 'Lippe', '3', 'DE', '5', '469');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA46', 'Minden-Lübbecke', '3', 'DE', '5', '470');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA47', 'Paderborn', '3', 'DE', '5', '471');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA5', 'Arnsberg', '2', 'DE', '5', '472');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA51', 'Bochum, Kreisfreie Stadt', '3', 'DE', '5', '473');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA52', 'Dortmund, Kreisfreie Stadt', '3', 'DE', '5', '474');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA53', 'Hagen, Kreisfreie Stadt', '3', 'DE', '5', '475');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA54', 'Hamm, Kreisfreie Stadt', '3', 'DE', '5', '476');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA55', 'Herne, Kreisfreie Stadt', '3', 'DE', '5', '477');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA56', 'Ennepe-Ruhr-Kreis', '3', 'DE', '5', '478');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA57', 'Hochsauerlandkreis', '3', 'DE', '5', '479');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA58', 'Märkischer Kreis', '3', 'DE', '5', '480');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA59', 'Olpe', '3', 'DE', '5', '481');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA5A', 'Siegen-Wittgenstein', '3', 'DE', '5', '482');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA5B', 'Soest', '3', 'DE', '5', '483');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA5C', 'Unna', '3', 'DE', '5', '484');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB', 'RHEINLAND-PFALZ', '1', 'DE', '5', '485');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB1', 'Koblenz', '2', 'DE', '5', '486');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB11', 'Koblenz, Kreisfreie Stadt', '3', 'DE', '5', '487');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB12', 'Ahrweiler', '3', 'DE', '5', '488');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB13', 'Altenkirchen (Westerwald)', '3', 'DE', '5', '489');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB14', 'Bad Kreuznach', '3', 'DE', '5', '490');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB15', 'Birkenfeld', '3', 'DE', '5', '491');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB16', 'Cochem-Zell', '3', 'DE', '5', '492');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB17', 'Mayen-Koblenz', '3', 'DE', '5', '493');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB18', 'Neuwied', '3', 'DE', '5', '494');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB19', 'Rhein-Hunsrück-Kreis', '3', 'DE', '5', '495');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB1A', 'Rhein-Lahn-Kreis', '3', 'DE', '5', '496');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB1B', 'Westerwaldkreis', '3', 'DE', '5', '497');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB2', 'Trier', '2', 'DE', '5', '498');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB21', 'Trier, Kreisfreie Stadt', '3', 'DE', '5', '499');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB22', 'Bernkastel-Wittlich', '3', 'DE', '5', '500');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB23', 'Eifelkreis Bitburg-Prüm', '3', 'DE', '5', '501');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB24', 'Vulkaneifel', '3', 'DE', '5', '502');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB25', 'Trier-Saarburg', '3', 'DE', '5', '503');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3', 'Rheinhessen-Pfalz', '2', 'DE', '5', '504');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB31', 'Frankenthal (Pfalz), Kreisfreie Stadt', '3', 'DE', '5', '505');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB32', 'Kaiserslautern, Kreisfreie Stadt', '3', 'DE', '5', '506');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB33', 'Landau in der Pfalz, Kreisfreie Stadt', '3', 'DE', '5', '507');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB34', 'Ludwigshafen am Rhein, Kreisfreie Stadt', '3', 'DE', '5', '508');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB35', 'Mainz, Kreisfreie Stadt', '3', 'DE', '5', '509');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB36', 'Neustadt an der Weinstraße, Kreisfreie Stadt', '3', 'DE', '5', '510');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB37', 'Pirmasens, Kreisfreie Stadt', '3', 'DE', '5', '511');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB38', 'Speyer, Kreisfreie Stadt', '3', 'DE', '5', '512');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB39', 'Worms, Kreisfreie Stadt', '3', 'DE', '5', '513');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3A', 'Zweibrücken, Kreisfreie Stadt', '3', 'DE', '5', '514');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3B', 'Alzey-Worms', '3', 'DE', '5', '515');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3C', 'Bad Dürkheim', '3', 'DE', '5', '516');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3D', 'Donnersbergkreis', '3', 'DE', '5', '517');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3E', 'Germersheim', '3', 'DE', '5', '518');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3F', 'Kaiserslautern, Landkreis', '3', 'DE', '5', '519');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3G', 'Kusel', '3', 'DE', '5', '520');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3H', 'Südliche Weinstraße', '3', 'DE', '5', '521');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3I', 'Rhein-Pfalz-Kreis', '3', 'DE', '5', '522');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3J', 'Mainz-Bingen', '3', 'DE', '5', '523');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3K', 'Südwestpfalz', '3', 'DE', '5', '524');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC', 'SAARLAND', '1', 'DE', '5', '525');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC0', 'Saarland', '2', 'DE', '5', '526');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC01', 'Regionalverband Saarbrücken', '3', 'DE', '5', '527');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC02', 'Merzig-Wadern', '3', 'DE', '5', '528');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC03', 'Neunkirchen', '3', 'DE', '5', '529');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC04', 'Saarlouis', '3', 'DE', '5', '530');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC05', 'Saarpfalz-Kreis', '3', 'DE', '5', '531');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC06', 'St. Wendel', '3', 'DE', '5', '532');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED', 'SACHSEN', '1', 'DE', '5', '533');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED2', 'Dresden', '2', 'DE', '5', '534');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED21', 'Dresden, Kreisfreie Stadt', '3', 'DE', '5', '535');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED2C', 'Bautzen', '3', 'DE', '5', '536');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED2D', 'Görlitz', '3', 'DE', '5', '537');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED2E', 'Meißen', '3', 'DE', '5', '538');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED2F', 'Sächsische Schweiz-Osterzgebirge', '3', 'DE', '5', '539');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED4', 'Chemnitz', '2', 'DE', '5', '540');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED41', 'Chemnitz, Kreisfreie Stadt', '3', 'DE', '5', '541');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED42', 'Erzgebirgskreis', '3', 'DE', '5', '542');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED43', 'Mittelsachsen', '3', 'DE', '5', '543');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED44', 'Vogtlandkreis', '3', 'DE', '5', '544');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED45', 'Zwickau', '3', 'DE', '5', '545');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED5', 'Leipzig', '2', 'DE', '5', '546');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED51', 'Leipzig, Kreisfreie Stadt', '3', 'DE', '5', '547');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED52', 'Leipzig', '3', 'DE', '5', '548');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED53', 'Nordsachsen', '3', 'DE', '5', '549');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('DEE', 'SACHSEN-ANHALT', '1', 'DE', '5', '550');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('DEE0', 'Sachsen-Anhalt', '2', 'DE', '5', '551');
@@ -1522,6 +1293,235 @@ INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('ES512', 'Girona', '3', 'ES', '9', '760');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('ES513', 'Lleida', '3', 'ES', '9', '761');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA19', 'Solingen, Kreisfreie Stadt', '3', 'DE', '5', '436');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA1A', 'Wuppertal, Kreisfreie Stadt', '3', 'DE', '5', '437');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA1B', 'Kleve', '3', 'DE', '5', '438');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA1C', 'Mettmann', '3', 'DE', '5', '439');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA1D', 'Rhein-Kreis Neuss', '3', 'DE', '5', '440');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA1E', 'Viersen', '3', 'DE', '5', '441');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA1F', 'Wesel', '3', 'DE', '5', '442');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA2', 'Köln', '2', 'DE', '5', '443');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA22', 'Bonn, Kreisfreie Stadt', '3', 'DE', '5', '444');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA23', 'Köln, Kreisfreie Stadt', '3', 'DE', '5', '445');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA24', 'Leverkusen, Kreisfreie Stadt', '3', 'DE', '5', '446');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA26', 'Düren', '3', 'DE', '5', '447');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA27', 'Rhein-Erft-Kreis', '3', 'DE', '5', '448');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA28', 'Euskirchen', '3', 'DE', '5', '449');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA29', 'Heinsberg', '3', 'DE', '5', '450');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA2A', 'Oberbergischer Kreis', '3', 'DE', '5', '451');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA2B', 'Rheinisch-Bergischer Kreis', '3', 'DE', '5', '452');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA2C', 'Rhein-Sieg-Kreis', '3', 'DE', '5', '453');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA2D', 'Städteregion Aachen', '3', 'DE', '5', '454');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA3', 'Münster', '2', 'DE', '5', '455');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA31', 'Bottrop, Kreisfreie Stadt', '3', 'DE', '5', '456');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA32', 'Gelsenkirchen, Kreisfreie Stadt', '3', 'DE', '5', '457');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA33', 'Münster, Kreisfreie Stadt', '3', 'DE', '5', '458');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA34', 'Borken', '3', 'DE', '5', '459');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA35', 'Coesfeld', '3', 'DE', '5', '460');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA36', 'Recklinghausen', '3', 'DE', '5', '461');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA37', 'Steinfurt', '3', 'DE', '5', '462');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA38', 'Warendorf', '3', 'DE', '5', '463');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA4', 'Detmold', '2', 'DE', '5', '464');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA41', 'Bielefeld, Kreisfreie Stadt', '3', 'DE', '5', '465');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA42', 'Gütersloh', '3', 'DE', '5', '466');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA43', 'Herford', '3', 'DE', '5', '467');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA44', 'Höxter', '3', 'DE', '5', '468');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA45', 'Lippe', '3', 'DE', '5', '469');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA46', 'Minden-Lübbecke', '3', 'DE', '5', '470');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA47', 'Paderborn', '3', 'DE', '5', '471');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA5', 'Arnsberg', '2', 'DE', '5', '472');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA51', 'Bochum, Kreisfreie Stadt', '3', 'DE', '5', '473');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA52', 'Dortmund, Kreisfreie Stadt', '3', 'DE', '5', '474');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA53', 'Hagen, Kreisfreie Stadt', '3', 'DE', '5', '475');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA54', 'Hamm, Kreisfreie Stadt', '3', 'DE', '5', '476');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA55', 'Herne, Kreisfreie Stadt', '3', 'DE', '5', '477');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA56', 'Ennepe-Ruhr-Kreis', '3', 'DE', '5', '478');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA57', 'Hochsauerlandkreis', '3', 'DE', '5', '479');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA58', 'Märkischer Kreis', '3', 'DE', '5', '480');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA59', 'Olpe', '3', 'DE', '5', '481');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA5A', 'Siegen-Wittgenstein', '3', 'DE', '5', '482');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA5B', 'Soest', '3', 'DE', '5', '483');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEA5C', 'Unna', '3', 'DE', '5', '484');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB', 'RHEINLAND-PFALZ', '1', 'DE', '5', '485');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB1', 'Koblenz', '2', 'DE', '5', '486');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB11', 'Koblenz, Kreisfreie Stadt', '3', 'DE', '5', '487');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB12', 'Ahrweiler', '3', 'DE', '5', '488');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB13', 'Altenkirchen (Westerwald)', '3', 'DE', '5', '489');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB14', 'Bad Kreuznach', '3', 'DE', '5', '490');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB15', 'Birkenfeld', '3', 'DE', '5', '491');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB16', 'Cochem-Zell', '3', 'DE', '5', '492');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB17', 'Mayen-Koblenz', '3', 'DE', '5', '493');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB18', 'Neuwied', '3', 'DE', '5', '494');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB19', 'Rhein-Hunsrück-Kreis', '3', 'DE', '5', '495');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB1A', 'Rhein-Lahn-Kreis', '3', 'DE', '5', '496');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB1B', 'Westerwaldkreis', '3', 'DE', '5', '497');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB2', 'Trier', '2', 'DE', '5', '498');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB21', 'Trier, Kreisfreie Stadt', '3', 'DE', '5', '499');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB22', 'Bernkastel-Wittlich', '3', 'DE', '5', '500');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB23', 'Eifelkreis Bitburg-Prüm', '3', 'DE', '5', '501');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB24', 'Vulkaneifel', '3', 'DE', '5', '502');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB25', 'Trier-Saarburg', '3', 'DE', '5', '503');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB3', 'Rheinhessen-Pfalz', '2', 'DE', '5', '504');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB31', 'Frankenthal (Pfalz), Kreisfreie Stadt', '3', 'DE', '5', '505');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB32', 'Kaiserslautern, Kreisfreie Stadt', '3', 'DE', '5', '506');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB33', 'Landau in der Pfalz, Kreisfreie Stadt', '3', 'DE', '5', '507');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB34', 'Ludwigshafen am Rhein, Kreisfreie Stadt', '3', 'DE', '5', '508');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB35', 'Mainz, Kreisfreie Stadt', '3', 'DE', '5', '509');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB36', 'Neustadt an der Weinstraße, Kreisfreie Stadt', '3', 'DE', '5', '510');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB37', 'Pirmasens, Kreisfreie Stadt', '3', 'DE', '5', '511');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB38', 'Speyer, Kreisfreie Stadt', '3', 'DE', '5', '512');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB39', 'Worms, Kreisfreie Stadt', '3', 'DE', '5', '513');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB3A', 'Zweibrücken, Kreisfreie Stadt', '3', 'DE', '5', '514');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB3B', 'Alzey-Worms', '3', 'DE', '5', '515');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB3C', 'Bad Dürkheim', '3', 'DE', '5', '516');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB3D', 'Donnersbergkreis', '3', 'DE', '5', '517');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB3E', 'Germersheim', '3', 'DE', '5', '518');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB3F', 'Kaiserslautern, Landkreis', '3', 'DE', '5', '519');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB3G', 'Kusel', '3', 'DE', '5', '520');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB3H', 'Südliche Weinstraße', '3', 'DE', '5', '521');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB3I', 'Rhein-Pfalz-Kreis', '3', 'DE', '5', '522');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB3J', 'Mainz-Bingen', '3', 'DE', '5', '523');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEB3K', 'Südwestpfalz', '3', 'DE', '5', '524');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEC', 'SAARLAND', '1', 'DE', '5', '525');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEC0', 'Saarland', '2', 'DE', '5', '526');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEC01', 'Regionalverband Saarbrücken', '3', 'DE', '5', '527');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEC02', 'Merzig-Wadern', '3', 'DE', '5', '528');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEC03', 'Neunkirchen', '3', 'DE', '5', '529');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEC04', 'Saarlouis', '3', 'DE', '5', '530');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEC05', 'Saarpfalz-Kreis', '3', 'DE', '5', '531');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DEC06', 'St. Wendel', '3', 'DE', '5', '532');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED', 'SACHSEN', '1', 'DE', '5', '533');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED2', 'Dresden', '2', 'DE', '5', '534');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED21', 'Dresden, Kreisfreie Stadt', '3', 'DE', '5', '535');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED2C', 'Bautzen', '3', 'DE', '5', '536');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED2D', 'Görlitz', '3', 'DE', '5', '537');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED2E', 'Meißen', '3', 'DE', '5', '538');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED2F', 'Sächsische Schweiz-Osterzgebirge', '3', 'DE', '5', '539');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED4', 'Chemnitz', '2', 'DE', '5', '540');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED41', 'Chemnitz, Kreisfreie Stadt', '3', 'DE', '5', '541');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED42', 'Erzgebirgskreis', '3', 'DE', '5', '542');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED43', 'Mittelsachsen', '3', 'DE', '5', '543');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED44', 'Vogtlandkreis', '3', 'DE', '5', '544');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED45', 'Zwickau', '3', 'DE', '5', '545');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED5', 'Leipzig', '2', 'DE', '5', '546');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED51', 'Leipzig, Kreisfreie Stadt', '3', 'DE', '5', '547');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED52', 'Leipzig', '3', 'DE', '5', '548');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
+VALUES ('DED53', 'Nordsachsen', '3', 'DE', '5', '549');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('ES514', 'Tarragona', '3', 'ES', '9', '762');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)

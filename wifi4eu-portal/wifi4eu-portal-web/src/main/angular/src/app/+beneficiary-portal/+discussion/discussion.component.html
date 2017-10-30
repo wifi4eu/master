@@ -24,11 +24,11 @@
                         <p>{{ 'postal-code.label' | translate }}</p>
                     </div>
                     <div class="ui-g-9">
-                        <p class="profileDataDiscussion profileData">{{lau.countryCode}}</p>
-                        <p class="profileData">{{lau.name1}}</p>
+                        <p class="profileDataDiscussion profileData">{{municipality.country}}</p>
+                        <p class="profileData">{{municipality.name}}</p>
                         <p class="profileData">{{municipality.address}}</p>
-                        <p class="profileData">{{number}}</p>
-                        <p class="profileData">{{postalCode}}</p>
+                        <p class="profileData">{{municipality.addressNum}}</p>
+                        <p class="profileData">{{municipality.postalCode}}</p>
                     </div>
                 </div>
             </div>
@@ -40,15 +40,15 @@
     <!--<div class="button-content">-->
     <ux-accordion-boxes>
         <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
-            <div class="ui-g">
+            <div class="ui-g" *ngFor="let currentUser of users">
                 <div class="ui-g-12">
                     <div class="ui-g-3">
                         <p class="profileDataDiscussion">{{ 'name.label' | translate }}</p>
                         <p>{{ 'surname.label' | translate }}</p>
                     </div>
                     <div class="ui-g-9">
-                        <p class="profileData profileDataDiscussion">{{mayor.name}}</p>
-                        <p class="profileData">{{mayor.surname}}</p>
+                        <p class="profileData profileDataDiscussion">{{currentUser.name}}</p>
+                        <p class="profileData">{{currentUser.surname}}</p>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
     <p>{{ 'recentConversations.text' | translate }}</p>
 
 
-    <div *ngIf="messageList.length < 1" class="ui-g button-content discussion-content">
+    <div *ngIf="thread.messages.length < 1" class="ui-g button-content discussion-content">
         <div class="ui-g-12 noPadding">
             <div class="ui-g-8">
                 <p>{{'noRecentConversations.text' | translate }}</p>
@@ -72,32 +72,32 @@
             </div>
         </div>
     </div>
-    <ng-container *ngIf="messageList.length > 0">
+    <ng-container *ngIf="thread.messages.length > 0">
         <div class="ui-g">
             <div class="ui-g-12">
                 <div class="ui-g-9"></div>
                 <div class="ui-g-3">
                     <div>
                         <button type="button" (click)="newMessage()"
-                                class="btn btn-primary changePassword discussionButton"><i class="fa fa-plus"
-                                                                                           aria-hidden="true"></i>
+                                class="btn btn-primary changePassword discussionButton">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
                             {{'add.repply' | translate }}
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="discussion-content">
-            <div *ngFor="let message of messageList; let i = index"
-                 class="ui-g discussion-content">
+        <div class="discussion-content" *ngFor="let currentMessage of thread.messages">
+            <div class="ui-g discussion-content">
                 <div class="ui-g-12">
                     <div class="ui-g-3 backgroundMessage">
-                        <p class="authorMessage">Mayor One</p>
-                        <p class="authorTime">20/10/2017</p>
-                        <p class="authorTime">09:15 AM</p>
+                        <p class="authorMessage">{{displayAuthorData(currentMessage.authorId, "name")}}
+                            {{displayAuthorData(currentMessage.authorId, "surname")}}</p>
+                        <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
+                        <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
                     </div>
                     <div class="ui-g-9 paddingMessages arrow_box">
-                        <textarea disabled="disabled" class="messageDiv">{{message}}</textarea>
+                        <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
                     </div>
                 </div>
             </div>
@@ -125,9 +125,12 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false" [resizable]="false" [draggable]="false"
+    <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false"
+              [resizable]="false" [draggable]="false"
               [closeOnEscape]="true">
-        <div class="beneficiaryTitle center hiddenScroll"> {{ 'sendMessage.title' | translate }}</div>
+        <div class="beneficiaryTitle center hiddenScroll"> {{ 'sendMessage.title' |
+            translate }}
+        </div>
         <form #messagesForm="ngForm">
             <div class="form-group profileDialog">
                 <div class="form-group">
@@ -159,7 +162,8 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+    <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false"
               [closeOnEscape]="true">
         <form #messagesForm="ngForm">
             <div class="form-group profileDialog">
@@ -168,11 +172,11 @@
                 <p>{{ 'mediationRequest.text' | translate }}</p>
                 <br>
                 <p>{{ 'mediationRequest.selectText' | translate }}</p>
-                <select class="selectDiscussion">
-                    <option value="option1">Option 1</option>
-                    <option value="option2">Option 2</option>
-                    <option value="option3">Option 3</option>
-                </select>
+                <!--<select class="selectDiscussion">-->
+                <!--<option value="option1">Option 1</option>-->
+                <!--<option value="option2">Option 2</option>-->
+                <!--<option value="option3">Option 3</option>-->
+                <!--</select>-->
                 <div class="form-group">
                     <div style="text-align: center !important">
                         <button type="button" class="btn btn-primary changePasswordModal cancel-button"

@@ -47,7 +47,7 @@ public class ThreadService {
                 threadDTO = threadMapper.toDTO(threadRepository.save(threadMapper.toEntity(threadDTO)));
                 threadId = threadDTO.getId();
             }
-            for (ThreadMessageDTO message: originalMessages) {
+            for (ThreadMessageDTO message : originalMessages) {
                 message.setThreadId(threadId);
                 correctMessages.add(message);
             }
@@ -65,4 +65,9 @@ public class ThreadService {
             return null;
         }
     }
+
+    public ThreadDTO getThreadByMunicipalityId(int municipalityId) {
+        return threadMapper.toDTO(threadRepository.findByMunicipalityId(municipalityId));
+    }
+
 }
