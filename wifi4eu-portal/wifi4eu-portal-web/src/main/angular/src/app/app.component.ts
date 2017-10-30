@@ -101,7 +101,7 @@ export class AppComponent {
         this.children[0] = [
             new UxLayoutLink({
                 label: 'Beneficiary Registration',
-                url: 'registration'
+                url: '/beneficiary-registration'
             }),
             new UxLayoutLink({
                 label: 'Supplier Registration',
@@ -121,7 +121,7 @@ export class AppComponent {
         this.children[2] = [
             new UxLayoutLink({
                 label: 'Beneficiary Registration',
-                url: '/registration'
+                url: '/beneficiary-registration'
             }),
             new UxLayoutLink({
                 label: 'Beneficiary Portal',
@@ -131,7 +131,7 @@ export class AppComponent {
         this.children[3] = [
             new UxLayoutLink({
                 label: 'Beneficiary Registration',
-                url: '/registration'
+                url: '/beneficiary-registration'
             }),
             new UxLayoutLink({
                 label: 'Beneficiary Portal',
