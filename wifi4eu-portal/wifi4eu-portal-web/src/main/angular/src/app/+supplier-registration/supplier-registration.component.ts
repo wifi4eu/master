@@ -6,9 +6,12 @@ import {SuppliedRegionDTOBase} from "../shared/swagger/model/SuppliedRegionDTO";
 import {NutsApi} from "../shared/swagger/api/NutsApi";
 import {SupplierApi} from "../shared/swagger/api/SupplierApi";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
+import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 
 @Component({
-    selector: 'supplier-registration', templateUrl: 'supplier-registration.component.html', providers: [NutsApi, SupplierApi]
+    selector: 'supplier-registration',
+    templateUrl: 'supplier-registration.component.html',
+    providers: [NutsApi, SupplierApi]
 })
 
 export class SupplierRegistrationComponent {
@@ -74,7 +77,8 @@ export class SupplierRegistrationComponent {
                 this.completed = [true, true, true, false];
                 this.active = [false, false, false, true];
                 break;
-        };
+        }
+        ;
     }
 
     submitRegistration() {
@@ -87,8 +91,12 @@ export class SupplierRegistrationComponent {
             }
         }
         this.supplierApi.submitSupplierRegistration(this.supplier).subscribe(
-            data => {
-                this.successRegistration = true;
+            (data: ResponseDTOBase) => {
+                if (data.success) {
+                    this.successRegistration = true;
+                } else {
+                    this.failureRegistration = true;
+                }
                 console.log(data);
             }, error => {
                 this.failureRegistration = true;

@@ -1,9 +1,9 @@
 import {Component} from "@angular/core";
 import {UserDTOBase} from "../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../shared/swagger/model/MunicipalityDTO";
-//import {RegistrationDTOBase} from "../shared/swagger/model/RegistrationDTO";
 import {BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
 import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
+import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 
 @Component({
     selector: 'beneficiary-registration',
@@ -55,8 +55,12 @@ export class BeneficiaryRegistrationComponent {
             this.finalBeneficiary.municipalities.push(municipality);
         }
         this.beneficiaryApi.submitBeneficiaryRegistration(this.finalBeneficiary).subscribe(
-            data => {
-                this.successRegistration = true;
+            (data: ResponseDTOBase) => {
+                if (data.success) {
+                    this.successRegistration = true;
+                } else {
+                    this.failureRegistration = true;
+                }
                 console.log(data);
             }, error => {
                 this.failureRegistration = true;
