@@ -78,6 +78,7 @@ export class SupplierRegistrationComponent {
     }
 
     submitRegistration() {
+        this.supplier.suppliedRegions = [];
         for (let selectedCountry in this.selectedRegions) {
             for (let selectedRegion of this.selectedRegions[selectedCountry]) {
                 let suppliedRegion = new SuppliedRegionDTOBase();
@@ -85,10 +86,12 @@ export class SupplierRegistrationComponent {
                 this.supplier.suppliedRegions.push(suppliedRegion);
             }
         }
-        this.supplierApi.createSupplier(this.supplier).subscribe(
+        this.supplierApi.submitSupplierRegistration(this.supplier).subscribe(
             data => {
+                this.successRegistration = true;
                 console.log(data);
             }, error => {
+                this.failureRegistration = true;
                 console.log(error);
             }
         );

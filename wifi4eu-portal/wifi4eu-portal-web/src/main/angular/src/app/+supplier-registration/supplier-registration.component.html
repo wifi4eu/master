@@ -8,7 +8,7 @@
         <uxWizardStepCustomContent>
             <supplier-registration-step2 [(selectedCountriesNames)]="selectedCountriesNames" [(selectedRegions)]="selectedRegions"
                                          [allCountriesSelect]="allCountriesSelect" [allRegionsSelect]="allRegionsSelect"
-                                         (onNext)="navigate(4)" (onBack)="navigate(1)"></supplier-registration-step2>
+                                         (onNext)="navigate(3)" (onBack)="navigate(1)"></supplier-registration-step2>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'step3.supplier' | translate }}" [isCompleted]="completed[2]" [isActive]="active[2]">
@@ -23,6 +23,6 @@
         </uxWizardStepCustomContent>
     </ux-wizard-step>
 </custom-wizard-steps>
-<!--<success-component *ngIf="successRegistration"></success-component>-->
-<!--<failure-component *ngIf="failureRegistration"></failure-component>-->
+<success-component *ngIf="successRegistration"></success-component>
+<failure-component *ngIf="failureRegistration"></failure-component>
 <!--<helpdesk-form-component portal="Supplier"></helpdesk-form-component>-->

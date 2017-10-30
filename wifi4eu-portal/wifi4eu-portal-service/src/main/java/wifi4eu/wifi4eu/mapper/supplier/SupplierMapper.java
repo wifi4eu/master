@@ -12,7 +12,9 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface SupplierMapper {
+    @Mapping(source = "entity.user.id", target = "userId")
     SupplierDTO toDTO(Supplier entity);
+    @Mapping(source = "vo.userId", target = "user.id")
     Supplier toEntity(SupplierDTO vo);
     @Mappings({
             @Mapping(source = "entity.supplier.id", target = "supplierId"),

@@ -55,7 +55,6 @@ export class SupplierRegistrationStep2Component {
             }
         }
         for (let index of countriesToRemove) {
-            console.log(this.selectedCountries);
             this.selectedCountries.splice(index - removedCount, 1);
             removedCount++;
         }

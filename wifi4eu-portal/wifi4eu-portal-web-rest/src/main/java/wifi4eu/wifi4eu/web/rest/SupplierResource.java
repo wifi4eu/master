@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
@@ -63,6 +64,21 @@ public class SupplierResource {
         try {
             _log.info("deleteSupplier: " + supplierId);
             SupplierDTO resSupplier = supplierService.deleteSupplier(supplierId);
+            return new ResponseDTO(true, resSupplier, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+    }
+
+    @ApiOperation(value = "Submit supplier registration")
+    @RequestMapping(value = "/submitRegistration", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO) {
+        try {
+            _log.info("submitSupplierRegistration");
+            SupplierDTO resSupplier = supplierService.submitSupplierRegistration(supplierDTO);
             return new ResponseDTO(true, resSupplier, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());

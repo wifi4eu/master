@@ -16,15 +16,15 @@ public class SupplierDTO {
     private String contactPhoneNumber;
     private String contactEmail;
     private String logo;
-    private List<SuppliedRegionDTO> suppliedRegions;
     private int userId;
+    private List<SuppliedRegionDTO> suppliedRegions;
     private boolean legalCheck1;
     private boolean legalCheck2;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, List<SuppliedRegionDTO> suppliedRegions, int userId, boolean legalCheck1, boolean legalCheck2) {
+    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, int userId, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -38,8 +38,8 @@ public class SupplierDTO {
         this.contactPhoneNumber = contactPhoneNumber;
         this.contactEmail = contactEmail;
         this.logo = logo;
-        this.suppliedRegions = suppliedRegions;
         this.userId = userId;
+        this.suppliedRegions = suppliedRegions;
         this.legalCheck1 = legalCheck1;
         this.legalCheck2 = legalCheck2;
     }
@@ -148,20 +148,20 @@ public class SupplierDTO {
         this.logo = logo;
     }
 
-    public List<SuppliedRegionDTO> getSuppliedRegions() {
-        return suppliedRegions;
-    }
-
-    public void setSuppliedRegions(List<SuppliedRegionDTO> suppliedRegions) {
-        this.suppliedRegions = suppliedRegions;
-    }
-
     public int getUserId() {
         return userId;
     }
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public List<SuppliedRegionDTO> getSuppliedRegions() {
+        return suppliedRegions;
+    }
+
+    public void setSuppliedRegions(List<SuppliedRegionDTO> suppliedRegions) {
+        this.suppliedRegions = suppliedRegions;
     }
 
     public boolean isLegalCheck1() {

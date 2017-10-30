@@ -16,27 +16,33 @@ export class SupplierRegistrationStep4Component {
     @Output() private onEdit: EventEmitter<any>;
     private legalChecks: boolean[] = [false, false];
     private successCaptcha: boolean = false;
+    private displayModal: boolean = false;
 
     constructor() {
-        this.legalChecks = [false, false];
-        this.successCaptcha = false;
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
         this.onEdit = new EventEmitter<any>();
     }
 
+    completeCaptcha(response: any) {
+        this.successCaptcha = response.success;
+    }
+
+    openModal() {
+        this.displayModal = true;
+    }
+
+    submit() {
+        if (this.legalChecks && this.successCaptcha) {
+            this.onNext.emit();
+        }
+    }
+
+    back() {
+        this.onBack.emit();
+    }
+
     edit(step: number) {
-        console.log(this.selectedCountriesNames);
         this.onEdit.emit(step);
     }
-    //
-    // openModal() {
-    //     this.display = true;
-    // }
-    //
-    //
-    // private onCaptchaComplete(response: any) {
-    //     this.successCaptcha = response.success;
-    // }
-    //
 }

@@ -29,7 +29,9 @@ public class ApplicationResource {
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<ApplicationDTO> allApplications() {
-        _log.info("allApplications");
+        if (_log.isInfoEnabled()) {
+            _log.info("allApplications");
+        }
         return applicationService.getAllApplications();
     }
 
@@ -37,7 +39,9 @@ public class ApplicationResource {
     @RequestMapping(value = "/{applicationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ApplicationDTO getApplicationById(@PathVariable("applicationId") final Integer applicationId) {
-        _log.info("getApplicationById: " + applicationId);
+        if (_log.isInfoEnabled()) {
+            _log.info("getApplicationById: " + applicationId);
+        }
         return applicationService.getApplicationById(applicationId);
     }
 
@@ -47,7 +51,9 @@ public class ApplicationResource {
     @ResponseBody
     public ResponseDTO createApplication(@RequestBody final ApplicationDTO applicationDTO) {
         try {
-            _log.info("createApplication");
+            if (_log.isInfoEnabled()) {
+                _log.info("createApplication");
+            }
             ApplicationDTO resApplication = applicationService.createApplication(applicationDTO);
             return new ResponseDTO(true, resApplication, null);
         } catch (Exception e) {
@@ -61,7 +67,9 @@ public class ApplicationResource {
     @ResponseBody
     public ResponseDTO deleteApplication(@RequestBody final Integer applicationId) {
         try {
-            _log.info("deleteApplication: " + applicationId);
+            if (_log.isInfoEnabled()) {
+                _log.info("deleteApplication: " + applicationId);
+            }
             ApplicationDTO resApplication = applicationService.deleteApplication(applicationId);
             return new ResponseDTO(true, resApplication, null);
         } catch (Exception e) {
@@ -74,7 +82,9 @@ public class ApplicationResource {
     @RequestMapping(value = "/supplier/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<ApplicationDTO> getApplicationsBySupplierId(@PathVariable("supplierId") final Integer supplierId) {
-        _log.info("getApplicationsBySupplierId");
+        if (_log.isInfoEnabled()) {
+            _log.info("getApplicationsBySupplierId");
+        }
         return applicationService.getApplicationsBySupplierId(supplierId);
     }
 }
