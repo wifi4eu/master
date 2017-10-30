@@ -6,7 +6,9 @@ import {BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
 import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
 
 @Component({
-    selector: 'beneficiary-registration', templateUrl: 'beneficiary-registration.component.html', providers: [BeneficiaryApi]
+    selector: 'beneficiary-registration',
+    templateUrl: 'beneficiary-registration.component.html',
+    providers: [BeneficiaryApi]
 })
 
 export class BeneficiaryRegistrationComponent {
@@ -54,8 +56,10 @@ export class BeneficiaryRegistrationComponent {
         }
         this.beneficiaryApi.submitBeneficiaryRegistration(this.finalBeneficiary).subscribe(
             data => {
+                this.successRegistration = true;
                 console.log(data);
             }, error => {
+                this.failureRegistration = true;
                 console.log(error);
             }
         );

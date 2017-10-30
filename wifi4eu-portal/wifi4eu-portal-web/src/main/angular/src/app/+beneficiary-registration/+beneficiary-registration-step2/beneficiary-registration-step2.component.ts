@@ -10,7 +10,9 @@ import {UxAccordionBoxesComponent} from "@ec-digit-uxatec/eui-angular2-ux-common
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 
 @Component({
-    selector: 'beneficiary-registration-step2', templateUrl: 'beneficiary-registration-step2.component.html', providers: [NutsApi, LauApi]
+    selector: 'beneficiary-registration-step2',
+    templateUrl: 'beneficiary-registration-step2.component.html',
+    providers: [NutsApi, LauApi]
 })
 
 export class BeneficiaryRegistrationStep2Component implements OnInit {
@@ -44,7 +46,7 @@ export class BeneficiaryRegistrationStep2Component implements OnInit {
     ngOnInit() {
         if (this.allNuts.length == 0) {
             this.nutsApi.getNutsByLevel(0).subscribe(
-                (nuts : NutsDTOBase[]) => {
+                (nuts: NutsDTOBase[]) => {
                     this.allNuts = nuts;
                     this.municipalities = [];
                     for (let country of this.allNuts) {

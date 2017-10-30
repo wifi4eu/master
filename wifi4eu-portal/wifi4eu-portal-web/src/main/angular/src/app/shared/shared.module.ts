@@ -89,7 +89,8 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         SuccessComponent,
         FailureComponent,
         CustomAccordionBoxComponent,
-        CustomWizardStepsComponent
+        CustomWizardStepsComponent,
+        Ng2GoogleRecaptchaModule
         // TimelineComponent,
         // CustomTimelineAccordionBoxComponent,
         // SuccessComponent,
