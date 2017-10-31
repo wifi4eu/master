@@ -77,4 +77,12 @@ public class RegistrationResource {
         _log.info("getRegistrationsByUserId" + userId);
         return registrationService.getRegistrationsByUserId(userId);
     }
+
+    @ApiOperation(value = "Get registrations by specific municipality id")
+    @RequestMapping(value = "/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<RegistrationDTO> getRegistrationsByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
+        _log.info("getRegistrationsByMunicipalityId" + municipalityId);
+        return registrationService.getRegistrationsByMunicipalityId(municipalityId);
+    }
 }
