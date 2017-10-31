@@ -34,13 +34,15 @@ export class BeneficiaryProfileComponent {
     private passwordsMatch: boolean = false;
 
     constructor(private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi) {
-        this.userApi.allUsers().subscribe(
+        // Get a random beneficiary user from the DB for testing purposes
+        let type = Math.floor(Math.random() * (3 - 2 + 1) ) + 2;
+        this.userApi.getUsersByType(type).subscribe(
             (users: UserDTOBase[]) => {
                 this.user = users[Math.floor(Math.random() * users.length)];
-                Object.assign(this.editedUser, this.user);
                 if (this.user.type == 3) {
                     this.representing = true;
                 }
+                Object.assign(this.editedUser, this.user);
                 this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
                     (registrations: RegistrationDTOBase[]) => {
                         for (let registration of registrations) {

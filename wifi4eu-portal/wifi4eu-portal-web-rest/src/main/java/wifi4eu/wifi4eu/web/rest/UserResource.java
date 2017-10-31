@@ -69,4 +69,12 @@ public class UserResource {
             return new ResponseDTO(false, null, errorDTO);
         }
     }
+
+    @ApiOperation(value = "Get users by specific type number")
+    @RequestMapping(value = "/type/{type}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<UserDTO> getUsersByType(@PathVariable("type") final Integer type) {
+        _log.info("getUsersByType" + type);
+        return userService.getUsersByType(type);
+    }
 }

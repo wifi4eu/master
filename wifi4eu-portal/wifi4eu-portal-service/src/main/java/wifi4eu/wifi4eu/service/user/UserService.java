@@ -40,4 +40,8 @@ public class UserService {
             return null;
         }
     }
+
+    public List<UserDTO> getUsersByType(int type) {
+        return userMapper.toDTOList(Lists.newArrayList(userRepository.findByType(type)));
+    }
 }
