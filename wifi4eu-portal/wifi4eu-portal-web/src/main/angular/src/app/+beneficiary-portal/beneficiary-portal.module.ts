@@ -3,6 +3,7 @@ import {NgModule} from "@angular/core";
 import {SharedModule} from '../shared/shared.module';
 import {BeneficiaryPortalRoutingModule} from './beneficiary-portal-routing.module';
 import {DiscussionComponent} from "./+discussion/discussion.component";
+import {BeneficiaryProfileComponent} from "./+profile/profile.component";
 // import {BeneficiaryPortalComponent} from './beneficiary-portal.component';
 // import {BeneficiaryProfileComponent} from './+profile/profile.component';
 // import {VoucherComponent} from "../+beneficiary-portal/+voucher/voucher.component";
@@ -17,7 +18,8 @@ import {DiscussionComponent} from "./+discussion/discussion.component";
         // BeneficiaryPortalComponent,
         // BeneficiaryProfileComponent,
         // SelectSupplierComponent
-        DiscussionComponent
+        DiscussionComponent,
+        BeneficiaryProfileComponent
     ]
     // ,
     // bootstrap: [BeneficiaryPortalComponent]
