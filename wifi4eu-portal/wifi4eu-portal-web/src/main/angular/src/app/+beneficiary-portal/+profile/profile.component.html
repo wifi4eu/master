@@ -66,7 +66,7 @@
                 <hr class="beneficiaryHr">
             </div>
 
-            <div class="ui-g-12" *ngIf="">
+            <div class="ui-g-12">
                 <div class="ui-g">
                     <div class="ui-g-10">
                         <p class="beneficiaryMayor">{{ 'representativedetails.title' | translate }}</p>
@@ -85,9 +85,9 @@
                         <p>{{ 'email.label' | translate }}</p>
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData" >{{
+                        <p class="profileData">{{
                             'treatment.option1' | translate }}</p>
-                        <p class="profileData" >{{
+                        <p class="profileData">{{
                             'treatment.option2' | translate }}</p>
                         <p class="profileData"></p>
                         <p class="profileData"></p>
@@ -120,14 +120,13 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayLegal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
               [closable]="true" [closeOnEscape]="true">
-        <form (ngSubmit)="updateLegalEntity()" #editLegalEntityForm="ngForm">
+        <form (Submit)="updateLegalEntity()">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="country">{{ 'country.label' | translate }}</label>
-                        <input type="text" id="country" class="form-control" name="country" ngcontrol="country"
-                               #country="ngModel" [(ngModel)]="" required disabled>
+                        <input type="text" id="country" class="form-control" name="country" required disabled>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -137,9 +136,7 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="municipality">{{ 'municipality.label' | translate }}</label>
-                        <input type="text" id="municipality" class="form-control" name="municipality"
-                               ngcontrol="municipality"
-                               #municipality="ngModel" [(ngModel)]="" required disabled>
+                        <input type="text" id="municipality" class="form-control" name="municipality" required disabled>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -149,9 +146,8 @@
                 <div class="ui-g-7">
                     <div class="form-group">
                         <label for="address">{{ 'address.label' | translate }}</label>
-                        <input type="text" id="address" class="form-control" name="address" ngcontrol="address"
-                               #address="ngModel" [(ngModel)]="" required>
-                        <div [hidden]="address.valid || address.pristine" class="alert alert-danger">
+                        <input type="text" id="address" class="form-control" name="address" required>
+                        <div class="alert alert-danger">
                             Address is required
                         </div>
                     </div>
@@ -160,9 +156,8 @@
                     <div class="form-group">
                         <label for="addressNum">{{ 'number.label' | translate }}</label>
                         <input type="number" id="addressNum" class="form-control" name="addressNum"
-                               ngcontrol="addressNum"
-                               #addressNum="ngModel" [(ngModel)]="" required>
-                        <div [hidden]="addressNum.valid || addressNum.pristine" class="alert alert-danger">
+                             required>
+                        <div class="alert alert-danger">
                             Address number is required
                         </div>
                     </div>
@@ -174,9 +169,8 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="postalCode">{{ 'postal-code.label' | translate }}</label>
-                        <input type="text" id="postalCode" class="form-control" name="postalCode" ngcontrol="postalCode"
-                               #postalCode="ngModel" [(ngModel)]="" required>
-                        <div [hidden]="postalCode.valid || postalCode.pristine" class="alert alert-danger">
+                        <input type="text" id="postalCode" class="form-control" name="postalCode" required>
+                        <div class="alert alert-danger">
                             Postal code is required
                         </div>
                     </div>
@@ -208,7 +202,7 @@
     <p-dialog [(visible)]="displayMayor" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
               [closable]="false" [closeOnEscape]="false">
         <button type="button" class="closeButton" (click)="closeModal()">X</button>
-        <form (ngSubmit)="updateInfo()" #editMayorForm="ngForm">
+        <form (submit)="updateInfo()">
             <div class="containerTimeline">
                 <div class="ui-g">
                     <div class="ui-g-3"></div>
@@ -221,9 +215,7 @@
                     <div class="ui-g-3"></div>
                     <div class="ui-g-3">
                         <label for="treatment">{{ 'treatment.label' | translate }}</label>
-                        <select class="form-control" name="treatment" id="treatment"
-                                ngcontrol="treatment" #treatment="ngModel"
-                                [(ngModel)]="" required>
+                        <select class="form-control" name="treatment" id="treatment" required>
                             <option value="mr">{{ 'treatment.option1' | translate }}</option>
                             <option value="ms">{{ 'treatment.option2' | translate }}</option>
                         </select>
@@ -234,8 +226,7 @@
                     <div class="ui-g-3"></div>
                     <div class="ui-g-6">
                         <label for="name">{{ 'name.label' | translate }}</label>
-                        <input class="form-control" type="text" name="name" id="name"
-                               ngcontrol="name" #name="ngModel" [(ngModel)]="" required>
+                        <input class="form-control" type="text" name="name" id="name" required>
                     </div>
                     <div class="ui-g-3"></div>
                 </div>
@@ -243,9 +234,7 @@
                     <div class="ui-g-3"></div>
                     <div class="ui-g-6">
                         <label for="surname">{{ 'surname.label' | translate }}</label>
-                        <input class="form-control" type="text" name="surname" id="surname"
-                               ngcontrol="surname" #surname="ngModel" [(ngModel)]=""
-                               required>
+                        <input class="form-control" type="text" name="surname" id="surname" required>
                     </div>
                     <div class="ui-g-3"></div>
                 </div>
@@ -253,9 +242,7 @@
                     <div class="ui-g-3"></div>
                     <div class="ui-g-6">
                         <label for="email">{{ 'email.label' | translate }}</label>
-                        <input class="form-control" type="email" name="email" id="email"
-                               ngcontrol="email" #email="ngModel" [(ngModel)]="" required
-                               disabled>
+                        <input class="form-control" type="email" name="email" id="email" disabled>
                     </div>
                     <div class="ui-g-3"></div>
                 </div>
@@ -280,12 +267,12 @@
 </div>
 
 
-<div class="container-font" *ngIf="">
+<div class="container-font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayRepresentative" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="false" [closeOnEscape]="false">
         <button type="button" class="closeButton" (click)="closeModal()">X</button>
-        <form (ngSubmit)="updateInfo()" #editRepresentativeForm="ngForm">
+        <form (submit)="updateInfo()">
             <div class="containerTimeline">
                 <div class="ui-g">
                     <div class="ui-g-3"></div>
@@ -298,9 +285,7 @@
                     <div class="ui-g-3"></div>
                     <div class="ui-g-3">
                         <label for="treatment">{{ 'treatment.label' | translate }}</label>
-                        <select class="form-control" name="treatment" id="treatment" ngcontrol="treatment"
-                                #treatment="ngModel" [(ngModel)]=""
-                                required>
+                        <select class="form-control" name="treatment" id="treatment" required>
                             <option value="mr">{{ 'treatment.option1' | translate }}</option>
                             <option value="ms">{{ 'treatment.option2' | translate }}</option>
                         </select>
@@ -311,8 +296,7 @@
                     <div class="ui-g-3"></div>
                     <div class="ui-g-6">
                         <label for="name">{{ 'name.label' | translate }}</label>
-                        <input class="form-control" type="text" name="name" id="name" ngcontrol="name"
-                               #name="ngModel" [(ngModel)]="" required>
+                        <input class="form-control" type="text" name="name" id="name" required>
                     </div>
                     <div class="ui-g-3"></div>
                 </div>
@@ -320,8 +304,7 @@
                     <div class="ui-g-3"></div>
                     <div class="ui-g-6">
                         <label for="surname">{{ 'surname.label' | translate }}</label>
-                        <input class="form-control" type="text" name="surname" id="surname" ngcontrol="surname"
-                               #surname="ngModel" [(ngModel)]="" required>
+                        <input class="form-control" type="text" name="surname" id="surname" required>
                     </div>
                     <div class="ui-g-3"></div>
                 </div>
@@ -329,10 +312,7 @@
                     <div class="ui-g-3"></div>
                     <div class="ui-g-6">
                         <label for="municipalityRole">{{ 'role.label' | translate }}</label>
-                        <input class="form-control" type="text" name="municipalityRole" id="municipalityRole"
-                               ngcontrol="municipalityRole"
-                               #municipalityRole="ngModel"
-                               [(ngModel)]="" required>
+                        <input class="form-control" type="text" name="municipalityRole" id="municipalityRole" required>
                     </div>
                     <div class="ui-g-3"></div>
                 </div>
@@ -340,8 +320,7 @@
                     <div class="ui-g-3"></div>
                     <div class="ui-g-6">
                         <label for="email">{{ 'email.label' | translate }}</label>
-                        <input class="form-control" type="text" name="email" id="email" ngcontrol="email"
-                               #email="ngModel" [(ngModel)]="" required
+                        <input class="form-control" type="text" name="email" id="email" required
                                disabled>
                     </div>
                     <div class="ui-g-3"></div>
