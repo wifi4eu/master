@@ -43,9 +43,9 @@ import {AppGuard} from "./app.guard";
             //     path: 'helpdesk',
             //     component: HelpdeskComponent,
             //     canActivate: [AppGuard]
-            //}, {
-            //   path: 'dgconn-portal',
-            //     loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
+        }, {
+            path: 'dgconn-portal',
+            loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
             //     canActivate: [AppGuard]
         }, {
             path: 'beneficiary-registration',
