@@ -316,5 +316,8 @@
   "nameMayor.label": "Nombre del alcalde",
   "surnameMayor.label": "Apellido del alcalde",
   "emailMayor.label": "Email del alcalde",
-  "beneficiaryRegistration.sameDetails": "Mis datos son los mismos que los datos de alcalde"
+  "beneficiaryRegistration.sameDetails": "Mis datos son los mismos que los datos de alcalde",
+  "duplicatedSuppliers.title":"Registros de proveedores duplicados",
+  "duplicatedBeneficiary.title":"Registros de municipios duplicados",
+  "discussionForum.title":"Foro de discusión"
 }
