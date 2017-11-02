@@ -37,7 +37,7 @@ export class DiscussionComponent {
     }
 
     ngOnInit() {
-        this.userApi.getUserById(100).subscribe(
+        this.userApi.getUserById(4).subscribe(
             (user: UserDTOBase) => {
                 this.user = user;
                 this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
