@@ -149,7 +149,7 @@ export class AppComponent {
     logout() {
         this.localStorage.remove('user');
         this.updateHeader();
-        this.router.navigateByUrl('login');
+        this.router.navigateByUrl('/home');
     }
 
 }

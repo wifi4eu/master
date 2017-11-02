@@ -1,0 +1,44 @@
+<form (ngSubmit)="onSubmit()" #activatedForm="ngForm">
+    <div class="form-group ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="form-group">
+
+                <p class="h2 h2-title center beneficiaryTitle ">{{ 'select.newPassword' | translate }}</p>
+                <p>{{ 'select.password' | translate }}</p>
+
+                <label for="password" class="label floatLeft labelForgot">{{ 'password.label' | translate }}</label>
+                <input type="password" [(ngModel)]="activation.password" id="password" class="form-control paddingInput" name="password"
+                       ngcontrol="activation.password" #password="ngModel" minlength="8" (keyup)="checkPasswordsMatch()" required>
+                <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+                    {{ 'password.required' | translate }}
+                </div>
+
+                <label for="confirmPassword" class="label floatLeft labelForgot">
+                    {{ 'confirmNewPassword.label' | translate }}
+                </label>
+                <input type="password" [(ngModel)]="activation.confirmPassword" id="confirmPassword" class="form-control paddingInput" name="confirmPassword"
+                       ngcontrol="repeatPassword" #confirmPassword="ngModel" minlength="8" (keyup)="checkPasswordsMatch()" required>
+                <div [hidden]="confirmPassword.valid || confirmPassword.pristine" class="alert alert-danger">
+                    {{ 'newPassword.required' |translate }}
+                </div>
+
+            </div>
+        </div>
+        <div class="ui-lg-3"></div>
+    </div>
+    <div class="form-group ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+            <button type="button" class="btn btn-primary cancel-button">
+                {{ 'cancel.button' | translate }}
+            </button>
+        </div>
+        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+            <button type="submit" class="btn btn-primary publish-button" [disabled]="!activatedForm.form.valid || !passwordsMatch">
+                {{ 'confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="ui-lg-3"></div>
+    </div>
+</form>

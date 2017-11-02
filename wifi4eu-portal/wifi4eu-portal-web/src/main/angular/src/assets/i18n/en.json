@@ -309,5 +309,7 @@
   "login.label":"Login",
   "logout.label":"Logout",
   "error.notloggedin":"You are not logged in!",
-  "error.notallowed":"You are not allowed to view this page."
+  "error.notallowed":"You are not allowed to view this page.",
+  "useractivation.success":"User activation success.",
+  "useractivation.failure":"Could not activate your account."
 }
