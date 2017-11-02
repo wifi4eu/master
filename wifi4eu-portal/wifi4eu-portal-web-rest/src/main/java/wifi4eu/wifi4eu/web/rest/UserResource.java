@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
@@ -76,5 +77,20 @@ public class UserResource {
     public List<UserDTO> getUsersByType(@PathVariable("type") final Integer type) {
         _log.info("getUsersByType" + type);
         return userService.getUsersByType(type);
+    }
+
+    @ApiOperation(value = "Service to do Login with a user email and SHA512 password")
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO login(@RequestBody final UserDTO userDTO) {
+        ResponseDTO result;
+        try {
+            _log.info("login: " + userDTO.getEmail());
+            UserDTO resUser = userService.login(userDTO);
+            resUser.setPassword(""); // Remove password
+            return new ResponseDTO(true, resUser, null);
+        } catch (UsernameNotFoundException ex) {
+            return new ResponseDTO(false, null, new ErrorDTO(0, ex.getLocalizedMessage()));
+        }
     }
 }

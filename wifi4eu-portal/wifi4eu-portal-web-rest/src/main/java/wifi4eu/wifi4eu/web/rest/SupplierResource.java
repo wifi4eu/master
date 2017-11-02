@@ -85,4 +85,12 @@ public class SupplierResource {
             return new ResponseDTO(false, null, errorDTO);
         }
     }
+
+    @ApiOperation(value = "Get supplier by specific user id")
+    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public SupplierDTO getSupplierByUserId(@PathVariable("userId") final Integer userId) {
+        _log.info("getSupplierByUserId: " + userId);
+        return supplierService.getSupplierByUserId(userId);
+    }
 }

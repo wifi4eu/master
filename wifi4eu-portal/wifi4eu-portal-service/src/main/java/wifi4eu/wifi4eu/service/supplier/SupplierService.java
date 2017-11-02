@@ -93,4 +93,8 @@ public class SupplierService {
         supplierDTO.setUserId(resUser.getId());
         return createSupplier(supplierDTO);
     }
+
+    public SupplierDTO getSupplierByUserId(int userId) {
+        return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
+    }
 }

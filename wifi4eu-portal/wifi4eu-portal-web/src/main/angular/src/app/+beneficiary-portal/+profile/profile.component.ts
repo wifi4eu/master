@@ -1,4 +1,5 @@
 import {Component} from "@angular/core";
+import {Router} from "@angular/router";
 import {UserApi} from "../../shared/swagger/api/UserApi";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
@@ -8,6 +9,9 @@ import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {CustomAccordionBoxComponent} from "../../shared/components/custom-accordion-box/custom-accordion-box.component";
 import {UxAccordionBoxesComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-ui-elements/ux-accordion-box/ux-accordion-boxes.component";
+import {LocalStorageService} from "angular-2-local-storage";
+import {TranslateService} from "ng2-translate";
+import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 
 @Component({
     selector: 'beneficiary-profile', templateUrl: 'profile.component.html', providers: [UserApi, RegistrationApi, MunicipalityApi]
@@ -33,12 +37,11 @@ export class BeneficiaryProfileComponent {
     private repeatNewPassword: string = '';
     private passwordsMatch: boolean = false;
 
-    constructor(private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi) {
-        // Get a random beneficiary user from the DB for testing purposes
-        let type = Math.floor(Math.random() * (3 - 2 + 1) ) + 2;
-        this.userApi.getUsersByType(type).subscribe(
-            (users: UserDTOBase[]) => {
-                this.user = users[Math.floor(Math.random() * users.length)];
+    constructor(private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private localStorageService: LocalStorageService, private translateService: TranslateService, private uxService: UxService, private router: Router) {
+        let storedUser = this.localStorageService.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+        if (this.user != null) {
+            if (this.user.type == 2 || this.user.type == 3) {
                 if (this.user.type == 3) {
                     this.representing = true;
                 }
@@ -73,8 +76,34 @@ export class BeneficiaryProfileComponent {
                         }
                     }
                 );
+            } else {
+                let translatedString = 'You are not allowed to view this page.';
+                this.translateService.get('error.notallowed').subscribe(
+                    (translation: string) => {
+                        translatedString = translation;
+                    }
+                );
+                this.uxService.growl({
+                    severity: 'warn',
+                    summary: 'WARNING',
+                    detail: translatedString
+                });
+                this.router.navigateByUrl('/home');
             }
-        );
+        } else {
+            let translatedString = 'You are not logged in!';
+            this.translateService.get('error.notloggedin').subscribe(
+                (translation: string) => {
+                    translatedString = translation;
+                }
+            );
+            this.uxService.growl({
+                severity: 'warn',
+                summary: 'WARNING',
+                detail: translatedString
+            });
+            this.router.navigateByUrl('/home');
+        }
     }
 
     displayModal(name: string, index?: number) {

@@ -1,6 +1,6 @@
 {
   "registration.entity.title": "PASO 2: Entidad legal",
-  "registration.beneficiary.title": "PASO 13333: Detalles del beneficiario",
+  "registration.beneficiary.title": "PASO 1: Detalles del beneficiario",
   "registration.review.title": "PASO 3: Revisión",
   "registration.step1.instructions": "Rellene los datos del formulario a continuación.",
   "registration.step2.instructions": "Para continuar, rellene los datos del formulario.",
@@ -247,7 +247,9 @@
   "suppPortal.outIndoor": "Exterior/Interior",
   "suppPortal.outdoor": "Exterior",
   "suppPortal.indoor": "Interior",
-  "loging.error.wrongpassword": "No se ha podido acceder a tu cuenta con estos credenciales. Asegúrate de que has escrito bien la contraseña.",
+  "login.success": "Acceso correcto. ¡Bienvenido a WiFi4EU!",
+  "login.error": "No se ha podido acceder a tu cuenta. Intentálo de nuevo más tarde.",
+  "login.error.wrongcredentials": "No se ha podido acceder a tu cuenta con estos credenciales. Asegúrate de que has escrito bien la contraseña.",
   "filtermunicipalities.label": "Buscar por nombre de municipio/país",
   "report1.title": "Entidades registradas",
   "report2.title": "Proveedores registrados",
@@ -292,5 +294,16 @@
   "sendMessage.subject": "Asunto:",
   "newMediation.text": "Pedir a WIFI4EU que medie la conversación.",
   "add.repply": "Responder",
-  "discussion.growl": "Su solicitud de mediación se ha enviado con éxito. El servicio de mediación WIFI4EU pronto intervendrá en esta conversación."
+  "discussion.growl": "Su solicitud de mediación se ha enviado con éxito. El servicio de mediación WIFI4EU pronto intervendrá en esta conversación.",
+  "loading.modal.title":"Cargando...",
+  "loading.modal.title2":"Cargando, espere, por favor...",
+  "loading.modal.title3":"Confirmando datos, espere, por favor...",
+  "loading.modal.registration.text":"Su solicitud de registro a Wifi4EU está en proceso de ser enviada.",
+  "loading.modal.login.text":"Se está intentando acceder a su cuenta.",
+  "loading.modal.dontclose":"No cierre esta ventana, por favor.",
+  "loggedin.as":"Conectado",
+  "login.label":"Conectarse",
+  "logout.label":"Desconectarse",
+  "error.notloggedin":"¡No estás conectado!",
+  "error.notallowed":"No puedes acceder a esta página."
 }
