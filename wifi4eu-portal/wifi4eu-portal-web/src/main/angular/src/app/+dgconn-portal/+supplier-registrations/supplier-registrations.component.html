@@ -1,0 +1,27 @@
+<div class="clearfix"></div>
+<div class="jumbotron mb-3" style="background-color: transparent;">
+    <div class="container center">
+        <p class="center beneficiaryTitle">{{ 'duplicatedSuppliers.title' | translate }}</p>
+    </div>
+</div>
+<div class="container center registrationsTable">
+    <p-dataTable [editable]="true">
+        <p-column field="name" header="Name"></p-column>
+        <p-column field="nuts" header="Nuts"></p-column>
+        <p-column field="address" header="Adress"></p-column>
+        <p-column field="status" header="Status">
+            <ng-template let-user="rowData" let-index="rowIndex" pTemplate="body">
+                <!--<p-dropdown (onChange)="uploadData()"-->
+                            <!--placeholder="Select a status"></p-dropdown>-->
+                <!--<p>Current Status:</p>-->
+            </ng-template>
+        </p-column>
+        <p-column field="duplicated" header="Duplicated">
+            <ng-template let-user="rowData" pTemplate="body">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </ng-template>
+        </p-column>
+    </p-dataTable>
+
+</div>

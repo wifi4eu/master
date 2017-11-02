@@ -292,5 +292,8 @@
   "sendMessage.subject": "Asunto:",
   "newMediation.text": "Pedir a WIFI4EU que medie la conversación.",
   "add.repply": "Responder",
-  "discussion.growl": "Su solicitud de mediación se ha enviado con éxito. El servicio de mediación WIFI4EU pronto intervendrá en esta conversación."
+  "discussion.growl": "Su solicitud de mediación se ha enviado con éxito. El servicio de mediación WIFI4EU pronto intervendrá en esta conversación.",
+  "duplicatedSuppliers.title":"Registros de proveedores duplicados",
+  "duplicatedBeneficiary.title":"Registros de municipios duplicados",
+  "discussionForum.title":"Foro de discusión"
 }

@@ -296,5 +296,8 @@
   "sendMessage.subject": "Subject:",
   "newMediation.text" : "Ask WIFI4EU to mediate this conversation.",
   "add.repply":"Add a reply",
-  "discussion.growl":"Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation."
+  "discussion.growl":"Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.",
+  "duplicatedSuppliers.title":"Duplicated supplier registrations",
+  "duplicatedBeneficiary.title":"Duplicated beneficiary registrations",
+  "discussionForum.title":"Discussion Forum"
 }
