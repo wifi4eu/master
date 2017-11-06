@@ -405,6 +405,26 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
 
+-- -----------------------------------------------------
+-- Table `wifi4eu-new`.`temp_tokens`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`temp_tokens` (
+  `id` BIGINT NOT NULL,
+  `token` VARCHAR(255) NULL,
+  `email` VARCHAR(255) NULL,
+  `create_date` BIGINT NULL,
+  `expiry_date` BIGINT NULL,
+  `user` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_temp_tokens_users_idx` (`user` ASC),
+  CONSTRAINT `fk_temp_tokens_users`
+    FOREIGN KEY (`user`)
+    REFERENCES `wifi4eu-new`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

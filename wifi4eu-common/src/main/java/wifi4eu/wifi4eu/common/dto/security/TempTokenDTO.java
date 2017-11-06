@@ -1,41 +1,30 @@
 package wifi4eu.wifi4eu.common.dto.security;
 
-import java.io.Serializable;
-import java.util.Date;
-
-/**
- * Created by rgarcita on 21/02/2017.
- */
-public class TempTokenDTO implements Serializable{
-
-    private Long id;
-
+public class TempTokenDTO {
+    private long id;
     private String token;
-
     private String email;
+    private long createDate;
+    private long expiryDate;
+    private int userId;
 
-    private Date createDate;
+    public TempTokenDTO() {
+    }
 
-    private Date expiryDate;
-
-    private Long userId;
-
-
-    public TempTokenDTO() {}
-
-    public TempTokenDTO(Long id, String token, String email, Date createDate, Date expiryDate) {
+    public TempTokenDTO(long id, String token, String email, long createDate, long expiryDate, int userId) {
         this.id = id;
         this.token = token;
         this.email = email;
         this.createDate = createDate;
         this.expiryDate = expiryDate;
+        this.userId = userId;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -55,27 +44,27 @@ public class TempTokenDTO implements Serializable{
         this.email = email;
     }
 
-    public Date getCreateDate() {
+    public long getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(long createDate) {
         this.createDate = createDate;
     }
 
-    public Date getExpiryDate() {
+    public long getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
+    public void setExpiryDate(long expiryDate) {
         this.expiryDate = expiryDate;
     }
 
-    public Long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 }

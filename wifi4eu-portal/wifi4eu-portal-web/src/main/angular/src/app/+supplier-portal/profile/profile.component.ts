@@ -1,17 +1,22 @@
 import {Component, ViewChild} from "@angular/core";
-import { SupplierDTOBase } from "../../shared/swagger/model/SupplierDTO";
-import { SupplierApi } from "../../shared/swagger/api/SupplierApi";
-import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
-import { NutsApi } from "../../shared/swagger/api/NutsApi";
-import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import {Router} from "@angular/router";
+import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
+import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
+import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
+import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
+import {NutsApi} from "../../shared/swagger/api/NutsApi";
+import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {Observable} from "rxjs/Observable";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {LocalStorageService} from "angular-2-local-storage";
+import {TranslateService} from "ng2-translate";
 
 @Component({
     selector: 'supplier-profile', templateUrl: 'profile.component.html', providers: [SupplierApi, NutsApi]
 })
 
 export class SupplierProfileComponent {
+    private user: UserDTOBase = new UserDTOBase();
     private supplier: SupplierDTOBase = new SupplierDTOBase();
     private editedSupplier: SupplierDTOBase = new SupplierDTOBase();
     private displayContact: boolean = false;
@@ -29,34 +34,65 @@ export class SupplierProfileComponent {
     private logoFile: File;
     @ViewChild('logoInput') private logoInput: any;
 
-    constructor(private supplierApi: SupplierApi, private nutsApi: NutsApi, private uxService: UxService) {
-        // Get a random supplier from the DB for testing purposes
-        this.supplierApi.allSuppliers().subscribe(
-            (suppliers: SupplierDTOBase[]) => {
-                this.supplier = suppliers[Math.floor(Math.random() * suppliers.length)];
-                Object.assign(this.editedSupplier, this.supplier);
-                this.nutsApi.getNutsByLevel(0).subscribe(
-                    (countries: NutsDTOBase[]) => {
-                        for (let suppliedRegion of this.supplier.suppliedRegions) {
-                            this.nutsApi.getNutsById(suppliedRegion.regionId).subscribe(
-                                (region: NutsDTOBase) => {
-                                    for (let country of countries) {
-                                        if (region.countryCode == country.countryCode) {
-                                            if (!this.supportedRegions[country.label]) {
-                                                this.selectedCountriesNames.push(country.label);
-                                                this.supportedRegions[country.label] = [];
+    constructor(private supplierApi: SupplierApi, private nutsApi: NutsApi, private uxService: UxService, private localStorageService: LocalStorageService, private router: Router, private translateService: TranslateService) {
+        let storedUser = this.localStorageService.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+        if (this.user != null) {
+            if (this.user.type == 1) {
+                this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
+                    (supplier: SupplierDTOBase) => {
+                        this.supplier = supplier;
+                        Object.assign(this.editedSupplier, this.supplier);
+                        this.nutsApi.getNutsByLevel(0).subscribe(
+                            (countries: NutsDTOBase[]) => {
+                                for (let suppliedRegion of this.supplier.suppliedRegions) {
+                                    this.nutsApi.getNutsById(suppliedRegion.regionId).subscribe(
+                                        (region: NutsDTOBase) => {
+                                            for (let country of countries) {
+                                                if (region.countryCode == country.countryCode) {
+                                                    if (!this.supportedRegions[country.label]) {
+                                                        this.selectedCountriesNames.push(country.label);
+                                                        this.supportedRegions[country.label] = [];
+                                                    }
+                                                    this.supportedRegions[country.label].push(region);
+                                                    break;
+                                                }
                                             }
-                                            this.supportedRegions[country.label].push(region);
-                                            break;
                                         }
-                                    }
+                                    );
                                 }
-                            );
-                        }
+                            }
+                        );
                     }
                 );
+            } else {
+                let translatedString = 'You are not allowed to view this page.';
+                this.translateService.get('error.notallowed').subscribe(
+                    (translation: string) => {
+                        translatedString = translation;
+                    }
+                );
+                this.uxService.growl({
+                    severity: 'warn',
+                    summary: 'WARNING',
+                    detail: translatedString
+                });
+                this.router.navigateByUrl('/home');
             }
-        );
+        } else {
+            let translatedString = 'You are not logged in!';
+            this.translateService.get('error.notloggedin').subscribe(
+                (translation: string) => {
+                    translatedString = translation;
+                }
+            );
+            this.uxService.growl({
+                severity: 'warn',
+                summary: 'WARNING',
+                detail: translatedString
+            });
+            this.router.navigateByUrl('/home');
+        }
     }
 
     displayModal(name: string) {
