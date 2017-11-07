@@ -4,22 +4,23 @@ import {MunicipalityDTOBase} from "../shared/swagger/model/MunicipalityDTO";
 import {BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
 import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
 import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
+import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
 
 @Component({
-    selector: 'beneficiary-registration',
-    templateUrl: 'beneficiary-registration.component.html',
-    providers: [BeneficiaryApi]
+    selector: 'beneficiary-registration', templateUrl: 'beneficiary-registration.component.html', providers: [BeneficiaryApi]
 })
 
 export class BeneficiaryRegistrationComponent {
     private successRegistration: boolean = false;
     private failureRegistration: boolean = false;
-    private completed: boolean[] = [false, false, false];
-    private active: boolean[] = [true, false, false];
+    private completed: boolean[] = [false, false, false, false];
+    private active: boolean[] = [true, false, false, false];
     private representing: boolean = false;
     private initialUser: UserDTOBase = new UserDTOBase();
     private users: UserDTOBase[] = [];
     private municipalities: MunicipalityDTOBase[] = [];
+    private country: NutsDTOBase;
+    private multipleMunicipalities: boolean = false;
     //private registrations: RegistrationDTOBase[] = [];
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
 
@@ -29,16 +30,20 @@ export class BeneficiaryRegistrationComponent {
     navigate(step: number) {
         switch (step) {
             case 1:
-                this.completed = [false, false, false];
-                this.active = [true, false, false];
+                this.completed = [false, false, false, false];
+                this.active = [true, false, false, false];
                 break;
             case 2:
-                this.completed = [true, false, false];
-                this.active = [false, true, false];
+                this.completed = [true, false, false, false];
+                this.active = [false, true, false, false];
                 break;
             case 3:
-                this.completed = [true, true, false];
-                this.active = [false, false, true];
+                this.completed = [true, true, false, false];
+                this.active = [false, false, true, false];
+                break;
+            case 4:
+                this.completed = [true, true, true, false];
+                this.active = [false, false, false, true];
                 break;
         }
     }

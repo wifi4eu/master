@@ -9,28 +9,23 @@ import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 export class BeneficiaryRegistrationStep2Component implements OnInit {
     @Input('initialUser') private initialUser: UserDTOBase;
     @Output() private initialUserChange: EventEmitter<UserDTOBase>;
+    @Input('representing') private representing: boolean;
     @Output() private representingChange: EventEmitter<boolean>;
     @Output() private onNext: EventEmitter<any>;
     private mayorUser: UserDTOBase;
     private representativeUser: UserDTOBase;
-
-    @Input('municipalities') private municipalities: MunicipalityDTOBase[];
-    @Output() private municipalitiesChange: EventEmitter<MunicipalityDTOBase[]>;
-    @Input('users') private users: UserDTOBase[];
-    @Output() private usersChange: EventEmitter<UserDTOBase[]>;
-    @Input('representing') private representing: boolean;
-    @Output() private onBack: EventEmitter<any>;
-
+    private mayorEmails: string[] = ['', ''];
+    private representativeEmails: string[] = ['', ''];
 
     constructor() {
         this.initialUserChange = new EventEmitter<UserDTOBase>();
         this.representingChange = new EventEmitter<boolean>();
         this.onNext = new EventEmitter<any>();
+        this.onNext = new EventEmitter<any>();
     }
 
 
     ngOnInit() {
-
         this.mayorUser = new UserDTOBase();
         this.mayorUser.type = 2;
         this.representativeUser = new UserDTOBase();
