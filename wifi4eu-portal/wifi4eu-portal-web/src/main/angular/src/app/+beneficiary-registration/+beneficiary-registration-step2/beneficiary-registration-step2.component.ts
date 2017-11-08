@@ -9,21 +9,6 @@ import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 })
 
 export class BeneficiaryRegistrationStep2Component {
-    // @Input('initialUser') private initialUser: UserDTOBase;
-    // @Output() private initialUserChange: EventEmitter<UserDTOBase>;
-    // @Input('representing') private representing: boolean;
-    // @Output() private representingChange: EventEmitter<boolean>;
-    // @Output() private onNext: EventEmitter<any>;
-    // private mayorUser: UserDTOBase;
-    // private representativeUser: UserDTOBase;
-    // private mayorEmails: string[] = ['', ''];
-    // private representativeEmails: string[] = ['', ''];
-    //
-    // private laus: NutsDTOBase[] = [];
-    // private countriesSuggestions: NutsDTOBase[] = [];
-    // private countrySelected: boolean = false;
-
-
     @Input('country') private country: NutsDTOBase;
     @Input('laus') private laus: LauDTOBase[][];
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
@@ -77,6 +62,7 @@ export class BeneficiaryRegistrationStep2Component {
             this.municipalities.push(new MunicipalityDTOBase());
             this.users.push(new UserDTOBase());
             this.municipalitiesSelected.push(false);
+            this.emailConfirmations.push('');
         }
     }
 
@@ -84,6 +70,8 @@ export class BeneficiaryRegistrationStep2Component {
         if (this.multipleMunicipalities) {
             this.municipalities.splice(index);
             this.users.splice(index);
+            this.municipalitiesSelected.splice(index);
+            this.emailConfirmations.splice(index);
         }
     }
 
