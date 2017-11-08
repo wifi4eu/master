@@ -14,47 +14,48 @@
         </div>
     </div>
 </div>
-<ng-container *ngIf="users.length > 0">
+<ng-container>
     <div *ngIf="!multipleMunicipalities">
-        <input type="checkbox" [(ngModel)]="checked" (click)="fillMayorData($event)">
-        {{"beneficiaryRegistration.sameData" | translate}}
+        <input type="checkbox" name="checked" [(ngModel)]="checked" (click)="fillMayorData($event)">{{"beneficiaryRegistration.sameDetails"
+        | translate}}
     </div>
-    <form #entityForm="ngForm">
-        <div class="form-group ui-g">
-            <div class="ui-lg-3"></div>
-            <div class="ui-g-12 ui-md-12 ui-lg-6">
-
-            </div>
-            <div class="ui-lg-3"></div>
-        </div>
-        <div class="form-group ui-g">
-
-        </div>
+    <form #entityForm="ngForm" (submit)="submit()">
         <div class="form-group ui-g">
             <div class="ui-lg-3"></div>
             <div class="ui-g-12 ui-md-12 ui-lg-5">
                 <div class="form-group">
                     <label class="label floatLeft" for="name">{{ 'name.label' | translate }}</label>
                     <input id="name" type="text" class="form-control paddingInput" name="name"
-                           placeholder="Diagonal" [disabled]="checked" [(ngModel)]="users[0].name" required>
+                           placeholder="John" [disabled]="checked" [(ngModel)]="initialUser.name" required>
                 </div>
             </div>
             <div class="ui-g-12 ui-md-12 ui-lg-1">
                 <div class="form-group">
                     <label class="label floatLeft" for="surname">{{ 'surname.label' | translate }}</label>
                     <input id="surname" type="text" class="form-control paddingInput" name="surname"
-                           placeholder="Diagonal" [disabled]="checked" [(ngModel)]="users[0].surname" required>
+                           placeholder="Doe" [disabled]="checked" [(ngModel)]="initialUser.surname" required>
                 </div>
             </div>
             <div class="ui-lg-3"></div>
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    <label class="label floatLeft" for="userAddress">{{ 'address.label' | translate }}</label>
+                    <input id="userAddress" type="text" class="form-control paddingInput" name="userAddress"
+                           placeholder="Mayor Street, 123" [disabled]="checked" [(ngModel)]="userAddress" required>
+                </div>
+                <div class="ui-g-8"></div>
+            </div>
         </div>
+
         <div class="form-group ui-g">
             <!-- Mayor email -->
             <div id="mayor-email" class="form-group ui-g">
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'emailMayor.label' | translate }}</label>
-                    <input class="form-control paddingInput" type="email" [disabled]="checked"
-                           pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="users[0].email"
+                    <input class="form-control paddingInput" (keyup)="onKey($event)" type="email" [disabled]="checked"
+                           name="email"
+                           placeholder="example@email.com"
+                           pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="initialUser.email"
                            required>
                     <label class="field-desc" style="margin-top: 10px;color: gray;">{{
                         'email.fielddesc'
@@ -66,9 +67,8 @@
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'confirmemailMayor.label' | translate
                         }}</label>
-                    <input class="form-control paddingInput" (keyup)="onKey($event)" [disabled]="checked"
-                           [(ngModel)]="repeatEmail"
-                           type="repeatEmail"
+                    <input class="form-control paddingInput" [disabled]="checked" [(ngModel)]="repeatEmail"
+                           type="repeatEmail" placeholder="example@email.com" (keyup)="onKey($event)"
                            name="repeatEmail" id="repeatEmail" required>
                 </div>
             </div>
@@ -82,8 +82,8 @@
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button type="submit" class="btn btn-primary publish-button" (click)="submit()"
-                        [disabled]="!entityForm.valid">{{ 'next.button' | translate }}
+                <button type="submit" class="btn btn-primary publish-button"
+                        [disabled]="!entityForm.valid || !userEmailMatches">{{ 'next.button' | translate }}
                 </button>
             </div>
             <div class="ui-lg-3"></div>
