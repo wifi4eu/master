@@ -38,7 +38,9 @@ export class BeneficiaryRegistrationStep3Component implements OnInit {
     fillMayorData(event: boolean) {
         if (event) {
             this.checked = true;
-          
+            this.initialUser.name = this.users[0].name;
+            this.initialUser.surname = this.users[0].surname;
+            this.initialUser.email = this.users[0].email;
         }
 
     }
