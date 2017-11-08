@@ -5,11 +5,13 @@ import {BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
 import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
 import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
+import {LauDTOBase} from "../shared/swagger/model/LauDTO";
+import {NutsApi} from "../shared/swagger/api/NutsApi";
+import {LauApi} from "../shared/swagger/api/LauApi";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
-    selector: 'beneficiary-registration',
-    templateUrl: 'beneficiary-registration.component.html',
-    providers: [BeneficiaryApi]
+    selector: 'beneficiary-registration', templateUrl: 'beneficiary-registration.component.html', providers: [BeneficiaryApi, NutsApi, LauApi]
 })
 
 export class BeneficiaryRegistrationComponent {
@@ -19,15 +21,40 @@ export class BeneficiaryRegistrationComponent {
     private active: boolean[] = [true, false, false, false];
     private representing: boolean = false;
     private initialUser: UserDTOBase = new UserDTOBase();
-    private users: UserDTOBase[] = [];
-    private municipalities: MunicipalityDTOBase[] = [];
+    private users: UserDTOBase[] = [new UserDTOBase()];
+    private municipalities: MunicipalityDTOBase[] = [new MunicipalityDTOBase()];
     private userAddress: string = "";
-    private country: NutsDTOBase;
-    private multipleMunicipalities: boolean = false;
     //private registrations: RegistrationDTOBase[] = [];
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
+    private country: NutsDTOBase = null;
+    private multipleMunicipalities: boolean = false;
+    private countries: NutsDTOBase[] = [];
+    private laus: LauDTOBase[][] = [];
+    private countrySubscription: Subscription = new Subscription();
 
-    constructor(private beneficiaryApi: BeneficiaryApi) {
+    constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private lauApi: LauApi) {
+        this.nutsApi.getNutsByLevel(0).subscribe(
+            (nuts: NutsDTOBase[]) => {
+                this.countries = nuts;
+            }, error => {
+                console.log(error);
+            }
+        );
+    }
+
+    selectCountry(country: NutsDTOBase) {
+        if (this.country != country) {
+            this.country = country;
+            if (!this.laus[country.countryCode]) {
+                this.laus[country.countryCode] = [];
+            }
+            this.countrySubscription.unsubscribe();
+            this.countrySubscription = this.lauApi.getLausByCountryCode(country.countryCode).subscribe(
+                (laus: LauDTOBase[]) => {
+                    this.laus[country.countryCode] = laus;
+                }
+            );
+        }
     }
 
     navigate(step: number) {

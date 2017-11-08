@@ -15,128 +15,210 @@
             </div>
         </div>
     </div>
-
-    <!--#beneficiaryForm="ngForm"-->
-    <form (submit)="submit()">
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <h3 class="beneficiaryTitle">{{ 'mayordetails.title' | translate }}</h3>
-                <div class="ui-g">
-                    <div class="ui-g-12">
-                        <div class="form-group">
-                            <label class="label floatLeft" for="country">{{ 'municipality.label' | translate }}</label>
-                            <div class="clearfix"></div>
-                            <p-autoComplete id="country" class="form-control" name="country"
-                                            placeholder="{{'loading.label' | translate}}"
-                                            field="label" disabled forceSelection="true"
-                                            required>
-                            </p-autoComplete>
-                            <!--<div [hidden="country.valid || country.pristine" class="alert alert-danger">Country is required</div>-->
+    <div *ngIf="!multipleMunicipalities">
+        <form #municipalityForm="ngForm" (submit)="submit()">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <h3 class="beneficiaryTitle">{{ 'mayordetails.title' | translate }}</h3>
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <div class="form-group">
+                                <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate }}</label>
+                                <div class="clearfix"></div>
+                                <p-autoComplete id="municipality" class="form-control" name="municipality" field="name1"
+                                                [(ngModel)]="municipalities[0]" [suggestions]="lauSuggestions" (completeMethod)="search($event, 0)" (onSelect)="selectMunicipality(true, 0)"
+                                                (onBlur)="findIfValidMunicipality(0)" required></p-autoComplete>
+                                <!--<div [hidden="country.valid || country.pristine" class="alert alert-danger">Country is required</div>-->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <div class="ui-g-8">
-                    <div class="form-group">
-                        <label class="label floatLeft" for="address">{{ 'townHall.address' | translate }}</label>
-                        <input id="address"
-                               type="text"
-                               class="form-control paddingInput"
-                               name="address"
-                               min="1"
-                               placeholder="Diagonal"
-                               required>
-                        <!--[(ngModel)]="allBeneficiaries[0].legalEntityDTO.address"-->
-                        <!--<div [hidden]="address.valid || address.pristine" class="alert alert-danger">Address is required-->
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="ui-g-8">
+                        <div class="form-group">
+                            <label class="label floatLeft" for="address">{{ 'townHall.address' | translate }}</label>
+                            <input type="text" class="form-control paddingInput" min="1" placeholder="Diagonal"
+                                   id="address" name="address" [(ngModel)]="municipalities[0].address" required>
+                        </div>
                     </div>
-                </div>
 
-                <div class="ui-g-4">
-                    <div class="form-group">
-                        <label class="label floatLeft" for="address">{{ 'number.label' | translate }}</label>
-                        <input id="number"
-                               type="number"
-                               class="form-control paddingInput"
-                               name="number"
-                               placeholder="605"
-                               required>
-                        <!--[(ngModel)]="allBeneficiaries[0].legalEntityDTO.addressNum"-->
-                        <!--<div [hidden]="address.valid || address.pristine" class="alert alert-danger">Address is required</div>-->
+                    <div class="ui-g-4">
+                        <div class="form-group">
+                            <label class="label floatLeft" for="address">{{ 'number.label' | translate }}</label>
+                            <input type="number" class="form-control paddingInput" placeholder="605"
+                                   id="addressNum" name="addressNum" [(ngModel)]="municipalities[0].addressNum" required>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="ui-g-4">
+                        <div class="form-group">
+                            <label class="label floatLeft" for="postalCode">{{ 'postal-code.label' | translate }}</label>
+                            <input type="text" class="form-control paddingInput" placeholder="08022"
+                                   id="postalCode" name="postalCode" [(ngModel)]="municipalities[0].postalCode" required>
+                        </div>
+                    </div>
+                    <div class="ui-g-8"></div>
+                </div>
+            </div>
 
-
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <div class="ui-g-4">
-                    <div class="form-group">
-                        <label class="label floatLeft" for="postalCode">{{ 'postal-code.label' | translate }}</label>
-                        <input id="postalCode" type="text" class="form-control paddingInput" name="postalCode"
-                               placeholder="08022" required>
-                        <!--[(ngModel)]="allBeneficiaries[0].legalEntityDTO.postalCode"-->
-                        <!--<div class="alert alert-danger" [hidden]="postalCode.valid || postalCode.pristine">Postal code is required</div>-->
+            <!-- Mayor name -->
+            <div id="mayor-name" class="form-group ui-g">
+                <div class="ui-g-12">
+                    <label class="label floatLeft">{{ 'nameMayor.label' | translate }}</label>
+                    <input class="form-control paddingInput" type="text" name="name" id="name" [(ngModel)]="users[0].name" required>
+                </div>
+            </div>
+            <!-- Mayor last name -->
+            <div id="mayor-last-name" class="form-group ui-g">
+                <div class="ui-g-12">
+                    <label class="label floatLeft">{{ 'surnameMayor.label' | translate }}</label>
+                    <input class="form-control paddingInput" type="text" name="surname" id="surname" [(ngModel)]="users[0].surname" required>
+                </div>
+            </div>
+            <!-- Mayor email -->
+            <div id="mayor-email" class="form-group ui-g">
+                <div class="ui-g-12">
+                    <label class="label floatLeft">{{ 'emailMayor.label' | translate }}</label>
+                    <input class="form-control paddingInput" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                           [(ngModel)]="users[0].email" id="email" name="email" required>
+                    <label class="field-desc" style="margin-top: 10px;color: gray;">{{ 'email.fielddesc' | translate }}</label>
+                </div>
+            </div>
+            <!-- Mayor confirmation email -->
+            <div id="mayor-confirm-email" class="form-group ui-g">
+                <div class="ui-g-12">
+                    <label class="label floatLeft">{{ 'confirmemailMayor.label' | translate
+                        }}</label>
+                    <input class="form-control paddingInput" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                           name="confirm-email" id="confirm-email" [(ngModel)]="emailConfirmations[0]" required>
+                </div>
+            </div>
+            <div id="navigation-buttons" class="form-group ui-g center">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-6 ui-md-6 ui-lg-3">
+                    <a href="#/home">
+                        <button type="button" class="btn btn-primary cancel-button" (click)="back()">{{ 'back.button' | translate }}</button>
+                    </a>
+                </div>
+                <!-- Next button -->
+                <div class="ui-g-6 ui-md-6 ui-lg-3">
+                    <button type="submit" class="btn btn-primary publish-button" [disabled]="!municipalityForm.valid">
+                        {{ 'next.button' | translate }}
+                    </button>
+                </div>
+                <div class="ui-lg-3"></div>
+            </div>
+        </form>
+    </div>
+    <div *ngIf="multipleMunicipalities">
+        <form #municipalityForm="ngForm" (submit)="submit()">
+            <ng-container *ngFor="let user of users; let i = index">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <h3 class="beneficiaryTitle">{{ 'mayordetails.title' | translate }}</h3>
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <div class="form-group">
+                                    <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate }}</label>
+                                    <div class="clearfix"></div>
+                                    <p-autoComplete [id]="'municipality-'+i" [name]="'municipality-'+i" class="form-control"
+                                                    [(ngModel)]="municipalities[i]" field="name1" [suggestions]="lauSuggestions"
+                                                    (completeMethod)="search($event, i)" (onSelect)="selectMunicipality(true, i)"
+                                                    (onBlur)="findIfValidMunicipality(i)" required></p-autoComplete>
+                                    <!--<div [hidden="country.valid || country.pristine" class="alert alert-danger">Country is required</div>-->
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="ui-g-8"></div>
-            </div>
-        </div>
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="ui-g-8">
+                            <div class="form-group">
+                                <label class="label floatLeft" for="address">{{ 'townHall.address' | translate }}</label>
+                                <input type="text" class="form-control paddingInput" min="1" placeholder="Diagonal"
+                                       [id]="'address-'+i" [name]="'address-'+i" [(ngModel)]="municipalities[i].address" required>
+                            </div>
+                        </div>
 
-
-        <!-- Mayor name -->
-        <div id="mayor-name" class="form-group ui-g">
-            <div class="ui-g-12">
-                <label class="label floatLeft">{{ 'nameMayor.label' | translate }}</label>
-                <input class="form-control paddingInput" name="name" id="name" type="text" required>
+                        <div class="ui-g-4">
+                            <div class="form-group">
+                                <label class="label floatLeft" for="address">{{ 'number.label' | translate }}</label>
+                                <input type="number" class="form-control paddingInput" placeholder="605"
+                                       [id]="'addressNum-'+i" [name]="'addressNum-'+i" [(ngModel)]="municipalities[i].addressNum" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <div class="form-group">
+                                <label class="label floatLeft" for="postalCode">{{ 'postal-code.label' | translate }}</label>
+                                <input type="text" class="form-control paddingInput" placeholder="08022"
+                                       [id]="'postalCode-'+i" [name]="'postalCode-'+i" [(ngModel)]="municipalities[i].postalCode" required>
+                            </div>
+                        </div>
+                        <div class="ui-g-8"></div>
+                    </div>
+                </div>
+                <!-- Mayor name -->
+                <div [id]="'mayor-name-'+i" class="form-group ui-g">
+                    <div class="ui-g-12">
+                        <label class="label floatLeft">{{ 'nameMayor.label' | translate }}</label>
+                        <input class="form-control paddingInput" [name]="'name-'+i" [id]="'name-'+i" type="text"
+                               [(ngModel)]="users[i].name" required>
+                    </div>
+                </div>
+                <!-- Mayor last name -->
+                <div [id]="'mayor-last-name-'+i" class="form-group ui-g">
+                    <div class="ui-g-12">
+                        <label class="label floatLeft">{{ 'surnameMayor.label' | translate }}</label>
+                        <input class="form-control paddingInput" type="text" [name]="'surname-'+i" [id]="'surname-'+i"
+                               [(ngModel)]="users[i].surname" required>
+                    </div>
+                </div>
+                <!-- Mayor email -->
+                <div [id]="'mayor-email-'+i" class="form-group ui-g">
+                    <div class="ui-g-12">
+                        <label class="label floatLeft">{{ 'emailMayor.label' | translate }}</label>
+                        <input class="form-control paddingInput" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                               [name]="'email-'+i" [id]="'email-'+i" [(ngModel)]="users[i].email" required>
+                        <label class="field-desc" style="margin-top: 10px;color: gray;">{{ 'email.fielddesc' | translate }}</label>
+                    </div>
+                </div>
+                <!-- Mayor confirmation email -->
+                <div [id]="'mayor-confirm-email-'+i" class="form-group ui-g">
+                    <div class="ui-g-12">
+                        <label class="label floatLeft">{{ 'confirmemailMayor.label' | translate }}</label>
+                        <input class="form-control paddingInput" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                               [name]="'confirm-email-'+i" [id]="'confirm-email-'+i" [(ngModel)]="emailConfirmations[i]" required>
+                    </div>
+                </div>
+            </ng-container>
+            <div class="form-group ui-g center">
+                <button (click)="addMunicipality()">Add municipality</button>
             </div>
-        </div>
-        <!-- Mayor last name -->
-        <div id="mayor-last-name" class="form-group ui-g">
-            <div class="ui-g-12">
-                <label class="label floatLeft">{{ 'surnameMayor.label' | translate }}</label>
-                <input class="form-control paddingInput" type="text" name="surname" id="surname" required>
-                <!--[(ngModel)]="allBeneficiaries[i].mayorDTO.surname"-->
+            <div id="navigation-buttons" class="form-group ui-g center">
+                <div class="ui-lg-3"></div>
+                <div class="ui-g-6 ui-md-6 ui-lg-3">
+                    <a href="#/home">
+                        <button type="button" class="btn btn-primary cancel-button" (click)="back()">{{ 'back.button' | translate }}</button>
+                    </a>
+                </div>
+                <!-- Next button -->
+                <div class="ui-g-6 ui-md-6 ui-lg-3">
+                    <button type="submit" class="btn btn-primary publish-button" [disabled]="!municipalityForm.valid">
+                        {{ 'next.button' | translate }}
+                    </button>
+                </div>
+                <div class="ui-lg-3"></div>
             </div>
-        </div>
-        <!-- Mayor email -->
-        <div id="mayor-email" class="form-group ui-g">
-            <div class="ui-g-12">
-                <label class="label floatLeft">{{ 'emailMayor.label' | translate }}</label>
-                <input class="form-control paddingInput" type="email"
-                       pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
-                <label class="field-desc" style="margin-top: 10px;color: gray;">{{
-                    'email.fielddesc'
-                    | translate }}</label>
-            </div>
-        </div>
-        <!-- Mayor confirmation email -->
-        <div id="mayor-confirm-email" class="form-group ui-g">
-            <div class="ui-g-12">
-                <label class="label floatLeft">{{ 'confirmemailMayor.label' | translate
-                    }}</label>
-                <input class="form-control paddingInput" type="email" name="email" id="email" required>
-                <!--[(ngModel)]="allBeneficiaries[i].mayorDTO.email"-->
-            </div>
-        </div>
-    </form>
-
-    <div id="navigation-buttons" class="form-group ui-g center">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-6 ui-md-6 ui-lg-3">
-            <a href="#/home">
-                <button type="button" class="btn btn-primary cancel-button">{{ 'back.button' | translate }}</button>
-            </a>
-        </div>
-        <!-- Next button -->
-        <div class="ui-g-6 ui-md-6 ui-lg-3">
-            <button type="submit" class="btn btn-primary publish-button" (click)="onSubmit(3)">{{ 'next.button' |
-                translate }}
-            </button>
-        </div>
-        <div class="ui-lg-3"></div>
+        </form>
     </div>
 </div>
