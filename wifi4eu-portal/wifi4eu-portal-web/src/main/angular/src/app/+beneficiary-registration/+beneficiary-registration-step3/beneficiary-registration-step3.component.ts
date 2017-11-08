@@ -14,7 +14,7 @@ export class BeneficiaryRegistrationStep3Component implements OnInit {
     @Input('users') private users: UserDTOBase[];
     @Input('userAddress') private userAddress: string;
 
-    private checked: boolean;
+    private imMayor: boolean;
     private repeatEmail: string;
     private userEmailMatches: boolean;
 
@@ -25,7 +25,7 @@ export class BeneficiaryRegistrationStep3Component implements OnInit {
     constructor() {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
-        this.checked = false;
+        this.imMayor = false;
         this.userEmailMatches = false;
         this.userAddress = "";
 
@@ -37,10 +37,8 @@ export class BeneficiaryRegistrationStep3Component implements OnInit {
 
     fillMayorData(event: boolean) {
         if (event) {
-            this.checked = true;
-            this.initialUser.name = this.users[0].name;
-            this.initialUser.surname = this.users[0].surname;
-            this.initialUser.email = this.users[0].email;
+            this.imMayor = true;
+
         }
 
     }
