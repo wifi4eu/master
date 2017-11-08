@@ -9,15 +9,15 @@
                         <div class="profile-wrapper" isCompact="false">
                             <div class="left-panel">
                                 <div *ngIf="user" class="user-infos">
-                                    <span class="wellcomeHeader">Logged in as <a [routerLink]="profileUrl"><strong
+                                    <span class="wellcomeHeader">{{ 'login.title' | translate }}<a [routerLink]="profileUrl"><strong
                                             class="color-primary">{{user.email}}</strong></a></span>
-                                    <button (click)="onLogout()" class="headerButton">Logout</button>
+                                    <button (click)="onLogout()" class="headerButton">{{ 'button.login' | translate }}</button>
                                 </div>
                                 <div *ngIf="!user" class="user-infos">
                                     <strong class="color-primary">
                                     </strong>
                                     <button class="headerButton" routerLink="/login" routerLinkActive="active">
-                                        Login
+                                        {{ 'login.title.button' | translate }}
                                     </button>
                                 </div>
                             </div>
