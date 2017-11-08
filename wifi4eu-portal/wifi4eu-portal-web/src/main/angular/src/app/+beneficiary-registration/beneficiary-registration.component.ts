@@ -7,7 +7,9 @@ import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
 
 @Component({
-    selector: 'beneficiary-registration', templateUrl: 'beneficiary-registration.component.html', providers: [BeneficiaryApi]
+    selector: 'beneficiary-registration',
+    templateUrl: 'beneficiary-registration.component.html',
+    providers: [BeneficiaryApi]
 })
 
 export class BeneficiaryRegistrationComponent {
@@ -19,6 +21,7 @@ export class BeneficiaryRegistrationComponent {
     private initialUser: UserDTOBase = new UserDTOBase();
     private users: UserDTOBase[] = [];
     private municipalities: MunicipalityDTOBase[] = [];
+    private userAddress: string = "";
     private country: NutsDTOBase;
     private multipleMunicipalities: boolean = false;
     //private registrations: RegistrationDTOBase[] = [];

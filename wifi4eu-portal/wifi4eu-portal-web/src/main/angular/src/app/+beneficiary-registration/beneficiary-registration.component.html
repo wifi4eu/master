@@ -17,7 +17,7 @@
                     [isActive]="active[2]">
         <uxWizardStepCustomContent>
             <beneficiary-registration-step3 [(initialUser)]="initialUser" [(users)]="users"
-                                            [(multipleMunicipalities)]="multipleMunicipalities" (onNext)="navigate(4)"
+                                            [(multipleMunicipalities)]="multipleMunicipalities" [(userAddress)]="userAddress" (onNext)="navigate(4)"
                                             (onBack)="navigate(2)"></beneficiary-registration-step3>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
