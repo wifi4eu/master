@@ -30,7 +30,7 @@
                                             [(ngModel)]="country"
                                             [suggestions]="countriesSuggestions"
                                             (completeMethod)="search($event)" (onSelect)="selectCountry(true)"
-                                            (onBlur)="findIfValidCountry($event)" required></p-autoComplete>
+                                            (onBlur)="findIfValidCountry()" required></p-autoComplete>
                         </div>
                     </div>
                     <br>
