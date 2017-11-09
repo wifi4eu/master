@@ -2,7 +2,9 @@
     <ux-wizard-step label="{{ 'beneficiaryRegistration.step1.title' | translate }}" [isCompleted]="completed[0]"
                     [isActive]="active[0]">
         <uxWizardStepCustomContent>
-            <beneficiary-registration-step1 [country]="country" [countries]="countries" [(multipleMunicipalities)]="multipleMunicipalities" (countryChange)="selectCountry($event)"
+            <beneficiary-registration-step1 [country]="country" [countries]="countries"
+                                            [(multipleMunicipalities)]="multipleMunicipalities"
+                                            (countryChange)="selectCountry($event)"
                                             (onNext)="navigate(2)"></beneficiary-registration-step1>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
@@ -16,15 +18,18 @@
     <ux-wizard-step label="{{ 'registration.entity.title' | translate }}" [isCompleted]="completed[2]"
                     [isActive]="active[2]">
         <uxWizardStepCustomContent>
-            <beneficiary-registration-step3 [(initialUser)]="initialUser" [(users)]="users" [(multipleMunicipalities)]="multipleMunicipalities" [(userAddress)]="userAddress"
-                                            (onNext)="navigate(4)" (onBack)="navigate(2)"></beneficiary-registration-step3>
+            <beneficiary-registration-step3 [(initialUser)]="initialUser" [users]="users"
+                                            [multipleMunicipalities]="multipleMunicipalities"
+                                            [municipalities]="municipalities" [(userAddress)]="userAddress"
+                                            [(addressNum)]="addressNum" [(postalCode)]="postalCode"
+                                            (onNext)="navigate(4)"
+                                            (onBack)="navigate(2)"></beneficiary-registration-step3>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'registration.review.title' | translate }}" [isCompleted]="completed[3]"
                     [isActive]="active[3]">
         <uxWizardStepCustomContent>
-            <beneficiary-registration-step4 [initialUser]="initialUser" [country]="country" [municipalities]="municipalities" [users]="users" [multipleMunicipalities]="multipleMunicipalities"
-                                            (onNext)="submitRegistration()" (onBack)="navigate(3)" (onEdit)="navigate($event)"></beneficiary-registration-step4>
+            <beneficiary-registration-step4 [initialUser]="initialUser" [country]="country" [municipalities]="municipalities" [users]="users" [multipleMunicipalities]="multipleMunicipalities" [(userAddress)]="userAddress" [(addressNum)]="addressNum" [(postalCode)]="postalCode" (onNext)="submitRegistration()" (onBack)="navigate(3)" (onEdit)="navigate($event)"></beneficiary-registration-step4>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
 </custom-wizard-steps>

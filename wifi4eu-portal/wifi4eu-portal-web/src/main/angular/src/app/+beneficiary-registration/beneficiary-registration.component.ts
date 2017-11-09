@@ -23,6 +23,8 @@ export class BeneficiaryRegistrationComponent {
     private users: UserDTOBase[] = [new UserDTOBase()];
     private municipalities: MunicipalityDTOBase[] = [new MunicipalityDTOBase()];
     private userAddress: string = "";
+    private addressNum: string = "";
+    private postalCode: string = "";
     //private registrations: RegistrationDTOBase[] = [];
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
     private country: NutsDTOBase = null;
