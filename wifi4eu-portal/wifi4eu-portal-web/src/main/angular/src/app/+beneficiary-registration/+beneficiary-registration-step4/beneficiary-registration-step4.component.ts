@@ -1,6 +1,7 @@
 import {Component, Input, Output, EventEmitter} from "@angular/core";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
+import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 
 
 @Component({
@@ -9,22 +10,21 @@ import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 
 export class BeneficiaryRegistrationStep4Component {
     @Input('initialUser') private initialUser: UserDTOBase;
+    @Input('country') private country: NutsDTOBase;
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
     @Input('users') private users: UserDTOBase[];
-    @Input('representing') private representing: boolean;
+    @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
     @Output() private onEdit: EventEmitter<number>;
-
     private displayModal: boolean;
-    private successCaptcha: boolean = false;
     private legalChecks: boolean[] = [false, false, false];
+    private successCaptcha: boolean = false;
 
     constructor() {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
         this.onEdit = new EventEmitter<any>();
-
         this.displayModal = false;
     }
 

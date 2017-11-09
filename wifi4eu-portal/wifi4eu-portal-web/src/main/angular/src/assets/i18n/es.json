@@ -295,7 +295,6 @@
   "newMediation.text": "Pedir a WIFI4EU que medie la conversación.",
   "add.repply": "Responder",
   "discussion.growl": "Su solicitud de mediación se ha enviado con éxito. El servicio de mediación WIFI4EU pronto intervendrá en esta conversación.",
-<<<<<<< HEAD
   "loading.modal.title": "Cargando...",
   "loading.modal.title2": "Cargando, espere, por favor...",
   "loading.modal.title3": "Confirmando datos, espere, por favor...",
@@ -311,6 +310,11 @@
   "useractivation.failure": "No se ha podido activar su cuenta.",
   "municipalityDetails.title": "Detalles del municipio",
   "municipalityDetails.text": "Por favor, provea la información del municipio que representa.",
+  "beneficiaryRegistration.step1.title": "PASO 1: Tipo de registro",
+  "beneficiaryRegistration.step1.instructions": "Por favor, escoja el país y el número de municipios que representa.",
+  "beneficiaryRegistration.step1.option1": "Represento un municipio",
+  "beneficiaryRegistration.step1.option2": "Represento dos o más municipios",
+  "beneficiaryRegistration.step1.information": "Este texto será proporcionado por DG CONNECT. Es breve y explica en pocas palabras qué significa representar a uno o a varios municipios.",
   "townHall.address": "Dirección del ayuntamiento",
   "loading.label": "cargando...",
   "confirmemailMayor.label": "Confirmar email del alcalde",
@@ -320,11 +324,7 @@
   "beneficiaryRegistration.sameDetails": "Mis datos son los mismos que los datos de alcalde",
   "duplicatedSuppliers.title":"Registros de proveedores duplicados",
   "duplicatedBeneficiary.title":"Registros de municipios duplicados",
-  "discussionForum.title":"Foro de discusión"
+  "discussionForum.title":"Foro de discusión",
+  "typeOfRegistration.title":"Tipo de registro",
+  "yourDetails.title":"Detalles personales"
 }
-=======
-  "duplicatedSuppliers.title":"Registros de proveedores duplicados",
-  "duplicatedBeneficiary.title":"Registros de municipios duplicados",
-  "discussionForum.title":"Foro de discusión"
-}
->>>>>>> 87f278f01e5d8cebf124cc1850285daefbfb6d35
