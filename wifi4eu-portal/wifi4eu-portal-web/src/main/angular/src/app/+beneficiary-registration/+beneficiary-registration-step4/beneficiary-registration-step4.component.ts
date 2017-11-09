@@ -14,6 +14,9 @@ export class BeneficiaryRegistrationStep4Component {
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
     @Input('users') private users: UserDTOBase[];
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
+    @Input('userAddress') private userAddress: string;
+    @Input('addressNum') private addressNum: string;
+    @Input('postalCode') private postalCode: string;
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
     @Output() private onEdit: EventEmitter<number>;

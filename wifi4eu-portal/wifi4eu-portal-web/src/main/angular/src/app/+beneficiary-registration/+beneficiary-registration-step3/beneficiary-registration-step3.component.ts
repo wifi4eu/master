@@ -17,6 +17,9 @@ export class BeneficiaryRegistrationStep3Component implements OnInit {
     @Input('addressNum') private addressNum: string;
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
     @Input('postalCode') private postalCode: string;
+    @Output() private addressNumChange: EventEmitter<string>;
+    @Output() private userAddressChange: EventEmitter<string>;
+    @Output() private postalCodeChange: EventEmitter<string>;
 
 
     private imMayor: boolean;
@@ -30,6 +33,9 @@ export class BeneficiaryRegistrationStep3Component implements OnInit {
     constructor() {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
+        this.addressNumChange = new EventEmitter<string>();
+        this.userAddressChange = new EventEmitter<string>();
+        this.postalCodeChange = new EventEmitter<string>();
         this.imMayor = false;
         this.userEmailMatches = false;
         this.userAddress = "";
@@ -73,10 +79,16 @@ export class BeneficiaryRegistrationStep3Component implements OnInit {
     }
 
     back() {
+        this.addressNumChange.emit(this.addressNum);
+        this.userAddressChange.emit(this.userAddress);
+        this.postalCodeChange.emit(this.postalCode);
         this.onBack.emit();
     }
 
     submit(step: number) {
+        this.addressNumChange.emit(this.addressNum);
+        this.userAddressChange.emit(this.userAddress);
+        this.postalCodeChange.emit(this.postalCode);
         this.onNext.emit(step);
     }
 }
