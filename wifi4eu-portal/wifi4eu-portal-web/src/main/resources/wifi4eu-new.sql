@@ -270,6 +270,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`mayors` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
   `surname` VARCHAR(255) NULL,
+  `treatment` VARCHAR(255) NULL,
   `email` VARCHAR(255) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
