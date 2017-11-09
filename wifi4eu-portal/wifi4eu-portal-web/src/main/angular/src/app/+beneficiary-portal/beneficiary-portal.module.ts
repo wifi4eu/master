@@ -4,9 +4,8 @@ import {SharedModule} from '../shared/shared.module';
 import {BeneficiaryPortalRoutingModule} from './beneficiary-portal-routing.module';
 import {DiscussionComponent} from "./+discussion/discussion.component";
 import {BeneficiaryProfileComponent} from "./+profile/profile.component";
-// import {BeneficiaryPortalComponent} from './beneficiary-portal.component';
 // import {BeneficiaryProfileComponent} from './+profile/profile.component';
-// import {VoucherComponent} from "../+beneficiary-portal/+voucher/voucher.component";
+import {VoucherComponent} from "../+beneficiary-portal/+voucher/voucher.component";
 // import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplier.component";
 
 @NgModule({
@@ -14,8 +13,7 @@ import {BeneficiaryProfileComponent} from "./+profile/profile.component";
         SharedModule, BeneficiaryPortalRoutingModule
     ],
     declarations: [
-        // VoucherComponent,
-        // BeneficiaryPortalComponent,
+        VoucherComponent,
         // BeneficiaryProfileComponent,
         // SelectSupplierComponent
         DiscussionComponent,

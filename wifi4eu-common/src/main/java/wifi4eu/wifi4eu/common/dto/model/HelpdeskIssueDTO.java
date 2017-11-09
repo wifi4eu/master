@@ -10,6 +10,7 @@ public class HelpdeskIssueDTO {
     private String portal;
     private String memberState;
     private String summary;
+    //TODO: Modificar los Date a objetos tipo Date
     private long createDate;
     private int status;
     private List<HelpdeskCommentDTO> comments;
