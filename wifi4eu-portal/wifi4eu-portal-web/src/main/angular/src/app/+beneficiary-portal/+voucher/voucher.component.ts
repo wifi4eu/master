@@ -5,7 +5,6 @@ import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
 //import {BenPubSupDTOBase} from "../../shared/swagger/model/BenPubSupDTO";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {UserDTO} from "../../shared/swagger/model/UserDTO";
-import {RepresentativeDTOBase} from "../../shared/swagger/model/RepresentativeDTO";
 import {LocalStorageService} from "angular-2-local-storage";
 import {CallApi} from "../../shared/swagger/api/CallApi";
 
@@ -25,6 +24,12 @@ export class VoucherComponent {
     }
 
     ngOnInit() {
+
+        // Check if there are Calls
+        if (this.user != null) {
+            this.checkForCalls();
+        }
+
         // TODO: Con el nuevo modelo creo que no hace falta todo esto
 
         // if (this.user != null) {

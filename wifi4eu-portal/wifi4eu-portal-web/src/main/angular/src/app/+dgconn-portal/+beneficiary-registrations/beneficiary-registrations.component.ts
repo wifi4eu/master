@@ -1,7 +1,6 @@
 import {Component, Input, IterableDifferFactory} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
 import {LauDTO, LauDTOBase} from "../../shared/swagger/model/LauDTO";
-import {RepresentativeDTO, RepresentativeDTOBase} from "../../shared/swagger/model/RepresentativeDTO";
 import {MayorDTO,MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
@@ -21,7 +20,6 @@ import {SelectItem} from "primeng/primeng";
 
 export class DgConnBeneficiaryRegistrationsComponent {
     private mayors: MayorDTO[];
-    private representatives: RepresentativeDTO[];
     private users: Array<Object>;
     private status: SelectItem[];
     private selectStatus: any[];

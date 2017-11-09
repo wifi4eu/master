@@ -868,6 +868,7 @@ INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('DEA17', 'Oberhausen, Kreisfreie Stadt', '3', 'DE', '5', '434');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('DEA18', 'Remscheid, Kreisfreie Stadt', '3', 'DE', '5', '435');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('DEE', 'SACHSEN-ANHALT', '1', 'DE', '5', '550');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('DEE0', 'Sachsen-Anhalt', '2', 'DE', '5', '551');
@@ -1075,10 +1076,6 @@ INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('EL42', 'Νότιο Αιγαίο (Notio Aigaio)', '2', 'EL', '8', '652');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('EL421', 'Κάλυμνος, Κάρπαθος, Κως, Ρόδος (Kalymnos, Karpathos, Kos, Rodos)', '3', 'EL', '8', '653');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING) VALUES ('EL422',
-                                                                                                    'Άνδρος, Θήρα, Κέα, Μήλος, Μύκονος, Νάξος, Πάρος, Σύρος, Τήνος (Andros, Thira, Kea, Milos, Mykonos, Naxos, Paros,  Syros, Tinos)',
-                                                                                                    '3', 'EL', '8',
-                                                                                                    '654');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('EL43', 'Κρήτη (Kriti)', '2', 'EL', '8', '655');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
@@ -1521,7 +1518,6 @@ INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('DED52', 'Leipzig', '3', 'DE', '5', '548');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('DED53', 'Nordsachsen', '3', 'DE', '5', '549');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
 VALUES ('ES514', 'Tarragona', '3', 'ES', '9', '762');
 INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
