@@ -19,7 +19,6 @@ export class BeneficiaryRegistrationComponent {
     private failureRegistration: boolean = false;
     private completed: boolean[] = [false, false, false, false];
     private active: boolean[] = [true, false, false, false];
-    private representing: boolean = false;
     private initialUser: UserDTOBase = new UserDTOBase();
     private users: UserDTOBase[] = [new UserDTOBase()];
     private municipalities: MunicipalityDTOBase[] = [new MunicipalityDTOBase()];
@@ -81,7 +80,7 @@ export class BeneficiaryRegistrationComponent {
     }
 
     submitRegistration() {
-        this.finalBeneficiary.representing = this.representing;
+        //this.finalBeneficiary.representing = this.representing;
         this.finalBeneficiary.users = [];
         this.finalBeneficiary.municipalities = [];
         this.finalBeneficiary.users.push(this.initialUser);
