@@ -24,7 +24,8 @@
             <span class="ui-lg-1"></span>
             <span class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: left;">
                 <p class="ui-g-11 ui-md-11 ui-lg-11 beneficiaryMayor">{{ 'typeOfRegistration.title' | translate }}</p>
-                <a class="ui-g-1 ui-md-1 ui-lg-1" (click)="edit(1)">{{ 'edit.button' | translate }} <i class="fa fa-pencil" aria-hidden="true"></i></a>
+                <a class="ui-g-1 ui-md-1 ui-lg-1" (click)="edit(1)">{{ 'edit.button' | translate }} <i
+                        class="fa fa-pencil" aria-hidden="true"></i></a>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'country.label' | translate }}</span>
                     <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ country.label }}</b></span>
@@ -42,7 +43,8 @@
                 <span class="ui-lg-1"></span>
                 <span class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: left;">
                     <p class="ui-g-11 ui-md-11 ui-lg-11 beneficiaryMayor">{{ 'municipalityDetails.title' | translate }}</p>
-                    <a class="ui-g-1 ui-md-1 ui-lg-1" (click)="edit(2)">{{ 'edit.button' | translate }} <i class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <a class="ui-g-1 ui-md-1 ui-lg-1" (click)="edit(2)">{{ 'edit.button' | translate }} <i
+                            class="fa fa-pencil" aria-hidden="true"></i></a>
                     <div>
                         <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'municipality.label' | translate }}</span>
                         <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipalities[0].name }}</b></span>
@@ -52,7 +54,7 @@
                         <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipalities[0].address }}</b></span>
                     </div>
                     <div>
-                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'addressNum.label' | translate }}</span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'number.label' | translate }}</span>
                         <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipalities[0].addressNum }}</b></span>
                     </div>
                     <div>
@@ -85,7 +87,8 @@
                             <h3><b>{{ 'municipality.label' | translate }} #{{ (i + 1) }}</b></h3>
                         </span>
                         <p class="ui-g-11 ui-md-11 ui-lg-11 beneficiaryMayor">{{ 'municipalityDetails.title' | translate }}</p>
-                        <a class="ui-g-1 ui-md-1 ui-lg-1" (click)="edit(2)">{{ 'edit.button' | translate }} <i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        <a class="ui-g-1 ui-md-1 ui-lg-1" (click)="edit(2)">{{ 'edit.button' | translate }} <i
+                                class="fa fa-pencil" aria-hidden="true"></i></a>
                         <div>
                             <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'municipality.label' | translate }}</span>
                             <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipality.name }}</b></span>
@@ -124,7 +127,8 @@
             <span class="ui-lg-1"></span>
             <span class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: left;">
                 <p class="ui-g-11 ui-md-11 ui-lg-11 beneficiaryMayor">{{ 'yourDetails.title' | translate }}</p>
-                <a class="ui-g-1 ui-md-1 ui-lg-1" (click)="edit(3)">{{ 'edit.button' | translate }} <i class="fa fa-pencil" aria-hidden="true"></i></a>
+                <a class="ui-g-1 ui-md-1 ui-lg-1" (click)="edit(3)">{{ 'edit.button' | translate }} <i
+                        class="fa fa-pencil" aria-hidden="true"></i></a>
                 <div>
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'name.label' | translate }}</span>
                     <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.name }}</b></span>
@@ -137,6 +141,18 @@
                     <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'email.label' | translate }}</span>
                     <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.email }}</b></span>
                 </div>
+                 <div>
+                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'address.label' | translate }}</span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ userAddress }}</b></span>
+                </div>
+                 <div>
+                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'number.label' | translate }}</span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ addressNum }}</b></span>
+                </div>
+                 <div>
+                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'postal-code.label' | translate }}</span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ postalCode }}</b></span>
+                </div>
             </span>
             <span class="ui-lg-1"></span>
         </div>
@@ -148,7 +164,8 @@
         <div class="ui-g" style="text-align: left;">
             <div class="ui-lg-1"></div>
             <div class="ui-g-12 ui-md-12 ui-lg-10">
-                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_1"><input type="checkbox" id="check_1" [(ngModel)]="legalChecks[0]">
+                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_1"><input type="checkbox" id="check_1"
+                                                                              [(ngModel)]="legalChecks[0]">
                     {{ 'preview.registration.check1' | translate }}
                 </label>
             </div>
@@ -157,7 +174,8 @@
         <div class="ui-g" style="text-align: left;">
             <span class="ui-lg-1"></span>
             <div class="ui-g-12 ui-md-12 ui-lg-10">
-                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_2"><input type="checkbox" id="check_2" [(ngModel)]="legalChecks[1]">
+                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_2"><input type="checkbox" id="check_2"
+                                                                              [(ngModel)]="legalChecks[1]">
                     {{ 'preview.registration.check2' | translate }}
                 </label>
             </div>
@@ -166,7 +184,8 @@
         <div class="ui-g" style="text-align: left;">
             <span class="ui-lg-1"></span>
             <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
-                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_3"><input type="checkbox" id="check_3" [(ngModel)]="legalChecks[2]">
+                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_3"><input type="checkbox" id="check_3"
+                                                                              [(ngModel)]="legalChecks[2]">
                     {{ 'preview.registration.check3' | translate }}
                 </label>
             </div>
@@ -174,7 +193,8 @@
         </div>
         <div id="captcha" class="ui-g">
             <span class="ui-md-4 ui-lg-4"></span>
-            <ng2-google-recaptcha class="ui-g-12 ui-md-4 ui-lg-4" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu" (onCaptchaComplete)="completeCaptcha($event)"></ng2-google-recaptcha>
+            <ng2-google-recaptcha class="ui-g-12 ui-md-4 ui-lg-4" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu"
+                                  (onCaptchaComplete)="completeCaptcha($event)"></ng2-google-recaptcha>
             <span class="ui-md-4 ui-lg-4"></span>
         </div>
 
