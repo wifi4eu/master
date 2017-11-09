@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnInit} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
@@ -18,10 +18,13 @@ export class BeneficiaryRegistrationStep2Component {
     @Output() private municipalitiesChange: EventEmitter<MunicipalityDTOBase[]>;
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
-    private municipalitiesSelected: boolean[] = [false];
+    private selectedLaus: LauDTOBase[] = [new LauDTOBase()];
     private lauSuggestions: LauDTOBase[] = [];
+    private municipalitiesSelected: boolean[] = [false];
+    private addressFields: string[] = [''];
+    private addressNumFields: string[] = [''];
+    private postalCodeFields: string[] = [''];
     private emailConfirmations: string[] = [''];
-    //private municipality: MunicipalityDTOBase;
 
     constructor() {
         this.usersChange = new EventEmitter<UserDTOBase[]>();
@@ -49,8 +52,8 @@ export class BeneficiaryRegistrationStep2Component {
     private findIfValidMunicipality(index: number) {
         if (this.country != null) {
             for (let lau of this.laus[this.country.countryCode]) {
-                if (lau.name1.toLowerCase() === this.municipalities[index].toString().toLowerCase()) {
-                    this.municipalities[index] = lau;
+                if (lau.name1.toLowerCase() === this.selectedLaus[index].toString().toLowerCase()) {
+                    this.selectedLaus[index] = lau;
                     this.municipalitiesSelected[index] = true;
                 }
             }
@@ -60,28 +63,52 @@ export class BeneficiaryRegistrationStep2Component {
     private addMunicipality() {
         if (this.multipleMunicipalities) {
             this.municipalities.push(new MunicipalityDTOBase());
+            this.selectedLaus.push(new LauDTOBase());
             this.users.push(new UserDTOBase());
             this.municipalitiesSelected.push(false);
+            this.addressFields.push('');
+            this.addressNumFields.push('');
+            this.postalCodeFields.push('');
             this.emailConfirmations.push('');
         }
     }
 
     private removeMunicipality(index: number) {
-        if (this.multipleMunicipalities) {
-            this.municipalities.splice(index);
-            this.users.splice(index);
-            this.municipalitiesSelected.splice(index);
-            this.emailConfirmations.splice(index);
+        if (this.multipleMunicipalities && this.municipalities.length > 1) {
+            this.municipalities.splice(index, 1);
+            this.selectedLaus.splice(index, 1);
+            this.users.splice(index, 1);
+            this.municipalitiesSelected.splice(index, 1);
+            this.addressFields.splice(index, 1);
+            this.addressNumFields.splice(index, 1);
+            this.postalCodeFields.splice(index, 1);
+            this.emailConfirmations.splice(index, 1);
         }
     }
 
-    submit() {
+    private submit() {
+        for (let i = 0; i < this.municipalities.length; i++) {
+            this.municipalities[i].name = this.selectedLaus[i].name1;
+            this.municipalities[i].country = this.country.label;
+            this.municipalities[i].address = this.addressFields[i];
+            this.municipalities[i].addressNum = this.addressNumFields[i];
+            this.municipalities[i].postalCode = this.postalCodeFields[i];
+            this.municipalities[i].lauId = this.selectedLaus[i].id;
+        }
         this.usersChange.emit(this.users);
         this.municipalitiesChange.emit(this.municipalities);
         this.onNext.emit();
     }
 
-    back() {
+    private back() {
+        for (let i = 0; i < this.municipalities.length; i++) {
+            this.municipalities[i].country = this.country.label;
+            this.municipalities[i].address = this.addressFields[i];
+            this.municipalities[i].addressNum = this.addressNumFields[i];
+            this.municipalities[i].postalCode = this.postalCodeFields[i];
+        }
+        this.usersChange.emit(this.users);
+        this.municipalitiesChange.emit(this.municipalities);
         this.onBack.emit();
     }
 }
