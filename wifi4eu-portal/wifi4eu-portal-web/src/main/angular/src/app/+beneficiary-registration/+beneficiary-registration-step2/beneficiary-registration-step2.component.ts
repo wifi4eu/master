@@ -18,7 +18,7 @@ export class BeneficiaryRegistrationStep2Component {
     @Output() private municipalitiesChange: EventEmitter<MunicipalityDTOBase[]>;
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
-    private selectedLaus: LauDTOBase[] = [new LauDTOBase()];
+    private selectedLaus: LauDTOBase[] = [];
     private lauSuggestions: LauDTOBase[] = [];
     private municipalitiesSelected: boolean[] = [false];
     private addressFields: string[] = [''];
