@@ -13,7 +13,7 @@ export class BeneficiaryRegistrationStep1Component {
     @Output() private multipleMunicipalitiesChange: EventEmitter<boolean>;
     @Output() private onNext: EventEmitter<any>;
     // private countries: NutsDTOBase[] = [];
-    private countriesSuggestions: NutsDTOBase[] = [];
+    // private countriesSuggestions: NutsDTOBase[] = [];
     private countrySelected: boolean = false;
     private singleMunicipalityCheckbox: boolean = false;
     private multipleMunicipalityCheckbox: boolean = false;
@@ -24,28 +24,28 @@ export class BeneficiaryRegistrationStep1Component {
         this.onNext = new EventEmitter<any>();
     }
 
-    private search(event) {
-        this.countrySelected = false;
-        this.countriesSuggestions = [];
-        for (let country of this.countries) {
-            if (country.label.toLowerCase().startsWith(event.query.toLowerCase())) {
-                this.countriesSuggestions.push(country);
-            }
-        }
-    }
+    // private search(event) {
+    //     this.countrySelected = false;
+    //     this.countriesSuggestions = [];
+    //     for (let country of this.countries) {
+    //         if (country.label.toLowerCase().startsWith(event.query.toLowerCase())) {
+    //             this.countriesSuggestions.push(country);
+    //         }
+    //     }
+    // }
 
-    private findIfValidCountry() {
-        for (let country of this.countries) {
-            if (country.label.toLowerCase() === this.country.toString().toLowerCase()) {
-                this.country = country;
-                this.countrySelected = true;
-                this.countryChange.emit(this.country);
-            }
-        }
-    }
+    // private findIfValidCountry() {
+    //     for (let country of this.countries) {
+    //         if (country.label.toLowerCase() === this.country.toString().toLowerCase()) {
+    //             this.country = country;
+    //             this.countrySelected = true;
+    //             this.countryChange.emit(this.country);
+    //         }
+    //     }
+    // }
 
-    private selectCountry(selected: boolean) {
-        this.countrySelected = selected;
+    private selectCountry(event: any) {
+        this.countrySelected = true;
         this.countryChange.emit(this.country);
     }
 
