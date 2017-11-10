@@ -3,7 +3,9 @@
     <div id="step2-title" class="ui-g">
         <div class="ui-g-12 center">
             <div id="component-title">
-                <h3 class="beneficiaryTitle labelModal">{{ 'beneficiaryRegistration.step1.title' | translate }}</h3>
+                <h3 class="beneficiaryTitle labelModal">
+                    {{ 'beneficiaryRegistration.step1.title' | translate }}
+                </h3>
             </div>
         </div>
     </div>
@@ -11,8 +13,9 @@
     <div id="step1-instructions" class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-12 center">
             <div id="component-subtitle">
-                <h6 class="label" style="text-align: center;">{{ 'beneficiaryRegistration.step1.instructions'
-                    | translate }}</h6>
+                <h6 class="label" style="text-align: center;">
+                    {{ 'beneficiaryRegistration.step1.instructions' | translate }}
+                </h6>
             </div>
         </div>
     </div>
@@ -26,8 +29,11 @@
                     <div class="form-group ui-g">
                         <div class="ui-g-12">
                             <label class="label" for="country">{{ 'country.label' | translate }}</label>
-                            <select id="country" [(ngModel)]="country" class="form-control" name="country" required>
-                                <option *ngFor="let currentCountry of countries" [value]="currentCountry">{{ currentCountry.label }}</option>
+                            <select [(ngModel)]="country" (ngModelChange)="selectCountry($event)"
+                                    id="country" name="country" class="form-control">
+                                <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry">
+                                    {{currentCountry.label}}
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -43,28 +49,29 @@
 
             <div class="ui-g-2"></div>
             <div class="ui-g-4">
-                <p-checkbox name="singleMunicipality" [(ngModel)]="singleMunicipalityCheckbox" binary="true"
-                            [disabled]="!countrySelected"
-                            (onChange)="chooseSingleMunicipality($event)"></p-checkbox>
-                <br>
-                <div *ngIf="!countrySelected">
-                    <img class="marginStep1" src="assets/images/noOneMunicipality.png" alt="">
-                </div>
-                <div *ngIf="countrySelected">
-                    <img class="marginStep1" src="assets/images/oneMunicipality.png" alt="">
+                <div [hidden]="!countrySelected">
+                    <p-checkbox name="singleMunicipality" [(ngModel)]="singleMunicipalityCheckbox"
+                                binary="true" (onChange)="chooseSingleMunicipality($event)"></p-checkbox>
+                    <br>
+                    <div *ngIf="!countrySelected">
+                        <img class="marginStep1" src="assets/images/noOneMunicipality.png" alt="">
+                    </div>
+                    <div *ngIf="countrySelected">
+                        <img class="marginStep1" src="assets/images/oneMunicipality.png" alt="">
+                    </div>
                 </div>
             </div>
             <div class="ui-g-4">
-                <p-checkbox name="multipleMunicipality" [(ngModel)]="multipleMunicipalityCheckbox"
-                            binary="true"
-                            [disabled]="!countrySelected"
-                            (onChange)="chooseMultipleMunicipality($event)"></p-checkbox>
-                <br>
-                <div *ngIf="!countrySelected">
-                    <img class="marginStep1" src="assets/images/noMoreMunicipalities.png" alt="">
-                </div>
-                <div *ngIf="countrySelected">
-                    <img class="marginStep1" src="assets/images/moreMunicipalities.png" alt="">
+                <div [hidden]="!countrySelected">
+                    <p-checkbox name="multipleMunicipality" [(ngModel)]="multipleMunicipalityCheckbox"
+                                binary="true" (onChange)="chooseMultipleMunicipality($event)"></p-checkbox>
+                    <br>
+                    <div *ngIf="!countrySelected">
+                        <img class="marginStep1" src="assets/images/noMoreMunicipalities.png" alt="">
+                    </div>
+                    <div *ngIf="countrySelected">
+                        <img class="marginStep1" src="assets/images/moreMunicipalities.png" alt="">
+                    </div>
                 </div>
             </div>
             <div class="ui-g-2"></div>
@@ -81,8 +88,8 @@
             <div class="ui-lg-3"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
                 <a href="#/home">
-                    <button type="button" class="btn btn-primary cancel-button">{{ 'back.button' | translate
-                        }}
+                    <button type="button" class="btn btn-primary cancel-button">
+                        {{ 'back.button' | translate }}
                     </button>
                 </a>
             </div>
