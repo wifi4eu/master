@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`SEQUENCE` (
 -- -----------------------------------------------------
 -- Table `wifi4eu-new`.`audit_data_t`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `audit_data_t` (
+CREATE TABLE IF NOT EXISTS `AUDIT_DATA_T` (
   `AUDIT_DATA_ID` int(11) NOT NULL,
   `REQUEST_ENDPOINT` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `REQUEST_METHOD` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`municipalities` (
   `address_num` VARCHAR(255) NULL,
   `postal_code` VARCHAR(255) NULL,
   `country` VARCHAR(255) NULL,
-  `lau` INT NOT NULL,
+  `lau` INT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_municipalities_laus1_idx` (`lau` ASC),
   CONSTRAINT `fk_municipalities_laus`
