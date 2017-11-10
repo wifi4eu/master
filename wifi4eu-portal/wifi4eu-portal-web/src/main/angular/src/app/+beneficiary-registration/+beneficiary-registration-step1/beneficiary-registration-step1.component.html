@@ -26,11 +26,9 @@
                     <div class="form-group ui-g">
                         <div class="ui-g-12">
                             <label class="label" for="country">{{ 'country.label' | translate }}</label>
-                            <p-autoComplete id="country" class="form-control" name="country" field="label"
-                                            [(ngModel)]="country"
-                                            [suggestions]="countriesSuggestions"
-                                            (completeMethod)="search($event)" (onSelect)="selectCountry(true)"
-                                            (onBlur)="findIfValidCountry()" required></p-autoComplete>
+                            <select id="country" [(ngModel)]="country" class="form-control" name="country" required>
+                                <option *ngFor="let currentCountry of countries" [value]="currentCountry">{{ currentCountry.label }}</option>
+                            </select>
                         </div>
                     </div>
                     <br>
