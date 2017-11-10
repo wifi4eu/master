@@ -16,7 +16,15 @@ import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
         SharedModule, DgConnectPortalRoutingModule
     ],
     declarations: [
-        DgConnPortalComponent, DgConnTimelineComponent, DgConnPublicationComponent, DgConnVoucherComponent, DgConnStatisticsComponent, DgConnSupplierRegistrationsComponent, DgConnBeneficiaryRegistrationsComponent, DgConnListMayorComponent, DgConnDiscussionComponent
+        DgConnPortalComponent, 
+        DgConnTimelineComponent, 
+        DgConnPublicationComponent, 
+        DgConnVoucherComponent,
+        DgConnStatisticsComponent, 
+        DgConnSupplierRegistrationsComponent, 
+        DgConnBeneficiaryRegistrationsComponent, 
+        DgConnListMayorComponent, 
+        DgConnDiscussionComponent
     ],
     bootstrap: [DgConnPortalComponent]
 })

@@ -78,12 +78,14 @@ export class DgConnTimelineComponent {
         let timeline = (this.timeline) ? this.timeline : new TimelineDTOBase();
         let finalStartDate = this.startDate;
         let finalEndDate = this.endDate;
+        timeline.description = this.event;
         finalStartDate.setHours(this.startTime.getHours());
         finalStartDate.setMinutes(this.startTime.getMinutes());
         timeline.startDate = finalStartDate.getTime();
         finalEndDate.setHours(this.endTime.getHours());
         finalEndDate.setMinutes(this.endTime.getMinutes());
         timeline.endDate = finalEndDate.getTime();
+        
 
         this.timelineApi.createTimeline(timeline).subscribe(
             data => {
