@@ -50,6 +50,7 @@ public class HelpdeskIssueResource {
             HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.createHelpdeskIssue(helpdeskIssueDTO);
             return new ResponseDTO(true, resHelpdeskIssue, null);
         } catch (Exception e) {
+            _log.error("can't createHelpdeskIssue: ",e);
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);
         }
@@ -65,6 +66,7 @@ public class HelpdeskIssueResource {
             HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.deleteHelpdeskIssue(issueId);
             return new ResponseDTO(true, resHelpdeskIssue, null);
         } catch (Exception e) {
+            _log.error("can't deleteHelpdeskIssue: ",e);
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);
         }

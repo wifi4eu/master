@@ -38,8 +38,9 @@ public class HelpdeskService {
     }
 
     public HelpdeskIssueDTO createHelpdeskIssue(HelpdeskIssueDTO helpdeskIssueDTO) {
-        if (helpdeskIssueDTO.getComments().isEmpty()) {
-            return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
+        return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
+
+/*        if (helpdeskIssueDTO.getComments() != null && helpdeskIssueDTO.getComments().isEmpty()) {
         } else {
             Integer helpdeskIssueId = helpdeskIssueDTO.getId();
             List<HelpdeskCommentDTO> originalComments = helpdeskIssueDTO.getComments();
@@ -55,7 +56,7 @@ public class HelpdeskService {
             }
             helpdeskIssueDTO.setComments(correctComments);
             return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
-        }
+        }*/
     }
 
     public HelpdeskIssueDTO deleteHelpdeskIssue(int helpdeskIssueId) {
