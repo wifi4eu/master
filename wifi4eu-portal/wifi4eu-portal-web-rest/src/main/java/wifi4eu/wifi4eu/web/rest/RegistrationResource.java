@@ -74,7 +74,7 @@ public class RegistrationResource {
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<RegistrationDTO> getRegistrationsByUserId(@PathVariable("userId") final Integer userId) {
-        _log.info("getRegistrationsByUserId" + userId);
+        _log.info("getRegistrationsByUserId: " + userId);
         return registrationService.getRegistrationsByUserId(userId);
     }
 
@@ -82,7 +82,7 @@ public class RegistrationResource {
     @RequestMapping(value = "/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<RegistrationDTO> getRegistrationsByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
-        _log.info("getRegistrationsByMunicipalityId" + municipalityId);
+        _log.info("getRegistrationsByMunicipalityId: " + municipalityId);
         return registrationService.getRegistrationsByMunicipalityId(municipalityId);
     }
 }
