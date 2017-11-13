@@ -53,4 +53,12 @@ public class LauResource {
         _log.info("getLausByNuts3: " + nuts3);
         return lauService.getLausByNuts3(nuts3);
     }
+
+    @ApiOperation(value = "Query laus by countryCode and name1")
+    @RequestMapping(value = "/query/{countryCode},{name1}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<LauDTO> queryLaus(@PathVariable("countryCode") final String countryCode, @PathVariable("name1") final String name1) {
+        _log.info("queryLaus: " + countryCode + "," + name1);
+        return lauService.queryLaus(countryCode, name1);
+    }
 }

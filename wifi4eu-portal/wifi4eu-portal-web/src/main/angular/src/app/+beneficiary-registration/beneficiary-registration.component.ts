@@ -2,16 +2,20 @@ import {Component} from "@angular/core";
 import {UserDTOBase} from "../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../shared/swagger/model/MunicipalityDTO";
 import {BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
+import {OrganizationDTOBase} from "../shared/swagger/model/OrganizationDTO";
 import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
 import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
 import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 import {NutsApi} from "../shared/swagger/api/NutsApi";
 import {LauApi} from "../shared/swagger/api/LauApi";
+import {OrganizationApi} from "../shared/swagger/api/OrganizationApi";
 import {Subscription} from "rxjs/Subscription";
 
 @Component({
-    selector: 'beneficiary-registration', templateUrl: 'beneficiary-registration.component.html', providers: [BeneficiaryApi, NutsApi, LauApi]
+    selector: 'beneficiary-registration',
+    templateUrl: 'beneficiary-registration.component.html',
+    providers: [BeneficiaryApi, NutsApi, LauApi, OrganizationApi]
 })
 
 export class BeneficiaryRegistrationComponent {
@@ -29,11 +33,12 @@ export class BeneficiaryRegistrationComponent {
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
     private country: NutsDTOBase = null;
     private multipleMunicipalities: boolean = false;
+    private organizations: OrganizationDTOBase[] = [];
     private countries: NutsDTOBase[] = [];
-    private laus: LauDTOBase[][] = [];
-    private countrySubscription: Subscription = new Subscription();
+    // private laus: LauDTOBase[][] = [];
+    private organizationsSubscription: Subscription = new Subscription();
 
-    constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private lauApi: LauApi) {
+    constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private lauApi: LauApi, private organizationApi: OrganizationApi) {
         this.nutsApi.getNutsByLevel(0).subscribe(
             (nuts: NutsDTOBase[]) => {
                 this.countries = nuts;
@@ -43,22 +48,18 @@ export class BeneficiaryRegistrationComponent {
         );
     }
 
-    selectCountry(country: NutsDTOBase) {
+    private selectCountry(country: NutsDTOBase) {
         if (this.country != country) {
             this.country = country;
-            if (!this.laus[country.countryCode]) {
-                this.laus[country.countryCode] = [];
-            }
-            this.countrySubscription.unsubscribe();
-            this.countrySubscription = this.lauApi.getLausByCountryCode(country.countryCode).subscribe(
-                (laus: LauDTOBase[]) => {
-                    this.laus[country.countryCode] = laus;
+            this.organizationsSubscription = this.organizationApi.getOrganizationsByCountry(country.countryCode).subscribe(
+                (organizations: OrganizationDTOBase[]) => {
+                    this.organizations = organizations;
                 }
             );
         }
     }
 
-    navigate(step: number) {
+    private navigate(step: number) {
         switch (step) {
             case 1:
                 this.completed = [false, false, false, false];
@@ -79,7 +80,7 @@ export class BeneficiaryRegistrationComponent {
         }
     }
 
-    submitRegistration() {
+    private submitRegistration() {
         //this.finalBeneficiary.representing = this.representing;
         this.finalBeneficiary.users = [];
         this.finalBeneficiary.municipalities = [];
