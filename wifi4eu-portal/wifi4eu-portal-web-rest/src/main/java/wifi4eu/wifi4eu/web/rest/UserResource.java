@@ -101,6 +101,7 @@ public class UserResource {
     public ResponseDTO activateAccount(@RequestBody final ActivateAccountDTO activateAccountDTO) {
         try {
             _log.info("activateAccount: " + activateAccountDTO.getEmail());
+            userService.activateAccount(activateAccountDTO);
             return new ResponseDTO(true, null, null);
         } catch (Exception e) {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
