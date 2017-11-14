@@ -3,19 +3,22 @@ import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
+import {LauApi} from "../../shared/swagger/api/LauApi";
 
 @Component({
-    selector: 'beneficiary-registration-step2', templateUrl: 'beneficiary-registration-step2.component.html'
+    selector: 'beneficiary-registration-step2',
+    templateUrl: 'beneficiary-registration-step2.component.html',
+    providers: [LauApi]
 })
 
 export class BeneficiaryRegistrationStep2Component {
     @Input('country') private country: NutsDTOBase;
-    @Input('laus') private laus: LauDTOBase[][];
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
     @Input('users') private users: UserDTOBase[];
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
     @Output() private usersChange: EventEmitter<UserDTOBase[]>;
     @Output() private municipalitiesChange: EventEmitter<MunicipalityDTOBase[]>;
+    @Output() private findLaus: EventEmitter<string>;
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
     private selectedLaus: LauDTOBase[] = [];
@@ -25,39 +28,31 @@ export class BeneficiaryRegistrationStep2Component {
     private addressNumFields: string[] = [''];
     private postalCodeFields: string[] = [''];
     private emailConfirmations: string[] = [''];
+    private readonly MAX_LENGTH = 2;
 
-    constructor() {
+    constructor(private lauApi: LauApi) {
         this.usersChange = new EventEmitter<UserDTOBase[]>();
         this.municipalitiesChange = new EventEmitter<MunicipalityDTOBase[]>();
+        this.findLaus = new EventEmitter<string>();
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
     }
 
     private search(event: any, index: number) {
-        if (this.country != null) {
-            this.municipalitiesSelected[index] = false;
-            this.lauSuggestions = [];
-            for (let lau of this.laus[this.country.countryCode]) {
-                if (lau.name1.toLowerCase().startsWith(event.query.toLowerCase())) {
-                    this.lauSuggestions.push(lau);
+        let query = event.query;
+        if (this.country != null && query.length >= this.MAX_LENGTH) {
+            this.lauApi.getLausByCountryCodeAndName1StartingWithIgnoreCase(this.country.countryCode, query).subscribe(
+                (laus: LauDTOBase[]) => {
+                    this.lauSuggestions = laus;
                 }
-            }
+            );
+        } else {
+            this.lauSuggestions = [];
         }
     }
 
     private selectMunicipality(selected: boolean, index: number) {
         this.municipalitiesSelected[index] = selected;
-    }
-
-    private findIfValidMunicipality(index: number) {
-        if (this.country != null) {
-            for (let lau of this.laus[this.country.countryCode]) {
-                if (lau.name1.toLowerCase() === this.selectedLaus[index].toString().toLowerCase()) {
-                    this.selectedLaus[index] = lau;
-                    this.municipalitiesSelected[index] = true;
-                }
-            }
-        }
     }
 
     private addMunicipality() {

@@ -32,4 +32,8 @@ public class LauService {
     public List<LauDTO> getLausByNuts3(String nuts3) {
         return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByNuts3(nuts3)));
     }
+
+    public List<LauDTO> getLausByCountryCodeAndName1StartingWithIgnoreCase(String countryCode, String name1) {
+        return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByCountryCodeAndName1StartingWithIgnoreCase(countryCode, name1)));
+    }
 }

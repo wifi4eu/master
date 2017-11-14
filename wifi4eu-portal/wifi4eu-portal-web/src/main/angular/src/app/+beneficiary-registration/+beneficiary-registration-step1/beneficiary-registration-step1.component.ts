@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
+import {OrganizationDTOBase} from "../../shared/swagger/model/OrganizationDTO";
 
 @Component({
     selector: 'beneficiary-registration-step1', templateUrl: 'beneficiary-registration-step1.component.html'
@@ -11,6 +12,7 @@ export class BeneficiaryRegistrationStep1Component {
     @Input('countries') private countries: NutsDTOBase[];
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
     @Output() private multipleMunicipalitiesChange: EventEmitter<boolean>;
+    @Input('organizations') private organizations: OrganizationDTOBase[];
     @Output() private onNext: EventEmitter<any>;
     // private countries: NutsDTOBase[] = [];
     // private countriesSuggestions: NutsDTOBase[] = [];
