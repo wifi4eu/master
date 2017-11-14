@@ -29,13 +29,11 @@ export class BeneficiaryRegistrationComponent {
     private userAddress: string = "";
     private addressNum: string = "";
     private postalCode: string = "";
-    //private registrations: RegistrationDTOBase[] = [];
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
     private country: NutsDTOBase = null;
     private multipleMunicipalities: boolean = false;
     private organizations: OrganizationDTOBase[] = [];
     private countries: NutsDTOBase[] = [];
-    // private laus: LauDTOBase[][] = [];
     private organizationsSubscription: Subscription = new Subscription();
 
     constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private lauApi: LauApi, private organizationApi: OrganizationApi) {
@@ -81,7 +79,6 @@ export class BeneficiaryRegistrationComponent {
     }
 
     private submitRegistration() {
-        //this.finalBeneficiary.representing = this.representing;
         this.finalBeneficiary.users = [];
         this.finalBeneficiary.municipalities = [];
         this.finalBeneficiary.users.push(this.initialUser);

@@ -13,7 +13,6 @@ import {LauApi} from "../../shared/swagger/api/LauApi";
 
 export class BeneficiaryRegistrationStep2Component {
     @Input('country') private country: NutsDTOBase;
-    // @Input('laus') private laus: LauDTOBase[][];
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
     @Input('users') private users: UserDTOBase[];
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
@@ -29,6 +28,7 @@ export class BeneficiaryRegistrationStep2Component {
     private addressNumFields: string[] = [''];
     private postalCodeFields: string[] = [''];
     private emailConfirmations: string[] = [''];
+    private readonly MAX_LENGTH = 2;
 
     constructor(private lauApi: LauApi) {
         this.usersChange = new EventEmitter<UserDTOBase[]>();
@@ -40,8 +40,8 @@ export class BeneficiaryRegistrationStep2Component {
 
     private search(event: any, index: number) {
         let query = event.query;
-        if (this.country != null && query.length >= 2) {
-            this.lauApi.queryLaus(this.country.countryCode, query).subscribe(
+        if (this.country != null && query.length >= this.MAX_LENGTH) {
+            this.lauApi.getLausByCountryCodeAndName1StartingWithIgnoreCase(this.country.countryCode, query).subscribe(
                 (laus: LauDTOBase[]) => {
                     this.lauSuggestions = laus;
                 }
@@ -54,17 +54,6 @@ export class BeneficiaryRegistrationStep2Component {
     private selectMunicipality(selected: boolean, index: number) {
         this.municipalitiesSelected[index] = selected;
     }
-
-    // private findIfValidMunicipality(index: number) {
-    //     if (this.country != null) {
-    //         for (let lau of this.laus[this.country.countryCode]) {
-    //             if (lau.name1.toLowerCase() === this.selectedLaus[index].toString().toLowerCase()) {
-    //                 this.selectedLaus[index] = lau;
-    //                 this.municipalitiesSelected[index] = true;
-    //             }
-    //         }
-    //     }
-    // }
 
     private addMunicipality() {
         if (this.multipleMunicipalities) {

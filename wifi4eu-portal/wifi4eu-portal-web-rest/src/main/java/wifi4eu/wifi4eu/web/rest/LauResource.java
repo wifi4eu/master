@@ -18,15 +18,21 @@ import java.util.List;
 @RequestMapping("lau")
 public class LauResource {
     @Autowired
-    LauService lauService;
+    private LauService lauService;
 
-    Logger _log = LoggerFactory.getLogger(LauResource.class);
+    private final static String GET_LAU_BY_ID = "getLauById: ";
+    private final static String GET_LAU_BY_COUNTRY_CODE_AND_LAU2 = "getLauByCountryCodeAndLau2: ";
+    private final static String GET_LAUS_BY_COUNTRY_CODE = "getLausByCountryCode: ";
+    private final static String GET_LAUS_BY_NUTS3 = "getLausByNuts3: ";
+    private final static String GET_LAUS_BY_COUNTRY_CODE_AND_NAME1_STARTING_WITH_IGNORE_CASE = "getLausByCountryCodeAndName1StartingWithIgnoreCase: ";
+
+    private Logger _log = LoggerFactory.getLogger(LauResource.class);
 
     @ApiOperation(value = "Get lau by specific id")
     @RequestMapping(value = "/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public LauDTO getLauById(@PathVariable("lauId") final Integer lauId) {
-        _log.info("getLauById: " + lauId);
+        _log.info(GET_LAU_BY_ID + lauId);
         return lauService.getLauById(lauId);
     }
 
@@ -34,7 +40,7 @@ public class LauResource {
     @RequestMapping(value = "/countryCode/{countryCode}/lau2/{lau2}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public LauDTO getLauByCountryCodeAndLau2(@PathVariable("countryCode") final String countryCode, @PathVariable("lau2") final String lau2) {
-        _log.info("getLauByCountryCodeAndLau2: " + countryCode + " | " + lau2);
+        _log.info(GET_LAU_BY_COUNTRY_CODE_AND_LAU2 + countryCode + " | " + lau2);
         return lauService.getLauByCountryCodeAndLau2(countryCode, lau2);
     }
 
@@ -42,7 +48,7 @@ public class LauResource {
     @RequestMapping(value = "/countryCode/{countryCode}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<LauDTO> getLausByCountryCode(@PathVariable("countryCode") final String countryCode) {
-        _log.info("getLausByCountryCode: " + countryCode);
+        _log.info(GET_LAUS_BY_COUNTRY_CODE + countryCode);
         return lauService.getLausByCountryCode(countryCode);
     }
 
@@ -50,15 +56,15 @@ public class LauResource {
     @RequestMapping(value = "/nuts3/{nuts3}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<LauDTO> getLausByNuts3(@PathVariable("nuts3") final String nuts3) {
-        _log.info("getLausByNuts3: " + nuts3);
+        _log.info(GET_LAUS_BY_NUTS3 + nuts3);
         return lauService.getLausByNuts3(nuts3);
     }
 
-    @ApiOperation(value = "Query laus by countryCode and name1")
-    @RequestMapping(value = "/query/{countryCode},{name1}", method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "Get laus by countryCode that start with name1, ignoring case")
+    @RequestMapping(value = "/countryCode/{countryCode}/name/{name1}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<LauDTO> queryLaus(@PathVariable("countryCode") final String countryCode, @PathVariable("name1") final String name1) {
-        _log.info("queryLaus: " + countryCode + "," + name1);
-        return lauService.queryLaus(countryCode, name1);
+    public List<LauDTO> getLausByCountryCodeAndName1StartingWithIgnoreCase(@PathVariable("countryCode") final String countryCode, @PathVariable("name1") final String name1) {
+        _log.info(GET_LAUS_BY_COUNTRY_CODE_AND_NAME1_STARTING_WITH_IGNORE_CASE + countryCode + "," + name1);
+        return lauService.getLausByCountryCodeAndName1StartingWithIgnoreCase(countryCode, name1);
     }
 }

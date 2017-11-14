@@ -28,7 +28,6 @@
                                 <p-autoComplete id="municipality" class="form-control" name="municipality" field="name1"
                                                 [(ngModel)]="selectedLaus[0]" [suggestions]="lauSuggestions" (completeMethod)="search($event, 0)" (onSelect)="selectMunicipality(true, 0)"
                                                 required></p-autoComplete>
-                                                <!--(onBlur)="findIfValidMunicipality(0)" required></p-autoComplete>-->
                                 <!--<div [hidden="country.valid || country.pristine" class="alert alert-danger">Country is required</div>-->
                             </div>
                         </div>
@@ -115,7 +114,6 @@
                                                         [(ngModel)]="selectedLaus[i]" field="name1" [suggestions]="lauSuggestions"
                                                         (completeMethod)="search($event, i)" (onSelect)="selectMunicipality(true, i)"
                                                         required></p-autoComplete>
-                                                        <!--(onBlur)="findIfValidMunicipality(i)" required></p-autoComplete>-->
                                         <!--<div [hidden="country.valid || country.pristine" class="alert alert-danger">Country is required</div>-->
                                     </div>
                                 </div>
