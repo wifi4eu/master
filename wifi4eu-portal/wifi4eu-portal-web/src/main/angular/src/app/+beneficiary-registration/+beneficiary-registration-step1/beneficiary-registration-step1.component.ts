@@ -14,8 +14,6 @@ export class BeneficiaryRegistrationStep1Component {
     @Output() private multipleMunicipalitiesChange: EventEmitter<boolean>;
     @Input('organizations') private organizations: OrganizationDTOBase[];
     @Output() private onNext: EventEmitter<any>;
-    // private countries: NutsDTOBase[] = [];
-    // private countriesSuggestions: NutsDTOBase[] = [];
     private countrySelected: boolean = false;
     private singleMunicipalityCheckbox: boolean = false;
     private multipleMunicipalityCheckbox: boolean = false;
@@ -26,27 +24,10 @@ export class BeneficiaryRegistrationStep1Component {
         this.onNext = new EventEmitter<any>();
     }
 
-    // private search(event) {
-    //     this.countrySelected = false;
-    //     this.countriesSuggestions = [];
-    //     for (let country of this.countries) {
-    //         if (country.label.toLowerCase().startsWith(event.query.toLowerCase())) {
-    //             this.countriesSuggestions.push(country);
-    //         }
-    //     }
-    // }
-
-    // private findIfValidCountry() {
-    //     for (let country of this.countries) {
-    //         if (country.label.toLowerCase() === this.country.toString().toLowerCase()) {
-    //             this.country = country;
-    //             this.countrySelected = true;
-    //             this.countryChange.emit(this.country);
-    //         }
-    //     }
-    // }
-
     private selectCountry(event: any) {
+        console.log(event);
+        this.singleMunicipalityCheckbox = false;
+        this.multipleMunicipalityCheckbox = false;
         this.countrySelected = true;
         this.countryChange.emit(this.country);
     }

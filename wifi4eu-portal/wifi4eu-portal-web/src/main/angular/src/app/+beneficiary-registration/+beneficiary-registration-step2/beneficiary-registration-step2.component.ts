@@ -58,7 +58,7 @@ export class BeneficiaryRegistrationStep2Component {
     private addMunicipality() {
         if (this.multipleMunicipalities) {
             this.municipalities.push(new MunicipalityDTOBase());
-            this.selectedLaus.push(new LauDTOBase());
+            this.selectedLaus.push();
             this.users.push(new UserDTOBase());
             this.municipalitiesSelected.push(false);
             this.addressFields.push('');
