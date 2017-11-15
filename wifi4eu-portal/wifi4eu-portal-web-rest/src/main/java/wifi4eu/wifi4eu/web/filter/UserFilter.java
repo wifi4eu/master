@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.web.filter;
 
+import eu.cec.digit.ecas.client.j2ee.tomcat.EcasPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -12,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Principal;
 
 public class UserFilter extends OncePerRequestFilter {
 
@@ -29,7 +32,9 @@ public class UserFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         try {
-            UserContext user = (UserContext) request.getSession(true).getAttribute(Constant.USER);
+
+            String userId = (String) request.getSession(true).getAttribute(Constant.USER);;
+            UserContext user = new UserContext(userId);
 
             if (user == null) {
                 user = UserHolder.getUser();
