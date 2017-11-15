@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
@@ -73,16 +74,31 @@ public class UserService {
         UserDTO resUser = userMapper.toDTO(userRepository.findByEmail(userDTO.getEmail()));
         if (resUser != null && userDTO.getPassword().equals(resUser.getPassword())) {
             resUser.setAccessDate(new Date().getTime());
-            createUser(resUser);
+            resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(resUser)));
             return resUser;
         } else {
             throw new UsernameNotFoundException("User not found");
         }
     }
 
+    public void activateAccount(ActivateAccountDTO activateAccountDTO) throws Exception {
+        TempTokenDTO tempToken = tempTokenMapper.toDTO(tempTokenRepository.findByToken(activateAccountDTO.getToken()));
+        Date now = new Date();
+        if (tempToken != null) {
+            if (new Date(tempToken.getExpiryDate()).after(now)) {
+                UserDTO user = userMapper.toDTO(userRepository.findOne(tempToken.getUserId()));
+                user.setPassword(activateAccountDTO.getPassword());
+                userRepository.save(userMapper.toEntity(user));
+            } else {
+                throw new Exception("Token has expired.");
+            }
+        } else {
+            throw new Exception("Token doesn't exist.");
+        }
+    }
+
     @Transactional
     public void sendActivateAccountMail(UserDTO userDTO) {
-        // create a temporal token
         Date now = new Date();
         TempTokenDTO tempTokenDTO = new TempTokenDTO();
         tempTokenDTO.setEmail(userDTO.getEmail());
@@ -93,10 +109,8 @@ public class UserService {
         String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
         tempTokenDTO.setToken(token);
         tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO)));
-
         String subject = "Welcome to WiFi4EU";
         String msgBody = "You have successfully registered to WiFi4EU, access to the next link and activate your account: " + UserService.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
-
         mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
     }
 }
