@@ -322,9 +322,12 @@
   "surnameMayor.label": "Apellido del alcalde",
   "emailMayor.label": "Email del alcalde",
   "beneficiaryRegistration.sameDetails": "Mis datos son los mismos que los datos de alcalde",
-  "duplicatedSuppliers.title":"Registros de proveedores duplicados",
-  "duplicatedBeneficiary.title":"Registros de municipios duplicados",
-  "discussionForum.title":"Foro de discusión",
-  "typeOfRegistration.title":"Tipo de registro",
-  "yourDetails.title":"Detalles personales"
+  "duplicatedSuppliers.title": "Registros de proveedores duplicados",
+  "duplicatedBeneficiary.title": "Registros de municipios duplicados",
+  "discussionForum.title": "Foro de discusión",
+  "typeOfRegistration.title": "Tipo de registro",
+  "yourDetails.title": "Detalles personales",
+  "beneficiary.deleteApplication": "Borrar mi solicitud",
+  "beneficiary.editApplication": "Editar mi solicitud",
+  "beneficiary.discusionText" : "Si ya no desea seguir participando en el esquema WIFI4EU, elimine su aplicación haciendo clic en el botón de abajo."
 }
