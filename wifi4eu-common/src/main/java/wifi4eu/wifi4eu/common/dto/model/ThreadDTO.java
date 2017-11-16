@@ -5,16 +5,16 @@ import java.util.List;
 public class ThreadDTO {
     private int id;
     private String title;
-    private int municipalityId;
+    private int lauId;
     private List<ThreadMessageDTO> messages;
 
     public ThreadDTO() {
     }
 
-    public ThreadDTO(int id, String title, int municipalityId, List<ThreadMessageDTO> messages) {
+    public ThreadDTO(int id, String title, int lauId, List<ThreadMessageDTO> messages) {
         this.id = id;
         this.title = title;
-        this.municipalityId = municipalityId;
+        this.lauId = lauId;
         this.messages = messages;
     }
 
@@ -34,12 +34,12 @@ public class ThreadDTO {
         this.title = title;
     }
 
-    public int getMunicipalityId() {
-        return municipalityId;
+    public int getLauId() {
+        return lauId;
     }
 
-    public void setMunicipalityId(int municipalityId) {
-        this.municipalityId = municipalityId;
+    public void setLauId(int lauId) {
+        this.lauId = lauId;
     }
 
     public List<ThreadMessageDTO> getMessages() {

@@ -54,8 +54,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`users` (
   `access_date` BIGINT NULL,
   `type` INT NULL DEFAULT NULL,
   `verified` TINYINT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC))
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 
@@ -156,12 +155,12 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`threads` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(255) NULL,
-  `municipality` INT NULL,
+  `lau` INT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_threads_municipalities_idx` (`municipality` ASC),
-  CONSTRAINT `fk_threads_municipalities`
-    FOREIGN KEY (`municipality`)
-    REFERENCES `wifi4eu-new`.`municipalities` (`id`)
+  INDEX `fk_threads_laus_idx` (`lau` ASC),
+  CONSTRAINT `fk_threads_laus`
+    FOREIGN KEY (`lau`)
+    REFERENCES `wifi4eu-new`.`laus` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
