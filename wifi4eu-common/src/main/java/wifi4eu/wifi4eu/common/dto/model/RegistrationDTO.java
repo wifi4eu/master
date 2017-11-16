@@ -5,6 +5,7 @@ public class RegistrationDTO {
     private int userId;
     private int municipalityId;
     private String role;
+    private int status;
 
     public RegistrationDTO() {
     }
@@ -36,6 +37,10 @@ public class RegistrationDTO {
         return municipalityId;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
     public void setMunicipalityId(int municipalityId) {
         this.municipalityId = municipalityId;
     }
@@ -46,5 +51,9 @@ public class RegistrationDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
