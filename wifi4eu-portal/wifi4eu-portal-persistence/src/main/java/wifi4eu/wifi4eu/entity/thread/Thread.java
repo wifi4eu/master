@@ -1,6 +1,6 @@
 package wifi4eu.wifi4eu.entity.thread;
 
-import wifi4eu.wifi4eu.entity.municipality.Municipality;
+import wifi4eu.wifi4eu.entity.location.Lau;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,8 +18,8 @@ public class Thread {
     private String title;
 
     @OneToOne
-    @JoinColumn(name = "municipality")
-    private Municipality municipality;
+    @JoinColumn(name = "lau")
+    private Lau lau;
 
     @OneToMany(mappedBy = "thread")
     private List<ThreadMessage> messages;
@@ -27,10 +27,10 @@ public class Thread {
     public Thread() {
     }
 
-    public Thread(Integer id, String title, Municipality municipality, List<ThreadMessage> messages) {
+    public Thread(Integer id, String title, Lau lau, List<ThreadMessage> messages) {
         this.id = id;
         this.title = title;
-        this.municipality = municipality;
+        this.lau = lau;
         this.messages = messages;
     }
 
@@ -50,12 +50,12 @@ public class Thread {
         this.title = title;
     }
 
-    public Municipality getMunicipality() {
-        return municipality;
+    public Lau getLau() {
+        return lau;
     }
 
-    public void setMunicipality(Municipality municipality) {
-        this.municipality = municipality;
+    public void setLau(Lau lau) {
+        this.lau = lau;
     }
 
     public List<ThreadMessage> getMessages() {

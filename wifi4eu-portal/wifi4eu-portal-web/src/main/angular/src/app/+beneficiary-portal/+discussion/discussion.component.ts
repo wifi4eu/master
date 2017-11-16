@@ -55,7 +55,7 @@ export class DiscussionComponent {
                         this.municipalityApi.getMunicipalityById(registrations[0].municipalityId).subscribe(
                             (municipality: MunicipalityDTOBase) => {
                                 this.municipality = municipality;
-                                this.threadApi.getThreadByMunicipalityId(this.municipality.id).subscribe(
+                                this.threadApi.getThreadByLauId(this.municipality.lauId).subscribe(
                                     (thread: ThreadDTOBase) => {
                                         if (thread != null) {
                                             this.thread = thread;

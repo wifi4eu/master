@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.ArrayList;
@@ -28,6 +29,9 @@ public class BeneficiaryService {
     @Autowired
     RegistrationService registrationService;
 
+    @Autowired
+    ThreadService threadService;
+
     @Transactional
     public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO) {
         List<UserDTO> resUsers = new ArrayList<>();
@@ -40,6 +44,14 @@ public class BeneficiaryService {
         }
         List<MunicipalityDTO> resMunicipalities = new ArrayList<>();
         for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
+            if (!municipalityService.getMunicipalitiesByLauId(municipality.getLauId()).isEmpty()) {
+                if (threadService.getThreadByLauId(municipality.getLauId()) == null) {
+                    ThreadDTO thread = new ThreadDTO();
+                    thread.setLauId(municipality.getLauId());
+                    thread.setTitle(municipality.getName());
+                    threadService.createThread(thread);
+                }
+            }
             resMunicipalities.add(municipalityService.createMunicipality(municipality));
         }
         List<RegistrationDTO> registrations = new ArrayList<>();

@@ -38,4 +38,8 @@ public class MunicipalityService {
             return null;
         }
     }
+
+    public List<MunicipalityDTO> getMunicipalitiesByLauId(int lauId) {
+        return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findByLauId(lauId)));
+    }
 }

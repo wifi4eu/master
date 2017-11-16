@@ -30,7 +30,7 @@ public class Municipality {
     @Column(name = "country")
     private String country;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "lau")
     private Lau lau;
 
