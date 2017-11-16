@@ -12,7 +12,8 @@
             <div class="ui-g-12">
                 <div class="ui-g">
                     <div class="ui-g-10">
-                        <p *ngIf="representing" class="beneficiaryMayor">{{ 'representativedetails.title' | translate }}</p>
+                        <p *ngIf="representing" class="beneficiaryMayor">{{ 'representativedetails.title' | translate
+                            }}</p>
                         <p *ngIf="!representing" class="beneficiaryMayor">{{ 'mayor.details' | translate }}</p>
                     </div>
                     <div class="ui-g-2">
@@ -23,14 +24,11 @@
                 </div>
                 <div class="ui-g">
                     <div class="ui-g-4">
-                        <p>{{ 'treatment.label' | translate }}</p>
                         <p>{{ 'name.label' | translate }}</p>
                         <p>{{ 'surname.label' | translate }}</p>
                         <p>{{ 'email.label' | translate }}</p>
                     </div>
                     <div class="ui-g-8">
-                        <p class="profileData" *ngIf="user.treatment == 'mr'">{{ 'treatment.option1' | translate }}</p>
-                        <p class="profileData" *ngIf="user.treatment == 'ms'">{{ 'treatment.option2' | translate }}</p>
                         <p class="profileData">{{user.name}}</p>
                         <p class="profileData">{{user.surname}}</p>
                         <p class="profileData">{{user.email}}</p>
@@ -69,7 +67,8 @@
             </div>
             <div class="ui-g-12" *ngIf="representing && municipalities.length > 0">
                 <ux-accordion-boxes>
-                    <custom-accordion-box *ngFor="let item of accordionBoxItems; let i = index" [isExpanded]="false" [rightSide]="true">
+                    <custom-accordion-box *ngFor="let item of accordionBoxItems; let i = index" [isExpanded]="false"
+                                          [rightSide]="true">
                         <div class="ui-g-12">
                             <div class="ui-g">
                                 <div class="ui-g-10">
@@ -91,7 +90,8 @@
                                 <div class="ui-g-8">
                                     <p class="profileData">{{municipalities[i].country}}</p>
                                     <p class="profileData">{{municipalities[i].name}}</p>
-                                    <p class="profileData">{{municipalities[i].address}}, {{municipalities[i].addressNum}}</p>
+                                    <p class="profileData">{{municipalities[i].address}},
+                                        {{municipalities[i].addressNum}}</p>
                                     <p class="profileData">{{municipalities[i].postalCode}}</p>
                                 </div>
                             </div>
@@ -110,14 +110,11 @@
                             </div>
                             <div class="ui-g">
                                 <div class="ui-g-4">
-                                    <p>{{ 'treatment.label' | translate }}</p>
                                     <p>{{ 'name.label' | translate }}</p>
                                     <p>{{ 'surname.label' | translate }}</p>
                                     <p>{{ 'email.label' | translate }}</p>
                                 </div>
                                 <div class="ui-g-8">
-                                    <p class="profileData" *ngIf="mayors[i].treatment == 'mr'">{{ 'treatment.option1' | translate }}</p>
-                                    <p class="profileData" *ngIf="mayors[i].treatment == 'ms'">{{ 'treatment.option2' | translate }}</p>
                                     <p class="profileData">{{mayors[i].name}}</p>
                                     <p class="profileData">{{mayors[i].surname}}</p>
                                     <p class="profileData">{{mayors[i].email}}</p>
@@ -144,6 +141,21 @@
             </div>
         </div>
     </div>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <div class="ui-g">
+                <div class="ui-g-4"></div>
+                <div class="ui-g-8 button-content">
+                    <p>{{ 'beneficiary.goDiscussionText' | translate }}</p>
+                    <div style="text-align: center !important">
+                        <button type="button" class="btn btn-primary changePassword">
+                            {{'beneficiary.goDiscussion' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!--MODALS BELOW-->
 <div class="container font">
@@ -152,20 +164,6 @@
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <p class="beneficiaryMayor center">{{ 'representativedetails.title' | translate }}</p>
         <form (ngSubmit)="saveUserChanges()" #profileFormUser="ngForm">
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <div class="form-group">
-                        <label for="treatment_user">{{ 'treatment.label' | translate }}</label>
-                        <select id="treatment_user" [(ngModel)]="editedUser.treatment" class="form-control"
-                            name="treatment_user" ngcontrol="treatment_user" #treatment_user="ngModel" required>
-                            <option value="mr">{{ 'treatment.option1' | translate }}</option>
-                            <option value="ms">{{ 'treatment.option2' | translate }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
@@ -218,7 +216,8 @@
                     </button>
                 </div>
                 <div class="ui-g-2" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary publish-button" [disabled]="!profileFormUser.form.valid">
+                    <button type="submit" class="btn btn-primary publish-button"
+                            [disabled]="!profileFormUser.form.valid">
                         {{ 'confirm.button' | translate }}
                     </button>
                 </div>
@@ -234,20 +233,6 @@
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <h1 class="beneficiaryMayorModal">{{'mayordetails.title' | translate }}</h1>
         <form (ngSubmit)="saveMayorChanges()" #profileFormMayor="ngForm">
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <div class="form-group">
-                        <label for="treatment_mayor">{{ 'treatment.label' | translate }}</label>
-                        <select id="treatment_mayor" [(ngModel)]="editedMayor.treatment" class="form-control"
-                                name="treatment_mayor" ngcontrol="treatment_mayor" #treatment_mayor="ngModel" required>
-                            <option value="mr">{{ 'treatment.option1' | translate }}</option>
-                            <option value="ms">{{ 'treatment.option2' | translate }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
@@ -300,7 +285,8 @@
                     </button>
                 </div>
                 <div class="ui-g-2" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary publish-button" [disabled]="!profileFormMayor.form.valid">
+                    <button type="submit" class="btn btn-primary publish-button"
+                            [disabled]="!profileFormMayor.form.valid">
                         {{ 'confirm.button' | translate }}
                     </button>
                 </div>
@@ -312,7 +298,8 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayMunicipality" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+    <p-dialog [(visible)]="displayMunicipality" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <h1 class="beneficiaryMayorModal">{{'legalentity.label' | translate }}</h1>
         <form (ngSubmit)="saveMunicipalityChanges()" #profileFormMunicipality="ngForm">
@@ -321,9 +308,12 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="country_municipality">{{ 'name.label' | translate }}</label>
-                        <input id="country_municipality" type="text" [(ngModel)]="editedMunicipality.country" class="form-control"
-                               name="country_municipality" ngcontrol="country_municipality" #country_municipality="ngModel" required disabled>
-                        <div [hidden]="country_municipality.valid || country_municipality.pristine" class="alert alert-danger">
+                        <input id="country_municipality" type="text" [(ngModel)]="editedMunicipality.country"
+                               class="form-control"
+                               name="country_municipality" ngcontrol="country_municipality"
+                               #country_municipality="ngModel" required disabled>
+                        <div [hidden]="country_municipality.valid || country_municipality.pristine"
+                             class="alert alert-danger">
                             {{ 'country.required' | translate }}
                         </div>
                     </div>
@@ -336,9 +326,12 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="name_municipality">{{ 'surname.label' | translate }}</label>
-                        <input id="name_municipality" type="text" [(ngModel)]="editedMunicipality.name" class="form-control"
-                               name="name_municipality" ngcontrol="name_municipality" #name_municipality="ngModel" required disabled>
-                        <div [hidden]="name_municipality.valid || name_municipality.pristine" class="alert alert-danger">
+                        <input id="name_municipality" type="text" [(ngModel)]="editedMunicipality.name"
+                               class="form-control"
+                               name="name_municipality" ngcontrol="name_municipality" #name_municipality="ngModel"
+                               required disabled>
+                        <div [hidden]="name_municipality.valid || name_municipality.pristine"
+                             class="alert alert-danger">
                             {{ 'municipality.required' | translate }}
                         </div>
                     </div>
@@ -351,9 +344,12 @@
                 <div class="ui-g-7">
                     <div class="form-group">
                         <label for="address_municipality">{{ 'address.label' | translate }}</label>
-                        <input id="address_municipality" type="text" [(ngModel)]="editedMunicipality.address" class="form-control"
-                               name="address_municipality" ngcontrol="address_municipality" #address_municipality="ngModel" required>
-                        <div [hidden]="address_municipality.valid || address_municipality.pristine" class="alert alert-danger">
+                        <input id="address_municipality" type="text" [(ngModel)]="editedMunicipality.address"
+                               class="form-control"
+                               name="address_municipality" ngcontrol="address_municipality"
+                               #address_municipality="ngModel" required>
+                        <div [hidden]="address_municipality.valid || address_municipality.pristine"
+                             class="alert alert-danger">
                             {{ 'address.required' | translate }}
                         </div>
                     </div>
@@ -361,9 +357,12 @@
                 <div class="ui-g-3">
                     <div class="form-group">
                         <label for="number_municipality">{{ 'number.label' | translate }}</label>
-                        <input id="number_municipality" type="text" [(ngModel)]="editedMunicipality.addressNum" class="form-control"
-                               name="number_municipality" ngcontrol="number_municipality" #number_municipality="ngModel" required>
-                        <div [hidden]="number_municipality.valid || number_municipality.pristine" class="alert alert-danger">
+                        <input id="number_municipality" type="text" [(ngModel)]="editedMunicipality.addressNum"
+                               class="form-control"
+                               name="number_municipality" ngcontrol="number_municipality" #number_municipality="ngModel"
+                               required>
+                        <div [hidden]="number_municipality.valid || number_municipality.pristine"
+                             class="alert alert-danger">
                             {{ 'address.required' | translate }}
                         </div>
                     </div>
@@ -376,9 +375,12 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="postalCode_municipality">{{ 'postal-code.label' | translate }}</label>
-                        <input id="postalCode_municipality" type="text" [(ngModel)]="editedMunicipality.postalCode" class="form-control"
-                               name="postalCode_municipality" ngcontrol="postalCode_municipality" #postalCode_municipality="ngModel" required>
-                        <div [hidden]="postalCode_municipality.valid || postalCode_municipality.pristine" class="alert alert-danger">
+                        <input id="postalCode_municipality" type="text" [(ngModel)]="editedMunicipality.postalCode"
+                               class="form-control"
+                               name="postalCode_municipality" ngcontrol="postalCode_municipality"
+                               #postalCode_municipality="ngModel" required>
+                        <div [hidden]="postalCode_municipality.valid || postalCode_municipality.pristine"
+                             class="alert alert-danger">
                             {{ 'address.required' | translate }}
                         </div>
                     </div>
@@ -394,7 +396,8 @@
                     </button>
                 </div>
                 <div class="ui-g-2" style="text-align: center !important">
-                    <button type="submit" class="btn btn-primary publish-button" [disabled]="!profileFormMunicipality.form.valid">
+                    <button type="submit" class="btn btn-primary publish-button"
+                            [disabled]="!profileFormMunicipality.form.valid">
                         {{ 'confirm.button' | translate }}
                     </button>
                 </div>
@@ -406,28 +409,38 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayChangePassword" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+    <p-dialog [(visible)]="displayChangePassword" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <h1 class="beneficiaryMayorModal">{{'beneficiaryProfile.password' | translate }}</h1>
         <form #profileFormPassword="ngForm">
             <div class="form-group profileDialog">
                 <label class="labelModal" for="currentPassword_field">{{ 'currentPassword.label' | translate }}</label>
-                <input id="currentPassword_field" type="password" [(ngModel)]="currentPassword" class="form-control beneficiaryProfileI"
-                       name="currentPassword_field" ngcontrol="currentPassword_field" #currentPassword_field="ngModel" required>
-                <div [hidden]="currentPassword_field.valid || currentPassword_field.pristine" class="alert alert-danger">
+                <input id="currentPassword_field" type="password" [(ngModel)]="currentPassword"
+                       class="form-control beneficiaryProfileI"
+                       name="currentPassword_field" ngcontrol="currentPassword_field" #currentPassword_field="ngModel"
+                       required>
+                <div [hidden]="currentPassword_field.valid || currentPassword_field.pristine"
+                     class="alert alert-danger">
                     {{ 'password.required' | translate }}
                 </div>
                 <a class="forgotPassword" routerLink="/forgot">Forgot password?</a><br>
                 <label class="labelModal" for="newPassword_field">{{ 'password.label' | translate }}</label>
-                <input id="newPassword_field" type="password" [(ngModel)]="newPassword" class="form-control beneficiaryProfileI"
-                       name="newPassword_field" ngcontrol="newPassword_field" #newPassword_field="ngModel" (keyup)="checkPasswordsMatch()" required>
+                <input id="newPassword_field" type="password" [(ngModel)]="newPassword"
+                       class="form-control beneficiaryProfileI"
+                       name="newPassword_field" ngcontrol="newPassword_field" #newPassword_field="ngModel"
+                       (keyup)="checkPasswordsMatch()" required>
                 <div [hidden]="newPassword_field.valid || newPassword_field.pristine" class="alert alert-danger">
                     {{ 'password.required' | translate }}
                 </div>
-                <label class="labelModal" for="repeatNewPassword_field">{{ 'confirmNewPassword.label' | translate }}</label>
-                <input id="repeatNewPassword_field" type="password" [(ngModel)]="repeatNewPassword" class="form-control beneficiaryProfileI"
-                       name="repeatNewPassword_field" ngcontrol="repeatNewPassword_field" #repeatNewPassword_field="ngModel" (keyup)="checkPasswordsMatch()" required>
-                <div [hidden]="repeatNewPassword_field.valid || repeatNewPassword_field.pristine" class="alert alert-danger">
+                <label class="labelModal" for="repeatNewPassword_field">{{ 'confirmNewPassword.label' | translate
+                    }}</label>
+                <input id="repeatNewPassword_field" type="password" [(ngModel)]="repeatNewPassword"
+                       class="form-control beneficiaryProfileI"
+                       name="repeatNewPassword_field" ngcontrol="repeatNewPassword_field"
+                       #repeatNewPassword_field="ngModel" (keyup)="checkPasswordsMatch()" required>
+                <div [hidden]="repeatNewPassword_field.valid || repeatNewPassword_field.pristine"
+                     class="alert alert-danger">
                     {{'newPassword.required' | translate }}
                 </div>
                 <div class="form-group">
@@ -435,7 +448,8 @@
                         <button type="button" class="btn btn-primary changePasswordModal" (click)="closeModal()">
                             {{ 'cancel.button' | translate }}
                         </button>
-                        <button type="submit" class="btn btn-primary changePasswordModal" [disabled]="!profileFormPassword.form.valid || !passwordsMatch">
+                        <button type="submit" class="btn btn-primary changePasswordModal"
+                                [disabled]="!profileFormPassword.form.valid || !passwordsMatch">
                             {{ 'change' | translate }}
                         </button>
                     </div>

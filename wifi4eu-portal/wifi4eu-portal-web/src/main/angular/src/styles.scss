@@ -439,8 +439,13 @@ body {
 }
 
 .discussionButton {
-  width: 100%;
+  width: 12em;
+  float: right;
+  margin-right: 4.6em;
+  height: 2.5em;
   margin-top: 0em;
+  background-color: #2A9FD8;
+  padding-top: 0.6em;
 }
 
 .changePasswordModal {
@@ -1074,7 +1079,29 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
   padding-top: 0;
 }
 
-.marginStep1{
+.marginStep1 {
   margin-top: 1em;
   margin-bottom: 4em;
+}
+
+.applicationDelete {
+  width: 15em;
+  background-color: #9ca4ab;
+  height: 50px;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.applicationEdit {
+  width: 15em;
+  background-color: #004494;
+  margin-top: 0.2em;
+  height: 50px;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.applicationText {
+  margin-top: 0rem;
+  margin-right: 0.3em;
 }
