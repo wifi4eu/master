@@ -107,6 +107,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`registrations` (
   `user` INT NOT NULL,
   `municipality` INT NOT NULL,
   `role` VARCHAR(500) NULL,
+  `status` INT(1) NOT NULL, --  0=HOLD; 1=KO; 2=OK
   PRIMARY KEY (`id`),
   INDEX `fk_user_idx` (`user` ASC),
   INDEX `fk_municipality_idx` (`municipality` ASC),

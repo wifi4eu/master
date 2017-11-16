@@ -25,13 +25,17 @@ public class Registration {
     @Column(name = "role")
     private String role;
 
+    @Column(name = "status")
+    private int status;
+
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role) {
+    public Registration(User user, Municipality municipality, String role, int status) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -44,6 +48,10 @@ public class Registration {
 
     public User getUser() {
         return user;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     public void setUser(User user) {
@@ -64,5 +72,9 @@ public class Registration {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
