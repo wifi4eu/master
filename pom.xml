@@ -112,6 +112,7 @@
         <server.address>localhost:8080</server.address>
         <server.prod.address>wifi4eu.everisdigitalchannels.com</server.prod.address>
         <server.prod.port>8080</server.prod.port>
+        <server.azure.address>wifi4eudev.azurewebsites.net</server.azure.address>
 
     </properties>
 
@@ -127,6 +128,12 @@
             <id>PROD</id>
             <properties>
                 <server.address>${server.prod.address}:${server.prod.port}</server.address>
+            </properties>
+        </profile>
+        <profile>
+            <id>AZURE</id>
+            <properties>
+                <server.address>${server.azure.address}</server.address>
             </properties>
         </profile>
     </profiles>
