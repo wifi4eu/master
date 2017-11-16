@@ -324,12 +324,12 @@
   "surnameMayor.label": "Surname of the Mayor",
   "emailMayor.label": "E-mail of the Mayor",
   "beneficiaryRegistration.sameDetails": "My details are the same as the Mayor details",
-  "newMediation.text" : "Ask WIFI4EU to mediate this conversation.",
-  "add.repply":"Add a reply",
-  "discussion.growl":"Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.",
-  "duplicatedSuppliers.title":"Duplicated supplier registrations",
-  "duplicatedBeneficiary.title":"Duplicated beneficiary registrations",
-  "discussionForum.title":"Discussion Forum",
-  "typeOfRegistration.title":"Type of registration",
-  "yourDetails.title":"Your details"
+  "duplicatedSuppliers.title": "Duplicated supplier registrations",
+  "duplicatedBeneficiary.title": "Duplicated beneficiary registrations",
+  "discussionForum.title": "Discussion Forum",
+  "typeOfRegistration.title": "Type of registration",
+  "yourDetails.title": "Your details",
+  "beneficiary.deleteApplication": "Delete my application",
+  "beneficiary.editApplication": "Edit my application",
+  "beneficiary.discusionText": "If you do not wish to participate to the WIFI4EU scheme anymore, delete your application by clicking on the button below."
 }
