@@ -81,8 +81,10 @@ export class BeneficiaryRegistrationComponent {
     private submitRegistration() {
         this.finalBeneficiary.users = [];
         this.finalBeneficiary.municipalities = [];
+        this.initialUser.type = 2;
         this.finalBeneficiary.users.push(this.initialUser);
         for (let user of this.users) {
+            user.type = 3;
             this.finalBeneficiary.users.push(user);
         }
         for (let municipality of this.municipalities) {
@@ -95,7 +97,6 @@ export class BeneficiaryRegistrationComponent {
                 } else {
                     this.failureRegistration = true;
                 }
-                console.log(data);
             }, error => {
                 this.failureRegistration = true;
                 console.log(error);
