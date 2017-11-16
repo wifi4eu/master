@@ -1,5 +1,4 @@
 import {Component} from "@angular/core";
-
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
@@ -12,6 +11,9 @@ import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO"
 import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
 import {ResponseDTO} from "../../shared/swagger/model/ResponseDTO";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
+import {LocalStorageService} from "angular-2-local-storage";
+import {TranslateService} from "ng2-translate";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -32,14 +34,12 @@ export class DiscussionComponent {
     private message: string = "";
 
 
-    constructor(private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private userApi: UserApi, private uxService: UxService) {
+    constructor(private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private userApi: UserApi, private uxService: UxService, private localStorageService: LocalStorageService, private translateService: TranslateService, private router: Router) {
         this.thread.messages = [];
-    }
-
-    ngOnInit() {
-        this.userApi.getUserById(4).subscribe(
-            (user: UserDTOBase) => {
-                this.user = user;
+        let storedUser = this.localStorageService.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+        if (this.user != null) {
+            if (this.user.type == 2 || this.user.type == 3) {
                 this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
                     (registrations: RegistrationDTOBase[]) => {
                         this.registrations = registrations;
@@ -47,8 +47,8 @@ export class DiscussionComponent {
                             this.userApi.getUserById(registration.userId).subscribe(
                                 (user: UserDTOBase) => {
                                     this.users.push(user);
-                                }, error5 => {
-                                    console.log(error5);
+                                }, error => {
+                                    console.log(error);
                                 }
                             );
                         }
@@ -57,24 +57,49 @@ export class DiscussionComponent {
                                 this.municipality = municipality;
                                 this.threadApi.getThreadByMunicipalityId(this.municipality.id).subscribe(
                                     (thread: ThreadDTOBase) => {
-                                        this.thread = thread;
+                                        if (thread != null) {
+                                            this.thread = thread;
+                                        }
                                     }, error4 => {
                                         console.log(error4);
                                     }
                                 );
-                            }, error3 => {
-                                console.log(error3);
+                            }, error2 => {
+                                console.log(error2);
                             }
                         );
-                    }, error2 => {
-                        console.log(error2);
+                    }, error3 => {
+                        console.log(error3);
                     }
                 );
-            }, error => {
-                console.log(error);
+            } else {
+                let translatedString = 'You are not allowed to view this page.';
+                this.translateService.get('error.notallowed').subscribe(
+                    (translation: string) => {
+                        translatedString = translation;
+                    }
+                );
+                this.uxService.growl({
+                    severity: 'warn',
+                    summary: 'WARNING',
+                    detail: translatedString
+                });
+                this.router.navigateByUrl('/home');
             }
-        );
-
+        } else {
+            let translatedString = 'You are not logged in!';
+            this.translateService.get('error.notloggedin').subscribe(
+                (translation: string) => {
+                    translatedString = translation;
+                }
+            );
+            this.uxService.growl({
+                severity: 'warn',
+                summary: 'WARNING',
+                detail: translatedString
+            });
+            this.router.navigateByUrl('/home');
+        }
     }
 
     newMessage() {
