@@ -1,7 +1,7 @@
 {
-  "registration.entity.title": "PASO 2: Entidad legal",
+  "registration.entity.title": "PASO 3: Detalles de contacto",
   "registration.beneficiary.title": "PASO 2: Detalles del municipio",
-  "registration.review.title": "PASO 3: Revisión",
+  "registration.review.title": "PASO 4: Revisión",
   "registration.step1.instructions": "Rellene los datos del formulario a continuación.",
   "registration.step2.instructions": "Para continuar, rellene los datos del formulario.",
   "registration.step3.instructions": "Por favor, revise toda la información que se ha facilitado antes de enviar la solicitud de registro.",
