@@ -23,12 +23,23 @@
                         <p>{{ 'number.label' | translate }}</p>
                         <p>{{ 'postal-code.label' | translate }}</p>
                     </div>
-                    <div class="ui-g-9">
+                    <div class="ui-g-3">
                         <p class="profileDataDiscussion profileData">{{municipality.country}}</p>
                         <p class="profileData">{{municipality.name}}</p>
                         <p class="profileData">{{municipality.address}}</p>
                         <p class="profileData">{{municipality.addressNum}}</p>
                         <p class="profileData">{{municipality.postalCode}}</p>
+                    </div>
+                    <div class="ui-g-2"></div>
+                    <div class="ui-g-4">
+                        <p class="applicationText">{{ 'beneficiary.discusionText' | translate }}</p>
+                        <button type="button" class="btn btn-primary applicationDelete">
+                            {{ 'beneficiary.deleteApplication' | translate }}
+                        </button>
+                        <br>
+                        <button type="submit" class="btn btn-primary applicationEdit">
+                            {{ 'beneficiary.editApplication' | translate }}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -193,3 +204,5 @@
         </form>
     </p-dialog>
 </div>
+
+
