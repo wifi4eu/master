@@ -110,16 +110,11 @@
                             </div>
                             <div class="ui-g">
                                 <div class="ui-g-4">
-                                    <p>{{ 'treatment.label' | translate }}</p>
                                     <p>{{ 'name.label' | translate }}</p>
                                     <p>{{ 'surname.label' | translate }}</p>
                                     <p>{{ 'email.label' | translate }}</p>
                                 </div>
                                 <div class="ui-g-8">
-                                    <p class="profileData" *ngIf="mayors[i].treatment == 'mr'">{{ 'treatment.option1' |
-                                        translate }}</p>
-                                    <p class="profileData" *ngIf="mayors[i].treatment == 'ms'">{{ 'treatment.option2' |
-                                        translate }}</p>
                                     <p class="profileData">{{mayors[i].name}}</p>
                                     <p class="profileData">{{mayors[i].surname}}</p>
                                     <p class="profileData">{{mayors[i].email}}</p>
@@ -154,20 +149,6 @@
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <p class="beneficiaryMayor center">{{ 'representativedetails.title' | translate }}</p>
         <form (ngSubmit)="saveUserChanges()" #profileFormUser="ngForm">
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <div class="form-group">
-                        <label for="treatment_user">{{ 'treatment.label' | translate }}</label>
-                        <select id="treatment_user" [(ngModel)]="editedUser.treatment" class="form-control"
-                                name="treatment_user" ngcontrol="treatment_user" #treatment_user="ngModel" required>
-                            <option value="mr">{{ 'treatment.option1' | translate }}</option>
-                            <option value="ms">{{ 'treatment.option2' | translate }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
@@ -237,20 +218,6 @@
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <h1 class="beneficiaryMayorModal">{{'mayordetails.title' | translate }}</h1>
         <form (ngSubmit)="saveMayorChanges()" #profileFormMayor="ngForm">
-            <div class="form-group ui-g">
-                <div class="ui-g-1"></div>
-                <div class="ui-g-10">
-                    <div class="form-group">
-                        <label for="treatment_mayor">{{ 'treatment.label' | translate }}</label>
-                        <select id="treatment_mayor" [(ngModel)]="editedMayor.treatment" class="form-control"
-                                name="treatment_mayor" ngcontrol="treatment_mayor" #treatment_mayor="ngModel" required>
-                            <option value="mr">{{ 'treatment.option1' | translate }}</option>
-                            <option value="ms">{{ 'treatment.option2' | translate }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="ui-g-1"></div>
-            </div>
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
