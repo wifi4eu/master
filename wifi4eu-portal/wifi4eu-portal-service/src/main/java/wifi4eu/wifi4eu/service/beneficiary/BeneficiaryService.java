@@ -7,6 +7,7 @@ import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -50,11 +51,13 @@ public class BeneficiaryService {
                     registration.setRole("Mayor");
                     registration.setMunicipalityId(resMunicipalities.get(i).getId());
                     registration.setUserId(resUsers.get(i + 1).getId());
+                    registration.setStatus(RegistrationStatus.OK.getValue());
                     registrations.add(registrationService.createRegistration(registration));
                     registration = new RegistrationDTO();
                     registration.setRole("Representative");
                     registration.setMunicipalityId(resMunicipalities.get(i).getId());
                     registration.setUserId(representativeUser.getId());
+                    registration.setStatus(RegistrationStatus.OK.getValue());
                     registrations.add(registrationService.createRegistration(registration));
                 }
             } else {
@@ -66,6 +69,7 @@ public class BeneficiaryService {
                 registration.setRole("Mayor");
                 registration.setMunicipalityId(resMunicipalities.get(i).getId());
                 registration.setUserId(resUsers.get(i).getId());
+                registration.setStatus(RegistrationStatus.OK.getValue());
                 registrations.add(registrationService.createRegistration(registration));
             }
         }

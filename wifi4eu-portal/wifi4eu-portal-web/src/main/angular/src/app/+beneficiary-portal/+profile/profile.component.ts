@@ -36,6 +36,7 @@ export class BeneficiaryProfileComponent {
     private newPassword: string = '';
     private repeatNewPassword: string = '';
     private passwordsMatch: boolean = false;
+    private isRegisterHold: boolean = false;
 
     constructor(private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private localStorageService: LocalStorageService, private translateService: TranslateService, private uxService: UxService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
@@ -49,6 +50,7 @@ export class BeneficiaryProfileComponent {
                 this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
                     (registrations: RegistrationDTOBase[]) => {
                         for (let registration of registrations) {
+                            this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
                             this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                                 (municipality: MunicipalityDTOBase) => {
                                     // If the user is a representative, we need to look for the info of the mayors.
