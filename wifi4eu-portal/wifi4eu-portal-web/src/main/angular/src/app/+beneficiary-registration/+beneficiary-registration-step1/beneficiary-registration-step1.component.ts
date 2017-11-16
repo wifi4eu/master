@@ -25,7 +25,6 @@ export class BeneficiaryRegistrationStep1Component {
     }
 
     private selectCountry(event: any) {
-        console.log(event);
         this.singleMunicipalityCheckbox = false;
         this.multipleMunicipalityCheckbox = false;
         this.countrySelected = true;
