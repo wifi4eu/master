@@ -141,6 +141,21 @@
             </div>
         </div>
     </div>
+    <div class="ui-g" *ngIf="isRegisterHold">
+        <div class="ui-g-12">
+            <div class="ui-g">
+                <div class="ui-g-4"></div>
+                <div class="ui-g-8 button-content">
+                    <p>{{ 'beneficiary.goDiscussionText' | translate }}</p>
+                    <div style="text-align: center !important">
+                        <button type="button" class="btn btn-primary changePassword">
+                            {{'beneficiary.goDiscussion' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!--MODALS BELOW-->
 <div class="container font">

@@ -93,8 +93,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`municipalities` (
   CONSTRAINT `fk_municipalities_laus`
     FOREIGN KEY (`lau`)
     REFERENCES `wifi4eu-new`.`laus` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -106,19 +106,20 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`registrations` (
   `user` INT NOT NULL,
   `municipality` INT NOT NULL,
   `role` VARCHAR(500) NULL,
+  `status` INT(1) NOT NULL, --  0=HOLD; 1=KO; 2=OK
   PRIMARY KEY (`id`),
   INDEX `fk_user_idx` (`user` ASC),
   INDEX `fk_municipality_idx` (`municipality` ASC),
   CONSTRAINT `fk_registrations_users`
     FOREIGN KEY (`user`)
     REFERENCES `wifi4eu-new`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_registrations_municipalities`
     FOREIGN KEY (`municipality`)
     REFERENCES `wifi4eu-new`.`municipalities` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -161,8 +162,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`threads` (
   CONSTRAINT `fk_threads_laus`
     FOREIGN KEY (`lau`)
     REFERENCES `wifi4eu-new`.`laus` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -181,13 +182,13 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`thread_messages` (
   CONSTRAINT `fk_thread_messages_threads`
     FOREIGN KEY (`thread`)
     REFERENCES `wifi4eu-new`.`threads` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_thread_messages_users`
     FOREIGN KEY (`author`)
     REFERENCES `wifi4eu-new`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -214,8 +215,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`suppliers` (
   CONSTRAINT `fk_suppliers_users`
     FOREIGN KEY (`user`)
     REFERENCES `wifi4eu-new`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
@@ -247,18 +248,18 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`applications` (
   CONSTRAINT `fk_applications_calls`
     FOREIGN KEY (`call_id`)
     REFERENCES `wifi4eu-new`.`calls` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_applications_registrations`
     FOREIGN KEY (`registration`)
     REFERENCES `wifi4eu-new`.`registrations` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_applications_suppliers`
     FOREIGN KEY (`supplier`)
     REFERENCES `wifi4eu-new`.`suppliers` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -288,13 +289,13 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`representations` (
   CONSTRAINT `fk_representations_municipalities`
     FOREIGN KEY (`municipality`)
     REFERENCES `wifi4eu-new`.`municipalities` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_representations_mayors`
     FOREIGN KEY (`mayor`)
     REFERENCES `wifi4eu-new`.`mayors` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -314,8 +315,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`access_points` (
   CONSTRAINT `fk_access_points_municipalities`
     FOREIGN KEY (`municipality`)
     REFERENCES `wifi4eu-new`.`municipalities` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -333,12 +334,12 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`supplied_regions` (
     FOREIGN KEY (`supplier`)
     REFERENCES `wifi4eu-new`.`suppliers` (`id`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION,
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_supplier_regions_nuts`
     FOREIGN KEY (`region`)
     REFERENCES `wifi4eu-new`.`nuts` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
@@ -377,8 +378,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`helpdesk_comments` (
   CONSTRAINT `fk_helpdesk_comments_issues`
     FOREIGN KEY (`issue`)
     REFERENCES `wifi4eu-new`.`helpdesk_issues` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
@@ -398,8 +399,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`timelines` (
   CONSTRAINT `fk_timelines_call_id`
     FOREIGN KEY (`call_id`)
     REFERENCES `wifi4eu-new`.`calls` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
@@ -409,7 +410,7 @@ COLLATE = utf8_bin;
 -- Table `wifi4eu-new`.`temp_tokens`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`temp_tokens` (
-  `id` BIGINT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `token` VARCHAR(255) NULL,
   `email` VARCHAR(255) NULL,
   `create_date` BIGINT NULL,
@@ -420,8 +421,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`temp_tokens` (
   CONSTRAINT `fk_temp_tokens_users`
     FOREIGN KEY (`user`)
     REFERENCES `wifi4eu-new`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -429,14 +430,14 @@ ENGINE = InnoDB;
 -- Table `wifi4eu-new`.`organizations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`organizations` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
   `type` VARCHAR(255) NULL,
   `country` VARCHAR(255) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
-
-
+INSERT INTO `wifi4eu-new`.`organizations` (name, type, country)
+VALUES ('Everis', 'private', 'ES');
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

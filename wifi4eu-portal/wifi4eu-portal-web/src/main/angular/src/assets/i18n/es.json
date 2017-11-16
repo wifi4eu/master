@@ -1,7 +1,7 @@
 {
-  "registration.entity.title": "PASO 2: Entidad legal",
+  "registration.entity.title": "PASO 3: Detalles de contacto",
   "registration.beneficiary.title": "PASO 2: Detalles del municipio",
-  "registration.review.title": "PASO 3: Revisión",
+  "registration.review.title": "PASO 4: Revisión",
   "registration.step1.instructions": "Rellene los datos del formulario a continuación.",
   "registration.step2.instructions": "Para continuar, rellene los datos del formulario.",
   "registration.step3.instructions": "Por favor, revise toda la información que se ha facilitado antes de enviar la solicitud de registro.",
@@ -322,9 +322,14 @@
   "surnameMayor.label": "Apellido del alcalde",
   "emailMayor.label": "Email del alcalde",
   "beneficiaryRegistration.sameDetails": "Mis datos son los mismos que los datos de alcalde",
-  "duplicatedSuppliers.title":"Registros de proveedores duplicados",
-  "duplicatedBeneficiary.title":"Registros de municipios duplicados",
-  "discussionForum.title":"Foro de discusión",
-  "typeOfRegistration.title":"Tipo de registro",
-  "yourDetails.title":"Detalles personales"
+  "duplicatedSuppliers.title": "Registros de proveedores duplicados",
+  "duplicatedBeneficiary.title": "Registros de municipios duplicados",
+  "discussionForum.title": "Foro de discusión",
+  "typeOfRegistration.title": "Tipo de registro",
+  "yourDetails.title": "Detalles personales",
+  "beneficiary.deleteApplication": "Borrar mi solicitud",
+  "beneficiary.editApplication": "Editar mi solicitud",
+  "beneficiary.discusionText" : "Si ya no desea seguir participando en el esquema WIFI4EU, elimine su aplicación haciendo clic en el botón de abajo.",
+  "beneficiary.goDiscussion" : "Ir a la discusión",
+  "beneficiary.goDiscussionText" : "Uno o más solicitantes aplicaron al mismo Municipio que usted. Por favor, contacte a las otras partes para resolver el problema."
 }
