@@ -20,7 +20,7 @@ export class BeneficiaryRegistrationStep4Component {
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
     @Output() private onEdit: EventEmitter<number>;
-    private displayModal: boolean;
+    private displayConfirmingData: boolean = false;
     private legalChecks: boolean[] = [false, false, false];
     private successCaptcha: boolean = false;
 
@@ -28,28 +28,24 @@ export class BeneficiaryRegistrationStep4Component {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
         this.onEdit = new EventEmitter<any>();
-        this.displayModal = false;
     }
 
-    completeCaptcha(response: any) {
+    private completeCaptcha(response: any) {
         this.successCaptcha = response.success;
     }
 
-    openModal() {
-        this.displayModal = true;
-    }
-
-    submit() {
+    private submit() {
         if (this.legalChecks && this.successCaptcha) {
+            this.displayConfirmingData = true;
             this.onNext.emit();
         }
     }
 
-    back() {
+    private back() {
         this.onBack.emit();
     }
 
-    edit(step: number) {
+    private edit(step: number) {
         this.onEdit.emit(step);
     }
 }

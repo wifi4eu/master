@@ -211,8 +211,7 @@
             </div>
             <!-- Next button -->
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button type="submit" class="btn btn-primary publish-button"
-                        [disabled]="!legalChecks[0] || !legalChecks[1] || !legalChecks[2] || !successCaptcha"
+                <button type="submit" class="btn btn-primary publish-button" [disabled]="!legalChecks[0] || !legalChecks[1] || !legalChecks[2] || !successCaptcha"
                         (click)="submit()">
                     {{ 'confirm.button' | translate }}
                 </button>
@@ -221,3 +220,9 @@
     </ng-container>
 </div>
 
+<p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+    <h1 class="Modalh1Confirmation">{{ 'loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'loading.modal.registration.text' | translate}}</p>
+    <p class="ModalpConfirmation">{{ 'loading.modal.dontclose' | translate}}</p>
+</p-dialog>
