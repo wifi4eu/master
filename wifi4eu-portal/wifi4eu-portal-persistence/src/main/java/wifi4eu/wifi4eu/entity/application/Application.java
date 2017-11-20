@@ -10,8 +10,7 @@ import javax.persistence.*;
 @Table(name = "applications")
 public class Application {
     @Id
-    @SequenceGenerator(name = "application_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "application_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 

@@ -8,8 +8,7 @@ import javax.persistence.*;
 @Table(name = "temp_tokens")
 public class TempToken {
     @Id
-    @SequenceGenerator(name = "temp_token_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "temp_token_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
