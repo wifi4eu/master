@@ -6,8 +6,7 @@ import javax.persistence.*;
 @Table(name = "helpdesk_comments")
 public class HelpdeskComment {
     @Id
-    @SequenceGenerator(name = "helpdesk_comment_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "helpdesk_comment_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
