@@ -22,7 +22,7 @@
             <div class="form-group">
                 <label class="label" for="name">{{ 'company.name' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="name" name="name"
-                       placeholder="Everis" [(ngModel)]="supplier.name" #name="ngModel" required>
+                       [(ngModel)]="supplier.name" #name="ngModel" required>
                 <div class="alert alert-danger" [hidden]="name.valid || name.pristine">
                     Company is required
                 </div>
@@ -36,7 +36,7 @@
             <div class="form-group">
                 <label class="label" for="address">{{ 'legal.address' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="address" name="address"
-                       placeholder="Diagonal, 605, 08022, Barcelona" [(ngModel)]="supplier.address" #address="ngModel" required>
+                       [(ngModel)]="supplier.address" #address="ngModel" required>
                 <div class="alert alert-danger" [hidden]="address.valid || address.pristine">
                     Address is required
                 </div>
@@ -50,7 +50,7 @@
             <div class="form-group">
                 <label class="label" for="vat">{{ 'vat.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="vat" name="vat"
-                       placeholder="000000000" [(ngModel)]="supplier.vat" #vat="ngModel" required>
+                       [(ngModel)]="supplier.vat" #vat="ngModel" required>
                 <div class="alert alert-danger" [hidden]="vat.valid || vat.pristine">
                     VAT number is required
                 </div>
@@ -64,7 +64,7 @@
             <div class="form-group">
                 <label class="label" for="bic">{{ 'bic.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="bic" name="bic"
-                       placeholder="000000000000" [(ngModel)]="supplier.bic" #bic="ngModel" required>
+                       [(ngModel)]="supplier.bic" #bic="ngModel" required>
                 <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">BIC is required</div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -76,7 +76,7 @@
             <div class="form-group">
                 <label class="label" for="accountNumber">{{ 'bank.account' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="accountNumber" name="accountNumber"
-                       placeholder="000000000000000000" [(ngModel)]="supplier.accountNumber" #accountNumber="ngModel" required>
+                       [(ngModel)]="supplier.accountNumber" #accountNumber="ngModel" required>
                 <div class="alert alert-danger" [hidden]="accountNumber.valid || accountNumber.pristine">
                     Bank account is required
                 </div>
@@ -90,7 +90,7 @@
             <div class="form-group">
                 <label class="label" for="website">{{ 'company.web' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="website" name="website" [pattern]="websitePattern"
-                       placeholder="http://everis.com" [(ngModel)]="supplier.website" #website="ngModel" required>
+                       [(ngModel)]="supplier.website" #website="ngModel" required>
                 <div class="alert alert-danger" [hidden]="website.valid || website.pristine">
                     Company Web is required
                 </div>

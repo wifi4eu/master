@@ -21,8 +21,7 @@
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
                 <label class="label floatLeft" for="contactName">{{ 'name.label' | translate }}</label>
-                <input class="form-control paddingInput" type="text"
-                       id="contactName" name="contactName" placeholder="{{ 'name.place' | translate }}"
+                <input class="form-control paddingInput" type="text" id="contactName" name="contactName"
                        [(ngModel)]="supplier.contactName" #contactName="ngModel" required>
                 <div class="alert alert-danger" [hidden]="contactName.valid || contactName.pristine">
                     Name is required
@@ -37,8 +36,7 @@
             <div class="form-group">
                 <label class="label floatLeft" for="contactSurname">{{ 'surname.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text"
-                       id="contactSurname" name="contactSurname" placeholder="{{ 'surname.place' | translate }}"
-                       [(ngModel)]="supplier.contactSurname" #contactSurname="ngModel" required>
+                       id="contactSurname" name="contactSurname" [(ngModel)]="supplier.contactSurname" #contactSurname="ngModel" required>
                 <div class="alert alert-danger" [hidden]="contactSurname.valid || contactSurname.pristine">
                     Surname is required
                 </div>
@@ -54,8 +52,7 @@
                 <label class="label floatLeft" for="contactPhonePrefix">{{ 'prefix.number' | translate
                     }}</label>
                 <input class="form-control paddingInput" type="text"
-                       id="contactPhonePrefix" name="contactPhonePrefix"
-                       placeholder="{{ 'prefix.place' | translate }}" pattern="(\+|00)[0-9]{2,3}"
+                       id="contactPhonePrefix" name="contactPhonePrefix" pattern="(\+|00)[0-9]{2,3}"
                        [(ngModel)]="supplier.contactPhonePrefix" #contactPhonePrefix="ngModel" required>
                 <div class="alert alert-danger"
                      [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine">
@@ -67,8 +64,7 @@
             <div class="form-group">
                 <label class="label floatLeft" for="contactPhoneNumber">{{ 'phone.number' | translate }}</label>
                 <input class="form-control paddingInput" type="number"
-                       id="contactPhoneNumber" name="contactPhoneNumber"
-                       placeholder="{{ 'phone.place' | translate }}" step="1" min="1"
+                       id="contactPhoneNumber" name="contactPhoneNumber" step="1" min="1"
                        [(ngModel)]="supplier.contactPhoneNumber" #contactPhoneNumber="ngModel" required>
                 <div class="alert alert-danger"
                      [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine">
@@ -83,8 +79,7 @@
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
                 <label class="label floatLeft" for="contactEmail">{{ 'email.label' | translate }}</label>
-                <input class="form-control paddingInput" type="email"
-                       id="contactEmail" name="contactEmail" placeholder="{{ 'email.place' | translate }}"
+                <input class="form-control paddingInput" type="email" id="contactEmail" name="contactEmail"
                        [(ngModel)]="supplier.contactEmail" #contactEmail="ngModel"
                        (keyup)="checkIfEmailMatches()" [pattern]="emailPattern" required>
                 <div class="alert alert-danger" [hidden]="contactEmail.valid || contactEmail.pristine">
@@ -99,8 +94,7 @@
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
                 <label class="label floatLeft" for="confirmEmail">{{ 'confirmemail.label' | translate }}</label>
-                <input class="form-control paddingInput" type="email"
-                       id="confirmEmail" name="confirmEmail" placeholder="{{ 'email.place' | translate }}"
+                <input class="form-control paddingInput" type="email" id="confirmEmail" name="confirmEmail"
                        [(ngModel)]="confirmEmailField" #confirmEmail="ngModel" (keyup)="checkIfEmailMatches()" [pattern]="emailPattern" required>
                 <div class="alert alert-danger" [hidden]="confirmEmail.valid || confirmEmail.pristine">
                     Valid email information is required
