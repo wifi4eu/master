@@ -39,7 +39,7 @@
                     <div class="ui-g-8">
                         <div class="form-group">
                             <label class="label floatLeft" for="address">{{ 'townHall.address' | translate }}</label>
-                            <input type="text" class="form-control paddingInput" min="1" placeholder="Diagonal"
+                            <input type="text" class="form-control paddingInput" min="1"
                                    id="address" name="address" [(ngModel)]="addressFields[0]" required>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                     <div class="ui-g-4">
                         <div class="form-group">
                             <label class="label floatLeft" for="address">{{ 'number.label' | translate }}</label>
-                            <input type="number" class="form-control paddingInput" placeholder="605"
+                            <input type="number" class="form-control paddingInput"
                                    id="addressNum" name="addressNum" [(ngModel)]="addressNumFields[0]" required>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                     <div class="ui-g-4">
                         <div class="form-group">
                             <label class="label floatLeft" for="postalCode">{{ 'postal-code.label' | translate }}</label>
-                            <input type="text" class="form-control paddingInput" placeholder="08022"
+                            <input type="text" class="form-control paddingInput"
                                    id="postalCode" name="postalCode" [(ngModel)]="postalCodeFields[0]" required>
                         </div>
                     </div>
@@ -125,7 +125,7 @@
                             <div class="ui-g-8">
                                 <div class="form-group">
                                     <label class="label floatLeft" for="address">{{ 'townHall.address' | translate }}</label>
-                                    <input type="text" class="form-control paddingInput" min="1" placeholder="Diagonal"
+                                    <input type="text" class="form-control paddingInput" min="1"
                                            [id]="'address-'+i" [name]="'address-'+i" [(ngModel)]="addressFields[i]" required>
                                 </div>
                             </div>
@@ -133,7 +133,7 @@
                             <div class="ui-g-4">
                                 <div class="form-group">
                                     <label class="label floatLeft" for="address">{{ 'number.label' | translate }}</label>
-                                    <input type="number" class="form-control paddingInput" placeholder="605"
+                                    <input type="number" class="form-control paddingInput"
                                            [id]="'addressNum-'+i" [name]="'addressNum-'+i" [(ngModel)]="addressNumFields[i]" required>
                                 </div>
                             </div>
@@ -144,7 +144,7 @@
                             <div class="ui-g-4">
                                 <div class="form-group">
                                     <label class="label floatLeft" for="postalCode">{{ 'postal-code.label' | translate }}</label>
-                                    <input type="text" class="form-control paddingInput" placeholder="08022"
+                                    <input type="text" class="form-control paddingInput"
                                            [id]="'postalCode-'+i" [name]="'postalCode-'+i" [(ngModel)]="postalCodeFields[i]" required>
                                 </div>
                             </div>
