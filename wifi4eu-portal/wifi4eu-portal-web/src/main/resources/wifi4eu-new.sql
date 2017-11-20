@@ -20,12 +20,6 @@ DROP SCHEMA IF EXISTS `wifi4eu-new`;
 CREATE SCHEMA IF NOT EXISTS `wifi4eu-new` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
 USE `wifi4eu-new` ;
 
-CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`SEQUENCE` (
-  `SEQ_NAME`  VARCHAR(50) NOT NULL,
-  `SEQ_COUNT` NUMERIC(38),
-  PRIMARY KEY (`SEQ_NAME`)
-);
-
 
 -- -----------------------------------------------------
 -- Table `wifi4eu-new`.`audit_data_t`
