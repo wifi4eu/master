@@ -47,10 +47,8 @@ export class AppComponent {
         this.menuLinks = [new UxLayoutLink({
             label: 'Wifi4EU',
             children: [
-                new UxLayoutLink({label: 'Free Wi-Fi for Europeans', url: 'home'}),
-                new UxLayoutLink({label: 'Registration', url: 'registration'}),
-                new UxLayoutLink({label: 'Beneficiary Portal', url: 'beneficiary-portal'}),
-                new UxLayoutLink({label: 'DGConnect Portal', url: 'dgconn-portal'})
+                new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
+                new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
             ]
         })];
 
