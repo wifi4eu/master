@@ -85,4 +85,17 @@ public class RegistrationResource {
         _log.info("getRegistrationsByMunicipalityId: " + municipalityId);
         return registrationService.getRegistrationsByMunicipalityId(municipalityId);
     }
+
+    @ApiOperation(value = "Check if a certain user id registration is KO (deleted or suspended).")
+    @RequestMapping(value = "/registrationKO/{userId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO checkIfRegistrationIsKO(@PathVariable("userId") final Integer userId) {
+        try {
+            _log.info("checkIfRegistrationIsKO: " + userId);
+            return new ResponseDTO(true, registrationService.checkIfRegistrationIsKO(userId), null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+    }
 }

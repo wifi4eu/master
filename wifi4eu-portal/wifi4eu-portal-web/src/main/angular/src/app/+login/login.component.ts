@@ -54,7 +54,7 @@ export class LoginComponent {
                             break;
                     }
                 } else {
-                    let translatedString = 'Could not login. Please, try again later.';
+                    let translatedString = 'Could not login with these credentials. Make sure you typed your password correctly.';
                     this.translateService.get('login.error.wrongcredentials').subscribe(
                         (translation: string) => {
                             translatedString = translation;
@@ -68,7 +68,7 @@ export class LoginComponent {
                 }
             }, error => {
                 this.displayConfirmingData = false;
-                let translatedString = 'Could not login with these credentials. Make sure you typed your password correctly.';
+                let translatedString = 'Could not login. Please, try again later.';
                 this.translateService.get('login.error').subscribe(
                     (translation: string) => {
                         translatedString = translation;

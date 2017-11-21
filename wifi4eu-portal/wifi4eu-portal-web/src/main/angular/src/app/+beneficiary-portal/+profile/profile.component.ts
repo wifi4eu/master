@@ -108,7 +108,7 @@ export class BeneficiaryProfileComponent {
         }
     }
 
-    displayModal(name: string, index?: number) {
+    private displayModal(name: string, index?: number) {
         switch (name) {
             case 'user':
                 this.displayUser = true;
@@ -129,7 +129,7 @@ export class BeneficiaryProfileComponent {
         }
     }
 
-    saveUserChanges() {
+    private saveUserChanges() {
         this.submittingData = true;
         this.userApi.createUser(this.editedUser).subscribe(
             (response: ResponseDTOBase) => {
@@ -142,7 +142,7 @@ export class BeneficiaryProfileComponent {
         );
     }
 
-    saveMunicipalityChanges() {
+    private saveMunicipalityChanges() {
         this.submittingData = true;
         this.municipalityApi.createMunicipality(this.editedMunicipality).subscribe(
             (response: ResponseDTOBase) => {
@@ -155,7 +155,7 @@ export class BeneficiaryProfileComponent {
         );
     }
 
-    saveMayorChanges() {
+    private saveMayorChanges() {
         this.submittingData = true;
         this.userApi.createUser(this.editedMayor).subscribe(
             (response: ResponseDTOBase) => {
@@ -168,7 +168,7 @@ export class BeneficiaryProfileComponent {
         );
     }
 
-    closeModal() {
+    private closeModal() {
         this.currentEditIndex = 0;
         this.displayUser = false;
         this.displayMunicipality = false;
@@ -181,11 +181,54 @@ export class BeneficiaryProfileComponent {
         Object.assign(this.editedUser, this.user);
     }
 
-    checkPasswordsMatch() {
+    private checkPasswordsMatch() {
         if (this.newPassword.length > 0 && this.newPassword == this.repeatNewPassword) {
             this.passwordsMatch = true;
         } else {
             this.passwordsMatch = false;
         }
+    }
+
+    private deleteRegistration() {
+        this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+            (registrations: RegistrationDTOBase[]) => {
+                let registrationCount = 0;
+                for (let registration of registrations) {
+                    registration.status = 1;
+                    this.registrationApi.createRegistration(registration).subscribe(
+                        (data: ResponseDTOBase) => {
+                            if (data.success) {
+                                registrationCount++;
+                                if (registrationCount >= registrations.length) {
+                                    let translatedString = 'Your applications were succesfully deleted.';
+                                    this.translateService.get('beneficiary.deleteApplication.Success').subscribe(
+                                        (translation: string) => {
+                                            translatedString = translation;
+                                        }
+                                    );
+                                    this.uxService.growl({
+                                        severity: 'success',
+                                        summary: 'SUCCESS',
+                                        detail: translatedString
+                                    });
+                                }
+                            }
+                        }, error => {
+                            let translatedString = 'Your applications were succesfully deleted.';
+                            this.translateService.get('beneficiary.deleteApplication.Failure').subscribe(
+                                (translation: string) => {
+                                    translatedString = translation;
+                                }
+                            );
+                            this.uxService.growl({
+                                severity: 'error',
+                                summary: 'ERROR',
+                                detail: translatedString
+                            });
+                        }
+                    );
+                }
+            }
+        );
     }
 }

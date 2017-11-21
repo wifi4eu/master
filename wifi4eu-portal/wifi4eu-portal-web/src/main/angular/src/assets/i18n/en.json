@@ -333,5 +333,8 @@
   "beneficiary.editApplication": "Edit my application",
   "beneficiary.discusionText": "If you do not wish to participate to the WIFI4EU scheme anymore, delete your application by clicking on the button below.",
   "beneficiary.goDiscussion" : "Go to discusion",
-  "beneficiary.goDiscussionText" : "One or more applicant applied with the same Municipality as you. Please, contact the other parties to solve de issue."
+  "beneficiary.goDiscussionText" : "One or more applicant applied with the same Municipality as you. Please, contact the other parties to solve de issue.",
+  "beneficiary.deleteApplication.Success": "Your applications were succesfully deleted.",
+  "beneficiary.deleteApplication.Failure": "An error occurred an your applications could not be deleted.",
+  "discussion.growl.error":"Your request for mediation could not be submited due to an error. Please, try again later."
 }
