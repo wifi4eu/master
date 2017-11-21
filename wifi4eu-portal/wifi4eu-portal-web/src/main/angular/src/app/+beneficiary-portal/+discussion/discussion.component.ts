@@ -148,10 +148,6 @@ export class DiscussionComponent {
         this.displayMediation = false;
     }
 
-    // newMediation() {
-    //     this.displayMediation = true;
-    // }
-
     private askMediation() {
         this.mediationButton = true;
         this.showAlert = true;
