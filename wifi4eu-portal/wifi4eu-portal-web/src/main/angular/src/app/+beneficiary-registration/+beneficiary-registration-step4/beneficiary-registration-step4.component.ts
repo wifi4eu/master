@@ -43,9 +43,11 @@ export class BeneficiaryRegistrationStep4Component {
 
     private back() {
         this.onBack.emit();
+        this.legalChecks = [false, false, false];
     }
 
     private edit(step: number) {
         this.onEdit.emit(step);
+        this.legalChecks = [false, false, false];
     }
 }
