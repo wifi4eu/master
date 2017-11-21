@@ -25,7 +25,19 @@ public class UserDetailsServiceCustom implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 
-        try {
+        try{
+
+            return UserHolder.getUser();
+
+        } catch (Exception ex) {
+            if (ex instanceof UsernameNotFoundException) {
+                throw (UsernameNotFoundException) ex;
+            } else
+                throw new UsernameNotFoundException("Cannot retrieve the userDetails", ex);
+        }
+
+
+/*        try {
 
             DetailedUser detailedUser = UserHolder.getDetailedUser();
             Long perId = UserHolder.extractEcasEmployeeNumber(detailedUser);
@@ -62,7 +74,7 @@ public class UserDetailsServiceCustom implements UserDetailsService {
                 throw (UsernameNotFoundException) ex;
             } else
                 throw new UsernameNotFoundException("Cannot retrieve the userDetails", ex);
-        }
+        }*/
     }
 
     public boolean existsClass(String claszzName) {
