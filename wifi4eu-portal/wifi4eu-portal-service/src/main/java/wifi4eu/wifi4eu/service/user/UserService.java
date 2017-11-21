@@ -52,7 +52,7 @@ public class UserService {
     @Transactional
     public UserDTO createUser(UserDTO userDTO) {
         UserDTO resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
-        sendActivateAccountMail(resUser);
+        //sendActivateAccountMail(resUser);
         return resUser;
     }
 
