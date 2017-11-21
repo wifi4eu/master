@@ -52,7 +52,7 @@
                 <label class="label floatLeft" for="contactPhonePrefix">{{ 'prefix.number' | translate
                     }}</label>
                 <input class="form-control paddingInput" type="text"
-                       id="contactPhonePrefix" name="contactPhonePrefix" pattern="(\+|00)[0-9]{2,3}"
+                       id="contactPhonePrefix" name="contactPhonePrefix" pattern="[0-9]{1,4}"
                        [(ngModel)]="supplier.contactPhonePrefix" #contactPhonePrefix="ngModel" required>
                 <div class="alert alert-danger"
                      [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine">
@@ -63,8 +63,8 @@
         <div class="ui-g-12 ui-md-12 ui-lg-3">
             <div class="form-group">
                 <label class="label floatLeft" for="contactPhoneNumber">{{ 'phone.number' | translate }}</label>
-                <input class="form-control paddingInput" type="number"
-                       id="contactPhoneNumber" name="contactPhoneNumber" step="1" min="1"
+                <input class="form-control paddingInput" type="text"
+                       id="contactPhoneNumber" name="contactPhoneNumber" pattern="[0-9]{1,}"
                        [(ngModel)]="supplier.contactPhoneNumber" #contactPhoneNumber="ngModel" required>
                 <div class="alert alert-danger"
                      [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine">
@@ -81,7 +81,7 @@
                 <label class="label floatLeft" for="contactEmail">{{ 'email.label' | translate }}</label>
                 <input class="form-control paddingInput" type="email" id="contactEmail" name="contactEmail"
                        [(ngModel)]="supplier.contactEmail" #contactEmail="ngModel"
-                       (keyup)="checkIfEmailMatches()" [pattern]="emailPattern" required>
+                       (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
                 <div class="alert alert-danger" [hidden]="contactEmail.valid || contactEmail.pristine">
                     Valid email information is required
                 </div>
@@ -95,7 +95,8 @@
             <div class="form-group">
                 <label class="label floatLeft" for="confirmEmail">{{ 'confirmemail.label' | translate }}</label>
                 <input class="form-control paddingInput" type="email" id="confirmEmail" name="confirmEmail"
-                       [(ngModel)]="confirmEmailField" #confirmEmail="ngModel" (keyup)="checkIfEmailMatches()" [pattern]="emailPattern" required>
+                       [(ngModel)]="confirmEmailField" #confirmEmail="ngModel"
+                       (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
                 <div class="alert alert-danger" [hidden]="confirmEmail.valid || confirmEmail.pristine">
                     Valid email information is required
                 </div>
