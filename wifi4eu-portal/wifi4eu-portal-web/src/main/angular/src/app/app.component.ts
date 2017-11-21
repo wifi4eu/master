@@ -1,17 +1,24 @@
-import {Component, enableProdMode, Output, EventEmitter} from "@angular/core";
+import {Component, enableProdMode, Output} from "@angular/core";
+import {Router} from "@angular/router";
+import {LocalStorageService} from "angular-2-local-storage";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {UxService, UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-// import {CoreService} from "./core/core.service";
 import {UxLanguage, UxEuLanguages} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
-import {LocalStorageService} from "angular-2-local-storage";
 import {SharedService} from "./shared/shared.service";
-import {Router} from "@angular/router";
 import {UserDTOBase} from "./shared/swagger/model/UserDTO";
+import {UserApi} from "./shared/swagger/api/UserApi";
+import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
+import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
 
 
 enableProdMode()
 
-@Component({selector: 'app-root', templateUrl: './app.component.html', styleUrls: ['./app.component.scss']})
+@Component({
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    providers: [UserApi, RegistrationApi]
+})
 export class AppComponent {
     private menuLinks: Array<UxLayoutLink>;
     private user: UserDTOBase;
@@ -22,7 +29,7 @@ export class AppComponent {
 
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
 
-    constructor(private router: Router, private translateService: TranslateService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService) {
+    constructor(private router: Router, private translateService: TranslateService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
         translateService.setDefaultLang('en');
         let language = this.localStorage.get('lang');
         if (language) {
@@ -35,7 +42,7 @@ export class AppComponent {
             this.selectedLanguage = UxEuLanguages.languagesByCode ['en'];
         }
 
-        this.profileUrl = "";
+        this.profileUrl = '';
 
         this.menuLinks = [new UxLayoutLink({
             label: 'Wifi4EU',
@@ -114,30 +121,46 @@ export class AppComponent {
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
 
         if (this.user != null) {
-            switch (this.user.type) {
-                case 1:
-                    this.profileUrl = "/supplier-portal/profile";
-                    break;
-                case 2:
-                case 3:
-                    this.profileUrl = "/beneficiary-portal/profile";
-                    break;
-                case 5:
-                    this.profileUrl = "/dgconn-portal";
-                    break;
-                default:
-                    break;
-            }
+            this.userApi.getUserById(this.user.id).subscribe(
+                (user: UserDTOBase) => {
+                    if (user != null) {
+                        this.registrationApi.checkIfRegistrationIsKO(user.id).subscribe(
+                            (response: ResponseDTOBase) => {
+                                if (response.success && !response.data) {
+                                    this.user = user;
+                                    switch (this.user.type) {
+                                        case 1:
+                                            this.profileUrl = '/supplier-portal/profile';
+                                            break;
+                                        case 2:
+                                        case 3:
+                                            this.profileUrl = '/beneficiary-portal/profile';
+                                            break;
+                                        case 5:
+                                            this.profileUrl = '/dgconn-portal';
+                                            break;
+                                        default:
+                                            this.profileUrl = '/home';
+                                            break;
+                                    }
+                                    this.menuLinks = [new UxLayoutLink({
+                                        label: 'Wifi4EU',
+                                        children: this.children[this.user.type]
+                                    })];
+                                } else {
+                                    this.logout();
+                                }
+                            }
+                        );
+                    } else {
+                        this.logout();
+                    }
+                }, error => {
+                    this.logout();
+                }
+            );
         }
-
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
-
-        let typeIndex = (this.user) ? this.user.type : 0;
-
-        this.menuLinks = [new UxLayoutLink({
-            label: 'Wifi4EU',
-            children: this.children[typeIndex]
-        })];
     }
 
     changeLanguage(language: UxLanguage) {
@@ -147,9 +170,15 @@ export class AppComponent {
     }
 
     logout() {
+        this.user = null;
         this.localStorage.remove('user');
         this.updateHeader();
         this.router.navigateByUrl('/home');
+        this.menuLinks = [new UxLayoutLink({
+            label: 'Wifi4EU',
+            children: this.children[0]
+        })];
+        this.profileUrl = null;
     }
 
 }
