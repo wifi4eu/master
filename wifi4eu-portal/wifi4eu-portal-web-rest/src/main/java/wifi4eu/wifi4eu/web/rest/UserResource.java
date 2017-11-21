@@ -13,6 +13,7 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RegistrationService registrationService;
+
     Logger _log = LoggerFactory.getLogger(UserResource.class);
 
     @ApiOperation(value = "Get all the users")
@@ -32,7 +36,11 @@ public class UserResource {
     @ResponseBody
     public List<UserDTO> allUsers() {
         _log.info("allUsers");
-        return userService.getAllUsers();
+        List<UserDTO> resUsers = userService.getAllUsers();
+        for (UserDTO resUser: resUsers) {
+            resUser.setPassword(null);
+        }
+        return resUsers;
     }
 
     @ApiOperation(value = "Get user by specific id")
@@ -40,7 +48,9 @@ public class UserResource {
     @ResponseBody
     public UserDTO getUserById(@PathVariable("userId") final Integer userId) {
         _log.info("getUserById: " + userId);
-        return userService.getUserById(userId);
+        UserDTO resUser = userService.getUserById(userId);
+        resUser.setPassword(null);
+        return resUser;
     }
 
     @ApiOperation(value = "Create user")
@@ -51,6 +61,7 @@ public class UserResource {
         try {
             _log.info("createUser");
             UserDTO resUser = userService.createUser(userDTO);
+            resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
@@ -65,6 +76,7 @@ public class UserResource {
         try {
             _log.info("deleteUser: " + userId);
             UserDTO resUser = userService.deleteUser(userId);
+            resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
         } catch (Exception e) {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
@@ -77,18 +89,24 @@ public class UserResource {
     @ResponseBody
     public List<UserDTO> getUsersByType(@PathVariable("type") final Integer type) {
         _log.info("getUsersByType" + type);
-        return userService.getUsersByType(type);
+        List<UserDTO> resUsers = userService.getUsersByType(type);
+        for (UserDTO resUser: resUsers) {
+            resUser.setPassword(null);
+        }
+        return resUsers;
     }
 
     @ApiOperation(value = "Service to do Login with a user email and SHA512 password")
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO login(@RequestBody final UserDTO userDTO) {
-        ResponseDTO result;
         try {
             _log.info("login: " + userDTO.getEmail());
             UserDTO resUser = userService.login(userDTO);
-            resUser.setPassword(""); // Remove password
+            resUser.setPassword(null);
+            if (registrationService.checkIfRegistrationIsKO(resUser.getId())) {
+                return new ResponseDTO(false, resUser, null);
+            }
             return new ResponseDTO(true, resUser, null);
         } catch (Exception e) {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
@@ -105,6 +123,22 @@ public class UserResource {
             return new ResponseDTO(true, null, null);
         } catch (Exception e) {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Service to resend email with a link to activate account")
+    @RequestMapping(value = "/resendEmail", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO resendEmail(@RequestBody final String email) {
+        try {
+            _log.info("Resend email to '" + email +"'...");
+            if (userService.resendEmail(email)) {
+                return new ResponseDTO(true, null, null);
+            }
+            return new ResponseDTO(false, null, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
         }
     }
 }

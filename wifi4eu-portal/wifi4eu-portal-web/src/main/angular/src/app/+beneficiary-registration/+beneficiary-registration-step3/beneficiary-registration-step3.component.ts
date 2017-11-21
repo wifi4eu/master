@@ -83,6 +83,7 @@ export class BeneficiaryRegistrationStep3Component implements OnInit {
         this.userAddressChange.emit(this.userAddress);
         this.postalCodeChange.emit(this.postalCode);
         this.onBack.emit();
+        this.repeatEmail = "";
     }
 
     submit(step: number) {
@@ -90,5 +91,6 @@ export class BeneficiaryRegistrationStep3Component implements OnInit {
         this.userAddressChange.emit(this.userAddress);
         this.postalCodeChange.emit(this.postalCode);
         this.onNext.emit(step);
+        this.repeatEmail = "";
     }
 }

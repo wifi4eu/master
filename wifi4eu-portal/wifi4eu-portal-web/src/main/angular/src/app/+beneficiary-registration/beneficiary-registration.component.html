@@ -43,6 +43,6 @@
         </uxWizardStepCustomContent>
     </ux-wizard-step>
 </custom-wizard-steps>
-<success-component *ngIf="successRegistration"></success-component>
+<success-component *ngIf="successRegistration" [emailConfirmation]="true" [email]="initialUser.email"></success-component>
 <failure-component *ngIf="failureRegistration"></failure-component>
 <helpdesk-form-component portal="beneficiary-registration"></helpdesk-form-component>

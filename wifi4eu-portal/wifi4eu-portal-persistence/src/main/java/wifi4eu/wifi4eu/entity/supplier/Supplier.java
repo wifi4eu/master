@@ -9,7 +9,8 @@ import java.util.List;
 @Table(name = "suppliers")
 public class Supplier {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "supp_seq", allocationSize = 1, initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "supp_seq")
     @Column(name = "id")
     private Integer id;
 
@@ -50,7 +51,7 @@ public class Supplier {
     private String logo;
 
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "_user")
     private User user;
 
     @OneToMany(mappedBy = "supplier")

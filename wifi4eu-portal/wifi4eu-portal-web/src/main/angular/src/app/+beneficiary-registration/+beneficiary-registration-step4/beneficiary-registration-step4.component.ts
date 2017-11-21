@@ -22,7 +22,6 @@ export class BeneficiaryRegistrationStep4Component {
     @Output() private onEdit: EventEmitter<number>;
     private displayConfirmingData: boolean = false;
     private legalChecks: boolean[] = [false, false, false];
-    private successCaptcha: boolean = false;
 
     constructor() {
         this.onNext = new EventEmitter<any>();
@@ -30,12 +29,8 @@ export class BeneficiaryRegistrationStep4Component {
         this.onEdit = new EventEmitter<any>();
     }
 
-    private completeCaptcha(response: any) {
-        this.successCaptcha = response.success;
-    }
-
     private submit() {
-        if (this.legalChecks && this.successCaptcha) {
+        if (this.legalChecks) {
             this.displayConfirmingData = true;
             this.onNext.emit();
         }
@@ -43,9 +38,11 @@ export class BeneficiaryRegistrationStep4Component {
 
     private back() {
         this.onBack.emit();
+        this.legalChecks = [false, false, false];
     }
 
     private edit(step: number) {
         this.onEdit.emit(step);
+        this.legalChecks = [false, false, false];
     }
 }

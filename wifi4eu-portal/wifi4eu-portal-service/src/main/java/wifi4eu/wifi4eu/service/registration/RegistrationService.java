@@ -46,4 +46,14 @@ public class RegistrationService {
     public List<RegistrationDTO> getRegistrationsByMunicipalityId(int municipalityId) {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findByMunicipalityId(municipalityId)));
     }
+
+    public boolean checkIfRegistrationIsKO(int userId) {
+        List<RegistrationDTO> registrations = getRegistrationsByUserId(userId);
+        for (RegistrationDTO registration : registrations) {
+            if (registration.getStatus() == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
