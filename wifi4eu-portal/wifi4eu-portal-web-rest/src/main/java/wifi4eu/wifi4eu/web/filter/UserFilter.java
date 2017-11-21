@@ -1,7 +1,8 @@
 package wifi4eu.wifi4eu.web.filter;
 
-import eu.cec.digit.ecas.client.j2ee.tomcat.EcasPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+
+import eu.cec.digit.ecas.client.jaas.DetailedUser;
+import wifi4eu.wifi4eu.common.dto.security.RoleDTO;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -14,7 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Principal;
+import java.util.LinkedList;
 
 public class UserFilter extends OncePerRequestFilter {
 
@@ -33,8 +34,24 @@ public class UserFilter extends OncePerRequestFilter {
 
         try {
 
+            DetailedUser ecasPrincipal = (DetailedUser) request.getUserPrincipal();
+
+            UserContext user = new UserContext(ecasPrincipal.getDomainUsername());
+            user.setEmail(ecasPrincipal.getEmail());
+            user.setDomain(ecasPrincipal.getDomain());
+            if(ecasPrincipal.getEmployeeNumber() != null) {
+                user.setPerId(new Long(ecasPrincipal.getEmployeeNumber()));
+            }
+            user.setDetailedUser(ecasPrincipal);
+            user.setFirstName(ecasPrincipal.getFirstName());
+            user.setLastName(ecasPrincipal.getLastName());
+
+            user.setRoleList(new LinkedList<RoleDTO>());
+
+            /*
             String userId = (String) request.getSession(true).getAttribute(Constant.USER);;
             UserContext user = new UserContext(userId);
+            */
 
             if (user == null) {
                 user = UserHolder.getUser();
