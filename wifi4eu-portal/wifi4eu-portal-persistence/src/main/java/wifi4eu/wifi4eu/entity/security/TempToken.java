@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Table(name = "temp_tokens")
 public class TempToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "temptoken_seq", allocationSize = 1, initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "temptoken_seq")
     @Column(name = "id")
     private Long id;
 
@@ -25,7 +26,7 @@ public class TempToken {
     private Long expiryDate;
 
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "_user")
     private User user;
 
     public TempToken() {

@@ -9,12 +9,13 @@ import javax.persistence.*;
 @Table(name = "registrations")
 public class Registration {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "registratrion_seq", allocationSize = 1, initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "registration_seq")
     @Column(name = "id")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "_user")
     private User user;
 
     @ManyToOne
@@ -24,7 +25,7 @@ public class Registration {
     @Column(name = "role")
     private String role;
 
-    @Column(name = "status")
+    @Column(name = "_status")
     private int status;
 
     public Registration() {
