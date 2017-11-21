@@ -22,6 +22,12 @@ CREATE SCHEMA IF NOT EXISTS `wifi4eu`
   COLLATE utf8_bin;
 USE `wifi4eu`;
 
+CREATE TABLE IF NOT EXISTS `wifi4eu-new`.`SEQUENCE` (
+  `SEQ_NAME`  VARCHAR(50) NOT NULL,
+  `SEQ_COUNT` NUMERIC(38),
+  PRIMARY KEY (`SEQ_NAME`)
+);
+
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`audit_data_t`
 -- -----------------------------------------------------
@@ -102,15 +108,15 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`municipalities` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`registrations` (
   `id`           INT          NOT NULL AUTO_INCREMENT,
-  `user`         INT          NOT NULL,
+  `_user`        INT          NOT NULL,
   `municipality` INT          NOT NULL,
   `role`         VARCHAR(500) NULL,
-  `status`       INT(1)       NOT NULL, --  0=HOLD; 1=KO; 2=OK
+  `_status`      INT(1)       NOT NULL, --  0=HOLD; 1=KO; 2=OK
   PRIMARY KEY (`id`),
-  INDEX `fk_user_idx` (`user` ASC),
+  INDEX `fk_user_idx` (`_user` ASC),
   INDEX `fk_municipality_idx` (`municipality` ASC),
   CONSTRAINT `fk_registrations_users`
-  FOREIGN KEY (`user`)
+  FOREIGN KEY (`_user`)
   REFERENCES `wifi4eu`.`users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
@@ -208,11 +214,11 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`suppliers` (
   `contact_phone_number` VARCHAR(255) NULL,
   `contact_email`        VARCHAR(255) NULL,
   `logo`                 LONGTEXT     NULL,
-  `user`                 INT          NULL,
+  `_user`                INT          NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_suppliers_users_idx` (`user` ASC),
+  INDEX `fk_suppliers_users_idx` (`_user` ASC),
   CONSTRAINT `fk_suppliers_users`
-  FOREIGN KEY (`user`)
+  FOREIGN KEY (`_user`)
   REFERENCES `wifi4eu`.`users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE
@@ -356,7 +362,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`helpdesk_issues` (
   `member_state` VARCHAR(255) NULL,
   `summary`      MEDIUMTEXT   NULL,
   `create_date`  BIGINT       NULL,
-  `status`       INT          NOT NULL DEFAULT 0,
+  `_status`      INT          NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
@@ -414,11 +420,11 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`temp_tokens` (
   `email`       VARCHAR(255) NULL,
   `create_date` BIGINT       NULL,
   `expiry_date` BIGINT       NULL,
-  `user`        INT          NULL,
+  `_user`       INT          NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_temp_tokens_users_idx` (`user` ASC),
+  INDEX `fk_temp_tokens_users_idx` (`_user` ASC),
   CONSTRAINT `fk_temp_tokens_users`
-  FOREIGN KEY (`user`)
+  FOREIGN KEY (`_user`)
   REFERENCES `wifi4eu`.`users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE
