@@ -9,7 +9,8 @@ import java.util.List;
 @Table(name = "threads")
 public class Thread {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "thread_seq", allocationSize = 1, initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "thread_seq")
     @Column(name = "id")
     private Integer id;
 

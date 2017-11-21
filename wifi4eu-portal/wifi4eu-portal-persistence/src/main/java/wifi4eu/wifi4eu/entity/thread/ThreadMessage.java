@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Table(name = "thread_messages")
 public class ThreadMessage {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "thmessage_seq", allocationSize = 1, initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "thmessage_seq")
     @Column(name = "id")
     private Integer id;
 

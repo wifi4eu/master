@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "user_seq", allocationSize = 1, initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
     @Column(name = "id")
     private Integer id;
 
@@ -40,8 +41,7 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String treatment, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified, Integer type) {
-        this.id = id;
+    public User(String treatment, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified, Integer type) {
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
