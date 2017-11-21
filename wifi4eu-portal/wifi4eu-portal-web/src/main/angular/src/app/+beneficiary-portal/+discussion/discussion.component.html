@@ -1,7 +1,6 @@
 <div class="clearfix"></div>
 <br>
 <div class="container font beneficiaryContent">
-
     <div class="ui-g-12" *ngIf="showAlert">
         <span class="ui-g-2"></span>
         <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussion.growl' | translate}}</ux-alert>
@@ -15,6 +14,12 @@
     <ux-accordion-boxes>
         <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
             <div class="ui-g">
+                <div class="ui-g-12">
+                    <p class="discussionForumMayors marginTopCountdown">{{ 'beneficiary.registration1' | translate
+                        }}</p>
+                </div>
+            </div>
+            <div class="ui-g discussionForumNoBorders">
                 <div class="ui-g-12">
                     <div class="ui-g-3">
                         <p class="profileDataDiscussion">{{ 'country.label' | translate }}</p>
@@ -43,23 +48,56 @@
                     </div>
                 </div>
             </div>
-        </custom-accordion-box>
-    </ux-accordion-boxes>
-    <!--</div>-->
-    <p class="beneficiaryMayor marginTopCountdown">{{ 'othersMayors.title' | translate }}</p>
-    <hr class="beneficiaryHr">
-    <!--<div class="button-content">-->
-    <ux-accordion-boxes>
-        <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
-            <div class="ui-g" *ngFor="let currentUser of users">
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <p class="profileDataDiscussion">{{ 'name.label' | translate }}</p>
-                        <p>{{ 'surname.label' | translate }}</p>
+
+            <!--</div>-->
+            <div class="ui-g">
+                <div class="ui-g-6">
+                    <p class="discussionForumMayors marginTopCountdown">{{ 'beneficiary.registrationNumber' | translate
+                        }}1</p>
+                    <!--<div class="button-content">-->
+
+                    <div class="ui-g discussionForumNoBorders" *ngFor="let currentUser of users">
+                        <div class="ui-g-12">
+                            <div class="ui-g-3">
+                                <p class="profileDataDiscussion">{{ 'country.label' | translate }}</p>
+                                <p>{{ 'municipality.label' | translate }}</p>
+                                <p>{{ 'address.label' | translate }}</p>
+                                <p>{{ 'number.label' | translate }}</p>
+                                <p>{{ 'postal-code.label' | translate }}</p>
+                            </div>
+                            <div class="ui-g-9">
+                                <p class="profileDataDiscussion profileData">Mayor 1 Country</p>
+                                <p class="profileData">Mayor 1 Name</p>
+                                <p class="profileData">Mayor 1 Address</p>
+                                <p class="profileData">Mayor 1 Address Num</p>
+                                <p class="profileData">Mayor 1 Postal code</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="ui-g-9">
-                        <p class="profileData profileDataDiscussion">{{currentUser.name}}</p>
-                        <p class="profileData">{{currentUser.surname}}</p>
+                </div>
+
+                <div class="ui-g-6">
+                    <p class="discussionForumMayors marginTopCountdown">{{ 'beneficiary.registrationNumber' | translate
+                        }}2</p>
+                    <!--<div class="button-content">-->
+
+                    <div class="ui-g discussionForumNoBorders" *ngFor="let currentUser of users">
+                        <div class="ui-g-12">
+                            <div class="ui-g-3">
+                                <p class="profileDataDiscussion">{{ 'country.label' | translate }}</p>
+                                <p>{{ 'municipality.label' | translate }}</p>
+                                <p>{{ 'address.label' | translate }}</p>
+                                <p>{{ 'number.label' | translate }}</p>
+                                <p>{{ 'postal-code.label' | translate }}</p>
+                            </div>
+                            <div class="ui-g-9">
+                                <p class="profileDataDiscussion profileData">Mayor 2 Country</p>
+                                <p class="profileData">Mayor 2 Name</p>
+                                <p class="profileData">Mayor 2 Address</p>
+                                <p class="profileData">Mayor 2 Address Num</p>
+                                <p class="profileData">Mayor 2 Postal code</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -145,11 +183,7 @@
         <form #messagesForm="ngForm">
             <div class="form-group profileDialog">
                 <div class="form-group">
-                    <p>{{ 'sendMessage.title' | translate }}</p>
-                    <input type="text" name="sendTo" class="form-control widthMax" [(ngModel)]="subject"
-                           disabled="disabled" placeholder="First Mayor, Second Mayor, Third Mayor">
-
-                    <br>
+                    <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate }}</p>
                     <p>{{ 'sendMessage.subject' | translate }}</p>
                     <textarea rows="10" cols="20" [(ngModel)]="message"
                               class="form-control widthMax"
@@ -179,10 +213,12 @@
         <form #messagesForm="ngForm">
             <div class="form-group profileDialog">
 
-                <div class="beneficiaryTitle"> {{ 'mediationRequest.title' | translate }}</div>
-                <p>{{ 'mediationRequest.text' | translate }}</p>
+                <div class="beneficiaryTitle center"> {{ 'mediationRequest.title' |
+                    translate }}
+                </div>
+                <p class="center newMessageDiscussionMargins">{{ 'mediationRequest.text' | translate }}</p>
                 <br>
-                <p>{{ 'mediationRequest.selectText' | translate }}</p>
+                <p class="center">{{ 'mediationRequest.selectText' | translate }}</p>
                 <!--<select class="selectDiscussion">-->
                 <!--<option value="option1">Option 1</option>-->
                 <!--<option value="option2">Option 2</option>-->
