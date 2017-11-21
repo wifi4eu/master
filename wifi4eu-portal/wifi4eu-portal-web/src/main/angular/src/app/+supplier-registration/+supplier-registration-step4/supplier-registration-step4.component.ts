@@ -44,5 +44,6 @@ export class SupplierRegistrationStep4Component {
 
     edit(step: number) {
         this.onEdit.emit(step);
+        this.legalChecks = [false, false];
     }
 }
