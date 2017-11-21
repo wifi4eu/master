@@ -23,10 +23,12 @@ export class SupplierRegistrationStep3Component {
     submit() {
         this.supplierChange.emit(this.supplier);
         this.onNext.emit();
+        this.confirmEmailField = "";
     }
 
     back() {
         this.onBack.emit();
+        this.confirmEmailField = "";
     }
 
     checkIfEmailMatches() {
