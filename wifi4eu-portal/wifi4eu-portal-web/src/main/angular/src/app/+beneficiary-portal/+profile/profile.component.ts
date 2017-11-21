@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {UserApi} from "../../shared/swagger/api/UserApi";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
@@ -14,7 +14,9 @@ import {TranslateService} from "ng2-translate";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 
 @Component({
-    selector: 'beneficiary-profile', templateUrl: 'profile.component.html', providers: [UserApi, RegistrationApi, MunicipalityApi]
+    selector: 'beneficiary-profile',
+    templateUrl: 'profile.component.html',
+    providers: [UserApi, RegistrationApi, MunicipalityApi]
 })
 
 export class BeneficiaryProfileComponent {
@@ -38,7 +40,7 @@ export class BeneficiaryProfileComponent {
     private passwordsMatch: boolean = false;
     private isRegisterHold: boolean = false;
 
-    constructor(private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private localStorageService: LocalStorageService, private translateService: TranslateService, private uxService: UxService, private router: Router) {
+    constructor(private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private localStorageService: LocalStorageService, private translateService: TranslateService, private uxService: UxService, private router: Router, private route: ActivatedRoute) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -230,5 +232,9 @@ export class BeneficiaryProfileComponent {
                 }
             }
         );
+    }
+
+    private goToDiscussion() {
+        this.router.navigate(['../discussion-forum'], {relativeTo: this.route});
     }
 }
