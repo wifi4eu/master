@@ -41,6 +41,8 @@
                     <div class="ui-g">
                         <div class="ui-g-10">
                             <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
+                            <p *ngIf="isRegisterHold" class="advDuplicatedMunic">{{
+                                'beneficiaryProfile.duplicatedMunicipalities' | translate }}</p>
                         </div>
                         <div class="ui-g-2">
                             <a (click)="displayModal('municipality', 0)" class="edit">

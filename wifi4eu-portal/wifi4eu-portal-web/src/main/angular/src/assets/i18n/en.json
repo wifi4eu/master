@@ -333,5 +333,6 @@
   "beneficiary.editApplication": "Edit my application",
   "beneficiary.discusionText": "If you do not wish to participate to the WIFI4EU scheme anymore, delete your application by clicking on the button below.",
   "beneficiary.goDiscussion" : "Go to discusion",
-  "beneficiary.goDiscussionText" : "One or more applicant applied with the same Municipality as you. Please, contact the other parties to solve de issue."
+  "beneficiary.goDiscussionText" : "One or more applicant applied with the same Municipality as you. Please, contact the other parties to solve de issue.",
+  "beneficiaryProfile.duplicatedMunicipalities" : "The municipality you registered with is already in use. Please, change your data or go to the discussion area to contact the other parties involved."
 }
