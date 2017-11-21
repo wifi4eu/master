@@ -333,5 +333,9 @@
   "beneficiary.goDiscussion": "Ir a la discusión",
   "beneficiary.goDiscussionText": "Uno o más solicitantes aplicaron al mismo Municipio que usted. Por favor, contacte a las otras partes para resolver el problema.",
   "beneficiary.registration1": "Registro 1 (usted)",
-  "beneficiary.registrationNumber": "Registro # "
+  "beneficiary.registrationNumber": "Registro # ",
+  "beneficiary.goDiscussionText" : "Uno o más solicitantes aplicaron al mismo Municipio que usted. Por favor, contacte a las otras partes para resolver el problema.",
+  "beneficiary.deleteApplication.Success": "Sus solicitudes han sido eliminadas correctamente.",
+  "beneficiary.deleteApplication.Failure": "Ocurrió un error y sus solicitudes no se han podido eliminar.",
+  "discussion.growl.error":"Ocurrió un error y no se pudo enviar su petición de mediación. Por favor, vuelva a intentarlo más tarde."
 }

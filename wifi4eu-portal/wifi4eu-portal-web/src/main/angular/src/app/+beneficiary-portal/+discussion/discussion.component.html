@@ -38,13 +38,15 @@
                     <div class="ui-g-2"></div>
                     <div class="ui-g-4">
                         <p class="applicationText">{{ 'beneficiary.discusionText' | translate }}</p>
-                        <button type="button" class="btn btn-primary applicationDelete">
+                        <button type="button" (click)="deleteApplication" class="btn btn-primary applicationDelete">
                             {{ 'beneficiary.deleteApplication' | translate }}
                         </button>
                         <br>
-                        <button type="submit" class="btn btn-primary applicationEdit">
-                            {{ 'beneficiary.editApplication' | translate }}
-                        </button>
+                        <a href="#/beneficiary-portal/profile">
+                            <button type="submit" class="btn btn-primary applicationEdit">
+                                {{ 'beneficiary.editApplication' | translate }}
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -157,8 +159,8 @@
                 <div class="ui-g-9"></div>
                 <div class="ui-g-3">
 
-                    <button type="button" (click)="newMediation()"
-                            class="btn btn-primary changePassword discussionButton" [disabled]="mediationButton">
+                    <button type="button" class="btn btn-primary changePassword discussionButton"
+                            (click)="displayMediation = true" [disabled]="mediationButton">
                         {{'newMediation.button' | translate }}
                     </button>
                     <p class="right">{{'newMediation.text' | translate }}</p>

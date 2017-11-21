@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
 import java.text.MessageFormat;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,14 +73,14 @@ public class BeneficiaryService {
         registration.setRole(role);
         registration.setMunicipalityId(municipalityId);
         registration.setUserId(userId);
-        registration.setStatus( generateRegistrationStatus(aMunicipalityDTO) );
+        registration.setStatus(generateRegistrationStatus(aMunicipalityDTO));
 
         return registration;
     }
 
     private int generateRegistrationStatus(MunicipalityDTO aMunicipalityDTO) {
-        if ( municipalitiesLauIdToHold.contains( aMunicipalityDTO.getLauId() ) ) {
-            return  RegistrationStatus.HOLD.getValue();
+        if (municipalitiesLauIdToHold.contains(aMunicipalityDTO.getLauId())) {
+            return RegistrationStatus.HOLD.getValue();
         } else {
             return RegistrationStatus.OK.getValue();
         }
@@ -90,9 +91,9 @@ public class BeneficiaryService {
 
         for (UserDTO user : beneficiaryDTO.getUsers()) {
             user.setCreateDate(new Date().getTime());
-            String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
+            String password = "12345678";
             user.setPassword(password);
-            user.setVerified(false);
+            user.setVerified(true);
             resUsers.add(userService.createUser(user));
         }
 
@@ -112,7 +113,7 @@ public class BeneficiaryService {
                     threadService.createThread(thread);
                 }
                 updateRegistrationStatusToHold(municipalitiesWithSameLau);
-                municipalitiesLauIdToHold.add( municipality.getLauId() );
+                municipalitiesLauIdToHold.add(municipality.getLauId());
             }
             resMunicipalities.add(municipalityService.createMunicipality(municipality));
         }
@@ -126,12 +127,12 @@ public class BeneficiaryService {
         final String LOG_STATUS_2_HOLD = "Registraion Id {0} updated to the status HOLD";
 
         for (MunicipalityDTO aMunicipality : municipalitiesWithSameLau) {
-            final List<RegistrationDTO> registrations = registrationService.getRegistrationsByMunicipalityId( aMunicipality.getId() );
+            final List<RegistrationDTO> registrations = registrationService.getRegistrationsByMunicipalityId(aMunicipality.getId());
             for (RegistrationDTO aRegistrationDTO : registrations) {
                 aRegistrationDTO.setStatus(RegistrationStatus.HOLD.getValue());
                 registrationService.createRegistration(aRegistrationDTO);
 
-                _log.info( MessageFormat.format(LOG_STATUS_2_HOLD, aRegistrationDTO.getId()) );
+                _log.info(MessageFormat.format(LOG_STATUS_2_HOLD, aRegistrationDTO.getId()));
             }
         }
     }
