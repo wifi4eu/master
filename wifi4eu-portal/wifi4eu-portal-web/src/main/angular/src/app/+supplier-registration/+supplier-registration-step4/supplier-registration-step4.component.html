@@ -8,8 +8,8 @@
 </div>
 <div class="container">
     <!--<div class="center">-->
-        <!--<p class="beneficiaryTitle labelModal">{{ 'step4.supplier' | translate }}</p>-->
-        <!--<p>{{ 'contact.description' | translate }}</p>-->
+    <!--<p class="beneficiaryTitle labelModal">{{ 'step4.supplier' | translate }}</p>-->
+    <!--<p>{{ 'contact.description' | translate }}</p>-->
     <!--</div>-->
 
     <hr class="beneficiaryHr marginHr">
@@ -34,7 +34,8 @@
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'phone.number' | translate }}</div>
-        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.contactPhonePrefix}} {{supplier.contactPhoneNumber}}</b></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.contactPhonePrefix}} {{supplier.contactPhoneNumber}}</b>
+        </div>
     </div>
     <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'email.modal' | translate }}</div>
@@ -105,7 +106,8 @@
             <p-tabView *ngIf="selectedCountriesNames.length > 0">
                 <p-tabPanel *ngFor="let country of selectedCountriesNames;" [header]="country">
                     <div class="ui-g">
-                        <p-dataTable [value]="selectedRegions[country]" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10,20,30,40,50]">
+                        <p-dataTable [value]="selectedRegions[country]" [paginator]="true" [rows]="10"
+                                     [rowsPerPageOptions]="[10,20,30,40,50]">
                             <p-column field="label" [sortable]="true"></p-column>
                         </p-dataTable>
                     </div>
@@ -121,7 +123,8 @@
     <div class="ui-g" style="text-align: left;">
         <span class="ui-lg-1"></span>
         <div class="ui-g-10 ui-md-10 ui-lg-10">
-            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_1"><input type="checkbox" id="check_1" [(ngModel)]="legalChecks[0]">
+            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_1"><input type="checkbox" id="check_1"
+                                                                          [(ngModel)]="legalChecks[0]">
                 {{ 'eu.requirements' | translate }}
             </label>
         </div>
@@ -130,7 +133,8 @@
     <div class="ui-g" style="text-align: left;">
         <span class="ui-lg-1"></span>
         <div class="ui-g-10 ui-md-10 ui-lg-10">
-            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_2"><input type="checkbox" id="check_2" [(ngModel)]="legalChecks[1]">
+            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_2"><input type="checkbox" id="check_2"
+                                                                          [(ngModel)]="legalChecks[1]">
                 {{ 'submit.application' | translate }}
             </label>
         </div>
@@ -138,15 +142,15 @@
         <div class="ui-lg-1"></div>
     </div>
 
-    <div>
-        <div class="ui-g">
-            <div class="ui-lg-4 ui-md-4"></div>
-            <div class="ui-g-12 ui-md-4 ui-lg-4">
-                <ng2-google-recaptcha class="ui-g-6 marginCaptcha" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu" (onCaptchaComplete)="completeCaptcha($event)"></ng2-google-recaptcha>
-            </div>
-            <div class="ui-lg-4 ui-md-4"></div>
-        </div>
-    </div>
+    <!--<div>-->
+    <!--<div class="ui-g">-->
+    <!--<div class="ui-lg-4 ui-md-4"></div>-->
+    <!--<div class="ui-g-12 ui-md-4 ui-lg-4">-->
+    <!--<ng2-google-recaptcha class="ui-g-6 marginCaptcha" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu" (onCaptchaComplete)="completeCaptcha($event)"></ng2-google-recaptcha>-->
+    <!--</div>-->
+    <!--<div class="ui-lg-4 ui-md-4"></div>-->
+    <!--</div>-->
+    <!--</div>-->
 
 
     <div class=" ui-g">
@@ -156,7 +160,8 @@
             </button>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn  btn-primary publish-button" (click)="openModal()" [disabled]="!legalChecks[0] || !legalChecks[1] || !successCaptcha">
+            <button type="submit" class="btn  btn-primary publish-button" (click)="openModal()"
+                    [disabled]="!legalChecks[0] || !legalChecks[1]">
                 {{ 'confirm.button' | translate}}
             </button>
         </div>
@@ -167,7 +172,8 @@
 </div>
 <!--MODAL-->
 
-<p-dialog [(visible)]="displayModal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="true" [closeOnEscape]="true">
+<p-dialog [(visible)]="displayModal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+          [closable]="true" [closeOnEscape]="true">
     <p class="beneficiaryMayor">{{ 'requirements.head' | translate }}</p>
 
     <p class="requirementSubitle">Requirement 1</p>
@@ -186,6 +192,8 @@
         dolor molestie, bibendum nisl quis, mollis risus. Quisque ullamcorper odio ante, tristique cursus arcu dignissim
         ac. </p>
     <div class="ui-g-2" style="text-align: center !important">
-        <button type="submit" class="btn btn-primary publish-button" (click)="submit()">{{ 'confirm.button' | translate }}</button>
+        <button type="submit" class="btn btn-primary publish-button" (click)="submit()">{{ 'confirm.button' | translate
+            }}
+        </button>
     </div>
 </p-dialog>
