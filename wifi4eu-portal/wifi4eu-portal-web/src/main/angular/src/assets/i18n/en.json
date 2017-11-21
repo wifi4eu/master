@@ -332,6 +332,8 @@
   "beneficiary.deleteApplication": "Delete my application",
   "beneficiary.editApplication": "Edit my application",
   "beneficiary.discusionText": "If you do not wish to participate to the WIFI4EU scheme anymore, delete your application by clicking on the button below.",
-  "beneficiary.goDiscussion" : "Go to discusion",
-  "beneficiary.goDiscussionText" : "One or more applicant applied with the same Municipality as you. Please, contact the other parties to solve de issue."
+  "beneficiary.goDiscussion": "Go to discusion",
+  "beneficiary.goDiscussionText": "One or more applicant applied with the same Municipality as you. Please, contact the other parties to solve de issue.",
+  "registration.emailResend.success": "The confirmation email has been resent successfully.",
+  "registration.emailResend.failure": "An error occurred when trying to resend the confirmation email."
 }

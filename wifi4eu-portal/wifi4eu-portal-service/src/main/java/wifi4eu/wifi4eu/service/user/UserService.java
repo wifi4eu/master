@@ -113,4 +113,14 @@ public class UserService {
         String msgBody = "You have successfully registered to WiFi4EU, access to the next link and activate your account: " + UserService.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
         mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
     }
+
+    public boolean resendEmail(String email) {
+        UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
+        if (userDTO != null) {
+            sendActivateAccountMail(userDTO);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
