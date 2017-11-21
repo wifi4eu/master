@@ -93,6 +93,7 @@ export class BeneficiaryRegistrationStep2Component {
         this.usersChange.emit(this.users);
         this.municipalitiesChange.emit(this.municipalities);
         this.onNext.emit();
+        this.emailConfirmations = [''];
     }
 
     private back() {
@@ -105,5 +106,6 @@ export class BeneficiaryRegistrationStep2Component {
         this.usersChange.emit(this.users);
         this.municipalitiesChange.emit(this.municipalities);
         this.onBack.emit();
+        this.emailConfirmations = [''];
     }
 }
