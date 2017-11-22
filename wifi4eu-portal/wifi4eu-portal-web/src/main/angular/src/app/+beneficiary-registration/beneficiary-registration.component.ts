@@ -26,9 +26,6 @@ export class BeneficiaryRegistrationComponent {
     private initialUser: UserDTOBase = new UserDTOBase();
     private mayors: MayorDTOBase[] = [new MayorDTOBase()];
     private municipalities: MunicipalityDTOBase[] = [new MunicipalityDTOBase()];
-    private userAddress: string = "";
-    private addressNum: string = "";
-    private postalCode: string = "";
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
     private country: NutsDTOBase = null;
     private multipleMunicipalities: boolean = false;

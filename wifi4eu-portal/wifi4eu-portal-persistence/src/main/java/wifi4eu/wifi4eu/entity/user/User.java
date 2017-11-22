@@ -20,6 +20,15 @@ public class User {
     @Column(name = "surname")
     private String surname;
 
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "address_num")
+    private String addressNum;
+
+    @Column(name = "postal_code")
+    private String postalCode;
+
     @Column(name = "email")
     private String email;
 
@@ -45,6 +54,9 @@ public class User {
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
+        this.address = address;
+        this.addressNum = addressNum;
+        this.postalCode = postalCode;
         this.email = email;
         this.password = password;
         this.createDate = createDate;
@@ -83,6 +95,30 @@ public class User {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddressNum() {
+        return addressNum;
+    }
+
+    public void setAddressNum(String addressNum) {
+        this.addressNum = addressNum;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getEmail() {
