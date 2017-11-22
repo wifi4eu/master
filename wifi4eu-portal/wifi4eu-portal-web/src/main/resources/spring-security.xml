@@ -14,8 +14,9 @@
         <!--<security:intercept-url pattern="/api/timeline" method="GET" access="isAuthenticated()" />-->
         <!--<security:intercept-url pattern="/api/timeline" method="POST" access="isAuthenticated()" />-->
         <security:custom-filter after="PRE_AUTH_FILTER" ref="customFilter" />
+        <!--
         <security:custom-filter before="PRE_AUTH_FILTER" ref="auditFilter"/>
-        
+        -->
     </security:http>
     
     <security:authentication-manager id="authenticationManager">
@@ -42,9 +43,9 @@
 
     <bean id="http403ForbiddenEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
     <bean id="userSessionCache" class="wifi4eu.wifi4eu.common.security.UserSessionCache"/>
-
+<!--
     <bean id="auditFilter" class="wifi4eu.wifi4eu.web.filter.AuditFilter"/>
-
+-->
 
 
 <!--<security:authentication-manager alias="authenticationManager">

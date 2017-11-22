@@ -7,7 +7,8 @@ import java.util.List;
 @Table(name = "helpdesk_issues")
 public class HelpdeskIssue {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "hdissue_seq", allocationSize = 1, initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hdissue_seq")
     @Column(name = "id")
     private Integer id;
 
@@ -32,7 +33,7 @@ public class HelpdeskIssue {
     @Column(name = "create_date")
     private Long createDate;
 
-    @Column(name = "status")
+    @Column(name = "_status")
     private Integer status;
 
     @OneToMany(mappedBy = "issue")

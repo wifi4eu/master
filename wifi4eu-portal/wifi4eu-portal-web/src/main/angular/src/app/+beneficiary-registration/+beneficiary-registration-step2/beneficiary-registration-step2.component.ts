@@ -4,6 +4,7 @@ import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {LauApi} from "../../shared/swagger/api/LauApi";
+import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 
 @Component({
     selector: 'beneficiary-registration-step2',
@@ -14,9 +15,9 @@ import {LauApi} from "../../shared/swagger/api/LauApi";
 export class BeneficiaryRegistrationStep2Component {
     @Input('country') private country: NutsDTOBase;
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
-    @Input('users') private users: UserDTOBase[];
+    @Input('mayors') private mayors: MayorDTOBase[];
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
-    @Output() private usersChange: EventEmitter<UserDTOBase[]>;
+    @Output() private mayorsChange: EventEmitter<MayorDTOBase[]>;
     @Output() private municipalitiesChange: EventEmitter<MunicipalityDTOBase[]>;
     @Output() private findLaus: EventEmitter<string>;
     @Output() private onNext: EventEmitter<any>;
@@ -31,7 +32,7 @@ export class BeneficiaryRegistrationStep2Component {
     private readonly MAX_LENGTH = 2;
 
     constructor(private lauApi: LauApi) {
-        this.usersChange = new EventEmitter<UserDTOBase[]>();
+        this.mayorsChange = new EventEmitter<UserDTOBase[]>();
         this.municipalitiesChange = new EventEmitter<MunicipalityDTOBase[]>();
         this.findLaus = new EventEmitter<string>();
         this.onNext = new EventEmitter<any>();
@@ -59,7 +60,7 @@ export class BeneficiaryRegistrationStep2Component {
         if (this.multipleMunicipalities) {
             this.municipalities.push(new MunicipalityDTOBase());
             this.selectedLaus.push();
-            this.users.push(new UserDTOBase());
+            this.mayors.push(new UserDTOBase());
             this.municipalitiesSelected.push(false);
             this.addressFields.push('');
             this.addressNumFields.push('');
@@ -72,7 +73,7 @@ export class BeneficiaryRegistrationStep2Component {
         if (this.multipleMunicipalities && this.municipalities.length > 1) {
             this.municipalities.splice(index, 1);
             this.selectedLaus.splice(index, 1);
-            this.users.splice(index, 1);
+            this.mayors.splice(index, 1);
             this.municipalitiesSelected.splice(index, 1);
             this.addressFields.splice(index, 1);
             this.addressNumFields.splice(index, 1);
@@ -90,9 +91,10 @@ export class BeneficiaryRegistrationStep2Component {
             this.municipalities[i].postalCode = this.postalCodeFields[i];
             this.municipalities[i].lauId = this.selectedLaus[i].id;
         }
-        this.usersChange.emit(this.users);
+        this.mayorsChange.emit(this.mayors);
         this.municipalitiesChange.emit(this.municipalities);
         this.onNext.emit();
+        this.emailConfirmations = [''];
     }
 
     private back() {
@@ -102,8 +104,9 @@ export class BeneficiaryRegistrationStep2Component {
             this.municipalities[i].addressNum = this.addressNumFields[i];
             this.municipalities[i].postalCode = this.postalCodeFields[i];
         }
-        this.usersChange.emit(this.users);
+        this.mayorsChange.emit(this.mayors);
         this.municipalitiesChange.emit(this.municipalities);
         this.onBack.emit();
+        this.emailConfirmations = [''];
     }
 }

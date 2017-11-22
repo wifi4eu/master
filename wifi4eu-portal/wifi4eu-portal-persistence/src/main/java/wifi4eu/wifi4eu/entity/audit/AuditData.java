@@ -7,9 +7,10 @@ import javax.persistence.*;
 public class AuditData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="AUDIT_DATA_ID")
-    private Long auditDataId;
+    @SequenceGenerator(name = "audit_seq", allocationSize = 1, initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "audit_seq")
+    @Column(name="id")
+    private Integer id;
 
     @Column(name="REQUEST_ENDPOINT")
     private String requestEndpoint;
@@ -30,8 +31,8 @@ public class AuditData {
 
     public AuditData(){}
 
-    public AuditData(Long auditDataId, String requestEndpoint, String requestMethod, String requestBody, String responseBody, Long userId) {
-        this.auditDataId = auditDataId;
+    public AuditData(Integer id, String requestEndpoint, String requestMethod, String requestBody, String responseBody, Long userId) {
+        this.id = id;
         this.requestEndpoint = requestEndpoint;
         this.requestMethod = requestMethod;
         this.requestBody = requestBody;
@@ -39,12 +40,12 @@ public class AuditData {
         this.userId = userId;
     }
 
-    public Long getAuditDataId() {
-        return auditDataId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setAuditDataId(Long auditDataId) {
-        this.auditDataId = auditDataId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getRequestEndpoint() {

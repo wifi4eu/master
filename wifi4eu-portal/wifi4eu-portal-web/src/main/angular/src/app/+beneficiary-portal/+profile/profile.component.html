@@ -41,6 +41,8 @@
                     <div class="ui-g">
                         <div class="ui-g-10">
                             <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
+                            <p *ngIf="isRegisterHold" class="advDuplicatedMunic">{{
+                                'beneficiaryProfile.duplicatedMunicipalities' | translate }}</p>
                         </div>
                         <div class="ui-g-2">
                             <a (click)="displayModal('municipality', 0)" class="edit">
@@ -148,8 +150,23 @@
                 <div class="ui-g-8 button-content">
                     <p>{{ 'beneficiary.goDiscussionText' | translate }}</p>
                     <div style="text-align: center !important">
-                        <button type="button" class="btn btn-primary changePassword">
+                        <button type="button" (click)="goToDiscussion()" class="btn btn-primary changePassword">
                             {{'beneficiary.goDiscussion' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <div class="ui-g">
+                <div class="ui-g-4"></div>
+                <div class="ui-g-8 button-content">
+                    <p>{{ 'beneficiary.discusionText' | translate }}</p>
+                    <div style="text-align: center !important">
+                        <button type="button" (click)="deleteRegistration()" class="btn btn-primary changePassword">
+                            {{'beneficiary.deleteApplication' | translate }}
                         </button>
                     </div>
                 </div>

@@ -63,15 +63,15 @@
                     </div>
                     <div>
                         <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'nameMayor.label' | translate }}</span>
-                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ users[0].name }}</b></span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[0].name }}</b></span>
                     </div>
                     <div>
                         <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'surnameMayor.label' | translate }}</span>
-                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ users[0].surname }}</b></span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[0].surname }}</b></span>
                     </div>
                     <div>
                         <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'emailMayor.label' | translate }}</span>
-                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ users[0].email }}</b></span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[0].email }}</b></span>
                     </div>
                 </span>
                 <span class="ui-lg-1"></span>
@@ -107,15 +107,15 @@
                         </div>
                         <div>
                             <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'nameMayor.label' | translate }}</span>
-                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ users[i].name }}</b></span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[i].name }}</b></span>
                         </div>
                         <div>
                             <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'surnameMayor.label' | translate }}</span>
-                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ users[i].surname }}</b></span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[i].surname }}</b></span>
                         </div>
                         <div>
                             <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'emailMayor.label' | translate }}</span>
-                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ users[i].email }}</b></span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[i].email }}</b></span>
                         </div>
                     </span>
                     <span class="ui-lg-1"></span>
@@ -191,12 +191,6 @@
             </div>
             <span class="ui-lg-1"></span>
         </div>
-        <div id="captcha" class="ui-g">
-            <span class="ui-md-4 ui-lg-4"></span>
-            <ng2-google-recaptcha class="ui-g-12 ui-md-4 ui-lg-4" siteKey="6LfUthYUAAAAAHdHO9HpCUyptQdYGXXQIFx9Y8zu"
-                                  (onCaptchaComplete)="completeCaptcha($event)"></ng2-google-recaptcha>
-            <span class="ui-md-4 ui-lg-4"></span>
-        </div>
 
     </ng-container>
     <div class="clearfix"></div>
@@ -211,7 +205,8 @@
             </div>
             <!-- Next button -->
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button type="submit" class="btn btn-primary publish-button" [disabled]="!legalChecks[0] || !legalChecks[1] || !legalChecks[2] || !successCaptcha"
+                <button type="submit" class="btn btn-primary publish-button"
+                        [disabled]="!legalChecks[0] || !legalChecks[1] || !legalChecks[2]"
                         (click)="submit()">
                     {{ 'confirm.button' | translate }}
                 </button>
@@ -220,7 +215,8 @@
     </ng-container>
 </div>
 
-<p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+<p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+          [closable]="false" [closeOnEscape]="false">
     <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
     <h1 class="Modalh1Confirmation">{{ 'loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'loading.modal.registration.text' | translate}}</p>

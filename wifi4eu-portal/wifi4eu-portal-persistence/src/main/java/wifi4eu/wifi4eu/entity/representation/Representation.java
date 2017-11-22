@@ -9,7 +9,8 @@ import javax.persistence.*;
 @Table(name = "representations")
 public class Representation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "representation_seq", allocationSize = 1, initialValue = 100)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "representation_seq")
     @Column(name = "id")
     private Integer id;
 
