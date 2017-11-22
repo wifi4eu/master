@@ -1,5 +1,5 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserModule} from "@angular/platform-browser";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {Http} from "@angular/http";
@@ -23,6 +23,7 @@ import {SharedService} from "./shared/shared.service";
 // import {AbacComponent} from "./+abac/abac.component";
 // import {EcasComponent} from "./+ecas/ecas.component";
 import {ChartsModule} from "ng2-charts";
+import {ForgotComponent} from "./+forgot/forgot.component";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -35,7 +36,7 @@ export function translateFactory(http: Http) {
         // MapComponent,
         ActivationComponent,
         LoginComponent,
-        // ForgotComponent,
+        ForgotComponent,
         HelpdeskComponent,
         // AbacComponent,
         // EcasComponent,
@@ -45,7 +46,7 @@ export function translateFactory(http: Http) {
         // MapComponent,
         ActivationComponent,
         LoginComponent,
-        // ForgotComponent,
+        ForgotComponent,
         HelpdeskComponent,
         // AbacComponent,
         // EcasComponent,

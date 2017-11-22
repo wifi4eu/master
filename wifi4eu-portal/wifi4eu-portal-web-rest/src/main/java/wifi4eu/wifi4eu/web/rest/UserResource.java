@@ -37,7 +37,7 @@ public class UserResource {
     public List<UserDTO> allUsers() {
         _log.info("allUsers");
         List<UserDTO> resUsers = userService.getAllUsers();
-        for (UserDTO resUser: resUsers) {
+        for (UserDTO resUser : resUsers) {
             resUser.setPassword(null);
         }
         return resUsers;
@@ -90,7 +90,7 @@ public class UserResource {
     public List<UserDTO> getUsersByType(@PathVariable("type") final Integer type) {
         _log.info("getUsersByType" + type);
         List<UserDTO> resUsers = userService.getUsersByType(type);
-        for (UserDTO resUser: resUsers) {
+        for (UserDTO resUser : resUsers) {
             resUser.setPassword(null);
         }
         return resUsers;
@@ -131,7 +131,7 @@ public class UserResource {
     @ResponseBody
     public ResponseDTO resendEmail(@RequestBody final String email) {
         try {
-            _log.info("Resend email to '" + email +"'...");
+            _log.info("Resend email to '" + email + "'...");
             if (userService.resendEmail(email)) {
                 return new ResponseDTO(true, null, null);
             }
@@ -140,5 +140,23 @@ public class UserResource {
             ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
             return new ResponseDTO(false, null, errorDTO);
         }
+    }
+
+
+    @ApiOperation(value = "Send forgot password mail with a link to reset password")
+    @RequestMapping(value = "forgotpassword", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO forgotPassword(@RequestBody final String email) {
+
+        _log.info("forgot Password: " + email);
+
+        try {
+            userService.forgotPassword(email);
+            return new ResponseDTO(true, null, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+
     }
 }
