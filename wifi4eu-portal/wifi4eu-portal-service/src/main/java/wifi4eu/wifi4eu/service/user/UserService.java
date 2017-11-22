@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
@@ -52,7 +53,7 @@ public class UserService {
     @Transactional
     public UserDTO createUser(UserDTO userDTO) {
         UserDTO resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
-        //sendActivateAccountMail(resUser);
+        sendActivateAccountMail(resUser);
         return resUser;
     }
 
@@ -123,4 +124,46 @@ public class UserService {
             return false;
         }
     }
+
+
+    public void forgotPassword(String email) throws Exception {
+
+        /* validate email variable is not null or empty */
+        if (email != null && !StringUtils.isEmpty(email)) {
+            UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
+            /* validate if user exist in wifi4eu portal */
+            if (userDTO != null) {
+                /* Create a temporal key for activation and reset password functionalities */
+                TempTokenDTO tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.findByEmail(email));
+                if (tempTokenDTO == null) {
+                    tempTokenDTO = new TempTokenDTO();
+                    tempTokenDTO.setEmail(email);
+                    tempTokenDTO.setUserId(userDTO.getId());
+                }
+                Date now = new Date();
+                tempTokenDTO.setCreateDate(now.getTime());
+                tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
+                SecureRandom secureRandom = new SecureRandom();
+                String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
+                tempTokenDTO.setToken(token);
+
+                tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO));
+
+                /* Send email with */
+                String fromAddress = MailService.FROM_ADDRESS;
+                String subject = "wifi4eu portal Forgot Password";
+                String msgBody = "you can access to the next link and reset your password " + RESET_PASS_URL + tempTokenDTO.getToken();
+                mailService.sendEmail(email, fromAddress, subject, msgBody);
+
+            } else {
+                throw new Exception("trying to forgetPassword with an unregistered user");
+            }
+
+        } else {
+            throw new Exception("trying to forgetPassword without an email");
+        }
+
+    }
+
+
 }
