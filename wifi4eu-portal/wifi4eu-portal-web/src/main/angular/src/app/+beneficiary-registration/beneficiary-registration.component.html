@@ -12,9 +12,8 @@
     <ux-wizard-step label="{{ 'registration.beneficiary.title' | translate }}" [isCompleted]="completed[1]"
                     [isActive]="active[1]">
         <uxWizardStepCustomContent>
-            <beneficiary-registration-step2 [country]="country"
-                                            [multipleMunicipalities]="multipleMunicipalities" [(users)]="users"
-                                            [(municipalities)]="municipalities"
+            <beneficiary-registration-step2 [country]="country" [multipleMunicipalities]="multipleMunicipalities"
+                                            [(mayors)]="mayors" [(municipalities)]="municipalities"
                                             (onNext)="navigate(3)"
                                             (onBack)="navigate(1)"></beneficiary-registration-step2>
         </uxWizardStepCustomContent>
@@ -22,7 +21,7 @@
     <ux-wizard-step label="{{ 'registration.entity.title' | translate }}" [isCompleted]="completed[2]"
                     [isActive]="active[2]">
         <uxWizardStepCustomContent>
-            <beneficiary-registration-step3 [(initialUser)]="initialUser" [users]="users"
+            <beneficiary-registration-step3 [(initialUser)]="initialUser" [mayors]="mayors"
                                             [multipleMunicipalities]="multipleMunicipalities"
                                             [municipalities]="municipalities" [(userAddress)]="userAddress"
                                             [(addressNum)]="addressNum" [(postalCode)]="postalCode"
@@ -34,7 +33,7 @@
                     [isActive]="active[3]">
         <uxWizardStepCustomContent>
             <beneficiary-registration-step4 [initialUser]="initialUser" [country]="country"
-                                            [municipalities]="municipalities" [users]="users"
+                                            [municipalities]="municipalities" [mayors]="mayors"
                                             [multipleMunicipalities]="multipleMunicipalities"
                                             [userAddress]="userAddress" [addressNum]="addressNum"
                                             [postalCode]="postalCode" (onNext)="submitRegistration()"

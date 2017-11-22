@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.entity.mayor;
 
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,14 +22,19 @@ public class Mayor {
     @Column(name = "email")
     private String email;
 
+    @OneToOne
+    @JoinColumn(name = "municipality")
+    private Municipality municipality;
+
     public Mayor() {
     }
 
-    public Mayor(Integer id, String name, String surname, String email) {
+    public Mayor(Integer id, String name, String surname, String email, Municipality municipality) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
+        this.municipality = municipality;
     }
 
     public Integer getId() {
@@ -60,5 +67,13 @@ public class Mayor {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Municipality getMunicipality() {
+        return municipality;
+    }
+
+    public void setMunicipality(Municipality municipality) {
+        this.municipality = municipality;
     }
 }

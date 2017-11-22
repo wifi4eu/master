@@ -272,12 +272,19 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`applications` (
 -- Table `wifi4eu`.`mayors`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`mayors` (
-  `id`        INT          NOT NULL AUTO_INCREMENT,
-  `name`      VARCHAR(255) NULL,
-  `surname`   VARCHAR(255) NULL,
-  `treatment` VARCHAR(255) NULL,
-  `email`     VARCHAR(255) NULL,
-  PRIMARY KEY (`id`)
+  `id`            INT          NOT NULL AUTO_INCREMENT,
+  `name`          VARCHAR(255) NULL,
+  `surname`       VARCHAR(255) NULL,
+  `treatment`     VARCHAR(255) NULL,
+  `email`         VARCHAR(255) NULL,
+  `municipality`  INT          NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_mayors_municipalities_idx` (`municipality` ASC),
+  CONSTRAINT `fk_mayors_municipalities`
+  FOREIGN KEY (`municipality`)
+  REFERENCES `wifi4eu`.`municipalities` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 

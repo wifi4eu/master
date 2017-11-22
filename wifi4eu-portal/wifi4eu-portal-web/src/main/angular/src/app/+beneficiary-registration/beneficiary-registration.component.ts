@@ -6,11 +6,11 @@ import {OrganizationDTOBase} from "../shared/swagger/model/OrganizationDTO";
 import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
 import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
-import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 import {NutsApi} from "../shared/swagger/api/NutsApi";
 import {LauApi} from "../shared/swagger/api/LauApi";
 import {OrganizationApi} from "../shared/swagger/api/OrganizationApi";
 import {Subscription} from "rxjs/Subscription";
+import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
 
 @Component({
     selector: 'beneficiary-registration',
@@ -24,7 +24,7 @@ export class BeneficiaryRegistrationComponent {
     private completed: boolean[] = [false, false, false, false];
     private active: boolean[] = [true, false, false, false];
     private initialUser: UserDTOBase = new UserDTOBase();
-    private users: UserDTOBase[] = [new UserDTOBase()];
+    private mayors: MayorDTOBase[] = [new MayorDTOBase()];
     private municipalities: MunicipalityDTOBase[] = [new MunicipalityDTOBase()];
     private userAddress: string = "";
     private addressNum: string = "";
@@ -79,17 +79,16 @@ export class BeneficiaryRegistrationComponent {
     }
 
     private submitRegistration() {
-        this.finalBeneficiary.users = [];
         this.finalBeneficiary.municipalities = [];
-        this.initialUser.type = 2;
-        this.finalBeneficiary.users.push(this.initialUser);
-        for (let user of this.users) {
-            user.type = 3;
-            this.finalBeneficiary.users.push(user);
-        }
         for (let municipality of this.municipalities) {
             this.finalBeneficiary.municipalities.push(municipality);
         }
+        this.finalBeneficiary.mayors = [];
+        for (let mayor of this.mayors) {
+            this.finalBeneficiary.mayors.push(mayor);
+        }
+        this.initialUser.type = 3;
+        this.finalBeneficiary.user = this.initialUser;
         this.beneficiaryApi.submitBeneficiaryRegistration(this.finalBeneficiary).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {

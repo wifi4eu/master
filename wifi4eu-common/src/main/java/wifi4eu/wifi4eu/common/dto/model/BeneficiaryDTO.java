@@ -4,25 +4,35 @@ import java.io.Serializable;
 import java.util.List;
 
 public class BeneficiaryDTO implements Serializable {
-    private List<UserDTO> users;
+    private UserDTO user;
+    private List<MayorDTO> mayors;
     private List<MunicipalityDTO> municipalities;
-    private boolean representing;
+    private boolean representsMultipleMunicipalities;
 
     public BeneficiaryDTO() {
     }
 
-    public BeneficiaryDTO(List<UserDTO> users, List<MunicipalityDTO> municipalities, boolean representing) {
-        this.users = users;
+    public BeneficiaryDTO(UserDTO user, List<MayorDTO> mayors, List<MunicipalityDTO> municipalities, boolean representsMultipleMunicipalities) {
+        this.user = user;
+        this.mayors = mayors;
         this.municipalities = municipalities;
-        this.representing = representing;
+        this.representsMultipleMunicipalities = representsMultipleMunicipalities;
     }
 
-    public List<UserDTO> getUsers() {
-        return users;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUsers(List<UserDTO> users) {
-        this.users = users;
+    public void setUser(UserDTO user) {
+        this.user = user;
+    }
+
+    public List<MayorDTO> getMayors() {
+        return mayors;
+    }
+
+    public void setMayors(List<MayorDTO> mayors) {
+        this.mayors = mayors;
     }
 
     public List<MunicipalityDTO> getMunicipalities() {
@@ -33,11 +43,11 @@ public class BeneficiaryDTO implements Serializable {
         this.municipalities = municipalities;
     }
 
-    public boolean isRepresenting() {
-        return representing;
+    public boolean isRepresentsMultipleMunicipalities() {
+        return representsMultipleMunicipalities;
     }
 
-    public void setRepresenting(boolean representing) {
-        this.representing = representing;
+    public void setRepresentsMultipleMunicipalities(boolean representsMultipleMunicipalities) {
+        this.representsMultipleMunicipalities = representsMultipleMunicipalities;
     }
 }
