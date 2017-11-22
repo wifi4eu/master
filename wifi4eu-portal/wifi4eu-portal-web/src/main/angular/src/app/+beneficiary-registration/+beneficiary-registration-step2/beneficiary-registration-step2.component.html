@@ -70,14 +70,14 @@
             <div id="mayor-name" class="form-group ui-g">
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'nameMayor.label' | translate }}</label>
-                    <input class="form-control paddingInput" type="text" name="name" id="name" [(ngModel)]="users[0].name" required>
+                    <input class="form-control paddingInput" type="text" name="name" id="name" [(ngModel)]="mayors[0].name" required>
                 </div>
             </div>
             <!-- Mayor last name -->
             <div id="mayor-last-name" class="form-group ui-g">
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'surnameMayor.label' | translate }}</label>
-                    <input class="form-control paddingInput" type="text" name="surname" id="surname" [(ngModel)]="users[0].surname" required>
+                    <input class="form-control paddingInput" type="text" name="surname" id="surname" [(ngModel)]="mayors[0].surname" required>
                 </div>
             </div>
             <!-- Mayor email -->
@@ -85,7 +85,7 @@
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'emailMayor.label' | translate }}</label>
                     <input class="form-control paddingInput" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
-                           [(ngModel)]="users[0].email" id="email" name="email" required>
+                           [(ngModel)]="mayors[0].email" id="email" name="email" required>
                     <label class="field-desc" style="margin-top: 10px;color: gray;">{{ 'email.fielddesc' | translate }}</label>
                 </div>
             </div>
@@ -100,7 +100,7 @@
         </ng-container>
         <ng-container *ngIf="multipleMunicipalities">
             <ux-accordion-boxes>
-                <custom-accordion-box *ngFor="let user of users; let i = index" [isExpanded]="true" [rightSide]="true">
+                <custom-accordion-box *ngFor="let mayor of mayors; let i = index" [isExpanded]="true" [rightSide]="true">
                     <hr *ngIf="i != 0">
                     <div class="ui-g">
                         <div class="ui-g-12">
@@ -156,7 +156,7 @@
                         <div class="ui-g-12">
                             <label class="label floatLeft">{{ 'nameMayor.label' | translate }}</label>
                             <input class="form-control paddingInput" [name]="'name-'+i" [id]="'name-'+i" type="text"
-                                   [(ngModel)]="users[i].name" required>
+                                   [(ngModel)]="mayors[i].name" required>
                         </div>
                     </div>
                     <!-- Mayor last name -->
@@ -164,7 +164,7 @@
                         <div class="ui-g-12">
                             <label class="label floatLeft">{{ 'surnameMayor.label' | translate }}</label>
                             <input class="form-control paddingInput" type="text" [name]="'surname-'+i" [id]="'surname-'+i"
-                                   [(ngModel)]="users[i].surname" required>
+                                   [(ngModel)]="mayors[i].surname" required>
                         </div>
                     </div>
                     <!-- Mayor email -->
@@ -172,7 +172,7 @@
                         <div class="ui-g-12">
                             <label class="label floatLeft">{{ 'emailMayor.label' | translate }}</label>
                             <input class="form-control paddingInput" type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
-                                   [name]="'email-'+i" [id]="'email-'+i" [(ngModel)]="users[i].email" required>
+                                   [name]="'email-'+i" [id]="'email-'+i" [(ngModel)]="mayors[i].email" required>
                             <label class="field-desc" style="margin-top: 10px;color: gray;">{{ 'email.fielddesc' | translate }}</label>
                         </div>
                     </div>

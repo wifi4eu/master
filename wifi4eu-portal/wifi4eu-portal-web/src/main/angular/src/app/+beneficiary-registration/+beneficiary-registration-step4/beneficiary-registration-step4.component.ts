@@ -12,7 +12,7 @@ export class BeneficiaryRegistrationStep4Component {
     @Input('initialUser') private initialUser: UserDTOBase;
     @Input('country') private country: NutsDTOBase;
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
-    @Input('users') private users: UserDTOBase[];
+    @Input('mayors') private mayors: UserDTOBase[];
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
     @Input('userAddress') private userAddress: string;
     @Input('addressNum') private addressNum: string;

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
@@ -33,6 +34,9 @@ public class BeneficiaryService {
     @Autowired
     ThreadService threadService;
 
+    @Autowired
+    MayorService mayorService;
+
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryService.class);
 
     private List<Integer> municipalitiesLauIdToHold = new ArrayList<>();
@@ -41,40 +45,31 @@ public class BeneficiaryService {
 
     @Transactional
     public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO) {
-        List<UserDTO> resUsers = getUserList(beneficiaryDTO);
+        UserDTO user = beneficiaryDTO.getUser();
+        user.setCreateDate(new Date().getTime());
+        String password = "12345678";
+        user.setPassword(password);
+        user.setVerified(true);
+        UserDTO resUser = userService.createUser(user);
         List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
-
         List<RegistrationDTO> registrations = new ArrayList<>();
-        if (beneficiaryDTO.isRepresenting()) {
-            UserDTO representativeUser = resUsers.get(0);
-            if (representativeUser != null) {
-                for (int i = 0; i < resMunicipalities.size(); i++) {
-                    RegistrationDTO registration = generateNewRegistration(MAYOR, resMunicipalities.get(i).getId(), resUsers.get(i + 1).getId(), resMunicipalities.get(i));
-                    registrations.add(registrationService.createRegistration(registration));
-
-                    registration = generateNewRegistration(REPRESENTATIVE, resMunicipalities.get(i).getId(), representativeUser.getId(), resMunicipalities.get(i));
-                    registrations.add(registrationService.createRegistration(registration));
-                }
-            } else {
-                return null;
-            }
-        } else {
-            for (int i = 0; i < resMunicipalities.size(); i++) {
-                RegistrationDTO registration = generateNewRegistration(MAYOR, resMunicipalities.get(i).getId(), resUsers.get(i).getId(), resMunicipalities.get(i));
-                registrations.add(registrationService.createRegistration(registration));
-            }
+        for (int i = 0; i < resMunicipalities.size(); i++) {
+            MunicipalityDTO municipality = resMunicipalities.get(i);
+            MayorDTO mayor = beneficiaryDTO.getMayors().get(i);
+            mayor.setMunicipalityId(municipality.getId());
+            mayorService.createMayor(mayor);
+            RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, resUser.getId());
+            registrations.add(registrationService.createRegistration(registration));
         }
         return registrations;
     }
 
-    private RegistrationDTO generateNewRegistration(final String role, final int municipalityId, final int userId, final MunicipalityDTO aMunicipalityDTO) {
+    private RegistrationDTO generateNewRegistration(final String role, final MunicipalityDTO municipality, final int userId) {
         RegistrationDTO registration = new RegistrationDTO();
-
         registration.setRole(role);
-        registration.setMunicipalityId(municipalityId);
+        registration.setMunicipalityId(municipality.getId());
         registration.setUserId(userId);
-        registration.setStatus(generateRegistrationStatus(aMunicipalityDTO));
-
+        registration.setStatus(generateRegistrationStatus(municipality));
         return registration;
     }
 
@@ -86,23 +81,8 @@ public class BeneficiaryService {
         }
     }
 
-    private List<UserDTO> getUserList(final BeneficiaryDTO beneficiaryDTO) {
-        List<UserDTO> resUsers = new ArrayList<>();
-
-        for (UserDTO user : beneficiaryDTO.getUsers()) {
-            user.setCreateDate(new Date().getTime());
-            String password = "12345678";
-            user.setPassword(password);
-            user.setVerified(true);
-            resUsers.add(userService.createUser(user));
-        }
-
-        return resUsers;
-    }
-
     private List<MunicipalityDTO> getMunicipalityList(final BeneficiaryDTO beneficiaryDTO) {
         List<MunicipalityDTO> resMunicipalities = new ArrayList<>();
-
         for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
             List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipality.getLauId());
             if (!municipalitiesWithSameLau.isEmpty()) {

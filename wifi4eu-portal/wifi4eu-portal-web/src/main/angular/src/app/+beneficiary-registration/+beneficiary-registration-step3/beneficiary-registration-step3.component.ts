@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output, OnInit} from "@angular/core";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
+import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 
 
@@ -12,7 +13,7 @@ export class BeneficiaryRegistrationStep3Component implements OnInit {
 
     @Input('initialUser') private initialUser: UserDTOBase;
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
-    @Input('users') private users: UserDTOBase[];
+    @Input('mayors') private mayors: MayorDTOBase[];
     @Input('userAddress') private userAddress: string;
     @Input('addressNum') private addressNum: string;
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
@@ -50,9 +51,9 @@ export class BeneficiaryRegistrationStep3Component implements OnInit {
     fillMayorData() {
         if (!this.imMayor) {
             this.imMayor = true;
-            this.initialUser.name = this.users[0].name;
-            this.initialUser.surname = this.users[0].surname;
-            this.initialUser.email = this.users[0].email;
+            this.initialUser.name = this.mayors[0].name;
+            this.initialUser.surname = this.mayors[0].surname;
+            this.initialUser.email = this.mayors[0].email;
             this.userEmailMatches = true;
             this.postalCode = this.municipalities[0].postalCode;
             this.addressNum = this.municipalities[0].addressNum;
@@ -68,7 +69,6 @@ export class BeneficiaryRegistrationStep3Component implements OnInit {
             this.userAddress = "";
             this.postalCode = "";
         }
-
     }
 
     onKey(event: any) {

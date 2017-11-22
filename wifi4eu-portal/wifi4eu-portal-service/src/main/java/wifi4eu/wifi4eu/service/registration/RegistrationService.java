@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.service.registration;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
@@ -25,6 +26,7 @@ public class RegistrationService {
         return registrationMapper.toDTO(registrationRepository.findOne(registrationId));
     }
 
+    @Transactional
     public RegistrationDTO createRegistration(RegistrationDTO registrationDTO) {
         return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
     }

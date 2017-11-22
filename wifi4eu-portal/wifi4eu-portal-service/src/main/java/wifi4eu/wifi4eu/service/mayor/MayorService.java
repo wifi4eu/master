@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.service.mayor;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.mapper.mayor.MayorMapper;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
@@ -25,6 +26,7 @@ public class MayorService {
         return mayorMapper.toDTO(mayorRepository.findOne(mayorId));
     }
 
+    @Transactional
     public MayorDTO createMayor(MayorDTO mayorDTO) {
         return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
     }
