@@ -5,6 +5,9 @@ public class UserDTO {
     private String treatment;
     private String name;
     private String surname;
+    private String address;
+    private String addressNum;
+    private String postalCode;
     private String email;
     private String password;
     private long createDate;
@@ -15,17 +18,20 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(int id, String treatment, String name, String surname, String email, String password, long createDate, long accessDate, boolean verified, int type) {
+    public UserDTO(int id, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, long createDate, long accessDate, int type, boolean verified) {
         this.id = id;
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
+        this.address = address;
+        this.addressNum = addressNum;
+        this.postalCode = postalCode;
         this.email = email;
         this.password = password;
         this.createDate = createDate;
         this.accessDate = accessDate;
-        this.verified = verified;
         this.type = type;
+        this.verified = verified;
     }
 
     public int getId() {
@@ -58,6 +64,30 @@ public class UserDTO {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddressNum() {
+        return addressNum;
+    }
+
+    public void setAddressNum(String addressNum) {
+        this.addressNum = addressNum;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getEmail() {
