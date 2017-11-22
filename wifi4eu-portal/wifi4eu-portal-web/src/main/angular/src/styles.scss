@@ -740,12 +740,6 @@ body {
   }
 }
 
-.ui-multiselect .ui-multiselect-label-container {
-  width: 25em;
-  height: 3em;
-  padding-top: 0.5em;
-}
-
 .ui-multiselect .ui-multiselect-trigger {
   padding-top: 0.5em;
 }
@@ -1103,6 +1097,17 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 .applicationText {
   margin-top: 0rem;
   margin-right: 0.3em;
+}
+
+ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  text-align: center;
+  height: 2.5em;
+}
+
+.ui-multiselect .ui-multiselect-label-container {
+  width: 25.7em;
 }
 
 discussion-component .expanded .content, discussion-component .expanded .header, discussion-component .header {
