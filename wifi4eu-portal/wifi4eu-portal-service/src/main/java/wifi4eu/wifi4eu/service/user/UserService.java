@@ -52,6 +52,10 @@ public class UserService {
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) {
+        UserDTO searchUser = getUserById(userDTO.getId());
+        if (searchUser != null) {
+            userDTO.setPassword(searchUser.getPassword());
+        }
         UserDTO resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
         sendActivateAccountMail(resUser);
         return resUser;
