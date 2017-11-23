@@ -39,7 +39,7 @@
         </div>
         <div id="municipality_details" class="ui-g-12 ui-md-12 ui-lg-12">
             <hr>
-            <ng-container *ngIf="!multipleMunicipalities">
+            <ng-container *ngIf="!multipleMunicipalities && municipalities.length > 0">
                 <span class="ui-lg-1"></span>
                 <span class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: left;">
                     <p class="ui-g-11 ui-md-11 ui-lg-11 beneficiaryMayor">{{ 'municipalityDetails.title' | translate }}</p>
@@ -115,7 +115,7 @@
                         </div>
                         <div>
                             <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'emailMayor.label' | translate }}</span>
-                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ users[i].email }}</b></span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[i].email }}</b></span>
                         </div>
                     </span>
                     <span class="ui-lg-1"></span>
