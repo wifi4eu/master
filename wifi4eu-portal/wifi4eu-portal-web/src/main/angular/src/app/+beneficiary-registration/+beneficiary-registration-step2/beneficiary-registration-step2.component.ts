@@ -30,6 +30,7 @@ export class BeneficiaryRegistrationStep2Component {
     private postalCodeFields: string[] = [''];
     private emailConfirmations: string[] = [''];
     private readonly MAX_LENGTH = 2;
+    private emailsMatch: boolean = false;
 
     constructor(private lauApi: LauApi) {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
@@ -52,6 +53,7 @@ export class BeneficiaryRegistrationStep2Component {
         }
     }
 
+
     private checkMunicipalitiesSelected() {
         for (let lau of this.selectedLaus) {
             if (!lau.id) {
@@ -60,6 +62,13 @@ export class BeneficiaryRegistrationStep2Component {
             }
         }
         this.municipalitiesSelected = true;
+    }
+
+    private checkEmailsMatch() {
+        this.emailsMatch = false;
+        if (this.mayors[0].email === this.emailConfirmations[0]) {
+            this.emailsMatch = true;
+        }
     }
 
     private addMunicipality() {
