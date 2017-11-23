@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `AUDIT_DATA_T` (
 -- Table `wifi4eu`.`users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`users` (
-  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `id`          INT          NOT NULL,
   `treatment`   VARCHAR(45)  NULL,
   `name`        VARCHAR(255) NULL,
   `surname`     VARCHAR(255) NULL,
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`users` (
 -- Table `wifi4eu`.`laus`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`laus` (
-  `id`               INT          NOT NULL AUTO_INCREMENT,
+  `id`               INT          NOT NULL,
   `country_code`     VARCHAR(255) NULL,
   `nuts3`            VARCHAR(255) NULL,
   `lau1`             VARCHAR(255) NULL,
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`laus` (
 -- Table `wifi4eu`.`municipalities`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`municipalities` (
-  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `id`          INT          NOT NULL,
   `name`        VARCHAR(255) NULL,
   `address`     VARCHAR(255) NULL,
   `address_num` VARCHAR(255) NULL,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`municipalities` (
 -- Table `wifi4eu`.`registrations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`registrations` (
-  `id`           INT          NOT NULL AUTO_INCREMENT,
+  `id`           INT          NOT NULL,
   `_user`        INT          NOT NULL,
   `municipality` INT          NOT NULL,
   `role`         VARCHAR(500) NULL,
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`registrations` (
 -- Table `wifi4eu`.`calls`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`calls` (
-  `id`         INT          NOT NULL AUTO_INCREMENT,
+  `id`         INT          NOT NULL,
   `event`      VARCHAR(500) NULL,
   `start_date` BIGINT       NULL,
   `end_date`   BIGINT       NULL,
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`calls` (
 -- Table `wifi4eu`.`nuts`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`nuts` (
-  `id`           INT          NOT NULL AUTO_INCREMENT,
+  `id`           INT          NOT NULL,
   `code`         VARCHAR(255) NULL,
   `label`        VARCHAR(255) NULL,
   `level`        INT          NULL,
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`nuts` (
 -- Table `wifi4eu`.`threads`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`threads` (
-  `id`    INT          NOT NULL AUTO_INCREMENT,
+  `id`    INT          NOT NULL,
   `title` VARCHAR(255) NULL,
   `lau`   INT          NULL,
   PRIMARY KEY (`id`),
@@ -179,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`threads` (
 -- Table `wifi4eu`.`thread_messages`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`thread_messages` (
-  `id`          INT        NOT NULL AUTO_INCREMENT,
+  `id`          INT        NOT NULL,
   `thread`      INT        NOT NULL,
   `author`      INT        NOT NULL,
   `message`     MEDIUMTEXT NULL,
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`thread_messages` (
 -- Table `wifi4eu`.`suppliers`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`suppliers` (
-  `id`                   INT          NOT NULL AUTO_INCREMENT,
+  `id`                   INT          NOT NULL,
   `name`                 VARCHAR(255) NULL,
   `address`              VARCHAR(255) NULL,
   `vat`                  VARCHAR(255) NULL,
@@ -234,7 +234,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`suppliers` (
 -- Table `wifi4eu`.`applications`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`applications` (
-  `id`              INT     NOT NULL AUTO_INCREMENT,
+  `id`              INT     NOT NULL,
   `call_id`         INT     NOT NULL,
   `registration`    INT     NOT NULL,
   `supplier`        INT     NULL,
@@ -275,12 +275,12 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`applications` (
 -- Table `wifi4eu`.`mayors`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`mayors` (
-  `id`            INT          NOT NULL AUTO_INCREMENT,
-  `name`          VARCHAR(255) NULL,
-  `surname`       VARCHAR(255) NULL,
-  `treatment`     VARCHAR(255) NULL,
-  `email`         VARCHAR(255) NULL,
-  `municipality`  INT          NULL,
+  `id`           INT          NOT NULL,
+  `name`         VARCHAR(255) NULL,
+  `surname`      VARCHAR(255) NULL,
+  `treatment`    VARCHAR(255) NULL,
+  `email`        VARCHAR(255) NULL,
+  `municipality` INT          NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_mayors_municipalities_idx` (`municipality` ASC),
   CONSTRAINT `fk_mayors_municipalities`
@@ -295,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`mayors` (
 -- Table `wifi4eu`.`representations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`representations` (
-  `id`           INT NOT NULL AUTO_INCREMENT,
+  `id`           INT NOT NULL,
   `municipality` INT NOT NULL,
   `mayor`        INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -318,7 +318,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`representations` (
 -- Table `wifi4eu`.`access_points`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`access_points` (
-  `id`            INT          NOT NULL AUTO_INCREMENT,
+  `id`            INT          NOT NULL,
   `municipality`  INT          NULL,
   `name`          VARCHAR(255) NULL,
   `product_name`  VARCHAR(255) NULL,
@@ -339,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`access_points` (
 -- Table `wifi4eu`.`supplied_regions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`supplied_regions` (
-  `id`       INT NOT NULL AUTO_INCREMENT,
+  `id`       INT NOT NULL,
   `supplier` INT NOT NULL,
   `region`   INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -364,7 +364,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`supplied_regions` (
 -- Table `wifi4eu`.`helpdesk_issues`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`helpdesk_issues` (
-  `id`           INT          NOT NULL AUTO_INCREMENT,
+  `id`           INT          NOT NULL,
   `from_email`   VARCHAR(255) NULL,
   `assigned_to`  VARCHAR(255) NULL,
   `topic`        VARCHAR(255) NULL,
@@ -383,7 +383,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`helpdesk_issues` (
 -- Table `wifi4eu`.`helpdesk_comments`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`helpdesk_comments` (
-  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `id`          INT          NOT NULL,
   `issue`       INT          NULL,
   `from_email`  VARCHAR(255) NULL,
   `comment`     MEDIUMTEXT   NULL,
@@ -404,7 +404,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`helpdesk_comments` (
 -- Table `wifi4eu`.`timelines`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`timelines` (
-  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `id`          INT          NOT NULL,
   `call_id`     INT          NULL,
   `description` VARCHAR(255) NULL,
   `start_date`  BIGINT       NULL,
@@ -425,7 +425,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`timelines` (
 -- Table `wifi4eu`.`temp_tokens`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`temp_tokens` (
-  `id`          BIGINT       NOT NULL AUTO_INCREMENT,
+  `id`          BIGINT       NOT NULL,
   `token`       VARCHAR(255) NULL,
   `email`       VARCHAR(255) NULL,
   `create_date` BIGINT       NULL,
@@ -445,7 +445,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`temp_tokens` (
 -- Table `wifi4eu`.`organizations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`organizations` (
-  `id`      INT          NOT NULL AUTO_INCREMENT,
+  `id`      INT          NOT NULL,
   `name`    VARCHAR(255) NULL,
   `type`    VARCHAR(255) NULL,
   `country` VARCHAR(255) NULL,
