@@ -15,8 +15,9 @@ export class SupplierRegistrationStep4Component {
     @Output() private onBack: EventEmitter<any>;
     @Output() private onEdit: EventEmitter<any>;
     private legalChecks: boolean[] = [false, false];
-    private successCaptcha: boolean = false;
+    private successCaptcha: boolean = true;
     private displayModal: boolean = false;
+    private displayConfirmingData: boolean = false;
 
     constructor() {
         this.onNext = new EventEmitter<any>();
@@ -34,6 +35,7 @@ export class SupplierRegistrationStep4Component {
 
     submit() {
         if (this.legalChecks && this.successCaptcha) {
+            this.displayConfirmingData = true;
             this.onNext.emit();
         }
     }
