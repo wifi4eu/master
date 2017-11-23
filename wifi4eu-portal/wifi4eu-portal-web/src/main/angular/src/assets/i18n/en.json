@@ -341,5 +341,6 @@
   "beneficiary.registrationNumber": "Registration ",
   "beneficiary.deleteApplication.Success": "Your applications were succesfully deleted.",
   "beneficiary.deleteApplication.Failure": "An error occurred an your applications could not be deleted.",
-  "discussion.growl.error":"Your request for mediation could not be submited due to an error. Please, try again later."
+  "discussion.growl.error":"Your request for mediation could not be submited due to an error. Please, try again later.",
+  "error.api.generic": "An error occurred while trying to retrieve the data from the server. Please, try again later."
 }

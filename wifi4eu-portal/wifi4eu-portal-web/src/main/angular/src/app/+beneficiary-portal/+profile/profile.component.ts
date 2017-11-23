@@ -44,68 +44,56 @@ export class BeneficiaryProfileComponent {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
-            if (this.user.type == 2 || this.user.type == 3) {
-                if (this.user.type == 3) {
-                    this.representing = true;
-                }
-                Object.assign(this.editedUser, this.user);
-                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-                    (registrations: RegistrationDTOBase[]) => {
-                        for (let registration of registrations) {
-                            this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
-                            this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
-                                (municipality: MunicipalityDTOBase) => {
-                                    // If the user is a representative, we need to look for the info of the mayors.
-                                    if (this.representing) {
-                                        this.registrationApi.getRegistrationsByMunicipalityId(municipality.id).subscribe(
-                                            (municipalityRegistrations: RegistrationDTOBase[]) => {
-                                                for (let municipalityRegistration of municipalityRegistrations) {
-                                                    if (municipalityRegistration.role == 'Mayor') {
-                                                        this.userApi.getUserById(municipalityRegistration.userId).subscribe(
-                                                            (mayor: UserDTOBase) => {
-                                                                this.municipalities.push(municipality);
-                                                                this.mayors.push(mayor);
-                                                                this.accordionBoxItems.push(new CustomAccordionBoxComponent(new UxAccordionBoxesComponent()));
-                                                            }
-                                                        );
-                                                    }
-                                                }
-                                            }
-                                        );
-                                    } else {
-                                        this.municipalities.push(municipality);
-                                    }
-                                }
-                            );
+            this.userApi.getUserById(this.user.id).subscribe(
+                (user: UserDTOBase) => {
+                    this.user = user;
+                    if (this.user.type == 2 || this.user.type == 3) {
+                        if (this.user.type == 3) {
+                            this.representing = true;
                         }
+                        Object.assign(this.editedUser, this.user);
+                        this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                            (registrations: RegistrationDTOBase[]) => {
+                                for (let registration of registrations) {
+                                    this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
+                                    this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
+                                        (municipality: MunicipalityDTOBase) => {
+                                            // If the user is a representative, we need to look for the info of the mayors.
+                                            if (this.representing) {
+                                                this.registrationApi.getRegistrationsByMunicipalityId(municipality.id).subscribe(
+                                                    (municipalityRegistrations: RegistrationDTOBase[]) => {
+                                                        for (let municipalityRegistration of municipalityRegistrations) {
+                                                            if (municipalityRegistration.role == 'Mayor') {
+                                                                this.userApi.getUserById(municipalityRegistration.userId).subscribe(
+                                                                    (mayor: UserDTOBase) => {
+                                                                        this.municipalities.push(municipality);
+                                                                        this.mayors.push(mayor);
+                                                                        this.accordionBoxItems.push(new CustomAccordionBoxComponent(new UxAccordionBoxesComponent()));
+                                                                    }
+                                                                );
+                                                            }
+                                                        }
+                                                    }
+                                                );
+                                            } else {
+                                                this.municipalities.push(municipality);
+                                            }
+                                        }
+                                    );
+                                }
+                            }
+                        );
+                    } else {
+                        this.growl('You are not allowed to view this page.', 'error.notallowed', 'warn');
+                        this.router.navigateByUrl('/home');
                     }
-                );
-            } else {
-                let translatedString = 'You are not allowed to view this page.';
-                this.translateService.get('error.notallowed').subscribe(
-                    (translation: string) => {
-                        translatedString = translation;
-                    }
-                );
-                this.uxService.growl({
-                    severity: 'warn',
-                    summary: 'WARNING',
-                    detail: translatedString
-                });
-                this.router.navigateByUrl('/home');
-            }
-        } else {
-            let translatedString = 'You are not logged in!';
-            this.translateService.get('error.notloggedin').subscribe(
-                (translation: string) => {
-                    translatedString = translation;
+                }, error => {
+                    this.growl('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'warn');
+                    this.router.navigateByUrl('/home');
                 }
             );
-            this.uxService.growl({
-                severity: 'warn',
-                summary: 'WARNING',
-                detail: translatedString
-            });
+        } else {
+            this.growl('You are not logged in!', 'error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
     }
@@ -236,5 +224,76 @@ export class BeneficiaryProfileComponent {
 
     private goToDiscussion() {
         this.router.navigate(['../discussion-forum'], {relativeTo: this.route});
+    }
+
+    private growl(translatedString: string, keyToTranslate: string, type: string) {
+        this.translateService.get(keyToTranslate).subscribe(
+            (translation: string) => {
+                if (translation) {
+                    translatedString = translation;
+                }
+                switch (type) {
+                    case 'success':
+                        this.uxService.growl({
+                            severity: 'success',
+                            summary: 'SUCCESS',
+                            detail: translatedString
+                        });
+                        break;
+                    case 'error':
+                        this.uxService.growl({
+                            severity: 'error',
+                            summary: 'ERROR',
+                            detail: translatedString
+                        });
+                        break;
+                    case 'warn':
+                        this.uxService.growl({
+                            severity: 'warn',
+                            summary: 'WARNING',
+                            detail: translatedString
+                        });
+                        break;
+                    case 'info':
+                        this.uxService.growl({
+                            severity: 'info',
+                            summary: 'INFO',
+                            detail: translatedString
+                        });
+                        break;
+                }
+            }, error => {
+                switch (type) {
+                    case 'success':
+                        this.uxService.growl({
+                            severity: 'success',
+                            summary: 'SUCCESS',
+                            detail: translatedString
+                        });
+                        break;
+                    case 'error':
+                        this.uxService.growl({
+                            severity: 'error',
+                            summary: 'ERROR',
+                            detail: translatedString
+                        });
+                        break;
+                    case 'warn':
+                        this.uxService.growl({
+                            severity: 'warn',
+                            summary: 'WARNING',
+                            detail: translatedString
+                        });
+                        break;
+                    case 'info':
+                        this.uxService.growl({
+                            severity: 'info',
+                            summary: 'INFO',
+                            detail: translatedString
+                        });
+                        break;
+                }
+            }
+        );
     }
 }
