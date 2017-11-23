@@ -24,7 +24,7 @@ export class BeneficiaryRegistrationStep2Component {
     @Output() private onBack: EventEmitter<any>;
     private selectedLaus: LauDTOBase[] = [];
     private lauSuggestions: LauDTOBase[] = [];
-    private municipalitiesSelected: boolean[] = [false];
+    private municipalitiesSelected: boolean = false;
     private addressFields: string[] = [''];
     private addressNumFields: string[] = [''];
     private postalCodeFields: string[] = [''];
@@ -52,8 +52,14 @@ export class BeneficiaryRegistrationStep2Component {
         }
     }
 
-    private selectMunicipality(selected: boolean, index: number) {
-        this.municipalitiesSelected[index] = selected;
+    private checkMunicipalitiesSelected() {
+        for (let lau of this.selectedLaus) {
+            if (!lau.id) {
+                this.municipalitiesSelected = false;
+                return;
+            }
+        }
+        this.municipalitiesSelected = true;
     }
 
     private addMunicipality() {
@@ -61,12 +67,12 @@ export class BeneficiaryRegistrationStep2Component {
             this.municipalities.push(new MunicipalityDTOBase());
             this.selectedLaus.push();
             this.mayors.push(new UserDTOBase());
-            this.municipalitiesSelected.push(false);
             this.addressFields.push('');
             this.addressNumFields.push('');
             this.postalCodeFields.push('');
             this.emailConfirmations.push('');
         }
+        this.checkMunicipalitiesSelected();
     }
 
     private removeMunicipality(index: number) {
@@ -74,12 +80,12 @@ export class BeneficiaryRegistrationStep2Component {
             this.municipalities.splice(index, 1);
             this.selectedLaus.splice(index, 1);
             this.mayors.splice(index, 1);
-            this.municipalitiesSelected.splice(index, 1);
             this.addressFields.splice(index, 1);
             this.addressNumFields.splice(index, 1);
             this.postalCodeFields.splice(index, 1);
             this.emailConfirmations.splice(index, 1);
         }
+        this.checkMunicipalitiesSelected();
     }
 
     private submit() {
