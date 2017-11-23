@@ -77,4 +77,12 @@ public class ThreadResource {
         _log.info("getThreadByLauId: " + lauId);
         return threadService.getThreadByLauId(lauId);
     }
+
+    @ApiOperation(value = "Get all the thread that a user is in.")
+    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<ThreadDTO> getUserThreads(@PathVariable("userId") final Integer userId) {
+        _log.info("getUserThreads: " + userId);
+        return threadService.getUserThreads(userId);
+    }
 }

@@ -10,9 +10,6 @@ import {VoucherComponent} from "./+voucher/voucher.component";
              path: '',
              component: VoucherComponent,
          }, {
-        //     path: 'profile',
-        //     component: BeneficiaryProfileComponent
-        // },{
             path: 'discussion-forum',
             component: DiscussionComponent
         }, {
