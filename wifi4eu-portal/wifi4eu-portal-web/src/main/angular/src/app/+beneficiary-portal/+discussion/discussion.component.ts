@@ -40,36 +40,72 @@ export class DiscussionComponent {
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             if (this.user.type == 2 || this.user.type == 3) {
-                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-                    (registrations: RegistrationDTOBase[]) => {
-                        this.registrations = registrations;
-                        for (let registration of registrations) {
-                            this.userApi.getUserById(registration.userId).subscribe(
-                                (user: UserDTOBase) => {
-                                    this.users.push(user);
-                                }, error => {
-                                    console.log(error);
+                this.threadApi.getUserThreads(this.user.id).subscribe(
+                    (threads: ThreadDTOBase[]) => {
+                        if (threads.length > 0) {
+
+
+                            this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                                (registrations: RegistrationDTOBase[]) => {
+                                    this.registrations = registrations;
+                                    for (let registration of registrations) {
+                                        this.userApi.getUserById(registration.userId).subscribe(
+                                            (user: UserDTOBase) => {
+                                                this.users.push(user);
+                                            }, error => {
+                                                console.log(error);
+                                            }
+                                        );
+                                    }
+                                    this.municipalityApi.getMunicipalityById(registrations[0].municipalityId).subscribe(
+                                        (municipality: MunicipalityDTOBase) => {
+                                            this.municipality = municipality;
+                                            this.threadApi.getThreadByLauId(this.municipality.lauId).subscribe(
+                                                (thread: ThreadDTOBase) => {
+                                                    if (thread != null) {
+                                                        this.thread = thread;
+                                                    }
+                                                }, error4 => {
+                                                    console.log(error4);
+                                                }
+                                            );
+                                        }, error2 => {
+                                            console.log(error2);
+                                        }
+                                    );
+                                }, error3 => {
+                                    console.log(error3);
                                 }
                             );
+
+
+                        } else {
+                            let translatedString = 'You are not allowed to view this page.';
+                            this.translateService.get('error.notallowed').subscribe(
+                                (translation: string) => {
+                                    translatedString = translation;
+                                }
+                            );
+                            this.uxService.growl({
+                                severity: 'warn',
+                                summary: 'WARNING',
+                                detail: translatedString
+                            });
+                            this.router.navigateByUrl('/home');
                         }
-                        this.municipalityApi.getMunicipalityById(registrations[0].municipalityId).subscribe(
-                            (municipality: MunicipalityDTOBase) => {
-                                this.municipality = municipality;
-                                this.threadApi.getThreadByLauId(this.municipality.lauId).subscribe(
-                                    (thread: ThreadDTOBase) => {
-                                        if (thread != null) {
-                                            this.thread = thread;
-                                        }
-                                    }, error4 => {
-                                        console.log(error4);
-                                    }
-                                );
-                            }, error2 => {
-                                console.log(error2);
+                    }, error => {
+                        let translatedString = 'You are not allowed to view this page.';
+                        this.translateService.get('error.notallowed').subscribe(
+                            (translation: string) => {
+                                translatedString = translation;
                             }
                         );
-                    }, error3 => {
-                        console.log(error3);
+                        this.uxService.growl({
+                            severity: 'warn',
+                            summary: 'WARNING',
+                            detail: translatedString
+                        });
+                        this.router.navigateByUrl('/home');
                     }
                 );
             } else {
