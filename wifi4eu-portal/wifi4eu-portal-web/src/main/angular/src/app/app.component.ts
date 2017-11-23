@@ -163,4 +163,7 @@ export class AppComponent {
         this.profileUrl = null;
     }
 
+    private goToTop() {
+        window.scrollTo(0, 0);
+    }
 }

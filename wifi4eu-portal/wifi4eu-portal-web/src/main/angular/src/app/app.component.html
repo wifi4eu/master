@@ -51,7 +51,7 @@
             </uxLayoutAppMainContentContainer>
             <uxLayoutAppMainFooterContainer>
                 <ux-layout-footer isCompact="true">
-                    {{ 'home.footer.update' | translate }}<a href="#">{{ 'home.footer.top' | translate }}</a>
+                    {{ 'home.footer.update' | translate }}<a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
                 </ux-layout-footer>
             </uxLayoutAppMainFooterContainer>
         </ux-layout-app-main>
