@@ -11,6 +11,7 @@ import {LauApi} from "../shared/swagger/api/LauApi";
 import {OrganizationApi} from "../shared/swagger/api/OrganizationApi";
 import {Subscription} from "rxjs/Subscription";
 import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
+import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 
 @Component({
     selector: 'beneficiary-registration',
@@ -26,6 +27,7 @@ export class BeneficiaryRegistrationComponent {
     private initialUser: UserDTOBase = new UserDTOBase();
     private mayors: MayorDTOBase[] = [new MayorDTOBase()];
     private municipalities: MunicipalityDTOBase[] = [new MunicipalityDTOBase()];
+    private laus: LauDTOBase[] = [];
     private finalBeneficiary: BeneficiaryDTOBase = new BeneficiaryDTOBase();
     private country: NutsDTOBase = null;
     private multipleMunicipalities: boolean = false;
@@ -51,6 +53,7 @@ export class BeneficiaryRegistrationComponent {
                     this.organizations = organizations;
                 }
             );
+            this.laus = [];
         }
     }
 

@@ -3,7 +3,10 @@
                     [isActive]="active[0]">
         <uxWizardStepCustomContent>
             <beneficiary-registration-step1 [country]="country" [countries]="countries"
-                                            [(multipleMunicipalities)]="multipleMunicipalities"
+                                            [(mayors)]="mayors"
+                                            [(municipalities)]="municipalities"
+                                            [(laus)]="laus"
+                                            [(initialUser)]="initialUser"
                                             [organizations]="organizations"
                                             (countryChange)="selectCountry($event)"
                                             (onNext)="navigate(2)"></beneficiary-registration-step1>
@@ -12,8 +15,11 @@
     <ux-wizard-step label="{{ 'registration.beneficiary.title' | translate }}" [isCompleted]="completed[1]"
                     [isActive]="active[1]">
         <uxWizardStepCustomContent>
-            <beneficiary-registration-step2 [country]="country" [multipleMunicipalities]="multipleMunicipalities"
-                                            [(mayors)]="mayors" [(municipalities)]="municipalities"
+            <beneficiary-registration-step2 [country]="country"
+                                            [multipleMunicipalities]="multipleMunicipalities"
+                                            [(municipalities)]="municipalities"
+                                            [(laus)]="laus"
+                                            [(mayors)]="mayors"
                                             (onNext)="navigate(3)" (onBack)="navigate(1)"></beneficiary-registration-step2>
         </uxWizardStepCustomContent>
     </ux-wizard-step>

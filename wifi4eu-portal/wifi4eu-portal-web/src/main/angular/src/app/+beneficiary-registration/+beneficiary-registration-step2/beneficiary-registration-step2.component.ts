@@ -17,23 +17,22 @@ export class BeneficiaryRegistrationStep2Component {
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
     @Input('mayors') private mayors: MayorDTOBase[];
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
+    @Input('laus') private laus: LauDTOBase[];
     @Output() private mayorsChange: EventEmitter<MayorDTOBase[]>;
     @Output() private municipalitiesChange: EventEmitter<MunicipalityDTOBase[]>;
     @Output() private findLaus: EventEmitter<string>;
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
-    private selectedLaus: LauDTOBase[] = [];
+    @Output() private lausChange: EventEmitter<LauDTOBase[]>;
     private lauSuggestions: LauDTOBase[] = [];
     private municipalitiesSelected: boolean[] = [false];
-    private addressFields: string[] = [''];
-    private addressNumFields: string[] = [''];
-    private postalCodeFields: string[] = [''];
     private emailConfirmations: string[] = [''];
     private readonly MAX_LENGTH = 2;
 
     constructor(private lauApi: LauApi) {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
         this.municipalitiesChange = new EventEmitter<MunicipalityDTOBase[]>();
+        this.lausChange = new EventEmitter<LauDTOBase[]>();
         this.findLaus = new EventEmitter<string>();
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
@@ -59,12 +58,9 @@ export class BeneficiaryRegistrationStep2Component {
     private addMunicipality() {
         if (this.multipleMunicipalities) {
             this.municipalities.push(new MunicipalityDTOBase());
-            this.selectedLaus.push();
+            this.laus.push();
             this.mayors.push(new UserDTOBase());
             this.municipalitiesSelected.push(false);
-            this.addressFields.push('');
-            this.addressNumFields.push('');
-            this.postalCodeFields.push('');
             this.emailConfirmations.push('');
         }
     }
@@ -72,27 +68,22 @@ export class BeneficiaryRegistrationStep2Component {
     private removeMunicipality(index: number) {
         if (this.multipleMunicipalities && this.municipalities.length > 1) {
             this.municipalities.splice(index, 1);
-            this.selectedLaus.splice(index, 1);
+            this.laus.splice(index, 1);
             this.mayors.splice(index, 1);
             this.municipalitiesSelected.splice(index, 1);
-            this.addressFields.splice(index, 1);
-            this.addressNumFields.splice(index, 1);
-            this.postalCodeFields.splice(index, 1);
             this.emailConfirmations.splice(index, 1);
         }
     }
 
     private submit() {
         for (let i = 0; i < this.municipalities.length; i++) {
-            this.municipalities[i].name = this.selectedLaus[i].name1;
+            this.municipalities[i].name = this.laus[i].name1;
             this.municipalities[i].country = this.country.label;
-            this.municipalities[i].address = this.addressFields[i];
-            this.municipalities[i].addressNum = this.addressNumFields[i];
-            this.municipalities[i].postalCode = this.postalCodeFields[i];
-            this.municipalities[i].lauId = this.selectedLaus[i].id;
+            this.municipalities[i].lauId = this.laus[i].id;
         }
         this.mayorsChange.emit(this.mayors);
         this.municipalitiesChange.emit(this.municipalities);
+        this.lausChange.emit(this.laus);
         this.onNext.emit();
         this.emailConfirmations = [''];
     }
@@ -100,12 +91,10 @@ export class BeneficiaryRegistrationStep2Component {
     private back() {
         for (let i = 0; i < this.municipalities.length; i++) {
             this.municipalities[i].country = this.country.label;
-            this.municipalities[i].address = this.addressFields[i];
-            this.municipalities[i].addressNum = this.addressNumFields[i];
-            this.municipalities[i].postalCode = this.postalCodeFields[i];
         }
         this.mayorsChange.emit(this.mayors);
         this.municipalitiesChange.emit(this.municipalities);
+        this.lausChange.emit(this.laus);
         this.onBack.emit();
         this.emailConfirmations = [''];
     }
