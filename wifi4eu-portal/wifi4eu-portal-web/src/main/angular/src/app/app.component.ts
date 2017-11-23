@@ -117,48 +117,33 @@ export class AppComponent {
     updateHeader() {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-
         if (this.user != null) {
             this.userApi.getUserById(this.user.id).subscribe(
                 (user: UserDTOBase) => {
-                    if (user != null) {
-                        this.registrationApi.checkIfRegistrationIsKO(user.id).subscribe(
-                            (response: ResponseDTOBase) => {
-                                if (response.success && !response.data) {
-                                    this.user = user;
-                                    switch (this.user.type) {
-                                        case 1:
-                                            this.profileUrl = '/supplier-portal/profile';
-                                            break;
-                                        case 2:
-                                        case 3:
-                                            this.profileUrl = '/beneficiary-portal/profile';
-                                            break;
-                                        case 5:
-                                            this.profileUrl = '/dgconn-portal';
-                                            break;
-                                        default:
-                                            this.profileUrl = '/home';
-                                            break;
-                                    }
-                                    this.menuLinks = [new UxLayoutLink({
-                                        label: 'Wifi4EU',
-                                        children: this.children[this.user.type]
-                                    })];
-                                } else {
-                                    this.logout();
-                                }
-                            }
-                        );
-                    } else {
-                        this.logout();
+                    this.user = user;
+                    this.localStorage.set('user', JSON.stringify(user));
+                    switch (this.user.type) {
+                        case 1:
+                            this.profileUrl = '/supplier-portal/profile';
+                            break;
+                        case 2:
+                        case 3:
+                            this.profileUrl = '/beneficiary-portal/profile';
+                            break;
+                        case 5:
+                            this.profileUrl = '/dgconn-portal';
+                            break;
+                        default:
+                            this.profileUrl = '/home';
+                            break;
                     }
                 }, error => {
                     this.logout();
                 }
             );
+        } else {
+            this.logout();
         }
-        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
 
     changeLanguage(language: UxLanguage) {
@@ -170,7 +155,6 @@ export class AppComponent {
     logout() {
         this.user = null;
         this.localStorage.remove('user');
-        this.updateHeader();
         this.router.navigateByUrl('/home');
         this.menuLinks = [new UxLayoutLink({
             label: 'Wifi4EU',
