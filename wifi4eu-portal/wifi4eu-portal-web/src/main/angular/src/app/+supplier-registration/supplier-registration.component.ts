@@ -78,7 +78,6 @@ export class SupplierRegistrationComponent {
                 this.active = [false, false, false, true];
                 break;
         }
-        ;
     }
 
     submitRegistration() {
