@@ -12,6 +12,7 @@ import {UxAccordionBoxesComponent} from "@ec-digit-uxatec/eui-angular2-ux-common
 import {LocalStorageService} from "angular-2-local-storage";
 import {TranslateService} from "ng2-translate";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
+import {SharedService} from "../../shared/shared.service";
 
 @Component({
     selector: 'beneficiary-profile',
@@ -40,7 +41,7 @@ export class BeneficiaryProfileComponent {
     private passwordsMatch: boolean = false;
     private isRegisterHold: boolean = false;
 
-    constructor(private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private localStorageService: LocalStorageService, private translateService: TranslateService, private uxService: UxService, private router: Router, private route: ActivatedRoute) {
+    constructor(private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private localStorageService: LocalStorageService, private translateService: TranslateService, private uxService: UxService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -190,31 +191,12 @@ export class BeneficiaryProfileComponent {
                             if (data.success) {
                                 registrationCount++;
                                 if (registrationCount >= registrations.length) {
-                                    let translatedString = 'Your applications were succesfully deleted.';
-                                    this.translateService.get('beneficiary.deleteApplication.Success').subscribe(
-                                        (translation: string) => {
-                                            translatedString = translation;
-                                        }
-                                    );
-                                    this.uxService.growl({
-                                        severity: 'success',
-                                        summary: 'SUCCESS',
-                                        detail: translatedString
-                                    });
+                                    this.growl('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
+                                    this.sharedService.logout();
                                 }
                             }
                         }, error => {
-                            let translatedString = 'Your applications were succesfully deleted.';
-                            this.translateService.get('beneficiary.deleteApplication.Failure').subscribe(
-                                (translation: string) => {
-                                    translatedString = translation;
-                                }
-                            );
-                            this.uxService.growl({
-                                severity: 'error',
-                                summary: 'ERROR',
-                                detail: translatedString
-                            });
+                            this.growl('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
                         }
                     );
                 }
