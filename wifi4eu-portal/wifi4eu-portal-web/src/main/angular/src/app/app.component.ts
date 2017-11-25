@@ -57,6 +57,7 @@ export class AppComponent {
         this.initChildren();
         this.updateHeader();
         this.sharedService.changeEmitted.subscribe(() => this.updateHeader());
+        this.sharedService.logoutEmitted.subscribe(() => this.logout());
     }
 
     initChildren() {
@@ -128,6 +129,13 @@ export class AppComponent {
                             break;
                         case 2:
                         case 3:
+                            this.registrationApi.checkIfRegistrationIsKO(this.user.id).subscribe(
+                                (response: ResponseDTOBase) => {
+                                    if (response.data) {
+                                        this.logout();
+                                    }
+                                }
+                            );
                             this.profileUrl = '/beneficiary-portal/profile';
                             break;
                         case 5:
@@ -144,6 +152,7 @@ export class AppComponent {
         } else {
             this.logout();
         }
+        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
 
     changeLanguage(language: UxLanguage) {
@@ -161,6 +170,7 @@ export class AppComponent {
             children: this.children[0]
         })];
         this.profileUrl = null;
+        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
 
     private goToTop() {
