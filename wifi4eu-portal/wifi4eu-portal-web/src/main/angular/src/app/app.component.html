@@ -2,8 +2,8 @@
     <uxLayoutAppMainContainer>
         <ux-layout-app-main>
             <uxLayoutAppMainHeaderContainer>
-                <ux-layout-header appFullName="Wifi4EU Free Wifi for Europeans" appShortName="App"
-                                  [userInfos]="userInfos" [isCustomRightContent]="true">
+                <custom-layout-header appFullName="Wifi4EU Free Wifi for Europeans" appShortName="App"
+                                  [userInfos]="userInfos" [isCustomRightContent]="true" logoUrl="https://ec.europa.eu/">
                     <uxLayoutHeaderRightContent>
                         <ux-language-selector [selectedLanguage]="selectedLanguage" (languageChanged)="changeLanguage($event)"></ux-language-selector>
                         <div class="profile-wrapper" isCompact="false">
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                     </uxLayoutHeaderRightContent>
-                </ux-layout-header>
+                </custom-layout-header>
             </uxLayoutAppMainHeaderContainer>
             <uxLayoutAppMainNavBarContainer>
                 <ux-layout-nav-bar>

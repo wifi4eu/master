@@ -28,6 +28,7 @@ import {CustomTimelineAccordionBoxComponent} from "./components/timeline/custom-
 import {CustomWizardStepsComponent} from "./components/custom-wizard-steps/custom-wizard-steps";
 import {HelpdeskFormComponent} from "../shared/components/helpdesk-form/helpdesk-form.component";
 import {TimerComponent} from "../shared/components/timer/timer.component";
+import {CustomLayoutHeaderComponent} from "./components/custom-layout-header/custom-layout-header";
 
 export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions) {
     return new UxHttp(backend, defaultOptions);
@@ -60,6 +61,7 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         CustomAccordionBoxComponent,
         CustomTimelineAccordionBoxComponent,
         CustomWizardStepsComponent,
+        CustomLayoutHeaderComponent,
         TimelineComponent,
         HelpdeskFormComponent,
         TimerComponent
@@ -87,6 +89,7 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         CustomAccordionBoxComponent,
         CustomTimelineAccordionBoxComponent,
         CustomWizardStepsComponent,
+        CustomLayoutHeaderComponent,
         Ng2GoogleRecaptchaModule,
         TimelineComponent,
         HelpdeskFormComponent,
