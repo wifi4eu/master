@@ -278,4 +278,8 @@ export class BeneficiaryProfileComponent {
             }
         );
     }
+
+    private preventPaste(event: any) {
+        return false;
+    }
 }

@@ -107,7 +107,7 @@
                         <label class="label floatLeft">{{ 'confirmemailMayor.label' | translate }}</label>
                         <input class="form-control paddingInput" type="email" id="repeatEmail" name="repeatEmail"
                                pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [disabled]="imMayor"
-                               [(ngModel)]="repeatEmail" (input)="checkEmailsMatch()" required>
+                               [(ngModel)]="repeatEmail" (input)="checkEmailsMatch()" (paste)="preventPaste()" required>
                     </div>
                 </div>
                 <div class="ui-g-2"></div>

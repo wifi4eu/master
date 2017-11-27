@@ -95,7 +95,7 @@ export class SupplierProfileComponent {
         }
     }
 
-    displayModal(name: string) {
+    private displayModal(name: string) {
         switch (name) {
             case 'contact':
                 this.displayContact = true;
@@ -109,7 +109,7 @@ export class SupplierProfileComponent {
         }
     }
 
-    closeModal() {
+    private closeModal() {
         this.displayContact = false;
         this.displayCompany = false;
         this.displayChangePassword = false;
@@ -121,7 +121,7 @@ export class SupplierProfileComponent {
         Object.assign(this.editedSupplier, this.supplier);
     }
 
-    saveSupplierChanges() {
+    private saveSupplierChanges() {
         this.submittingData = true;
         this.supplierApi.createSupplier(this.editedSupplier).subscribe(
             (response: ResponseDTOBase) => {
@@ -134,7 +134,7 @@ export class SupplierProfileComponent {
         );
     }
 
-    changeLogo(event) {
+    private changeLogo(event) {
         if (event.target.files.length > 0) {
             this.logoFile = event.target.files[0];
             let imageStatus = "";
@@ -163,7 +163,7 @@ export class SupplierProfileComponent {
         }
     }
 
-    uploadCorrect() : any {
+    private uploadCorrect() : any {
         this.logoUrl.readAsDataURL(this.logoFile);
         let subscription = Observable.interval(200).subscribe(
             x => {
@@ -176,7 +176,7 @@ export class SupplierProfileComponent {
         );
     }
 
-    uploadWrong() : any {
+    private uploadWrong() : any {
         this.clearLogoFile();
         this.uxService.growl({
             severity: 'error',
@@ -185,7 +185,7 @@ export class SupplierProfileComponent {
         });
     }
 
-    clearLogoFile() {
+    private clearLogoFile() {
         this.logoInput.nativeElement.value = "";
         this.isLogoUploaded = false;
         this.logoUrl = new FileReader();
@@ -193,11 +193,15 @@ export class SupplierProfileComponent {
         this.editedSupplier.logo = null;
     }
 
-    checkPasswordsMatch() {
+    private checkPasswordsMatch() {
         if (this.newPassword.length > 0 && this.newPassword == this.repeatNewPassword) {
             this.passwordsMatch = true;
         } else {
             this.passwordsMatch = false;
         }
+    }
+
+    private preventPaste(event: any) {
+        return false;
     }
 }

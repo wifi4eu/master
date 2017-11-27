@@ -25,11 +25,11 @@ export class ForgotComponent implements OnInit {
         this.compareURls = this.forgotUrl.includes("forgot;token=");
     }
 
-    checkPassword() {
+    private checkPassword() {
         return this.forgotDetails.password === this.forgotDetails.confirmPassword;
     }
 
-    onSendEmail() {
+    private onSendEmail() {
         this.userApi.forgotPassword(this.forgotDetails.email).subscribe(
             data => {
                 if (data['success']) {
@@ -58,7 +58,7 @@ export class ForgotComponent implements OnInit {
         );
     }
 
-    onNewPassword() {
+    private onNewPassword() {
         this.userApi.activateAccount(this.forgotDetails).subscribe(
             data => {
                 if (data['success']) {

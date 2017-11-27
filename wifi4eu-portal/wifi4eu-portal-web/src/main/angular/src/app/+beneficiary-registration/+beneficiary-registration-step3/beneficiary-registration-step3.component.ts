@@ -67,4 +67,8 @@ export class BeneficiaryRegistrationStep3Component {
         this.onNext.emit();
         this.repeatEmail = '';
     }
+
+    private preventPaste(event: any) {
+        return false;
+    }
 }
