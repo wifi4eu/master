@@ -124,4 +124,8 @@ export class BeneficiaryRegistrationStep2Component {
         this.onBack.emit();
         this.emailConfirmations = [''];
     }
+
+    private preventPaste(event: any) {
+        return false;
+    }
 }

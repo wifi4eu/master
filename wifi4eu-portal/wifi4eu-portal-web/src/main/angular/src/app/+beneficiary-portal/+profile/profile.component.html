@@ -444,18 +444,18 @@
                 <a class="forgotPassword" routerLink="/forgot">Forgot password?</a><br>
                 <label class="labelModal" for="newPassword_field">{{ 'password.label' | translate }}</label>
                 <input id="newPassword_field" type="password" [(ngModel)]="newPassword"
-                       class="form-control beneficiaryProfileI"
-                       name="newPassword_field" ngcontrol="newPassword_field" #newPassword_field="ngModel"
-                       (keyup)="checkPasswordsMatch()" required>
+                       class="form-control beneficiaryProfileI" name="newPassword_field"
+                       ngcontrol="newPassword_field" #newPassword_field="ngModel"
+                       (input)="checkPasswordsMatch()" required>
                 <div [hidden]="newPassword_field.valid || newPassword_field.pristine" class="alert alert-danger">
                     {{ 'password.required' | translate }}
                 </div>
                 <label class="labelModal" for="repeatNewPassword_field">{{ 'confirmNewPassword.label' | translate
                     }}</label>
                 <input id="repeatNewPassword_field" type="password" [(ngModel)]="repeatNewPassword"
-                       class="form-control beneficiaryProfileI"
-                       name="repeatNewPassword_field" ngcontrol="repeatNewPassword_field"
-                       #repeatNewPassword_field="ngModel" (keyup)="checkPasswordsMatch()" required>
+                       class="form-control beneficiaryProfileI" name="repeatNewPassword_field"
+                       ngcontrol="repeatNewPassword_field" #repeatNewPassword_field="ngModel"
+                       (input)="checkPasswordsMatch()" (paste)="preventPaste()" required>
                 <div [hidden]="repeatNewPassword_field.valid || repeatNewPassword_field.pristine"
                      class="alert alert-danger">
                     {{'newPassword.required' | translate }}

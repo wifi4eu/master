@@ -104,7 +104,7 @@
                     <input class="form-control paddingInput" type="email"
                            pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
                            name="confirm-email" id="confirm-email" [(ngModel)]="emailConfirmations[0]"
-                           (input)="checkEmailsMatch()" required>
+                           (input)="checkEmailsMatch()" (paste)="preventPaste()" required>
                 </div>
             </div>
         </ng-container>
