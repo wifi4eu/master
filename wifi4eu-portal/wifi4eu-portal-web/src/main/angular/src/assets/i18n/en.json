@@ -334,13 +334,17 @@
   "beneficiary.discusionText": "If you do not wish to participate to the WIFI4EU scheme anymore, delete your application by clicking on the button below.",
   "registration.emailResend.success": "The confirmation email has been resent successfully.",
   "registration.emailResend.failure": "An error occurred when trying to resend the confirmation email.",
-  "beneficiaryProfile.duplicatedMunicipalities" : "The municipality you registered with is already in use. Please, change your data or go to the discussion area to contact the other parties involved.",
+  "beneficiaryProfile.duplicatedMunicipalities": "The municipality you registered with is already in use. Please, change your data or go to the discussion area to contact the other parties involved.",
   "beneficiary.goDiscussion": "Go to discusion",
   "beneficiary.goDiscussionText": "One or more applicant applied with the same Municipality as you. Please, contact the other parties to solve de issue.",
   "beneficiary.registration1": "Registration 1 (you)",
   "beneficiary.registrationNumber": "Registration ",
   "beneficiary.deleteApplication.Success": "Your applications were succesfully deleted.",
   "beneficiary.deleteApplication.Failure": "An error occurred an your applications could not be deleted.",
-  "discussion.growl.error":"Your request for mediation could not be submited due to an error. Please, try again later.",
-  "error.api.generic": "An error occurred while trying to retrieve the data from the server. Please, try again later."
+  "discussion.growl.error": "Your request for mediation could not be submited due to an error. Please, try again later.",
+  "error.api.generic": "An error occurred while trying to retrieve the data from the server. Please, try again later.",
+  "home.counterSection1": "A total of ",
+  "home.counterSection2": " Municipalities and ",
+  "home.counterSection3": " wi-fi installation companies have already applied!",
+  "home.counterSectionButton" : "Discover who they are"
 }

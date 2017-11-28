@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.entity.supplier.SuppliedRegion;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
@@ -55,7 +56,7 @@ public class SupplierService {
                 supplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
                 supplierId = supplierDTO.getId();
             }
-            for (SuppliedRegionDTO region: originalRegions) {
+            for (SuppliedRegionDTO region : originalRegions) {
                 region.setSupplierId(supplierId);
                 correctRegions.add(region);
             }
@@ -96,5 +97,9 @@ public class SupplierService {
 
     public SupplierDTO getSupplierByUserId(int userId) {
         return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
+    }
+
+    public List<SuppliedRegionDTO> getSuppliedRegionsGroupedByRegionId() {
+        return suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsGroupedByRegionId()));
     }
 }
