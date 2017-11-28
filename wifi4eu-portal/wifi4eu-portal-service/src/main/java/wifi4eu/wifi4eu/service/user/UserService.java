@@ -2,12 +2,14 @@ package wifi4eu.wifi4eu.service.user;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import org.springframework.util.StringUtils;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
@@ -22,8 +24,10 @@ import java.util.List;
 
 @Service
 public class UserService {
+    private final Logger _log = LoggerFactory.getLogger(UserService.class);
+
     public final static int TIMEFRAME_ACTIVATE_ACCOUNT_HOURS = 2;
-    public final static String BASE_URL = "http://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/";
+    public final static String BASE_URL = "http://wifi4eudev.azurewebsites.net/wifi4eu/#/";
     public final static String RESET_PASS_URL = BASE_URL + "forgot;token=";
     public final static String ACTIVATE_ACCOUNT_URL = BASE_URL + "activation;token=";
 
@@ -50,11 +54,16 @@ public class UserService {
         return userMapper.toDTO(userRepository.findOne(userId));
     }
 
+    public UserDTO getUserByEmail(String email) {
+        return userMapper.toDTO(userRepository.findByEmail(email));
+    }
+
     @Transactional
-    public UserDTO createUser(UserDTO userDTO) {
-        UserDTO searchUser = getUserById(userDTO.getId());
+    public UserDTO createUser(UserDTO userDTO) throws Exception {
+        UserDTO searchUser = getUserByEmail(userDTO.getEmail());
         if (searchUser != null) {
             userDTO.setPassword(searchUser.getPassword());
+            throw new Exception("User already registered.");
         }
         UserDTO resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
         sendActivateAccountMail(resUser);

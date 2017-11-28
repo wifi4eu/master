@@ -10,10 +10,8 @@ import {BeneficiaryRegistrationStep1Component} from "./+beneficiary-registration
 // import {Ng2GoogleRecaptchaModule} from "ng2-google-recaptcha";
 
 @NgModule({
-    imports: [BeneficiaryRegistrationRoutingModule, SharedModule]
-    ,
-    declarations: [BeneficiaryRegistrationComponent, BeneficiaryRegistrationStep4Component, BeneficiaryRegistrationStep2Component, BeneficiaryRegistrationStep3Component, BeneficiaryRegistrationStep1Component]
-    ,
+    imports: [BeneficiaryRegistrationRoutingModule, SharedModule],
+    declarations: [BeneficiaryRegistrationComponent, BeneficiaryRegistrationStep4Component, BeneficiaryRegistrationStep2Component, BeneficiaryRegistrationStep3Component, BeneficiaryRegistrationStep1Component],
     bootstrap: [BeneficiaryRegistrationComponent]
 })
 

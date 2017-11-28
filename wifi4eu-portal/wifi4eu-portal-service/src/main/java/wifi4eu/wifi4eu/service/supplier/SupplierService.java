@@ -55,7 +55,7 @@ public class SupplierService {
                 supplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
                 supplierId = supplierDTO.getId();
             }
-            for (SuppliedRegionDTO region: originalRegions) {
+            for (SuppliedRegionDTO region : originalRegions) {
                 region.setSupplierId(supplierId);
                 correctRegions.add(region);
             }
@@ -79,7 +79,7 @@ public class SupplierService {
     }
 
     @Transactional
-    public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) {
+    public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
         UserDTO userDTO = new UserDTO();
         userDTO.setName(supplierDTO.getContactName());
         userDTO.setSurname(supplierDTO.getContactSurname());
