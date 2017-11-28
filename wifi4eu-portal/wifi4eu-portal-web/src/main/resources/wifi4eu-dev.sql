@@ -11,25 +11,25 @@ SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'TRADITIONAL,ALLOW_INVALID_DATES';
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema dbo
+-- Schema wifi4eu
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `dbo`;
+DROP SCHEMA IF EXISTS `wifi4eu`;
 -- -----------------------------------------------------
--- Schema dbo
+-- Schema wifi4eu
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `dbo`
+CREATE SCHEMA IF NOT EXISTS `wifi4eu`
   DEFAULT CHARACTER SET utf8
   COLLATE utf8_bin;
-USE `dbo`;
+USE `wifi4eu`;
 
-CREATE TABLE IF NOT EXISTS `dbo`.`SEQUENCE` (
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`SEQUENCE` (
   `SEQ_NAME`  VARCHAR(50) NOT NULL,
   `SEQ_COUNT` NUMERIC(38),
   PRIMARY KEY (`SEQ_NAME`)
 );
 
 -- -----------------------------------------------------
--- Table `dbo`.`audit_data_t`
+-- Table `wifi4eu`.`audit_data_t`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `AUDIT_DATA_T` (
   `AUDIT_DATA_ID`    INT(11) NOT NULL,
@@ -46,10 +46,10 @@ CREATE TABLE IF NOT EXISTS `AUDIT_DATA_T` (
   COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
--- Table `dbo`.`users`
+-- Table `wifi4eu`.`users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`users` (
-  `id`          INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`users` (
+  `id`          INT          NOT NULL AUTO_INCREMENT,
   `treatment`   VARCHAR(45)  NULL,
   `name`        VARCHAR(255) NULL,
   `surname`     VARCHAR(255) NULL,
@@ -67,10 +67,10 @@ CREATE TABLE IF NOT EXISTS `dbo`.`users` (
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`laus`
+-- Table `wifi4eu`.`laus`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`laus` (
-  `id`               INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`laus` (
+  `id`               INT          NOT NULL AUTO_INCREMENT,
   `country_code`     VARCHAR(255) NULL,
   `nuts3`            VARCHAR(255) NULL,
   `lau1`             VARCHAR(255) NULL,
@@ -86,10 +86,10 @@ CREATE TABLE IF NOT EXISTS `dbo`.`laus` (
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`municipalities`
+-- Table `wifi4eu`.`municipalities`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`municipalities` (
-  `id`          INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`municipalities` (
+  `id`          INT          NOT NULL AUTO_INCREMENT,
   `name`        VARCHAR(255) NULL,
   `address`     VARCHAR(255) NULL,
   `address_num` VARCHAR(255) NULL,
@@ -100,17 +100,17 @@ CREATE TABLE IF NOT EXISTS `dbo`.`municipalities` (
   INDEX `fk_municipalities_laus1_idx` (`lau` ASC),
   CONSTRAINT `fk_municipalities_laus`
   FOREIGN KEY (`lau`)
-  REFERENCES `dbo`.`laus` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`laus` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`registrations`
+-- Table `wifi4eu`.`registrations`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`registrations` (
-  `id`           INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`registrations` (
+  `id`           INT          NOT NULL AUTO_INCREMENT,
   `_user`        INT          NOT NULL,
   `municipality` INT          NOT NULL,
   `role`         VARCHAR(500) NULL,
@@ -120,22 +120,22 @@ CREATE TABLE IF NOT EXISTS `dbo`.`registrations` (
   INDEX `fk_municipality_idx` (`municipality` ASC),
   CONSTRAINT `fk_registrations_users`
   FOREIGN KEY (`_user`)
-  REFERENCES `dbo`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  REFERENCES `wifi4eu`.`users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_registrations_municipalities`
   FOREIGN KEY (`municipality`)
-  REFERENCES `dbo`.`municipalities` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`municipalities` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`calls`
+-- Table `wifi4eu`.`calls`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`calls` (
-  `id`         INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`calls` (
+  `id`         INT          NOT NULL AUTO_INCREMENT,
   `event`      VARCHAR(500) NULL,
   `start_date` BIGINT       NULL,
   `end_date`   BIGINT       NULL,
@@ -144,10 +144,10 @@ CREATE TABLE IF NOT EXISTS `dbo`.`calls` (
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`nuts`
+-- Table `wifi4eu`.`nuts`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`nuts` (
-  `id`           INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`nuts` (
+  `id`           INT          NOT NULL AUTO_INCREMENT,
   `code`         VARCHAR(255) NULL,
   `label`        VARCHAR(255) NULL,
   `level`        INT          NULL,
@@ -159,27 +159,27 @@ CREATE TABLE IF NOT EXISTS `dbo`.`nuts` (
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`threads`
+-- Table `wifi4eu`.`threads`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`threads` (
-  `id`    INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`threads` (
+  `id`    INT          NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(255) NULL,
   `lau`   INT          NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_threads_laus_idx` (`lau` ASC),
   CONSTRAINT `fk_threads_laus`
   FOREIGN KEY (`lau`)
-  REFERENCES `dbo`.`laus` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`laus` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`thread_messages`
+-- Table `wifi4eu`.`thread_messages`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`thread_messages` (
-  `id`          INT        NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`thread_messages` (
+  `id`          INT        NOT NULL AUTO_INCREMENT,
   `thread`      INT        NOT NULL,
   `author`      INT        NOT NULL,
   `message`     MEDIUMTEXT NULL,
@@ -189,22 +189,22 @@ CREATE TABLE IF NOT EXISTS `dbo`.`thread_messages` (
   INDEX `fk_author_idx` (`author` ASC),
   CONSTRAINT `fk_thread_messages_threads`
   FOREIGN KEY (`thread`)
-  REFERENCES `dbo`.`threads` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  REFERENCES `wifi4eu`.`threads` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_thread_messages_users`
   FOREIGN KEY (`author`)
-  REFERENCES `dbo`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`suppliers`
+-- Table `wifi4eu`.`suppliers`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`suppliers` (
-  `id`                   INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`suppliers` (
+  `id`                   INT          NOT NULL AUTO_INCREMENT,
   `name`                 VARCHAR(255) NULL,
   `address`              VARCHAR(255) NULL,
   `vat`                  VARCHAR(255) NULL,
@@ -222,19 +222,19 @@ CREATE TABLE IF NOT EXISTS `dbo`.`suppliers` (
   INDEX `fk_suppliers_users_idx` (`_user` ASC),
   CONSTRAINT `fk_suppliers_users`
   FOREIGN KEY (`_user`)
-  REFERENCES `dbo`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8
   COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
--- Table `dbo`.`applications`
+-- Table `wifi4eu`.`applications`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`applications` (
-  `id`              INT     NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`applications` (
+  `id`              INT     NOT NULL AUTO_INCREMENT,
   `call_id`         INT     NOT NULL,
   `registration`    INT     NOT NULL,
   `supplier`        INT     NULL,
@@ -255,27 +255,27 @@ CREATE TABLE IF NOT EXISTS `dbo`.`applications` (
   INDEX `fk_applications_supplier_idx` (`supplier` ASC),
   CONSTRAINT `fk_applications_calls`
   FOREIGN KEY (`call_id`)
-  REFERENCES `dbo`.`calls` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  REFERENCES `wifi4eu`.`calls` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_applications_registrations`
   FOREIGN KEY (`registration`)
-  REFERENCES `dbo`.`registrations` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  REFERENCES `wifi4eu`.`registrations` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_applications_suppliers`
   FOREIGN KEY (`supplier`)
-  REFERENCES `dbo`.`suppliers` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`suppliers` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`mayors`
+-- Table `wifi4eu`.`mayors`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`mayors` (
-  `id`           INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`mayors` (
+  `id`           INT          NOT NULL AUTO_INCREMENT,
   `name`         VARCHAR(255) NULL,
   `surname`      VARCHAR(255) NULL,
   `treatment`    VARCHAR(255) NULL,
@@ -285,17 +285,17 @@ CREATE TABLE IF NOT EXISTS `dbo`.`mayors` (
   INDEX `fk_mayors_municipalities_idx` (`municipality` ASC),
   CONSTRAINT `fk_mayors_municipalities`
   FOREIGN KEY (`municipality`)
-  REFERENCES `dbo`.`municipalities` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`municipalities` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`representations`
+-- Table `wifi4eu`.`representations`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`representations` (
-  `id`           INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`representations` (
+  `id`           INT NOT NULL AUTO_INCREMENT,
   `municipality` INT NOT NULL,
   `mayor`        INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -303,22 +303,22 @@ CREATE TABLE IF NOT EXISTS `dbo`.`representations` (
   INDEX `fk_mayor_idx` (`mayor` ASC),
   CONSTRAINT `fk_representations_municipalities`
   FOREIGN KEY (`municipality`)
-  REFERENCES `dbo`.`municipalities` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  REFERENCES `wifi4eu`.`municipalities` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_representations_mayors`
   FOREIGN KEY (`mayor`)
-  REFERENCES `dbo`.`mayors` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`mayors` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`access_points`
+-- Table `wifi4eu`.`access_points`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`access_points` (
-  `id`            INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`access_points` (
+  `id`            INT          NOT NULL AUTO_INCREMENT,
   `municipality`  INT          NULL,
   `name`          VARCHAR(255) NULL,
   `product_name`  VARCHAR(255) NULL,
@@ -329,17 +329,17 @@ CREATE TABLE IF NOT EXISTS `dbo`.`access_points` (
   INDEX `fk_municipality_idx` (`municipality` ASC),
   CONSTRAINT `fk_access_points_municipalities`
   FOREIGN KEY (`municipality`)
-  REFERENCES `dbo`.`municipalities` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`municipalities` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`supplied_regions`
+-- Table `wifi4eu`.`supplied_regions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`supplied_regions` (
-  `id`       INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`supplied_regions` (
+  `id`       INT NOT NULL AUTO_INCREMENT,
   `supplier` INT NOT NULL,
   `region`   INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -347,24 +347,24 @@ CREATE TABLE IF NOT EXISTS `dbo`.`supplied_regions` (
   INDEX `fk_supplier_regions_region_idx` (`region` ASC),
   CONSTRAINT `fk_supplier_regions_suppliers`
   FOREIGN KEY (`supplier`)
-  REFERENCES `dbo`.`suppliers` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  REFERENCES `wifi4eu`.`suppliers` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_supplier_regions_nuts`
   FOREIGN KEY (`region`)
-  REFERENCES `dbo`.`nuts` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`nuts` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8
   COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
--- Table `dbo`.`helpdesk_issues`
+-- Table `wifi4eu`.`helpdesk_issues`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`helpdesk_issues` (
-  `id`           INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`helpdesk_issues` (
+  `id`           INT          NOT NULL AUTO_INCREMENT,
   `from_email`   VARCHAR(255) NULL,
   `assigned_to`  VARCHAR(255) NULL,
   `topic`        VARCHAR(255) NULL,
@@ -380,10 +380,10 @@ CREATE TABLE IF NOT EXISTS `dbo`.`helpdesk_issues` (
   COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
--- Table `dbo`.`helpdesk_comments`
+-- Table `wifi4eu`.`helpdesk_comments`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`helpdesk_comments` (
-  `id`          INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`helpdesk_comments` (
+  `id`          INT          NOT NULL AUTO_INCREMENT,
   `issue`       INT          NULL,
   `from_email`  VARCHAR(255) NULL,
   `comment`     MEDIUMTEXT   NULL,
@@ -392,19 +392,19 @@ CREATE TABLE IF NOT EXISTS `dbo`.`helpdesk_comments` (
   INDEX `fk_helpdesk_comments_issue_idx` (`issue` ASC),
   CONSTRAINT `fk_helpdesk_comments_issues`
   FOREIGN KEY (`issue`)
-  REFERENCES `dbo`.`helpdesk_issues` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`helpdesk_issues` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8
   COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
--- Table `dbo`.`timelines`
+-- Table `wifi4eu`.`timelines`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`timelines` (
-  `id`          INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`timelines` (
+  `id`          INT          NOT NULL AUTO_INCREMENT,
   `call_id`     INT          NULL,
   `description` VARCHAR(255) NULL,
   `start_date`  BIGINT       NULL,
@@ -413,19 +413,19 @@ CREATE TABLE IF NOT EXISTS `dbo`.`timelines` (
   INDEX `fk_timelines_call_id_idx` (`call_id` ASC),
   CONSTRAINT `fk_timelines_call_id`
   FOREIGN KEY (`call_id`)
-  REFERENCES `dbo`.`calls` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`calls` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8
   COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
--- Table `dbo`.`temp_tokens`
+-- Table `wifi4eu`.`temp_tokens`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`temp_tokens` (
-  `id`          BIGINT       NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`temp_tokens` (
+  `id`          BIGINT       NOT NULL AUTO_INCREMENT,
   `token`       VARCHAR(255) NULL,
   `email`       VARCHAR(255) NULL,
   `create_date` BIGINT       NULL,
@@ -435,24 +435,24 @@ CREATE TABLE IF NOT EXISTS `dbo`.`temp_tokens` (
   INDEX `fk_temp_tokens_users_idx` (`_user` ASC),
   CONSTRAINT `fk_temp_tokens_users`
   FOREIGN KEY (`_user`)
-  REFERENCES `dbo`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  REFERENCES `wifi4eu`.`users` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 )
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `dbo`.`organizations`
+-- Table `wifi4eu`.`organizations`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbo`.`organizations` (
-  `id`      INT          NOT NULL,
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`organizations` (
+  `id`      INT          NOT NULL AUTO_INCREMENT,
   `name`    VARCHAR(255) NULL,
   `type`    VARCHAR(255) NULL,
   `country` VARCHAR(255) NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB;
-INSERT INTO `dbo`.`organizations` (name, type, country)
+INSERT INTO `wifi4eu`.`organizations` (name, type, country)
 VALUES ('Everis', 'private', 'ES');
 
 SET SQL_MODE = @OLD_SQL_MODE;

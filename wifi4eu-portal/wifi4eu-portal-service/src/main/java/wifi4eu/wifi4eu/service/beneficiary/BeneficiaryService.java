@@ -1,7 +1,5 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
-import java.text.MessageFormat;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +13,10 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class BeneficiaryService {
@@ -44,7 +42,7 @@ public class BeneficiaryService {
     private final String REPRESENTATIVE = "Representative";
 
     @Transactional
-    public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO) {
+    public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO) throws Exception {
         UserDTO user = beneficiaryDTO.getUser();
         user.setCreateDate(new Date().getTime());
         String password = "12345678";

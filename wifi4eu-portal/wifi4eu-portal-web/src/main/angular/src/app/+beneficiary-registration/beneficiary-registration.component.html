@@ -14,7 +14,8 @@
         <uxWizardStepCustomContent>
             <beneficiary-registration-step2 [country]="country" [multipleMunicipalities]="multipleMunicipalities"
                                             [(mayors)]="mayors" [(municipalities)]="municipalities"
-                                            (onNext)="navigate(3)" (onBack)="navigate(1)"></beneficiary-registration-step2>
+                                            (onNext)="navigate(3)"
+                                            (onBack)="navigate(1)"></beneficiary-registration-step2>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'registration.entity.title' | translate }}" [isCompleted]="completed[2]"
@@ -23,7 +24,8 @@
             <beneficiary-registration-step3 [(initialUser)]="initialUser" [mayors]="mayors"
                                             [multipleMunicipalities]="multipleMunicipalities"
                                             [municipalities]="municipalities"
-                                            (onNext)="navigate(4)" (onBack)="navigate(2)"></beneficiary-registration-step3>
+                                            (onNext)="navigate(4)"
+                                            (onBack)="navigate(2)"></beneficiary-registration-step3>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'registration.review.title' | translate }}" [isCompleted]="completed[3]"
@@ -37,6 +39,7 @@
         </uxWizardStepCustomContent>
     </ux-wizard-step>
 </custom-wizard-steps>
-<success-component *ngIf="successRegistration" [emailConfirmation]="true" [email]="initialUser.email"></success-component>
-<failure-component *ngIf="failureRegistration"></failure-component>
+<success-component *ngIf="successRegistration" [emailConfirmation]="true"
+                   [email]="initialUser.email"></success-component>
+<failure-component *ngIf="failureRegistration" [alreadyRegistered]="alreadyRegistered"></failure-component>
 <helpdesk-form-component portal="beneficiary-registration"></helpdesk-form-component>

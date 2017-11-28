@@ -36,3 +36,4 @@ npm-debug.log
 **/swagger
 **/swagger/**
 .vagrant/
+*.box
