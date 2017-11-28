@@ -140,7 +140,6 @@ public class UserService {
 
 
     public void forgotPassword(String email) throws Exception {
-
         /* validate email variable is not null or empty */
         if (email != null && !StringUtils.isEmpty(email)) {
             UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
