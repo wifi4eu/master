@@ -37,7 +37,7 @@ export class SupplierRegistrationComponent {
                     this.allCountriesSelect.push(selectCountry);
                     this.allRegionsSelect[country.label] = [];
                     this.selectedRegions[country.label] = [];
-                    this.nutsApi.getNutsByCountryCodeAndLevel(country.countryCode, 3).subscribe(
+                    this.nutsApi.getNutsByCountryCodeAndLevelOrderByLabelAsc(country.countryCode, 3).subscribe(
                         (regions: NutsDTOBase[]) => {
                             for (let region of regions) {
                                 let selectRegion = {
