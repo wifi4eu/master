@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from "@angular/core";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
@@ -12,7 +12,7 @@ import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
     providers: [LauApi]
 })
 
-export class BeneficiaryRegistrationStep2Component {
+export class BeneficiaryRegistrationStep2Component implements OnChanges {
     @Input('country') private country: NutsDTOBase;
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
     @Input('mayors') private mayors: MayorDTOBase[];
@@ -40,7 +40,16 @@ export class BeneficiaryRegistrationStep2Component {
         this.onBack = new EventEmitter<any>();
     }
 
-    private search(event: any, index: number) {
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.hasOwnProperty("multipleMunicipalities")) {
+            if (!this.multipleMunicipalities)
+                this.removeMunicipality(1, this.municipalities.length - 1);
+            console.log(this.municipalities);
+            console.log(this.mayors);
+        }
+    }
+
+    private search(event: any) {
         let query = event.query;
         if (this.country != null && query.length >= this.MAX_LENGTH) {
             this.lauApi.getLausByCountryCodeAndName1StartingWithIgnoreCase(this.country.countryCode, query).subscribe(
@@ -84,15 +93,15 @@ export class BeneficiaryRegistrationStep2Component {
         this.checkMunicipalitiesSelected();
     }
 
-    private removeMunicipality(index: number) {
-        if (this.multipleMunicipalities && this.municipalities.length > 1) {
-            this.municipalities.splice(index, 1);
-            this.selectedLaus.splice(index, 1);
-            this.mayors.splice(index, 1);
-            this.addressFields.splice(index, 1);
-            this.addressNumFields.splice(index, 1);
-            this.postalCodeFields.splice(index, 1);
-            this.emailConfirmations.splice(index, 1);
+    private removeMunicipality(index: number, removeCount: number = 1) {
+        if (this.municipalities.length > 1) {
+            this.municipalities.splice(index, removeCount);
+            this.selectedLaus.splice(index, removeCount);
+            this.mayors.splice(index, removeCount);
+            this.addressFields.splice(index, removeCount);
+            this.addressNumFields.splice(index, removeCount);
+            this.postalCodeFields.splice(index, removeCount);
+            this.emailConfirmations.splice(index, removeCount);
         }
         this.checkMunicipalitiesSelected();
     }
