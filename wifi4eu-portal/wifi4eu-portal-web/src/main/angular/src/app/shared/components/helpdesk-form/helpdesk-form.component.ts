@@ -7,7 +7,9 @@ import {NutsDTOBase} from "../../swagger/model/NutsDTO";
 import {ResponseDTO} from "../../swagger/model/ResponseDTO";
 
 @Component({
-    selector: 'helpdesk-form-component', templateUrl: 'helpdesk-form.component.html', providers: [NutsApi, HelpdeskissuesApi]
+    selector: 'helpdesk-form-component',
+    templateUrl: 'helpdesk-form.component.html',
+    providers: [NutsApi, HelpdeskissuesApi]
 })
 export class HelpdeskFormComponent {
     private helpdeskIssue: HelpdeskIssueDTO;
@@ -45,6 +47,11 @@ export class HelpdeskFormComponent {
             (issue: ResponseDTO) => {
                 if (issue.success) {
                     this.success = true;
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: 'SUCCESS',
+                        detail: 'Your message was successfully sent.'
+                    });
                 }
             }, error => {
                 this.uxService.growl({
