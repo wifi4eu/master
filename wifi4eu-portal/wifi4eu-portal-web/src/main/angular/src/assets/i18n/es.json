@@ -341,5 +341,6 @@
   "beneficiary.deleteApplication.Failure": "Ocurrió un error y sus solicitudes no se han podido eliminar.",
   "discussion.growl.error": "Ocurrió un error y no se pudo enviar su petición de mediación. Por favor, vuelva a intentarlo más tarde.",
   "error.api.generic": "Ocurrió un error al intentar recuperar la información del servidor. Por favor, vuelva a intentarlo más tarde.",
-  "already.registered.error": "Usuario ya registrado."
+  "already.registered.error": "Usuario ya registrado.",
+  "home.label":"Inicio"
 }
