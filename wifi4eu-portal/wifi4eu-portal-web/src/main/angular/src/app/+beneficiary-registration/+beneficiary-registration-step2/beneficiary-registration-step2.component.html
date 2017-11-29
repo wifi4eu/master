@@ -26,11 +26,13 @@
                                 <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate
                                     }}</label>
                                 <div class="clearfix"></div>
-                                <p-autoComplete id="municipality" class="form-control" name="municipality" field="name1"
+                                <p-autoComplete id="municipality" class="form-control {{css_class}}"
+                                                ng-model-options="{allowInvalid: true}" name="municipality"
+                                                field="name1"
                                                 [(ngModel)]="selectedLaus[0]" [suggestions]="lauSuggestions"
                                                 (completeMethod)="search($event)"
                                                 (onSelect)="checkMunicipalitiesSelected()"
-                                                (input)="checkMunicipalitiesSelected()"></p-autoComplete>
+                                                (input)="checkMunicipalitiesSelected()" required></p-autoComplete>
                                 <!--<div [hidden="country.valid || country.pristine" class="alert alert-danger">Country is required</div>-->
                             </div>
                         </div>
@@ -124,7 +126,8 @@
                                         <div class="clearfix"></div>
                                         <p-autoComplete [id]="'municipality-'+i" [name]="'municipality-'+i"
                                                         class="form-control"
-                                                        [(ngModel)]="selectedLaus[i]" field="name1"
+                                                        [(ngModel)]="selectedLaus[i]"
+                                                        ng-model-options="{allowInvalid: true}" field="name1"
                                                         [suggestions]="lauSuggestions"
                                                         (completeMethod)="search($event)"
                                                         (onSelect)="checkMunicipalitiesSelected()"

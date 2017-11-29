@@ -31,6 +31,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private emailConfirmations: string[] = [''];
     private readonly MAX_LENGTH = 2;
     private emailsMatch: boolean = false;
+    private css_class: string = "";
 
     constructor(private lauApi: LauApi) {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
@@ -67,10 +68,12 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         for (let lau of this.selectedLaus) {
             if (!lau.id) {
                 this.municipalitiesSelected = false;
+                this.css_class = "notValid";
                 return;
             }
         }
         this.municipalitiesSelected = true;
+        this.css_class = "isValid";
     }
 
     private checkEmailsMatch() {
