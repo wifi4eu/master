@@ -51,8 +51,10 @@ public class MunicipalityResource {
             MunicipalityDTO resMunicipality = municipalityService.createMunicipality(municipalityDTO);
             return new ResponseDTO(true, resMunicipality, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'createMunicipality' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
@@ -65,8 +67,10 @@ public class MunicipalityResource {
             MunicipalityDTO resMunicipality = municipalityService.deleteMunicipality(municipalityId);
             return new ResponseDTO(true, resMunicipality, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'deleteMunicipality' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 }

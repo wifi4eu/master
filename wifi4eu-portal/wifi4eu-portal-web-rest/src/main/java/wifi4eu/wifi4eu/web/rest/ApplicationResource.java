@@ -57,8 +57,10 @@ public class ApplicationResource {
             ApplicationDTO resApplication = applicationService.createApplication(applicationDTO);
             return new ResponseDTO(true, resApplication, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'createApplication' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
@@ -73,8 +75,10 @@ public class ApplicationResource {
             ApplicationDTO resApplication = applicationService.deleteApplication(applicationId);
             return new ResponseDTO(true, resApplication, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'deleteApplication' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 

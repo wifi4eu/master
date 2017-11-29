@@ -51,8 +51,10 @@ public class HelpdeskCommentResource {
             HelpdeskCommentDTO resHelpdeskComment = helpdeskService.createHelpdeskComment(helpdeskCommentDTO);
             return new ResponseDTO(true, resHelpdeskComment, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'createHelpdeskComment' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
@@ -66,8 +68,10 @@ public class HelpdeskCommentResource {
             HelpdeskCommentDTO resHelpdeskComment = helpdeskService.deleteHelpdeskComment(commentId);
             return new ResponseDTO(true, resHelpdeskComment, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'deleteHelpdeskComment' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 }

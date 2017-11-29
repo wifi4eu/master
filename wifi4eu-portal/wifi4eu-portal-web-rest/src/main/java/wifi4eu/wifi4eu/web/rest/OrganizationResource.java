@@ -51,8 +51,10 @@ public class OrganizationResource {
             OrganizationDTO resOrganization = organizationService.createOrganization(organizationDTO);
             return new ResponseDTO(true, resOrganization, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'createOrganization' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
@@ -65,8 +67,10 @@ public class OrganizationResource {
             OrganizationDTO resOrganization = organizationService.deleteOrganization(organizationId);
             return new ResponseDTO(true, resOrganization, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'deleteOrganization' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 

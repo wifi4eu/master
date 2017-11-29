@@ -37,9 +37,10 @@ public class BeneficiaryResource {
             List<RegistrationDTO> resRegistrations = beneficiaryService.submitBeneficiaryRegistration(beneficiaryDTO);
             return new ResponseDTO(true, resRegistrations, null);
         } catch (Exception e) {
-            _log.error("beneficiary registration",e);
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'submitBeneficiaryRegistration' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
