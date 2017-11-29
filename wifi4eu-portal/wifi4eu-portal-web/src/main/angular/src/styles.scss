@@ -1139,3 +1139,17 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   margin-top: 2em !important;
   margin-bottom: 2em !important;
 }
+
+.counter {
+  background-image: url("assets/images/registrationsCounter.png");
+  background-position: right;
+  height: 497px;
+  background-size: 66%;
+  padding-top: 83px;
+  margin-right: -1em;
+  background-repeat: no-repeat;
+}
+
+.counterText {
+  padding-top: 1em;
+}
