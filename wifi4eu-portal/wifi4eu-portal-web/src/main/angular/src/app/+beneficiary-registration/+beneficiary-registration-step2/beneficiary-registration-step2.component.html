@@ -26,7 +26,7 @@
                                 <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate
                                     }}</label>
                                 <div class="clearfix"></div>
-                                <p-autoComplete id="municipality" class="form-control {{css_class}}"
+                                <p-autoComplete id="municipality" class="form-control {{css_class_municipalities}}"
                                                 ng-model-options="{allowInvalid: true}" name="municipality"
                                                 field="name1"
                                                 [(ngModel)]="selectedLaus[0]" [suggestions]="lauSuggestions"
@@ -103,8 +103,7 @@
             <div id="mayor-confirm-email" class="form-group ui-g">
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'confirmemailMayor.label' | translate }}</label>
-                    <input class="form-control paddingInput" type="email"
-                           pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                    <input class="form-control paddingInput {{css_class_email}}"
                            name="confirm-email" id="confirm-email" [(ngModel)]="emailConfirmations[0]"
                            (input)="checkEmailsMatch()" (paste)="preventPaste()" required>
                 </div>
