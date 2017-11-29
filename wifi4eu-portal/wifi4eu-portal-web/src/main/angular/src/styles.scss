@@ -1139,3 +1139,11 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   margin-top: 2em !important;
   margin-bottom: 2em !important;
 }
+
+.notValid {
+  border-left: 5px solid #f44336 !important;
+}
+
+.isValid {
+  border-left: 5px solid #4caf50 !important;
+}
