@@ -210,7 +210,7 @@
                                    [(ngModel)]="emailConfirmations[i]" required>
                         </div>
                     </div>
-                    <div class="form-group ui-g center">
+                    <div class="form-group ui-g center" *ngIf="i > 0">
                         <button type="button" (click)="removeMunicipality(i)">Remove municipality</button>
                     </div>
                     <br><br>
