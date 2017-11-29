@@ -105,7 +105,7 @@
                     <label class="label floatLeft">{{ 'confirmemailMayor.label' | translate }}</label>
                     <input class="form-control paddingInput {{css_class_email}}"
                            name="confirm-email" id="confirm-email" [(ngModel)]="emailConfirmations[0]"
-                           (input)="checkEmailsMatch()" (paste)="preventPaste()" required>
+                           (input)="checkEmailsMatch()" (paste)="preventPaste()">
                 </div>
             </div>
         </ng-container>
