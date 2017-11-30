@@ -79,7 +79,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
 
     private checkEmailsMatch() {
         this.emailsMatch = false;
-        if (this.mayors[0].email === this.emailConfirmations[0]) {
+        if (this.mayors[0].email === this.emailConfirmations[0] && this.emailConfirmations[0].length > 0) {
             this.emailsMatch = true;
             this.css_class_email = "isValid";
         } else {
