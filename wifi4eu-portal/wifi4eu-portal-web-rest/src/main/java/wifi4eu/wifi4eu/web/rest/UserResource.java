@@ -64,8 +64,28 @@ public class UserResource {
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'createUser' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Save user changes")
+    @RequestMapping(value = "/saveChanges", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO) {
+        try {
+            _log.info("saveUserChanges");
+            UserDTO resUser = userService.saveUserChanges(userDTO);
+            resUser.setPassword(null);
+            return new ResponseDTO(true, resUser, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'saveUserChanges' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
@@ -79,8 +99,10 @@ public class UserResource {
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'deleteUser' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
@@ -88,7 +110,7 @@ public class UserResource {
     @RequestMapping(value = "/type/{type}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<UserDTO> getUsersByType(@PathVariable("type") final Integer type) {
-        _log.info("getUsersByType" + type);
+        _log.info("getUsersByType: " + type);
         List<UserDTO> resUsers = userService.getUsersByType(type);
         for (UserDTO resUser : resUsers) {
             resUser.setPassword(null);
@@ -109,6 +131,9 @@ public class UserResource {
             }
             return new ResponseDTO(true, resUser, null);
         } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'login' operation.", e);
+            }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
@@ -122,6 +147,9 @@ public class UserResource {
             userService.activateAccount(activateAccountDTO);
             return new ResponseDTO(true, null, null);
         } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'activateAccount' operation.", e);
+            }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
@@ -137,26 +165,27 @@ public class UserResource {
             }
             return new ResponseDTO(false, null, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'resendEmail' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
 
     @ApiOperation(value = "Send forgot password mail with a link to reset password")
-    @RequestMapping(value = "forgotpassword", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO forgotPassword(@RequestBody final String email) {
-
         _log.info("forgot Password: " + email);
-
         try {
             userService.forgotPassword(email);
             return new ResponseDTO(true, null, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'forgotPassword' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-
     }
 }

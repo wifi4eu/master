@@ -30,7 +30,12 @@
                         <div class="ui-g-12">
                             <label class="label" for="country">{{ 'country.label' | translate }}</label>
                             <select [(ngModel)]="country" (ngModelChange)="selectCountry($event)"
-                                    id="country" name="country" class="form-control" [disabled]="countries.length < 1">
+                                    id="country" name="country" class="form-control"
+                                    ng-options="option.value as option.name for option in typeOptions"
+                                    [disabled]="countries.length < 1">
+                                <option disabled selected [ngValue]="null">
+                                    {{ 'registration.step1.instructions' | translate }}
+                                </option>
                                 <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry">
                                     {{currentCountry.label}}
                                 </option>

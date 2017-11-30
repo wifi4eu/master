@@ -51,8 +51,10 @@ public class RepresentationResource {
             RepresentationDTO resRepresentation = representationService.createRepresentation(representationDTO);
             return new ResponseDTO(true, resRepresentation, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'createRepresentation' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
@@ -65,8 +67,10 @@ public class RepresentationResource {
             RepresentationDTO resRepresentation = representationService.deleteRepresentation(representationId);
             return new ResponseDTO(true, resRepresentation, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'deleteRepresentation' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 

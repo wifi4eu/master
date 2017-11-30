@@ -21,6 +21,10 @@ export class AppGuard implements CanActivate {
             case "beneficiary-portal":
                 allow = this.canActivateBeneficiary();
                 break;
+            case "beneficiary-registration":
+            case "supplier-registration":
+                allow = this.canActivateRegistration();
+                break;
             case "helpdesk":
                 allow = this.canActivateMemberState() || this.canActivateDgConn();
                 break;
@@ -42,6 +46,10 @@ export class AppGuard implements CanActivate {
             return false;
         }
         return (this.user.type == 2 || this.user.type == 3) ? true : false;
+    }
+
+    canActivateRegistration() {
+        return (this.user === null);
     }
 
     canActivateSupplier() {

@@ -10,5 +10,5 @@ public interface NutsRepository extends CrudRepository<Nuts, Integer> {
 
     Iterable<Nuts> findByCountryCode(String countryCode);
 
-    Iterable<Nuts> findByCountryCodeAndLevel(String countryCode, Integer level);
+    Iterable<Nuts> getNutsByCountryCodeAndLevelOrderByLabelAsc(String countryCode, Integer level);
 }

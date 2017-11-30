@@ -79,6 +79,7 @@ $light-grey: #f4f4f4;
 
 body {
   font-family: verdana;
+  background-color: whitesmoke;
 }
 
 .contenedor {
@@ -1152,4 +1153,11 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 
 .counterText {
   padding-top: 1em;
+}
+.notValid {
+  border-left: 5px solid #f44336 !important;
+}
+
+.isValid {
+  border-left: 5px solid #4caf50 !important;
 }

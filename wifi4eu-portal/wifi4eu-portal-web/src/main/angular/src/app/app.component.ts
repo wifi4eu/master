@@ -57,6 +57,7 @@ export class AppComponent {
         this.initChildren();
         this.updateHeader();
         this.sharedService.changeEmitted.subscribe(() => this.updateHeader());
+        this.sharedService.logoutEmitted.subscribe(() => this.logout());
     }
 
     initChildren() {
@@ -72,29 +73,17 @@ export class AppComponent {
         ];
         this.children[1] = [
             new UxLayoutLink({
-                label: 'Supplier Registration',
-                url: '/supplier-registration'
-            }),
-            new UxLayoutLink({
                 label: 'Supplier Portal',
                 url: '/supplier-portal'
             })
         ];
         this.children[2] = [
             new UxLayoutLink({
-                label: 'Beneficiary Registration',
-                url: '/beneficiary-registration'
-            }),
-            new UxLayoutLink({
                 label: 'Beneficiary Portal',
                 url: '/beneficiary-portal'
             })
         ];
         this.children[3] = [
-            new UxLayoutLink({
-                label: 'Beneficiary Registration',
-                url: '/beneficiary-registration'
-            }),
             new UxLayoutLink({
                 label: 'Beneficiary Portal',
                 url: '/beneficiary-portal'
@@ -125,16 +114,27 @@ export class AppComponent {
                     switch (this.user.type) {
                         case 1:
                             this.profileUrl = '/supplier-portal/profile';
+                            this.menuLinks = this.children[1];
                             break;
                         case 2:
                         case 3:
+                            this.registrationApi.checkIfRegistrationIsKO(this.user.id).subscribe(
+                                (response: ResponseDTOBase) => {
+                                    if (response.data) {
+                                        this.logout();
+                                    }
+                                }
+                            );
                             this.profileUrl = '/beneficiary-portal/profile';
+                            this.menuLinks = this.children[2];
                             break;
                         case 5:
                             this.profileUrl = '/dgconn-portal';
+                            this.menuLinks = this.children[5];
                             break;
                         default:
                             this.profileUrl = '/home';
+                            this.menuLinks = this.children[0];
                             break;
                     }
                 }, error => {
@@ -144,6 +144,7 @@ export class AppComponent {
         } else {
             this.logout();
         }
+        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
 
     changeLanguage(language: UxLanguage) {
@@ -161,6 +162,7 @@ export class AppComponent {
             children: this.children[0]
         })];
         this.profileUrl = null;
+        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
 
     private goToTop() {

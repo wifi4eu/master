@@ -95,7 +95,7 @@
             <div class="form-group">
                 <label class="label floatLeft" for="confirmEmail">{{ 'confirmemail.label' | translate }}</label>
                 <input class="form-control paddingInput" type="email" id="confirmEmail" name="confirmEmail"
-                       [(ngModel)]="confirmEmailField" #confirmEmail="ngModel"
+                       [(ngModel)]="confirmEmailField" #confirmEmail="ngModel" (paste)="preventPaste()"
                        (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
                 <div class="alert alert-danger" [hidden]="confirmEmail.valid || confirmEmail.pristine">
                     Valid email information is required

@@ -89,7 +89,8 @@
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
                 <label class="label" for="website">{{ 'company.web' | translate }}</label>
-                <input class="form-control paddingInput" type="text" id="website" name="website" [pattern]="websitePattern"
+                <input class="form-control paddingInput" type="text" id="website" name="website"
+                       [pattern]="websitePattern"
                        [(ngModel)]="supplier.website" #website="ngModel" required>
                 <div class="alert alert-danger" [hidden]="website.valid || website.pristine">
                     Company Web is required
@@ -107,15 +108,19 @@
                 <div class="ui-g-12 left">
                     <div class="fileUpload btn btn-primary">
                         <span>{{ 'upload.logo' | translate }}</span>
-                        <input #logoInput id="uploadBtn" type="file" class="upload" (change)="changeLogo($event)" accept="image/*" />
+                        <input #logoInput id="uploadBtn" type="file" class="upload" (change)="changeLogo($event)"
+                               accept="image/*"/>
                     </div>
                 </div>
                 <br>
-                <div *ngIf="supplier.logo != null" class="ui-g-12" style="border: 1px solid #D5D5D5; background: #ffffff;">
+                <div *ngIf="supplier.logo != null" class="ui-g-12"
+                     style="border: 1px solid #D5D5D5; background: #ffffff;">
                     <img [src]="logoUrl.result" class="ui-g-3">
-                    <span class="ui-g-1"></span>
-                    <span class="ui-g-4">{{logoFile.name}}<br>{{logoFile.size}} KB</span>
-                    <span class="ui-g-1"></span>
+                    <div class="ui-g">
+                        <span class="ui-g-1"></span>
+                        <span class="ui-g-4">{{logoFile.name}}<br>{{logoFile.size}} KB</span>
+                        <span class="ui-g-1"></span>
+                    </div>
                     <button type="button" class="ui-g-3 btn btn-primary" (click)="clearLogoFile()">Clear</button>
                 </div>
             </div>
@@ -124,7 +129,9 @@
     <div class="form-group ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <a href="#/home"><button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button></a>
+            <a href="#/home">
+                <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button>
+            </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn btn-primary publish-button" [disabled]="!supplierForm.form.valid">
