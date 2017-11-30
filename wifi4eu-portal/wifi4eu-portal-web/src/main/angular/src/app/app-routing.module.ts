@@ -50,7 +50,8 @@ import {AppGuard} from "./app.guard";
             canActivate: [AppGuard]
         }, {
             path: 'supplier-registration',
-            loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule'
+            loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule',
+            canActivate: [AppGuard]
         }, {
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',

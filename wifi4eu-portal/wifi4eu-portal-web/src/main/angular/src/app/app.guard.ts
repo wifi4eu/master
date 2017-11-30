@@ -22,6 +22,7 @@ export class AppGuard implements CanActivate {
                 allow = this.canActivateBeneficiary();
                 break;
             case "beneficiary-registration":
+            case "supplier-registration":
                 allow = this.canActivateRegistration();
                 break;
             case "helpdesk":
