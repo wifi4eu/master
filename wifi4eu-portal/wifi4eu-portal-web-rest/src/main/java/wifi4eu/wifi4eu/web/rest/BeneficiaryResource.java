@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
@@ -42,6 +43,18 @@ public class BeneficiaryResource {
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
+    }
+
+    @ApiOperation(value = "Get beneficiaries by specific thread id")
+    @RequestMapping(value = "/thread/{threadId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<BeneficiaryDTO> getBeneficiariesByThreadId(@PathVariable("threadId") final Integer threadId) {
+        _log.info("getBeneficiariesByThreadId: " + threadId);
+        List<BeneficiaryDTO> resBeneficiaries = beneficiaryService.getBeneficiariesByThreadId(threadId);
+        for (BeneficiaryDTO resBenenficiary : resBeneficiaries) {
+            resBenenficiary.getUser().setPassword(null);
+        }
+        return resBeneficiaries;
     }
 
 }

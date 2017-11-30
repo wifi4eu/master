@@ -85,16 +85,16 @@ export class BeneficiaryProfileComponent {
                             }
                         );
                     } else {
-                        this.growl('You are not allowed to view this page.', 'error.notallowed', 'warn');
+                        this.sharedService.growlTranslation('You are not allowed to view this page.', 'error.notallowed', 'warn');
                         this.router.navigateByUrl('/home');
                     }
                 }, error => {
-                    this.growl('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'warn');
+                    this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'error');
                     this.router.navigateByUrl('/home');
                 }
             );
         } else {
-            this.growl('You are not logged in!', 'error.notloggedin', 'warn');
+            this.sharedService.growlTranslation('You are not logged in!', 'error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
     }
@@ -191,12 +191,12 @@ export class BeneficiaryProfileComponent {
                             if (data.success) {
                                 registrationCount++;
                                 if (registrationCount >= registrations.length) {
-                                    this.growl('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
+                                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
                                     this.sharedService.logout();
                                 }
                             }
                         }, error => {
-                            this.growl('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
+                            this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
                         }
                     );
                 }
@@ -206,77 +206,6 @@ export class BeneficiaryProfileComponent {
 
     private goToDiscussion() {
         this.router.navigate(['../discussion-forum'], {relativeTo: this.route});
-    }
-
-    private growl(translatedString: string, keyToTranslate: string, type: string) {
-        this.translateService.get(keyToTranslate).subscribe(
-            (translation: string) => {
-                if (translation) {
-                    translatedString = translation;
-                }
-                switch (type) {
-                    case 'success':
-                        this.uxService.growl({
-                            severity: 'success',
-                            summary: 'SUCCESS',
-                            detail: translatedString
-                        });
-                        break;
-                    case 'error':
-                        this.uxService.growl({
-                            severity: 'error',
-                            summary: 'ERROR',
-                            detail: translatedString
-                        });
-                        break;
-                    case 'warn':
-                        this.uxService.growl({
-                            severity: 'warn',
-                            summary: 'WARNING',
-                            detail: translatedString
-                        });
-                        break;
-                    case 'info':
-                        this.uxService.growl({
-                            severity: 'info',
-                            summary: 'INFO',
-                            detail: translatedString
-                        });
-                        break;
-                }
-            }, error => {
-                switch (type) {
-                    case 'success':
-                        this.uxService.growl({
-                            severity: 'success',
-                            summary: 'SUCCESS',
-                            detail: translatedString
-                        });
-                        break;
-                    case 'error':
-                        this.uxService.growl({
-                            severity: 'error',
-                            summary: 'ERROR',
-                            detail: translatedString
-                        });
-                        break;
-                    case 'warn':
-                        this.uxService.growl({
-                            severity: 'warn',
-                            summary: 'WARNING',
-                            detail: translatedString
-                        });
-                        break;
-                    case 'info':
-                        this.uxService.growl({
-                            severity: 'info',
-                            summary: 'INFO',
-                            detail: translatedString
-                        });
-                        break;
-                }
-            }
-        );
     }
 
     private preventPaste(event: any) {
