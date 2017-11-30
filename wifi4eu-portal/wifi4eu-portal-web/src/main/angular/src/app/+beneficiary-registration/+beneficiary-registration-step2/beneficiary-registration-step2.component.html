@@ -26,14 +26,9 @@
                                 <label class="label floatLeft" for="municipality">{{ 'municipality.label' | translate
                                     }}</label>
                                 <div class="clearfix"></div>
-                                <p-autoComplete id="municipality" class="form-control {{css_class_municipalities}}"
-                                                ng-model-options="{allowInvalid: true}" name="municipality"
-                                                field="name1"
-                                                [(ngModel)]="selectedLaus[0]" [suggestions]="lauSuggestions"
-                                                (completeMethod)="search($event)"
-                                                (onSelect)="checkMunicipalitiesSelected()"
-                                                (input)="checkMunicipalitiesSelected()" required></p-autoComplete>
-                                <!--<div [hidden="country.valid || country.pristine" class="alert alert-danger">Country is required</div>-->
+                                <p-autoComplete id="municipality" class="form-control" name="municipality" field="name1"
+                                                [(ngModel)]="laus[0]" [suggestions]="lauSuggestions" (completeMethod)="search($event, 0)" (onSelect)="selectMunicipality(true, 0)"
+                                                required></p-autoComplete>
                             </div>
                         </div>
                     </div>
@@ -45,7 +40,7 @@
                         <div class="form-group">
                             <label class="label floatLeft" for="address">{{ 'townHall.address' | translate }}</label>
                             <input type="text" class="form-control paddingInput" min="1"
-                                   id="address" name="address" [(ngModel)]="addressFields[0]" required>
+                                   id="address" name="address" [(ngModel)]="municipalities[0].address" required>
                         </div>
                     </div>
 
@@ -53,7 +48,7 @@
                         <div class="form-group">
                             <label class="label floatLeft" for="address">{{ 'number.label' | translate }}</label>
                             <input type="number" class="form-control paddingInput"
-                                   id="addressNum" name="addressNum" [(ngModel)]="addressNumFields[0]" required>
+                                   id="addressNum" name="addressNum" [(ngModel)]="municipalities[0].addressNum" required>
                         </div>
                     </div>
                 </div>
@@ -65,7 +60,7 @@
                             <label class="label floatLeft" for="postalCode">{{ 'postal-code.label' | translate
                                 }}</label>
                             <input type="text" class="form-control paddingInput"
-                                   id="postalCode" name="postalCode" [(ngModel)]="postalCodeFields[0]" required>
+                                   id="postalCode" name="postalCode" [(ngModel)]="municipalities[0].postalCode" required>
                         </div>
                     </div>
                     <div class="ui-g-8"></div>
@@ -123,14 +118,10 @@
                                         <label class="label floatLeft" for="municipality">{{ 'municipality.label' |
                                             translate }}</label>
                                         <div class="clearfix"></div>
-                                        <p-autoComplete [id]="'municipality-'+i" [name]="'municipality-'+i"
-                                                        class="form-control"
-                                                        [(ngModel)]="selectedLaus[i]"
-                                                        ng-model-options="{allowInvalid: true}" field="name1"
-                                                        [suggestions]="lauSuggestions"
-                                                        (completeMethod)="search($event)"
-                                                        (onSelect)="checkMunicipalitiesSelected()"
-                                                        (input)="checkMunicipalitiesSelected()"></p-autoComplete>
+                                        <p-autoComplete [id]="'municipality-'+i" [name]="'municipality-'+i" class="form-control"
+                                                        [(ngModel)]="laus[i]" field="name1" [suggestions]="lauSuggestions"
+                                                        (completeMethod)="search($event, i)" (onSelect)="selectMunicipality(true, i)"
+                                                        required></p-autoComplete>
                                         <!--<div [hidden="country.valid || country.pristine" class="alert alert-danger">Country is required</div>-->
                                     </div>
                                 </div>
@@ -144,8 +135,7 @@
                                     <label class="label floatLeft" for="address">{{ 'townHall.address' | translate
                                         }}</label>
                                     <input type="text" class="form-control paddingInput" min="1"
-                                           [id]="'address-'+i" [name]="'address-'+i" [(ngModel)]="addressFields[i]"
-                                           required>
+                                           [id]="'address-'+i" [name]="'address-'+i" [(ngModel)]="municipalities[i].address" required>
                                 </div>
                             </div>
 
@@ -154,8 +144,7 @@
                                     <label class="label floatLeft" for="address">{{ 'number.label' | translate
                                         }}</label>
                                     <input type="number" class="form-control paddingInput"
-                                           [id]="'addressNum-'+i" [name]="'addressNum-'+i"
-                                           [(ngModel)]="addressNumFields[i]" required>
+                                           [id]="'addressNum-'+i" [name]="'addressNum-'+i" [(ngModel)]="municipalities[i].addressNum" required>
                                 </div>
                             </div>
                         </div>
@@ -167,8 +156,7 @@
                                     <label class="label floatLeft" for="postalCode">{{ 'postal-code.label' | translate
                                         }}</label>
                                     <input type="text" class="form-control paddingInput"
-                                           [id]="'postalCode-'+i" [name]="'postalCode-'+i"
-                                           [(ngModel)]="postalCodeFields[i]" required>
+                                           [id]="'postalCode-'+i" [name]="'postalCode-'+i" [(ngModel)]="municipalities[i].postalCode" required>
                                 </div>
                             </div>
                             <div class="ui-g-8"></div>
