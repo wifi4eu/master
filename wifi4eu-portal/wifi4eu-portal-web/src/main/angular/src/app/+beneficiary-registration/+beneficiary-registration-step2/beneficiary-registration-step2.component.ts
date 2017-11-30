@@ -32,7 +32,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private readonly MAX_LENGTH = 2;
     private emailsMatch: boolean = false;
     private css_class_municipalities: string = "";
-    private css_class_email: string = "";
+    private css_class_email: string[] = [];
 
     constructor(private lauApi: LauApi) {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
@@ -77,13 +77,13 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         this.css_class_municipalities = "isValid";
     }
 
-    private checkEmailsMatch() {
+    private checkEmailsMatch(counterMayor: number) {
         this.emailsMatch = false;
-        if (this.mayors[0].email === this.emailConfirmations[0] && this.emailConfirmations[0].length > 0) {
+        if (this.mayors[counterMayor].email === this.emailConfirmations[counterMayor] && this.emailConfirmations[counterMayor].length > 0) {
             this.emailsMatch = true;
-            this.css_class_email = "isValid";
+            this.css_class_email[counterMayor] = "isValid";
         } else {
-            this.css_class_email = "notValid";
+            this.css_class_email[counterMayor] = "notValid";
         }
     }
 
