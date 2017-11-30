@@ -46,7 +46,8 @@ import {AppGuard} from "./app.guard";
             //     canActivate: [AppGuard]
         }, {
             path: 'beneficiary-registration',
-            loadChildren: 'app/+beneficiary-registration/beneficiary-registration.module#BeneficiaryRegistrationModule'
+            loadChildren: 'app/+beneficiary-registration/beneficiary-registration.module#BeneficiaryRegistrationModule',
+            canActivate: [AppGuard]
         }, {
             path: 'supplier-registration',
             loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule'
@@ -65,6 +66,7 @@ import {AppGuard} from "./app.guard";
             redirectTo: 'notfound'
         }
     ], {useHash: true})],
+    providers: [AppGuard],
     exports: [RouterModule]
 })
 export class AppRoutingModule {
