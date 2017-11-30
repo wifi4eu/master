@@ -105,9 +105,9 @@
                     <!-- Mayor confirmation email -->
                     <div id="mayor-confirm-email">
                         <label class="label floatLeft">{{ 'confirmemailMayor.label' | translate }}</label>
-                        <input class="form-control paddingInput" type="email" id="repeatEmail" name="repeatEmail"
-                               pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [disabled]="imMayor"
-                               [(ngModel)]="repeatEmail" (input)="checkEmailsMatch()" (paste)="preventPaste()" required>
+                        <input class="form-control paddingInput {{css_class_email}}" id="repeatEmail" name="repeatEmail"
+                               [disabled]="imMayor"
+                               [(ngModel)]="repeatEmail" (input)="checkEmailsMatch()" (paste)="preventPaste()">
                     </div>
                 </div>
                 <div class="ui-g-2"></div>
