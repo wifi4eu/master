@@ -342,5 +342,7 @@
   "discussion.growl.error": "Ocurrió un error y no se pudo enviar su petición de mediación. Por favor, vuelva a intentarlo más tarde.",
   "error.api.generic": "Ocurrió un error al intentar recuperar la información del servidor. Por favor, vuelva a intentarlo más tarde.",
   "already.registered.error": "Usuario ya registrado.",
-  "home.label":"Inicio"
+  "home.label":"Inicio",
+  "thread.message.success":"Su mensaje se ha enviado correctamente.",
+  "thread.message.error":"Ocurrió un error al intentar enviar su mensaje. Por favor, vuelva a intentarlo más tarde."
 }

@@ -46,8 +46,6 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         if (changes.hasOwnProperty("multipleMunicipalities")) {
             if (!this.multipleMunicipalities)
                 this.removeMunicipality(1, this.municipalities.length - 1);
-            console.log(this.municipalities);
-            console.log(this.mayors);
         }
     }
 

@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
@@ -16,6 +18,9 @@ import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.util.MailService;
 
 import java.security.SecureRandom;
@@ -166,16 +171,11 @@ public class UserService {
                 String subject = "wifi4eu portal Forgot Password";
                 String msgBody = "you can access to the next link and reset your password " + RESET_PASS_URL + tempTokenDTO.getToken();
                 mailService.sendEmail(email, fromAddress, subject, msgBody);
-
             } else {
                 throw new Exception("trying to forgetPassword with an unregistered user");
             }
-
         } else {
             throw new Exception("trying to forgetPassword without an email");
         }
-
     }
-
-
 }

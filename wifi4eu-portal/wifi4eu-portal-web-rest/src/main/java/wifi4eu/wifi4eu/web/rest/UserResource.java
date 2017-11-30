@@ -92,7 +92,7 @@ public class UserResource {
     @RequestMapping(value = "/type/{type}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<UserDTO> getUsersByType(@PathVariable("type") final Integer type) {
-        _log.info("getUsersByType" + type);
+        _log.info("getUsersByType: " + type);
         List<UserDTO> resUsers = userService.getUsersByType(type);
         for (UserDTO resUser : resUsers) {
             resUser.setPassword(null);
@@ -169,6 +169,5 @@ public class UserResource {
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-
     }
 }
