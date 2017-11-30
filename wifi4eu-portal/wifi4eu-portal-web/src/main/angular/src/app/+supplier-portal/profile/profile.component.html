@@ -273,7 +273,7 @@
                                 <img id="logo" [src]="supplier.logo" height="75"
                                      style="max-width: 100%; border: 1px solid; box-shadow: 0px 0px 5px black;">
                             </div>
-                            <h2 *ngIf="!supplier.logo" class="ui-g-4">No logo uploaded</h2>
+                            <h2 *ngIf="!supplier.logo" class="ui-g-4">{{'noLogo.label' | translate}}</h2>
                             <div class="ui-g-2"></div>
                             <div class="ui-g-5">
                                 <h3 *ngIf="isLogoUploaded"><b>New logo</b></h3><br>
