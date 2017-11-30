@@ -73,29 +73,17 @@ export class AppComponent {
         ];
         this.children[1] = [
             new UxLayoutLink({
-                label: 'Supplier Registration',
-                url: '/supplier-registration'
-            }),
-            new UxLayoutLink({
                 label: 'Supplier Portal',
                 url: '/supplier-portal'
             })
         ];
         this.children[2] = [
             new UxLayoutLink({
-                label: 'Beneficiary Registration',
-                url: '/beneficiary-registration'
-            }),
-            new UxLayoutLink({
                 label: 'Beneficiary Portal',
                 url: '/beneficiary-portal'
             })
         ];
         this.children[3] = [
-            new UxLayoutLink({
-                label: 'Beneficiary Registration',
-                url: '/beneficiary-registration'
-            }),
             new UxLayoutLink({
                 label: 'Beneficiary Portal',
                 url: '/beneficiary-portal'
@@ -126,6 +114,7 @@ export class AppComponent {
                     switch (this.user.type) {
                         case 1:
                             this.profileUrl = '/supplier-portal/profile';
+                            this.menuLinks = this.children[1];
                             break;
                         case 2:
                         case 3:
@@ -137,12 +126,15 @@ export class AppComponent {
                                 }
                             );
                             this.profileUrl = '/beneficiary-portal/profile';
+                            this.menuLinks = this.children[2];
                             break;
                         case 5:
                             this.profileUrl = '/dgconn-portal';
+                            this.menuLinks = this.children[5];
                             break;
                         default:
                             this.profileUrl = '/home';
+                            this.menuLinks = this.children[0];
                             break;
                     }
                 }, error => {
