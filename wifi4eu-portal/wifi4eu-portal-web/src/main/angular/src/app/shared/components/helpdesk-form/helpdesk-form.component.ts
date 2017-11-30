@@ -39,8 +39,7 @@ export class HelpdeskFormComponent {
 
     sendIssue() {
         this.helpdeskIssue.portal = this.portal;
-        //TODO:Fix Date objects
-        //this.helpdeskIssue.createDate = new Date().getMilliseconds;
+        this.helpdeskIssue.createDate = Date.now();
         this.helpdeskIssue.assignedTo = "Member State";
         this.helpdeskIssue.status = 0;
         this.helpdeskApi.createHelpdeskIssue(this.helpdeskIssue).subscribe(
