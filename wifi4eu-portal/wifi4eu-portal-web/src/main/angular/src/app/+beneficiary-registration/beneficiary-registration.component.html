@@ -2,12 +2,9 @@
     <ux-wizard-step label="{{ 'beneficiaryRegistration.step1.title' | translate }}" [isCompleted]="completed[0]"
                     [isActive]="active[0]">
         <uxWizardStepCustomContent>
-            <beneficiary-registration-step1 [country]="country" [countries]="countries"
-                                            [(mayors)]="mayors"
-                                            [(municipalities)]="municipalities"
-                                            [(laus)]="laus"
-                                            [(initialUser)]="initialUser"
+            <beneficiary-registration-step1 [countries]="countries" [country]="country"
                                             [organizations]="organizations"
+                                            [(multipleMunicipalities)]="multipleMunicipalities"
                                             (countryChange)="selectCountry($event)"
                                             (onNext)="navigate(2)"></beneficiary-registration-step1>
         </uxWizardStepCustomContent>
@@ -18,8 +15,7 @@
             <beneficiary-registration-step2 [country]="country"
                                             [multipleMunicipalities]="multipleMunicipalities"
                                             [(municipalities)]="municipalities"
-                                            [(laus)]="laus"
-                                            [(mayors)]="mayors"
+                                            [(laus)]="laus" [(mayors)]="mayors"
                                             (onNext)="navigate(3)" (onBack)="navigate(1)"></beneficiary-registration-step2>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
@@ -29,8 +25,7 @@
             <beneficiary-registration-step3 [(initialUser)]="initialUser" [mayors]="mayors"
                                             [multipleMunicipalities]="multipleMunicipalities"
                                             [municipalities]="municipalities"
-                                            (onNext)="navigate(4)"
-                                            (onBack)="navigate(2)"></beneficiary-registration-step3>
+                                            (onNext)="navigate(4)" (onBack)="navigate(2)"></beneficiary-registration-step3>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
     <ux-wizard-step label="{{ 'registration.review.title' | translate }}" [isCompleted]="completed[3]"
