@@ -55,6 +55,9 @@ export class BeneficiaryRegistrationComponent {
                 }
             );
             this.laus = [];
+            this.municipalities = [new MunicipalityDTOBase()];
+            this.mayors = [new MayorDTOBase()];
+            this.initialUser = new UserDTOBase();
         }
     }
 
