@@ -24,6 +24,7 @@ import {SharedService} from "./shared/shared.service";
 // import {EcasComponent} from "./+ecas/ecas.component";
 import {ChartsModule} from "ng2-charts";
 import {ForgotComponent} from "./+forgot/forgot.component";
+import {AppGuard} from "./app.guard";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -73,7 +74,7 @@ export function translateFactory(http: Http) {
     providers: [
         UxService,
         CoreService,
-        // AppGuard,
+        AppGuard,
         SharedService
     ],
     bootstrap: [AppComponent]
