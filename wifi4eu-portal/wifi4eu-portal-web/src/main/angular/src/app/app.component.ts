@@ -75,18 +75,30 @@ export class AppComponent {
             new UxLayoutLink({
                 label: 'Supplier Portal',
                 url: '/supplier-portal'
+            }),
+            new UxLayoutLink({
+                label: 'Supplier Profile',
+                url: '/supplier-portal/profile'
             })
         ];
         this.children[2] = [
             new UxLayoutLink({
                 label: 'Beneficiary Portal',
                 url: '/beneficiary-portal'
+            }),
+            new UxLayoutLink({
+                label: 'Beneficiary Profile',
+                url: '/beneficiary-portal/profile'
             })
         ];
         this.children[3] = [
             new UxLayoutLink({
                 label: 'Beneficiary Portal',
                 url: '/beneficiary-portal'
+            }),
+            new UxLayoutLink({
+                label: 'Beneficiary Profile',
+                url: '/beneficiary-portal/profile'
             })
         ];
         this.children[4] = [
