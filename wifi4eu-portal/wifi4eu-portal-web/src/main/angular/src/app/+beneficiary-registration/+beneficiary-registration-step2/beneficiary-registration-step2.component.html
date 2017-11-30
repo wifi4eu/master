@@ -129,7 +129,9 @@
                                                         (completeMethod)="search($event, i)"
                                                         (onSelect)="checkMunicipalitiesSelected()"
                                                         (input)="checkMunicipalitiesSelected()"></p-autoComplete>
-                                        <!--<div [hidden="country.valid || country.pristine" class="alert alert-danger">Country is required</div>-->
+                                        <div [hidden="country.valid || country.pristine" class="alert alert-danger">
+                                            {{'country.required' | translate}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -211,13 +213,15 @@
                         </div>
                     </div>
                     <div class="form-group ui-g center">
-                        <button type="button" (click)="removeMunicipality(i)">Remove municipality</button>
+                        <button type="button" (click)="removeMunicipality(i)">{{'removeMunicipality.label' |
+                            translate}}
+                        </button>
                     </div>
                     <br><br>
                 </custom-accordion-box>
             </ux-accordion-boxes>
             <div class="form-group ui-g center">
-                <button type="button" (click)="addMunicipality()">Add municipality</button>
+                <button type="button" (click)="addMunicipality()">{{'addMunicipalty.label' | translate}}</button>
             </div>
         </ng-container>
         <div id="navigation-buttons" class="form-group ui-g center">
