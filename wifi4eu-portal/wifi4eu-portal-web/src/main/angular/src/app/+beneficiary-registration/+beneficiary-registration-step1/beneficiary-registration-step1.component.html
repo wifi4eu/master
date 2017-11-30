@@ -33,8 +33,8 @@
                                     id="country" name="country" class="form-control"
                                     ng-options="option.value as option.name for option in typeOptions"
                                     [disabled]="countries.length < 1">
-                                <option style="display:none" value="">{{ 'registration.step1.instructions' |translate
-                                    }}
+                                <option disabled selected [ngValue]="null">
+                                    {{ 'registration.step1.instructions' | translate }}
                                 </option>
                                 <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry">
                                     {{currentCountry.label}}
