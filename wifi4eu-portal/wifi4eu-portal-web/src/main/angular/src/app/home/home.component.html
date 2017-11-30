@@ -84,6 +84,23 @@
         <div class="col-xl-2"></div>
     </div>
 </div>
+
+<div class="container-fluid second changePasswordModalNoTop"
+     *ngIf="suppliersCounter > 50 && municipalitiesCounter > 50">
+    <div class="counter">
+        <div class="row contenedor">
+            <div class="col-xl-8">
+                <p class="mayor-title counterText">{{ 'home.counterSection1' | translate }} {{municipalitiesCounter}} {{
+                    'home.counterSection2' | translate }} {{suppliersCounter}}{{ 'home.counterSection3' |
+                    translate}}</p>
+                <a class="btn btn-primary video-button center-block marginSelect"
+                   href="" *ngIf="suppliersCounter < 1">{{ 'home.counterSectionButton' | translate
+                    }}</a>
+            </div>
+            <div class="col-xl-4"></div>
+        </div>
+    </div>
+</div>
 <div class="container-fluid third">
     <div class="row contenedor">
 

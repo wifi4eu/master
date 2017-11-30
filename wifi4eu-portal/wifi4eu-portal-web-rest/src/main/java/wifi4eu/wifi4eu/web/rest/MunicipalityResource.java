@@ -74,6 +74,14 @@ public class MunicipalityResource {
         }
     }
 
+    @ApiOperation(value = "Get municipalities grouped by lau id")
+    @RequestMapping(value = "/groupedByLauId", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<MunicipalityDTO> getMunicipalitiesGroupedByLauId() {
+        _log.info("getMunicipalitiesGroupedByLauId: ");
+        return municipalityService.getMunicipalitiesGroupedByLauId();
+    }
+
     @ApiOperation(value = "Get municipalities by specific lau id")
     @RequestMapping(value = "/lauId/{lauId}",method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
