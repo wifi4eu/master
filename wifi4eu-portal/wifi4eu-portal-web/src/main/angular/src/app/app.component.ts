@@ -57,6 +57,7 @@ export class AppComponent {
         this.initChildren();
         this.updateHeader();
         this.sharedService.changeEmitted.subscribe(() => this.updateHeader());
+        this.sharedService.logoutEmitted.subscribe(() => this.logout());
     }
 
     initChildren() {
@@ -117,46 +118,39 @@ export class AppComponent {
     updateHeader() {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-
         if (this.user != null) {
             this.userApi.getUserById(this.user.id).subscribe(
                 (user: UserDTOBase) => {
-                    if (user != null) {
-                        this.registrationApi.checkIfRegistrationIsKO(user.id).subscribe(
-                            (response: ResponseDTOBase) => {
-                                if (response.success && !response.data) {
-                                    this.user = user;
-                                    switch (this.user.type) {
-                                        case 1:
-                                            this.profileUrl = '/supplier-portal/profile';
-                                            break;
-                                        case 2:
-                                        case 3:
-                                            this.profileUrl = '/beneficiary-portal/profile';
-                                            break;
-                                        case 5:
-                                            this.profileUrl = '/dgconn-portal';
-                                            break;
-                                        default:
-                                            this.profileUrl = '/home';
-                                            break;
+                    this.user = user;
+                    this.localStorage.set('user', JSON.stringify(user));
+                    switch (this.user.type) {
+                        case 1:
+                            this.profileUrl = '/supplier-portal/profile';
+                            break;
+                        case 2:
+                        case 3:
+                            this.registrationApi.checkIfRegistrationIsKO(this.user.id).subscribe(
+                                (response: ResponseDTOBase) => {
+                                    if (response.data) {
+                                        this.logout();
                                     }
-                                    this.menuLinks = [new UxLayoutLink({
-                                        label: 'Wifi4EU',
-                                        children: this.children[this.user.type]
-                                    })];
-                                } else {
-                                    this.logout();
                                 }
-                            }
-                        );
-                    } else {
-                        this.logout();
+                            );
+                            this.profileUrl = '/beneficiary-portal/profile';
+                            break;
+                        case 5:
+                            this.profileUrl = '/dgconn-portal';
+                            break;
+                        default:
+                            this.profileUrl = '/home';
+                            break;
                     }
                 }, error => {
                     this.logout();
                 }
             );
+        } else {
+            this.logout();
         }
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
@@ -170,13 +164,16 @@ export class AppComponent {
     logout() {
         this.user = null;
         this.localStorage.remove('user');
-        this.updateHeader();
         this.router.navigateByUrl('/home');
         this.menuLinks = [new UxLayoutLink({
             label: 'Wifi4EU',
             children: this.children[0]
         })];
         this.profileUrl = null;
+        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
 
+    private goToTop() {
+        window.scrollTo(0, 0);
+    }
 }

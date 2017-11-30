@@ -18,7 +18,7 @@ export class ActivationComponent implements OnInit {
         this.route.params.subscribe(params => this.activation.token = params['token']);
     }
 
-    checkPasswordsMatch() {
+    private checkPasswordsMatch() {
         if (this.activation.password.length > 0 && this.activation.password == this.activation.confirmPassword) {
             this.passwordsMatch = true;
         } else {
@@ -26,7 +26,7 @@ export class ActivationComponent implements OnInit {
         }
     }
 
-    submit() {
+    private submit() {
         this.userApi.activateAccount(this.activation).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {
@@ -73,4 +73,7 @@ export class ActivationComponent implements OnInit {
         );
     }
 
+    private preventPaste(event: any) {
+        return false;
+    }
 }

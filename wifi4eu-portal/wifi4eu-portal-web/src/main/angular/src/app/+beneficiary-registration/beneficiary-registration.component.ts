@@ -34,6 +34,7 @@ export class BeneficiaryRegistrationComponent {
     private organizations: OrganizationDTOBase[] = [];
     private countries: NutsDTOBase[] = [];
     private organizationsSubscription: Subscription = new Subscription();
+    private alreadyRegistered: boolean = false;
 
     constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private lauApi: LauApi, private organizationApi: OrganizationApi) {
         this.nutsApi.getNutsByLevel(0).subscribe(
@@ -89,16 +90,18 @@ export class BeneficiaryRegistrationComponent {
         }
         this.initialUser.type = 3;
         this.finalBeneficiary.user = this.initialUser;
+        this.alreadyRegistered = true;
         this.beneficiaryApi.submitBeneficiaryRegistration(this.finalBeneficiary).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {
                     this.successRegistration = true;
                 } else {
                     this.failureRegistration = true;
+                    this.alreadyRegistered = (data.error.errorMessage === "User already registered.");
                 }
             }, error => {
                 this.failureRegistration = true;
-                console.log(error);
+                this.alreadyRegistered = (error.errorMessage === "User already registered.");
             }
         );
     }

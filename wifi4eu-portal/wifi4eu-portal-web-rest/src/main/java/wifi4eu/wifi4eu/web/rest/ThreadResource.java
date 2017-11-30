@@ -50,8 +50,10 @@ public class ThreadResource {
             ThreadDTO resThread = threadService.createThread(threadDTO);
             return new ResponseDTO(true, resThread, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'createThread' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
@@ -65,8 +67,10 @@ public class ThreadResource {
             ThreadDTO resThread = threadService.deleteThread(threadId);
             return new ResponseDTO(true, resThread, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'deleteThread' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
@@ -76,5 +80,13 @@ public class ThreadResource {
     public ThreadDTO getThreadByLauId(@PathVariable("lauId") final Integer lauId) {
         _log.info("getThreadByLauId: " + lauId);
         return threadService.getThreadByLauId(lauId);
+    }
+
+    @ApiOperation(value = "Get all the thread that a user is in.")
+    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<ThreadDTO> getUserThreads(@PathVariable("userId") final Integer userId) {
+        _log.info("getUserThreads: " + userId);
+        return threadService.getUserThreads(userId);
     }
 }

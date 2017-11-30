@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
-import java.text.MessageFormat;
-
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,10 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class BeneficiaryService {
@@ -44,7 +43,7 @@ public class BeneficiaryService {
     private final String REPRESENTATIVE = "Representative";
 
     @Transactional
-    public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO) {
+    public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO) throws Exception {
         UserDTO user = beneficiaryDTO.getUser();
         user.setCreateDate(new Date().getTime());
         String password = "12345678";
@@ -115,5 +114,33 @@ public class BeneficiaryService {
                 _log.info(MessageFormat.format(LOG_STATUS_2_HOLD, aRegistrationDTO.getId()));
             }
         }
+    }
+
+    public List<BeneficiaryDTO> getBeneficiariesByThreadId(int threadId) {
+        List<BeneficiaryDTO> beneficiaries = new ArrayList<>();
+        ThreadDTO thread = threadService.getThreadById(threadId);
+        List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(thread.getLauId());
+        for (MunicipalityDTO municipality : municipalities) {
+            System.out.println("MUNICIPALITY whatever");
+            BeneficiaryDTO beneficiary = new BeneficiaryDTO();
+            List<RegistrationDTO> registrations = registrationService.getRegistrationsByMunicipalityId(municipality.getId());
+            for (RegistrationDTO registration : registrations) {
+                System.out.println("REGISTRATION something");
+                if (registration.getRole().equals(REPRESENTATIVE)) {
+                    System.out.println("Let's set the user");
+                    beneficiary.setUser(userService.getUserById(registration.getUserId()));
+                }
+            }
+            List<MunicipalityDTO> municipalityList = new ArrayList<>();
+            municipalityList.add(municipality);
+            beneficiary.setMunicipalities(municipalityList);
+            if (registrations.size() > 1) {
+                beneficiary.setRepresentsMultipleMunicipalities(true);
+            } else {
+                beneficiary.setRepresentsMultipleMunicipalities(false);
+            }
+            beneficiaries.add(beneficiary);
+        }
+        return beneficiaries;
     }
 }

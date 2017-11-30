@@ -1,268 +1,207 @@
-import {Component, Input, Output, EventEmitter, ViewChild} from "@angular/core";
-import {SelectItem} from "primeng/primeng";
-import {SupplierDetails} from "../../shared/models/supplier-details.model";
+import {Component, ViewChild} from "@angular/core";
+import {Router} from "@angular/router";
+import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
 import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
-import {LauApi} from "../../shared/swagger/api/LauApi";
+import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {NutsApi} from "../../shared/swagger/api/NutsApi";
-import {LocalStorageService} from "angular-2-local-storage";
-import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
-import {NutsDTO, NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
+import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
+import {Observable} from "rxjs/Observable";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {UserDTO} from "../../shared/swagger/model/UserDTO";
-import {ResponseDTO} from "../../shared/swagger/model/ResponseDTO";
-import {UserApi} from "../../shared/swagger/api/UserApi";
-import {Observable} from 'rxjs/Rx';
+import {LocalStorageService} from "angular-2-local-storage";
+import {TranslateService} from "ng2-translate";
 
 @Component({
-    templateUrl: 'profile.component.html', providers: [SupplierApi, LauApi, NutsApi, UserApi]
+    selector: 'supplier-profile', templateUrl: 'profile.component.html', providers: [SupplierApi, NutsApi]
 })
 
 export class SupplierProfileComponent {
-    private supplierData: SupplierDTOBase;
-    private selectedSupplierData: SupplierDTOBase;
-    private supplierDetails: SupplierDetails;
-    private display: boolean;
-    private displayContact: boolean;
-    private displayCompany: boolean;
-    private displayLegal: boolean;
-    private user: UserDTO;
-    private countriesList: string[];
-    private provincesList: string[];
-    private countries: NutsDTO[];
-    private provinces: NutsDTO[];
-    private selectedCountries: NutsDTO[];
-    private selectedProvinces: NutsDTO[];
-    private allCountries: SelectItem[];
+    private user: UserDTOBase = new UserDTOBase();
+    private supplier: SupplierDTOBase = new SupplierDTOBase();
+    private editedSupplier: SupplierDTOBase = new SupplierDTOBase();
+    private displayContact: boolean = false;
+    private displayCompany: boolean = false;
+    private displayChangePassword: boolean = false;
+    private selectedCountriesNames: string[] = [];
+    private supportedRegions: NutsDTOBase[][] = [];
+    private submittingData = false;
+    private currentPassword: string = '';
+    private newPassword: string = '';
+    private repeatNewPassword: string = '';
+    private passwordsMatch: boolean = false;
     private isLogoUploaded: boolean = false;
     private logoUrl: FileReader = new FileReader();
     private logoFile: File;
-    private nutsCountry: NutsDTOBase;
-    private lauMunicipality: LauDTOBase;
-    private nutsModalInitial: NutsDTOBase;
-    private lausModalInitial: LauDTOBase;
-    @ViewChild('logoInput') logoInput: any;
+    @ViewChild('logoInput') private logoInput: any;
 
-    constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private lauApi: LauApi, private nutsApi: NutsApi, private uxService: UxService, private userApi: UserApi) {
-        this.supplierDetails = new SupplierDetails();
-        this.display = false;
-        this.displayContact = false;
-        this.displayCompany = false;
-        this.displayLegal = false;
-        this.supplierData = new SupplierDTOBase();
-        this.nutsCountry = new NutsDTOBase();
-        this.lauMunicipality = new LauDTOBase();
-        this.selectedSupplierData = new SupplierDTOBase();
-        this.selectedSupplierData = Object.assign({}, this.supplierData);
-        this.selectedCountries = [];
-        this.selectedProvinces = [];
-        this.allCountries = [];
-        this.countries = [];
-        this.provinces = [];
-        this.countriesList = [];
-        this.provincesList = [];
-
-        let u = this.localStorage.get('user');
-        this.user = u ? JSON.parse(u.toString()) : null;
-    }
-
-    ngOnInit() {
+    constructor(private supplierApi: SupplierApi, private nutsApi: NutsApi, private uxService: UxService, private localStorageService: LocalStorageService, private router: Router, private translateService: TranslateService) {
+        let storedUser = this.localStorageService.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
-            this.supplierApi.getSupplierById(this.user.id).subscribe(
-                response => {
-                    this.supplierData = response;
-                    let partNuts = this.supplierData.suppliedRegions;
-                    for (let i = 0; i < partNuts.length; i++) {
-                        this.nutsApi.getNutsById(partNuts[i].regionId).subscribe(
-                            (nuts: NutsDTO) => {
-                                if (nuts.level == 0) {
-                                    this.countries.push(nuts);
-                                    let countryName = nuts.label.toLowerCase();
-                                    countryName = countryName.charAt(0).toUpperCase() + countryName.slice(1);
-                                    this.countriesList.push(countryName);
-                                } else if (nuts.level == 3) {
-                                    this.provinces.push(nuts);
-                                    this.provincesList.push(nuts.label);
+            if (this.user.type == 1) {
+                this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
+                    (supplier: SupplierDTOBase) => {
+                        this.supplier = supplier;
+                        Object.assign(this.editedSupplier, this.supplier);
+                        this.nutsApi.getNutsByLevel(0).subscribe(
+                            (countries: NutsDTOBase[]) => {
+                                for (let suppliedRegion of this.supplier.suppliedRegions) {
+                                    this.nutsApi.getNutsById(suppliedRegion.regionId).subscribe(
+                                        (region: NutsDTOBase) => {
+                                            for (let country of countries) {
+                                                if (region.countryCode == country.countryCode) {
+                                                    if (!this.supportedRegions[country.label]) {
+                                                        this.selectedCountriesNames.push(country.label);
+                                                        this.supportedRegions[country.label] = [];
+                                                    }
+                                                    this.supportedRegions[country.label].push(region);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    );
                                 }
                             }
-                        )
+                        );
                     }
-                }, error => {
-                    console.log(error);
+                );
+            } else {
+                let translatedString = 'You are not allowed to view this page.';
+                this.translateService.get('error.notallowed').subscribe(
+                    (translation: string) => {
+                        translatedString = translation;
+                    }
+                );
+                this.uxService.growl({
+                    severity: 'warn',
+                    summary: 'WARNING',
+                    detail: translatedString
+                });
+                this.router.navigateByUrl('/home');
+            }
+        } else {
+            let translatedString = 'You are not logged in!';
+            this.translateService.get('error.notloggedin').subscribe(
+                (translation: string) => {
+                    translatedString = translation;
                 }
             );
+            this.uxService.growl({
+                severity: 'warn',
+                summary: 'WARNING',
+                detail: translatedString
+            });
+            this.router.navigateByUrl('/home');
         }
     }
 
-    openModal() {
-        this.display = true;
+    private displayModal(name: string) {
+        switch (name) {
+            case 'contact':
+                this.displayContact = true;
+                break;
+            case 'company':
+                this.displayCompany = true;
+                break;
+            case 'password':
+                this.displayChangePassword = true;
+                break;
+        }
     }
 
-    displayContactModal() {
-        this.selectedSupplierData = Object.assign({}, this.supplierData);
-        this.nutsModalInitial = this.nutsCountry;
-        this.lausModalInitial = this.lauMunicipality;
-        this.displayContact = true;
+    private closeModal() {
+        this.displayContact = false;
+        this.displayCompany = false;
+        this.displayChangePassword = false;
+        this.currentPassword = '';
+        this.newPassword = '';
+        this.repeatNewPassword = '';
+        this.passwordsMatch = false;
+        this.clearLogoFile();
+        Object.assign(this.editedSupplier, this.supplier);
     }
 
-    displayCompanyModal() {
-        this.selectedSupplierData = Object.assign({}, this.supplierData);
-        this.nutsModalInitial = this.nutsCountry;
-        this.lausModalInitial = this.lauMunicipality;
-        this.displayCompany = true;
-    }
-
-    displayLegalModal() {
-        this.selectedSupplierData = Object.assign({}, this.supplierData);
-        this.nutsModalInitial = this.nutsCountry;
-        this.lausModalInitial = this.lauMunicipality;
-        this.displayLegal = true;
-        console.log(this.selectedCountries);
-        console.log(this.allCountries);
-        this.checkCountries();
-    }
-
-    checkCountries() {
-        this.nutsApi.getNutsByLevel(0).subscribe(
-            (nuts: NutsDTO[]) => {
-                for (let nut of nuts) {
-                    let selectedItem = {
-                        label: ' ' + nut.label,
-                        value: nut
-                    };
-                    this.allCountries.push(selectedItem);
-                    if(this.countries.some(function(e) {return e.label == nut.label;})){
-                        this.selectedCountries.push(selectedItem.value);
-                    }
+    private saveSupplierChanges() {
+        this.submittingData = true;
+        this.supplierApi.createSupplier(this.editedSupplier).subscribe(
+            (response: ResponseDTOBase) => {
+                if (response.success) {
+                    this.supplier = response.data;
+                    this.closeModal();
+                    this.submittingData = false;
                 }
             }
         );
     }
 
-    closeModal() {
-        this.display = false;
-        this.displayLegal = false;
-        this.displayCompany = false;
-        this.displayContact = false;
-        this.clearLogoFile();
-        this.nutsCountry = this.nutsModalInitial;
-        this.lauMunicipality = this.lausModalInitial;
-        this.selectedSupplierData = Object.assign({}, this.supplierData);
-    }
-
-    checkPassword() {
-        return this.supplierDetails.newPassword === this.supplierDetails.repeatNewPassword;
-    }
-
-    saveSupplierChanges() {
-        if (this.isLogoUploaded) {
-            this.selectedSupplierData.logo = this.logoUrl.result;
+    private changeLogo(event) {
+        if (event.target.files.length > 0) {
+            this.logoFile = event.target.files[0];
+            let imageStatus = "";
+            let image = new Image();
+            image.onload = function () {
+                imageStatus = "correct";
+            };
+            image.onerror = function () {
+                imageStatus = "wrong";
+            };
+            image.src = URL.createObjectURL(this.logoFile);
+            let subscription = Observable.interval(200).subscribe(
+                x => {
+                    switch(imageStatus) {
+                        case "correct":
+                            this.uploadCorrect();
+                            subscription.unsubscribe();
+                            break;
+                        case "wrong":
+                            this.uploadWrong();
+                            subscription.unsubscribe();
+                            break;
+                    }
+                }
+            );
         }
-        //TODO: falta implementar el saveSupplier para guardar cambios
-        // this.supplierApi.saveSupplier(this.selectedSupplierData).subscribe(
-        //     (savedSupplier: ResponseDTO) => {
-        //         this.supplierData = savedSupplier.data;
-        //         this.display = false;
-        //         this.displayLegal = false;
-        //         this.displayCompany = false;
-        //         this.displayContact = false;
-        //         this.clearLogoFile();
-        //     }, error => {
-        //         console.log(error);
-        //     }
-        // );
     }
 
-    onSelect(event) {
-        this.isLogoUploaded = false;
-        if (event.target && event.target.files && event.target.files.length > 0) {
-            this.logoUrl.readAsDataURL(event.target.files["0"]);
-            this.logoFile = event.target.files["0"];
-            let subscription = Observable.interval(500).map((x) => {
-            }).subscribe((x) => {
+    private uploadCorrect() : any {
+        this.logoUrl.readAsDataURL(this.logoFile);
+        let subscription = Observable.interval(200).subscribe(
+            x => {
                 if (this.logoUrl.result != "") {
+                    this.editedSupplier.logo = this.logoUrl.result;
                     this.isLogoUploaded = true;
                     subscription.unsubscribe();
                 }
-            });
-        }
-	}
+            }
+        );
+    }
 
-    clearLogoFile() {
+    private uploadWrong() : any {
+        this.clearLogoFile();
+        this.uxService.growl({
+            severity: 'error',
+            summary: 'ERROR',
+            detail: 'The file you uploaded is not a valid image file.'
+        });
+    }
+
+    private clearLogoFile() {
         this.logoInput.nativeElement.value = "";
         this.isLogoUploaded = false;
         this.logoUrl = new FileReader();
         this.logoFile = null;
+        this.editedSupplier.logo = null;
     }
 
-    onMultiSelectChange(event) {
-        if (event.value.length > 0) {
-            let country: NutsDTO = event.value[event.value.length - 1];
-
-            if (this.selectedCountries.length > 0) {
-                this.selectedCountries.splice(0, this.selectedCountries.length);
-            }
-            for (let country of event.value) {
-                this.selectedCountries.push(country);
-            }
-
-            // this.nutsApi.findNutsByLevel(3).subscribe(
-            //     (nuts: NutsDTO[]) => {
-            //         this.provinces[country.name.toUpperCase()] = [];
-            //         for (let nut of nuts) {
-            //             if (country.countryCode === nut.countryCode) {
-            //                 this.provinces[country.name.toUpperCase()].push(nut);
-            //             }
-            //         }
-            //     }
-            // );
+    private checkPasswordsMatch() {
+        if (this.newPassword.length > 0 && this.newPassword == this.repeatNewPassword) {
+            this.passwordsMatch = true;
+        } else {
+            this.passwordsMatch = false;
         }
     }
 
-    updateNutsAndLau() {
-        // TODO: Nuts y Lau hay que adaptarlos al nuevo modelo con Objetos en lugar de un string con todos los IDs
-        // this.selectedSupplierData.suppliedRegions = "";
-        // this.selectedSupplierData.nutsIds += this.nutsCountry.countryCode;
-        // this.selectedSupplierData.nutsIds += "," + this.lauMunicipality.lau2;
-    }
-
-    emptyPasswordModal() {
-        this.supplierDetails.currentPassword = "";
-        this.supplierDetails.newPassword = "";
-        this.supplierDetails.repeatNewPassword = "";
-    }
-
-    changePassword() {
-        //TODO: Hay que eliminar esto, el cambio de password será con ECAS
-        // let passwords: string = '{"currentPassword" : "' + this.supplierDetails.currentPassword + '", "newPassword" : "' + this.supplierDetails.newPassword + '"}';
-
-        // this.userApi.changePassword(this.user.userId, passwords).subscribe(
-        //     (response: ResponseDTO) => {
-        //         if (response.success == true) {
-        //             this.uxService.growl({
-        //                 severity: 'success',
-        //                 summary: 'SUCCESS',
-        //                 detail: 'Password changed succesfully!'
-        //             });
-        //             this.user = response.data;
-        //             this.closeModal();
-
-        //         } else {
-        //             this.uxService.growl({
-        //                 severity: 'warn',
-        //                 summary: 'WARNING',
-        //                 detail: response.data
-        //             });
-        //             this.emptyPasswordModal();
-        //         }
-        //     }, error => {
-        //         console.log(error);
-        //         this.uxService.growl({
-        //             severity: 'warn',
-        //             summary: 'WARNING',
-        //             detail: 'Contact your administrator'
-        //         });
-        //     }
-        // )
+    private preventPaste(event: any) {
+        return false;
     }
 }

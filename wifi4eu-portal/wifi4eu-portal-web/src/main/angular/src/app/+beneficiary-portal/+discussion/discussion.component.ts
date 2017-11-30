@@ -1,110 +1,96 @@
 import {Component} from "@angular/core";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
+import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
 import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
-import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
-import {UserApi} from "../../shared/swagger/api/UserApi";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
 import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
+import {UserApi} from "../../shared/swagger/api/UserApi";
+import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
+import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
+import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
+import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
+import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
+import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
+import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
 import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 import {LocalStorageService} from "angular-2-local-storage";
-import {TranslateService} from "ng2-translate";
+import {SharedService} from "../../shared/shared.service";
 import {Router} from "@angular/router";
-
 
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
-    providers: [UserApi, RegistrationApi, MunicipalityApi, ThreadApi, ThreadmessagesApi]
+    providers: [ThreadApi, BeneficiaryApi, ThreadmessagesApi, UserApi, RegistrationApi]
 })
+
 export class DiscussionComponent {
+    private thread: ThreadDTOBase = new ThreadDTOBase();
+    private municipality: MunicipalityDTOBase = new MunicipalityDTOBase();
+    private municipalities: MunicipalityDTOBase[] = [];
     private user: UserDTOBase = new UserDTOBase();
     private users: UserDTOBase[] = [];
-    private municipality: MunicipalityDTOBase = new MunicipalityDTOBase();
-    private registrations: RegistrationDTOBase[] = [];
-    private thread: ThreadDTOBase = new ThreadDTOBase();
+    private messageAuthors: UserDTOBase[] = [];
+    private message: string = '';
     private displayMessage: boolean = false;
     private displayMediation: boolean = false;
-    private mediationButton: boolean = false;
+    private mediationBlocked: boolean = false;
     private showAlert: boolean = false;
-    private message: string = "";
 
-
-    constructor(private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private userApi: UserApi, private uxService: UxService, private localStorageService: LocalStorageService, private translateService: TranslateService, private router: Router) {
+    constructor(private threadApi: ThreadApi, private beneficiaryApi: BeneficiaryApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
         this.thread.messages = [];
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             if (this.user.type == 2 || this.user.type == 3) {
-                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-                    (registrations: RegistrationDTOBase[]) => {
-                        this.registrations = registrations;
-                        for (let registration of registrations) {
-                            this.userApi.getUserById(registration.userId).subscribe(
-                                (user: UserDTOBase) => {
-                                    this.users.push(user);
-                                }, error => {
-                                    console.log(error);
-                                }
-                            );
-                        }
-                        this.municipalityApi.getMunicipalityById(registrations[0].municipalityId).subscribe(
-                            (municipality: MunicipalityDTOBase) => {
-                                this.municipality = municipality;
-                                this.threadApi.getThreadByLauId(this.municipality.lauId).subscribe(
-                                    (thread: ThreadDTOBase) => {
-                                        if (thread != null) {
-                                            this.thread = thread;
+                this.threadApi.getUserThreads(this.user.id).subscribe(
+                    (threads: ThreadDTOBase[]) => {
+                        this.thread = threads[0];
+                        this.beneficiaryApi.getBeneficiariesByThreadId(this.thread.id).subscribe(
+                            (beneficiaries: BeneficiaryDTOBase[]) => {
+                                for (let beneficiary of beneficiaries) {
+                                    for (let municipality of beneficiary.municipalities) {
+                                        if (municipality.lauId == this.thread.lauId) {
+                                            if (beneficiary.user.id == this.user.id) {
+                                                this.municipality = municipality;
+                                            } else {
+                                                this.users.push(beneficiary.user);
+                                                this.municipalities.push(municipality);
+                                            }
                                         }
-                                    }, error4 => {
-                                        console.log(error4);
                                     }
-                                );
-                            }, error2 => {
-                                console.log(error2);
+                                }
+                                for (let message of this.thread.messages) {
+                                    if (message.authorId == this.user.id) {
+                                        this.messageAuthors.push(this.user);
+                                    } else {
+                                        this.userApi.getUserById(message.authorId).subscribe(
+                                            (user: UserDTOBase) => {
+                                                this.messageAuthors.push(user);
+                                            }
+                                        );
+                                    }
+                                }
+                            }, error => {
+                                this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'warn');
+                                this.router.navigateByUrl('/home');
                             }
                         );
-                    }, error3 => {
-                        console.log(error3);
+                    }, error => {
+                        this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'warn');
+                        this.router.navigateByUrl('/home');
                     }
                 );
             } else {
-                let translatedString = 'You are not allowed to view this page.';
-                this.translateService.get('error.notallowed').subscribe(
-                    (translation: string) => {
-                        translatedString = translation;
-                    }
-                );
-                this.uxService.growl({
-                    severity: 'warn',
-                    summary: 'WARNING',
-                    detail: translatedString
-                });
+                this.sharedService.growlTranslation('You are not allowed to view this page.', 'error.notallowed', 'warn');
                 this.router.navigateByUrl('/home');
             }
         } else {
-            let translatedString = 'You are not logged in!';
-            this.translateService.get('error.notloggedin').subscribe(
-                (translation: string) => {
-                    translatedString = translation;
-                }
-            );
-            this.uxService.growl({
-                severity: 'warn',
-                summary: 'WARNING',
-                detail: translatedString
-            });
+            this.sharedService.growlTranslation('You are not logged in!', 'error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
     }
 
     private newMessage() {
         this.displayMessage = true;
-        this.message = "";
+        this.message = '';
     }
 
     private sendMessage() {
@@ -117,39 +103,21 @@ export class DiscussionComponent {
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.thread.messages.push(response.data);
-                    this.uxService.growl({
-                        severity: 'success',
-                        summary: 'SUCCESS',
-                        detail: 'The message was successfully sent!'
-                    });
+                    this.messageAuthors.push(this.user);
+                    this.sharedService.growlTranslation('The message was successfully sent!', 'thread.message.success', 'success');
                 } else {
-                    this.uxService.growl({
-                        severity: 'error',
-                        summary: 'ERROR',
-                        detail: 'The message could not be successfully sent.'
-                    });
+                    this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'thread.message.error', 'error');
                 }
                 this.displayMessage = false;
             }, error => {
-                console.log(error);
-                this.uxService.growl({
-                    severity: 'error',
-                    summary: 'ERROR',
-                    detail: 'Something went wrong while trying to send the message.'
-                });
+                this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'thread.message.error', 'error');
                 this.displayMessage = false;
             }
         );
     }
 
-
-    private closeModal() {
-        this.displayMessage = false;
-        this.displayMediation = false;
-    }
-
     private askMediation() {
-        this.mediationButton = true;
+        this.mediationBlocked = true;
         this.showAlert = true;
         window.scrollTo(0, 0);
         this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
@@ -159,43 +127,15 @@ export class DiscussionComponent {
                     this.registrationApi.createRegistration(registration).subscribe(
                         (data: ResponseDTOBase) => {
                             if (data.success) {
-                                let translatedString = 'Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.';
-                                this.translateService.get('discussion.growl').subscribe(
-                                    (translation: string) => {
-                                        translatedString = translation;
-                                    }
-                                );
-                                this.uxService.growl({
-                                    severity: 'success',
-                                    summary: 'SUCCESS',
-                                    detail: translatedString
-                                });
+                                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussion.growl', 'success');
                             }
                         }, error => {
-                            let translatedString = 'Your request for mediation could not be submited due to an error. Please, try again later.';
-                            this.translateService.get('discussion.growl.error').subscribe(
-                                (translation: string) => {
-                                    translatedString = translation;
-                                }
-                            );
-                            this.uxService.growl({
-                                severity: 'error',
-                                summary: 'ERROR',
-                                detail: translatedString
-                            });
+                            this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussion.growl.error', 'error');
                         }
                     );
                 }
             }
         );
-    }
-
-    private displayAuthorData(authorId: number, field: string) {
-        for (let user of this.users) {
-            if (user.id = authorId) {
-                return user[field];
-            }
-        }
     }
 
     private deleteApplication() {
@@ -209,35 +149,26 @@ export class DiscussionComponent {
                             if (data.success) {
                                 registrationCount++;
                                 if (registrationCount >= registrations.length) {
-                                    let translatedString = 'Your applications were succesfully deleted.';
-                                    this.translateService.get('beneficiary.deleteApplication.Success').subscribe(
-                                        (translation: string) => {
-                                            translatedString = translation;
-                                        }
-                                    );
-                                    this.uxService.growl({
-                                        severity: 'success',
-                                        summary: 'SUCCESS',
-                                        detail: translatedString
-                                    });
+                                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
+                                    this.sharedService.logout();
+                                    this.router.navigateByUrl('/home');
                                 }
                             }
                         }, error => {
-                            let translatedString = 'Your applications were succesfully deleted.';
-                            this.translateService.get('beneficiary.deleteApplication.Failure').subscribe(
-                                (translation: string) => {
-                                    translatedString = translation;
-                                }
-                            );
-                            this.uxService.growl({
-                                severity: 'error',
-                                summary: 'ERROR',
-                                detail: translatedString
-                            });
+                            this.sharedService.growlTranslation('An error occurred and your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
                         }
                     );
                 }
             }
         );
+    }
+
+    private editApplication() {
+        this.router.navigateByUrl('/beneficiary-portal/profile');
+    }
+
+    private closeModal() {
+        this.displayMessage = false;
+        this.displayMediation = false;
     }
 }

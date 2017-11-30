@@ -153,7 +153,7 @@
   "registered.date": "Registered date",
   "image": "Image",
   "step1.supplier": "STEP 1: Company details",
-  "step2.supplier": "STEP 2: Legal entity",
+  "step2.supplier": "STEP 2: Select country and communes",
   "step3.supplier": "STEP 3: Contact person",
   "step4.supplier": "STEP 4: Review",
   "company.info": "Please, provide information about your company.",
@@ -340,6 +340,11 @@
   "beneficiary.registration1": "Registration 1 (you)",
   "beneficiary.registrationNumber": "Registration ",
   "beneficiary.deleteApplication.Success": "Your applications were succesfully deleted.",
-  "beneficiary.deleteApplication.Failure": "An error occurred an your applications could not be deleted.",
-  "discussion.growl.error":"Your request for mediation could not be submited due to an error. Please, try again later."
+  "beneficiary.deleteApplication.Failure": "An error occurred and your applications could not be deleted.",
+  "discussion.growl.error":"Your request for mediation could not be submited due to an error. Please, try again later.",
+  "error.api.generic": "An error occurred while trying to retrieve the data from the server. Please, try again later.",
+  "already.registered.error": "User already registered.",
+  "home.label":"Home",
+  "thread.message.success":"The message was successfully sent!",
+  "thread.message.error":"An error occurred while trying to send the message. Please, try again later."
 }

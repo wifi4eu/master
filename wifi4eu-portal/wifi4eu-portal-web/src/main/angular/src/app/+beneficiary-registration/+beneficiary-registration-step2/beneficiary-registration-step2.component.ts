@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from "@angular/core";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
@@ -12,7 +12,7 @@ import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
     providers: [LauApi]
 })
 
-export class BeneficiaryRegistrationStep2Component {
+export class BeneficiaryRegistrationStep2Component implements OnChanges {
     @Input('country') private country: NutsDTOBase;
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
     @Input('mayors') private mayors: MayorDTOBase[];
@@ -25,9 +25,15 @@ export class BeneficiaryRegistrationStep2Component {
     @Output() private onBack: EventEmitter<any>;
     @Output() private lausChange: EventEmitter<LauDTOBase[]>;
     private lauSuggestions: LauDTOBase[] = [];
-    private municipalitiesSelected: boolean[] = [false];
+    private municipalitiesSelected: boolean = false;
+    private addressFields: string[] = [''];
+    private addressNumFields: string[] = [''];
+    private postalCodeFields: string[] = [''];
     private emailConfirmations: string[] = [''];
     private readonly MAX_LENGTH = 2;
+    private emailsMatch: boolean = false;
+    private css_class_municipalities: string = "";
+    private css_class_email: string[] = [];
 
     constructor(private lauApi: LauApi) {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
@@ -38,7 +44,14 @@ export class BeneficiaryRegistrationStep2Component {
         this.onBack = new EventEmitter<any>();
     }
 
-    private search(event: any, index: number) {
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.hasOwnProperty("multipleMunicipalities")) {
+            if (!this.multipleMunicipalities)
+                this.removeMunicipality(1, this.municipalities.length - 1);
+        }
+    }
+
+    private search(event: any) {
         let query = event.query;
         if (this.country != null && query.length >= this.MAX_LENGTH) {
             this.lauApi.getLausByCountryCodeAndName1StartingWithIgnoreCase(this.country.countryCode, query).subscribe(
@@ -51,8 +64,27 @@ export class BeneficiaryRegistrationStep2Component {
         }
     }
 
-    private selectMunicipality(selected: boolean, index: number) {
-        this.municipalitiesSelected[index] = selected;
+
+    private checkMunicipalitiesSelected() {
+        for (let lau of this.selectedLaus) {
+            if (!lau.id) {
+                this.municipalitiesSelected = false;
+                this.css_class_municipalities = "notValid";
+                return;
+            }
+        }
+        this.municipalitiesSelected = true;
+        this.css_class_municipalities = "isValid";
+    }
+
+    private checkEmailsMatch(counterMayor: number) {
+        this.emailsMatch = false;
+        if (this.mayors[counterMayor].email === this.emailConfirmations[counterMayor] && this.emailConfirmations[counterMayor].length > 0) {
+            this.emailsMatch = true;
+            this.css_class_email[counterMayor] = "isValid";
+        } else {
+            this.css_class_email[counterMayor] = "notValid";
+        }
     }
 
     private addMunicipality() {
@@ -63,6 +95,7 @@ export class BeneficiaryRegistrationStep2Component {
             this.municipalitiesSelected.push(false);
             this.emailConfirmations.push('');
         }
+        this.checkMunicipalitiesSelected();
     }
 
     private removeMunicipality(index: number) {
@@ -73,6 +106,7 @@ export class BeneficiaryRegistrationStep2Component {
             this.municipalitiesSelected.splice(index, 1);
             this.emailConfirmations.splice(index, 1);
         }
+        this.checkMunicipalitiesSelected();
     }
 
     private submit() {
@@ -97,5 +131,9 @@ export class BeneficiaryRegistrationStep2Component {
         this.lausChange.emit(this.laus);
         this.onBack.emit();
         this.emailConfirmations = [''];
+    }
+
+    private preventPaste(event: any) {
+        return false;
     }
 }

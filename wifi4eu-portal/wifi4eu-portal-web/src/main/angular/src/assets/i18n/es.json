@@ -153,7 +153,7 @@
   "registered.date": "Fecha de registro",
   "image": "Imagen",
   "step1.supplier": "PASO 1: Detalles de la compañía",
-  "step2.supplier": "PASO 2: Entidad jurídica",
+  "step2.supplier": "PASO 2: Seleccionar países y comunidades",
   "step3.supplier": "PASO 3: Persona de conatcto",
   "step4.supplier": "PASO 4: Revisión",
   "company.info": "Proporcione información sobre su empresa.",
@@ -336,8 +336,13 @@
   "beneficiary.goDiscussionText": "Uno o más solicitantes aplicaron al mismo Municipio que usted. Por favor, contacte a las otras partes para resolver el problema.",
   "beneficiary.registration1": "Registro 1 (usted)",
   "beneficiary.registrationNumber": "Registro # ",
-  "beneficiary.goDiscussionText" : "Uno o más solicitantes aplicaron al mismo Municipio que usted. Por favor, contacte a las otras partes para resolver el problema.",
+  "beneficiary.goDiscussionText": "Uno o más solicitantes aplicaron al mismo Municipio que usted. Por favor, contacte a las otras partes para resolver el problema.",
   "beneficiary.deleteApplication.Success": "Sus solicitudes han sido eliminadas correctamente.",
   "beneficiary.deleteApplication.Failure": "Ocurrió un error y sus solicitudes no se han podido eliminar.",
-  "discussion.growl.error":"Ocurrió un error y no se pudo enviar su petición de mediación. Por favor, vuelva a intentarlo más tarde."
+  "discussion.growl.error": "Ocurrió un error y no se pudo enviar su petición de mediación. Por favor, vuelva a intentarlo más tarde.",
+  "error.api.generic": "Ocurrió un error al intentar recuperar la información del servidor. Por favor, vuelva a intentarlo más tarde.",
+  "already.registered.error": "Usuario ya registrado.",
+  "home.label":"Inicio",
+  "thread.message.success":"Su mensaje se ha enviado correctamente.",
+  "thread.message.error":"Ocurrió un error al intentar enviar su mensaje. Por favor, vuelva a intentarlo más tarde."
 }

@@ -25,11 +25,11 @@ public class MunicipalityResource {
 
     Logger _log = LoggerFactory.getLogger(MunicipalityResource.class);
 
-    @ApiOperation(value = "Get all the municipalitys")
+    @ApiOperation(value = "Get all the municipalities")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> allMunicipalities() {
-        _log.info("allMunicipalitys");
+        _log.info("allMunicipalities");
         return municipalityService.getAllMunicipalities();
     }
 
@@ -51,8 +51,10 @@ public class MunicipalityResource {
             MunicipalityDTO resMunicipality = municipalityService.createMunicipality(municipalityDTO);
             return new ResponseDTO(true, resMunicipality, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'createMunicipality' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
@@ -65,8 +67,30 @@ public class MunicipalityResource {
             MunicipalityDTO resMunicipality = municipalityService.deleteMunicipality(municipalityId);
             return new ResponseDTO(true, resMunicipality, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
-            return new ResponseDTO(false, null, errorDTO);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'deleteMunicipality' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
+    }
+
+    @ApiOperation(value = "Get municipalities by specific lau id")
+    @RequestMapping(value = "/lauId/{lauId}",method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<MunicipalityDTO> getMunicipalitiesByLauId(@PathVariable("lauId") final Integer lauId) {
+        if (_log.isInfoEnabled()) {
+            _log.info("getMunicipalitiesByLauId:" + lauId);
+        }
+        return municipalityService.getMunicipalitiesByLauId(lauId);
+    }
+
+    @ApiOperation(value = "Get municipalities by specific user id")
+    @RequestMapping(value = "/userId/{userId}",method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<MunicipalityDTO> getMunicipalitiesByUserId(@PathVariable("userId") final Integer userId) {
+        if (_log.isInfoEnabled()) {
+            _log.info("getMunicipalitiesByUserId:" + userId);
+        }
+        return municipalityService.getMunicipalitiesByUserId(userId);
     }
 }

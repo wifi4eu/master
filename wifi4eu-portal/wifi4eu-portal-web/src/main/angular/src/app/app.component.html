@@ -2,8 +2,8 @@
     <uxLayoutAppMainContainer>
         <ux-layout-app-main>
             <uxLayoutAppMainHeaderContainer>
-                <ux-layout-header appFullName="Wifi4EU Free Wifi for Europeans" appShortName="App"
-                                  [userInfos]="userInfos" [isCustomRightContent]="true">
+                <custom-layout-header appFullName="Wifi4EU Free Wifi for Europeans" appShortName="App"
+                                  [userInfos]="userInfos" [isCustomRightContent]="true" logoUrl="https://ec.europa.eu/">
                     <uxLayoutHeaderRightContent>
                         <ux-language-selector [selectedLanguage]="selectedLanguage" (languageChanged)="changeLanguage($event)"></ux-language-selector>
                         <div class="profile-wrapper" isCompact="false">
@@ -25,23 +25,24 @@
                             </div>
                         </div>
                     </uxLayoutHeaderRightContent>
-                </ux-layout-header>
+                </custom-layout-header>
             </uxLayoutAppMainHeaderContainer>
             <uxLayoutAppMainNavBarContainer>
                 <ux-layout-nav-bar>
                     <ux-layout-nav-bar-top-menu homeUrl="home" [links]="menuLinks"></ux-layout-nav-bar-top-menu>
                     <ux-layout-nav-bar-actions>
                         <div *ngIf="user">
-                            <ux-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu" isOverlayPanel="true"
-                                                           userInfos="Logged in as {{user.email}}" [links]="menuLinks">
-                            </ux-layout-nav-bar-action-item>
+                            <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu" isOverlayPanel="true"
+                                                           userInfos="{{ 'loggedin.as' | translate }} {{user.email}}" [links]="menuLinks"
+                                                               homeUrl="/home">
+                            </custom-layout-nav-bar-action-item>
                         </div>
                         <div *ngIf="!user">
                             <div class="clearfix"></div>
-                            <ux-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu" isOverlayPanel="true"
-                                                           [links]="menuLinks" userInfos="Login">
+                            <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu" isOverlayPanel="true"
+                                                           [links]="menuLinks" homeUrl="/home">
                                 {{ 'logout.label' | translate }}
-                            </ux-layout-nav-bar-action-item>
+                            </custom-layout-nav-bar-action-item>
                         </div>
                     </ux-layout-nav-bar-actions>
                 </ux-layout-nav-bar>
@@ -51,7 +52,7 @@
             </uxLayoutAppMainContentContainer>
             <uxLayoutAppMainFooterContainer>
                 <ux-layout-footer isCompact="true">
-                    {{ 'home.footer.update' | translate }}<a href="#">{{ 'home.footer.top' | translate }}</a>
+                    {{ 'home.footer.update' | translate }}<a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
                 </ux-layout-footer>
             </uxLayoutAppMainFooterContainer>
         </ux-layout-app-main>

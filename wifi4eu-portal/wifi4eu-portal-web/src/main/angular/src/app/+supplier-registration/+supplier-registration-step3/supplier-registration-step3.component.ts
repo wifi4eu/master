@@ -20,21 +20,25 @@ export class SupplierRegistrationStep3Component {
         this.onBack = new EventEmitter<number>();
     }
 
-    submit() {
+    private submit() {
         this.supplierChange.emit(this.supplier);
         this.onNext.emit();
         this.confirmEmailField = "";
     }
 
-    back() {
+    private back() {
         this.onBack.emit();
         this.confirmEmailField = "";
     }
 
-    checkIfEmailMatches() {
+    private checkIfEmailMatches() {
         this.emailMatches = false;
         if (this.supplier.contactEmail === this.confirmEmailField) {
             this.emailMatches = true;
         }
+    }
+
+    private preventPaste(event: any) {
+        return false;
     }
 }

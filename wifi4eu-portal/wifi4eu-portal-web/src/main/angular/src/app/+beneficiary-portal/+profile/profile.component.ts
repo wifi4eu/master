@@ -12,6 +12,7 @@ import {UxAccordionBoxesComponent} from "@ec-digit-uxatec/eui-angular2-ux-common
 import {LocalStorageService} from "angular-2-local-storage";
 import {TranslateService} from "ng2-translate";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
+import {SharedService} from "../../shared/shared.service";
 
 @Component({
     selector: 'beneficiary-profile',
@@ -40,72 +41,60 @@ export class BeneficiaryProfileComponent {
     private passwordsMatch: boolean = false;
     private isRegisterHold: boolean = false;
 
-    constructor(private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private localStorageService: LocalStorageService, private translateService: TranslateService, private uxService: UxService, private router: Router, private route: ActivatedRoute) {
+    constructor(private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private localStorageService: LocalStorageService, private translateService: TranslateService, private uxService: UxService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
-            if (this.user.type == 2 || this.user.type == 3) {
-                if (this.user.type == 3) {
-                    this.representing = true;
-                }
-                Object.assign(this.editedUser, this.user);
-                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-                    (registrations: RegistrationDTOBase[]) => {
-                        for (let registration of registrations) {
-                            this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
-                            this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
-                                (municipality: MunicipalityDTOBase) => {
-                                    // If the user is a representative, we need to look for the info of the mayors.
-                                    if (this.representing) {
-                                        this.registrationApi.getRegistrationsByMunicipalityId(municipality.id).subscribe(
-                                            (municipalityRegistrations: RegistrationDTOBase[]) => {
-                                                for (let municipalityRegistration of municipalityRegistrations) {
-                                                    if (municipalityRegistration.role == 'Mayor') {
-                                                        this.userApi.getUserById(municipalityRegistration.userId).subscribe(
-                                                            (mayor: UserDTOBase) => {
-                                                                this.municipalities.push(municipality);
-                                                                this.mayors.push(mayor);
-                                                                this.accordionBoxItems.push(new CustomAccordionBoxComponent(new UxAccordionBoxesComponent()));
-                                                            }
-                                                        );
-                                                    }
-                                                }
-                                            }
-                                        );
-                                    } else {
-                                        this.municipalities.push(municipality);
-                                    }
-                                }
-                            );
+            this.userApi.getUserById(this.user.id).subscribe(
+                (user: UserDTOBase) => {
+                    this.user = user;
+                    if (this.user.type == 2 || this.user.type == 3) {
+                        if (this.user.type == 3) {
+                            this.representing = true;
                         }
+                        Object.assign(this.editedUser, this.user);
+                        this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                            (registrations: RegistrationDTOBase[]) => {
+                                for (let registration of registrations) {
+                                    this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
+                                    this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
+                                        (municipality: MunicipalityDTOBase) => {
+                                            // If the user is a representative, we need to look for the info of the mayors.
+                                            if (this.representing) {
+                                                this.registrationApi.getRegistrationsByMunicipalityId(municipality.id).subscribe(
+                                                    (municipalityRegistrations: RegistrationDTOBase[]) => {
+                                                        for (let municipalityRegistration of municipalityRegistrations) {
+                                                            if (municipalityRegistration.role == 'Mayor') {
+                                                                this.userApi.getUserById(municipalityRegistration.userId).subscribe(
+                                                                    (mayor: UserDTOBase) => {
+                                                                        this.municipalities.push(municipality);
+                                                                        this.mayors.push(mayor);
+                                                                        this.accordionBoxItems.push(new CustomAccordionBoxComponent(new UxAccordionBoxesComponent()));
+                                                                    }
+                                                                );
+                                                            }
+                                                        }
+                                                    }
+                                                );
+                                            } else {
+                                                this.municipalities.push(municipality);
+                                            }
+                                        }
+                                    );
+                                }
+                            }
+                        );
+                    } else {
+                        this.sharedService.growlTranslation('You are not allowed to view this page.', 'error.notallowed', 'warn');
+                        this.router.navigateByUrl('/home');
                     }
-                );
-            } else {
-                let translatedString = 'You are not allowed to view this page.';
-                this.translateService.get('error.notallowed').subscribe(
-                    (translation: string) => {
-                        translatedString = translation;
-                    }
-                );
-                this.uxService.growl({
-                    severity: 'warn',
-                    summary: 'WARNING',
-                    detail: translatedString
-                });
-                this.router.navigateByUrl('/home');
-            }
-        } else {
-            let translatedString = 'You are not logged in!';
-            this.translateService.get('error.notloggedin').subscribe(
-                (translation: string) => {
-                    translatedString = translation;
+                }, error => {
+                    this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'error');
+                    this.router.navigateByUrl('/home');
                 }
             );
-            this.uxService.growl({
-                severity: 'warn',
-                summary: 'WARNING',
-                detail: translatedString
-            });
+        } else {
+            this.sharedService.growlTranslation('You are not logged in!', 'error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
     }
@@ -133,7 +122,7 @@ export class BeneficiaryProfileComponent {
 
     private saveUserChanges() {
         this.submittingData = true;
-        this.userApi.createUser(this.editedUser).subscribe(
+        this.userApi.saveUserChanges(this.editedUser).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.user = response.data;
@@ -159,7 +148,7 @@ export class BeneficiaryProfileComponent {
 
     private saveMayorChanges() {
         this.submittingData = true;
-        this.userApi.createUser(this.editedMayor).subscribe(
+        this.userApi.saveUserChanges(this.editedMayor).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.mayors[this.currentEditIndex] = response.data;
@@ -202,31 +191,12 @@ export class BeneficiaryProfileComponent {
                             if (data.success) {
                                 registrationCount++;
                                 if (registrationCount >= registrations.length) {
-                                    let translatedString = 'Your applications were succesfully deleted.';
-                                    this.translateService.get('beneficiary.deleteApplication.Success').subscribe(
-                                        (translation: string) => {
-                                            translatedString = translation;
-                                        }
-                                    );
-                                    this.uxService.growl({
-                                        severity: 'success',
-                                        summary: 'SUCCESS',
-                                        detail: translatedString
-                                    });
+                                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
+                                    this.sharedService.logout();
                                 }
                             }
                         }, error => {
-                            let translatedString = 'Your applications were succesfully deleted.';
-                            this.translateService.get('beneficiary.deleteApplication.Failure').subscribe(
-                                (translation: string) => {
-                                    translatedString = translation;
-                                }
-                            );
-                            this.uxService.growl({
-                                severity: 'error',
-                                summary: 'ERROR',
-                                detail: translatedString
-                            });
+                            this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
                         }
                     );
                 }
@@ -236,5 +206,9 @@ export class BeneficiaryProfileComponent {
 
     private goToDiscussion() {
         this.router.navigate(['../discussion-forum'], {relativeTo: this.route});
+    }
+
+    private preventPaste(event: any) {
+        return false;
     }
 }

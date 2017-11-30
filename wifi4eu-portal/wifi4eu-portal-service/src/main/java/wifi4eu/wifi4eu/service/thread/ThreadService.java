@@ -10,6 +10,11 @@ import wifi4eu.wifi4eu.mapper.thread.ThreadMapper;
 import wifi4eu.wifi4eu.mapper.thread.ThreadMessageMapper;
 import wifi4eu.wifi4eu.repository.thread.ThreadMessageRepository;
 import wifi4eu.wifi4eu.repository.thread.ThreadRepository;
+import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +32,12 @@ public class ThreadService {
 
     @Autowired
     ThreadMessageRepository threadMessageRepository;
+
+    @Autowired
+    RegistrationService registrationService;
+
+    @Autowired
+    MunicipalityService municipalityService;
 
     public List<ThreadDTO> getAllThreads() {
         return threadMapper.toDTOList(Lists.newArrayList(threadRepository.findAll()));
@@ -74,6 +85,18 @@ public class ThreadService {
 
     public ThreadDTO getThreadByLauId(int lauId) {
         return threadMapper.toDTO(threadRepository.findByLauId(lauId));
+    }
+
+    public List<ThreadDTO> getUserThreads(int userId) {
+        List<ThreadDTO> threads = new ArrayList<>();
+        for (RegistrationDTO registration : registrationService.getRegistrationsByUserId(userId)) {
+            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+            ThreadDTO thread = getThreadByLauId(municipality.getLauId());
+            if (thread != null) {
+                threads.add(thread);
+            }
+        }
+        return threads;
     }
 
 }
