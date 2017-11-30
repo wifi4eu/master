@@ -10,13 +10,12 @@
     <p>{{ 'lEissues.warning' | translate }}</p>
     <p class="beneficiaryMayor marginTopCountdown">{{ 'legalentity.label' | translate }}</p>
     <hr class="beneficiaryHr">
-    <!--<div class="button-content">-->
     <ux-accordion-boxes>
         <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
             <div class="ui-g">
                 <div class="ui-g-12">
-                    <p class="discussionForumMayors marginTopCountdown">{{ 'beneficiary.registration1' | translate
-                        }}</p>
+                    <p class="discussionForumMayors marginTopCountdown">
+                        {{ 'beneficiary.registration1' | translate }}</p>
                 </div>
             </div>
             <div class="ui-g discussionForumNoBorders">
@@ -38,27 +37,24 @@
                     <div class="ui-g-2"></div>
                     <div class="ui-g-4">
                         <p class="applicationText">{{ 'beneficiary.discusionText' | translate }}</p>
-                        <button type="button" (click)="deleteApplication" class="btn btn-primary applicationDelete">
+                        <button type="button" class="btn btn-primary applicationDelete"
+                                (click)="deleteApplication()">
                             {{ 'beneficiary.deleteApplication' | translate }}
                         </button>
                         <br>
-                        <a href="#/beneficiary-portal/profile">
-                            <button type="submit" class="btn btn-primary applicationEdit">
-                                {{ 'beneficiary.editApplication' | translate }}
-                            </button>
-                        </a>
+                        <button type="button" class="btn btn-primary applicationEdit"
+                                (click)="editApplication()">
+                            {{ 'beneficiary.editApplication' | translate }}
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!--</div>-->
             <div class="ui-g">
-                <div class="ui-g-6">
-                    <p class="discussionForumMayors marginTopCountdown">{{ 'beneficiary.registrationNumber' | translate
-                        }}1</p>
-                    <!--<div class="button-content">-->
-
-                    <div class="ui-g discussionForumNoBorders" *ngFor="let currentUser of users">
+                <div class="ui-g-6" *ngFor="let municipality of municipalities; let i = index">
+                    <p class="discussionForumMayors marginTopCountdown">
+                        {{ 'beneficiary.registrationNumber' | translate }}{{i+1}}</p>
+                    <div class="ui-g discussionForumNoBorders">
                         <div class="ui-g-12">
                             <div class="ui-g-3">
                                 <p class="profileDataDiscussion">{{ 'country.label' | translate }}</p>
@@ -68,36 +64,11 @@
                                 <p>{{ 'postal-code.label' | translate }}</p>
                             </div>
                             <div class="ui-g-9">
-                                <p class="profileDataDiscussion profileData">Mayor 1 Country</p>
-                                <p class="profileData">Mayor 1 Name</p>
-                                <p class="profileData">Mayor 1 Address</p>
-                                <p class="profileData">Mayor 1 Address Num</p>
-                                <p class="profileData">Mayor 1 Postal code</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ui-g-6">
-                    <p class="discussionForumMayors marginTopCountdown">{{ 'beneficiary.registrationNumber' | translate
-                        }}2</p>
-                    <!--<div class="button-content">-->
-
-                    <div class="ui-g discussionForumNoBorders" *ngFor="let currentUser of users">
-                        <div class="ui-g-12">
-                            <div class="ui-g-3">
-                                <p class="profileDataDiscussion">{{ 'country.label' | translate }}</p>
-                                <p>{{ 'municipality.label' | translate }}</p>
-                                <p>{{ 'address.label' | translate }}</p>
-                                <p>{{ 'number.label' | translate }}</p>
-                                <p>{{ 'postal-code.label' | translate }}</p>
-                            </div>
-                            <div class="ui-g-9">
-                                <p class="profileDataDiscussion profileData">Mayor 2 Country</p>
-                                <p class="profileData">Mayor 2 Name</p>
-                                <p class="profileData">Mayor 2 Address</p>
-                                <p class="profileData">Mayor 2 Address Num</p>
-                                <p class="profileData">Mayor 2 Postal code</p>
+                                <p class="profileDataDiscussion profileData">{{ municipality.country }}</p>
+                                <p class="profileData">{{ municipality.name }}</p>
+                                <p class="profileData">{{ municipality.address }}</p>
+                                <p class="profileData">{{ municipality.addressNum }}</p>
+                                <p class="profileData">{{ municipality.postalCode }}</p>
                             </div>
                         </div>
                     </div>
@@ -105,19 +76,17 @@
             </div>
         </custom-accordion-box>
     </ux-accordion-boxes>
-    <!--</div>-->
     <hr class="beneficiaryHr">
     <p class="beneficiaryMayor marginTopCountdown">{{ 'recentConversations.title' | translate }}</p>
     <p>{{ 'recentConversations.text' | translate }}</p>
-
-
     <div *ngIf="thread.messages.length < 1" class="ui-g button-content discussion-content">
         <div class="ui-g-12 noPadding">
             <div class="ui-g-8">
                 <p>{{'noRecentConversations.text' | translate }}</p>
             </div>
             <div class="ui-g-4">
-                <button type="button" (click)="newMessage()" class="btn btn-primary changePassword discussionButton">
+                <button type="button" class="btn btn-primary changePassword discussionButton"
+                        (click)="newMessage()">
                     {{'startConversations.text' | translate }}
                 </button>
             </div>
@@ -129,8 +98,8 @@
                 <div class="ui-g-9"></div>
                 <div class="ui-g-3">
                     <div>
-                        <button type="button" (click)="newMessage()"
-                                class="btn btn-primary changePassword discussionButton">
+                        <button type="button" class="btn btn-primary changePassword discussionButton"
+                                (click)="newMessage()">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             {{'add.repply' | translate }}
                         </button>
@@ -138,12 +107,13 @@
                 </div>
             </div>
         </div>
-        <div class="discussion-content" *ngFor="let currentMessage of thread.messages">
+        <div class="discussion-content" *ngFor="let currentMessage of thread.messages; let i = index">
             <div class="ui-g discussion-content">
                 <div class="ui-g-12">
                     <div class="ui-g-3 backgroundMessage">
-                        <p class="authorMessage">{{displayAuthorData(currentMessage.authorId, "name")}}
-                            {{displayAuthorData(currentMessage.authorId, "surname")}}</p>
+                        <p *ngIf="messageAuthors[i]" class="authorMessage">
+                            {{messageAuthors[i].name}} {{messageAuthors[i].surname}}
+                        </p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
                     </div>
@@ -153,22 +123,18 @@
                 </div>
             </div>
         </div>
-
         <div class="ui-g">
             <div class="ui-g-12">
                 <div class="ui-g-9"></div>
                 <div class="ui-g-3">
-
                     <button type="button" class="btn btn-primary changePassword discussionButton"
-                            (click)="displayMediation = true" [disabled]="mediationButton">
+                            (click)="displayMediation = true" [disabled]="mediationBlocked">
                         {{'newMediation.button' | translate }}
                     </button>
                     <p class="right">{{'newMediation.text' | translate }}</p>
                 </div>
             </div>
         </div>
-
-
     </ng-container>
 </div>
 
@@ -177,26 +143,23 @@
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false"
-              [resizable]="false" [draggable]="false"
-              [closeOnEscape]="true">
-        <div class="beneficiaryTitle center hiddenScroll"> {{ 'sendMessage.title' |
-            translate }}
+              [resizable]="false" [draggable]="false" [closeOnEscape]="true">
+        <div class="beneficiaryTitle center hiddenScroll">
+            {{ 'sendMessage.title' | translate }}
         </div>
-        <form #messagesForm="ngForm">
+        <form #messagesForm="ngForm" (submit)="sendMessage()">
             <div class="form-group profileDialog">
                 <div class="form-group">
                     <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate }}</p>
                     <p>{{ 'sendMessage.subject' | translate }}</p>
-                    <textarea rows="10" cols="20" [(ngModel)]="message"
-                              class="form-control widthMax"
-                              name="newMessage" required></textarea>
+                    <textarea rows="10" cols="20" class="form-control widthMax"
+                              name="newMessage" [(ngModel)]="message" required></textarea>
                     <div style="text-align: center !important">
                         <button type="button" class="btn btn-primary changePasswordModal cancel-button"
                                 (click)="closeModal()">
                             {{ 'cancel.button' | translate }}
                         </button>
-                        <button type="submit" class="btn btn-primary changePasswordModal publish-button"
-                                (click)="sendMessage()">
+                        <button type="submit" class="btn btn-primary changePasswordModal publish-button">
                             {{ 'helpdeskform.sendmessage' | translate }}
                         </button>
                     </div>
@@ -210,13 +173,12 @@
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false"
-              [closeOnEscape]="true">
+              [draggable]="false" [closeOnEscape]="true">
         <form #messagesForm="ngForm">
             <div class="form-group profileDialog">
 
-                <div class="beneficiaryTitle center"> {{ 'mediationRequest.title' |
-                    translate }}
+                <div class="beneficiaryTitle center">
+                    {{ 'mediationRequest.title' | translate }}
                 </div>
                 <p class="center newMessageDiscussionMargins">{{ 'mediationRequest.text' | translate }}</p>
                 <br>
@@ -242,5 +204,3 @@
         </form>
     </p-dialog>
 </div>
-
-

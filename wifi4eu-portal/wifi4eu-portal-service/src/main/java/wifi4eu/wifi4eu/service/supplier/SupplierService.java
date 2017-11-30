@@ -80,7 +80,7 @@ public class SupplierService {
     }
 
     @Transactional
-    public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) {
+    public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
         UserDTO userDTO = new UserDTO();
         userDTO.setName(supplierDTO.getContactName());
         userDTO.setSurname(supplierDTO.getContactSurname());

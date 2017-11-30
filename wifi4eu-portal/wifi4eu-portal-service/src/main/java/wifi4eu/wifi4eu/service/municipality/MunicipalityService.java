@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,6 +20,9 @@ public class MunicipalityService {
 
     @Autowired
     MunicipalityRepository municipalityRepository;
+
+    @Autowired
+    RegistrationService registrationService;
 
     public List<MunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
@@ -49,4 +55,12 @@ public class MunicipalityService {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findGroupedByLauId()));
     }
 
+    public List<MunicipalityDTO> getMunicipalitiesByUserId(int userId) {
+        List<MunicipalityDTO> municipalities = new ArrayList<>();
+        List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userId);
+        for (RegistrationDTO registration : registrations) {
+            municipalities.add(getMunicipalityById(registration.getMunicipalityId()));
+        }
+        return municipalities;
+    }
 }

@@ -62,11 +62,11 @@ public class NutsResource {
         return nutsService.getNutsByCountryCode(countryCode);
     }
 
-    @ApiOperation(value = "Get all nuts from a specific countryCode and level")
+    @ApiOperation(value = "Get all nuts from a specific countryCode and level order by Label Asc")
     @RequestMapping(value = "/countryCode/{countryCode}/level/{level}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<NutsDTO> getNutsByCountryCodeAndLevel(@PathVariable("countryCode") final String countryCode, @PathVariable("level") final Integer level) {
-        _log.info("getNutsByCountryCodeAndLevel " + countryCode + level);
-        return nutsService.getNutsByCountryCodeAndLevel(countryCode, level);
+    public List<NutsDTO> getNutsByCountryCodeAndLevelOrderByLabelAsc(@PathVariable("countryCode") final String countryCode, @PathVariable("level") final Integer level) {
+        _log.info("getNutsByCountryCodeAndLevelOrderByLabelAsc " + countryCode + level);
+        return nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode, level);
     }
 }

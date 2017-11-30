@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from "@angular/core";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
@@ -12,7 +12,7 @@ import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
     providers: [LauApi]
 })
 
-export class BeneficiaryRegistrationStep2Component {
+export class BeneficiaryRegistrationStep2Component implements OnChanges {
     @Input('country') private country: NutsDTOBase;
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
     @Input('mayors') private mayors: MayorDTOBase[];
@@ -31,6 +31,8 @@ export class BeneficiaryRegistrationStep2Component {
     private emailConfirmations: string[] = [''];
     private readonly MAX_LENGTH = 2;
     private emailsMatch: boolean = false;
+    private css_class_municipalities: string = "";
+    private css_class_email: string[] = [];
 
     constructor(private lauApi: LauApi) {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
@@ -40,7 +42,14 @@ export class BeneficiaryRegistrationStep2Component {
         this.onBack = new EventEmitter<any>();
     }
 
-    private search(event: any, index: number) {
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.hasOwnProperty("multipleMunicipalities")) {
+            if (!this.multipleMunicipalities)
+                this.removeMunicipality(1, this.municipalities.length - 1);
+        }
+    }
+
+    private search(event: any) {
         let query = event.query;
         if (this.country != null && query.length >= this.MAX_LENGTH) {
             this.lauApi.getLausByCountryCodeAndName1StartingWithIgnoreCase(this.country.countryCode, query).subscribe(
@@ -58,16 +67,21 @@ export class BeneficiaryRegistrationStep2Component {
         for (let lau of this.selectedLaus) {
             if (!lau.id) {
                 this.municipalitiesSelected = false;
+                this.css_class_municipalities = "notValid";
                 return;
             }
         }
         this.municipalitiesSelected = true;
+        this.css_class_municipalities = "isValid";
     }
 
-    private checkEmailsMatch() {
+    private checkEmailsMatch(counterMayor: number) {
         this.emailsMatch = false;
-        if (this.mayors[0].email === this.emailConfirmations[0]) {
+        if (this.mayors[counterMayor].email === this.emailConfirmations[counterMayor] && this.emailConfirmations[counterMayor].length > 0) {
             this.emailsMatch = true;
+            this.css_class_email[counterMayor] = "isValid";
+        } else {
+            this.css_class_email[counterMayor] = "notValid";
         }
     }
 
@@ -84,15 +98,15 @@ export class BeneficiaryRegistrationStep2Component {
         this.checkMunicipalitiesSelected();
     }
 
-    private removeMunicipality(index: number) {
-        if (this.multipleMunicipalities && this.municipalities.length > 1) {
-            this.municipalities.splice(index, 1);
-            this.selectedLaus.splice(index, 1);
-            this.mayors.splice(index, 1);
-            this.addressFields.splice(index, 1);
-            this.addressNumFields.splice(index, 1);
-            this.postalCodeFields.splice(index, 1);
-            this.emailConfirmations.splice(index, 1);
+    private removeMunicipality(index: number, removeCount: number = 1) {
+        if (this.municipalities.length > 1) {
+            this.municipalities.splice(index, removeCount);
+            this.selectedLaus.splice(index, removeCount);
+            this.mayors.splice(index, removeCount);
+            this.addressFields.splice(index, removeCount);
+            this.addressNumFields.splice(index, removeCount);
+            this.postalCodeFields.splice(index, removeCount);
+            this.emailConfirmations.splice(index, removeCount);
         }
         this.checkMunicipalitiesSelected();
     }
@@ -123,5 +137,9 @@ export class BeneficiaryRegistrationStep2Component {
         this.municipalitiesChange.emit(this.municipalities);
         this.onBack.emit();
         this.emailConfirmations = [''];
+    }
+
+    private preventPaste(event: any) {
+        return false;
     }
 }

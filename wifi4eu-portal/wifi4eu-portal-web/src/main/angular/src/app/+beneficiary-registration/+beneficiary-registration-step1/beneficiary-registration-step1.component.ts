@@ -27,8 +27,10 @@ export class BeneficiaryRegistrationStep1Component {
     private selectCountry(event: any) {
         this.singleMunicipalityCheckbox = false;
         this.multipleMunicipalityCheckbox = false;
-        this.countrySelected = true;
-        this.countryChange.emit(this.country);
+        if (this.country != null) {
+            this.countrySelected = true;
+            this.countryChange.emit(this.country);
+        }
     }
 
     private chooseSingleMunicipality(checked: boolean) {

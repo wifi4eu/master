@@ -20,6 +20,7 @@ export class BeneficiaryRegistrationStep3Component {
     private userEmailMatches: boolean;
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
+    private css_class_email: string = "";
 
 
     constructor() {
@@ -53,8 +54,11 @@ export class BeneficiaryRegistrationStep3Component {
 
     private checkEmailsMatch() {
         this.userEmailMatches = false;
-        if (this.initialUser.email === this.repeatEmail) {
+        if (this.initialUser.email === this.repeatEmail && this.repeatEmail.length > 0) {
             this.userEmailMatches = true;
+            this.css_class_email = "isValid";
+        } else {
+            this.css_class_email = "notValid";
         }
     }
 
@@ -66,5 +70,9 @@ export class BeneficiaryRegistrationStep3Component {
     private submit() {
         this.onNext.emit();
         this.repeatEmail = '';
+    }
+
+    private preventPaste(event: any) {
+        return false;
     }
 }

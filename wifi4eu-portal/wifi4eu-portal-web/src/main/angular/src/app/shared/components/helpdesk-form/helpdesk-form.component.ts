@@ -7,7 +7,9 @@ import {NutsDTOBase} from "../../swagger/model/NutsDTO";
 import {ResponseDTO} from "../../swagger/model/ResponseDTO";
 
 @Component({
-    selector: 'helpdesk-form-component', templateUrl: 'helpdesk-form.component.html', providers: [NutsApi, HelpdeskissuesApi]
+    selector: 'helpdesk-form-component',
+    templateUrl: 'helpdesk-form.component.html',
+    providers: [NutsApi, HelpdeskissuesApi]
 })
 export class HelpdeskFormComponent {
     private helpdeskIssue: HelpdeskIssueDTO;
@@ -37,14 +39,18 @@ export class HelpdeskFormComponent {
 
     sendIssue() {
         this.helpdeskIssue.portal = this.portal;
-        //TODO:Fix Date objects
-        //this.helpdeskIssue.createDate = new Date().getMilliseconds;
+        this.helpdeskIssue.createDate = Date.now();
         this.helpdeskIssue.assignedTo = "Member State";
         this.helpdeskIssue.status = 0;
         this.helpdeskApi.createHelpdeskIssue(this.helpdeskIssue).subscribe(
             (issue: ResponseDTO) => {
                 if (issue.success) {
                     this.success = true;
+                    this.uxService.growl({
+                        severity: 'success',
+                        summary: 'SUCCESS',
+                        detail: 'Your message was successfully sent.'
+                    });
                 }
             }, error => {
                 this.uxService.growl({

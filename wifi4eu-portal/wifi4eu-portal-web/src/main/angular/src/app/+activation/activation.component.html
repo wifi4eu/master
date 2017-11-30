@@ -9,7 +9,7 @@
 
                 <label for="password" class="label floatLeft labelForgot">{{ 'password.label' | translate }}</label>
                 <input type="password" [(ngModel)]="activation.password" id="password" class="form-control paddingInput" name="password"
-                       ngcontrol="activation.password" #password="ngModel" minlength="8" (keyup)="checkPasswordsMatch()" required>
+                       ngcontrol="activation.password" #password="ngModel" minlength="8" (input)="checkPasswordsMatch()" required>
                 <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
                     {{ 'password.required' | translate }}
                 </div>
@@ -18,7 +18,7 @@
                     {{ 'confirmNewPassword.label' | translate }}
                 </label>
                 <input type="password" [(ngModel)]="activation.confirmPassword" id="confirmPassword" class="form-control paddingInput" name="confirmPassword"
-                       ngcontrol="repeatPassword" #confirmPassword="ngModel" minlength="8" (keyup)="checkPasswordsMatch()" required>
+                       ngcontrol="repeatPassword" #confirmPassword="ngModel" minlength="8" (input)="checkPasswordsMatch()" (paste)="preventPaste()" required>
                 <div [hidden]="confirmPassword.valid || confirmPassword.pristine" class="alert alert-danger">
                     {{ 'newPassword.required' |translate }}
                 </div>

@@ -336,6 +336,7 @@
   "beneficiary.goDiscussionText": "Uno o más solicitantes aplicaron al mismo Municipio que usted. Por favor, contacte a las otras partes para resolver el problema.",
   "beneficiary.registration1": "Registro 1 (usted)",
   "beneficiary.registrationNumber": "Registro # ",
+  "beneficiary.goDiscussionText": "Uno o más solicitantes aplicaron al mismo Municipio que usted. Por favor, contacte a las otras partes para resolver el problema.",
   "beneficiary.deleteApplication.Success": "Sus solicitudes han sido eliminadas correctamente.",
   "beneficiary.deleteApplication.Failure": "Ocurrió un error y sus solicitudes no se han podido eliminar.",
   "discussion.growl.error":"Ocurrió un error y no se pudo enviar su petición de mediación. Por favor, vuelva a intentarlo más tarde.",
@@ -343,5 +344,9 @@
   "home.counterSection1": "Un total de ",
   "home.counterSection2" : " municipios y ",
   "home.counterSection3" : " empresas de instalación de wi-fi ya han aplicado!",
-  "home.counterSectionButton" : "Descubra quienes son"
+  "home.counterSectionButton" : "Descubra quienes son",
+  "already.registered.error": "Usuario ya registrado.",
+  "home.label":"Inicio",
+  "thread.message.success":"Su mensaje se ha enviado correctamente.",
+  "thread.message.error":"Ocurrió un error al intentar enviar su mensaje. Por favor, vuelva a intentarlo más tarde."
 }
