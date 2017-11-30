@@ -71,6 +71,24 @@ public class UserResource {
         }
     }
 
+    @ApiOperation(value = "Save user changes")
+    @RequestMapping(value = "/saveChanges", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO) {
+        try {
+            _log.info("saveUserChanges");
+            UserDTO resUser = userService.saveUserChanges(userDTO);
+            resUser.setPassword(null);
+            return new ResponseDTO(true, resUser, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'saveUserChanges' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
     @ApiOperation(value = "Delete user by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody

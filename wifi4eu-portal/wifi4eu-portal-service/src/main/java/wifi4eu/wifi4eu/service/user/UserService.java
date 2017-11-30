@@ -75,6 +75,18 @@ public class UserService {
         return resUser;
     }
 
+    @Transactional
+    public UserDTO saveUserChanges(UserDTO userDTO) throws Exception {
+        UserDTO searchUser = getUserById(userDTO.getId());
+        if (searchUser != null) {
+            userDTO.setPassword(searchUser.getPassword());
+            UserDTO resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
+            return resUser;
+        } else {
+            throw new Exception("User doesn't exist.");
+        }
+    }
+
     public UserDTO deleteUser(int userId) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
         if (userDTO != null) {

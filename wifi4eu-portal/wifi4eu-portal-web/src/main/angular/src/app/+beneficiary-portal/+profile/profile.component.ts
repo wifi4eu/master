@@ -122,7 +122,7 @@ export class BeneficiaryProfileComponent {
 
     private saveUserChanges() {
         this.submittingData = true;
-        this.userApi.createUser(this.editedUser).subscribe(
+        this.userApi.saveUserChanges(this.editedUser).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.user = response.data;
@@ -148,7 +148,7 @@ export class BeneficiaryProfileComponent {
 
     private saveMayorChanges() {
         this.submittingData = true;
-        this.userApi.createUser(this.editedMayor).subscribe(
+        this.userApi.saveUserChanges(this.editedMayor).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.mayors[this.currentEditIndex] = response.data;
