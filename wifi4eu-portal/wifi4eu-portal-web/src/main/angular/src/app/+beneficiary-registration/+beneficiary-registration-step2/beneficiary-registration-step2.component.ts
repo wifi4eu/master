@@ -26,9 +26,9 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     @Output() private lausChange: EventEmitter<LauDTOBase[]>;
     private lauSuggestions: LauDTOBase[] = [];
     private municipalitiesSelected: boolean = false;
+    private emailsMatch: boolean = false;
     private emailConfirmations: string[] = [''];
     private readonly MAX_LENGTH = 2;
-    private emailsMatch: boolean = false;
     private css_class_municipalities: string[] = ['notValid'];
     private css_class_email: string[] = ['notValid'];
 
@@ -98,14 +98,12 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     }
 
     private removeMunicipality(index: number, deleteCount: number = 1) {
-        if (this.multipleMunicipalities && this.municipalities.length > 1) {
-            this.municipalities.splice(index, deleteCount);
-            this.laus.splice(index, deleteCount);
-            this.mayors.splice(index, deleteCount);
-            this.emailConfirmations.splice(index, deleteCount);
-            this.css_class_email.splice(index, deleteCount);
-            this.css_class_municipalities.splice(index, deleteCount);
-        }
+        this.municipalities.splice(index, deleteCount);
+        this.laus.splice(index, deleteCount);
+        this.mayors.splice(index, deleteCount);
+        this.emailConfirmations.splice(index, deleteCount);
+        this.css_class_email.splice(index, deleteCount);
+        this.css_class_municipalities.splice(index, deleteCount);
         this.checkMunicipalitiesSelected();
     }
 
@@ -123,6 +121,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
             this.emailConfirmations[i] = '';
             this.css_class_email[i] = 'notValid';
         }
+        this.emailsMatch = false;
     }
 
     private back() {
@@ -134,6 +133,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
             this.emailConfirmations[i] = '';
             this.css_class_email[i] = 'notValid';
         }
+        this.emailsMatch = false;
     }
 
     private preventPaste(event: any) {

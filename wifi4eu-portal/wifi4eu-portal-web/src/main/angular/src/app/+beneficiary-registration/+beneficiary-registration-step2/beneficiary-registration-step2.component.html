@@ -27,9 +27,10 @@
                                     {{ 'municipality.label' | translate }}</label>
                                 <div class="clearfix"></div>
                                 <p-autoComplete id="municipality" class="form-control {{css_class_municipalities[0]}}"
-                                                name="municipality" [(ngModel)]="laus[i]" field="name1"
-                                                [suggestions]="lauSuggestions" (completeMethod)="search($event, 0)"
-                                                (onSelect)="checkMunicipalitiesSelected()" required></p-autoComplete>
+                                                name="municipality" field="name1" [(ngModel)]="laus[0]"
+                                                [suggestions]="lauSuggestions" (completeMethod)="search($event)"
+                                                (onSelect)="checkMunicipalitiesSelected()"
+                                                (input)="checkMunicipalitiesSelected()" required></p-autoComplete>
                             </div>
                         </div>
                     </div>
@@ -117,15 +118,15 @@
                             <div class="ui-g">
                                 <div class="ui-g-12">
                                     <div class="form-group">
-                                        <label class="label floatLeft" for="municipality">{{ 'municipality.label' |
-                                            translate }}</label>
+                                        <label class="label floatLeft" for="municipality">
+                                            {{ 'municipality.label' | translate }}
+                                        </label>
                                         <div class="clearfix"></div>
-                                        <p-autoComplete [id]="'municipality-'+i" [name]="'municipality-'+i"
-                                                        class="form-control {{css_class_municipalities[i]}}"
-                                                        [(ngModel)]="laus[i]" field="name1" [suggestions]="lauSuggestions"
-                                                        (completeMethod)="search($event, i)"
-                                                        (onSelect)="checkMunicipalitiesSelected()" required></p-autoComplete>
-                                        <!--<div [hidden="country.valid || country.pristine" class="alert alert-danger">Country is required</div>-->
+                                        <p-autoComplete [id]="'municipality-'+i" class="form-control {{css_class_municipalities[0]}}"
+                                                        [name]="'municipality-'+i" field="name1" [(ngModel)]="laus[i]"
+                                                        [suggestions]="lauSuggestions" (completeMethod)="search($event)"
+                                                        (onSelect)="checkMunicipalitiesSelected()"
+                                                        (input)="checkMunicipalitiesSelected()" required></p-autoComplete>
                                     </div>
                                 </div>
                             </div>
