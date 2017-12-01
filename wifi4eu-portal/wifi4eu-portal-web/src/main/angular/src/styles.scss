@@ -733,7 +733,7 @@ body {
   margin-top: 5%;
 }
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (max-width: 1024px) {
   .ui-multiselect .ui-multiselect-label-container {
     width: 100%;
     height: 3em;
@@ -1108,7 +1108,7 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 }
 
 .ui-multiselect .ui-multiselect-label-container {
-  width: 25.7em;
+  width: 21.7em;
 }
 
 discussion-component .expanded .content, discussion-component .expanded .header, discussion-component .header {
@@ -1147,4 +1147,8 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 
 .isValid {
   border-left: 5px solid #4caf50 !important;
+}
+
+.ui-multiselect-header .ui-inputtext {
+  width: 94%;
 }
