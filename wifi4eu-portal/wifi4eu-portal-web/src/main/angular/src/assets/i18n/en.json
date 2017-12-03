@@ -364,4 +364,5 @@
   "home.label":"Home",
   "thread.message.success":"The message was successfully sent!",
   "thread.message.error":"An error occurred while trying to send the message. Please, try again later."
+  "removeMunicipality.label" : "Remove municipality"
 }
