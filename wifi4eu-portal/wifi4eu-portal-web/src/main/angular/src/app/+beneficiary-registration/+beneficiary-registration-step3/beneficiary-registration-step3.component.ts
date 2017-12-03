@@ -20,8 +20,8 @@ export class BeneficiaryRegistrationStep3Component {
     private userEmailMatches: boolean;
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
-    private css_class_email: string = "";
-
+    private css_class_email: string = '';
+    private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$';
 
     constructor() {
         this.onNext = new EventEmitter<any>();
@@ -56,9 +56,9 @@ export class BeneficiaryRegistrationStep3Component {
         this.userEmailMatches = false;
         if (this.initialUser.email === this.repeatEmail && this.repeatEmail.length > 0) {
             this.userEmailMatches = true;
-            this.css_class_email = "isValid";
+            this.css_class_email = 'isValid';
         } else {
-            this.css_class_email = "notValid";
+            this.css_class_email = 'notValid';
         }
     }
 

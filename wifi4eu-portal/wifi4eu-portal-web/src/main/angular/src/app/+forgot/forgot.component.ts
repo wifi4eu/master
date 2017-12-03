@@ -1,5 +1,4 @@
 import {Component, OnInit} from "@angular/core";
-import {ForgotService} from "./forgot.service";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {ForgotDetails} from "./forgot-details.model";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -10,10 +9,10 @@ import {UserApi} from "../shared/swagger/api/UserApi";
     providers: [UserApi]
 })
 export class ForgotComponent implements OnInit {
-
     private forgotDetails: ForgotDetails;
     private forgotUrl: string;
     private compareURls: boolean;
+    private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$';
 
     constructor(private uxService: UxService, private route: ActivatedRoute, private router: Router, private userApi: UserApi) {
     }

@@ -43,7 +43,7 @@
                     <label for="from" class="label floatLeft">{{ 'helpdeskform.youremail' | translate }}</label><br/>
                     <input id="from" type="email" name="from" #from="ngModel" class="form-control"
                            [(ngModel)]="helpdeskIssue.fromEmail" maxlength="254"
-                           pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$" required>
+                           [pattern]="emailPattern" required>
                 </div>
                 <div class="ui-lg-3"></div>
             </div>

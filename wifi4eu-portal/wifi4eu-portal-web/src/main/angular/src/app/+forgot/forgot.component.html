@@ -9,9 +9,13 @@
                     <p class="text-align-center">{{ 'email.forgot' | translate}}</p>
 
                     <label for="email" class="label floatLeft labelForgot">{{ 'email.label' | translate }}</label>
-                    <input type="email" [(ngModel)]="forgotDetails.email" id="email" class="form-control  paddingInput" name="email"
-                           ngcontrol="forgotDetails.email" #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$" required>
-                    <div [hidden]="email.valid || email.pristine" class="alert alert-danger">{{ 'email.required' |translate }}</div>
+                    <input type="email" id="email" class="form-control paddingInput"
+                           [(ngModel)]="forgotDetails.email" name="email"
+                           ngcontrol="forgotDetails.email" #email="ngModel"
+                           [pattern]="emailPattern" required>
+                    <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+                        {{ 'email.required' |translate }}
+                    </div>
                 </div>
             </div>
             <div class="ui-lg-3"></div>
