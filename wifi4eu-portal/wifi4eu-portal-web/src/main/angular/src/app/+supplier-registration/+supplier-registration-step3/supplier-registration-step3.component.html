@@ -24,7 +24,7 @@
                 <input class="form-control paddingInput" type="text" id="contactName" name="contactName"
                        [(ngModel)]="supplier.contactName" #contactName="ngModel" required>
                 <div class="alert alert-danger" [hidden]="contactName.valid || contactName.pristine">
-                    Name is required
+                    {{'name.required' | translate }}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -36,9 +36,10 @@
             <div class="form-group">
                 <label class="label floatLeft" for="contactSurname">{{ 'surname.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text"
-                       id="contactSurname" name="contactSurname" [(ngModel)]="supplier.contactSurname" #contactSurname="ngModel" required>
+                       id="contactSurname" name="contactSurname" [(ngModel)]="supplier.contactSurname"
+                       #contactSurname="ngModel" required>
                 <div class="alert alert-danger" [hidden]="contactSurname.valid || contactSurname.pristine">
-                    Surname is required
+                    {{'surname.required' | translate }}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -56,7 +57,7 @@
                        [(ngModel)]="supplier.contactPhonePrefix" #contactPhonePrefix="ngModel" required>
                 <div class="alert alert-danger"
                      [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine">
-                    Prefix is required
+                    {{'prefix.required' | translate }}
                 </div>
             </div>
         </div>
@@ -68,7 +69,7 @@
                        [(ngModel)]="supplier.contactPhoneNumber" #contactPhoneNumber="ngModel" required>
                 <div class="alert alert-danger"
                      [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine">
-                    Phone is required
+                    {{'phone.required' | translate }}
                 </div>
             </div>
         </div>
@@ -83,7 +84,7 @@
                        [(ngModel)]="supplier.contactEmail" #contactEmail="ngModel"
                        (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
                 <div class="alert alert-danger" [hidden]="contactEmail.valid || contactEmail.pristine">
-                    Valid email information is required
+                    {{'warning.emailRequired' | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -98,10 +99,10 @@
                        [(ngModel)]="confirmEmailField" #confirmEmail="ngModel" (paste)="preventPaste()"
                        (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
                 <div class="alert alert-danger" [hidden]="confirmEmail.valid || confirmEmail.pristine">
-                    Valid email information is required
+                    {{'warning.emailRequired' | translate}}
                 </div>
                 <div [hidden]="emailMatches || confirmEmail.pristine" class="alert alert-info">
-                    The email information must match
+                    {{'warning.emailMatch' | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -110,10 +111,13 @@
     <div class="form-group ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="button" class="btn btn-primary cancel-button" (click)="back()">{{ 'back.button' | translate }}</button>
+            <button type="button" class="btn btn-primary cancel-button" (click)="back()">{{ 'back.button' | translate
+                }}
+            </button>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary publish-button" [disabled]="!supplierForm.form.valid || !emailMatches">
+            <button type="submit" class="btn btn-primary publish-button"
+                    [disabled]="!supplierForm.form.valid || !emailMatches">
                 {{ 'confirm.button' | translate }}
             </button>
         </div>
