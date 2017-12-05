@@ -14,6 +14,8 @@ import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
@@ -87,6 +89,34 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public UserDTO getUserByUserContext(UserContext userContext) {
+
+        _log.debug("[i] getUserByEcasPerId");
+
+        UserDTO userDTO = userMapper.toDTO( userRepository.findByEcasUsername(userContext.getUsername()));
+
+        _log.debug("after search userDTO: " + userDTO);
+
+        if(userDTO == null){
+
+            userDTO = new UserDTO();
+            userDTO.setAccessDate(new Date().getTime());
+            userDTO.setEcasEmail(userContext.getEmail());
+            userDTO.setEcasUsername(userContext.getUsername());
+            userDTO.setName(userContext.getFirstName());
+            userDTO.setSurname(userContext.getLastName());
+            userDTO.setEmail(userContext.getEmail());
+
+            userDTO = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
+        }
+
+        _log.debug("after create userDTO: " + userDTO);
+
+        _log.debug("[f] getUserByEcasPerId");
+        return userDTO;
+    }
+
     public UserDTO deleteUser(int userId) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
         if (userDTO != null) {
@@ -117,8 +147,20 @@ public class UserService {
         Date now = new Date();
         if (tempToken != null) {
             if (new Date(tempToken.getExpiryDate()).after(now)) {
-                UserDTO user = userMapper.toDTO(userRepository.findOne(tempToken.getUserId()));
-                user.setPassword(activateAccountDTO.getPassword());
+                UserContext userContext = UserHolder.getUser();
+                UserDTO user;
+                if(userContext != null){
+                    //ECAS user
+                    user = getUserByUserContext(userContext);
+                    if(tempToken.getUserId() != user.getId()){
+                        throw new Exception("Token doesn't match with the ECAS user");
+                    }
+                }else{
+                    //
+                    user = userMapper.toDTO(userRepository.findOne(tempToken.getUserId()));
+                    user.setPassword(activateAccountDTO.getPassword());
+                }
+                user.setVerified(true);
                 userRepository.save(userMapper.toEntity(user));
             } else {
                 throw new Exception("Token has expired.");
@@ -140,6 +182,7 @@ public class UserService {
         String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
         tempTokenDTO.setToken(token);
         tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO)));
+        //TODO: Translate subject and msgBody
         String subject = "Welcome to WiFi4EU";
         String msgBody = "You have successfully registered to WiFi4EU, access to the next link and activate your account: " + UserService.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
         mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
@@ -157,37 +200,46 @@ public class UserService {
 
 
     public void forgotPassword(String email) throws Exception {
-        /* validate email variable is not null or empty */
-        if (email != null && !StringUtils.isEmpty(email)) {
-            UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
-            /* validate if user exist in wifi4eu portal */
-            if (userDTO != null) {
-                /* Create a temporal key for activation and reset password functionalities */
-                TempTokenDTO tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.findByEmail(email));
-                if (tempTokenDTO == null) {
-                    tempTokenDTO = new TempTokenDTO();
-                    tempTokenDTO.setEmail(email);
-                    tempTokenDTO.setUserId(userDTO.getId());
+
+        UserContext userContext = UserHolder.getUser();
+        UserDTO user = getUserByUserContext(userContext);
+
+        if(user == null){
+            /* validate email variable is not null or empty */
+            if (email != null && !StringUtils.isEmpty(email)) {
+                UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
+                /* validate if user exist in wifi4eu portal */
+                if (userDTO != null) {
+                    /* Create a temporal key for activation and reset password functionalities */
+                    TempTokenDTO tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.findByEmail(email));
+                    if (tempTokenDTO == null) {
+                        tempTokenDTO = new TempTokenDTO();
+                        tempTokenDTO.setEmail(email);
+                        tempTokenDTO.setUserId(userDTO.getId());
+                    }
+                    Date now = new Date();
+                    tempTokenDTO.setCreateDate(now.getTime());
+                    tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
+                    SecureRandom secureRandom = new SecureRandom();
+                    String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
+                    tempTokenDTO.setToken(token);
+
+                    tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO));
+
+                    /* Send email with */
+                    String fromAddress = MailService.FROM_ADDRESS;
+                    //TODO: translate subject and msgBody
+                    String subject = "wifi4eu portal Forgot Password";
+                    String msgBody = "you can access to the next link and reset your password " + RESET_PASS_URL + tempTokenDTO.getToken();
+                    mailService.sendEmail(email, fromAddress, subject, msgBody);
+                } else {
+                    throw new Exception("trying to forgetPassword with an unregistered user");
                 }
-                Date now = new Date();
-                tempTokenDTO.setCreateDate(now.getTime());
-                tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
-                SecureRandom secureRandom = new SecureRandom();
-                String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
-                tempTokenDTO.setToken(token);
-
-                tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO));
-
-                /* Send email with */
-                String fromAddress = MailService.FROM_ADDRESS;
-                String subject = "wifi4eu portal Forgot Password";
-                String msgBody = "you can access to the next link and reset your password " + RESET_PASS_URL + tempTokenDTO.getToken();
-                mailService.sendEmail(email, fromAddress, subject, msgBody);
             } else {
-                throw new Exception("trying to forgetPassword with an unregistered user");
+                throw new Exception("trying to forgetPassword without an email");
             }
-        } else {
-            throw new Exception("trying to forgetPassword without an email");
+        }else{
+            throw new Exception("ECAS user has to go throw ECAS portal to manage the password");
         }
     }
 }

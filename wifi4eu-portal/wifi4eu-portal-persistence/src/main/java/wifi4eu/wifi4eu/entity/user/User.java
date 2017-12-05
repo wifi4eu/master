@@ -47,10 +47,16 @@ public class User {
     @Column(name = "verified")
     private boolean verified;
 
+    @Column(name = "ecas_email")
+    private String ecasEmail;
+
+    @Column(name = "ecas_username")
+    private String ecasUsername;
+
     public User() {
     }
 
-    public User(String treatment, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified, Integer type) {
+    public User(String treatment, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified, Integer type, String ecasEmail, String ecasUsername) {
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
@@ -63,6 +69,8 @@ public class User {
         this.accessDate = accessDate;
         this.verified = verified;
         this.type = type;
+        this.ecasEmail = ecasEmail;
+        this.ecasUsername = ecasUsername;
     }
 
     public Integer getId() {
@@ -167,5 +175,21 @@ public class User {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getEcasEmail() {
+        return ecasEmail;
+    }
+
+    public void setEcasEmail(String ecasEmail) {
+        this.ecasEmail = ecasEmail;
+    }
+
+    public String getEcasUsername() {
+        return ecasUsername;
+    }
+
+    public void setEcasUsername(String ecasUsername) {
+        this.ecasUsername = ecasUsername;
     }
 }

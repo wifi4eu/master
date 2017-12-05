@@ -25,6 +25,7 @@ public class SupplierResource {
 
     Logger _log = LoggerFactory.getLogger(SupplierResource.class);
 
+    //TODO: limit access to this service
     @ApiOperation(value = "Get all the suppliers")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -33,6 +34,7 @@ public class SupplierResource {
         return supplierService.getAllSuppliers();
     }
 
+    //TODO: limit access to this service
     @ApiOperation(value = "Get supplier by specific id")
     @RequestMapping(value = "/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -41,6 +43,7 @@ public class SupplierResource {
         return supplierService.getSupplierById(supplierId);
     }
 
+    //TODO: is it necessary to be exposed? All the registration have to use submitSupplierRegistration endpoint?
     @ApiOperation(value = "Create supplier")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -58,6 +61,7 @@ public class SupplierResource {
         }
     }
 
+    //TODO: limit access to this service
     @ApiOperation(value = "Delete supplier by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
@@ -91,6 +95,7 @@ public class SupplierResource {
         }
     }
 
+    //TODO: limit access to this endpoint
     @ApiOperation(value = "Get supplier by specific user id")
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

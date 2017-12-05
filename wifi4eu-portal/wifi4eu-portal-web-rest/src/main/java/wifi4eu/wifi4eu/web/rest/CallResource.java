@@ -46,6 +46,9 @@ public class CallResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO createCall(@RequestBody final CallDTO callDTO) {
+
+        //TODO:check DGConn permissions
+
         try {
             _log.info("createCall");
             CallDTO resCall = callService.createCall(callDTO);
@@ -62,6 +65,8 @@ public class CallResource {
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseDTO deleteCall(@RequestBody final Integer callId) {
+
+        //TODO: check DGConn permissions
         try {
             _log.info("deleteCall: " + callId);
             CallDTO resCall = callService.deleteCall(callId);

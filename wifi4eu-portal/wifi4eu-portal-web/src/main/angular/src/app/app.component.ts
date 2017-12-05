@@ -1,10 +1,10 @@
 import {Component, enableProdMode, Output} from "@angular/core";
 import {Router} from "@angular/router";
-import {LocalStorageService} from "angular-2-local-storage";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {UxService, UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {UxLanguage, UxEuLanguages} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import {SharedService} from "./shared/shared.service";
+import {LocalStorageService} from "angular-2-local-storage";
 import {UserDTOBase} from "./shared/swagger/model/UserDTO";
 import {UserApi} from "./shared/swagger/api/UserApi";
 import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
@@ -29,7 +29,7 @@ export class AppComponent {
 
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
 
-    constructor(private router: Router, private translateService: TranslateService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
+    constructor(private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService,private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
         translateService.setDefaultLang('en');
         let language = this.localStorage.get('lang');
         if (language) {
@@ -58,6 +58,41 @@ export class AppComponent {
         this.updateHeader();
         this.sharedService.changeEmitted.subscribe(() => this.updateHeader());
         this.sharedService.logoutEmitted.subscribe(() => this.logout());
+    }
+
+    ngOnInit() {
+        this.userApi.ecasLogin().subscribe(
+            (response: ResponseDTOBase) => {
+
+                this.localStorageService.set('user', JSON.stringify(response.data));
+                this.sharedService.emitChange();
+                /*
+                switch (this.user.type) {
+                    case 1:
+                        this.router.navigateByUrl('/supplier-portal/profile');
+                        break;
+                    case 2:
+                    case 3:
+                        this.router.navigateByUrl('/beneficiary-portal/profile');
+                        break;
+                    case 5:
+                        this.router.navigateByUrl('/dgconn-portal');
+                        break;
+                    default:
+                        this.router.navigateByUrl('/home');
+                        break;
+                }
+                */
+
+            },
+            error => {
+                this.uxService.growl({
+                    severity: 'warning',
+                    summary: 'WARNING',
+                    detail: 'Could not get ECAS User, ignore this when NG is working in offline mode'
+                });
+                console.log('WARNING : Could not get ECAS User, ignore this when NG is working in offline mode');
+            });
     }
 
     initChildren() {

@@ -363,6 +363,7 @@
   "removeMunicipality.label" : "Remove municipality",
   "home.label":"Home",
   "thread.message.success":"The message was successfully sent!",
-  "thread.message.error":"An error occurred while trying to send the message. Please, try again later."
-  "removeMunicipality.label" : "Remove municipality"
+  "thread.message.error":"An error occurred while trying to send the message. Please, try again later.",
+  "removeMunicipality.label" : "Remove municipality",
+  "login.ecas-message" : "ECAS Logon is enabled, manual login is not needed."
 }

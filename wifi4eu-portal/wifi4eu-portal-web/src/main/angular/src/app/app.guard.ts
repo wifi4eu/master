@@ -49,7 +49,10 @@ export class AppGuard implements CanActivate {
     }
 
     canActivateRegistration() {
-        return (this.user === null);
+        if (this.user === null){
+            return true;
+        }
+        return (this.user.type == 0) ? true : false;
     }
 
     canActivateSupplier() {

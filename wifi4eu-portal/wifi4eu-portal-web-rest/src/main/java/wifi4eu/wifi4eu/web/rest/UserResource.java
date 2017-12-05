@@ -13,6 +13,8 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -116,6 +118,27 @@ public class UserResource {
             resUser.setPassword(null);
         }
         return resUsers;
+    }
+
+    @ApiOperation(value = "Service to do Login with a ECAS User")
+    @RequestMapping(value = "/ecaslogin", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO ecasLogin() {
+        try {
+            _log.info("[i] ecasLogin");
+            UserContext userContext = UserHolder.getUser();
+            _log.debug("user Email: " + userContext.getEmail());
+            _log.debug("user PerId: " + userContext.getPerId());
+            UserDTO userDTO = userService.getUserByUserContext(userContext);
+
+            _log.info("[f] ecasLogin");
+            return new ResponseDTO(true, userDTO, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'login' with ECAS operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
     }
 
     @ApiOperation(value = "Service to do Login with a user email and SHA512 password")
