@@ -203,13 +203,13 @@ export class AppComponent {
     logout() {
         this.user = null;
         this.localStorage.remove('user');
-        this.router.navigateByUrl('/home');
         this.menuLinks = [new UxLayoutLink({
             label: 'Wifi4EU',
             children: this.children[0]
         })];
         this.profileUrl = null;
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
+        window.location.href = 'https://ecas.acceptance.ec.europa.eu/cas/logout';
     }
 
     private goToTop() {
