@@ -15,11 +15,15 @@ export class BeneficiaryRegistrationStep3Component {
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
     @Input('mayors') private mayors: MayorDTOBase[];
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
+    @Input('sameDetails') private sameDetails: boolean;
+
     private imMayor: boolean;
     private repeatEmail: string;
     private userEmailMatches: boolean;
+
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
+
     private css_class_email: string = '';
     private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$';
 
@@ -28,6 +32,7 @@ export class BeneficiaryRegistrationStep3Component {
         this.onBack = new EventEmitter<any>();
         this.imMayor = false;
         this.userEmailMatches = false;
+        this.sameDetails = false;
     }
 
     private fillMayorData() {
@@ -65,6 +70,16 @@ export class BeneficiaryRegistrationStep3Component {
     private back() {
         this.onBack.emit();
         this.repeatEmail = '';
+        if (this.imMayor) {
+            this.sameDetails = this.imMayor = false;
+            this.initialUser.name = '';
+            this.initialUser.surname = '';
+            this.initialUser.address = '';
+            this.initialUser.addressNum = '';
+            this.initialUser.postalCode = '';
+            this.initialUser.email = '';
+            this.repeatEmail = '';
+        }
     }
 
     private submit() {

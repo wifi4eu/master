@@ -21,7 +21,7 @@
         <div class="ui-g-8">
             <div *ngIf="!multipleMunicipalities">
                 <label>
-                    <input type="checkbox" (click)="fillMayorData()">
+                    <input type="checkbox" [(ngModel)]="sameDetails" (click)="fillMayorData()">
                     {{ 'beneficiaryRegistration.sameDetails' | translate }}
                 </label>
             </div>
