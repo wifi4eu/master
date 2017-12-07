@@ -115,7 +115,8 @@ export class BeneficiaryProfileComponent {
                 this.displayMayor = true;
                 break;
             case 'password':
-                this.displayChangePassword = true;
+                window.location.href = 'https://ecas.acceptance.ec.europa.eu/cas/login';
+                //this.displayChangePassword = true;
                 break;
         }
     }

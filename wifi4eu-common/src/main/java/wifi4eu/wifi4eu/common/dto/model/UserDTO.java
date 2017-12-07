@@ -2,6 +2,9 @@ package wifi4eu.wifi4eu.common.dto.model;
 
 public class UserDTO {
     private int id;
+
+    private String ecasUsername;
+    private String ecasEmail;
     private String treatment;
     private String name;
     private String surname;
@@ -18,7 +21,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(int id, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, long createDate, long accessDate, int type, boolean verified) {
+    public UserDTO(int id, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, long createDate, long accessDate, int type, boolean verified, String ecasEmail, String ecasUsername) {
         this.id = id;
         this.treatment = treatment;
         this.name = name;
@@ -32,6 +35,8 @@ public class UserDTO {
         this.accessDate = accessDate;
         this.type = type;
         this.verified = verified;
+        this.ecasEmail = ecasEmail;
+        this.ecasUsername = ecasUsername;
     }
 
     public int getId() {
@@ -136,5 +141,21 @@ public class UserDTO {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getEcasUsername() {
+        return ecasUsername;
+    }
+
+    public void setEcasUsername(String ecasUsername) {
+        this.ecasUsername = ecasUsername;
+    }
+
+    public String getEcasEmail() {
+        return ecasEmail;
+    }
+
+    public void setEcasEmail(String ecasEmail) {
+        this.ecasEmail = ecasEmail;
     }
 }

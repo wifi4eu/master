@@ -60,6 +60,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`users` (
   `password`    VARCHAR(255) NULL,
   `create_date` BIGINT       NULL,
   `access_date` BIGINT       NULL,
+  `ecas_email`  VARCHAR(255) NULL,
+  `ecas_username`  VARCHAR(255) NULL,
   `type`        INT          NULL     DEFAULT NULL,
   `verified`    TINYINT      NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)

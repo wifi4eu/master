@@ -15,26 +15,28 @@
 
     <requestingUserDetails>true</requestingUserDetails>
 
+    <!--
     <extraGroupHandler>wifi4eu.wifi4eu.web.util.ecas.RbacEcasExtraGroupHandler</extraGroupHandler>
+    -->
 
     <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
     <assuranceLevel>${ecas.config.assuranceLevel}</assuranceLevel>
     <serverProtocol>http</serverProtocol>
     <cas:serverName>${server.prod.address}</cas:serverName>
     <serverPort>${server.prod.port}</serverPort>
+
+    <applicationServer>tomcat</applicationServer>
     <!--
-    <applicationServer>weblogic</applicationServer>
+        <acceptStrengths>
+            <strength>${ecas.config.strength}</strength>
+        </acceptStrengths>
 
-    <acceptStrengths>
-        <strength>${ecas.config.strength}</strength>
-    </acceptStrengths>
-
-    <cas:renew>${ecas.config.renew}</cas:renew>
+        <cas:renew>${ecas.config.renew}</cas:renew>
 
 
-    ${ecas.config.validate.load_test_specific}
+        ${ecas.config.validate.load_test_specific}
 
-    ${ecas.config.test.certificate.element}
-    -->
+        ${ecas.config.test.certificate.element}
+        -->
 
 </client-config>

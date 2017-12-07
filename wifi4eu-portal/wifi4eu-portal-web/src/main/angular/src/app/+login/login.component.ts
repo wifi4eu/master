@@ -15,8 +15,18 @@ import {SharedService} from "../shared/shared.service";
 export class LoginComponent {
     private user: UserDTOBase = new UserDTOBase();
     private displayConfirmingData: boolean = false;
+    private isEcasUser: boolean = false;
 
     constructor(private userApi: UserApi, private localStorageService: LocalStorageService, private uxService: UxService, private translateService: TranslateService, private sharedService: SharedService, private router: Router) {
+
+        let storedUser = this.localStorageService.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+        if (this.user.ecasEmail != null) {
+            this.isEcasUser = true;
+        }else{
+            this.user = new UserDTOBase();
+        }
+
     }
 
     login() {

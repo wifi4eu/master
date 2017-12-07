@@ -89,7 +89,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private addMunicipality() {
         if (this.multipleMunicipalities) {
             this.municipalities.push(new MunicipalityDTOBase());
-            this.laus.push();
+            //this.laus.push();
             this.mayors.push(new UserDTOBase());
             this.emailConfirmations.push('');
             this.css_class_email.push('notValid');

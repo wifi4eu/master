@@ -30,6 +30,8 @@ public class CallService {
     }
 
     public CallDTO deleteCall(int callId) {
+
+        //TODO: change to a logic delete
         CallDTO callDTO = callMapper.toDTO(callRepository.findOne(callId));
         if (callDTO != null) {
             callRepository.delete(callMapper.toEntity(callDTO));

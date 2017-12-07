@@ -2,7 +2,8 @@ package wifi4eu.wifi4eu.common;
 
 public abstract class Constant {
 
-	public static final String USER = "USER";
+	//public static final String USER = "USER";
+	public static final String USER = "edu.yale.its.tp.cas.client.filter.user";
 	public static final String FORM = "FORM";
 
 	public static final long ROLE_SUPPLIER = 1;

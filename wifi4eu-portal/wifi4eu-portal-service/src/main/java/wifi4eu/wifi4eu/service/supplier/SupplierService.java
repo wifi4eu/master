@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.supplier.SuppliedRegion;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
@@ -66,6 +68,7 @@ public class SupplierService {
     }
 
     public SupplierDTO deleteSupplier(int supplierId) {
+        //TODO: change to a soft delete
         SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
         if (supplierDTO != null) {
             supplierRepository.delete(supplierMapper.toEntity(supplierDTO));
@@ -81,13 +84,25 @@ public class SupplierService {
 
     @Transactional
     public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
-        UserDTO userDTO = new UserDTO();
+
+        UserDTO userDTO;
+
+        UserContext userContext = UserHolder.getUser();
+
+        if(userContext != null){
+            // with ECAS
+            userDTO = userService.getUserByUserContext(userContext);
+        }else{
+            // without ECAS (only testing purpose)
+            userDTO = new UserDTO();
+            String password = "12345678";
+            userDTO.setPassword(password);
+        }
+
         userDTO.setName(supplierDTO.getContactName());
         userDTO.setSurname(supplierDTO.getContactSurname());
         userDTO.setEmail(supplierDTO.getContactEmail());
         userDTO.setCreateDate(new Date().getTime());
-        String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
-        userDTO.setPassword(password);
         userDTO.setType(1);
         userDTO.setVerified(false);
         UserDTO resUser = userService.createUser(userDTO);

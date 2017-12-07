@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -44,12 +46,38 @@ public class BeneficiaryService {
 
     @Transactional
     public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO) throws Exception {
-        UserDTO user = beneficiaryDTO.getUser();
+
+        UserDTO user;
+        UserContext userContext = UserHolder.getUser();
+        boolean isEcasUser = false;
+
+        if(userContext != null){
+            user = userService.getUserByUserContext(userContext);
+            user.setName(beneficiaryDTO.getUser().getName());
+            user.setSurname(beneficiaryDTO.getUser().getSurname());
+            user.setAddress(beneficiaryDTO.getUser().getAddress());
+            user.setAddressNum(beneficiaryDTO.getUser().getAddressNum());
+            user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
+            user.setEmail(beneficiaryDTO.getUser().getEmail());
+            user.setType(beneficiaryDTO.getUser().getType());
+            isEcasUser = true;
+        }else{
+            user = beneficiaryDTO.getUser();
+            String password = "12345678";
+            user.setPassword(password);
+            isEcasUser = false;
+        }
+
         user.setCreateDate(new Date().getTime());
-        String password = "12345678";
-        user.setPassword(password);
-        user.setVerified(true);
-        UserDTO resUser = userService.createUser(user);
+
+        UserDTO resUser;
+        if(isEcasUser){
+            resUser = userService.saveUserChanges(user);
+        }
+        else{
+            resUser = userService.createUser(user);
+        }
+
         List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
         List<RegistrationDTO> registrations = new ArrayList<>();
         for (int i = 0; i < resMunicipalities.size(); i++) {
@@ -60,6 +88,9 @@ public class BeneficiaryService {
             RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, resUser.getId());
             registrations.add(registrationService.createRegistration(registration));
         }
+
+        userService.sendActivateAccountMail(resUser);
+
         return registrations;
     }
 

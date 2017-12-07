@@ -123,14 +123,11 @@
                                             {{ 'municipality.label' | translate }}
                                         </label>
                                         <div class="clearfix"></div>
-                                        <p-autoComplete [id]="'municipality-'+i" class="form-control {{css_class_municipalities[0]}}"
+                                        <p-autoComplete [id]="'municipality-'+i" class="form-control {{css_class_municipalities[i]}}"
                                                         [name]="'municipality-'+i" field="name1" [(ngModel)]="laus[i]"
                                                         [suggestions]="lauSuggestions" (completeMethod)="search($event)"
                                                         (onSelect)="checkMunicipalitiesSelected()"
                                                         (input)="checkMunicipalitiesSelected()" required></p-autoComplete>
-                                        <div [hidden="country.valid || country.pristine" class="alert alert-danger">
-                                            {{'country.required' | translate}}
-                                        </div>
                                     </div>
                                 </div>
                             </div>
