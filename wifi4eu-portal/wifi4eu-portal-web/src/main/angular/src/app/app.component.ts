@@ -213,7 +213,7 @@ export class AppComponent {
         this.profileUrl = null;
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
         this.userApi.ecasLogout();
-        window.location.href = 'https://ecas.acceptance.ec.europa.eu/cas/logout';
+        //window.location.href = 'https://ecas.acceptance.ec.europa.eu/cas/logout';
     }
 
     private goToTop() {
