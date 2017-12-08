@@ -10,7 +10,6 @@ import {UserApi} from "./shared/swagger/api/UserApi";
 import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
 import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
 
-
 enableProdMode()
 
 @Component({
@@ -56,16 +55,17 @@ export class AppComponent {
         this.children = [];
         this.initChildren();
         this.updateHeader();
-        this.sharedService.changeEmitted.subscribe(() => this.updateHeader());
-        this.sharedService.logoutEmitted.subscribe(() => this.logout());
+
+        this.sharedService.updateEmitter.subscribe(() => this.updateHeader());
+        this.sharedService.logoutEmitter.subscribe(() => this.logout());
+
     }
 
     ngOnInit() {
         this.userApi.ecasLogin().subscribe(
             (response: ResponseDTOBase) => {
-
                 this.localStorageService.set('user', JSON.stringify(response.data));
-                this.sharedService.emitChange();
+                this.sharedService.update();
                 /*
                 switch (this.user.type) {
                     case 1:
@@ -152,8 +152,11 @@ export class AppComponent {
 
     updateHeader() {
         let storedUser = this.localStorage.get('user');
+
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+
         if (this.user != null) {
+
             this.userApi.getUserById(this.user.id).subscribe(
                 (user: UserDTOBase) => {
                     this.user = user;
@@ -209,6 +212,7 @@ export class AppComponent {
         })];
         this.profileUrl = null;
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
+        this.userApi.ecasLogout();
         window.location.href = 'https://ecas.acceptance.ec.europa.eu/cas/logout';
     }
 

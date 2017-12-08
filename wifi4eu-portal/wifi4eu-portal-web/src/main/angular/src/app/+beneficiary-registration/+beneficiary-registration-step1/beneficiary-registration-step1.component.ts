@@ -5,6 +5,7 @@ import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
+import {SharedService} from "../../shared/shared.service";
 
 @Component({
     selector: 'beneficiary-registration-step1', templateUrl: 'beneficiary-registration-step1.component.html'
@@ -13,16 +14,18 @@ import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 export class BeneficiaryRegistrationStep1Component {
     @Input('countries') private countries: NutsDTOBase[];
     @Input('country') private country: NutsDTOBase;
-    @Output() private countryChange: EventEmitter<NutsDTOBase>;
     @Input('organizations') private organizations: OrganizationDTOBase[];
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
+
+    @Output() private countryChange: EventEmitter<NutsDTOBase>;
     @Output() private multipleMunicipalitiesChange: EventEmitter<boolean>;
     @Output() private onNext: EventEmitter<any>;
+
     private countrySelected: boolean = false;
     private singleMunicipalityCheckbox: boolean = false;
     private multipleMunicipalityCheckbox: boolean = false;
 
-    constructor() {
+    constructor(private sharedService: SharedService) {
         this.countryChange = new EventEmitter<NutsDTOBase>();
         this.multipleMunicipalitiesChange = new EventEmitter<boolean>();
         this.onNext = new EventEmitter<any>();
@@ -34,6 +37,7 @@ export class BeneficiaryRegistrationStep1Component {
         if (this.country != null) {
             this.countrySelected = true;
             this.countryChange.emit(this.country);
+            this.sharedService.clean();
         }
     }
 

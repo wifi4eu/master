@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output, OnInit} from "@angular/core";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
+import {SharedService} from "../../shared/shared.service";
 
 
 @Component({
@@ -27,12 +28,13 @@ export class BeneficiaryRegistrationStep3Component {
     private css_class_email: string = '';
     private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$';
 
-    constructor() {
+    constructor(private sharedService: SharedService) {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
         this.imMayor = false;
         this.userEmailMatches = false;
         this.sameDetails = false;
+        this.sharedService.cleanEmitter.subscribe(() => {this.reset()});
     }
 
     private fillMayorData() {
@@ -70,6 +72,10 @@ export class BeneficiaryRegistrationStep3Component {
     private back() {
         this.onBack.emit();
         this.repeatEmail = '';
+        this.reset();
+    }
+
+    private reset() {
         if (this.imMayor) {
             this.sameDetails = this.imMayor = false;
             this.initialUser.name = '';

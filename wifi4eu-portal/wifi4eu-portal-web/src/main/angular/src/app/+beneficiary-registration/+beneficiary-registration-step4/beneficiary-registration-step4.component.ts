@@ -2,6 +2,7 @@ import {Component, Input, Output, EventEmitter} from "@angular/core";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
+import {SharedService} from "../../shared/shared.service";
 
 
 @Component({
@@ -20,7 +21,7 @@ export class BeneficiaryRegistrationStep4Component {
     private displayConfirmingData: boolean = false;
     private legalChecks: boolean[] = [false, false, false];
 
-    constructor() {
+    constructor(private sharedService: SharedService) {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
         this.onEdit = new EventEmitter<any>();
@@ -41,5 +42,6 @@ export class BeneficiaryRegistrationStep4Component {
     private edit(step: number) {
         this.onEdit.emit(step);
         this.legalChecks = [false, false, false];
+        this.sharedService.clean();
     }
 }

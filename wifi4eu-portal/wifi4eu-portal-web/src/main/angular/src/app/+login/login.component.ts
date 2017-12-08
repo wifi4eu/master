@@ -20,7 +20,9 @@ export class LoginComponent {
     constructor(private userApi: UserApi, private localStorageService: LocalStorageService, private uxService: UxService, private translateService: TranslateService, private sharedService: SharedService, private router: Router) {
 
         let storedUser = this.localStorageService.get('user');
+
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+
         if (this.user.ecasEmail != null) {
             this.isEcasUser = true;
         }else{
@@ -47,7 +49,7 @@ export class LoginComponent {
                         detail: translatedString
                     });
                     this.localStorageService.set('user', JSON.stringify(response.data));
-                    this.sharedService.emitChange();
+                    this.sharedService.update();
                     switch (this.user.type) {
                         case 1:
                             this.router.navigateByUrl('/supplier-portal/profile');

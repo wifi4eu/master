@@ -130,9 +130,24 @@ public class UserResource {
             _log.debug("user Email: " + userContext.getEmail());
             _log.debug("user PerId: " + userContext.getPerId());
             UserDTO userDTO = userService.getUserByUserContext(userContext);
-
             _log.info("[f] ecasLogin");
             return new ResponseDTO(true, userDTO, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'login' with ECAS operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Service to do Login with a ECAS User")
+    @RequestMapping(value = "/ecaslogout", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO ecasLogout() {
+        try {
+            _log.info("[i] ecasLogout");
+            _log.info("[f] ecasLogout");
+            return new ResponseDTO(true, null, null);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'login' with ECAS operation.", e);
@@ -211,4 +226,5 @@ public class UserResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
+
 }

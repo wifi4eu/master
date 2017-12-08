@@ -6,23 +6,30 @@ import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux
 @Injectable()
 export class SharedService {
 
-    private emitChangeSource = new Subject<any>();
+    private emitUpdate = new Subject<any>();
+    private emitLogout = new Subject<any>();
+    private emitClean = new Subject<any>();
 
-    changeEmitted = this.emitChangeSource.asObservable();
-    logoutEmitted = this.emitChangeSource.asObservable();
+    updateEmitter = this.emitUpdate.asObservable();
+    logoutEmitter = this.emitLogout.asObservable();
+    cleanEmitter = this.emitClean.asObservable();
 
     constructor(private translateService: TranslateService, private uxService: UxService) {
     }
 
-    emitChange() {
-        this.emitChangeSource.next();
+    update() {
+        this.emitUpdate.next();
     }
 
     login() {
     }
 
     logout() {
-        this.emitChangeSource.next();
+        this.emitLogout.next();
+    }
+
+    clean() {
+        this.emitClean.next();
     }
 
     growlTranslation(translatedString: string, keyToTranslate: string, type: string) {
