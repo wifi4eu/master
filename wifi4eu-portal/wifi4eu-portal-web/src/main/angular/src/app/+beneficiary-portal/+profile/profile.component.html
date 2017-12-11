@@ -133,21 +133,6 @@
             <div class="ui-g">
                 <div class="ui-g-4"></div>
                 <div class="ui-g-8 button-content">
-                    <p>{{ 'beneficiaryProfile.text' | translate }}</p>
-                    <div style="text-align: center !important">
-                        <button type="button" (click)="displayModal('password')" class="btn btn-primary changePassword">
-                            {{'beneficiaryProfile.password' | translate }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="ui-g" *ngIf="isRegisterHold">
-        <div class="ui-g-12">
-            <div class="ui-g">
-                <div class="ui-g-4"></div>
-                <div class="ui-g-8 button-content">
                     <p>{{ 'beneficiary.goDiscussionText' | translate }}</p>
                     <div style="text-align: center !important">
                         <button type="button" (click)="goToDiscussion()" class="btn btn-primary changePassword">
@@ -158,7 +143,7 @@
             </div>
         </div>
     </div>
-    <div class="ui-g">
+    <div class="ui-g" *ngIf="isRegisterHold">
         <div class="ui-g-12">
             <div class="ui-g">
                 <div class="ui-g-4"></div>
