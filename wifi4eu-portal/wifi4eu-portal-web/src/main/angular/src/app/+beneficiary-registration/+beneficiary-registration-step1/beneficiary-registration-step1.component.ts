@@ -25,8 +25,13 @@ export class BeneficiaryRegistrationStep1Component {
     private singleMunicipalityCheckbox: boolean = false;
     private multipleMunicipalityCheckbox: boolean = false;
 
+    @Input('organization') private organization: OrganizationDTOBase;
+    @Output() private organizationChange: EventEmitter<OrganizationDTOBase>;
+    private organizationSelected: boolean = false;
+
     constructor(private sharedService: SharedService) {
         this.countryChange = new EventEmitter<NutsDTOBase>();
+        this.organizationChange = new EventEmitter<OrganizationDTOBase>();
         this.multipleMunicipalitiesChange = new EventEmitter<boolean>();
         this.onNext = new EventEmitter<any>();
     }
@@ -64,7 +69,14 @@ export class BeneficiaryRegistrationStep1Component {
             this.multipleMunicipalities = true;
         }
         this.countryChange.emit(this.country);
+        this.organizationChange.emit(this.organization);
         this.multipleMunicipalitiesChange.emit(this.multipleMunicipalities);
         this.onNext.emit();
+    }
+
+    private selectOrganization(event: any) {
+        if (this.organization != null) {
+            this.organizationSelected = true;
+        }
     }
 }

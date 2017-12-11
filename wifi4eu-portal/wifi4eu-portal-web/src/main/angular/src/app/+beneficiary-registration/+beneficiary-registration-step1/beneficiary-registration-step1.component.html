@@ -67,6 +67,32 @@
             <div class="ui-g-5"></div>
         </div>
         <div *ngIf="organizations.length > 0" id="represent-option" class="form-group ui-g center">
+            <div class="ui-g-12">
+                <div class="ui-g-2"></div>
+                <div class="ui-g-8">
+                    <!-- Organization selection -->
+                    <div class="form-group ui-g">
+                        <div class="ui-g-12">
+                            <label class="label" for="organization">{{ 'organization.label' | translate }}</label>
+                            <select [(ngModel)]="organization" (ngModelChange)="selectOrganization($event)"
+                                    id="organization" name="organization" class="form-control"
+                                    ng-options="option.value as option.name for option in typeOptions"
+                                    [disabled]="organizations.length < 1">
+                                <option disabled selected [ngValue]="null">
+                                    Choose an organization
+                                </option>
+                                <option *ngFor="let currentOrganization of organizations" [ngValue]="currentOrganization">
+                                    {{currentOrganization.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <hr>
+                    <br class="beneficiaryHr">
+                </div>
+                <div class="ui-g-2"></div>
+            </div>
             <div class="ui-g-3"></div>
             <div class="ui-g-2">
                 <div [hidden]="!countrySelected">
@@ -114,8 +140,13 @@
             </div>
             <!-- Next button -->
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button type="submit" class="btn btn-primary publish-button"
+                <button *ngIf="organizations.length < 1" type="submit" class="btn btn-primary publish-button"
                         [disabled]="!registrationForm.valid || !countrySelected || (!singleMunicipalityCheckbox && !multipleMunicipalityCheckbox)">
+                    {{ 'next.button' | translate }}
+                </button>
+                <button *ngIf="organizations.length > 0" type="submit" class="btn btn-primary publish-button"
+                        [disabled]="!registrationForm.valid || !countrySelected ||
+                        (!singleMunicipalityCheckbox && !multipleMunicipalityCheckbox) || !organizationSelected">
                     {{ 'next.button' | translate }}
                 </button>
             </div>
