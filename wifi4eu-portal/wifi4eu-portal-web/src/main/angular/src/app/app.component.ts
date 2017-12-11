@@ -192,7 +192,7 @@ export class AppComponent {
                 }
             );
         } else {
-            this.logout();
+            //this.logout();
         }
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
