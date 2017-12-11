@@ -35,6 +35,7 @@ export class BeneficiaryRegistrationComponent {
     private countries: NutsDTOBase[] = [];
     private organizationsSubscription: Subscription = new Subscription();
     private alreadyRegistered: boolean = false;
+    private organization: OrganizationDTOBase = null;
 
     constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private lauApi: LauApi, private organizationApi: OrganizationApi) {
         this.nutsApi.getNutsByLevel(0).subscribe(
@@ -49,6 +50,7 @@ export class BeneficiaryRegistrationComponent {
     private selectCountry(country: NutsDTOBase) {
         if (this.country != country) {
             this.country = country;
+            this.organization = null;
             this.organizationsSubscription = this.organizationApi.getOrganizationsByCountry(country.countryCode).subscribe(
                 (organizations: OrganizationDTOBase[]) => {
                     this.organizations = organizations;
