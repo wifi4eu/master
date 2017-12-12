@@ -28,7 +28,7 @@ export class AppComponent {
 
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
 
-    constructor(private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService,private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
+    constructor(private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
         translateService.setDefaultLang('en');
         let language = this.localStorage.get('lang');
         if (language) {
@@ -46,7 +46,7 @@ export class AppComponent {
         this.menuLinks = [new UxLayoutLink({
             label: 'Wifi4EU',
             children: [
-                new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
+                new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-landing'}),
                 new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
             ]
         })];
@@ -99,7 +99,7 @@ export class AppComponent {
         this.children[0] = [
             new UxLayoutLink({
                 label: 'Beneficiary Registration',
-                url: '/beneficiary-registration'
+                url: '/beneficiary-landing'
             }),
             new UxLayoutLink({
                 label: 'Supplier Registration',

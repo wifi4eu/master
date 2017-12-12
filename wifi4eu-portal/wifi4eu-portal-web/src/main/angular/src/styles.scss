@@ -1149,6 +1149,7 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 .counterText {
   padding-top: 1em;
 }
+
 .notValid {
   border-left: 5px solid #f44336 !important;
 }
@@ -1188,4 +1189,42 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 
 #app-header {
   height: 7.5em;
+}
+
+.benefLandingLink {
+  color: $darkish-blue;
+  font-size: 18px;
+  margin-bottom: 30px;
+  line-height: 0px;
+}
+
+.landingText {
+  font-size: 18px;
+}
+
+.pleaseNote {
+  position: absolute;
+}
+
+.landingFirstText {
+  margin-top: 2em;
+}
+
+#img-wifiLanding {
+  position: absolute;
+  bottom: 0;
+  max-width: 500px;
+  width: 28%;
+  margin-left: 33%;
+}
+
+.firstBackgroundBenefLanding, #benefLandingThirdBackground, #benefLandingSecondBackground {
+  width: 100%;
+}
+
+.helpdesk-bottom {
+  background-color: #EAEEF2;
+  padding-bottom: 16em;
+  padding-top: 3em;
+  margin-top: 6em;
 }
