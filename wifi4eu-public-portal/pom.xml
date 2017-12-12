@@ -18,7 +18,7 @@
     </parent>
 
     <properties>
-        <app.context.root>/wifi4eu-public-portal</app.context.root>
+        <app.context.root>/wifi4eu-public</app.context.root>
     </properties>
 
     <modules>
