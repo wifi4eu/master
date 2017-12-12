@@ -7,6 +7,7 @@ import {ForgotComponent} from "./+forgot/forgot.component";
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {NotFoundComponent} from "./not-found/not-found.component"
 import {AppGuard} from "./app.guard";
+import {BeneficiaryLandingComponent} from "./+beneficiary-landing/beneficiary-landing.component";
 // import {AppGuard} from "./app.guard";
 // import {AbacComponent} from "./+abac/abac.component";
 // import {EcasComponent} from "./+ecas/ecas.component";
@@ -29,16 +30,16 @@ import {AppGuard} from "./app.guard";
         }, {
             path: 'login',
             component: LoginComponent
-            }, {
-                path: 'forgot',
-                component: ForgotComponent
+        }, {
+            path: 'forgot',
+            component: ForgotComponent
         }, {
             path: 'beneficiary-portal',
             loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule',
             //     canActivate: [AppGuard]
-             }, {
-                 path: 'helpdesk',
-                 component: HelpdeskComponent,
+        }, {
+            path: 'helpdesk',
+            component: HelpdeskComponent,
             //     canActivate: [AppGuard]
         }, {
             path: 'dgconn-portal',
@@ -59,6 +60,9 @@ import {AppGuard} from "./app.guard";
             // }, {
             //     path: 'abac',
             //     component: AbacComponent
+        }, {
+            path: 'beneficiary-landing',
+            component: BeneficiaryLandingComponent
         }, {
             path: 'notfound',
             component: NotFoundComponent
