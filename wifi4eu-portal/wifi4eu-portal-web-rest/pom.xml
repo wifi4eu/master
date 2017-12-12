@@ -8,7 +8,7 @@
     </parent>
   
   <artifactId>wifi4eu-portal-web-rest</artifactId>
-  <name>WiFi4EU Public Portal REST module</name>
+  <name>WiFi4EU Portal REST module</name>
 
   <dependencies>
 
