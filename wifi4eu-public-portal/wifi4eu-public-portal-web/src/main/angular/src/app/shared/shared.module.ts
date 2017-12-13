@@ -30,6 +30,7 @@ import {HelpdeskFormComponent} from "../shared/components/helpdesk-form/helpdesk
 import {TimerComponent} from "../shared/components/timer/timer.component";
 import {CustomLayoutHeaderComponent} from "./components/custom-layout-header/custom-layout-header";
 import {CustomLayoutNavBarActionItemComponent} from "./components/custom-layout-nav-bar-action-item/custom-layout-nav-bar-action-item";
+import {CustomLayoutNavBarTopMenuComponent} from "./components/custom-layout-nav-bar-top-menu/custom-layout-nav-bar-top-menu.component";
 
 export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions) {
     return new UxHttp(backend, defaultOptions);
@@ -64,6 +65,7 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         CustomWizardStepsComponent,
         CustomLayoutHeaderComponent,
         CustomLayoutNavBarActionItemComponent,
+        CustomLayoutNavBarTopMenuComponent,
         TimelineComponent,
         HelpdeskFormComponent,
         TimerComponent
@@ -93,6 +95,7 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         CustomWizardStepsComponent,
         CustomLayoutHeaderComponent,
         CustomLayoutNavBarActionItemComponent,
+        CustomLayoutNavBarTopMenuComponent,
         Ng2GoogleRecaptchaModule,
         TimelineComponent,
         HelpdeskFormComponent,
