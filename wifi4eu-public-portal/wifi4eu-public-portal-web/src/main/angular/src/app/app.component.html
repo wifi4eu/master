@@ -10,19 +10,11 @@
                                               (languageChanged)="changeLanguage($event)"></ux-language-selector>
                         <div class="profile-wrapper" isCompact="false">
                             <div class="left-panel">
-                                <div *ngIf="user" class="user-infos">
-                                    <span class="wellcomeHeader">{{ 'loggedin.as' | translate }}: <a
-                                            [routerLink]="profileUrl">
-                                        <strong class="color-primary">{{user.email}}</strong></a></span><br>
-                                    <button (click)="logout()" class="headerButton">
-                                        {{ 'logout.label' | translate }}
-                                    </button>
-                                </div>
-                                <div *ngIf="!user" class="user-infos">
+                                <div class="user-infos">
                                     <strong class="color-primary">
                                     </strong>
-                                    <button class="headerButton" routerLink="/login" routerLinkActive="active">
-                                        {{ 'login.label' | translate }}
+                                    <button class="headerButton" type="button">
+                                        <a href="../../../wifi4eu">{{ 'login.label' | translate }}</a>
                                     </button>
                                 </div>
                             </div>
