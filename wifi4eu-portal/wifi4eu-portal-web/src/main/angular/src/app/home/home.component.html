@@ -37,16 +37,18 @@
     <div class="row contenedor">
         <div class="col-xl-6">
             <h1 class="benefit">{{ 'home.part2.title' | translate }}</h1>
-            <p class="europeans-text">{{ 'home.part2.subtitle1' | translate }} date {{ 'home.part2.subtitle1.2' |
-                translate }} time {{ 'home.part2.subtitle3' | translate}}</p>
+            <p *ngIf="showTimeline" class="europeans-text">{{ 'home.part2.subtitle1' | translate }}
+                {{currentCall.startDate | date: 'dd/MM/yyyy'}} {{
+                'home.part2.subtitle1.2' |
+                translate }}{{currentCall.startDate | date: 'HH:mm'}} {{ 'home.part2.subtitle3' | translate}}</p>
             <p class="europeans-text">{{ 'home.part2.subtitle4' | translate}}</p>
-            <ul class="europeans-text">
+            <ul class="europeans-text benefLandingList">
                 <li>{{ 'home.part2.list1' | translate}}</li>
                 <li>{{ 'home.part2.list2' | translate}}</li>
             </ul>
-            <p class="europeans-text">{{ 'home.part2.subtitle5' | translate}}</p>
-            <p class="europeans-text">{{ 'home.part2.subtitle6' | translate}}<a href="#">{{'benfefLanding.pleaseNoteTextLink'
-                | translate}}</a>.</p>
+            <p class="europeans-text">{{ 'home.part2.subtitle5' | translate}}<a href="#">{{'benfefLanding.pleaseNoteTextLink'
+                | translate}}</a></p>
+            <p class="europeans-text">{{ 'home.part2.subtitle6' | translate}}.</p>
             <div id="img-scnd">
                 <img src="assets/images/copy-3.png" alt="">
             </div>
@@ -66,12 +68,16 @@
         <div class="col-xl-6">
             <h2 class="apply">{{ 'home.part3.title' | translate }} </h2>
             <p class="apply-text">{{ 'home.part3.text1' | translate }}</p>
-            <ul class="europeans-text">
+            <ul class="europeans-text benefLandingList">
                 <li>{{ 'home.part3.list1' | translate}}</li>
                 <li>{{ 'home.part3.list2' | translate}}</li>
             </ul>
-            <p class="apply-text">{{ 'home.part3.text3' | translate }}</p>
-            <p class="apply-text">{{ 'home.part3.text4' | translate }}</p>
+            <div *ngIf="showTimeline">
+                <p class="apply-text">{{ 'home.part3.text3' | translate }}</p>
+                <p class="apply-text">{{ 'home.part3.text4' | translate }}</p>
+                <timer-component class="timelineBenefLanding" (timerEvent)="checkIfSelected()"
+                                 [expirationTimestamp]="currentCall.startDate"></timer-component>
+            </div>
         </div>
         <div class="col-xl-6">
             <h2 class="apply">{{ 'home.part3.title.1' | translate }} </h2>
@@ -88,7 +94,7 @@
             <div class="col-xl-6">
                 <img class="mayor-img"
                      src="assets/images/account-balance-material-icons-regular.png">
-                <p class="mayor-title">{{ 'home.part3.title2' | translate }}</p>
+                <p class="supplier">{{ 'home.part3.title2' | translate }}</p>
                 <a class="btn btn-primary video-button center-block video-button"
                    href="#/beneficiary-registration">{{ 'home.register' | translate }}</a>
             </div>

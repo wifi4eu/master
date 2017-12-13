@@ -1149,6 +1149,7 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 .counterText {
   padding-top: 1em;
 }
+
 .notValid {
   border-left: 5px solid #f44336 !important;
 }
@@ -1188,4 +1189,16 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 
 #app-header {
   height: 7.5em;
+}
+
+.benefLandingList {
+  list-style: circle;
+}
+
+.timelineBenefLanding {
+  background: #fbfbfb;
+  width: 34em;
+  box-shadow: 0px 1px 2px #888888;
+  color: $dark-blue;
+
 }
