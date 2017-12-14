@@ -89,10 +89,10 @@ public class SupplierService {
 
         UserContext userContext = UserHolder.getUser();
 
-        if(userContext != null){
+        if (userContext != null) {
             // with ECAS
             userDTO = userService.getUserByUserContext(userContext);
-        }else{
+        } else {
             // without ECAS (only testing purpose)
             userDTO = new UserDTO();
             String password = "12345678";

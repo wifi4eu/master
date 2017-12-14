@@ -166,14 +166,10 @@ CREATE TABLE IF NOT EXISTS `dbo`.`nuts` (
 CREATE TABLE IF NOT EXISTS `dbo`.`threads` (
   `id`    INT          NOT NULL,
   `title` VARCHAR(255) NULL,
-  `lau`   INT          NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_threads_laus_idx` (`lau` ASC),
-  CONSTRAINT `fk_threads_laus`
-  FOREIGN KEY (`lau`)
-  REFERENCES `dbo`.`laus` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  `reason`   VARCHAR(255) NULL,
+  `type` INT NOT NULL,
+  PRIMARY KEY (`id`)
+
 )
   ENGINE = InnoDB;
 
@@ -456,6 +452,17 @@ CREATE TABLE IF NOT EXISTS `dbo`.`organizations` (
   ENGINE = InnoDB;
 INSERT INTO `dbo`.`organizations` (name, type, country)
 VALUES ('Everis', 'private', 'ES');
+
+-- -----------------------------------------------------
+-- Table `dbo`.`user_threads`
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `dbo`.`user_threads` (
+  `id` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `thread` int(11) NOT NULL,
+   PRIMARY KEY (`id`)
+)
 
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;

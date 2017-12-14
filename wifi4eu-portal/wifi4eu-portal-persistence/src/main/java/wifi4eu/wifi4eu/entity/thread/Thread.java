@@ -17,9 +17,15 @@ public class Thread {
     @Column(name = "title")
     private String title;
 
-    @OneToOne
-    @JoinColumn(name = "lau")
-    private Lau lau;
+    @Column(name = "reason")
+    private String reason;
+
+    @Column(name = "type")
+    private Integer type;
+
+//    @OneToOne
+//    @JoinColumn(name = "reason")
+//    private Lau lau;
 
     @OneToMany(mappedBy = "thread")
     private List<ThreadMessage> messages;
@@ -27,10 +33,11 @@ public class Thread {
     public Thread() {
     }
 
-    public Thread(Integer id, String title, Lau lau, List<ThreadMessage> messages) {
+    public Thread(Integer id, String title, Integer type, String reason, List<ThreadMessage> messages) {
         this.id = id;
         this.title = title;
-        this.lau = lau;
+        this.reason = reason;
+        this.type = type;
         this.messages = messages;
     }
 
@@ -50,12 +57,20 @@ public class Thread {
         this.title = title;
     }
 
-    public Lau getLau() {
-        return lau;
+    public String getReason() {
+        return reason;
     }
 
-    public void setLau(Lau lau) {
-        this.lau = lau;
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public List<ThreadMessage> getMessages() {

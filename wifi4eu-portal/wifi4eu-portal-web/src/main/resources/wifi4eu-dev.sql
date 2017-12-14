@@ -164,17 +164,13 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`nuts` (
 -- Table `wifi4eu`.`threads`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`threads` (
-  `id`    INT          NOT NULL AUTO_INCREMENT,
+    `id`    INT          NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(255) NULL,
-  `lau`   INT          NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_threads_laus_idx` (`lau` ASC),
-  CONSTRAINT `fk_threads_laus`
-  FOREIGN KEY (`lau`)
-  REFERENCES `wifi4eu`.`laus` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-)
+  `reason`   VARCHAR(255) NULL,
+  `type` INT NOT NULL,
+  PRIMARY KEY (`id`)
+
+
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -456,6 +452,19 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`organizations` (
   ENGINE = InnoDB;
 INSERT INTO `wifi4eu`.`organizations` (name, type, country)
 VALUES ('Everis', 'private', 'ES');
+
+
+
+-- -----------------------------------------------------
+-- Table `dbo`.`user_threads`
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`user_threads`(
+  `id` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `thread` int(11) NOT NULL,
+   PRIMARY KEY (`id`)
+)
 
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;

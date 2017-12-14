@@ -14,11 +14,13 @@ import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {LocalStorageService} from "angular-2-local-storage";
 import {SharedService} from "../../shared/shared.service";
 import {Router} from "@angular/router";
+import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
+import {UserThreadsDTO, UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
 
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
-    providers: [ThreadApi, BeneficiaryApi, ThreadmessagesApi, UserApi, RegistrationApi]
+    providers: [UserThreadsApi, ThreadApi, BeneficiaryApi, ThreadmessagesApi, UserApi, RegistrationApi]
 })
 
 export class DiscussionComponent {
@@ -34,50 +36,64 @@ export class DiscussionComponent {
     private mediationBlocked: boolean = false;
     private showAlert: boolean = false;
 
-    constructor(private threadApi: ThreadApi, private beneficiaryApi: BeneficiaryApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
+
+    constructor(private userThreadsApi: UserThreadsApi, private threadApi: ThreadApi, private beneficiaryApi: BeneficiaryApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
         this.thread.messages = [];
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             if (this.user.type == 2 || this.user.type == 3) {
-                this.threadApi.getUserThreads(this.user.id).subscribe(
-                    (threads: ThreadDTOBase[]) => {
-                        this.thread = threads[0];
-                        this.beneficiaryApi.getBeneficiariesByThreadId(this.thread.id).subscribe(
-                            (beneficiaries: BeneficiaryDTOBase[]) => {
-                                for (let beneficiary of beneficiaries) {
-                                    for (let municipality of beneficiary.municipalities) {
-                                        if (municipality.lauId == this.thread.lauId) {
-                                            if (beneficiary.user.id == this.user.id) {
-                                                this.municipality = municipality;
-                                            } else {
-                                                this.users.push(beneficiary.user);
-                                                this.municipalities.push(municipality);
-                                            }
-                                        }
-                                    }
-                                }
-                                for (let message of this.thread.messages) {
-                                    if (message.authorId == this.user.id) {
-                                        this.messageAuthors.push(this.user);
-                                    } else {
-                                        this.userApi.getUserById(message.authorId).subscribe(
-                                            (user: UserDTOBase) => {
-                                                this.messageAuthors.push(user);
-                                            }
-                                        );
-                                    }
-                                }
-                            }, error => {
-                                this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'warn');
-                                this.router.navigateByUrl('/home');
-                            }
-                        );
+                this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
+                    (threads: UserThreadsDTOBase[]) => {
+                        console.log("THREADS: ", threads);
                     }, error => {
-                        this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'warn');
-                        this.router.navigateByUrl('/home');
+                        console.log(error);
+                    });
+                this.userThreadsApi.getUsersByThreadId(12).subscribe(
+                    (users: UserThreadsDTOBase[]) => {
+                        console.log("THREADS: ", users);
+                    }, error => {
+                        console.log(error);
                     }
                 );
+                // this.threadApi.getUserThreads(this.user.id).subscribe(
+                //     (threads: ThreadDTOBase[]) => {
+                //         this.thread = threads[0];
+                //         this.beneficiaryApi.getBeneficiariesByThreadId(this.thread.id).subscribe(
+                //             (beneficiaries: BeneficiaryDTOBase[]) => {
+                //                 for (let beneficiary of beneficiaries) {
+                //                     for (let municipality of beneficiary.municipalities) {
+                //                         if (municipality.lauId == this.thread.lauId) {
+                //                             if (beneficiary.user.id == this.user.id) {
+                //                                 this.municipality = municipality;
+                //                             } else {
+                //                                 this.users.push(beneficiary.user);
+                //                                 this.municipalities.push(municipality);
+                //                             }
+                //                         }
+                //                     }
+                //                 }
+                //                 for (let message of this.thread.messages) {
+                //                     if (message.authorId == this.user.id) {
+                //                         this.messageAuthors.push(this.user);
+                //                     } else {
+                //                         this.userApi.getUserById(message.authorId).subscribe(
+                //                             (user: UserDTOBase) => {
+                //                                 this.messageAuthors.push(user);
+                //                             }
+                //                         );
+                //                     }
+                //                 }
+                //             }, error => {
+                //                 this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'warn');
+                //                 this.router.navigateByUrl('/home');
+                //             }
+                //         );
+                //     }, error => {
+                //         this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'warn');
+                //         this.router.navigateByUrl('/home');
+                //     }
+                // );
             } else {
                 this.sharedService.growlTranslation('You are not allowed to view this page.', 'error.notallowed', 'warn');
                 this.router.navigateByUrl('/home');
