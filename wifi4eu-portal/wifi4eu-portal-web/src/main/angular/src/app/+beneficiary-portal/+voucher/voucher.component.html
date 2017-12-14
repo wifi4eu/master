@@ -2,10 +2,13 @@
 <div [ngSwitch]="voucherCompetitionState">
     <!-- no competition created, display warning -->
     <div *ngSwitchCase="0">
+        <success-component></success-component>
+        <hr class="beneficiaryHr">
         <div class="ui-g-12">
             <span class="ui-g-2"></span>
-            <ux-alert class="ui-g-8" styleClass="alert-info">{{ 'voucher.noCompetitionPart1' | translate}}<b>{{
-                'voucher.noCompetitionPart2' | translate}}</b></ux-alert>
+            <ux-alert class="ui-g-8" styleClass="alert-info">
+                {{ 'voucher.noCompetitionPart1' | translate}}<b>{{ 'voucher.noCompetitionPart2' | translate}}</b>
+            </ux-alert>
             <span class="ui-g-2"></span>
         </div>
         <div class="center">
@@ -21,22 +24,7 @@
     </div>
     <!-- no competition active, display timer -->
     <div *ngSwitchCase="1">
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <h2 class="ui-g-8 beneficiaryMayor">{{ 'voucher.timeleft.title' | translate}}</h2>
-            <span class="ui-g-2"></span>
-        </div>
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <span class="ui-g-8">{{ 'voucher.timeleft.subtitle' | translate}}</span>
-            <span class="ui-g-2"></span>
-        </div>
-        <br>
-        <div class="ui-g-12">
-            <timer-component (timerEvent)="checkIfAlreadyApplied()"
-                             [expirationTimestamp]="currentCall.startDate"></timer-component>
-        </div>
-
+        <success-component></success-component>
         <hr class="beneficiaryHr">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
@@ -66,9 +54,28 @@
                 <p><span class="dotSteps">4.</span>{{ 'voucher.step4' | translate}}</p>
             </div>
         </div>
+
+        <hr class="beneficiaryHr">
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <h2 class="ui-g-8 beneficiaryMayor">{{ 'voucher.timeleft.title' | translate}}</h2>
+            <span class="ui-g-2"></span>
+        </div>
+        <div class="ui-g-12 center">
+            <span class="ui-g-2"></span>
+            <span class="ui-g-8">{{ 'voucher.timeleft.subtitle' | translate}}</span>
+            <span class="ui-g-2"></span>
+        </div>
+        <br>
+        <div class="ui-g-12">
+            <timer-component (timerEvent)="checkIfAlreadyApplied()"
+                             [expirationTimestamp]="currentCall.startDate"></timer-component>
+        </div>
     </div>
     <!-- competition Open, display apply button -->
     <div *ngSwitchCase="2">
+        <success-component></success-component>
+        <hr class="beneficiaryHr">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
             <ux-alert class="ui-g-8" styleClass="alert-info">{{ 'voucher.statusmessage4' | translate}}</ux-alert>
@@ -96,6 +103,8 @@
     </div>
     <!-- user has applied for voucher -->
     <div *ngSwitchCase="3">
+        <success-component></success-component>
+        <hr class="beneficiaryHr">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
             <ux-alert class="ui-g-8" styleClass="alert-success">{{ 'voucher.statusmessage5' | translate}}</ux-alert>
