@@ -1191,6 +1191,17 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   height: 7.5em;
 }
 
+.benefLandingList {
+  list-style: circle;
+}
+
+.timelineBenefLanding {
+  background: #fbfbfb;
+  width: 34em;
+  box-shadow: 0px 1px 2px #888888;
+  color: $dark-blue;
+
+}
 .benefLandingLink {
   color: $darkish-blue;
   font-size: 18px;
@@ -1218,13 +1229,29 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   margin-left: 33%;
 }
 
-.firstBackgroundBenefLanding, #benefLandingThirdBackground, #benefLandingSecondBackground {
-  width: 100%;
+#benefLandingThirdBackground {
+  width: 36em;
+  position: absolute;
+  padding-top: 14em;
+}
+
+#benefLandingSecondBackground {
+  width: 28em;
+  position: absolute;
+  padding-top: 4em;
+  padding-left: 10em;
+}
+
+#firstBackgroundBenefLanding {
+  position: absolute;
+  padding-top: 14em;
+  margin-left: 31em;
+  width: 18em;
 }
 
 .helpdesk-bottom {
   background-color: #EAEEF2;
   padding-bottom: 16em;
   padding-top: 3em;
-  margin-top: 6em;
+  margin-top: 7em;
 }
