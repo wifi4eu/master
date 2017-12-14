@@ -375,9 +375,8 @@
   "home.label": "Home",
   "thread.message.success": "The message was successfully sent!",
   "thread.message.error": "An error occurred while trying to send the message. Please, try again later.",
-  "removeMunicipality.label": "Remove municipality",
   "login.ecas-message": "ECAS Logon is enabled, manual login is not needed.",
-  "timelineComponentTitle": "Remaining time for the launch of the call"
+  "timelineComponentTitle": "Remaining time for the launch of the call",
   "benefLanding.title": "WELCOME TO THE WIFI4EU REGISTRATION PAGE FOR APPLICANTS.",
   "benefLanding.conectEU": "In order to proceed further, please first connect with an “EU-login“ account:",
   "benefLanding.EUlink": "click here to create one.",
