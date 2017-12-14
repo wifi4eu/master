@@ -1,4 +1,4 @@
-import {Component, enableProdMode, Output} from "@angular/core";
+import {Component, enableProdMode, OnInit, Output} from "@angular/core";
 import {Router} from "@angular/router";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {UxService, UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons";
@@ -10,7 +10,7 @@ import {UserApi} from "./shared/swagger/api/UserApi";
 import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
 import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
 
-enableProdMode()
+enableProdMode();
 
 @Component({
     selector: 'app-root',
@@ -18,7 +18,7 @@ enableProdMode()
     styleUrls: ['./app.component.scss'],
     providers: [UserApi, RegistrationApi]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     private menuLinks: Array<UxLayoutLink>;
     private user: UserDTOBase;
     private visibility: boolean[];

@@ -9,7 +9,7 @@
     </parent>
     <artifactId>wifi4eu-portal-ear</artifactId>
     <packaging>ear</packaging>
-    <name>wifi4eu Public Portal EAR module</name>
+    <name>wifi4eu Portal EAR module</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
