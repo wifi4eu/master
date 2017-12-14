@@ -23,7 +23,7 @@ export class LoginComponent {
 
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
 
-        if (this.user.ecasEmail != null) {
+        if (this.user != null && this.user.ecasEmail != null) {
             this.isEcasUser = true;
         }else{
             this.user = new UserDTOBase();
