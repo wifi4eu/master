@@ -404,4 +404,6 @@
   "benefLanding.proceed": "Would you like to proceed with the registration process?",
   "benefLanding.yes": "Yes",
   "benefLanding.no": "No"
+  "select.activateAccount": "Activate your Email Account",
+  "select.activateAccountDesc": "Please, click on the Confirm button to validate your Email Account"
 }

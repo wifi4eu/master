@@ -14,6 +14,7 @@
     <modules>
         <module>wifi4eu-common</module>
         <module>wifi4eu-portal</module>
+        <module>wifi4eu-public-portal</module>
         <!--<module>wifi4eu-financial</module>-->
     </modules>
 
@@ -100,6 +101,8 @@
         <ecas.config.base.url>https://ecas.acceptance.ec.europa.eu</ecas.config.base.url>
         <ecas.config.strength>PASSWORD</ecas.config.strength>
         <ecas.config.test.certificate.element/>
+        <ecas.server.address />
+        <ecas.server.port />
 
         <!-- PERSISTENCE PROPERTIES -->
 
@@ -120,7 +123,7 @@
         <enable.login.start> </enable.login.start>
         <enable.login.end> </enable.login.end>
         <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory>
-
+        <server.azure.port>80</server.azure.port>
     </properties>
 
 
@@ -135,6 +138,8 @@
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
                 <war.output.directory>wifi4eu-portal\wifi4eu-portal-web\target</war.output.directory>
+                <ecas.server.address>${server.prod.address}</ecas.server.address>
+                <ecas.server.port>${server.prod.port}</ecas.server.port>
             </properties>
         </profile>
         <profile>
@@ -146,6 +151,8 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
+                <ecas.server.address>${server.azure.address}</ecas.server.address>
+                <ecas.server.port>${server.azure.port}</ecas.server.port>
             </properties>
         </profile>
     </profiles>
