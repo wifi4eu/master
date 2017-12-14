@@ -146,7 +146,6 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
-                <war.output.directory>wifi4eu-portal\wifi4eu-portal-web\target</war.output.directory>
             </properties>
         </profile>
     </profiles>
@@ -171,16 +170,6 @@
                         <target>${jdk.version}</target>
                     </configuration>
                 </plugin>
-
-                <!--
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <configuration>
-                        <outputDirectory>${war.output.directory}</outputDirectory>
-                    </configuration>
-                </plugin>
-                -->
             </plugins>
         </pluginManagement>
 

@@ -53,7 +53,7 @@
 
     <filter>
         <filter-name>userFilter</filter-name>
-        <filter-class>${user.filter.path}</filter-class> <!-- Maven var -->
+        <filter-class>${user.filter.path}</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>userFilter</filter-name>
@@ -129,7 +129,7 @@
             <transport-guarantee>NONE</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
-    ${enable.security.end}-->
+    ${enable.security.end} -->
 
     <resource-ref>
         <description>DB Connection</description>
