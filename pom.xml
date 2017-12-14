@@ -14,7 +14,6 @@
     <modules>
         <module>wifi4eu-common</module>
         <module>wifi4eu-portal</module>
-        <module>wifi4eu-public-portal</module>
         <!--<module>wifi4eu-financial</module>-->
     </modules>
 
@@ -61,6 +60,7 @@
         <javaee-api.version>7.0</javaee-api.version>
         <joda-time.version>2.9.1</joda-time.version>
         <tika.version>1.2</tika.version>
+        <commons-lang.version>2.6</commons-lang.version>
         <commons-lang.version>2.6</commons-lang.version>
         <ehcache.version>2.6.10</ehcache.version>
         <junit.version>4.12</junit.version>
@@ -114,27 +114,39 @@
         <server.prod.address>wifi4eu.everisdigitalchannels.com</server.prod.address>
         <server.prod.port>8080</server.prod.port>
         <server.azure.address>wifi4eudev.azurewebsites.net</server.azure.address>
+        <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilterMocked</user.filter.path>
+        <enable.security.start> </enable.security.start>
+        <enable.security.end> </enable.security.end>
+        <enable.login.start> </enable.login.start>
+        <enable.login.end> </enable.login.end>
+        <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory>
 
     </properties>
 
 
     <profiles>
         <profile>
-            <id>DEV</id>
+            <id>TEST</id>
             <properties>
-                <server.address>52.16.188.65:8080</server.address>
+                <server.address>${server.prod.address}:${server.prod.port}</server.address>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <war.output.directory>wifi4eu-portal\wifi4eu-portal-web\target</war.output.directory>
             </properties>
         </profile>
         <profile>
             <id>PROD</id>
             <properties>
-                <server.address>${server.prod.address}:${server.prod.port}</server.address>
-            </properties>
-        </profile>
-        <profile>
-            <id>AZURE</id>
-            <properties>
                 <server.address>${server.azure.address}</server.address>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <war.output.directory>wifi4eu-portal\wifi4eu-portal-web\target</war.output.directory>
             </properties>
         </profile>
     </profiles>
@@ -159,6 +171,16 @@
                         <target>${jdk.version}</target>
                     </configuration>
                 </plugin>
+
+                <!--
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <configuration>
+                        <outputDirectory>${war.output.directory}</outputDirectory>
+                    </configuration>
+                </plugin>
+                -->
             </plugins>
         </pluginManagement>
 
@@ -429,13 +451,13 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
             </dependency>
-<!--
-            <dependency>
-                <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
-                <artifactId>ecas-weblogic-10.3-authprovider</artifactId>
-                <version>${ecas.client.version}</version>
-            </dependency>
--->
+            <!--
+                        <dependency>
+                            <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
+                            <artifactId>ecas-weblogic-10.3-authprovider</artifactId>
+                            <version>${ecas.client.version}</version>
+                        </dependency>
+            -->
             <dependency>
                 <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
                 <artifactId>ecas-tomcat-8.0</artifactId>
@@ -513,13 +535,13 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-<!--
-        <dependency>
-            <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
-            <artifactId>ecas-weblogic-10.3-authprovider</artifactId>
-            <scope>provided</scope>
-        </dependency>
--->
+        <!--
+                <dependency>
+                    <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
+                    <artifactId>ecas-weblogic-10.3-authprovider</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+        -->
         <dependency>
             <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
             <artifactId>ecas-tomcat-8.0</artifactId>
