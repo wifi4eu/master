@@ -1,12 +1,9 @@
-import {Component} from "@angular/core";
-import {MunicipalityDTOBase} from "../shared/swagger/model/MunicipalityDTO";
-import {MunicipalityApi} from "../shared/swagger/api/MunicipalityApi";
-import {SupplierApi} from "../shared/swagger/api/SupplierApi";
-import {SuppliedRegionApi} from "../shared/swagger/api/SuppliedRegionApi";
+import { Component } from "@angular/core";
+import { MunicipalityApi } from "../shared/swagger/api/MunicipalityApi";
+import { SuppliedRegionApi } from "../shared/swagger/api/SuppliedRegionApi";
 
 @Component({selector: 'app-home', templateUrl: 'home.component.html', providers: [MunicipalityApi, SuppliedRegionApi]})
 export class HomeComponent {
-    // private municipalities: MunicipalityDTOBase[] = [];
     private municipalitiesCounter: number;
     private suppliersCounter: number;
 

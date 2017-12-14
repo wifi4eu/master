@@ -39,7 +39,7 @@ export class AppComponent {
         this.menuLinks = [new CustomLayoutLink({
             label: 'Wifi4EU',
             children: [
-                new CustomLayoutLink({label: 'Beneficiary Registration', url: '../../../wifi4eu/#/beneficiary-registration', externalUrl: true}),
+                new CustomLayoutLink({label: 'Beneficiary Registration', url: '/#/beneficiary-landing', externalUrl: true}),
                 new CustomLayoutLink({label: 'Supplier Registration', url: '../../../wifi4eu/#/supplier-registration', externalUrl: true})
             ]
         })];
