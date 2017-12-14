@@ -1,19 +1,17 @@
-import {Component, Output, ViewChild} from '@angular/core';
-import {CallDTOBase} from "../../shared/swagger/model/CallDTO";
-import {MunicipalityDTO, MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
-//import {BenPubSupDTOBase} from "../../shared/swagger/model/BenPubSupDTO";
-import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
-import {UserDTO} from "../../shared/swagger/model/UserDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {CallApi} from "../../shared/swagger/api/CallApi";
+import { Component } from '@angular/core';
+import { BeneficiaryApi } from "../../shared/swagger/api/BeneficiaryApi";
+import { CallApi } from "../../shared/swagger/api/CallApi";
+import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
+import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { LocalStorageService } from "angular-2-local-storage";
 
 @Component({templateUrl: 'voucher.component.html', providers: [BeneficiaryApi, CallApi]})
 export class VoucherComponent {
     private voucherCompetitionState: number;
-    private user: UserDTO;
+    private user: UserDTOBase;
     private currentCall: CallDTOBase;
-    private myMunicipality: MunicipalityDTO;
+    private myMunicipality: MunicipalityDTOBase;
     private errorCause: string;
 
     constructor(private localStorage: LocalStorageService, private beneficiaryApi: BeneficiaryApi, private callApi: CallApi) {

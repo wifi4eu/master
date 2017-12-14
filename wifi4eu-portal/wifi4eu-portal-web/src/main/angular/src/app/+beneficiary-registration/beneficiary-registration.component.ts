@@ -7,16 +7,16 @@ import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
 import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
 import {NutsApi} from "../shared/swagger/api/NutsApi";
-import {LauApi} from "../shared/swagger/api/LauApi";
 import {OrganizationApi} from "../shared/swagger/api/OrganizationApi";
 import {Subscription} from "rxjs/Subscription";
 import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
 import {LauDTOBase} from "../shared/swagger/model/LauDTO";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'beneficiary-registration',
     templateUrl: 'beneficiary-registration.component.html',
-    providers: [BeneficiaryApi, NutsApi, LauApi, OrganizationApi]
+    providers: [BeneficiaryApi, NutsApi, OrganizationApi]
 })
 
 export class BeneficiaryRegistrationComponent {
@@ -37,7 +37,7 @@ export class BeneficiaryRegistrationComponent {
     private alreadyRegistered: boolean = false;
     private organization: OrganizationDTOBase = null;
 
-    constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private lauApi: LauApi, private organizationApi: OrganizationApi) {
+    constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router) {
         this.nutsApi.getNutsByLevel(0).subscribe(
             (nuts: NutsDTOBase[]) => {
                 this.countries = nuts;
@@ -100,6 +100,7 @@ export class BeneficiaryRegistrationComponent {
             (data: ResponseDTOBase) => {
                 if (data.success) {
                     this.successRegistration = true;
+                    this.router.navigateByUrl('/beneficiary-portal');
                 } else {
                     this.failureRegistration = true;
                     this.alreadyRegistered = (data.error.errorMessage === "User already registered.");
