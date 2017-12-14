@@ -182,11 +182,25 @@ export class BeneficiaryProfileComponent {
     }
 
     private deleteRegistration() {
+        this.registrationApi.deleteRegistration(this.user.id).subscribe(
+            (data: ResponseDTOBase) => {
+                if (data.success) {
+                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
+                    this.sharedService.logout();
+                }
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
+            }
+        );
+/*
         this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
             (registrations: RegistrationDTOBase[]) => {
                 let registrationCount = 0;
                 for (let registration of registrations) {
-                    registration.status = 1;
+                    // Se borra cambiando el estado /////////////////////////////////////
+                    registration.status = 1; ////////////////////////////////////////////
+                    // Con esto se esta haciendo una update y siempre se mantendrá ahí //
+                    /////////////////////////////////////////////////////////////////////
                     this.registrationApi.createRegistration(registration).subscribe(
                         (data: ResponseDTOBase) => {
                             if (data.success) {
@@ -203,6 +217,7 @@ export class BeneficiaryProfileComponent {
                 }
             }
         );
+*/
     }
 
     private goToDiscussion() {

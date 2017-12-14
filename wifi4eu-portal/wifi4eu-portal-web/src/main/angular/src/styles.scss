@@ -1202,3 +1202,56 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   color: $dark-blue;
 
 }
+.benefLandingLink {
+  color: $darkish-blue;
+  font-size: 18px;
+  margin-bottom: 30px;
+  line-height: 0px;
+}
+
+.landingText {
+  font-size: 18px;
+}
+
+.pleaseNote {
+  position: absolute;
+}
+
+.landingFirstText {
+  margin-top: 2em;
+}
+
+#img-wifiLanding {
+  position: absolute;
+  bottom: 0;
+  max-width: 500px;
+  width: 28%;
+  margin-left: 33%;
+}
+
+#benefLandingThirdBackground {
+  width: 36em;
+  position: absolute;
+  padding-top: 14em;
+}
+
+#benefLandingSecondBackground {
+  width: 28em;
+  position: absolute;
+  padding-top: 4em;
+  padding-left: 10em;
+}
+
+#firstBackgroundBenefLanding {
+  position: absolute;
+  padding-top: 14em;
+  margin-left: 31em;
+  width: 18em;
+}
+
+.helpdesk-bottom {
+  background-color: #EAEEF2;
+  padding-bottom: 16em;
+  padding-top: 3em;
+  margin-top: 7em;
+}

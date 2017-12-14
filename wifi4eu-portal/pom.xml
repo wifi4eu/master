@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>wifi4eu-portal</name>
-    <description>Public Portal WiFi4EU</description>
+    <description>Portal WiFi4EU</description>
 
 
     <parent>

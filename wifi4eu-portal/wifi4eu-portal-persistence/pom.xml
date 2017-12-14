@@ -12,7 +12,7 @@
     <artifactId>wifi4eu-portal-persistence</artifactId>
     <packaging>jar</packaging>
 
-    <name>WiFi4EU Public Portal Persistence module</name>
+    <name>WiFi4EU Portal Persistence module</name>
 
   <dependencies>
 

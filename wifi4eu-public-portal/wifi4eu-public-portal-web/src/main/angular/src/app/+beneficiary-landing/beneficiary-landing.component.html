@@ -1,0 +1,104 @@
+<div class="first">
+    <img id="first-background" src="assets/images/skyline.png" alt="">
+    <div class="container-fluid header-fluid">
+
+        <div class="contenedor row">
+            <div class="col-xl-12">
+                <img id="img-wifiLanding" src="assets/images/wifi_benef.png" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <img id="firstBackgroundBenefLanding" src="assets/images/copy-6.png">
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <h2 class="title-home">{{ 'benefLanding.title' | translate }}</h2>
+            <p class="landingText landingFirstText">{{ 'benefLanding.conectEU' | translate }}</p>
+            <p class="benefLandingLink"><a href="#">{{ 'benefLanding.EUlink' | translate}}</a></p>
+            <p class="landingText">{{ 'benefLanding.nextSteps' | translate }}<b>{{ 'benefLanding.nextStepsBold' |
+                translate }}</b></p>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <p class="pleaseNote">{{ 'benefLanding.pleaseNote' | translate }}</p>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <div class="ui-g-6">
+                <p>{{ 'benfefLanding.pleaseNoteText' | translate}}<a href="#">{{ 'benfefLanding.pleaseNoteTextLink' |
+                    translate}}</a>{{
+                    'benfefLanding.pleaseNoteTextAfterLink' | translate}}</p>
+            </div>
+            <div class="ui-g-6">
+                <p>{{ 'benfefLanding.pleaseNoteText2' | translate }}</p>
+                <p>{{ 'benefLanding.pleaseNoteText3' | translate }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <div class="ui-g-6">
+                <h2 class="title-home">{{ 'benefLanding.secondTitle' | translate }}</h2>
+            </div>
+        </div>
+    </div>
+    <img id="benefLandingThirdBackground" src="assets/images/copy-6.png">
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <p class="landingText">{{ 'benefLanding.elegibleText3' | translate }}</p>
+            <p class="landingText">{{ 'benefLanding.elegibleText' | translate }}<b>{{
+                'benefLanding.elegibleTextBold' | translate }}</b>{{ 'benefLanding.elegibleTextAfterBold' |
+                translate
+                }}<a href="#">{{ 'benefLanding.elegibleTextLink' | translate }}</a>{{
+                'benefLanding.elegibleTextAfterLink' |
+                translate }}</p>
+        </div>
+        <div class="ui-g-6">
+            <img id="benefLandingSecondBackground" src="assets/images/copy-6.png">
+            <p class="landingText">{{ 'benefLanding.elegibleText2' | translate }}<b>{{
+                'benefLanding.elegibleText2Bold' | translate }}</b>{{ 'benefLanding.elegibleText2AfterBold' |
+                translate
+                }}</p>
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-2"></div>
+        <div class="ui-g-8">
+            <p class="europeans">{{ 'benefLanding.proceed' | translate }}</p>
+        </div>
+        <div class="ui-g-2"></div>
+    </div>
+
+    <!--buttons-->
+    <div id="navigation-buttons" class="form-group center">
+        <div class="ui-g-12">
+            <div class="ui-g-3"></div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3">
+                <a href="#/home">
+                    <button type="button" class="btn btn-primary cancel-button">
+                        {{ 'benefLanding.no' | translate }}
+                    </button>
+                </a>
+            </div>
+            <!-- Next button -->
+            <div class="ui-g-6 ui-md-6 ui-lg-3">
+                <a href="#/beneficiary-registration">
+                    <button class="btn btn-primary publish-button">
+                        {{ 'benefLanding.yes' | translate }}
+                    </button>
+                </a>
+            </div>
+            <div class="ui-g-3"></div>
+        </div>
+    </div>
+</div>
+<div class="helpdesk-bottom">
+    <helpdesk-form-component [portal]="beneficiary-registration"></helpdesk-form-component>
+</div>
+
