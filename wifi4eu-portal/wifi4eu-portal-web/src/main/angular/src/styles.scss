@@ -1191,6 +1191,17 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   height: 7.5em;
 }
 
+.benefLandingList {
+  list-style: circle;
+}
+
+.timelineBenefLanding {
+  background: #fbfbfb;
+  width: 34em;
+  box-shadow: 0px 1px 2px #888888;
+  color: $dark-blue;
+
+}
 .benefLandingLink {
   color: $darkish-blue;
   font-size: 18px;
