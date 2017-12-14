@@ -20,8 +20,7 @@
             <p class="normal-text">{{ 'home.part1.text2' | translate }}</p>
         </div>
         <div class="col-xl-6 margin-top-right">
-            <p class="subtitle-bold-italic"> {{ 'home.part1.text3' | translate
-                }}</p>
+            <p class="subtitle-bold-italic"> {{ 'home.part1.text3' | translate }}</p>
             <p class="subtitle-italic">{{ 'home.part1.author' | translate }}<br>
                 {{ 'home.part1.date' | translate }}</p>
             <div id="img-europeans">
@@ -44,9 +43,8 @@
             <h2 class="entities">{{ 'home.part2.subtitle2' | translate }}</h2>
             <p class="entities-text">{{ 'home.part2.text2' | translate }}</p>
             <a class="btn btn-primary video-button"
-               href="https://youtu.be/FvaJIPg0Pxw" target="_blank">{{
-                'home.whatch.video' | translate }}</a>
-
+               href="https://youtu.be/FvaJIPg0Pxw" target="_blank">
+                {{ 'home.whatch.video' | translate }}</a>
         </div>
     </div>
 </div>
@@ -70,15 +68,13 @@
                 <p class="mayor-title">{{ 'home.part3.title2' | translate }}</p>
                 <p class="represent">{{ 'home.part3.subtitle' | translate }}</p>
                 <a class="btn btn-primary video-button center-block video-button"
-                   href="#/beneficiary-registration">{{ 'home.register' | translate }}</a>
+                   href="/#/beneficiary-landing">{{ 'home.register' | translate }}</a>
             </div>
             <div class="col-xl-6">
                 <img class="supplier-img" src="assets/images/group-4.png">
                 <p class="supplier">{{ 'home.part3.title3' | translate }}</p>
                 <a class="btn btn-primary video-button center-block video-button"
-                   href="#/supplier-registration">{{ 'home.register' | translate
-                    }}</a>
-
+                   href="../../../wifi4eu/#/supplier-registration">{{ 'home.register' | translate }}</a>
             </div>
         </div>
         <div class="col-xl-2"></div>
@@ -90,12 +86,13 @@
     <div class="counter">
         <div class="row contenedor">
             <div class="col-xl-8">
-                <p class="mayor-title counterText">{{ 'home.counterSection1' | translate }} {{municipalitiesCounter}} {{
-                    'home.counterSection2' | translate }} {{suppliersCounter}}{{ 'home.counterSection3' |
-                    translate}}</p>
+                <p class="mayor-title counterText">
+                    {{ 'home.counterSection1' | translate }} {{municipalitiesCounter}}
+                    {{ 'home.counterSection2' | translate }} {{suppliersCounter}}{{ 'home.counterSection3' | translate}}
+                </p>
                 <a class="btn btn-primary video-button center-block marginSelect"
-                   href="" *ngIf="suppliersCounter < 1">{{ 'home.counterSectionButton' | translate
-                    }}</a>
+                   href="" *ngIf="suppliersCounter < 1">
+                    {{ 'home.counterSectionButton' | translate }}</a>
             </div>
             <div class="col-xl-4"></div>
         </div>
@@ -116,20 +113,24 @@
     </div>
     <div class="row contenedor">
         <div class="col-xl-6">
-            <p class="white-links"><a target="_blank"
-                                      href="https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu">{{
-                'home.part4.link1' | translate }}</a></p>
-            <p class="white-links"><a target="_blank"
-                                      href="http://europa.eu/rapid/press-release_IP-16-4261_en.htm">{{
-                'home.part4.link2' | translate }}</a></p>
+            <p class="white-links">
+                <a target="_blank"
+                   href="https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu">
+                {{ 'home.part4.link1' | translate }}</a></p>
+            <p class="white-links">
+                <a target="_blank"
+                   href="http://europa.eu/rapid/press-release_IP-16-4261_en.htm">
+                {{ 'home.part4.link2' | translate }}</a></p>
         </div>
         <div class="col-xl-6">
-            <p class="white-links"><a target="_blank"
-                                      href="https://ec.europa.eu/digital-single-market/en/news/proposed-regulation-promotion-internet-connectivity-local-communities-and-public-spaces-wifi4eu">{{
-                'home.part4.link3' | translate }}</a></p>
-            <p class="white-links"><a target="_blank"
-                                      href="https://ec.europa.eu/digital-single-market/events/cf/b-day-going-giga/document.cfm?doc_id=36544">{{
-                'home.part4.link4' | translate }}</a></p>
+            <p class="white-links">
+                <a target="_blank"
+                   href="https://ec.europa.eu/digital-single-market/en/news/proposed-regulation-promotion-internet-connectivity-local-communities-and-public-spaces-wifi4eu">
+                {{ 'home.part4.link3' | translate }}</a></p>
+            <p class="white-links">
+                <a target="_blank"
+                   href="https://ec.europa.eu/digital-single-market/events/cf/b-day-going-giga/document.cfm?doc_id=36544">
+                    {{ 'home.part4.link4' | translate }}</a></p>
         </div>
     </div>
 </div>
