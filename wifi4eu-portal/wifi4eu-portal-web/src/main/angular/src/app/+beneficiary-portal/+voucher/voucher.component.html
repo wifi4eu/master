@@ -71,6 +71,12 @@
             <timer-component (timerEvent)="checkIfAlreadyApplied()"
                              [expirationTimestamp]="currentCall.startDate"></timer-component>
         </div>
+        <br><br>
+        <div class="ui-g-12 center">
+            <span class="ui-g-4"></span>
+            <button class="btn btn-primary ui-g-4" disabled>{{ 'voucher.applyforvoucher' | translate}}</button>
+            <span class="ui-g-4"></span>
+        </div>
     </div>
     <!-- competition Open, display apply button -->
     <div *ngSwitchCase="2">
