@@ -37,10 +37,21 @@ export class DgConnBeneficiaryRegistrationsComponent {
 
         this.registrationApi.allRegistrations().subscribe(
             registrations =>{
+                registrations.pop()
                 
             },
             error => console.log(error)
         );
+
+        this.userApi.getUsersByType(0).subscribe(
+            users => {
+
+            },
+            error => {
+
+            }
+        );
+
 
         // this.mayorApi.allMayors().subscribe(
         //     mayors => {

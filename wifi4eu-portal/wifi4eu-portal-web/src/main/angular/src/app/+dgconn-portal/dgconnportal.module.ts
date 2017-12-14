@@ -8,7 +8,7 @@ import {DgConnVoucherComponent} from "app/+dgconn-portal/+voucher/voucher.compon
 import {DgConnStatisticsComponent} from "./+statistics/statistics.component";
 import {DgConnSupplierRegistrationsComponent} from "./+supplier-registrations/supplier-registrations.component";
 import {DgConnBeneficiaryRegistrationsComponent} from "./+beneficiary-registrations/beneficiary-registrations.component";
-import {DgConnListMayorComponent} from "./+mayors-list/mayors-list.component";
+import {DgConnManageLauComponent} from "./+manage-lau/manage-lau.component";
 import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 
 @NgModule({
@@ -22,8 +22,8 @@ import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
         DgConnVoucherComponent,
         DgConnStatisticsComponent, 
         DgConnSupplierRegistrationsComponent, 
-        DgConnBeneficiaryRegistrationsComponent, 
-        DgConnListMayorComponent, 
+        DgConnBeneficiaryRegistrationsComponent,
+        DgConnManageLauComponent,
         DgConnDiscussionComponent
     ],
     bootstrap: [DgConnPortalComponent]
