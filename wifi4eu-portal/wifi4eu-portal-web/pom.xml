@@ -145,6 +145,7 @@
                     </webResources>
                     <warSourceDirectory>src/main/webapp</warSourceDirectory>
                     <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+                    <outputDirectory>${war.output.directory}</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>

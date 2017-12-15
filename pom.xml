@@ -137,7 +137,7 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
-                <war.output.directory>wifi4eu-portal\wifi4eu-portal-web\target</war.output.directory>
+                <war.output.directory/>
                 <ecas.server.address>${server.test.address}</ecas.server.address>
                 <ecas.server.port>${server.test.port}</ecas.server.port>
             </properties>
@@ -151,6 +151,7 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
+                <war.output.directory/>
                 <ecas.server.address>${server.azure.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
             </properties>
