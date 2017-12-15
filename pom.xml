@@ -114,8 +114,8 @@
         <eclipselink.logging.level.sql>FINE</eclipselink.logging.level.sql>
         <eclipselink.logging.parameters>true</eclipselink.logging.parameters>
         <server.address>localhost:8080</server.address>
-        <server.prod.address>wifi4eu.everisdigitalchannels.com</server.prod.address>
-        <server.prod.port>8080</server.prod.port>
+        <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
+        <server.test.port>8080</server.test.port>
         <server.azure.address>wifi4eudev.azurewebsites.net</server.azure.address>
         <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilterMocked</user.filter.path>
         <enable.security.start> </enable.security.start>
@@ -131,19 +131,19 @@
         <profile>
             <id>TEST</id>
             <properties>
-                <server.address>${server.prod.address}:${server.prod.port}</server.address>
+                <server.address>${server.test.address}:${server.test.port}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
                 <war.output.directory>wifi4eu-portal\wifi4eu-portal-web\target</war.output.directory>
-                <ecas.server.address>${server.prod.address}</ecas.server.address>
-                <ecas.server.port>${server.prod.port}</ecas.server.port>
+                <ecas.server.address>${server.test.address}</ecas.server.address>
+                <ecas.server.port>${server.test.port}</ecas.server.port>
             </properties>
         </profile>
         <profile>
-            <id>PROD</id>
+            <id>AZURE</id>
             <properties>
                 <server.address>${server.azure.address}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
