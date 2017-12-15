@@ -1253,5 +1253,36 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   background-color: #EAEEF2;
   padding-bottom: 16em;
   padding-top: 3em;
+<<<<<<< HEAD
   margin-top: 7em;
+=======
+  margin-top: 6em;
+>>>>>>> 3ed7625f40dbed5c6add21eddacfaa2a41da0c0d
+}
+
+.supplierFont {
+  font-size: 37px !important;
+}
+
+.benefLandingList {
+  list-style: circle !important;
+  margin-left: 2em;
+}
+
+.timelineBenefLanding {
+  background: #fbfbfb;
+  width: 34em;
+  box-shadow: 0px 1px 2px #888888;
+  color: $dark-blue;
+}
+
+.phoneIcon {
+  width: 3em;
+  float: left;
+  margin-top: 1em;
+  margin-right: 2em;
+}
+
+.phoneNum {
+  color: yellow;
 }

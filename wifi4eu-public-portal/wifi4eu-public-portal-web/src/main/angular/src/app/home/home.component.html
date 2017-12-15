@@ -23,9 +23,12 @@
             <p class="subtitle-bold-italic"> {{ 'home.part1.text3' | translate }}</p>
             <p class="subtitle-italic">{{ 'home.part1.author' | translate }}<br>
                 {{ 'home.part1.date' | translate }}</p>
-            <div id="img-europeans">
-                <img src="assets/images/copy-2.png" alt="">
-            </div>
+            <a class="btn btn-primary video-button"
+               href="https://youtu.be/FvaJIPg0Pxw" target="_blank">{{
+                'home.whatch.video' | translate }}</a>
+        </div>
+        <div id="img-europeans">
+            <img src="assets/images/copy-2.png" alt="">
         </div>
     </div>
 </div>
@@ -33,8 +36,18 @@
     <div class="row contenedor">
         <div class="col-xl-6">
             <h1 class="benefit">{{ 'home.part2.title' | translate }}</h1>
-            <h2 class="europeans">{{ 'home.part2.subtitle1' | translate }}</h2>
-            <p class="europeans-text">{{ 'home.part2.text1' | translate }}</p>
+            <p *ngIf="showTimeline" class="europeans-text">{{ 'home.part2.subtitle1' | translate }}
+                {{currentCall.startDate | date: 'dd/MM/yyyy'}} {{
+                'home.part2.subtitle1.2' |
+                translate }}{{currentCall.startDate | date: 'HH:mm'}} {{ 'home.part2.subtitle3' | translate}}</p>
+            <p class="europeans-text">{{ 'home.part2.subtitle4' | translate}}</p>
+            <ul class="europeans-text benefLandingList">
+                <li>{{ 'home.part2.list1' | translate}}</li>
+                <li>{{ 'home.part2.list2' | translate}}</li>
+            </ul>
+            <p class="europeans-text">{{ 'home.part2.subtitle5' | translate}}<a href="#">{{'benfefLanding.pleaseNoteTextLink'
+                | translate}}</a></p>
+            <p class="europeans-text">{{ 'home.part2.subtitle6' | translate}}.</p>
             <div id="img-scnd">
                 <img src="assets/images/copy-3.png" alt="">
             </div>
@@ -42,31 +55,51 @@
         <div class="col-xl-6">
             <h2 class="entities">{{ 'home.part2.subtitle2' | translate }}</h2>
             <p class="entities-text">{{ 'home.part2.text2' | translate }}</p>
+<<<<<<< HEAD
             <a class="btn btn-primary video-button"
                href="https://youtu.be/FvaJIPg0Pxw" target="_blank">
                 {{ 'home.whatch.video' | translate }}</a>
+=======
+            <p class="entities-text">{{ 'home.part2.text3' | translate }}</p>
+            <p class="entities-text">{{ 'home.part2.text4' | translate }}</p>
+>>>>>>> 3ed7625f40dbed5c6add21eddacfaa2a41da0c0d
         </div>
     </div>
 </div>
+
+<!--third-->
 <div class="container-fluid mayor">
     <div class="row contenedor">
         <div class="col-xl-6">
             <h2 class="apply">{{ 'home.part3.title' | translate }} </h2>
             <p class="apply-text">{{ 'home.part3.text1' | translate }}</p>
+            <ul class="europeans-text benefLandingList">
+                <li>{{ 'home.part3.list1' | translate}}</li>
+                <li>{{ 'home.part3.list2' | translate}}</li>
+            </ul>
+            <div *ngIf="showTimeline">
+                <p class="apply-text">{{ 'home.part3.text3' | translate }}</p>
+                <p class="apply-text">{{ 'home.part3.text4' | translate }}</p>
+                <timer-component class="timelineBenefLanding" (timerEvent)="checkIfSelected()"
+                                 [expirationTimestamp]="currentCall.startDate"></timer-component>
+            </div>
         </div>
         <div class="col-xl-6">
+            <h2 class="apply">{{ 'home.part3.title.1' | translate }} </h2>
             <p class="apply-text">{{ 'home.part3.text2' | translate }}</p>
 
         </div>
     </div>
+
+
+    <!--endthird-->
     <div class="row">
         <div class="col-xl-2"></div>
         <div class="col-xl-8">
             <div class="col-xl-6">
                 <img class="mayor-img"
                      src="assets/images/account-balance-material-icons-regular.png">
-                <p class="mayor-title">{{ 'home.part3.title2' | translate }}</p>
-                <p class="represent">{{ 'home.part3.subtitle' | translate }}</p>
+                <p class="supplier supplierFont">{{ 'home.part3.title2' | translate }}</p>
                 <a class="btn btn-primary video-button center-block video-button"
                    href="/#/beneficiary-landing">{{ 'home.register' | translate }}</a>
             </div>
@@ -80,7 +113,6 @@
         <div class="col-xl-2"></div>
     </div>
 </div>
-
 <div class="container-fluid second changePasswordModalNoTop"
      *ngIf="suppliersCounter > 50 && municipalitiesCounter > 50">
     <div class="counter">
@@ -113,6 +145,7 @@
     </div>
     <div class="row contenedor">
         <div class="col-xl-6">
+<<<<<<< HEAD
             <p class="white-links">
                 <a target="_blank"
                    href="https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu">
@@ -131,6 +164,23 @@
                 <a target="_blank"
                    href="https://ec.europa.eu/digital-single-market/events/cf/b-day-going-giga/document.cfm?doc_id=36544">
                     {{ 'home.part4.link4' | translate }}</a></p>
+=======
+            <p class="white-links"><a target="_blank"
+                                      href="https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu">{{
+                'home.part4.link1' | translate }}</a></p>
+            <p class="white-links"><a target="_blank"
+                                      href="http://europa.eu/rapid/press-release_IP-16-4261_en.htm">{{
+                'home.part4.link2' | translate }}</a></p>
+
+            <p class="white-links"><a target="_blank"
+                                      href="https://ec.europa.eu/digital-single-market/en/news/proposed-regulation-promotion-internet-connectivity-local-communities-and-public-spaces-wifi4eu">{{
+                'home.part4.link3' | translate }}</a></p>
+>>>>>>> 3ed7625f40dbed5c6add21eddacfaa2a41da0c0d
+        </div>
+        <div class="col-xl-6">
+            <img class="phoneIcon" src="assets/images/phone.PNG" alt="">
+            <p class="white-links">{{'home.part4.link4' | translate }}<span class="phoneNum">{{'home.part4.link4.1' | translate }}</span>
+            </p>
         </div>
     </div>
 </div>
