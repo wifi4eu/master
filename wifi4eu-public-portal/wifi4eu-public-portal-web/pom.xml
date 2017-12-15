@@ -136,6 +136,7 @@
                             <directory>src/main/angular/dist</directory>
                         </resource>
                     </webResources>
+                    <outputDirectory>${war.output.directory}</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
