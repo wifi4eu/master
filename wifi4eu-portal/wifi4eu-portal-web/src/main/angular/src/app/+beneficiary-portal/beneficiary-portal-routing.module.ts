@@ -6,11 +6,11 @@ import {VoucherComponent} from "./+voucher/voucher.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
-         {
-             path: '',
-             component: VoucherComponent,
-         }, {
-            path: 'discussion-forum',
+        {
+            path: '',
+            component: VoucherComponent,
+        }, {
+            path: 'discussion-forum/:threadId',
             component: DiscussionComponent
         }, {
             path: 'profile',

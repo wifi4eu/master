@@ -13,7 +13,7 @@ import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
 import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {LocalStorageService} from "angular-2-local-storage";
 import {SharedService} from "../../shared/shared.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
 import {UserThreadsDTO, UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
@@ -39,15 +39,17 @@ export class DiscussionComponent {
     private showAlert: boolean = false;
     private registration: RegistrationDTOBase[] = [];
     private lauId: number;
+    private threadId: number;
 
 
-    constructor(private municipalityApi: MunicipalityApi, private userThreadsApi: UserThreadsApi, private threadApi: ThreadApi, private beneficiaryApi: BeneficiaryApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
+    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
+        this.route.params.subscribe(params => this.threadId = params['threadId']);
+
         this.thread.messages = [];
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             if (this.user.type == 2 || this.user.type == 3) {
-
                 this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
                     (registration: RegistrationDTOBase[]) => {
                         this.registration = registration;
@@ -76,6 +78,7 @@ export class DiscussionComponent {
                                 );
 
                                 for (let message of this.thread.messages) {
+                                    console.log(this.thread.messages);
                                     if (message.authorId == this.user.id) {
                                         this.messageAuthors.push(this.user);
                                     } else {
@@ -118,7 +121,7 @@ export class DiscussionComponent {
         newMessage.createDate = new Date().getTime();
         newMessage.message = this.message;
         newMessage.authorId = this.user.id;
-        newMessage.threadId = this.thread.id;
+        newMessage.threadId = this.threadId;
         this.threadMessagesApi.createThreadMessage(newMessage).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {

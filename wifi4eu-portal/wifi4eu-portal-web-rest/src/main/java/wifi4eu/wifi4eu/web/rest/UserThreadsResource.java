@@ -80,15 +80,16 @@ public class UserThreadsResource {
     @ResponseBody
     public List<UserThreadsDTO> getThreadsByUserId(@PathVariable("userId") final Integer userId) {
         _log.info("getThreadsByUserId: " + userId);
-        return getThreadsByUserId(userId);
+        return userThreadsService.getThreadsByUserId(userId);
     }
+
 
     @ApiOperation(value = "Get User by specific thread id")
     @RequestMapping(value = "/threadId/{threadId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<UserThreadsDTO> getUsersByThreadId(@PathVariable("threadId") final Integer threadId) {
         _log.info("getUsersByThreadId: " + threadId);
-        return getUsersByThreadId(threadId);
+        return userThreadsService.getUsersByThreadId(threadId);
     }
 
 }

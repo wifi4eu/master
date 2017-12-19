@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.mapper.thread.UserThreadsMapper;
 import wifi4eu.wifi4eu.repository.thread.UserThreadsRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -16,6 +18,8 @@ public class UserThreadsService {
 
     @Autowired
     UserThreadsRepository userThreadsRepository;
+
+    Logger _log = LoggerFactory.getLogger(UserThreadsService.class);
 
     public List<UserThreadsDTO> getAllUserThreads() {
         return userThreadsMapper.toDTOList(Lists.newArrayList(userThreadsRepository.findAll()));
