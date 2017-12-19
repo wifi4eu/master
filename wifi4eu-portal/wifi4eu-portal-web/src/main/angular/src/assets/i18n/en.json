@@ -233,7 +233,7 @@
   "issueSummary": "Issue Summary",
   "memberStateComments": "Member State Comments",
   "dgConnectComments": "DG Connect Comments",
-  "dgconn.dashboard.card.managelau":"Manage LAUs",
+  "dgconn.dashboard.card.managelau": "Manage LAUs",
   "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "setAsResolved": "Set as Resolved",
@@ -403,7 +403,7 @@
   "benefLanding.elegibleText3": "You are about to register on the WiFi4EU portal on behalf of a municipailty.",
   "benefLanding.proceed": "Would you like to proceed with the registration process?",
   "benefLanding.yes": "Yes",
-  "benefLanding.no": "No"
+  "benefLanding.no": "No",
   "select.activateAccount": "Activate your Email Account",
   "select.activateAccountDesc": "Please, click on the Confirm button to validate your Email Account"
 }

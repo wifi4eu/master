@@ -74,19 +74,19 @@ public class ThreadResource {
         }
     }
 
-    @ApiOperation(value = "Get thread by specific lau id")
-    @RequestMapping(value = "/lau/{lauId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public ThreadDTO getThreadByLauId(@PathVariable("lauId") final Integer lauId) {
-        _log.info("getThreadByLauId: " + lauId);
-        return threadService.getThreadByLauId(lauId);
-    }
+//    @ApiOperation(value = "Get thread by specific lau id")
+//    @RequestMapping(value = "/lau/{lauId}", method = RequestMethod.GET, produces = "application/json")
+//    @ResponseBody
+//    public ThreadDTO getThreadByLauId(@PathVariable("lauId") final Integer lauId) {
+//        _log.info("getThreadByLauId: " + lauId);
+//        return threadService.getThreadByLauId(lauId);
+//    }
 
-    @ApiOperation(value = "Get all the thread that a user is in.")
-    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<ThreadDTO> getUserThreads(@PathVariable("userId") final Integer userId) {
-        _log.info("getUserThreads: " + userId);
-        return threadService.getUserThreads(userId);
-    }
+//    @ApiOperation(value = "Get all the thread that a user is in.")
+//    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
+//    @ResponseBody
+//    public List<ThreadDTO> getUserThreads(@PathVariable("userId") final Integer userId) {
+//        _log.info("getUserThreads: " + userId);
+//        return threadService.getUserThreads(userId);
+//    }
 }

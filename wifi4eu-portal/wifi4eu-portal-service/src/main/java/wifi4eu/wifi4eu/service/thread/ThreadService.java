@@ -83,20 +83,20 @@ public class ThreadService {
         }
     }
 
-    public ThreadDTO getThreadByLauId(int lauId) {
-        return threadMapper.toDTO(threadRepository.findByLauId(lauId));
-    }
+//    public ThreadDTO getThreadByLauId(int lauId) {
+//        return threadMapper.toDTO(threadRepository.findByLauId(lauId));
+//    }
 
-    public List<ThreadDTO> getUserThreads(int userId) {
-        List<ThreadDTO> threads = new ArrayList<>();
-        for (RegistrationDTO registration : registrationService.getRegistrationsByUserId(userId)) {
-            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-            ThreadDTO thread = getThreadByLauId(municipality.getLauId());
-            if (thread != null) {
-                threads.add(thread);
-            }
-        }
-        return threads;
-    }
+//    public List<ThreadDTO> getUserThreads(int userId) {
+//        List<ThreadDTO> threads = new ArrayList<>();
+//        for (RegistrationDTO registration : registrationService.getRegistrationsByUserId(userId)) {
+//            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+//            ThreadDTO thread = getThreadByLauId(municipality.getLauId());
+//            if (thread != null) {
+//                threads.add(thread);
+//            }
+//        }
+//        return threads;
+//    }
 
 }

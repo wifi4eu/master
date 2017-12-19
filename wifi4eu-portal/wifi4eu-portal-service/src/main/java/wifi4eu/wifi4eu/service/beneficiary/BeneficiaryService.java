@@ -51,7 +51,7 @@ public class BeneficiaryService {
         UserContext userContext = UserHolder.getUser();
         boolean isEcasUser = false;
 
-        if(userContext != null){
+        if (userContext != null) {
             user = userService.getUserByUserContext(userContext);
             user.setName(beneficiaryDTO.getUser().getName());
             user.setSurname(beneficiaryDTO.getUser().getSurname());
@@ -61,7 +61,7 @@ public class BeneficiaryService {
             user.setEmail(beneficiaryDTO.getUser().getEmail());
             user.setType(beneficiaryDTO.getUser().getType());
             isEcasUser = true;
-        }else{
+        } else {
             user = beneficiaryDTO.getUser();
             String password = "12345678";
             user.setPassword(password);
@@ -71,23 +71,22 @@ public class BeneficiaryService {
         user.setCreateDate(new Date().getTime());
 
         UserDTO resUser;
-        if(isEcasUser){
+        if (isEcasUser) {
             resUser = userService.saveUserChanges(user);
-        }
-        else{
+        } else {
             resUser = userService.createUser(user);
         }
 
-        List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
+//        List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
         List<RegistrationDTO> registrations = new ArrayList<>();
-        for (int i = 0; i < resMunicipalities.size(); i++) {
-            MunicipalityDTO municipality = resMunicipalities.get(i);
-            MayorDTO mayor = beneficiaryDTO.getMayors().get(i);
-            mayor.setMunicipalityId(municipality.getId());
-            mayorService.createMayor(mayor);
-            RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, resUser.getId());
-            registrations.add(registrationService.createRegistration(registration));
-        }
+//        for (int i = 0; i < resMunicipalities.size(); i++) {
+//            MunicipalityDTO municipality = resMunicipalities.get(i);
+//            MayorDTO mayor = beneficiaryDTO.getMayors().get(i);
+//            mayor.setMunicipalityId(municipality.getId());
+//            mayorService.createMayor(mayor);
+//            RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, resUser.getId());
+//            registrations.add(registrationService.createRegistration(registration));
+//        }
 
         userService.sendActivateAccountMail(resUser);
 
@@ -110,25 +109,25 @@ public class BeneficiaryService {
             return RegistrationStatus.OK.getValue();
         }
     }
-
-    private List<MunicipalityDTO> getMunicipalityList(final BeneficiaryDTO beneficiaryDTO) {
-        List<MunicipalityDTO> resMunicipalities = new ArrayList<>();
-        for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
-            List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipality.getLauId());
-            if (!municipalitiesWithSameLau.isEmpty()) {
-                if (threadService.getThreadByLauId(municipality.getLauId()) == null) {
-                    ThreadDTO thread = new ThreadDTO();
-                    thread.setLauId(municipality.getLauId());
-                    thread.setTitle(municipality.getName());
-                    threadService.createThread(thread);
-                }
-                updateRegistrationStatusToHold(municipalitiesWithSameLau);
-                municipalitiesLauIdToHold.add(municipality.getLauId());
-            }
-            resMunicipalities.add(municipalityService.createMunicipality(municipality));
-        }
-        return resMunicipalities;
-    }
+//
+//    private List<MunicipalityDTO> getMunicipalityList(final BeneficiaryDTO beneficiaryDTO) {
+//        List<MunicipalityDTO> resMunicipalities = new ArrayList<>();
+//        for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
+//            List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipality.getLauId());
+//            if (!municipalitiesWithSameLau.isEmpty()) {
+//                if (threadService.getThreadByLauId(municipality.getLauId()) == null) {
+//                    ThreadDTO thread = new ThreadDTO();
+//                    thread.setLauId(municipality.getLauId());
+//                    thread.setTitle(municipality.getName());
+//                    threadService.createThread(thread);
+//                }
+//                updateRegistrationStatusToHold(municipalitiesWithSameLau);
+//                municipalitiesLauIdToHold.add(municipality.getLauId());
+//            }
+//            resMunicipalities.add(municipalityService.createMunicipality(municipality));
+//        }
+//        return resMunicipalities;
+//    }
 
     /**
      * The update registration status to hold
@@ -146,32 +145,32 @@ public class BeneficiaryService {
             }
         }
     }
-
-    public List<BeneficiaryDTO> getBeneficiariesByThreadId(int threadId) {
-        List<BeneficiaryDTO> beneficiaries = new ArrayList<>();
-        ThreadDTO thread = threadService.getThreadById(threadId);
-        List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(thread.getLauId());
-        for (MunicipalityDTO municipality : municipalities) {
-            System.out.println("MUNICIPALITY whatever");
-            BeneficiaryDTO beneficiary = new BeneficiaryDTO();
-            List<RegistrationDTO> registrations = registrationService.getRegistrationsByMunicipalityId(municipality.getId());
-            for (RegistrationDTO registration : registrations) {
-                System.out.println("REGISTRATION something");
-                if (registration.getRole().equals(REPRESENTATIVE)) {
-                    System.out.println("Let's set the user");
-                    beneficiary.setUser(userService.getUserById(registration.getUserId()));
-                }
-            }
-            List<MunicipalityDTO> municipalityList = new ArrayList<>();
-            municipalityList.add(municipality);
-            beneficiary.setMunicipalities(municipalityList);
-            if (registrations.size() > 1) {
-                beneficiary.setRepresentsMultipleMunicipalities(true);
-            } else {
-                beneficiary.setRepresentsMultipleMunicipalities(false);
-            }
-            beneficiaries.add(beneficiary);
-        }
-        return beneficiaries;
-    }
+//
+//    public List<BeneficiaryDTO> getBeneficiariesByThreadId(int threadId) {
+//        List<BeneficiaryDTO> beneficiaries = new ArrayList<>();
+//        ThreadDTO thread = threadService.getThreadById(threadId);
+//        List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(thread.getLauId());
+//        for (MunicipalityDTO municipality : municipalities) {
+//            System.out.println("MUNICIPALITY whatever");
+//            BeneficiaryDTO beneficiary = new BeneficiaryDTO();
+//            List<RegistrationDTO> registrations = registrationService.getRegistrationsByMunicipalityId(municipality.getId());
+//            for (RegistrationDTO registration : registrations) {
+//                System.out.println("REGISTRATION something");
+//                if (registration.getRole().equals(REPRESENTATIVE)) {
+//                    System.out.println("Let's set the user");
+//                    beneficiary.setUser(userService.getUserById(registration.getUserId()));
+//                }
+//            }
+//            List<MunicipalityDTO> municipalityList = new ArrayList<>();
+//            municipalityList.add(municipality);
+//            beneficiary.setMunicipalities(municipalityList);
+//            if (registrations.size() > 1) {
+//                beneficiary.setRepresentsMultipleMunicipalities(true);
+//            } else {
+//                beneficiary.setRepresentsMultipleMunicipalities(false);
+//            }
+//            beneficiaries.add(beneficiary);
+//        }
+//        return beneficiaries;
+//    }
 }

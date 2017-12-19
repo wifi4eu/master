@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 import wifi4eu.wifi4eu.entity.thread.Thread;
 
 public interface ThreadRepository extends CrudRepository<Thread, Integer> {
-    Thread findByLauId(Integer lauId);
+//    Thread findByTypeAndLauId(Integer type, String reason);
 }

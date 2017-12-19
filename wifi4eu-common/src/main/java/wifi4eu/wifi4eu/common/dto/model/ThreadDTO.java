@@ -5,16 +5,18 @@ import java.util.List;
 public class ThreadDTO {
     private int id;
     private String title;
-    private int lauId;
+    private String reason;
+    private int type;
     private List<ThreadMessageDTO> messages;
 
     public ThreadDTO() {
     }
 
-    public ThreadDTO(int id, String title, int lauId, List<ThreadMessageDTO> messages) {
+    public ThreadDTO(int id, String title, String reason, int type, List<ThreadMessageDTO> messages) {
         this.id = id;
         this.title = title;
-        this.lauId = lauId;
+        this.reason = reason;
+        this.type = type;
         this.messages = messages;
     }
 
@@ -34,12 +36,20 @@ public class ThreadDTO {
         this.title = title;
     }
 
-    public int getLauId() {
-        return lauId;
+    public String getReason() {
+        return reason;
     }
 
-    public void setLauId(int lauId) {
-        this.lauId = lauId;
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public List<ThreadMessageDTO> getMessages() {
