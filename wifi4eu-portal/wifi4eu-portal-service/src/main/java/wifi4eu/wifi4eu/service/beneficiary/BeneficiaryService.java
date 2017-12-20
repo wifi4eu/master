@@ -14,6 +14,7 @@ import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
+import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.text.MessageFormat;
@@ -34,6 +35,9 @@ public class BeneficiaryService {
 
     @Autowired
     ThreadService threadService;
+
+    @Autowired
+    UserThreadsService userThreadsService;
 
     @Autowired
     MayorService mayorService;
@@ -77,18 +81,19 @@ public class BeneficiaryService {
             resUser = userService.createUser(user);
         }
 
-//        List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
+        List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
         List<RegistrationDTO> registrations = new ArrayList<>();
-//        for (int i = 0; i < resMunicipalities.size(); i++) {
-//            MunicipalityDTO municipality = resMunicipalities.get(i);
-//            MayorDTO mayor = beneficiaryDTO.getMayors().get(i);
-//            mayor.setMunicipalityId(municipality.getId());
-//            mayorService.createMayor(mayor);
-//            RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, resUser.getId());
-//            registrations.add(registrationService.createRegistration(registration));
-//        }
+        for (int i = 0; i < resMunicipalities.size(); i++) {
+            MunicipalityDTO municipality = resMunicipalities.get(i);
+            MayorDTO mayor = beneficiaryDTO.getMayors().get(i);
+            mayor.setMunicipalityId(municipality.getId());
+            mayorService.createMayor(mayor);
+            RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, resUser.getId());
+            registrations.add(registrationService.createRegistration(registration));
+        }
 
         userService.sendActivateAccountMail(resUser);
+
 
         return registrations;
     }
@@ -109,25 +114,33 @@ public class BeneficiaryService {
             return RegistrationStatus.OK.getValue();
         }
     }
-//
-//    private List<MunicipalityDTO> getMunicipalityList(final BeneficiaryDTO beneficiaryDTO) {
-//        List<MunicipalityDTO> resMunicipalities = new ArrayList<>();
-//        for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
-//            List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipality.getLauId());
-//            if (!municipalitiesWithSameLau.isEmpty()) {
-//                if (threadService.getThreadByLauId(municipality.getLauId()) == null) {
-//                    ThreadDTO thread = new ThreadDTO();
-//                    thread.setLauId(municipality.getLauId());
-//                    thread.setTitle(municipality.getName());
-//                    threadService.createThread(thread);
-//                }
-//                updateRegistrationStatusToHold(municipalitiesWithSameLau);
-//                municipalitiesLauIdToHold.add(municipality.getLauId());
-//            }
-//            resMunicipalities.add(municipalityService.createMunicipality(municipality));
-//        }
-//        return resMunicipalities;
-//    }
+
+    private List<MunicipalityDTO> getMunicipalityList(final BeneficiaryDTO beneficiaryDTO) {
+        List<MunicipalityDTO> resMunicipalities = new ArrayList<>();
+        for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
+            List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipality.getLauId());
+            if (!municipalitiesWithSameLau.isEmpty()) {
+                ThreadDTO thread = new ThreadDTO();
+                if (threadService.getThreadByTypeAndReason(1, String.valueOf(municipality.getLauId())) == null) {
+                    thread.setType(1);
+                    thread.setReason(String.valueOf(municipality.getLauId()));
+                    thread.setTitle(municipality.getName());
+                    threadService.createThread(thread);
+                }
+                UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
+                userThreadsDTO.setUserId(beneficiaryDTO.getUser().getId());
+                userThreadsDTO.setThreadId(thread.getId());
+
+                userThreadsService.createUserThreads(userThreadsDTO);
+                updateRegistrationStatusToHold(municipalitiesWithSameLau);
+                municipalitiesLauIdToHold.add(municipality.getLauId());
+
+            }
+            resMunicipalities.add(municipalityService.createMunicipality(municipality));
+        }
+        return resMunicipalities;
+    }
+
 
     /**
      * The update registration status to hold
@@ -145,32 +158,32 @@ public class BeneficiaryService {
             }
         }
     }
-//
-//    public List<BeneficiaryDTO> getBeneficiariesByThreadId(int threadId) {
-//        List<BeneficiaryDTO> beneficiaries = new ArrayList<>();
-//        ThreadDTO thread = threadService.getThreadById(threadId);
-//        List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(thread.getLauId());
-//        for (MunicipalityDTO municipality : municipalities) {
-//            System.out.println("MUNICIPALITY whatever");
-//            BeneficiaryDTO beneficiary = new BeneficiaryDTO();
-//            List<RegistrationDTO> registrations = registrationService.getRegistrationsByMunicipalityId(municipality.getId());
-//            for (RegistrationDTO registration : registrations) {
-//                System.out.println("REGISTRATION something");
-//                if (registration.getRole().equals(REPRESENTATIVE)) {
-//                    System.out.println("Let's set the user");
-//                    beneficiary.setUser(userService.getUserById(registration.getUserId()));
-//                }
-//            }
-//            List<MunicipalityDTO> municipalityList = new ArrayList<>();
-//            municipalityList.add(municipality);
-//            beneficiary.setMunicipalities(municipalityList);
-//            if (registrations.size() > 1) {
-//                beneficiary.setRepresentsMultipleMunicipalities(true);
-//            } else {
-//                beneficiary.setRepresentsMultipleMunicipalities(false);
-//            }
-//            beneficiaries.add(beneficiary);
-//        }
-//        return beneficiaries;
-//    }
+
+    public List<BeneficiaryDTO> getBeneficiariesByThreadId(int threadId) {
+        List<BeneficiaryDTO> beneficiaries = new ArrayList<>();
+        ThreadDTO thread = threadService.getThreadById(threadId);
+        List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(Integer.parseInt(thread.getReason()));
+        for (MunicipalityDTO municipality : municipalities) {
+            System.out.println("MUNICIPALITY whatever");
+            BeneficiaryDTO beneficiary = new BeneficiaryDTO();
+            List<RegistrationDTO> registrations = registrationService.getRegistrationsByMunicipalityId(municipality.getId());
+            for (RegistrationDTO registration : registrations) {
+                System.out.println("REGISTRATION something");
+                if (registration.getRole().equals(REPRESENTATIVE)) {
+                    System.out.println("Let's set the user");
+                    beneficiary.setUser(userService.getUserById(registration.getUserId()));
+                }
+            }
+            List<MunicipalityDTO> municipalityList = new ArrayList<>();
+            municipalityList.add(municipality);
+            beneficiary.setMunicipalities(municipalityList);
+            if (registrations.size() > 1) {
+                beneficiary.setRepresentsMultipleMunicipalities(true);
+            } else {
+                beneficiary.setRepresentsMultipleMunicipalities(false);
+            }
+            beneficiaries.add(beneficiary);
+        }
+        return beneficiaries;
+    }
 }

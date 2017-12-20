@@ -50,4 +50,5 @@ public class UserThreadsService {
     public List<UserThreadsDTO> getUsersByThreadId(int threadId) {
         return userThreadsMapper.toDTOList(Lists.newArrayList(userThreadsRepository.findByThreadId(threadId)));
     }
+
 }

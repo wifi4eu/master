@@ -74,13 +74,13 @@ public class ThreadResource {
         }
     }
 
-//    @ApiOperation(value = "Get thread by specific lau id")
-//    @RequestMapping(value = "/lau/{lauId}", method = RequestMethod.GET, produces = "application/json")
-//    @ResponseBody
-//    public ThreadDTO getThreadByLauId(@PathVariable("lauId") final Integer lauId) {
-//        _log.info("getThreadByLauId: " + lauId);
-//        return threadService.getThreadByLauId(lauId);
-//    }
+    @ApiOperation(value = "Get thread by specific type")
+    @RequestMapping(value = "/type/{type}/reason/{reason}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ThreadDTO getThreadByTypeAndReason(@PathVariable("type") final Integer type, @PathVariable("reason") final String reason) {
+        _log.info("getThreadByTypeAndReason: " + type);
+        return threadService.getThreadByTypeAndReason(type, reason);
+    }
 
 //    @ApiOperation(value = "Get all the thread that a user is in.")
 //    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
