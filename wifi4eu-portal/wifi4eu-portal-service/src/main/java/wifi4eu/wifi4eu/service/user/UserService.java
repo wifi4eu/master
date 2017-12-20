@@ -33,13 +33,9 @@ import java.util.List;
 public class UserService {
     private final Logger _log = LoggerFactory.getLogger(UserService.class);
 
-    public final static int TIMEFRAME_ACTIVATE_ACCOUNT_HOURS = 2;
-    public final static String BASE_URL = "http://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/";
-    public final static String RESET_PASS_URL = BASE_URL + "forgot;token=";
-    public final static String ACTIVATE_ACCOUNT_URL = BASE_URL + "activation;token=";
 
     @Value("${mail.server.location}")
-    private String mailServer;
+    private String baseUrl;
 
     @Autowired
     UserMapper userMapper;
@@ -181,17 +177,17 @@ public class UserService {
         tempTokenDTO.setEmail(userDTO.getEmail());
         tempTokenDTO.setUserId(userDTO.getId());
         tempTokenDTO.setCreateDate(now.getTime());
-        tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
+        tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserConstants.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
         SecureRandom secureRandom = new SecureRandom();
         String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
         tempTokenDTO.setToken(token);
         tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO)));
         //TODO: Translate subject and msgBody
         String subject = "Welcome to WiFi4EU";
-        String msgBody = "You have successfully registered to WiFi4EU, access to the next link and activate your account: " + UserService.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
+        String msgBody = "You have successfully registered to WiFi4EU, access to the next link and activate your account: " + baseUrl + UserConstants.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
 
         // If it is localhost it wont send mail
-        if (!mailServer.contains("localhost")) {
+        if (!baseUrl.contains(UserConstants.LOCAL)) {
             mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }
     }
@@ -227,7 +223,7 @@ public class UserService {
                     }
                     Date now = new Date();
                     tempTokenDTO.setCreateDate(now.getTime());
-                    tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
+                    tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserConstants.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
                     SecureRandom secureRandom = new SecureRandom();
                     String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
                     tempTokenDTO.setToken(token);
@@ -238,7 +234,7 @@ public class UserService {
                     String fromAddress = MailService.FROM_ADDRESS;
                     //TODO: translate subject and msgBody
                     String subject = "wifi4eu portal Forgot Password";
-                    String msgBody = "you can access to the next link and reset your password " + RESET_PASS_URL + tempTokenDTO.getToken();
+                    String msgBody = "you can access to the next link and reset your password " + baseUrl + UserConstants.RESET_PASS_URL + tempTokenDTO.getToken();
                     mailService.sendEmail(email, fromAddress, subject, msgBody);
                 } else {
                     throw new Exception("trying to forgetPassword with an unregistered user");
