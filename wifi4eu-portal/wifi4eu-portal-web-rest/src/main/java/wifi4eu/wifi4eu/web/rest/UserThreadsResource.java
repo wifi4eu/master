@@ -83,7 +83,6 @@ public class UserThreadsResource {
         return userThreadsService.getThreadsByUserId(userId);
     }
 
-
     @ApiOperation(value = "Get User by specific thread id")
     @RequestMapping(value = "/threadId/{threadId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

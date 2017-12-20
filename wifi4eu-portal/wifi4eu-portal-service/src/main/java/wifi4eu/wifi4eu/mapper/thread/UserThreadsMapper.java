@@ -6,7 +6,6 @@ import org.mapstruct.Mappings;
 import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.entity.thread.UserThreads;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
