@@ -5,12 +5,13 @@ import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
@@ -20,15 +21,14 @@ import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
-import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
-import wifi4eu.wifi4eu.service.registration.RegistrationService;
-import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.util.MailService;
 
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 
+@Configuration
+@PropertySource("classpath:env.properties")
 @Service
 public class UserService {
     private final Logger _log = LoggerFactory.getLogger(UserService.class);
@@ -37,6 +37,9 @@ public class UserService {
     public final static String BASE_URL = "http://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/";
     public final static String RESET_PASS_URL = BASE_URL + "forgot;token=";
     public final static String ACTIVATE_ACCOUNT_URL = BASE_URL + "activation;token=";
+
+    @Value("${mail.server.location}")
+    private String mailServer;
 
     @Autowired
     UserMapper userMapper;
@@ -52,6 +55,7 @@ public class UserService {
 
     @Autowired
     MailService mailService;
+
 
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
@@ -185,7 +189,11 @@ public class UserService {
         //TODO: Translate subject and msgBody
         String subject = "Welcome to WiFi4EU";
         String msgBody = "You have successfully registered to WiFi4EU, access to the next link and activate your account: " + UserService.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
-        mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+
+        // If it is localhost it wont send mail
+        if (!mailServer.contains("localhost")) {
+            mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+        }
     }
 
     public boolean resendEmail(String email) {
