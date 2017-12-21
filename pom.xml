@@ -122,7 +122,6 @@
         <enable.security.end> </enable.security.end>
         <enable.login.start> </enable.login.start>
         <enable.login.end> </enable.login.end>
-        <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory>
         <server.azure.port>80</server.azure.port>
         <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
 
@@ -143,6 +142,7 @@
                 <war.output.directory/>
                 <ecas.server.address>${server.test.address}</ecas.server.address>
                 <ecas.server.port>${server.test.port}</ecas.server.port>
+                <mail.serv.location>http://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
             </properties>
         </profile>
         <profile>
@@ -157,6 +157,7 @@
                 <war.output.directory/>
                 <ecas.server.address>${server.azure.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
+                <mail.serv.location>http://wifi4eudev.azurewebsites.net/wifi4eu/#/</mail.serv.location>
             </properties>
         </profile>
     </profiles>
@@ -202,6 +203,7 @@
                 <version>${joda-time.version}</version>
             </dependency>
 
+            <!-- Guava cache -->
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
@@ -462,13 +464,6 @@
                 <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
                 <artifactId>ecas-tomcat-8.0</artifactId>
                 <version>${ecas.client.version}</version>
-            </dependency>
-
-            <!-- Guava cache -->
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
             </dependency>
 
             <!-- JWT -->
