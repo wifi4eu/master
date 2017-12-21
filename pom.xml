@@ -123,7 +123,7 @@
         <enable.login.start> </enable.login.start>
         <enable.login.end> </enable.login.end>
         <server.azure.port>80</server.azure.port>
-        <mail.serv.location>localhost</mail.serv.location>
+        <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
 
         <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory>
     </properties>

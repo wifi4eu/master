@@ -6,5 +6,6 @@ public class UserConstants {
     public final static String RESET_PASS_URL = "forgot;token=";
     public final static String ACTIVATE_ACCOUNT_URL = "activation;token=";
     public final static String LOCAL = "localhost";
+    public final static String DEFAULT_LANG = "en";
 
 }

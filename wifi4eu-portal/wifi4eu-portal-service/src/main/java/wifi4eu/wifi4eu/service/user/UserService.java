@@ -26,6 +26,8 @@ import wifi4eu.wifi4eu.util.MailService;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -51,6 +53,11 @@ public class UserService {
 
     @Autowired
     MailService mailService;
+
+    /**
+     * The language used in user browser
+     */
+    private String lang = null;
 
 
     public List<UserDTO> getAllUsers() {
@@ -182,12 +189,13 @@ public class UserService {
         String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
         tempTokenDTO.setToken(token);
         tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO)));
-        //TODO: Translate subject and msgBody
-        String subject = "Welcome to WiFi4EU";
-        String msgBody = "You have successfully registered to WiFi4EU, access to the next link and activate your account: " + baseUrl + UserConstants.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
 
-        // If it is localhost it wont send mail
-        if (!baseUrl.contains(UserConstants.LOCAL)) {
+        Locale locale = initLocale();
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.subject");
+        String msgBody = bundle.getString("mail.body") + baseUrl + UserConstants.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
+
+        if (!isLocalHost()) {
             mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }
     }
@@ -245,5 +253,30 @@ public class UserService {
         }else{
             throw new Exception("ECAS user has to go throw ECAS portal to manage the password");
         }
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+    public String getLang() {
+        return this.lang;
+    }
+
+    private boolean isLocalHost() {
+        return baseUrl.contains(UserConstants.LOCAL);
+    }
+
+    private Locale initLocale() {
+        Locale locale;
+
+        if (lang != null) {
+            locale = new Locale(lang);
+
+        } else {
+            locale = new Locale(UserConstants.DEFAULT_LANG);
+        }
+
+        return locale;
     }
 }
