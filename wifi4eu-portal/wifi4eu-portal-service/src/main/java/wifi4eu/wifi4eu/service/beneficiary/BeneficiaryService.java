@@ -120,7 +120,7 @@ public class BeneficiaryService {
         for (MunicipalityDTO municipalityDTO : municipalityDTOs) {
             List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipalityDTO.getLauId());
 
-            if (municipalitiesWithSameLau.size() > 0) {
+            if (municipalitiesWithSameLau.size() > 1) {
 
                 /* verificamos que existe el thread */
 
