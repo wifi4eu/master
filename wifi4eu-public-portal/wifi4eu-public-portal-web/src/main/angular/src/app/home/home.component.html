@@ -36,17 +36,16 @@
     <div class="row contenedor">
         <div class="col-xl-6">
             <h1 class="benefit">{{ 'home.part2.title' | translate }}</h1>
-            <p *ngIf="showTimeline" class="europeans-text">{{ 'home.part2.subtitle1' | translate }}
-                {{currentCall.startDate | date: 'dd/MM/yyyy'}} {{
-                'home.part2.subtitle1.2' |
-                translate }}{{currentCall.startDate | date: 'HH:mm'}} {{ 'home.part2.subtitle3' | translate}}</p>
+            <p *ngIf="showTimeline" class="europeans-text"
+               [innerHTML]="'home.part2.text1' | translate:{date:dateNumber,hour:hourNumber}">
+            </p>
             <p class="europeans-text">{{ 'home.part2.subtitle4' | translate}}</p>
             <ul class="europeans-text benefLandingList">
                 <li>{{ 'home.part2.list1' | translate}}</li>
                 <li>{{ 'home.part2.list2' | translate}}</li>
             </ul>
-            <p class="europeans-text">{{ 'home.part2.subtitle5' | translate}}<a href="#">{{'benfefLanding.pleaseNoteTextLink'
-                | translate}}</a></p>
+            <p class="europeans-text" [innerHTML]="'home.part2.subtitle5' | translate">{{ 'home.part2.subtitle5' |
+                translate}}</p>
             <p class="europeans-text">{{ 'home.part2.subtitle6' | translate}}.</p>
             <div id="img-scnd">
                 <img src="assets/images/copy-3.png" alt="">
@@ -112,9 +111,9 @@
     <div class="counter">
         <div class="row contenedor">
             <div class="col-xl-8">
-                <p class="mayor-title counterText">
-                    {{ 'home.counterSection1' | translate }} {{municipalitiesCounter}}
-                    {{ 'home.counterSection2' | translate }} {{suppliersCounter}}{{ 'home.counterSection3' | translate}}
+                <p class="mayor-title counterText"
+                   [innerHTML]="'home.counterSection2' | translate:{suppliersCounter:suppliersCounter}"
+                   [innerHTML]="'home.counterSection3' | translate:{municipalitiesCounter:municipalitiesCounter}">
                 </p>
                 <a class="btn btn-primary video-button center-block marginSelect"
                    href="" *ngIf="suppliersCounter < 1">
@@ -152,8 +151,7 @@
         </div>
         <div class="col-xl-6">
             <img class="phoneIcon" src="assets/images/phone.PNG" alt="">
-            <p class="white-links">{{'home.part4.link4' | translate }}<span class="phoneNum">{{'home.part4.link4.1' | translate }}</span>
-            </p>
+            <p class="white-links" [innerHTML]="'home.part4.link4' | translate"></p>
         </div>
     </div>
 </div>
