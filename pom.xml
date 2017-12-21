@@ -14,7 +14,7 @@
     <modules>
         <module>wifi4eu-common</module>
         <module>wifi4eu-portal</module>
-        <module>wifi4eu-public-portal</module>
+        <!-- <module>wifi4eu-public-portal</module> ***************************************** -->
         <!--<module>wifi4eu-financial</module>-->
     </modules>
 
@@ -125,7 +125,8 @@
         <server.azure.port>80</server.azure.port>
         <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
 
-        <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory>
+        <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
+        <war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>
     </properties>
 
 
