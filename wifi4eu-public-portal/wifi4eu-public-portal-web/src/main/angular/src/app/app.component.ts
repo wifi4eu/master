@@ -40,7 +40,7 @@ export class AppComponent {
             label: 'Wifi4EU',
             children: [
                 new CustomLayoutLink({label: 'Beneficiary Registration', url: '/#/beneficiary-landing', externalUrl: true}),
-                new CustomLayoutLink({label: 'Supplier Registration', url: '../../../wifi4eu/#/supplier-registration', externalUrl: true})
+                new CustomLayoutLink({label: 'Supplier Registration', url: '/#/supplier-landing', externalUrl: true})
             ]
         })];
 

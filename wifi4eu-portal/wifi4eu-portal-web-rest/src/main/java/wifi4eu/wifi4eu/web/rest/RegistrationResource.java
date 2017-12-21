@@ -104,4 +104,12 @@ public class RegistrationResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
+
+    @ApiOperation(value = "Get registration by specific user and municipality id's")
+    @RequestMapping(value = "/user/{userId}/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public RegistrationDTO getRegistrationByUserAndMunicipality(@PathVariable("userId") final Integer userId, @PathVariable("municipalityId") final Integer municipalityId) {
+        _log.info("getRegistrationByUser: " + userId  + " | AndMunicipality: " + municipalityId);
+        return registrationService.getRegistrationByUserAndMunicipality(userId, municipalityId);
+    }
 }

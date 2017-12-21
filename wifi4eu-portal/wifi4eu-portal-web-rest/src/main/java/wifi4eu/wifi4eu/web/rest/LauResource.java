@@ -67,4 +67,6 @@ public class LauResource {
         _log.info(GET_LAUS_BY_COUNTRY_CODE_AND_NAME1_STARTING_WITH_IGNORE_CASE + countryCode + "," + name1);
         return lauService.getLausByCountryCodeAndName1StartingWithIgnoreCase(countryCode, name1);
     }
+
+
 }

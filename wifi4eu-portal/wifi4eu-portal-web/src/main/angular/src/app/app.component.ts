@@ -9,6 +9,7 @@ import {UserDTOBase} from "./shared/swagger/model/UserDTO";
 import {UserApi} from "./shared/swagger/api/UserApi";
 import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
 import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
+import {Http} from "@angular/http";
 
 enableProdMode();
 
@@ -212,6 +213,15 @@ export class AppComponent implements OnInit {
         })];
         this.profileUrl = null;
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
+
+        this.userApi.doCompleteSignOut().subscribe(
+            (response: string) => {
+                console.log(response);
+            }, error => {
+                console.log(error);
+            }
+        );
+
         this.userApi.ecasLogout();
         window.location.href = 'https://ecas.acceptance.ec.europa.eu/cas/logout';
     }

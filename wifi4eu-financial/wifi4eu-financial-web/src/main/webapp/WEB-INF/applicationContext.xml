@@ -16,10 +16,10 @@
 	<import resource="classpath:spring-security.xml" />
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.gmail.com" />
+		<property name="host" value="smtp.sendgrid.net" />
 		<property name="port" value="587" />
-		<property name="username" value="portaleseveris@gmail.com" />
-		<property name="password" value="bcf74eb9b6" />
+		<property name="username" value="azure_efe0541f6fda2f126859caac07925571@azure.com" />
+		<property name="password" value="BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M" />
 
 		<property name="javaMailProperties">
 			<props>

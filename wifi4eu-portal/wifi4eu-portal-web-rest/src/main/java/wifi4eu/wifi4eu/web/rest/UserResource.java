@@ -6,9 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -18,6 +23,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -227,4 +233,37 @@ public class UserResource {
         }
     }
 
+    @ApiOperation(value = "Set the user language")
+    @RequestMapping(value = "/lang/{lang}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String setUserLang(@PathVariable("lang") final String userLang) {
+        _log.info("setUserLang: " + userLang);
+        userService.setLang(userLang);
+
+        return userService.getLang();
+    }
+
+    @ApiOperation(value = "Logout session")
+    @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String doCompleteSignOut()  {
+        _log.debug("Logging out");
+
+        final HttpSession session = RecoverHttpSession.session();
+        String outMessage = "page.logout";
+
+        if (session == null) {
+            _log.info("Session is expired.");
+            outMessage = "page.not.session";
+        } else {
+            _log.info("Expiring session.");
+            doLogout(session);
+        }
+
+        return outMessage;
+    }
+
+    private void doLogout(HttpSession session) {
+        session.invalidate();
+    }
 }

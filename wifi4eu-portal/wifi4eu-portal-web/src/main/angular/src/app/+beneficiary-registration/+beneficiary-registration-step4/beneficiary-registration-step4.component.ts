@@ -3,6 +3,8 @@ import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {SharedService} from "../../shared/shared.service";
+import {UserApi} from "../../shared/swagger/api/UserApi";
+import {LocalStorageService} from "angular-2-local-storage";
 
 
 @Component({
@@ -21,7 +23,7 @@ export class BeneficiaryRegistrationStep4Component {
     private displayConfirmingData: boolean = false;
     private legalChecks: boolean[] = [false, false, false];
 
-    constructor(private sharedService: SharedService) {
+    constructor(private sharedService: SharedService, private localStorage: LocalStorageService, private userApi: UserApi) {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
         this.onEdit = new EventEmitter<any>();
@@ -29,6 +31,7 @@ export class BeneficiaryRegistrationStep4Component {
 
     private submit() {
         if (this.legalChecks) {
+            this.setLanguage();
             this.displayConfirmingData = true;
             this.onNext.emit();
         }
@@ -43,5 +46,20 @@ export class BeneficiaryRegistrationStep4Component {
         this.onEdit.emit(step);
         this.legalChecks = [false, false, false];
         this.sharedService.clean();
+    }
+
+    private setLanguage() {
+        let language = this.localStorage.get('lang');
+        if (!language) {
+            language = 'en';
+        }
+
+        this.userApi.setUserLang(language.toString()).subscribe(
+            (language: string) => {
+                console.log("The mail will send in " + language);
+            }, error => {
+                console.log(error);
+            }
+        );
     }
 }
