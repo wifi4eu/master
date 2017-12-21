@@ -45,17 +45,5 @@ public class BeneficiaryResource {
         }
     }
 
-    //TODO: move to ThreadResource
-    @ApiOperation(value = "Get beneficiaries by specific thread id")
-    @RequestMapping(value = "/thread/{threadId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<BeneficiaryDTO> getBeneficiariesByThreadId(@PathVariable("threadId") final Integer threadId) {
-        _log.info("getBeneficiariesByThreadId: " + threadId);
-        List<BeneficiaryDTO> resBeneficiaries = beneficiaryService.getBeneficiariesByThreadId(threadId);
-        for (BeneficiaryDTO resBenenficiary : resBeneficiaries) {
-            resBenenficiary.getUser().setPassword(null);
-        }
-        return resBeneficiaries;
-    }
 
 }

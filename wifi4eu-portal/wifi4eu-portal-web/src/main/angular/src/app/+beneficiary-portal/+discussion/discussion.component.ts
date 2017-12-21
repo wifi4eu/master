@@ -13,12 +13,16 @@ import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
 import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {LocalStorageService} from "angular-2-local-storage";
 import {SharedService} from "../../shared/shared.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
+import {UserThreadsDTO, UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
+import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
+import index from "@angular/cli/lib/cli";
 
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
-    providers: [ThreadApi, BeneficiaryApi, ThreadmessagesApi, UserApi, RegistrationApi]
+    providers: [UserThreadsApi, ThreadApi, BeneficiaryApi, ThreadmessagesApi, UserApi, RegistrationApi, MunicipalityApi]
 })
 
 export class DiscussionComponent {
@@ -26,38 +30,55 @@ export class DiscussionComponent {
     private municipality: MunicipalityDTOBase = new MunicipalityDTOBase();
     private municipalities: MunicipalityDTOBase[] = [];
     private user: UserDTOBase = new UserDTOBase();
-    private users: UserDTOBase[] = [];
+    private userThread: UserThreadsDTOBase = new UserThreadsDTOBase();
     private messageAuthors: UserDTOBase[] = [];
     private message: string = '';
     private displayMessage: boolean = false;
     private displayMediation: boolean = false;
     private mediationBlocked: boolean = false;
     private showAlert: boolean = false;
+    private registration: RegistrationDTOBase[] = [];
+    private lauId: number;
+    private threadId: number;
 
-    constructor(private threadApi: ThreadApi, private beneficiaryApi: BeneficiaryApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
+
+    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
+        this.route.params.subscribe(params => this.threadId = params['threadId']);
+
         this.thread.messages = [];
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             if (this.user.type == 2 || this.user.type == 3) {
-                this.threadApi.getUserThreads(this.user.id).subscribe(
-                    (threads: ThreadDTOBase[]) => {
-                        this.thread = threads[0];
-                        this.beneficiaryApi.getBeneficiariesByThreadId(this.thread.id).subscribe(
-                            (beneficiaries: BeneficiaryDTOBase[]) => {
-                                for (let beneficiary of beneficiaries) {
-                                    for (let municipality of beneficiary.municipalities) {
-                                        if (municipality.lauId == this.thread.lauId) {
-                                            if (beneficiary.user.id == this.user.id) {
-                                                this.municipality = municipality;
-                                            } else {
-                                                this.users.push(beneficiary.user);
-                                                this.municipalities.push(municipality);
+                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                    (registration: RegistrationDTOBase[]) => {
+                        this.registration = registration;
+                        console.log("REGISTRATIONS: ", this.registration);
+                        console.log("REGISTRATIONS[0]: ", this.registration[0]);
+                        this.municipalityApi.getMunicipalityById(this.registration[0].municipalityId).subscribe(
+                            (municipality: MunicipalityDTOBase) => {
+                                this.municipality = municipality;
+                                this.lauId = this.municipality.lauId;
+                                console.log("MUNICIPALITY: ", this.municipality);
+
+                                this.municipalityApi.getMunicipalitiesByLauId(this.lauId).subscribe(
+                                    (municipalities: MunicipalityDTOBase[]) => {
+                                        for (var i = 0; i < municipalities.length; i++) {
+
+                                            if (this.municipality.id != municipalities[i].id) {
+                                                this.municipalities.push(municipalities[i]);
+                                                console.log("PUSH MUNICIPALITIES", this.municipalities);
                                             }
                                         }
+                                        console.log("MUNICIPALITIES: ", this.municipalities);
+
+                                    }, error => {
+                                        console.log(error);
                                     }
-                                }
+                                );
+
                                 for (let message of this.thread.messages) {
+                                    console.log(this.thread.messages);
                                     if (message.authorId == this.user.id) {
                                         this.messageAuthors.push(this.user);
                                     } else {
@@ -68,14 +89,16 @@ export class DiscussionComponent {
                                         );
                                     }
                                 }
+
                             }, error => {
-                                this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'warn');
-                                this.router.navigateByUrl('/home');
+                                console.log(error);
                             }
                         );
-                    }, error => {
-                        this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'warn');
-                        this.router.navigateByUrl('/home');
+
+                    }
+                    ,
+                    error => {
+                        console.log(error);
                     }
                 );
             } else {
@@ -98,7 +121,7 @@ export class DiscussionComponent {
         newMessage.createDate = new Date().getTime();
         newMessage.message = this.message;
         newMessage.authorId = this.user.id;
-        newMessage.threadId = this.thread.id;
+        newMessage.threadId = this.threadId;
         this.threadMessagesApi.createThreadMessage(newMessage).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {

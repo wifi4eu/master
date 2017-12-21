@@ -59,8 +59,6 @@ export class HomeComponent {
     checkForCalls() {
         this.callApi.allCalls().subscribe(
             calls => {
-                console.log("CALLS", calls);
-                console.log("call 0", calls[0]);
                 this.currentCall = calls[0];
                 this.showTimeline = true;
 

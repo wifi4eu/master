@@ -11,7 +11,7 @@ import { AdditionalInfoComponent } from "./+additional-info/additional-info.comp
             path: '',
             component: VoucherComponent,
         }, {
-            path: 'discussion-forum',
+            path: 'discussion-forum/:threadId',
             component: DiscussionComponent
         }, {
             path: 'profile',

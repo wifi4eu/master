@@ -13,11 +13,13 @@ import {LocalStorageService} from "angular-2-local-storage";
 import {TranslateService} from "ng2-translate";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 import {SharedService} from "../../shared/shared.service";
+import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
+import {UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
 
 @Component({
     selector: 'beneficiary-profile',
     templateUrl: 'profile.component.html',
-    providers: [UserApi, RegistrationApi, MunicipalityApi]
+    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi]
 })
 
 export class BeneficiaryProfileComponent {
@@ -40,8 +42,10 @@ export class BeneficiaryProfileComponent {
     private repeatNewPassword: string = '';
     private passwordsMatch: boolean = false;
     private isRegisterHold: boolean = false;
+    private userThreads: UserThreadsDTOBase = new UserThreadsDTOBase();
+    private threadId: number;
 
-    constructor(private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private localStorageService: LocalStorageService, private translateService: TranslateService, private uxService: UxService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+    constructor(private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private localStorageService: LocalStorageService, private translateService: TranslateService, private uxService: UxService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -192,36 +196,47 @@ export class BeneficiaryProfileComponent {
                 this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
             }
         );
-/*
-        this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-            (registrations: RegistrationDTOBase[]) => {
-                let registrationCount = 0;
-                for (let registration of registrations) {
-                    // Se borra cambiando el estado /////////////////////////////////////
-                    registration.status = 1; ////////////////////////////////////////////
-                    // Con esto se esta haciendo una update y siempre se mantendrá ahí //
-                    /////////////////////////////////////////////////////////////////////
-                    this.registrationApi.createRegistration(registration).subscribe(
-                        (data: ResponseDTOBase) => {
-                            if (data.success) {
-                                registrationCount++;
-                                if (registrationCount >= registrations.length) {
-                                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
-                                    this.sharedService.logout();
+        /*
+                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                    (registrations: RegistrationDTOBase[]) => {
+                        let registrationCount = 0;
+                        for (let registration of registrations) {
+                            // Se borra cambiando el estado /////////////////////////////////////
+                            registration.status = 1; ////////////////////////////////////////////
+                            // Con esto se esta haciendo una update y siempre se mantendrá ahí //
+                            /////////////////////////////////////////////////////////////////////
+                            this.registrationApi.createRegistration(registration).subscribe(
+                                (data: ResponseDTOBase) => {
+                                    if (data.success) {
+                                        registrationCount++;
+                                        if (registrationCount >= registrations.length) {
+                                            this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
+                                            this.sharedService.logout();
+                                        }
+                                    }
+                                }, error => {
+                                    this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
                                 }
-                            }
-                        }, error => {
-                            this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
+                            );
                         }
-                    );
-                }
-            }
-        );
-*/
+                    }
+                );
+        */
     }
 
     private goToDiscussion() {
-        this.router.navigate(['../discussion-forum'], {relativeTo: this.route});
+        this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
+            (userThreads: UserThreadsDTOBase[]) => {
+                console.log("userThreads1:::: ", userThreads);
+                this.userThreads = userThreads[0];
+                this.threadId = userThreads[0].threadId;
+                console.log("userThreads", this.userThreads);
+                console.log("threadId", this.threadId);
+                this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
+            }, error => {
+                console.log("service error: ", error);
+            }
+        );
     }
 
     private preventPaste(event: any) {
