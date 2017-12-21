@@ -101,7 +101,7 @@ export class AppComponent implements OnInit {
     initChildren() {
         this.children[0] = [
             new UxLayoutLink({
-                label: 'Beneficiary Registration',
+                label: 'Applicant Registration',
                 url: '/beneficiary-landing'
             }),
             new UxLayoutLink({
@@ -115,28 +115,28 @@ export class AppComponent implements OnInit {
                 url: '/supplier-portal'
             }),
             new UxLayoutLink({
-                label: 'Supplier Profile',
+                label: 'My account',
                 url: '/supplier-portal/profile'
             })
         ];
         this.children[2] = [
             new UxLayoutLink({
-                label: 'Beneficiary Portal',
-                url: '/beneficiary-portal'
+                label: 'My account',
+                url: '/beneficiary-portal/profile'
             }),
             new UxLayoutLink({
-                label: 'Beneficiary Profile',
-                url: '/beneficiary-portal/profile'
+                label: 'Application page',
+                url: '/beneficiary-portal'
             })
         ];
         this.children[3] = [
             new UxLayoutLink({
-                label: 'Beneficiary Portal',
-                url: '/beneficiary-portal'
+                label: 'My account',
+                url: '/beneficiary-portal/profile'
             }),
             new UxLayoutLink({
-                label: 'Beneficiary Profile',
-                url: '/beneficiary-portal/profile'
+                label: 'Application page',
+                url: '/beneficiary-portal'
             })
         ];
         this.children[4] = [
