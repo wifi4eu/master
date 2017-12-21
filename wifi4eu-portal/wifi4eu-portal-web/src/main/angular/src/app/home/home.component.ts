@@ -34,6 +34,7 @@ export class HomeComponent {
                 this.suppliersCounter = suppliers.length;
             }, error => {
                 console.log(error);
+                this.suppliersCounter = 0;
             }
         );
 

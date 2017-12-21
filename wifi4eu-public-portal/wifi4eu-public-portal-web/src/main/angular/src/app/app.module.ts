@@ -18,6 +18,7 @@ import { SharedService } from "./shared/shared.service";
 import { ChartsModule } from "ng2-charts";
 import { AppGuard } from "./app.guard";
 import { BeneficiaryLandingComponent } from "./+beneficiary-landing/beneficiary-landing.component";
+import { SupplierLandingComponent } from "./+supplier-landing/supplier-landing.component";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -29,7 +30,8 @@ export function translateFactory(http: Http) {
         HomeComponent,
         LoginComponent,
         NotFoundComponent,
-        BeneficiaryLandingComponent
+        BeneficiaryLandingComponent,
+        SupplierLandingComponent
     ],
     exports: [
         LoginComponent,

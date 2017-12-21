@@ -2,10 +2,10 @@
 <div class="container">
     <div class="row tableTitle">
     </div>
-    <p-dataTable [rows]="5" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [editable]="true"
+    <p-dataTable [value]="laus" [rows]="5" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [editable]="true"
                  [responsive]="true">
         <p-column field="lauId" header="LauId" [sortable]="true"></p-column>
-        <p-column field="countryCode" header="CtryCode" [sortable]="true"></p-column>
+        <p-column field="countryCode" header="{{ 'country.label' | translate }}" [sortable]="true"></p-column>
         <p-column field="nuts3" header="Nuts3" [sortable]="true"></p-column>
         <p-column field="lau1" header="Lau1" [sortable]="true"></p-column>
         <p-column field="lau2" header="Lau2" [sortable]="true"></p-column>
@@ -14,9 +14,9 @@
         <p-column field="name2" header="Name2" [sortable]="true"></p-column>
         <p-column field="pop" header="Pop" [sortable]="true"></p-column>
         <p-column field="area" header="Area" [sortable]="true"></p-column>
-        <p-column field="physicalAddress" header="Address" [sortable]="true">
+        <p-column field="physicalAddress" header="{{ 'address.label' | translate }}" [sortable]="true">
             <template pTemplate="body" let-laus="rowData" let-i="rowIndex">
-                <span></span>
+                <span>{{ laus.physicalAddress }}</span>
                 <button type="button" class="btn" style="background: none; padding: 0;" (click)="edit(i)">
                     <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i>
                 </button>
@@ -31,7 +31,7 @@
                 <div class="form-group ui-g">
                     <div class="ui-g-12">
                         <div class="form-group left">
-                            <input type="text" placeholder="" id="address" class="form-control" name="address" required>
+                            <input type="text" [(ngModel)]="address" placeholder="" id="address" class="form-control" name="address" required>
                         </div>
                     </div>
                 </div>
@@ -48,4 +48,3 @@
         </p-dialog>
     </div>
 </div>
-
