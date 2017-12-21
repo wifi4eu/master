@@ -14,8 +14,11 @@
 <div class="container-fluid">
     <div class="contenedor row">
         <div class="col-xl-6 margin-top">
+<!--
+            <h2 class="title-home" [innerHTML]="'home.part1.title' | translate:{hour:suppliersCounter}">{{ 'home.part1.title' | translate:{hour:suppliersCounter} }}</h2>
 
-            <h2 class="title-home">{{ 'home.part1.title' | translate }}</h2>
+  -->
+            <h2 class="title-home" [innerHTML]="'home.part1.title' | translate:{hour:suppliersCounter}"></h2>
             <p class="subtitle-home">{{ 'home.part1.text1' | translate }}</p>
             <p class="normal-text">{{ 'home.part1.text2' | translate }}</p>
         </div>
