@@ -51,4 +51,7 @@ public class UserThreadsService {
         return userThreadsMapper.toDTOList(Lists.newArrayList(userThreadsRepository.findByThreadId(threadId)));
     }
 
+    public UserThreadsDTO getByUserIdAndThreadId(int userId, int threadId) {
+        return userThreadsMapper.toDTO(userThreadsRepository.findByUserIdAndThreadId(userId, threadId));
+    }
 }

@@ -4,16 +4,17 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
-import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.supplier.SuppliedRegion;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+import wifi4eu.wifi4eu.service.thread.ThreadService;
+import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.ArrayList;
@@ -37,6 +38,12 @@ public class SupplierService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ThreadService threadService;
+
+    @Autowired
+    UserThreadsService userThreadsService;
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -107,7 +114,58 @@ public class SupplierService {
         userDTO.setVerified(false);
         UserDTO resUser = userService.createUser(userDTO);
         supplierDTO.setUserId(resUser.getId());
-        return createSupplier(supplierDTO);
+        supplierDTO = createSupplier(supplierDTO);
+        checkDuplicateSuppliers(supplierDTO);
+        return supplierDTO;
+    }
+
+    private void checkDuplicateSuppliers(SupplierDTO supplierDTO) {
+        List<SupplierDTO> suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByVat(supplierDTO.getVat())));
+        if (!suppliers.isEmpty()) {
+            UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
+            userThreadsDTO.setUserId(supplierDTO.getUserId());
+            ThreadDTO thread = threadService.getThreadByTypeAndReason(2, supplierDTO.getVat());
+            if (thread == null) {
+                thread = new ThreadDTO();
+                thread.setType(2);
+                thread.setReason(supplierDTO.getVat());
+                thread = threadService.createThread(thread);
+            }
+            userThreadsDTO.setThreadId(thread.getId());
+            userThreadsService.createUserThreads(userThreadsDTO);
+            for (SupplierDTO supplier: suppliers) {
+                UserThreadsDTO specificUserThread = userThreadsService.getByUserIdAndThreadId(supplier.getUserId(), thread.getId());
+                if (specificUserThread == null) {
+                    specificUserThread = new UserThreadsDTO();
+                    specificUserThread.setUserId(supplier.getUserId());
+                    specificUserThread.setThreadId(thread.getId());
+                    userThreadsService.createUserThreads(specificUserThread);
+                }
+            }
+        }
+        suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByAccountNumber(supplierDTO.getAccountNumber())));
+        if (!suppliers.isEmpty()) {
+            UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
+            userThreadsDTO.setUserId(supplierDTO.getUserId());
+            ThreadDTO thread = threadService.getThreadByTypeAndReason(3, supplierDTO.getAccountNumber());
+            if (thread == null) {
+                thread = new ThreadDTO();
+                thread.setType(3);
+                thread.setReason(supplierDTO.getAccountNumber());
+                thread = threadService.createThread(thread);
+            }
+            userThreadsDTO.setThreadId(thread.getId());
+            userThreadsService.createUserThreads(userThreadsDTO);
+            for (SupplierDTO supplier: suppliers) {
+                UserThreadsDTO specificUserThread = userThreadsService.getByUserIdAndThreadId(supplier.getUserId(), thread.getId());
+                if (specificUserThread == null) {
+                    specificUserThread = new UserThreadsDTO();
+                    specificUserThread.setUserId(supplier.getUserId());
+                    specificUserThread.setThreadId(thread.getId());
+                    userThreadsService.createUserThreads(specificUserThread);
+                }
+            }
+        }
     }
 
     public SupplierDTO getSupplierByUserId(int userId) {
