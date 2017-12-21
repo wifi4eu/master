@@ -173,9 +173,10 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`threads` (
   `reason`   VARCHAR(255) NULL,
   `type` INT NOT NULL,
   PRIMARY KEY (`id`)
-
-
-  ENGINE = InnoDB;
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`thread_messages`
@@ -471,6 +472,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`user_threads`(
   `thread` int(11) NOT NULL,
    PRIMARY KEY (`id`)
 )
+
+  ENGINE = InnoDB;
 
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;

@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.web.filter;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 import wifi4eu.wifi4eu.common.dto.security.RoleDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 
@@ -39,10 +40,14 @@ public class UserFilterMocked extends OncePerRequestFilter {
 
             user.setRoleList(new LinkedList<RoleDTO>());
 
+            UserHolder.setUser(user);
+
             filterChain.doFilter(request, response);
 
         } catch (Exception e) {
             throw new AppException(e);
-        }
+        } finally {
+        UserHolder.clearUser();
+    }
     }
 }
