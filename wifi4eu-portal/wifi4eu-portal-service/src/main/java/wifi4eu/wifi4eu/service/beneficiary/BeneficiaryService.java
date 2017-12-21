@@ -51,11 +51,13 @@ public class BeneficiaryService {
     @Transactional
     public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO) throws Exception {
 
+        /* Get user from ECAS */
         UserDTO user;
         UserContext userContext = UserHolder.getUser();
         boolean isEcasUser = false;
 
         if (userContext != null) {
+            /* user from ECAS */
             user = userService.getUserByUserContext(userContext);
             user.setName(beneficiaryDTO.getUser().getName());
             user.setSurname(beneficiaryDTO.getUser().getSurname());
@@ -66,6 +68,7 @@ public class BeneficiaryService {
             user.setType(beneficiaryDTO.getUser().getType());
             isEcasUser = true;
         } else {
+            /* Deprecated: TODO: remove it */
             user = beneficiaryDTO.getUser();
             String password = "12345678";
             user.setPassword(password);
@@ -78,24 +81,85 @@ public class BeneficiaryService {
         if (isEcasUser) {
             resUser = userService.saveUserChanges(user);
         } else {
+            /*deprecated_: TODO: remove it */
             resUser = userService.createUser(user);
         }
 
+        /* create municipalities and check duplicates */
         List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
+
+        /* create registrations between user and municipality */
+        List<RegistrationDTO> registrations = getRegistrationsList(resUser, beneficiaryDTO, resMunicipalities);
+
+        /* send Activate Account Email*/
+        // userService.sendActivateAccountMail(resUser);
+
+        /* check Duplicates and crate Threads if apply */
+        checkDuplicates(resUser, resMunicipalities);
+
+        return registrations;
+    }
+
+    private List<RegistrationDTO> getRegistrationsList(UserDTO userDTO, BeneficiaryDTO beneficiaryDTO, List<MunicipalityDTO> resMunicipalities) {
         List<RegistrationDTO> registrations = new ArrayList<>();
         for (int i = 0; i < resMunicipalities.size(); i++) {
             MunicipalityDTO municipality = resMunicipalities.get(i);
             MayorDTO mayor = beneficiaryDTO.getMayors().get(i);
             mayor.setMunicipalityId(municipality.getId());
+            /* create mayor */
             mayorService.createMayor(mayor);
-            RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, resUser.getId());
+            /* create registration */
+            RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, userDTO.getId());
             registrations.add(registrationService.createRegistration(registration));
         }
-
-        userService.sendActivateAccountMail(resUser);
-
-
         return registrations;
+    }
+
+    private void checkDuplicates(UserDTO userDTO, List<MunicipalityDTO> municipalityDTOs) {
+
+        for (MunicipalityDTO municipalityDTO : municipalityDTOs) {
+            List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipalityDTO.getLauId());
+
+            if (municipalitiesWithSameLau.size() > 0) {
+
+                /* verificamos que existe el thread */
+
+                ThreadDTO threadDTO = threadService.getThreadByTypeAndReason(1, String.valueOf(municipalityDTO.getLauId()));
+
+                if (threadDTO == null) {
+                    /* creamos el thrad */
+                    threadDTO = new ThreadDTO();
+                    threadDTO.setTitle(municipalityDTO.getName());
+                    threadDTO.setType(1);
+                    threadDTO.setReason(String.valueOf(municipalityDTO.getLauId()));
+                    threadDTO = threadService.createThread(threadDTO);
+
+                    /* Añado todos los user threads */
+                    for (MunicipalityDTO conflictMunicipality : municipalitiesWithSameLau) {
+                        List<RegistrationDTO> registrationDTOs = registrationService.getRegistrationsByMunicipalityId(conflictMunicipality.getId());
+                        for (RegistrationDTO conflictRegistrationDTO : registrationDTOs) {
+                            UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
+                            userThreadsDTO.setUserId(conflictRegistrationDTO.getUserId());
+                            userThreadsDTO.setThreadId(threadDTO.getId());
+                            userThreadsService.createUserThreads(userThreadsDTO);
+                        }
+                    }
+
+                } else {
+                    /* añado el nuevo user thread */
+                    UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
+                    userThreadsDTO.setUserId(userDTO.getId());
+                    userThreadsDTO.setThreadId(threadDTO.getId());
+                    userThreadsDTO = userThreadsService.createUserThreads(userThreadsDTO);
+                }
+
+            }
+
+            /* change registration status to Hold on conflict Registrations*/
+            updateRegistrationStatusToHold(municipalitiesWithSameLau);
+            //municipalitiesLauIdToHold.add(municipality.getLauId());
+
+        }
     }
 
     private RegistrationDTO generateNewRegistration(final String role, final MunicipalityDTO municipality, final int userId) {
@@ -118,24 +182,8 @@ public class BeneficiaryService {
     private List<MunicipalityDTO> getMunicipalityList(final BeneficiaryDTO beneficiaryDTO) {
         List<MunicipalityDTO> resMunicipalities = new ArrayList<>();
         for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
-            List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipality.getLauId());
-            if (!municipalitiesWithSameLau.isEmpty()) {
-                ThreadDTO thread = new ThreadDTO();
-                if (threadService.getThreadByTypeAndReason(1, String.valueOf(municipality.getLauId())) == null) {
-                    thread.setType(1);
-                    thread.setReason(String.valueOf(municipality.getLauId()));
-                    thread.setTitle(municipality.getName());
-                    threadService.createThread(thread);
-                }
-                UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
-                userThreadsDTO.setUserId(beneficiaryDTO.getUser().getId());
-                userThreadsDTO.setThreadId(thread.getId());
+            /* search for other users registered on the same municipality */
 
-                userThreadsService.createUserThreads(userThreadsDTO);
-                updateRegistrationStatusToHold(municipalitiesWithSameLau);
-                municipalitiesLauIdToHold.add(municipality.getLauId());
-
-            }
             resMunicipalities.add(municipalityService.createMunicipality(municipality));
         }
         return resMunicipalities;
@@ -148,8 +196,9 @@ public class BeneficiaryService {
     private void updateRegistrationStatusToHold(List<MunicipalityDTO> municipalitiesWithSameLau) {
         final String LOG_STATUS_2_HOLD = "Registraion Id {0} updated to the status HOLD";
 
+        /* put all the registrations for a given municiaplity on Hold*/
         for (MunicipalityDTO aMunicipality : municipalitiesWithSameLau) {
-            final List<RegistrationDTO> registrations = registrationService.getRegistrationsByMunicipalityId(aMunicipality.getId());
+            List<RegistrationDTO> registrations = registrationService.getRegistrationsByMunicipalityId(aMunicipality.getId());
             for (RegistrationDTO aRegistrationDTO : registrations) {
                 aRegistrationDTO.setStatus(RegistrationStatus.HOLD.getValue());
                 registrationService.createRegistration(aRegistrationDTO);
