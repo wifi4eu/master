@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.GroupedRegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -109,7 +110,22 @@ public class RegistrationResource {
     @RequestMapping(value = "/user/{userId}/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public RegistrationDTO getRegistrationByUserAndMunicipality(@PathVariable("userId") final Integer userId, @PathVariable("municipalityId") final Integer municipalityId) {
-        _log.info("getRegistrationByUser: " + userId  + " | AndMunicipality: " + municipalityId);
+        _log.info("getRegistrationByUser: " + userId + " | AndMunicipality: " + municipalityId);
         return registrationService.getRegistrationByUserAndMunicipality(userId, municipalityId);
+    }
+
+    @ApiOperation(value = "Get registrations grouped by municipality")
+    @RequestMapping(value = "/grouped", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<GroupedRegistrationDTO> getAllGroupedRegistrations() {
+        _log.info("getAllGroupedRegistrations");
+        return registrationService.getAllGroupedRegistrations();
+    }
+
+    @ApiOperation(value = "Get registrations grouped by municipality")
+    @RequestMapping(value = "/grouped", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public GroupedRegistrationDTO test() {
+        return new GroupedRegistrationDTO();
     }
 }

@@ -4,9 +4,14 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
+
+import wifi4eu.wifi4eu.common.dto.model.GroupedRegistrationDTO;
+import wifi4eu.wifi4eu.mapper.registration.GroupedRegistrationMapper;
+import wifi4eu.wifi4eu.repository.registration.GroupedRegistrationRepository;
 
 import java.util.List;
 
@@ -17,6 +22,12 @@ public class RegistrationService {
 
     @Autowired
     RegistrationRepository registrationRepository;
+
+    @Autowired
+    GroupedRegistrationMapper groupedRegistrationMapper;
+
+    @Autowired
+    GroupedRegistrationRepository groupedRegistrationRepository;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -61,5 +72,9 @@ public class RegistrationService {
             }
         }
         return false;
+    }
+
+    public List<GroupedRegistrationDTO> getAllGroupedRegistrations() {
+        return groupedRegistrationMapper.toDTOList(Lists.newArrayList(groupedRegistrationRepository.findAllGroupedRegistrations()));
     }
 }

@@ -6,9 +6,9 @@
 </div>
 <div class="container center registrationsTable">
     <p-dataTable [editable]="true">
-        <p-column field="name" header="Name"></p-column>
-        <p-column field="nuts" header="Nuts"></p-column>
-        <p-column field="address" header="Adress"></p-column>
+        <p-column field="country" header="Country"></p-column>
+        <p-column field="municipality" header="Municipality"></p-column>
+        <p-column field="applicants" header="Adress"></p-column>
         <p-column field="status" header="Status">
             <ng-template let-user="rowData" let-index="rowIndex" pTemplate="body">
                 <!--<p-dropdown (onChange)="uploadData(user, index)" [options]="status" [(ngModel)]="selectStatus[index]"-->

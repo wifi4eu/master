@@ -4,16 +4,21 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+
 import wifi4eu.wifi4eu.common.security.UserContext;
+
 import wifi4eu.wifi4eu.entity.supplier.SuppliedRegion;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.ArrayList;

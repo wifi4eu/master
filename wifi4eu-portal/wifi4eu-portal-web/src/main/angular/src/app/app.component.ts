@@ -1,8 +1,8 @@
 import {Component, enableProdMode, OnInit, Output} from "@angular/core";
 import {Router} from "@angular/router";
 import {TranslateService} from "ng2-translate/ng2-translate";
-import {UxService, UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {UxLanguage, UxEuLanguages} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import {UxLayoutLink, UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import {SharedService} from "./shared/shared.service";
 import {LocalStorageService} from "angular-2-local-storage";
 import {UserDTOBase} from "./shared/swagger/model/UserDTO";
@@ -111,36 +111,12 @@ export class AppComponent implements OnInit {
             new UxLayoutLink({
                 label: 'Supplier Portal',
                 url: '/supplier-portal'
-            }),
-            new UxLayoutLink({
-                label: 'Supplier Profile',
-                url: '/supplier-portal/profile'
-            })
-        ];
-        this.children[2] = [
-            new UxLayoutLink({
-                label: 'Beneficiary Portal',
-                url: '/beneficiary-portal'
-            }),
-            new UxLayoutLink({
-                label: 'Beneficiary Profile',
-                url: '/beneficiary-portal/profile'
             })
         ];
         this.children[3] = [
             new UxLayoutLink({
                 label: 'Beneficiary Portal',
                 url: '/beneficiary-portal'
-            }),
-            new UxLayoutLink({
-                label: 'Beneficiary Profile',
-                url: '/beneficiary-portal/profile'
-            })
-        ];
-        this.children[4] = [
-            new UxLayoutLink({
-                label: 'Member State Portal',
-                url: '#'
             })
         ];
         this.children[5] = [
@@ -167,7 +143,6 @@ export class AppComponent implements OnInit {
                             this.profileUrl = '/supplier-portal/profile';
                             this.menuLinks = this.children[1];
                             break;
-                        case 2:
                         case 3:
                             this.registrationApi.checkIfRegistrationIsKO(this.user.id).subscribe(
                                 (response: ResponseDTOBase) => {

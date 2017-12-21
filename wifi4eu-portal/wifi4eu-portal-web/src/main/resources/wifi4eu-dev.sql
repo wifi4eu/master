@@ -168,11 +168,26 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`nuts` (
 -- Table `wifi4eu`.`threads`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`threads` (
+<<<<<<< Updated upstream
     `id`    INT          NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(255) NULL,
   `reason`   VARCHAR(255) NULL,
   `type` INT NOT NULL,
   PRIMARY KEY (`id`)
+=======
+  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `title`       VARCHAR(255) NULL,
+  `lau`         INT          NULL,
+  `mediation`   INT          DEFAULT 0,
+  `status`      INT          DEFAULT 0,
+  PRIMARY KEY (`id`),
+  INDEX `fk_threads_laus_idx` (`lau` ASC),
+  CONSTRAINT `fk_threads_laus`
+  FOREIGN KEY (`lau`)
+  REFERENCES `wifi4eu`.`laus` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+>>>>>>> Stashed changes
 )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8
