@@ -85,28 +85,23 @@ public class SupplierService {
     @Transactional
     public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
 
-        UserDTO userDTO;
+        UserDTO userDTO = new UserDTO();
 
         UserContext userContext = UserHolder.getUser();
 
         if (userContext != null) {
             // with ECAS
             userDTO = userService.getUserByUserContext(userContext);
-        } else {
-            // without ECAS (only testing purpose)
-            userDTO = new UserDTO();
-            String password = "12345678";
-            userDTO.setPassword(password);
+            userDTO.setName(supplierDTO.getContactName());
+            userDTO.setSurname(supplierDTO.getContactSurname());
+            userDTO.setEmail(supplierDTO.getContactEmail());
+            userDTO.setCreateDate(new Date().getTime());
+            userDTO.setType(1);
+            userDTO.setVerified(false);
+            userDTO = userService.createUser(userDTO);
         }
 
-        userDTO.setName(supplierDTO.getContactName());
-        userDTO.setSurname(supplierDTO.getContactSurname());
-        userDTO.setEmail(supplierDTO.getContactEmail());
-        userDTO.setCreateDate(new Date().getTime());
-        userDTO.setType(1);
-        userDTO.setVerified(false);
-        UserDTO resUser = userService.createUser(userDTO);
-        supplierDTO.setUserId(resUser.getId());
+        supplierDTO.setUserId(userDTO.getId());
         return createSupplier(supplierDTO);
     }
 
