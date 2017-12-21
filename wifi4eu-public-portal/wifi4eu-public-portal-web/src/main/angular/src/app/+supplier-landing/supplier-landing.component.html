@@ -14,42 +14,33 @@
     <img id="firstBackgroundBenefLanding" src="assets/images/copy-6.png">
     <div class="ui-g">
         <div class="ui-g-12">
-            <h2 class="title-home">{{ 'benefLanding.title' | translate }}</h2>
+            <h2 class="title-home">{{ 'supp.landingpage.title' | translate }}</h2>
         </div>
     </div>
 
     <div class="ui-g">
         <div class="ui-g-12">
             <div class="ui-g-6">
-                <h3>{{ 'benefLanding.secondTitle' | translate }}</h3>
+                <h3>{{ 'supp.landingpage.secondTitle' | translate }}</h3>
             </div>
         </div>
     </div>
     <img id="benefLandingThirdBackground" src="assets/images/copy-6.png">
     <div class="ui-g-12">
         <div class="ui-g-6">
-            <p class="landingText">{{ 'benefLanding.elegibleText3' | translate }}</p>
-            <p class="landingText">{{ 'benefLanding.elegibleText' | translate }}<b>{{
-                'benefLanding.elegibleTextBold' | translate }}</b>{{ 'benefLanding.elegibleTextAfterBold' |
-                translate
-                }}<a href="#">{{ 'benefLanding.elegibleTextLink' | translate }}</a>{{
-                'benefLanding.elegibleTextAfterLink' |
-                translate }}</p>
+            <p class="landingText" [innerHTML]="'supp.landingpage.elegibleText3' | translate"></p>
         </div>
         <div class="ui-g-6">
             <img id="benefLandingSecondBackground" src="assets/images/copy-6.png">
-            <p class="landingText">{{ 'benefLanding.elegibleText2' | translate }}<b>{{
-                'benefLanding.elegibleText2Bold' | translate }}</b>{{ 'benefLanding.elegibleText2AfterBold' |
-                translate
-                }}</p>
+            <p class="landingText" [innerHTML]="'supp.landingpage.elegibleText2' | translate"></p>
         </div>
     </div>
 
     <div class="ui-g-12">
         <div class="ui-g-2"></div>
         <div class="ui-g-8">
-            <p class="europeans">{{ 'benefLanding.proceed' | translate }}</p>
-            <p>{{'benefLanding.ecasmessage'| translate }}</p>
+            <p class="europeans">{{ 'supp.landingpage.proceed' | translate }}</p>
+            <p>{{'benefLanding.ecasmessage'| translate }}}</p>
         </div>
         <div class="ui-g-2"></div>
     </div>
@@ -61,15 +52,15 @@
             <div class="ui-g-6 ui-md-6 ui-lg-3">
                 <a href="/#/home">
                     <button class="btn btn-primary cancel-button">
-                        {{ 'benefLanding.no' | translate }}
+                        {{ 'supp.landingpage.no' | translate }}
                     </button>
                 </a>
             </div>
             <!-- Next button -->
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <a href="/wifi4eu/#/beneficiary-registration">
+                <a href="/wifi4eu/#/supplier-registration">
                     <button class="btn btn-primary publish-button">
-                        {{ 'benefLanding.yes' | translate }}
+                        {{ 'supp.landingpage.yes' | translate }}
                     </button>
                 </a>
             </div>
@@ -78,6 +69,6 @@
     </div>
 </div>
 <div class="helpdesk-bottom">
-    <helpdesk-form-component [portal]="beneficiary-registration"></helpdesk-form-component>
+    <helpdesk-form-component [portal]="supplier-registration"></helpdesk-form-component>
 </div>
 
