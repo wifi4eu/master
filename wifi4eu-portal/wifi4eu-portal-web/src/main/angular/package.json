@@ -28,6 +28,7 @@
     "@ec-digit-uxatec/eui-angular2-ux-language-selector": "^1.4.6",
     "@ec-digit-uxatec/eui-angular2-ux-search-input": "^1.4.6",
     "@ec-digit-uxatec/eui-styles": "^1.4.6",
+    "@ngx-translate/core": "^9.0.2",
     "@types/crypto-js": "^3.1.33",
     "@types/file-saver": "0.0.1",
     "angular-2-local-storage": "^1.0.1",

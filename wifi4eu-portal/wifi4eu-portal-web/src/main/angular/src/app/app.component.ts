@@ -1,8 +1,8 @@
 import {Component, enableProdMode, OnInit, Output} from "@angular/core";
 import {Router} from "@angular/router";
 import {TranslateService} from "ng2-translate/ng2-translate";
-import {UxService, UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {UxLanguage, UxEuLanguages} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import {UxLayoutLink, UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import {SharedService} from "./shared/shared.service";
 import {LocalStorageService} from "angular-2-local-storage";
 import {UserDTOBase} from "./shared/swagger/model/UserDTO";
@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
     private user: UserDTOBase;
     private visibility: boolean[];
     private profileUrl: string;
+    private actualDate: string;
 
     private children: UxLayoutLink[][];
 
@@ -60,6 +61,7 @@ export class AppComponent implements OnInit {
         this.sharedService.updateEmitter.subscribe(() => this.updateHeader());
         this.sharedService.logoutEmitter.subscribe(() => this.logout());
 
+        this.updateFooterDate();
     }
 
     ngOnInit() {
@@ -202,6 +204,7 @@ export class AppComponent implements OnInit {
         this.translateService.use(language.code);
         this.uxService.activeLanguage = language;
         this.localStorage.set('lang', language.code);
+        this.updateFooterDate();
     }
 
     logout() {
@@ -228,5 +231,11 @@ export class AppComponent implements OnInit {
 
     private goToTop() {
         window.scrollTo(0, 0);
+    }
+
+    private updateFooterDate() {
+        let lang = this.localStorage.get('lang');
+        if (!lang) lang = 'en';
+        this.actualDate = new Date( Date.now() ).toLocaleDateString(lang.toString());
     }
 }
