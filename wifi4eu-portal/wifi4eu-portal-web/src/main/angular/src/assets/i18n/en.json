@@ -407,7 +407,7 @@
   "select.activateAccount": "Activate your Email Account",
   "select.activateAccountDesc": "Please, click on the Confirm button to validate your Email Account",
   "request.additionalInfo.title":"Request for additional information",
-  "request.additionalInfo.instructions": "The system has detected that one or more representatives registered with <b>{{value}}</b> as an eligible entity. The dedicated discussion area did not allow you to resolve this issue.<br><br>We therefore need to request the documentation detailed below.",
+  "request.additionalInfo.instructions": "The system has detected that one or more representatives registered with <b>{{municipality}}</b> as an eligible entity. The dedicated discussion area did not allow you to resolve this issue.<br><br>We therefore need to request the documentation detailed below.",
   "request.additionalInfo.provideDocs1":"Please provide the following documents for the legal representative mentioned above:",
   "request.additionalInfo.provideDocs2":"In addition, please provide the following documents for the LEAR mentioned above:",
   "request.additionalInfo.doc1.label":"Legal document indicating the person legally authorised to sign on behalf of the municipality",
@@ -415,5 +415,6 @@
   "request.additionalInfo.doc3.label":"Please download and complete the LEAR form and upload a signed copy",
   "request.additionalInfo.doc4.label":"Legal documents proving the LEAR’s identity (copy of valid identity card, passport or similar)",
   "registration.update.success":"Your registration was successfully updated.",
-  "registration.update.error":"An error occurred and your registration could not be updated."
+  "registration.update.error":"An error occurred and your registration could not be updated.",
+  "file.toobig.maxsize":"The file you uploaded is too big. Max file size allowed is {{size}}."
 }
