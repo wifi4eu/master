@@ -1,7 +1,7 @@
 <div class="ui-g">
     <div class="ui-g-12 center">
-        <i class="fa fa-check-circle success-failure-icon" aria-hidden="true"></i><br>
-        <h2>{{ titleKey | translate }}</h2>
+        <i class="fa fa-check-circle success-failure-icon" style="color: green" aria-hidden="true"></i><br><br>
+        <h2 class="beneficiaryTitle">{{ titleKey | translate }}</h2>
         <br>
         <p *ngFor="let textKey of textKeys">
             {{ textKey | translate }}

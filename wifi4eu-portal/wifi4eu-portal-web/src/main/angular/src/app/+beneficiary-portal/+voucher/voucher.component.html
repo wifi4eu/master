@@ -2,7 +2,7 @@
 <div [ngSwitch]="voucherCompetitionState">
     <!-- no competition created, display warning -->
     <div *ngSwitchCase="0">
-        <success-component></success-component>
+        <success-component emailConfirmation="true" [email]="user.email"></success-component>
         <hr class="beneficiaryHr">
         <div class="ui-g-12">
             <span class="ui-g-2"></span>
@@ -24,7 +24,7 @@
     </div>
     <!-- no competition active, display timer -->
     <div *ngSwitchCase="1">
-        <success-component></success-component>
+        <success-component emailConfirmation="true" [email]="user.email"></success-component>
         <hr class="beneficiaryHr">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
@@ -80,7 +80,7 @@
     </div>
     <!-- competition Open, display apply button -->
     <div *ngSwitchCase="2">
-        <success-component></success-component>
+        <success-component emailConfirmation="true" [email]="user.email"></success-component>
         <hr class="beneficiaryHr">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
@@ -109,7 +109,7 @@
     </div>
     <!-- user has applied for voucher -->
     <div *ngSwitchCase="3">
-        <success-component></success-component>
+        <success-component emailConfirmation="true" [email]="user.email"></success-component>
         <hr class="beneficiaryHr">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>

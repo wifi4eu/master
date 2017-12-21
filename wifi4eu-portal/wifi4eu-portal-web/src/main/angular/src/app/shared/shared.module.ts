@@ -16,7 +16,8 @@ import {
     MultiSelectModule,
     TabMenuModule,
     TabViewModule,
-    DropdownModule
+    DropdownModule,
+    FileUploadModule
 } from "primeng/primeng";
 // import {APP_DIRECTIVES} from "./components/index";
 import {TimelineComponent} from "./components/timeline/timeline.component";
@@ -51,6 +52,7 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         TabMenuModule,
         TabViewModule,
         DropdownModule,
+        FileUploadModule,
         Ng2GoogleRecaptchaModule
     ],
     declarations: [
@@ -86,6 +88,8 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         MultiSelectModule,
         TabMenuModule,
         TabViewModule,
+        DropdownModule,
+        FileUploadModule,
         SuccessComponent,
         FailureComponent,
         CustomAccordionBoxComponent,
