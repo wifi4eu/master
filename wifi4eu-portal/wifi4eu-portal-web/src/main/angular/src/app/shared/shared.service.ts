@@ -32,8 +32,8 @@ export class SharedService {
         this.emitClean.next();
     }
 
-    growlTranslation(translatedString: string, keyToTranslate: string, type: string) {
-        this.translateService.get(keyToTranslate).subscribe(
+    growlTranslation(translatedString: string, keyToTranslate: string, type: string, params?: any) {
+        this.translateService.get(keyToTranslate, params).subscribe(
             (translation: string) => {
                 if (translation) {
                     translatedString = translation;
