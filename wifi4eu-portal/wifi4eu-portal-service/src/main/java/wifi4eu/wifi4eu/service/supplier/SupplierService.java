@@ -98,7 +98,7 @@ public class SupplierService {
             userDTO.setCreateDate(new Date().getTime());
             userDTO.setType(1);
             userDTO.setVerified(false);
-            userDTO = userService.createUser(userDTO);
+            userDTO = userService.saveUserChanges(userDTO);
         }
 
         supplierDTO.setUserId(userDTO.getId());
