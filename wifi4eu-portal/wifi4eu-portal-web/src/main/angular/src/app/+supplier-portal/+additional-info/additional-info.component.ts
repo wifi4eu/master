@@ -44,8 +44,8 @@ export class AdditionalInfoComponent {
 
     private uploadFile(event: any, index: number = 0) {
         if (event.target.files[0]) {
-            if (event.target.files[0].size > 2048000) {
-                this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 2 MB.', 'file.toobig.maxsize', 'warn', {size: '2 MB'});
+            if (event.target.files[0].size > 1024000) {
+                this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'file.toobig.maxsize', 'warn', {size: '1 MB'});
                 this.removeFile(index);
                 return;
             }
