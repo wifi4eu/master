@@ -19,17 +19,12 @@ export class VoucherComponent {
         this.user = u ? JSON.parse(u.toString()) : null;
         this.currentCall = new CallDTOBase();
         this.myMunicipality = new MunicipalityDTOBase();
-    }
-
-    ngOnInit() {
 
         // Check if there are Calls
         if (this.user != null) {
             this.checkForCalls();
         }
-
         // TODO: Con el nuevo modelo creo que no hace falta todo esto
-
         // if (this.user != null) {
         //     if (this.user.type == 3) {
         //         this.beneficiaryApi.getRepresentativeById(this.user.userTypeId).subscribe(
@@ -115,6 +110,7 @@ export class VoucherComponent {
 
     checkIfAlreadyApplied() {
         // TODO: Consultar si el usuario ya ha aplicado por el voucher
+        this.voucherCompetitionState = 2;
         // this.beneficiaryApi.findByBeneficiaryIdAndPublicationId(this.myMunicipality.legalEntityId, this.currentCall.callId).subscribe(
         //     (request: BenPubSupDTOBase) => {
         //         if (request != null) {
@@ -139,6 +135,7 @@ export class VoucherComponent {
 
     applyForVoucher() {
         // TODO: Llamar al nuevo servicio de Apply for voucher
+        this.voucherCompetitionState = 3;
         // this.beneficiaryApi.apply(this.myMunicipality.legalEntityId, this.currentCall.callId).subscribe(
         //     data => {
         //         this.voucherCompetitionState = 3;
@@ -150,5 +147,5 @@ export class VoucherComponent {
         //     }
         // );
     }
-    
+
 }
