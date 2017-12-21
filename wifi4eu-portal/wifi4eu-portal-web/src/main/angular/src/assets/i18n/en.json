@@ -416,5 +416,8 @@
   "request.additionalInfo.doc4.label":"Legal documents proving the LEAR’s identity (copy of valid identity card, passport or similar)",
   "registration.update.success":"Your registration was successfully updated.",
   "registration.update.error":"An error occurred and your registration could not be updated.",
-  "file.toobig.maxsize":"The file you uploaded is too big. Max file size allowed is {{size}}."
+  "file.toobig.maxsize":"The file you uploaded is too big. Max file size allowed is {{size}}.",
+  "request.additionalInfo.supplier.instructions": "The system has detected other companies as duplicate registrations. The dedicated discussion area did not allow you to resolve this issue.<br><br>We therefore need to request the documentation detailed below.",
+  "request.additionalInfo.supplier.doc1.label":"Legal document indicating the person legally authorised to sign on behalf of the company",
+  "request.additionalInfo.supplier.doc2.label":"Proof of legal representative's identity (copy of valid identity card, passport or similar)"
 }

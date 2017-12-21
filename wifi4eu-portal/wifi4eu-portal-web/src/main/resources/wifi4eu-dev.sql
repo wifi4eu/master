@@ -117,6 +117,10 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`registrations` (
   `municipality` INT          NOT NULL,
   `role`         VARCHAR(500) NULL,
   `_status`      INT(1)       NOT NULL, --  0=HOLD; 1=KO; 2=OK
+  `legal_file1`  LONGTEXT     NULL,
+  `legal_file2`  LONGTEXT     NULL,
+  `legal_file3`  LONGTEXT     NULL,
+  `legal_file4`  LONGTEXT     NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_user_idx` (`_user` ASC),
   INDEX `fk_municipality_idx` (`municipality` ASC),
@@ -220,6 +224,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`suppliers` (
   `contact_email`        VARCHAR(255) NULL,
   `logo`                 LONGTEXT     NULL,
   `_user`                INT          NULL,
+  `legal_file1`          LONGTEXT     NULL,
+  `legal_file2`          LONGTEXT     NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_suppliers_users_idx` (`_user` ASC),
   CONSTRAINT `fk_suppliers_users`
