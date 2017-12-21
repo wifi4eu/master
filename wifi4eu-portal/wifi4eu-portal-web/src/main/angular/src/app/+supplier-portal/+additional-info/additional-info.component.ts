@@ -3,51 +3,39 @@ import { Router } from "@angular/router";
 import { LocalStorageService } from "angular-2-local-storage";
 import { Observable } from "rxjs/Observable";
 import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
-import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
-import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
-import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
-import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { SupplierDTOBase } from "../../shared/swagger/model/SupplierDTO";
+import { SupplierApi } from "../../shared/swagger/api/SupplierApi";
 import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
 import { SharedService } from "../../shared/shared.service";
 
 @Component({
-    selector: 'beneficiary-additional-info-component',
+    selector: 'supplier-additional-info-component',
     templateUrl: 'additional-info.component.html',
-    providers: [MunicipalityApi]
+    providers: [SupplierApi]
 })
 
 export class AdditionalInfoComponent {
     private user: UserDTOBase;
-    private municipality: MunicipalityDTOBase;
-    private registration: RegistrationDTOBase;
+    private supplier: SupplierDTOBase;
     private documentFiles: File[] = [];
     private documentUrls: string[] = [];
     private reader: FileReader = new FileReader();
     private allFilesUploaded: boolean = false;
     @ViewChild('document1') private document1: any;
     @ViewChild('document2') private document2: any;
-    @ViewChild('document3') private document3: any;
-    @ViewChild('document4') private document4: any;
     private displayConfirmingData: boolean = false;
 
-    constructor(private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
+    constructor(private localStorageService: LocalStorageService, private supplierApi: SupplierApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
-            this.municipalityApi.getMunicipalitiesByUserId(this.user.id).subscribe(
-                (municipalities: MunicipalityDTOBase[]) => {
-                    if (municipalities.length > 0) {
-                        this.municipality = municipalities[0];
-                        this.registrationApi.getRegistrationByUserAndMunicipality(this.user.id, this.municipality.id).subscribe(
-                            (registration: RegistrationDTOBase) => {
-                                this.registration = registration;
-                            }
-                        );
+            if (this.user.type == 1) {
+                this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
+                    (supplier: SupplierDTOBase) => {
+                        this.supplier = supplier;
                     }
-                }, error => {
-                    console.log(error);
-                }
-            );
+                );
+            }
         } else {
             this.sharedService.growlTranslation('You are not logged in!', 'error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
@@ -67,7 +55,7 @@ export class AdditionalInfoComponent {
                 x => {
                     if (this.reader.result != "") {
                         this.documentUrls[index] = this.reader.result;
-                        if (this.documentUrls[0] && this.documentUrls[1] && this.documentUrls[2] && this.documentUrls[3]) {
+                        if (this.documentUrls[0] && this.documentUrls[1]) {
                             this.allFilesUploaded = true;
                         } else {
                             this.allFilesUploaded = false;
@@ -92,35 +80,23 @@ export class AdditionalInfoComponent {
             case 1:
                 this.document2.nativeElement.value = '';
                 break;
-            case 2:
-                this.document3.nativeElement.value = '';
-                break;
-            case 3:
-                this.document4.nativeElement.value = '';
-                break;
         }
     }
 
     private onSubmit() {
         if (this.documentUrls[0]) {
-            this.registration.legalFile1 = this.documentUrls[0];
+            this.supplier.legalFile1 = this.documentUrls[0];
         }
         if (this.documentUrls[1]) {
-            this.registration.legalFile2 = this.documentUrls[1];
-        }
-        if (this.documentUrls[2]) {
-            this.registration.legalFile3 = this.documentUrls[2];
-        }
-        if (this.documentUrls[3]) {
-            this.registration.legalFile4 = this.documentUrls[3];
+            this.supplier.legalFile2 = this.documentUrls[1];
         }
         this.displayConfirmingData = true;
-        this.registrationApi.createRegistration(this.registration).subscribe(
+        this.supplierApi.createSupplier(this.supplier).subscribe(
             (response: ResponseDTOBase) => {
                 this.displayConfirmingData = false;
                 if (response.success) {
                     this.sharedService.growlTranslation('Your registration was successfully updated.', 'registration.update.success', 'success');
-                    this.registration = response.data;
+                    this.supplier = response.data;
                 } else {
                     this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'registration.update.error', 'error');
                 }

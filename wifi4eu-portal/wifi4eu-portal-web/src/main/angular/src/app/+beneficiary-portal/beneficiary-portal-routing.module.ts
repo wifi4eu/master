@@ -7,10 +7,10 @@ import { AdditionalInfoComponent } from "./+additional-info/additional-info.comp
 
 @NgModule({
     imports: [RouterModule.forChild([
-         {
-             path: '',
-             component: VoucherComponent,
-         }, {
+        {
+            path: '',
+            component: VoucherComponent,
+        }, {
             path: 'discussion-forum',
             component: DiscussionComponent
         }, {
