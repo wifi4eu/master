@@ -12,20 +12,26 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ThreadMapper {
-    @Mapping(source = "entity.lau.id", target = "lauId")
+    //    @Mapping(source = "entity.lau.id", target = "lauId")
     ThreadDTO toDTO(Thread entity);
-    @Mapping(source = "vo.lauId", target = "lau.id")
+
+    //    @Mapping(source = "vo.lauId", target = "lau.id")
     Thread toEntity(ThreadDTO vo);
+
     @Mappings({
             @Mapping(source = "entity.thread.id", target = "threadId"),
             @Mapping(source = "entity.author.id", target = "authorId")
     })
     ThreadMessageDTO toDTO(ThreadMessage entity);
+
     @Mappings({
             @Mapping(source = "vo.threadId", target = "thread.id"),
             @Mapping(source = "vo.authorId", target = "author.id")
     })
     ThreadMessage toEntity(ThreadMessageDTO vo);
+
     List<ThreadDTO> toDTOList(List<Thread> list);
+
     List<Thread> toEntityList(List<ThreadDTO> list);
 }
+
