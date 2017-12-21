@@ -92,7 +92,7 @@ public class BeneficiaryService {
         List<RegistrationDTO> registrations = getRegistrationsList(resUser, beneficiaryDTO, resMunicipalities);
 
         /* send Activate Account Email*/
-        // userService.sendActivateAccountMail(resUser);
+        userService.sendActivateAccountMail(resUser);
 
         /* check Duplicates and crate Threads if apply */
         checkDuplicates(resUser, resMunicipalities);
