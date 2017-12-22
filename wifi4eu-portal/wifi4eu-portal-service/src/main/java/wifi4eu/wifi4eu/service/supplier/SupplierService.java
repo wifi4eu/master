@@ -122,47 +122,59 @@ public class SupplierService {
     private void checkDuplicateSuppliers(SupplierDTO supplierDTO) {
         List<SupplierDTO> suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByVat(supplierDTO.getVat())));
         if (!suppliers.isEmpty()) {
-            UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
-            userThreadsDTO.setUserId(supplierDTO.getUserId());
-            ThreadDTO thread = threadService.getThreadByTypeAndReason(2, supplierDTO.getVat());
-            if (thread == null) {
-                thread = new ThreadDTO();
-                thread.setType(2);
-                thread.setReason(supplierDTO.getVat());
-                thread = threadService.createThread(thread);
-            }
-            userThreadsDTO.setThreadId(thread.getId());
-            userThreadsService.createUserThreads(userThreadsDTO);
-            for (SupplierDTO supplier: suppliers) {
-                UserThreadsDTO specificUserThread = userThreadsService.getByUserIdAndThreadId(supplier.getUserId(), thread.getId());
-                if (specificUserThread == null) {
-                    specificUserThread = new UserThreadsDTO();
-                    specificUserThread.setUserId(supplier.getUserId());
-                    specificUserThread.setThreadId(thread.getId());
-                    userThreadsService.createUserThreads(specificUserThread);
+            for (SupplierDTO supplier : suppliers) {
+                if (supplier.getId() != supplierDTO.getId()) {
+                    ThreadDTO thread = threadService.getThreadByTypeAndReason(2, supplierDTO.getVat());
+                    if (thread == null) {
+                        thread = new ThreadDTO();
+                        thread.setTitle("VAT: " +  supplierDTO.getVat());
+                        thread.setType(2);
+                        thread.setReason(supplierDTO.getVat());
+                        thread = threadService.createThread(thread);
+                    }
+                    UserThreadsDTO specificSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplier.getUserId(), thread.getId());
+                    if (specificSupplierUserThreads == null) {
+                        specificSupplierUserThreads = new UserThreadsDTO();
+                        specificSupplierUserThreads.setUserId(supplier.getUserId());
+                        specificSupplierUserThreads.setThreadId(thread.getId());
+                        userThreadsService.createUserThreads(specificSupplierUserThreads);
+                    }
+                    UserThreadsDTO originalSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplierDTO.getUserId(), thread.getId());
+                    if (originalSupplierUserThreads == null) {
+                        originalSupplierUserThreads = new UserThreadsDTO();
+                        originalSupplierUserThreads.setUserId(supplierDTO.getUserId());
+                        originalSupplierUserThreads.setThreadId(thread.getId());
+                        userThreadsService.createUserThreads(originalSupplierUserThreads);
+                    }
                 }
             }
         }
         suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByAccountNumber(supplierDTO.getAccountNumber())));
         if (!suppliers.isEmpty()) {
-            UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
-            userThreadsDTO.setUserId(supplierDTO.getUserId());
-            ThreadDTO thread = threadService.getThreadByTypeAndReason(3, supplierDTO.getAccountNumber());
-            if (thread == null) {
-                thread = new ThreadDTO();
-                thread.setType(3);
-                thread.setReason(supplierDTO.getAccountNumber());
-                thread = threadService.createThread(thread);
-            }
-            userThreadsDTO.setThreadId(thread.getId());
-            userThreadsService.createUserThreads(userThreadsDTO);
-            for (SupplierDTO supplier: suppliers) {
-                UserThreadsDTO specificUserThread = userThreadsService.getByUserIdAndThreadId(supplier.getUserId(), thread.getId());
-                if (specificUserThread == null) {
-                    specificUserThread = new UserThreadsDTO();
-                    specificUserThread.setUserId(supplier.getUserId());
-                    specificUserThread.setThreadId(thread.getId());
-                    userThreadsService.createUserThreads(specificUserThread);
+            for (SupplierDTO supplier : suppliers) {
+                if (supplier.getId() != supplierDTO.getId()) {
+                    ThreadDTO thread = threadService.getThreadByTypeAndReason(3, supplierDTO.getAccountNumber());
+                    if (thread == null) {
+                        thread = new ThreadDTO();
+                        thread.setTitle("IBAN: " +  supplierDTO.getAccountNumber());
+                        thread.setType(3);
+                        thread.setReason(supplierDTO.getAccountNumber());
+                        thread = threadService.createThread(thread);
+                    }
+                    UserThreadsDTO specificSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplier.getUserId(), thread.getId());
+                    if (specificSupplierUserThreads == null) {
+                        specificSupplierUserThreads = new UserThreadsDTO();
+                        specificSupplierUserThreads.setUserId(supplier.getUserId());
+                        specificSupplierUserThreads.setThreadId(thread.getId());
+                        userThreadsService.createUserThreads(specificSupplierUserThreads);
+                    }
+                    UserThreadsDTO originalSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplierDTO.getUserId(), thread.getId());
+                    if (originalSupplierUserThreads == null) {
+                        originalSupplierUserThreads = new UserThreadsDTO();
+                        originalSupplierUserThreads.setUserId(supplierDTO.getUserId());
+                        originalSupplierUserThreads.setThreadId(thread.getId());
+                        userThreadsService.createUserThreads(originalSupplierUserThreads);
+                    }
                 }
             }
         }
