@@ -46,6 +46,16 @@ export class DiscussionComponent {
         this.route.params.subscribe(params => this.threadId = params['threadId']);
 
         this.thread.messages = [];
+
+        this.threadMessagesApi.allThreadMessages().subscribe(
+            (messages: ThreadMessageDTOBase[]) => {
+                this.thread.messages = messages;
+            }, error => {
+                console.log(error);
+            }
+        );
+
+
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
