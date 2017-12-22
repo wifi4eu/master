@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
 
-    public final static String FROM_ADDRESS =  "portales.everis@gmail.com";
+    public final static String FROM_ADDRESS =  "azure_efe0541f6fda2f126859caac07925571@azure.com";
 
     @Autowired
     private MailSender mailSender;

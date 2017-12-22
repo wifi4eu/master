@@ -117,6 +117,10 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`registrations` (
   `municipality` INT          NOT NULL,
   `role`         VARCHAR(500) NULL,
   `_status`      INT(1)       NOT NULL, --  0=HOLD; 1=KO; 2=OK
+  `legal_file1`  LONGTEXT     NULL,
+  `legal_file2`  LONGTEXT     NULL,
+  `legal_file3`  LONGTEXT     NULL,
+  `legal_file4`  LONGTEXT     NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_user_idx` (`_user` ASC),
   INDEX `fk_municipality_idx` (`municipality` ASC),
@@ -144,6 +148,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`calls` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB;
+INSERT INTO calls (event, start_date, end_date)
+  SELECT 'Test call #1' as event, ROUND(UNIX_TIMESTAMP(CURTIME(4)) * 1000 + 100000000) AS start_date, 0 AS end_date;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`nuts`
@@ -169,9 +175,10 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`threads` (
   `reason`   VARCHAR(255) NULL,
   `type` INT NOT NULL,
   PRIMARY KEY (`id`)
-
-
-  ENGINE = InnoDB;
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`thread_messages`
@@ -216,6 +223,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`suppliers` (
   `contact_email`        VARCHAR(255) NULL,
   `logo`                 LONGTEXT     NULL,
   `_user`                INT          NULL,
+  `legal_file1`          LONGTEXT     NULL,
+  `legal_file2`          LONGTEXT     NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_suppliers_users_idx` (`_user` ASC),
   CONSTRAINT `fk_suppliers_users`
@@ -465,6 +474,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`user_threads`(
   `thread` int(11) NOT NULL,
    PRIMARY KEY (`id`)
 )
+
+  ENGINE = InnoDB;
 
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;

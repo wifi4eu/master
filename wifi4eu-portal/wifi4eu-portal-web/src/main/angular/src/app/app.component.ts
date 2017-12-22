@@ -1,14 +1,15 @@
 import {Component, enableProdMode, OnInit, Output} from "@angular/core";
 import {Router} from "@angular/router";
 import {TranslateService} from "ng2-translate/ng2-translate";
-import {UxService, UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {UxLanguage, UxEuLanguages} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import {UxLayoutLink, UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
 import {SharedService} from "./shared/shared.service";
 import {LocalStorageService} from "angular-2-local-storage";
 import {UserDTOBase} from "./shared/swagger/model/UserDTO";
 import {UserApi} from "./shared/swagger/api/UserApi";
 import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
 import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
+import {Http} from "@angular/http";
 
 enableProdMode();
 
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit {
     private user: UserDTOBase;
     private visibility: boolean[];
     private profileUrl: string;
+    private actualDate: string;
 
     private children: UxLayoutLink[][];
 
@@ -59,6 +61,7 @@ export class AppComponent implements OnInit {
         this.sharedService.updateEmitter.subscribe(() => this.updateHeader());
         this.sharedService.logoutEmitter.subscribe(() => this.logout());
 
+        this.updateFooterDate();
     }
 
     ngOnInit() {
@@ -98,7 +101,7 @@ export class AppComponent implements OnInit {
     initChildren() {
         this.children[0] = [
             new UxLayoutLink({
-                label: 'Beneficiary Registration',
+                label: 'Applicant Registration',
                 url: '/beneficiary-landing'
             }),
             new UxLayoutLink({
@@ -112,28 +115,28 @@ export class AppComponent implements OnInit {
                 url: '/supplier-portal'
             }),
             new UxLayoutLink({
-                label: 'Supplier Profile',
+                label: 'My account',
                 url: '/supplier-portal/profile'
             })
         ];
         this.children[2] = [
             new UxLayoutLink({
-                label: 'Beneficiary Portal',
-                url: '/beneficiary-portal'
+                label: 'My account',
+                url: '/beneficiary-portal/profile'
             }),
             new UxLayoutLink({
-                label: 'Beneficiary Profile',
-                url: '/beneficiary-portal/profile'
+                label: 'Application page',
+                url: '/beneficiary-portal'
             })
         ];
         this.children[3] = [
             new UxLayoutLink({
-                label: 'Beneficiary Portal',
-                url: '/beneficiary-portal'
+                label: 'My account',
+                url: '/beneficiary-portal/profile'
             }),
             new UxLayoutLink({
-                label: 'Beneficiary Profile',
-                url: '/beneficiary-portal/profile'
+                label: 'Application page',
+                url: '/beneficiary-portal'
             })
         ];
         this.children[4] = [
@@ -201,6 +204,7 @@ export class AppComponent implements OnInit {
         this.translateService.use(language.code);
         this.uxService.activeLanguage = language;
         this.localStorage.set('lang', language.code);
+        this.updateFooterDate();
     }
 
     logout() {
@@ -212,11 +216,26 @@ export class AppComponent implements OnInit {
         })];
         this.profileUrl = null;
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
+
+        this.userApi.doCompleteSignOut().subscribe(
+            (response: string) => {
+                console.log(response);
+            }, error => {
+                console.log(error);
+            }
+        );
+
         this.userApi.ecasLogout();
         window.location.href = 'https://ecas.acceptance.ec.europa.eu/cas/logout';
     }
 
     private goToTop() {
         window.scrollTo(0, 0);
+    }
+
+    private updateFooterDate() {
+        let lang = this.localStorage.get('lang');
+        if (!lang) lang = 'en';
+        this.actualDate = new Date( Date.now() ).toLocaleDateString(lang.toString());
     }
 }

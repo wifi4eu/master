@@ -57,10 +57,16 @@ public class Supplier {
     @OneToMany(mappedBy = "supplier")
     private List<SuppliedRegion> suppliedRegions;
 
+    @Column(name = "legal_file1")
+    private String legalFile1;
+
+    @Column(name = "legal_file2")
+    private String legalFile2;
+
     public Supplier() {
     }
 
-    public Supplier(Integer id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, User user, List<SuppliedRegion> suppliedRegions) {
+    public Supplier(Integer id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, User user, List<SuppliedRegion> suppliedRegions, String legalFile1, String legalFile2) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -76,6 +82,8 @@ public class Supplier {
         this.logo = logo;
         this.user = user;
         this.suppliedRegions = suppliedRegions;
+        this.legalFile1 = legalFile1;
+        this.legalFile2 = legalFile2;
     }
 
     public Integer getId() {
@@ -196,5 +204,21 @@ public class Supplier {
 
     public void setSuppliedRegions(List<SuppliedRegion> suppliedRegions) {
         this.suppliedRegions = suppliedRegions;
+    }
+
+    public String getLegalFile1() {
+        return legalFile1;
+    }
+
+    public void setLegalFile1(String legalFile1) {
+        this.legalFile1 = legalFile1;
+    }
+
+    public String getLegalFile2() {
+        return legalFile2;
+    }
+
+    public void setLegalFile2(String legalFile2) {
+        this.legalFile2 = legalFile2;
     }
 }

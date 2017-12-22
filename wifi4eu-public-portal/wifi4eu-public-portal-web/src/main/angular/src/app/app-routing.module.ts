@@ -5,6 +5,7 @@ import { LoginComponent } from "./+login/login.component";
 import { NotFoundComponent } from "./not-found/not-found.component"
 import { AppGuard } from "./app.guard";
 import { BeneficiaryLandingComponent } from "./+beneficiary-landing/beneficiary-landing.component";
+import { SupplierLandingComponent } from "./+supplier-landing/supplier-landing.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
@@ -24,6 +25,9 @@ import { BeneficiaryLandingComponent } from "./+beneficiary-landing/beneficiary-
         }, {
             path: 'beneficiary-landing',
             component: BeneficiaryLandingComponent
+        }, {
+            path: 'supplier-landing',
+            component: SupplierLandingComponent
         }, {
             path: 'notfound',
             component: NotFoundComponent

@@ -61,6 +61,15 @@ export class HomeComponent {
             calls => {
                 this.currentCall = calls[0];
                 this.showTimeline = true;
+
+
+                var date = new Date(this.currentCall.startDate);
+                date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+
+                this.dateNumber = date.getUTCDate() + "/" + (date.getMonth() - 1) + "/" + date.getFullYear();
+                this.hourNumber = date.getHours() + ":" + date.getMinutes();
+
+
             }, error => {
                 console.log(error);
                 this.currentCall = null;

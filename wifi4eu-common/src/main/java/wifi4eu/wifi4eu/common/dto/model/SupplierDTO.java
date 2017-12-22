@@ -20,11 +20,13 @@ public class SupplierDTO {
     private List<SuppliedRegionDTO> suppliedRegions;
     private boolean legalCheck1;
     private boolean legalCheck2;
+    private String legalFile1;
+    private String legalFile2;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, int userId, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2) {
+    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, int userId, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -42,6 +44,8 @@ public class SupplierDTO {
         this.suppliedRegions = suppliedRegions;
         this.legalCheck1 = legalCheck1;
         this.legalCheck2 = legalCheck2;
+        this.legalFile1 = legalFile1;
+        this.legalFile2 = legalFile2;
     }
 
     public int getId() {
@@ -178,5 +182,21 @@ public class SupplierDTO {
 
     public void setLegalCheck2(boolean legalCheck2) {
         this.legalCheck2 = legalCheck2;
+    }
+
+    public String getLegalFile1() {
+        return legalFile1;
+    }
+
+    public void setLegalFile1(String legalFile1) {
+        this.legalFile1 = legalFile1;
+    }
+
+    public String getLegalFile2() {
+        return legalFile2;
+    }
+
+    public void setLegalFile2(String legalFile2) {
+        this.legalFile2 = legalFile2;
     }
 }

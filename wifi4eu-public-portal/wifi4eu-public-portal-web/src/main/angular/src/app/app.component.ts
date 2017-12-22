@@ -20,6 +20,7 @@ enableProdMode();
 export class AppComponent {
     private menuLinks: Array<CustomLayoutLink>;
     private visibility: boolean[];
+    private actualDate: string;
 
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
 
@@ -40,7 +41,7 @@ export class AppComponent {
             label: 'Wifi4EU',
             children: [
                 new CustomLayoutLink({label: 'Beneficiary Registration', url: '/#/beneficiary-landing', externalUrl: true}),
-                new CustomLayoutLink({label: 'Supplier Registration', url: '../../../wifi4eu/#/supplier-registration', externalUrl: true})
+                new CustomLayoutLink({label: 'Supplier Registration', url: '/#/supplier-landing', externalUrl: true})
             ]
         })];
 
@@ -48,6 +49,8 @@ export class AppComponent {
         this.updateHeader();
 
         this.sharedService.updateEmitter.subscribe(() => this.updateHeader());
+
+        this.updateFooterDate();
     }
 
     updateHeader() {
@@ -58,9 +61,16 @@ export class AppComponent {
         this.translateService.use(language.code);
         this.uxService.activeLanguage = language;
         this.localStorage.set('lang', language.code);
+        this.updateFooterDate();
     }
 
     private goToTop() {
         window.scrollTo(0, 0);
+    }
+
+    private updateFooterDate() {
+        let lang = this.localStorage.get('lang');
+        if (!lang) lang = 'en';
+        this.actualDate = new Date( Date.now() ).toLocaleDateString(lang.toString());
     }
 }
