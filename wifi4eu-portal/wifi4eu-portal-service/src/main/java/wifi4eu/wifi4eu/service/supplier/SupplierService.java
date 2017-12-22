@@ -4,16 +4,17 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
-import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.supplier.SuppliedRegion;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+import wifi4eu.wifi4eu.service.thread.ThreadService;
+import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.ArrayList;
@@ -37,6 +38,12 @@ public class SupplierService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ThreadService threadService;
+
+    @Autowired
+    UserThreadsService userThreadsService;
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -85,24 +92,92 @@ public class SupplierService {
     @Transactional
     public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
 
-        UserDTO userDTO = new UserDTO();
+        UserDTO userDTO;
 
         UserContext userContext = UserHolder.getUser();
 
         if (userContext != null) {
             // with ECAS
             userDTO = userService.getUserByUserContext(userContext);
-            userDTO.setName(supplierDTO.getContactName());
-            userDTO.setSurname(supplierDTO.getContactSurname());
-            userDTO.setEmail(supplierDTO.getContactEmail());
-            userDTO.setCreateDate(new Date().getTime());
-            userDTO.setType(1);
-            userDTO.setVerified(false);
-            userDTO = userService.saveUserChanges(userDTO);
+        } else {
+            // without ECAS (only testing purpose)
+            userDTO = new UserDTO();
+            String password = "12345678";
+            userDTO.setPassword(password);
         }
 
-        supplierDTO.setUserId(userDTO.getId());
-        return createSupplier(supplierDTO);
+        userDTO.setName(supplierDTO.getContactName());
+        userDTO.setSurname(supplierDTO.getContactSurname());
+        userDTO.setEmail(supplierDTO.getContactEmail());
+        userDTO.setCreateDate(new Date().getTime());
+        userDTO.setType(1);
+        userDTO.setVerified(false);
+        UserDTO resUser = userService.createUser(userDTO);
+        supplierDTO.setUserId(resUser.getId());
+        supplierDTO = createSupplier(supplierDTO);
+        checkDuplicateSuppliers(supplierDTO);
+        return supplierDTO;
+    }
+
+    private void checkDuplicateSuppliers(SupplierDTO supplierDTO) {
+        List<SupplierDTO> suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByVat(supplierDTO.getVat())));
+        if (!suppliers.isEmpty()) {
+            for (SupplierDTO supplier : suppliers) {
+                if (supplier.getId() != supplierDTO.getId()) {
+                    ThreadDTO thread = threadService.getThreadByTypeAndReason(2, supplierDTO.getVat());
+                    if (thread == null) {
+                        thread = new ThreadDTO();
+                        thread.setTitle("VAT: " +  supplierDTO.getVat());
+                        thread.setType(2);
+                        thread.setReason(supplierDTO.getVat());
+                        thread = threadService.createThread(thread);
+                    }
+                    UserThreadsDTO specificSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplier.getUserId(), thread.getId());
+                    if (specificSupplierUserThreads == null) {
+                        specificSupplierUserThreads = new UserThreadsDTO();
+                        specificSupplierUserThreads.setUserId(supplier.getUserId());
+                        specificSupplierUserThreads.setThreadId(thread.getId());
+                        userThreadsService.createUserThreads(specificSupplierUserThreads);
+                    }
+                    UserThreadsDTO originalSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplierDTO.getUserId(), thread.getId());
+                    if (originalSupplierUserThreads == null) {
+                        originalSupplierUserThreads = new UserThreadsDTO();
+                        originalSupplierUserThreads.setUserId(supplierDTO.getUserId());
+                        originalSupplierUserThreads.setThreadId(thread.getId());
+                        userThreadsService.createUserThreads(originalSupplierUserThreads);
+                    }
+                }
+            }
+        }
+        suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByAccountNumber(supplierDTO.getAccountNumber())));
+        if (!suppliers.isEmpty()) {
+            for (SupplierDTO supplier : suppliers) {
+                if (supplier.getId() != supplierDTO.getId()) {
+                    ThreadDTO thread = threadService.getThreadByTypeAndReason(3, supplierDTO.getAccountNumber());
+                    if (thread == null) {
+                        thread = new ThreadDTO();
+                        thread.setTitle("IBAN: " +  supplierDTO.getAccountNumber());
+                        thread.setType(3);
+                        thread.setReason(supplierDTO.getAccountNumber());
+                        thread = threadService.createThread(thread);
+                    }
+                    UserThreadsDTO specificSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplier.getUserId(), thread.getId());
+                    if (specificSupplierUserThreads == null) {
+                        specificSupplierUserThreads = new UserThreadsDTO();
+                        specificSupplierUserThreads.setUserId(supplier.getUserId());
+                        specificSupplierUserThreads.setThreadId(thread.getId());
+                        userThreadsService.createUserThreads(specificSupplierUserThreads);
+                    }
+                    UserThreadsDTO originalSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplierDTO.getUserId(), thread.getId());
+                    if (originalSupplierUserThreads == null) {
+                        originalSupplierUserThreads = new UserThreadsDTO();
+                        originalSupplierUserThreads.setUserId(supplierDTO.getUserId());
+                        originalSupplierUserThreads.setThreadId(thread.getId());
+                        userThreadsService.createUserThreads(originalSupplierUserThreads);
+                    }
+                }
+            }
+        }
     }
 
     public SupplierDTO getSupplierByUserId(int userId) {
