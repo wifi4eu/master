@@ -112,8 +112,8 @@ public class SupplierService {
         userDTO.setCreateDate(new Date().getTime());
         userDTO.setType(1);
         userDTO.setVerified(false);
-        UserDTO resUser = userService.createUser(userDTO);
-        supplierDTO.setUserId(resUser.getId());
+        userDTO = userService.saveUserChanges(userDTO);
+        supplierDTO.setUserId(userDTO.getId());
         supplierDTO = createSupplier(supplierDTO);
         checkDuplicateSuppliers(supplierDTO);
         return supplierDTO;
