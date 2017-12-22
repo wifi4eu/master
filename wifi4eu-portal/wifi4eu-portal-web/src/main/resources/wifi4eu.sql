@@ -148,6 +148,8 @@ CREATE TABLE IF NOT EXISTS `dbo`.`calls` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB;
+INSERT INTO `dbo`.`calls` (event, start_date, end_date)
+  SELECT 'Test call #1' as event, ROUND(UNIX_TIMESTAMP(CURTIME(4)) * 1000 + 100000000) AS start_date, 0 AS end_date;
 
 -- -----------------------------------------------------
 -- Table `dbo`.`nuts`
