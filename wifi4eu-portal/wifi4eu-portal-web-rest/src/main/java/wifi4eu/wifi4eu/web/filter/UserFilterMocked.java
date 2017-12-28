@@ -11,10 +11,13 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Random;
+import java.util.UUID;
 
 public class UserFilterMocked extends OncePerRequestFilter {
+
+    public static String randomUser = null;
 
     @Override
     protected String getAlreadyFilteredAttributeName() {
@@ -27,27 +30,57 @@ public class UserFilterMocked extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
 
         try {
-            UserContext user = new UserContext("Mr. Tester");
-            user.setEmail("tester@test.com");
-            user.setDomain("TemporalDom");
-            user.setPerId(1L);
-            user.setDetailedUser( null );
-            user.setFirstName("Tester Name");
-            user.setLastName("Test LastName");
-
-            user.setRoleList(new LinkedList<RoleDTO>());
+            if (randomUser == null) {
+                randomUser = randomString();
+            }
+            final UserContext user = initUserContext();
 
             UserHolder.setUser(user);
-
             filterChain.doFilter(request, response);
 
         } catch (Exception e) {
             throw new AppException(e);
         } finally {
-        UserHolder.clearUser();
+            UserHolder.clearUser();
+        }
     }
+
+    private UserContext initUserContext() {
+        final UserContext user = new UserContext(randomUser);
+
+        user.setEmail( randomUser +
+                UserFilterConstants.AT +
+                UserFilterConstants.DOMAIN +
+                UserFilterConstants.EXTENSION);
+        user.setDomain( UserFilterConstants.DOMAIN );
+        user.setPerId( randomInt() );
+        user.setDetailedUser( null );
+        user.setFirstName(UserFilterConstants.NAME);
+        user.setLastName(UserFilterConstants.LAST_NAME);
+        user.setRoleList(new LinkedList<RoleDTO>());
+
+        return user;
+    }
+
+    private String randomString(){
+        final UUID idOne = UUID.randomUUID();
+        final String uuid = idOne.toString();
+        final String[] uuidArray = uuid.split("-");
+
+        return uuidArray[uuidArray.length-1]+uuidArray[0];
+    }
+
+    private Long randomInt(){
+        final Random randomGenerator = new Random();
+        Long randomInt = 0L;
+        
+        for (int idx = 1; idx <= 10; ++idx){
+            randomInt += randomGenerator.nextInt(UserFilterConstants.RANDOM_VALUE);
+        }
+        
+        return randomInt;
     }
 }

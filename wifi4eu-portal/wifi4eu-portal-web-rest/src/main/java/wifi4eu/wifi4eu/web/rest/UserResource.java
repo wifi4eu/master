@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.web.filter.UserFilterMocked;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -263,7 +264,17 @@ public class UserResource {
         return outMessage;
     }
 
+    @ApiOperation(value = "Is mocked user")
+    @RequestMapping(value = "/isMockedUser", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public boolean isMockedUser()  {
+        _log.debug("Getting if it is mocked user: " + UserFilterMocked.randomUser);
+
+        return UserFilterMocked.randomUser != null;
+    }
+
     private void doLogout(HttpSession session) {
         session.invalidate();
+        UserFilterMocked.randomUser = null;
     }
 }
