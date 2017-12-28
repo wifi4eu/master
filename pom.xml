@@ -125,8 +125,8 @@
         <server.azure.port>80</server.azure.port>
         <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
 
-        <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
-        <war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>
+        <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory>
+        <!-- <war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory> -->
     </properties>
 
 
@@ -140,10 +140,10 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
-                <war.output.directory/>
                 <ecas.server.address>${server.test.address}</ecas.server.address>
                 <ecas.server.port>${server.test.port}</ecas.server.port>
                 <mail.serv.location>http://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
+                <war.output.directory/>
             </properties>
         </profile>
         <profile>
@@ -155,10 +155,22 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
-                <war.output.directory/>
                 <ecas.server.address>${server.azure.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <mail.serv.location>http://wifi4eudev.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+                <war.output.directory/>
+            </properties>
+        </profile>
+        <profile>
+            <id>USERMOCKED</id>
+            <properties>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilterMocked</user.filter.path>
+                <enable.security.start> </enable.security.start>
+                <enable.security.end> </enable.security.end>
+                <enable.login.start> </enable.login.start>
+                <enable.login.end> </enable.login.end>
+                <ecas.server.address />
+                <ecas.server.port />
             </properties>
         </profile>
     </profiles>
