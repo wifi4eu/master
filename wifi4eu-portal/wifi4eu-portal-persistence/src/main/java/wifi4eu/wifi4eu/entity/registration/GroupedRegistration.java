@@ -6,8 +6,9 @@ import javax.persistence.*;
 
 @Entity
 public class GroupedRegistration {
+    @Id
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "country")
     private String country;
@@ -27,7 +28,7 @@ public class GroupedRegistration {
     public GroupedRegistration() {
     }
 
-    public GroupedRegistration(int id, String country, String municipality, int applicants, int posts, int status) {
+    public GroupedRegistration(Integer id, String country, String municipality, int applicants, int posts, int status) {
         this.id = id;
         this.country = country;
         this.municipality = municipality;
@@ -36,27 +37,51 @@ public class GroupedRegistration {
         this.status = status;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCountry() {
         return country;
     }
 
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
     public String getMunicipality() {
         return municipality;
+    }
+
+    public void setMunicipality(String municipality) {
+        this.municipality = municipality;
     }
 
     public int getApplicants() {
         return applicants;
     }
 
+    public void setApplicants(int applicants) {
+        this.applicants = applicants;
+    }
+
     public int getPosts() {
         return posts;
     }
 
+    public void setPosts(int posts) {
+        this.posts = posts;
+    }
+
     public int getStatus() {
         return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

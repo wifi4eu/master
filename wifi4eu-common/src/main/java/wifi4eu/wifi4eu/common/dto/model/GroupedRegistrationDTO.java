@@ -24,23 +24,47 @@ public class GroupedRegistrationDTO {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getCountry() {
         return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getMunicipality() {
         return municipality;
     }
 
+    public void setMunicipality(String municipality) {
+        this.municipality = municipality;
+    }
+
     public int getApplicants() {
         return applicants;
+    }
+
+    public void setApplicants(int applicants) {
+        this.applicants = applicants;
     }
 
     public int getPosts() {
         return posts;
     }
 
+    public void setPosts(int posts) {
+        this.posts = posts;
+    }
+
     public int getStatus() {
         return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

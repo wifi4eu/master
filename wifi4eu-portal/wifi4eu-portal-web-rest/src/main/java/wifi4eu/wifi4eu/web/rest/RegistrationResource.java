@@ -123,7 +123,7 @@ public class RegistrationResource {
     }
 
     @ApiOperation(value = "Get registrations grouped by municipality")
-    @RequestMapping(value = "/grouped", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public GroupedRegistrationDTO test() {
         return new GroupedRegistrationDTO();
