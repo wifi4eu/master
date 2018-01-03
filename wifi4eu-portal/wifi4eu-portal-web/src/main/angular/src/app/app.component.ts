@@ -48,8 +48,8 @@ export class AppComponent implements OnInit {
         this.menuLinks = [new UxLayoutLink({
             label: 'Wifi4EU',
             children: [
-                new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-landing'}),
-                new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-landing'})
+                new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
+                new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
             ]
         })];
 
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit {
         this.children[0] = [
             new UxLayoutLink({
                 label: 'Applicant Registration',
-                url: '../#/beneficiary-landing'
+                url: '/beneficiary-registration'
             }),
             new UxLayoutLink({
                 label: 'Supplier Registration',
