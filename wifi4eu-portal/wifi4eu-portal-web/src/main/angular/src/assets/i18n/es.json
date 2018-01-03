@@ -371,5 +371,7 @@
   "benefLanding.elegibleText3": "Está a punto de registrarse en el portal WiFi4EU en nombre de una municipalidad.",
   "benefLanding.proceed": "¿Le gustaría continuar con el proceso de registro?",
   "benefLanding.yes": "Sí",
-  "benefLanding.no": "No"
+  "benefLanding.no": "No",
+  "notFound.title": "Página no encontrada - ERROR 404",
+  "notFound.description":"Parece que la URL que ha escrito no existe. Por favor, compruebe que la ha escrito correctamente."
 }
