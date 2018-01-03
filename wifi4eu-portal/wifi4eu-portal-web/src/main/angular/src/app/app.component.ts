@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
             label: 'Wifi4EU',
             children: [
                 new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-landing'}),
-                new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
+                new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-landing'})
             ]
         })];
 
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit {
         this.children[0] = [
             new UxLayoutLink({
                 label: 'Applicant Registration',
-                url: '/beneficiary-landing'
+                url: '../#/beneficiary-landing'
             }),
             new UxLayoutLink({
                 label: 'Supplier Registration',
@@ -236,6 +236,6 @@ export class AppComponent implements OnInit {
     private updateFooterDate() {
         let lang = this.localStorage.get('lang');
         if (!lang) lang = 'en';
-        this.actualDate = new Date( Date.now() ).toLocaleDateString(lang.toString());
+        this.actualDate = new Date(Date.now()).toLocaleDateString(lang.toString());
     }
 }
