@@ -9,6 +9,7 @@ import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
 import {NutsApi} from "../shared/swagger/api/NutsApi";
 import {OrganizationApi} from "../shared/swagger/api/OrganizationApi";
 import {Subscription} from "rxjs/Subscription";
+import {SharedService} from "../shared/shared.service";
 import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
 import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 import {Router} from "@angular/router";
@@ -37,7 +38,7 @@ export class BeneficiaryRegistrationComponent {
     private alreadyRegistered: boolean = false;
     private organization: OrganizationDTOBase = null;
 
-    constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router) {
+    constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router,private sharedService: SharedService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
             (nuts: NutsDTOBase[]) => {
                 this.countries = nuts;
@@ -100,6 +101,7 @@ export class BeneficiaryRegistrationComponent {
             (data: ResponseDTOBase) => {
                 if (data.success) {
                     this.successRegistration = true;
+                    this.sharedService.update();
                     this.router.navigateByUrl('/beneficiary-portal');
                 } else {
                     this.failureRegistration = true;

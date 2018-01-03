@@ -6,6 +6,7 @@ import {SuppliedRegionDTOBase} from "../shared/swagger/model/SuppliedRegionDTO";
 import {NutsApi} from "../shared/swagger/api/NutsApi";
 import {SupplierApi} from "../shared/swagger/api/SupplierApi";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
+import {SharedService} from "../shared/shared.service";
 import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 
 @Component({
@@ -26,7 +27,7 @@ export class SupplierRegistrationComponent {
     private allRegionsSelect: SelectItem[][] = [];
     private logoUrl: FileReader = new FileReader();
 
-    constructor(private nutsApi: NutsApi, private supplierApi: SupplierApi, private uxService: UxService) {
+    constructor(private nutsApi: NutsApi, private supplierApi: SupplierApi, private uxService: UxService,private sharedService: SharedService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
             (countries: NutsDTOBase[]) => {
                 for (let country of countries) {
@@ -92,6 +93,7 @@ export class SupplierRegistrationComponent {
         this.supplierApi.submitSupplierRegistration(this.supplier).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {
+                    this.sharedService.update();
                     this.successRegistration = true;
                 } else {
                     this.failureRegistration = true;
