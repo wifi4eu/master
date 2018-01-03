@@ -22,8 +22,10 @@ export class AppGuard implements CanActivate {
                 allow = this.canActivateBeneficiary();
                 break;
             case "beneficiary-registration":
+                allow = this.canActivateBeneficiaryRegistration();
+                break;
             case "supplier-registration":
-                allow = this.canActivateRegistration();
+                allow = this.canActivateSupplierRegistration();
                 break;
             case "helpdesk":
                 allow = this.canActivateMemberState() || this.canActivateDgConn();
@@ -35,9 +37,7 @@ export class AppGuard implements CanActivate {
                 allow = this.canActivateSupplier();
                 break;
         }
-        if (allow == false) {
-            this.router.navigateByUrl("notfound");
-        }
+
         return allow;
     }
 
@@ -48,10 +48,27 @@ export class AppGuard implements CanActivate {
         return (this.user.type == 2 || this.user.type == 3) ? true : false;
     }
 
-    canActivateRegistration() {
+    canActivateBeneficiaryRegistration() {
         if (this.user === null){
             return true;
+        }else if(this.user != null && (this.user.type==2 || this.user.type==3)){
+            this.router.navigateByUrl("beneficiary-portal");
+        }else if(this.user != null && (this.user.type==1)){
+            this.router.navigateByUrl("supplier-portal");
         }
+
+        return (this.user.type == 0) ? true : false;
+    }
+
+    canActivateSupplierRegistration() {
+        if (this.user === null){
+            return true;
+        }else if(this.user != null && (this.user.type==2 || this.user.type==3)){
+            this.router.navigateByUrl("beneficiary-portal");
+        }else if(this.user != null && (this.user.type==1)){
+            this.router.navigateByUrl("supplier-portal");
+        }
+
         return (this.user.type == 0) ? true : false;
     }
 

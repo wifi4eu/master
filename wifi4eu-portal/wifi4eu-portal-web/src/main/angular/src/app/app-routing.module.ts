@@ -1,29 +1,27 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
-import {HomeComponent} from "./home/home.component";
 import {ActivationComponent} from "./activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {NotFoundComponent} from "./not-found/not-found.component"
 import {AppGuard} from "./app.guard";
-import {BeneficiaryLandingComponent} from "./+beneficiary-landing/beneficiary-landing.component";
 // import {AppGuard} from "./app.guard";
-// import {AbacComponent} from "./+abac/abac.component";
+import {HomeComponent} from "./home/home.component";
 // import {EcasComponent} from "./+ecas/ecas.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
         {
             path: '',
-            redirectTo: 'home',
+            redirectTo: 'beneficiary-portal',
             pathMatch: 'full'
-        }, {
-            path: 'index.jsp',
-            redirectTo: 'home'
         }, {
             path: 'home',
             component: HomeComponent
+        }, {
+            path: 'index.jsp',
+            redirectTo: 'beneficiary-portal'
         }, {
             path: 'activation',
             component: ActivationComponent
@@ -36,15 +34,15 @@ import {BeneficiaryLandingComponent} from "./+beneficiary-landing/beneficiary-la
         }, {
             path: 'beneficiary-portal',
             loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule',
-            //     canActivate: [AppGuard]
+            canActivate: [AppGuard]
         }, {
             path: 'helpdesk',
             component: HelpdeskComponent,
-            //     canActivate: [AppGuard]
+            canActivate: [AppGuard]
         }, {
             path: 'dgconn-portal',
             loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
-            //     canActivate: [AppGuard]
+            canActivate: [AppGuard]
         }, {
             path: 'beneficiary-registration',
             loadChildren: 'app/+beneficiary-registration/beneficiary-registration.module#BeneficiaryRegistrationModule',
@@ -56,13 +54,8 @@ import {BeneficiaryLandingComponent} from "./+beneficiary-landing/beneficiary-la
         }, {
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
-            // canActivate: [AppGuard]
-            // }, {
-            //     path: 'abac',
-            //     component: AbacComponent
-        }, {
-            path: 'beneficiary-landing',
-            component: BeneficiaryLandingComponent
+            canActivate: [AppGuard]
+
         }, {
             path: 'notfound',
             component: NotFoundComponent
