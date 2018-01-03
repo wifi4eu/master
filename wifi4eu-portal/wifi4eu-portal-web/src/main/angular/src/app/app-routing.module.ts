@@ -7,22 +7,21 @@ import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {NotFoundComponent} from "./not-found/not-found.component"
 import {AppGuard} from "./app.guard";
 // import {AppGuard} from "./app.guard";
-// import {AbacComponent} from "./+abac/abac.component";
+import {HomeComponent} from "./home/home.component";
 // import {EcasComponent} from "./+ecas/ecas.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
         {
             path: '',
-            redirectTo: 'home',
+            redirectTo: 'beneficiary-portal',
             pathMatch: 'full'
         }, {
-            path: 'index.jsp',
-            redirectTo: 'home'
-        }, {
             path: 'home',
-            redirectTo: '/home',
-
+            component: HomeComponent
+        }, {
+            path: 'index.jsp',
+            redirectTo: 'beneficiary-portal'
         }, {
             path: 'activation',
             component: ActivationComponent
@@ -35,15 +34,15 @@ import {AppGuard} from "./app.guard";
         }, {
             path: 'beneficiary-portal',
             loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule',
-            //     canActivate: [AppGuard]
+            canActivate: [AppGuard]
         }, {
             path: 'helpdesk',
             component: HelpdeskComponent,
-            //     canActivate: [AppGuard]
+            canActivate: [AppGuard]
         }, {
             path: 'dgconn-portal',
             loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
-            //     canActivate: [AppGuard]
+            canActivate: [AppGuard]
         }, {
             path: 'beneficiary-registration',
             loadChildren: 'app/+beneficiary-registration/beneficiary-registration.module#BeneficiaryRegistrationModule',
@@ -55,10 +54,8 @@ import {AppGuard} from "./app.guard";
         }, {
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
-            // canActivate: [AppGuard]
-            // }, {
-            //     path: 'abac',
-            //     component: AbacComponent
+            canActivate: [AppGuard]
+
         }, {
             path: 'notfound',
             component: NotFoundComponent
