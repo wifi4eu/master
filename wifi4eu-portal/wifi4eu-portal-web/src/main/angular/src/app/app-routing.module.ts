@@ -1,13 +1,11 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
-import {HomeComponent} from "./home/home.component";
 import {ActivationComponent} from "./activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {NotFoundComponent} from "./not-found/not-found.component"
 import {AppGuard} from "./app.guard";
-import {BeneficiaryLandingComponent} from "./+beneficiary-landing/beneficiary-landing.component";
 // import {AppGuard} from "./app.guard";
 // import {AbacComponent} from "./+abac/abac.component";
 // import {EcasComponent} from "./+ecas/ecas.component";
@@ -23,7 +21,8 @@ import {BeneficiaryLandingComponent} from "./+beneficiary-landing/beneficiary-la
             redirectTo: 'home'
         }, {
             path: 'home',
-            component: HomeComponent
+            redirectTo: '/home',
+
         }, {
             path: 'activation',
             component: ActivationComponent
@@ -60,9 +59,6 @@ import {BeneficiaryLandingComponent} from "./+beneficiary-landing/beneficiary-la
             // }, {
             //     path: 'abac',
             //     component: AbacComponent
-        }, {
-            path: 'beneficiary-landing',
-            component: BeneficiaryLandingComponent
         }, {
             path: 'notfound',
             component: NotFoundComponent

@@ -9,7 +9,6 @@ import {CoreModule} from "./core/core.module";
 import {CoreService} from "./core/core.service";
 import {AppComponent} from "./app.component";
 import {AppRoutingModule} from "./app-routing.module";
-import {HomeComponent} from "./home/home.component";
 // import {MapComponent} from "./+dgconn-portal/+map/map.component";
 import {ActivationComponent} from "./activation/activation.component";
 import {LoginComponent} from "./+login/login.component";
@@ -25,7 +24,6 @@ import {SharedService} from "./shared/shared.service";
 import {ChartsModule} from "ng2-charts";
 import {ForgotComponent} from "./+forgot/forgot.component";
 import {AppGuard} from "./app.guard";
-import {BeneficiaryLandingComponent} from "./+beneficiary-landing/beneficiary-landing.component";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -34,16 +32,13 @@ export function translateFactory(http: Http) {
 @NgModule({
     declarations: [
         AppComponent,
-        HomeComponent,
-        // MapComponent,
         ActivationComponent,
         LoginComponent,
         ForgotComponent,
         HelpdeskComponent,
         // AbacComponent,
         // EcasComponent,
-        NotFoundComponent,
-        BeneficiaryLandingComponent
+        NotFoundComponent
     ],
     exports: [
         // MapComponent,
