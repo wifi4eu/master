@@ -125,6 +125,12 @@
         <server.azure.port>80</server.azure.port>
         <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
 
+        <!-- SMTP -->
+        <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
+        <mail.smtp.port>587</mail.smtp.port>
+        <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
+        <mail.smtp.password>bcf74eb9b6</mail.smtp.password>
+
         <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
         <war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>
     </properties>
@@ -144,6 +150,10 @@
                 <ecas.server.address>${server.test.address}</ecas.server.address>
                 <ecas.server.port>${server.test.port}</ecas.server.port>
                 <mail.serv.location>http://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
+                <mail.smtp.password>bcf74eb9b6</mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -159,6 +169,10 @@
                 <ecas.server.address>${server.azure.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <mail.serv.location>http://wifi4eudev.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
             </properties>
         </profile>
     </profiles>
