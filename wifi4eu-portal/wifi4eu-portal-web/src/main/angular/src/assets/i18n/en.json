@@ -424,5 +424,8 @@
   "file.toobig.maxsize":"The file you uploaded is too big. Max file size allowed is {{size}}.",
   "request.additionalInfo.supplier.instructions": "The system has detected other companies as duplicate registrations. The dedicated discussion area did not allow you to resolve this issue.<br><br>We therefore need to request the documentation detailed below.",
   "request.additionalInfo.supplier.doc1.label":"Legal document indicating the person legally authorised to sign on behalf of the company",
-  "request.additionalInfo.supplier.doc2.label":"Proof of legal representative's identity (copy of valid identity card, passport or similar)"
+  "request.additionalInfo.supplier.doc2.label":"Proof of legal representative's identity (copy of valid identity card, passport or similar)",
+  "notFound.title": "Page not Found - ERROR 404",
+  "notFound.description":"The URL you've written doesn't seem to exist. Make sure you've typed it correctly and try again."
+
 }
