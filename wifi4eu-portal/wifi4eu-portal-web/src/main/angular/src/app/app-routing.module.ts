@@ -14,7 +14,7 @@ import {HomeComponent} from "./home/home.component";
     imports: [RouterModule.forRoot([
         {
             path: '',
-            redirectTo: 'beneficiary-portal',
+            redirectTo: 'beneficiary-registration',
             pathMatch: 'full'
         }, {
             path: 'home',
@@ -45,12 +45,12 @@ import {HomeComponent} from "./home/home.component";
             canActivate: [AppGuard]
         }, {
             path: 'beneficiary-registration',
-            loadChildren: 'app/+beneficiary-registration/beneficiary-registration.module#BeneficiaryRegistrationModule',
-            canActivate: [AppGuard]
+            loadChildren: 'app/beneficiary-registration/beneficiary-registration.module#BeneficiaryRegistrationModule',
+            //canActivate: [AppGuard]
         }, {
             path: 'supplier-registration',
-            loadChildren: 'app/+supplier-registration/supplier-registration.module#SupplierRegistrationModule',
-            canActivate: [AppGuard]
+            loadChildren: 'app/supplier-registration/supplier-registration.module#SupplierRegistrationModule',
+            //canActivate: [AppGuard]
         }, {
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
