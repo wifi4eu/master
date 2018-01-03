@@ -563,6 +563,10 @@ body {
   font-weight: bold;
 }
 
+.cancel-button.cancel-link{
+    line-height: 1.6em;
+}
+
 @media only screen and (max-width: 438px) {
   .cancel-button, .publish-button {
     font-size: 0.9em;
