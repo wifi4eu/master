@@ -47,14 +47,13 @@ export class DiscussionComponent {
 
         this.thread.messages = [];
 
-        this.threadMessagesApi.allThreadMessages().subscribe(
+        this.threadMessagesApi.getThreadMessageById(this.threadId).subscribe(
             (messages: ThreadMessageDTOBase[]) => {
                 this.thread.messages = messages;
             }, error => {
                 console.log(error);
             }
         );
-
 
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
