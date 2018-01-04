@@ -18,6 +18,7 @@ import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
 import {UserThreadsDTO, UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import index from "@angular/cli/lib/cli";
+import {isNumber} from "util";
 
 @Component({
     selector: 'discussion-component',
@@ -30,8 +31,7 @@ export class DiscussionComponent {
     private municipality: MunicipalityDTOBase = new MunicipalityDTOBase();
     private municipalities: MunicipalityDTOBase[] = [];
     private user: UserDTOBase = new UserDTOBase();
-    private userThread: UserThreadsDTOBase = new UserThreadsDTOBase();
-    private messageAuthors: UserDTOBase[] = [];
+    private messageAuthors: RegistrationDTOBase[] = [];
     private message: string = '';
     private displayMessage: boolean = false;
     private displayMediation: boolean = false;
@@ -41,31 +41,30 @@ export class DiscussionComponent {
     private lauId: number;
     private threadId: number;
     private hasMessages: boolean = false;
+    private hasAuthor: boolean = false;
+    private counter: number = 0;
 
 
-    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private threadApi:ThreadApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
+    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
 
         this.route.params.subscribe(params => this.threadId = params['threadId']);
 
         this.thread.messages = [];
+        this.hasAuthor = false;
+
 
         this.threadApi.getThreadById(this.threadId).subscribe(
-            thread => {this.thread=thread;},
-            error =>{
+            thread => {
+                this.thread = thread;
+                if (this.thread.messages.length > 0) {
+                    this.hasMessages = true;
+                }
+            },
+            error => {
                 console.log(error);
             }
         );
 
-        this.threadMessagesApi.allThreadMessages().subscribe(
-            (messages: ThreadMessageDTOBase[]) => {
-                this.thread.messages = messages;
-                if(this.thread.messages.length > 0){
-                    this.hasMessages = true;
-                }
-            }, error => {
-                console.log(error);
-            }
-        );
 
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
@@ -74,43 +73,34 @@ export class DiscussionComponent {
                 this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
                     (registration: RegistrationDTOBase[]) => {
                         this.registration = registration;
-                        console.log("REGISTRATIONS: ", this.registration);
-                        console.log("REGISTRATIONS[0]: ", this.registration[0]);
                         this.municipalityApi.getMunicipalityById(this.registration[0].municipalityId).subscribe(
                             (municipality: MunicipalityDTOBase) => {
                                 this.municipality = municipality;
                                 this.lauId = this.municipality.lauId;
-                                console.log("MUNICIPALITY: ", this.municipality);
-
                                 this.municipalityApi.getMunicipalitiesByLauId(this.lauId).subscribe(
                                     (municipalities: MunicipalityDTOBase[]) => {
                                         for (var i = 0; i < municipalities.length; i++) {
-
                                             if (this.municipality.id != municipalities[i].id) {
                                                 this.municipalities.push(municipalities[i]);
-                                                console.log("PUSH MUNICIPALITIES", this.municipalities);
+                                                this.registrationApi.getRegistrationsByMunicipalityId(municipalities[i].id).subscribe(
+                                                    (registrations: RegistrationDTOBase[]) => {
+                                                        this.messageAuthors.push(registrations[0]);
+                                                        this.counter++;
+                                                        if (this.counter >= this.municipalities.length) {
+                                                            this.hasAuthor = true;
+                                                        }
+                                                    }, error => {
+                                                        console.log(error);
+                                                    }
+                                                )
+                                                ;
                                             }
                                         }
-                                        console.log("MUNICIPALITIES: ", this.municipalities);
 
                                     }, error => {
                                         console.log(error);
                                     }
                                 );
-
-                                for (let message of this.thread.messages) {
-                                    console.log(this.thread.messages);
-                                    if (message.authorId == this.user.id) {
-                                        this.messageAuthors.push(this.user);
-                                    } else {
-                                        this.userApi.getUserById(message.authorId).subscribe(
-                                            (user: UserDTOBase) => {
-                                                this.messageAuthors.push(user);
-                                            }
-                                        );
-                                    }
-                                }
-
                             }, error => {
                                 console.log(error);
                             }
@@ -132,6 +122,11 @@ export class DiscussionComponent {
         }
     }
 
+    ngOnInit() {
+        this.messageAuthors = [];
+    }
+
+
     private newMessage() {
         this.displayMessage = true;
         this.message = '';
@@ -147,7 +142,7 @@ export class DiscussionComponent {
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.thread.messages.push(response.data);
-                    this.messageAuthors.push(this.user);
+                    // this.messageAuthors.push(this.user);
                     this.hasMessages = true;
                     this.sharedService.growlTranslation('The message was successfully sent!', 'thread.message.success', 'success');
                 } else {
@@ -216,4 +211,5 @@ export class DiscussionComponent {
         this.displayMessage = false;
         this.displayMediation = false;
     }
+
 }

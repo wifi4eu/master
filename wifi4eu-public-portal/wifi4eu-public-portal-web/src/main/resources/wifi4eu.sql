@@ -117,6 +117,10 @@ CREATE TABLE IF NOT EXISTS `dbo`.`registrations` (
   `municipality` INT          NOT NULL,
   `role`         VARCHAR(500) NULL,
   `_status`      INT(1)       NOT NULL, --  0=HOLD; 1=KO; 2=OK
+   `legal_file1` longtext COLLATE utf8_bin,
+  `legal_file2` longtext COLLATE utf8_bin,
+  `legal_file3` longtext COLLATE utf8_bin,
+  `legal_file4` longtext COLLATE utf8_bin
   PRIMARY KEY (`id`),
   INDEX `fk_user_idx` (`_user` ASC),
   INDEX `fk_municipality_idx` (`municipality` ASC),

@@ -312,7 +312,7 @@
   "beneficiaryProfile.duplicatedMunicipalities": "The municipality you registered with is already in use. Please, change your data or go to the discussion area to contact the other parties involved.",
   "beneficiary.goDiscussion": "Go to discusion",
   "beneficiary.goDiscussionText": "One or more applicant applied with the same Municipality as you. Please, contact the other parties to solve de issue.",
-  "beneficiary.registration1": "Registration 1 (you)",
+  "beneficiary.registration1": "Registration {{selfRegistration}} (you)",
   "beneficiary.registrationNumber": "Registration ",
   "beneficiary.deleteApplication.Success": "Your applications were succesfully deleted.",
   "beneficiary.deleteApplication.Failure": "An error occurred an your applications could not be deleted.",
@@ -413,6 +413,5 @@
   "home.part4.link3": "Calls for applications",
   "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
   "notFound.title": "Page not Found - ERROR 404",
-  "notFound.description":"The URL you've written doesn't seem to exist. Make sure you've typed it correctly and try again."
-
+  "notFound.description": "The URL you've written doesn't seem to exist. Make sure you've typed it correctly and try again."
 }

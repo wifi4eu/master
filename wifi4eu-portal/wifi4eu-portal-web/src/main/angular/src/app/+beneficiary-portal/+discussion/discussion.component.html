@@ -13,10 +13,9 @@
     <ux-accordion-boxes>
         <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
             <div class="ui-g">
-                <div class="ui-g-12">
-                    <p class="discussionForumMayors marginTopCountdown">
-                        {{ 'beneficiary.registration1' | translate }}</p>
-                </div>
+                <p class="discussionForumMayors marginTopCountdown"
+                   [innerHTML]="'beneficiary.registration1' | translate:{selfRegistration:user.id}">
+                </p>
             </div>
             <div class="ui-g discussionForumNoBorders">
                 <div class="ui-g-12">
@@ -50,10 +49,12 @@
                 </div>
             </div>
 
-            <div class="ui-g">
+            <div class="ui-g" *ngIf="hasAuthor">
                 <div class="ui-g-6" *ngFor="let municipality of municipalities; let i = index">
                     <p class="discussionForumMayors marginTopCountdown">
-                        {{ 'beneficiary.registrationNumber' | translate }}{{i+2}}</p>
+                        {{ 'beneficiary.registrationNumber' | translate }} <span>{{messageAuthors[i].userId}}</span>
+                    </p>
+
                     <div class="ui-g discussionForumNoBorders">
                         <div class="ui-g-12">
                             <div class="ui-g-3">
@@ -111,8 +112,8 @@
             <div class="ui-g discussion-content">
                 <div class="ui-g-12">
                     <div class="ui-g-3 backgroundMessage">
-                        <p *ngIf="messageAuthors[i]" class="authorMessage">
-                            {{messageAuthors[i].name}} {{messageAuthors[i].surname}}
+                        <p class="authorMessage">
+                            {{ 'beneficiary.registrationNumber' | translate }} {{thread.messages[i].authorId}}
                         </p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
