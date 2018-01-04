@@ -470,7 +470,7 @@ VALUES ('Everis', 'private', 'ES');
 
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`user_threads`(
   `id` int(11) NOT NULL,
-  `user` int(11) NOT NULL,
+  `_user` int(11) NOT NULL,
   `thread` int(11) NOT NULL,
    PRIMARY KEY (`id`)
 )

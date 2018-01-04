@@ -79,7 +79,7 @@
     <hr class="beneficiaryHr">
     <p class="beneficiaryMayor marginTopCountdown">{{ 'recentConversations.title' | translate }}</p>
     <p>{{ 'recentConversations.text' | translate }}</p>
-    <div *ngIf="thread.messages.length < 1" class="ui-g button-content discussion-content">
+    <div *ngIf="!hasMessages" class="ui-g button-content discussion-content">
         <div class="ui-g-12 noPadding">
             <div class="ui-g-8">
                 <p>{{'noRecentConversations.text' | translate }}</p>
@@ -92,7 +92,7 @@
             </div>
         </div>
     </div>
-    <ng-container *ngIf="thread.messages.length > 0">
+    <ng-container *ngIf="hasMessages">
         <div class="ui-g">
             <div class="ui-g-12">
                 <div class="ui-g-9"></div>

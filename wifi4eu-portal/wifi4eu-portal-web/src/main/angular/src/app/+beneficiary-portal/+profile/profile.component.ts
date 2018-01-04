@@ -44,6 +44,7 @@ export class BeneficiaryProfileComponent {
     private isRegisterHold: boolean = false;
     private userThreads: UserThreadsDTOBase = new UserThreadsDTOBase();
     private threadId: number;
+    private hasDiscussion: boolean = false;
 
     constructor(private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private localStorageService: LocalStorageService, private translateService: TranslateService, private uxService: UxService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
@@ -95,6 +96,18 @@ export class BeneficiaryProfileComponent {
                 }, error => {
                     this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'error');
                     this.router.navigateByUrl('/home');
+                }
+            );
+            this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
+                (userThreads: UserThreadsDTOBase[]) => {
+                    console.log("userThreads1:::: ", userThreads);
+                    this.userThreads = userThreads[0];
+                    this.threadId = userThreads[0].threadId;
+                    console.log("userThreads", this.userThreads);
+                    console.log("threadId", this.threadId);
+                    this.hasDiscussion = true;
+                }, error => {
+                    console.log("service error: ", error);
                 }
             );
         } else {

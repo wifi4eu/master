@@ -40,16 +40,28 @@ export class DiscussionComponent {
     private registration: RegistrationDTOBase[] = [];
     private lauId: number;
     private threadId: number;
+    private hasMessages: boolean = false;
 
 
-    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
+    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private threadApi:ThreadApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
+
         this.route.params.subscribe(params => this.threadId = params['threadId']);
 
         this.thread.messages = [];
 
-        this.threadMessagesApi.getThreadMessageById(this.threadId).subscribe(
+        this.threadApi.getThreadById(this.threadId).subscribe(
+            thread => {this.thread=thread;},
+            error =>{
+                console.log(error);
+            }
+        );
+
+        this.threadMessagesApi.allThreadMessages().subscribe(
             (messages: ThreadMessageDTOBase[]) => {
                 this.thread.messages = messages;
+                if(this.thread.messages.length > 0){
+                    this.hasMessages = true;
+                }
             }, error => {
                 console.log(error);
             }
@@ -136,6 +148,7 @@ export class DiscussionComponent {
                 if (response.success) {
                     this.thread.messages.push(response.data);
                     this.messageAuthors.push(this.user);
+                    this.hasMessages = true;
                     this.sharedService.growlTranslation('The message was successfully sent!', 'thread.message.success', 'success');
                 } else {
                     this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'thread.message.error', 'error');

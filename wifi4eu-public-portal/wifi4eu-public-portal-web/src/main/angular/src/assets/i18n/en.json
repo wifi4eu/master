@@ -64,7 +64,7 @@
   "home.part2.subtitle3": " (Central European Time).",
   "home.part4.subtitle": "Please visit following links form more information about the project",
   "home.part4.link4.1": " 00 800 6 7 8 9 10 11",
-  "home.footer.update": "Last Update {{ActualDate}} v1.1.0",
+  "home.footer.update": "Last Update {{ActualDate}} v1.1.1",
   "home.footer.top": " | Top",
   "code.label": "Code",
   "code.required": "Code is required",
@@ -411,5 +411,8 @@
   "home.part4.link1": "Frequently asked questions",
   "home.part4.link2": "About WiFi4EU",
   "home.part4.link3": "Calls for applications",
-  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "notFound.title": "Page not Found - ERROR 404",
+  "notFound.description":"The URL you've written doesn't seem to exist. Make sure you've typed it correctly and try again."
+
 }

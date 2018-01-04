@@ -16,7 +16,7 @@ public class UserThreads {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "_user")
     private User user;
 
     @ManyToOne

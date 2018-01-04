@@ -45,7 +45,7 @@ export class AppGuard implements CanActivate {
         if (this.user === null) {
             return false;
         }
-        return (this.user.type == 2 || this.user.type == 3) ? true : false;
+        return (this.user.type == 2 || this.user.type == 3 || this.user.type == 0) ? true : false;
     }
 
     canActivateBeneficiaryRegistration() {

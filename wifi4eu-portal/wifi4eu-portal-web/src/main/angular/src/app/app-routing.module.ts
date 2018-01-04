@@ -46,7 +46,7 @@ import {HomeComponent} from "./home/home.component";
         }, {
             path: 'beneficiary-registration',
             loadChildren: 'app/beneficiary-registration/beneficiary-registration.module#BeneficiaryRegistrationModule',
-            //canActivate: [AppGuard]
+            canActivate: [AppGuard]
         }, {
             path: 'supplier-registration',
             loadChildren: 'app/supplier-registration/supplier-registration.module#SupplierRegistrationModule',
