@@ -1259,3 +1259,38 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   padding-top: 3em;
   margin-top: 7em;
 }
+
+.panel-dg{
+  background-color: #fff;
+  border: 1px solid rgba(187, 187, 187, 0.8196078431372549);
+  margin-bottom: 1.25rem;
+  position: relative;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.149);
+
+  &.panel-padding{
+    padding: 20px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0);
+  }
+
+  &.panel-input{
+    text-align: left;
+    border: 1px solid rgba(0, 0, 0, 0.09);
+  }
+
+  .panel-dg-header{
+    text-align: left;
+    border-bottom: 1px solid #bbbbbb;
+    padding: 1.75rem 1.25rem;
+
+    span.header-label{
+      color: #565656;
+      font-size: 19px;
+      font-weight: 800;
+    }
+  }
+
+  .text-center{
+    padding: 1.25rem 0.75rem;
+    text-align: center;
+  }
+}
