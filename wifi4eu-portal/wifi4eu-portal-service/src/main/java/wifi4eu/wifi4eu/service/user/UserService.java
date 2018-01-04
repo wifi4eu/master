@@ -195,9 +195,9 @@ public class UserService {
         String subject = bundle.getString("mail.subject");
         String msgBody = bundle.getString("mail.body") + baseUrl + UserConstants.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
 
-
+        if (!isLocalHost()) {
             mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-
+        }
     }
 
     public boolean resendEmail(String email) {
