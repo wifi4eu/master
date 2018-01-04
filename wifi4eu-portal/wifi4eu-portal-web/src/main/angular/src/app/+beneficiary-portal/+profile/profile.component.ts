@@ -69,7 +69,7 @@ export class BeneficiaryProfileComponent {
                                                 this.registrationApi.getRegistrationsByMunicipalityId(municipality.id).subscribe(
                                                     (municipalityRegistrations: RegistrationDTOBase[]) => {
                                                         for (let municipalityRegistration of municipalityRegistrations) {
-                                                            if (municipalityRegistration.role == 'Mayor') {
+                                                             if (municipalityRegistration.role == 'Mayor') {
                                                                 this.userApi.getUserById(municipalityRegistration.userId).subscribe(
                                                                     (mayor: UserDTOBase) => {
                                                                         this.municipalities.push(municipality);
@@ -100,11 +100,8 @@ export class BeneficiaryProfileComponent {
             );
             this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
                 (userThreads: UserThreadsDTOBase[]) => {
-                    console.log("userThreads1:::: ", userThreads);
                     this.userThreads = userThreads[0];
                     this.threadId = userThreads[0].threadId;
-                    console.log("userThreads", this.userThreads);
-                    console.log("threadId", this.threadId);
                     this.hasDiscussion = true;
                 }, error => {
                     console.log("service error: ", error);
