@@ -1,7 +1,36 @@
 <div class="clearfix"></div>
 <div class="container">
-    <div class="row tableTitle">
+
+
+    <div class="jumbotron" style="background-color: transparent;">
+        <div class="container center">
+            <p class="center beneficiaryTitle">{{'dgconn.dashboard.card.managelau' | translate}}</p>
+            <p class="center">{{'manage-lau.country-instructions'| translate}}</p>
+        </div>
     </div>
+
+    <div class="form-group ui-g">
+        <div class="ui-g-12">
+            <label class="label" for="country">{{ 'country.label' | translate }}</label>
+            <select [(ngModel)]="country" (ngModelChange)="selectCountry($event)"
+                    id="country" name="country" class="form-control"
+                    ng-options="option.value as option.name for option in typeOptions"
+                    [disabled]="countries.length < 1">
+                <option disabled selected [ngValue]="null">
+                    {{ 'manage-lau.country-instructions' | translate }}
+                </option>
+                <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry">
+                    {{currentCountry.label}}
+                </option>
+            </select>
+        </div>
+        <div class="ui-g-12">
+            <label class="" for="keyword">{{'keyword.label'|translate}}</label>
+            <input type="text" class="paddingInput"
+                   id="keyword" name="keyword" [(ngModel)]="keyword" (input)="selectCountry($event)">
+        </div>
+    </div>
+
     <p-dataTable [value]="laus" [rows]="5" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [editable]="true"
                  [responsive]="true">
         <p-column field="lauId" header="LauId" [sortable]="true"></p-column>
@@ -27,9 +56,14 @@
         <div class="ui-g-1"></div>
         <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
                   [draggable]="false" [closable]="true" [closeOnEscape]="false" onShow="editPhysicalAddress()">
-            <div class="containerTimeline center">
+            <div class="center">
+
                 <div class="form-group ui-g">
                     <div class="ui-g-12">
+                        <p>{{'manage-lau.dialog.instructions'|translate}} <b>{{selectedLau.name2}}</b></b></p>
+                    </div>
+                    <div class="ui-g-12">
+                        <label for="address">{{'physical-address.label'|translate}}</label>
                         <div class="form-group left">
                             <input type="text" [(ngModel)]="address" placeholder="" id="address" class="form-control" name="address" required>
                         </div>

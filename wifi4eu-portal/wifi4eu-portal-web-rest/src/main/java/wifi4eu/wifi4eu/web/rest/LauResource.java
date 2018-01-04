@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.location.LauService;
 
 import java.util.List;
@@ -68,5 +70,17 @@ public class LauResource {
         return lauService.getLausByCountryCodeAndName1StartingWithIgnoreCase(countryCode, name1);
     }
 
+    @ApiOperation(value = "Update Lau Physical Address")
+    @RequestMapping(value = "/physicaladdress", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO updatePhysicalAddress(@RequestBody final LauDTO lauDTO) {
+        try {
+            LauDTO resLau = lauService.updatePhysicalAddress(lauDTO);
+            return new ResponseDTO(true, resLau, null);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            return new ResponseDTO(false, null, errorDTO);
+        }
+    }
 
 }

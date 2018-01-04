@@ -36,4 +36,8 @@ public class LauService {
     public List<LauDTO> getLausByCountryCodeAndName1StartingWithIgnoreCase(String countryCode, String name1) {
         return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByCountryCodeAndName1StartingWithIgnoreCase(countryCode, name1)));
     }
+
+    public LauDTO updatePhysicalAddress(LauDTO lauDTO){
+        return lauMapper.toDTO(lauRepository.save(lauMapper.toEntity(lauDTO)));
+    }
 }
