@@ -113,10 +113,14 @@
         <eclipselink.logging.level>FINE</eclipselink.logging.level>
         <eclipselink.logging.level.sql>FINE</eclipselink.logging.level.sql>
         <eclipselink.logging.parameters>true</eclipselink.logging.parameters>
+
+        <!-- App settings -->
         <server.address>localhost:8080</server.address>
         <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
         <server.test.port>8080</server.test.port>
-        <server.azure.address>wifi4eudev.azurewebsites.net</server.azure.address>
+        <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
+        <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
+        <server.azure.pro.address>wifi4eupro.azurewebsites.net</server.azure.pro.address>
         <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilterMocked</user.filter.path>
         <enable.security.start> </enable.security.start>
         <enable.security.end> </enable.security.end>
@@ -157,18 +161,56 @@
             </properties>
         </profile>
         <profile>
-            <id>AZURE</id>
+            <id>AZUREDEV</id>
             <properties>
-                <server.address>${server.azure.address}</server.address>
+                <server.address>${server.azure.dev.address}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
                 <war.output.directory/>
-                <ecas.server.address>${server.azure.address}</ecas.server.address>
+                <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <mail.serv.location>http://wifi4eudev.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>AZURETEST</id>
+            <properties>
+                <server.address>${server.azure.test.address}</server.address>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <war.output.directory/>
+                <ecas.server.address>${server.azure.test.address}</ecas.server.address>
+                <ecas.server.port>${server.azure.port}</ecas.server.port>
+                <mail.serv.location>http://wifi4eutest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>AZUREPRO</id>
+            <properties>
+                <server.address>${server.azure.pro.address}</server.address>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <war.output.directory/>
+                <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
+                <ecas.server.port>${server.azure.port}</ecas.server.port>
+                <mail.serv.location>http://wifi4eupro.azurewebsites.net/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
