@@ -189,6 +189,7 @@
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
                 <war.output.directory/>
+                <ecas.config.base.url>https://ecas.ec.europa.eu</ecas.config.base.url>
                 <ecas.server.address>${server.azure.test.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <mail.serv.location>http://wifi4eutest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
