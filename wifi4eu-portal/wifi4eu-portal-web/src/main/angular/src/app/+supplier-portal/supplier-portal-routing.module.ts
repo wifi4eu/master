@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SupplierPortalComponent } from "./supplier-portal.component";
 import { SupplierInstallationComponent } from "./installation/supplier-installation.component";
-import { SupplierMunicipalitiesComponent } from "./municipalities/supplier-municipalities.component";
 import { SupplierProfileComponent } from "./profile/profile.component";
 import { AdditionalInfoComponent } from "./+additional-info/additional-info.component";
+import {DiscussionComponent} from "./+discussion/discussion.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -14,6 +14,9 @@ import { AdditionalInfoComponent } from "./+additional-info/additional-info.comp
         }, {
             path: 'installation/:id',
             component: SupplierInstallationComponent,
+        }, {
+            path: 'discussion-forum/:threadId',
+            component: DiscussionComponent
         }, {
             path: 'profile',
             component: SupplierProfileComponent,
