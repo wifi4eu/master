@@ -237,11 +237,8 @@ export class BeneficiaryProfileComponent {
     private goToDiscussion() {
         this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
             (userThreads: UserThreadsDTOBase[]) => {
-                console.log("userThreads1:::: ", userThreads);
                 this.userThreads = userThreads[0];
                 this.threadId = userThreads[0].threadId;
-                console.log("userThreads", this.userThreads);
-                console.log("threadId", this.threadId);
                 this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
             }, error => {
                 console.log("service error: ", error);

@@ -1,5 +1,5 @@
 import {Component, ViewChild} from "@angular/core";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
 import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
@@ -10,9 +10,14 @@ import {Observable} from "rxjs/Observable";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {LocalStorageService} from "angular-2-local-storage";
 import {TranslateService} from "ng2-translate";
+import {UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
+import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
+import {SharedService} from "../../shared/shared.service";
 
 @Component({
-    selector: 'supplier-profile', templateUrl: 'profile.component.html', providers: [SupplierApi, NutsApi]
+    selector: 'supplier-profile',
+    templateUrl: 'profile.component.html',
+    providers: [SupplierApi, NutsApi, UserThreadsApi]
 })
 
 export class SupplierProfileComponent {
@@ -32,9 +37,12 @@ export class SupplierProfileComponent {
     private isLogoUploaded: boolean = false;
     private logoUrl: FileReader = new FileReader();
     private logoFile: File;
+    private userThreads: UserThreadsDTOBase = new UserThreadsDTOBase();
+    private threadId: number;
+    private hasDiscussion: boolean = false;
     @ViewChild('logoInput') private logoInput: any;
 
-    constructor(private supplierApi: SupplierApi, private nutsApi: NutsApi, private uxService: UxService, private localStorageService: LocalStorageService, private router: Router, private translateService: TranslateService) {
+    constructor(private router: Router, private route: ActivatedRoute, private sharedService: SharedService, private userThreadsApi: UserThreadsApi, private supplierApi: SupplierApi, private nutsApi: NutsApi, private uxService: UxService, private localStorageService: LocalStorageService, private translateService: TranslateService) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -65,6 +73,16 @@ export class SupplierProfileComponent {
                         );
                     }
                 );
+                this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
+                    (userThreads: UserThreadsDTOBase[]) => {
+                        this.userThreads = userThreads[0];
+                        this.threadId = userThreads[0].threadId;
+                        this.hasDiscussion = true;
+                    }, error => {
+                        console.log("service error: ", error);
+                    }
+                );
+
             } else {
                 let translatedString = 'You are not allowed to view this page.';
                 this.translateService.get('error.notallowed').subscribe(
@@ -95,6 +113,7 @@ export class SupplierProfileComponent {
         }
     }
 
+
     private displayModal(name: string) {
         switch (name) {
             case 'contact':
@@ -104,7 +123,7 @@ export class SupplierProfileComponent {
                 this.displayCompany = true;
                 break;
             case 'password':
-                window.location.href ='https://ecas.acceptance.ec.europa.eu/cas/login';
+                window.location.href = 'https://ecas.acceptance.ec.europa.eu/cas/login';
                 //this.displayChangePassword = true;
                 break;
         }
@@ -149,7 +168,7 @@ export class SupplierProfileComponent {
             image.src = URL.createObjectURL(this.logoFile);
             let subscription = Observable.interval(200).subscribe(
                 x => {
-                    switch(imageStatus) {
+                    switch (imageStatus) {
                         case "correct":
                             this.uploadCorrect();
                             subscription.unsubscribe();
@@ -164,7 +183,7 @@ export class SupplierProfileComponent {
         }
     }
 
-    private uploadCorrect() : any {
+    private uploadCorrect(): any {
         this.logoUrl.readAsDataURL(this.logoFile);
         let subscription = Observable.interval(200).subscribe(
             x => {
@@ -177,7 +196,7 @@ export class SupplierProfileComponent {
         );
     }
 
-    private uploadWrong() : any {
+    private uploadWrong(): any {
         this.clearLogoFile();
         this.uxService.growl({
             severity: 'error',
@@ -204,5 +223,20 @@ export class SupplierProfileComponent {
 
     private preventPaste(event: any) {
         return false;
+    }
+
+    private goToDiscussion() {
+        this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
+            (userThreads: UserThreadsDTOBase[]) => {
+                console.log("userThreads1:::: ", userThreads);
+                this.userThreads = userThreads[0];
+                this.threadId = userThreads[0].threadId;
+                console.log("userThreads", this.userThreads);
+                console.log("threadId", this.threadId);
+                this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
+            }, error => {
+                console.log("service error: ", error);
+            }
+        );
     }
 }
