@@ -335,7 +335,7 @@
   "dgconn.statistics.detail.col4": "Attribution du coupon",
   "dgconn.assign.vouchers": "Vous vous apprêtez à attribuer 100 000 coupons en Autriche. Êtes-vous sûr(e) de vouloir continuer?",
   "general.yes": "Oui",
-  "benefLanding.conectEU": "Veuillez d’abord vous connecter à l’aide de votre compte «EU Login»: <a href=\"#\">cliquez ici<\a>",
+  "benefLanding.conectEU": "Veuillez d’abord vous connecter à l’aide de votre compte «EU Login»: <a href=\"#\">cliquez ici</a>",
   "benefLanding.nextSteps": "Vous pourrez ensuite passer aux étapes suivantes de l’enregistrement et/ou de la candidature au programme WiFi4EU. ",
   "benefLanding.elegibleText": "Si votre organisation ne figure pas sur la liste des entités pouvant bénéficier du programme, il est inutile de remplir le formulaire d’enregistrement. Celui-ci ne sera pas valide et vous ne pourrez pas présenter votre candidature. Les candidatures présentées par des entreprises privées seront rejetées.",
   "benefLanding.secondTitle": "Êtes-vous autorisé à participer?",
@@ -386,5 +386,5 @@
   "voucher.step3": "Présenter sa candidature",
   "voucher.ableApply": "Vous pourrez présenter votre candidature lorsque que l’appel à candidatures sera lancé. Pour ce faire, connectez-vous avec votre compte utilisateur EU Login et introduisez une demande de coupon WiFi4EU.",
   "voucher.firstServed": "Veuillez noter que la sélection repose sur le principe du «premier arrivé, premier servi», ainsi que sur des critères visant à garantir l’équilibre géographique, comme expliqué dans le programme de travail du MIE.",
-  "helpdeskform.clickhere.label1": "Vous rencontrez des problèmes d’enregistrement? Cliquez <a (click)=\"expanded = true\">ici pour accéder au service d’assistance<\a>."
+  "helpdeskform.clickhere.label1": "Vous rencontrez des problèmes d’enregistrement? Cliquez <a (click)=\"expanded = true\">ici pour accéder au service d’assistance</a>."
 }

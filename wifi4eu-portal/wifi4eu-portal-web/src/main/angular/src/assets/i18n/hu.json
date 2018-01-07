@@ -320,7 +320,7 @@
   "dgconn.statistics.detail.col4": "Utalványkiosztás",
   "dgconn.assign.vouchers": "Ön 100 000 utalványt készül kiosztani Ausztriában. Biztos, hogy folytatni kívánja a műveletet?",
   "general.yes": "Igen",
-  "benefLanding.conectEU":"A folytatáshoz kérjük, jelentkezzen be EU Login azonosítóival:<a href=\"#\"> kattintson ide<\a>",
+  "benefLanding.conectEU":"A folytatáshoz kérjük, jelentkezzen be EU Login azonosítóival:<a href=\"#\"> kattintson ide</a>",
   "benefLanding.nextSteps":"Ezt követően továbbléphet, vagyis regisztrálhat és/vagy pályázhat WiFi4EU-utalványra. ",
   "benefLanding.pleaseNote":"Figyelem:",
   "benfefLanding.pleaseNoteText":"A tagállamokkal együttműködésben összeállítottuk azoknak a településeknek a listáját, amelyek a soron következő pályázati felhívás keretében WiFi4EU-utalványért folyamodhatnak. A listán települések és települések által létrehozott társulások szerepelnek. Kérjük, tekintse meg, hogy az Ön szervezete rajta van-e a közös megegyezéssel összeállított listán. Ha igen, szervezete már most regisztrálhat, majd benyújthatja jelentkezését, amint közzétételre kerül a pályázati felhívás.",
@@ -387,5 +387,5 @@
   "voucher.step3":"Jelentkezés",
   "voucher.ableApply":"Amint közzé lett téve a felhívás, pályázni lehet utalványért. Ehhez jelentkezzen be EU Login azonosítójával, majd nyújtsa be WiFi4EU-utalványra vonatkozó jelentkezését.",
   "voucher.firstServed":"Figyelem: a kedvezményezetteket a jelentkezések beérkezésének sorrendjében fogjuk kiválasztani az Európai Hálózatfinanszírozási Eszköz (CEF) 2017. évi munkaprogramjában foglaltak szerint.",
-  "helpdeskform.clickhere.label1":"Probléma merült fel a regisztráció során? Kérjük, <a (click)=\"expanded = true\">lépjen kapcsolatba az ügyfélszolgálattal<\a>."
+  "helpdeskform.clickhere.label1":"Probléma merült fel a regisztráció során? Kérjük, <a (click)=\"expanded = true\">lépjen kapcsolatba az ügyfélszolgálattal</a>."
 }

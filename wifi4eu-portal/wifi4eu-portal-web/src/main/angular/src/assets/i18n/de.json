@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Gutscheinzuteilung",
   "dgconn.assign.vouchers": "Sie sind im Begriff, 100 000 Gutscheine in Österreich zuzuteilen. Möchten Sie wirklich fortfahren?",
   "general.yes": "Ja",
-  "benefLanding.conectEU": "Zunächst müssen Sie sich mit einem <a href=\"#\">EU Login-Konto anmelden <\a>.",
+  "benefLanding.conectEU": "Zunächst müssen Sie sich mit einem <a href=\"#\">EU Login-Konto anmelden </a>.",
   "benefLanding.nextSteps": "Dann können Sie sich registrieren und/oder WiFi4EU beantragen. ",
   "benefLanding.pleaseNote": "Hinweis:",
   "benefLanding.elegibleText": "Füllen Sie kein Formular aus, wenn Ihre Organisation nicht auf der Liste steht; die Registrierung wäre ungültig, und Sie könnten keinen Antrag stellen. Von Privatunternehmen eingereichte Anträge werden abgelehnt.",
@@ -388,5 +388,5 @@
   "voucher.step3": "Antrag stellen",
   "voucher.ableApply": "Sobald die Aufforderung ergeht, können Sie Ihren Antrag stellen. Dazu müssen Sie sich mit Ihrem EU Login-Konto anmelden und einen Antrag auf einen WiFi4EU-Gutschein einreichen.",
   "voucher.firstServed": "Beachten Sie, dass die Auswahl nach dem Windhundverfahren sowie nach Kriterien zur Gewährleistung einer geografischen Ausgewogenheit erfolgt – siehe das Arbeitsprogramm 2017 der Fazilität „Connecting Europe“.",
-  "helpdeskform.clickhere.label1": "Probleme mit Ihrer Registrierung? Wenden <a (click)=\"expanded = true\">Sie sich an das Helpdesk <\a>."
+  "helpdeskform.clickhere.label1": "Probleme mit Ihrer Registrierung? Wenden <a (click)=\"expanded = true\">Sie sich an das Helpdesk </a>."
 }

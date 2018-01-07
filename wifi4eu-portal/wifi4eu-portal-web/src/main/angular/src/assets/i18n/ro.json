@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Alocare cupoane Wi-Fi",
   "dgconn.assign.vouchers": "Veți aloca 100 000 de cupoane Wi-Fi Austriei. Sunteți sigur că doriți să continuați?",
   "general.yes": "Da.",
-  "benefLanding.conectEU": "Pentru a continua , trebuie să vă conectați mai întâi la un cont „EU-login”: <a href=\"#\"> clic aici<\a>",
+  "benefLanding.conectEU": "Pentru a continua , trebuie să vă conectați mai întâi la un cont „EU-login”: <a href=\"#\"> clic aici</a>",
   "benefLanding.nextSteps": "După aceea, veți parcurge restul pașilor necesari pentru înregistrare și/sau depunerea candidaturii. ",
   "benefLanding.pleaseNote": "Notă:",
   "benefLanding.elegibleText": "Dacă organizația dumneavoastră nu se regăsește pe lista entităților eligibile, nu completați formularul, pentru că înregistrarea nu va fi valabilă și nu veți putea candida. Formularele completate de companii private vor fi respinse.",
@@ -388,5 +388,5 @@
   "voucher.step3": "Depuneți-vă candidatura",
   "voucher.ableApply": "Odată publicată cererea de proiecte, vă puteți depune candidatura. Pentru a face acest lucru, conectați-vă la contul dumneavoastră EU Login și solicitați un cupon WiFi4EU.",
   "voucher.firstServed": "Notă: Selecția se realizează pe baza principiului „primul venit, primul servit”, precum și pe criterii menite să asigure o reprezentare geografică echilibrată, după cum se precizează în programul de lucru al MIE pentru 2017.",
-  "helpdeskform.clickhere.label1": "Aveți probleme cu înregistrarea? Faceți clic <a (click)=\"expanded = true\"> aici pentru a accesa serviciul de asistență tehnică<\a>."
+  "helpdeskform.clickhere.label1": "Aveți probleme cu înregistrarea? Faceți clic <a (click)=\"expanded = true\"> aici pentru a accesa serviciul de asistență tehnică</a>."
 }

@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Assegnazione di voucher",
   "dgconn.assign.vouchers": "100 000 buoni stanno per essere assegnati in Austria. Continuare?",
   "general.yes": "Sì",
-  "benefLanding.conectEU": "Per procedere, prima connettiti con un account “EU Login” : <a href=\"#\">clicca qui<\a>",
+  "benefLanding.conectEU": "Per procedere, prima connettiti con un account “EU Login” : <a href=\"#\">clicca qui</a>",
   "benefLanding.nextSteps": "Poi potrai passare alle fasi successive della registrazione e/o chiedere di partecipare all'iniziativa WIFI4EU. ",
   "benefLanding.pleaseNote": "Attenzione:",
   "benefLanding.elegibleText": "Se la tua organizzazione non figura sull'elenco dei soggetti ammissibili, non compilare il modulo: la registrazione non sarà considerata valida e non potrai candidarti. Le candidature compilate dalle imprese private saranno respinte.",
@@ -388,5 +388,5 @@
   "timelineComponentTitle": "Tempo rimanente prima del lancio dell’invito a presentare proposte:",
   "voucher.ableApply": "Quando l’invito a presentare proposte sarà aperto, potrai candidarti. Per farlo, connettiti con il tuo account EU Login e presenta una domanda di buoni WIFI4EU.",
   "voucher.firstServed": "Attenzione: la selezione avviene in base al principio \"primo arrivato, primo servito\" e secondo determinati criteri per assicurare un equilibrio geografico, come indicato nel programma di lavoro 2017 del CEF.",
-  "helpdeskform.clickhere.label1": "Problemi con la registrazione? Clicca <a (click)=\"expanded = true\">qui per accedere all'helpdesk<\a>."
+  "helpdeskform.clickhere.label1": "Problemi con la registrazione? Clicca <a (click)=\"expanded = true\">qui per accedere all'helpdesk</a>."
 }

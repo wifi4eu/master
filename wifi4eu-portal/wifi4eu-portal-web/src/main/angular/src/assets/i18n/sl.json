@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Dodelitev bonov",
   "dgconn.assign.vouchers": "Dodeliti nameravate 100 000 bonov v Avstriji. Ali res želite nadaljevati?",
   "general.yes": "Da",
-  "benefLanding.conectEU": "Da boste lahko opravili postopek registracije, se morate najprej prijaviti v račun EU-Login: <a href=\"#\"> kliknite tukaj<\a>",
+  "benefLanding.conectEU": "Da boste lahko opravili postopek registracije, se morate najprej prijaviti v račun EU-Login: <a href=\"#\"> kliknite tukaj</a>",
   "benefLanding.nextSteps": "Nato lahko opravite registracijo oziroma oddate prijavo za shemo WiFi4EU. ",
   "benefLanding.pleaseNote": "Opozarjamo:",
   "benefLanding.elegibleText": "Če vaše organizacije ni na seznamu upravičenih subjektov, ne izpolnjujte obrazca, saj vaša registracija ne bo veljavna in ne boste mogli oddati prijave oziroma vloge. Prijave zasebnih podjetij bomo zavrnili.",
@@ -388,5 +388,5 @@
   "timelineComponentTitle": "Do objave razpisa je še:",
   "voucher.ableApply": "Prijavo boste oddali, ko bo objavljen razpis za zbiranje prijav. Najprej se morate prijaviti v sistem z geslom EU Login, nato oddajte prijavo za bon WiFi4EU.",
   "voucher.firstServed": "Izbor projektov bo potekal po načelu „kdor prej pride, prej melje“ ter po kriterijih, ki zagotavljajo geografsko uravnoteženost, kot je natančno določeno v delovnem programu IPE 2017.",
-  "helpdeskform.clickhere.label1": "Težave z registracijo? Kontaktirajte <a (click)=\"expanded = true\"> službo za pomoč<\a>."
+  "helpdeskform.clickhere.label1": "Težave z registracijo? Kontaktirajte <a (click)=\"expanded = true\"> službo za pomoč</a>."
 }

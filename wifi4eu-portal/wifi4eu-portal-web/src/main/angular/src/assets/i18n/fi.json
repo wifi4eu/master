@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Maksusetelien antaminen",
   "dgconn.assign.vouchers": "Olet antamassa 100 000 maksuseteliä Itävaltaan. Haluatko varmasti jatkaa?",
   "general.yes": "Kyllä",
-  "benefLanding.conectEU": "Kirjaudu ensin  ”EU Login” -<a href=\"#\">tilillesi tai luo sellainen tästä linkistä<\a>.",
+  "benefLanding.conectEU": "Kirjaudu ensin  ”EU Login” -<a href=\"#\">tilillesi tai luo sellainen tästä linkistä</a>.",
   "benefLanding.nextSteps": "Voit sen jälkeen rekisteröityä WiFi4EU-järjestelmään ja hakea rahoitusta. ",
   "benefLanding.pleaseNote": "Huom.",
   "benefLanding.elegibleText": "Jos organisaatiosi ei ole hyväksyttyjen organisaatioiden luettelossa, älä täytä lomaketta, sillä rekisteröityminen ja rahoituksen hakeminen eivät tule onnistumaan. Yksityisten yritysten lähettämät hakemukset hylätään.",
@@ -388,5 +388,5 @@
   "timelineComponentTitle": "Aikaa jäljellä hakuajan alkuun:",
   "voucher.ableApply": "Voit tehdä hakemuksen hakuajan alettua. Kirjaudu sisään käyttäen EU Login -tiliäsi ja tee WiFi4EU-rahoitushakemus.",
   "voucher.firstServed": "Huomaa, että rahoituksen saajat valitaan hakemusten saapumisjärjestyksessä sekä alueellisen tasapuolisuuden varmistavien kriteerien mukaan. Kriteerit on esitetty Verkkojen Eurooppa -välineen vuoden 2017 työohjelmassa.",
-  "helpdeskform.clickhere.label1": "Eikö rekisteröityminen onnistu? Ota yhteyttä <a (click)=\"expanded = true\">käyttötukeen napsauttamalla tästä.<\a>"
+  "helpdeskform.clickhere.label1": "Eikö rekisteröityminen onnistu? Ota yhteyttä <a (click)=\"expanded = true\">käyttötukeen napsauttamalla tästä.</a>"
 }

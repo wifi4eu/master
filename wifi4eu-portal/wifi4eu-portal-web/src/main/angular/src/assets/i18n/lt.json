@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Čekio paskyrimas",
   "dgconn.assign.vouchers": "Rengiatės skirti 100 000 čekių Austrijai. Ar tikrai norite tęsti?",
   "general.yes": "Taip",
-  "benefLanding.conectEU": "Kad galėtumėte registruotis, prisijunkite prie savo „EU-login“ paskyros: <a href=\"#\">spustelėkite čia<\a>.",
+  "benefLanding.conectEU": "Kad galėtumėte registruotis, prisijunkite prie savo „EU-login“ paskyros: <a href=\"#\">spustelėkite čia</a>.",
   "benefLanding.nextSteps": "Tuomet galėsite užsiregistruoti ir (arba) pateikti paraišką dalyvauti programoje „WiFi4EU“. ",
   "benefLanding.pleaseNote": "Dėmesio!",
   "benefLanding.elegibleText": "Jei Jūsų organizacijos tinkamų subjektų sąraše nėra, nepildykite formos, nes registracija negalios ir pateikti paraiškos negalėsite. Privačių bendrovių paraiškos bus atmestos.",
@@ -388,5 +388,5 @@
   "voucher.step3": "Pateikti paraišką",
   "voucher.ableApply": "Kai bus paskelbtas kvietimas teikti paraiškas, galėsite pateikti paraišką. Tuo tikslu prisijunkite prie savo „EU Login“ paskyros ir pateikite „WiFi4EU“ čekio paraišką.",
   "voucher.firstServed": "Atkreipkite dėmesį, kad atranka vykdoma eiliškumo principu ir remiantis geografinės pusiausvyros užtikrinimo kriterijais, kaip nurodyta 2017 m. Europos infrastruktūros tinklų priemonės darbo programoje.",
-  "helpdeskform.clickhere.label1": "Kilo problemų registruojantis? Spustelėkite <a (click)=\"expanded = true\">čia ir kreipkitės į pagalbos tarnybą<\a>."
+  "helpdeskform.clickhere.label1": "Kilo problemų registruojantis? Spustelėkite <a (click)=\"expanded = true\">čia ir kreipkitės į pagalbos tarnybą</a>."
 }

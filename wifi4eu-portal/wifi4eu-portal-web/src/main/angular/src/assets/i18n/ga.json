@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Sannadh dearbhán",
   "dgconn.assign.vouchers": "Tá tú ar tí 100, 000 dearbhán a shannadh san Ostair. An bhfuil tú cinnte gur mian leat leanúint ar aghaidh?",
   "general.yes": "Tá",
-  "benefLanding.conectEU": "Chun leanúint ar aghaidh, ní mór logáil isteach ar do chuntas EU-login: <a href=\"#\">cliceáil anseo<\a>",
+  "benefLanding.conectEU": "Chun leanúint ar aghaidh, ní mór logáil isteach ar do chuntas EU-login: <a href=\"#\">cliceáil anseo</a>",
   "benefLanding.nextSteps": "Ansin, is féidir leat na chéad chéimeanna eile a leanúint chun clárú leis an scéim WiFi4EU nó chun iarratas a dhéanamh uirthi. ",
   "benefLanding.pleaseNote": "Tabhair do d'aire:",
   "benefLanding.elegibleText": "Mura bhfuil an eagraíocht s'agatsa ar liosta na n-eintiteas incháilithe, ná líon isteach an fhoirm óir ní bheidh an clárúchán bailí agus ní bheidh tú in ann iarratas a dhéanamh. Ní ghlacfar le hiarratais ó chuideachtaí príobháideacha.",
@@ -388,5 +388,5 @@
   "voucher.step3": "Iarratas a dhéanamh",
   "voucher.ableApply": "A luaithe agus a osclófar an glao ar iarratais, beidh tú in ann iarratas a dhéanamh. Chun an méid sin a dhéanamh, logáil isteach trí EU Login agusdéan iarratas ar dhearbhán WiFi4EU.",
   "voucher.firstServed": "Tabhair do d'aire go ndéanfar an roghnú ar bhonn \"tús freastail ar an gceann is túisce\" agus ar bhonn critéar ar leith d'fhonn cothromaíocht gheografach a chinntiú , mar atá leagtha síos i gClár Oibre na Saoráide um Chónascadh na hEorpa 2017.",
-  "helpdeskform.clickhere.label1": "Deacracht agat an clárú a dhéanamh? Cliceáil anseo chun dul i <a (click)=\"expanded = true\">dteagmháil leis an deasc chabhrach<\a>."
+  "helpdeskform.clickhere.label1": "Deacracht agat an clárú a dhéanamh? Cliceáil anseo chun dul i <a (click)=\"expanded = true\">dteagmháil leis an deasc chabhrach</a>."
 }

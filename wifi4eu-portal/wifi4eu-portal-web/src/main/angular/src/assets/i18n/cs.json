@@ -321,7 +321,7 @@
   "dgconn.assign.vouchers": "Chystáte se přidělit 100 000 poukázek žadatelům z Rakouska. Chcete pokračovat?",
   "general.yes": "Ano",
   "benefLanding.title": "Vítejte na registračních stránkách pro žadatele prostředků z projektu WiFi4EU.",
-  "benefLanding.conectEU": "Chcete-li pokračovat, nejdříve se  přihlaste přes službu „EU Login“: <a href=\"#\">klikněte sem<\a>",
+  "benefLanding.conectEU": "Chcete-li pokračovat, nejdříve se  přihlaste přes službu „EU Login“: <a href=\"#\">klikněte sem</a>",
   "benefLanding.nextSteps": "Poté můžete provést další kroky registrace a/nebo zažádat o prostředky z rozpočtu projektu WiFi4EU. ",
   "benefLanding.pleaseNote": "Upozornění:",
   "benefLanding.elegibleText": "Pokud vaše organizace ještě na seznamu způsobilých subjektů zapsaná není, registrační formulář nevyplňujte – nebude platná a NEBUDETE MOCT podat přihlášku. Na žádosti soukromých společností nebudou brán zřetel.",
@@ -388,5 +388,5 @@
   "voucher.step3": "Zažádat",
   "voucher.ableApply": "Žádost lze podat až po zahájení samotné výzvy k podávání žádostí. Při podávání žádosti je třeba se přihlásit pomocí uživatelského účtu u služby „EU Login“ a žádost o poukázku WiFi4EU odeslat.",
   "voucher.firstServed": "Přednost budou mít při výběru ti, kteří zažádají dříve.  Dále Komise dodrží zeměpisnou vyváženost, jak je podrobně uvedeno v pracovním programu pro Nástroj pro propojení Evropy na rok 2017 .",
-  "helpdeskform.clickhere.label1": "Nedaří se vám zaregistrovat? Klikněte sem a <a (click)=\"expanded = true\">obraťte se na asistenční službu.<\a>"
+  "helpdeskform.clickhere.label1": "Nedaří se vám zaregistrovat? Klikněte sem a <a (click)=\"expanded = true\">obraťte se na asistenční službu.</a>"
 }

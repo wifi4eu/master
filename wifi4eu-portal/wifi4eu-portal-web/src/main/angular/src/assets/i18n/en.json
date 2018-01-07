@@ -374,7 +374,6 @@
   "notFound.title": "Page not Found - ERROR 404",
   "notFound.description": "The URL you've written doesn't seem to exist. Make sure you've typed it correctly and try again.",
   "benefLanding.title": "Welcome to the WiFi4EU registration page for applicants.",
-  "benefLanding.conectEU": "In order to proceed further, please first connect with an “EU-login” account: <a href=\"#\">click here<\a>",
   "benefLanding.nextSteps": "You may then proceed with the next steps to register and/or apply for the WiFi4EU scheme. ",
   "benefLanding.pleaseNote": "Please note:",
   "benfefLanding.pleaseNoteText": "In collaboration with the Member States, a list of entities eligible to apply for a WiFi4EU voucher has been agreed for the next call for applications. This list includes municipalities or associations formed by municipalities. Please check if your organisation is part of the agreed list. In that case, you can already register now, and subsequently apply when the call for applications will be opened.",
@@ -440,6 +439,7 @@
   "timelineComponentTitle": "Remaining time for the launch of the call:",
   "voucher.step3": "Apply",
   "voucher.ableApply": "Once the call for applications is open, you will be able to apply. To do so, login with your EU Login user account and submit you application for a WiFi4EU voucher.",
-  "voucher.firstServed": "Note that the selection is conducted on a 'first-come first-served' basis as well as criteria to ensure a geographical balance, as detailed in the CEF Work Programme 2017.",
-  "helpdeskform.clickhere.label1": "Problems with your registration? Please <a (click)=\"expanded = true\">click here to access the Help-Desk.<\a>"
+  "voucher.firstServed": "Note that the selection is conducted on a 'first-come first-served' basis as well as criteria to ensure a geographical balance, as detailed in the CEF Work Programme 2017."
+  "benefLanding.conectEU": "In order to proceed further, please first connect with an “EU-login” account: <a href=\"#\">click here</a>",
+  "helpdeskform.clickhere.label1": "Problems with your registration? Please <a (click)=\"expanded = true\">click here to access the Help-Desk.</a>"
 }

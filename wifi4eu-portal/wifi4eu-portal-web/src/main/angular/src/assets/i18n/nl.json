@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Vouchers toekennen",
   "dgconn.assign.vouchers": "U staat op het punt om 100.000 vouchers in Oostenrijk toe te kennen. Weet u zeker dat u wilt doorgaan?",
   "general.yes": "Ja",
-  "benefLanding.conectEU": "Om te beginnen moet u inloggen <a href=\"#\">met uw EU Login-account<\a>.",
+  "benefLanding.conectEU": "Om te beginnen moet u inloggen <a href=\"#\">met uw EU Login-account</a>.",
   "benefLanding.nextSteps": "Daarna kunt u zich inschrijven en/of een aanvraag indienen voor WiFi4EU. ",
   "benefLanding.pleaseNote": "Let op:",
   "benefLanding.elegibleText": "Staat uw organisatie niet op de lijst? Dan heeft het ook geen zin om het formulier in te vullen en een aanvraag in te dienen. Ook aanvragen van privébedrijven worden afgewezen.",
@@ -388,5 +388,5 @@
   "voucher.step3": "Uw aanvraag indienen",
   "voucher.ableApply": "Zodra de aanvraagronde van start gaat, kunt u uw aanvraag indienen. Daarvoor moet u inloggen met uw EU Login-account en het aanvraagformulier voor een WiFi4EU-voucher verzenden.",
   "voucher.firstServed": "Let op: We hanteren de regel \"Wie het eerst komt, het eerst maalt\" en criteria voor een evenwichtige geografische spreiding als beschreven in het CEF-werkprogramma 2017.",
-  "helpdeskform.clickhere.label1": "Problemen met inschrijven? Neem hier <a (click)=\"expanded = true\"> contact op met de helpdesk<\a>."
+  "helpdeskform.clickhere.label1": "Problemen met inschrijven? Neem hier <a (click)=\"expanded = true\"> contact op met de helpdesk</a>."
 }

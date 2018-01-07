@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Tildeling af kuponer",
   "dgconn.assign.vouchers": "Du er ved at tildele 100 000 kuponer til Østrig. Er du sikker på, at du vil fortsætte?",
   "general.yes": "Ja",
-  "benefLanding.conectEU": "For at kunne fortsætte skal du først logge ind med en EU Login-konto:<a href=\"#\"> Klik her<\a>",
+  "benefLanding.conectEU": "For at kunne fortsætte skal du først logge ind med en EU Login-konto:<a href=\"#\"> Klik her</a>",
   "benefLanding.nextSteps": "Derefter kan du fortsætte til næste trin og registrere dig og/eller ansøge om deltagelse i WiFi4EU-ordningen. ",
   "benefLanding.pleaseNote": "Bemærk:",
   "benfefLanding.pleaseNoteText": "Der er i samarbejde med medlemslandene udarbejdet en liste over, hvilke enheder der kan ansøge om en WiFi4EU-kupon under den næste indkaldelse af ansøgninger. Listen omfatter kommuner eller sammenslutninger af kommuner. Se om din organisation er omfattet af listen. Hvis den er, kan du allerede registrere den nu og efterfølgende ansøge, når indkaldelsen af ansøgninger åbner.",
@@ -388,5 +388,5 @@
   "voucher.step3": "Ansøg",
   "voucher.ableApply": "Så snart indkaldelsen af ansøgninger er åben, kan du sende din ansøgning. For at gøre det skal du logge ind med din EU Login-konto og sende din ansøgning om en WiFi4EU-kupon.",
   "voucher.firstServed": "Bemærk, at udvælgelsen sker efter først til mølle-princippet og efter kriterier, der skal sikre en geografisk balance, som beskrevet i CEF-arbejdsprogrammet for 2017.",
-  "helpdeskform.clickhere.label1": "Problemer med registreringen? Klik her for at <a (click)=\"expanded = true\">få adgang til vores helpdesk.<\a>"
+  "helpdeskform.clickhere.label1": "Problemer med registreringen? Klik her for at <a (click)=\"expanded = true\">få adgang til vores helpdesk.</a>"
 }

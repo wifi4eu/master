@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Pridelenie poukážok",
   "dgconn.assign.vouchers": "Chystáte sa prideliť 10 000 poukážok v Rakúsku. Naozaj chcete pokračovať?",
   "general.yes": "Áno",
-  "benefLanding.conectEU": "Ak chcete pokračovať, prihláste sa pomocou svojho účtu EU Login: <a href=\"#\">kliknite sem<\a>",
+  "benefLanding.conectEU": "Ak chcete pokračovať, prihláste sa pomocou svojho účtu EU Login: <a href=\"#\">kliknite sem</a>",
   "benefLanding.nextSteps": "Potom môžete vykonať ďalšie kroky na registráciu prípadne podanie žiadosti o zapojenie sa do programu WiFi4EU. ",
   "benefLanding.pleaseNote": "Upozornenie:",
   "benefLanding.elegibleText": "Ak vaša organizácia na zozname oprávnených subjektov nefiguruje, formulár nevypĺňajte, registrácia bude neplatná a nebudete môcť podať žiadosť. Žiadosti vyplnené súkromnými spoločnosťami budú zamietnuté.",
@@ -388,5 +388,5 @@
   "voucher.step3": "Podajte žiadosť",
   "voucher.ableApply": "Podať prihlášku budete môcť hneď, ako sa otvorí výzva na podávanie žiadostí. Potrebujete sa prihlásiť na svoj používateľský účet EU Login a predložiť žiadosť o vydanie poukazu WiFi4EU.",
   "voucher.firstServed": "Upozorňujeme, že výber sa uskutoční na základe poradia, v akom boli predložené žiadosti, a zohľadnia sa aj kritériá na zaručenie zemepisnej vyváženosti, podrobnosti možno nájsť v pracovnom programe NPE na rok 2017.",
-  "helpdeskform.clickhere.label1": "Máte problémy s registráciou?<a (click)=\"expanded = true\"> Kliknutím sem sa spojíte s asistenčným centrom<\a>."
+  "helpdeskform.clickhere.label1": "Máte problémy s registráciou?<a (click)=\"expanded = true\"> Kliknutím sem sa spojíte s asistenčným centrom</a>."
 }

@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Assenjament tal-vawċer",
   "dgconn.assign.vouchers": "Se tassenja 100,000 vawċers fl-Awstrija. Ċert li tixtieq tkompli?",
   "general.yes": "Iva",
-  "benefLanding.conectEU": "Biex tkompli jekk jogħġbok l-ewwel ikkonnettja ma’ kont tal-“EU-login”: <a href=\"#\">Ikklikkja hawn<\a>",
+  "benefLanding.conectEU": "Biex tkompli jekk jogħġbok l-ewwel ikkonnettja ma’ kont tal-“EU-login”: <a href=\"#\">Ikklikkja hawn</a>",
   "benefLanding.nextSteps": "Imbagħad tista’ tipproċedi bil-passi li jmiss biex tirreġistra u/jew tapplika għall-iskema WiFi4EU. ",
   "benefLanding.pleaseNote": "Jekk jogħġbok kun af li:",
   "benefLanding.elegibleText": "Jekk l-organizzazzjoni tiegħek mhix fuq il-lista tal-entitajiet eliġibbli timliex il-formola, ir-reġistrazzjoni mhux se tkun valida u ma tkunx tista’ tapplika. L-applikazzjonijiet mimlijin minn kumpaniji privati jiġu rifjutati.",
@@ -388,5 +388,5 @@
   "timelineComponentTitle": "Żmien li fadal għall-varar tas-sejħa:",
   "voucher.ableApply": "Ladarba tiftaħ is-sejħa għall-applikazzjonijiet, tkun tista’ tapplika. Biex tagħmel dan, illoggja bil-kont tal-EU Login tiegħek u ssottometti l-applikazzjoni tiegħek għal vawċer ta’ WiFi4EU.",
   "voucher.firstServed": "Innota li l-għażla ssir fuq bażi ta’ “min jiġi l-ewwel jinqeda l-ewwel” kif ukoll kriterji biex jiġi żgurat bilanċ ġeografiku, kif spjegat fid-dettall fil-Programm ta’ Ħidma tas-CEF tal-2017.",
-  "helpdeskform.clickhere.label1": "Qed issib il-problemi bir-reġistrazzjoni tiegħek?<a (click)=\"expanded = true\"> Jekk jogħġbok ikklikkja hawn biex tikkuntattja lill-Helpdesk<\a>."
+  "helpdeskform.clickhere.label1": "Qed issib il-problemi bir-reġistrazzjoni tiegħek?<a (click)=\"expanded = true\"> Jekk jogħġbok ikklikkja hawn biex tikkuntattja lill-Helpdesk</a>."
 }

@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Utdelning av checkar",
   "dgconn.assign.vouchers": "Du är på väg att dela ut 100 000 checkar i Österrike. Vill du fortsätta?",
   "general.yes": "Ja",
-  "benefLanding.conectEU": "Först måste du logga in med ditt EU Login-konto:<a href=\"#\"> Skapa ett konto<\a>",
+  "benefLanding.conectEU": "Först måste du logga in med ditt EU Login-konto:<a href=\"#\"> Skapa ett konto</a>",
   "benefLanding.nextSteps": "Sedan kan du gå vidare med nästa steg och registrera dig och/eller ansöka om WiFi4EU-bidrag. ",
   "benefLanding.pleaseNote": "Obs!",
   "benefLanding.elegibleText": "Om din kommun inte finns med på listan ska du inte registrera den. Registreringen kommer inte att godkännas och du kommer inte att kunna ansöka om en check. Vi godkänner inte heller ansökningar från privata företag.",
@@ -388,5 +388,5 @@
   "voucher.step3": "Ansök",
   "voucher.ableApply": "När ansökningsomgången väl har startat kan du söka. Logga in med ditt EU Login-konto och skicka in ansökan om en WiFi4EU-check.",
   "voucher.firstServed": "Urvalet sker enligt principen ”först till kvarn” och utifrån kriterier för en jämn geografisk spridning (se FSE:s arbetsprogram för 2017).",
-  "helpdeskform.clickhere.label1": "Problem med registreringen?<a (click)=\"expanded = true\">Kontakta helpdesk<\a>"
+  "helpdeskform.clickhere.label1": "Problem med registreringen?<a (click)=\"expanded = true\">Kontakta helpdesk</a>"
 }

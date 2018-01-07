@@ -330,7 +330,7 @@
   "benefLanding.no": "No",
   "notFound.title": "Página no encontrada - ERROR 404",
   "notFound.description": "Parece que la URL que ha escrito no existe. Por favor, compruebe que la ha escrito correctamente.",
-  "benefLanding.conectEU": "Para empezar, inicie sesión en su cuenta \"EU-login\": <a href=\"#\">pulse aquí<\a>",
+  "benefLanding.conectEU": "Para empezar, inicie sesión en su cuenta \"EU-login\": <a href=\"#\">pulse aquí</a>",
   "benefLanding.nextSteps": "Después continúe con las siguientes etapas para la inscripción y/o la solicitud de participación en la iniciativa WiFi4EU. ",
   "benefLanding.pleaseNote": "Nota:",
   "benefLanding.elegibleText": "Si su organización no figura en la lista de entidades, no servirá de nada rellenar el formulario porque la inscripción no será válida y no podrá presentar su solicitud. Se rechazarán las solicitudes cumplimentadas por empresas privadas.",
@@ -404,5 +404,5 @@
   "timelineComponentTitle": "Tiempo restante antes de la publicación de la convocatoria:",
   "voucher.ableApply": "Una vez abierta la convocatoria, podrá presentar su solicitud. Para hacerlo, inicie sesión con su cuenta de usuario EU Login y presente su solicitud de bonos WiFi4EU.",
   "voucher.firstServed": "Tenga en cuenta que el proceso de selección se realiza por orden de solicitud y de acuerdo con criterios para garantizar el equilibrio geográfico, tal como se indica en el programa de trabajo 2017 del MCE.",
-  "helpdeskform.clickhere.label1": "¿Tiene algún problema con la inscripción? <a (click)=\"expanded = true\"> Pulse aquí para acceder al servicio de asistencia.<\a>"
+  "helpdeskform.clickhere.label1": "¿Tiene algún problema con la inscripción? <a (click)=\"expanded = true\"> Pulse aquí para acceder al servicio de asistencia.</a>"
 }

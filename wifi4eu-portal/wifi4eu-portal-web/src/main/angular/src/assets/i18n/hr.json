@@ -335,7 +335,7 @@
   "dgconn.statistics.detail.col4": "Dodjeljivanje kupona",
   "dgconn.assign.vouchers": "Uskoro ćete dodijeliti 100 000 kupona u Austriji. Sigurni ste da želite nastaviti?",
   "general.yes": "Da",
-  "benefLanding.conectEU": "Prvo se povežite na račun „EU-login”: <a href=\"#\">kliknite ovdje<\a>",
+  "benefLanding.conectEU": "Prvo se povežite na račun „EU-login”: <a href=\"#\">kliknite ovdje</a>",
   "benefLanding.nextSteps": "Potom se možete registrirati i/ili podnijeti zahtjev za program WiFi4EU. ",
   "benefLanding.pleaseNote": "Napomena:",
   "benfefLanding.pleaseNoteText": "U suradnji s državama članicama za sljedeći je poziv za podnošenje prijava dogovoren popis subjekata koji ispunjavaju uvjete za podnošenje zahtjeva za dobivanje kupona WiFi4EU. Taj popis uključuje općine ili udruženja koja su osnovale općine. Provjerite je li vaša organizacija na dogovorenom popisu. U tom se slučaju već sada možete registrirati, a prijavu možete podnijeti kada poziv bude otvoren.",
@@ -388,5 +388,5 @@
   "voucher.step3": "Primijeni",
   "voucher.ableApply": "Prijavu ćete moći podnijeti kada se otvori poziv. Kako biste to učinili, prijavite se na svoj korisnički račun EU Login i podnesite zahtjev za dobivanje kupona WiFi4EU.",
   "voucher.firstServed": "Imajte na umu da se odabir provodi prema redoslijedu podnošenja prijava i na temelju kriterija kojima se osigurava zemljopisna ravnoteža, kako je opisano uradnom programu CEF-a za 2017.",
-  "helpdeskform.clickhere.label1": "Imate problema s registracijom? Za pristup <a (click)=\"expanded = true\">službi za korisnike kliknite ovdje<\a>."
+  "helpdeskform.clickhere.label1": "Imate problema s registracijom? Za pristup <a (click)=\"expanded = true\">službi za korisnike kliknite ovdje</a>."
 }

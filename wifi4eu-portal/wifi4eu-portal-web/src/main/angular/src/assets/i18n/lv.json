@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Vaučeru piešķiršana",
   "dgconn.assign.vouchers": "Jūs gatavojaties piešķirt 100 000 vaučerus Austrijā Vai tiešām gribat turpināt?",
   "general.yes": "Jā",
-  "benefLanding.conectEU": "Lai varētu turpināt, vispirms pieslēdzieties, izmantojot “EU-login” kontu: <a href=\"#\">noklikšķiniet te<\a>",
+  "benefLanding.conectEU": "Lai varētu turpināt, vispirms pieslēdzieties, izmantojot “EU-login” kontu: <a href=\"#\">noklikšķiniet te</a>",
   "benefLanding.nextSteps": "Tad varat veikt nākamos soļus, kas vajadzīgi, lai reģistrētos un/vai pieteiktos iniciatīvai WiFi4EU. ",
   "benefLanding.pleaseNote": "Ņemiet vērā!",
   "benefLanding.elegibleText": "Ja jūsu organizācijas sarakstā nav, neaizpildiet veidlapu, jo reģistrācija nebūs derīga un jūs nevarēsiet pieteikties. Privātu uzņēmumu pieteikumi tiks noraidīti.",
@@ -388,5 +388,5 @@
   "voucher.step3": "Piesakieties",
   "voucher.ableApply": "Kad būs izsludināts uzaicinājums iesniegt pieteikumus, jūs varēsiet pieteikties. Lai to izdarītu, piesakieties, izmantojot savu “EU-login” kontu, un iesniedziet pieteikumu WiFi4EU vaučeram.",
   "voucher.firstServed": "Ņemiet vērā, ka atlase notiek pieteikšanās secībā, kā arī saskaņā ar kritērijiem ģeogrāfiskā līdzsvara nodrošināšanai, kā izklāstīts 2017. gada EISI darba programmā.",
-  "helpdeskform.clickhere.label1": "Jums radušās problēmas ar reģistrāciju? Noklikšķiniet šeit, <a (click)=\"expanded = true\">lai sazinātos ar palīdzības dienestu<\a>."
+  "helpdeskform.clickhere.label1": "Jums radušās problēmas ar reģistrāciju? Noklikšķiniet šeit, <a (click)=\"expanded = true\">lai sazinātos ar palīdzības dienestu</a>."
 }

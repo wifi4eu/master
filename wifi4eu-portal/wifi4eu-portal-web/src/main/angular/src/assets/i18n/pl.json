@@ -321,7 +321,7 @@
   "dgconn.statistics.detail.col4": "Przydzielanie bonów",
   "dgconn.assign.vouchers": "Za chwilę przydzielisz 100 000 bonów Austrii. Czy na pewno chcesz kontynuować?",
   "general.yes": "Tak",
-  "benefLanding.conectEU": "Aby kontynuować, zaloguj się przy pomocy swojego konta EU-login: <a href=\"#\"> kliknij tutaj <\a>.",
+  "benefLanding.conectEU": "Aby kontynuować, zaloguj się przy pomocy swojego konta EU-login: <a href=\"#\"> kliknij tutaj </a>.",
   "benefLanding.nextSteps": "Następnie możesz przejść do kolejnych kroków, aby się zarejestrować lub złożyć wniosek o udział w programie WiFi4EU. ",
   "benefLanding.pleaseNote": "Uwaga:",
   "benefLanding.elegibleText": "Jeżeli Twoja gmina nie figuruje w wykazie kwalifikujących się podmiotów, nie wypełniaj formularza – Twoja rejestracja nie będzie ważna i nie będziesz mógł złożyć wniosku. Wnioski wypełnione przez przedsiębiorstwa prywatne zostaną odrzucone.",
@@ -388,5 +388,5 @@
   "voucher.step3": "Złóż wniosek",
   "voucher.ableApply": "Gdy tylko zaproszenie do składania wniosków zostanie ogłoszone, będziesz mógł złożyć wniosek. Zaloguj się wtedy przy pomocy konta użytkownika w systemie EU Login i złóż wniosek o bon w ramach programu WiFi4EU.",
   "voucher.firstServed": "Beneficjenci będą wybierani zgodnie z kolejnością zgłoszeń oraz z zachowaniem kryteriów zapewniających równomierne rozłożenie geograficzne, zgodnie z zasadami określonymi w programie prac instrumentu „Łącząc Europę” na 2017 r.",
-  "helpdeskform.clickhere.label1": "Podczas rejestracji wystąpiły problemy? Kliknij tutaj, <a (click)=\"expanded = true\">aby skontaktować się z działem pomocy technicznej <\a>."
+  "helpdeskform.clickhere.label1": "Podczas rejestracji wystąpiły problemy? Kliknij tutaj, <a (click)=\"expanded = true\">aby skontaktować się z działem pomocy technicznej </a>."
 }
