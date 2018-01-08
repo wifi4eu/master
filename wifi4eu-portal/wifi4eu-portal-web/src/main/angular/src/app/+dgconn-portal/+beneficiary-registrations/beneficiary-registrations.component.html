@@ -1,27 +1,56 @@
 <div class="clearfix"></div>
 <div class="jumbotron mb-3" style="background-color: transparent;">
-    <div class="container center">
-        <p class="center beneficiaryTitle">{{ 'duplicatedBeneficiary.title' | translate }}</p>
-    </div>
+  <div class="container center">
+    <p class="center beneficiaryTitle">{{ 'duplicatedBeneficiary.title' | translate }}</p>
+  </div>
 </div>
-<div class="container center registrationsTable">
-    <p-dataTable [editable]="true">
-        <p-column field="name" header="Name"></p-column>
-        <p-column field="nuts" header="Nuts"></p-column>
-        <p-column field="address" header="Adress"></p-column>
-        <p-column field="status" header="Status">
-            <ng-template let-user="rowData" let-index="rowIndex" pTemplate="body">
-                <!--<p-dropdown (onChange)="uploadData(user, index)" [options]="status" [(ngModel)]="selectStatus[index]"-->
-                <!--placeholder="Select a status"></p-dropdown>-->
-                <!--<p>Current Status: {{this.finalStatus[index]}}</p>-->
-            </ng-template>
-        </p-column>
-        <p-column field="duplicated" header="Duplicated">
-            <ng-template let-user="rowData" pTemplate="body">
-                <i class="fa fa-check" aria-hidden="true"></i>
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </ng-template>
-        </p-column>
+<div class="container center">
+  <div class="panel-dg panel-padding panel-input">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-addon">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </span>
+          <input type="text" [(ngModel)]="inputSearch" (keyup.enter)="filterData(inputSearch)" class="form-control" aria-label="Search in list of suppliers"
+            placeholder="Search in list of beneficiaries">
+          <span class="input-group-btn">
+            <button class="btn btn-primary" (click)="filterData(inputSearch)" type="button">Search</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-dg">
+    <div class="panel-dg-header">
+      <span class="header-label">List of beneficiaries</span>
+    </div>
+    <p-dataTable #tableBeneficiary [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="customRegistrationList.length" [value]="customRegistrationList"
+      [rows]="numberRowsTable" [paginator]="true">
+      <p-column field="municipality.name" [sortable]="true" header="Municipality" styleClass="text-center"></p-column>
+      <p-column field="municipality.country" [sortable]="true" header="Country" styleClass="text-center"></p-column>
+      <p-column field="municipality.addressFull" [sortable]="true" header="Address" styleClass="text-center"></p-column>
+      <p-column field="municipality.postalCode" [sortable]="true" header="Postal code" styleClass="text-center"></p-column>
+      <p-column  field="user.userFull" [sortable]="true" header="User" styleClass="text-center separator">
+        <ng-template let-customBen="rowData" pTemplate="body">
+          <span>{{ customBen.user.name + ' ' + customBen.user.surname }}</span>
+        </ng-template>
+      </p-column>
+      <p-column field="registration.status" header="Status" styleClass="text-center separator" [sortable]="true">
+        <ng-template let-customBen="rowData" pTemplate="body">
+          <span class="badge" [class.badge-warning]="customBen['registration']['status'] == 0" [class.badge-fail]="customBen['registration']['status'] == 1"
+            [class.badge-success]="customBen['registration']['status'] == 2">
+            <span *ngIf="customBen['registration']['status'] == 0">PENDING</span>
+            <span *ngIf="customBen['registration']['status'] == 1">DUPLICATES</span>
+            <span *ngIf="customBen['registration']['status'] == 2">RESOLVED</span>
+          </span>
+        </ng-template>
+      </p-column>
+      <footer>
+        <div style="position: absolute; bottom: 25px; left: 20px;">
+          <span>Total records: {{tableBeneficiary.totalRecords}} </span>
+        </div>
+      </footer>
     </p-dataTable>
-
+  </div>
 </div>
