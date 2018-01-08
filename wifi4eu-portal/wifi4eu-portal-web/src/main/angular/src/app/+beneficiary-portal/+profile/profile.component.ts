@@ -196,6 +196,18 @@ export class BeneficiaryProfileComponent {
     }
 
     private deleteRegistration() {
+
+        this.userApi.deleteUser(this.user.id).subscribe(
+            (data: ResponseDTOBase) => {
+                if (data.success) {
+                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
+                    this.sharedService.logout();
+                }
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
+            }
+        );
+        /*
         this.registrationApi.deleteRegistration(this.user.id).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {
@@ -206,6 +218,7 @@ export class BeneficiaryProfileComponent {
                 this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
             }
         );
+        */
         /*
                 this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
                     (registrations: RegistrationDTOBase[]) => {
