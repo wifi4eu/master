@@ -388,5 +388,6 @@
   "voucher.step3": "Uw aanvraag indienen",
   "voucher.ableApply": "Zodra de aanvraagronde van start gaat, kunt u uw aanvraag indienen. Daarvoor moet u inloggen met uw EU Login-account en het aanvraagformulier voor een WiFi4EU-voucher verzenden.",
   "voucher.firstServed": "Let op: We hanteren de regel \"Wie het eerst komt, het eerst maalt\" en criteria voor een evenwichtige geografische spreiding als beschreven in het CEF-werkprogramma 2017.",
-  "helpdeskform.clickhere.label1": "Problemen met inschrijven? Neem hier <a (click)=\"expanded = true\"> contact op met de helpdesk</a>."
+  "helpdeskform.clickhere.label1": "Problemen met inschrijven? Neem hier ",
+  "helpdeskform.clickhere.label2": "contact op met de helpdesk."
 }
