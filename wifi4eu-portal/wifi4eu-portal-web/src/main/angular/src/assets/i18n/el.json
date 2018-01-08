@@ -412,5 +412,7 @@
   "discussionForum.sendMessage": "Το μήνυμα αυτό θα σταλεί στους υπόλοιπους χρήστες που έχουν εγγραφεί για τον ίδιο δήμο.",
   "sendMessage.subject": "Το μήνυμά σας",
   "mediationRequest.text": "Εάν αποστείλετε αυτή την αίτηση, η Ευρωπαϊκή Επιτροπή θα παρέμβει στη συζήτηση για να βοηθήσει όλους τους αιτούντες να διευθετήσουν το ζήτημα.",
-  "newMediation.text": "Αίτηση διαμεσολάβησης"
+  "newMediation.text": "Αίτηση διαμεσολάβησης",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

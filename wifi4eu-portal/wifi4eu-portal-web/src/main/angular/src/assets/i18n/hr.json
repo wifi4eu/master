@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Ta će poruka biti poslana drugim korisnicima koji su registrirali istu općinu.",
   "sendMessage.subject": "Vaša poruka",
   "mediationRequest.text": "Nakon slanja ovog zahtjeva Europska komisija uključit će se u raspravu kako bi svim podnositeljima prijave pomogla riješiti problem.",
-  "newMediation.text": "Zahtjev za posredovanje"
+  "newMediation.text": "Zahtjev za posredovanje",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

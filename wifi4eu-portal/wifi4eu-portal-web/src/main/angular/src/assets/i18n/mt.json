@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Dan il-messaġġ se jintbagħat lill-utenti l-oħra li rreġistraw għall-istess muniċipalità.",
   "sendMessage.subject": "Il-messaġġ tiegħek",
   "mediationRequest.text": "Billi tibgħat din it-talba, il-Kummissjoni Ewropea se tintervjeni fid-diskussjoni biex tgħin l-applikanti kollha jsolvi l-kwistjoni.",
-  "newMediation.text": "Talba ta’ medjazzjoni"
+  "newMediation.text": "Talba ta’ medjazzjoni",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

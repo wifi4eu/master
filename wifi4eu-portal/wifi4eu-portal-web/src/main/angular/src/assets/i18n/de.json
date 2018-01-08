@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Die Nachricht geht an die anderen Nutzer, die sich für dieselbe Gemeinde registriert haben.",
   "sendMessage.subject": "Ihre Nachricht",
   "mediationRequest.text": "Mit diesem Ersuchen bitten Sie die Europäische Kommission, sich an der Diskussion zu beteiligen, um zwischen den Antragstellern zu vermitteln.",
-  "newMediation.text": "Mediationsersuchen"
+  "newMediation.text": "Mediationsersuchen",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

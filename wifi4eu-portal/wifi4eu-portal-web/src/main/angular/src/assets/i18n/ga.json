@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Seolfar an teachtaireacht seo chuig na húsáideoirí eile atá cláraithe don bhardas céanna.",
   "sendMessage.subject": "Do theachtaireacht",
   "mediationRequest.text": "Má sheoltar an t-iarratas seo, déanfaidh an Coimisiún Eorpach idirghabháil sa phlé chun cabhrú leis na hiarratasóirí uile an fhadhb a réiteach.",
-  "newMediation.text": "Iarratas ar idirghabháil"
+  "newMediation.text": "Iarratas ar idirghabháil",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

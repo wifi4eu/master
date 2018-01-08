@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Šis ziņojums tiks nosūtīts citiem lietotājiem, kas reģistrējuši to pašu pašvaldību.",
   "sendMessage.subject": "Jūsu ziņojums",
   "mediationRequest.text": "Ja nosūtīsiet šo pieprasījumu, Eiropas Komisija iejauksies diskusijā, lai visiem iesaistītajiem pieteikuma iesniedzējiem palīdzētu atrisināt problēmu.",
-  "newMediation.text": "Mediācijas pieprasījums"
+  "newMediation.text": "Mediācijas pieprasījums",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

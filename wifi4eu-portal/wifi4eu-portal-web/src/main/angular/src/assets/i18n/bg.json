@@ -363,5 +363,7 @@
   "discussionForum.sendMessage": "Това съобщение ще бъде изпратено и на другите потребители, които са направили регистрация за тази община.",
   "sendMessage.subject": "Вашето съобщение",
   "mediationRequest.text": "След изпращането на това заявление Европейската комисия ще се намеси в дискусията, за да помогне на кандидатите да решат въпроса.",
-  "newMediation.text": "Искане за посредничество"
+  "newMediation.text": "Искане за посредничество",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }
