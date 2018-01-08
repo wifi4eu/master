@@ -349,5 +349,14 @@
   "home.part4.link1": "Ceisteanna coitianta",
   "home.part4.link2": "Eolas faoi WiFi4EU",
   "home.part4.link3": "Glaonna ar iarratais",
-  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.conectEU": "Chun leanúint ar aghaidh, ní mór logáil isteach ar do chuntas \"EU-login\": cliceáil anseo",
+  "benefLanding.nextSteps": "Ansin, is féidir leat na chéad chéimeanna eile a leanúint chun clárú leis an scéim WiFi4EU nó chun iarratas a dhéanamh uirthi. ",
+  "benefLanding.pleaseNote": "Tabhair do d'aire:",
+  "benefLanding.elegibleText": "Mura bhfuil an eagraíocht s'agatsa ar liosta na n-eintiteas incháilithe, ná líon isteach an fhoirm óir ní bheidh an clárúchán bailí agus ní bheidh tú in ann iarratas a dhéanamh. Ní ghlacfar le hiarratais ó chuideachtaí príobháideacha.",
+  "benefLanding.secondTitle": "An bhfuil tú incháilithe i dtaca le hiarratas a dhéanamh?",
+  "benefLanding.elegibleText3": "Tá tú ar tí clárú ar thairseach WiFi4EU thar ceann bardais. ",
+  "benfefLanding.pleaseNoteText": "I gcomhar leis na Ballstáit, comhaontaíodh liosta de na heintitis atá incháilithe i dtaca le hiarratas a dhéanamh ar dhearbhán WiFi4EU don chéad ghlao eile ar iarratais. Ar an liosta sin tá bardais, nó comhlachais arna mbunú ag bardais. Seiceáil an bhfuil an eagraíocht s'agatsa ar an liosta comhaontaithe. Má tá, is féidir leat clárú anois, agus iarratas a dhéanamh níos déanaí nuair a sheolfar an glao ar iarratais.",
+  "benefLanding.pleaseNoteText3": "Mura bhfuil an eagraíocht s'agatsa ar liosta na n-eintiteas incháilithe, ná líon isteach an fhoirm óir ní bheidh an clárúchán bailí agus ní bheidh tú in ann iarratas a dhéanamh. Ní ghlacfar le hiarratais ó chuideachtaí príobháideacha.",
+  "benefLanding.proceed": "Ar mhaith leat leanúint ar aghaidh leis an bpróiseas clárúcháin?"
 }

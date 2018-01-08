@@ -351,5 +351,14 @@
   "home.part4.link1": "Najčešća pitanja",
   "home.part4.link2": "O WiFi4EU",
   "home.part4.link3": "Pozivi na podnošenje prijava",
-  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.conectEU": "Prvo se povežite na račun „EU-login”: kliknite ovdje",
+  "benefLanding.nextSteps": "Potom se možete registrirati i/ili podnijeti zahtjev za program WiFi4EU. ",
+  "benefLanding.pleaseNote": "Napomena:",
+  "benefLanding.elegibleText": "Ako vaša organizacija nije na popisu prihvatljivih subjekata, nemojte ispunjavati obrazac jer vaša registracija neće biti valjana i nećete moći podnijeti prijavu. Prijave koje ispunjavaju privatna poduzeća bit će odbijene.",
+  "benefLanding.secondTitle": "Ispunjavate uvjete za prijavu?",
+  "benefLanding.elegibleText3": "Sada ćete se registrirati na portal WiFi4EU uime općine. ",
+  "benfefLanding.pleaseNoteText": "U suradnji s državama članicama za sljedeći je poziv za podnošenje prijava dogovoren popis subjekata koji ispunjavaju uvjete za podnošenje zahtjeva za dobivanje kupona WiFi4EU. Taj popis uključuje općine ili udruženja koja su osnovale općine. Provjerite je li vaša organizacija na dogovorenom popisu. U tom se slučaju već sada možete registrirati, a prijavu možete podnijeti kada poziv bude otvoren.",
+  "benefLanding.pleaseNoteText3": "Ako vaša organizacija nije na popisu prihvatljivih subjekata, nemojte ispunjavati obrazac jer vaša registracija neće biti valjana i nećete moći podnijeti prijavu. Prijave koje ispunjavaju privatna poduzeća bit će odbijene.",
+  "benefLanding.proceed": "Želite li nastaviti s postupkom registracije?"
 }

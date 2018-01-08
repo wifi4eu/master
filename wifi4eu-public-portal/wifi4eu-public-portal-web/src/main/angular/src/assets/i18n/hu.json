@@ -338,7 +338,6 @@
   "voucher.minutes": "perc",
   "voucher.days": "nap",
   "home.part3.title.1": "Internetszolgáltató céget képvisel? ",
-  "home.part3.text2": "Kérjük, regisztráljon portálunkon és közölje velünk, mely földrajzi területeken tudja vállalni vezeték nélküli internet telepítését. A regisztrált vállalkozások jegyzékét közzétesszük honlapunkon, így az önkormányzatok könnyen rátalálnak az ő területükön működő szolgáltatókra. ",
   "home.part3.text5": "Figyelem: ez a jegyzék pusztán tájékoztatási célt szolgál. A kedvezményezettek szabadon dönthetnek, melyik szolgáltatót bízzák meg a wifi-infrastruktúra létesítésével. Olyan szolgáltatót is választhatnak, amely nincs rajta a jegyzéken. ",
   "home.part3.title2": "Regisztrálni szeretnék önkormányzat nevében",
   "home.register": "Regisztrálás most",
@@ -350,5 +349,14 @@
   "home.part4.link1": "Gyakran feltett kérdések",
   "home.part4.link2": "A WiFi4EU bemutatása",
   "home.part4.link3": "Pályázati felhívások",
-  "home.part4.link4": "Europe Direct ügyfélszolgálat:  <span class=\"phoneNum\">00 800 6 7 8 9 10 11</span>"
+  "home.part4.link4": "Europe Direct ügyfélszolgálat:  <span class=\"phoneNum\">00 800 6 7 8 9 10 11</span>",
+  "benefLanding.conectEU": "A folytatáshoz kérjük, jelentkezzen be EU Login azonosítóival: kattintson ide",
+  "benefLanding.nextSteps": "Ezt követően továbbléphet, vagyis regisztrálhat és/vagy pályázhat WiFi4EU-utalványra. ",
+  "benefLanding.pleaseNote": "Figyelem:",
+  "benfefLanding.pleaseNoteText": "A tagállamokkal együttműködésben összeállítottuk azoknak a településeknek a listáját, amelyek a soron következő pályázati felhívás keretében WiFi4EU-utalványért folyamodhatnak. A listán települések és települések által létrehozott társulások szerepelnek. Kérjük, tekintse meg, hogy az Ön szervezete rajta van-e a közös megegyezéssel összeállított listán. Ha igen, szervezete már most regisztrálhat, majd benyújthatja jelentkezését, amint közzétételre kerül a pályázati felhívás.",
+  "benefLanding.elegibleText": "Ha az Ön szervezete nincs rajta a jogosult települések, illetve társulások listáján, ne töltse ki az űrlapot. A regisztráció nem lesz érvényes, és szervezete nem fog tudni jelentkezni utalványért. A magáncégek pályázatát el fogjuk utasítani.",
+  "benefLanding.secondTitle": "Ki jogosult pályázni?",
+  "benefLanding.elegibleText3": "Ön település nevében készül regisztrálni a WiFi4EU kezdeményezés portálján. ",
+  "benefLanding.pleaseNoteText3": "Ha az Ön szervezete nincs rajta a jogosult települések, illetve társulások listáján, ne töltse ki az űrlapot. A regisztráció nem lesz érvényes, és szervezete nem fog tudni jelentkezni utalványért. A magáncégek pályázatát el fogjuk utasítani.",
+  "benefLanding.proceed": "Folytatni kívánja a regisztrációt?"
 }

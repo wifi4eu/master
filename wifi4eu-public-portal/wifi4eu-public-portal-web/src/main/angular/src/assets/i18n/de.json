@@ -352,5 +352,14 @@
   "home.part4.link1": "Fragen und Antworten",
   "home.part4.link2": "Über WiFi4EU",
   "home.part4.link3": "Aufforderungen zur Einreichung von Anträgen",
-  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.conectEU": "Zunächst müssen Sie sich mit einem EU Login-Konto anmelden.",
+  "benefLanding.nextSteps": "Dann können Sie sich registrieren und/oder WiFi4EU beantragen. ",
+  "benefLanding.pleaseNote": "Hinweis:",
+  "benefLanding.elegibleText": "Füllen Sie kein Formular aus, wenn Ihre Organisation nicht auf der Liste steht; die Registrierung wäre ungültig, und Sie könnten keinen Antrag stellen. Von Privatunternehmen eingereichte Anträge werden abgelehnt.",
+  "benefLanding.secondTitle": "Wer kann einen Antrag stellen?",
+  "benefLanding.elegibleText3": "Sie sind dabei, sich auf dem WiFi4EU-Portal im Namen einer Gemeinde zu registrieren. ",
+  "benfefLanding.pleaseNoteText": "Gemeinsam mit den EU-Ländern wurde eine Liste von Einrichtungen festgelegt, die bei der nächsten Aufforderung zur Einreichung von Anträgen einen WFi4EU-Gutschein beantragen können. Diese Liste umfasst Gemeinden und Gemeindeverbände. Bitte prüfen Sie, ob Ihre Organisation auf dieser vereinbarten Liste steht. In diesem Fall können Sie sich schon jetzt registrieren und dann einen Antrag stellen, sobald die Aufforderung ergeht.",
+  "benefLanding.pleaseNoteText3": "Füllen Sie kein Formular aus, wenn Ihre Organisation nicht auf der Liste steht; die Registrierung wäre ungültig, und Sie könnten keinen Antrag stellen. Von Privatunternehmen eingereichte Anträge werden abgelehnt.",
+  "benefLanding.proceed": "Möchten Sie mit der Registrierung fortfahren?"
 }

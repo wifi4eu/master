@@ -351,5 +351,15 @@
   "home.part4.link1": "Usein kysyttyä",
   "home.part4.link2": "Tietoa WiFi4EU-aloitteesta",
   "home.part4.link3": "Hakuilmoitukset",
-  "home.part4.link4": "Europe Direct, puh.  <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Europe Direct, puh.  <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.conectEU": "Kirjaudu ensin  ”EU Login” -tilillesi tai luo sellainen tästä linkistä.",
+  "benefLanding.nextSteps": "Voit sen jälkeen rekisteröityä WiFi4EU-järjestelmään ja hakea rahoitusta. ",
+  "benefLanding.pleaseNote": "Huom.",
+  "benefLanding.elegibleText": "Jos organisaatiosi ei ole hyväksyttyjen organisaatioiden luettelossa, älä täytä lomaketta, sillä rekisteröityminen ja rahoituksen hakeminen eivät tule onnistumaan. Yksityisten yritysten lähettämät hakemukset hylätään.",
+  "benefLanding.secondTitle": "Hakukelpoisuus",
+  "benefLanding.elegibleText3": "Olet rekisteröitymässä WiFi4EU-portaaliin kunnan puolesta. ",
+  "benfefLanding.pleaseNoteText": "EU-maiden kesken on seuraavaa hakukierrosta varten sovittu, mitkä organisaatiot voivat hakea WiFi4EU-maksuseteliä. Näitä ovat esimerkiksi kunnat ja kuntien yhteenliittymät. Tarkista, onko organisaatiosi hyväksyttyjen organisaatioiden luettelossa. Jos näin on, voit rekisteröityä ja hakea rahoitusta seuraavan hakukierroksen alettua.",
+  "benefLanding.pleaseNoteText3": "Jos organisaatiosi ei ole hyväksyttyjen organisaatioiden luettelossa, älä täytä lomaketta, sillä rekisteröityminen ja rahoituksen hakeminen eivät tule onnistumaan. Yksityisten yritysten lähettämät hakemukset hylätään.",
+  "benefLanding.proceed": "Haluatko jatkaa rekisteröitymistä?",
+
 }

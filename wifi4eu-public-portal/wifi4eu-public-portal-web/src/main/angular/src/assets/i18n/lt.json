@@ -323,7 +323,6 @@
   "home.part2.list1": "-           savivaldybės,",
   "home.part2.list2": "-           savivaldybių vardu veikiantys subjektai.  ",
   "home.part2.subtitle5": "Susipažinkite su reikalavimus atitinkančių jūsų šalies subjektų sąrašu.",
-  "home.part2.subtitle5": "Susipažinkite su reikalavimus atitinkančių jūsų šalies subjektų sąrašu.",
   "home.part2.subtitle6": "„WiFi4EU“ čekiu bus padengtos belaidžio interneto prieigos zonų įrangos ir jos diegimo išlaidos. Paramos gavėjai įsipareigoja sumokėti už ryšį (interneto abonementą) ir įrangos priežiūrą, kad ne trumpiau kaip 3 metus būtų nemokamai teikiamas kokybiškas belaidis internetas.",
   "home.part2.subtitle2": "Ko galite tikėtis?",
   "home.part2.text2": "„Wifi4EU“ čekiu suteikiama fiksuoto dydžio suma – 15 000 eurų vienai savivaldybei. Čekį gavusios savivaldybės atrinks visuomeninius centrus, kuriuose bus įrengtos „WiFi4EU“ belaidžio ryšio prieigos zonos, „WiFi4EU“ čekius jos galės naudoti ir tam, kad padengtų dalį didesnės vertės projekto išlaidų.",
@@ -352,5 +351,14 @@
   "home.part4.link1": "Dažnai užduodami klausimai",
   "home.part4.link2": "Apie programą „WiFi4EU“",
   "home.part4.link3": "Kvietimai teikti paraiškas",
-  "home.part4.link4": "„Europe Direct“  <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span> "
+  "home.part4.link4": "„Europe Direct“  <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span> ",
+  "benefLanding.conectEU": "Kad galėtumėte registruotis, prisijunkite prie savo „EU-login“ paskyros: spustelėkite čia.",
+  "benefLanding.nextSteps": "Tuomet galėsite užsiregistruoti ir (arba) pateikti paraišką dalyvauti programoje „WiFi4EU“. ",
+  "benefLanding.pleaseNote": "Dėmesio!",
+  "benefLanding.elegibleText": "Jei Jūsų organizacijos tinkamų subjektų sąraše nėra, nepildykite formos, nes registracija negalios ir pateikti paraiškos negalėsite. Privačių bendrovių paraiškos bus atmestos.",
+  "benefLanding.secondTitle": "Ar atitinkate sąlygas?",
+  "benefLanding.elegibleText3": "Rengiatės registruotis „WiFi4EU“ portale savivaldybės vardu. ",
+  "benfefLanding.pleaseNoteText": "Bendradarbiaujant su valstybėmis narėmis buvo sutartas sąrašas subjektų, galinčių teikti paraiškas „WiFi4EU“ čekiui gauti, kai bus paskelbtas kitas kvietimas teikti paraiškas. Į šį sąrašą įtrauktos savivaldybės ir jų asociacijos. Pasitikrinkite, ar Jūsų organizacija yra sutartame sąraše. Jei taip, galite registruotis jau dabar, o vėliau, kai bus paskelbtas kvietimas teikti paraiškas, pateikti paraišką.",
+  "benefLanding.pleaseNoteText3": "Jei Jūsų organizacijos tinkamų subjektų sąraše nėra, nepildykite formos, nes registracija negalios ir pateikti paraiškos negalėsite. Privačių bendrovių paraiškos bus atmestos.",
+  "benefLanding.proceed": "Ar norite registruotis?"
 }

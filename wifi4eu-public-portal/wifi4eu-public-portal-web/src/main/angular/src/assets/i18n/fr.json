@@ -351,5 +351,14 @@
   "home.part4.link1": "Foire aux questions",
   "home.part4.link2": "À propos de WiFi4EU",
   "home.part4.link3": "Appels à candidatures",
-  "home.part4.link4": "Europe Direct: <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Europe Direct: <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.conectEU": "Veuillez d’abord vous connecter à l’aide de votre compte «EU Login»: cliquez ici",
+  "benefLanding.nextSteps": "Vous pourrez ensuite passer aux étapes suivantes de l’enregistrement et/ou de la candidature au programme WiFi4EU. ",
+  "benefLanding.pleaseNote": "Remarque:",
+  "benefLanding.elegibleText": "Si votre organisation ne figure pas sur la liste des entités pouvant bénéficier du programme, il est inutile de remplir le formulaire d’enregistrement. Celui-ci ne sera pas valide et vous ne pourrez pas présenter votre candidature. Les candidatures présentées par des entreprises privées seront rejetées.",
+  "benefLanding.secondTitle": "Êtes-vous autorisé à participer?",
+  "benefLanding.elegibleText3": "Vous êtes sur le point de vous enregistrer sur le portail WiFi4EU pour le compte d’une municipalité. ",
+  "benfefLanding.pleaseNoteText": "Une liste des entités autorisées à demander un coupon WiFi4EU a été arrêtée pour le prochain appel à candidatures, en collaboration avec les États membres de l’UE. Cette liste comprend des municipalités et des associations constituées de municipalités. Veuillez vérifier que votre organisation figure sur la liste. Si c’est bien le cas, vous pouvez déjà vous enregistrer. Vous pourrez répondre à l’appel à candidatures lorsque celui-ci sera lancé.",
+  "benefLanding.pleaseNoteText3": "Si votre organisation ne figure pas sur la liste des entités pouvant participer au programme, il est inutile de remplir le formulaire d’enregistrement. Celui-ci ne sera pas valide et vous ne pourrez pas présenter votre candidature. Les candidatures présentées par des entreprises privées seront rejetées.",
+  "benefLanding.proceed": "Souhaitez-vous poursuivre la procédure d’enregistrement?"
 }

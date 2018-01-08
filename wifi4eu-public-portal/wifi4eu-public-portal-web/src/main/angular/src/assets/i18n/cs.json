@@ -352,5 +352,15 @@
   "home.part4.link1": "Časté otázky",
   "home.part4.link2": "O projektu WiFi4EU",
   "home.part4.link3": "Výzvy k podávání žádostí",
-  "home.part4.link4": "Služba Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Služba Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.title": "Vítejte na registračních stránkách pro žadatele prostředků z projektu WiFi4EU.",
+  "benefLanding.conectEU": "Chcete-li pokračovat, nejdříve se  přihlaste přes službu „EU Login“: klikněte sem",
+  "benefLanding.nextSteps": "Poté můžete provést další kroky registrace a/nebo zažádat o prostředky z rozpočtu projektu WiFi4EU. ",
+  "benefLanding.pleaseNote": "Upozornění:",
+  "benefLanding.elegibleText": "Pokud vaše organizace ještě na seznamu způsobilých subjektů zapsaná není, registrační formulář nevyplňujte – nebude platná a NEBUDETE MOCT podat přihlášku. Na žádosti soukromých společností nebudou brán zřetel.",
+  "benefLanding.secondTitle": "Jste na seznamu způsobilých subjektů?",
+  "benefLanding.elegibleText3": "Máte v úmyslu se zaregistrovat na portálu WiFi4EU jménem obce. ",
+  "benfefLanding.pleaseNoteText": "Pro aktuální výzvu k podávání žádostí byl ve spolupráci s členskými státy sestaven seznam subjektů způsobilých k podávání žádostí o poukázky WiFi4EU. Tento seznam obsahuje obce a sdružení obcí. Zkontrolujte prosím, zda je vaše organizace na dohodnutém seznamu zapsána. Pokud ano, můžete se zaregistrovat již nyní a následně, tj. po zahájení výzvy, podat žádost.",
+  "benefLanding.pleaseNoteText3": "Pokud vaše organizace ještě na seznamu způsobilých subjektů zapsaná není, registrační formulář nevyplňujte – nebude platná a NEBUDETE MOCT podat přihlášku. Na žádosti soukromých společností nebudou brán zřetel.",
+  "benefLanding.proceed": "Přejete si v registraci pokračovat?"
 }
