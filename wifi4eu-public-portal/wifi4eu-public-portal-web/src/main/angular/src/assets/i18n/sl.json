@@ -361,5 +361,6 @@
   "benefLanding.elegibleText3": "Na portalu WiFi4EU se nameravate registrirati v imenu občine. ",
   "benfefLanding.pleaseNoteText": "V sodelovanju z državami članicami smo se za naslednji razpis za zbiranje prijav dogovorili o seznamu upravičenih subjektov do prijave za bon WiFi4EU. Seznam vsebuje občine in zveze občin. Preverite, ali je vaša organizacija na dogovorjenem seznamu. Če je na seznamu, se lahko registrirate zdaj in se prijavite, ko bo objavljen razpis.",
   "benefLanding.pleaseNoteText3": "Če vaše organizacije ni na seznamu upravičenih subjektov, ne izpolnjujte obrazca, saj vaša registracija ne bo veljavna in ne boste mogli oddati prijave oziroma vloge. Prijave zasebnih podjetij bomo zavrnili.",
-  "benefLanding.proceed": "Želite nadaljevati postopek registracije?"
+  "benefLanding.proceed": "Želite nadaljevati postopek registracije?",
+  "benefLanding.title": "Pozdravljeni na strani WiFi4EU za registracijo"
 }

@@ -360,5 +360,6 @@
   "benefLanding.elegibleText3": "Olete end registreerimas WiFi4EU portaalis mõne omavalitsuse nimel. ",
   "benfefLanding.pleaseNoteText": "Koostöös liikmesriikidega on koostatud kokkulepitud nimekiri üksustest, kes saavad osaleda järgmises WiFi4EU taotlusvoorus. Nende hulgas on omavalitsusi ja omavalitsuste moodustatud ühendusi. Palun kontrollige, kas teie organisatsioon on sellesse kokkulepitud nimekirja kantud. Kui on, saate kohe registreeruda ja taotleda siis, kui osalemiskutse on avaldatud.",
   "benefLanding.pleaseNoteText3": "Kui teie organisatsioon ei ole toetuskõlblike üksuste nimekirjas, ärge palun vormi täitke. Registreerimist ei võeta arvesse ja teil ei ole võimalik taotleda. Eraettevõtete esitatud taotlused lükatakse tagasi.",
-  "benefLanding.proceed": "Kas soovite registreerimist jätkata?"
+  "benefLanding.proceed": "Kas soovite registreerimist jätkata?",
+  "benefLanding.title": "Tere tulemast WiFi4EU toetuse taotlejate registreerimislehele!"
 }

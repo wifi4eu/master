@@ -361,5 +361,6 @@
   "benefLanding.elegibleText3": "Du är på väg att registrera dig i WiFi4EU-portalen på uppdrag av en kommun. ",
   "benfefLanding.pleaseNoteText": "Vi har tillsammans med EU-länderna tagit fram en lista med organ som får ansöka om en WiFi4EU-check i nästa ansökningsomgång. Listan omfattar kommuner och sammanslutningar av kommuner. Se om din kommun står med på listan. I så fall kan du registrera den nu och skicka in ansökan när ansökningsomgången startar.",
   "benefLanding.pleaseNoteText3": "Om din kommun inte finns med på listan ska du inte registrera den. Registreringen kommer inte att godkännas och du kommer inte att kunna ansöka om en check. Vi godkänner inte heller ansökningar från privata företag.",
-  "benefLanding.proceed": "Vill du fortsätta med registreringen?"
+  "benefLanding.proceed": "Vill du fortsätta med registreringen?",
+  "benefLanding.title": "Här kan du registrera dig för initiativet WiFi4EU"
 }

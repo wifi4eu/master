@@ -361,5 +361,6 @@
   "benefLanding.elegibleText3": "Zamierzasz zarejestrować się w portalu WiFi4EU w imieniu gminy. ",
   "benfefLanding.pleaseNoteText": "We współpracy z państwami członkowskimi ustalono wykaz podmiotów uprawnionych do ubiegania się o bon WiFi4EU w ramach kolejnego zaproszenia do składania wniosków. Wykaz ten obejmuje gminy i stowarzyszenia gmin. Sprawdź, czy Twoja gmina figuruje w tym wykazie. Jeśli tak, możesz zarejestrować się już teraz, a następnie złożyć wniosek, gdy tylko zostanie ogłoszone zaproszenie do składania wniosków.",
   "benefLanding.pleaseNoteText3": "Jeżeli Twoja gmina nie figuruje w wykazie kwalifikujących się podmiotów, nie wypełniaj formularza – Twoja rejestracja nie będzie ważna i nie będziesz mógł złożyć wniosku. Wnioski wypełnione przez przedsiębiorstwa prywatne zostaną odrzucone.",
-  "benefLanding.proceed": "Czy chcesz kontynuować rejestrację?"
+  "benefLanding.proceed": "Czy chcesz kontynuować rejestrację?",
+  "benefLanding.title": "Witamy na stronie rejestracji w programie WiFi4EU"
 }

@@ -361,5 +361,6 @@
   "benefLanding.elegibleText3": "Int se tirreġistra issa fuq portal WiFi4EU f’isem muniċipalità. ",
   "benfefLanding.pleaseNoteText": "F’kollaborazzjoni mal-Istati Membri, intlaħaq qbil dwar lista ta’ entitajiet eliġibbli biex japplikaw għal vawċer ta’ WiFi4EU għas-sejħa għall-applikazzjonijiet li jmiss. Din il-lista tinkludi muniċipalitajiet jew assoċjazzjonijiet iffurmati minn muniċipalitajiet. Jekk jogħġbok iċċekkja jekk l-organizzazzjoni tiegħek hix parti mil-lista. F’dak il-każ, tista’ tirreġistra issa, u sussegwentement tapplika meta tinfetaħ is-sejħa għall-applikazzjonijiet.",
   "benefLanding.pleaseNoteText3": "Jekk l-organizzazzjoni tiegħek mhix fuq il-lista tal-entitajiet eliġibbli timliex il-formola, ir-reġistrazzjoni mhux se tkun valida u ma tkunx tista’ tapplika. L-applikazzjonijiet mimlijin minn kumpaniji privati jiġu rifjutati.",
-  "benefLanding.proceed": "Tixtieq tipproċedi bil-proċess tar-reġistrazzjoni?"
+  "benefLanding.proceed": "Tixtieq tipproċedi bil-proċess tar-reġistrazzjoni?",
+  "benefLanding.title": "Merħba fil-paġna tar-reġistrazzjoni ta’ WiFi4EU għall-applikanti."
 }
