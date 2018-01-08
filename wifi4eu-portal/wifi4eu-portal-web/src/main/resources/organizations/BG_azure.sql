@@ -1,0 +1,10 @@
+INSERT INTO dbo.organizations(id, name, country) VALUES (1,'National Association of the Municipalities in Republic of Bulgaria','BG');
+INSERT INTO dbo.organizations(id, name, country) VALUES (2,'The regional association of municipalities "Trakia"','BG');
+INSERT INTO dbo.organizations(id, name, country) VALUES (3,'Regional Municipalities Association "Maritza"','BG');
+INSERT INTO dbo.organizations(id, name, country) VALUES (4,'Association of South-Western Municipalities (ASWM)','BG');
+INSERT INTO dbo.organizations(id, name, country) VALUES (5,'Regional Municipalities Association “Yantra”','BG');
+INSERT INTO dbo.organizations(id, name, country) VALUES (6,'Association of Municipalities of the South Central Region "Heber"','BG');
+INSERT INTO dbo.organizations(id, name, country) VALUES (7,'Association of Rhodope Municipalities','BG');
+INSERT INTO dbo.organizations(id, name, country) VALUES (8,'Union of the Bulgarian Black Sea Local Authorities','BG');
+INSERT INTO dbo.organizations(id, name, country) VALUES (9,'Association of Danube River Municipalities "Danube"','BG');
+INSERT INTO dbo.organizations(id, name, country) VALUES (10,'Regional Association of Municipalities "Central Stara Planina"','BG');
