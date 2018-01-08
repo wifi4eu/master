@@ -361,5 +361,6 @@
   "benefLanding.elegibleText3": "Sie sind dabei, sich auf dem WiFi4EU-Portal im Namen einer Gemeinde zu registrieren. ",
   "benfefLanding.pleaseNoteText": "Gemeinsam mit den EU-Ländern wurde eine Liste von Einrichtungen festgelegt, die bei der nächsten Aufforderung zur Einreichung von Anträgen einen WFi4EU-Gutschein beantragen können. Diese Liste umfasst Gemeinden und Gemeindeverbände. Bitte prüfen Sie, ob Ihre Organisation auf dieser vereinbarten Liste steht. In diesem Fall können Sie sich schon jetzt registrieren und dann einen Antrag stellen, sobald die Aufforderung ergeht.",
   "benefLanding.pleaseNoteText3": "Füllen Sie kein Formular aus, wenn Ihre Organisation nicht auf der Liste steht; die Registrierung wäre ungültig, und Sie könnten keinen Antrag stellen. Von Privatunternehmen eingereichte Anträge werden abgelehnt.",
-  "benefLanding.proceed": "Möchten Sie mit der Registrierung fortfahren?"
+  "benefLanding.proceed": "Möchten Sie mit der Registrierung fortfahren?",
+  "benefLanding.title": "Willkommen auf der WiFi4EU-Registrierungsseite für Antragsteller"
 }

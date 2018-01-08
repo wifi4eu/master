@@ -359,5 +359,6 @@
   "benefLanding.secondTitle": "Kan du ansøge?",
   "benefLanding.elegibleText3": "Du er ved at registrere dig på WiFi4EU-portalen på vegne af en kommune. ",
   "benfefLanding.pleaseNoteText": "Der er i samarbejde med medlemslandene udarbejdet en liste over, hvilke enheder der kan ansøge om en WiFi4EU-kupon under næste indkaldelse af ansøgninger. Listen omfatter kommuner eller sammenslutninger af kommuner. Se om din organisation er omfattet af listen. Hvis den er, kan du allerede registrere den nu og efterfølgende ansøge, når indkaldelsen af ansøgninger åbner.",
-  "benefLanding.pleaseNoteText3": "Hvis din organisation ikke er omfattet af listen over ansøgningsberettigede enheder, skal du ikke udfylde formularen, da din registrering ikke vil være gyldig, og du ikke vil kunne ansøge om deltagelse i ordningen. Ansøgninger fra private virksomheder vil blive afvist."
+  "benefLanding.pleaseNoteText3": "Hvis din organisation ikke er omfattet af listen over ansøgningsberettigede enheder, skal du ikke udfylde formularen, da din registrering ikke vil være gyldig, og du ikke vil kunne ansøge om deltagelse i ordningen. Ansøgninger fra private virksomheder vil blive afvist.",
+  "benefLanding.title": "Velkommen til registreringssiden for WiFi4EU for ansøgere."
 }

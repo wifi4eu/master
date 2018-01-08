@@ -361,5 +361,6 @@
   "benefLanding.elegibleText3": "Urmează să vă înregistrați pe portalul WiFi4EU în numele unei municipalități. ",
   "benfefLanding.pleaseNoteText": "În colaborare cu statele membre, s-a convenit deja asupra unei liste a entităților care pot solicita cupoane valorice WiFi4EU în cadrul viitoarei cereri de proiecte. Lista include municipalități sau asociații de municipalități. Verificați dacă organizația dumneavoastră se regăsește pe lista agreată. Dacă da, puteți să vă înregistrați deja și să vă depuneți candidatura de îndată ce se publică cererea de proiecte.",
   "benefLanding.pleaseNoteText3": "Dacă organizația dumneavoastră nu se regăsește pe lista entităților eligibile, nu completați formularul, pentru că înregistrarea nu va fi valabilă și nu veți putea candida. Formularele completate de companii private vor fi respinse.",
-  "benefLanding.proceed": "Doriți să continuați procedura de înregistrare?"
+  "benefLanding.proceed": "Doriți să continuați procedura de înregistrare?",
+  "benefLanding.title": "Bun venit pe pagina WiFi4EU pentru înregistrarea entităților solicitante."
 }

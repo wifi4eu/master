@@ -360,5 +360,6 @@
   "benefLanding.elegibleText3": "Sada ćete se registrirati na portal WiFi4EU uime općine. ",
   "benfefLanding.pleaseNoteText": "U suradnji s državama članicama za sljedeći je poziv za podnošenje prijava dogovoren popis subjekata koji ispunjavaju uvjete za podnošenje zahtjeva za dobivanje kupona WiFi4EU. Taj popis uključuje općine ili udruženja koja su osnovale općine. Provjerite je li vaša organizacija na dogovorenom popisu. U tom se slučaju već sada možete registrirati, a prijavu možete podnijeti kada poziv bude otvoren.",
   "benefLanding.pleaseNoteText3": "Ako vaša organizacija nije na popisu prihvatljivih subjekata, nemojte ispunjavati obrazac jer vaša registracija neće biti valjana i nećete moći podnijeti prijavu. Prijave koje ispunjavaju privatna poduzeća bit će odbijene.",
-  "benefLanding.proceed": "Želite li nastaviti s postupkom registracije?"
+  "benefLanding.proceed": "Želite li nastaviti s postupkom registracije?",
+  "benefLanding.title": "Dobro došli na stranicu WiFi4EU za registraciju podnositelja prijave."
 }

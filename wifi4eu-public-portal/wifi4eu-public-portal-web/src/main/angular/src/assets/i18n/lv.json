@@ -361,5 +361,6 @@
   "benefLanding.elegibleText3": "Jūs tūlīt pašvaldības vārdā reģistrēsities WiFi4EU portālā. ",
   "benfefLanding.pleaseNoteText": "Sadarbībā ar dalībvalstīm ir izveidots tādu juridisko personu saraksts, kuras drīkst pieteikties WiFi4EU vaučeram nākamajā konkursā. Sarakstā ietilpst pašvaldības vai pašvaldību apvienības. Pārbaudiet, vai jūsu organizācija ir šajā sarakstā. Ja jā, varat reģistrēties jau tagad un pieteikties, kad tiks izsludināts uzaicinājums iesniegt pieteikumus.",
   "benefLanding.pleaseNoteText3": "Ja jūsu organizācijas sarakstā nav, neaizpildiet veidlapu, jo reģistrācija nebūs derīga un jūs nevarēsiet pieteikties. Privātu uzņēmumu pieteikumi tiks noraidīti.",
-  "benefLanding.proceed": "Vai vēlaties turpināt reģistrācijas procesu?"
+  "benefLanding.proceed": "Vai vēlaties turpināt reģistrācijas procesu?",
+  "benefLanding.title" : "Laipni lūgti WiFi4EU reģistrācijas lapā pieteikumu iesniedzējiem!"
 }
