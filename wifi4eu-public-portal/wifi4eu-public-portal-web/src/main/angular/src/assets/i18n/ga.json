@@ -359,5 +359,9 @@
   "benfefLanding.pleaseNoteText": "I gcomhar leis na Ballstáit, comhaontaíodh liosta de na heintitis atá incháilithe i dtaca le hiarratas a dhéanamh ar dhearbhán WiFi4EU don chéad ghlao eile ar iarratais. Ar an liosta sin tá bardais, nó comhlachais arna mbunú ag bardais. Seiceáil an bhfuil an eagraíocht s'agatsa ar an liosta comhaontaithe. Má tá, is féidir leat clárú anois, agus iarratas a dhéanamh níos déanaí nuair a sheolfar an glao ar iarratais.",
   "benefLanding.pleaseNoteText3": "Mura bhfuil an eagraíocht s'agatsa ar liosta na n-eintiteas incháilithe, ná líon isteach an fhoirm óir ní bheidh an clárúchán bailí agus ní bheidh tú in ann iarratas a dhéanamh. Ní ghlacfar le hiarratais ó chuideachtaí príobháideacha.",
   "benefLanding.proceed": "Ar mhaith leat leanúint ar aghaidh leis an bpróiseas clárúcháin?",
-  "benefLanding.title": "Fáilte go dtí an leathanach clárúcháin le haghaidh iarratasóirí ar WiFi4EU."
+  "benefLanding.title": "Fáilte go dtí an leathanach clárúcháin le haghaidh iarratasóirí ar WiFi4EU.",
+  "supp.landingpage.title": "Fáilte go dtí an leathanach clárúcháin le haghaidh cuideachtaí suiteála Wi-Fi.",
+  "supp.landingpage.elegibleText3": "Is féidir leat leanúint ar aghaidh agus clárú láithreach ar an tairseach WiFi4EU chun na ceantair inar féidir leat trealamh agus seirbhís suiteála a sholáthar do thairbhithe WiFi4EU a thabhairt le fios. ",
+  "supp.landingpage.elegibleText2": "Beidh ar na tairbhithe a dtionscadail suiteála Wi-Fi áitiúla a shainiú agus a sholáthar i gcomhréir leis na rialacha soláthair atá infheidhme agus is féidir leo féachaint ar liosta na gcuideachtaí atá cláraithe chun soláthraithe féideartha a aimsiú ina gceantar féin. ",
+  "supp.landingpage.elegibleText4": "Tá sé éigeantach duit clárú má tá conradh faighte ag do chuideachta mar sholáthraí ag tairbhí WiFi4EU. "
 }

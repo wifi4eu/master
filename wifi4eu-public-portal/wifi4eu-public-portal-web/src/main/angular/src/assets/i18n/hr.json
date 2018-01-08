@@ -361,5 +361,9 @@
   "benfefLanding.pleaseNoteText": "U suradnji s državama članicama za sljedeći je poziv za podnošenje prijava dogovoren popis subjekata koji ispunjavaju uvjete za podnošenje zahtjeva za dobivanje kupona WiFi4EU. Taj popis uključuje općine ili udruženja koja su osnovale općine. Provjerite je li vaša organizacija na dogovorenom popisu. U tom se slučaju već sada možete registrirati, a prijavu možete podnijeti kada poziv bude otvoren.",
   "benefLanding.pleaseNoteText3": "Ako vaša organizacija nije na popisu prihvatljivih subjekata, nemojte ispunjavati obrazac jer vaša registracija neće biti valjana i nećete moći podnijeti prijavu. Prijave koje ispunjavaju privatna poduzeća bit će odbijene.",
   "benefLanding.proceed": "Želite li nastaviti s postupkom registracije?",
-  "benefLanding.title": "Dobro došli na stranicu WiFi4EU za registraciju podnositelja prijave."
+  "benefLanding.title": "Dobro došli na stranicu WiFi4EU za registraciju podnositelja prijave.",
+  "supp.landingpage.title": "Dobro došli na stranicu WiFi4EU za registraciju poduzeća za ugradnju Wi-Fija.",
+  "supp.landingpage.elegibleText3": "Na portalu WiFi4EU odmah se možete registrirati i navesti na kojim područjima korisnicima programa WiFi4EU možete ponuditi opremu i ugradnju. ",
+  "supp.landingpage.elegibleText2": "Korisnici će morati odrediti i osigurati lokalne projekte ugradnje Wi-Fija u skladu s mjerodavnim pravilima o javnoj nabavi, a na popisu registriranih poduzeća moći će pronaći potencijalne pružatelje usluga na svojem području. ",
+  "supp.landingpage.elegibleText4": "Morate se registrirati ako je korisnik programa WiFi4EU s vašim poduzećem sklopio ugovor o pružanju usluga. "
 }

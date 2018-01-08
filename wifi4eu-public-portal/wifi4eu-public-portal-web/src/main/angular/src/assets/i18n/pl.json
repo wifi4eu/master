@@ -362,5 +362,9 @@
   "benfefLanding.pleaseNoteText": "We współpracy z państwami członkowskimi ustalono wykaz podmiotów uprawnionych do ubiegania się o bon WiFi4EU w ramach kolejnego zaproszenia do składania wniosków. Wykaz ten obejmuje gminy i stowarzyszenia gmin. Sprawdź, czy Twoja gmina figuruje w tym wykazie. Jeśli tak, możesz zarejestrować się już teraz, a następnie złożyć wniosek, gdy tylko zostanie ogłoszone zaproszenie do składania wniosków.",
   "benefLanding.pleaseNoteText3": "Jeżeli Twoja gmina nie figuruje w wykazie kwalifikujących się podmiotów, nie wypełniaj formularza – Twoja rejestracja nie będzie ważna i nie będziesz mógł złożyć wniosku. Wnioski wypełnione przez przedsiębiorstwa prywatne zostaną odrzucone.",
   "benefLanding.proceed": "Czy chcesz kontynuować rejestrację?",
-  "benefLanding.title": "Witamy na stronie rejestracji w programie WiFi4EU"
+  "benefLanding.title": "Witamy na stronie rejestracji w programie WiFi4EU",
+  "supp.landingpage.title": "Witamy na stronie rejestracji w programie WiFi4EU dla firm instalujących Wi-Fi",
+  "supp.landingpage.elegibleText3": "Możesz przejść bezpośrednio do portalu WiFi4EU, aby się zarejestrować i określić, na jakim obszarze terytorialnym możesz dostarczyć sprzęt i zapewnić instalację u beneficjentów programu WiFi4EU. ",
+  "supp.landingpage.elegibleText2": "Beneficjenci muszą zdefiniować i zamówić instalację lokalnej sieci Wi-Fi zgodnie z mającymi zastosowanie zasadami zamówień publicznych. Aby znaleźć potencjalnych dostawców oferujących usługi na ich obszarze terytorialnym, mogą skorzystać ze sporządzonej do tego celu listy zarejestrowanych przedsiębiorstw. ",
+  "supp.landingpage.elegibleText4": "Rejestracja jest obowiązkowa, jeśli Twoja firma podpisała jako dostawca kontrakt z beneficjentem WiFi4EU. "
 }

@@ -382,5 +382,10 @@
   "benefLanding.elegibleText3": "Está a punto de inscribirse en el portal WiFi4EU en nombre de un municipio. ",
   "benfefLanding.pleaseNoteText": "En colaboración con los Estados miembros, se ha elaborado una lista de entidades que pueden solicitar un bono de WiFi4EU para la próxima convocatoria. La lista comprende municipios o asociaciones formadas por municipios. Compruebe si su organización figura en la lista. En ese caso, puede inscribirse ya y presentar la solicitud en cuanto se abra la convocatoria.",
   "benefLanding.pleaseNoteText3": "Si su organización no figura en la lista de entidades, no servirá de nada rellenar el formulario porque la inscripción no será válida y no podrá presentar su solicitud. Se rechazarán las solicitudes cumplimentadas por empresas privadas.",
-  "benefLanding.proceed": "¿Desea seguir adelante con el proceso de inscripción?"
+  "benefLanding.proceed": "¿Desea seguir adelante con el proceso de inscripción?",
+  "supp.landingpage.title": "Bienvenido a la página de inscripción de WiFi4EU para las empresas de instalación de wifi.",
+  "supp.landingpage.elegibleText3": "Puede inscribirse inmediatamente en el portal WiFi4EU para indicar las zonas en las que puede proporcionar material y servicios de instalación a los beneficiarios de WiFi4EU. ",
+  "supp.landingpage.elegibleText2": "Los beneficiarios deben definir y adjudicar sus proyectos de instalación local de wifi de conformidad con las normas aplicables de contratación pública y pueden consultar la lista de las empresas inscritas para identificar los suministradores potenciales en su zona. ",
+  "supp.landingpage.elegibleText4": "La inscripción es obligatoria para las empresas contratadas por un beneficiario de WiFi4EU. "
+
 }

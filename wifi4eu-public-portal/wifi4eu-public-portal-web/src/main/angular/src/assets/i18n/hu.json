@@ -359,5 +359,10 @@
   "benefLanding.elegibleText3": "Ön település nevében készül regisztrálni a WiFi4EU kezdeményezés portálján. ",
   "benefLanding.pleaseNoteText3": "Ha az Ön szervezete nincs rajta a jogosult települések, illetve társulások listáján, ne töltse ki az űrlapot. A regisztráció nem lesz érvényes, és szervezete nem fog tudni jelentkezni utalványért. A magáncégek pályázatát el fogjuk utasítani.",
   "benefLanding.proceed": "Folytatni kívánja a regisztrációt?",
-  "benefLanding.title": "Üdvözöljük a WiFi4EU kezdeményezésről szóló portál regisztrációs oldalán."
+  "benefLanding.title": "Üdvözöljük a WiFi4EU kezdeményezésről szóló portál regisztrációs oldalán.",
+  "supp.landingpage.title": "Üdvözöljük a WiFi4EU kezdeményezés portálján, azon belül is az internetszolgáltatóknak szóló regisztrációs oldalon.",
+  "supp.landingpage.elegibleText3": "Ön rögtön regisztrálhat a WiFi4EU portálján, és jelezheti, hogy mely területeken tud wifi-berendezést és hotspotot telepíteni a WiFi4EU kedvezményezettjei számára. ",
+  "supp.landingpage.elegibleText2": "A WiFi4EU-utalványban részesülő szervezeteknek (kedvezményezetteknek) az alkalmazandó közbeszerzési szabályokkal összhangban kell meghatározniuk a helyi wifi-infrastruktúra létesítésének menetét és lefolytatniuk a vonatkozó beszerzési eljárást. A kedvezményezetteknek módjukban áll, hogy a regisztrált cégek listája alapján tájékozódjanak arról, mely internetszolgáltatók vállalják wifi-infrastruktúra kiépítését az adott településen. ",
+  "supp.landingpage.elegibleText4": "Önnek kötelező regisztrálnia, ha szolgáltatási szerződést kötött egy WiFi4EU-kedvezményezettel. "
+
 }

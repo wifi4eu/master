@@ -359,5 +359,9 @@
   "benfefLanding.pleaseNoteText": "In collaborazione con gli Stati membri è stato concordato un elenco dei soggetti che possono presentare richieste di buoni WIFI4EU per il prossimo invito. L'elenco comprende comuni o associazioni costituite da comuni. Verifica se la tua organizzazione figura sull'elenco concordato. Se è così, puoi registrarti fin da subito e successivamente candidarti quando l'invito a presentare le candidature sarà lanciato.",
   "benefLanding.pleaseNoteText3": "Se la tua organizzazione non figura sull'elenco dei soggetti ammissibili, non compilare il modulo: la registrazione non sarà considerata valida e non potrai candidarti. Le candidature compilate dalle imprese private saranno respinte.",
   "benefLanding.proceed": "Vuoi procedere con la registrazione?",
-  "benefLanding.title": "Benvenuto alla pagina di registrazione di WIFI4EU per i candidati."
+  "benefLanding.title": "Benvenuto alla pagina di registrazione di WIFI4EU per i candidati.",
+  "supp.landingpage.title": "Benvenuto alla pagina di registrazione di WiFi4EU per le imprese di impianti Wi-Fi",
+  "supp.landingpage.elegibleText3": "Puoi registrarti subito sul portale WiFi4EU per indicare i settori in cui puoi fornire attrezzature e impianti ai beneficiari dell'iniziativa WiFi4EU. ",
+  "supp.landingpage.elegibleText2": "I beneficiari dovranno definire e appaltare i progetti di impianti Wi-Fi locali nel rispetto delle regole applicabili agli appalti e possono consultare l'elenco delle imprese registrate per individuare potenziali fornitori nella loro area. ",
+  "supp.landingpage.elegibleText4": "La registrazione è obbligatoria se un beneficiario WiFi4EU ha scelto la tua impresa come fornitore.  "
 }

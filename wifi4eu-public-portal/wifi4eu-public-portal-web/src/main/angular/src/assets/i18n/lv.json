@@ -362,5 +362,10 @@
   "benfefLanding.pleaseNoteText": "Sadarbībā ar dalībvalstīm ir izveidots tādu juridisko personu saraksts, kuras drīkst pieteikties WiFi4EU vaučeram nākamajā konkursā. Sarakstā ietilpst pašvaldības vai pašvaldību apvienības. Pārbaudiet, vai jūsu organizācija ir šajā sarakstā. Ja jā, varat reģistrēties jau tagad un pieteikties, kad tiks izsludināts uzaicinājums iesniegt pieteikumus.",
   "benefLanding.pleaseNoteText3": "Ja jūsu organizācijas sarakstā nav, neaizpildiet veidlapu, jo reģistrācija nebūs derīga un jūs nevarēsiet pieteikties. Privātu uzņēmumu pieteikumi tiks noraidīti.",
   "benefLanding.proceed": "Vai vēlaties turpināt reģistrācijas procesu?",
-  "benefLanding.title" : "Laipni lūgti WiFi4EU reģistrācijas lapā pieteikumu iesniedzējiem!"
+  "benefLanding.title" : "Laipni lūgti WiFi4EU reģistrācijas lapā pieteikumu iesniedzējiem!",
+  "supp.landingpage.title": "Laipni lūgti WiFi4EU reģistrācijas lapā uzņēmumiem, kas uzstāda bezvadu interneta iekārtas!",
+  "supp.landingpage.elegibleText3": "Varat tūdaļ reģistrēties WiFi4EU portālā, lai norādītu apvidus, kuros spējat WiFi4EU vaučera saņēmējiem piedāvāt aprīkojumu un to uzstādīt. ",
+  "supp.landingpage.elegibleText2": "Vaučera saņēmējiem būs savi vietējie bezvadu interneta izveidošanas projekti jāīsteno un attiecīgais iepirkums jāveic atbilstīgi spēkā esošajiem iepirkuma noteikumiem, un viņi var reģistrētu uzņēmumu sarakstā izvēlēties potenciālos piegādātājus konkrētajā apgabalā. ",
+  "supp.landingpage.elegibleText4": "Ja WiFi4EU vaučera saņēmējs ir ar jūsu uzņēmumu noslēdzis līgumu par piegādi, jums ir jāreģistrējas obligāti. "
+
 }
