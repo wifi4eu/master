@@ -383,5 +383,8 @@
   "supp.landingpage.title": "Bienvenue sur la page d’enregistrement de WiFi4EU pour les entreprises d'installation wi-fi.",
   "supp.landingpage.elegibleText3": "Vous pouvez vous enregistrer dès maintenant sur le portail WiFi4EU afin d’indiquer les zones dans lesquelles vous pouvez fournir des équipements et des services d’installation aux bénéficiaires de WiFi4EU. ",
   "supp.landingpage.elegibleText2": "Les bénéficiaires devront définir leurs projets d'installation wi-fi et se procurer les équipements nécessaires conformément aux règles en matière de marchés publics. Ils peuvent consulter la liste des entreprises enregistrées pour y rechercher des fournisseurs potentiels. ",
-  "supp.landingpage.elegibleText4": "L’enregistrement de votre entreprise est obligatoire si celle-ci a été engagée comme fournisseur par un bénéficiaire de WiFi4EU. "
+  "supp.landingpage.elegibleText4": "L’enregistrement de votre entreprise est obligatoire si celle-ci a été engagée comme fournisseur par un bénéficiaire de WiFi4EU. ",
+  "supp.landingpage.no": "Non",
+  "supp.landingpage.yes": "Oui",
+  "logout.label": "Sortie"
 }
