@@ -343,7 +343,7 @@
   "benefLanding.proceed": "Želite li nastaviti s postupkom registracije?",
   "beneficiaryRegistration.step1.title": "Korak 1.: vrsta registracije",
   "registration.selectCountry": "Odaberite svoju zemlju.",
-  "registration.myOrganisation": "Moja organizacija",
+  "organization.label": "Moja organizacija",
   "registration.selectOrganisation": "Odaberite svoju organizaciju",
   "beneficiaryRegistration.step1.information": "NAPOMENA: vaša vlada sastavila je popis „općina” i „udruženja koja su osnovale općine” (to su: Pravni subjekti (tijela javnog sektora) koji djeluju uime jednog ili više svojih članova (općina) i koji ispunjavaju uvjete za registraciju i zahtjev za dobivanje kupona WiFi4EU. Popis prihvatljivih subjekata u svojoj zemlji pogledajte ovdje.",
   "municipalityDetails.title": "Podaci o općini",

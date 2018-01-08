@@ -333,7 +333,7 @@
   "registration.review.title": "4.ª etapa: verificação",
   "country.label": "País",
   "registration.selectCountry": "Selecione o seu país.",
-  "registration.myOrganisation": "A minha organização",
+  "organization.label": "A minha organização",
   "registration.selectOrganisation": "Selecione a sua organização.",
   "beneficiaryRegistration.step1.information": "NOTA: As autoridades do seu país elaboraram uma lista de «autarquias» e «associações constituídas por autarquias» [trata-se de entidades jurídicas (organismos do setor público) que agem em nome de um ou vários dos seus membros (autarquias)] que são elegíveis para se inscreverem e candidatarem a um vale WiFi4EU. Consulte aqui a lista das entidades elegíveis no seu país.",
   "back.button": "Anterior",

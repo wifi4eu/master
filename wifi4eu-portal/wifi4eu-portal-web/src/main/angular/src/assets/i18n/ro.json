@@ -333,7 +333,7 @@
   "registration.review.title": "Pasul 4: verificarea informațiilor",
   "country.label": "Țara",
   "registration.selectCountry": "Selectați țara",
-  "registration.myOrganisation": "Organizația mea",
+  "organization.label": "Organizația mea",
   "registration.selectOrganisation": "Selectați organizația",
   "beneficiaryRegistration.step1.information": "NOTĂ: Guvernul dumneavoastră a identificat lista „municipalităților” și a „asociațiilor de municipalități” (acestea sunt: entități juridice (organisme din sectorul public) care acționează în numele unuia sau mai multora din membrii lor (municipalități)) care sunt eligibile să se înregistreze și să solicite un cupon valoric WiFi4EU. Consultați aici lista entităților eligibile din țara dumneavoastră.",
   "back.button": "Înapoi",

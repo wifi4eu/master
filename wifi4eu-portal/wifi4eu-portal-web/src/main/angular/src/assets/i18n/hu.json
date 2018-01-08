@@ -333,7 +333,7 @@
   "registration.review.title": "4. lépés: Értékelés",
   "country.label": "Ország",
   "registration.selectCountry": "Kérjük, válassza ki az országot.",
-  "registration.myOrganisation": "Saját szervezet",
+  "organization.label": "Saját szervezet",
   "registration.selectOrganisation": "Kérjük, válassza ki szervezetét a listáról.",
   "beneficiaryRegistration.step1.information": "MEGJEGYZÉS:  Az Ön országában működő jogosult szervezetek listája itt található.",
   "back.button": "Vissza",

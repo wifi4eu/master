@@ -333,7 +333,7 @@
   "registration.review.title": "4. korak: pregled",
   "country.label": "Država",
   "registration.selectCountry": "Izberite svojo državo.",
-  "registration.myOrganisation": "Moja organizacija",
+  "organization.label": "Moja organizacija",
   "registration.selectOrganisation": "Izberite svojo organizacijo",
   "beneficiaryRegistration.step1.information": "OPOMBA: vaša vlada je določila seznam „občin“ in „zvez občin“ (te so: Pravni subjekti (organi javnega sektorja), ki delujejo v imenu ene ali več svojih članic (občin)), upravičenih do registracije in prijave za bon WiFi4EU. Preverite seznam upravičenih subjektov v vaši državi.",
   "back.button": "Nazaj",

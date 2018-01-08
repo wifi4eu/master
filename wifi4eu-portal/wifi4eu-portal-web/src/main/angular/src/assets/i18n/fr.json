@@ -341,7 +341,7 @@
   "benefLanding.proceed": "Souhaitez-vous poursuivre la procédure d’enregistrement?",
   "beneficiaryRegistration.step1.title": "Étape 1: type d’enregistrement",
   "registration.selectCountry": "Veuillez sélectionner votre pays.",
-  "registration.myOrganisation": "Mon organisation",
+  "organization.label": "Mon organisation",
   "registration.selectOrganisation": "Veuillez sélectionner votre organisation",
   "beneficiaryRegistration.step1.information": "REMARQUE: les autorités de votre pays ont dressé la liste des «municipalités» et des «associations constituées de municipalités» [autrement dit, des entités juridiques (organismes publics) agissant au nom d’un ou plusieurs membres (municipalités)] qui remplissent les conditions pour s’enregistrer et introduire une demande de coupon WiFi4EU. Veuillez consulter ici la liste des entités admissibles dans votre pays.",
   "municipalityDetails.title": "Renseignements sur la municipalité",

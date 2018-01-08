@@ -333,7 +333,7 @@
   "registration.review.title": "4. etapp: ülekontrollimine",
   "country.label": "Riik",
   "registration.selectCountry": "Palun valige oma riik.",
-  "registration.myOrganisation": "Minu organisatsioon",
+  "organization.label": "Minu organisatsioon",
   "registration.selectOrganisation": "Valige oma organisatsioon",
   "beneficiaryRegistration.step1.information": "Pange tähele! Teie riik on kindlaks määranud ja nimekirja kandnud „omavalitsused“ ja „omavalitsuste moodustatud ühendused“. Need on:seadusjärgsed üksused (avaliku sektori asutused), kes tegutsevad selliste liikmete või liikme (omavalitsus) nimel, kellel on õigus WiFi4EU vautšeri saamiseks registreeruda ja seda taotleda. Tutvuge nimekirjaga, kuhu on kantud teie riigi toetuskõlblikud üksused.",
   "back.button": "Tagasi",

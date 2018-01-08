@@ -333,7 +333,7 @@
   "registration.review.title": "Fase 4: controllo",
   "country.label": "Paese",
   "registration.selectCountry": "Selezionare il paese.",
-  "registration.myOrganisation": "La mia organizzazione",
+  "organization.label": "La mia organizzazione",
   "registration.selectOrganisation": "Selezionare l'organizzazione",
   "beneficiaryRegistration.step1.information": "NOTA: il governo del tuo paese ha individuato l’elenco dei \"comuni\" e delle \"associazioni di comuni\" (si tratta di: Soggetti giuridici (enti pubblici) che agiscono a nome di uno o più dei loro membri (comuni) che possono registrarsi e chiedere buoni WIFI4EU. Per consultare l’elenco dei soggetti ammissibili nel tuo paese, clicca qui.",
   "back.button": "Indietro",

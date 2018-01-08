@@ -336,7 +336,7 @@
   "registration.review.title": "Stap 4: Controle",
   "country.label": "Land",
   "registration.selectCountry": "Kies uw land",
-  "registration.myOrganisation": "Mijn organisatie",
+  "organization.label": "Mijn organisatie",
   "registration.selectOrganisation": "Kies uw organisatie",
   "beneficiaryRegistration.step1.information": "Let op: Uw regering heeft een lijst opgesteld van \"gemeenten\" en \"verenigingen van gemeenten\". (met name rechtspersonen (publiekrechtelijke organisaties) die optreden namens een of meer leden (gemeenten)) die zich kunnen inschrijven en een WiFi4EU-voucher kunnen aanvragen. Controleer eerst de lijst van erkende organisaties in uw land.",
   "back.button": "Terug",

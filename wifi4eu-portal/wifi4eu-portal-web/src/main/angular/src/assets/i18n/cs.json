@@ -333,7 +333,7 @@
   "registration.review.title": "Krok 4: Kontrola",
   "country.label": "Země",
   "registration.selectCountry": "Vyberte svou zemi.",
-  "registration.myOrganisation": "Naše organizace",
+  "organization.label": "Naše organizace",
   "registration.selectOrganisation": "Zvolte organizaci",
   "beneficiaryRegistration.step1.information": "POZNÁMKA: Orgány vašeho státu sestavily seznam obcí a jejich sdružení (jedná se o veřejnoprávní subjekty jednající jménem jednoho nebo více svých členů, tj. obcí), které jsou způsobilé k registraci a k žádání o poukázku WiFi4EU. Viz seznam způsobilých subjektů z vaší země.",
   "back.button": "Zpět",

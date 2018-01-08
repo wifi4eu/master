@@ -333,7 +333,7 @@
   "registration.review.title": "Krok 4: verifikácia",
   "country.label": "Krajina",
   "registration.selectCountry": "Zvoľte si krajinu.",
-  "registration.myOrganisation": "Moja organizácia",
+  "organization.label": "Moja organizácia",
   "registration.selectOrganisation": "Zvoľte si organizáciu",
   "beneficiaryRegistration.step1.information": "POZNÁMKA: vaša krajina určila zoznam „obcí“ a „združení obcí“ [sú to právnické osoby (verejnoprávne subjekty) konajúce v mene jedného alebo viacerých svojich členov (obcí)], ktoré sú oprávnené na registráciu a podanie žiadosti o poukaz WiFi4EU. Zoznam oprávnených subjektov vo vašej krajine je k dispozícii na tomto mieste.",
   "back.button": "Späť",

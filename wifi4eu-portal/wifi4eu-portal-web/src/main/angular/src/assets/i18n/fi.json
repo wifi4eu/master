@@ -333,7 +333,7 @@
   "registration.review.title": "Vaihe 4: Tietojen tarkistus",
   "country.label": "Maa",
   "registration.selectCountry": "Valitse maa.",
-  "registration.myOrganisation": "Organisaatio",
+  "organization.label": "Organisaatio",
   "registration.selectOrganisation": "Valitse organisaatiosi",
   "beneficiaryRegistration.step1.information": "HUOM. EU-maat ovat vahvistaneet kunnat ja kuntien yhteenliittymät, joilla on oikeus rekisteröityä WiFi4EU-järjestelmään ja hakea siitä rahoitusta (näitä ovat juridiset yksiköt (julkisen sektorin elimet), jotka toimivat yhden tai useamman jäsenensä (kunnan) puolesta). Löydät luettelon hakukelpoisista juridisista yksiköstä tästä.",
   "back.button": "Edellinen",

@@ -1,13 +1,8 @@
 <div class="clearfix"></div>
 <div class="container">
-    <p class="center">
     <p *ngIf="supplier" class="label" style="text-align: center;"
-       [innerHTML]="'helpdeskform.clickhere.label1' | translate">
+       [innerHTML]="'helpdeskform.clickhere.label1' | translate">{{'helpdeskform.clickhere.label1' | translate}}
     </p>
-
-    </p>
-    <br>
-    <br>
     <div id="helpdesk-form" *ngIf="expanded">
 
         <hr class="center" style="padding-bottom: 2em; margin-top: 2em !important;">

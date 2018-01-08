@@ -367,7 +367,7 @@
   "registration.review.title": "Step 4: review",
   "country.label": "Country",
   "registration.selectCountry": "Please select your country.",
-  "registration.myOrganisation": "My organisation",
+  "organization.label": "My organisation",
   "registration.selectOrganisation": "Please select your organisation",
   "beneficiaryRegistration.step1.information": "NOTE: your government has identified the list of “municipalities” and “associations formed by municipalities” (these are: Legal entities (public sector bodies) acting on behalf of one or more of their members (municipalities)) that are eligible to register and apply for a WiFi4EU voucher. Please consult the list of eligible entities in your country here.",
   "back.button": "Back",
@@ -416,7 +416,7 @@
   "timelineComponentTitle": "Remaining time for the launch of the call:",
   "voucher.step3": "Apply",
   "voucher.ableApply": "Once the call for applications is open, you will be able to apply. To do so, login with your EU Login user account and submit you application for a WiFi4EU voucher.",
-  "voucher.firstServed": "Note that the selection is conducted on a 'first-come first-served' basis as well as criteria to ensure a geographical balance, as detailed in the CEF Work Programme 2017."
+  "voucher.firstServed": "Note that the selection is conducted on a 'first-come first-served' basis as well as criteria to ensure a geographical balance, as detailed in the CEF Work Programme 2017.",
   "benefLanding.conectEU": "In order to proceed further, please first connect with an “EU-login” account: <a href=\"#\">click here</a>",
   "helpdeskform.clickhere.label1": "Problems with your registration? Please <a (click)=\"expanded = true\">click here to access the Help-Desk.</a>",
   "profile.registrationCompleted": "Your registration is completed.",

@@ -324,7 +324,7 @@
   "registration.review.title": "Etapa 4: revisión",
   "country.label": "País",
   "registration.selectCountry": "Seleccione su país.",
-  "registration.myOrganisation": "Organización",
+  "organization.label": "Organización",
   "registration.selectOrganisation": "Seleccione su organización",
   "beneficiaryRegistration.step1.information": "NOTA: el gobierno de su país ha elaborado la lista de \"municipios\" y \"asociaciones formadas por municipios\"[entidades jurídicas (organismos del sector público) que actúan en nombre de uno o varios de sus miembros (municipios)] que pueden inscribirse y solicitar un bono WiFi4EU. Consulte la lista de entidades de su país que reúnen las condiciones.",
   "back.button": "Atrás",

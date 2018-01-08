@@ -333,7 +333,7 @@
   "registration.review.title": "4. Schritt: Überprüfung",
   "country.label": "Land",
   "registration.selectCountry": "Ihr Land auswählen",
-  "registration.myOrganisation": "Meine Organisation",
+  "organization.label": "Meine Organisation",
   "registration.selectOrganisation": "Ihre Organisation auswählen",
   "beneficiaryRegistration.step1.information": "HINWEIS: Ihre Regierung hat die Liste der „Gemeinden“ und „Gemeindeverbände“ (das sind juristische Personen (öffentliche Stellen), die im Namen eines oder mehrerer ihrer Mitglieder (Gemeinden) handeln) festgelegt, die sich registrieren und einen WiFi4EU-Gutschein beantragen dürfen. Liste zugelassener Einrichtungen in Ihrem Land",
   "back.button": "Zurück",

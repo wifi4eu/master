@@ -333,7 +333,7 @@
   "registration.review.title": "Steg 4: Granska din uppgifter",
   "country.label": "Land",
   "registration.selectCountry": "Välj ditt land.",
-  "registration.myOrganisation": "Min organisation",
+  "organization.label": "Min organisation",
   "registration.selectOrganisation": "Välj din organisation.",
   "beneficiaryRegistration.step1.information": "Obs! Ditt land har gjort en lista med de kommuner och kommunsammanslutningar som får registrera sig och ansöka om bidrag från WiFi4EU. De är juridiska personer (offentliga organ) som agerar på uppdrag av en eller flera av sina medlemmar (kommuner). Se vilka organ som kan söka i ditt land.",
   "back.button": "Tillbaka",

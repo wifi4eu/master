@@ -333,7 +333,7 @@
   "registration.review.title": "4. solis: pārskatīšana",
   "country.label": "Valsts",
   "registration.selectCountry": "Izvēlieties savu valsti",
-  "registration.myOrganisation": "Mana organizācija",
+  "organization.label": "Mana organizācija",
   "registration.selectOrganisation": "Izvēlieties savu organizāciju",
   "beneficiaryRegistration.step1.information": "PIEZĪME. Jūsu valdība ir izveidojusi tādu “pašvaldību” un “pašvaldību apvienību” (tās ir juridiskas personas (publiskā sektora struktūras), kas rīkojas viena vai vairāku savu dalībnieku (pašvaldību) vārdā) sarakstu, kuras drīkst reģistrēties un pieteikties WiFi4EU vaučeram. Tādu savas valsts juridisko personu sarakstu, kuras drīkst pieteikties, skatiet šeit.",
   "back.button": "Atpakaļ",

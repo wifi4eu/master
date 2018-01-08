@@ -333,7 +333,7 @@
   "registration.review.title": "Céim 4: seiceáil:",
   "country.label": "Tír",
   "registration.selectCountry": "Roghnaigh do thír",
-  "registration.myOrganisation": "An eagraíocht s'agamsa",
+  "organization.label": "An eagraíocht s'agamsa",
   "registration.selectOrganisation": "Roghnaigh an eagraíocht s'agatsa",
   "beneficiaryRegistration.step1.information": "NÓTA: tá an liosta \"bardas\" agus \"comhlachas arna mbunú ag bardais\" (is iad sin: eintitis dhlíthiúla (comhlachtaí earnála poiblí) ag gníomhú ar son ball (bardas) amháin nó níos mó dá gcuid) atá incháilithe i dtaca le clárú le haghaidh dhearbhán WiFi4EU agus le hiarratas a dhéanamh ar dhearbhán, sainaitheanta ag rialtas do thíre. Is féidir teacht ar liosta na n-eintiteas atá incháilithe i do thír anseo.",
   "back.button": "Siar",

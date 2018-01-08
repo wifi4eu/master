@@ -333,7 +333,7 @@
   "registration.review.title": "Trin 4: Gennemsyn",
   "country.label": "Land",
   "registration.selectCountry": "Vælg dit land.",
-  "registration.myOrganisation": "Min organisation",
+  "organization.label": "Min organisation",
   "registration.selectOrganisation": "Vælg din organisation",
   "beneficiaryRegistration.step1.information": "BEMÆRK: De nationale myndigheder i dit land har udfærdiget listen over kommuner og sammenslutninger af kommuner (den omfatter: Retlige enheder (offentlige organer), som handler på vegne af en eller flere af deres medlemmer (kommuner)), der er berettiget til at registrere sig og ansøge om en WiFi4EU-kupon. Se listen over enheder, som kan ansøge i dit land.",
   "back.button": "Forrige",
