@@ -16,7 +16,7 @@
     </div>
     <div class="ui-lg-3"></div>
 </div>
-<form #legalForm="ngForm"(ngSubmit)="onSubmit()" *ngIf="municipality && user">
+<form #legalForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="municipality && user">
     <div class="ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
@@ -67,7 +67,7 @@
             <div class="form-group">
                 <label class="label" for="document1">{{ 'request.additionalInfo.doc1.label' | translate }}</label>
                 <input #document1 id="document1" name="document1" (change)="uploadFile($event, 0)"
-                       type="file" class="upload" accept=".doc, .docx, .pdf" required />
+                       type="file" class="upload" accept=".doc, .docx, .pdf" required/>
             </div>
         </div>
         <div class="ui-lg-3"></div>
@@ -76,7 +76,7 @@
             <div class="form-group">
                 <label class="label" for="document2">{{ 'request.additionalInfo.doc2.label' | translate }}</label>
                 <input #document2 id="document2" name="document2" (change)="uploadFile($event, 1)"
-                       type="file" class="upload" accept=".doc, .docx, .pdf" required />
+                       type="file" class="upload" accept=".doc, .docx, .pdf" required/>
             </div>
         </div>
         <div class="ui-lg-3"></div>
@@ -95,7 +95,7 @@
             <div class="form-group">
                 <label class="label" for="document3">{{ 'request.additionalInfo.doc3.label' | translate }}</label>
                 <input #document3 id="document3" name="document3" (change)="uploadFile($event, 2)"
-                       type="file" class="upload" accept=".doc, .docx, .pdf" required />
+                       type="file" class="upload" accept=".doc, .docx, .pdf" required/>
             </div>
         </div>
         <div class="ui-lg-3"></div>
@@ -104,7 +104,7 @@
             <div class="form-group">
                 <label class="label" for="document4">{{ 'request.additionalInfo.doc4.label' | translate }}</label>
                 <input #document4 id="document4" name="document4" (change)="uploadFile($event, 3)"
-                       type="file" class="upload" accept=".doc, .docx, .pdf" required />
+                       type="file" class="upload" accept=".doc, .docx, .pdf" required/>
             </div>
         </div>
         <div class="ui-lg-3"></div>
@@ -117,7 +117,8 @@
             </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary publish-button" [disabled]="!legalForm.form.valid || !allFilesUploaded">
+            <button type="submit" class="btn btn-primary publish-button"
+                    [disabled]="!legalForm.form.valid || !allFilesUploaded">
                 {{ 'confirm.button' | translate }}
             </button>
         </div>
