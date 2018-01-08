@@ -79,7 +79,7 @@
                                     ng-options="option.value as option.name for option in typeOptions"
                                     [disabled]="organizations.length < 1">
                                 <option disabled selected [ngValue]="null">
-                                    Choose an organization
+                                    {{'registration.selectOrganisation' |translate}}
                                 </option>
                                 <option *ngFor="let currentOrganization of organizations"
                                         [ngValue]="currentOrganization">
