@@ -352,5 +352,14 @@
   "home.part4.link1": "Întrebări și răspunsuri",
   "home.part4.link2": "Despre WiFi4EU",
   "home.part4.link3": "Cereri de proiecte",
-  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.conectEU": "Pentru a continua , trebuie să vă conectați mai întâi la un cont „EU-login”: clic aici",
+  "benefLanding.nextSteps": "După aceea, veți parcurge restul pașilor necesari pentru înregistrare și/sau depunerea candidaturii. ",
+  "benefLanding.pleaseNote": "Notă:",
+  "benefLanding.elegibleText": "Dacă organizația dumneavoastră nu se regăsește pe lista entităților eligibile, nu completați formularul, pentru că înregistrarea nu va fi valabilă și nu veți putea candida. Formularele completate de companii private vor fi respinse.",
+  "benefLanding.secondTitle": "Sunteți eligibil?",
+  "benefLanding.elegibleText3": "Urmează să vă înregistrați pe portalul WiFi4EU în numele unei municipalități. ",
+  "benfefLanding.pleaseNoteText": "În colaborare cu statele membre, s-a convenit deja asupra unei liste a entităților care pot solicita cupoane valorice WiFi4EU în cadrul viitoarei cereri de proiecte. Lista include municipalități sau asociații de municipalități. Verificați dacă organizația dumneavoastră se regăsește pe lista agreată. Dacă da, puteți să vă înregistrați deja și să vă depuneți candidatura de îndată ce se publică cererea de proiecte.",
+  "benefLanding.pleaseNoteText3": "Dacă organizația dumneavoastră nu se regăsește pe lista entităților eligibile, nu completați formularul, pentru că înregistrarea nu va fi valabilă și nu veți putea candida. Formularele completate de companii private vor fi respinse.",
+  "benefLanding.proceed": "Doriți să continuați procedura de înregistrare?"
 }

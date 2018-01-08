@@ -352,5 +352,14 @@
   "home.part4.link1": "Najčastejšie otázky",
   "home.part4.link2": "O iniciatíve WiFi4EU",
   "home.part4.link3": "Výzvy na podanie prihlášok",
-  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.conectEU": "Ak chcete pokračovať, prihláste sa pomocou svojho účtu EU Login: kliknite sem",
+  "benefLanding.nextSteps": "Potom môžete vykonať ďalšie kroky na registráciu prípadne podanie žiadosti o zapojenie sa do programu WiFi4EU. ",
+  "benefLanding.pleaseNote": "Upozornenie:",
+  "benefLanding.elegibleText": "Ak vaša organizácia na zozname oprávnených subjektov nefiguruje, formulár nevypĺňajte, registrácia bude neplatná a nebudete môcť podať žiadosť. Žiadosti vyplnené súkromnými spoločnosťami budú zamietnuté.",
+  "benefLanding.secondTitle": "Ste oprávnený na podanie žiadosti?",
+  "benefLanding.elegibleText3": "Chystáte sa zaregistrovať na portál WiFi4EU v mene obce. ",
+  "benfefLanding.pleaseNoteText": "Pre nasledujúcu výzvu na predkladanie žiadostí bol v spolupráci s členskými štátmi schválený zoznam subjektov, ktoré sú oprávnené podávať žiadosť o poukaz WiFi4EU. Sú v ňom zahrnuté obce alebo združenia obcí. Skontrolujte si, či vaša organizácia figuruje na schválenom zozname. Ak áno, môžete sa zaregistrovať a následne podať žiadosť, keď sa otvorí výzva na predkladanie žiadostí.",
+  "benefLanding.pleaseNoteText3": "Ak vaša organizácia na zozname oprávnených subjektov nefiguruje, formulár nevypĺňajte, registrácia bude neplatná a nebudete môcť podať žiadosť. Žiadosti vyplnené súkromnými spoločnosťami budú zamietnuté.",
+  "benefLanding.proceed": "Chcete v registrácii pokračovať"
 }

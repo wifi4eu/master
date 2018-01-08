@@ -351,5 +351,14 @@
   "home.part4.link1": "Korduma kippuvad küsimused",
   "home.part4.link2": "Mis on WiFi4EU?",
   "home.part4.link3": "Kandideerimiskutsed",
-  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.conectEU": "Jätkamiseks logige palun kõigepealt sisse oma EU Logini konto kaudu siin.",
+  "benefLanding.nextSteps": "Seejärel saate registreeruda ja/või taotleda WiFi4EU toetust. ",
+  "benefLanding.pleaseNote": "Pange tähele!",
+  "benefLanding.elegibleText": "Kui teie organisatsioon ei ole toetuskõlblike üksuste nimekirjas, ärge palun vormi täitke. Registreerimist ei võeta arvesse ja teil ei ole võimalik taotleda. Eraettevõtete esitatud taotlused lükatakse tagasi.",
+  "benefLanding.secondTitle": "Kes saavad taotleda?",
+  "benefLanding.elegibleText3": "Olete end registreerimas WiFi4EU portaalis mõne omavalitsuse nimel. ",
+  "benfefLanding.pleaseNoteText": "Koostöös liikmesriikidega on koostatud kokkulepitud nimekiri üksustest, kes saavad osaleda järgmises WiFi4EU taotlusvoorus. Nende hulgas on omavalitsusi ja omavalitsuste moodustatud ühendusi. Palun kontrollige, kas teie organisatsioon on sellesse kokkulepitud nimekirja kantud. Kui on, saate kohe registreeruda ja taotleda siis, kui osalemiskutse on avaldatud.",
+  "benefLanding.pleaseNoteText3": "Kui teie organisatsioon ei ole toetuskõlblike üksuste nimekirjas, ärge palun vormi täitke. Registreerimist ei võeta arvesse ja teil ei ole võimalik taotleda. Eraettevõtete esitatud taotlused lükatakse tagasi.",
+  "benefLanding.proceed": "Kas soovite registreerimist jätkata?"
 }

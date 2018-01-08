@@ -352,5 +352,14 @@
   "home.part4.link1": "Veelgestelde vragen",
   "home.part4.link2": "Over WiFi4EU",
   "home.part4.link3": "Oproepen tot het indienen van aanvragen",
-  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.conectEU": "Om te beginnen moet u inloggen met uw EU Login-account.",
+  "benefLanding.nextSteps": "Daarna kunt u zich inschrijven en/of een aanvraag indienen voor WiFi4EU. ",
+  "benefLanding.pleaseNote": "Let op:",
+  "benefLanding.elegibleText": "Staat uw organisatie niet op de lijst? Dan heeft het ook geen zin om het formulier in te vullen en een aanvraag in te dienen. Ook aanvragen van privébedrijven worden afgewezen.",
+  "benefLanding.secondTitle": "Komt u in aanmerking?",
+  "benefLanding.elegibleText3": "U kunt zich nu namens een gemeente inschrijven op het WiFi4EU-portaal. ",
+  "benfefLanding.pleaseNoteText": "In samenwerking met de EU-landen is voor de volgende ronde een lijst opgesteld van organisaties die een WiFi4EU-voucher kunnen aanvragen. Daarop staan gemeenten en verenigingen van gemeenten. Controleer of uw organisatie ook op de goedgekeurde lijst staat. U kunt zich dan nu al inschrijven en meteen een aanvraag indienen zodra de volgende ronde van start gaat.",
+  "benefLanding.pleaseNoteText3": "Staat uw organisatie niet op de lijst? Dan heeft het ook geen zin om het formulier in te vullen en een aanvraag in te dienen. Ook aanvragen van privébedrijven worden afgewezen.",
+  "benefLanding.proceed": "Wilt u verdergaan met de inschrijving?"
 }

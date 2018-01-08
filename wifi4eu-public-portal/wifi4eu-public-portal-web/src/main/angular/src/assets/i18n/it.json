@@ -349,5 +349,14 @@
   "home.part4.link2": "Informazioni su WiFi4EU",
   "home.part4.link3": "Inviti a presentare candidature",
   "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
-  "timelineComponentTitle": ""
+  "timelineComponentTitle": "",
+  "benefLanding.conectEU": "Per procedere, prima connettiti con un account “EU Login” : clicca qui",
+  "benefLanding.nextSteps": "Poi potrai passare alle fasi successive della registrazione e/o chiedere di partecipare all'iniziativa WIFI4EU. ",
+  "benefLanding.pleaseNote": "Attenzione:",
+  "benefLanding.elegibleText": "Se la tua organizzazione non figura sull'elenco dei soggetti ammissibili, non compilare il modulo: la registrazione non sarà considerata valida e non potrai candidarti. Le candidature compilate dalle imprese private saranno respinte.",
+  "benefLanding.secondTitle": "Puoi candidarti?",
+  "benefLanding.elegibleText3": "Stai per registrarti sul portale WIFI4EU per conto di un comune. ",
+  "benfefLanding.pleaseNoteText": "In collaborazione con gli Stati membri è stato concordato un elenco dei soggetti che possono presentare richieste di buoni WIFI4EU per il prossimo invito. L'elenco comprende comuni o associazioni costituite da comuni. Verifica se la tua organizzazione figura sull'elenco concordato. Se è così, puoi registrarti fin da subito e successivamente candidarti quando l'invito a presentare le candidature sarà lanciato.",
+  "benefLanding.pleaseNoteText3": "Se la tua organizzazione non figura sull'elenco dei soggetti ammissibili, non compilare il modulo: la registrazione non sarà considerata valida e non potrai candidarti. Le candidature compilate dalle imprese private saranno respinte.",
+  "benefLanding.proceed": "Vuoi procedere con la registrazione?"
 }

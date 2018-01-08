@@ -352,5 +352,14 @@
   "home.part4.link1": "Vanliga frågor",
   "home.part4.link2": "Om WiFi4EU",
   "home.part4.link3": "Ansökningsomgångar",
-  "home.part4.link4": "Europa direkt <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Europa direkt <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.conectEU": "Först måste du logga in med ditt EU Login-konto: Skapa ett konto",
+  "benefLanding.nextSteps": "Sedan kan du gå vidare med nästa steg och registrera dig och/eller ansöka om WiFi4EU-bidrag. ",
+  "benefLanding.pleaseNote": "Obs!",
+  "benefLanding.elegibleText": "Om din kommun inte finns med på listan ska du inte registrera den. Registreringen kommer inte att godkännas och du kommer inte att kunna ansöka om en check. Vi godkänner inte heller ansökningar från privata företag.",
+  "benefLanding.secondTitle": "Vem kan söka?",
+  "benefLanding.elegibleText3": "Du är på väg att registrera dig i WiFi4EU-portalen på uppdrag av en kommun. ",
+  "benfefLanding.pleaseNoteText": "Vi har tillsammans med EU-länderna tagit fram en lista med organ som får ansöka om en WiFi4EU-check i nästa ansökningsomgång. Listan omfattar kommuner och sammanslutningar av kommuner. Se om din kommun står med på listan. I så fall kan du registrera den nu och skicka in ansökan när ansökningsomgången startar.",
+  "benefLanding.pleaseNoteText3": "Om din kommun inte finns med på listan ska du inte registrera den. Registreringen kommer inte att godkännas och du kommer inte att kunna ansöka om en check. Vi godkänner inte heller ansökningar från privata företag.",
+  "benefLanding.proceed": "Vill du fortsätta med registreringen?"
 }

@@ -352,5 +352,14 @@
   "home.part4.link1": "Bieži uzdoti jautājumi",
   "home.part4.link2": "Par iniciatīvu WiFi4EU",
   "home.part4.link3": "Uzaicinājumi iesniegt pieteikumus",
-  "home.part4.link4": "Informatīvais dienests “Europe Direct”, tālrunis: <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Informatīvais dienests “Europe Direct”, tālrunis: <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.conectEU": "Lai varētu turpināt, vispirms pieslēdzieties, izmantojot “EU-login” kontu: noklikšķiniet te",
+  "benefLanding.nextSteps": "Tad varat veikt nākamos soļus, kas vajadzīgi, lai reģistrētos un/vai pieteiktos iniciatīvai WiFi4EU. ",
+  "benefLanding.pleaseNote": "Ņemiet vērā!",
+  "benefLanding.elegibleText": "Ja jūsu organizācijas sarakstā nav, neaizpildiet veidlapu, jo reģistrācija nebūs derīga un jūs nevarēsiet pieteikties. Privātu uzņēmumu pieteikumi tiks noraidīti.",
+  "benefLanding.secondTitle": "Vai jūs varat pieteikties?",
+  "benefLanding.elegibleText3": "Jūs tūlīt pašvaldības vārdā reģistrēsities WiFi4EU portālā. ",
+  "benfefLanding.pleaseNoteText": "Sadarbībā ar dalībvalstīm ir izveidots tādu juridisko personu saraksts, kuras drīkst pieteikties WiFi4EU vaučeram nākamajā konkursā. Sarakstā ietilpst pašvaldības vai pašvaldību apvienības. Pārbaudiet, vai jūsu organizācija ir šajā sarakstā. Ja jā, varat reģistrēties jau tagad un pieteikties, kad tiks izsludināts uzaicinājums iesniegt pieteikumus.",
+  "benefLanding.pleaseNoteText3": "Ja jūsu organizācijas sarakstā nav, neaizpildiet veidlapu, jo reģistrācija nebūs derīga un jūs nevarēsiet pieteikties. Privātu uzņēmumu pieteikumi tiks noraidīti.",
+  "benefLanding.proceed": "Vai vēlaties turpināt reģistrācijas procesu?"
 }

@@ -352,5 +352,14 @@
   "home.part4.link1": "Perguntas frequentes",
   "home.part4.link2": "Sobre a WiFi4EU",
   "home.part4.link3": "Convites à apresentação de candidaturas",
-  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>"
+  "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
+  "benefLanding.conectEU": "Comece por iniciar uma sessão com uma conta EU Login.",
+  "benefLanding.nextSteps": "Depois, passe às etapas seguintes para se inscrever/candidatar ao apoio da WiFi4EU. ",
+  "benefLanding.pleaseNote": "Nota:",
+  "benefLanding.elegibleText": "Se a sua organização não constar desta lista não preencha o formulário, pois a inscrição não será válida e não poderá candidatar-se. Não são aceites candidaturas de empresas privadas.",
+  "benefLanding.secondTitle": "Reúne as condições para poder beneficiar da WiFi4EU?",
+  "benefLanding.elegibleText3": "Está prestes a inscrever-se no portal WiFi4EU em nome de uma autarquia. ",
+  "benfefLanding.pleaseNoteText": "Em colaboração com os países da UE, foi elaborada uma lista de autarquias e associações de autarquias que podem candidatar-se a um vale WiFi4EU no próximo convite à apresentação de candidaturas. Verifique se a sua organização consta desta lista. Em caso afirmativo, pode inscrever-se agora e candidatar-se posteriormente, quando o convite for lançado.",
+  "benefLanding.pleaseNoteText3": "Se a sua organização não constar desta lista não preencha o formulário, pois a inscrição não será válida e não poderá candidatar-se. Não são aceites candidaturas de empresas privadas.",
+  "benefLanding.proceed": "Deseja continuar com o processo de inscrição?"
 }
