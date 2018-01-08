@@ -448,5 +448,6 @@
   "submit.application": "Niniejszym potwierdzam, że informacje podane w tym portalu i dotyczące programu WiFi4EU są prawdziwe, kompletne i dokładne. Niniejszym potwierdzam, że Komisja Europejska lub inna upoważniona agencja europejska może zweryfikować informacje tu podane, korzystając ze źródeł dostępnych na mocy prawa.",
   "submitregistration.failure.title": "Podczas rejestracji wystąpił błąd.",
   "submitregistration.failure.text.part1": "Prosimy spróbować ponownie później lub skonsultować się z działem pomocy technicznej.",
-  "backtohome.button": "Powrót na stronę główną"
+  "backtohome.button": "Powrót na stronę główną",
+
 }

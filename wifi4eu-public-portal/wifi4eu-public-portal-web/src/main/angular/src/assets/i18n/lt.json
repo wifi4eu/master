@@ -361,5 +361,10 @@
   "benfefLanding.pleaseNoteText": "Bendradarbiaujant su valstybėmis narėmis buvo sutartas sąrašas subjektų, galinčių teikti paraiškas „WiFi4EU“ čekiui gauti, kai bus paskelbtas kitas kvietimas teikti paraiškas. Į šį sąrašą įtrauktos savivaldybės ir jų asociacijos. Pasitikrinkite, ar Jūsų organizacija yra sutartame sąraše. Jei taip, galite registruotis jau dabar, o vėliau, kai bus paskelbtas kvietimas teikti paraiškas, pateikti paraišką.",
   "benefLanding.pleaseNoteText3": "Jei Jūsų organizacijos tinkamų subjektų sąraše nėra, nepildykite formos, nes registracija negalios ir pateikti paraiškos negalėsite. Privačių bendrovių paraiškos bus atmestos.",
   "benefLanding.proceed": "Ar norite registruotis?",
-  "benefLanding.title": "Sveiki, čia pareiškėjams skirtas „WiFi4EU“ registracijos puslapis."
+  "benefLanding.title": "Sveiki, čia pareiškėjams skirtas „WiFi4EU“ registracijos puslapis.",
+  "supp.landingpage.title": "Sveiki, čia įrengimo bendrovėms skirtas „WiFi4EU“ registracijos puslapis.",
+  "supp.landingpage.elegibleText3": "Galite iškart registruotis „WiFi4EU“ portale, kad nurodytumėte vietoves, kuriose galite siūlyti įrangą ir jos įrengimo paslaugas „WiFi4EU“ paramos gavėjams. ",
+  "supp.landingpage.elegibleText2": "Paramos gavėjai savo vietos belaidžio vietinio tinklo projektus turės parengti ir viešąjį pirkimą atlikti pagal taikomas viešojo pirkimo taisykles ir gali peržiūrėti užsiregistravusių bendrovių sąrašą, kad nustatytų galimus tiekėjus savo vietovėje. ",
+  "supp.landingpage.elegibleText4": "Jei „WiFi4EU“ paramos gavėjas su Jūsų bendrove sudarė tiekimo sutartį, Jūsų registracija yra privaloma. ",
+
 }

@@ -362,5 +362,9 @@
   "benfefLanding.pleaseNoteText": "Gemeinsam mit den EU-Ländern wurde eine Liste von Einrichtungen festgelegt, die bei der nächsten Aufforderung zur Einreichung von Anträgen einen WFi4EU-Gutschein beantragen können. Diese Liste umfasst Gemeinden und Gemeindeverbände. Bitte prüfen Sie, ob Ihre Organisation auf dieser vereinbarten Liste steht. In diesem Fall können Sie sich schon jetzt registrieren und dann einen Antrag stellen, sobald die Aufforderung ergeht.",
   "benefLanding.pleaseNoteText3": "Füllen Sie kein Formular aus, wenn Ihre Organisation nicht auf der Liste steht; die Registrierung wäre ungültig, und Sie könnten keinen Antrag stellen. Von Privatunternehmen eingereichte Anträge werden abgelehnt.",
   "benefLanding.proceed": "Möchten Sie mit der Registrierung fortfahren?",
-  "benefLanding.title": "Willkommen auf der WiFi4EU-Registrierungsseite für Antragsteller"
+  "benefLanding.title": "Willkommen auf der WiFi4EU-Registrierungsseite für Antragsteller",
+  "supp.landingpage.title": "Willkommen auf der WiFi4EU-Registrierungsseite für WLAN-Installationsfirmen.",
+  "supp.landingpage.elegibleText3": "Sie können sich dann direkt auf dem WiFi4EU-Portal registrieren und angeben, in welchem Umkreis Sie den WiFi4EU-Begünstigten Ausrüstung und Installation bereitstellen können. ",
+  "supp.landingpage.elegibleText2": "Die Begünstigten müssen ihre WLAN-Installationsprojekte im Einklang mit den geltenden Vergabevorschriften festlegen und ausschreiben und dürfen die Liste der registrierten Installationsfirmen konsultieren, um potenzielle Anbieter in ihrem Umkreis zu finden. ",
+  "supp.landingpage.elegibleText4": "Wenn Ihr Unternehmen einen Lieferauftrag von einem WiFi4EU-Begünstigten erhalten hat, sind Sie verpflichtet, sich zu registrieren. "
 }
