@@ -170,13 +170,14 @@
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
                 <war.output.directory/>
+                <ecas.config.base.url>https://webgate.stress.ec.europa.eu</ecas.config.base.url>
                 <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <mail.serv.location>http://wifi4eudev.azurewebsites.net/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
-                <mail.smtp.username>zrFimYABQaOUJYXwU9Q6kg</mail.smtp.username>
-                <mail.smtp.password>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</mail.smtp.password>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -189,7 +190,6 @@
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
                 <war.output.directory/>
-                <ecas.config.base.url>https://ecas.ec.europa.eu</ecas.config.base.url>
                 <ecas.server.address>${server.azure.test.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <mail.serv.location>http://wifi4eutest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
@@ -200,7 +200,7 @@
             </properties>
         </profile>
         <profile>
-            <id>AZUREPRO</id>
+            <id>AZUREPROD</id>
             <properties>
                 <server.address>${server.azure.pro.address}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
@@ -209,6 +209,7 @@
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
                 <war.output.directory/>
+                <ecas.config.base.url>https://ecas.ec.europa.eu</ecas.config.base.url>
                 <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <mail.serv.location>http://wifi4euprod.azurewebsites.net/wifi4eu/#/</mail.serv.location>

@@ -28,6 +28,7 @@
 				<prop key="mail.smtp.auth">true</prop>
 				<prop key="mail.smtp.starttls.enable">true</prop>
 				<prop key="mail.debug">true</prop>
+				<prop key ="mail.smtp.from">no-reply@wifi4eu.eu</prop>
 			</props>
 		</property>
 	</bean>
