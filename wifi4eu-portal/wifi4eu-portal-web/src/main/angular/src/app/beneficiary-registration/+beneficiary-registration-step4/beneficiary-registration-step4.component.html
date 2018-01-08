@@ -203,7 +203,7 @@
             <span class="ui-lg-1"></span>
             <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
                 <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_4"><input type="checkbox" id="check_4"
-                                                                              [(ngModel)]="legalChecks[2]">
+                                                                              [(ngModel)]="legalChecks[3]">
                     {{ 'preview.registration.check4' | translate }}
                 </label>
             </div>
@@ -213,7 +213,7 @@
             <span class="ui-lg-1"></span>
             <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
                 <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_5"><input type="checkbox" id="check_5"
-                                                                              [(ngModel)]="legalChecks[2]">
+                                                                              [(ngModel)]="legalChecks[4]">
                     {{ 'preview.registrations.check5' | translate }}
                 </label>
             </div>
@@ -223,7 +223,7 @@
             <span class="ui-lg-1"></span>
             <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
                 <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_6"><input type="checkbox" id="check_6"
-                                                                              [(ngModel)]="legalChecks[2]">
+                                                                              [(ngModel)]="legalChecks[5]">
                     {{ 'preview.registrations.check6' | translate }}
                 </label>
             </div>
@@ -233,7 +233,7 @@
             <span class="ui-lg-1"></span>
             <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
                 <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_7"><input type="checkbox" id="check_7"
-                                                                              [(ngModel)]="legalChecks[2]">
+                                                                              [(ngModel)]="legalChecks[6]">
                     {{ 'preview.registrations.check7' | translate }}
                 </label>
             </div>
@@ -243,7 +243,7 @@
             <span class="ui-lg-1"></span>
             <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
                 <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_8"><input type="checkbox" id="check_8"
-                                                                              [(ngModel)]="legalChecks[2]">
+                                                                              [(ngModel)]="legalChecks[7]">
                     {{ 'preview.registrations.check8' | translate }}
                 </label>
             </div>
@@ -253,7 +253,7 @@
             <span class="ui-lg-1"></span>
             <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
                 <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_9"><input type="checkbox" id="check_9"
-                                                                              [(ngModel)]="legalChecks[2]">
+                                                                              [(ngModel)]="legalChecks[8]">
                     {{ 'preview.registrations.check9' | translate }}
                 </label>
             </div>
@@ -263,7 +263,7 @@
             <span class="ui-lg-1"></span>
             <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
                 <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_10"><input type="checkbox" id="check_10"
-                                                                               [(ngModel)]="legalChecks[2]">
+                                                                               [(ngModel)]="legalChecks[9]">
                     {{ 'preview.registrations.check10' | translate }}
                 </label>
             </div>
@@ -284,7 +284,9 @@
             <!-- Next button -->
             <div class="ui-g-6 ui-md-6 ui-lg-3">
                 <button type="submit" class="btn btn-primary publish-button"
-                        [disabled]="!legalChecks[0] || !legalChecks[1] || !legalChecks[2]"
+                        [disabled]="!legalChecks[0] || !legalChecks[1] || !legalChecks[2] || !legalChecks[3]
+                        || !legalChecks[4] || !legalChecks[5] || !legalChecks[6] || !legalChecks[7]
+                        || !legalChecks[8] || !legalChecks[9]"
                         (click)="submit()">
                     {{ 'confirm.button' | translate }}
                 </button>
