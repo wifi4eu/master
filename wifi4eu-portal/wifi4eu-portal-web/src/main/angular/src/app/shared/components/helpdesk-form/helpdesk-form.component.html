@@ -1,11 +1,9 @@
 <div class="clearfix"></div>
 <div class="container">
-    <p class="center">
-        {{ 'helpdeskform.clickhere.label1' | translate }}
-        <a (click)="expanded = true">{{ 'helpdeskform.clickhere.label2' | translate }}</a>
+    <p class="label" style="text-align: center;"
+       [innerHTML]="'helpdeskform.clickhere.label1' | translate">
+
     </p>
-    <br>
-    <br>
     <div id="helpdesk-form" *ngIf="expanded">
 
         <hr class="center" style="padding-bottom: 2em; margin-top: 2em !important;">

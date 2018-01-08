@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div *ngIf="organizations.length < 1" id="represent-option" class="form-group ui-g center">
+        <div *ngIf="organizations.length < 1" id="represent-option" class="form-group ui-g">
             <div class="ui-g-5"></div>
             <div class="ui-g-2">
                 <div [hidden]="!countrySelected">
@@ -81,7 +81,8 @@
                                 <option disabled selected [ngValue]="null">
                                     Choose an organization
                                 </option>
-                                <option *ngFor="let currentOrganization of organizations" [ngValue]="currentOrganization">
+                                <option *ngFor="let currentOrganization of organizations"
+                                        [ngValue]="currentOrganization">
                                     {{currentOrganization.name}}
                                 </option>
                             </select>
