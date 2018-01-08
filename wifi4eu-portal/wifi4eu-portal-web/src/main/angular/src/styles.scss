@@ -1317,3 +1317,9 @@ discussion-component .expanded .content, discussion-component .expanded .header,
     }
   }
 }
+
+/* fix blinking issue with the header */
+
+#app-wrapper.shrink-header-active #main #nav-bar{
+  position: relative;
+}
