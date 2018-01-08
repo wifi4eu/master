@@ -448,5 +448,7 @@
   "discussionForum.sendMessage": "This message will be sent to the other users who have registered for the same municipality.",
   "sendMessage.subject": "Your message",
   "mediationRequest.text": "By sending this request, the European Commission will intervene in the discussion to help all applicants resolve the issue.",
-  "newMediation.text": "Mediation request"
+  "newMediation.text": "Mediation request",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

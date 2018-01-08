@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Meddelandet kommer att skickas till de andra användare som också har registrerat kommunen.",
   "sendMessage.subject": "Ditt meddelande",
   "mediationRequest.text": "Skicka denna begäran om du vill att Europeiska kommissionen ska hjälpa dig och övriga sökande att lösa problemet.",
-  "newMediation.text": "Begäran om hjälp"
+  "newMediation.text": "Begäran om hjälp",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

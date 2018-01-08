@@ -412,5 +412,7 @@
   "discussionForum.sendMessage": "See sõnum saadetakse teistele kasutajatele, kes on end registreerinud seoses sama omavalitsusega.",
   "sendMessage.subject": "Teie sõnum",
   "mediationRequest.text": "Kui saadate selle taotluse, sekkub vestlusesse Euroopa Komisjon, et aidata taotlejatel olukord lahendada.",
-  "newMediation.text": "Vahendusmenetluse taotlemine"
+  "newMediation.text": "Vahendusmenetluse taotlemine",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions" : ""
 }

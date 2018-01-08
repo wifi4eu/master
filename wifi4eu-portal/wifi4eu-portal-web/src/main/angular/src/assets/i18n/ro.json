@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Acest mesaj va fi trimis celorlalți utilizatori care au înregistrat aceeași municipalitate.",
   "sendMessage.subject": "Mesajul dumneavoastră",
   "mediationRequest.text": "Dacă trimiteți această cerere, Comisia Europeană va interveni în discuție pentru a-i ajuta pe toți solicitanții să rezolve problema.",
-  "newMediation.text": "Cerere de mediere"
+  "newMediation.text": "Cerere de mediere",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

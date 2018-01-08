@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Táto správa sa odošle ostatným používateľom, ktorí registrovali tú istú obec.",
   "sendMessage.subject": "Vaša správa",
   "mediationRequest.text": "Ak odošlete túto žiadosť, Európska komisia zasiahne do diskusie, aby všetkým žiadateľom pomohla situáciu vyriešiť.",
-  "newMediation.text": "Žiadosť o sprostredkovanie"
+  "newMediation.text": "Žiadosť o sprostredkovanie",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

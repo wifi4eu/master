@@ -271,8 +271,6 @@
   "error.notallowed": "No puedes acceder a esta página.",
   "useractivation.success": "Su cuenta se ha activado correctamente.",
   "useractivation.failure": "No se ha podido activar su cuenta.",
-  "beneficiaryRegistration.step1.instructions": "Por favor, escoja el país y el número de municipios que representa.",
-  "beneficiaryRegistration.step1.option1": "Represento un municipio",
   "beneficiaryRegistration.step1.option2": "Represento dos o más municipios",
   "loading.label": "cargando...",
   "duplicatedSuppliers.title": "Registros de proveedores duplicados",
@@ -403,5 +401,7 @@
   "discussionForum.sendMessage": "Este mensaje se enviará a los demás usuarios que hayan realizado una inscripción para el mismo municipio.",
   "sendMessage.subject": "Su mensaje",
   "mediationRequest.text": "Al enviar esta petición, la Comisión Europea intervendrá en el debate para ayudar a todos los solicitantes a resolver el problema.",
-  "newMediation.text": "Solicitud de mediación"
+  "newMediation.text": "Solicitud de mediación",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

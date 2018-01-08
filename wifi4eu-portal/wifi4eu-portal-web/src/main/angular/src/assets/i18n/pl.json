@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Ta wiadomość zostanie wysłana do innych użytkowników, którzy dokonali rejestracji dotyczącej tej samej gminy.",
   "sendMessage.subject": "Twoja wiadomość",
   "mediationRequest.text": "Po otrzymaniu prośby o przeprowadzenie mediacji Komisja Europejska będzie starała się pomóc wszystkim wnioskodawcom w rozwiązaniu problemu.",
-  "newMediation.text": "Prośba o przeprowadzenie mediacji"
+  "newMediation.text": "Prośba o przeprowadzenie mediacji",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

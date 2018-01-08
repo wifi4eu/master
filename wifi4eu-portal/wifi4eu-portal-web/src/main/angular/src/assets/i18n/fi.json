@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Tämä viesti lähetetään muille käyttäjille, jotka ovat rekisteröineet saman kunnan.",
   "sendMessage.subject": "Viestisi",
   "mediationRequest.text": "Jos lähetät tämän pyynnön, Euroopan komissio osallistuu keskusteluun auttaakseen hakijoita ratkaisun löytämisessä.",
-  "newMediation.text": "Sovittelupyyntö"
+  "newMediation.text": "Sovittelupyyntö",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions" : ""
 }

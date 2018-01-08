@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Esta mensagem será enviada aos outros utilizadores que se inscreveram para a mesma autarquia.",
   "sendMessage.subject": "A sua mensagem",
   "mediationRequest.text": "Na sequência deste pedido, a Comissão Europeia intervirá no debate para ajudar os candidatos de resolver o problema.",
-  "newMediation.text": "Pedido de mediação"
+  "newMediation.text": "Pedido de mediação",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

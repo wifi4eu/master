@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Ezt az üzenetet azok fogják megkapni, akik ugyanazt a települést regisztrálták.",
   "sendMessage.subject": "Az Ön üzenete",
   "mediationRequest.text": "Ha benyújtja ezt a kérést, az Európai Bizottság el fog járni közvetítőként, hogy segítsen az ügy rendezésében.",
-  "newMediation.text": "Közvetítés kérése"
+  "newMediation.text": "Közvetítés kérése",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

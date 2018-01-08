@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Questo messaggio sarà inviato agli altri utilizzatori che si sono registrati per lo stesso comune.",
   "sendMessage.subject": "Il tuo messaggio",
   "mediationRequest.text": "Se invii questa richiesta, la Commissione europea interverrà nella discussione per aiutare tutti i candidati a risolvere il problema.",
-  "newMediation.text": "Richiesta di mediazione"
+  "newMediation.text": "Richiesta di mediazione",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }

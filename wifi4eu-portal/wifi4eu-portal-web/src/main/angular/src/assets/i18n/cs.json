@@ -413,5 +413,7 @@
   "discussionForum.sendMessage": "Tato zpráva bude zaslána uživatelům, kteří se zaregistrovali u stejné obce.",
   "sendMessage.subject": "Vaše zpráva",
   "mediationRequest.text": "Po zaslání této žádosti vstoupí Evropská komise do diskuse a pokusí se věc vyřešit.",
-  "newMediation.text": "Žádost o mediaci"
+  "newMediation.text": "Žádost o mediaci",
+  "beneficiaryRegistration.step1.option1": "",
+  "beneficiaryRegistration.step1.instructions": ""
 }
