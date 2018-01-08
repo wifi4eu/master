@@ -318,7 +318,7 @@
   "home.part1.date": "Président de la Commission européenne",
   "home.whatch.video": "Regarder la vidéo",
   "home.part2.title": "Qui peut introduire une demande?",
-  "home.part2.text1": "Le prochain appel à projets sera lancé le {{date}} à {{hours}} (heure de l'Europe centrale).",
+  "home.part2.text1": "Le prochain appel à projets sera lancé le {{date}} à {{hour}} (heure de l'Europe centrale).",
   "home.part2.subtitle4": "Il s’adresse aux:",
   "home.part2.list1": "-           municipalités,",
   "home.part2.list2": "-           entités agissant pour le compte de municipalités.  ",
