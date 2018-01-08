@@ -8,6 +8,7 @@ import { LocalStorageService } from "angular-2-local-storage";
 import { UserApi } from "./shared/swagger/api/UserApi";
 import { RegistrationApi } from "./shared/swagger/api/RegistrationApi";
 import { CustomLayoutLink } from "./shared/components/custom-layout-nav-bar-top-menu/custom-layout-link";
+import { UxLayoutLink } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/models/ux-layout-link";
 
 enableProdMode();
 
@@ -37,13 +38,10 @@ export class AppComponent {
             this.selectedLanguage = UxEuLanguages.languagesByCode ['en'];
         }
 
-        this.menuLinks = [new CustomLayoutLink({
-            label: 'Wifi4EU',
-            children: [
-                new CustomLayoutLink({label: 'Beneficiary Registration', url: '/#/beneficiary-landing', externalUrl: true}),
-                new CustomLayoutLink({label: 'Supplier Registration', url: '/#/supplier-landing', externalUrl: true})
-            ]
-        })];
+        this.menuLinks = [
+          new CustomLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-landing'}),
+          new CustomLayoutLink({label: 'Supplier Registration', url: '/supplier-landing'})
+        ];
 
         this.visibility = [false, false, false, false, false];
         this.updateHeader();
