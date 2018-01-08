@@ -10,10 +10,12 @@ import {DgConnSupplierRegistrationsComponent} from "./+supplier-registrations/su
 import {DgConnBeneficiaryRegistrationsComponent} from "./+beneficiary-registrations/beneficiary-registrations.component";
 import {DgConnManageLauComponent} from "./+manage-lau/manage-lau.component";
 import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
+import { PaginatorModule } from "primeng/primeng";
+import { SharedModule as SharedNgModule } from 'primeng/primeng';
 
 @NgModule({
     imports: [
-        SharedModule, DgConnectPortalRoutingModule
+        SharedModule, DgConnectPortalRoutingModule, SharedNgModule
     ],
     declarations: [
         DgConnPortalComponent, 

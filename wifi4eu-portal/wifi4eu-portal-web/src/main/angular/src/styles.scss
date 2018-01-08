@@ -1293,4 +1293,27 @@ discussion-component .expanded .content, discussion-component .expanded .header,
     padding: 1.25rem 0.75rem;
     text-align: center;
   }
+
+  .separator{
+    border-left: 1px solid rgba(171, 171, 171, 0.22);
+  }
+
+  .ui-datatable table thead th{
+    border-bottom: 1px solid rgba(187, 187, 187, 0.8196078431372549)!important;
+  }
+
+  .badge{
+    color: #fff;
+    padding: 4px 8px;
+    font-style: italic;
+    &.badge-success{
+      background-color: #4caf50;
+    }
+    &.badge-fail{
+      background-color: #f44336;
+    }
+    &.badge-warning{
+      background-color: #ff9800;
+    }
+  }
 }

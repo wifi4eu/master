@@ -293,7 +293,7 @@
   "useractivation.success": "User activation success.",
   "useractivation.failure": "Could not activate your account.",
   "duplicatedSuppliers.title": "Supplier registrations",
-  "duplicatedBeneficiary.title": "Duplicated beneficiary registrations",
+  "duplicatedBeneficiary.title": "Beneficiary registrations",
   "discussionForum.title": "Discussion Forum",
   "registration.emailResend.success": "The confirmation email has been resent successfully.",
   "registration.emailResend.failure": "An error occurred when trying to resend the confirmation email.",
