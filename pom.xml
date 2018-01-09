@@ -134,6 +134,7 @@
         <mail.smtp.port>587</mail.smtp.port>
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
         <mail.smtp.password>bcf74eb9b6</mail.smtp.password>
+        <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
 
         <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
         <war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>
