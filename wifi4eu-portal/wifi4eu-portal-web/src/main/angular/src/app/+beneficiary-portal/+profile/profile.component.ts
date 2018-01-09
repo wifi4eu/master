@@ -1,36 +1,32 @@
-import {Component} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {UserApi} from "../../shared/swagger/api/UserApi";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {CustomAccordionBoxComponent} from "../../shared/components/custom-accordion-box/custom-accordion-box.component";
-import {UxAccordionBoxesComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-ui-elements/ux-accordion-box/ux-accordion-boxes.component";
-import {LocalStorageService} from "angular-2-local-storage";
-import {TranslateService} from "ng2-translate";
-import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
-import {SharedService} from "../../shared/shared.service";
-import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
-import {UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
+import { Component } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { UserApi } from "../../shared/swagger/api/UserApi";
+import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
+import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { LocalStorageService } from "angular-2-local-storage";
+import { SharedService } from "../../shared/shared.service";
+import { UserThreadsApi } from "../../shared/swagger/api/UserThreadsApi";
+import { UserThreadsDTOBase } from "../../shared/swagger/model/UserThreadsDTO";
+import { MayorApi } from "../../shared/swagger/api/MayorApi";
+import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
 
 @Component({
     selector: 'beneficiary-profile',
     templateUrl: 'profile.component.html',
-    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi]
+    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi]
 })
 
 export class BeneficiaryProfileComponent {
     private user: UserDTOBase = new UserDTOBase;
     private municipalities: MunicipalityDTOBase[] = [];
-    private mayors: UserDTOBase[] = [];
+    private mayors: MayorDTOBase[] = [];
     private editedUser: UserDTOBase = new UserDTOBase();
     private editedMunicipality: MunicipalityDTOBase = new MunicipalityDTOBase();
-    private editedMayor: UserDTOBase = new UserDTOBase();
-    private accordionBoxItems: CustomAccordionBoxComponent[] = [];
-    private representing: boolean = false;
+    private editedMayor: MayorDTOBase = new MayorDTOBase();
     private currentEditIndex: number = 0;
     private displayUser: boolean = false;
     private displayMunicipality: boolean = false;
@@ -46,7 +42,8 @@ export class BeneficiaryProfileComponent {
     private threadId: number;
     private hasDiscussion: boolean = false;
 
-    constructor(private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private localStorageService: LocalStorageService, private translateService: TranslateService, private uxService: UxService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+
+    constructor(private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -54,9 +51,6 @@ export class BeneficiaryProfileComponent {
                 (user: UserDTOBase) => {
                     this.user = user;
                     if (this.user.type == 2 || this.user.type == 3) {
-                        if (this.user.type == 3) {
-                            this.representing = true;
-                        }
                         Object.assign(this.editedUser, this.user);
                         this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
                             (registrations: RegistrationDTOBase[]) => {
@@ -64,26 +58,12 @@ export class BeneficiaryProfileComponent {
                                     this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
                                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                                         (municipality: MunicipalityDTOBase) => {
-                                            // If the user is a representative, we need to look for the info of the mayors.
-                                            if (this.representing) {
-                                                this.registrationApi.getRegistrationsByMunicipalityId(municipality.id).subscribe(
-                                                    (municipalityRegistrations: RegistrationDTOBase[]) => {
-                                                        for (let municipalityRegistration of municipalityRegistrations) {
-                                                             if (municipalityRegistration.role == 'Mayor') {
-                                                                this.userApi.getUserById(municipalityRegistration.userId).subscribe(
-                                                                    (mayor: UserDTOBase) => {
-                                                                        this.municipalities.push(municipality);
-                                                                        this.mayors.push(mayor);
-                                                                        this.accordionBoxItems.push(new CustomAccordionBoxComponent(new UxAccordionBoxesComponent()));
-                                                                    }
-                                                                );
-                                                            }
-                                                        }
-                                                    }
-                                                );
-                                            } else {
-                                                this.municipalities.push(municipality);
-                                            }
+                                            this.municipalities.push(municipality);
+                                            this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
+                                                (mayor: MayorDTOBase) => {
+                                                    this.mayors.push(mayor);
+                                                }
+                                            );
                                         }
                                     );
                                 }
@@ -100,9 +80,11 @@ export class BeneficiaryProfileComponent {
             );
             this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
                 (userThreads: UserThreadsDTOBase[]) => {
-                    this.userThreads = userThreads[0];
-                    this.threadId = userThreads[0].threadId;
-                    this.hasDiscussion = true;
+                    if (userThreads.length > 0) {
+                        this.userThreads = userThreads[0];
+                        this.threadId = userThreads[0].threadId;
+                        this.hasDiscussion = true;
+                    }
                 }, error => {
                     console.log("service error: ", error);
                 }
@@ -196,7 +178,6 @@ export class BeneficiaryProfileComponent {
     }
 
     private deleteRegistration() {
-
         this.userApi.deleteUser(this.user.id).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {
@@ -207,44 +188,6 @@ export class BeneficiaryProfileComponent {
                 this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
             }
         );
-        /*
-        this.registrationApi.deleteRegistration(this.user.id).subscribe(
-            (data: ResponseDTOBase) => {
-                if (data.success) {
-                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
-                    this.sharedService.logout();
-                }
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
-            }
-        );
-        */
-        /*
-                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-                    (registrations: RegistrationDTOBase[]) => {
-                        let registrationCount = 0;
-                        for (let registration of registrations) {
-                            // Se borra cambiando el estado /////////////////////////////////////
-                            registration.status = 1; ////////////////////////////////////////////
-                            // Con esto se esta haciendo una update y siempre se mantendrá ahí //
-                            /////////////////////////////////////////////////////////////////////
-                            this.registrationApi.createRegistration(registration).subscribe(
-                                (data: ResponseDTOBase) => {
-                                    if (data.success) {
-                                        registrationCount++;
-                                        if (registrationCount >= registrations.length) {
-                                            this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
-                                            this.sharedService.logout();
-                                        }
-                                    }
-                                }, error => {
-                                    this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
-                                }
-                            );
-                        }
-                    }
-                );
-        */
     }
 
     private goToDiscussion() {
