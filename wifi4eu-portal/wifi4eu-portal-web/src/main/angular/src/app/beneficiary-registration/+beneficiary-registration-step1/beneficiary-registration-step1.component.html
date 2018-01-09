@@ -49,8 +49,7 @@
                 <div class="ui-g-2"></div>
             </div>
         </div>
-
-        <div *ngIf="organizations.length < 1" id="represent-option" class="form-group ui-g">
+        <!-- <div *ngIf="organizations.length < 1" id="represent-option" class="form-group ui-g">
             <div class="ui-g-5"></div>
             <div class="ui-g-2">
                 <div [hidden]="!countrySelected">
@@ -65,9 +64,9 @@
                 </div>
             </div>
             <div class="ui-g-5"></div>
-        </div>
-        <div *ngIf="organizations.length > 0" id="represent-option" class="form-group ui-g center">
-            <div class="ui-g-12">
+        </div> -->
+        <div id="represent-option" class="form-group ui-g">  <!-- organizations.length > 0 -->
+            <div class="ui-g-12"> <!-- *ngIf="countrySelected" -->
                 <div class="ui-g-2"></div>
                 <div class="ui-g-8">
                     <!-- Organization selection -->
@@ -76,11 +75,12 @@
                             <label class="label" for="organization">{{ 'organization.label' | translate }}</label>
                             <select [(ngModel)]="organization" (ngModelChange)="selectOrganization($event)"
                                     id="organization" name="organization" class="form-control"
-                                    ng-options="option.value as option.name for option in typeOptions"
-                                    [disabled]="organizations.length < 1">
+                                    ng-options="option.value as option.name for option in typeOptions" 
+                                    [disabled]="!countrySelected"><!--  [disabled]="organizations.length < 1" -->
                                 <option disabled selected [ngValue]="null">
                                     {{'registration.selectOrganisation' |translate}}
                                 </option>
+                                <option ngValue="municipality">Municipality</option>
                                 <option *ngFor="let currentOrganization of organizations"
                                         [ngValue]="currentOrganization">
                                     {{currentOrganization.name}}
@@ -94,7 +94,8 @@
                 </div>
                 <div class="ui-g-2"></div>
             </div>
-            <div class="ui-g-3"></div>
+          </div>
+            <!-- <div class="ui-g-3"></div>
             <div class="ui-g-2">
                 <div [hidden]="!countrySelected">
                     <p-checkbox name="singleMunicipality" [(ngModel)]="singleMunicipalityCheckbox"
@@ -120,8 +121,7 @@
                     </div>
                 </div>
             </div>
-            <div class="ui-g-3"></div>
-        </div>
+            <div class="ui-g-3"></div> -->
 
         <div class="ui-g">
             <div class="ui-lg-4"></div>
