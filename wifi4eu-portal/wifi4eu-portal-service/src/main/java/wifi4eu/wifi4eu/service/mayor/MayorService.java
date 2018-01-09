@@ -40,4 +40,8 @@ public class MayorService {
             return null;
         }
     }
+
+    public MayorDTO getMayorByMunicipalityId(int municipalityId) {
+        return mayorMapper.toDTO(mayorRepository.findByMunicipalityId(municipalityId));
+    }
 }

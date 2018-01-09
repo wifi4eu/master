@@ -73,4 +73,14 @@ public class MayorResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
+
+    @ApiOperation(value = "Get mayor by specific municipality id")
+    @RequestMapping(value = "/municipalityId/{municipalityId}",method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public MayorDTO getMayorByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
+        if (_log.isInfoEnabled()) {
+            _log.info("getMayorByMunicipalityId: " + municipalityId);
+        }
+        return mayorService.getMayorByMunicipalityId(municipalityId);
+    }
 }
