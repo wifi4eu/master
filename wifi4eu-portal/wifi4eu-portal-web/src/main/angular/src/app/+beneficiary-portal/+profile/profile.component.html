@@ -14,10 +14,9 @@
                     <div class="ui-g-12">
                         <div class="ui-g">
                             <div class="ui-g-10">
-                                <p *ngIf="representing" class="beneficiaryMayor">{{ 'representativedetails.title' |
-                                    translate
-                                    }}</p>
-                                <p *ngIf="!representing" class="beneficiaryMayor">{{ 'mayor.details' | translate }}</p>
+                                <p class="beneficiaryMayor">
+                                    {{ 'representativedetails.title' | translate }}
+                                </p>
                             </div>
                             <div class="ui-g-2">
                                 <a (click)="displayModal('user')" class="edit">
@@ -39,43 +38,10 @@
                         </div>
                         <hr class="beneficiaryHr">
                     </div>
-                    <div class="ui-g-12" *ngIf="!representing && municipalities.length > 0">
-                        <div class="ui-g-12">
-                            <div class="ui-g">
-                                <div class="ui-g-10">
-                                    <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
-                                    <p *ngIf="isRegisterHold" class="advDuplicatedMunic">{{
-                                        'beneficiaryProfile.duplicatedMunicipalities' | translate }}</p>
-                                </div>
-                                <div class="ui-g-2">
-                                    <a (click)="displayModal('municipality', 0)" class="edit">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="ui-g">
-                                <div class="ui-g-4">
-                                    <p>{{ 'country.label' | translate }}</p>
-                                    <p>{{ 'municipality.label' | translate }}</p>
-                                    <p>{{ 'address.label' | translate }}</p>
-                                    <p>{{ 'postal-code.label' | translate }}</p>
-                                </div>
-                                <div class="ui-g-8">
-                                    <p class="profileData">{{municipalities[0].country}}</p>
-                                    <p class="profileData">{{municipalities[0].name}}</p>
-                                    <p class="profileData">{{municipalities[0].address}},
-                                        {{municipalities[0].addressNum}}</p>
-                                    <p class="profileData">{{municipalities[0].postalCode}}</p>
-                                </div>
-                            </div>
-                            <hr class="beneficiaryHr">
-                        </div>
-                    </div>
-                    <div class="ui-g-12" *ngIf="representing && municipalities.length > 0">
+                    <div class="ui-g-12" *ngIf="municipalities.length > 0 && municipalities.length == mayors.length">
                         <ux-accordion-boxes>
-                            <custom-accordion-box *ngFor="let item of accordionBoxItems; let i = index"
-                                                  [isExpanded]="false"
-                                                  [rightSide]="true">
+                            <custom-accordion-box *ngFor="let municipality of municipalities; let i = index"
+                                                  [isExpanded]="false" [rightSide]="true">
                                 <div class="ui-g-12">
                                     <div class="ui-g">
                                         <div class="ui-g-10">
@@ -83,8 +49,8 @@
                                         </div>
                                         <div class="ui-g-2">
                                             <a (click)="displayModal('municipality', i)" class="edit">
-                                                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' |
-                                                translate }}
+                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                {{ 'edit.button' | translate }}
                                             </a>
                                         </div>
                                     </div>
@@ -96,11 +62,12 @@
                                             <p>{{ 'postal-code.label' | translate }}</p>
                                         </div>
                                         <div class="ui-g-8">
-                                            <p class="profileData">{{municipalities[i].country}}</p>
-                                            <p class="profileData">{{municipalities[i].name}}</p>
-                                            <p class="profileData">{{municipalities[i].address}},
-                                                {{municipalities[i].addressNum}}</p>
-                                            <p class="profileData">{{municipalities[i].postalCode}}</p>
+                                            <p class="profileData">{{municipality.country}}</p>
+                                            <p class="profileData">{{municipality.name}}</p>
+                                            <p class="profileData">
+                                                {{municipality.address}}, {{municipality.addressNum}}
+                                            </p>
+                                            <p class="profileData">{{municipality.postalCode}}</p>
                                         </div>
                                     </div>
                                     <hr class="beneficiaryHr">
@@ -112,8 +79,8 @@
                                         </div>
                                         <div class="ui-g-2">
                                             <a (click)="displayModal('mayor', i)" class="edit">
-                                                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' |
-                                                translate }}
+                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                {{ 'edit.button' | translate }}
                                             </a>
                                         </div>
                                     </div>
@@ -182,7 +149,7 @@
     <p-dialog [(visible)]="displayUser" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <p class="beneficiaryMayor center">{{ 'representativedetails.title' | translate }}</p>
-        <form (ngSubmit)="saveUserChanges()" #profileFormUser="ngForm">
+        <form (ngSubmit)="saveUserChanges()" #profileFormUser="ngForm" *ngIf="editedUser">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
@@ -251,7 +218,7 @@
     <p-dialog [(visible)]="displayMayor" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <h1 class="beneficiaryMayorModal">{{'mayordetails.title' | translate }}</h1>
-        <form (ngSubmit)="saveMayorChanges()" #profileFormMayor="ngForm">
+        <form (ngSubmit)="saveMayorChanges()" #profileFormMayor="ngForm" *ngIf="editedMayor">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
@@ -318,10 +285,9 @@
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMunicipality" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false"
-              [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+              [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <h1 class="beneficiaryMayorModal">{{'legalentity.label' | translate }}</h1>
-        <form (ngSubmit)="saveMunicipalityChanges()" #profileFormMunicipality="ngForm">
+        <form (ngSubmit)="saveMunicipalityChanges()" #profileFormMunicipality="ngForm" *ngIf="editedMunicipality">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
@@ -429,8 +395,7 @@
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayChangePassword" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false"
-              [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+              [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <h1 class="beneficiaryMayorModal">{{'beneficiaryProfile.password' | translate }}</h1>
         <form #profileFormPassword="ngForm">
             <div class="form-group profileDialog">
