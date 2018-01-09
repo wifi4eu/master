@@ -460,5 +460,6 @@
   "submit.application": "I hereby confirm that the information provided on this portal and in connection with the WiFi4EU scheme is true, complete and accurate. I hereby acknowledge that the European Commission or any delegated European Agency may verify the information set forth herein from sources accessible under law.",
   "submitregistration.failure.title": "Something went wrong with the registration.",
   "submitregistration.failure.text.part1": "Please try again or consult the Help Desk.",
-  "backtohome.button": "Back to the homepage"
+  "backtohome.button": "Back to the homepage",
+  "legalentity.label": "Legal entity"
 }
