@@ -65,9 +65,9 @@ public class LauResource {
     @ApiOperation(value = "Get laus by countryCode that start with name1, ignoring case")
     @RequestMapping(value = "/countryCode/{countryCode}/name/{name1}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<LauDTO> getLausByCountryCodeAndName1StartingWithIgnoreCase(@PathVariable("countryCode") final String countryCode, @PathVariable("name1") final String name1) {
+    public List<LauDTO> getLausByCountryCodeAndName1ContainingIgnoreCase(@PathVariable("countryCode") final String countryCode, @PathVariable("name1") final String name1) {
         _log.info(GET_LAUS_BY_COUNTRY_CODE_AND_NAME1_STARTING_WITH_IGNORE_CASE + countryCode + "," + name1);
-        return lauService.getLausByCountryCodeAndName1StartingWithIgnoreCase(countryCode, name1);
+        return lauService.getLausByCountryCodeAndName1ContainingIgnoreCase(countryCode, name1);
     }
 
     @ApiOperation(value = "Update Lau Physical Address")

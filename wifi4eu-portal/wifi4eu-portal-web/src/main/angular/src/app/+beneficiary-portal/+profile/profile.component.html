@@ -417,8 +417,8 @@
                 <div [hidden]="newPassword_field.valid || newPassword_field.pristine" class="alert alert-danger">
                     {{ 'password.required' | translate }}
                 </div>
-                <label class="labelModal" for="repeatNewPassword_field">{{ 'confirmNewPassword.label' | translate
-                    }}</label>
+                <label class="labelModal" for="repeatNewPassword_field">
+                    {{ 'confirmNewPassword.label' | translate }}</label>
                 <input id="repeatNewPassword_field" type="password" [(ngModel)]="repeatNewPassword"
                        class="form-control beneficiaryProfileI" name="repeatNewPassword_field"
                        ngcontrol="repeatNewPassword_field" #repeatNewPassword_field="ngModel"

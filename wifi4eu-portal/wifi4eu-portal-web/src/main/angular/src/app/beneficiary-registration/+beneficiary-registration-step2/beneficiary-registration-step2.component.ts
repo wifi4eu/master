@@ -52,7 +52,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private search(event: any) {
         let query = event.query;
         if (this.country != null && query.length >= this.MAX_LENGTH) {
-            this.lauApi.getLausByCountryCodeAndName1StartingWithIgnoreCase(this.country.countryCode, query).subscribe(
+            this.lauApi.getLausByCountryCodeAndName1ContainingIgnoreCase(this.country.countryCode, query).subscribe(
                 (laus: LauDTOBase[]) => {
                     this.lauSuggestions = laus;
                 }
