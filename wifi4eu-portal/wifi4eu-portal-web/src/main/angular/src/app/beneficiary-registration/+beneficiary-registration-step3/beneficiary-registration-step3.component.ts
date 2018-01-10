@@ -26,7 +26,8 @@ export class BeneficiaryRegistrationStep3Component {
     @Output() private onBack: EventEmitter<any>;
 
     private css_class_email: string = '';
-    private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$';
+    /* private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$'; */
+    private emailPattern =  new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\.)+[a-z0-9]{2,6}?$/i);
 
     constructor(private sharedService: SharedService) {
         this.onNext = new EventEmitter<any>();
@@ -47,6 +48,7 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.postalCode = this.municipalities[0].postalCode;
             this.initialUser.email = this.mayors[0].email;
             this.userEmailMatches = true;
+            this.css_class_email = '';
         } else {
             this.imMayor = false;
             this.initialUser.name = '';
@@ -56,6 +58,7 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.postalCode = '';
             this.initialUser.email = '';
             this.repeatEmail = '';
+            this.checkEmailsMatch();
         }
     }
 
@@ -73,6 +76,7 @@ export class BeneficiaryRegistrationStep3Component {
         this.onBack.emit();
         this.repeatEmail = '';
         this.reset();
+        this.checkEmailsMatch();
     }
 
     private reset() {
@@ -85,12 +89,16 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.postalCode = '';
             this.initialUser.email = '';
             this.repeatEmail = '';
+            this.userEmailMatches = false;
         }
     }
 
     private submit() {
         this.onNext.emit();
         this.repeatEmail = '';
+        if(!this.imMayor){
+          this.checkEmailsMatch();
+        }        
     }
 
     private preventPaste(event: any) {
