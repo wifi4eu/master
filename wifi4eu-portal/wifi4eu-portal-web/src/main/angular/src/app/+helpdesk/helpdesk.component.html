@@ -11,11 +11,19 @@
         <p-column field="memberState" header="{{ 'memberState' | translate }}" [sortable]="false"></p-column>
         <p-column field="date" header="{{ 'dateandtime' | translate }}" [sortable]="true">
             <template pTemplate="body" let-issue="rowData">
-                <span>{{issue.date | date: 'dd/MM/yyyy HH:mm'}}</span>
+                <span>{{issue.createDate | date: 'dd/MM/yyyy HH:mm'}}</span>
             </template>
         </p-column>
         <p-column field="assignedTo" header="{{ 'assignedTo' | translate }}" [sortable]="true"></p-column>
-        <p-column field="status" header="{{ 'status' | translate }}" [sortable]="true"></p-column>
+        <p-column field="status" header="{{ 'status' | translate }}" [sortable]="true">
+            <template pTemplate="body" let-issue="rowData">
+                <div [ngSwitch]="issue.status">
+                    <span *ngSwitchCase="0" class="issue-status-pending"><i>{{ 'issueStatus.pending' | translate }}</i></span>
+                    <span *ngSwitchCase="1" class="issue-status-resolved"><i>{{ 'issueStatus.resolved' | translate }}</i></span>
+                    <span *ngSwitchCase="2" class="issue-status-pending"><i>{{ 'issueStatus.pending' | translate }}</i></span>
+                </div>
+            </template>
+        </p-column>
         <p-column header="{{ 'details' | translate }}">
             <template pTemplate="body" let-issue="rowData" let-rowIndex="rowIndex">
                 <button type="button" class="btn" style="background: none; padding: 0;"
