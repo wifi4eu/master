@@ -79,6 +79,7 @@ export class BeneficiaryRegistrationStep1Component {
       this.organizationSelected = true;
       if(this.organization == "municipality"){
         this.chooseSingleMunicipality(true);
+        this.organizationChange.emit(this.organization);
       }
       else{
         this.chooseMultipleMunicipality(true);
