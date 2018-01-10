@@ -51,7 +51,7 @@ export class DgConnManageLauComponent {
 
     selectCountry(event: any) {
         if (this.country != null && this.keyword != null && this.keyword != "") {
-            this.lauApi.getLausByCountryCodeAndName1StartingWithIgnoreCase(this.country.countryCode, this.keyword).subscribe(
+            this.lauApi.getLausByCountryCodeAndName1ContainingIgnoreCase(this.country.countryCode, this.keyword).subscribe(
                 (laus: LauDTOBase[]) => {
                     this.laus = laus;
                 }
