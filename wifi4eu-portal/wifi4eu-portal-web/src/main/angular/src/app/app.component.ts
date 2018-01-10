@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
             (response: ResponseDTOBase) => {
                 this.localStorageService.set('user', JSON.stringify(response.data));
                 this.sharedService.update();
-                /*
+                
                 switch (this.user.type) {
                     case 1:
                         this.router.navigateByUrl('/supplier-portal/profile');
@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
                         this.router.navigateByUrl('/home');
                         break;
                 }
-                */
+               
 
             },
             error => {
