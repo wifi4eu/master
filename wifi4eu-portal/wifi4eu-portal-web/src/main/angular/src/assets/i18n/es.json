@@ -416,5 +416,7 @@
   "submit.application": "Confirmo que la información facilitada a este portal, relacionada con la iniciativa WiFi4EU es veraz, completa y exacta. Reconozco que la Comisión Europea o cualquier Agencia Europea delegada puede comprobar la información comunicada a partir de fuentes accesibles conforme a Derecho.",
   "submitregistration.failure.title": "Ha habido un fallo al realizar la inscripción.",
   "submitregistration.failure.text.part1": "Vuelva a intentarlo o consulte al servicio de asistencia.",
-  "backtohome.button": "Volver a la página inicial"
+  "backtohome.button": "Volver a la página inicial",
+  "issueStatus.pending": "PENDIENTE",
+  "issueStatus.resolved": "RESUELTO"
 }

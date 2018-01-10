@@ -461,5 +461,7 @@
   "submitregistration.failure.title": "Something went wrong with the registration.",
   "submitregistration.failure.text.part1": "Please try again or consult the Help Desk.",
   "backtohome.button": "Back to the homepage",
-  "legalentity.label": "Legal entity"
+  "legalentity.label": "Legal entity",
+  "issueStatus.pending": "PENDING",
+  "issueStatus.resolved": "RESOLVED"
 }

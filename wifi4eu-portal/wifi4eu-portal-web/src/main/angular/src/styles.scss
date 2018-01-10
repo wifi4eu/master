@@ -1265,6 +1265,18 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   margin-top: 7em;
 }
 
+.issue-status-resolved {
+  background: #228854;
+  padding: 3px;
+  color: white;
+}
+
+.issue-status-pending {
+  background: #F0AD4E;
+  padding: 3px;
+  color: white;
+}
+
 .panel-dg{
   background-color: #fff;
   border: 1px solid rgba(187, 187, 187, 0.8196078431372549);
