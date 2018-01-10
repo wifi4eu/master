@@ -26,17 +26,17 @@
     <serverPort>${ecas.server.port}</serverPort>
 
     <applicationServer>tomcat</applicationServer>
-    <!--
+
         <acceptStrengths>
             <strength>${ecas.config.strength}</strength>
         </acceptStrengths>
+    <!--
+            <cas:renew>${ecas.config.renew}</cas:renew>
 
-        <cas:renew>${ecas.config.renew}</cas:renew>
 
+            ${ecas.config.validate.load_test_specific}
 
-        ${ecas.config.validate.load_test_specific}
-
-        ${ecas.config.test.certificate.element}
-        -->
+            ${ecas.config.test.certificate.element}
+            -->
 
 </client-config>
