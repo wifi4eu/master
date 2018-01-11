@@ -80,7 +80,7 @@
                                 <option disabled selected [ngValue]="null">
                                     {{'registration.selectOrganisation' |translate}}
                                 </option>
-                                <option ngValue="municipality">Municipality</option>
+                                <option ngValue="municipality"> {{ 'municipality.label' | translate }}</option>
                                 <option *ngFor="let currentOrganization of organizations"
                                         [ngValue]="currentOrganization">
                                     {{currentOrganization.name}}
