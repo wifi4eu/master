@@ -47,6 +47,7 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.addressNum = this.municipalities[0].addressNum;
             this.initialUser.postalCode = this.municipalities[0].postalCode;
             this.initialUser.email = this.mayors[0].email;
+            this.repeatEmail = this.mayors[0].email;
             this.userEmailMatches = true;
             this.css_class_email = '';
         } else {
@@ -95,8 +96,8 @@ export class BeneficiaryRegistrationStep3Component {
 
     private submit() {
         this.onNext.emit();
-        this.repeatEmail = '';
         if(!this.imMayor){
+          this.repeatEmail = '';
           this.checkEmailsMatch();
         }        
     }
