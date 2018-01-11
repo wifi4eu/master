@@ -112,6 +112,7 @@ public class SupplierService {
         userDTO.setType(1);
         userDTO.setVerified(false);
         userDTO = userService.saveUserChanges(userDTO);
+        userService.sendActivateAccountMail(userDTO);
         supplierDTO.setUserId(userDTO.getId());
         supplierDTO = createSupplier(supplierDTO);
         checkDuplicateSuppliers(supplierDTO);
