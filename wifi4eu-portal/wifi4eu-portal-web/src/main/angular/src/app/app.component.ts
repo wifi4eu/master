@@ -10,6 +10,8 @@ import {UserApi} from "./shared/swagger/api/UserApi";
 import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
 import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
 import {Http} from "@angular/http";
+import { Observable } from "rxjs/Observable";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 enableProdMode();
 
@@ -27,6 +29,8 @@ export class AppComponent implements OnInit {
     private actualDate: string;
 
     private children: UxLayoutLink[][];
+    private menuTranslations: Map<String, String>;
+    private stringsTranslated = new BehaviorSubject<number>(null);
 
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
 
@@ -55,6 +59,16 @@ export class AppComponent implements OnInit {
 
         this.visibility = [false, false, false, false, false];
         this.children = [];
+        this.menuTranslations = new Map();
+        this.stringsTranslated.subscribe(
+          (stringsTranslated: number) => {
+            if(stringsTranslated == 7){
+              this.initChildren();
+              this.updateHeader();
+            }
+          }
+        );
+
         this.initChildren();
         this.updateHeader();
 
@@ -62,6 +76,7 @@ export class AppComponent implements OnInit {
         this.sharedService.logoutEmitter.subscribe(() => this.logout());
 
         this.updateFooterDate();
+        this.updateMenuTranslations();
     }
 
     ngOnInit() {
@@ -101,41 +116,41 @@ export class AppComponent implements OnInit {
     initChildren() {
         this.children[0] = [
             new UxLayoutLink({
-                label: 'Applicant Registration',
+                label: this.menuTranslations.get('itemMenu.appReg'),
                 url: '/beneficiary-registration'
             }),
             new UxLayoutLink({
-                label: 'Supplier Registration',
+                label: this.menuTranslations.get('itemMenu.suppReg'),
                 url: '/supplier-registration'
             })
         ];
         this.children[1] = [
             new UxLayoutLink({
-                label: 'Supplier Portal',
+                label: this.menuTranslations.get('itemMenu.suppPortal'),
                 url: '/supplier-portal'
             }),
             new UxLayoutLink({
-                label: 'My account',
+                label: this.menuTranslations.get('itemMenu.myAccount'),
                 url: '/supplier-portal/profile'
             })
         ];
         this.children[2] = [
             new UxLayoutLink({
-                label: 'My account',
+                label: this.menuTranslations.get('itemMenu.myAccount'),
                 url: '/beneficiary-portal/profile'
             }),
             new UxLayoutLink({
-                label: 'Application page',
+                label: this.menuTranslations.get('itemMenu.appPortal'),
                 url: '/beneficiary-portal'
             })
         ];
         this.children[3] = [
             new UxLayoutLink({
-                label: 'My account',
+                label: this.menuTranslations.get('itemMenu.myAccount'),
                 url: '/beneficiary-portal/profile'
             }),
             new UxLayoutLink({
-                label: 'Application page',
+                label: this.menuTranslations.get('itemMenu.appPortal'),
                 url: '/beneficiary-portal'
             })
         ];
@@ -147,7 +162,7 @@ export class AppComponent implements OnInit {
         ];
         this.children[5] = [
             new UxLayoutLink({
-                label: 'DGConnect Portal',
+                label: this.menuTranslations.get('itemMenu.dgPortal'),
                 url: 'dgconn-portal'
             })
         ];
@@ -204,7 +219,61 @@ export class AppComponent implements OnInit {
         this.translateService.use(language.code);
         this.uxService.activeLanguage = language;
         this.localStorage.set('lang', language.code);
+        this.updateMenuTranslations();
         this.updateFooterDate();
+    }
+
+    private updateMenuTranslations(){
+      var num = 0;
+      this.translateService.get('itemMenu.appReg').subscribe(
+        (translatedString: string) => {
+          this.menuTranslations.set('itemMenu.appReg', translatedString);
+          num++;
+          this.stringsTranslated.next(num)
+        }
+      );
+      this.translateService.get('itemMenu.suppReg').subscribe(
+        (translatedString: string) => {
+          this.menuTranslations.set('itemMenu.suppReg', translatedString);
+          num++;
+          this.stringsTranslated.next(num)
+        }
+      );
+      this.translateService.get('itemMenu.myAccount').subscribe(
+        (translatedString: string) => {
+          this.menuTranslations.set('itemMenu.myAccount', translatedString);
+          num++;
+          this.stringsTranslated.next(num)
+        }
+      );
+      this.translateService.get('itemMenu.suppPortal').subscribe(
+        (translatedString: string) => {
+          this.menuTranslations.set('itemMenu.suppPortal', translatedString);
+          num++;
+          this.stringsTranslated.next(num)
+        }
+      );
+      this.translateService.get('itemMenu.dissForum').subscribe(
+        (translatedString: string) => {
+          this.menuTranslations.set('itemMenu.dissForum', translatedString);
+          num++;
+          this.stringsTranslated.next(num)
+        }
+      );
+      this.translateService.get('itemMenu.appPortal').subscribe(
+        (translatedString: string) => {
+          this.menuTranslations.set('itemMenu.appPortal', translatedString);
+          num++;
+          this.stringsTranslated.next(num)
+        }
+      );
+      this.translateService.get('itemMenu.dgPortal').subscribe(
+        (translatedString: string) => {
+          this.menuTranslations.set('itemMenu.dgPortal', translatedString);
+          num++;
+          this.stringsTranslated.next(num)
+        }
+      );
     }
 
     logout() {
