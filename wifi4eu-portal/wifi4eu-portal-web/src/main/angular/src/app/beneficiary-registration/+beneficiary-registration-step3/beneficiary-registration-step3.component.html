@@ -65,8 +65,9 @@
                     <label class="label floatLeft" for="addressNum">
                         {{ 'number.label' | translate }}
                     </label>
-                    <input type="number" class="form-control paddingInput"
-                           id="addressNum" name="addressNum" [disabled]="imMayor" [(ngModel)]="initialUser.addressNum" required>
+                    <input type="text" class="form-control paddingInput"
+                           id="addressNum" name="addressNum" [disabled]="imMayor" [(ngModel)]="initialUser.addressNum"
+                           required>
                 </div>
                 <div class="ui-g-2"></div>
             </div>
@@ -93,7 +94,8 @@
                                id="email" name="email" [pattern]="emailPattern"
                                [(ngModel)]="initialUser.email" [disabled]="imMayor"
                                (input)="checkEmailsMatch()" required>
-                        <label class="field-desc" style="margin-top: 10px;color: gray;">{{ 'email.fielddesc' | translate }}</label>
+                        <label class="field-desc" style="margin-top: 10px;color: gray;">{{ 'email.fielddesc' | translate
+                            }}</label>
                     </div>
 
                 </div>
