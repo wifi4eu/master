@@ -359,7 +359,6 @@
   "submitregistration.failure.title": "Something went wrong with the registration.",
   "submitregistration.failure.text.part1": "Please try again or consult the Help Desk.",
   "backtohome.button": "Back to the homepage",
-  "legalentity.label": "Legal entity",
   "startOfNewLabels": "--------------------------------------------Here starts the new labels list------------------------------------------",
   "discussionForum.perPage": "[X] per page",
   "discussionForum.ofPage": "[X] of [X]",
@@ -419,7 +418,7 @@
   "contact.person": "Please, specify a contact person for your company. ",
   "company.details": "Please, provide information about your company.",
   "requirements.head": "I confirm that I have read and agree to the following conditions of the scheme: ",
-  "add.repply": "New message"
+  "add.repply": "New message",
   "legalentity.label": "Legal entity",
   "issueStatus.pending": "PENDING",
   "issueStatus.resolved": "RESOLVED"
