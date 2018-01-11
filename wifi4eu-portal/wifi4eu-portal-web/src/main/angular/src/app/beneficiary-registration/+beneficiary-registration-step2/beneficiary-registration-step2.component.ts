@@ -5,6 +5,8 @@ import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
 import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 import {LauApi} from "../../shared/swagger/api/LauApi";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
+import { ViewChild } from "@angular/core";
+import { NgForm } from "@angular/forms";
 
 @Component({
     selector: 'beneficiary-registration-step2',
@@ -32,6 +34,8 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private css_class_municipalities: string[] = ['notValid'];
     private css_class_email: string[] = ['notValid'];
     private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$';
+
+    @ViewChild('municipalityForm') municipalityForm: NgForm;
 
     constructor(private lauApi: LauApi) {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
@@ -67,8 +71,20 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         for (let i = 0; i < this.laus.length; i++) {
             if (!this.laus[i].id) {
                 this.municipalitiesSelected = false;
+                if (!this.multipleMunicipalities) {
+                  this.municipalityForm.controls['municipality'].setErrors({'incorrect': true});
+                }
+                else{
+                  this.municipalityForm.controls[`municipality-${i}`].setErrors({'incorrect': true});
+                }
                 this.css_class_municipalities[i] = 'notValid';
             } else {
+                if (!this.multipleMunicipalities) {
+                  this.municipalityForm.controls['municipality'].setErrors(null);
+                }
+                else{
+                  this.municipalityForm.controls[`municipality-${i}`].setErrors(null);
+                }
                 this.css_class_municipalities[i] = 'isValid';
             }
         }
