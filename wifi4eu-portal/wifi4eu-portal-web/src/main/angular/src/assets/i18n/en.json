@@ -420,4 +420,7 @@
   "company.details": "Please, provide information about your company.",
   "requirements.head": "I confirm that I have read and agree to the following conditions of the scheme: ",
   "add.repply": "New message"
+  "legalentity.label": "Legal entity",
+  "issueStatus.pending": "PENDING",
+  "issueStatus.resolved": "RESOLVED"
 }
