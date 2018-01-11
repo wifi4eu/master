@@ -101,8 +101,8 @@
         <ecas.config.base.url>https://ecas.acceptance.ec.europa.eu</ecas.config.base.url>
         <ecas.config.strength>PASSWORD</ecas.config.strength>
         <ecas.config.test.certificate.element/>
-        <ecas.server.address />
-        <ecas.server.port />
+        <ecas.server.address/>
+        <ecas.server.port/>
 
         <!-- PERSISTENCE PROPERTIES -->
 
@@ -122,10 +122,10 @@
         <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
         <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
         <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilterMocked</user.filter.path>
-        <enable.security.start> </enable.security.start>
-        <enable.security.end> </enable.security.end>
-        <enable.login.start> </enable.login.start>
-        <enable.login.end> </enable.login.end>
+        <enable.security.start></enable.security.start>
+        <enable.security.end></enable.security.end>
+        <enable.login.start></enable.login.start>
+        <enable.login.end></enable.login.end>
         <server.azure.port>80</server.azure.port>
         <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
 
@@ -211,7 +211,7 @@
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
                 <war.output.directory/>
-                <ecas.config.base.url>https://ecas.ec.europa.eu</ecas.config.base.url>
+                <ecas.config.base.url>https://ecas.acceptance.ec.europa.eu</ecas.config.base.url>
                 <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <mail.serv.location>http://wifi4euprod.azurewebsites.net/wifi4eu/#/</mail.serv.location>
