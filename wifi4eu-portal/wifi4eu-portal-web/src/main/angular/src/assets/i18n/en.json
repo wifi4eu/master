@@ -463,5 +463,7 @@
   "backtohome.button": "Back to the homepage",
   "legalentity.label": "Legal entity",
   "issueStatus.pending": "PENDING",
-  "issueStatus.resolved": "RESOLVED"
+  "issueStatus.resolved": "RESOLVED",
+  "itemMenu.appPortal": "Application page",
+  "itemMenu.dgPortal": "DGConnect Portal"
 }
