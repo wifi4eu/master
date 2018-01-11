@@ -1,24 +1,24 @@
-import {Component} from "@angular/core";
-import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
-import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
-import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
-import {UserApi} from "../../shared/swagger/api/UserApi";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
-import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
-import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {SharedService} from "../../shared/shared.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
-import {UserThreadsDTO, UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
+import { Component } from "@angular/core";
+import { BeneficiaryApi } from "../../shared/swagger/api/BeneficiaryApi";
+import { ThreadApi } from "../../shared/swagger/api/ThreadApi";
+import { ThreadmessagesApi } from "../../shared/swagger/api/ThreadmessagesApi";
+import { UserApi } from "../../shared/swagger/api/UserApi";
+import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { BeneficiaryDTOBase } from "../../shared/swagger/model/BeneficiaryDTO";
+import { ThreadDTOBase } from "../../shared/swagger/model/ThreadDTO";
+import { ThreadMessageDTOBase } from "../../shared/swagger/model/ThreadMessageDTO";
+import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
+import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
+import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { LocalStorageService } from "angular-2-local-storage";
+import { SharedService } from "../../shared/shared.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { UserThreadsApi } from "../../shared/swagger/api/UserThreadsApi";
+import { UserThreadsDTO, UserThreadsDTOBase } from "../../shared/swagger/model/UserThreadsDTO";
+import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
 import index from "@angular/cli/lib/cli";
-import {isNumber} from "util";
+import { isNumber } from "util";
 
 @Component({
     selector: 'discussion-component',
@@ -46,12 +46,10 @@ export class DiscussionComponent {
 
 
     constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
-
         this.route.params.subscribe(params => this.threadId = params['threadId']);
-
         this.thread.messages = [];
+        this.messageAuthors = [];
         this.hasAuthor = false;
-
 
         this.threadApi.getThreadById(this.threadId).subscribe(
             thread => {
@@ -64,7 +62,6 @@ export class DiscussionComponent {
                 console.log(error);
             }
         );
-
 
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
@@ -79,11 +76,11 @@ export class DiscussionComponent {
                                 this.lauId = this.municipality.lauId;
                                 this.municipalityApi.getMunicipalitiesByLauId(this.lauId).subscribe(
                                     (municipalities: MunicipalityDTOBase[]) => {
-                                        for (var i = 0; i < municipalities.length; i++) {
+                                        for (let i = 0; i < municipalities.length; i++) {
                                             if (this.municipality.id != municipalities[i].id) {
-                                                this.municipalities.push(municipalities[i]);
                                                 this.registrationApi.getRegistrationsByMunicipalityId(municipalities[i].id).subscribe(
                                                     (registrations: RegistrationDTOBase[]) => {
+                                                        this.municipalities.push(municipalities[i]);
                                                         this.messageAuthors.push(registrations[0]);
                                                         this.counter++;
                                                         if (this.counter >= this.municipalities.length) {
@@ -92,11 +89,9 @@ export class DiscussionComponent {
                                                     }, error => {
                                                         console.log(error);
                                                     }
-                                                )
-                                                ;
+                                                );
                                             }
                                         }
-
                                     }, error => {
                                         console.log(error);
                                     }
@@ -105,10 +100,7 @@ export class DiscussionComponent {
                                 console.log(error);
                             }
                         );
-
-                    }
-                    ,
-                    error => {
+                    }, error => {
                         console.log(error);
                     }
                 );
@@ -121,11 +113,6 @@ export class DiscussionComponent {
             this.router.navigateByUrl('/home');
         }
     }
-
-    ngOnInit() {
-        this.messageAuthors = [];
-    }
-
 
     private newMessage() {
         this.displayMessage = true;

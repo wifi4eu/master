@@ -15,4 +15,8 @@ public abstract class Constant {
 
 	public static final String DATE_FORMAT = "dd/MM/yyyy";	
 	public static final String DATETIME_FORMAT = "dd/MM/yyyy HH:mm";
+
+	public static final int THREAD_REASON_LAU = 1;
+	public static final int THREAD_REASON_VAT = 2;
+	public static final int THREAD_REASON_IBAN = 3;
 }

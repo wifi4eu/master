@@ -4,11 +4,10 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.supplier.SuppliedRegion;
-import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
@@ -128,7 +127,7 @@ public class SupplierService {
                     if (thread == null) {
                         thread = new ThreadDTO();
                         thread.setTitle("VAT: " +  supplierDTO.getVat());
-                        thread.setType(2);
+                        thread.setType(Constant.THREAD_REASON_VAT);
                         thread.setReason(supplierDTO.getVat());
                         thread = threadService.createThread(thread);
                     }
@@ -157,7 +156,7 @@ public class SupplierService {
                     if (thread == null) {
                         thread = new ThreadDTO();
                         thread.setTitle("IBAN: " +  supplierDTO.getAccountNumber());
-                        thread.setType(3);
+                        thread.setType(Constant.THREAD_REASON_IBAN);
                         thread.setReason(supplierDTO.getAccountNumber());
                         thread = threadService.createThread(thread);
                     }
@@ -186,5 +185,13 @@ public class SupplierService {
 
     public List<SuppliedRegionDTO> getSuppliedRegionsGroupedByRegionId() {
         return suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsGroupedByRegionId()));
+    }
+
+    public List<SupplierDTO> getSuppliersByVat(String vat) {
+        return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByVat(vat)));
+    }
+
+    public List<SupplierDTO> getSuppliersByAccountNumber(String accountNumber) {
+        return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByAccountNumber(accountNumber)));
     }
 }
