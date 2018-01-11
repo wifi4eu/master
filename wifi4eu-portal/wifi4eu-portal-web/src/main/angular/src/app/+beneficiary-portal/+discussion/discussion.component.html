@@ -11,7 +11,7 @@
     <p class="beneficiaryMayor marginTopCountdown">{{ 'legalentity.label' | translate }}</p>
     <hr class="beneficiaryHr">
     <ux-accordion-boxes>
-        <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
+        <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true" *ngIf="municipality">
             <div class="ui-g">
                 <p class="discussionForumMayors marginTopCountdown"
                    [innerHTML]="'beneficiary.registration1' | translate:{selfRegistration:user.id}">
@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="ui-g" *ngIf="hasAuthor">
+            <div class="ui-g" *ngIf="hasAuthor && municipalities.length == messageAuthors.length">
                 <div class="ui-g-6" *ngFor="let municipality of municipalities; let i = index">
                     <p class="discussionForumMayors marginTopCountdown">
                         {{ 'beneficiary.registrationNumber' | translate }} <span>{{messageAuthors[i].userId}}</span>
@@ -184,11 +184,6 @@
                 <p class="center newMessageDiscussionMargins">{{ 'mediationRequest.text' | translate }}</p>
                 <br>
                 <p class="center">{{ 'mediationRequest.selectText' | translate }}</p>
-                <!--<select class="selectDiscussion">-->
-                <!--<option value="option1">Option 1</option>-->
-                <!--<option value="option2">Option 2</option>-->
-                <!--<option value="option3">Option 3</option>-->
-                <!--</select>-->
                 <div class="form-group">
                     <div style="text-align: center !important">
                         <button type="button" class="btn btn-primary changePasswordModal cancel-button"

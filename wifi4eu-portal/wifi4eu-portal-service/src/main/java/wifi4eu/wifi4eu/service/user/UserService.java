@@ -263,11 +263,11 @@ public class UserService {
         return this.lang;
     }
 
-    private boolean isLocalHost() {
+    public boolean isLocalHost() {
         return baseUrl.contains(UserConstants.LOCAL);
     }
 
-    private Locale initLocale() {
+    public Locale initLocale() {
         Locale locale;
 
         if (lang != null) {
