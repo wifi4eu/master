@@ -82,7 +82,7 @@ export class AppComponent implements OnInit {
                         this.router.navigateByUrl('/dgconn-portal');
                         break;
                     default:
-                        this.router.navigateByUrl('/home');
+                        //this.router.navigateByUrl('/home');
                         break;
                 }
                
