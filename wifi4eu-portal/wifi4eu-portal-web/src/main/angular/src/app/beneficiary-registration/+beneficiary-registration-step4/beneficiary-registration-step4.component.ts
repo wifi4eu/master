@@ -21,7 +21,7 @@ export class BeneficiaryRegistrationStep4Component {
     @Output() private onBack: EventEmitter<any>;
     @Output() private onEdit: EventEmitter<number>;
     private displayConfirmingData: boolean = false;
-    private legalChecks: boolean[] = [false, false, false, false, false, false, false, false, false];
+    private legalChecks: boolean[] = [true, false, false, false, false, false, false, false, false];
 
     constructor(private sharedService: SharedService, private localStorage: LocalStorageService, private userApi: UserApi) {
         this.onNext = new EventEmitter<any>();
@@ -39,12 +39,12 @@ export class BeneficiaryRegistrationStep4Component {
 
     private back() {
         this.onBack.emit();
-        this.legalChecks = [false, false, false, false, false, false, false, false, false];
+        this.legalChecks = [true, false, false, false, false, false, false, false, false];
     }
 
     private edit(step: number) {
         this.onEdit.emit(step);
-        this.legalChecks = [false, false, false, false, false, false, false, false, false];
+        this.legalChecks = [true, false, false, false, false, false, false, false, false];
         this.sharedService.clean();
     }
 
