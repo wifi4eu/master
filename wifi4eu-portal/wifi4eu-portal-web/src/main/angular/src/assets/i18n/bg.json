@@ -422,7 +422,7 @@
   "mediationRequest.selectText": "Целта на посредничеството е да определи коя регистрация следва да бъде определена за валидна.",
   "itemMenu.suppPortal": "",
   "itemMenu.myAccount": "Настоящ статус",
-  "itemMenu.suppReg": "",
-  "itemMenu.appReg": "",
+  "itemMenu.suppReg": "Регистрация на дружество за инсталиране на WiFi",
+  "itemMenu.appReg": "Регистрация на община",
   "itemMenu.dissForum": "Дискусионен форум"
 }

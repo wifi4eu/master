@@ -469,7 +469,7 @@
   "mediationRequest.selectText": "La mediazione intende determinare quale registrazione vada considerata valida.",
   "itemMenu.suppPortal": "",
   "itemMenu.myAccount": "Stato attuale",
-  "itemMenu.suppReg": "",
-  "itemMenu.appReg": "",
+  "itemMenu.suppReg": "Registrazione di un'impresa WiFi",
+  "itemMenu.appReg": "Registrazione di un comune",
   "itemMenu.dissForum": "Area dedicata alle discussioni"
 }

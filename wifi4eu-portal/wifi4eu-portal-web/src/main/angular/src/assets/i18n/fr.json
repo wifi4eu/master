@@ -478,7 +478,7 @@
   "mediationRequest.selectText": "L’objectif de la médiation est de déterminer quel enregistrement doit être retenu.",
   "itemMenu.suppPortal": "",
   "itemMenu.myAccount": "Statut actuel",
-  "itemMenu.suppReg": "",
-  "itemMenu.appReg": "",
+  "itemMenu.suppReg": "Enregistrement d’une entreprise d’installation wi-fi",
+  "itemMenu.appReg": "Enregistrement d’une municipalité",
   "itemMenu.dissForum": "Espace de discussion"
 }
