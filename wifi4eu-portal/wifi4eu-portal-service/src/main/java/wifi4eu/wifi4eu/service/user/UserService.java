@@ -263,11 +263,11 @@ public class UserService {
         return this.lang;
     }
 
-    private boolean isLocalHost() {
+    public boolean isLocalHost() {
         return baseUrl.contains(UserConstants.LOCAL);
     }
 
-    private Locale initLocale() {
+    public Locale initLocale() {
         Locale locale;
 
         if (lang != null) {
@@ -278,5 +278,23 @@ public class UserService {
         }
 
         return locale;
+    }
+
+    public String getLogoutEnviroment() {
+        switch (baseUrl) {
+            case "http://wifi4euprod.azurewebsites.net/wifi4eu/#/":
+                return "https://ecas.acceptance.ec.europa.eu/cas/logout";
+            default:
+                return "https://ecas.ec.europa.eu/cas/logout";
+        }
+    }
+
+    public String getChangePassword() {
+        switch (baseUrl) {
+            case "http://wifi4euprod.azurewebsites.net/wifi4eu/#/":
+                return "https://ecas.acceptance.ec.europa.eu/cas/change/changePassword.cgi";
+            default:
+                return "https://ecas.ec.europa.eu/cas/change/changePassword.cgi";
+        }
     }
 }

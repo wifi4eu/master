@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
@@ -130,7 +131,7 @@ public class BeneficiaryService {
                     /* creamos el thrad */
                     threadDTO = new ThreadDTO();
                     threadDTO.setTitle(municipalityDTO.getName());
-                    threadDTO.setType(1);
+                    threadDTO.setType(Constant.THREAD_REASON_LAU);
                     threadDTO.setReason(String.valueOf(municipalityDTO.getLauId()));
                     threadDTO = threadService.createThread(threadDTO);
 

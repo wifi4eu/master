@@ -97,7 +97,7 @@ export class AppComponent implements OnInit {
                         this.router.navigateByUrl('/dgconn-portal');
                         break;
                     default:
-                        this.router.navigateByUrl('/home');
+                        //this.router.navigateByUrl('/home');
                         break;
                 }
                
@@ -293,9 +293,15 @@ export class AppComponent implements OnInit {
                 console.log(error);
             }
         );
-
-        this.userApi.ecasLogout();
-        window.location.href = 'https://ecas.acceptance.ec.europa.eu/cas/logout';
+        this.userApi.ecasLogout().subscribe(
+            (response: ResponseDTOBase) => {
+                if (response.success) {
+                    window.location.href = response.data;
+                }
+            }, error => {
+                console.log(error);
+            }
+        );
     }
 
     private goToTop() {
