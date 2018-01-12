@@ -78,8 +78,8 @@ export class AppComponent {
 
     updateMenuLink() {
       this.menuLinks = [
-        new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.appReg'), url: '/beneficiary-registration'}),
-        new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.suppReg'), url: '/supplier-registration'})
+        new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.appReg'), url: '/beneficiary-landing'}),
+        new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.suppReg'), url: '/supplier-landing'})
       ]
     }
 
