@@ -9,6 +9,7 @@ import { UserApi } from "./shared/swagger/api/UserApi";
 import { RegistrationApi } from "./shared/swagger/api/RegistrationApi";
 import { CustomLayoutLink } from "./shared/components/custom-layout-nav-bar-top-menu/custom-layout-link";
 import { UxLayoutLink } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/models/ux-layout-link";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 enableProdMode();
 
@@ -22,6 +23,8 @@ export class AppComponent {
     private menuLinks: Array<CustomLayoutLink>;
     private visibility: boolean[];
     private actualDate: string;
+    private menuTranslations: Map<String, String>;
+    private stringsTranslated = new BehaviorSubject<number>(null);
 
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
 
@@ -42,6 +45,15 @@ export class AppComponent {
           new CustomLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-landing'}),
           new CustomLayoutLink({label: 'Supplier Registration', url: '/supplier-landing'})
         ];
+        this.menuTranslations = new Map();
+        this.stringsTranslated.subscribe(
+          (stringsTranslated: number) => {
+            if(stringsTranslated == 2){
+              this.updateMenuLink();
+              this.updateHeader();
+            }
+          }
+        );
 
         this.visibility = [false, false, false, false, false];
         this.updateHeader();
@@ -49,6 +61,7 @@ export class AppComponent {
         this.sharedService.updateEmitter.subscribe(() => this.updateHeader());
 
         this.updateFooterDate();
+        this.updateMenuTranslations();
     }
 
     updateHeader() {
@@ -59,7 +72,34 @@ export class AppComponent {
         this.translateService.use(language.code);
         this.uxService.activeLanguage = language;
         this.localStorage.set('lang', language.code);
+        this.updateMenuTranslations();
         this.updateFooterDate();
+    }
+
+    updateMenuLink() {
+      this.menuLinks = [
+        new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.appReg'), url: '/beneficiary-registration'}),
+        new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.suppReg'), url: '/supplier-registration'})
+      ]
+    }
+
+    private updateMenuTranslations(){
+      var num = 0;
+      this.translateService.get('itemMenu.appReg').subscribe(
+        (translatedString: string) => {
+          console.log(translatedString);
+          this.menuTranslations.set('itemMenu.appReg', translatedString);
+          num++;
+          this.stringsTranslated.next(num)
+        }
+      );
+      this.translateService.get('itemMenu.suppReg').subscribe(
+        (translatedString: string) => {
+          this.menuTranslations.set('itemMenu.suppReg', translatedString);
+          num++;
+          this.stringsTranslated.next(num)
+        }
+      );
     }
 
     private goToTop() {

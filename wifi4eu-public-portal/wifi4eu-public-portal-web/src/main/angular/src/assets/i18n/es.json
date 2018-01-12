@@ -386,6 +386,7 @@
   "supp.landingpage.title": "Bienvenido a la página de inscripción de WiFi4EU para las empresas de instalación de wifi.",
   "supp.landingpage.elegibleText3": "Puede inscribirse inmediatamente en el portal WiFi4EU para indicar las zonas en las que puede proporcionar material y servicios de instalación a los beneficiarios de WiFi4EU. ",
   "supp.landingpage.elegibleText2": "Los beneficiarios deben definir y adjudicar sus proyectos de instalación local de wifi de conformidad con las normas aplicables de contratación pública y pueden consultar la lista de las empresas inscritas para identificar los suministradores potenciales en su zona. ",
-  "supp.landingpage.elegibleText4": "La inscripción es obligatoria para las empresas contratadas por un beneficiario de WiFi4EU. "
-
+  "supp.landingpage.elegibleText4": "La inscripción es obligatoria para las empresas contratadas por un beneficiario de WiFi4EU. ",
+  "itemMenu.appReg": "Registro de alcade",
+  "itemMenu.suppReg": "Registro de proveedor"
 }
