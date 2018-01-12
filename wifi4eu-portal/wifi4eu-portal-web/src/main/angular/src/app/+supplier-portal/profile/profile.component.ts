@@ -13,11 +13,12 @@ import {TranslateService} from "ng2-translate";
 import {UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
 import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
 import {SharedService} from "../../shared/shared.service";
+import {UserApi} from "../../shared/swagger/api/UserApi";
 
 @Component({
     selector: 'supplier-profile',
     templateUrl: 'profile.component.html',
-    providers: [SupplierApi, NutsApi, UserThreadsApi]
+    providers: [SupplierApi, NutsApi, UserThreadsApi, UserApi]
 })
 
 export class SupplierProfileComponent {
@@ -42,7 +43,7 @@ export class SupplierProfileComponent {
     private hasDiscussion: boolean = false;
     @ViewChild('logoInput') private logoInput: any;
 
-    constructor(private router: Router, private route: ActivatedRoute, private sharedService: SharedService, private userThreadsApi: UserThreadsApi, private supplierApi: SupplierApi, private nutsApi: NutsApi, private uxService: UxService, private localStorageService: LocalStorageService, private translateService: TranslateService) {
+    constructor(private router: Router, private route: ActivatedRoute, private sharedService: SharedService, private userThreadsApi: UserThreadsApi, private supplierApi: SupplierApi, private nutsApi: NutsApi, private uxService: UxService, private localStorageService: LocalStorageService, private translateService: TranslateService, private userApi: UserApi) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -123,8 +124,15 @@ export class SupplierProfileComponent {
                 this.displayCompany = true;
                 break;
             case 'password':
-                window.location.href = 'https://ecas.acceptance.ec.europa.eu/cas/login';
-                //this.displayChangePassword = true;
+                this.userApi.ecasChangePassword().subscribe(
+                    (response: ResponseDTOBase) => {
+                        if (response.success) {
+                            window.location.href = response.data;
+                        }
+                    }, error => {
+                        console.log(error);
+                    }
+                );
                 break;
         }
     }

@@ -111,8 +111,15 @@ export class BeneficiaryProfileComponent {
                 this.displayMayor = true;
                 break;
             case 'password':
-                window.location.href = 'https://ecas.acceptance.ec.europa.eu/cas/change/changePassword.cgi';
-                //this.displayChangePassword = true;
+                this.userApi.ecasChangePassword().subscribe(
+                    (response: ResponseDTOBase) => {
+                        if (response.success) {
+                            window.location.href = response.data;
+                        }
+                    }, error => {
+                        console.log(error);
+                    }
+                );
                 break;
         }
     }
