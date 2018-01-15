@@ -91,7 +91,7 @@
                 <label class="label" for="website">{{ 'company.web' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="website" name="website"
                        [pattern]="websitePattern"
-                       [(ngModel)]="supplier.website" #website="ngModel" required>
+                       [(ngModel)]="supplier.website" #website="ngModel">
                 <div class="alert alert-danger" [hidden]="website.valid || website.pristine">
                     {{ 'companyWeb.required' | translate }}
                 </div>
