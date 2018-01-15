@@ -1,8 +1,10 @@
 import json
 import os
-
 import xlsxwriter
+import sys
+from importlib import reload
 
+reload(sys)
 
 # Initialize excel file
 def init_worksheet(filename):
@@ -17,7 +19,7 @@ def init_worksheet(filename):
 
 # Parse json file into dictionary
 def get_data(filename):
-    with open('../translations/' + filename + '.json') as f:
+    with open('../translations/' + filename + '.json', encoding="utf8") as f:
         return json.load(f)
 
 
@@ -38,20 +40,21 @@ def main():
         # Write headers for each translation file
         worksheet.write(0, i + 1, filename, bold)
 
+        aux_data = dict(data)
         # Remove labels not present in base file but in translation file
         for key, value in data.items():
             if key not in base_data:
-                del data[key]
+                del aux_data[key]
 
         # Add labels not present in translation file but in base file
         # Write labels values translated in each language into excel file
         for j, item in enumerate(base_data.items()):
             key = item[0]
-            if key not in data:
-                data[key] = ''
+            if key not in aux_data:
+                aux_data[key] = ''
             if i == 0:
                 worksheet.write(j + 1, i, key)
-            worksheet.write(j + 1, i + 1, data[key])
+            worksheet.write(j + 1, i + 1, aux_data[key])
     workbook.close()
 
 
