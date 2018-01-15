@@ -1,7 +1,6 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {DgConnPortalComponent} from "./dgconnportal.component";
-import {DgConnTimelineComponent} from "./+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+publication/publication.component";
 import {DgConnVoucherComponent} from "app/+dgconn-portal/+voucher/voucher.component";
 import {DgConnStatisticsComponent} from "./+statistics/statistics.component";
@@ -15,9 +14,6 @@ import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
         {
             path: '',
             component: DgConnPortalComponent,
-        }, {
-            path: 'timeline',
-            component: DgConnTimelineComponent,
         }, {
             path: 'publication',
             component: DgConnPublicationComponent,
