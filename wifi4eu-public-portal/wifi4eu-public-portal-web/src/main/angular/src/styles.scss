@@ -110,6 +110,20 @@ body {
 
 }
 
+@media only screen and (max-width: 1024px) {
+  .second {
+    padding-bottom: 16% !important;
+  }
+
+  #img-scnd img, #img-europeans img {
+    width: 100%;
+    margin-top: -30em;
+  }
+  .img-scnd-top {
+    margin-top: -28em;
+  }
+}
+
 .third {
   background-image: url("assets/images/group-5.png");
   height: 444px;
@@ -1202,6 +1216,7 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   color: $dark-blue;
 
 }
+
 .benefLandingLink {
   color: $darkish-blue;
   font-size: 18px;
@@ -1285,6 +1300,6 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 
 /* fix blinking issue with the header */
 
-#app-wrapper.shrink-header-active #main #nav-bar{
+#app-wrapper.shrink-header-active #main #nav-bar {
   position: relative;
 }
