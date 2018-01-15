@@ -83,6 +83,7 @@ export class BeneficiaryRegistrationComponent {
                 this.active = [false, false, false, true];
                 break;
         }
+        window.scrollTo(0, 0);
     }
 
     private submitRegistration() {
