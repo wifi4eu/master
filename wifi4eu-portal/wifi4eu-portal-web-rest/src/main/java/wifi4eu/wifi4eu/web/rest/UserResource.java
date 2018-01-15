@@ -21,6 +21,7 @@ import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpSession;
@@ -36,6 +37,9 @@ public class UserResource {
 
     @Autowired
     private RegistrationService registrationService;
+
+    @Autowired
+    private PermissionChecker permissionChecker;
 
     Logger _log = LoggerFactory.getLogger(UserResource.class);
 
@@ -56,6 +60,10 @@ public class UserResource {
     @ResponseBody
     public UserDTO getUserById(@PathVariable("userId") final Integer userId) {
         _log.info("getUserById: " + userId);
+
+        //check permission
+        permissionChecker.check("users_"+userId);
+
         UserDTO resUser = userService.getUserById(userId);
         resUser.setPassword(null);
         return resUser;
