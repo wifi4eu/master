@@ -94,6 +94,11 @@ public class UserResource {
     public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO) {
         try {
             _log.info("saveUserChanges");
+
+            //check permission
+            int userId = userDTO.getId();
+            permissionChecker.check("users_"+userId);
+
             UserDTO resUser = userService.saveUserChanges(userDTO);
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);

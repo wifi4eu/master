@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +45,12 @@ public class BeneficiaryService {
 
     @Autowired
     MayorService mayorService;
+
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    RightRepository rightRepository;
 
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryService.class);
 
@@ -124,7 +129,7 @@ public class BeneficiaryService {
 
         for (MunicipalityDTO municipalityDTO : municipalityDTOs) {
             List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipalityDTO.getLauId());
-            addPrivilegesToUser(userDTO);
+            addUserPrivileges(userDTO);
 
             if (municipalitiesWithSameLau.size() > 1) {
 
@@ -168,20 +173,13 @@ public class BeneficiaryService {
         }
     }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    @Autowired
-    UserMapper userMapper;
-    @Autowired
-    RightRepository rightRepository;
-    private void addPrivilegesToUser(UserDTO userDTO) {
+    private void addUserPrivileges(UserDTO userDTO) {
+        _log.debug("addUserPrivileges - id: " + userDTO.getId() + " - Email: " + userDTO.getEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
+
         User user = userMapper.toEntity(userDTO);
-        //TODO: ¿Integer type?
-        Right right = new Right(user, "users_"+userDTO.getId(), 0);
+        Right right = new Right(user, "users_"+userDTO.getId(), user.getType());
         rightRepository.save(right);
     }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private RegistrationDTO generateNewRegistration(final String role, final MunicipalityDTO municipality, final int userId) {
         RegistrationDTO registration = new RegistrationDTO();
