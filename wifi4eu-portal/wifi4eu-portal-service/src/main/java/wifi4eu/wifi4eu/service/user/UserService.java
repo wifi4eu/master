@@ -281,7 +281,18 @@ public class UserService {
   }
 
   public String getLogoutEnviroment() {
-    return "https://ecas.ec.europa.eu/cas/logout";
+    UserContext userContext = UserHolder.getUser();
+
+    //TODO: "tester@test.com" a constante. Revisar wifi4eu.wifi4eu.web.filter.doFilterInternal
+    if ( !"tester@test.com".equals( userContext.getEmail() ) ) {
+      return "https://ecas.ec.europa.eu/cas/logout";
+    } else {
+      return "http://localhost:8080/wifi4eu/#/beneficiary-registration";
+    }
+
+    //TODO: Originalmente
+    //TODO: return "https://ecas.ec.europa.eu/cas/logout";
+    //TODO: Quitado con la condicion previa para local
   }
 
   public String getChangePassword() {

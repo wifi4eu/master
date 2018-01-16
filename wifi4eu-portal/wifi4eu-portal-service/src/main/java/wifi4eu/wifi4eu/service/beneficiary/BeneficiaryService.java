@@ -11,6 +11,10 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.security.Right;
+import wifi4eu.wifi4eu.entity.user.User;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -120,6 +124,7 @@ public class BeneficiaryService {
 
         for (MunicipalityDTO municipalityDTO : municipalityDTOs) {
             List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipalityDTO.getLauId());
+            addPrivilegesToUser(userDTO);
 
             if (municipalitiesWithSameLau.size() > 1) {
 
@@ -162,6 +167,21 @@ public class BeneficiaryService {
 
         }
     }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Autowired
+    UserMapper userMapper;
+    @Autowired
+    RightRepository rightRepository;
+    private void addPrivilegesToUser(UserDTO userDTO) {
+        User user = userMapper.toEntity(userDTO);
+        //TODO: ¿Integer type?
+        Right right = new Right(user, "users_"+userDTO.getId(), 0);
+        rightRepository.save(right);
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private RegistrationDTO generateNewRegistration(final String role, final MunicipalityDTO municipality, final int userId) {
         RegistrationDTO registration = new RegistrationDTO();
