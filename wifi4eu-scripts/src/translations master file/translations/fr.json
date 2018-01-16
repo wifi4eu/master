@@ -489,7 +489,7 @@
   "registration.step3.instructions": "Vérifiez votre demande d’enregistrement avant de la soumettre.",
   "country.label": "Pays",
   "municipality.label": "Localité",
-  "address.label": "Votre demande a été rejetée pour les raisons suivantes:",
+  "address.label": "Adresse officielle                  numéro",
   "number.label": "Numéro",
   "postal-code.label": "Code postal",
   "street.label": "Rue",
