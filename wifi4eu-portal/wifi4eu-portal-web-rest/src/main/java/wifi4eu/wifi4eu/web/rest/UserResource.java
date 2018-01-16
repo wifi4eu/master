@@ -20,6 +20,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -62,7 +63,7 @@ public class UserResource {
         _log.info("getUserById: " + userId);
 
         //check permission
-        permissionChecker.check("users_"+userId);
+        permissionChecker.check(RightConstants.USER_TABLE+userId);
 
         UserDTO resUser = userService.getUserById(userId);
         resUser.setPassword(null);
@@ -95,9 +96,11 @@ public class UserResource {
         try {
             _log.info("saveUserChanges");
 
+            //TODO: create saveMayorsChanges
+            //TODO: https://webgate.ec.europa.eu/CITnet/jira/browse/WIFIFOREU-1548
             //check permission
             int userId = userDTO.getId();
-            permissionChecker.check("users_"+userId);
+            permissionChecker.check(RightConstants.USER_TABLE+userId);
 
             UserDTO resUser = userService.saveUserChanges(userDTO);
             resUser.setPassword(null);

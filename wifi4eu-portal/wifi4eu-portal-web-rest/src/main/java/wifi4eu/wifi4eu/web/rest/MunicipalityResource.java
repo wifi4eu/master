@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
 import java.util.List;
 
@@ -22,6 +24,9 @@ import java.util.List;
 public class MunicipalityResource {
     @Autowired
     private MunicipalityService municipalityService;
+
+    @Autowired
+    private PermissionChecker permissionChecker;
 
     Logger _log = LoggerFactory.getLogger(MunicipalityResource.class);
 
@@ -48,6 +53,11 @@ public class MunicipalityResource {
     public ResponseDTO createMunicipality(@RequestBody final MunicipalityDTO municipalityDTO) {
         try {
             _log.info("createMunicipality");
+
+            //check permission
+            int municipalityId = municipalityDTO.getId();
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE+municipalityId);
+
             MunicipalityDTO resMunicipality = municipalityService.createMunicipality(municipalityDTO);
             return new ResponseDTO(true, resMunicipality, null);
         } catch (Exception e) {

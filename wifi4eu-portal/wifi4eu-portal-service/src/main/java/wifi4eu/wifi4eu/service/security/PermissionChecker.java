@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.service.security;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,8 +68,12 @@ public class PermissionChecker {
         _log.debug("addTablePermissions " + logInfo);
 
         User user = userMapper.toEntity(userDTO);
-        Right right = new Right(user, destTable+rowId, user.getType());
-        rightRepository.save(right);
+        Iterable<Right> rightsFound = rightRepository.findByRightdescAndUserId(destTable + rowId, user.getId());
+
+        if ( Iterables.isEmpty(rightsFound) ) {
+            Right right = new Right(user, destTable + rowId, user.getType());
+            rightRepository.save(right);
+        }
     }
 
 }
