@@ -1335,6 +1335,12 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   }
 }
 
+.row-municipality{
+  box-sizing: border-box; 
+  float:left; 
+  width: 100%;
+}
+
 /* fix blinking issue with the header */
 
 #app-wrapper.shrink-header-active #main #nav-bar{
