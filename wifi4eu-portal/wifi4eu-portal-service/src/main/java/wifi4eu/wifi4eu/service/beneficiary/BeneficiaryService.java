@@ -129,15 +129,17 @@ public class BeneficiaryService {
             mayor.setMunicipalityId(municipality.getId());
 
             /* create mayor */
-            mayorService.createMayor(mayor);
-//            permissionChecker.addTablePermissions(userDTO, RightConstants.MAYORS_TABLE,
-//                    "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipalityId());
+            MayorDTO mayorDtoOutput = mayorService.createMayor(mayor);
+            permissionChecker.addTablePermissions(userDTO, mayorDtoOutput,
+                    RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipalityId());
 
             /* create registration */
             RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, userDTO.getId());
-            registrations.add(registrationService.createRegistration(registration));
-//            permissionChecker.addTablePermissions(userDTO, RightConstants.REGISTRATIONS_TABLE,
-//                    "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipalityId());
+            RegistrationDTO registrationDtoOutput = registrationService.createRegistration(registration);
+            registrations.add(registrationDtoOutput);
+
+            permissionChecker.addTablePermissions(userDTO, registrationDtoOutput,
+                    RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipalityId());
         }
         return registrations;
     }
@@ -211,9 +213,10 @@ public class BeneficiaryService {
         for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
             /* search for other users registered on the same municipality */
 
-            resMunicipalities.add(municipalityService.createMunicipality(municipality));
-//            permissionChecker.addTablePermissions(beneficiaryDTO.getUser(), RightConstants.MUNICIPALITIES_TABLE,
-//                    "[MUNICIPALITIES] - id: " + municipality.getId() + " - Country: " + municipality.getCountry() + " - Lau Id: " + municipality.getLauId());
+            MunicipalityDTO municipalityDtoOutput = municipalityService.createMunicipality(municipality);
+            resMunicipalities.add(municipalityDtoOutput);
+//            permissionChecker.addTablePermissions(beneficiaryDTO.getUser(), municipalityDtoOutput,
+//                    RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + municipality.getId() + " - Country: " + municipality.getCountry() + " - Lau Id: " + municipality.getLauId());
         }
         return resMunicipalities;
     }
