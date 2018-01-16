@@ -218,7 +218,7 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMayor" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <h1 class="beneficiaryMayorModal">{{'mayordetails.title' | translate }}</h1>
+        <h1 class="beneficiaryMayorModal">{{'mayor.details' | translate }}</h1>
         <form (ngSubmit)="saveMayorChanges()" #profileFormMayor="ngForm" *ngIf="editedMayor">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
