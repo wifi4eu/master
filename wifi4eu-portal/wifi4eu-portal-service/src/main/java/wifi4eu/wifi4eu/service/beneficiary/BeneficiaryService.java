@@ -148,6 +148,8 @@ public class BeneficiaryService {
 
         for (MunicipalityDTO municipalityDTO : municipalityDTOs) {
             List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipalityDTO.getLauId());
+            permissionChecker.addTablePermissions(userDTO, Integer.toString(municipalityDTO.getId()),
+                    RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + municipalityDTO.getId() + " - Country: " + municipalityDTO.getCountry() + " - Lau Id: " + municipalityDTO.getLauId());
 
             if (municipalitiesWithSameLau.size() > 1) {
 
@@ -215,8 +217,6 @@ public class BeneficiaryService {
 
             MunicipalityDTO municipalityDtoOutput = municipalityService.createMunicipality(municipality);
             resMunicipalities.add(municipalityDtoOutput);
-//            permissionChecker.addTablePermissions(beneficiaryDTO.getUser(), municipalityDtoOutput,
-//                    RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + municipality.getId() + " - Country: " + municipality.getCountry() + " - Lau Id: " + municipality.getLauId());
         }
         return resMunicipalities;
     }
