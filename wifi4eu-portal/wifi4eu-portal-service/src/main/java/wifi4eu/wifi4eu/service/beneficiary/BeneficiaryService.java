@@ -130,7 +130,7 @@ public class BeneficiaryService {
 
             /* create mayor */
             MayorDTO mayorDtoOutput = mayorService.createMayor(mayor);
-            permissionChecker.addTablePermissions(userDTO, mayorDtoOutput,
+            permissionChecker.addTablePermissions(userDTO, Integer.toString(mayorDtoOutput.getId()),
                     RightConstants.MAYORS_TABLE, "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipalityId());
 
             /* create registration */
@@ -138,7 +138,7 @@ public class BeneficiaryService {
             RegistrationDTO registrationDtoOutput = registrationService.createRegistration(registration);
             registrations.add(registrationDtoOutput);
 
-            permissionChecker.addTablePermissions(userDTO, registrationDtoOutput,
+            permissionChecker.addTablePermissions(userDTO, Integer.toString(registrationDtoOutput.getId()),
                     RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipalityId());
         }
         return registrations;

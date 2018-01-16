@@ -62,32 +62,13 @@ public class PermissionChecker {
     }
 
     @Transactional
-    public void addTablePermissions(final UserDTO userDTO, final Object rowObj,
+    public void addTablePermissions(final UserDTO userDTO, final String rowId,
                                     final String destTable, final String logInfo) {
         _log.debug("addTablePermissions " + logInfo);
 
-        final String id = getIdByReflection(rowObj);
-        if (id != null) {
-            User user = userMapper.toEntity(userDTO);
-            Right right = new Right(user, destTable+id, user.getType());
-            rightRepository.save(right);
-        } else {
-            _log.error("Id was not recovered");
-        }
-    }
-
-    private String getIdByReflection(final Object rowObj) {
-        String id = null;
-
-        try {
-            Method method = rowObj.getClass().getMethod("getId");
-            id = method.invoke(rowObj).toString();
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            _log.error("Reflection fails");
-            e.printStackTrace();
-        }
-
-        return id;
+        User user = userMapper.toEntity(userDTO);
+        Right right = new Right(user, destTable+rowId, user.getType());
+        rightRepository.save(right);
     }
 
 }

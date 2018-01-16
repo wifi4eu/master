@@ -101,7 +101,7 @@ public class UserService {
     if (searchUser != null) {
       userDTO.setPassword(searchUser.getPassword());
       UserDTO resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
-      permissionChecker.addTablePermissions(userDTO, resUser,
+      permissionChecker.addTablePermissions(userDTO, Integer.toString(resUser.getId()),
               RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
       return resUser;
     } else {
@@ -202,7 +202,7 @@ public class UserService {
     String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
     tempTokenDTO.setToken(token);
     tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO)));
-    permissionChecker.addTablePermissions(userDTO, tempTokenDTO,
+    permissionChecker.addTablePermissions(userDTO, Long.toString(tempTokenDTO.getId()),
             RightConstants.TEMP_TOKENS_TABLE, "[TEMP_TOKENS] - id: " + tempTokenDTO.getId() + " - User Id: " + tempTokenDTO.getUserId() + " - TOKEN: " + tempTokenDTO.getToken());
 
     Locale locale = initLocale();
