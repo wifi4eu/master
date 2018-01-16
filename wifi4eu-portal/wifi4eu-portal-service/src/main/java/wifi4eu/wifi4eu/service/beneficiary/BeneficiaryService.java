@@ -6,17 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
+import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.Right;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -47,10 +55,13 @@ public class BeneficiaryService {
     MayorService mayorService;
 
     @Autowired
+    RightRepository rightRepository;
+
+    @Autowired
     UserMapper userMapper;
 
     @Autowired
-    RightRepository rightRepository;
+    PermissionChecker permissionChecker;
 
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryService.class);
 
@@ -116,11 +127,17 @@ public class BeneficiaryService {
             MunicipalityDTO municipality = resMunicipalities.get(i);
             MayorDTO mayor = beneficiaryDTO.getMayors().get(i);
             mayor.setMunicipalityId(municipality.getId());
+
             /* create mayor */
             mayorService.createMayor(mayor);
+//            permissionChecker.addTablePermissions(userDTO, RightConstants.MAYORS_TABLE,
+//                    "[MAYORS] - id: " + mayor.getId() + " - Email: " + mayor.getEmail() + " - Municipality Id: " + mayor.getMunicipalityId());
+
             /* create registration */
             RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, userDTO.getId());
             registrations.add(registrationService.createRegistration(registration));
+//            permissionChecker.addTablePermissions(userDTO, RightConstants.REGISTRATIONS_TABLE,
+//                    "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipalityId());
         }
         return registrations;
     }
@@ -129,7 +146,6 @@ public class BeneficiaryService {
 
         for (MunicipalityDTO municipalityDTO : municipalityDTOs) {
             List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipalityDTO.getLauId());
-            addUserPrivileges(userDTO);
 
             if (municipalitiesWithSameLau.size() > 1) {
 
@@ -173,14 +189,6 @@ public class BeneficiaryService {
         }
     }
 
-    private void addUserPrivileges(UserDTO userDTO) {
-        _log.debug("addUserPrivileges - id: " + userDTO.getId() + " - Email: " + userDTO.getEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
-
-        User user = userMapper.toEntity(userDTO);
-        Right right = new Right(user, "users_"+userDTO.getId(), user.getType());
-        rightRepository.save(right);
-    }
-
     private RegistrationDTO generateNewRegistration(final String role, final MunicipalityDTO municipality, final int userId) {
         RegistrationDTO registration = new RegistrationDTO();
         registration.setRole(role);
@@ -204,6 +212,8 @@ public class BeneficiaryService {
             /* search for other users registered on the same municipality */
 
             resMunicipalities.add(municipalityService.createMunicipality(municipality));
+//            permissionChecker.addTablePermissions(beneficiaryDTO.getUser(), RightConstants.MUNICIPALITIES_TABLE,
+//                    "[MUNICIPALITIES] - id: " + municipality.getId() + " - Country: " + municipality.getCountry() + " - Lau Id: " + municipality.getLauId());
         }
         return resMunicipalities;
     }
