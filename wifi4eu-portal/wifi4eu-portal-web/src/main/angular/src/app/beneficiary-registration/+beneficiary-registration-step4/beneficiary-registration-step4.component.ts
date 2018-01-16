@@ -8,7 +8,13 @@ import {LocalStorageService} from "angular-2-local-storage";
 
 
 @Component({
-    selector: 'beneficiary-registration-step4', templateUrl: 'beneficiary-registration-step4.component.html'
+    selector: 'beneficiary-registration-step4', templateUrl: 'beneficiary-registration-step4.component.html',
+    styles: [`
+      .publish-button {
+        width: auto;
+        min-width: 10em;
+      }
+    `]
 })
 
 export class BeneficiaryRegistrationStep4Component {
