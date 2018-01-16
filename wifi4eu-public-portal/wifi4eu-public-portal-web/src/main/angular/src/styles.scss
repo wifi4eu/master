@@ -114,6 +114,9 @@ body {
   .second {
     padding-bottom: 16% !important;
   }
+  #benefLandingThirdBackground {
+    padding-top: 6em !important;
+  }
 
   #img-scnd img, #img-europeans img {
     width: 100%;
@@ -1302,4 +1305,8 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 
 #app-wrapper.shrink-header-active #main #nav-bar {
   position: relative;
+}
+
+#navigation-buttons {
+  z-index: 999;
 }
