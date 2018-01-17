@@ -91,4 +91,14 @@ public class ApplicationResource {
         }
         return applicationService.getApplicationsBySupplierId(supplierId);
     }
+
+    @ApiOperation(value = "Get application by specific id")
+    @RequestMapping(value = "/call/{callId}/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId) {
+        if (_log.isInfoEnabled()) {
+            _log.info("getApplicationByCall: " + callId + " & Registration: " + registrationId);
+        }
+        return applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
+    }
 }
