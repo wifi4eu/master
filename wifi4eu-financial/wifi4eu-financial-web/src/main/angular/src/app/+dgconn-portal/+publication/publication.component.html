@@ -21,11 +21,11 @@
                 <span>{{call.endDate | date: 'dd/MM/yyyy HH:mm'}}</span>
             </template>
         </p-column>
-        <p-column header="{{ 'edit.button' | translate }}">
+        <p-column header="{{ 'shared.edit.button' | translate }}">
             <template pTemplate="body" let-element="rowData" let-rowElement="rowIndex">
                 <button type="button" class="btn" style="background: none; padding: 0;"
                         (click)="displayInfo(element)">
-                    <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{ 'edit.button' | translate}}
+                    <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{ 'shared.edit.button' | translate}}
                 </button>
             </template>
         </p-column>
@@ -99,7 +99,7 @@
                     <div class="ui-g-3"></div>
                     <div class="ui-g-2" style="text-align: center !important">
                         <button type="button" (click)="cancelPublication()" class="btn btn-primary cancel-button">
-                            {{ 'cancel.button' | translate }}
+                            {{ 'shared.cancel.button' | translate }}
                         </button>
                     </div>
                     <div class="ui-g-1"></div>

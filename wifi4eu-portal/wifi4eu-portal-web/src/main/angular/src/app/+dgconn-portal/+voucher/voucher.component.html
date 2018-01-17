@@ -4,7 +4,7 @@
     <div class="ui-g">
         <div class="ui-g-4  voucherLabel"><p>{{ 'dgConn.totalCountries' | translate }}: <b>{{totalCountries}}</b></p></div>
         <div class="ui-g-4  voucherLabel">
-            <div class="ui-g-4">{{ 'country.label' | translate }}</div>
+            <div class="ui-g-4">{{ 'shared.country.label' | translate }}</div>
             <div class="ui-g-8">
                 <p-autoComplete  id="country"
                                     class="form-control autoComplete"
@@ -47,7 +47,7 @@
         <p><span class="voucherTitle">{{ 'dgConn.voucher.dashboard' | translate }}</span> | <span class="voucherSubtitle">{{ 'dgConn.voucher.simulation' | translate }}</span><a class="downloadData"><i class="fa fa-download" aria-hidden="true"></i> {{'dgConn.voucher.downloadData' | translate}}</a></p>
     </div>
     <p-dataTable [value]="mapTableData" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
-            <p-column field="name" header="{{ 'country.label' | translate }}" [sortable]="true"></p-column>
+            <p-column field="name" header="{{ 'shared.country.label' | translate }}" [sortable]="true"></p-column>
             <p-column field="municipalities" header="{{ 'dgConn.voucher.municipalities' | translate }}" [sortable]="true"></p-column>
             <p-column field="requests" header="{{ 'dgConn.voucher.request' | translate }}" [sortable]="true"></p-column>
             <p-column field="awarded" header="{{ 'dgConn.voucher.assigned' | translate }}" [sortable]="true"></p-column>

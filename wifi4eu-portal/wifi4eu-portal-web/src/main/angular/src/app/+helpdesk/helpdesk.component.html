@@ -18,9 +18,9 @@
         <p-column field="status" header="{{ 'dgConn.status' | translate }}" [sortable]="true">
             <template pTemplate="body" let-issue="rowData">
                 <div [ngSwitch]="issue.status">
-                    <span *ngSwitchCase="0" class="issue-status-pending"><i>{{ 'issueStatus.pending' | translate }}</i></span>
-                    <span *ngSwitchCase="1" class="issue-status-resolved"><i>{{ 'issueStatus.resolved' | translate }}</i></span>
-                    <span *ngSwitchCase="2" class="issue-status-pending"><i>{{ 'issueStatus.pending' | translate }}</i></span>
+                    <span *ngSwitchCase="0" class="issue-status-pending"><i>{{ 'dgConn.issueStatus.pending' | translate }}</i></span>
+                    <span *ngSwitchCase="1" class="issue-status-resolved"><i>{{ 'dgConn.issueStatus.resolved' | translate }}</i></span>
+                    <span *ngSwitchCase="2" class="issue-status-pending"><i>{{ 'dgConn.issueStatus.pending' | translate }}</i></span>
                 </div>
             </template>
         </p-column>
@@ -97,7 +97,7 @@
     <div class="ui-g-12" style="margin-top: 20px;">
             <span>
                 <button type="button" class="btn cancel-button" (click)="cancel()">
-                    {{ 'cancel.button' | translate }}
+                    {{ 'shared.cancel.button' | translate }}
                 </button>
             </span>
         <span style="float: right;">

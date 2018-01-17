@@ -21,13 +21,13 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <h2 class="discussionForumMayors marginTopCountdown">
-                {{ 'yourDetails.title' | translate }}</h2>
+                {{ 'benefRegistration.yourDetails.title' | translate }}</h2>
         </div>
         <div class="ui-lg-3"></div>
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="municipality">{{ 'municipality.label' | translate }}</label>
+                <label class="label" for="municipality">{{ 'shared.municipality.label' | translate }}</label>
                 <label class="form-control" id="municipality" name="municipality"><b>{{municipality.name}}</b></label>
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="name">{{ 'name.label' | translate }}</label>
+                <label class="label" for="name">{{ 'suppRegistration.name.label' | translate }}</label>
                 <label class="form-control" id="name" name="name"><b>{{user.name}}</b></label>
             </div>
         </div>
@@ -43,7 +43,7 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="surname">{{ 'surname.label' | translate }}</label>
+                <label class="label" for="surname">{{ 'suppRegistration.surname.label' | translate }}</label>
                 <label class="form-control " id="surname" name="surname"><b>{{user.surname}}</b></label>
             </div>
         </div>
@@ -102,7 +102,7 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="document4">{{ 'request.additionalInfo.doc4.label' | translate }}</label>
+                <label class="label" for="document4">{{ 'benefPortal.request.additionalInfo.doc4.label' | translate }}</label>
                 <input #document4 id="document4" name="document4" (change)="uploadFile($event, 3)"
                        type="file" class="upload" accept=".doc, .docx, .pdf" required/>
             </div>
@@ -113,13 +113,13 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <a href="#/beneficiary-portal">
-                <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button>
+                <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' | translate }}</button>
             </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn btn-primary publish-button"
                     [disabled]="!legalForm.form.valid || !allFilesUploaded">
-                {{ 'confirm.button' | translate }}
+                {{ 'suppRegistration.confirm.button' | translate }}
             </button>
         </div>
         <div class="ui-lg-3"></div>

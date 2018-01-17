@@ -1,6 +1,6 @@
 <!-- Accordin Box style -->
 <ux-accordion-boxes>
-    <custom-timeline-accordion-box id="expandHideBox" label="{{ 'expand.label' | translate}}" [isExpanded]="false"
+    <custom-timeline-accordion-box id="expandHideBox" label="{{ 'shared.expand.label' | translate}}" [isExpanded]="false"
                                    [rightSide]="true">
         <ux-timeline-items id="timelineList">
             <ux-timeline-item *ngFor="let item of timelineItems" [date]="item.date" [label]="item.label"

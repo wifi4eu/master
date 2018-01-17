@@ -2,7 +2,7 @@
 <div class="container font">
     <div class="ui-g">
         <div class="ui-g-12">
-            <p class="beneficiaryTitle">{{ 'profile.title' | translate }}</p>
+            <p class="beneficiaryTitle">{{ 'benefPortal.profile.title' | translate }}</p>
         </div>
     </div>
     <div class="ui-g">
@@ -10,20 +10,20 @@
             <hr class="beneficiaryHr">
             <div class="ui-g">
                 <div class="ui-g-10">
-                    <p class="beneficiaryMayor">{{ 'contact.person' | translate }}</p>
+                    <p class="beneficiaryMayor">{{ 'suppRegistration.contact.person' | translate }}</p>
                 </div>
                 <div class="ui-g-2">
                     <a (click)="displayModal('contact')" class="edit">
-                        <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
+                        <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
                     </a>
                 </div>
             </div>
             <div class="ui-g">
                 <div class="ui-g-4">
-                    <p>{{ 'name.label' | translate }}</p>
-                    <p>{{ 'surname.label' | translate }}</p>
-                    <p>{{ 'phone.number' | translate }}</p>
-                    <p>{{ 'email.label' | translate }}</p>
+                    <p>{{ 'suppRegistration.name.label' | translate }}</p>
+                    <p>{{ 'suppRegistration.surname.label' | translate }}</p>
+                    <p>{{ 'suppRegistration.phone.number' | translate }}</p>
+                    <p>{{ 'suppRegistration.email.label' | translate }}</p>
                 </div>
                 <div class="ui-g-8">
                     <p class="profileData">{{supplier.contactName}}</p>
@@ -36,20 +36,20 @@
             <hr class="beneficiaryHr">
             <div class="ui-g">
                 <div class="ui-g-10">
-                    <p class="beneficiaryMayor">{{ 'company.details' | translate }}</p>
+                    <p class="beneficiaryMayor">{{ 'suppRegistration.company.details' | translate }}</p>
                 </div>
                 <div class="ui-g-2">
                     <a (click)="displayModal('company')">
-                        <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
+                        <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
                     </a>
                 </div>
             </div>
             <div class="ui-g">
                 <div class="ui-g-4">
-                    <p>{{ 'company.name' | translate }}</p>
-                    <p>{{ 'legal.address' | translate }}</p>
-                    <p>{{ 'vat.label' | translate }}</p>
-                    <p>{{ 'bic.label' | translate }}</p>
+                    <p>{{ 'suppRegistration.company.name' | translate }}</p>
+                    <p>{{ 'suppRegistration.legal.address' | translate }}</p>
+                    <p>{{ 'suppRegistration.vat.label' | translate }}</p>
+                    <p>{{ 'suppRegistration.bic.label' | translate }}</p>
                     <p *ngIf="supplier.logo">{{ 'suppRegistration.logo.label' | translate }}</p>
                 </div>
                 <div class="ui-g-8">
@@ -63,7 +63,7 @@
             <hr class="beneficiaryHr">
             <div class="ui-g">
                 <div class="ui-g-10">
-                    <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
+                    <p class="beneficiaryMayor">{{ 'suppRegistration.legalentity.label' | translate }}</p>
                     <p-tabView *ngIf="selectedCountriesNames.length > 0">
                         <p-tabPanel *ngFor="let country of selectedCountriesNames;" [header]="country">
                             <div class="ui-g">
@@ -83,11 +83,11 @@
             <div class="ui-g-12">
                 <div class="ui-g">
                     <div class="ui-g-12 button-content">
-                        <p>{{ 'beneficiaryProfile.text' | translate }}</p>
+                        <p>{{ 'shared.beneficiaryProfile.text' | translate }}</p>
                         <div style="text-align: center !important">
                             <button type="button" (click)="displayModal('password')"
                                     class="btn btn-primary changePassword">
-                                {{'beneficiaryProfile.password' | translate }}
+                                {{'shared.beneficiaryProfile.password' | translate }}
                             </button>
                         </div>
                     </div>
@@ -95,10 +95,10 @@
                 <br>
                 <div class="ui-g" *ngIf="hasDiscussion">
                     <div class="ui-g-12 button-content">
-                        <p>{{ 'beneficiary.goDiscussionText' | translate }}</p>
+                        <p>{{ 'benefPortal.beneficiary.goDiscussionText' | translate }}</p>
                         <div style="text-align: center !important">
                             <button type="button" (click)="goToDiscussion()" class="btn btn-primary changePassword">
-                                {{'beneficiary.goDiscussion' | translate }}
+                                {{'discussionForum.beneficiary.goDiscussion' | translate }}
                             </button>
                         </div>
                     </div>
@@ -114,13 +114,13 @@
     <p-dialog [(visible)]="displayContact" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <p class="beneficiaryMayor center">{{ 'contact.person' | translate }}</p>
+        <p class="beneficiaryMayor center">{{ 'suppRegistration.contact.person' | translate }}</p>
         <form (ngSubmit)="saveSupplierChanges()" #profileFormContact="ngForm">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="contactName">{{ 'name.label' | translate }}</label>
+                        <label for="contactName">{{ 'suppRegistration.name.label' | translate }}</label>
                         <input id="contactName" type="text" [(ngModel)]="editedSupplier.contactName"
                                class="form-control"
                                name="contactName" ngcontrol="contactName" #contactName="ngModel" required>
@@ -135,7 +135,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="contactSurname">{{ 'surname.label' | translate }}</label>
+                        <label for="contactSurname">{{ 'suppRegistration.surname.label' | translate }}</label>
                         <input id="contactSurname" type="text" [(ngModel)]="editedSupplier.contactSurname"
                                class="form-control"
                                name="contactSurname" ngcontrol="contactSurname" #contactSurname="ngModel"
@@ -153,7 +153,7 @@
                 <div class="ui-g-10" style="padding:0.5em 0">
                     <div class="form-group">
                         <div class="ui-g-5">
-                            <label for="contactPhonePrefix">{{ 'prefix.number' | translate }}</label>
+                            <label for="contactPhonePrefix">{{ 'suppRegistration.prefix.number' | translate }}</label>
                             <input id="contactPhonePrefix" type="text"
                                    [(ngModel)]="editedSupplier.contactPhonePrefix"
                                    class="form-control"
@@ -165,7 +165,7 @@
                             </div>
                         </div>
                         <div class="ui-g-5">
-                            <label for="contactPhoneNumber">{{ 'phone.number' | translate }}</label>
+                            <label for="contactPhoneNumber">{{ 'suppRegistration.phone.number' | translate }}</label>
                             <input id="contactPhoneNumber" type="text"
                                    [(ngModel)]="editedSupplier.contactPhoneNumber"
                                    class="form-control"
@@ -185,7 +185,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="contactEmail">{{ 'email.label' | translate }}</label>
+                        <label for="contactEmail">{{ 'suppRegistration.email.label' | translate }}</label>
                         <input id="contactEmail" type="text" [(ngModel)]="editedSupplier.contactEmail"
                                class="form-control"
                                name="contactEmail" ngcontrol="contactEmail" #contactEmail="ngModel" required
@@ -201,7 +201,7 @@
                 <div style="text-align: center !important">
                     <button type="button" class="btn btn-primary changePasswordModalNoTop"
                             (click)="closeModal()">
-                        {{ 'cancel.button' | translate }}
+                        {{ 'shared.cancel.button' | translate }}
                     </button>
                     <button type="submit" class="btn btn-primary changePasswordModalNoTop"
                             [disabled]="!profileFormContact.form.valid">
@@ -218,13 +218,13 @@
     <p-dialog [(visible)]="displayCompany" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <p class="beneficiaryMayor center">{{ 'company.details' | translate }}</p>
+        <p class="beneficiaryMayor center">{{ 'suppRegistration.company.details' | translate }}</p>
         <form (ngSubmit)="saveSupplierChanges()" #profileFormCompany="ngForm">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="name">{{ 'company.name' | translate }}</label>
+                        <label for="name">{{ 'suppRegistration.company.name' | translate }}</label>
                         <input id="name" type="text" [(ngModel)]="editedSupplier.name" class="form-control"
                                name="name" ngcontrol="name" #name="ngModel" required>
                         <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
@@ -238,7 +238,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="address">{{ 'legal.address' | translate }}</label>
+                        <label for="address">{{ 'suppRegistration.legal.address' | translate }}</label>
                         <input id="address" type="text" [(ngModel)]="editedSupplier.address"
                                class="form-control"
                                name="address" ngcontrol="address" #address="ngModel" required>
@@ -253,7 +253,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="vat">{{ 'vat.label' | translate }}</label>
+                        <label for="vat">{{ 'suppRegistration.vat.label' | translate }}</label>
                         <input id="vat" type="text" [(ngModel)]="editedSupplier.vat" class="form-control"
                                name="vat" ngcontrol="vat" #vat="ngModel" required>
                         <div [hidden]="vat.valid || vat.pristine" class="alert alert-danger">
@@ -267,7 +267,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="bic">{{ 'bic.label' | translate }}</label>
+                        <label for="bic">{{ 'suppRegistration.bic.label' | translate }}</label>
                         <input id="bic" type="text" [(ngModel)]="editedSupplier.bic" class="form-control"
                                name="bic" ngcontrol="bic" #bic="ngModel" required>
                         <div [hidden]="bic.valid || bic.pristine" class="alert alert-danger">
@@ -310,7 +310,7 @@
                 <div style="text-align: center !important">
                     <button type="button" class="btn btn-primary changePasswordModalNoTop"
                             (click)="closeModal()">
-                        {{ 'cancel.button' | translate }}
+                        {{ 'shared.cancel.button' | translate }}
                     </button>
                     <button type="submit" class="btn btn-primary changePasswordModalNoTop"
                             [disabled]="!profileFormCompany.form.valid">
@@ -327,7 +327,7 @@
     <p-dialog [(visible)]="displayChangePassword" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <p class="beneficiaryMayorModal">{{'beneficiaryProfile.password' | translate }}</p>
+        <p class="beneficiaryMayorModal">{{'shared.beneficiaryProfile.password' | translate }}</p>
         <form #profileFormPassword="ngForm">
             <div class="form-group profileDialog">
                 <label class="labelModal" for="currentPassword_field">{{ 'currentPassword.label' | translate
@@ -366,7 +366,7 @@
                     <div style="text-align: center !important">
                         <button type="button" class="btn btn-primary changePasswordModal"
                                 (click)="closeModal()">
-                            {{ 'cancel.button' | translate }}
+                            {{ 'shared.cancel.button' | translate }}
                         </button>
                         <button type="submit" class="btn btn-primary changePasswordModal"
                                 [disabled]="!profileFormPassword.form.valid || !passwordsMatch">

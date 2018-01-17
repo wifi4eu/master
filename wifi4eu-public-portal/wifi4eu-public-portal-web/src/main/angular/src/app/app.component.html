@@ -31,7 +31,7 @@
                         <div *ngIf="user">
                             <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
                                                                isOverlayPanel="true"
-                                                               userInfos="{{ 'loggedin.as' | translate }} {{user.email}}"
+                                                               userInfos="{{ 'shared.loggedin.as' | translate }} {{user.email}}"
                                                                [links]="menuLinks"
                                                                homeUrl="/home">
                             </custom-layout-nav-bar-action-item>
@@ -41,7 +41,7 @@
                             <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
                                                                isOverlayPanel="true"
                                                                [links]="menuLinks" homeUrl="/home">
-                                {{ 'logout.label' | translate }}
+                                {{ 'shared.logout.label' | translate }}
                             </custom-layout-nav-bar-action-item>
                         </div>
                     </ux-layout-nav-bar-actions>

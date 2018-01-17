@@ -23,17 +23,17 @@ export class CustomAccordionBoxComponent extends UxAccordionBoxComponent {
     @Input() rightSide: boolean = false;
     @Input() isExpanded: boolean = false;
     @Input() closable: boolean = false;
-    @Input() label: string = this.isExpanded ? 'hide.label' : 'expand.label';
+    @Input() label: string = this.isExpanded ? 'shared.hide.label' : 'shared.expand.label';
     expandHideClass: string = this.isExpanded ? 'fa fa-2x fa-chevron-up' : 'fa fa-2x fa-chevron-down';
     @Output('onClose') onClose: EventEmitter<any> = new EventEmitter();
 
     toggle() {
         super.toggle();
         if (this.isExpanded) {
-            this.label = 'hide.label';
+            this.label = 'shared.hide.label';
             this.expandHideClass = 'fa fa-2x fa-chevron-up';
         } else {
-            this.label = 'expand.label';
+            this.label = 'shared.expand.label';
             this.expandHideClass = 'fa fa-2x fa-chevron-down';
         }
     }

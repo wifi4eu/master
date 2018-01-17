@@ -155,7 +155,7 @@ export class DiscussionComponent {
                     this.registrationApi.createRegistration(registration).subscribe(
                         (data: ResponseDTOBase) => {
                             if (data.success) {
-                                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussion.growl', 'success');
+                                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussionForum.discussion.growl', 'success');
                             }
                         }, error => {
                             this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');

@@ -7,8 +7,8 @@ import {TranslateService} from "ng2-translate";
 @Component({selector: 'success-component', templateUrl: 'success.component.html', providers: [UserApi]})
 
 export class SuccessComponent {
-    @Input() titleKey: string = 'submitregistration.success.title';
-    @Input() textKeys: string[] = ['submitregistration.success.text.part1', 'benefRegistration.submitregistration.success.text.part2'];
+    @Input() titleKey: string = 'shared.submitregistration.success.title';
+    @Input() textKeys: string[] = ['shared.submitregistration.success.text.part1', 'benefRegistration.submitregistration.success.text.part2'];
     @Input() emailConfirmation: boolean = false;
     @Input() email: string = null;
 

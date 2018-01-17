@@ -11,11 +11,11 @@
             <div class="profile-wrapper" isCompact="false">
               <div class="left-panel">
                 <div *ngIf="user" class="user-infos">
-                                    <span class="wellcomeHeader">{{ 'loggedin.as' | translate }}: <a
+                                    <span class="wellcomeHeader">{{ 'shared.loggedin.as' | translate }}: <a
                                         [routerLink]="profileUrl">
                                         <strong class="color-primary">{{user.ecasUsername}}</strong></a></span><br>
                   <button (click)="logout()" class="headerButton">
-                    {{ 'logout.label' | translate }}
+                    {{ 'shared.logout.label' | translate }}
                   </button>
                 </div>
                 <div *ngIf="!user" class="user-infos">
@@ -37,7 +37,7 @@
             <div *ngIf="user">
               <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
                                                  isOverlayPanel="true"
-                                                 userInfos="{{ 'loggedin.as' | translate }} {{user.email}}"
+                                                 userInfos="{{ 'shared.loggedin.as' | translate }} {{user.email}}"
                                                  [links]="menuLinks"
                                                  homeUrl="/home">
               </custom-layout-nav-bar-action-item>
@@ -47,7 +47,7 @@
               <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
                                                  isOverlayPanel="true"
                                                  [links]="menuLinks" homeUrl="/home">
-                {{ 'logout.label' | translate }}
+                {{ 'shared.logout.label' | translate }}
               </custom-layout-nav-bar-action-item>
             </div>
           </ux-layout-nav-bar-actions>
