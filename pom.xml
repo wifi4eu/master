@@ -106,7 +106,7 @@
 
         <!-- NG PROPERTIES -->
 
-        <ng.env></ng.env>
+        <ng.env>local</ng.env>
 
         <!-- PERSISTENCE PROPERTIES -->
 
