@@ -6,6 +6,7 @@ import wifi4eu.wifi4eu.common.dto.security.RoleDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -30,13 +31,13 @@ public class UserFilterMocked extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         try {
-            UserContext user = new UserContext("Mr. Tester");
-            user.setEmail("tester@test.com");
-            user.setDomain("TemporalDom");
-            user.setPerId(1L);
-            user.setDetailedUser( null );
-            user.setFirstName("Tester Name");
-            user.setLastName("Test LastName");
+            UserContext user = new UserContext(UserConstants.MOCKED_USER_NAME);
+            user.setEmail(UserConstants.MOCKED_MAIL);
+            user.setDomain(UserConstants.MOCKED_DOMAIN);
+            user.setPerId(UserConstants.MOCKED_PER_ID);
+            user.setDetailedUser(UserConstants.MOCKED_DETAILED_USER);
+            user.setFirstName(UserConstants.MOCKED_FIRST_NAME);
+            user.setLastName(UserConstants.MOCKED_LAST_NAME);
 
             user.setRoleList(new LinkedList<RoleDTO>());
 

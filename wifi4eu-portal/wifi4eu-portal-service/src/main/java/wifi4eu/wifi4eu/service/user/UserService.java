@@ -17,10 +17,13 @@ import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.util.MailService;
 
 import java.security.SecureRandom;
@@ -53,6 +56,12 @@ public class UserService {
 
   @Autowired
   MailService mailService;
+
+  @Autowired
+  RightRepository rightRepository;
+
+  @Autowired
+  PermissionChecker permissionChecker;
 
   /**
    * The language used in user browser
@@ -90,6 +99,8 @@ public class UserService {
     if (searchUser != null) {
       userDTO.setPassword(searchUser.getPassword());
       UserDTO resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
+      permissionChecker.addTablePermissions(userDTO, Integer.toString(resUser.getId()),
+              RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
       return resUser;
     } else {
       throw new Exception("User doesn't exist.");
@@ -189,6 +200,8 @@ public class UserService {
     String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
     tempTokenDTO.setToken(token);
     tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO)));
+    permissionChecker.addTablePermissions(userDTO, Long.toString(tempTokenDTO.getId()),
+            RightConstants.TEMP_TOKENS_TABLE, "[TEMP_TOKENS] - id: " + tempTokenDTO.getId() + " - User Id: " + tempTokenDTO.getUserId() + " - TOKEN: " + tempTokenDTO.getToken());
 
     Locale locale = initLocale();
     ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
@@ -281,10 +294,17 @@ public class UserService {
   }
 
   public String getLogoutEnviroment() {
-    return "https://ecas.ec.europa.eu/cas/logout";
+    UserContext userContext = UserHolder.getUser();
+
+    if ( !UserConstants.MOCKED_MAIL.equals( userContext.getEmail() ) ) {
+      return "https://ecas.ec.europa.eu/cas/logout";
+    } else {
+      return "http://localhost:8080/wifi4eu/#/beneficiary-registration";
+    }
   }
 
   public String getChangePassword() {
     return "https://ecas.ec.europa.eu/cas/change/changePassword.cgi";
   }
+
 }

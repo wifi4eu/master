@@ -20,7 +20,9 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpSession;
@@ -36,6 +38,9 @@ public class UserResource {
 
     @Autowired
     private RegistrationService registrationService;
+
+    @Autowired
+    private PermissionChecker permissionChecker;
 
     Logger _log = LoggerFactory.getLogger(UserResource.class);
 
@@ -56,6 +61,10 @@ public class UserResource {
     @ResponseBody
     public UserDTO getUserById(@PathVariable("userId") final Integer userId) {
         _log.info("getUserById: " + userId);
+
+        //check permission
+        permissionChecker.check(RightConstants.USER_TABLE+userId);
+
         UserDTO resUser = userService.getUserById(userId);
         resUser.setPassword(null);
         return resUser;
@@ -86,6 +95,13 @@ public class UserResource {
     public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO) {
         try {
             _log.info("saveUserChanges");
+
+            //TODO: create saveMayorsChanges
+            //TODO: https://webgate.ec.europa.eu/CITnet/jira/browse/WIFIFOREU-1548
+            //check permission
+            int userId = userDTO.getId();
+            permissionChecker.check(RightConstants.USER_TABLE+userId);
+
             UserDTO resUser = userService.saveUserChanges(userDTO);
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
@@ -103,6 +119,9 @@ public class UserResource {
     public ResponseDTO deleteUser(@RequestBody final Integer userId) {
         try {
             _log.info("deleteUser: " + userId);
+
+            //check permission
+            permissionChecker.check(RightConstants.USER_TABLE+userId);
             UserDTO resUser = userService.deleteUser(userId);
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
@@ -169,7 +188,7 @@ public class UserResource {
         try {
             _log.info("[i] ecasLogout");
             _log.info("[f] ecasLogout");
-            return new ResponseDTO(true, userService.getChangePassword(), null);
+            return new ResponseDTO(true, userService.getChangePassword(), null); //permissionChecker.check(RightConstants.USER_TABLE+userId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'login' with ECAS operation.", e);

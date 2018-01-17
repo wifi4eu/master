@@ -69,6 +69,19 @@ CREATE TABLE IF NOT EXISTS `dbo`.`users` (
   ENGINE = InnoDB;
 
 -- -----------------------------------------------------
+-- Table `wifi4eu`.`rights`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `dbo`.`rights` (
+  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `userId`      INT  NULL,
+  `rightdesc`       VARCHAR(255) NULL,
+  `type`        INT          NULL     DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `dbo`.`laus`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dbo`.`laus` (
