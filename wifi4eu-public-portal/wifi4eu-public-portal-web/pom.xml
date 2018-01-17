@@ -57,6 +57,7 @@
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
                                         <argument>build</argument>
+                                        <argument>--env=${ng.env}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -85,6 +86,7 @@
                                     <arguments>
                                         <argument>/c</argument>
                                         <argument>"ng build --base-href /wifi4eu-public/"</argument>
+                                        <argument>--env=${ng.env}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
