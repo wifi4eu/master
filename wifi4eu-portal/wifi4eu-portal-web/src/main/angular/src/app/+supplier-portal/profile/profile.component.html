@@ -50,7 +50,7 @@
                     <p>{{ 'legal.address' | translate }}</p>
                     <p>{{ 'vat.label' | translate }}</p>
                     <p>{{ 'bic.label' | translate }}</p>
-                    <p *ngIf="supplier.logo">{{ 'logo.label' | translate }}</p>
+                    <p *ngIf="supplier.logo">{{ 'suppRegistration.logo.label' | translate }}</p>
                 </div>
                 <div class="ui-g-8">
                     <p class="profileData">{{supplier.name}}</p>
@@ -125,7 +125,7 @@
                                class="form-control"
                                name="contactName" ngcontrol="contactName" #contactName="ngModel" required>
                         <div [hidden]="contactName.valid || contactName.pristine" class="alert alert-danger">
-                            {{ 'name.required' | translate }}
+                            {{ 'benefRegistration.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                                required>
                         <div [hidden]="contactSurname.valid || contactSurname.pristine"
                              class="alert alert-danger">
-                            {{ 'surname.required' | translate }}
+                            {{ 'surbenefRegistration.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -161,7 +161,7 @@
                                    #contactPhonePrefix="ngModel" required>
                             <div [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine"
                                  class="alert alert-danger">
-                                {{ 'phone.required' | translate }}
+                                {{ 'benefRegistration.phone.required' | translate }}
                             </div>
                         </div>
                         <div class="ui-g-5">
@@ -173,7 +173,7 @@
                                    #contactPhoneNumber="ngModel" required>
                             <div [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine"
                                  class="alert alert-danger">
-                                {{ 'phone.required' | translate }}
+                                {{ 'benefRegistration.phone.required' | translate }}
                             </div>
                         </div>
                     </div>
@@ -205,7 +205,7 @@
                     </button>
                     <button type="submit" class="btn btn-primary changePasswordModalNoTop"
                             [disabled]="!profileFormContact.form.valid">
-                        {{ 'change' | translate }}
+                        {{ 'shared.change' | translate }}
                     </button>
                 </div>
             </div>
@@ -228,7 +228,7 @@
                         <input id="name" type="text" [(ngModel)]="editedSupplier.name" class="form-control"
                                name="name" ngcontrol="name" #name="ngModel" required>
                         <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-                            {{'company.required' | translate }}
+                            {{'suppRegistration.company.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -243,7 +243,7 @@
                                class="form-control"
                                name="address" ngcontrol="address" #address="ngModel" required>
                         <div [hidden]="address.valid || address.pristine" class="alert alert-danger">
-                            {{'address.required' | translate }}
+                            {{'suppRegistration.address.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -257,7 +257,7 @@
                         <input id="vat" type="text" [(ngModel)]="editedSupplier.vat" class="form-control"
                                name="vat" ngcontrol="vat" #vat="ngModel" required>
                         <div [hidden]="vat.valid || vat.pristine" class="alert alert-danger">
-                            {{'vat.required' | translate }}
+                            {{'suppRegistration.vat.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -271,7 +271,7 @@
                         <input id="bic" type="text" [(ngModel)]="editedSupplier.bic" class="form-control"
                                name="bic" ngcontrol="bic" #bic="ngModel" required>
                         <div [hidden]="bic.valid || bic.pristine" class="alert alert-danger">
-                            {{'bic.required' | translate }}
+                            {{'benefRegistration.bic.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -281,7 +281,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="logo">{{ 'logo.label' | translate }}</label>
+                        <label for="logo">{{ 'suppRegistration.logo.label' | translate }}</label>
                         <br>
                         <br>
                         <div class="ui-g-12" style="border: 1px solid #D5D5D5; background: #ffffff;">
@@ -290,7 +290,7 @@
                                 <img id="logo" [src]="supplier.logo" height="75"
                                      style="max-width: 100%; border: 1px solid; box-shadow: 0px 0px 5px black;">
                             </div>
-                            <h2 *ngIf="!supplier.logo" class="ui-g-4">{{'noLogo.label' | translate}}</h2>
+                            <h2 *ngIf="!supplier.logo" class="ui-g-4">{{'suppRegistration.noLogo.label' | translate}}</h2>
                             <div class="ui-g-2"></div>
                             <div class="ui-g-5">
                                 <h3 *ngIf="isLogoUploaded"><b>New logo</b></h3><br>
@@ -314,7 +314,7 @@
                     </button>
                     <button type="submit" class="btn btn-primary changePasswordModalNoTop"
                             [disabled]="!profileFormCompany.form.valid">
-                        {{ 'change' | translate }}
+                        {{ 'shared.change' | translate }}
                     </button>
                 </div>
             </div>
@@ -342,7 +342,7 @@
                     {{ 'password.required' | translate }}
                 </div>
                 <a class="forgotPassword" routerLink="/forgot">Forgot password?</a><br>
-                <label class="labelModal" for="newPassword_field">{{ 'password.label' | translate }}</label>
+                <label class="labelModal" for="newPassword_field">{{ 'shared.password.label' | translate }}</label>
                 <input id="newPassword_field" type="password" [(ngModel)]="newPassword"
                        class="form-control beneficiaryProfileI" name="newPassword_field"
                        ngcontrol="newPassword_field" #newPassword_field="ngModel"
@@ -370,7 +370,7 @@
                         </button>
                         <button type="submit" class="btn btn-primary changePasswordModal"
                                 [disabled]="!profileFormPassword.form.valid || !passwordsMatch">
-                            {{ 'change' | translate }}
+                            {{ 'shared.change' | translate }}
                         </button>
                     </div>
                 </div>

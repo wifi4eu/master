@@ -8,7 +8,7 @@ import {TranslateService} from "ng2-translate";
 
 export class SuccessComponent {
     @Input() titleKey: string = 'submitregistration.success.title';
-    @Input() textKeys: string[] = ['submitregistration.success.text.part1', 'submitregistration.success.text.part2'];
+    @Input() textKeys: string[] = ['submitregistration.success.text.part1', 'benefRegistration.submitregistration.success.text.part2'];
     @Input() emailConfirmation: boolean = false;
     @Input() email: string = null;
 
@@ -20,7 +20,7 @@ export class SuccessComponent {
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     let translatedString = 'The confirmation email has been resent successfully.';
-                    this.translateService.get('registration.emailResend.success').subscribe(
+                    this.translateService.get('shared.registration.emailResend.success').subscribe(
                         (translation: string) => {
                             translatedString = translation;
                         }
@@ -32,7 +32,7 @@ export class SuccessComponent {
                     });
                 } else {
                     let translatedString = 'An error occurred when trying to resend the confirmation email.';
-                    this.translateService.get('registration.emailResend.failure').subscribe(
+                    this.translateService.get('shared.registration.emailResend.failure').subscribe(
                         (translation: string) => {
                             translatedString = translation;
                         }
@@ -45,7 +45,7 @@ export class SuccessComponent {
                 }
             }, error => {
                 let translatedString = 'An error occurred when trying to resend the confirmation email.';
-                this.translateService.get('registration.emailResend.failure').subscribe(
+                this.translateService.get('shared.registration.emailResend.failure').subscribe(
                     (translation: string) => {
                         translatedString = translation;
                     }

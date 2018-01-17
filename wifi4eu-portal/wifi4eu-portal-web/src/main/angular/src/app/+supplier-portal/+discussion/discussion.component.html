@@ -3,11 +3,11 @@
 <div class="container font beneficiaryContent">
     <div class="ui-g-12" *ngIf="showAlert">
         <span class="ui-g-2"></span>
-        <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussion.growl' | translate}}</ux-alert>
+        <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussionForum.discussion.growl' | translate}}</ux-alert>
         <span class="ui-g-2"></span>
     </div>
-    <p class="beneficiaryTitle marginTop">{{ 'legalEntity.issues' | translate }}</p>
-    <p>{{ 'lEissues.warning' | translate }}</p>
+    <p class="beneficiaryTitle marginTop">{{ 'benefPortal.legalEntity.issues' | translate }}</p>
+    <p>{{ 'discussionForum.lEissues.warning' | translate }}</p>
     <p class="beneficiaryMayor marginTopCountdown">{{ 'legalentity.label' | translate }}</p>
     <hr class="beneficiaryHr">
     <ux-accordion-boxes>
@@ -24,7 +24,7 @@
                         <p>{{ 'company.name' | translate }}</p>
                         <p>{{ 'vat.label' | translate }}</p>
                         <p>{{ 'bic.label' | translate }}</p>
-                        <p>{{ 'web.site' | translate }}</p>
+                        <p>{{ 'suppRegistration.web.site' | translate }}</p>
                     </div>
                     <div class="ui-g-3">
                         <p class="profileDataDiscussion profileData">{{ownSupplier.address}}</p>
@@ -62,7 +62,7 @@
                                 <p>{{ 'company.name' | translate }}</p>
                                 <p>{{ 'vat.label' | translate }}</p>
                                 <p>{{ 'bic.label' | translate }}</p>
-                                <p>{{ 'web.site' | translate }}</p>
+                                <p>{{ 'suppRegistration.web.site' | translate }}</p>
                             </div>
                             <div class="ui-g-3">
                                 <p class="profileDataDiscussion profileData">{{supplier.address}}</p>
@@ -78,17 +78,17 @@
         </custom-accordion-box>
     </ux-accordion-boxes>
     <hr class="beneficiaryHr">
-    <p class="beneficiaryMayor marginTopCountdown">{{ 'recentConversations.title' | translate }}</p>
-    <p>{{ 'recentConversations.text' | translate }}</p>
+    <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.recentConversations.title' | translate }}</p>
+    <p>{{ 'discussionForum.recentConversations.text' | translate }}</p>
     <div *ngIf="!hasMessages" class="ui-g button-content discussion-content">
         <div class="ui-g-12 noPadding">
             <div class="ui-g-8">
-                <p>{{'noRecentConversations.text' | translate }}</p>
+                <p>{{'discussionForum.noRecentConversations.text' | translate }}</p>
             </div>
             <div class="ui-g-4">
                 <button type="button" class="btn btn-primary changePassword discussionButton"
                         (click)="newMessage()">
-                    {{'startConversations.text' | translate }}
+                    {{'discussionForum.startConversations.text' | translate }}
                 </button>
             </div>
         </div>

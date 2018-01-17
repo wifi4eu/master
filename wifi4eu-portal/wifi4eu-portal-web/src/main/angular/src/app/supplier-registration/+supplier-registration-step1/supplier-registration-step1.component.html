@@ -24,7 +24,7 @@
                 <input class="form-control paddingInput" type="text" id="name" name="name"
                        [(ngModel)]="supplier.name" #name="ngModel" required>
                 <div class="alert alert-danger" [hidden]="name.valid || name.pristine">
-                    {{'company.required'|translate}}
+                    {{'suppRegistration.company.required'|translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -38,7 +38,7 @@
                 <input class="form-control paddingInput" type="text" id="address" name="address"
                        [(ngModel)]="supplier.address" #address="ngModel" required>
                 <div class="alert alert-danger" [hidden]="address.valid || address.pristine">
-                    {{'address.required' | translate}}
+                    {{'suppRegistration.address.required' | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -52,7 +52,7 @@
                 <input class="form-control paddingInput" type="text" id="vat" name="vat"
                        [(ngModel)]="supplier.vat" #vat="ngModel" required>
                 <div class="alert alert-danger" [hidden]="vat.valid || vat.pristine">
-                    {{'address.required' | translate}}
+                    {{'suppRegistration.address.required' | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -65,7 +65,7 @@
                 <label class="label" for="bic">{{ 'bic.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="bic" name="bic"
                        [(ngModel)]="supplier.bic" #bic="ngModel" required>
-                <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">{{'bic.required' | translate}}</div>
+                <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">{{'benefRegistration.bic.required' | translate}}</div>
                 <div class="ui-lg-3"></div>
             </div>
         </div>
@@ -78,7 +78,7 @@
                 <input class="form-control paddingInput" type="text" id="accountNumber" name="accountNumber"
                        [(ngModel)]="supplier.accountNumber" #accountNumber="ngModel" required>
                 <div class="alert alert-danger" [hidden]="accountNumber.valid || accountNumber.pristine">
-                    {{'bank.required' | translate}}
+                    {{'suppRegistration.bank.required' | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -93,7 +93,7 @@
                        [pattern]="websitePattern"
                        [(ngModel)]="supplier.website" #website="ngModel">
                 <div class="alert alert-danger" [hidden]="website.valid || website.pristine">
-                    {{ 'companyWeb.required' | translate }}
+                    {{ 'suppRegistration.companyWeb.required' | translate }}
                 </div>
             </div>
         </div>
@@ -121,7 +121,7 @@
                         <span class="ui-g-4">{{logoFile.name}}<br>{{logoFile.size}} KB</span>
                         <span class="ui-g-1"></span>
                     </div>
-                    <button type="button" class="ui-g-3 btn btn-primary" (click)="clearLogoFile()">{{'clear.label' | translate}}</button>
+                    <button type="button" class="ui-g-3 btn btn-primary" (click)="clearLogoFile()">{{'shared.clear.label' | translate}}</button>
                 </div>
             </div>
         </div>

@@ -37,7 +37,7 @@ export class AdditionalInfoComponent {
                 );
             }
         } else {
-            this.sharedService.growlTranslation('You are not logged in!', 'error.notloggedin', 'warn');
+            this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
     }

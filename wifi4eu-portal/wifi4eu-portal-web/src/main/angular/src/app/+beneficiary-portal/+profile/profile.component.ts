@@ -70,11 +70,11 @@ export class BeneficiaryProfileComponent {
                             }
                         );
                     } else {
-                        this.sharedService.growlTranslation('You are not allowed to view this page.', 'error.notallowed', 'warn');
+                        this.sharedService.growlTranslation('You are not allowed to view this page.', 'shared.error.notallowed', 'warn');
                         this.router.navigateByUrl('/home');
                     }
                 }, error => {
-                    this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'error.api.generic', 'error');
+                    this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'shared.error.api.generic', 'error');
                     this.router.navigateByUrl('/home');
                 }
             );
@@ -90,7 +90,7 @@ export class BeneficiaryProfileComponent {
                 }
             );
         } else {
-            this.sharedService.growlTranslation('You are not logged in!', 'error.notloggedin', 'warn');
+            this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
     }
@@ -188,11 +188,11 @@ export class BeneficiaryProfileComponent {
         this.userApi.deleteUser(this.user.id).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {
-                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
+                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
                     this.sharedService.logout();
                 }
             }, error => {
-                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
+                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
             }
         );
     }

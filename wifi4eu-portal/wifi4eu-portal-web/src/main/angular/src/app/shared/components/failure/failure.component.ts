@@ -15,7 +15,7 @@ export class FailureComponent implements OnChanges {
     ngOnChanges() {
         if (this.alreadyRegistered) {
             let translatedString = 'User already registered.';
-            this.translateService.get('already.registered.error').subscribe(
+            this.translateService.get('shared.already.registered.error').subscribe(
                 (translation: string) => {
                     translatedString = translation;
                 }

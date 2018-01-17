@@ -24,7 +24,7 @@
                 <input class="form-control paddingInput" type="text" id="contactName" name="contactName"
                        [(ngModel)]="supplier.contactName" #contactName="ngModel" required>
                 <div class="alert alert-danger" [hidden]="contactName.valid || contactName.pristine">
-                    {{'name.required' | translate }}
+                    {{'benefRegistration.name.required' | translate }}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -39,7 +39,7 @@
                        id="contactSurname" name="contactSurname" [(ngModel)]="supplier.contactSurname"
                        #contactSurname="ngModel" required>
                 <div class="alert alert-danger" [hidden]="contactSurname.valid || contactSurname.pristine">
-                    {{'surname.required' | translate }}
+                    {{'surbenefRegistration.name.required' | translate }}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -69,7 +69,7 @@
                        [(ngModel)]="supplier.contactPhoneNumber" #contactPhoneNumber="ngModel" required>
                 <div class="alert alert-danger"
                      [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine">
-                    {{'phone.required' | translate }}
+                    {{'benefRegistration.phone.required' | translate }}
                 </div>
             </div>
         </div>
@@ -102,7 +102,7 @@
                     {{'warning.emailRequired' | translate}}
                 </div>
                 <div [hidden]="emailMatches || confirmEmail.pristine" class="alert alert-info">
-                    {{'warning.emailMatch' | translate}}
+                    {{'suppRegistration.warning.emailMatch' | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>

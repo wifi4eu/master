@@ -12,7 +12,7 @@
                         <div class="ui-g">
                             <div class="ui-g-10">
                                 <p class="beneficiaryMayor">
-                                    {{ 'representativedetails.title' | translate }}
+                                    {{ 'benefRegistration.representativedetails.title' | translate }}
                                 </p>
                             </div>
                             <div class="ui-g-2">
@@ -40,7 +40,7 @@
                             <div class="ui-g-12">
                                 <div class="ui-g">
                                     <div class="ui-g-10">
-                                        <p class="beneficiaryMayor">{{ 'mayor.details' | translate }}</p>
+                                        <p class="beneficiaryMayor">{{ 'benefRegistration.mayor.details' | translate }}</p>
                                     </div>
                                     <div class="ui-g-2">
                                         <a (click)="displayModal('mayor', i)" class="edit">
@@ -149,7 +149,7 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayUser" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <p class="beneficiaryMayor center">{{ 'representativedetails.title' | translate }}</p>
+        <p class="beneficiaryMayor center">{{ 'benefRegistration.representativedetails.title' | translate }}</p>
         <form (ngSubmit)="saveUserChanges()" #profileFormUser="ngForm" *ngIf="editedUser">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
@@ -159,7 +159,7 @@
                         <input id="name_user" type="text" [(ngModel)]="editedUser.name" class="form-control"
                                name="name_user" ngcontrol="name_user" #name_user="ngModel" required>
                         <div [hidden]="name_user.valid || name_user.pristine" class="alert alert-danger">
-                            {{ 'name.required' | translate }}
+                            {{ 'benefRegistration.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -174,7 +174,7 @@
                         <input id="surname_user" type="text" [(ngModel)]="editedUser.surname" class="form-control"
                                name="surname_user" ngcontrol="surname_user" #surname_user="ngModel" required>
                         <div [hidden]="surname_user.valid || surname_user.pristine" class="alert alert-danger">
-                            {{ 'surname.required' | translate }}
+                            {{ 'surbenefRegistration.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -218,7 +218,7 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMayor" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <h1 class="beneficiaryMayorModal">{{'mayor.details' | translate }}</h1>
+        <h1 class="beneficiaryMayorModal">{{'benefRegistration.mayor.details' | translate }}</h1>
         <form (ngSubmit)="saveMayorChanges()" #profileFormMayor="ngForm" *ngIf="editedMayor">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
@@ -228,7 +228,7 @@
                         <input id="name_mayor" type="text" [(ngModel)]="editedMayor.name" class="form-control"
                                name="name_mayor" ngcontrol="name_mayor" #name_mayor="ngModel" required>
                         <div [hidden]="name_mayor.valid || name_mayor.pristine" class="alert alert-danger">
-                            {{ 'name.required' | translate }}
+                            {{ 'benefRegistration.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -243,7 +243,7 @@
                         <input id="surname_mayor" type="text" [(ngModel)]="editedMayor.surname" class="form-control"
                                name="surname_mayor" ngcontrol="surname_mayor" #surname_mayor="ngModel" required>
                         <div [hidden]="surname_mayor.valid || surname_mayor.pristine" class="alert alert-danger">
-                            {{ 'surname.required' | translate }}
+                            {{ 'surbenefRegistration.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -300,7 +300,7 @@
                                #country_municipality="ngModel" required disabled>
                         <div [hidden]="country_municipality.valid || country_municipality.pristine"
                              class="alert alert-danger">
-                            {{ 'country.required' | translate }}
+                            {{ 'benefRegistration.country.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -318,7 +318,7 @@
                                required disabled>
                         <div [hidden]="name_municipality.valid || name_municipality.pristine"
                              class="alert alert-danger">
-                            {{ 'municipality.required' | translate }}
+                            {{ 'benefRegistration.municipality.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -336,7 +336,7 @@
                                #address_municipality="ngModel" required>
                         <div [hidden]="address_municipality.valid || address_municipality.pristine"
                              class="alert alert-danger">
-                            {{ 'address.required' | translate }}
+                            {{ 'suppRegistration.address.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -349,7 +349,7 @@
                                required>
                         <div [hidden]="number_municipality.valid || number_municipality.pristine"
                              class="alert alert-danger">
-                            {{ 'address.required' | translate }}
+                            {{ 'suppRegistration.address.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -367,7 +367,7 @@
                                #postalCode_municipality="ngModel" required>
                         <div [hidden]="postalCode_municipality.valid || postalCode_municipality.pristine"
                              class="alert alert-danger">
-                            {{ 'address.required' | translate }}
+                            {{ 'suppRegistration.address.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -410,7 +410,7 @@
                     {{ 'password.required' | translate }}
                 </div>
                 <a class="forgotPassword" routerLink="/forgot">Forgot password?</a><br>
-                <label class="labelModal" for="newPassword_field">{{ 'password.label' | translate }}</label>
+                <label class="labelModal" for="newPassword_field">{{ 'shared.password.label' | translate }}</label>
                 <input id="newPassword_field" type="password" [(ngModel)]="newPassword"
                        class="form-control beneficiaryProfileI" name="newPassword_field"
                        ngcontrol="newPassword_field" #newPassword_field="ngModel"
@@ -435,7 +435,7 @@
                         </button>
                         <button type="submit" class="btn btn-primary changePasswordModal"
                                 [disabled]="!profileFormPassword.form.valid || !passwordsMatch">
-                            {{ 'change' | translate }}
+                            {{ 'shared.change' | translate }}
                         </button>
                     </div>
                 </div>

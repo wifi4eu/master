@@ -40,21 +40,21 @@ export class VoucherComponent {
         //                                 console.log(error);
         //                                 this.myMunicipality = null;
         //                                 this.voucherCompetitionState = -1;
-        //                                 this.errorCause = "beneficiaryportal.municipalitynotfound";
+        //                                 this.errorCause = "benefPortal.beneficiaryportal.municipalitynotfound";
         //                             }
         //                         );
         //                     }, error => {
         //                         console.log(error);
         //                         this.myMunicipality = null;
         //                         this.voucherCompetitionState = -1;
-        //                         this.errorCause = "beneficiaryportal.municipalitynotfound";
+        //                         this.errorCause = "benefPortal.beneficiaryportal.municipalitynotfound";
         //                     }
         //                 );
         //             }, error => {
         //                 console.log(error);
         //                 this.myMunicipality = null;
         //                 this.voucherCompetitionState = -1;
-        //                 this.errorCause = "beneficiaryportal.municipalitynotfound";
+        //                 this.errorCause = "benefPortal.beneficiaryportal.municipalitynotfound";
         //             }
         //         );
         //     } else if (this.user.userType == 2) {
@@ -69,14 +69,14 @@ export class VoucherComponent {
         //                         console.log(error);
         //                         this.myMunicipality = null;
         //                         this.voucherCompetitionState = -1;
-        //                         this.errorCause = "beneficiaryportal.municipalitynotfound";
+        //                         this.errorCause = "benefPortal.beneficiaryportal.municipalitynotfound";
         //                     }
         //                 );
         //             }, error => {
         //                 console.log(error);
         //                 this.myMunicipality = null;
         //                 this.voucherCompetitionState = -1;
-        //                 this.errorCause = "beneficiaryportal.municipalitynotfound";
+        //                 this.errorCause = "benefPortal.beneficiaryportal.municipalitynotfound";
         //             }
         //         );
         //     }
@@ -128,7 +128,7 @@ export class VoucherComponent {
         //     error => {
         //         console.log(error);
         //         this.voucherCompetitionState = -1;
-        //         this.errorCause = "beneficiaryportal.couldntcheckifapplied";
+        //         this.errorCause = "benefPortal.beneficiaryportal.couldntcheckifapplied";
         //     }
         // );
     }
@@ -143,7 +143,7 @@ export class VoucherComponent {
         //     error => {
         //         console.log(error);
         //         this.voucherCompetitionState = -1;
-        //         this.errorCause = "beneficiaryportal.errorapplying";
+        //         this.errorCause = "benefPortal.beneficiaryportal.errorapplying";
         //     }
         // );
     }
