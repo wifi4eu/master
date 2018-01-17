@@ -17,9 +17,7 @@ import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.security.Right;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
-import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
@@ -298,16 +296,11 @@ public class UserService {
   public String getLogoutEnviroment() {
     UserContext userContext = UserHolder.getUser();
 
-    //TODO: "tester@test.com" a constante. Revisar wifi4eu.wifi4eu.web.filter.doFilterInternal
-    if ( !"tester@test.com".equals( userContext.getEmail() ) ) {
+    if ( !UserConstants.MOCKED_MAIL.equals( userContext.getEmail() ) ) {
       return "https://ecas.ec.europa.eu/cas/logout";
     } else {
       return "http://localhost:8080/wifi4eu/#/beneficiary-registration";
     }
-
-    //TODO: Originalmente
-    //TODO: return "https://ecas.ec.europa.eu/cas/logout";
-    //TODO: Quitado con la condicion previa para local
   }
 
   public String getChangePassword() {

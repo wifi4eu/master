@@ -93,19 +93,14 @@ public class UserResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO) {
-        _log.info("saveUserChanges - Testing");
-        //check permission
-        int userId = userDTO.getId();
-        permissionChecker.check(RightConstants.USER_TABLE+userId);
-
         try {
             _log.info("saveUserChanges");
 
             //TODO: create saveMayorsChanges
             //TODO: https://webgate.ec.europa.eu/CITnet/jira/browse/WIFIFOREU-1548
-//            //check permission
-//            int userId = userDTO.getId();
-//            permissionChecker.check(RightConstants.USER_TABLE+userId);
+            //check permission
+            int userId = userDTO.getId();
+            permissionChecker.check(RightConstants.USER_TABLE+userId);
 
             UserDTO resUser = userService.saveUserChanges(userDTO);
             resUser.setPassword(null);
