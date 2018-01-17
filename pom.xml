@@ -104,6 +104,10 @@
         <ecas.server.address/>
         <ecas.server.port/>
 
+        <!-- NG PROPERTIES -->
+
+        <ng.env></ng.env>
+
         <!-- PERSISTENCE PROPERTIES -->
 
         <app.context.root>/wifi4eu</app.context.root>
@@ -145,6 +149,7 @@
         <profile>
             <id>TEST</id>
             <properties>
+                <ng.env>int</ng.env>
                 <server.address>${server.test.address}:${server.test.port}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
@@ -164,6 +169,7 @@
         <profile>
             <id>AZUREDEV</id>
             <properties>
+                <ng.env>dev</ng.env>
                 <server.address>${server.azure.dev.address}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
@@ -185,6 +191,7 @@
         <profile>
             <id>AZURETEST</id>
             <properties>
+                <ng.env>test</ng.env>
                 <server.address>${server.azure.test.address}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
@@ -204,6 +211,7 @@
         <profile>
             <id>AZUREPROD</id>
             <properties>
+                <ng.env>prod</ng.env>
                 <server.address>${server.azure.pro.address}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
