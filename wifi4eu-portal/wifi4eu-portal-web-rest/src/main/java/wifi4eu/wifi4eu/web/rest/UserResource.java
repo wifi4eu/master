@@ -93,14 +93,19 @@ public class UserResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO) {
+        _log.info("saveUserChanges - Testing");
+        //check permission
+        int userId = userDTO.getId();
+        permissionChecker.check(RightConstants.USER_TABLE+userId);
+
         try {
             _log.info("saveUserChanges");
 
             //TODO: create saveMayorsChanges
             //TODO: https://webgate.ec.europa.eu/CITnet/jira/browse/WIFIFOREU-1548
-            //check permission
-            int userId = userDTO.getId();
-            permissionChecker.check(RightConstants.USER_TABLE+userId);
+//            //check permission
+//            int userId = userDTO.getId();
+//            permissionChecker.check(RightConstants.USER_TABLE+userId);
 
             UserDTO resUser = userService.saveUserChanges(userDTO);
             resUser.setPassword(null);
@@ -119,6 +124,9 @@ public class UserResource {
     public ResponseDTO deleteUser(@RequestBody final Integer userId) {
         try {
             _log.info("deleteUser: " + userId);
+
+            //check permission
+            permissionChecker.check(RightConstants.USER_TABLE+userId);
             UserDTO resUser = userService.deleteUser(userId);
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
@@ -185,7 +193,7 @@ public class UserResource {
         try {
             _log.info("[i] ecasLogout");
             _log.info("[f] ecasLogout");
-            return new ResponseDTO(true, userService.getChangePassword(), null);
+            return new ResponseDTO(true, userService.getChangePassword(), null); //permissionChecker.check(RightConstants.USER_TABLE+userId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'login' with ECAS operation.", e);
