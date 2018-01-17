@@ -18,8 +18,7 @@ public interface ApplicationMapper {
     ApplicationDTO toDTO(Application entity);
     @Mappings({
             @Mapping(source = "vo.callId", target = "call.id"),
-            @Mapping(source = "vo.registrationId", target = "registration.id"),
-            @Mapping(source = "vo.supplierId", target = "supplier.id")
+            @Mapping(source = "vo.registrationId", target = "registration.id")
     })
     Application toEntity(ApplicationDTO vo);
     List<ApplicationDTO> toDTOList(List<Application> list);

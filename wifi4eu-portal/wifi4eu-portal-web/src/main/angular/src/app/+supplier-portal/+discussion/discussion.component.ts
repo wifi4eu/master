@@ -114,7 +114,6 @@ export class DiscussionComponent {
         this.messageAuthors = [];
     }
 
-
     private newMessage() {
         this.displayMessage = true;
         this.message = '';

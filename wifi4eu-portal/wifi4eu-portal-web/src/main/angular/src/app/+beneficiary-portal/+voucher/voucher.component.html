@@ -1,4 +1,3 @@
-
 <div [ngSwitch]="voucherCompetitionState">
     <!-- no competition created, display warning -->
     <div *ngSwitchCase="0">
@@ -125,7 +124,9 @@
         <br><br>
         <div class="ui-g-12 center">
             <span class="ui-g-4"></span>
-            <button class="btn btn-primary ui-g-4" disabled>{{ 'voucher.applyforvoucher' | translate}}</button>
+            <button class="btn btn-primary ui-g-4" (click)="applyForVoucher()" [disabled]="allApplied || loadingButtons[0]">
+                {{ 'voucher.applyforvoucher' | translate}}
+            </button>
             <span class="ui-g-4"></span>
         </div>
     </div>
@@ -166,4 +167,49 @@
             <span class="ui-g-4"></span>
         </div>
     </div>
+    <p-dialog [(visible)]="displayRegistrationSelect" [modal]="true" [responsive]="true"
+              [resizable]="false" [draggable]="false" [closable]="true" [closeOnEscape]="true">
+        <h2 class="beneficiaryTitle">{{ 'beneficiary.registrations' | translate }}</h2><br><br>
+        <div class="ui-g-12 registrationPanel" *ngFor="let municipality of municipalities; let i = index">
+            <div class="ui-g-12">
+                <span class="beneficiaryMayor">{{ 'beneficiary.registrationNumber' | translate }} #{{registrations[i].id}}</span>
+            </div>
+            <hr class="beneficiaryHr">
+            <div class="ui-g-12">
+                <span class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</span>
+            </div>
+            <div class="ui-g-4">
+                <p>{{ 'country.label' | translate }}</p>
+                <p>{{ 'municipality.label' | translate }}</p>
+                <p>{{ 'address.label' | translate }}</p>
+                <p>{{ 'number.label' | translate }}</p>
+                <p>{{ 'postal-code.label' | translate }}</p>
+            </div>
+            <div class="ui-g-8">
+                <p class="profileData">{{municipality.country}}</p>
+                <p class="profileData">{{municipality.name}}</p>
+                <p class="profileData">{{municipality.address}}</p>
+                <p class="profileData">{{municipality.addressNum}}</p>
+                <p class="profileData">{{municipality.postalCode}}</p>
+            </div>
+            <div class="ui-g-12">
+                <span class="beneficiaryMayor">{{ 'mayor.details' | translate }}</span>
+            </div>
+            <div class="ui-g-4">
+                <p>{{ 'name.label' | translate }}</p>
+                <p>{{ 'surname.label' | translate }}</p>
+                <p>{{ 'email.label' | translate }}</p>
+            </div>
+            <div class="ui-g-8">
+                <p class="profileData">{{mayors[i].name}}</p>
+                <p class="profileData">{{mayors[i].surname}}</p>
+                <p class="profileData">{{mayors[i].email}}</p>
+            </div>
+            <div class="ui-g-12 center">
+                <button type="button" class="btn btn-primary offset-lg-6"
+                        (click)="sendApplication(i)" [disabled]="applications[i] || loadingButtons[i]">
+                    {{ 'voucher.applyforvoucher' | translate }}</button>
+            </div>
+        </div>
+    </p-dialog>
 </div>
