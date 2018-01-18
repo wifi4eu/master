@@ -31,6 +31,7 @@ public class MayorService {
         return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
     }
 
+    @Transactional
     public MayorDTO deleteMayor(int mayorId) {
         MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.findOne(mayorId));
         if (mayorDTO != null) {

@@ -4,9 +4,12 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 
 import java.util.List;
 
@@ -17,6 +20,9 @@ public class RegistrationService {
 
     @Autowired
     RegistrationRepository registrationRepository;
+
+    @Autowired
+    ApplicationService applicationService;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -31,9 +37,13 @@ public class RegistrationService {
         return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
     }
 
+    @Transactional
     public RegistrationDTO deleteRegistration(int registrationId) {
         RegistrationDTO registrationDTO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
         if (registrationDTO != null) {
+            for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registrationDTO.getId())) {
+                applicationService.deleteApplication(application.getId());
+            }
             registrationRepository.delete(registrationMapper.toEntity(registrationDTO));
             return registrationDTO;
         } else {
