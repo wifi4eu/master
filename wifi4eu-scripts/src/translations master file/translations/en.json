@@ -397,7 +397,7 @@
   "benefRegistration.beneficiaryRegistration.step1.instructions": "Please, provide information about the Country and number of municipalities you represent.",
   "benefRegistration.prefix.required": "Prefix is required",
   "home.part2.text1": "The next call for projects will be launched on {{date}} at {{hour}} (Central European Time).",
-  "supp.landingpage.secondTitle": "ARE YOU ELEGIBLE TO APPLY?",
+  "supp.landingpage.secondTitle": "Are you elegible to apply?",
   "supp.landingpage.proceed": "Would you like to proceed with the registration process?",
   "supp.landingpage.no": "No",
   "supp.landingpage.yes": "Yes",
@@ -423,5 +423,6 @@
   "supp.landingpage.elegibleText3": "You can proceed to register immediately in the WiFi4EU portal to indicate the areas where you are available to offer equipment and installation to beneficiaries of WiFi4EU. ",
   "supp.landingpage.elegibleText2": "Beneficiaries will need to define and procure their local Wi-Fi installation projects in accordance with the applicable procurement rules and may consult the list of companies registered to identify potential suppliers in their area. ",
   "supp.landingpage.elegibleText4": "Your registration is mandatory if your company has been contracted as a supplier by a WiFi4EU beneficiary. ",
-  "dgConn.user.label": "User"
+  "dgConn.user.label": "User",
+  "suppRegistration.webFormat": "Enter a valid format"
 }

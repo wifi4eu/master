@@ -93,7 +93,6 @@
   "suppRegistration.eu.requirements2": "2.        La financiación se destina a cubrir los costes de compra e instalación de uno o más puntos de acceso inalámbrico a internet para crear una red wifi local. Los gastos de funcionamiento (incluida cualquier suscripción de conectividad) no son subvencionables. ",
   "suppRegistration.eu.requirements3": "3.        El material y los servicios de instalación que proporcione mi empresa en el ámbito de la iniciativa WiFi4EU cumplirán las condiciones establecidas en el texto de la convocatoria. ",
   "suppRegistration.submit.application": "Confirmo que la información facilitada a este portal, relacionada con la iniciativa WiFi4EU es veraz, completa y exacta. Reconozco que la Comisión Europea o cualquier Agencia Europea delegada puede comprobar la información comunicada a partir de fuentes accesibles conforme a Derecho.",
-  "startOfNewLabels": "--------------------------------------------Here starts the new labels list------------------------------------------",
   "shared.discussionForum.perPage": "[X] por página",
   "shared.discussionForum.ofPage": "[X] de [X]",
   "discussionForum.description": "El sistema ha detectado otras X empresas con inscripciones iguales a la suya. Puede iniciar una conversación con las otras empresas. Tenga en cuenta que, hasta que no se haya resuelto este problema, ninguna de las empresas podrá inscribirse como suministrador potencial. Si no se alcanza ningún acuerdo sobre la inscripción válida, se podrá solicitar la intervención de la Comisión.",
@@ -146,8 +145,6 @@
   "suppRegistration.company.details": "Por favor, brinde información sobre su empresa.",
   "suppRegistration.requirements.head": "Confirmo que he leído y acepto las siguientes condiciones del esquema: ",
   "suppRegistration.add.repply": "Nuevo mensaje",
-  "suppRegistration.company.required": "La compañía es obligatoria",
-  "suppRegistration.companyWeb.required": "El sitio web de la empresa es obligatoria",
   "dgConn.issueStatus.pending": "PENDIENTE",
   "dgConn.issueStatus.resolved": "RESUELTO",
   "benefRegistration.registration.entity.title": "PASO 3: Detalles de contacto",
@@ -468,5 +465,6 @@
   "supp.landingpage.elegibleText3": "Puede inscribirse inmediatamente en el portal WiFi4EU para indicar las zonas en las que puede proporcionar material y servicios de instalación a los beneficiarios de WiFi4EU. ",
   "supp.landingpage.elegibleText2": "Los beneficiarios deben definir y adjudicar sus proyectos de instalación local de wifi de conformidad con las normas aplicables de contratación pública y pueden consultar la lista de las empresas inscritas para identificar los suministradores potenciales en su zona. ",
   "supp.landingpage.elegibleText4": "La inscripción es obligatoria para las empresas contratadas por un beneficiario de WiFi4EU. ",
-  "dgConn.user.label": "User"
+  "dgConn.user.label": "User",
+  "suppRegistration.webFormat": "Introduzca un formato válido"
 }
