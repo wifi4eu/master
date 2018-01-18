@@ -744,7 +744,7 @@
   "discussionForum.beneficiary.registration1": "Inscrição {{selfRegistration}} (a sua)",
   "shared.country.label": "País",
   "shared.municipality.label": "Nome da empresa",
-  "shared.discussionForum.officialAddress": "Endereço oficial                número",
+  "shared.discussionForum.officialAddress": "Endereço oficial",
   "shared.postal-code.label": "Código postal",
   "discussionForum.editButtons": "Se pretender alterar os seus dados ou anular a inscrição, clique abaixo no botão previsto para o efeito.",
   "discussionForum.withdraw": "Anular",
