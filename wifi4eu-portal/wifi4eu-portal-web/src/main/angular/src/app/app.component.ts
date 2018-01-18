@@ -12,6 +12,7 @@ import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
 import {Http} from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { environment } from '../environments/environment';
 
 enableProdMode();
 
@@ -295,7 +296,7 @@ export class AppComponent implements OnInit {
         this.userApi.ecasLogout().subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
-                    window.location.href = response.data;
+                  window.location.href = environment['logoutUrl'];
                 }
             }, error => {
                 console.log(error);
