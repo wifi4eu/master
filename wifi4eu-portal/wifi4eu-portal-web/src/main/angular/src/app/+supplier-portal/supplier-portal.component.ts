@@ -34,7 +34,7 @@ export class SupplierPortalComponent {
                     console.log(error);
                     this.supplierInfo = null;
                     this.voucherCompetitionState = -1;
-                    this.errorCause = "supplierportal.suppliernotfound";
+                    this.errorCause = "benefPortal.supplierportal.suppliernotfound";
                 }
             );
         }
@@ -78,7 +78,7 @@ export class SupplierPortalComponent {
                 console.log(error);
                 this.supplierInfo = null;
                 this.voucherCompetitionState = -1;
-                this.errorCause = "supplierportal.couldntgetselectedmunicipalities";
+                this.errorCause = "benefPortal.supplierportal.couldntgetselectedmunicipalities";
             }
         );
     }

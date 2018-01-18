@@ -2,7 +2,7 @@
 <div id="step2-title" class="ui-g">
     <div class="ui-g-12 center">
         <div id="component-title">
-            <h3 class="beneficiaryTitle labelModal">{{ 'step4.supplier' | translate }}</h3>
+            <h3 class="beneficiaryTitle labelModal">{{ 'suppRegistration.step4.supplier' | translate }}</h3>
         </div>
     </div>
 </div>
@@ -11,29 +11,29 @@
 
     <div class="ui-g">
         <div class="ui-g-11 ui-md-11 ui-lg-11">
-            <p class="beneficiaryMayor">{{ 'contact.person' | translate }}</p>
+            <p class="beneficiaryMayor">{{ 'suppRegistration.contact.person' | translate }}</p>
         </div>
         <div class="ui-g-1 ui-md-1 ui-lg-1">
             <a (click)="edit(3)">
-                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
+                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
             </a>
         </div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'name.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.name.label' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.contactName}}</b></div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'surname.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.surname.label' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.contactSurname}}</b></div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'phone.number' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.phone.number' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.contactPhonePrefix}} {{supplier.contactPhoneNumber}}</b>
         </div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'email.modal' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.email.modal' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.contactEmail}}</b></div>
     </div>
 
@@ -41,40 +41,40 @@
 
     <div class="ui-g">
         <div class="ui-g-11 ui-md-11 ui-lg-11">
-            <p class="beneficiaryMayor">{{ 'company.details' | translate }}</p>
+            <p class="beneficiaryMayor">{{ 'suppRegistration.company.details' | translate }}</p>
         </div>
         <div class="ui-g-1 ui-md-1 ui-lg-1">
             <a (click)="edit(1)">
-                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
+                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
             </a>
         </div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'company.name' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.company.name' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.name}}</b></div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'legal.address' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.legal.address' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.address}}</b></div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'vat.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.vat.label' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.vat}}</b></div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'bic.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.bic.label' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.bic}}</b></div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'bank.account' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.bank.account' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.accountNumber}}</b></div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'company.web' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.company.web' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.website}}</b></div>
     </div>
     <div class="ui-g" *ngIf="supplier.logo != null">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'logo.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.logo.label' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><img src="{{logoUrl.result}}" alt="logo" height="60"></div>
     </div>
 
@@ -82,11 +82,11 @@
 
     <div class="ui-g">
         <div class="ui-g-10 ui-md-10 ui-lg-11">
-            <p class="beneficiaryMayor">{{ 'entity.support' | translate }}</p>
+            <p class="beneficiaryMayor">{{ 'suppRegistration.entity.support' | translate }}</p>
         </div>
         <div class="ui-g-1 ui-md-1 ui-lg-1">
             <a (click)="edit(2)">
-                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
+                <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
             </a>
         </div>
         <div class="ui-g-1 ui-md-1"></div>
@@ -115,7 +115,7 @@
         <div class="ui-g-10 ui-md-10 ui-lg-10">
             <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_1"><input type="checkbox" id="check_1"
                                                                           [(ngModel)]="legalChecks[0]">
-                {{ 'eu.requirements' | translate }}
+                {{ 'suppRegistration.eu.requirements' | translate }}
             </label>
         </div>
         <div class="ui-lg-1"></div>
@@ -125,7 +125,7 @@
         <div class="ui-g-10 ui-md-10 ui-lg-10">
             <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_2"><input type="checkbox" id="check_2"
                                                                           [(ngModel)]="legalChecks[1]">
-                {{ 'submit.application' | translate }}
+                {{ 'suppRegistration.submit.application' | translate }}
             </label>
         </div>
 
@@ -136,13 +136,13 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <a href="#/home">
-                <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button>
+                <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' | translate }}</button>
             </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn  btn-primary publish-button" (click)="openModal()"
                     [disabled]="!legalChecks[0] || !legalChecks[1]">
-                {{ 'confirm.button' | translate}}
+                {{ 'suppRegistration.confirm.button' | translate}}
             </button>
         </div>
         <div class="ui-lg-3"></div>
@@ -154,15 +154,15 @@
 
 <p-dialog [(visible)]="displayModal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
           [closable]="true" [closeOnEscape]="true">
-    <p class="beneficiaryMayor">{{ 'requirements.head' | translate }}</p>
+    <p class="beneficiaryMayor">{{ 'suppRegistration.requirements.head' | translate }}</p>
 
-    <p>{{ 'eu.requirementsTitle' | translate}}</p>
-    <p>{{ 'eu.requirements' | translate}}</p>
-    <p>{{ 'eu.requirements2' | translate}}</p>
-    <p>{{ 'eu.requirements3' | translate}}</p>
+    <p>{{ 'suppRegistration.suppRegistration.eu.requirementsTitle' | translate}}</p>
+    <p>{{ 'suppRegistration.eu.requirements' | translate}}</p>
+    <p>{{ 'suppRegistration.eu.requirements2' | translate}}</p>
+    <p>{{ 'suppRegistration.eu.requirements3' | translate}}</p>
     <div class="ui-g-2" style="text-align: center !important">
         <button type="submit" class="btn btn-primary publish-button" (click)="submit()">
-            {{ 'confirm.button' | translate }}
+            {{ 'suppRegistration.confirm.button' | translate }}
         </button>
     </div>
 </p-dialog>
@@ -170,7 +170,7 @@
 <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
           [closable]="false" [closeOnEscape]="false">
     <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
-    <h1 class="Modalh1Confirmation">{{ 'loading.modal.title3' | translate }}</h1>
-    <p class="ModalpConfirmation">{{ 'loading.modal.registration.text' | translate}}</p>
-    <p class="ModalpConfirmation">{{ 'loading.modal.dontclose' | translate}}</p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.registration.text' | translate}}</p>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>

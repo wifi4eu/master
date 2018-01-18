@@ -24,7 +24,7 @@
               <template pTemplate="body" let-element="rowData" let-rowElement="rowIndex">
                   <button type="button" class="btn" style="background: none; padding: 0;"
                           (click)="displayInfo(element)">
-                      <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{ 'edit.button' | translate}}
+                    <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{ 'shared.edit.button' | translate}}
                   </button>
               </template>
           </p-column>
@@ -33,7 +33,7 @@
                   <button type="button" class="btn" style="background: none; padding: 0;"
                           (click)="deleteElement(rowElement)">
                       <i class="fa fa-trash-o" style="font-size: 17px; color: red;" aria-hidden="true"></i>
-                      {{ 'delete.button' | translate }}
+                    {{ 'shared.delete.button' | translate }}
                   </button>
               </template>
           </p-column>
@@ -45,13 +45,13 @@
         <p-dialog [(visible)]="display" [modal]="true" [responsive]="true" [resizable]="false"
                   [draggable]="false" [closable]="false" [closeOnEscape]="false">
             <button type="button" (click)="cancelPublication()" class="closeButton">X</button>
-            <p class="beneficiaryMayorModal">{{'publication.call' | translate }}</p>
+            <p class="beneficiaryMayorModal">{{'dgConn.publication.call' | translate }}</p>
             <form (ngSubmit)="onSubmit()" #publicationForm="ngForm">
                 <div class="containerTimeline center">
                     <div class="form-group ui-g">
                         <div class="ui-g-12">
                             <div class="form-group left">
-                                <label class="labelModal" for="event">{{'labelModal.timeline' | translate }}</label>
+                                <label class="labelModal" for="event">{{'dgConn.labelModal.timeline' | translate }}</label>
                                 <input type="text" [(ngModel)]="event" id="event" class="form-control" name="event" required>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                     <div class="form-group ui-g">
                         <div class="ui-g-3">
                             <div class="form-group left">
-                                <label class="labelModal" for="startDate">{{'opening.date' | translate }}</label>
+                                <label class="labelModal" for="startDate">{{'dgConn.opening.date' | translate }}</label>
                                 <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"
                                             [showIcon]="true" type="text" dateFormat="dd/mm/yy" [(ngModel)]="startDate"
                                             name="startDate" onkeydown="return false" required></p-calendar>
@@ -68,7 +68,7 @@
                         <div class="ui-g-1"></div>
                         <div class="ui-g-2">
                             <div class="form-group left">
-                                <label class="labelModal" for="startTime">{{'start.time' | translate }}</label>
+                                <label class="labelModal" for="startTime">{{'dgConn.start.time' | translate }}</label>
                                 <p-calendar timeFormat="HH:mm:ss" [timeOnly]="true" [showIcon]="true" type="text" [(ngModel)]="startTime" name="startTime"
                                             onkeydown="return false" required></p-calendar>
                             </div>
@@ -78,7 +78,7 @@
                     <div class="form-group ui-g">
                         <div class="ui-g-3">
                             <div class="form-group left">
-                                <label class="labelModal" for="endDate">{{'closing.date' | translate }}</label>
+                                <label class="labelModal" for="endDate">{{'dgConn.closing.date' | translate }}</label>
                                 <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"
                                             [showIcon]="true" type="text" dateFormat="dd/mm/yy" [(ngModel)]="endDate"
                                             name="endDate" onkeydown="return false" required></p-calendar>
@@ -87,7 +87,7 @@
                         <div class="ui-g-1"></div>
                         <div class="ui-g-2">
                             <div class="form-group left">
-                                <label class="labelModal" for="endTime">{{'end.time' | translate }}</label>
+                                <label class="labelModal" for="endTime">{{'dgConn.end.time' | translate }}</label>
                                 <p-calendar timeFormat="HH:mm:ss" [timeOnly]="true" [showIcon]="true" type="text" [(ngModel)]="endTime" name="endTime"
                                             onkeydown="return false" required></p-calendar>
                             </div>
@@ -99,18 +99,18 @@
                     <div class="ui-g-3"></div>
                     <div class="ui-g-2" style="text-align: center !important">
                         <button type="button" (click)="cancelPublication()" class="btn btn-primary cancel-button">
-                            {{ 'cancel.button' | translate }}
+                            {{ 'shared.cancel.button' | translate }}
                         </button>
                     </div>
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
                         <button type="button" (click)="createPublication()" class="btn btn-primary publish-button"
                                 *ngIf="!newElementForm" [disabled]="!(publicationForm.form.valid && checkDate())">
-                            {{ 'change.publication' | translate }}
+                            {{ 'dgConn.change.publication' | translate }}
                         </button>
                         <button type="button" (click)="createPublication()" class="btn btn-primary publish-button"
                                 *ngIf="newElementForm" [disabled]="!(publicationForm.form.valid && checkDate())">
-                            {{ 'add.publication' | translate }}
+                            {{ 'dgConn.add.publication' | translate }}
                         </button>
                     </div>
                     <div class="ui-g-3"></div>

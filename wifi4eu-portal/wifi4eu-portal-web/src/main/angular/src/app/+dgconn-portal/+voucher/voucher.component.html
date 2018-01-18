@@ -2,9 +2,9 @@
 <div class="supplier"></div>
 <div class="container">
     <div class="ui-g">
-        <div class="ui-g-4  voucherLabel"><p>{{ 'totalCountries' | translate }}: <b>{{totalCountries}}</b></p></div> 
+        <div class="ui-g-4  voucherLabel"><p>{{ 'dgConn.totalCountries' | translate }}: <b>{{totalCountries}}</b></p></div>
         <div class="ui-g-4  voucherLabel">
-            <div class="ui-g-4">{{ 'country.label' | translate }}</div>
+            <div class="ui-g-4">{{ 'shared.country.label' | translate }}</div>
             <div class="ui-g-8">
                 <p-autoComplete  id="country"
                                     class="form-control autoComplete"
@@ -24,28 +24,28 @@
         </div>
         <div class="ui-g-4">
             <button type="button" class="btn btn-primary voucherButtons" (click)="simulateDistribution()">
-                {{'voucher.simulate' | translate }}
+                {{'dgConn.voucher.simulate' | translate }}
             </button>
         </div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-4 voucherLabel"><p>{{ 'voucher.totalRequest' | translate }}: <b>{{totalRequests}}</b></p></div>
+        <div class="ui-g-4 voucherLabel"><p>{{ 'dgConn.voucher.totalRequest' | translate }}: <b>{{totalRequests}}</b></p></div>
         <div class="ui-g-4 voucherLabel">
-            <div class="ui-g-4">{{ 'voucher.amountVoucher' | translate }}</div>
+            <div class="ui-g-4">{{ 'dgConn.voucher.amountVoucher' | translate }}</div>
             <div class="ui-g-8">
                 <input type="text" name="" class="paddingInput" value="">
             </div>
         </div>
         <div class="ui-g-4">
             <button type="button"  class="btn btn-primary voucherButtons">
-                {{'voucher.cancelAssignment' | translate }}
+                {{'dgConn.voucher.cancelAssignment' | translate }}
             </button>
         </div>
     </div>
     <div id="map"></div>
     <div class="panel-dg">
       <div class="headerTableVoucher">
-        <p><span class="voucherTitle">{{ 'voucher.dashboard' | translate }}</span> | <span class="voucherSubtitle">{{ 'voucher.simulation' | translate }}</span><a class="downloadData"><i class="fa fa-download" aria-hidden="true"></i> {{'voucher.downloadData' | translate}}</a></p>
+        <p><span class="voucherTitle">{{ 'dgConn.voucher.dashboard' | translate }}</span> | <span class="voucherSubtitle">{{ 'dgConn.voucher.simulation' | translate }}</span><a class="downloadData"><i class="fa fa-download" aria-hidden="true"></i> {{'dgConn.voucher.downloadData' | translate}}</a></p>
       </div>
       <p-dataTable [value]="mapTableData" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
               <p-column field="name" header="{{ 'country.label' | translate }}" [sortable]="true" styleClass="text-center"></p-column>

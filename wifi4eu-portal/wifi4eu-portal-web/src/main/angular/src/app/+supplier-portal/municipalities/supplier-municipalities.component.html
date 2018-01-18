@@ -1,53 +1,53 @@
 <div class="clearfix"></div>
 <div class="container">
-    <p class="Modalh1Confirmation">{{ 'municipalities.list' | translate }}</p>
-    <p class="ModalpConfirmation">{{ 'check.municipalities' | translate }}</p>
+    <p class="Modalh1Confirmation">{{ 'suppPortal.municipalities.list' | translate }}</p>
+    <p class="ModalpConfirmation">{{ 'benefRegistration.check.municipalities' | translate }}</p>
     <form action="">
         <div class="ui-g-12 white">
             <div class="ui-g-10">
-                <p>{{ 'filtermunicipalities.label' | translate }}:</p><input type="text" [(ngModel)]="filterInput" name="filterInput">
+                <p>{{ 'suppPortal.filtermunicipalities.label' | translate }}:</p><input type="text" [(ngModel)]="filterInput" name="filterInput">
             </div>
             <div class="ui-g-2">
-                <button (click)="filterSearch()" class="btn btn-primary">{{ 'search.button' | translate }}</button>
+                <button (click)="filterSearch()" class="btn btn-primary">{{ 'shared.search.button | translate }}</button>
             </div>
         </div>
 
         <div class="ui-g-12">
             <div class="ui-g-5 ">
-                <p class="subTitleCountdown">{{ 'municipalities.awarded' | translate }}</p>
+                <p class="subTitleCountdown">{{ 'suppPortal.municipalities.awarded' | translate }}</p>
                 <div class="whiteNoMargin">
                     <p-dataTable [value]="awardedMunicipalities" *ngIf="!filtering">
-                        <p-column field="municipalityName" header="{{ 'municipality.label' | translate }}" [sortable]="false"></p-column>
-                        <p-column field="countryName" header="{{ 'country.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="municipalityName" header="{{ 'shared.municipality.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="countryName" header="{{ 'shared.country.label' | translate }}" [sortable]="false"></p-column>
                     </p-dataTable>
                     <p-dataTable [value]="filteredAwardedMunicipalities" *ngIf="filtering">
-                        <p-column field="municipalityName" header="{{ 'municipality.label' | translate }}" [sortable]="false"></p-column>
-                        <p-column field="countryName" header="{{ 'country.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="municipalityName" header="{{ 'shared.municipality.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="countryName" header="{{ 'shared.country.label' | translate }}" [sortable]="false"></p-column>
                     </p-dataTable>
                 </div>
             </div>
             <div class="ui-g-2"></div>
             <div class="ui-g-5">
-                <p class="subTitleCountdown">{{ 'municipalities.selected' | translate }}</p>
+                <p class="subTitleCountdown">{{ 'suppPortal.municipalities.selected' | translate }}</p>
                 <div class="whiteNoMargin">
                     <p-dataTable [value]="selectedMeMunicipalities" *ngIf="!filtering">
-                        <p-column field="municipalityName" header="{{ 'municipality.label' | translate }}" [sortable]="false"></p-column>
-                        <p-column field="countryName" header="{{ 'country.label' | translate }}" [sortable]="false"></p-column>
-                        <p-column field="installationId" header="{{ 'access.point' | translate }}">
+                        <p-column field="municipalityName" header="{{ 'shared.municipality.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="countryName" header="{{ 'shared.country.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="installationId" header="{{ 'suppPortal.access.point' | translate }}">
                             <template pTemplate="body" let-rowData="rowData">
                                 <button type="button" class="btn" [routerLink]="['/supplier-portal/installation', rowData.installationId]" routerLinkActive="active" style="background: none; padding: 0;">
-                                    <i class="fa fa-2x fa-eye" style="font-size: 20px;"></i> {{ 'view' | translate }}
+                                    <i class="fa fa-2x fa-eye" style="font-size: 20px;"></i> {{ 'shared.view' | translate }}
                                 </button>
                             </template>
                         </p-column>
                     </p-dataTable>
                     <p-dataTable [value]="filteredSelectedMeMunicipalities" *ngIf="filtering">
-                        <p-column field="municipalityName" header="{{ 'municipality.label' | translate }}" [sortable]="false"></p-column>
-                        <p-column field="countryName" header="{{ 'country.label' | translate }}" [sortable]="false"></p-column>
-                        <p-column field="installationId" header="{{ 'access.point' | translate }}">
+                        <p-column field="municipalityName" header="{{ 'shared.municipality.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="countryName" header="{{ 'shared.country.label' | translate }}" [sortable]="false"></p-column>
+                        <p-column field="installationId" header="{{ 'suppPortal.access.point' | translate }}">
                             <template pTemplate="body" let-rowData="rowData">
                                 <button type="button" class="btn" [routerLink]="['/supplier-portal/installation', rowData.installationId]" routerLinkActive="active" style="background: none; padding: 0;">
-                                    <i class="fa fa-2x fa-eye" style="font-size: 20px;"></i> {{ 'view' | translate }}
+                                    <i class="fa fa-2x fa-eye" style="font-size: 20px;"></i> {{ 'shared.view' | translate }}
                                 </button>
                             </template>
                         </p-column>

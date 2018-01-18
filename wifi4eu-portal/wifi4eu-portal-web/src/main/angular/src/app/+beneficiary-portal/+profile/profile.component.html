@@ -4,7 +4,7 @@
         <div class="ui-g-12">
             <div class="ui-g-8 ui-lg-7">
                 <div class="ui-g-12">
-                    <p class="beneficiaryTitle">{{ 'profile.title' | translate }}</p>
+                    <p class="beneficiaryTitle">{{ 'benefPortal.profile.title' | translate }}</p>
                 </div>
                 <hr class="beneficiaryHr">
                 <div class="ui-g">
@@ -12,20 +12,20 @@
                         <div class="ui-g">
                             <div class="ui-g-10">
                                 <p class="beneficiaryMayor">
-                                    {{ 'representativedetails.title' | translate }}
+                                    {{ 'benefRegistration.representativedetails.title' | translate }}
                                 </p>
                             </div>
                             <div class="ui-g-2">
                                 <a (click)="displayModal('user')" class="edit">
-                                    <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'edit.button' | translate }}
+                                    <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
                                 </a>
                             </div>
                         </div>
                         <div class="ui-g">
                             <div class="ui-g-4">
-                                <p>{{ 'name.label' | translate }}</p>
-                                <p>{{ 'surname.label' | translate }}</p>
-                                <p>{{ 'email.label' | translate }}</p>
+                                <p>{{ 'suppRegistration.name.label' | translate }}</p>
+                                <p>{{ 'suppRegistration.surname.label' | translate }}</p>
+                                <p>{{ 'suppRegistration.email.label' | translate }}</p>
                             </div>
                             <div class="ui-g-8">
                                 <p class="profileData">{{user.name}}</p>
@@ -40,20 +40,20 @@
                             <div class="ui-g-12">
                                 <div class="ui-g">
                                     <div class="ui-g-10">
-                                        <p class="beneficiaryMayor">{{ 'mayor.details' | translate }}</p>
+                                        <p class="beneficiaryMayor">{{ 'benefRegistration.mayor.details' | translate }}</p>
                                     </div>
                                     <div class="ui-g-2">
                                         <a (click)="displayModal('mayor', i)" class="edit">
                                             <i class="fa fa-pencil" aria-hidden="true"></i>
-                                            {{ 'edit.button' | translate }}
+                                            {{ 'shared.edit.button' | translate }}
                                         </a>
                                     </div>
                                 </div>
                                 <div class="ui-g">
                                     <div class="ui-g-4">
-                                        <p>{{ 'name.label' | translate }}</p>
-                                        <p>{{ 'surname.label' | translate }}</p>
-                                        <p>{{ 'email.label' | translate }}</p>
+                                        <p>{{ 'suppRegistration.name.label' | translate }}</p>
+                                        <p>{{ 'suppRegistration.surname.label' | translate }}</p>
+                                        <p>{{ 'suppRegistration.email.label' | translate }}</p>
                                     </div>
                                     <div class="ui-g-8">
                                         <p class="profileData">{{mayors[i].name}}</p>
@@ -68,22 +68,22 @@
                             <div class="ui-g-12">
                                 <div class="ui-g">
                                     <div class="ui-g-10">
-                                        <p class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</p>
+                                        <p class="beneficiaryMayor">{{ 'suppRegistration.legalentity.label' | translate }}</p>
                                     </div>
                                     <div class="ui-g-2">
                                         <a (click)="displayModal('municipality', i)" class="edit">
                                             <i class="fa fa-pencil" aria-hidden="true"></i>
-                                            {{ 'edit.button' | translate }}
+                                            {{ 'shared.edit.button' | translate }}
                                         </a>
                                     </div>
                                 </div>
                                 <div class="ui-g">
                                     <div class="ui-g-4">
-                                        <p>{{ 'country.label' | translate }}</p>
-                                        <p>{{ 'municipality.label' | translate }}</p>
-                                        <p>{{ 'address.label' | translate }}</p>
-                                        <p>{{ 'number.label' | translate }}</p>
-                                        <p>{{ 'postal-code.label' | translate }}</p>
+                                        <p>{{ 'shared.country.label' | translate }}</p>
+                                        <p>{{ 'shared.municipality.label' | translate }}</p>
+                                        <p>{{ 'benefRegistration.address.label' | translate }}</p>
+                                        <p>{{ 'benefRegistration.number.label' | translate }}</p>
+                                        <p>{{ 'shared.postal-code.label' | translate }}</p>
                                     </div>
                                     <div class="ui-g-8">
                                         <p class="profileData">{{municipality.country}}</p>
@@ -106,11 +106,11 @@
                 </div>
                 <div class="ui-g">
                     <div class="ui-g-12  button-content" *ngIf="hasDiscussion">
-                        <p>{{ 'beneficiary.goDiscussionText' | translate }}</p>
+                        <p>{{ 'benefPortal.beneficiary.goDiscussionText' | translate }}</p>
                         <div style="text-align: center !important">
                             <button type="button" (click)="goToDiscussion()"
                                     class="btn btn-primary changePassword">
-                                {{'beneficiary.goDiscussion' | translate }}
+                                {{'discussionForum.beneficiary.goDiscussion' | translate }}
                             </button>
                         </div>
                     </div>
@@ -118,11 +118,11 @@
                 <br>
                 <div class="ui-g">
                     <div class="ui-g-12  button-content">
-                        <p>{{ 'beneficiaryProfile.text' | translate }}</p>
+                        <p>{{ 'shared.beneficiaryProfile.text' | translate }}</p>
                         <div style="text-align: center !important">
                             <button type="button" (click)="displayModal('password')"
                                     class="btn btn-primary changePassword">
-                                {{'beneficiaryProfile.password' | translate }}
+                                {{'shared.beneficiaryProfile.password' | translate }}
                             </button>
                         </div>
                     </div>
@@ -130,11 +130,11 @@
                 <br>
                 <div class="ui-g" *ngIf="isRegisterHold">
                     <div class="ui-g-12 button-content">
-                        <p>{{ 'beneficiary.discusionText' | translate }}</p>
+                        <p>{{ 'shared.beneficiary.discusionText' | translate }}</p>
                         <div style="text-align: center !important">
                             <button type="button" (click)="deleteRegistration()"
                                     class="btn btn-primary changePassword">
-                                {{'beneficiary.deleteApplication' | translate }}
+                                {{'shared.beneficiary.deleteApplication' | translate }}
                             </button>
                         </div>
                     </div>
@@ -149,17 +149,17 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayUser" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <p class="beneficiaryMayor center">{{ 'representativedetails.title' | translate }}</p>
+        <p class="beneficiaryMayor center">{{ 'benefRegistration.representativedetails.title' | translate }}</p>
         <form (ngSubmit)="saveUserChanges()" #profileFormUser="ngForm" *ngIf="editedUser">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="name_user">{{ 'name.label' | translate }}</label>
+                        <label for="name_user">{{ 'suppRegistration.name.label' | translate }}</label>
                         <input id="name_user" type="text" [(ngModel)]="editedUser.name" class="form-control"
                                name="name_user" ngcontrol="name_user" #name_user="ngModel" required>
                         <div [hidden]="name_user.valid || name_user.pristine" class="alert alert-danger">
-                            {{ 'name.required' | translate }}
+                            {{ 'benefRegistration.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -170,11 +170,11 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="surname_user">{{ 'surname.label' | translate }}</label>
+                        <label for="surname_user">{{ 'suppRegistration.surname.label' | translate }}</label>
                         <input id="surname_user" type="text" [(ngModel)]="editedUser.surname" class="form-control"
                                name="surname_user" ngcontrol="surname_user" #surname_user="ngModel" required>
                         <div [hidden]="surname_user.valid || surname_user.pristine" class="alert alert-danger">
-                            {{ 'surname.required' | translate }}
+                            {{ 'surbenefRegistration.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -185,7 +185,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="email_user">{{ 'email.label' | translate }}</label>
+                        <label for="email_user">{{ 'suppRegistration.email.label' | translate }}</label>
                         <input id="email_user" type="text" [(ngModel)]="editedUser.email" class="form-control"
                                name="email_user" ngcontrol="email_user" #email_user="ngModel" required disabled>
                         <div [hidden]="email_user.valid || email_user.pristine" class="alert alert-danger">
@@ -199,13 +199,13 @@
                 <div class="ui-g-4"></div>
                 <div class="ui-g-2" style="text-align: center !important">
                     <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
-                        {{ 'cancel.button' | translate }}
+                        {{ 'shared.cancel.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-2" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary publish-button"
                             [disabled]="!profileFormUser.form.valid">
-                        {{ 'confirm.button' | translate }}
+                        {{ 'suppRegistration.confirm.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-4"></div>
@@ -218,17 +218,17 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMayor" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <h1 class="beneficiaryMayorModal">{{'mayor.details' | translate }}</h1>
+        <h1 class="beneficiaryMayorModal">{{'benefRegistration.mayor.details' | translate }}</h1>
         <form (ngSubmit)="saveMayorChanges()" #profileFormMayor="ngForm" *ngIf="editedMayor">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="name_mayor">{{ 'name.label' | translate }}</label>
+                        <label for="name_mayor">{{ 'suppRegistration.name.label' | translate }}</label>
                         <input id="name_mayor" type="text" [(ngModel)]="editedMayor.name" class="form-control"
                                name="name_mayor" ngcontrol="name_mayor" #name_mayor="ngModel" required>
                         <div [hidden]="name_mayor.valid || name_mayor.pristine" class="alert alert-danger">
-                            {{ 'name.required' | translate }}
+                            {{ 'benefRegistration.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -239,11 +239,11 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="surname_mayor">{{ 'surname.label' | translate }}</label>
+                        <label for="surname_mayor">{{ 'suppRegistration.surname.label' | translate }}</label>
                         <input id="surname_mayor" type="text" [(ngModel)]="editedMayor.surname" class="form-control"
                                name="surname_mayor" ngcontrol="surname_mayor" #surname_mayor="ngModel" required>
                         <div [hidden]="surname_mayor.valid || surname_mayor.pristine" class="alert alert-danger">
-                            {{ 'surname.required' | translate }}
+                            {{ 'surbenefRegistration.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -254,7 +254,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="email_mayor">{{ 'email.label' | translate }}</label>
+                        <label for="email_mayor">{{ 'suppRegistration.email.label' | translate }}</label>
                         <input id="email_mayor" type="text" [(ngModel)]="editedMayor.email" class="form-control"
                                name="email_mayor" ngcontrol="email_mayor" #email_mayor="ngModel" required disabled>
                         <div [hidden]="email_mayor.valid || email_mayor.pristine" class="alert alert-danger">
@@ -268,13 +268,13 @@
                 <div class="ui-g-4"></div>
                 <div class="ui-g-2" style="text-align: center !important">
                     <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
-                        {{ 'cancel.button' | translate }}
+                        {{ 'shared.cancel.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-2" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary publish-button"
                             [disabled]="!profileFormMayor.form.valid">
-                        {{ 'confirm.button' | translate }}
+                        {{ 'suppRegistration.confirm.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-4"></div>
@@ -287,20 +287,20 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMunicipality" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <h1 class="beneficiaryMayorModal">{{'legalentity.label' | translate }}</h1>
+        <h1 class="beneficiaryMayorModal">{{'suppRegistration.legalentity.label' | translate }}</h1>
         <form (ngSubmit)="saveMunicipalityChanges()" #profileFormMunicipality="ngForm" *ngIf="editedMunicipality">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="country_municipality">{{ 'name.label' | translate }}</label>
+                        <label for="country_municipality">{{ 'suppRegistration.name.label' | translate }}</label>
                         <input id="country_municipality" type="text" [(ngModel)]="editedMunicipality.country"
                                class="form-control"
                                name="country_municipality" ngcontrol="country_municipality"
                                #country_municipality="ngModel" required disabled>
                         <div [hidden]="country_municipality.valid || country_municipality.pristine"
                              class="alert alert-danger">
-                            {{ 'country.required' | translate }}
+                            {{ 'benefRegistration.country.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -311,14 +311,14 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="name_municipality">{{ 'surname.label' | translate }}</label>
+                        <label for="name_municipality">{{ 'suppRegistration.surname.label' | translate }}</label>
                         <input id="name_municipality" type="text" [(ngModel)]="editedMunicipality.name"
                                class="form-control"
                                name="name_municipality" ngcontrol="name_municipality" #name_municipality="ngModel"
                                required disabled>
                         <div [hidden]="name_municipality.valid || name_municipality.pristine"
                              class="alert alert-danger">
-                            {{ 'municipality.required' | translate }}
+                            {{ 'benefRegistration.municipality.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -329,27 +329,27 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-7">
                     <div class="form-group">
-                        <label for="address_municipality">{{ 'address.label' | translate }}</label>
+                        <label for="address_municipality">{{ 'benefRegistration.address.label' | translate }}</label>
                         <input id="address_municipality" type="text" [(ngModel)]="editedMunicipality.address"
                                class="form-control"
                                name="address_municipality" ngcontrol="address_municipality"
                                #address_municipality="ngModel" required>
                         <div [hidden]="address_municipality.valid || address_municipality.pristine"
                              class="alert alert-danger">
-                            {{ 'address.required' | translate }}
+                            {{ 'suppRegistration.address.required' | translate }}
                         </div>
                     </div>
                 </div>
                 <div class="ui-g-3">
                     <div class="form-group">
-                        <label for="number_municipality">{{ 'number.label' | translate }}</label>
+                        <label for="number_municipality">{{ 'benefRegistration.number.label' | translate }}</label>
                         <input id="number_municipality" type="text" [(ngModel)]="editedMunicipality.addressNum"
                                class="form-control"
                                name="number_municipality" ngcontrol="number_municipality" #number_municipality="ngModel"
                                required>
                         <div [hidden]="number_municipality.valid || number_municipality.pristine"
                              class="alert alert-danger">
-                            {{ 'address.required' | translate }}
+                            {{ 'suppRegistration.address.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -360,14 +360,14 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="postalCode_municipality">{{ 'postal-code.label' | translate }}</label>
+                        <label for="postalCode_municipality">{{ 'shared.postal-code.label' | translate }}</label>
                         <input id="postalCode_municipality" type="text" [(ngModel)]="editedMunicipality.postalCode"
                                class="form-control"
                                name="postalCode_municipality" ngcontrol="postalCode_municipality"
                                #postalCode_municipality="ngModel" required>
                         <div [hidden]="postalCode_municipality.valid || postalCode_municipality.pristine"
                              class="alert alert-danger">
-                            {{ 'address.required' | translate }}
+                            {{ 'suppRegistration.address.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -378,13 +378,13 @@
                 <div class="ui-g-4"></div>
                 <div class="ui-g-2" style="text-align: center !important">
                     <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
-                        {{ 'cancel.button' | translate }}
+                        {{ 'shared.cancel.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-2" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary publish-button"
                             [disabled]="!profileFormMunicipality.form.valid">
-                        {{ 'confirm.button' | translate }}
+                        {{ 'suppRegistration.confirm.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-4"></div>
@@ -397,7 +397,7 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayChangePassword" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <h1 class="beneficiaryMayorModal">{{'beneficiaryProfile.password' | translate }}</h1>
+        <h1 class="beneficiaryMayorModal">{{'shared.beneficiaryProfile.password' | translate }}</h1>
         <form #profileFormPassword="ngForm">
             <div class="form-group profileDialog">
                 <label class="labelModal" for="currentPassword_field">{{ 'currentPassword.label' | translate }}</label>
@@ -410,7 +410,7 @@
                     {{ 'password.required' | translate }}
                 </div>
                 <a class="forgotPassword" routerLink="/forgot">Forgot password?</a><br>
-                <label class="labelModal" for="newPassword_field">{{ 'password.label' | translate }}</label>
+                <label class="labelModal" for="newPassword_field">{{ 'shared.password.label' | translate }}</label>
                 <input id="newPassword_field" type="password" [(ngModel)]="newPassword"
                        class="form-control beneficiaryProfileI" name="newPassword_field"
                        ngcontrol="newPassword_field" #newPassword_field="ngModel"
@@ -431,11 +431,11 @@
                 <div class="form-group">
                     <div style="text-align: center !important">
                         <button type="button" class="btn btn-primary changePasswordModal" (click)="closeModal()">
-                            {{ 'cancel.button' | translate }}
+                            {{ 'shared.cancel.button' | translate }}
                         </button>
                         <button type="submit" class="btn btn-primary changePasswordModal"
                                 [disabled]="!profileFormPassword.form.valid || !passwordsMatch">
-                            {{ 'change' | translate }}
+                            {{ 'shared.change' | translate }}
                         </button>
                     </div>
                 </div>

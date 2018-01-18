@@ -5,8 +5,8 @@ import {TranslateService} from "ng2-translate";
 @Component({selector: 'failure-component', templateUrl: 'failure.component.html'})
 
 export class FailureComponent implements OnChanges {
-    @Input() titleKey: string = 'submitregistration.failure.title';
-    @Input() textKeys: string[] = ['submitregistration.failure.text.part1'];
+    @Input() titleKey: string = 'shared.submitregistration.failure.title';
+    @Input() textKeys: string[] = ['shared.submitregistration.failure.text.part1'];
     @Input() alreadyRegistered: boolean = false;
 
     constructor(private uxService: UxService, private translateService: TranslateService) {
@@ -15,7 +15,7 @@ export class FailureComponent implements OnChanges {
     ngOnChanges() {
         if (this.alreadyRegistered) {
             let translatedString = 'User already registered.';
-            this.translateService.get('already.registered.error').subscribe(
+            this.translateService.get('shared.already.registered.error').subscribe(
                 (translation: string) => {
                     translatedString = translation;
                 }

@@ -1,7 +1,7 @@
 <div class="clearfix"></div>
 <div class="container">
     <p class="label" style="text-align: center;">
-        {{'helpdeskform.clickhere.label1' | translate}} <a (click)="expanded = true">{{'helpdeskform.clickhere.label2' |
+        {{'helpdesk.helpdeskform.clickhere.label1' | translate}} <a (click)="expanded = true">{{'helpdesk.helpdeskform.clickhere.label2' |
         translate}}</a>
 
     </p>
@@ -14,13 +14,13 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <label for="topic" class="label floatLeft">
-                        {{ 'helpdeskform.selectproblemtype' | translate }}
+                        {{ 'helpdesk.helpdeskform.selectproblemtype' | translate }}
                     </label>
                     <select class="form-control" name="topic" id="topic" [(ngModel)]="helpdeskIssue.topic" required>
-                        <option value="Login">{{ 'helpdeskform.problemtype.option1' | translate }}</option>
-                        <option value="Registration">{{ 'helpdeskform.problemtype.option2' | translate }}</option>
-                        <option value="Password">{{ 'helpdeskform.problemtype.option3' | translate }}</option>
-                        <option value="Other">{{ 'helpdeskform.problemtype.option4' | translate }}</option>
+                        <option value="Login">{{ 'helpdesk.helpdeskform.problemtype.option1' | translate }}</option>
+                        <option value="Registration">{{ 'helpdesk.helpdeskform.problemtype.option2' | translate }}</option>
+                        <option value="Password">{{ 'helpdesk.helpdeskform.problemtype.option3' | translate }}</option>
+                        <option value="Other">{{ 'helpdesk.helpdeskform.problemtype.option4' | translate }}</option>
                     </select>
                 </div>
                 <div class="ui-lg-3"></div>
@@ -29,7 +29,7 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
                     <label for="problem_desc" class="label floatLeft">
-                        {{ 'helpdeskform.describeproblem' | translate }}
+                        {{ 'helpdesk.helpdeskform.describeproblem' | translate }}
                     </label><br/>
                     <textarea id="problem_desc" name="problem_desc" class="form-control"
                               [(ngModel)]="helpdeskIssue.summary" required></textarea>
@@ -39,7 +39,7 @@
             <div class="ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
-                    <label for="from" class="label floatLeft">{{ 'helpdeskform.youremail' | translate }}</label><br/>
+                    <label for="from" class="label floatLeft">{{ 'helpdesk.helpdeskform.youremail' | translate }}</label><br/>
                     <input id="from" type="email" name="from" #from="ngModel" class="form-control"
                            [(ngModel)]="helpdeskIssue.fromEmail" maxlength="254"
                            [pattern]="emailPattern" required>
@@ -49,7 +49,7 @@
             <div class="ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">
-                    <label for="problem_country" class="label floatLeft">{{ 'country.label' | translate }}</label>
+                    <label for="problem_country" class="label floatLeft">{{ 'shared.country.label' | translate }}</label>
                     <select class="form-control" name="problem_country" id="problem_country"
                             [(ngModel)]="helpdeskIssue.memberState" required>
                         <option selected disabled>Select</option>
@@ -63,12 +63,12 @@
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                     <button (click)="expanded = false" class="right" class="btn btn-primary publish-button">
-                        {{ 'close.label' | translate }}
+                        {{ 'shared.close.label' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary publish-button" [disabled]="!issueForm.form.valid">
-                        {{ 'helpdeskform.sendmessage' | translate }}
+                        {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
                     </button>
                 </div>
 
@@ -76,7 +76,7 @@
             </div>
         </form>
         <div *ngIf="success">
-            <p class="center"><b>{{ 'helpdeskform.success' | translate }}</b></p>
+            <p class="center"><b>{{ 'helpdesk.helpdeskform.success' | translate }}</b></p>
         </div>
         <div class="ui-g-1"></div>
     </div>

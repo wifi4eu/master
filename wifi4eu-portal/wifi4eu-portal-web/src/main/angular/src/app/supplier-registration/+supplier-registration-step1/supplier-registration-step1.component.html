@@ -2,7 +2,7 @@
 <div id="step2-title" class="ui-g">
     <div class="ui-g-12 center">
         <div id="component-title">
-            <h3 class="beneficiaryTitle labelModal">{{ 'step1.supplier' | translate }}</h3>
+            <h3 class="beneficiaryTitle labelModal">{{ 'suppRegistration.step1.supplier' | translate }}</h3>
         </div>
     </div>
 </div>
@@ -10,7 +10,7 @@
 <div id="step2-instructions" class="ui-g">
     <div class="ui-g-12 ui-md-12 ui-lg-12 center">
         <div id="component-subtitle">
-            <h6>{{ 'company.info' | translate }}</h6>
+            <h6>{{ 'suppRegistration.company.info' | translate }}</h6>
         </div>
     </div>
 </div>
@@ -20,11 +20,11 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="name">{{ 'company.name' | translate }}</label>
+                <label class="label" for="name">{{ 'suppRegistration.company.name' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="name" name="name"
                        [(ngModel)]="supplier.name" #name="ngModel" required>
                 <div class="alert alert-danger" [hidden]="name.valid || name.pristine">
-                    {{'company.required'|translate}}
+                    {{'suppRegistration.company.required'|translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -34,11 +34,11 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="address">{{ 'legal.address' | translate }}</label>
+                <label class="label" for="address">{{ 'suppRegistration.legal.address' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="address" name="address"
                        [(ngModel)]="supplier.address" #address="ngModel" required>
                 <div class="alert alert-danger" [hidden]="address.valid || address.pristine">
-                    {{'address.required' | translate}}
+                    {{'suppRegistration.address.required' | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -48,11 +48,11 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="vat">{{ 'vat.label' | translate }}</label>
+                <label class="label" for="vat">{{ 'suppRegistration.vat.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="vat" name="vat"
                        [(ngModel)]="supplier.vat" #vat="ngModel" required>
                 <div class="alert alert-danger" [hidden]="vat.valid || vat.pristine">
-                    {{'address.required' | translate}}
+                    {{'suppRegistration.address.required' | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -62,10 +62,10 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="bic">{{ 'bic.label' | translate }}</label>
+                <label class="label" for="bic">{{ 'suppRegistration.bic.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="bic" name="bic"
                        [(ngModel)]="supplier.bic" #bic="ngModel" required>
-                <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">{{'bic.required' | translate}}</div>
+                <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">{{'benefRegistration.bic.required' | translate}}</div>
                 <div class="ui-lg-3"></div>
             </div>
         </div>
@@ -74,11 +74,11 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="accountNumber">{{ 'bank.account' | translate }}</label>
+                <label class="label" for="accountNumber">{{ 'suppRegistration.bank.account' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="accountNumber" name="accountNumber"
                        [(ngModel)]="supplier.accountNumber" #accountNumber="ngModel" required>
                 <div class="alert alert-danger" [hidden]="accountNumber.valid || accountNumber.pristine">
-                    {{'bank.required' | translate}}
+                    {{'suppRegistration.bank.required' | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>
@@ -88,12 +88,12 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="website">{{ 'company.web' | translate }}</label>
+                <label class="label" for="website">{{ 'suppRegistration.company.web' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="website" name="website"
                        [pattern]="websitePattern"
                        [(ngModel)]="supplier.website" #website="ngModel">
                 <div class="alert alert-danger" [hidden]="website.valid || website.pristine">
-                    {{ 'companyWeb.required' | translate }}
+                    {{ 'suppRegistration.companyWeb.required' | translate }}
                 </div>
             </div>
         </div>
@@ -103,11 +103,11 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="uploadBtn">{{ 'company.logo' | translate }}</label>
+                <label class="label" for="uploadBtn">{{ 'suppRegistration.company.logo' | translate }}</label>
                 <br>
                 <div class="ui-g-12 left">
                     <div class="fileUpload btn btn-primary">
-                        <span>{{ 'upload.logo' | translate }}</span>
+                        <span>{{ 'suppRegistration.upload.logo' | translate }}</span>
                         <input #logoInput id="uploadBtn" type="file" class="upload" (change)="changeLogo($event)"
                                accept="image/*"/>
                     </div>
@@ -121,7 +121,7 @@
                         <span class="ui-g-4">{{logoFile.name}}<br>{{logoFile.size}} KB</span>
                         <span class="ui-g-1"></span>
                     </div>
-                    <button type="button" class="ui-g-3 btn btn-primary" (click)="clearLogoFile()">{{'clear.label' | translate}}</button>
+                    <button type="button" class="ui-g-3 btn btn-primary" (click)="clearLogoFile()">{{'shared.clear.label' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -130,12 +130,12 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <a href="#/home">
-                <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button>
+                <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' | translate }}</button>
             </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn btn-primary publish-button" [disabled]="!supplierForm.form.valid">
-                {{ 'confirm.button' | translate }}
+                {{ 'suppRegistration.confirm.button' | translate }}
             </button>
         </div>
         <div class="ui-lg-3"></div>

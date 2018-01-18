@@ -1,7 +1,7 @@
 <div class="clearfix"></div>
 <div class="jumbotron mb-3" style="background-color: transparent;">
   <div class="container center">
-    <p class="center beneficiaryTitle">{{ 'duplicatedSuppliers.title' | translate }}</p>
+    <p class="center beneficiaryTitle">{{ 'dgConn.duplicatedSuppliers.title' | translate }}</p>
   </div>
 </div>
 <div class="container center ">
@@ -30,7 +30,7 @@
     <p-dataTable [editable]="true" [responsive]="true" sortMode="multiple" [value]="customUserSupplierArray" [rows]="10" [paginator]="true">
       <p-column field="supplier.name" styleClass="text-center" [sortable]="true" header="Name"></p-column>
       <p-column field="supplier.address" styleClass="text-center" [sortable]="true" header="Address"></p-column>
-      <p-column header="Phone number" styleClass="text-center">
+      <p-column header="suppRegistration.phone.number" styleClass="text-center">
         <ng-template let-customSupplier="rowData" pTemplate="body">
           <span>{{ customSupplier.supplier.contactPhonePrefix }} </span>
           <span>{{ customSupplier.supplier.contactPhoneNumber }}</span>

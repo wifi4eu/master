@@ -91,7 +91,7 @@ export class HomeComponent {
                 console.log(error);
                 this.supplierInfo = null;
                 this.voucherCompetitionState = -1;
-                this.errorCause = "supplierportal.couldntgetselectedmunicipalities";
+                this.errorCause = "benefPortal.supplierportal.couldntgetselectedmunicipalities";
             }
         );
     }
