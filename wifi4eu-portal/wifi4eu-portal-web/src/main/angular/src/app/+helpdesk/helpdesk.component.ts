@@ -11,10 +11,11 @@ export class HelpdeskComponent {
     private selectedIssues: HelpdeskIssueDTO[];
     private issueSelected: HelpdeskIssueDTOBase;
     private display: boolean;
+    private originalIssues: HelpdeskIssueDTO[];
 
-
+    
     constructor(private helpdeskApi: HelpdeskissuesApi) {
-        this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
+        this.helpdeskApi.allHelpdeskIssues().subscribe(issues => {this.issues = issues; this.originalIssues = issues;});
         this.issueSelected = new HelpdeskIssueDTOBase();
         this.display = false;
 
@@ -30,9 +31,13 @@ export class HelpdeskComponent {
     resolveIssues() {
         for (var i = 0; i < this.selectedIssues.length; i++) {
             this.selectedIssues[i].status = 1;
-            this.helpdeskApi.createHelpdeskIssue(this.selectedIssues[i]).subscribe();
+            this.helpdeskApi.createHelpdeskIssue(this.selectedIssues[i]).subscribe(
+              data => {
+                this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
+              }
+            );
         }
-        this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
+        
     }
 
     setAsResolved() {
@@ -40,7 +45,7 @@ export class HelpdeskComponent {
         this.issueSelected.status = 1;
         this.helpdeskApi.createHelpdeskIssue(this.issueSelected).subscribe(
             data => {
-                this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
+                this.helpdeskApi.allHelpdeskIssues().subscribe(issues => {this.issues = issues; this.originalIssues = issues;});
             },
             error => {
                 console.log(error);
@@ -67,6 +72,16 @@ export class HelpdeskComponent {
         this.display = false;
         this.issueSelected = new HelpdeskIssueDTOBase();
         this.helpdeskApi.allHelpdeskIssues().subscribe(issues => this.issues = issues);
+    }
+
+    filterData(stringSearch: string) {
+      if(typeof stringSearch != "undefined" && stringSearch != ""){
+        stringSearch = stringSearch.toLocaleLowerCase();
+        let helpdesksFiltered = this.originalIssues.filter(issue => {return (issue.portal.toLocaleLowerCase().match(stringSearch)  || issue.assignedTo.toLocaleLowerCase().match(stringSearch) || issue.topic.toLocaleLowerCase().match(stringSearch) || issue.memberState.match(stringSearch)) });
+        this.issues = [...helpdesksFiltered];
+      } else{
+        this.issues = [...this.originalIssues];
+      }    
     }
 
 }

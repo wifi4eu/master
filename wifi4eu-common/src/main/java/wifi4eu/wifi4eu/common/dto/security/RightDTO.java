@@ -4,49 +4,50 @@ import java.util.List;
 import java.io.Serializable;
 
 public class RightDTO implements Serializable{
-    private Long rightId;
-    private String name;
-    private List<RoleDTO> roles;
+    private int id;
+    private int userId;
+    private String rightdesc;
+    private int type;
 
     public RightDTO() {
     }
 
-    public RightDTO(String name) {
-        this.name = name;
+    public RightDTO(int id, int userId, String rightdesc, int type) {
+        this.id = id;
+        this.userId = userId;
+        this.rightdesc = rightdesc;
+        this.type = type;
     }
 
-    public RightDTO(Long rightId, String name) {
-        this.rightId = rightId;
-        this.name = name;
+    public int getId() {
+        return id;
     }
 
-    public RightDTO(Long rightId, String name, List<RoleDTO> roleDTOs) {
-        this.rightId = rightId;
-        this.name = name;
-        this.roles = roleDTOs;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public Long getRightId() {
-        return rightId;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setRightId(Long rightId) {
-        this.rightId = rightId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public String getRightdesc() {
+        return rightdesc;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRightdesc(String rightdesc) {
+        this.rightdesc = rightdesc;
     }
 
-    public List<RoleDTO> getRoles() {
-        return roles;
+    public int getType() {
+        return type;
     }
 
-    public void setRoles(List<RoleDTO> roles) {
-        this.roles = roles;
+    public void setType(int type) {
+        this.type = type;
     }
 }

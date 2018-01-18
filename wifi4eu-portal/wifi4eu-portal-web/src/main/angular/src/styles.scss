@@ -1341,6 +1341,13 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   width: 100%;
 }
 
+.registrationPanel {
+  border: 1px solid #D5D5D5;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+  border-radius: 3px;
+  margin-bottom: 2em;
+}
+
 /* fix blinking issue with the header */
 
 #app-wrapper.shrink-header-active #main #nav-bar{

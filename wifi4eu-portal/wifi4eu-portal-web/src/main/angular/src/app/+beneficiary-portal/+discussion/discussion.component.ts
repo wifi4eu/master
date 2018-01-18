@@ -80,11 +80,13 @@ export class DiscussionComponent {
                                             if (this.municipality.id != municipalities[i].id) {
                                                 this.registrationApi.getRegistrationsByMunicipalityId(municipalities[i].id).subscribe(
                                                     (registrations: RegistrationDTOBase[]) => {
-                                                        this.municipalities.push(municipalities[i]);
-                                                        this.messageAuthors.push(registrations[0]);
-                                                        this.counter++;
-                                                        if (this.counter >= this.municipalities.length) {
-                                                            this.hasAuthor = true;
+                                                        if (registrations.length > 0) {
+                                                            this.municipalities.push(municipalities[i]);
+                                                            this.messageAuthors.push(registrations[0]);
+                                                            this.counter++;
+                                                            if (this.counter >= this.municipalities.length) {
+                                                                this.hasAuthor = true;
+                                                            }
                                                         }
                                                     }, error => {
                                                         console.log(error);

@@ -1,96 +1,81 @@
 import { Component } from '@angular/core';
-import { BeneficiaryApi } from "../../shared/swagger/api/BeneficiaryApi";
+import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
 import { CallApi } from "../../shared/swagger/api/CallApi";
 import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
 import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
 import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
 import { LocalStorageService } from "angular-2-local-storage";
+import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
+import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
+import { ApplicationDTOBase } from "../../shared/swagger/model/ApplicationDTO";
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
+import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
+import {MayorApi} from "../../shared/swagger/api/MayorApi";
+import {SharedService} from "../../shared/shared.service";
 
-@Component({templateUrl: 'voucher.component.html', providers: [BeneficiaryApi, CallApi]})
+@Component({
+    templateUrl: 'voucher.component.html', providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi]
+})
+
 export class VoucherComponent {
     private voucherCompetitionState: number;
     private user: UserDTOBase;
-    private currentCall: CallDTOBase;
-    private myMunicipality: MunicipalityDTOBase;
-    private errorCause: string;
+    private currentCall: CallDTOBase = new CallDTOBase();
+    private registrations: RegistrationDTOBase[] = [];
+    private municipalities: MunicipalityDTOBase[] = [];
+    private mayors: MayorDTOBase[] = [];
+    private applications: ApplicationDTOBase[] = [];
+    private displayRegistrationSelect: boolean = false;
+    private allApplied: boolean = false;
+    private loadingButtons: boolean[] = [];
 
-    constructor(private localStorage: LocalStorageService, private beneficiaryApi: BeneficiaryApi, private callApi: CallApi) {
-        let u = this.localStorage.get('user');
-        this.user = u ? JSON.parse(u.toString()) : null;
-        this.currentCall = new CallDTOBase();
-        this.myMunicipality = new MunicipalityDTOBase();
-
+    constructor(private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService) {
+        let storedUser = this.localStorage.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         // Check if there are Calls
         if (this.user != null) {
-            this.checkForCalls();
+            this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                (registrations: RegistrationDTOBase[]) => {
+                    this.checkForCalls(registrations);
+                }
+            );
         }
-        // TODO: Con el nuevo modelo creo que no hace falta todo esto
-        // if (this.user != null) {
-        //     if (this.user.type == 3) {
-        //         this.beneficiaryApi.getRepresentativeById(this.user.userTypeId).subscribe(
-        //             (representative: RepresentativeDTOBase) => {
-        //                 this.beneficiaryApi.getMayorById(representative.mayorId).subscribe(
-        //                     (mayor: MayorDTOBase) => {
-        //                         this.beneficiaryApi.getLegalEntity(mayor.legalEntityId).subscribe(
-        //                             entity => {
-        //                                 this.myMunicipality = entity;
-        //                                 this.checkForCalls();
-        //                             },
-        //                             error => {
-        //                                 console.log(error);
-        //                                 this.myMunicipality = null;
-        //                                 this.voucherCompetitionState = -1;
-        //                                 this.errorCause = "benefPortal.beneficiaryportal.municipalitynotfound";
-        //                             }
-        //                         );
-        //                     }, error => {
-        //                         console.log(error);
-        //                         this.myMunicipality = null;
-        //                         this.voucherCompetitionState = -1;
-        //                         this.errorCause = "benefPortal.beneficiaryportal.municipalitynotfound";
-        //                     }
-        //                 );
-        //             }, error => {
-        //                 console.log(error);
-        //                 this.myMunicipality = null;
-        //                 this.voucherCompetitionState = -1;
-        //                 this.errorCause = "benefPortal.beneficiaryportal.municipalitynotfound";
-        //             }
-        //         );
-        //     } else if (this.user.userType == 2) {
-        //         this.beneficiaryApi.getMayorById(this.user.userTypeId).subscribe(
-        //             (mayor: MayorDTOBase) => {
-        //                 this.beneficiaryApi.getLegalEntity(mayor.legalEntityId).subscribe(
-        //                     entity => {
-        //                         this.myMunicipality = entity;
-        //                         this.checkForCalls();
-        //                     },
-        //                     error => {
-        //                         console.log(error);
-        //                         this.myMunicipality = null;
-        //                         this.voucherCompetitionState = -1;
-        //                         this.errorCause = "benefPortal.beneficiaryportal.municipalitynotfound";
-        //                     }
-        //                 );
-        //             }, error => {
-        //                 console.log(error);
-        //                 this.myMunicipality = null;
-        //                 this.voucherCompetitionState = -1;
-        //                 this.errorCause = "benefPortal.beneficiaryportal.municipalitynotfound";
-        //             }
-        //         );
-        //     }
-        // }
     }
 
-    checkForCalls() {
+    private checkForCalls(registrations: RegistrationDTOBase[]) {
         this.callApi.allCalls().subscribe(
             calls => {
                 this.currentCall = calls[0];
                 if (this.currentCall != null) {
                     // First, check if the call has already began
                     if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
-                        this.checkIfAlreadyApplied();
+                        this.voucherCompetitionState = 2;
+                        for (let registration of registrations) {
+                            this.applicationApi.getApplicationByCallIdAndRegistrationId(this.currentCall.id, registration.id).subscribe(
+                                (application: ApplicationDTOBase) => {
+                                    this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
+                                        (municipality: MunicipalityDTOBase) => {
+                                            if (municipality != null) {
+                                                this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
+                                                    (mayor: MayorDTOBase) => {
+                                                        this.registrations.push(registration);
+                                                        this.municipalities.push(municipality);
+                                                        this.mayors.push(mayor);
+                                                        this.applications.push(application);
+                                                        this.loadingButtons.push(false);
+                                                        if (application != null) {
+                                                            this.voucherCompetitionState = 3;
+                                                        }
+                                                        this.checkAllApplied();
+                                                    }
+                                                );
+                                            }
+                                        }
+                                    );
+                                }
+                            );
+                        }
                     } else {
                         // The competition hasn't started, display the timer
                         this.voucherCompetitionState = 1;
@@ -108,44 +93,46 @@ export class VoucherComponent {
         );
     }
 
-    checkIfAlreadyApplied() {
-        // TODO: Consultar si el usuario ya ha aplicado por el voucher
-        this.voucherCompetitionState = 2;
-        // this.beneficiaryApi.findByBeneficiaryIdAndPublicationId(this.myMunicipality.legalEntityId, this.currentCall.callId).subscribe(
-        //     (request: BenPubSupDTOBase) => {
-        //         if (request != null) {
-        //             if (request.awarded) {
-        //                 // Display 'Select supplier' screen.
-        //                 this.voucherCompetitionState = 4;
-        //             } else {
-        //                 this.voucherCompetitionState = 3;
-        //             }
-        //         } else {
-        //             // The user hasn't applied yet, display the "Apply for Voucher" button.
-        //             this.voucherCompetitionState = 2;
-        //         }
-        //     },
-        //     error => {
-        //         console.log(error);
-        //         this.voucherCompetitionState = -1;
-        //         this.errorCause = "benefPortal.beneficiaryportal.couldntcheckifapplied";
-        //     }
-        // );
+    private applyForVoucher() {
+        if (this.registrations.length == 1) {
+            this.sendApplication(0);
+        } else {
+            this.displayRegistrationSelect = true;
+        }
     }
 
-    applyForVoucher() {
+    private sendApplication(registrationNumber: number) {
         // TODO: Llamar al nuevo servicio de Apply for voucher
-        this.voucherCompetitionState = 3;
-        // this.beneficiaryApi.apply(this.myMunicipality.legalEntityId, this.currentCall.callId).subscribe(
-        //     data => {
-        //         this.voucherCompetitionState = 3;
-        //     },
-        //     error => {
-        //         console.log(error);
-        //         this.voucherCompetitionState = -1;
-        //         this.errorCause = "benefPortal.beneficiaryportal.errorapplying";
-        //     }
-        // );
+        this.loadingButtons[registrationNumber] = true;
+        let newApplication = new ApplicationDTOBase();
+        newApplication.callId = this.currentCall.id;
+        newApplication.registrationId = this.registrations[registrationNumber].id;
+        newApplication.date = new Date().getTime();
+        newApplication.supplierId = null;
+        this.applicationApi.createApplication(newApplication).subscribe(
+            (response: ResponseDTOBase) => {
+                if (response.success) {
+                    if (response.data) {
+                        this.applications[registrationNumber] = response.data;
+                        this.voucherCompetitionState = 3;
+                        this.loadingButtons[registrationNumber] = false;
+                        this.displayRegistrationSelect = false;
+                        this.checkAllApplied();
+                        this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'voucher.statusmessage5', 'success');
+                    }
+                }
+            }
+        );
     }
 
+    private checkAllApplied() {
+        let allApplicationsCorrect = true;
+        for (let application of this.applications) {
+            if (!application) {
+                allApplicationsCorrect = false;
+                break;
+            }
+        }
+        this.allApplied = allApplicationsCorrect;
+    }
 }

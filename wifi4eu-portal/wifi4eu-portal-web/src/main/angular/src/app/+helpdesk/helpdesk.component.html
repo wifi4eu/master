@@ -1,21 +1,49 @@
-<div class="container">
-    <div class="ui-widget-header" style="padding:5px 10px; margin-top: 15px;">
-        <p><a class="downloadData" (click)="helpdeskTable.exportCSV()"><i class="fa fa-download" aria-hidden="true"></i>
-            {{'dgConn.voucher.downloadData' | translate}}</a></p>
+<div class="clearfix"></div>
+<div class="jumbotron mb-3" style="background-color: transparent;">
+    <div class="container center">
+      <p class="center beneficiaryTitle">{{ 'helpdesk.dashboard' | translate }}</p>
     </div>
-    <p-dataTable #helpdeskTable [value]="issues" [(selection)]="selectedIssues" [rows]="10" [paginator]="true"
-                 [pageLinks]="3" [rowsPerPageOptions]="[10,20,50,100]" [globalFilter]="gb">
-        <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
-        <p-column field="portal" header="{{ 'helpdesk.portal' | translate }}" [sortable]="true"></p-column>
-        <p-column field="topic" header="{{ 'helpdesk.topic' | translate }}" [sortable]="false"></p-column>
-        <p-column field="memberState" header="{{ 'helpdesk.memberState' | translate }}" [sortable]="false"></p-column>
-        <p-column field="date" header="{{ 'dgConn.dateandtime' | translate }}" [sortable]="true">
+  </div>
+<div class="container"  style="padding:5px 10px; margin-top: 15px;">
+  <div class="panel-dg panel-padding panel-input">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="input-group">
+          <span class="input-group-addon">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </span>
+          <input type="text" [(ngModel)]="inputSearch" (keyup.enter)="filterData(inputSearch)" class="form-control">
+          <span class="input-group-btn">
+            <button class="btn btn-primary" (click)="filterData(inputSearch)" type="button">{{ 'search.button' | translate }}</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-dg">
+    <div class="panel-dg-header">
+      <span class="header-label">{{ 'helpdesk.dashboard' | translate }}</span>
+      <span class="right" style="padding: 5px 0;">
+        <a class="downloadData" (click)="helpdeskTable.exportCSV()"> <!--  -->
+          <i class="fa fa-download" aria-hidden="true"></i>
+          {{'voucher.downloadData' | translate}}
+        </a>
+      </span>
+    </div>
+    <p-dataTable #helpdeskTable [value]="issues" [(selection)]="selectedIssues" [rows]="10" [paginator]="true" [pageLinks]="3"
+      [rowsPerPageOptions]="[10,20,50,100]" [globalFilter]="gb" [totalRecords]="issues?.length" [editable]="true">
+      <p-column [style]="{'width':'38px'}" selectionMode="multiple" styleClass="text-center"></p-column>
+      <p-column field="portal" header="{{ 'portal' | translate }}" [sortable]="true" styleClass="text-center"></p-column>
+      <p-column field="topic" header="{{ 'topic' | translate }}" [sortable]="false" styleClass="text-center"></p-column>
+      <p-column field="memberState" header="{{ 'memberState' | translate }}" [sortable]="false" styleClass="text-center"></p-column>
+      <p-column field="date" header="{{ 'dateandtime' | translate }}" [sortable]="true" styleClass="text-center">
             <template pTemplate="body" let-issue="rowData">
                 <span>{{issue.createDate | date: 'dd/MM/yyyy HH:mm'}}</span>
             </template>
         </p-column>
-        <p-column field="assignedTo" header="{{ 'dgConn.assignedTo' | translate }}" [sortable]="true"></p-column>
-        <p-column field="status" header="{{ 'dgConn.status' | translate }}" [sortable]="true">
+      <p-column field="assignedTo" header="{{ 'assignedTo' | translate }}" [sortable]="true" styleClass="text-center"></p-column>
+      <p-column field="status" header="{{ 'status' | translate }}" [sortable]="true" styleClass="text-center">
             <template pTemplate="body" let-issue="rowData">
                 <div [ngSwitch]="issue.status">
                     <span *ngSwitchCase="0" class="issue-status-pending"><i>{{ 'dgConn.issueStatus.pending' | translate }}</i></span>
@@ -24,15 +52,15 @@
                 </div>
             </template>
         </p-column>
-        <p-column header="{{ 'dgConn.details' | translate }}">
+      <p-column header="{{ 'details' | translate }}" styleClass="text-center">
             <template pTemplate="body" let-issue="rowData" let-rowIndex="rowIndex">
-                <button type="button" class="btn" style="background: none; padding: 0;"
-                        (click)="viewIssueDetails(issue, rowIndex)">
-                    <i class="fa fa-2x fa-eye" style="font-size: 20px;"></i> {{ 'shared.view' | translate }}
+          <button type="button" class="btn" style="background: none; padding: 0;display: inline-flex; align-content: center; align-items: center;" (click)="viewIssueDetails(issue, rowIndex)">
+            <i class="fa fa-2x fa-eye" style="font-size: 20px;padding-right: 5px;"></i> {{ 'view' | translate }}
                 </button>
             </template>
         </p-column>
     </p-dataTable>
+  </div>
     <div class="right">
         <button type="submit" class="btn btn-primary cancel-button" (click)="resolveIssues()">{{ 'dgConn.resolve' | translate
             }}

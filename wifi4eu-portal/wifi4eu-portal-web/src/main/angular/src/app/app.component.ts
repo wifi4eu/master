@@ -102,10 +102,9 @@ export class AppComponent implements OnInit {
                 }
                
 
-            },
-            error => {
+            },error => {
                 this.uxService.growl({
-                    severity: 'warning',
+                    severity: 'warn',
                     summary: 'WARNING',
                     detail: 'Could not get ECAS User, ignore this when NG is working in offline mode'
                 });

@@ -57,6 +57,7 @@
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
                                         <argument>build</argument>
+                                        <argument>--env=${ng.env}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -85,6 +86,7 @@
                                     <arguments>
                                         <argument>/c</argument>
                                         <argument>"ng build --base-href /wifi4eu/"</argument>
+                                        <argument>--env=${ng.env}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -95,10 +97,24 @@
         </profile>
     </profiles>
 
-
     <build>
         <finalName>wifi4eu</finalName>
         <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/angular/src/app/shared/swagger</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
