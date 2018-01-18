@@ -26,7 +26,9 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -90,7 +92,8 @@ public class UserResource {
     @RequestMapping(value = "/saveChanges", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO) {
+    public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO,
+                                       HttpServletResponse response) throws IOException {
         try {
             _log.info("saveUserChanges");
 
@@ -107,11 +110,13 @@ public class UserResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'saveUserChanges' operation.", ade);
             }
+            response.sendError(HttpStatus.FORBIDDEN.value());
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'saveUserChanges' operation.", e);
             }
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
@@ -119,7 +124,8 @@ public class UserResource {
     @ApiOperation(value = "Delete user by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseDTO deleteUser(@RequestBody final Integer userId) {
+    public ResponseDTO deleteUser(@RequestBody final Integer userId,
+                                  HttpServletResponse response) throws IOException {
         try {
             _log.info("deleteUser: " + userId);
 
@@ -132,11 +138,13 @@ public class UserResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'deleteUser' operation.", ade);
             }
+            response.sendError(HttpStatus.FORBIDDEN.value());
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteUser' operation.", e);
             }
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }

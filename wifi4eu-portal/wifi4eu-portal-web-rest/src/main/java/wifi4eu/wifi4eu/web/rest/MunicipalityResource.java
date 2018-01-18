@@ -16,6 +16,8 @@ import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -51,7 +53,8 @@ public class MunicipalityResource {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO createMunicipality(@RequestBody final MunicipalityDTO municipalityDTO) {
+    public ResponseDTO createMunicipality(@RequestBody final MunicipalityDTO municipalityDTO,
+                                          HttpServletResponse response) throws IOException {
         try {
             _log.info("createMunicipality");
 
@@ -65,11 +68,13 @@ public class MunicipalityResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'createMunicipality' operation.", ade);
             }
+            response.sendError(HttpStatus.FORBIDDEN.value());
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createMunicipality' operation.", e);
             }
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
