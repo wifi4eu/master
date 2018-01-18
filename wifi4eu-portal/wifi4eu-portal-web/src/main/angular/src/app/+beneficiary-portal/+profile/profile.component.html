@@ -174,7 +174,7 @@
                         <input id="surname_user" type="text" [(ngModel)]="editedUser.surname" class="form-control"
                                name="surname_user" ngcontrol="surname_user" #surname_user="ngModel" required>
                         <div [hidden]="surname_user.valid || surname_user.pristine" class="alert alert-danger">
-                            {{ 'surbenefRegistration.name.required' | translate }}
+                            {{ 'benefRegistration.surname.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -243,7 +243,7 @@
                         <input id="surname_mayor" type="text" [(ngModel)]="editedMayor.surname" class="form-control"
                                name="surname_mayor" ngcontrol="surname_mayor" #surname_mayor="ngModel" required>
                         <div [hidden]="surname_mayor.valid || surname_mayor.pristine" class="alert alert-danger">
-                            {{ 'surbenefRegistration.name.required' | translate }}
+                            {{ 'benefRegistration.surname.required' | translate }}
                         </div>
                     </div>
                 </div>
