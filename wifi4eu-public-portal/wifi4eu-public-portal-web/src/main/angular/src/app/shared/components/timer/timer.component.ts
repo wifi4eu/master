@@ -10,6 +10,7 @@ export class TimerComponent {
     private hours: number;
     private minutes: number;
     private seconds: number;
+    private expired: boolean;
 
     ngOnInit() {
         this.currentTimestamp = new Date().getTime();
@@ -19,7 +20,9 @@ export class TimerComponent {
             this.toEpoch(this.expirationTimestamp - this.currentTimestamp);
             if (this.checkIfFinished(this.expirationTimestamp - this.currentTimestamp)) {
                 subscription.unsubscribe();
+                this.expired = true;
             }
+            else this.expired = false;
         });
     }
 
