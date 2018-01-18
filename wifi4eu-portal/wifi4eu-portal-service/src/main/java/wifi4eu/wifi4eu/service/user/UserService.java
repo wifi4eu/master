@@ -127,6 +127,10 @@ public class UserService {
       userDTO.setEmail(userContext.getEmail());
 
       userDTO = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
+
+      permissionChecker.addTablePermissions(userDTO, Integer.toString(userDTO.getId()),
+              RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
+
     }
 
     _log.debug("after create userDTO: " + userDTO);

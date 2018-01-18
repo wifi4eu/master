@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `dbo`.`users` (
 -- Table `wifi4eu`.`rights`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dbo`.`rights` (
-  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `id`          INT          NOT NULL,
   `userId`      INT  NULL,
   `rightdesc`       VARCHAR(255) NULL,
   `type`        INT          NULL     DEFAULT NULL,
