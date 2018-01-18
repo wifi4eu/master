@@ -471,5 +471,6 @@
   "itemMenu.myAccount": "Aktueller Status",
   "itemMenu.suppReg": "Registrierung einer WLAN-Installationsfirma",
   "itemMenu.appReg": "Registrierung einer Gemeinde",
-  "itemMenu.dissForum": "Forum"
+  "itemMenu.dissForum": "Forum",
+  "dgConn.user.label": "User"
 }

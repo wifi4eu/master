@@ -757,5 +757,6 @@
   "discussionForum.newMediation.text": "Acesta este un mesaj automat. Vă rugăm să nu răspundeți: această adresă nu este monitorizată. Pe site-ul WiFi4EU veți găsi informații suplimentare, inclusiv o listă de întrebări și răspunsuri.",
   "discussionForum.mediationRequest.selectText": "Cerere de mediere",
   "itemMenu.myAccount": "Aveți probleme cu înregistrarea? Faceți clic aici pentru a accesa serviciul de asistență.",
-  "itemMenu.dissForum": "Există înregistrări multiple pentru compania dumneavoastră. Faceți clic mai jos pentru a soluționa această problemă, înainte de a vă înregistra compania ca potențial furnizor."
+  "itemMenu.dissForum": "Există înregistrări multiple pentru compania dumneavoastră. Faceți clic mai jos pentru a soluționa această problemă, înainte de a vă înregistra compania ca potențial furnizor.",
+  "dgConn.user.label": "User"
 }

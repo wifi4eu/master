@@ -836,5 +836,6 @@
   "supp.landingpage.title": "Benvenuto alla pagina di registrazione di WiFi4EU per le imprese di impianti Wi-Fi",
   "supp.landingpage.elegibleText3": "Puoi registrarti subito sul portale WiFi4EU per indicare i settori in cui puoi fornire attrezzature e impianti ai beneficiari dell'iniziativa WiFi4EU. ",
   "supp.landingpage.elegibleText2": "I beneficiari dovranno definire e appaltare i progetti di impianti Wi-Fi locali nel rispetto delle regole applicabili agli appalti e possono consultare l'elenco delle imprese registrate per individuare potenziali fornitori nella loro area. ",
-  "supp.landingpage.elegibleText4": "La registrazione è obbligatoria se un beneficiario WiFi4EU ha scelto la tua impresa come fornitore.  "
+  "supp.landingpage.elegibleText4": "La registrazione è obbligatoria se un beneficiario WiFi4EU ha scelto la tua impresa come fornitore.  ",
+  "dgConn.user.label": "User"
 }

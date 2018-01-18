@@ -845,5 +845,6 @@
   "discussionForum.mediationRequest.text": "Εάν αποστείλετε αυτή την αίτηση, η Ευρωπαϊκή Επιτροπή θα παρέμβει στη συζήτηση για να βοηθήσει όλες τις εταιρείες να διευθετήσουν το ζήτημα.",
   "discussionForum.mediationRequest.selectText": "Στόχος της διαδικασίας διαμεσολάβησης είναι να προσδιοριστεί ποια εγγραφή θα πρέπει να θεωρηθεί έγκυρη.",
   "itemMenu.myAccount": "Ισχύον καθεστώς",
-  "itemMenu.dissForum": "Χώρος συζήτησης"
+  "itemMenu.dissForum": "Χώρος συζήτησης",
+  "dgConn.user.label": "User"
 }

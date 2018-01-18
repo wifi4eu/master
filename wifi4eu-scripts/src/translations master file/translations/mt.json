@@ -850,5 +850,6 @@
   "itemMenu.myAccount": "Status attwali",
   "itemMenu.suppReg": "in missing labels file",
   "itemMenu.appReg": "in missing labels file",
-  "itemMenu.dissForum": "Żona ta’ diskussjoni"
+  "itemMenu.dissForum": "Żona ta’ diskussjoni",
+  "dgConn.user.label": "User"
 }

@@ -771,5 +771,6 @@
   "itemMenu.myAccount": "Súčasný status",
   "itemMenu.suppReg": "in missing labels file",
   "itemMenu.appReg": "in missing labels file",
-  "itemMenu.dissForum": "Diskusná skupina"
+  "itemMenu.dissForum": "Diskusná skupina",
+  "dgConn.user.label": "User"
 }

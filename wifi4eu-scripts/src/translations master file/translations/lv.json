@@ -848,5 +848,6 @@
   "discussionForum.mediationRequest.text":"Ja nosūtīsiet šo pieprasījumu, Eiropas Komisija iejauksies diskusijā, lai visiem iesaistītajiem uzņēmumiem palīdzētu atrisināt problēmu.",
   "discussionForum.mediationRequest.selectText":"Šīs mediācijas procedūras mērķis ir noteikt, kura reģistrācija ir uzskatāma par derīgu.",
   "itemMenu.myAccount":"Pašreizējais statuss",
-  "itemMenu.dissForum":"Diskusiju sadaļa"
+  "itemMenu.dissForum":"Diskusiju sadaļa",
+  "dgConn.user.label": "User"
 }

@@ -825,6 +825,6 @@
   "discussionForum.mediationRequest.text":"Als u de Europese Commissie daarom vraagt, kan zij bemiddelen tussen de verschillende inschrijvers.",
   "discussionForum.mediationRequest.selectText":"Het doel van de bemiddeling is te bepalen welke inschrijving er zal worden ingediend namens het bedrijf.",
   "itemMenu.myAccount":"Huidige status",
-  "itemMenu.dissForum":"Forum"
-
+  "itemMenu.dissForum":"Forum",
+  "dgConn.user.label": "User"
 }

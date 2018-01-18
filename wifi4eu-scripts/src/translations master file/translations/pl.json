@@ -816,5 +816,6 @@
   "supp.landingpage.title": "Witamy na stronie rejestracji w programie WiFi4EU dla firm instalujących Wi-Fi",
   "supp.landingpage.elegibleText3": "Możesz przejść bezpośrednio do portalu WiFi4EU, aby się zarejestrować i określić, na jakim obszarze terytorialnym możesz dostarczyć sprzęt i zapewnić instalację u beneficjentów programu WiFi4EU. ",
   "supp.landingpage.elegibleText2": "Beneficjenci muszą zdefiniować i zamówić instalację lokalnej sieci Wi-Fi zgodnie z mającymi zastosowanie zasadami zamówień publicznych. Aby znaleźć potencjalnych dostawców oferujących usługi na ich obszarze terytorialnym, mogą skorzystać ze sporządzonej do tego celu listy zarejestrowanych przedsiębiorstw. ",
-  "supp.landingpage.elegibleText4": "Rejestracja jest obowiązkowa, jeśli Twoja firma podpisała jako dostawca kontrakt z beneficjentem WiFi4EU. "
+  "supp.landingpage.elegibleText4": "Rejestracja jest obowiązkowa, jeśli Twoja firma podpisała jako dostawca kontrakt z beneficjentem WiFi4EU. ",
+  "dgConn.user.label": "User"
 }

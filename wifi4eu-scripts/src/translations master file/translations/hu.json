@@ -845,5 +845,6 @@
   "discussionForum.mediationRequest.text": "A kérés elküldése esetén az Európai Bizottság segíteni fog a cégeknek a probléma megoldásában.",
   "discussionForum.mediationRequest.selectText": "A közvetítés abban hivatott dönteni, hogy melyik regisztráció érvényes.",
   "itemMenu.myAccount": "Jelenlegi állapot",
-  "itemMenu.dissForum": "Vitafórum"
+  "itemMenu.dissForum": "Vitafórum",
+  "dgConn.user.label": "User"
 }

@@ -770,5 +770,6 @@
   "itemMenu.myAccount":"Trenutni status",
   "itemMenu.suppReg":"in missing labels file",
   "itemMenu.appReg":"in missing labels file",
-  "itemMenu.dissForum":"Razdelek za razpravo"
+  "itemMenu.dissForum":"Razdelek za razpravo",
+  "dgConn.user.label": "User"
 }

@@ -845,5 +845,6 @@
   "discussionForum.mediationRequest.text": "Má sheolann tú an t-iarratas seo, cuirfidh an Coimisiún Eorpach tús le próiseas eadrána ar bun le cabhrú le gach cuideachta an scéal a réiteach.",
   "discussionForum.mediationRequest.selectText": "Is é an cuspóir a bhíonn leis an bpróiseas eadrána a fháil amach cé acu de na clárúcháin atá bailí.",
   "itemMenu.myAccount": "Stádas reatha",
-  "itemMenu.dissForum": "Cúinne plé"
+  "itemMenu.dissForum": "Cúinne plé",
+  "dgConn.user.label": "User"
 }
