@@ -4,10 +4,14 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 
 import java.util.ArrayList;
@@ -24,6 +28,12 @@ public class MunicipalityService {
     @Autowired
     RegistrationService registrationService;
 
+    @Autowired
+    ApplicationService applicationService;
+
+    @Autowired
+    MayorService mayorService;
+
     public List<MunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
     }
@@ -37,9 +47,19 @@ public class MunicipalityService {
         return municipalityMapper.toDTO(municipalityRepository.save(municipalityMapper.toEntity(municipalityDTO)));
     }
 
+    @Transactional
     public MunicipalityDTO deleteMunicipality(int municipalityId) {
         MunicipalityDTO municipalityDTO = municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
         if (municipalityDTO != null) {
+            MayorDTO mayor = mayorService.getMayorByMunicipalityId(municipalityDTO.getId());
+            if (mayor != null) {
+                mayorService.deleteMayor(mayor.getId());
+            }
+            for (RegistrationDTO registration : registrationService.getRegistrationsByMunicipalityId(municipalityDTO.getId())) {
+                for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registration.getId())) {
+                    applicationService.deleteApplication(application.getId());
+                }
+            }
             municipalityRepository.delete(municipalityMapper.toEntity(municipalityDTO));
             return municipalityDTO;
         } else {

@@ -12,18 +12,24 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import wifi4eu.wifi4eu.common.Constant;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.entity.security.TempToken;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.util.MailService;
 
 import java.security.SecureRandom;
@@ -62,6 +68,12 @@ public class UserService {
 
   @Autowired
   PermissionChecker permissionChecker;
+
+  @Autowired
+  MunicipalityService municipalityService;
+
+  @Autowired
+  SupplierService supplierService;
 
   /**
    * The language used in user browser
@@ -139,15 +151,32 @@ public class UserService {
     return userDTO;
   }
 
-  public UserDTO deleteUser(int userId) {
-    UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
-    if (userDTO != null) {
-      userRepository.delete(userMapper.toEntity(userDTO));
-      return userDTO;
-    } else {
-      return null;
+    @Transactional
+    public UserDTO deleteUser(int userId) {
+        UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
+        if (userDTO != null) {
+            switch (userDTO.getType()) {
+                case (int) Constant.ROLE_REPRESENTATIVE:
+                    for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
+                        tempTokenRepository.delete(tempToken);
+                    }
+                    for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
+                        municipalityService.deleteMunicipality(municipality.getId());
+                    }
+                    break;
+                case (int) Constant.ROLE_SUPPLIER:
+                    SupplierDTO supplier = supplierService.getSupplierByUserId(userDTO.getId());
+                    if (supplier != null) {
+                        supplierService.deleteSupplier(supplier.getId());
+                    }
+                    break;
+            }
+            userRepository.delete(userMapper.toEntity(userDTO));
+            return userDTO;
+        } else {
+            return null;
+        }
     }
-  }
 
   public List<UserDTO> getUsersByType(int type) {
     return userMapper.toDTOList(Lists.newArrayList(userRepository.findByType(type)));

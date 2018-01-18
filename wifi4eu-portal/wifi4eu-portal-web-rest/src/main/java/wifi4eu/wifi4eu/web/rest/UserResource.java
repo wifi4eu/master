@@ -171,7 +171,6 @@ public class UserResource {
     public ResponseDTO ecasLogout() {
         try {
             _log.info("[i] ecasLogout");
-            _log.info("[f] ecasLogout");
             return new ResponseDTO(true, userService.getLogoutEnviroment(), null);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
@@ -186,8 +185,7 @@ public class UserResource {
     @ResponseBody
     public ResponseDTO ecasChangePassword() {
         try {
-            _log.info("[i] ecasLogout");
-            _log.info("[f] ecasLogout");
+            _log.info("[i] ecasChangePassword");
             return new ResponseDTO(true, userService.getChangePassword(), null); //permissionChecker.check(RightConstants.USER_TABLE+userId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
