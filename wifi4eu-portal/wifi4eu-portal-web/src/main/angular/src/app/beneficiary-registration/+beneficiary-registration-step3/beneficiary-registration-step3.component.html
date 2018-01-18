@@ -2,7 +2,7 @@
 <div id="step2-title" class="ui-g">
     <div class="ui-g-12 center">
         <div id="component-title">
-            <h3 class="beneficiaryTitle labelModal">{{ 'registration.entity.title' | translate }}</h3>
+            <h3 class="beneficiaryTitle labelModal">{{ 'benefRegistration.registration.entity.title' | translate }}</h3>
         </div>
     </div>
 </div>
@@ -10,7 +10,7 @@
 <div id="step2-instructions" class="ui-g">
     <div class="ui-g-12 ui-md-12 ui-lg-12 center">
         <div id="component-subtitle">
-            <h6>{{ 'registration.step1.instructions' | translate }}</h6>
+            <h6>{{ 'benefRegistration.registration.step1.instructions' | translate }}</h6>
         </div>
     </div>
 </div>
@@ -22,7 +22,7 @@
             <div *ngIf="!multipleMunicipalities">
                 <label>
                     <input type="checkbox" [(ngModel)]="sameDetails" (click)="fillMayorData()">
-                    {{ 'beneficiaryRegistration.sameDetails' | translate }}
+                    {{ 'benefRegistration.beneficiaryRegistration.sameDetails' | translate }}
                 </label>
             </div>
         </div>
@@ -36,7 +36,7 @@
                 <div class="ui-g-2"></div>
                 <div class="ui-g-8">
                     <div>
-                        <label class="label floatLeft" for="name">{{ 'name.label' | translate }}</label>
+                        <label class="label floatLeft" for="name">{{ 'suppRegistration.name.label' | translate }}</label>
                         <input id="name" type="text" class="form-control paddingInput" name="name"
                                [disabled]="imMayor" [(ngModel)]="initialUser.name" required>
                     </div>
@@ -47,7 +47,7 @@
                 <div class="ui-g-2"></div>
                 <div class="ui-g-8">
                     <div class="form-group">
-                        <label class="label floatLeft" for="surname">{{ 'surname.label' | translate }}</label>
+                        <label class="label floatLeft" for="surname">{{ 'suppRegistration.surname.label' | translate }}</label>
                         <input id="surname" type="text" class="form-control paddingInput" name="surname"
                                [disabled]="imMayor" [(ngModel)]="initialUser.surname" required>
                     </div>
@@ -57,13 +57,13 @@
             <div class="ui-g-12">
                 <div class="ui-g-2"></div>
                 <div class="ui-g-4">
-                    <label class="label floatLeft" for="address">{{ 'address.label' | translate }}</label>
+                    <label class="label floatLeft" for="address">{{ 'benefRegistration.address.label' | translate }}</label>
                     <input id="address" type="text" class="form-control paddingInput" name="address"
                            [disabled]="imMayor" [(ngModel)]="initialUser.address" required>
                 </div>
                 <div class="ui-g-2">
                     <label class="label floatLeft" for="addressNum">
-                        {{ 'number.label' | translate }}
+                        {{ 'benefRegistration.number.label' | translate }}
                     </label>
                     <input type="text" class="form-control paddingInput"
                            id="addressNum" name="addressNum" [disabled]="imMayor" [(ngModel)]="initialUser.addressNum"
@@ -75,7 +75,7 @@
                 <div class="ui-g-2"></div>
                 <div class="ui-g-8">
                     <label class="label floatLeft" for="postalCode">
-                        {{ 'postal-code.label' | translate }}
+                        {{ 'shared.postal-code.label' | translate }}
                     </label>
                     <input type="text" class="form-control paddingInput"
                            id="postalCode" name="postalCode" [disabled]="imMayor" [(ngModel)]="initialUser.postalCode"
@@ -89,12 +89,12 @@
                 <div class="ui-g-2"></div>
                 <div class="ui-g-8">
                     <div id="mayor-email">
-                        <label class="label floatLeft">{{ 'email.label' | translate }}</label>
+                        <label class="label floatLeft">{{ 'suppRegistration.email.label' | translate }}</label>
                         <input class="form-control paddingInput" type="email"
                                id="email" name="email" [pattern]="emailPattern"
                                [(ngModel)]="initialUser.email" [disabled]="imMayor"
                                (input)="checkEmailsMatch()" required>
-                        <label class="field-desc" style="margin-top: 10px;color: gray;">{{ 'email.fielddesc' | translate
+                        <label class="field-desc" style="margin-top: 10px;color: gray;">{{ 'benefRegistration.email.fielddesc' | translate
                             }}</label>
                     </div>
 
@@ -106,7 +106,7 @@
                 <div class="ui-g-8">
                     <!-- Mayor confirmation email -->
                     <div id="mayor-confirm-email">
-                        <label class="label floatLeft">{{ 'confirmemail.label' | translate }}</label>
+                        <label class="label floatLeft">{{ 'confirmsuppRegistration.email.label' | translate }}</label>
                         <input class="form-control paddingInput {{css_class_email}}"
                                id="repeatEmail" name="repeatEmail"
                                [(ngModel)]="repeatEmail" [disabled]="imMayor"
@@ -121,13 +121,13 @@
             <div class="ui-lg-3"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
                 <button type="button" class="btn btn-primary cancel-button" (click)="back()">
-                    {{ 'back.button' | translate }}
+                    {{ 'shared.back.button' | translate }}
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
                 <button type="submit" class="btn btn-primary publish-button"
                         [disabled]="!imMayor && (!entityForm.valid || !userEmailMatches)">
-                    {{ 'next.button' | translate }}
+                    {{ 'shared.next.button' | translate }}
                 </button>
             </div>
             <div class="ui-lg-3"></div>

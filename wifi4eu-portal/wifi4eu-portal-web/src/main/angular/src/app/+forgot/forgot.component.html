@@ -5,10 +5,10 @@
             <div class="ui-g-12 ui-md-12 ui-lg-6">
                 <div class="form-group">
 
-                    <p class="h2 h2-title center beneficiaryTitle">{{ 'forgot.title' | translate}}</p>
+                    <p class="h2 h2-title center beneficiaryTitle">{{ 'shared.forgot.title' | translate}}</p>
                     <p class="text-align-center">{{ 'email.forgot' | translate}}</p>
 
-                    <label for="email" class="label floatLeft labelForgot">{{ 'email.label' | translate }}</label>
+                    <label for="email" class="label floatLeft labelForgot">{{ 'suppRegistration.email.label' | translate }}</label>
                     <input type="email" id="email" class="form-control paddingInput"
                            [(ngModel)]="forgotDetails.email" name="email"
                            ngcontrol="forgotDetails.email" #email="ngModel"
@@ -23,11 +23,11 @@
         <div class="form-group ui-g">
             <div class="ui-lg-3"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button>
+                <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' | translate }}</button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                 <button type="submit" class="btn btn-primary publish-button" [disabled]="!emailForm.form.valid">
-                    {{ 'confirm.button' | translate }}
+                    {{ 'suppRegistration.confirm.button' | translate }}
                 </button>
             </div>
             <div class="ui-lg-3"></div>
@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <p class="h2 h2-title center">{{ 'select.newPassword' | translate }}</p>
                     <p class="text-align-center">{{ 'select.password' | translate }}</p>
-                    <label for="password" class="label floatLeft labelForgot">{{ 'password.label' | translate }}</label>
+                    <label for="password" class="label floatLeft labelForgot">{{ 'shared.password.label' | translate }}</label>
                     <input type="password" [(ngModel)]="forgotDetails.password" id="password"
                            class="form-control  paddingInput" name="password"
                            ngcontrol="forgotDetails.password" #password="ngModel"
@@ -61,11 +61,11 @@
         <div class="form-group ui-g">
             <div class="ui-lg-3"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button>
+                <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' | translate }}</button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                 <button type="submit" class="btn btn-primary publish-button" [disabled]="!forgotForm.form.valid || !checkPassword()">
-                    {{ 'confirm.button' | translate }}
+                    {{ 'suppRegistration.confirm.button' | translate }}
                 </button>
             </div>
             <div class="ui-lg-3"></div>

@@ -38,7 +38,7 @@ export class LoginComponent {
                 this.displayConfirmingData = false;
                 if (response.success) {
                     let translatedString = 'Login successful. Welcome to WiFi4EU!';
-                    this.translateService.get('login.success').subscribe(
+                    this.translateService.get('shared.login.success').subscribe(
                         (translation: string) => {
                             translatedString = translation;
                         }
@@ -67,7 +67,7 @@ export class LoginComponent {
                     }
                 } else {
                     let translatedString = 'Could not login with these credentials. Make sure you typed your password correctly.';
-                    this.translateService.get('login.error.wrongcredentials').subscribe(
+                    this.translateService.get('shared.login.error.wrongcredentials').subscribe(
                         (translation: string) => {
                             translatedString = translation;
                         }
@@ -81,7 +81,7 @@ export class LoginComponent {
             }, error => {
                 this.displayConfirmingData = false;
                 let translatedString = 'Could not login. Please, try again later.';
-                this.translateService.get('login.error').subscribe(
+                this.translateService.get('shared.login.error').subscribe(
                     (translation: string) => {
                         translatedString = translation;
                     }

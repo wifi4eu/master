@@ -7,7 +7,7 @@ import {UxAccordionBoxComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons"
     <div *ngIf=!isExpanded class="box accordion-box" [class.expanded]="isExpanded" (click)="toggle()">
         <div class="header">
             <span class="title" [style.padding]="rightSide ? '0.65rem 1rem 0 0' : '0.65rem 0 0 1rem'"
-            [style.float]="rightSide ? 'right' : 'left'">{{'expand.label' | translate}}
+            [style.float]="rightSide ? 'right' : 'left'">{{'shared.expand.label' | translate}}
             <i [class]="getExpandHideClass()" style="font-size: 15px; margin-left: 3px;"></i></span>
         </div>
         <div class="content">
@@ -17,7 +17,7 @@ import {UxAccordionBoxComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons"
     <div *ngIf=isExpanded class="box accordion-box" [class.expanded]="isExpanded" (click)="toggle()">
         <div class="header">
             <span class="title" [style.padding]="rightSide ? '0.65rem 1rem 0 0' : '0.65rem 0 0 1rem'"
-            [style.float]="rightSide ? 'right' : 'left'">{{'hide.label' | translate}}
+            [style.float]="rightSide ? 'right' : 'left'">{{'shared.hide.label' | translate}}
             <i [class]="getExpandHideClass()" style="font-size: 15px; margin-left: 3px;"></i></span>
         </div>
         <div class="content">

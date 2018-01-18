@@ -42,4 +42,8 @@ public class ApplicationService {
     public List<ApplicationDTO> getApplicationsBySupplierId(int supplierId) {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findBySupplierId(supplierId)));
     }
+
+    public ApplicationDTO getApplicationByCallIdAndRegistrationId(int callId, int registrationId) {
+        return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
+    }
 }

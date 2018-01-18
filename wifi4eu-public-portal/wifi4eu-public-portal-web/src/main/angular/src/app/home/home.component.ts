@@ -62,7 +62,7 @@ export class HomeComponent {
                 this.currentCall = calls[0];
                 this.showTimeline = true;
 
-
+                
                 var date = new Date(this.currentCall.startDate);
                 date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 
@@ -78,6 +78,7 @@ export class HomeComponent {
     }
 
     checkIfSelected() {
+      this.showTimeline = false;
         this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
             (entities: MunicipalityDTO[]) => {
                 if (entities.length > 0) {
@@ -91,7 +92,7 @@ export class HomeComponent {
                 console.log(error);
                 this.supplierInfo = null;
                 this.voucherCompetitionState = -1;
-                this.errorCause = "supplierportal.couldntgetselectedmunicipalities";
+                this.errorCause = "benefPortal.supplierportal.couldntgetselectedmunicipalities";
             }
         );
     }

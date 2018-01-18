@@ -80,11 +80,13 @@ export class DiscussionComponent {
                                             if (this.municipality.id != municipalities[i].id) {
                                                 this.registrationApi.getRegistrationsByMunicipalityId(municipalities[i].id).subscribe(
                                                     (registrations: RegistrationDTOBase[]) => {
-                                                        this.municipalities.push(municipalities[i]);
-                                                        this.messageAuthors.push(registrations[0]);
-                                                        this.counter++;
-                                                        if (this.counter >= this.municipalities.length) {
-                                                            this.hasAuthor = true;
+                                                        if (registrations.length > 0) {
+                                                            this.municipalities.push(municipalities[i]);
+                                                            this.messageAuthors.push(registrations[0]);
+                                                            this.counter++;
+                                                            if (this.counter >= this.municipalities.length) {
+                                                                this.hasAuthor = true;
+                                                            }
                                                         }
                                                     }, error => {
                                                         console.log(error);
@@ -105,11 +107,11 @@ export class DiscussionComponent {
                     }
                 );
             } else {
-                this.sharedService.growlTranslation('You are not allowed to view this page.', 'error.notallowed', 'warn');
+                this.sharedService.growlTranslation('You are not allowed to view this page.', 'shared.error.notallowed', 'warn');
                 this.router.navigateByUrl('/home');
             }
         } else {
-            this.sharedService.growlTranslation('You are not logged in!', 'error.notloggedin', 'warn');
+            this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
     }
@@ -131,13 +133,13 @@ export class DiscussionComponent {
                     this.thread.messages.push(response.data);
                     // this.messageAuthors.push(this.user);
                     this.hasMessages = true;
-                    this.sharedService.growlTranslation('The message was successfully sent!', 'thread.message.success', 'success');
+                    this.sharedService.growlTranslation('The message was successfully sent!', 'discussionForum.thread.message.success', 'success');
                 } else {
-                    this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'thread.message.error', 'error');
+                    this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
                 }
                 this.displayMessage = false;
             }, error => {
-                this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'thread.message.error', 'error');
+                this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
                 this.displayMessage = false;
             }
         );
@@ -154,10 +156,10 @@ export class DiscussionComponent {
                     this.registrationApi.createRegistration(registration).subscribe(
                         (data: ResponseDTOBase) => {
                             if (data.success) {
-                                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussion.growl', 'success');
+                                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussionForum.discussion.growl', 'success');
                             }
                         }, error => {
-                            this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussion.growl.error', 'error');
+                            this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussionForum.discussion.growl.error', 'error');
                         }
                     );
                 }
@@ -176,13 +178,13 @@ export class DiscussionComponent {
                             if (data.success) {
                                 registrationCount++;
                                 if (registrationCount >= registrations.length) {
-                                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
+                                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
                                     this.sharedService.logout();
                                     this.router.navigateByUrl('/home');
                                 }
                             }
                         }, error => {
-                            this.sharedService.growlTranslation('An error occurred and your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
+                            this.sharedService.growlTranslation('An error occurred and your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
                         }
                     );
                 }

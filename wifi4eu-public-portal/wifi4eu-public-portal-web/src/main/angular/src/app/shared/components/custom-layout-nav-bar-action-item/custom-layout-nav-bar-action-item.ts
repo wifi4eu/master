@@ -53,7 +53,7 @@ import {UxLayoutNavBarActionsComponent} from "@ec-digit-uxatec/eui-angular2-ux-c
                     <ul *ngIf="isShowHome">
                         <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
                             <a [routerLink]="homeUrl">
-                                {{ 'home.label' | translate }}
+                                {{ 'shared.home.label' | translate }}
                             </a>
                         </li>
                     </ul>

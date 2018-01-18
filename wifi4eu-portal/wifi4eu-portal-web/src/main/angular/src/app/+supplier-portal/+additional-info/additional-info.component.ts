@@ -37,7 +37,7 @@ export class AdditionalInfoComponent {
                 );
             }
         } else {
-            this.sharedService.growlTranslation('You are not logged in!', 'error.notloggedin', 'warn');
+            this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
     }
@@ -45,7 +45,7 @@ export class AdditionalInfoComponent {
     private uploadFile(event: any, index: number = 0) {
         if (event.target.files[0]) {
             if (event.target.files[0].size > 1024000) {
-                this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'file.toobig.maxsize', 'warn', {size: '1 MB'});
+                this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'benefPortal.file.toobig.maxsize', 'warn', {size: '1 MB'});
                 this.removeFile(index);
                 return;
             }
@@ -95,14 +95,14 @@ export class AdditionalInfoComponent {
             (response: ResponseDTOBase) => {
                 this.displayConfirmingData = false;
                 if (response.success) {
-                    this.sharedService.growlTranslation('Your registration was successfully updated.', 'registration.update.success', 'success');
+                    this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
                     this.supplier = response.data;
                 } else {
-                    this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'registration.update.error', 'error');
+                    this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
                 }
             }, error => {
                 this.displayConfirmingData = false;
-                this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'registration.update.error', 'error');
+                this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
             }
         );
     }
