@@ -47,7 +47,7 @@
   "home.part3.title.1": "You are a Wi-Fi installation company?",
   "home.part3.text2": "You are invited to register online and indicate the areas where you can provide your services. The list of registered companies will be published online; this facilitates municipalities to be aware of potential suppliers in their area. ",
   "home.part4.subtitle": "Please visit following links form more information about the project",
-  "home.footer.update": "Last Update {{ActualDate}} v1.1.2",
+  "home.footer.update": "Last Update {{versionDate}} v{{version}}",
   "home.footer.top": " | Top",
   "shared.password.label": "New password",
   "shared.forgot.title": "Forgot password",

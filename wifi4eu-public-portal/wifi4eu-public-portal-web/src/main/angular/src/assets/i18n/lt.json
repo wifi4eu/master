@@ -60,7 +60,7 @@
   "home.part4.link2": "Europos gigabitinės visuomenės junglumo strategija",
   "home.part4.link3": "Reglamento dėl interneto ryšio vietos bendruomenėse rėmimo („WiFi4EU“) pasiūlymas",
   "home.part4.link4": "Pranešimas „Bringing it all together in WiFi4EU“ konferencijoje „B-DAY: Going Giga“ (2016 m. lapkričio 15 d.)",
-  "home.footer.update": "Atnaujinta {{ActualDate}} v1.1.0",
+  "home.footer.update": "Atnaujinta {{versionDate}} v{{version}}",
   "home.footer.top": " | Į puslapio pradžią",
   "code.label": "Kodas",
   "code.required": "Reikia nurodyti kodą",

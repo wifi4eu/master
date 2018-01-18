@@ -60,7 +60,7 @@
   "home.part4.link2": "Sajtóközlemény: Összekapcsoltság az európai gigabitalapú társadalom szolgálatában",
   "home.part4.link3": "Rendeletjavaslat: Az internetkapcsolat helyi közösségekben és közösségi terekben történő előmozdításáról (Wifi4EU rendelet)",
   "home.part4.link4": "A 2016. november 15-i „B-DAY: Going Giga” konferencián tartott „Bringing it all together in WiFi4EU” című előadás anyaga",
-  "home.footer.update": "Utolsó frissítés dátuma: {{ActualDate}} v1.1.0",
+  "home.footer.update": "Utolsó frissítés dátuma: {{versionDate}} v{{version}}",
   "home.footer.top": " | Vissza az oldal tetejére",
   "code.label": "Kód",
   "code.required": "A kód megadása kötelező",

@@ -60,7 +60,7 @@
   "home.part4.link2": "Strategia in materia di connettività per una società dei Gigabit europea",
   "home.part4.link3": "Proposta di regolamento sulla promozione della connettività internet nelle comunità locali (WiFi4EU)",
   "home.part4.link4": "“Bringing it all together in WiFi4EU” - presentazione in occasione del B-DAY: Going Giga, 15 novembre 2016",
-  "home.footer.update": "Ultimo aggiornamento {{ActualDate}} v1.1.0",
+  "home.footer.update": "Ultimo aggiornamento {{versionDate}} v{{version}}",
   "home.footer.top": " | Inizio pagina",
   "code.label": "Codice",
   "code.required": "Il codice è necessario",

@@ -60,7 +60,7 @@
   "home.part4.link2": "Savienojamības stratēģija ceļā uz Eiropas Gigabitu sabiedrību",
   "home.part4.link3": "Priekšlikums Regulai attiecībā uz interneta savienojamības veicināšanu vietējās kopienās (WiFi4EU)",
   "home.part4.link4": "“Bringing it all together in WiFi4EU” – prezentācija no pasākuma “B-DAY: Going Giga” (2016. g. 15. nov.)",
-  "home.footer.update": "Pēdējais atjauninājums: {{ActualDate}} v1.1.0",
+  "home.footer.update": "Pēdējais atjauninājums: {{versionDate}} v{{version}}",
   "home.footer.top": " | Atpakaļ uz sākumu",
   "code.label": "Kods",
   "code.required": "Jānorāda kods",

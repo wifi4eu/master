@@ -60,7 +60,7 @@
   "home.part4.link2": "Persbericht over connectiviteit voor een Europese gigabitmaatschappij",
   "home.part4.link3": "Voorstel voor een verordening ter bevordering van internettoegang in lokale gemeenschappen (WiFi4EU)",
   "home.part4.link4": "\"Bringing it all together in WiFi4EU\" –- Presentatie van de B-DAY: Going Giga, 15 november 2016",
-  "home.footer.update": "Laatste update: {{ActualDate}} v1.1.0",
+  "home.footer.update": "Laatste update: {{versionDate}} v{{version}}",
   "home.footer.top": " | Naar boven",
   "code.label": "Code",
   "code.required": "Code ontbreekt",

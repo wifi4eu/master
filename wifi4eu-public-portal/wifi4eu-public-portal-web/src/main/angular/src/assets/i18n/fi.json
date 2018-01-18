@@ -60,7 +60,7 @@
   "home.part4.link2": "Verkkoyhteysstrategia eurooppalaista gigabittiyhteiskuntaa varten",
   "home.part4.link3": "Asetusehdotus paikallisyhteisöjen internetyhteyksien parantamiseksi (WiFi4EU)",
   "home.part4.link4": "Bringing it all together in WiFi4EU' - B-DAY-konferenssin esitys: Going Giga, 15.11.2016",
-  "home.footer.update": "Päivitetty viimeksi {{ActualDate}} v1.1.0",
+  "home.footer.update": "Päivitetty viimeksi {{versionDate}} v{{version}}",
   "home.footer.top": " | sivun alkuun",
   "code.label": "Koodi",
   "code.required": "Koodi on pakollinen",

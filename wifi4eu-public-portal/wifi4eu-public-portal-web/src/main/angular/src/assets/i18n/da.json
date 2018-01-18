@@ -60,7 +60,7 @@
   "home.part4.link2": "Strategi for konnektivitet i et europæisk gigabitsamfund",
   "home.part4.link3": "Forslag til forordning om fremme af internetforbindelser i lokalsamfund (WiFi4EU)",
   "home.part4.link4": "“Bringing it all together in WiFi4EU” - præsentation på B-DAY: Going Giga, den 15. november 2016",
-  "home.footer.update": "Seneste opdatering: {{ActualDate}} v1.1.0",
+  "home.footer.update": "Seneste opdatering: {{versionDate}} v{{version}}",
   "home.footer.top": " | tilbage til toppen",
   "code.label": "Kode",
   "code.required": "Kode er påkrævet",

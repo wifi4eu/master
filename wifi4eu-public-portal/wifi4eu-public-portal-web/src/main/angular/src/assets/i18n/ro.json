@@ -76,7 +76,7 @@
   "home.part4.link2": "Strategia privind conectivitatea pentru o societate europeană a gigabiților",
   "home.part4.link3": "Propunere de regulament privind promovarea conectivității la internet în comunitățile locale (WiFi4EU)",
   "home.part4.link4": "“Bringing it all together in WiFi4EU” - prezentare făcută în cadrul evenimentului „B-DAY: Going Giga” (15 noiembrie 2016)",
-  "home.footer.update": "Ultima actualizare: 11.5.2017",
+  "home.footer.update": "Ultima actualizare: {{versionDate}} v{{version}}",
   "home.footer.top": " | înapoi la începutul paginii",
   "code.label": "Cod",
   "code.required": "Codul este obligatoriu",

@@ -59,7 +59,7 @@
   "home.part4.link2": "Στρατηγική συνδεσιμότητας για μια «Ευρωπαϊκή Κοινωνία των Gigabit»",
   "home.part4.link3": "Πρόταση κανονισμού για την προώθηση της συνδεσιμότητας τοπικών κοινοτήτων με το διαδίκτυο (WiFi4EU)",
   "home.part4.link4": "«Bringing it all together in WiFi4EU» - παρουσίαση από την B-DAY: Going Giga, 15 Νοεμβρίου 2016",
-  "home.footer.update": "Τελευταία επικαιροποίηση {{ActualDate}} v1.1.0",
+  "home.footer.update": "Τελευταία επικαιροποίηση {{versionDate}} v{{version}}",
   "home.footer.top": " | αρχή της σελίδας",
   "code.label": "Κωδικός",
   "code.required": "Απαιτείται κωδικός",

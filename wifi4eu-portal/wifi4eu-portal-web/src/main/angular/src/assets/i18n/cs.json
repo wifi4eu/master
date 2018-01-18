@@ -59,7 +59,7 @@
   "home.part4.link2": "Strategie na propojení evropské gigabitové společnosti",
   "home.part4.link3": "Návrh nařízení o podpoře připojení k internetu v místních komunitách (WiFi4EU)",
   "home.part4.link4": "„Bringing it all together in WiFi4EU“ - prezentace: „Going Giga“, 15. listopadu 2016",
-  "home.footer.update": "Poslední aktualizace {{ActualDate}} v1.1.0",
+  "home.footer.update": "Poslední aktualizace {{versionDate}} v{{version}}",
   "home.footer.top": " | Zpět na začátek",
   "code.label": "Kód",
   "code.required": "Je nutné zadat kód",

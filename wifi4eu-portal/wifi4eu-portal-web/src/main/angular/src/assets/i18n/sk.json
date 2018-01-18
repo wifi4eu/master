@@ -76,7 +76,7 @@
   "home.part4.link2": "Stratégia o pripojení pre európsku gigabitovú spoločnosť",
   "home.part4.link3": "Navrhované nariadenie o podpore internetového pripojenia v miestnych komunitách (WiFi4EU)",
   "home.part4.link4": "„Bringing it all together in WiFi4EU“ – prezentácia z podujatia B-DAY: Going Giga, 15. novembra 2016",
-  "home.footer.update": "Posledná aktualizácia: 11. 05. 2017",
+  "home.footer.update": "Posledná aktualizácia: {{versionDate}} v{{version}}",
   "home.footer.top": " | Na začiatok",
   "code.label": "Kód",
   "code.required": "Uveďte kód",
