@@ -97,4 +97,8 @@ export class HomeComponent {
         );
     }
 
+    private goToTop() {
+      window.scrollTo(0, 0);
+  }
+
 }
