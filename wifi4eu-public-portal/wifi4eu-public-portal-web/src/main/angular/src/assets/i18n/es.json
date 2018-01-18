@@ -166,6 +166,7 @@
   "logo.required": "Logo es obligatorio",
   "name.place": "Jonh",
   "surname.place": "Doe",
+  "benefPortal.timelineComponentTitle": "Tiempo restante antes de la publicación de la convocatoria:",
   "prefix.place": "+34",
   "phone.place": "123456789",
   "email.place": "email@example.com",
@@ -306,7 +307,7 @@
   "discussionForum.beneficiary.goDiscussion": "Ir a la discusión",
   "benefPortal.beneficiary.goDiscussionText": "Uno o más solicitantes aplicaron al mismo Municipio que usted. Por favor, contacte a las otras partes para resolver el problema.",
   "discussionForum.beneficiary.registration1": "Registro {{selfRegistration}} (usted)",
-  "discussionForum.beneficiary.registrationNumber": "Registro # ",
+  "discussionForum.beneficiary.registrationNumber": "Registro ",
   "benefPortal.beneficiary.deleteApplication.Success": "Sus solicitudes han sido eliminadas correctamente.",
   "benefPortal.beneficiary.deleteApplication.Failure": "Ocurrió un error y sus solicitudes no se han podido eliminar.",
   "discussionForum.discussion.growl.error": "Ocurrió un error y no se pudo enviar su petición de mediación. Por favor, vuelva a intentarlo más tarde.",
@@ -388,5 +389,10 @@
   "supp.landingpage.elegibleText2": "Los beneficiarios deben definir y adjudicar sus proyectos de instalación local de wifi de conformidad con las normas aplicables de contratación pública y pueden consultar la lista de las empresas inscritas para identificar los suministradores potenciales en su zona. ",
   "supp.landingpage.elegibleText4": "La inscripción es obligatoria para las empresas contratadas por un beneficiario de WiFi4EU. ",
   "itemMenu.appReg": "Registro de alcalde",
-  "itemMenu.suppReg": "Registro de proveedor"
+  "itemMenu.suppReg": "Registro de proveedor",
+  "supp.landingpage.secondTitle": "¿Eres elegible para aplicar?",
+  "supp.landingpage.yes": "Sí",
+  "supp.landingpage.no": "No",
+  "itemMenu.appPortal" : "Portal solicitante",
+  "supp.landingpage.proceed": "¿Le gustaría continuar con el proceso de registro?"
 }

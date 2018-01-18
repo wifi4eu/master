@@ -34,7 +34,8 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label floatLeft" for="contactSurname">{{ 'suppRegistration.surname.label' | translate }}</label>
+                <label class="label floatLeft" for="contactSurname">{{ 'suppRegistration.surname.label' | translate
+                    }}</label>
                 <input class="form-control paddingInput" type="text"
                        id="contactSurname" name="contactSurname" [(ngModel)]="supplier.contactSurname"
                        #contactSurname="ngModel" required>
@@ -63,7 +64,8 @@
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-3">
             <div class="form-group">
-                <label class="label floatLeft" for="contactPhoneNumber">{{ 'suppRegistration.phone.number' | translate }}</label>
+                <label class="label floatLeft" for="contactPhoneNumber">{{ 'suppRegistration.phone.number' | translate
+                    }}</label>
                 <input class="form-control paddingInput" type="text"
                        id="contactPhoneNumber" name="contactPhoneNumber" pattern="[0-9]{1,}"
                        [(ngModel)]="supplier.contactPhoneNumber" #contactPhoneNumber="ngModel" required>
@@ -79,7 +81,8 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label floatLeft" for="contactEmail">{{ 'suppRegistration.email.label' | translate }}</label>
+                <label class="label floatLeft" for="contactEmail">{{ 'suppRegistration.email.label' | translate
+                    }}</label>
                 <input class="form-control paddingInput" type="email" id="contactEmail" name="contactEmail"
                        [(ngModel)]="supplier.contactEmail" #contactEmail="ngModel"
                        (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
@@ -94,12 +97,13 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label floatLeft" for="confirmEmail">{{ 'confirmsuppRegistration.email.label' | translate }}</label>
+                <label class="label floatLeft" for="confirmEmail">{{ 'suppRegistration.confirmemail.label' | translate
+                    }}</label>
                 <input class="form-control paddingInput" type="email" id="confirmEmail" name="confirmEmail"
                        [(ngModel)]="confirmEmailField" #confirmEmail="ngModel" (paste)="preventPaste()"
                        (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
                 <div class="alert alert-danger" [hidden]="confirmEmail.valid || confirmEmail.pristine">
-                    {{'warning.emailRequired' | translate}}
+                    {{'suppRegistration.warning.emailRequired' | translate}}
                 </div>
                 <div [hidden]="emailMatches || confirmEmail.pristine" class="alert alert-info">
                     {{'suppRegistration.warning.emailMatch' | translate}}
@@ -111,7 +115,8 @@
     <div class="form-group ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="button" class="btn btn-primary cancel-button" (click)="back()">{{ 'shared.back.button' | translate
+            <button type="button" class="btn btn-primary cancel-button" (click)="back()">{{ 'shared.back.button' |
+                translate
                 }}
             </button>
         </div>

@@ -297,6 +297,7 @@
   "benefPortal.voucher.step1": "Validate your registration",
   "benefPortal.voucher.step2": "Wait for the call to open",
   "benefPortal.voucher.step4": "Wait for selection",
+  "benefRegistration.number.label": "Number",
   "benefPortal.timelineComponentTitle": "Remaining time for the launch of the call:",
   "benefPortal.voucher.step3": "Apply",
   "helpdesk.helpdeskform.clickhere.label1": "Problems with your registration? Please ",
