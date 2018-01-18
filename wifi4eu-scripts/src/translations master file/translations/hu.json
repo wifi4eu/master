@@ -331,7 +331,7 @@
   "benefRegistration.municipalityDetails.title": "A település adatai",
   "benefRegistration.municipalityDetails.text": "Kérjük, adja meg az Ön által képviselt település(ek) adatait.",
   "shared.municipality.label": "Település",
-  "benefRegistration.townHall.address": "Hivatalos cím                  Házszám",
+  "benefRegistration.townHall.address": "Hivatalos cím",
   "registration.legalRepresentative": "Jogi képviselő ",
   "registration.authorisedPerson": "A település nevében aláírásra jogosult személy, jellemzően a település polgármestere",
   "benefRegistration.nameMayor.label": "Név",
