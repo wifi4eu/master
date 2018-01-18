@@ -94,11 +94,16 @@ export class VoucherComponent {
     }
 
     private applyForVoucher() {
-        if (this.registrations.length == 1) {
-            this.sendApplication(0);
-        } else {
-            this.displayRegistrationSelect = true;
+        for (let i = 0; i < this.registrations.length; i++) {
+            if (!this.applications[i]) {
+                this.sendApplication(i);
+            }
         }
+        // if (this.registrations.length == 1) {
+        //     this.sendApplication(0);
+        // } else {
+        //     this.displayRegistrationSelect = true;
+        // }
     }
 
     private sendApplication(registrationNumber: number) {
