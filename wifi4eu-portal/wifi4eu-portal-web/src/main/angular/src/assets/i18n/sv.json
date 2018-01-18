@@ -373,4 +373,5 @@
   "submitregistration.failure.title": "Något gick fel vid registreringen.",
   "submitregistration.failure.text.part1": "Försök igen eller kontakta helpdesk.",
   "backtohome.button": "Tillbaka till förstasidan",
+  "dgConn.user.label": "User"
 }

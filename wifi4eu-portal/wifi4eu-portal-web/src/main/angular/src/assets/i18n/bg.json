@@ -424,5 +424,6 @@
   "itemMenu.myAccount": "Настоящ статус",
   "itemMenu.suppReg": "Регистрация на дружество за инсталиране на WiFi",
   "itemMenu.appReg": "Регистрация на община",
-  "itemMenu.dissForum": "Дискусионен форум"
+  "itemMenu.dissForum": "Дискусионен форум",
+  "dgConn.user.label": "User"
 }

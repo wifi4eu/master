@@ -1,7 +1,7 @@
 <div class="clearfix"></div>
 <div class="jumbotron mb-3" style="background-color: transparent;">
   <div class="container center">
-    <p class="center beneficiaryTitle">{{ 'duplicatedSuppliers.title' | translate }}</p>
+    <p class="center beneficiaryTitle">{{ 'dgConn.duplicatedSuppliers.title' | translate }}</p>
   </div>
 </div>
 <div class="container center ">
@@ -14,7 +14,7 @@
           <span class="input-group-addon">
             <i class="fa fa-search" aria-hidden="true"></i>
           </span>
-          <input type="text" [(ngModel)]="inputSearch" (keyup.enter)="filterData(inputSearch)" class="form-control" aria-label="Search in list of suppliers" placeholder="Search in list of suppliers">
+          <input type="text" [(ngModel)]="inputSearch" (keyup.enter)="filterData(inputSearch)" class="form-control">
           <span class="input-group-btn">
             <button class="btn btn-primary" (click)="filterData(inputSearch)" type="button">Search</button>
           </span>
@@ -24,23 +24,25 @@
   </div>
 
   <div class="panel-dg">
-    <div class="panel-dg-header">
-      <span class="header-label">List of suppliers</span>
-    </div>
     <p-dataTable [editable]="true" [responsive]="true" sortMode="multiple" [value]="customUserSupplierArray" [rows]="10" [paginator]="true">
-      <p-column field="supplier.name" styleClass="text-center" [sortable]="true" header="Name"></p-column>
-      <p-column field="supplier.address" styleClass="text-center" [sortable]="true" header="Address"></p-column>
-      <p-column header="Phone number" styleClass="text-center">
+      <p-column field="supplier.name" styleClass="text-center" [sortable]="true" header="{{ 'suppRegistration.name.label' | translate }}"></p-column>
+      <p-column field="supplier.address" styleClass="text-center" [sortable]="true" header="{{ 'suppRegistration.physical-address.label' | translate }}"></p-column>
+      <p-column header="{{ 'suppRegistration.phone.number' | translate }}" styleClass="text-center">
         <ng-template let-customSupplier="rowData" pTemplate="body">
           <span>{{ customSupplier.supplier.contactPhonePrefix }} </span>
           <span>{{ customSupplier.supplier.contactPhoneNumber }}</span>
         </ng-template>
       </p-column>
-      <p-column field="supplier.website" styleClass="text-center" header="Website" [sortable]="true"></p-column>
-      <p-column field="supplier.vat" styleClass="text-center" header="Vat" [sortable]="true"></p-column>
-      <p-column field="supplier.bic" styleClass="text-center" header="Bic" [sortable]="true"></p-column>
-      <p-column field="user.name" styleClass="text-center" [sortable]="true" header="User name"></p-column>
-      <p-column field="user.surname" styleClass="text-center" [sortable]="true" header="User surname"></p-column>
+      <!-- <p-column field="supplier.website" styleClass="text-center" header="Website" [sortable]="true"></p-column> -->
+      <p-column field="supplier.vat" styleClass="text-center" header="{{ 'suppRegistration.vat.label' | translate}}" [sortable]="true"></p-column>
+      <p-column field="supplier.bic" styleClass="text-center" header="{{ 'suppRegistration.bic.label' | translate }}" [sortable]="true"></p-column>
+      <p-column field="user.name" styleClass="text-center" [sortable]="true" header="{{ 'dgConn.user.label' | translate }}">
+        <ng-template let-customSupplier="rowData" pTemplate="body">
+          <span>{{ customSupplier.user.name }} </span>
+          <span>{{ customSupplier.user.surname }}</span>
+        </ng-template>
+      </p-column>
+     <!--  <p-column field="user.surname" styleClass="text-center" [sortable]="true" header="User surname"></p-column> -->
     </p-dataTable>
   </div>
 </div>

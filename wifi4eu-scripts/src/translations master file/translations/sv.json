@@ -768,5 +768,6 @@
   "mediationRequest.text": "Skicka denna begäran om du vill att Europeiska kommissionen ska hjälpa dig och de andra användarna att lösa problemet.",
   "mediationRequest.selectText": "Kommissionen kommer att hjälpa er att fastställa vilken registrering som gäller.",
   "itemMenu.myAccount": "Aktuell status",
-  "itemMenu.dissForum": "Forum"
+  "itemMenu.dissForum": "Forum",
+  "dgConn.user.label": "User"
 }

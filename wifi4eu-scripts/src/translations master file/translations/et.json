@@ -846,5 +846,6 @@
   "mediationRequest.text": "Kui saadate selle taotluse, sekkub vestlusesse Euroopa Komisjon, et aidata ettevõtjatel olukord lahendada.",
   "mediationRequest.selectText": "Vahendusmenetluse eesmärk on teha kindlaks, milline registreeringutest on kehtiv.",
   "itemMenu.myAccount": "Praegune olek",
-  "itemMenu.dissForum": "Vestlused"
+  "itemMenu.dissForum": "Vestlused",
+  "dgConn.user.label": "User"
 }

@@ -916,5 +916,6 @@
   "voucher.step3": "Ansøg",
   "voucher.ableApply": "Så snart indkaldelsen af ansøgninger er åben, kan du sende din ansøgning. For at gøre det skal du logge ind med din EU Login-konto og sende din ansøgning om en WiFi4EU-kupon.",
   "voucher.firstServed": "Bemærk, at udvælgelsen sker efter først til mølle-princippet og efter kriterier, der skal sikre en geografisk balance, som beskrevet i CEF-arbejdsprogrammet for 2017.",
-  "helpdeskform.clickhere.label1": "Problemer med registreringen? Klik her for at få adgang til vores helpdesk."
+  "helpdeskform.clickhere.label1": "Problemer med registreringen? Klik her for at få adgang til vores helpdesk.",
+  "dgConn.user.label": "User"
 }

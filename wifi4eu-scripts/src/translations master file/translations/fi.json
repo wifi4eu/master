@@ -847,5 +847,6 @@
   "mediationRequest.text": "Jos lähetät tämän pyynnön, Euroopan komissio osallistuu keskusteluun auttaakseen yrityksiä ratkaisun löytämisessä.",
   "mediationRequest.selectText": "Sovittelun tarkoituksena on määrittää, mikä yrityksen rekisteröinneistä voidaan kirjata.",
   "itemMenu.myAccount": "Tämänhetkinen tilanne",
-  "itemMenu.dissForum": "Keskusteluosio"
+  "itemMenu.dissForum": "Keskusteluosio",
+  "dgConn.user.label": "User"
 }

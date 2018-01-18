@@ -448,5 +448,6 @@
   "submit.application": "B’dan jien nikkonferma li l-informazzjoni pprovduta fuq dan il-portal u b’konnessjoni mal-iskema WiFi4EU hija vera, kompluta u preċiża. B’dan qed ngħaraf li l-Kummissjoni Ewropea jew kwalunkwe Aġenzija Ewropea delegata tista’ tivverifika l-informazzjoni li hawn stabbilita minn sorsi aċċessibbli skont il-liġi.",
   "submitregistration.failure.title": "Xi ħaġa marret ħażin fir-reġistrazzjoni.",
   "submitregistration.failure.text.part1": "Jekk jogħġbok erġa’ pprova jew ikkonsulta l-Helpdesk.",
-  "backtohome.button": "Lura lejn il-paġna ewlenija"
+  "backtohome.button": "Lura lejn il-paġna ewlenija",
+  "dgConn.user.label": "User"
 }

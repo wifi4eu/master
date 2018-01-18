@@ -372,5 +372,6 @@
   "submit.application": "3.        Echipamentul și serviciile de instalare pe care compania mea le va furniza în contextul inițiativei WiFi4EU vor respecta condițiile stabilite în textul cererii de proiecte. ",
   "submitregistration.failure.title": " ",
   "submitregistration.failure.text.part1": "0",
-  "backtohome.button": "Înregistrarea a eșuat."
+  "backtohome.button": "Înregistrarea a eșuat.",
+  "dgConn.user.label": "User"
 }

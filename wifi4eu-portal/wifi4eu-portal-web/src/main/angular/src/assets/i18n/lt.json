@@ -448,5 +448,6 @@
   "submit.application": "Patvirtinu, kad šiame portale pateikta su programa „WiFi4EU“ susijusi informacija yra teisinga, išsami ir tiksli. Pripažįstu, kad Europos Komisija ar bet kuri įgaliota Europos agentūra, naudodamasi teisėtai prieinamais šaltiniais, gali patikrinti čia pateiktą informaciją.",
   "submitregistration.failure.title": "Užsiregistruoti nepavyko.",
   "submitregistration.failure.text.part1": "Bandykite dar kartą arba kreipkitės į pagalbos tarnybą.",
-  "backtohome.button": "Grįžti į pradžios puslapį"
+  "backtohome.button": "Grįžti į pradžios puslapį",
+  "dgConn.user.label": "User"
 }

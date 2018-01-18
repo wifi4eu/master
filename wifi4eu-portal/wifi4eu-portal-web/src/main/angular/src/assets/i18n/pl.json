@@ -449,5 +449,5 @@
   "submitregistration.failure.title": "Podczas rejestracji wystąpił błąd.",
   "submitregistration.failure.text.part1": "Prosimy spróbować ponownie później lub skonsultować się z działem pomocy technicznej.",
   "backtohome.button": "Powrót na stronę główną",
-
+  "dgConn.user.label": "User"
 }

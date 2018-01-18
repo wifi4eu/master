@@ -768,5 +768,6 @@
   "mediationRequest.text": "Na sequência deste pedido, a Comissão Europeia intervirá no debate para ajudar todas as empresas a resolver o problema.",
   "mediationRequest.selectText": "O objetivo do processo de mediação é determinar qual a inscrição válida.",
   "itemMenu.myAccount": "Situação atual",
-  "itemMenu.dissForum": "Espaço de debate"
+  "itemMenu.dissForum": "Espaço de debate",
+  "dgConn.user.label": "User"
 }

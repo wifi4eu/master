@@ -447,5 +447,6 @@
   "submit.application":"Kinnitan, et selles portaalis ja seoses WiFi4EU algatusega esitatud teave on õige, täielik ja täpne. Annan Euroopa Komisjonile või selleks volitatud Euroopa ametile loa esitatud teavet õigusnormide kohaselt kättesaadavate allikate põhjal kontrollida.",
   "submitregistration.failure.title":"Registreerimisel ilmnes viga.",
   "submitregistration.failure.text.part1":"Palun proovige uuesti või küsige abi kasutajatoelt.",
-  "backtohome.button":"Avalehele"
+  "backtohome.button":"Avalehele",
+  "dgConn.user.label": "User"
 }

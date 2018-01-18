@@ -448,5 +448,6 @@
   "submit.application": "Vahvistan, että tässä portaalissa ja WiFi4EU-järjestelmän yhteydessä antamani tiedot ovat todenperäisiä, täydellisiä ja tarkkoja. Vahvistan, että Euroopan komissio tai mikä tahansa valtuudet saanut EU:n virasto voivat tarkistaa tässä annetut tiedot lainsäädännön nojalla saatavilla olevista lähteistä.",
   "submitregistration.failure.title": "Rekisteröinti ei onnistunut.",
   "submitregistration.failure.text.part1": "Yritä uudelleen tai ota yhteyttä käyttötukeen.",
-  "backtohome.button": "Takaisin etusivulle"
+  "backtohome.button": "Takaisin etusivulle",
+  "dgConn.user.label": "User"
 }

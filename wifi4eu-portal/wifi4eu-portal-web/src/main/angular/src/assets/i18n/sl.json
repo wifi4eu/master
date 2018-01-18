@@ -372,5 +372,6 @@
   "submit.application": "Potrjujem, da so informacije, predložene na tem portalu v zvezi s shemo WiFi4EU, resnične, popolne in točne. Potrjujem, da lahko Evropska komisija oziroma pooblaščena evropska agencija preveri tu navedene informacije pri virih, dostopnih v skladu z zakonom.",
   "submitregistration.failure.title": "Pri registraciji so nastale težave.",
   "submitregistration.failure.text.part1": "Poskusite znova ali se obrnite na službo za pomoč uporabnikom.",
-  "backtohome.button": "Nazaj na domačo stran"
+  "backtohome.button": "Nazaj na domačo stran",
+  "dgConn.user.label": "User"
 }

@@ -423,5 +423,6 @@
   "issueStatus.pending": "PENDING",
   "issueStatus.resolved": "RESOLVED",
   "itemMenu.appPortal": "Application page",
-  "itemMenu.dgPortal": "DGConnect Portal"
+  "itemMenu.dgPortal": "DGConnect Portal",
+  "dgConn.user.label": "User"
 }

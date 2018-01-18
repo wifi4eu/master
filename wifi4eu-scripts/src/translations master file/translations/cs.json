@@ -920,5 +920,6 @@
   "voucher.step3":"Zažádat",
   "voucher.ableApply":"Žádost lze podat až po zahájení samotné výzvy k podávání žádostí. Při podávání žádosti je třeba se přihlásit pomocí uživatelského účtu u služby „EU Login“ a žádost o poukázku WiFi4EU odeslat.",
   "voucher.firstServed":"Přednost budou mít při výběru ti, kteří zažádají dříve.  Dále Komise dodrží zeměpisnou vyváženost, jak je podrobně uvedeno v pracovním programu pro Nástroj pro propojení Evropy na rok 2017 .",
-  "helpdeskform.clickhere.label1":"Nedaří se vám zaregistrovat? Klikněte sem a obraťte se na asistenční službu."
+  "helpdeskform.clickhere.label1":"Nedaří se vám zaregistrovat? Klikněte sem a obraťte se na asistenční službu.",
+  "dgConn.user.label": "User"
 }

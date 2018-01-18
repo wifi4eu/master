@@ -868,5 +868,6 @@
   "supp.landingpage.elegibleText4": "L’enregistrement de votre entreprise est obligatoire si celle-ci a été engagée comme fournisseur par un bénéficiaire de WiFi4EU. ",
   "supp.landingpage.no": "Non",
   "supp.landingpage.yes": "Oui",
-  "logout.label": "Sortie"
+  "logout.label": "Sortie",
+  "dgConn.user.label": "User"
 }

@@ -444,5 +444,6 @@
   "requirements.head": "Confirmo que he leído y acepto las siguientes condiciones del esquema: ",
   "add.repply": "Nuevo mensaje",
   "issueStatus.pending": "PENDIENTE",
-  "issueStatus.resolved": "RESUELTO"
+  "issueStatus.resolved": "RESUELTO",
+  "dgConn.user.label": "User"
 }

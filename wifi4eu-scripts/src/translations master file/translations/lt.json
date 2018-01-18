@@ -847,5 +847,6 @@
   "mediationRequest.text": "Jei išsiųsite šį prašymą, Europos Komisija įsikiš į diskusiją, kad padėtų visoms bendrovėms išspręsti klausimą.",
   "mediationRequest.selectText": "Tarpininkavimo tikslas – nustatyti, kuris registracijos prašymas turėtų būti pripažintas galiojančiu.",
   "itemMenu.myAccount": "Dabartinis statusas",
-  "itemMenu.dissForum": "Diskusijų erdvė"
+  "itemMenu.dissForum": "Diskusijų erdvė",
+  "dgConn.user.label": "User"
 }

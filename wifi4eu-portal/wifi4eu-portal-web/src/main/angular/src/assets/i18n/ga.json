@@ -448,5 +448,6 @@
   "submit.application": "Dearbhaím leis seo go bhfuil an t-eolas a thugtar ar an tairseach seo agus i dtaca leis an scéim WiFi4EU fíor, iomlán agus cruinn. Admhaím leis seo go bhféadfaidh an Coimisiún Eorpach nó aon Ghníomhaireacht Eorpach tharmligthe eile an t-eolas a leagtar amach anseo ó fhoinsí is inrochtana faoin dlí a fhíorú.",
   "submitregistration.failure.title": "Bhí fadhb leis an gclárúchán.",
   "submitregistration.failure.text.part1": "Bain triail as arís nó déan teagmháil leis an deasc chabhrach.",
-  "backtohome.button": "Siar chuig an leathanach baile"
+  "backtohome.button": "Siar chuig an leathanach baile",
+  "dgConn.user.label": "User"
 }

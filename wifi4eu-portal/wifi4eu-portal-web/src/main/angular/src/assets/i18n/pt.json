@@ -372,5 +372,6 @@
   "submit.application": "Confirmo que as informações facultadas no presente portal e relacionadas com a iniciativa WiFi4EU são verdadeiras, completas e exatas. Tomo nota de que a Comissão Europeia ou qualquer agência europeia mandatada para o efeito pode verificar as informações aqui apresentadas junto de fontes acessíveis ao abrigo da lei.",
   "submitregistration.failure.title": "Ocorreu um problema com a inscrição.",
   "submitregistration.failure.text.part1": "Volte a tentar ou consulte o serviço de assistência.",
-  "backtohome.button": "Voltar ao início"
+  "backtohome.button": "Voltar ao início",
+  "dgConn.user.label": "User"
 }

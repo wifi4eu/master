@@ -372,5 +372,6 @@
   "submit.application": "Týmto potvrdzujem, že informácie poskytnuté tomuto portálu a v súvislosti s iniciatívou WiFi4EU sú pravdivé, úplné a presné. Týmto potvrdzujem, že Európska komisia alebo delegovaná európska agentúra sú oprávnené overiť si informácie uvedené na tomto portáli zo zdrojov, ktoré sú podľa zákona prístupné.",
   "submitregistration.failure.title": "Pri registrácii došlo k chybe.",
   "submitregistration.failure.text.part1": "Skúste sa registrovať znovu alebo kontaktujte asistenčné centrum.",
-  "backtohome.button": "Späť na domovskú stránku."
+  "backtohome.button": "Späť na domovskú stránku.",
+  "dgConn.user.label": "User"
 }

@@ -425,5 +425,6 @@
   "submit.application":"Ik bevestig dat de gegevens die ik op dit portaal in verband met de WiFi4EU-regeling verstrekt heb, correct, volledig en nauwkeurig zijn. Ik ga ermee akkoord dat de Europese Commissie of een gedelegeerd Europees agentschap de hier verstrekte gegevens mag controleren met gebruikmaking van alle wettelijk toegankelijke bronnen.",
   "submitregistration.failure.title":"Er is iets misgegaan met de inschrijving.",
   "submitregistration.failure.text.part1":"Probeer het opnieuw, of neem contact op met de helpdesk.",
-  "backtohome.button":"Terug naar de homepage"
+  "backtohome.button":"Terug naar de homepage",
+  "dgConn.user.label": "User"
 }

@@ -847,5 +847,6 @@
   "mediationRequest.text": "Nakon slanja ovog zahtjeva Europska komisija uključit će se u raspravu kako bi svim poduzećima pomogla riješiti problem.",
   "mediationRequest.selectText": "Svrha je postupka posredovanja utvrditi koja je registracija valjana.",
   "itemMenu.myAccount": "Trenutačni status",
-  "itemMenu.dissForum": "Mjesto za rasprave"
+  "itemMenu.dissForum": "Mjesto za rasprave",
+  "dgConn.user.label": "User"
 }

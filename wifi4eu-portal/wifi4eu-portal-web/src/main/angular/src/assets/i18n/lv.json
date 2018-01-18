@@ -448,5 +448,6 @@
   "submit.application": "Ar šo apliecinu, ka informācija, kuru esmu sniedzis šajā portālā un saistībā ar iniciatīvu WiFi4EU, ir patiesa, pilnīga un pareiza. Ar šo apstiprinu, ka Eiropas Komisija vai jebkura deleģēta Eiropas aģentūra var pārbaudīt šeit sniegto informāciju, izmantojot avotus, kas pieejami saskaņā ar likumu.",
   "submitregistration.failure.title": "Reģistrēties neizdevās, jo radusies kāda problēma.",
   "submitregistration.failure.text.part1": "Lūdzu, mēģiniet vēlāk vai sazinieties ar palīdzības dienestu.",
-  "backtohome.button": "Atpakaļ uz sākumlapu"
+  "backtohome.button": "Atpakaļ uz sākumlapu",
+  "dgConn.user.label": "User"
 }

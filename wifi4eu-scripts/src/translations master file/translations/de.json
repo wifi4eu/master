@@ -839,5 +839,6 @@
   "supp.landingpage.title": "Willkommen auf der WiFi4EU-Registrierungsseite für WLAN-Installationsfirmen.",
   "supp.landingpage.elegibleText3": "Sie können sich dann direkt auf dem WiFi4EU-Portal registrieren und angeben, in welchem Umkreis Sie den WiFi4EU-Begünstigten Ausrüstung und Installation bereitstellen können. ",
   "supp.landingpage.elegibleText2": "Die Begünstigten müssen ihre WLAN-Installationsprojekte im Einklang mit den geltenden Vergabevorschriften festlegen und ausschreiben und dürfen die Liste der registrierten Installationsfirmen konsultieren, um potenzielle Anbieter in ihrem Umkreis zu finden. ",
-  "supp.landingpage.elegibleText4": "Wenn Ihr Unternehmen einen Lieferauftrag von einem WiFi4EU-Begünstigten erhalten hat, sind Sie verpflichtet, sich zu registrieren. "
+  "supp.landingpage.elegibleText4": "Wenn Ihr Unternehmen einen Lieferauftrag von einem WiFi4EU-Begünstigten erhalten hat, sind Sie verpflichtet, sich zu registrieren. ",
+  "dgConn.user.label": "User"
 }

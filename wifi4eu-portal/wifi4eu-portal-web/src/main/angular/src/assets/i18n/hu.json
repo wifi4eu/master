@@ -448,5 +448,6 @@
   "submit.application": "Kijelentem, hogy a WiFi4EU kezdeményezéssel kapcsolatban itt megadott információk helytállók, hiánytalanok és pontosak. Tudomásul veszem, hogy az Európai Bizottság, illetve bármely decentralizált európai ügynökség a jogszerűen hozzáférhető források alapján ellenőrizheti az itt megadott információkat.",
   "submitregistration.failure.title": "Probléma történt a regisztráció során.",
   "submitregistration.failure.text.part1": "Kérjük, próbálkozzon újra vagy lépjen kapcsolatba az ügyfélszolgálattal.",
-  "backtohome.button": "Vissza a kezdőlapra"
+  "backtohome.button": "Vissza a kezdőlapra",
+  "dgConn.user.label": "User"
 }

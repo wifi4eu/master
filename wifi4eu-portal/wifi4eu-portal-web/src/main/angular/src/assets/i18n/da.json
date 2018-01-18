@@ -448,5 +448,6 @@
   "submit.application": "Jeg bekræfter hermed, at de oplysninger, der er opgivet her på portalen i forbindelse med WiFi4EU-ordningen, er korrekte, fuldstændige og nøjagtige. Jeg er indforstået med, at Europa-Kommissionen eller et eventuelt delegeret europæisk agentur må kontrollere oplysningerne gennem lovligt tilgængelige kilder.",
   "submitregistration.failure.title": "Der gik noget galt med registreringen.",
   "submitregistration.failure.text.part1": "Prøv igen, eller kontakt vores helpdesk.",
-  "backtohome.button": "Tilbage til startsiden"
+  "backtohome.button": "Tilbage til startsiden",
+  "dgConn.user.label": "User"
 }
