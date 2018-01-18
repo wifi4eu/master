@@ -60,7 +60,7 @@
   "home.part4.link2": "L-istrateġija dwar il-Konnettività għal Soċjetà Ewropea Gigabit",
   "home.part4.link3": "Regolament propost dwar il-promozzjoni tal-konnettività tal-Internet fil-komunitajiet lokali (WiFi4EU)",
   "home.part4.link4": "Inġibu kollox flimkien f’WiFi4EU - preżentazzjoni minn B-DAY: Naqilbu Giga, 15 ta’ Novembru 2016",
-  "home.footer.update": "L-aħħar aġġornament {{ActualDate}} v1.1.0",
+  "home.footer.update": "L-aħħar aġġornament {{versionDate}} v{{version}}",
   "home.footer.top": " | lura 'l fuq",
   "code.label": "Kodiċi",
   "code.required": "Il-kodiċi huwa meħtieġ",

@@ -59,7 +59,7 @@
   "home.part4.link2": "Ühenduvuse arendamine Euroopa gigabitiühiskonna poole liikumiseks",
   "home.part4.link3": "Määruse ettepanek internetiühenduse arendamise kohta maapiirkondades (WiFi4EU)",
   "home.part4.link4": "Konverentsil „B-DAY: Going Giga“ 15. novembril 2016. aastal tehtud esitlus „Bringing it all together in WiFi4EU“ ",
-  "home.footer.update": "Viimati uuendatud {{ActualDate}} v1.1.0",
+  "home.footer.update": "Viimati uuendatud {{versionDate}} v{{version}}",
   "home.footer.top": " | Tagasi üles",
   "code.label": "Turvakood",
   "code.required": "Turvakood on kohustuslik",

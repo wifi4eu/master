@@ -72,7 +72,7 @@
   "home.part4.link2": "Strategija povezivosti za europsko gigabitno društvo",
   "home.part4.link3": "Predložena uredba o poticanju internetske povezivosti u lokalnim zajednicama (WiFi4EU)",
   "home.part4.link4": "„Povežimo sve u WiFi4EU” – prezentacija s dana B: prema gigabitnom društvu, 15. studenoga 2016.",
-  "home.footer.update": "Posljednji put ažurirano {{ActualDate}} v1.1.0.",
+  "home.footer.update": "Posljednji put ažurirano {{versionDate}} v{{version}}",
   "home.footer.top": " | Povratak na vrh",
   "code.label": "Kod",
   "code.required": "Potreban je kod",

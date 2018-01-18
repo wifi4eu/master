@@ -184,7 +184,7 @@
   "shared.submitregistration.failure.title": "Algo ha ido mal durante el registro.",
   "shared.submitregistration.failure.text.part1": "Por favor, prueba de nuevo en unos minutos o contacta con Helpdesk.",
   "shared.backtohome.button": "Volver a la página principal",
-  "home.footer.update": "Última actualización {{ActualDate}} v1.1.1 | ",
+  "home.footer.update": "Última actualización {{versionDate}} v{{version}} | ",
   "home.footer.top": "Arriba",
   "code.label": "Código",
   "code.required": "El código es necesario",

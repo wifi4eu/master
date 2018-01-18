@@ -76,7 +76,7 @@
   "home.part4.link2": "Strategi för ett europeiskt gigabitsamhälle",
   "home.part4.link3": "Förslag till förordning om att främja internetuppkoppling på offentliga platser (WiFi4EU)",
   "home.part4.link4": "Presentation om WiFi4EU på konferensen B-DAY: Going Giga, 15 november 2016",
-  "home.footer.update": "Senaste uppdatering 11/5/2017",
+  "home.footer.update": "Senaste uppdatering {{versionDate}} v{{version}}",
   "home.footer.top": " | Till början",
   "code.label": "Kod",
   "code.required": "Du måste ange en kod",

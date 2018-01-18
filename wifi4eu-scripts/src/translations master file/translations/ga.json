@@ -60,7 +60,7 @@
   "home.part4.link2": "Straitéis Nascachta do Shochaí Eorpach Gigighiotán",
   "home.part4.link3": "Togra le haghaidh Rialachán maidir le nascacht idirlín a chur chun cinn i bpobail áitiúla (WiFi4EU)",
   "home.part4.link4": "“Bringing it all together in WiFi4EU” – cur i láthair ón gcomhdháil “B-DAY: Going Giga”, 15 Samhain 2016",
-  "home.footer.update": "An nuashonrú is déanaí {{ActualDate}} v1.1.0",
+  "home.footer.update": "An nuashonrú is déanaí {{versionDate}} v{{version}}",
   "home.footer.top": " | ar ais go dtí an barr",
   "code.label": "Cód",
   "code.required": "Tá cód ag teastáil",

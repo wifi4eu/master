@@ -70,7 +70,7 @@
   "home.part4.link2": "Stratégie sur la connectivité pour une société européenne du gigabit",
   "home.part4.link3": "Proposition de règlement relatif à la promotion de la connectivité internet dans les communautés locales (Wifi4EU)",
   "home.part4.link4": "«Mieux connecter l’Europe à ses citoyens» – exposé de la conférence «B-DAY: Going Giga» du 15 novembre 2016",
-  "home.footer.update": "Dernière mise à jour: {{ActualDate}} v1.1.0",
+  "home.footer.update": "Dernière mise à jour: {{versionDate}} v{{version}}",
   "home.footer.top": " | haut de la page",
   "code.label": "Code",
   "code.required": "Le code est obligatoire",

@@ -60,7 +60,7 @@
   "home.part4.link2": "Strategia dotycząca łączności dla europejskiego społeczeństwa gigabitowego",
   "home.part4.link3": "Proponowane rozporządzenie w sprawie promowania dostępu do internetu we wspólnotach lokalnych (WiFi4EU)",
   "home.part4.link4": "Wdrażanie programu WiFi4EU – prezentacja przedstawiona podczas konferencji „B-DAY: Going Giga”, 15 listopada 2016 r.",
-  "home.footer.update": "Ostatnia aktualizacja: {{ActualDate}} v1.1.0 r.",
+  "home.footer.update": "Ostatnia aktualizacja: {{versionDate}} v{{version}}",
   "home.footer.top": " | początek strony",
   "code.label": "Kod",
   "code.required": "Wymagany jest kod",

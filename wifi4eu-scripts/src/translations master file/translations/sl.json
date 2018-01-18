@@ -76,7 +76,7 @@
   "home.part4.link2": "Strategija povezljivosti za evropsko gigabitno družbo",
   "home.part4.link3": "Predlog uredbe o spodbujanju internetne povezljivosti v lokalnih skupnostih (WiFi4EU)",
   "home.part4.link4": "Združimo vse v WiFi4EU, predstavitev: B-DAY: Going Giga, 15. novembra 2016",
-  "home.footer.update": "Zadnja sprememba 11. 5. 2017",
+  "home.footer.update": "Zadnja sprememba {{versionDate}} v{{version}}",
   "home.footer.top": " | nazaj na vrh",
   "code.label": "Koda",
   "code.required": "Niste vpisali kode",

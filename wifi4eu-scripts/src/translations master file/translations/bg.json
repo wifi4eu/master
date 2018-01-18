@@ -73,7 +73,7 @@
   "home.part4.link2": "Стратегия за свързаност за европейско общество в ерата на гигабитовия интернет",
   "home.part4.link3": "Предложение за Регламент за насърчаване на интернет свързаността в местните общности и на публични места (WiFi4EU)",
   "home.part4.link4": "Bringing it all together in WiFi4EU — презентация от проявата B-DAY: Going Giga, 15 ноември 2016 г.",
-  "home.footer.update": "Последна актуализация на {{ActualDate}} v1.1.0 г.",
+  "home.footer.update": "Последна актуализация на {{versionDate}} v{{version}} г.",
   "home.footer.top": " | към началото",
   "code.label": "Код",
   "code.required": "Кодът е задължителен",
