@@ -339,7 +339,7 @@
   "suppRegistration.step4.supplier": "Steg 4: Granska dina uppgifter",
   "suppRegistration.company.info": "Lämna uppgifter om ditt företag.",
   "suppRegistration.company.name": "Företagets namn",
-  "suppRegistration.legal.address": "Officiell adress                  nummer",
+  "suppRegistration.legal.address": "Officiell adress",
   "suppRegistration.city.label": "Ort",
   "shared.postal-code.label": "Postnummer",
   "shared.country.label": "Land",

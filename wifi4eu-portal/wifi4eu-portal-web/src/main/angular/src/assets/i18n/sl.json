@@ -339,7 +339,7 @@
   "suppRegistration.step4.supplier": "4. korak: Pregled",
   "suppRegistration.company.info": "Vpišite podatke o podjetju.",
   "suppRegistration.company.name": "Ime podjetja",
-  "suppRegistration.legal.address": "Uradni naslov                   hišna št.",
+  "suppRegistration.legal.address": "Uradni naslov",
   "suppRegistration.city.label": "Kraj",
   "shared.postal-code.label": "Poštna številka",
   "shared.country.label": "Država",
