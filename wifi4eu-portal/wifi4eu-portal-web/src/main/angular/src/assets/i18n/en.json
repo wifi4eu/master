@@ -369,6 +369,7 @@
   "dgConn.beneficiary.registrations": "Registrations",
   "discussionForum.beneficiary.registration1": "Registration {{selfRegistration}} (you)",
   "shared.country.label": "Country",
+  "benefRegistration.prefix.required": "Prefix is required",
   "shared.municipality.label": "Company name",
   "shared.discussionForum.officialAddress": "Official address",
   "shared.postal-code.label": "Postal code",

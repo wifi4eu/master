@@ -87,7 +87,7 @@
                        [(ngModel)]="supplier.contactEmail" #contactEmail="ngModel"
                        (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
                 <div class="alert alert-danger" [hidden]="contactEmail.valid || contactEmail.pristine">
-                    {{'warning.emailRequired' | translate}}
+                    {{'suppRegistration.warning.emailRequired' | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
             </div>

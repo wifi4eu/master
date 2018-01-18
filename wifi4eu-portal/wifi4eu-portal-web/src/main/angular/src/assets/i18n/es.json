@@ -407,6 +407,8 @@
   "discussionForum.askMediation": "Solicitar mediación",
   "discussionForum.beneficiary.registrationNumber": "Inscripción ",
   "discussionForum.discussion": "Debate",
+  "shared.clear.label": "Limpiar",
+  "benefRegistration.prefix.required": "El prefijo es obligatorio",
   "discussionForum.messagesDescription": "A continuación figuran los mensajes intercambiados entre las demás empresas y la suya.",
   "discussionForum.search": "Buscar en el debate",
   "shared.search.button": "Buscar",
