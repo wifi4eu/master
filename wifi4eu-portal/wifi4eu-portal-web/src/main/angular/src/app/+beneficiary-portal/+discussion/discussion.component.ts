@@ -1,24 +1,24 @@
-import { Component } from "@angular/core";
-import { BeneficiaryApi } from "../../shared/swagger/api/BeneficiaryApi";
-import { ThreadApi } from "../../shared/swagger/api/ThreadApi";
-import { ThreadmessagesApi } from "../../shared/swagger/api/ThreadmessagesApi";
-import { UserApi } from "../../shared/swagger/api/UserApi";
-import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
-import { BeneficiaryDTOBase } from "../../shared/swagger/model/BeneficiaryDTO";
-import { ThreadDTOBase } from "../../shared/swagger/model/ThreadDTO";
-import { ThreadMessageDTOBase } from "../../shared/swagger/model/ThreadMessageDTO";
-import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
-import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
-import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
-import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
-import { LocalStorageService } from "angular-2-local-storage";
-import { SharedService } from "../../shared/shared.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { UserThreadsApi } from "../../shared/swagger/api/UserThreadsApi";
-import { UserThreadsDTO, UserThreadsDTOBase } from "../../shared/swagger/model/UserThreadsDTO";
-import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
+import {Component} from "@angular/core";
+import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
+import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
+import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
+import {UserApi} from "../../shared/swagger/api/UserApi";
+import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
+import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
+import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
+import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
+import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
+import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
+import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
+import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
+import {LocalStorageService} from "angular-2-local-storage";
+import {SharedService} from "../../shared/shared.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
+import {UserThreadsDTO, UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
+import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import index from "@angular/cli/lib/cli";
-import { isNumber } from "util";
+import {isNumber} from "util";
 
 @Component({
     selector: 'discussion-component',
@@ -156,10 +156,10 @@ export class DiscussionComponent {
                     this.registrationApi.createRegistration(registration).subscribe(
                         (data: ResponseDTOBase) => {
                             if (data.success) {
-                                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussionForum.discussion.growl', 'success');
+                                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussion.growl', 'success');
                             }
                         }, error => {
-                            this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussionForum.discussion.growl.error', 'error');
+                            this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');
                         }
                     );
                 }

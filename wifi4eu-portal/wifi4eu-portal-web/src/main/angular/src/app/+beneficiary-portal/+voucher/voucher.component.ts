@@ -1,21 +1,22 @@
-import { Component } from '@angular/core';
-import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
-import { CallApi } from "../../shared/swagger/api/CallApi";
-import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
-import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
-import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
-import { LocalStorageService } from "angular-2-local-storage";
-import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
-import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
-import { ApplicationDTOBase } from "../../shared/swagger/model/ApplicationDTO";
-import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import {Component} from '@angular/core';
+import {ApplicationApi} from "../../shared/swagger/api/ApplicationApi";
+import {CallApi} from "../../shared/swagger/api/CallApi";
+import {CallDTOBase} from "../../shared/swagger/model/CallDTO";
+import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
+import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
+import {LocalStorageService} from "angular-2-local-storage";
+import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
+import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
+import {ApplicationDTOBase} from "../../shared/swagger/model/ApplicationDTO";
+import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {SharedService} from "../../shared/shared.service";
 
 @Component({
-    templateUrl: 'voucher.component.html', providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi]
+    templateUrl: 'voucher.component.html',
+    providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi]
 })
 
 export class VoucherComponent {
@@ -29,6 +30,9 @@ export class VoucherComponent {
     private displayRegistrationSelect: boolean = false;
     private allApplied: boolean = false;
     private loadingButtons: boolean[] = [];
+    private dateNumber: string;
+    private hourNumber: string;
+    private showTimeline: boolean = false;
 
     constructor(private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService) {
         let storedUser = this.localStorage.get('user');
@@ -41,6 +45,28 @@ export class VoucherComponent {
                 }
             );
         }
+        this.checkForOpenCalls();
+    }
+
+    checkForOpenCalls() {
+        this.callApi.allCalls().subscribe(
+            calls => {
+                this.currentCall = calls[0];
+                this.showTimeline = true;
+
+
+                var date = new Date(this.currentCall.startDate);
+                date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+
+                this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
+                this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
+
+            }, error => {
+                console.log(error);
+                this.currentCall = null;
+                this.voucherCompetitionState = 0;
+            }
+        );
     }
 
     private checkForCalls(registrations: RegistrationDTOBase[]) {
