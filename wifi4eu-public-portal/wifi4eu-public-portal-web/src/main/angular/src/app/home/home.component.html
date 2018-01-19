@@ -67,10 +67,10 @@
         <li>{{ 'home.part3.list1' | translate}}</li>
         <li>{{ 'home.part3.list2' | translate}}</li>
       </ul>
-      <div *ngIf="showTimeline">
+      <div *ngIf="showTimer">
         <p class="apply-text">{{ 'home.part3.text3' | translate }}</p>
         <p class="apply-text">{{ 'home.part3.text4' | translate }}</p>
-        <timer-component class="timelineBenefLanding" (timerEvent)="checkIfSelected()" [expirationTimestamp]="currentCall.startDate"></timer-component>
+        <timer-component class="timelineBenefLanding" (timerEvent)="hideTimer()" [expirationTimestamp]="currentCall.startDate"></timer-component>
       </div>
     </div>
     <div class="col-xl-6">

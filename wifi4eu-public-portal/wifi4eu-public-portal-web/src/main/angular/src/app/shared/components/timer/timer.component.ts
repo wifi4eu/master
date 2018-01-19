@@ -12,7 +12,7 @@ export class TimerComponent {
     private seconds: number;
     private expired: boolean;
 
-    ngOnInit() {
+     constructor() {
         this.currentTimestamp = new Date().getTime();
         let subscription = Observable.interval(500).map((x) => {
         }).subscribe((x) => {
