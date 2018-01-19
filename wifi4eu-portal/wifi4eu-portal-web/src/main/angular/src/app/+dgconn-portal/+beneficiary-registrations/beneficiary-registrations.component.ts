@@ -167,13 +167,22 @@ export class DgConnBeneficiaryRegistrationsComponent {
   }
  */
   filterData(stringSearch: string) {
-    stringSearch = stringSearch.toLocaleLowerCase();
-    if(stringSearch.length > 0){
-      let registrations = this.registrationListOriginal.filter(element => {return ( element.municipality.name.toLocaleLowerCase() == stringSearch || element.municipality.country.toLocaleLowerCase() == stringSearch )});
+    if(typeof stringSearch != "undefined" && stringSearch != ""){
+      stringSearch = stringSearch.toLocaleLowerCase();
+      let registrations =  this.registrationListOriginal.map(
+        (registration) => {
+          registration.municipality.name = registration.municipality.name || "";
+          registration.municipality.country = registration.municipality.country || "";
+          return registration;
+        }
+      ).filter(element => { 
+        return (element.municipality.name.toLocaleLowerCase().match(stringSearch) || element.municipality.country.toLocaleLowerCase().match(stringSearch))
+      });
       this.customRegistrationList = [...registrations];
-    } else{
+    }
+    else{
       this.customRegistrationList = [...this.registrationListOriginal];
-    }    
+    }
   }
 
   // uploadData(user: any, index: number) {
