@@ -1353,3 +1353,7 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 #app-wrapper.shrink-header-active #main #nav-bar{
   position: relative;
 }
+
+p-tabview.white .ui-widget-content.ui-tabview{
+  background: #fff;
+}
