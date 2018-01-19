@@ -401,6 +401,8 @@
   "supp.landingpage.proceed": "Would you like to proceed with the registration process?",
   "supp.landingpage.no": "No",
   "supp.landingpage.yes": "Yes",
+  "general.no": "No",
+  "general.yes": "Yes",
   "benefLanding.ecasmessage": "You are going to be redirect to ECAS before register on WIFI4EU",
   "home.part3.title2": "I want to register a municipality",
   "home.register": "Register now",

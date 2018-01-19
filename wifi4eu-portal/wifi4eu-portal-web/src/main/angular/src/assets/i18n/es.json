@@ -271,6 +271,8 @@
   "supp.landingpage.secondTitle": "¿Eres elegible para aplicar?",
   "supp.landingpage.yes": "Sí",
   "supp.landingpage.no": "No",
+  "general.no": "No",
+  "general.yes": "Yes",
   "supp.landingpage.proceed": "¿Le gustaría continuar con el proceso de registro?",
   "suppPortal.invoicing.label": "Facturación",
   "suppPortal.invoicing.installed": "Información del Punto de Acceso instalado",
