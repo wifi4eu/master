@@ -77,7 +77,15 @@ export class HelpdeskComponent {
     filterData(stringSearch: string) {
       if(typeof stringSearch != "undefined" && stringSearch != ""){
         stringSearch = stringSearch.toLocaleLowerCase();
-        let helpdesksFiltered = this.originalIssues.filter(issue => {return (issue.portal.toLocaleLowerCase().match(stringSearch)  || issue.assignedTo.toLocaleLowerCase().match(stringSearch) || issue.topic.toLocaleLowerCase().match(stringSearch) || issue.memberState.match(stringSearch)) });
+        let helpdesksFiltered = this.originalIssues.map(
+          (issue: HelpdeskIssueDTOBase) => {
+            issue.portal = issue.portal || "";
+            issue.assignedTo = issue.assignedTo || "";
+            issue.topic = issue.topic || "";
+            issue.memberState = issue.memberState || "";
+            return issue;
+          }
+        ).filter(issue => {return (issue.portal.toLocaleLowerCase().match(stringSearch)  || issue.assignedTo.toLocaleLowerCase().match(stringSearch) || issue.topic.toLocaleLowerCase().match(stringSearch) || issue.memberState.match(stringSearch)) });
         this.issues = [...helpdesksFiltered];
       } else{
         this.issues = [...this.originalIssues];

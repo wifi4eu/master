@@ -1,75 +1,77 @@
 <div class="clearfix"></div>
 
 <div class="first">
-  <img id="first-background" src="assets/images/group-6.png" alt="">
-  <div class="container-fluid header-fluid">
+    <img id="first-background" src="assets/images/group-6.png" alt="">
+    <div class="container-fluid header-fluid">
 
-    <div class="contenedor row">
-      <div class="col-xl-12">
-        <img id="img-wifi" src="assets/images/group.png" alt="">
-      </div>
+        <div class="contenedor row">
+            <div class="col-xl-12">
+                <img id="img-wifi" src="assets/images/group.png" alt="">
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <div class="container-fluid">
-  <div class="contenedor row">
-    <div class="col-xl-6 margin-top">
+    <div class="contenedor row">
+        <div class="col-xl-6 margin-top">
 
-      <h2 class="title-home">{{ 'home.part1.title' | translate }}</h2>
-      <p class="subtitle-home">{{ 'home.part1.text1' | translate }}</p>
-      <p class="normal-text">{{ 'home.part1.text2' | translate }}</p>
+            <h2 class="title-home">{{ 'home.part1.title' | translate }}</h2>
+            <p class="subtitle-home">{{ 'home.part1.text1' | translate }}</p>
+            <p class="normal-text">{{ 'home.part1.text2' | translate }}</p>
+            <p class="normal-text">{{ 'home.part1.finalText' | translate }}</p>
+        </div>
+        <div class="col-xl-6 margin-top-right">
+            <p class="subtitle-bold-italic"> {{ 'home.part1.text3' | translate }}</p>
+            <p class="subtitle-italic">{{ 'home.part1.author' | translate }}
+                <br> {{ 'home.part1.date' | translate }}</p>
+            <a class="btn btn-primary video-button" href="https://youtu.be/FvaJIPg0Pxw" target="_blank">{{
+                'home.whatch.video' | translate }}</a>
+        </div>
+        <div id="img-europeans">
+            <img src="assets/images/copy-2.png" alt="">
+        </div>
     </div>
-    <div class="col-xl-6 margin-top-right">
-      <p class="subtitle-bold-italic"> {{ 'home.part1.text3' | translate }}</p>
-      <p class="subtitle-italic">{{ 'home.part1.author' | translate }}
-        <br> {{ 'home.part1.date' | translate }}</p>
-      <a class="btn btn-primary video-button" href="https://youtu.be/FvaJIPg0Pxw" target="_blank">{{ 'home.whatch.video' | translate }}</a>
-    </div>
-    <div id="img-europeans">
-      <img src="assets/images/copy-2.png" alt="">
-    </div>
-  </div>
 </div>
 <div class="container-fluid second">
-  <div class="row contenedor">
-    <div class="col-xl-6">
-      <h1 class="benefit">{{ 'home.part2.title' | translate }}</h1>
-      <p *ngIf="showTimeline" class="europeans-text" 
-        [innerHTML]="'home.part2.text1' | translate:{date:dateNumber,hour:hourNumber}">
-      </p>
-      <p class="europeans-text">{{ 'home.part2.subtitle4' | translate}}</p>
-      <ul class="europeans-text benefLandingList">
-        <li>{{ 'home.part2.list1' | translate}}</li>
-        <li>{{ 'home.part2.list2' | translate}}</li>
-      </ul>
-      <p class="europeans-text" [innerHTML]="'home.part2.subtitle5' | translate"></p>
-      <p class="europeans-text">{{ 'home.part2.subtitle6' | translate}}</p>
-      <div id="img-scnd" class="img-scnd-top">
-        <img src="assets/images/copy-3.png" alt="">
-      </div>
+    <div class="row contenedor">
+        <div class="col-xl-6">
+            <h1 class="benefit">{{ 'home.part2.title' | translate }}</h1>
+            <p *ngIf="showTimeline" class="europeans-text"
+               [innerHTML]="'home.part2.text1' | translate:{date:dateNumber,hour:hourNumber}">
+            </p>
+            <p class="europeans-text">{{ 'home.part2.subtitle4' | translate}}</p>
+            <ul class="europeans-text benefLandingList">
+                <li>{{ 'home.part2.list1' | translate}}</li>
+                <li>{{ 'home.part2.list2' | translate}}</li>
+            </ul>
+            <p class="europeans-text" [innerHTML]="'home.part2.subtitle5' | translate"></p>
+            <p class="europeans-text">{{ 'home.part2.subtitle6' | translate}}</p>
+            <div id="img-scnd" class="img-scnd-top">
+                <img src="assets/images/copy-3.png" alt="">
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <h2 class="entities">{{ 'home.part2.subtitle2' | translate }}</h2>
+            <p class="entities-text">{{ 'home.part2.text2' | translate }}</p>
+            <p class="entities-text">{{ 'home.part2.text3' | translate }}</p>
+            <p class="entities-text">{{ 'home.part2.text4' | translate }}</p>
+        </div>
     </div>
-    <div class="col-xl-6">
-      <h2 class="entities">{{ 'home.part2.subtitle2' | translate }}</h2>
-      <p class="entities-text">{{ 'home.part2.text2' | translate }}</p>
-      <p class="entities-text">{{ 'home.part2.text3' | translate }}</p>
-      <p class="entities-text">{{ 'home.part2.text4' | translate }}</p>
-    </div>
-  </div>
 </div>
 
 <!--third-->
 <div class="container-fluid mayor">
-  <div class="row contenedor">
-    <div class="col-xl-6">
-      <h2 class="apply">{{ 'home.part3.title' | translate }} </h2>
-      <p class="apply-text">{{ 'home.part3.text1' | translate }}</p>
-      <ul class="europeans-text benefLandingList">
-        <li>{{ 'home.part3.list1' | translate}}</li>
-        <li>{{ 'home.part3.list2' | translate}}</li>
-      </ul>
+    <div class="row contenedor">
+        <div class="col-xl-6">
+            <h2 class="apply">{{ 'home.part3.title' | translate }} </h2>
+            <p class="apply-text">{{ 'home.part3.text1' | translate }}</p>
+            <ul class="europeans-text benefLandingList">
+                <li>{{ 'home.part3.list1' | translate}}</li>
+                <li>{{ 'home.part3.list2' | translate}}</li>
+            </ul>
       <div *ngIf="showTimer">
-        <p class="apply-text">{{ 'home.part3.text3' | translate }}</p>
-        <p class="apply-text">{{ 'home.part3.text4' | translate }}</p>
+                <p class="apply-text">{{ 'home.part3.text3' | translate }}</p>
+                <p class="apply-text">{{ 'home.part3.text4' | translate }}</p>
         <timer-component class="timelineBenefLanding" (timerEvent)="hideTimer()" [expirationTimestamp]="currentCall.startDate"></timer-component>
       </div>
     </div>
@@ -77,8 +79,8 @@
       <h2 class="apply">{{ 'home.part3.title.1' | translate }} </h2>
       <p class="apply-text">{{ 'home.part3.text2' | translate }}</p>
 
+        </div>
     </div>
-  </div>
 
 
   <!--endthird-->
@@ -113,9 +115,9 @@
   </div>
 </div>
 <div class="container-fluid third">
-  <div class="row contenedor">
+    <div class="row contenedor">
 
-  </div>
+    </div>
 </div>
 <div class="content azul container-fluid">
   <div class="row contenedor">
