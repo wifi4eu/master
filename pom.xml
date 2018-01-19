@@ -202,8 +202,6 @@
                 <ecas.config.base.url>https://ecas.acceptance.ec.europa.eu</ecas.config.base.url>
                 <ecas.server.address>${server.azure.test.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
-                <ecas.server.address>${server.azure.test.address}</ecas.server.address>
-                <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <mail.serv.location>http://wifi4eutest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>

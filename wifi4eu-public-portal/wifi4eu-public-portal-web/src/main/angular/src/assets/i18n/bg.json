@@ -484,7 +484,7 @@
   "benefPortal.voucher.timeleft.subtitle": "Надпреварата за ваучери започва след",
   "home.part3.subtitle": "или представлявам местен орган",
   "home.part4.subtitle": "Щракнете върху връзките по-долу за повече информация за проекта:",
-  "home.footer.update": "Последна актуализация на {{ActualDate}} v1.1.0 г.",
+  "home.footer.update": "Последна актуализация на {{versionDate}} v{{version}}",
   "home.footer.top": " | към началото",
   "code.label": "Код",
   "code.required": "Кодът е задължителен",
