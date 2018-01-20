@@ -44,7 +44,7 @@
   "home.part4.link3": "Покани за представяне на кандидатури",
   "home.part4.link4": "Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
   "int.comment.2": "-- END BG Home file --",
-  "int.comment.3": "-- START English Beneficiary Registration file --",
+  "int.comment.3": "-- START BG Beneficiary Registration file --",
   "benefLanding.title": "",
   "benefLanding.secondTitle": "",
   "benefLanding.elegibleText": "",
@@ -89,6 +89,6 @@
   "benefRegistration.email.fielddesc": "",
   "benefRegistration.confirmemailMayor.label": "",
   "benefRegistration.townHall.address": "",
-  "int.comment.4": "-- END English Beneficiary Registration file --",
+  "int.comment.4": "-- END BG Registration file --",
   "int.breakfile": ""
 }
