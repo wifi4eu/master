@@ -25,7 +25,6 @@
   "home.part3.list2":"- Dès que l’appel sera lancé officiellement, vous devrez vous connecter avant de pouvoir introduire votre demande.",
   "home.part3.text3":"Sachez que vous pouvez vous enregistrer à tout moment avant le lancement de l’appel à projets. Pour appliquer le principe du «premier arrivé, premier servi», ce sont la date et l’heure d’introduction de la demande qui seront prises en considération (et non celles de l’enregistrement)!",
   "home.part3.text4":"Temps restant avant le lancement de l’appel:",
-  /* TODO: review if this translations comes on another source, it was on the old version */
   "voucher.hours":"voucher.hours",
   "voucher.seconds":"voucher.seconds",
   "voucher.minutes":"voucher.minutes",
