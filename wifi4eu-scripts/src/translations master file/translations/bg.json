@@ -44,7 +44,7 @@
   "home.part4.link3":"Покани за представяне на кандидатури",
   "home.part4.link4":"Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
   "int.comment.2":"-- END BG Home file --",
-  "int.comment.3":"-- Start BG Company registration file --",
+  "int.comment.5":"-- Start BG Company registration file --",
   "supp.landingpage.title":"Добре дошли на страницата на схемата WiFi4EU за регистрация на дружества, занимаващи се с инсталиране на Wi-Fi.",
   "supp.landingpage.elegibleText3":"Можете да се регистрирате незабавно на портала WiFi4EU, като посочите в кои райони можете да предоставяте оборудване и услуги по инсталиране на бенефициери по схемата WiFi4EU. ",
   "supp.landingpage.elegibleText2":"Бенефициерите ще трябва да изготвят своите проекти за инсталиране на Wi-Fi и да намерят доставчици в съответствие с правилата за обществените поръчки. Те могат да открият потенциални доставчици в своя район в списъка с регистрирани дружества. ",
@@ -90,6 +90,6 @@
   "shared.submitregistration.failure.text.part1":"Моля, опитайте отново или се свържете с бюрото за помощ.",
   "shared.backtohome.button":"Обратно към началната страница",
   "suppRegistration.requirements.head":"",
-  "int.comment.4":"-- END English Company registration file --",
+  "int.comment.6":"-- END English Company registration file --",
   "int.breakfile":""
 }

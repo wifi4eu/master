@@ -44,11 +44,8 @@
   "home.part4.link3":"Convocatorias de presentación de candidaturas",
   "home.part4.link4":"Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
   "int.comment.2":"-- END ES Home file --",
-  "int.comment.3":"-- Start ES Company registration file --",
-
-
+  "int.comment.5":"-- Start ES Company registration file --",
   "supp.landingpage.title":"Bienvenido a la página de inscripción de WiFi4EU para las empresas de instalación de wifi.",
-
   "supp.landingpage.elegibleText3":"Puede inscribirse inmediatamente en el portal WiFi4EU para indicar las zonas en las que puede proporcionar material y servicios de instalación a los beneficiarios de WiFi4EU. ",
   "supp.landingpage.elegibleText2":"Los beneficiarios deben definir y adjudicar sus proyectos de instalación local de wifi de conformidad con las normas aplicables de contratación pública y pueden consultar la lista de las empresas inscritas para identificar los suministradores potenciales en su zona. ",
   "supp.landingpage.elegibleText4":"La inscripción es obligatoria para las empresas contratadas por un beneficiario de WiFi4EU. ",
@@ -93,6 +90,6 @@
   "shared.submitregistration.failure.text.part1":"Vuelva a intentarlo o consulte al servicio de asistencia.",
   "shared.backtohome.button":"Volver a la página inicial",
   "suppRegistration.requirements.head":"",
-  "int.comment.4":"-- END ES Company registration file --",
+  "int.comment.6":"-- END ES Company registration file --",
   "int.breakfile":""
 }

@@ -44,7 +44,7 @@
   "home.part4.link3":"Convites à apresentação de candidaturas",
   "home.part4.link4":"Europe Direct <span class=\"phoneNum\">00 800 6 7 8 9 10 11 </span>",
   "int.comment.2":"-- END PT Home file --",
-  "int.comment.3":"-- Start PT Company registration file --",
+  "int.comment.5":"-- Start PT Company registration file --",
   "supp.landingpage.title":"Bem-vindo à página de inscrição na WiFi4EU para as empresas de instalação de redes sem fios.",
   "supp.landingpage.elegibleText3":"Pode inscrever-se imediatamente no portal WiFi4EU e indicar as zonas onde pode propor equipamento e serviços de instalação aos beneficiários da WiFi4EU. ",
   "supp.landingpage.elegibleText2":"Os beneficiários devem conceber os seus projetos de instalação de rede sem fios e adjudicar os contratos com vista à execução dos mesmos em conformidade com as normas de adjudicação de contratos públicos aplicáveis, podendo consultar a lista das empresas inscritas para identificar potenciais fornecedores na sua região. ",
@@ -90,6 +90,6 @@
   "shared.submitregistration.failure.text.part1":"Volte a tentar ou consulte o serviço de assistência.",
   "shared.backtohome.button":"Voltar ao início",
   "suppRegistration.requirements.head":"",
-  "int.comment.4":"-- END PT Company registration file --",
+  "int.comment.6":"-- END PT Company registration file --",
   "int.breakfile":""
 }
