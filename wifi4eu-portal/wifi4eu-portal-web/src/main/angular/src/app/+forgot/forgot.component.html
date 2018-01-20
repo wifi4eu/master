@@ -8,7 +8,7 @@
                     <p class="h2 h2-title center beneficiaryTitle">{{ 'shared.forgot.title' | translate}}</p>
                     <p class="text-align-center">{{ 'email.forgot' | translate}}</p>
 
-                    <label for="email" class="label floatLeft labelForgot">{{ 'suppRegistration.email.label' | translate }}</label>
+                    <label for="email" class="label floatLeft labelForgot">{{ 'shared.email.label' | translate }}</label>
                     <input type="email" id="email" class="form-control paddingInput"
                            [(ngModel)]="forgotDetails.email" name="email"
                            ngcontrol="forgotDetails.email" #email="ngModel"
@@ -27,7 +27,7 @@
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                 <button type="submit" class="btn btn-primary publish-button" [disabled]="!emailForm.form.valid">
-                    {{ 'suppRegistration.confirm.button' | translate }}
+                    {{ 'shared.confirm.button' | translate }}
                 </button>
             </div>
             <div class="ui-lg-3"></div>
@@ -65,7 +65,7 @@
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
                 <button type="submit" class="btn btn-primary publish-button" [disabled]="!forgotForm.form.valid || !checkPassword()">
-                    {{ 'suppRegistration.confirm.button' | translate }}
+                    {{ 'shared.confirm.button' | translate }}
                 </button>
             </div>
             <div class="ui-lg-3"></div>

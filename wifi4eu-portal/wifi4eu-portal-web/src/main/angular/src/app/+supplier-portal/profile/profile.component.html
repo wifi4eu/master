@@ -20,10 +20,10 @@
             </div>
             <div class="ui-g">
                 <div class="ui-g-4">
-                    <p>{{ 'suppRegistration.name.label' | translate }}</p>
-                    <p>{{ 'suppRegistration.surname.label' | translate }}</p>
+                    <p>{{ 'shared.name.label' | translate }}</p>
+                    <p>{{ 'shared.surname.label' | translate }}</p>
                     <p>{{ 'suppRegistration.phone.number' | translate }}</p>
-                    <p>{{ 'suppRegistration.email.label' | translate }}</p>
+                    <p>{{ 'shared.email.label' | translate }}</p>
                 </div>
                 <div class="ui-g-8">
                     <p class="profileData">{{supplier.contactName}}</p>
@@ -120,7 +120,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="contactName">{{ 'suppRegistration.name.label' | translate }}</label>
+                        <label for="contactName">{{ 'shared.name.label' | translate }}</label>
                         <input id="contactName" type="text" [(ngModel)]="editedSupplier.contactName"
                                class="form-control"
                                name="contactName" ngcontrol="contactName" #contactName="ngModel" required>
@@ -135,7 +135,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="contactSurname">{{ 'suppRegistration.surname.label' | translate }}</label>
+                        <label for="contactSurname">{{ 'shared.surname.label' | translate }}</label>
                         <input id="contactSurname" type="text" [(ngModel)]="editedSupplier.contactSurname"
                                class="form-control"
                                name="contactSurname" ngcontrol="contactSurname" #contactSurname="ngModel"
@@ -185,7 +185,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="contactEmail">{{ 'suppRegistration.email.label' | translate }}</label>
+                        <label for="contactEmail">{{ 'shared.email.label' | translate }}</label>
                         <input id="contactEmail" type="text" [(ngModel)]="editedSupplier.contactEmail"
                                class="form-control"
                                name="contactEmail" ngcontrol="contactEmail" #contactEmail="ngModel" required
