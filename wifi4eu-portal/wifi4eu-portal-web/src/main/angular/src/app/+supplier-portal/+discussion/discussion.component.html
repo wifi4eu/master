@@ -6,9 +6,9 @@
         <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussionForum.discussion.growl' | translate}}</ux-alert>
         <span class="ui-g-2"></span>
     </div>
-    <p class="beneficiaryTitle marginTop">{{ 'benefPortal.legalEntity.issues' | translate }}</p>
-    <p>{{ 'discussionForum.lEissues.warning' | translate }}</p>
-    <p class="beneficiaryMayor marginTopCountdown">{{ 'suppRegistration.legalentity.label' | translate }}</p>
+    <p class="beneficiaryTitle marginTop">{{ 'discussionForum.legalEntity.issues' | translate }}</p>
+    <p>{{ 'discussionForum.issues.warning' | translate }}</p>
+    <p class="beneficiaryMayor marginTopCountdown">{{ 'shared.legalentity.label' | translate }}</p>
     <hr class="beneficiaryHr">
     <ux-accordion-boxes>
         <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
@@ -24,7 +24,7 @@
                         <p>{{ 'suppRegistration.company.name' | translate }}</p>
                         <p>{{ 'suppRegistration.vat.label' | translate }}</p>
                         <p>{{ 'suppRegistration.bic.label' | translate }}</p>
-                        <p>{{ 'suppRegistration.web.site' | translate }}</p>
+                        <p>{{ 'discussionForum.supplier.web.site' | translate }}</p>
                     </div>
                     <div class="ui-g-3">
                         <p class="profileDataDiscussion profileData">{{ownSupplier.address}}</p>
@@ -43,7 +43,7 @@
                         <br>
                         <button type="button" class="btn btn-primary applicationEdit"
                                 (click)="editApplication()">
-                            {{ 'benefPortal.beneficiary.editApplication' | translate }}
+                            {{ 'discussionForum.beneficiary.editApplication' | translate }}
                         </button>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                                 <p>{{ 'suppRegistration.company.name' | translate }}</p>
                                 <p>{{ 'suppRegistration.vat.label' | translate }}</p>
                                 <p>{{ 'suppRegistration.bic.label' | translate }}</p>
-                                <p>{{ 'suppRegistration.web.site' | translate }}</p>
+                                <p>{{ 'discussionForum.supplier.web.site' | translate }}</p>
                             </div>
                             <div class="ui-g-3">
                                 <p class="profileDataDiscussion profileData">{{supplier.address}}</p>
@@ -102,7 +102,7 @@
                         <button type="button" class="btn btn-primary changePassword discussionButton"
                                 (click)="newMessage()">
                             <i class="fa fa-plus" aria-hidden="true"></i>
-                            {{'suppRegistration.add.repply' | translate }}
+                            {{'discussionForum.add.reply' | translate }}
                         </button>
                     </div>
                 </div>

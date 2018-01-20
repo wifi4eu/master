@@ -5,7 +5,7 @@ import re
 parent = "."
 extensions = ['html', 'js', 'ts']
 ignore_dirs = ['wifi4eu-financial', 'node_modules', 'target', 'dist']
-regex = r"\{\{(.*?)\s\|\stranslate\s\}\}"
+regex = r"\{\{(.*?)\|"
 base_file = 'en.json'
 
 
@@ -48,6 +48,7 @@ def get_base_data(used_labels):
     new = 0
     for label in used_labels:
         if label not in base_data:
+            print('"' + label + '":"",')
             base_data[label] = ''
             new += 1
 
@@ -70,10 +71,9 @@ def get_portal_labels():
 
 def main():
     used_labels = get_portal_labels()
-    print(used_labels)
-    # base_data = get_base_data(used_labels)
-    # print('Labels defined in portal:', used_labels)
-    # print('Labels in base translation file:', base_data)
+    base_data = get_base_data(used_labels)
+    print('Labels defined in portal:', used_labels)
+    print('Labels in base translation file:', base_data)
 
 
 if __name__ == "__main__":

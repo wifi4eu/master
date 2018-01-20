@@ -68,7 +68,7 @@
                             <div class="ui-g-12">
                                 <div class="ui-g">
                                     <div class="ui-g-10">
-                                        <p class="beneficiaryMayor">{{ 'suppRegistration.legalentity.label' | translate }}</p>
+                                        <p class="beneficiaryMayor">{{ 'shared.legalentity.label' | translate }}</p>
                                     </div>
                                     <div class="ui-g-2">
                                         <a (click)="displayModal('municipality', i)" class="edit">
@@ -287,7 +287,7 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMunicipality" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <h1 class="beneficiaryMayorModal">{{'suppRegistration.legalentity.label' | translate }}</h1>
+        <h1 class="beneficiaryMayorModal">{{'shared.legalentity.label' | translate }}</h1>
         <form (ngSubmit)="saveMunicipalityChanges()" #profileFormMunicipality="ngForm" *ngIf="editedMunicipality">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
