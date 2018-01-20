@@ -23,9 +23,9 @@
                         </div>
                         <div class="ui-g">
                             <div class="ui-g-4">
-                                <p>{{ 'suppRegistration.name.label' | translate }}</p>
-                                <p>{{ 'suppRegistration.surname.label' | translate }}</p>
-                                <p>{{ 'suppRegistration.email.label' | translate }}</p>
+                                <p>{{ 'shared.name.label' | translate }}</p>
+                                <p>{{ 'shared.surname.label' | translate }}</p>
+                                <p>{{ 'shared.email.label' | translate }}</p>
                             </div>
                             <div class="ui-g-8">
                                 <p class="profileData">{{user.name}}</p>
@@ -51,9 +51,9 @@
                                 </div>
                                 <div class="ui-g">
                                     <div class="ui-g-4">
-                                        <p>{{ 'suppRegistration.name.label' | translate }}</p>
-                                        <p>{{ 'suppRegistration.surname.label' | translate }}</p>
-                                        <p>{{ 'suppRegistration.email.label' | translate }}</p>
+                                        <p>{{ 'shared.name.label' | translate }}</p>
+                                        <p>{{ 'shared.surname.label' | translate }}</p>
+                                        <p>{{ 'shared.email.label' | translate }}</p>
                                     </div>
                                     <div class="ui-g-8">
                                         <p class="profileData">{{mayors[i].name}}</p>
@@ -155,7 +155,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="name_user">{{ 'suppRegistration.name.label' | translate }}</label>
+                        <label for="name_user">{{ 'shared.name.label' | translate }}</label>
                         <input id="name_user" type="text" [(ngModel)]="editedUser.name" class="form-control"
                                name="name_user" ngcontrol="name_user" #name_user="ngModel" required>
                         <div [hidden]="name_user.valid || name_user.pristine" class="alert alert-danger">
@@ -170,7 +170,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="surname_user">{{ 'suppRegistration.surname.label' | translate }}</label>
+                        <label for="surname_user">{{ 'shared.surname.label' | translate }}</label>
                         <input id="surname_user" type="text" [(ngModel)]="editedUser.surname" class="form-control"
                                name="surname_user" ngcontrol="surname_user" #surname_user="ngModel" required>
                         <div [hidden]="surname_user.valid || surname_user.pristine" class="alert alert-danger">
@@ -185,7 +185,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="email_user">{{ 'suppRegistration.email.label' | translate }}</label>
+                        <label for="email_user">{{ 'shared.email.label' | translate }}</label>
                         <input id="email_user" type="text" [(ngModel)]="editedUser.email" class="form-control"
                                name="email_user" ngcontrol="email_user" #email_user="ngModel" required disabled>
                         <div [hidden]="email_user.valid || email_user.pristine" class="alert alert-danger">
@@ -205,7 +205,7 @@
                 <div class="ui-g-2" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary publish-button"
                             [disabled]="!profileFormUser.form.valid">
-                        {{ 'suppRegistration.confirm.button' | translate }}
+                        {{ 'shared.confirm.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-4"></div>
@@ -224,7 +224,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="name_mayor">{{ 'suppRegistration.name.label' | translate }}</label>
+                        <label for="name_mayor">{{ 'shared.name.label' | translate }}</label>
                         <input id="name_mayor" type="text" [(ngModel)]="editedMayor.name" class="form-control"
                                name="name_mayor" ngcontrol="name_mayor" #name_mayor="ngModel" required>
                         <div [hidden]="name_mayor.valid || name_mayor.pristine" class="alert alert-danger">
@@ -239,7 +239,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="surname_mayor">{{ 'suppRegistration.surname.label' | translate }}</label>
+                        <label for="surname_mayor">{{ 'shared.surname.label' | translate }}</label>
                         <input id="surname_mayor" type="text" [(ngModel)]="editedMayor.surname" class="form-control"
                                name="surname_mayor" ngcontrol="surname_mayor" #surname_mayor="ngModel" required>
                         <div [hidden]="surname_mayor.valid || surname_mayor.pristine" class="alert alert-danger">
@@ -254,7 +254,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="email_mayor">{{ 'suppRegistration.email.label' | translate }}</label>
+                        <label for="email_mayor">{{ 'shared.email.label' | translate }}</label>
                         <input id="email_mayor" type="text" [(ngModel)]="editedMayor.email" class="form-control"
                                name="email_mayor" ngcontrol="email_mayor" #email_mayor="ngModel" required disabled>
                         <div [hidden]="email_mayor.valid || email_mayor.pristine" class="alert alert-danger">
@@ -274,7 +274,7 @@
                 <div class="ui-g-2" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary publish-button"
                             [disabled]="!profileFormMayor.form.valid">
-                        {{ 'suppRegistration.confirm.button' | translate }}
+                        {{ 'shared.confirm.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-4"></div>
@@ -293,7 +293,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="country_municipality">{{ 'suppRegistration.name.label' | translate }}</label>
+                        <label for="country_municipality">{{ 'shared.name.label' | translate }}</label>
                         <input id="country_municipality" type="text" [(ngModel)]="editedMunicipality.country"
                                class="form-control"
                                name="country_municipality" ngcontrol="country_municipality"
@@ -311,7 +311,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="name_municipality">{{ 'suppRegistration.surname.label' | translate }}</label>
+                        <label for="name_municipality">{{ 'shared.surname.label' | translate }}</label>
                         <input id="name_municipality" type="text" [(ngModel)]="editedMunicipality.name"
                                class="form-control"
                                name="name_municipality" ngcontrol="name_municipality" #name_municipality="ngModel"
@@ -384,7 +384,7 @@
                 <div class="ui-g-2" style="text-align: center !important">
                     <button type="submit" class="btn btn-primary publish-button"
                             [disabled]="!profileFormMunicipality.form.valid">
-                        {{ 'suppRegistration.confirm.button' | translate }}
+                        {{ 'shared.confirm.button' | translate }}
                     </button>
                 </div>
                 <div class="ui-g-4"></div>

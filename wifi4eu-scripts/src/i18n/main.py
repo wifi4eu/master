@@ -2,10 +2,10 @@ import json
 import os
 import re
 
-parent = "../../../"
+parent = "."
 extensions = ['html', 'js', 'ts']
 ignore_dirs = ['wifi4eu-financial', 'node_modules', 'target', 'dist']
-regex = r"\{\{(.*?)\}\}"
+regex = r"\{\{(.*?)\s\|\stranslate\s\}\}"
 base_file = 'en.json'
 
 
@@ -54,6 +54,7 @@ def get_base_data(used_labels):
     print('Labels not present in base translation file (' + base_file + '):', new)
     return base_data
 
+
 # Get labels present in the portal
 def get_portal_labels():
     labels = []
@@ -69,9 +70,10 @@ def get_portal_labels():
 
 def main():
     used_labels = get_portal_labels()
-    base_data = get_base_data(used_labels)
-    print('Labels defined in portal:', used_labels)
-    print('Labels in base translation file:', base_data)
+    print(used_labels)
+    # base_data = get_base_data(used_labels)
+    # print('Labels defined in portal:', used_labels)
+    # print('Labels in base translation file:', base_data)
 
 
 if __name__ == "__main__":

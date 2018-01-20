@@ -20,7 +20,7 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label floatLeft" for="contactName">{{ 'suppRegistration.name.label' | translate }}</label>
+                <label class="label floatLeft" for="contactName">{{ 'shared.name.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="contactName" name="contactName"
                        [(ngModel)]="supplier.contactName" #contactName="ngModel" required>
                 <div class="alert alert-danger" [hidden]="contactName.valid || contactName.pristine">
@@ -34,7 +34,7 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label floatLeft" for="contactSurname">{{ 'suppRegistration.surname.label' | translate
+                <label class="label floatLeft" for="contactSurname">{{ 'shared.surname.label' | translate
                     }}</label>
                 <input class="form-control paddingInput" type="text"
                        id="contactSurname" name="contactSurname" [(ngModel)]="supplier.contactSurname"
@@ -81,7 +81,7 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label floatLeft" for="contactEmail">{{ 'suppRegistration.email.label' | translate
+                <label class="label floatLeft" for="contactEmail">{{ 'shared.email.label' | translate
                     }}</label>
                 <input class="form-control paddingInput" type="email" id="contactEmail" name="contactEmail"
                        [(ngModel)]="supplier.contactEmail" #contactEmail="ngModel"
@@ -97,7 +97,7 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label floatLeft" for="confirmEmail">{{ 'suppRegistration.confirmemail.label' | translate
+                <label class="label floatLeft" for="confirmEmail">{{ 'shared.confirmemail.label' | translate
                     }}</label>
                 <input class="form-control paddingInput" type="email" id="confirmEmail" name="confirmEmail"
                        [(ngModel)]="confirmEmailField" #confirmEmail="ngModel" (paste)="preventPaste()"
@@ -123,7 +123,7 @@
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn btn-primary publish-button"
                     [disabled]="!supplierForm.form.valid || !emailMatches">
-                {{ 'suppRegistration.confirm.button' | translate }}
+                {{ 'shared.confirm.button' | translate }}
             </button>
         </div>
         <div class="ui-lg-3"></div>

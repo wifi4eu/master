@@ -27,11 +27,11 @@
         </div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.name.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.name.label' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.contactName}}</b></div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'suppRegistration.surname.label' | translate }}</div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">{{ 'shared.surname.label' | translate }}</div>
         <div class="ui-g-12 ui-md-12 ui-lg-7"><b>{{supplier.contactSurname}}</b></div>
     </div>
     <div class="ui-g">
@@ -150,7 +150,7 @@
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn  btn-primary publish-button" (click)="openModal()"
                     [disabled]="!legalChecks[0] || !legalChecks[1]">
-                {{ 'suppRegistration.confirm.button' | translate}}
+                {{ 'shared.confirm.button' | translate}}
             </button>
         </div>
         <div class="ui-lg-3"></div>
@@ -169,7 +169,7 @@
     <p>{{ 'suppRegistration.eu.requirements3' | translate}}</p>
     <div class="ui-g-2" style="text-align: center !important">
         <button type="submit" class="btn btn-primary publish-button" (click)="submit()">
-            {{ 'suppRegistration.confirm.button' | translate }}
+            {{ 'shared.confirm.button' | translate }}
         </button>
     </div>
 </p-dialog>
