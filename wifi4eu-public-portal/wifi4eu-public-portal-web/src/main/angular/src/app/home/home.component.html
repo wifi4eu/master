@@ -71,7 +71,6 @@
             </ul>
             <div *ngIf="showTimeline">
                 <p class="apply-text">{{ 'home.part3.text3' | translate }}</p>
-                <p class="apply-text">{{ 'home.part3.text4' | translate }}</p>
                 <timer-component class="timelineBenefLanding" (timerEvent)="checkIfSelected()"
                                  [expirationTimestamp]="currentCall.startDate"></timer-component>
             </div>
