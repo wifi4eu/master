@@ -50,7 +50,7 @@
                     <p>{{ 'suppRegistration.legal.address' | translate }}</p>
                     <p>{{ 'suppRegistration.vat.label' | translate }}</p>
                     <p>{{ 'suppRegistration.bic.label' | translate }}</p>
-                    <p *ngIf="supplier.logo">{{ 'suppRegistration.logo.label' | translate }}</p>
+                    <p *ngIf="supplier.logo">{{ 'suppRegistration.upload.logo' | translate }}</p>
                 </div>
                 <div class="ui-g-8">
                     <p class="profileData">{{supplier.name}}</p>
@@ -63,7 +63,7 @@
             <hr class="beneficiaryHr">
             <div class="ui-g">
                 <div class="ui-g-10">
-                    <p class="beneficiaryMayor">{{ 'shared.legalentity.label' | translate }}</p>
+                    <p class="beneficiaryMayor">{{ 'suppRegistration.entity.support' | translate }}</p>
                     <p-tabView *ngIf="selectedCountriesNames.length > 0">
                         <p-tabPanel *ngFor="let country of selectedCountriesNames;" [header]="country">
                             <div class="ui-g">
@@ -205,7 +205,7 @@
                     </button>
                     <button type="submit" class="btn btn-primary changePasswordModalNoTop"
                             [disabled]="!profileFormContact.form.valid">
-                        {{ 'shared.change' | translate }}
+                        {{ 'shared.confirm.button' | translate }}
                     </button>
                 </div>
             </div>
@@ -290,7 +290,8 @@
                                 <img id="logo" [src]="supplier.logo" height="75"
                                      style="max-width: 100%; border: 1px solid; box-shadow: 0px 0px 5px black;">
                             </div>
-                            <h2 *ngIf="!supplier.logo" class="ui-g-4">{{'suppRegistration.noLogo.label' | translate}}</h2>
+                            <h2 *ngIf="!supplier.logo" class="ui-g-4">{{'suppRegistration.noLogo.label' |
+                                translate}}</h2>
                             <div class="ui-g-2"></div>
                             <div class="ui-g-5">
                                 <h3 *ngIf="isLogoUploaded"><b>New logo</b></h3><br>
@@ -314,7 +315,7 @@
                     </button>
                     <button type="submit" class="btn btn-primary changePasswordModalNoTop"
                             [disabled]="!profileFormCompany.form.valid">
-                        {{ 'shared.change' | translate }}
+                        {{ 'shared.confirm.button' | translate }}
                     </button>
                 </div>
             </div>
@@ -370,7 +371,7 @@
                         </button>
                         <button type="submit" class="btn btn-primary changePasswordModal"
                                 [disabled]="!profileFormPassword.form.valid || !passwordsMatch">
-                            {{ 'shared.change' | translate }}
+                            {{ 'shared.confirm.button' | translate }}
                         </button>
                     </div>
                 </div>
