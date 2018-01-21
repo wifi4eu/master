@@ -137,7 +137,7 @@
   "suppRegistration.phone.number": "Phone number",
   "suppRegistration.email.label": "E-mail address",
   "suppRegistration.confirmemail.label": "Confirm e-mail address",
-  "suppRegistration.warning.emailMatch": "suppRegistration.warning.emailMatch",
+  "suppRegistration.warning.emailMatch": "The email address does not match, please provide the same e-mail address.",
   "suppRegistration.warning.emailRequired": "Please provide a valid e-mail address. To validate your registration, a confirmation email will be sent to this e-mail address. ",
   "suppRegistration.review.description": "Please, review all the information provided before you complete your registration.",
   "suppRegistration.contact.person": "Contact Person",

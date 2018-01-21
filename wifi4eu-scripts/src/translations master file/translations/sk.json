@@ -75,7 +75,7 @@
   "suppRegistration.phone.number": "Telefónne číslo",
   "suppRegistration.email.label": "E-mailová adresa",
   "suppRegistration.confirmemail.label": "Potvrďte e-mailovú adresu",
-  "suppRegistration.warning.emailMatch": "",
+  "suppRegistration.warning.emailMatch": "E-mailové adresy sa musia zhodovať.",
   "suppRegistration.warning.emailRequired": "Uveďte platnú e-mailovú adresu. Na potvrdenie vašej registrácie vám bude na túto e-mailovú adresu zaslaný potvrdzujúci e-mail.",
   "suppRegistration.review.description": "Skôr, než dokončíte svoju registráciu, skontrolujte všetky uvedené informácie.",
   "suppRegistration.contact.person": "Kontaktná osoba",

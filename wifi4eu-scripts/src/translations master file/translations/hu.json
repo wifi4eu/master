@@ -75,7 +75,7 @@
   "suppRegistration.phone.number": "Telefonszám",
   "suppRegistration.email.label": "E-mail-cím",
   "suppRegistration.confirmemail.label": "E-mail-cím megerősítése",
-  "suppRegistration.warning.emailMatch": "",
+  "suppRegistration.warning.emailMatch": "A két e-mail-cím nem egyezik meg egymással. Kérjük, javítsa.",
   "suppRegistration.warning.emailRequired": "Kérjük, adjon meg egy érvényes e-mail-címet. Fogunk küldeni Önnek erre a címre egy visszaigazoló e-mailt, melyen keresztül érvényesíteni tudja a regisztrációt. ",
   "suppRegistration.review.description": "Kérjük, a regisztráció befejezése előtt ellenőrizze az összes megadott információt.",
   "suppRegistration.contact.person": "Kapcsolattartó személy",
