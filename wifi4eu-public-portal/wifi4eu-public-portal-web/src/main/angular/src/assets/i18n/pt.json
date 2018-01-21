@@ -165,6 +165,7 @@
   "int.comment.19": "-- Start PT Old translations file --",
   "home.footer.update": "Última atualização: {{versionDate}} v{{version}}",
   "home.footer.top": " | voltar ao topo",
+  "shared.login.label": "Iniciar sessão",
   "int.comment.20": "-- END PT Old translations file --",
   "int.breakfile": ""
 }

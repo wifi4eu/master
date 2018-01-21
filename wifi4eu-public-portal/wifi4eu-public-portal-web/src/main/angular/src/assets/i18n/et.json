@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start ET Old translations file --",
   "home.footer.update": "Viimati uuendatud {{versionDate}} v{{version}}",
   "home.footer.top": " | Tagasi üles",
+  "shared.login.label": "Sisselogimine",
   "int.comment.20": "-- END ET Old translations file --",
   "int.breakfile": ""
 }

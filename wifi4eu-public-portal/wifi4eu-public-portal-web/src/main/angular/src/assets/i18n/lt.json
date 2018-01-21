@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start LT Old translations file --",
   "home.footer.update": "Atnaujinta {{versionDate}} v{{version}}",
   "home.footer.top": " | Į puslapio pradžią",
+  "shared.login.label": "Prisijungti",
   "int.comment.20": "-- END LT Old translations file --",
   "int.breakfile": ""
 }

@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start LV Old translations file --",
   "home.footer.update": "Pēdējais atjauninājums: {{versionDate}} v{{version}}",
   "home.footer.top": " | Atpakaļ uz sākumu",
+  "shared.login.label": "Pieteikties",
   "int.comment.20": "-- END LV Old translations file --",
   "int.breakfile": ""
 }

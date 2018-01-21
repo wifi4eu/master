@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start NL Old translations file --",
   "home.footer.update": "Laatste update: {{versionDate}} v{{version}}",
   "home.footer.top": " | Naar boven",
+  "shared.login.label": "Aanmelden",
   "int.comment.20": "-- END NL Old translations file --",
   "int.breakfile": ""
 }

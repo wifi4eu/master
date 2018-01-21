@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start DA Old translations file --",
   "home.footer.update": "Seneste opdatering: {{versionDate}} v{{version}}",
   "home.footer.top": " | tilbage til toppen",
+  "shared.login.label": "Log på",
   "int.comment.20": "-- END DA Old translations file --",
   "int.breakfile": ""
 }

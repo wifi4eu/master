@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start ET Old translations file --",
   "home.footer.update": "Päivitetty viimeksi {{versionDate}} v{{version}}",
   "home.footer.top": " | sivun alkuun",
+  "shared.login.label": "Sisäänkirjautuminen",
   "int.comment.20": "-- END ET Old translations file --",
   "int.breakfile": ""
 }

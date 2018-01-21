@@ -163,6 +163,7 @@
   "int.comment.19": "-- Start SL Old translations file --",
   "home.footer.update": "Zadnja sprememba {{versionDate}} v{{version}}",
   "home.footer.top": " | nazaj na vrh",
+  "shared.login.label": "Prijava",
   "int.comment.20": "-- END SL Old translations file --",
   "int.breakfile": ""
 }

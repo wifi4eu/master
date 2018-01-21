@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start HR Old translations file --",
   "home.footer.update": "Posljednji put ažurirano {{versionDate}} v{{version}}",
   "home.footer.top": " | Povratak na vrh",
+  "shared.login.label": "Prijava",
   "int.comment.20": "-- END HR Old translations file --",
   "int.breakfile": ""
 }

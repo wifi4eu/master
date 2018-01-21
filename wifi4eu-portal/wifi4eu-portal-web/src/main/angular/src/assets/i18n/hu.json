@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start HU Old translations file --",
   "home.footer.update": "Utolsó frissítés dátuma: {{versionDate}} v{{version}}",
   "home.footer.top": " | Vissza az oldal tetejére",
+  "shared.login.label": "Bejelentkezés",
   "int.comment.20": "-- END HU Old translations file --",
   "int.breakfile": ""
 }

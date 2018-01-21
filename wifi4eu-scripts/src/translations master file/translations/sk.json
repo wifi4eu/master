@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start SK Old translations file --",
   "home.footer.update": "Posledná aktualizácia: {{versionDate}} v{{version}}",
   "home.footer.top": " | Na začiatok",
+  "shared.login.label": "Prihlásenie",
   "int.comment.20": "-- END SK Old translations file --",
   "int.breakfile": ""
 }

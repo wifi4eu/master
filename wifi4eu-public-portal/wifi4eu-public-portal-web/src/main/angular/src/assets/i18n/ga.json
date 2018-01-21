@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start GA Old translations file --",
   "home.footer.update": "An nuashonrú is déanaí {{versionDate}} v{{version}}",
   "home.footer.top": " | ar ais go dtí an barr",
+  "shared.login.label": "Logáil isteach",
   "int.comment.20": "-- END GA Old translations file --",
   "int.breakfile": ""
 }

@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start MT Old translations file --",
   "home.footer.update": "L-aħħar aġġornament {{versionDate}} v{{version}}",
   "home.footer.top": " | lura 'l fuq",
+  "shared.login.label": "Login",
   "int.comment.20": "-- END MT Old translations file --",
   "int.breakfile": ""
 }

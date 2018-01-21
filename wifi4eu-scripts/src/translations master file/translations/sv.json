@@ -164,6 +164,7 @@
   "int.comment.19": "-- Start SV Old translations file --",
   "home.footer.update": "Senaste uppdatering {{versionDate}} v{{version}}",
   "home.footer.top": " | Till början",
+  "shared.login.label": "Logga in",
   "int.comment.20": "-- END SV Old translations file --",
   "int.breakfile": ""
 }

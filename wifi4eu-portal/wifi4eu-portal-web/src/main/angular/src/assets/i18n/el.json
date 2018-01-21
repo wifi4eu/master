@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start EL Old translations file --",
   "home.footer.update": "Τελευταία επικαιροποίηση {{versionDate}} v{{version}}",
   "home.footer.top": " | αρχή της σελίδας",
+  "shared.login.label": "Σύνδεση",
   "int.comment.20": "-- END EL Old translations file --",
   "int.breakfile": ""
 }

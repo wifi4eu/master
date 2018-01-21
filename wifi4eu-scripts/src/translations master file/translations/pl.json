@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start PL Old translations file --",
   "home.footer.update": "Ostatnia aktualizacja: {{versionDate}} v{{version}}",
   "home.footer.top": " | początek strony",
+  "shared.login.label": "Logowanie",
   "int.comment.20": "-- END PL Old translations file --",
   "int.breakfile": ""
 }

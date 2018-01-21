@@ -162,6 +162,7 @@
   "int.comment.19": "-- Start CS Old translations file --",
   "home.footer.update": "Poslední aktualizace {{versionDate}} v{{version}}",
   "home.footer.top": " | Zpět na začátek",
+  "shared.login.label": "Přihlášení",
   "int.comment.20": "-- END CS Old translations file --",
   "int.breakfile": ""
 }

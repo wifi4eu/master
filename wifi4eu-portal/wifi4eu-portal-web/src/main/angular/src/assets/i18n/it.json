@@ -184,6 +184,7 @@
   "int.comment.19": "-- Start IT Old translations file --",
   "home.footer.update": "Ultimo aggiornamento {{versionDate}} v{{version}}",
   "home.footer.top": " | Inizio pagina",
+  "shared.login.label": "Login",
   "int.comment.20": "-- END IT Old translations file --",
   "int.breakfile": ""
 }
