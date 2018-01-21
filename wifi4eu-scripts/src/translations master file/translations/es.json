@@ -58,6 +58,8 @@
   "benefLanding.elegibleText3": "Está a punto de inscribirse en el portal WiFi4EU en nombre de un municipio. ",
   "benefLanding.pleaseNoteText3": "Si su organización no figura en la lista de entidades, no servirá de nada rellenar el formulario porque la inscripción no será válida y no podrá presentar su solicitud. Se rechazarán las solicitudes cumplimentadas por empresas privadas.",
   "benefLanding.proceed": "¿Desea seguir adelante con el proceso de inscripción?",
+  "shared.no": "No",
+  "shared.yes": "Si",
   "benefRegistration.beneficiaryRegistration.step1.title": "Etapa 1: tipo de inscripción",
   "benefRegistration.registration.beneficiary.title": "Etapa 2: información sobre el municipio",
   "benefRegistration.registration.entity.title": "Etapa 3: datos de contacto",

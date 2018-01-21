@@ -56,6 +56,8 @@
   "benefLanding.elegibleText3": "Vous êtes sur le point de vous enregistrer sur le portail WiFi4EU pour le compte d’une municipalité. ",
   "benefLanding.pleaseNoteText3": "Si votre organisation ne figure pas sur la liste des entités pouvant participer au programme, il est inutile de remplir le formulaire d’enregistrement. Celui-ci ne sera pas valide et vous ne pourrez pas présenter votre candidature. Les candidatures présentées par des entreprises privées seront rejetées.",
   "benefLanding.proceed": "Souhaitez-vous poursuivre la procédure d’enregistrement?",
+  "shared.no": "Non",
+  "shared.yes": "Oui",
   "benefRegistration.beneficiaryRegistration.step1.title": "Étape 1: type d’enregistrement",
   "benefRegistration.registration.beneficiary.title": "Étape 2: renseignements sur la municipalité",
   "benefRegistration.registration.entity.title": "Étape 3: coordonnées",
