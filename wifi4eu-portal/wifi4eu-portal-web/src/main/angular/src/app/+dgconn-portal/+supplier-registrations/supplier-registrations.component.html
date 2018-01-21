@@ -25,7 +25,7 @@
 
   <div class="panel-dg">
     <p-dataTable [editable]="true" [responsive]="true" sortMode="multiple" [value]="customUserSupplierArray" [rows]="10" [paginator]="true">
-      <p-column field="supplier.name" styleClass="text-center" [sortable]="true" header="{{ 'suppRegistration.name.label' | translate }}"></p-column>
+      <p-column field="supplier.name" styleClass="text-center" [sortable]="true" header="{{ 'shared.name.label' | translate }}"></p-column>
       <p-column field="supplier.address" styleClass="text-center" [sortable]="true" header="{{ 'suppRegistration.physical-address.label' | translate }}"></p-column>
       <p-column header="{{ 'suppRegistration.phone.number' | translate }}" styleClass="text-center">
         <ng-template let-customSupplier="rowData" pTemplate="body">

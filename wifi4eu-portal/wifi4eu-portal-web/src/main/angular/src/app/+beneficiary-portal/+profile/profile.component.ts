@@ -152,7 +152,7 @@ export class BeneficiaryProfileComponent {
 
     private saveMayorChanges() {
         this.submittingData = true;
-        this.userApi.saveUserChanges(this.editedMayor).subscribe(
+        this.mayorApi.createMayor(this.editedMayor).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.mayors[this.currentEditIndex] = response.data;

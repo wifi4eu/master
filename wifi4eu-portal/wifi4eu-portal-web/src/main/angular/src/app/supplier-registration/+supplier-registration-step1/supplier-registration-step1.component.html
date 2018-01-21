@@ -65,7 +65,7 @@
                 <label class="label" for="bic">{{ 'suppRegistration.bic.label' | translate }}</label>
                 <input class="form-control paddingInput" type="text" id="bic" name="bic"
                        [(ngModel)]="supplier.bic" #bic="ngModel" required>
-                <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">{{'benefRegistration.bic.required'
+                <div class="alert alert-danger" [hidden]="bic.valid || bic.pristine">{{'suppRegistration.bic.required'
                     | translate}}
                 </div>
                 <div class="ui-lg-3"></div>
@@ -140,7 +140,7 @@
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <button type="submit" class="btn btn-primary publish-button" [disabled]="!supplierForm.form.valid">
-                {{ 'suppRegistration.confirm.button' | translate }}
+                {{ 'shared.confirm.button' | translate }}
             </button>
         </div>
         <div class="ui-lg-3"></div>

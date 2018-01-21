@@ -6,13 +6,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -22,6 +27,9 @@ import java.util.List;
 public class MayorResource {
     @Autowired
     private MayorService mayorService;
+
+    @Autowired
+    private PermissionChecker permissionChecker;
 
     Logger _log = LoggerFactory.getLogger(MayorResource.class);
 
@@ -45,16 +53,29 @@ public class MayorResource {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO createMayor(@RequestBody final MayorDTO mayorDTO) {
+    public ResponseDTO createMayor(@RequestBody final MayorDTO mayorDTO,
+                                   HttpServletResponse response) throws IOException {
         try {
             _log.info("createMayor");
             MayorDTO resMayor = mayorService.createMayor(mayorDTO);
+
+            //check permission
+            int mayorId = mayorDTO.getId();
+            permissionChecker.check(RightConstants.MAYORS_TABLE+mayorId);
+
             return new ResponseDTO(true, resMayor, null);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'createMayor' operation.", ade);
+            }
+            response.sendError(HttpStatus.FORBIDDEN.value());
+            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createMayor' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
 

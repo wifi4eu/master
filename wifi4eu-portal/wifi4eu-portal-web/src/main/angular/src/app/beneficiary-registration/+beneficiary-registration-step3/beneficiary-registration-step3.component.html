@@ -36,7 +36,7 @@
                 <div class="ui-g-2"></div>
                 <div class="ui-g-8">
                     <div>
-                        <label class="label floatLeft" for="name">{{ 'suppRegistration.name.label' | translate }}</label>
+                        <label class="label floatLeft" for="name">{{ 'shared.name.label' | translate }}</label>
                         <input id="name" type="text" class="form-control paddingInput" name="name"
                                [disabled]="imMayor" [(ngModel)]="initialUser.name" required>
                     </div>
@@ -47,7 +47,7 @@
                 <div class="ui-g-2"></div>
                 <div class="ui-g-8">
                     <div class="form-group">
-                        <label class="label floatLeft" for="surname">{{ 'suppRegistration.surname.label' | translate }}</label>
+                        <label class="label floatLeft" for="surname">{{ 'shared.surname.label' | translate }}</label>
                         <input id="surname" type="text" class="form-control paddingInput" name="surname"
                                [disabled]="imMayor" [(ngModel)]="initialUser.surname" required>
                     </div>
@@ -89,7 +89,7 @@
                 <div class="ui-g-2"></div>
                 <div class="ui-g-8">
                     <div id="mayor-email">
-                        <label class="label floatLeft">{{ 'suppRegistration.email.label' | translate }}</label>
+                        <label class="label floatLeft">{{ 'shared.email.label' | translate }}</label>
                         <input class="form-control paddingInput" type="email"
                                id="email" name="email" [pattern]="emailPattern"
                                [(ngModel)]="initialUser.email" [disabled]="imMayor"
@@ -106,7 +106,7 @@
                 <div class="ui-g-8">
                     <!-- Mayor confirmation email -->
                     <div id="mayor-confirm-email">
-                        <label class="label floatLeft">{{ 'suppRegistration.confirmemail.label' | translate }}</label>
+                        <label class="label floatLeft">{{ 'shared.confirmemail.label' | translate }}</label>
                         <input class="form-control paddingInput {{css_class_email}}"
                                id="repeatEmail" name="repeatEmail"
                                [(ngModel)]="repeatEmail" [disabled]="imMayor"
