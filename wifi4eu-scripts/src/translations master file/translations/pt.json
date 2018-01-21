@@ -149,5 +149,9 @@
   "shared.backtohome.button": "Voltar ao início",
   "suppRegistration.requirements.head": "suppRegistration.requirements.head",
   "int.comment.6": "-- END PT Company registration file --",
+  "int.comment.19": "-- Start PT Old translations file --",
+  "home.footer.update": "Última atualização: {{versionDate}} v{{version}}",
+  "home.footer.top": " | voltar ao topo",
+  "int.comment.20": "-- END PT Old translations file --",
   "int.breakfile": ""
 }

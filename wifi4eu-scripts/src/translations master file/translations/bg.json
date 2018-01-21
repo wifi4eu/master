@@ -171,5 +171,9 @@
   "suppRegistration.requirements.head": "Потвърждавам, че съм прочел и съм съгласен със следните условия на схемата: ",
   "discussionForum.add.reply": "Ново съобщение",
   "int.comment.14": "-- END BG Missing translations file --",
+  "int.comment.19": "-- Start BG Old translations file --",
+  "home.footer.update": "Последна актуализация на {{versionDate}} v{{version}} г.",
+  "home.footer.top": " | към началото",
+  "int.comment.20": "-- END BG Old translations file --",
   "int.breakfile": ""
 }

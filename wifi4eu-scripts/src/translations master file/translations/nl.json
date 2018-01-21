@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Terug naar de homepage",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END NL Company registration file --",
+  "int.comment.19": "-- Start NL Old translations file --",
+  "home.footer.update": "Laatste update: {{versionDate}} v{{version}}",
+  "home.footer.top": " | Naar boven",
+  "int.comment.20": "-- END NL Old translations file --",
   "int.breakfile": ""
 }

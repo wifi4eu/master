@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Πίσω στην αρχική σελίδα",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END EL Company registration file --",
+  "int.comment.19": "-- Start EL Old translations file --",
+  "home.footer.update": "Τελευταία επικαιροποίηση {{versionDate}} v{{version}}",
+  "home.footer.top": " | αρχή της σελίδας",
+  "int.comment.20": "-- END EL Old translations file --",
   "int.breakfile": ""
 }

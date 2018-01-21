@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Späť na domovskú stránku.",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END SK Company registration file --",
+  "int.comment.19": "-- Start SK Old translations file --",
+  "home.footer.update": "Posledná aktualizácia: {{versionDate}} v{{version}}",
+  "home.footer.top": " | Na začiatok",
+  "int.comment.20": "-- END SK Old translations file --",
   "int.breakfile": ""
 }

@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Powrót na stronę główną",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END PL Company registration file --",
+  "int.comment.19": "-- Start PL Old translations file --",
+  "home.footer.update": "Ostatnia aktualizacja: {{versionDate}} v{{version}}",
+  "home.footer.top": " | początek strony",
+  "int.comment.20": "-- END PL Old translations file --",
   "int.breakfile": ""
 }

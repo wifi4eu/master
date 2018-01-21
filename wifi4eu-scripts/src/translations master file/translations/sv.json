@@ -92,5 +92,9 @@
   "shared.backtohome.button": "Tillbaka till förstasidan",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END SV Company registration file --",
+  "int.comment.19": "-- Start SV Old translations file --",
+  "home.footer.update": "Senaste uppdatering {{versionDate}} v{{version}}",
+  "home.footer.top": " | Till början",
+  "int.comment.20": "-- END SV Old translations file --",
   "int.breakfile": ""
 }

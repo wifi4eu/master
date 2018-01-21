@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Povratak na početnu stranicu",
   "suppRegistration.requirements.head": "suppRegistration.requirements.head",
   "int.comment.6": "-- END HR Company registration file --",
+  "int.comment.19": "-- Start HR Old translations file --",
+  "home.footer.update": "Posljednji put ažurirano {{versionDate}} v{{version}}",
+  "home.footer.top": " | Povratak na vrh",
+  "int.comment.20": "-- END HR Old translations file --",
   "int.breakfile": ""
 }

@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Lura lejn il-paġna ewlenija",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END MT Company registration file --",
+  "int.comment.19": "-- Start MT Old translations file --",
+  "home.footer.update": "L-aħħar aġġornament {{versionDate}} v{{version}}",
+  "home.footer.top": " | lura 'l fuq",
+  "int.comment.20": "-- END MT Old translations file --",
   "int.breakfile": ""
 }

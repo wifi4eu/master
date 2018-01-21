@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Tilbage til startsiden",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END DA Company registration file --",
+  "int.comment.19": "-- Start DA Old translations file --",
+  "home.footer.update": "Seneste opdatering: {{versionDate}} v{{version}}",
+  "home.footer.top": " | tilbage til toppen",
+  "int.comment.20": "-- END DA Old translations file --",
   "int.breakfile": ""
 }

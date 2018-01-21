@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Înregistrarea a eșuat.",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END RO Company registration file --",
+  "int.comment.19": "-- Start RO Old translations file --",
+  "home.footer.update": "Ultima actualizare: {{versionDate}} v{{version}}",
+  "home.footer.top": " | înapoi la începutul paginii",
+  "int.comment.20": "-- END RO Old translations file --",
   "int.breakfile": ""
 }

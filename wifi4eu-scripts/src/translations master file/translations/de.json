@@ -114,5 +114,9 @@
   "suppRegistration.requirements.head": "Ich habe die folgenden Bedingungen gelesen und bin damit einverstanden: ",
   "discussionForum.add.reply": "Neue Nachricht",
   "int.comment.14": "-- END DE Missing translations file --",
+  "int.comment.19": "-- Start DE Old translations file --",
+  "home.footer.update": "Letzte Aktualisierung: {{versionDate}} v{{version}}",
+  "home.footer.top": " | Seitenanfang",
+  "int.comment.20": "-- END DE Old translations file --",
   "int.breakfile": ""
 }

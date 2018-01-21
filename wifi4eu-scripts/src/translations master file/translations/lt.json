@@ -90,6 +90,10 @@
   "shared.submitregistration.failure.text.part1": "Bandykite dar kartą arba kreipkitės į pagalbos tarnybą.",
   "shared.backtohome.button": "Grįžti į pradžios puslapį",
   "suppRegistration.requirements.head": "",
-  "int.comment.6": "-- END English Company registration file --",
+  "int.comment.6": "-- END LT Company registration file --",
+  "int.comment.19": "-- Start LT Old translations file --",
+  "home.footer.update": "Atnaujinta {{versionDate}} v{{version}}",
+  "home.footer.top": " | Į puslapio pradžią",
+  "int.comment.20": "-- END LT Old translations file --",
   "int.breakfile": ""
 }

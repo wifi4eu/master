@@ -194,5 +194,9 @@
   "suppRegistration.requirements.head": "I confirm that I have read and agree to the following conditions of the scheme: ",
   "discussionForum.add.reply": "New message",
   "int.comment.14": "-- END EN Missing translations file --",
+  "int.comment.19": "-- Start EN Old translations file --",
+  "home.footer.update": "Last Update {{versionDate}} v{{version}}",
+  "home.footer.top": " | Top",
+  "int.comment.20": "-- END EN Old translations file --",
   "int.breakfile": ""
 }

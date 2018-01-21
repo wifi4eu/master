@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Atpakaļ uz sākumlapu",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END LV Company registration file --",
+  "int.comment.19": "-- Start LV Old translations file --",
+  "home.footer.update": "Pēdējais atjauninājums: {{versionDate}} v{{version}}",
+  "home.footer.top": " | Atpakaļ uz sākumu",
+  "int.comment.20": "-- END LV Old translations file --",
   "int.breakfile": ""
 }

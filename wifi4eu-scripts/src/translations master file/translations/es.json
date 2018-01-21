@@ -160,5 +160,9 @@
   "shared.backtohome.button": "Volver a la página inicial",
   "suppRegistration.requirements.head": "suppRegistration.requirements.head",
   "int.comment.6": "-- END ES Company registration file --",
+  "int.comment.19": "-- Start ES Old translations file --",
+  "home.footer.update": "Última actualización {{versionDate}} v{{version}} | ",
+  "home.footer.top": "Arriba",
+  "int.comment.20": "-- END ES Old translations file --",
   "int.breakfile": ""
 }

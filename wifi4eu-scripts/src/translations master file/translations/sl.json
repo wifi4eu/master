@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Nazaj na domačo stran",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END SL Company registration file --",
+  "int.comment.19": "-- Start SL Old translations file --",
+  "home.footer.update": "Zadnja sprememba {{versionDate}} v{{version}}",
+  "home.footer.top": " | nazaj na vrh",
+  "int.comment.20": "-- END SL Old translations file --",
   "int.breakfile": ""
 }

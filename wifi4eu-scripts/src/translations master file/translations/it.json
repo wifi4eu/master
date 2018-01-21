@@ -113,6 +113,10 @@
   "suppRegistration.upload.logo": "caricare il logo",
   "suppRegistration.requirements.head": "Confermo di aver letto e approvato le seguenti condizioni dell'iniziativa: ",
   "discussionForum.add.reply": "Nuovo messaggio",
-  "int.comment.14": "-- END EN Missing translations file --",
+  "int.comment.14": "-- END IT Missing translations file --",
+  "int.comment.19": "-- Start IT Old translations file --",
+  "home.footer.update": "Ultimo aggiornamento {{versionDate}} v{{version}}",
+  "home.footer.top": " | Inizio pagina",
+  "int.comment.20": "-- END IT Old translations file --",
   "int.breakfile": ""
 }

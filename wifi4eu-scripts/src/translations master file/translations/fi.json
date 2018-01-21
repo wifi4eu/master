@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Takaisin etusivulle",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END FI Company registration file --",
+  "int.comment.19": "-- Start ET Old translations file --",
+  "home.footer.update": "Päivitetty viimeksi {{versionDate}} v{{version}}",
+  "home.footer.top": " | sivun alkuun",
+  "int.comment.20": "-- END ET Old translations file --",
   "int.breakfile": ""
 }

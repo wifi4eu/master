@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Avalehele",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END ET Company registration file --",
+  "int.comment.19": "-- Start ET Old translations file --",
+  "home.footer.update": "Viimati uuendatud {{versionDate}} v{{version}}",
+  "home.footer.top": " | Tagasi üles",
+  "int.comment.20": "-- END ET Old translations file --",
   "int.breakfile": ""
 }

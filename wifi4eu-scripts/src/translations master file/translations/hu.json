@@ -91,5 +91,9 @@
   "shared.backtohome.button": "Vissza a kezdőlapra",
   "suppRegistration.requirements.head": "",
   "int.comment.6": "-- END HU Company registration file --",
+  "int.comment.19": "-- Start HU Old translations file --",
+  "home.footer.update": "Utolsó frissítés dátuma: {{versionDate}} v{{version}}",
+  "home.footer.top": " | Vissza az oldal tetejére",
+  "int.comment.20": "-- END HU Old translations file --",
   "int.breakfile": ""
 }
