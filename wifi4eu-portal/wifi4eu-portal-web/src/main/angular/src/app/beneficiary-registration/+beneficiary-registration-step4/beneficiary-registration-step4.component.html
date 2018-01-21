@@ -39,7 +39,7 @@
             <ng-container *ngIf="!multipleMunicipalities && municipalities.length > 0">
                 <span class="ui-lg-1"></span>
                 <span class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: left;">
-                    <p class="ui-g-11 ui-md-11 ui-lg-10 beneficiaryMayor">{{ 'benefRegistration.municipalityDetails.title' | translate }}</p>
+                    <p class="ui-g-11 ui-md-11 ui-lg-10 beneficiaryMayor">{{ 'shared.municipalityDetails.title' | translate }}</p>
                     <a class="ui-g-2 ui-md-2 ui-lg-2 right" (click)="edit(2)">{{ 'shared.edit.button' | translate }} <i
                             class="fa fa-pencil" aria-hidden="true"></i></a>
                     <div class="row-municipality">
@@ -51,7 +51,7 @@
                         <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipalities[0].address }}</b></span>
                     </div>
                     <div class="row-municipality">
-                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.number.label' | translate }}</span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.number.label' | translate }}</span>
                         <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipalities[0].addressNum }}</b></span>
                     </div>
                     <div class="row-municipality">
@@ -59,15 +59,15 @@
                         <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipalities[0].postalCode }}</b></span>
                     </div>
                     <div class="row-municipality">
-                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.nameMayor.label' | translate }}</span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.name.label' | translate }}</span>
                         <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[0].name }}</b></span>
                     </div>
                     <div class="row-municipality">
-                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.surnameMayor.label' | translate }}</span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.surname.label' | translate }}</span>
                         <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[0].surname }}</b></span>
                     </div>
                     <div class="row-municipality">
-                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.emailMayor.label' | translate }}</span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.email.label' | translate }}</span>
                         <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[0].email }}</b></span>
                     </div>
                 </span>
@@ -83,7 +83,7 @@
                         <span class="ui-g-12">
                             <h3><b>{{ 'shared.municipality.label' | translate }} #{{ (i + 1) }}</b></h3>
                         </span>
-                        <p class="ui-g-11 ui-md-11 ui-lg-10 beneficiaryMayor">{{ 'benefRegistration.municipalityDetails.title' | translate }}</p>
+                        <p class="ui-g-11 ui-md-11 ui-lg-10 beneficiaryMayor">{{ 'shared.municipalityDetails.title' | translate }}</p>
                         <a class="ui-g-2 ui-md-2 ui-lg-2 right" (click)="edit(2)">{{ 'shared.edit.button' | translate }} <i
                                 class="fa fa-pencil" aria-hidden="true"></i></a>
                         <div class="row-municipality">
@@ -95,7 +95,7 @@
                             <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipality.address }}</b></span>
                         </div>
                         <div class="row-municipality">
-                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.number.label' | translate }}</span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.number.label' | translate }}</span>
                             <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipality.addressNum }}</b></span>
                         </div>
                         <div class="row-municipality">
@@ -103,15 +103,15 @@
                             <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipality.postalCode }}</b></span>
                         </div>
                         <div class="row-municipality">
-                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.nameMayor.label' | translate }}</span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.name.label' | translate }}</span>
                             <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[i].name }}</b></span>
                         </div>
                         <div class="row-municipality">
-                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.surnameMayor.label' | translate }}</span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.surname.label' | translate }}</span>
                             <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[i].surname }}</b></span>
                         </div>
                         <div class="row-municipality">
-                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.emailMayor.label' | translate }}</span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.email.label' | translate }}</span>
                             <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[i].email }}</b></span>
                         </div>
                     </span>
@@ -143,7 +143,7 @@
                     <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.address }}</b></span>
                 </div>
                 <div class="row-municipality">
-                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.number.label' | translate }}</span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.number.label' | translate }}</span>
                     <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.addressNum }}</b></span>
                 </div>
                 <div class="row-municipality">

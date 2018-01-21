@@ -82,7 +82,7 @@
                                         <p>{{ 'shared.country.label' | translate }}</p>
                                         <p>{{ 'shared.municipality.label' | translate }}</p>
                                         <p>{{ 'benefRegistration.address.label' | translate }}</p>
-                                        <p>{{ 'benefRegistration.number.label' | translate }}</p>
+                                        <p>{{ 'shared.number.label' | translate }}</p>
                                         <p>{{ 'shared.postal-code.label' | translate }}</p>
                                     </div>
                                     <div class="ui-g-8">
@@ -159,7 +159,7 @@
                         <input id="name_user" type="text" [(ngModel)]="editedUser.name" class="form-control"
                                name="name_user" ngcontrol="name_user" #name_user="ngModel" required>
                         <div [hidden]="name_user.valid || name_user.pristine" class="alert alert-danger">
-                            {{ 'benefRegistration.name.required' | translate }}
+                            {{ 'shared.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -174,7 +174,7 @@
                         <input id="surname_user" type="text" [(ngModel)]="editedUser.surname" class="form-control"
                                name="surname_user" ngcontrol="surname_user" #surname_user="ngModel" required>
                         <div [hidden]="surname_user.valid || surname_user.pristine" class="alert alert-danger">
-                            {{ 'benefRegistration.surname.required' | translate }}
+                            {{ 'shared.surname.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -228,7 +228,7 @@
                         <input id="name_mayor" type="text" [(ngModel)]="editedMayor.name" class="form-control"
                                name="name_mayor" ngcontrol="name_mayor" #name_mayor="ngModel" required>
                         <div [hidden]="name_mayor.valid || name_mayor.pristine" class="alert alert-danger">
-                            {{ 'benefRegistration.name.required' | translate }}
+                            {{ 'shared.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -243,7 +243,7 @@
                         <input id="surname_mayor" type="text" [(ngModel)]="editedMayor.surname" class="form-control"
                                name="surname_mayor" ngcontrol="surname_mayor" #surname_mayor="ngModel" required>
                         <div [hidden]="surname_mayor.valid || surname_mayor.pristine" class="alert alert-danger">
-                            {{ 'benefRegistration.surname.required' | translate }}
+                            {{ 'shared.surname.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -342,7 +342,7 @@
                 </div>
                 <div class="ui-g-3">
                     <div class="form-group">
-                        <label for="number_municipality">{{ 'benefRegistration.number.label' | translate }}</label>
+                        <label for="number_municipality">{{ 'shared.number.label' | translate }}</label>
                         <input id="number_municipality" type="text" [(ngModel)]="editedMunicipality.addressNum"
                                class="form-control"
                                name="number_municipality" ngcontrol="number_municipality" #number_municipality="ngModel"

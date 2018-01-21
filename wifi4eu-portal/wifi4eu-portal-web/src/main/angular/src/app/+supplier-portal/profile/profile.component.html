@@ -125,7 +125,7 @@
                                class="form-control"
                                name="contactName" ngcontrol="contactName" #contactName="ngModel" required>
                         <div [hidden]="contactName.valid || contactName.pristine" class="alert alert-danger">
-                            {{ 'benefRegistration.name.required' | translate }}
+                            {{ 'shared.name.required' | translate }}
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                                required>
                         <div [hidden]="contactSurname.valid || contactSurname.pristine"
                              class="alert alert-danger">
-                            {{ 'benefRegistration.surname.required' | translate }}
+                            {{ 'shared.surname.required' | translate }}
                         </div>
                     </div>
                 </div>

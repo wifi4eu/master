@@ -8,7 +8,7 @@
                     <p class="h2 h2-title center beneficiaryTitle">{{ 'shared.forgot.title' | translate}}</p>
                     <p class="text-align-center">{{ 'email.forgot' | translate}}</p>
 
-                    <label for="email" class="label floatLeft labelForgot">{{ 'suppRegistration.email.label' | translate }}</label>
+                    <label for="email" class="label floatLeft labelForgot">{{ 'remove' | translate }}</label>
                     <input type="email" [(ngModel)]="forgotDetails.email" id="email" class="form-control  paddingInput" name="email"
                            ngcontrol="forgotDetails.email" #email="ngModel" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$" required>
                     <div [hidden]="email.valid || email.pristine" class="alert alert-danger">{{ 'email.required' |translate }}</div>
