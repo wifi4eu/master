@@ -34,7 +34,7 @@ export class ActivationComponent implements OnInit {
                                 summary: 'SUCCESS',
                                 detail: translatedString
                             });
-                            this.router.navigateByUrl('/home');
+                            this.router.navigateByUrl('/beneficiary-portal');
                         } else {
                             let translatedString = 'Could not activate your account.';
                             this.translateService.get('shared.useractivation.failure').subscribe(
