@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "4. korak: pregled",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Država",
+  "shared.no": "Ne",
+  "shared.yes": "Da",
   "benefRegistration.registration.selectCountry": "Izberite svojo državo.",
   "benefRegistration.organization.label": "Moja organizacija",
   "benefRegistration.registration.selectOrganisation": "Izberite svojo organizacijo",

@@ -61,6 +61,8 @@
   "benefRegistration.registration.review.title": "Trin 4: Gennemsyn",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Land",
+  "shared.no": "Nej",
+  "shared.yes": "Ja",
   "benefRegistration.registration.selectCountry": "Vælg dit land.",
   "benefRegistration.organization.label": "Min organisation",
   "benefRegistration.registration.selectOrganisation": "Vælg din organisation",

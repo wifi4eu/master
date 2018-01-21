@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "Pass 4: ir-rieżami",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Pajjiż",
+  "shared.no": "Le",
+  "shared.yes": "Iva",
   "benefRegistration.registration.selectCountry": "Jekk jogħġbok agħżel pajjiżek.",
   "benefRegistration.organization.label": "L-organizzazzjoni tiegħi",
   "benefRegistration.registration.selectOrganisation": "Jekk jogħġbok agħżel l-organizzazzjoni tiegħek",

@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "Vaihe 4: Tietojen tarkistus",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Maa",
+  "shared.no": "Ei",
+  "shared.yes": "Kyllä",
   "benefRegistration.registration.selectCountry": "Valitse maa.",
   "benefRegistration.organization.label": "Organisaatio",
   "benefRegistration.registration.selectOrganisation": "Valitse organisaatiosi",

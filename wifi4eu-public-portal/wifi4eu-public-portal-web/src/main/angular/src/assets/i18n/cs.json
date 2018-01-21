@@ -61,6 +61,8 @@
   "benefRegistration.registration.review.title": "Krok 4: Kontrola",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Země",
+  "shared.no": "Ne",
+  "shared.yes": "Ano",
   "benefRegistration.registration.selectCountry": "Vyberte svou zemi.",
   "benefRegistration.organization.label": "Naše organizace",
   "benefRegistration.registration.selectOrganisation": "Zvolte organizaci",

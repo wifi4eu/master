@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "Stap 4: Controle",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Land",
+  "shared.no": "Nee",
+  "shared.yes": "Ja",
   "benefRegistration.registration.selectCountry": "Kies uw land",
   "benefRegistration.organization.label": "Mijn organisatie",
   "benefRegistration.registration.selectOrganisation": "Kies uw organisatie",

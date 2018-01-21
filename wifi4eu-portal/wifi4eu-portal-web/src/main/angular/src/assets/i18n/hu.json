@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "4. lépés: Értékelés",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Ország",
+  "shared.no": "Nem",
+  "shared.yes": "Igen",
   "benefRegistration.registration.selectCountry": "Kérjük, válassza ki az országot.",
   "benefRegistration.organization.label": "Saját szervezet",
   "benefRegistration.registration.selectOrganisation": "Kérjük, válassza ki szervezetét a listáról.",

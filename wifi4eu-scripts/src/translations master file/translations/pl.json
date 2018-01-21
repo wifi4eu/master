@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "Krok 4: Weryfikacja",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Kraj",
+  "shared.no": "Nie",
+  "shared.yes": "Tak",
   "benefRegistration.registration.selectCountry": "Wskaż swój kraj.",
   "benefRegistration.organization.label": "Moja gmina",
   "benefRegistration.registration.selectOrganisation": "Wskaż swoją gminę",

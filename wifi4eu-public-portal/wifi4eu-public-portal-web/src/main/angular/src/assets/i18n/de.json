@@ -61,6 +61,8 @@
   "benefRegistration.registration.review.title": "4. Schritt: Überprüfung",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Land",
+  "shared.no": "Nein",
+  "shared.yes": "Ja",
   "benefRegistration.registration.selectCountry": "Ihr Land auswählen",
   "benefRegistration.organization.label": "Meine Organisation",
   "benefRegistration.registration.selectOrganisation": "Ihre Organisation auswählen",

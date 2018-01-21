@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "Krok 4: verifikácia",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Krajina",
+  "shared.no": "Nie",
+  "shared.yes": "Áno",
   "benefRegistration.registration.selectCountry": "Zvoľte si krajinu.",
   "benefRegistration.organization.label": "Moja organizácia",
   "benefRegistration.registration.selectOrganisation": "Zvoľte si organizáciu",

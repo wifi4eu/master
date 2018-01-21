@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "4. etapp: ülekontrollimine",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Riik",
+  "shared.no": "Ei",
+  "shared.yes": "Jah",
   "benefRegistration.registration.selectCountry": "Palun valige oma riik.",
   "benefRegistration.organization.label": "Minu organisatsioon",
   "benefRegistration.registration.selectOrganisation": "Valige oma organisatsioon",

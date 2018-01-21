@@ -187,7 +187,6 @@
   "int.comment.19": "-- Start FR Old translations file --",
   "home.footer.update": "Dernière mise à jour: {{versionDate}} v{{version}}",
   "home.footer.top": " | haut de la page",
-  "shared.login.label": "Connexion",
   "int.comment.20": "-- END FR Old translations file --",
   "int.breakfile": ""
 }

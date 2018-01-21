@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "Céim 4: seiceáil:",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Tír",
+  "shared.no": "Níor mhaith",
+  "shared.yes": "Ba mhaith",
   "benefRegistration.registration.selectCountry": "Roghnaigh do thír",
   "benefRegistration.organization.label": "An eagraíocht s'agamsa",
   "benefRegistration.registration.selectOrganisation": "Roghnaigh an eagraíocht s'agatsa",

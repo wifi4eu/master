@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "Fase 4: controllo",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Paese",
+  "shared.no": "No",
+  "shared.yes": "Sì",
   "benefRegistration.registration.selectCountry": "Selezionare il paese.",
   "benefRegistration.organization.label": "La mia organizzazione",
   "benefRegistration.registration.selectOrganisation": "Selezionare l'organizzazione",

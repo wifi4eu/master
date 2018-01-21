@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "4 veiksmas. Peržiūra",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Šalis",
+  "shared.no": "Ne",
+  "shared.yes": "Taip",
   "benefRegistration.registration.selectCountry": "Pasirinkite savo šalį.",
   "benefRegistration.organization.label": "Mano organizacija",
   "benefRegistration.registration.selectOrganisation": "Pasirinkite savo organizaciją",

@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "Pasul 4: verificarea informațiilor",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Țara",
+  "shared.no": "Nu",
+  "shared.yes": "Da",
   "benefRegistration.registration.selectCountry": "Selectați țara",
   "benefRegistration.organization.label": "Organizația mea",
   "benefRegistration.registration.selectOrganisation": "Selectați organizația",

@@ -61,6 +61,8 @@
   "benefRegistration.registration.review.title": "Βήμα 4: έλεγχος",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Χώρα",
+  "shared.no": "Όχι",
+  "shared.yes": "Ναι",
   "benefRegistration.registration.selectCountry": "Επιλέξτε τη χώρα σας.",
   "benefRegistration.organization.label": "Ο οργανισμός μου",
   "benefRegistration.registration.selectOrganisation": "Επιλέξτε τον οργανισμό σας",

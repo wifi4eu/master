@@ -60,6 +60,8 @@
   "benefRegistration.registration.review.title": "4. solis: pārskatīšana",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Valsts",
+  "shared.no": "Nē",
+  "shared.yes": "Jā",
   "benefRegistration.registration.selectCountry": "Izvēlieties savu valsti",
   "benefRegistration.organization.label": "Mana organizācija",
   "benefRegistration.registration.selectOrganisation": "Izvēlieties savu organizāciju",

@@ -61,6 +61,8 @@
   "benefRegistration.registration.review.title": "Steg 4: Granska din uppgifter",
   "benefRegistration.registration.step1.instructions": "",
   "shared.country.label": "Land",
+  "shared.no": "Nej",
+  "shared.yes": "Ja",
   "benefRegistration.registration.selectCountry": "Välj ditt land.",
   "benefRegistration.organization.label": "Min organisation",
   "benefRegistration.registration.selectOrganisation": "Välj din organisation.",
