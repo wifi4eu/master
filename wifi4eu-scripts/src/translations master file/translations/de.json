@@ -74,7 +74,7 @@
   "suppRegistration.phone.number": "Telefonnummer",
   "suppRegistration.email.label": "E-Mail-Adresse",
   "suppRegistration.confirmemail.label": "E-Mail-Adresse bestätigen",
-  "suppRegistration.warning.emailMatch": "",
+  "suppRegistration.warning.emailMatch": "Die E-Mail-Adressen müssen übereinstimmen, bitte erneut eingeben.",
   "suppRegistration.warning.emailRequired": "Bitte geben Sie eine gültige E-Mail-Adresse an. Zur Validierung Ihrer Registrierung wird eine Bestätigungsnachricht an diese Adresse geschickt. ",
   "suppRegistration.review.description": "Bitte überprüfen Sie alle Angaben, bevor Sie Ihre Registrierung abschließen.",
   "suppRegistration.contact.person": "Kontaktperson",

@@ -137,7 +137,7 @@
   "suppRegistration.phone.number": "Телефонен номер",
   "suppRegistration.email.label": "Електронна поща",
   "suppRegistration.confirmemail.label": "Потвърждаване на електронния адрес",
-  "suppRegistration.warning.emailMatch": "suppRegistration.warning.emailMatch",
+  "suppRegistration.warning.emailMatch": "Електронният адрес не съответства на посочения. Молим да предоставите същия електронен адрес.",
   "suppRegistration.warning.emailRequired": "Моля, въведете валиден електронен адрес. За да валидирате регистрацията си, на този електронен адрес ще ви бъде изпратено електронно писмо за потвърждение. ",
   "suppRegistration.review.description": "Моля, прегледайте цялата предоставена информация, преди да завършите регистрацията си.",
   "suppRegistration.contact.person": "Лице за контакт",

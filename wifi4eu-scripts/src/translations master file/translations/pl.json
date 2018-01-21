@@ -75,7 +75,7 @@
   "suppRegistration.phone.number": "Nr telefonu",
   "suppRegistration.email.label": "Adres e-mail",
   "suppRegistration.confirmemail.label": "Potwierdź adres e-mail",
-  "suppRegistration.warning.emailMatch": "",
+  "suppRegistration.warning.emailMatch": "Należy podać ten sam adres e-mail.",
   "suppRegistration.warning.emailRequired": "Proszę podać prawidłowy adres e-mail. W celu zatwierdzenia Twojej rejestracji na podany adres zostanie wysłany e-mail. ",
   "suppRegistration.review.description": "Przed wysłaniem wniosku o rejestrację proszę sprawdzić wszystkie podane informacje.",
   "suppRegistration.contact.person": "Osoba wyznaczona do kontaktów",
