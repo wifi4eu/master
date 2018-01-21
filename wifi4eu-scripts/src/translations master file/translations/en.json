@@ -211,5 +211,9 @@
   "home.footer.update": "Last Update {{versionDate}} v{{version}}",
   "home.footer.top": " | Top",
   "int.comment.20": "-- END EN Old translations file --",
+  "int.comment.29": "-- Start To Be translated --",
+  "notFound.title": "Page not Found - ERROR 404",
+  "notFound.description": "The URL you've written doesn't seem to exist. Make sure you've typed it correctly and try again.",
+  "int.comment.30": "-- END To Be translated --",
   "int.breakfile": ""
 }
