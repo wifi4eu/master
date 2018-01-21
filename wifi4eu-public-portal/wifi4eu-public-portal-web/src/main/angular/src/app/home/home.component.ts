@@ -1,32 +1,40 @@
-import { Component } from "@angular/core";
-import { MunicipalityApi } from "../shared/swagger/api/MunicipalityApi";
-import { SupplierApi } from "../shared/swagger/api/SupplierApi";
-import { SuppliedRegionApi } from "../shared/swagger/api/SuppliedRegionApi";
-import { UserDTOBase } from "../shared/swagger/model/UserDTO";
-import { CallDTOBase } from "../shared/swagger/model/CallDTO";
-import { LocalStorageService } from "angular-2-local-storage";
-import { CallApi } from "../shared/swagger/api/CallApi";
+import {Component} from "@angular/core";
+import {MunicipalityDTO, MunicipalityDTOBase} from "../shared/swagger/model/MunicipalityDTO";
+import {MunicipalityApi} from "../shared/swagger/api/MunicipalityApi";
+import {SupplierApi} from "../shared/swagger/api/SupplierApi";
+import {SuppliedRegionApi} from "../shared/swagger/api/SuppliedRegionApi";
+import {UserDTO} from "../shared/swagger/model/UserDTO";
+import {CallDTOBase} from "../shared/swagger/model/CallDTO";
+import {SupplierDTO, SupplierDTOBase} from "../shared/swagger/model/SupplierDTO";
+import {LocalStorageService} from "angular-2-local-storage";
+import {CallApi} from "../shared/swagger/api/CallApi";
 
 @Component({
     selector: 'app-home',
     templateUrl: 'home.component.html',
     providers: [MunicipalityApi, SuppliedRegionApi, CallApi, SupplierApi]
 })
-
 export class HomeComponent {
     private municipalitiesCounter: number;
     private suppliersCounter: number;
-    private user: UserDTOBase;
+    private voucherCompetitionState: number;
+    private user: UserDTO;
     private currentCall: CallDTOBase;
     private dateNumber: string;
     private hourNumber: string;
+    private supplierInfo: SupplierDTO;
+    private municipalitiesThatSelectedMe: MunicipalityDTO[];
     private showTimeline: boolean = false;
-    private showTimer: boolean = false;
+
+
+    private errorCause: string;
 
     constructor(private municipalityApi: MunicipalityApi, private suppliedRegionApi: SuppliedRegionApi, private localStorage: LocalStorageService, private callApi: CallApi, private supplierApi: SupplierApi) {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
         this.currentCall = new CallDTOBase();
+        this.supplierInfo = new SupplierDTOBase();
+        this.municipalitiesThatSelectedMe = [];
 
         this.municipalityApi.getMunicipalitiesGroupedByLauId().subscribe(
             municipalities => {
@@ -35,6 +43,8 @@ export class HomeComponent {
                 console.log(error);
             }
         );
+
+
         this.suppliedRegionApi.getSuppliedRegionsGroupedByRegionId().subscribe(
             suppliers => {
                 this.suppliersCounter = suppliers.length;
@@ -42,6 +52,7 @@ export class HomeComponent {
                 console.log(error);
             }
         );
+
         this.checkForCalls();
     }
 
@@ -50,20 +61,40 @@ export class HomeComponent {
             calls => {
                 this.currentCall = calls[0];
                 this.showTimeline = true;
-                this.showTimer = true;
-                let date = new Date(this.currentCall.startDate);
+
+
+                var date = new Date(this.currentCall.startDate);
                 date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-                this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth()+1)).slice(-2) + "/" + date.getFullYear();
+
+                this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
                 this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
+
             }, error => {
                 console.log(error);
                 this.currentCall = null;
+                this.voucherCompetitionState = 0;
             }
         );
     }
 
-    private hideTimer() {
-        this.showTimer = false;
+    checkIfSelected() {
+        this.showTimeline = false;
+        this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
+            (entities: MunicipalityDTO[]) => {
+                if (entities.length > 0) {
+                    this.municipalitiesThatSelectedMe = entities;
+                    // Display the 'municipalities' screen
+                    this.voucherCompetitionState = 3;
+                } else {
+                    this.voucherCompetitionState = 2;
+                }
+            }, error => {
+                console.log(error);
+                this.supplierInfo = null;
+                this.voucherCompetitionState = -1;
+                this.errorCause = "benefPortal.supplierportal.couldntgetselectedmunicipalities";
+            }
+        );
     }
 
     private goToTop() {

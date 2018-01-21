@@ -69,7 +69,7 @@
                 <li>{{ 'home.part3.list1' | translate}}</li>
                 <li>{{ 'home.part3.list2' | translate}}</li>
             </ul>
-            <div *ngIf="showTimer">
+            <div *ngIf="showTimeline">
                 <p class="apply-text">{{ 'home.part3.text3' | translate }}</p>
                 <timer-component class="timelineBenefLanding" (timerEvent)="checkIfSelected()"
                                  [expirationTimestamp]="currentCall.startDate"></timer-component>
@@ -78,6 +78,7 @@
         <div class="col-xl-6">
             <h2 class="apply">{{ 'home.part3.title.1' | translate }} </h2>
             <p class="apply-text">{{ 'home.part3.text2' | translate }}</p>
+            <p class="apply-text">{{ 'home.part3.text5' | translate }}</p>
 
         </div>
     </div>
@@ -130,21 +131,20 @@
             <h2 class="information">{{ 'home.part4.title1' | translate }}</h2>
         </div>
     </div>
-</div>
-<div class="row contenedor">
-    <div class="col-xl-6">
-        <p class="white-links">
-            <a target="_blank" href="https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu">{{
-                'home.part4.link1' | translate }}</a>
-        </p>
-        <p class="white-links">
-            <a target="_blank" href="http://europa.eu/rapid/press-release_IP-16-4261_en.htm">{{ 'home.part4.link2' |
-                translate }}</a>
-        </p>
+    <div class="row contenedor">
+        <div class="col-xl-6">
+            <p class="white-links">
+                <a target="_blank" href="https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu">{{
+                    'home.part4.link1' | translate }}</a>
+            </p>
+            <p class="white-links">
+                <a target="_blank" href="http://europa.eu/rapid/press-release_IP-16-4261_en.htm">{{ 'home.part4.link2' |
+                    translate }}</a>
+            </p>
+        </div>
+        <div class="col-xl-6">
+            <img class="phoneIcon" src="assets/images/phone.PNG" alt="">
+            <p class="white-links" [innerHTML]="'home.part4.link4' | translate"></p>
+        </div>
     </div>
-    <div class="col-xl-6">
-        <img class="phoneIcon" src="assets/images/phone.PNG" alt="">
-        <p class="white-links" [innerHTML]="'home.part4.link4' | translate"></p>
-    </div>
-</div>
 </div>
