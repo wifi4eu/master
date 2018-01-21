@@ -24,18 +24,4 @@ public class TimelineService {
     public TimelineDTO getTimelineById(int timelineId) {
         return timelineMapper.toDTO(timelineRepository.findOne(timelineId));
     }
-
-    public TimelineDTO createTimeline(TimelineDTO timelineDTO) {
-        return timelineMapper.toDTO(timelineRepository.save(timelineMapper.toEntity(timelineDTO)));
-    }
-
-    public TimelineDTO deleteTimeline(int timelineId) {
-        TimelineDTO timelineDTO = timelineMapper.toDTO(timelineRepository.findOne(timelineId));
-        if (timelineDTO != null) {
-            timelineRepository.delete(timelineMapper.toEntity(timelineDTO));
-            return timelineDTO;
-        } else {
-            return null;
-        }
-    }
 }

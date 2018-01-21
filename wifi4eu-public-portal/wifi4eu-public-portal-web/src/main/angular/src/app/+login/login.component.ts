@@ -1,12 +1,10 @@
-import {Component} from "@angular/core";
-import {Router} from "@angular/router";
-import {UserDTOBase} from "../shared/swagger/model/UserDTO";
-import {UserApi} from "../shared/swagger/api/UserApi";
-import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
-import {TranslateService} from "ng2-translate";
-import {SharedService} from "../shared/shared.service";
+import { Component } from "@angular/core";
+import { Router } from "@angular/router";
+import { UserDTOBase } from "../shared/swagger/model/UserDTO";
+import { UserApi } from "../shared/swagger/api/UserApi";
+import { ResponseDTOBase } from "../shared/swagger/model/ResponseDTO";
+import { LocalStorageService } from "angular-2-local-storage";
+import { SharedService } from "../shared/shared.service";
 
 @Component({
     selector: 'login-component', templateUrl: 'login.component.html', providers: [UserApi]
@@ -17,18 +15,14 @@ export class LoginComponent {
     private displayConfirmingData: boolean = false;
     private isEcasUser: boolean = false;
 
-    constructor(private userApi: UserApi, private localStorageService: LocalStorageService, private uxService: UxService, private translateService: TranslateService, private sharedService: SharedService, private router: Router) {
-
+    constructor(private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
-
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-
         if (this.user.ecasEmail != null) {
             this.isEcasUser = true;
         }else{
             this.user = new UserDTOBase();
         }
-
     }
 
     login() {
@@ -37,17 +31,7 @@ export class LoginComponent {
             (response: ResponseDTOBase) => {
                 this.displayConfirmingData = false;
                 if (response.success) {
-                    let translatedString = 'Login successful. Welcome to WiFi4EU!';
-                    this.translateService.get('shared.login.success').subscribe(
-                        (translation: string) => {
-                            translatedString = translation;
-                        }
-                    );
-                    this.uxService.growl({
-                        severity: 'success',
-                        summary: 'SUCCESS',
-                        detail: translatedString
-                    });
+                    this.sharedService.growlTranslation('Login successful. Welcome to WiFi4EU!', 'shared.login.success', 'success');
                     this.localStorageService.set('user', JSON.stringify(response.data));
                     this.sharedService.update();
                     switch (this.user.type) {
@@ -66,31 +50,11 @@ export class LoginComponent {
                             break;
                     }
                 } else {
-                    let translatedString = 'Could not login with these credentials. Make sure you typed your password correctly.';
-                    this.translateService.get('shared.login.error.wrongcredentials').subscribe(
-                        (translation: string) => {
-                            translatedString = translation;
-                        }
-                    );
-                    this.uxService.growl({
-                        severity: 'warn',
-                        summary: 'WARNING',
-                        detail: translatedString
-                    });
+                    this.sharedService.growlTranslation('Could not login with these credentials. Make sure you typed your password correctly.', 'shared.login.error.wrongcredentials', 'warn');
                 }
             }, error => {
                 this.displayConfirmingData = false;
-                let translatedString = 'Could not login. Please, try again later.';
-                this.translateService.get('shared.login.error').subscribe(
-                    (translation: string) => {
-                        translatedString = translation;
-                    }
-                );
-                this.uxService.growl({
-                    severity: 'error',
-                    summary: 'ERROR',
-                    detail: translatedString
-                });
+                this.sharedService.growlTranslation('Could not login. Please, try again later.', 'shared.login.error', 'error');
             }
         );
     }

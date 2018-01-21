@@ -62,11 +62,11 @@ export class HomeComponent {
                 this.currentCall = calls[0];
                 this.showTimeline = true;
 
-                
+
                 var date = new Date(this.currentCall.startDate);
                 date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 
-                this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth()+1)).slice(-2) + "/" + date.getFullYear();
+                this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
                 this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
 
             }, error => {
@@ -78,7 +78,7 @@ export class HomeComponent {
     }
 
     checkIfSelected() {
-      this.showTimeline = false;
+        this.showTimeline = false;
         this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
             (entities: MunicipalityDTO[]) => {
                 if (entities.length > 0) {
@@ -98,7 +98,7 @@ export class HomeComponent {
     }
 
     private goToTop() {
-      window.scrollTo(0, 0);
-  }
+        window.scrollTo(0, 0);
+    }
 
 }
