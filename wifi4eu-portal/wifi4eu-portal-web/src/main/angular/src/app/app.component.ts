@@ -10,9 +10,9 @@ import {UserApi} from "./shared/swagger/api/UserApi";
 import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
 import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
 import {Http} from "@angular/http";
-import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { environment } from '../environments/environment';
+import {Observable} from "rxjs/Observable";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {environment} from '../environments/environment';
 
 enableProdMode();
 
@@ -62,12 +62,12 @@ export class AppComponent implements OnInit {
         this.children = [];
         this.menuTranslations = new Map();
         this.stringsTranslated.subscribe(
-          (stringsTranslated: number) => {
-            if(stringsTranslated == 7){
-              this.initChildren();
-              this.updateHeader();
+            (stringsTranslated: number) => {
+                if (stringsTranslated == 7) {
+                    this.initChildren();
+                    this.updateHeader();
+                }
             }
-          }
         );
 
         this.initChildren();
@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
             (response: ResponseDTOBase) => {
                 this.localStorageService.set('user', JSON.stringify(response.data));
                 this.sharedService.update();
-                
+
                 switch (this.user.type) {
                     case 1:
                         this.router.navigateByUrl('/supplier-portal/profile');
@@ -101,9 +101,9 @@ export class AppComponent implements OnInit {
                         //this.router.navigateByUrl('/home');
                         break;
                 }
-               
 
-            },error => {
+
+            }, error => {
                 this.uxService.growl({
                     severity: 'warn',
                     summary: 'WARNING',
@@ -223,57 +223,57 @@ export class AppComponent implements OnInit {
         this.updateFooterDate();
     }
 
-    private updateMenuTranslations(){
-      var num = 0;
-      this.translateService.get('itemMenu.appReg').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.appReg', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
-      this.translateService.get('itemMenu.suppReg').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.suppReg', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
-      this.translateService.get('itemMenu.myAccount').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.myAccount', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
-      this.translateService.get('itemMenu.suppPortal').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.suppPortal', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
-      this.translateService.get('itemMenu.dissForum').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.dissForum', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
-      this.translateService.get('itemMenu.appPortal').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.appPortal', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
-      this.translateService.get('itemMenu.dgPortal').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.dgPortal', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
+    private updateMenuTranslations() {
+        var num = 0;
+        this.translateService.get('itemMenu.appReg').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.appReg', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.suppReg').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.suppReg', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.myAccount').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.myAccount', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.suppPortal').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.suppPortal', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.dissForum').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.dissForum', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.appPortal').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.appPortal', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.dgPortal').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.dgPortal', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
     }
 
     logout() {
@@ -295,11 +295,10 @@ export class AppComponent implements OnInit {
         );
         this.userApi.ecasLogout().subscribe(
             (response: ResponseDTOBase) => {
-                if (response.success) {
-                  window.location.href = environment['logoutUrl'];
-                }
+                window.location.href = environment['logoutUrl'];
             }, error => {
                 console.log(error);
+                window.location.href = environment['logoutUrl'];
             }
         );
     }

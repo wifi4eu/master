@@ -105,7 +105,7 @@
   "confirmNewPassword.label": "Confirm password",
   "suppRegistration.confirm.button": "Confirm",
   "activate.account": "Activate your account",
-  "shared.beneficiaryProfile.text": "If you know your current password, you can change it by clicking on the button below",
+  "shared.change-password.button": "If you know your current password, you can change it by clicking on the button below",
   "shared.beneficiaryProfile.password": "Change password",
   "benefPortal.profile.title": "My profile",
   "benefRegistration.mayor.details": "Mayor details",

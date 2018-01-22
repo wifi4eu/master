@@ -12,12 +12,13 @@
                         <div class="ui-g">
                             <div class="ui-g-10">
                                 <p class="beneficiaryMayor">
-                                    {{ 'benefRegistration.representativedetails.title' | translate }}
+                                    {{ 'benefRegistration.yourDetails.title' | translate }}
                                 </p>
                             </div>
                             <div class="ui-g-2">
                                 <a (click)="displayModal('user')" class="edit">
-                                    <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
+                                    <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate
+                                    }}
                                 </a>
                             </div>
                         </div>
@@ -40,7 +41,8 @@
                             <div class="ui-g-12">
                                 <div class="ui-g">
                                     <div class="ui-g-10">
-                                        <p class="beneficiaryMayor">{{ 'benefRegistration.mayor.details' | translate }}</p>
+                                        <p class="beneficiaryMayor">{{ 'benefRegistration.representativedetails.title' |
+                                            translate }}</p>
                                     </div>
                                     <div class="ui-g-2">
                                         <a (click)="displayModal('mayor', i)" class="edit">
@@ -68,7 +70,8 @@
                             <div class="ui-g-12">
                                 <div class="ui-g">
                                     <div class="ui-g-10">
-                                        <p class="beneficiaryMayor">{{ 'shared.legalentity.label' | translate }}</p>
+                                        <p class="beneficiaryMayor">{{ 'shared.municipalityDetails.title' | translate
+                                            }}</p>
                                     </div>
                                     <div class="ui-g-2">
                                         <a (click)="displayModal('municipality', i)" class="edit">
@@ -118,7 +121,7 @@
                 <br>
                 <div class="ui-g">
                     <div class="ui-g-12  button-content">
-                        <p>{{ 'shared.beneficiaryProfile.text' | translate }}</p>
+                        <p>{{ 'shared.change-password.button' | translate }}</p>
                         <div style="text-align: center !important">
                             <button type="button" (click)="displayModal('password')"
                                     class="btn btn-primary changePassword">

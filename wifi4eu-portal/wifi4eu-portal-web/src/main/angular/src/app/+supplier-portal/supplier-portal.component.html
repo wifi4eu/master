@@ -1,11 +1,11 @@
-
 <div [ngSwitch]="voucherCompetitionState">
     <!-- no competition created, display warning -->
     <div *ngSwitchCase="0">
         <div class="ui-g-12">
             <span class="ui-g-2"></span>
-            <ux-alert class="ui-g-8" styleClass="alert-info">{{ 'benefPortal.voucher.noCompetitionPart1' | translate}}<b>{{
-                'benefPortal.voucher.noCompetitionPart2' | translate}}</b></ux-alert>
+            <ux-alert class="ui-g-8" styleClass="alert-info">{{ 'benefPortal.voucher.noCompetitionPart1' |
+                translate}}<b>{{
+                    'benefPortal.voucher.noCompetitionPart2' | translate}}</b></ux-alert>
             <span class="ui-g-2"></span>
         </div>
         <div class="center">
@@ -54,11 +54,7 @@
             <h2 class="ui-g-8 beneficiaryMayor">{{ 'benefPortal.voucher.timeleft.title' | translate}}</h2>
             <span class="ui-g-2"></span>
         </div>
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <span class="ui-g-8">{{ 'benefPortal.voucher.timeleft.subtitle' | translate}}</span>
-            <span class="ui-g-2"></span>
-        </div>
+
         <br>
         <div class="ui-g-12 center">
             <timer-component (timerEvent)="checkIfSelected()"
@@ -97,7 +93,8 @@
     <div *ngSwitchCase="2">
         <div class="ui-g-12 center">
             <span class="ui-g-2"></span>
-            <ux-alert class="ui-g-8" styleClass="alert-info">{{ 'benefPortal.voucher.statusmessage4' | translate}}</ux-alert>
+            <ux-alert class="ui-g-8" styleClass="alert-info">{{ 'benefPortal.voucher.statusmessage4' | translate}}
+            </ux-alert>
             <span class="ui-g-2"></span>
         </div>
         <br>

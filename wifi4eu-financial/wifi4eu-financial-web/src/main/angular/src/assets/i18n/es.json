@@ -105,7 +105,7 @@
   "benefPortal.voucher.hours": "Horas",
   "benefPortal.voucher.minutes": "Minutos",
   "benefPortal.voucher.seconds": "Segundos",
-  "shared.beneficiaryProfile.text": "Si conoces tu contraseña actual, puedes cambiarla clicando en el botón de abajo",
+  "shared.change-password.button": "Si conoces tu contraseña actual, puedes cambiarla clicando en el botón de abajo",
   "shared.beneficiaryProfile.password": "Cambiar contraseña",
   "benefPortal.profile.title": "Mi perfil",
   "benefRegistration.mayor.details": "Detalles alcalde",
