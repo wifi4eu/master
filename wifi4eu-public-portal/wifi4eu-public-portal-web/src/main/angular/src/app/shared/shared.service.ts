@@ -1,11 +1,10 @@
-import {Injectable} from '@angular/core';
-import {Subject} from "rxjs";
-import {TranslateService} from "ng2-translate";
-import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
+import { Injectable } from '@angular/core';
+import { Subject } from "rxjs";
+import { TranslateService } from "ng2-translate";
+import { UxService } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 
 @Injectable()
 export class SharedService {
-
     private emitUpdate = new Subject<any>();
     private emitLogout = new Subject<any>();
     private emitClean = new Subject<any>();

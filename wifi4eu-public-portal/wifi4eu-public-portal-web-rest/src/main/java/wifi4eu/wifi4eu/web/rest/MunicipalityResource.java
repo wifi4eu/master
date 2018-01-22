@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 
 import java.util.List;
@@ -33,10 +34,10 @@ public class MunicipalityResource {
     @ApiOperation(value = "Get municipalities grouped by lau id")
     @RequestMapping(value = "/groupedByLauId", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<MunicipalityDTO> getMunicipalitiesGroupedByLauId() {
+    public ResponseDTO getMunicipalitiesCountGroupedByLauId() {
         if (_log.isInfoEnabled()) {
             _log.info("getMunicipalitiesGroupedByLauId");
         }
-        return municipalityService.getMunicipalitiesGroupedByLauId();
+        return new ResponseDTO(true, municipalityService.getMunicipalitiesCountGroupedByLauId(), null);
     }
 }
