@@ -13,7 +13,6 @@ import {SharedService} from "../shared/shared.service";
 import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
 import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 import {Router} from "@angular/router";
-import { OnInit } from "@angular/core/src/metadata/lifecycle_hooks";
 import { LocalStorageService } from "angular-2-local-storage/dist/local-storage.service";
 
 @Component({
