@@ -83,38 +83,6 @@
                 </div>
                 <div class="ui-g-2"></div>
             </div>
-
-            <!-- Mayor email -->
-            <div class="ui-g-12">
-                <div class="ui-g-2"></div>
-                <div class="ui-g-8">
-                    <div id="mayor-email">
-                        <label class="label floatLeft">{{ 'shared.email.label' | translate }}</label>
-                        <input class="form-control paddingInput" type="email"
-                               id="email" name="email" [pattern]="emailPattern"
-                               [(ngModel)]="initialUser.email" [disabled]="imMayor"
-                               (input)="checkEmailsMatch()" required>
-                        <label class="field-desc" style="margin-top: 10px;color: gray;">{{ 'benefRegistration.email.fielddesc' | translate
-                            }}</label>
-                    </div>
-
-                </div>
-                <div class="ui-g-2"></div>
-            </div>
-            <div class="ui-g-12">
-                <div class="ui-g-2"></div>
-                <div class="ui-g-8">
-                    <!-- Mayor confirmation email -->
-                    <div id="mayor-confirm-email">
-                        <label class="label floatLeft">{{ 'shared.confirmemail.label' | translate }}</label>
-                        <input class="form-control paddingInput {{css_class_email}}"
-                               id="repeatEmail" name="repeatEmail"
-                               [(ngModel)]="repeatEmail" [disabled]="imMayor"
-                               (input)="checkEmailsMatch()" (paste)="preventPaste()">
-                    </div>
-                </div>
-                <div class="ui-g-2"></div>
-            </div>
         </div>
 
         <div id="navigation-buttons" class="form-group ui-g center">

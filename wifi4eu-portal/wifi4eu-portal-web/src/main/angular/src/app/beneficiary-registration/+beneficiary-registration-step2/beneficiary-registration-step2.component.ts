@@ -7,6 +7,8 @@ import {LauApi} from "../../shared/swagger/api/LauApi";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import { ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { LocalStorageService } from "angular-2-local-storage/dist/local-storage.service";
+import { Observable } from "rxjs/Observable";
 
 @Component({
     selector: 'beneficiary-registration-step2',
@@ -35,15 +37,21 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private css_class_email: string[] = ['notValid'];
     private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$';
 
+    private userEcas: UserDTOBase;
+
     @ViewChild('municipalityForm') municipalityForm: NgForm;
 
-    constructor(private lauApi: LauApi) {
+    constructor(private lauApi: LauApi, private localStorage: LocalStorageService) {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
         this.municipalitiesChange = new EventEmitter<MunicipalityDTOBase[]>();
         this.lausChange = new EventEmitter<LauDTOBase[]>();
         this.findLaus = new EventEmitter<string>();
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
+
+        let storedUser = this.localStorage.get('user');
+        this.userEcas = storedUser ? JSON.parse(storedUser.toString()) : null;
+        this.emailsMatch = true;
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -80,7 +88,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
                 this.css_class_municipalities[i] = 'notValid';
             } else {
                 if (!this.multipleMunicipalities) {
-                  this.municipalityForm.controls['municipality'].setErrors(null);
+                  if(this.municipalityForm.controls['municipality'] != undefined) this.municipalityForm.controls['municipality'].setErrors(null);
                 }
                 else{
                   this.municipalityForm.controls[`municipality-${i}`].setErrors(null);
@@ -106,10 +114,10 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         if (this.multipleMunicipalities) {
             this.municipalities.push(new MunicipalityDTOBase());
             //this.laus.push();
-            this.mayors.push(new UserDTOBase());
-            this.emailConfirmations.push('');
-            this.css_class_email.push('notValid');
-            this.css_class_municipalities.push('notValid');
+            var mayor = new UserDTOBase();
+            mayor.email = this.userEcas.ecasEmail;
+            this.mayors.push(mayor);
+            this.emailConfirmations.push(this.userEcas.ecasEmail);
         }
         this.checkMunicipalitiesSelected();
     }
@@ -134,11 +142,6 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         this.municipalitiesChange.emit(this.municipalities);
         this.lausChange.emit(this.laus);
         this.onNext.emit();
-        for (let i = 0; i < this.emailConfirmations.length; i++) {
-            this.emailConfirmations[i] = '';
-            this.css_class_email[i] = 'notValid';
-        }
-        this.emailsMatch = false;
     }
 
     private back() {
@@ -150,7 +153,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
             this.emailConfirmations[i] = '';
             this.css_class_email[i] = 'notValid';
         }
-        this.emailsMatch = false;
+        /* this.emailsMatch = false; */
     }
 
     private preventPaste(event: any) {

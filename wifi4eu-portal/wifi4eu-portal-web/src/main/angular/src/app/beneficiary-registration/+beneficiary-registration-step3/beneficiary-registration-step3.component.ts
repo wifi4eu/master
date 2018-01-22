@@ -33,7 +33,7 @@ export class BeneficiaryRegistrationStep3Component {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
         this.imMayor = false;
-        this.userEmailMatches = false;
+        this.userEmailMatches = true;
         this.sameDetails = false;
         this.sharedService.cleanEmitter.subscribe(() => {this.reset()});
     }
@@ -46,8 +46,6 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.address = this.municipalities[0].address;
             this.initialUser.addressNum = this.municipalities[0].addressNum;
             this.initialUser.postalCode = this.municipalities[0].postalCode;
-            this.initialUser.email = this.mayors[0].email;
-            this.repeatEmail = this.mayors[0].email;
             this.userEmailMatches = true;
             this.css_class_email = '';
         } else {
@@ -57,8 +55,6 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.address = '';
             this.initialUser.addressNum = '';
             this.initialUser.postalCode = '';
-            this.initialUser.email = '';
-            this.repeatEmail = '';
             this.checkEmailsMatch();
         }
     }
@@ -88,9 +84,7 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.address = '';
             this.initialUser.addressNum = '';
             this.initialUser.postalCode = '';
-            this.initialUser.email = '';
-            this.repeatEmail = '';
-            this.userEmailMatches = false;
+            this.userEmailMatches = true;
         }
     }
 
@@ -98,7 +92,7 @@ export class BeneficiaryRegistrationStep3Component {
         this.onNext.emit();
         if(!this.imMayor){
           this.repeatEmail = '';
-          this.checkEmailsMatch();
+           this.checkEmailsMatch();
         }        
     }
 
