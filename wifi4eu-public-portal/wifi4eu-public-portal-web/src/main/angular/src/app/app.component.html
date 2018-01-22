@@ -6,7 +6,7 @@
                                       [userInfos]="userInfos" [isCustomRightContent]="true"
                                       logoUrl="https://ec.europa.eu/">
                     <uxLayoutHeaderRightContent>
-                        <ux-language-selector [selectedLanguage]="selectedLanguage"
+                        <ux-language-selector [selectedLanguage]="selectedLanguage" [languageCodes]="newLanguageArray"
                                               (languageChanged)="changeLanguage($event)"></ux-language-selector>
                         <div class="profile-wrapper" isCompact="false">
                             <div class="left-panel">
