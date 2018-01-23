@@ -13,6 +13,7 @@ import {SharedService} from "../shared/shared.service";
 import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
 import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 import {Router} from "@angular/router";
+import { LocalStorageService } from "angular-2-local-storage/dist/local-storage.service";
 
 @Component({
     selector: 'beneficiary-registration',
@@ -37,8 +38,9 @@ export class BeneficiaryRegistrationComponent {
     private organizationsSubscription: Subscription = new Subscription();
     private alreadyRegistered: boolean = false;
     private organization: OrganizationDTOBase = null;
+    private userEcas: UserDTOBase;
 
-    constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router,private sharedService: SharedService) {
+    constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router,private sharedService: SharedService, private localStorage: LocalStorageService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
             (nuts: NutsDTOBase[]) => {
                 this.countries = nuts;
@@ -46,6 +48,11 @@ export class BeneficiaryRegistrationComponent {
                 console.log(error);
             }
         );
+
+        let storedUser = this.localStorage.get('user');
+
+        this.userEcas = storedUser ? JSON.parse(storedUser.toString()) : null;
+
     }
 
     private selectCountry(country: NutsDTOBase) {
@@ -65,6 +72,11 @@ export class BeneficiaryRegistrationComponent {
     }
 
     private navigate(step: number) {
+        console.log(this.multipleMunicipalities);
+        for(let i = 0; i < this.mayors.length; i++){
+          this.mayors[i].email = this.userEcas.ecasEmail;
+        }
+        
         switch (step) {
             case 1:
                 this.completed = [false, false, false, false];
@@ -79,6 +91,7 @@ export class BeneficiaryRegistrationComponent {
                 this.active = [false, false, true, false];
                 break;
             case 4:
+                this.initialUser.email = this.userEcas.ecasEmail;
                 this.completed = [true, true, true, false];
                 this.active = [false, false, false, true];
                 break;
