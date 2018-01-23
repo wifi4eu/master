@@ -21,8 +21,8 @@ public class MunicipalityService {
         return municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
     }
 
-    public List<MunicipalityDTO> getMunicipalitiesGroupedByLauId() {
-        return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findGroupedByLauId()));
+    public List<Object> getMunicipalitiesCountGroupedByLauId() {
+        return Lists.newArrayList(municipalityRepository.findMunicipalitiesCountGroupedByLauId());
     }
 
 }

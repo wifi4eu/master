@@ -3,7 +3,6 @@ package wifi4eu.wifi4eu.service.supplier;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
@@ -30,7 +29,7 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
     }
 
-    public List<SuppliedRegionDTO> getSuppliedRegionsGroupedByRegionId() {
-        return suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsGroupedByRegionId()));
+    public List<Object> getSuppliedRegionsCountGroupedByRegionId() {
+        return Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsCountGroupedByRegionId());
     }
 }
