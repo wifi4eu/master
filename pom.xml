@@ -160,7 +160,7 @@
                 <war.output.directory/>
                 <ecas.server.address>${server.test.address}</ecas.server.address>
                 <ecas.server.port>${server.test.port}</ecas.server.port>
-                <mail.serv.location>http://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
+                <mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
@@ -183,7 +183,7 @@
                 <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <ecas.config.strength>BASIC</ecas.config.strength>
-                <mail.serv.location>http://wifi4eudev.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+                <mail.serv.location>https://wifi4eudev.azurewebsites.net/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
@@ -205,7 +205,7 @@
                 <ecas.config.base.url>https://ecas.acceptance.ec.europa.eu</ecas.config.base.url>
                 <ecas.server.address>${server.azure.test.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
-                <mail.serv.location>http://wifi4eutest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+                <mail.serv.location>https://wifi4eutest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
@@ -227,7 +227,7 @@
                 <ecas.config.base.url>https://ecas.ec.europa.eu</ecas.config.base.url>
                 <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
-                <mail.serv.location>http://wifi4euprod.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+                <mail.serv.location>https://wifi4euprod.azurewebsites.net/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
