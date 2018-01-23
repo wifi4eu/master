@@ -50,13 +50,10 @@ export class AppComponent implements OnInit {
 
         this.profileUrl = '';
 
-        this.menuLinks = [new UxLayoutLink({
-            label: 'Wifi4EU',
-            children: [
-                new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
-                new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
-            ]
-        })];
+        this.menuLinks = [
+          new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
+          new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
+        ];
 
         this.visibility = [false, false, false, false, false];
         this.children = [];
@@ -211,6 +208,7 @@ export class AppComponent implements OnInit {
             );
         } else {
             //this.logout();
+            this.menuLinks = this.children[0];
         }
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
@@ -279,10 +277,7 @@ export class AppComponent implements OnInit {
     logout() {
         this.user = null;
         this.localStorage.remove('user');
-        this.menuLinks = [new UxLayoutLink({
-            label: 'Wifi4EU',
-            children: this.children[0]
-        })];
+        this.menuLinks = this.children[0];
         this.profileUrl = null;
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
