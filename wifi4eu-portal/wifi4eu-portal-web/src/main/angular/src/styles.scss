@@ -662,7 +662,7 @@ body {
 }
 
 .ui-dialog.ui-widget {
-  width: 50% !important;
+  width: 50%;
 }
 
 .whiteNoInline {
@@ -1356,4 +1356,16 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 
 p-tabview.white .ui-widget-content.ui-tabview{
   background: #fff;
+}
+
+@media screen and (min-width: 855px) and (max-width: 1042px){
+  .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow{
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 855px){
+  .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow{
+    width: 90%;
+  }
 }
