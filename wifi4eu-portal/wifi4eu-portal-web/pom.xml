@@ -56,8 +56,14 @@
                                     <executable>ng</executable>
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
+                                        <!-- Esto no lo tengo muy claro si debería ir aquí -->
+                                        <!-- <argument>"npm run build_prod"</argument> -->
+                                        <!-- Si queremos generar para PRODUCCION añadir - -prod - -aot false  y mantener el - -env=${ng.env} -->
+                                        <!-- TODO: Probar en un MacOS -->
                                         <argument>build</argument>
+                                        <!-- Esto ya no sería necesario **** -->
                                         <argument>--env=${ng.env}</argument>
+                                        <!-- ******************************** -->
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -85,7 +91,12 @@
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
                                         <argument>/c</argument>
-                                        <argument>"ng build --base-href /wifi4eu/"</argument>
+                                        <!-- Fix JS size -->
+                                        <argument>"npm run build_prod"</argument>
+                                        <!-- Por defecto -->
+                                        <!-- <argument>"ng build - -base-href /wifi4eu/"</argument> -->
+                                        <!-- Si queremos generar para PRODUCCION -->
+                                        <!-- <argument>"ng build - -prod - -aot false - -base-href /wifi4eu/"</argument> -->
                                         <argument>--env=${ng.env}</argument>
                                     </arguments>
                                 </configuration>
