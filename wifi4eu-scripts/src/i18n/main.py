@@ -2,19 +2,20 @@ import json
 import os
 import re
 
-parent = "."
+parent = "../../../"
 extensions = ['html', 'js', 'ts']
 ignore_dirs = ['wifi4eu-financial', 'node_modules', 'target', 'dist']
 regex = r"\{\{(.*?)\|"
 base_file = 'en.json'
 
 
-def add_file_labels(f, labels):
+def add_file_labels(f, labels, label_files):
     for line in f:
         matches = re.finditer(regex, line, re.MULTILINE | re.DOTALL)
         for match in matches:
             label = ''.join(match.group(1).split()).split('|')[0].replace("'", '')
             if label not in labels:
+                label_files.append(f.name)
                 labels.append(label)
 
 
@@ -30,7 +31,7 @@ def get_data_from_file(file):
         return json.load(f)
 
 
-def get_base_data(used_labels):
+def get_base_data(used_labels, label_files):
     base_data = get_data_from_file(base_file)
 
     # Delete labels no longer used
@@ -46,9 +47,9 @@ def get_base_data(used_labels):
 
     # Add labels without text
     new = 0
-    for label in used_labels:
+    for i, label in enumerate(used_labels):
         if label not in base_data:
-            print('"' + label + '":"",')
+            print(label + ' --> ' + label_files[i].split('/')[-1])
             base_data[label] = ''
             new += 1
 
@@ -59,19 +60,20 @@ def get_base_data(used_labels):
 # Get labels present in the portal
 def get_portal_labels():
     labels = []
+    label_files = []
     for root, dirs, files in os.walk(parent):
         for file in files:
             path = os.path.join(root, file)
             for extension in extensions:
                 if file.endswith('.' + extension) and not ignore_path(path):
                     with open(path) as f:
-                        add_file_labels(f, labels)
-    return labels
+                        add_file_labels(f, labels, label_files)
+    return labels, label_files
 
 
 def main():
-    used_labels = get_portal_labels()
-    base_data = get_base_data(used_labels)
+    used_labels, label_files = get_portal_labels()
+    base_data = get_base_data(used_labels, label_files)
     print('Labels defined in portal:', used_labels)
     print('Labels in base translation file:', base_data)
 
