@@ -77,10 +77,7 @@
         </div>
         <br><br>
         <div class="ui-g-12 center">
-            <span class="ui-g-4"></span>
-            <button class="btn btn-primary ui-g-4" disabled>{{ 'benefPortal.voucher.applyforvoucher' | translate}}
-            </button>
-            <span class="ui-g-4"></span>
+            <button class="btn btn-primary" disabled>{{ 'benefPortal.voucher.applyforvoucher' | translate}}</button>
         </div>
     </div>
     <!-- competition Open, display apply button -->
@@ -106,12 +103,36 @@
         </div>
         <br><br>
         <div class="ui-g-12 center">
-            <span class="ui-g-4"></span>
             <!--<button class="btn btn-primary ui-g-4" (click)="applyForVoucher()">-->
-            <button class="btn btn-primary ui-g-4" (click)="applyForVoucher()" [disabled]="loadingButtons[0]">
+            <!--<button class="btn btn-primary ui-g-4" (click)="applyForVoucher()" [disabled]="loadingButtons[0]">-->
+                <!--{{ 'benefPortal.voucher.applyforvoucher' | translate}}-->
+            <!--</button>-->
+            <button *ngIf="municipalities.length == 1" class="btn btn-primary"
+                    (click)="applyForVoucher(0)" [disabled]="loadingButtons[0]">
                 {{ 'benefPortal.voucher.applyforvoucher' | translate}}
             </button>
-            <span class="ui-g-4"></span>
+            <div class="offset-lg-4 ui-lg-4 ui-g-12" *ngIf="municipalities.length > 1">
+                <div class="backgroundPanel ui-g-12">
+                    <p class="beneficiaryMayor left">{{ 'benefPortal.voucher.yourMunicipalities' | translate}}</p>
+                </div>
+                <p-dataTable [value]="municipalities">
+                    <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
+                        <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
+                            <span>
+                                <img src="assets/images/account-balance-material-icons-regular.png" alt="" class="municipality-icon"> {{municipality.name}}
+                            </span>
+                        </template>
+                    </p-column>
+                    <p-column header="{{ 'benefPortal.voucher.actions' | translate }}" styleClass="label">
+                        <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
+                            <button class="btn btn-primary" (click)="applyForVoucher(i)"
+                                    [disabled]="applications[i] || loadingButtons[i]">
+                                {{ 'benefPortal.voucher.applyforvoucher' | translate }}
+                            </button>
+                        </template>
+                    </p-column>
+                </p-dataTable>
+            </div>
         </div>
     </div>
     <!-- user has applied for voucher -->
@@ -132,12 +153,32 @@
         </div>
         <br><br>
         <div class="ui-g-12 center">
-            <span class="ui-g-4"></span>
-            <!--<button class="btn btn-primary ui-g-4" (click)="applyForVoucher()" [disabled]="allApplied || loadingButtons[0]">-->
-            <button class="btn btn-primary ui-g-4" (click)="applyForVoucher()" [disabled]="allApplied">
+            <button *ngIf="municipalities.length == 1" class="btn btn-primary"
+                    (click)="applyForVoucher(0)" [disabled]="loadingButtons[0]">
                 {{ 'benefPortal.voucher.applyforvoucher' | translate}}
             </button>
-            <span class="ui-g-4"></span>
+            <div class="offset-lg-4 ui-lg-4 ui-g-12" *ngIf="municipalities.length > 1">
+                <div class="backgroundPanel ui-g-12">
+                    <p class="beneficiaryMayor left">{{ 'benefPortal.voucher.yourMunicipalities' | translate}}</p>
+                </div>
+                <p-dataTable [value]="municipalities">
+                    <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
+                        <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
+                            <span>
+                                <img src="assets/images/account-balance-material-icons-regular.png" alt="" class="municipality-icon"> {{municipality.name}}
+                            </span>
+                        </template>
+                    </p-column>
+                    <p-column header="{{ 'benefPortal.voucher.actions' | translate }}" styleClass="label">
+                        <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
+                            <button class="btn btn-primary" (click)="applyForVoucher(i)"
+                                    [disabled]="applications[i] || loadingButtons[i]">
+                                {{ 'benefPortal.voucher.applyforvoucher' | translate }}
+                            </button>
+                        </template>
+                    </p-column>
+                </p-dataTable>
+            </div>
         </div>
     </div>
     <!-- user has been awarded and can select a supplier -->
@@ -171,56 +212,9 @@
             <span class="ui-g-4"></span>
         </div>
         <div class="ui-g-12 center">
-            <span class="ui-g-4"></span>
-            <button class="btn btn-primary ui-g-4" routerLink="/home" routerLinkActive="active">
+            <button class="btn btn-primary" routerLink="/home" routerLinkActive="active">
                 {{ 'benefPortal.voucher.backhome' | translate}}
             </button>
-            <span class="ui-g-4"></span>
         </div>
     </div>
-    <!--<p-dialog [(visible)]="displayRegistrationSelect" [modal]="true" [responsive]="true"-->
-    <!--[resizable]="false" [draggable]="false" [closable]="true" [closeOnEscape]="true">-->
-    <!--<h2 class="beneficiaryTitle">{{ 'beneficiary.registrations' | translate }}</h2><br><br>-->
-    <!--<div class="ui-g-12 registrationPanel" *ngFor="let municipality of municipalities; let i = index">-->
-    <!--<div class="ui-g-12">-->
-    <!--<span class="beneficiaryMayor">{{ 'beneficiary.registrationNumber' | translate }} #{{registrations[i].id}}</span>-->
-    <!--</div>-->
-    <!--<hr class="beneficiaryHr">-->
-    <!--<div class="ui-g-12">-->
-    <!--<span class="beneficiaryMayor">{{ 'legalentity.label' | translate }}</span>-->
-    <!--</div>-->
-    <!--<div class="ui-g-4">-->
-    <!--<p>{{ 'country.label' | translate }}</p>-->
-    <!--<p>{{ 'municipality.label' | translate }}</p>-->
-    <!--<p>{{ 'address.label' | translate }}</p>-->
-    <!--<p>{{ 'number.label' | translate }}</p>-->
-    <!--<p>{{ 'postal-code.label' | translate }}</p>-->
-    <!--</div>-->
-    <!--<div class="ui-g-8">-->
-    <!--<p class="profileData">{{municipality.country}}</p>-->
-    <!--<p class="profileData">{{municipality.name}}</p>-->
-    <!--<p class="profileData">{{municipality.address}}</p>-->
-    <!--<p class="profileData">{{municipality.addressNum}}</p>-->
-    <!--<p class="profileData">{{municipality.postalCode}}</p>-->
-    <!--</div>-->
-    <!--<div class="ui-g-12">-->
-    <!--<span class="beneficiaryMayor">{{ 'mayor.details' | translate }}</span>-->
-    <!--</div>-->
-    <!--<div class="ui-g-4">-->
-    <!--<p>{{ 'name.label' | translate }}</p>-->
-    <!--<p>{{ 'surname.label' | translate }}</p>-->
-    <!--<p>{{ 'email.label' | translate }}</p>-->
-    <!--</div>-->
-    <!--<div class="ui-g-8">-->
-    <!--<p class="profileData">{{mayors[i].name}}</p>-->
-    <!--<p class="profileData">{{mayors[i].surname}}</p>-->
-    <!--<p class="profileData">{{mayors[i].email}}</p>-->
-    <!--</div>-->
-    <!--<div class="ui-g-12 center">-->
-    <!--<button type="button" class="btn btn-primary offset-lg-6"-->
-    <!--(click)="sendApplication(i)" [disabled]="applications[i] || loadingButtons[i]">-->
-    <!--{{ 'voucher.applyforvoucher' | translate }}</button>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</p-dialog>-->
 </div>

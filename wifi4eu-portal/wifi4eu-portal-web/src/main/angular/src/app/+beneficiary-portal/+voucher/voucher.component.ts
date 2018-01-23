@@ -28,7 +28,6 @@ export class VoucherComponent {
     private mayors: MayorDTOBase[] = [];
     private applications: ApplicationDTOBase[] = [];
     private displayRegistrationSelect: boolean = false;
-    private allApplied: boolean = false;
     private loadingButtons: boolean[] = [];
     private dateNumber: string;
     private hourNumber: string;
@@ -93,7 +92,6 @@ export class VoucherComponent {
                                                         if (application != null) {
                                                             this.voucherCompetitionState = 3;
                                                         }
-                                                        this.checkAllApplied();
                                                     }
                                                 );
                                             }
@@ -119,20 +117,7 @@ export class VoucherComponent {
         );
     }
 
-    private applyForVoucher() {
-        for (let i = 0; i < this.registrations.length; i++) {
-            if (!this.applications[i]) {
-                this.sendApplication(i);
-            }
-        }
-        // if (this.registrations.length == 1) {
-        //     this.sendApplication(0);
-        // } else {
-        //     this.displayRegistrationSelect = true;
-        // }
-    }
-
-    private sendApplication(registrationNumber: number) {
+    private applyForVoucher(registrationNumber: number) {
         // TODO: Llamar al nuevo servicio de Apply for voucher
         this.loadingButtons[registrationNumber] = true;
         let newApplication = new ApplicationDTOBase();
@@ -148,22 +133,10 @@ export class VoucherComponent {
                         this.voucherCompetitionState = 3;
                         this.loadingButtons[registrationNumber] = false;
                         this.displayRegistrationSelect = false;
-                        this.checkAllApplied();
                         this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
                     }
                 }
             }
         );
-    }
-
-    private checkAllApplied() {
-        let allApplicationsCorrect = true;
-        for (let application of this.applications) {
-            if (!application) {
-                allApplicationsCorrect = false;
-                break;
-            }
-        }
-        this.allApplied = allApplicationsCorrect;
     }
 }

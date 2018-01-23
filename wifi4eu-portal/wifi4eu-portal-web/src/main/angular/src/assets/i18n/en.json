@@ -484,5 +484,7 @@
   "dgConn.user.label": "User",
   "suppRegistration.webFormat": "Enter a valid format",
   "int.comment.100": "-- END OLD LABELS TO BE REMOVED --",
-  "int.breakfile": ""
+  "int.breakfile": "",
+  "benefPortal.voucher.actions": "Actions",
+  "benefPortal.voucher.yourMunicipalities": "Your municipalities"
 }

@@ -1341,6 +1341,15 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   width: 100%;
 }
 
+.municipality-icon {
+  width: 1em;
+}
+
+.backgroundPanel {
+  background: #ebedf0;
+  border-bottom: 1px solid #d9d9d9;
+}
+
 .registrationPanel {
   border: 1px solid #D5D5D5;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
