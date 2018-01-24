@@ -91,13 +91,28 @@
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
                                         <argument>/c</argument>
-                                        <!-- Fix JS size -->
-                                        <argument>"npm run build_prod"</argument>
+                                        <argument>npm</argument>
+                                        <argument>run</argument>
+                                        <argument>clean</argument>
+
+                                        <argument>&amp;&amp;</argument>
+
+                                        <argument>ng</argument>
+                                        <argument>build</argument>
+                                        <argument>--base-href</argument>
+                                        <argument>/wifi4eu/</argument>
+                                        <argument>--env=${ng.env}</argument>
+
+                                        <argument>&amp;&amp;</argument>
+
+                                        <argument>npm</argument>
+                                        <argument>run</argument>
+                                        <argument>minify</argument>
+
                                         <!-- Por defecto -->
                                         <!-- <argument>"ng build - -base-href /wifi4eu/"</argument> -->
                                         <!-- Si queremos generar para PRODUCCION -->
                                         <!-- <argument>"ng build - -prod - -aot false - -base-href /wifi4eu/"</argument> -->
-                                        <argument>--env=${ng.env}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
