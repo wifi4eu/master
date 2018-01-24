@@ -1,7 +1,6 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
 import {ActivationComponent} from "./activation/activation.component";
-import {LoginComponent} from "./+login/login.component";
 import {ForgotComponent} from "./+forgot/forgot.component";
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {NotFoundComponent} from "./not-found/not-found.component"
@@ -25,9 +24,6 @@ import {HomeComponent} from "./home/home.component";
         }, {
             path: 'activation',
             component: ActivationComponent
-        }, {
-            path: 'login',
-            component: LoginComponent
         }, {
             path: 'forgot',
             component: ForgotComponent
