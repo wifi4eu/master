@@ -12,9 +12,11 @@
     "e2e": "protractor",
 
     "clean": "rm -rf dist",
-    "minify": "uglifyjs dist/vendor.bundle.js --screw-ie8 --compress --mangle --output dist/vendor.bundle.js",
+    "build": "tsc -p src/tsconfig.json",
+    "rollup": "rollup -f iife -c rollup.config.js",
+    "minify": "uglifyjs dist/vendor.bundle.rollup.js --screw-ie8 --compress --mangle --output dist/vendor.bundle.js",
 
-    "build_prod_testing": "npm run clean && ng build --env=$local && npm run minify"
+    "build_prod_testing": "npm run clean && ng build --env=local && npm run build && npm run rollup && npm run minify"
   },
   "private": true,
   "dependencies": {

@@ -107,6 +107,12 @@
 
                                         <argument>npm</argument>
                                         <argument>run</argument>
+                                        <argument>rollup</argument>
+
+                                        <argument>&amp;&amp;</argument>
+
+                                        <argument>npm</argument>
+                                        <argument>run</argument>
                                         <argument>minify</argument>
 
                                         <!-- Por defecto -->
