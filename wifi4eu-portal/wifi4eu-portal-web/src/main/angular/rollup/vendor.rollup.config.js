@@ -16,7 +16,7 @@ const rollupNG2 = (config) => new RollupNG2(config);
 export default {
     input: 'dist/vendor.bundle.js',
     output: {
-        file: 'dist/vendor.bundle.rollup.js',
+        file: 'dist/vendor.bundle.js',
         format: 'iife',
         sourcemap: true
     },

@@ -107,14 +107,14 @@
 
                                         <argument>npm</argument>
                                         <argument>run</argument>
-                                        <argument>rollup</argument>
-
+                                        <argument>compress_vendor</argument>
+<!--
                                         <argument>&amp;&amp;</argument>
 
                                         <argument>npm</argument>
                                         <argument>run</argument>
-                                        <argument>minify</argument>
-
+                                        <argument>uglify</argument>
+-->
                                         <!-- Por defecto -->
                                         <!-- <argument>"ng build - -base-href /wifi4eu/"</argument> -->
                                         <!-- Si queremos generar para PRODUCCION -->
