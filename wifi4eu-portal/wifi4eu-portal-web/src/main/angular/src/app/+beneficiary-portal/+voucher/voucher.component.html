@@ -13,10 +13,24 @@
             {{ 'benefPortal.voucher.statusmessage5' | translate }}
         </h2>
     </div>
+
 </div>
+
+<div class="ui-g-12">
+    <div class="ui-g-1"></div>
+    <div class="ui-g-11">
+        <h2 class="beneficiaryTitle">{{ 'benefPortal.voucher.competitionTitle' | translate }}</h2>
+        <p>{{ 'benefPortal.voucher.competitionSubtitle' | translate }}</p>
+    </div>
+</div>
+
 
 <!-- Timer & "Apply For Voucher" -->
 <div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
+    <h1 class="beneficiaryTitle marginTop">{{ 'suppPortal.voucher.competition' | translate }}</h1>
+    <p *ngIf="showTimeline" class="europeans-text"
+       [innerHTML]="'benefPortal.voucher.counterSubtitle' | translate:{date:dateNumber,hour:hourNumber}">
+    </p>
     <div *ngIf="displayMunicipality" class="container font">
         <div style="margin-top: 1em;">
             <span class="left municipality-name" (click)="hideMunicipalityData()">
@@ -64,10 +78,16 @@
                          [expirationTimestamp]="currentCall.startDate"></timer-component>
     </div>
     <div class="offset-lg-3 ui-lg-6 ui-g-12" *ngIf="!displayMunicipality">
-        <div class="backgroundPanel ui-g-12">
-            <p class="beneficiaryMayor left">
-                {{ 'benefPortal.voucher.yourMunicipalities' | translate}}
-            </p>
+
+        <div class="row tableTitle">
+            <div class="col-md-10">
+                <div class="ui-g-12">
+                    <p class="beneficiaryMayor left">
+                        {{ 'benefPortal.voucher.yourMunicipalities' | translate}}
+                    </p>
+                </div>
+            </div>
+
         </div>
         <p-dataTable [value]="municipalities">
             <p-column field="name" header="{{ 'shared.municipality.label' | translate }}"
@@ -83,10 +103,14 @@
             </p-column>
             <p-column header="{{ 'benefPortal.voucher.actions' | translate }}" styleClass="label">
                 <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                    <button class="btn btn-primary" (click)="applyForVoucher(i)"
-                            [disabled]="applications[i] || loadingButtons[i] || voucherCompetitionState == 1">
+                    <button class="btn btn-primary" (click)="applyForVoucher(i)" *ngIf="!applications[i]"
+                            [disabled]="loadingButtons[i] || voucherCompetitionState == 1">
                         {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                     </button>
+                    <span *ngIf="applications[i]">
+                        <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
+                        {{ 'benefPortal.voucher.applied' | translate }}
+                    </span>
                 </template>
             </p-column>
         </p-dataTable>
