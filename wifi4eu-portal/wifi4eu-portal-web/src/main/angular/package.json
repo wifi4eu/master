@@ -31,10 +31,15 @@
     "uglify_common": "uglifyjs dist/common.chunk.js --screw-ie8 --compress --mangle --output dist/common.chunk.js",
     "compress_common": "npm run rollup_common && npm run uglify_common",
 
+    "rollup_dgconnportal": "rollup -f iife -c rollup/dgconnportal.rollup.config.js",
+    "uglify_dgconnportal": "uglifyjs dist/dgconnportal.module.chunk.js --screw-ie8 --compress --mangle --output dist/dgconnportal.module.chunk.js",
+    "compress_dgconnportal": "npm run rollup_dgconnportal && npm run uglify_dgconnportal",
+
     "build_vendor_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_vendor",
     "build_styles_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_styles",
     "build_main_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_main",
-    "build_common_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_common"
+    "build_common_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_common",
+    "build_dgconnportal_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_dgconnportal"
   },
   "private": true,
   "dependencies": {

@@ -126,6 +126,12 @@
                                         <argument>npm</argument>
                                         <argument>run</argument>
                                         <argument>compress_common</argument>
+
+                                        <argument>&amp;&amp;</argument>
+
+                                        <argument>npm</argument>
+                                        <argument>run</argument>
+                                        <argument>compress_dgconnportal</argument>
 <!--
                                         <argument>&amp;&amp;</argument>
 
