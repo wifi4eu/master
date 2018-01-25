@@ -1,220 +1,124 @@
-<div [ngSwitch]="voucherCompetitionState">
-    <!-- no competition created, display warning -->
-    <div *ngSwitchCase="0">
+<!-- Competition & user registration status -->
+<div id="upper-block" class="ui-g-12 center">
+    <div *ngIf="(voucherCompetitionState == 0 || voucherCompetitionState == 1)" class="ui-g-12">
         <success-component emailConfirmation="true" [email]="user.email"></success-component>
-        <hr class="beneficiaryHr">
-        <div class="ui-g-12">
-            <span class="ui-g-2"></span>
-            <ux-alert class="ui-g-8" styleClass="alert-info">
-                {{ 'benefPortal.voucher.noCompetitionPart1' | translate}}<b>{{ 'benefPortal.voucher.noCompetitionPart2'
-                | translate}}</b>
-            </ux-alert>
-            <span class="ui-g-2"></span>
-        </div>
-        <div class="center">
-            <img src="assets/images/notification.png" alt="">
-        </div>
-        <div class="ui-g-12">
-            <div class="ui-g-4"></div>
-            <div class="ui-g-4">
-                <p class="labelModal">{{ 'benefPortal.voucher.emailNotification' | translate}}</p>
-            </div>
-            <div class="ui-g-4"></div>
-        </div>
     </div>
-    <!-- no competition active, display timer -->
-    <div *ngSwitchCase="1">
-        <success-component emailConfirmation="true" [email]="user.email"></success-component>
-        <hr class="beneficiaryHr">
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <h2 class="ui-g-8 beneficiaryMayor">{{ 'benefPortal.voucher.whats.next' | translate}}</h2>
-            <span class="ui-g-2"></span>
-        </div>
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <span class="ui-g-8">{{ 'benefPortal.voucher.steps' | translate}}</span>
-            <span class="ui-g-2"></span>
-        </div>
-        <div class="ui-g-12 center">
-            <div class="ui-g-3">
-                <img src="assets/images/apply.png" alt="">
-                <p><span class="dotSteps">1.</span>{{ 'benefPortal.voucher.step1' | translate}}</p>
-            </div>
-            <div class="ui-g-3">
-                <img src="assets/images/supplier.png" alt="">
-                <p><span class="dotSteps">2.</span>{{ 'benefPortal.voucher.step2' | translate}}</p>
-            </div>
-            <div class="ui-g-3">
-                <img src="assets/images/check.png" alt="">
-                <p><span class="dotSteps">3.</span>{{ 'benefPortal.voucher.step3' | translate}}</p>
-            </div>
-            <div class="ui-g-3">
-                <img src="assets/images/voucher.png" alt="">
-                <p><span class="dotSteps">4.</span>{{ 'benefPortal.voucher.step4' | translate}}</p>
-            </div>
-        </div>
+    <div *ngIf="voucherCompetitionState == 2" class="ui-g-12">
+        <i class="fa fa-info-circle success-failure-icon" style="color: #0074CA" aria-hidden="true"></i><br><br>
+        <h2 class="beneficiaryTitle">{{ 'benefPortal.voucher.statusmessage4' | translate }}</h2>
+    </div>
+    <div *ngIf="voucherCompetitionState == 3" class="ui-g-12">
+        <i class="fa fa-check-circle success-failure-icon" style="color: green" aria-hidden="true"></i><br><br>
+        <h2 class="beneficiaryTitle offset-lg-2 ui-lg-8 ui-g-12">
+            {{ 'benefPortal.voucher.statusmessage5' | translate }}
+        </h2>
+    </div>
+</div>
 
-        <hr class="beneficiaryHr">
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <h2 class="ui-g-8 beneficiaryMayor">{{ 'benefPortal.voucher.timeleft.title' | translate}}</h2>
-            <span class="ui-g-2"></span>
-        </div>
-        <!--
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <span class="ui-g-8" *ngIf="showTimeline" class="europeans-text"
-                  [innerHTML]="'benefPortal.voucher.timeleft.subtitle' | translate:{date:dateNumber,hour:hourNumber}">
+<!-- Timer & "Apply For Voucher" -->
+<div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
+    <div *ngIf="displayMunicipality" class="container font">
+        <div style="margin-top: 1em;">
+            <span class="left municipality-name" (click)="hideMunicipalityData()">
+                <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
             </span>
-            <span class="ui-g-2"></span>
-        </div>
-        -->
-        <br>
-        <div class="ui-g-12">
-            <timer-component (timerEvent)="checkIfAlreadyApplied()"
-                             [expirationTimestamp]="currentCall.startDate"></timer-component>
-        </div>
-        <br><br>
-        <div class="ui-g-12 center">
-            <button class="btn btn-primary" disabled>{{ 'benefPortal.voucher.applyforvoucher' | translate}}</button>
+            <span class="right municipality-name" (click)="goToProfile()">
+                <i class="fa fa-share" aria-hidden="true"></i> {{ 'itemMenu.myAccount' | translate }}
+            </span>
         </div>
     </div>
-    <!-- competition Open, display apply button -->
-    <div *ngSwitchCase="2">
-        <success-component emailConfirmation="true" [email]="user.email"></success-component>
-        <hr class="beneficiaryHr">
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <ux-alert class="ui-g-8" styleClass="alert-info">{{ 'benefPortal.voucher.statusmessage4' | translate}}
-            </ux-alert>
-            <span class="ui-g-2"></span>
+    <div *ngIf="displayMunicipality" class="container font">
+        <div class="ui-g">
+            <p class="beneficiaryMayor">
+                {{municipalities[shownMunicipalityIndex].name}}
+            </p>
         </div>
-        <br>
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <h2 class="ui-g-8">{{ 'benefPortal.voucher.apply.title' | translate}}</h2>
-            <span class="ui-g-2"></span>
-        </div>
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <span class="ui-g-8">{{ 'benefPortal.voucher.apply.subtitle' | translate}}</span>
-            <span class="ui-g-2"></span>
-        </div>
-        <br><br>
-        <div class="ui-g-12 center">
-            <!--<button class="btn btn-primary ui-g-4" (click)="applyForVoucher()">-->
-            <!--<button class="btn btn-primary ui-g-4" (click)="applyForVoucher()" [disabled]="loadingButtons[0]">-->
-                <!--{{ 'benefPortal.voucher.applyforvoucher' | translate}}-->
-            <!--</button>-->
-            <button *ngIf="municipalities.length == 1" class="btn btn-primary"
-                    (click)="applyForVoucher(0)" [disabled]="loadingButtons[0]">
-                {{ 'benefPortal.voucher.applyforvoucher' | translate}}
-            </button>
-            <div class="offset-lg-4 ui-lg-4 ui-g-12" *ngIf="municipalities.length > 1">
-                <div class="backgroundPanel ui-g-12">
-                    <p class="beneficiaryMayor left">{{ 'benefPortal.voucher.yourMunicipalities' | translate}}</p>
-                </div>
-                <p-dataTable [value]="municipalities">
-                    <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
-                        <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                            <span>
-                                <img src="assets/images/account-balance-material-icons-regular.png" alt="" class="municipality-icon"> {{municipality.name}}
-                            </span>
-                        </template>
-                    </p-column>
-                    <p-column header="{{ 'benefPortal.voucher.actions' | translate }}" styleClass="label">
-                        <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                            <button class="btn btn-primary" (click)="applyForVoucher(i)"
-                                    [disabled]="applications[i] || loadingButtons[i]">
-                                {{ 'benefPortal.voucher.applyforvoucher' | translate }}
-                            </button>
-                        </template>
-                    </p-column>
-                </p-dataTable>
+        <div class="ui-g">
+            <div class="ui-g-12 left">
+                <p>
+                    {{ 'shared.country.label' | translate }}:
+                    <b>{{municipalities[shownMunicipalityIndex].country}}</b>
+                </p>
+                <p>
+                    {{ 'benefRegistration.address.label' | translate }}:
+                    <b>{{municipalities[shownMunicipalityIndex].address}}</b>
+                </p>
+                <p>
+                    {{ 'shared.number.label' | translate }}:
+                    <b>{{municipalities[shownMunicipalityIndex].addressNum}}</b>
+                </p>
+                <p>
+                    {{ 'shared.postal-code.label' | translate }}:
+                    <b>{{municipalities[shownMunicipalityIndex].postalCode}}</b>
+                </p>
             </div>
         </div>
     </div>
-    <!-- user has applied for voucher -->
-    <div *ngSwitchCase="3">
-        <success-component emailConfirmation="true" [email]="user.email"></success-component>
-        <hr class="beneficiaryHr">
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <ux-alert class="ui-g-8" styleClass="alert-success">{{ 'benefPortal.voucher.statusmessage5' | translate}}
-            </ux-alert>
-            <span class="ui-g-2"></span>
-        </div>
-        <br>
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <h2 class="ui-g-8">{{ 'benefPortal.voucher.alreadyapplied' | translate}}</h2>
-            <span class="ui-g-2"></span>
-        </div>
-        <br><br>
-        <div class="ui-g-12 center">
-            <button *ngIf="municipalities.length == 1" class="btn btn-primary"
-                    (click)="applyForVoucher(0)" [disabled]="loadingButtons[0]">
-                {{ 'benefPortal.voucher.applyforvoucher' | translate}}
-            </button>
-            <div class="offset-lg-4 ui-lg-4 ui-g-12" *ngIf="municipalities.length > 1">
-                <div class="backgroundPanel ui-g-12">
-                    <p class="beneficiaryMayor left">{{ 'benefPortal.voucher.yourMunicipalities' | translate}}</p>
-                </div>
-                <p-dataTable [value]="municipalities">
-                    <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
-                        <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                            <span>
-                                <img src="assets/images/account-balance-material-icons-regular.png" alt="" class="municipality-icon"> {{municipality.name}}
-                            </span>
-                        </template>
-                    </p-column>
-                    <p-column header="{{ 'benefPortal.voucher.actions' | translate }}" styleClass="label">
-                        <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                            <button class="btn btn-primary" (click)="applyForVoucher(i)"
-                                    [disabled]="applications[i] || loadingButtons[i]">
-                                {{ 'benefPortal.voucher.applyforvoucher' | translate }}
-                            </button>
-                        </template>
-                    </p-column>
-                </p-dataTable>
-            </div>
-        </div>
+    <div *ngIf="voucherCompetitionState == 0" class="ui-g-12">
+        <h2 class="beneficiaryTitle">{{ 'benefPortal.voucher.step2' | translate }}</h2>
     </div>
-    <!-- user has been awarded and can select a supplier -->
-    <!--
-        <select-supplier-component *ngSwitchCase="4" [publicationId]="currentCall.callId"
-                               [myMunicipality]="myMunicipality"></select-supplier-component>
-    -->
-    <!-- a problem occurred -->
-    <div *ngSwitchCase="-1">
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <ux-alert class="ui-g-8" styleClass="alert-danger">{{ 'benefPortal.voucher.statusmessage3' | translate}}
-            </ux-alert>
-            <span class="ui-g-2"></span>
+    <div *ngIf="voucherCompetitionState == 1" class="ui-g-12">
+        <h2 class="beneficiaryTitle">{{ 'benefPortal.voucher.timeleft.title' | translate }}</h2>
+        <p>{{ 'benefPortal.voucher.timeleft.subtitle' | translate:{date:dateNumber,hour:hourNumber} }}</p>
+        <timer-component class="offset-lg-3 ui-lg-6 ui-g-12" (timerEvent)="openApplyForVoucher()"
+                         [expirationTimestamp]="currentCall.startDate"></timer-component>
+    </div>
+    <div class="offset-lg-3 ui-lg-6 ui-g-12" *ngIf="!displayMunicipality">
+        <div class="backgroundPanel ui-g-12">
+            <p class="beneficiaryMayor left">
+                {{ 'benefPortal.voucher.yourMunicipalities' | translate}}
+            </p>
         </div>
-        <br>
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <h2 class="ui-g-8">{{ 'benefPortal.voucher.rejectedtitle' | translate}}</h2>
-            <span class="ui-g-2"></span>
+        <p-dataTable [value]="municipalities">
+            <p-column field="name" header="{{ 'shared.municipality.label' | translate }}"
+                      [sortable]="true" styleClass="label">
+                <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
+                        <span>
+                            <img src="assets/images/account-balance-material-icons-regular.png"
+                                 alt="" class="municipality-icon">
+                            <span class="municipality-name"
+                                  (click)="showMunicipalityData(i)">{{municipality.name}}</span>
+                        </span>
+                </template>
+            </p-column>
+            <p-column header="{{ 'benefPortal.voucher.actions' | translate }}" styleClass="label">
+                <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
+                    <button class="btn btn-primary" (click)="applyForVoucher(i)"
+                            [disabled]="applications[i] || loadingButtons[i] || voucherCompetitionState == 1">
+                        {{ 'benefPortal.voucher.applyforvoucher' | translate }}
+                    </button>
+                </template>
+            </p-column>
+        </p-dataTable>
+    </div>
+    <div *ngIf="displayMunicipality" class="ui-g-12">
+        <button class="btn btn-primary" (click)="applyForVoucher(shownMunicipalityIndex)"
+                [disabled]="applications[shownMunicipalityIndex] || loadingButtons[shownMunicipalityIndex] || voucherCompetitionState == 1">
+            {{ 'benefPortal.voucher.applyforvoucher' | translate}}
+        </button>
+    </div>
+</div>
+
+<!-- "What's next?" steps -->
+<div id="bottom-block" class="ui-g-12 center">
+    <p class="beneficiaryMayor">{{ 'benefPortal.voucher.whats.next' | translate }}</p>
+    <p>{{ 'benefPortal.voucher.steps' | translate }}</p>
+    <div class="ui-g-12">
+        <div class="ui-g-3 ui-sm-6">
+            <img src="assets/images/check.png" alt="">
+            <p><span class="dotSteps">1. </span>{{ 'benefPortal.voucher.step1' | translate}}</p>
         </div>
-        <div class="ui-g-12 center">
-            <span class="ui-g-2"></span>
-            <span class="ui-g-8">{{errorCause | translate}}</span>
-            <span class="ui-g-2"></span>
+        <div class="ui-g-3 ui-sm-6">
+            <img src="assets/images/clock.png" alt="">
+            <p><span class="dotSteps">2. </span>{{ 'benefPortal.voucher.step2' | translate}}</p>
         </div>
-        <br><br>
-        <div class="ui-g-12 center">
-            <span class="ui-g-4"></span>
-            <span class="ui-g-4">{{ 'benefPortal.voucher.tryagain' | translate}}</span>
-            <span class="ui-g-4"></span>
+        <div class="ui-g-3 ui-sm-6">
+            <img src="assets/images/apply.png" alt="">
+            <p><span class="dotSteps">3. </span>{{ 'benefPortal.voucher.step3' | translate}}</p>
         </div>
-        <div class="ui-g-12 center">
-            <button class="btn btn-primary" routerLink="/home" routerLinkActive="active">
-                {{ 'benefPortal.voucher.backhome' | translate}}
-            </button>
+        <div class="ui-g-3 ui-sm-6">
+            <img src="assets/images/voucher.png" alt="">
+            <p><span class="dotSteps">4. </span>{{ 'benefPortal.voucher.step4' | translate}}</p>
         </div>
     </div>
 </div>
