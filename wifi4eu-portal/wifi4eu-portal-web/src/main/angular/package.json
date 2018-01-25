@@ -27,9 +27,14 @@
     "uglify_main": "uglifyjs dist/main.bundle.js --screw-ie8 --compress --mangle --output dist/main.bundle.js",
     "compress_main": "npm run rollup_main && npm run uglify_main",
 
+    "rollup_common": "rollup -f iife -c rollup/common.rollup.config.js",
+    "uglify_common": "uglifyjs dist/common.chunk.js --screw-ie8 --compress --mangle --output dist/common.chunk.js",
+    "compress_common": "npm run rollup_common && npm run uglify_common",
+
     "build_vendor_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_vendor",
     "build_styles_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_styles",
-    "build_main_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_main"
+    "build_main_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_main",
+    "build_common_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_common"
   },
   "private": true,
   "dependencies": {
