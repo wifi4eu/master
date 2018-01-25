@@ -15,11 +15,16 @@
     "build": "tsc -p src/tsconfig.json",
 
     "rollup_vendor": "rollup -f iife -c rollup/vendor.rollup.config.js",
-    "uglify_vendor": "uglifyjs dist/vendor.bundle.js --screw-ie8 --compress --mangle --output dist/vendor.bundle.js",
     "minify_vendor": "minify dist/vendor.bundle.js --output dist/vendor.bundle.js",
+    "uglify_vendor": "uglifyjs dist/vendor.bundle.js --screw-ie8 --compress --mangle --output dist/vendor.bundle.js",
     "compress_vendor": "npm run rollup_vendor && npm run minify_vendor && npm run uglify_vendor",
 
-    "build_vendor_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_vendor"
+    "rollup_styles": "rollup -f iife -c rollup/styles.rollup.config.js",
+    "uglify_styles": "uglifyjs dist/styles.bundle.js --screw-ie8 --compress --mangle --output dist/styles.bundle.js",
+    "compress_styles": "npm run rollup_styles && npm run uglify_styles",
+
+    "build_vendor_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_vendor",
+    "build_styles_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_styles"
   },
   "private": true,
   "dependencies": {

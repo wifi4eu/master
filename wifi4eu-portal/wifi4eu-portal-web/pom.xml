@@ -108,6 +108,12 @@
                                         <argument>npm</argument>
                                         <argument>run</argument>
                                         <argument>compress_vendor</argument>
+
+                                        <argument>&amp;&amp;</argument>
+
+                                        <argument>npm</argument>
+                                        <argument>run</argument>
+                                        <argument>compress_styles</argument>
 <!--
                                         <argument>&amp;&amp;</argument>
 
