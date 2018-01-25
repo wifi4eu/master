@@ -39,12 +39,17 @@
     "uglify_supplierportal": "uglifyjs dist/supplier-portal.module.chunk.js --screw-ie8 --compress --mangle --output dist/supplier-portal.module.chunk.js",
     "compress_supplierportal": "npm run rollup_supplierportal && npm run uglify_supplierportal",
 
+    "rollup_beneficiaryportal": "rollup -f iife -c rollup/beneficiary-portal.rollup.config.js",
+    "uglify_beneficiaryportal": "uglifyjs dist/beneficiary-portal.module.chunk.js --screw-ie8 --compress --mangle --output dist/beneficiary-portal.module.chunk.js",
+    "compress_beneficiaryportal": "npm run rollup_beneficiaryportal && npm run uglify_beneficiaryportal",
+
     "build_vendor_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_vendor",
     "build_styles_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_styles",
     "build_main_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_main",
     "build_common_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_common",
     "build_dgconnportal_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_dgconnportal",
-    "build_supplierportal_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_supplierportal"
+    "build_supplierportal_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_supplierportal",
+    "build_beneficiaryportal_testing": "npm run clean && ng build --env=local && npm run build && npm run compress_beneficiaryportal"
   },
   "private": true,
   "dependencies": {
