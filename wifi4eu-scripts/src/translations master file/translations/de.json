@@ -494,7 +494,7 @@
   "benefPortal.profile.title": "Meine Registrierung",
   "benefRegistration.typeOfRegistration.title": "Art der Registrierung",
   "shared.change-password.button": "Unten können Sie Ihr Passwort mit einem Klick ändern.",
-  "shared.beneficiaryProfile.password": "Passwort ändern",
+  "shared.change-password": "Passwort ändern",
   "shared.beneficiary.discusionText": "Sie sind nicht mehr an einem WiFi4EU-Gutschein interessiert? Unten können Sie Ihre Registrierung mit einem Klick zurückziehen.",
   "shared.beneficiary.deleteApplication": "Registrierung zurückziehen",
   "shared.newMessage.button": "Senden",
