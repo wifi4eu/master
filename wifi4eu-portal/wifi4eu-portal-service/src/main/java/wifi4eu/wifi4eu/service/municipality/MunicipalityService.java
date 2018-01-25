@@ -80,8 +80,7 @@ public class MunicipalityService {
         return municipalities;
     }
 
-    public List<MunicipalityDTO> getMunicipalitiesGroupedByLauId() {
-        return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findGroupedByLauId()));
+    public List<Object> getMunicipalitiesCountGroupedByLauId() {
+        return Lists.newArrayList(municipalityRepository.findMunicipalitiesCountGroupedByLauId());
     }
-
 }

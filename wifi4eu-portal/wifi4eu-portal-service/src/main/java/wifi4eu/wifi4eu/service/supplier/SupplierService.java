@@ -187,15 +187,15 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
     }
 
-    public List<SuppliedRegionDTO> getSuppliedRegionsGroupedByRegionId() {
-        return suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsGroupedByRegionId()));
-    }
-
     public List<SupplierDTO> getSuppliersByVat(String vat) {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByVat(vat)));
     }
 
     public List<SupplierDTO> getSuppliersByAccountNumber(String accountNumber) {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByAccountNumber(accountNumber)));
+    }
+
+    public List<Object> getSuppliedRegionsCountGroupedByRegionId() {
+        return Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsCountGroupedByRegionId());
     }
 }
