@@ -497,7 +497,7 @@
   "benefPortal.profile.title": "Mon enregistrement",
   "benefRegistration.typeOfRegistration.title": "Type d’enregistrement",
   "shared.change-password.button": "Cliquez ci-dessous pour modifier votre mot de passe",
-  "shared.beneficiaryProfile.password": "Modifier le mot de passe",
+  "shared.change-password": "Modifier le mot de passe",
   "shared.beneficiary.discusionText": "Vous ne souhaitez plus demander un coupon WiFi4EU? Cliquez ci-dessous pour supprimer votre enregistrement.",
   "shared.beneficiary.deleteApplication": "Supprimer l’enregistrement",
   "shared.newMessage.button": "Envoyer",

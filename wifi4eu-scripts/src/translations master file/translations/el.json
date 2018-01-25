@@ -469,7 +469,7 @@
   "benefPortal.profile.title": "Η εγγραφή μου",
   "benefRegistration.typeOfRegistration.title": "Είδος εγγραφής",
   "shared.change-password.button": "Κάνε κλικ παρακάτω για να αλλάξετε τον κωδικό σας πρόσβασης",
-  "shared.beneficiaryProfile.password": "Αλλαγή κωδικού πρόσβασης",
+  "shared.change-password": "Αλλαγή κωδικού πρόσβασης",
   "shared.beneficiary.discusionText": "Δεν ενδιαφέρεστε πλέον να κάνετε αίτηση για κουπόνια WiFi4EU; Κάντε κλικ παρακάτω για να αποσύρετε την εγγραφή σας.",
   "shared.beneficiary.deleteApplication": "Απόσυρση εγγραφής",
   "discussionForum.beneficiary.registration1": "Εγγραφή {{selfRegistration}} (εσείς)",

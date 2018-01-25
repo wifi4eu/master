@@ -285,7 +285,7 @@
   "benefPortal.voucher.timeleft.title": "Tiempo restante para la competición",
   "benefPortal.voucher.timeleft.subtitle": "La próxima convocatoria de aplicaciones se abrirá el {{date}} a las {{hour}} (Hora Central Europea). ",
   "shared.change-password.button": "Si conoces tu contraseña actual, puedes cambiarla clicando en el botón de abajo",
-  "shared.beneficiaryProfile.password": "Cambiar contraseña",
+  "shared.change-password": "Cambiar contraseña",
   "benefPortal.profile.title": "Mi perfil",
   "benefRegistration.mayor.details": "Detalles alcalde",
   "currentPassword.label": "Contraseña actual",

@@ -214,7 +214,7 @@
   "confirmNewPassword.label": "Confirmar a senha",
   "activate.account": "Ativar a sua conta",
   "shared.change-password.button": "Se conhecer a sua senha atual, pode alterá-la clicando no botão abaixo.",
-  "shared.beneficiaryProfile.password": "Alterar senha",
+  "shared.change-password": "Alterar senha",
   "benefPortal.profile.title": "O meu perfil",
   "benefRegistration.mayor.details": "Dados do presidente da autarquia",
   "currentPassword.label": "Senha atual",
