@@ -484,5 +484,13 @@
   "dgConn.user.label": "User",
   "suppRegistration.webFormat": "Enter a valid format",
   "int.comment.100": "-- END OLD LABELS TO BE REMOVED --",
+  "int.comment.101": "-- START EN Apply for Voucher file --",
+  "benefPortal.voucher.actions": "Actions",
+  "benefPortal.voucher.yourMunicipalities": "Your municipalities",
+  "benefPortal.voucher.actions": "Actions",
+  "benefPortal.voucher.municipalitySuccessApply.title": "You have succesfully applied for voucher!",
+  "benefPortal.voucher.municipalitySuccessApply.part1": "Stay tuned! WIFI4EU will communcate soon who go the vouchers.",
+  "benefPortal.voucher.municipalitySuccessApply.part2": "Note that the selection is conducted on a 'first-come first-served' basis as well as criteria to ensure a geographical balance, as detailed in the CEF Work Programme 2017.",
+  "int.comment.102": "-- END EN Apply for Voucher file --",
   "int.breakfile": ""
 }
