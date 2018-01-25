@@ -471,7 +471,7 @@
   "suppRegistration.email.label": "E-mailadresse",
   "suppRegistration.confirmemail.label": "Bekræft e-mailadresse",
   "shared.change-password.button": "Hvis du kender dit nuværende password, kan du ændre det ved at klikke på knappen nedenfor.",
-  "shared.beneficiaryProfile.password": "Skift password",
+  "shared.change-password": "Skift password",
   "benefPortal.profile.title": "Min profil",
   "home.part3.text4": "Resterende tid af indkaldelsesperioden:",
   "supp.landingpage.secondTitle": "Kan du ansøge?",

@@ -465,7 +465,7 @@
   "benefPortal.profile.title": "Моята регистрация",
   "benefRegistration.typeOfRegistration.title": "Вид регистрация",
   "shared.change-password.button": "Щракнете по-долу, за да промените вашата парола.",
-  "shared.beneficiaryProfile.password": "Промяна на парола",
+  "shared.change-password": "Промяна на парола",
   "shared.beneficiary.discusionText": "Вече не искате да кандидатствате за ваучер по WiFi4EU? Щракнете по-долу, за да оттеглите регистрацията си.",
   "shared.beneficiary.deleteApplication": "Оттегляне на регистрация",
   "shared.newMessage.button": "Изпращане",

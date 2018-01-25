@@ -471,7 +471,7 @@
   "benefPortal.profile.title": "Moje registrace",
   "benefRegistration.typeOfRegistration.title": "Typ registrace",
   "shared.change-password.button": "Chcete-li změnit heslo, klikněte sem.",
-  "shared.beneficiaryProfile.password": "Změnit heslo",
+  "shared.change-password": "Změnit heslo",
   "shared.beneficiary.discusionText": "Rozmysleli jste si to a o poukázku už žádat nechcete? Kliknutím níže můžete registraci zrušit.",
   "shared.beneficiary.deleteApplication": "Zrušit registraci",
   "discussionForum.beneficiary.registration1": "Registrace {{selfRegistration}} (vaše)",
