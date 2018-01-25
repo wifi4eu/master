@@ -132,6 +132,12 @@
                                         <argument>npm</argument>
                                         <argument>run</argument>
                                         <argument>compress_dgconnportal</argument>
+
+                                        <argument>&amp;&amp;</argument>
+
+                                        <argument>npm</argument>
+                                        <argument>run</argument>
+                                        <argument>compress_supplierportal</argument>
 <!--
                                         <argument>&amp;&amp;</argument>
 
