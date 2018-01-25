@@ -491,5 +491,9 @@
   "benefPortal.voucher.call.label2": "Once the call for application is open, you will be able to apply for a voucher",
   "benefPortal.voucher.competition.timeleft.title": "Competition for voucher will be open in",
   "int.comment.102": "-- END EN Apply for Voucher file --",
+  "int.comment.110": "-- START NEW LABELS TO BE REVIEWED --",
+  "benefPortal.voucher.competitionTitle": "Competition",
+  "benefPortal.voucher.counterSubtitle": "The calls for competition opened on {{date}} at {{hour}} (Central European Time).",
+  "int.comment.111": "-- END NEW LABELS TO BE REVIEWED --",
   "int.breakfile": ""
 }

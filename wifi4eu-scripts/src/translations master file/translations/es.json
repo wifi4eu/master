@@ -482,7 +482,6 @@
   "dgConn.user.label": "User",
   "suppRegistration.webFormat": "Introduzca un formato válido",
   "int.comment.100": "-- END OLD LABELS TO BE REMOVED --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Inscripción de un municipio",
   "itemMenu.suppReg": "Inscripción de una empresa",
@@ -506,5 +505,10 @@
   "benefRegistration.preview.registrations.check8": "He leído y entiendo las condiciones de esta convocatoria de candidaturas tal como figuran en el texto de la convocatoria.",
   "shared.expand.label": "Expandir",
   "shared.hide.label": "Ocultar",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.comment.110": "-- START NEW LABELS TO BE REVIEWED --",
+  "benefPortal.voucher.competitionTitle": "Competition",
+  "benefPortal.voucher.counterSubtitle": "The calls for competition opened on {{date}} at {{hour}} (Central European Time).",
+  "int.comment.111": "-- END NEW LABELS TO BE REVIEWED --",
+  "int.breakfile": ""
 }
