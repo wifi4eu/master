@@ -1366,6 +1366,17 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   cursor: pointer;
 }
 
+.voucher-status-block {
+  text-align: left;
+  border: 2px solid #004494;
+  padding: 20px;
+  margin-bottom: 2em;
+}
+
+.voucher-status-block h2 {
+  font-size: 20px;
+}
+
 /* fix blinking issue with the header */
 
 #app-wrapper.shrink-header-active #main #nav-bar{
