@@ -107,54 +107,7 @@
 
                                         <argument>npm</argument>
                                         <argument>run</argument>
-                                        <argument>compress_vendor</argument>
-
-                                        <argument>&amp;&amp;</argument>
-
-                                        <argument>npm</argument>
-                                        <argument>run</argument>
-                                        <argument>compress_styles</argument>
-
-                                        <argument>&amp;&amp;</argument>
-
-                                        <argument>npm</argument>
-                                        <argument>run</argument>
-                                        <argument>compress_main</argument>
-
-                                        <argument>&amp;&amp;</argument>
-
-                                        <argument>npm</argument>
-                                        <argument>run</argument>
-                                        <argument>compress_common</argument>
-
-                                        <argument>&amp;&amp;</argument>
-
-                                        <argument>npm</argument>
-                                        <argument>run</argument>
-                                        <argument>compress_dgconnportal</argument>
-
-                                        <argument>&amp;&amp;</argument>
-
-                                        <argument>npm</argument>
-                                        <argument>run</argument>
-                                        <argument>compress_supplierportal</argument>
-
-                                        <argument>&amp;&amp;</argument>
-
-                                        <argument>npm</argument>
-                                        <argument>run</argument>
-                                        <argument>compress_beneficiaryportal</argument>
-<!--
-                                        <argument>&amp;&amp;</argument>
-
-                                        <argument>npm</argument>
-                                        <argument>run</argument>
-                                        <argument>uglify</argument>
--->
-                                        <!-- Por defecto -->
-                                        <!-- <argument>"ng build - -base-href /wifi4eu/"</argument> -->
-                                        <!-- Si queremos generar para PRODUCCION -->
-                                        <!-- <argument>"ng build - -prod - -aot false - -base-href /wifi4eu/"</argument> -->
+                                        <argument>compress_all_js</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
