@@ -86,11 +86,13 @@ export class VoucherComponent {
                         this.voucherCompetitionState = 2;
                     } else {
                         this.voucherCompetitionState = 1;
-                        let date = new Date(this.currentCall.startDate);
-                        date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-                        this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
-                        this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
+                       
                     }
+
+                    let date = new Date(this.currentCall.startDate);
+                    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+                    this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
+                    this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
                 } else {
                     // Display "no competition active" message
                     this.voucherCompetitionState = 0;
