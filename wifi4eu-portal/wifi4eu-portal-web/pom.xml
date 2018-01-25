@@ -114,6 +114,12 @@
                                         <argument>npm</argument>
                                         <argument>run</argument>
                                         <argument>compress_styles</argument>
+
+                                        <argument>&amp;&amp;</argument>
+
+                                        <argument>npm</argument>
+                                        <argument>run</argument>
+                                        <argument>compress_main</argument>
 <!--
                                         <argument>&amp;&amp;</argument>
 
