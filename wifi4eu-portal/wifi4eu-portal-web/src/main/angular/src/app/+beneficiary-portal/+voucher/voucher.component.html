@@ -15,31 +15,53 @@
   </div>
 </div>
 
-<!-- APPLY FOR VOUCHER -->
+<!-- Timer & "Apply For Voucher" -->
 <div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
-  <!-- WAITING CALL TO BE CREATED -->
+  <h1 class="beneficiaryTitle marginTop">{{ 'suppPortal.voucher.competition' | translate }}</h1>
+  <p *ngIf="showTimeline" class="europeans-text"
+     [innerHTML]="'benefPortal.voucher.counterSubtitle' | translate:{date:dateNumber,hour:hourNumber}">
+  </p>
+  <div *ngIf="displayMunicipality" class="container font">
+    <div style="margin-top: 1em;">
+          <span class="left municipality-name" (click)="hideMunicipalityData()">
+              <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
+          </span>
+      <span class="right municipality-name" (click)="goToProfile()">
+              <i class="fa fa-share" aria-hidden="true"></i> {{ 'itemMenu.myAccount' | translate }}
+          </span>
+    </div>
+  </div>
+  <div *ngIf="displayMunicipality" class="container font">
+    <div class="ui-g">
+      <p class="beneficiaryMayor">
+        {{municipalities[shownMunicipalityIndex].name}}
+      </p>
+
+    </div>
+    <div class="ui-g">
+      <p>
+        {{ 'benefPortal.voucher.municipality.subtitle' | translate }}
+      </p>
+    </div>
+  </div>
   <div *ngIf="voucherCompetitionState == 0" class="ui-g-12">
     <h2 class="beneficiaryTitle">{{ 'benefPortal.voucher.step2' | translate }}</h2>
   </div>
-
-  <!-- CALL OPEN -->
   <div *ngIf="displayMunicipality && voucherCompetitionState == 2 || voucherCompetitionState == 3" class="ui-g-12">
-    <h2 class="beneficiaryTitle">{{'suppPortal.voucher.competition' | translate}}</h2>
-    <p>{{ 'benefPortal.voucher.counterSubtitle' | translate:{date:dateNumber,hour:hourNumber} }}</p>
+    <h2 class="beneficiaryTitle">{{'benefPortal.voucher.competition.title' | translate}}</h2>
+    <p>{{ 'benefPortal.voucher.competition.subtitle' | translate:{date:dateNumber,hour:hourNumber} }}</p>
   </div>
-
-  <!-- WAITING FOR THE CALL TO BE OPEN TO APPLY FOR -->
   <div *ngIf="voucherCompetitionState == 1" class="ui-g-12">
     <h2 class="beneficiaryTitle">
       {{ 'benefPortal.voucher.timeleft.title' | translate }}
     </h2>
     <p>{{ 'benefPortal.voucher.timeleft.subtitle' | translate:{date:dateNumber,hour:hourNumber} }}</p>
-    <timer-component class="offset-lg-3 ui-lg-6 ui-g-12" (timerEvent)="openApplyForVoucher()"
+    <timer-component class="of
+   fset-lg-3 ui-lg-6 ui-g-12" (timerEvent)="openApplyForVoucher()"
                      [expirationTimestamp]="currentCall.startDate"></timer-component>
   </div>
+  <div class="offset-lg-3 ui-lg-6 ui-g-12" *ngIf="!displayMunicipality">
 
-  <!-- MIUNICIPALITIES TABLE -->
-  <div *ngIf="!displayMunicipality" class="offset-lg-3 ui-lg-6 ui-g-12">
     <div class="row tableTitle">
       <div class="col-md-10">
         <div class="ui-g-12">
@@ -76,9 +98,7 @@
       </p-column>
     </p-dataTable>
   </div>
-
-  <!-- APPLY DETAILS -->
-  <div *ngIf="displayMunicipality && !applications[shownMunicipalityIndex]" class="ui-g-12">
+  <div *ngIf="displayMunicipality && !applications[showMunicipalityIndex]" class="ui-g-12">
     <button class="btn btn-primary publish-button" style="width: auto;"
             (click)="applyForVoucher(shownMunicipalityIndex)"
             [disabled]="applications[shownMunicipalityIndex] || loadingButtons[shownMunicipalityIndex] || voucherCompetitionState == 1">
@@ -91,8 +111,6 @@
       <p>{{ 'benefPortal.voucher.firstServed' | translate }}</p>
     </div>
   </div>
-
-  <!-- SUCCESS MESSAGE WHEN APPLIED -->
   <div *ngIf="displayMunicipality && applications[shownMunicipalityIndex]" class="container voucher-status-block">
     <div>
       <h2>
@@ -128,3 +146,7 @@
     </div>
   </div>
 </div>
+
+
+
+
