@@ -48,11 +48,8 @@ export class BeneficiaryRegistrationComponent {
                 console.log(error);
             }
         );
-
         let storedUser = this.localStorage.get('user');
-
         this.userEcas = storedUser ? JSON.parse(storedUser.toString()) : null;
-
     }
 
     private selectCountry(country: NutsDTOBase) {
@@ -71,12 +68,8 @@ export class BeneficiaryRegistrationComponent {
         }
     }
 
-    private navigate(step: number) {
-        console.log(this.multipleMunicipalities);
-        for(let i = 0; i < this.mayors.length; i++){
-          this.mayors[i].email = this.userEcas.ecasEmail;
-        }
-        
+    private navigate(step: number) {       
+        this.initialUser.email = this.userEcas.ecasEmail; 
         switch (step) {
             case 1:
                 this.completed = [false, false, false, false];
@@ -91,7 +84,7 @@ export class BeneficiaryRegistrationComponent {
                 this.active = [false, false, true, false];
                 break;
             case 4:
-                this.initialUser.email = this.userEcas.ecasEmail;
+                
                 this.completed = [true, true, true, false];
                 this.active = [false, false, false, true];
                 break;
