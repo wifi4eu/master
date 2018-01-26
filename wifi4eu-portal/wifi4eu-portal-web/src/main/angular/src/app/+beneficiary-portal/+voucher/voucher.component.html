@@ -1,13 +1,13 @@
 <!-- Competition & user registration status -->
 <div id="upper-block" class="ui-g-12 center">
-  <div *ngIf="(voucherCompetitionState == 0 || voucherCompetitionState == 1) && !displayMunicipality" class="ui-g-12">
+  <div *ngIf="voucherCompetitionState == 0 || voucherCompetitionState == 1" class="ui-g-12">
     <success-component emailConfirmation="true" [email]="user.email"></success-component>
   </div>
-  <div *ngIf="voucherCompetitionState == 2 && !displayMunicipality" class="ui-g-12">
+  <div *ngIf="voucherCompetitionState == 2" class="ui-g-12">
     <i class="fa fa-info-circle success-failure-icon" style="color: #0074CA" aria-hidden="true"></i><br><br>
     <h2 class="beneficiaryTitle">{{ 'benefPortal.voucher.statusmessage4' | translate }}</h2>
   </div>
-  <div *ngIf="voucherCompetitionState == 3 && !displayMunicipality" class="ui-g-12">
+  <div *ngIf="voucherCompetitionState == 3" class="ui-g-12">
     <i class="fa fa-check-circle success-failure-icon" style="color: green" aria-hidden="true"></i><br><br>
     <h2 class="beneficiaryTitle offset-lg-2 ui-lg-8 ui-g-12">
       {{ 'benefPortal.voucher.statusmessage5' | translate }}
@@ -17,108 +17,58 @@
 
 <!-- Timer & "Apply For Voucher" -->
 <div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
-  <h1 class="beneficiaryTitle marginTop">{{ 'suppPortal.voucher.competition' | translate }}</h1>
-  <p *ngIf="showTimeline" class="europeans-text"
-     [innerHTML]="'benefPortal.voucher.counterSubtitle' | translate:{date:dateNumber,hour:hourNumber}">
+  <h2 *ngIf="voucherCompetitionState != 1" class="beneficiaryTitle marginTop">
+    {{ 'suppPortal.voucher.competition' | translate }}
+  </h2>
+  <h2 *ngIf="voucherCompetitionState == 1" class="beneficiaryTitle marginTop">
+    {{ 'benefPortal.voucher.timeleft.title' | translate }}
+  </h2>
+  <p *ngIf="voucherCompetitionState == 0">
+    {{ 'benefPortal.voucher.step2' | translate }}
   </p>
-  <div *ngIf="displayMunicipality" class="container font">
-    <div style="margin-top: 1em;">
-          <span class="left municipality-name" (click)="hideMunicipalityData()">
-              <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
-          </span>
-      <span class="right municipality-name" (click)="goToProfile()">
-              <i class="fa fa-share" aria-hidden="true"></i> {{ 'itemMenu.myAccount' | translate }}
-          </span>
-    </div>
-  </div>
-  <div *ngIf="displayMunicipality" class="container font">
-    <div class="ui-g">
-      <p class="beneficiaryMayor">
-        {{municipalities[shownMunicipalityIndex].name}}
-      </p>
-
-    </div>
-    <div class="ui-g">
-      <p>
-        {{ 'benefPortal.voucher.municipality.subtitle' | translate }}
-      </p>
-    </div>
-  </div>
-  <div *ngIf="voucherCompetitionState == 0" class="ui-g-12">
-    <h2 class="beneficiaryTitle">{{ 'benefPortal.voucher.step2' | translate }}</h2>
-  </div>
-  <div *ngIf="displayMunicipality && voucherCompetitionState == 2 || voucherCompetitionState == 3" class="ui-g-12">
-    <h2 class="beneficiaryTitle">{{'benefPortal.voucher.competition.title' | translate}}</h2>
-    <p>{{ 'benefPortal.voucher.competition.subtitle' | translate:{date:dateNumber,hour:hourNumber} }}</p>
-  </div>
-  <div *ngIf="voucherCompetitionState == 1" class="ui-g-12">
-    <h2 class="beneficiaryTitle">
-      {{ 'benefPortal.voucher.timeleft.title' | translate }}
-    </h2>
-    <p>{{ 'benefPortal.voucher.timeleft.subtitle' | translate:{date:dateNumber,hour:hourNumber} }}</p>
-    <timer-component class="of
-   fset-lg-3 ui-lg-6 ui-g-12" (timerEvent)="openApplyForVoucher()"
-                     [expirationTimestamp]="currentCall.startDate"></timer-component>
-  </div>
-  <div class="offset-lg-3 ui-lg-6 ui-g-12" *ngIf="!displayMunicipality">
-
-    <div class="row tableTitle">
-      <div class="col-md-10">
-        <div class="ui-g-12">
-          <p class="beneficiaryMayor left">
-            {{ 'benefPortal.voucher.yourMunicipalities' | translate}}
-          </p>
+  <p *ngIf="voucherCompetitionState == 1">
+    {{ 'benefPortal.voucher.timeleft.subtitle' | translate:{date:dateNumber,hour:hourNumber} }}
+  </p>
+  <p *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3">
+    {{ 'benefPortal.voucher.counterSubtitle' | translate:{date:dateNumber,hour:hourNumber} }}
+  </p>
+  <timer-component *ngIf="voucherCompetitionState == 1" class="offset-lg-3 ui-lg-6 ui-g-12"
+  (timerEvent)="openApplyForVoucher()" [expirationTimestamp]="currentCall.startDate"></timer-component>
+  <div class="offset-lg-3 ui-lg-6 ui-g-12">
+    <div class="marginTop registrationPanel">
+      <div class="row tableTitleVoucher">
+        <div class="col-md-10">
+          <div class="ui-g-12">
+            <p class="beneficiaryMayor left">
+              {{ 'benefPortal.voucher.yourMunicipalities' | translate}}
+            </p>
+          </div>
         </div>
       </div>
-
-    </div>
-    <p-dataTable [value]="municipalities">
-      <p-column field="name" header="{{ 'shared.municipality.label' | translate }}"
-                [sortable]="true" styleClass="label">
-        <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <span>
-                            <img src="assets/images/account-balance-material-icons-regular.png"
-                                 alt="" class="municipality-icon">
-                            <span class="municipality-name"
-                                  (click)="showMunicipalityData(i)">{{municipality.name}}</span>
-                        </span>
-        </template>
-      </p-column>
-      <p-column header="{{ 'benefPortal.voucher.actions' | translate }}" styleClass="label">
-        <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-          <button class="btn btn-primary" (click)="applyForVoucher(i)" *ngIf="!applications[i]"
-                  [disabled]="loadingButtons[i] || voucherCompetitionState == 1">
-            {{ 'benefPortal.voucher.applyforvoucher' | translate }}
-          </button>
-          <span *ngIf="applications[i]">
-                        <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
-                        {{ 'benefPortal.voucher.applied' | translate }}
-                    </span>
-        </template>
-      </p-column>
-    </p-dataTable>
-  </div>
-  <div *ngIf="displayMunicipality && !applications[shownMunicipalityIndex]" class="ui-g-12">
-    <button class="btn btn-primary publish-button" style="width: auto;"
-            (click)="applyForVoucher(shownMunicipalityIndex)"
-            [disabled]="applications[shownMunicipalityIndex] || loadingButtons[shownMunicipalityIndex] || voucherCompetitionState == 1">
-      {{ 'benefPortal.voucher.applyforvoucher' | translate}}
-    </button>
-    <div class="container" style="text-align: left;padding-top: 32px;">
-      <p *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3">{{ 'benefPortal.voucher.call.label1' |
-        translate }}</p>
-      <p *ngIf="voucherCompetitionState == 1">{{ 'benefPortal.voucher.call.label2' | translate }}</p>
-      <p>{{ 'benefPortal.voucher.firstServed' | translate }}</p>
-    </div>
-  </div>
-  <div *ngIf="displayMunicipality && applications[shownMunicipalityIndex]" class="container voucher-status-block">
-    <div>
-      <h2>
-        <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
-        {{ 'benefPortal.voucher.municipalitySuccessApply.title' | translate }}
-      </h2>
-      <p>{{ 'benefPortal.voucher.municipalitySuccessApply.part1' | translate }}</p>
-      <p>{{ 'benefPortal.voucher.municipalitySuccessApply.part2' | translate }}</p>
+      <p-dataTable [value]="municipalities">
+        <p-column field="name" header="{{ 'shared.municipality.label' | translate }}"
+                  [sortable]="true" styleClass="label">
+          <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
+            <span>
+              <img alt="" class="municipality-icon"
+                   src="assets/images/account-balance-material-icons-regular.png">
+              <span class="municipality-name">{{municipality.name}}</span>
+            </span>
+          </template>
+        </p-column>
+        <p-column header="{{ 'benefPortal.voucher.actions' | translate }}" styleClass="label">
+          <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
+            <button class="btn btn-primary" (click)="applyForVoucher(i)" *ngIf="!applications[i]"
+                    [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1">
+              {{ 'benefPortal.voucher.applyforvoucher' | translate }}
+            </button>
+            <span *ngIf="applications[i]">
+              <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
+              {{ 'benefPortal.voucher.applied' | translate }}
+            </span>
+          </template>
+        </p-column>
+      </p-dataTable>
     </div>
   </div>
 </div>
