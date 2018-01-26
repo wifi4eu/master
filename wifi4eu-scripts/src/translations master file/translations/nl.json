@@ -214,7 +214,7 @@
   "confirmNewPassword.label": "Bevestig uw wachtwoord",
   "activate.account": "Account activeren",
   "shared.change-password.button": "Als u uw huidige wachtwoord kent, kunt u het wijzigen door op de knop hieronder te klikken",
-  "shared.beneficiaryProfile.password": "Wachtwoord wijzigen",
+  "shared.change-password": "Wachtwoord wijzigen",
   "benefPortal.profile.title": "Mijn profiel",
   "benefRegistration.mayor.details": "Gegevens burgemeester",
   "currentPassword.label": "Huidig wachtwoord",

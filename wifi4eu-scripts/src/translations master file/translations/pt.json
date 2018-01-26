@@ -245,7 +245,6 @@
   "select.password": "A sua senha deve conter, pelo menos, oito carateres, incluindo um algarismo e uma letra em maiúscula ou minúscula.",
   "confirmNewPassword.label": "Confirmar a senha",
   "activate.account": "Ativar a sua conta",
-  "shared.beneficiaryProfile.password": "Alterar senha",
   "benefRegistration.mayor.details": "Dados do presidente da autarquia",
   "currentPassword.label": "Senha atual",
   "forgot.password": "Esqueceu-se da senha?",
