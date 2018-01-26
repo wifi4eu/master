@@ -121,11 +121,11 @@
                 <br>
                 <div class="ui-g">
                     <div class="ui-g-12  button-content">
-                        <p>{{ 'shared.change-password.button' | translate }}</p>
+                        <p>{{ 'shared.change-password.text' | translate }}</p>
                         <div style="text-align: center !important">
                             <button type="button" (click)="displayModal('password')"
                                     class="btn btn-primary changePassword">
-                                {{'shared.change-password' | translate }}
+                                {{'shared.change-password.button' | translate }}
                             </button>
                         </div>
                     </div>
@@ -133,11 +133,11 @@
                 <br>
                 <div class="ui-g" *ngIf="isRegisterHold">
                     <div class="ui-g-12 button-content">
-                        <p>{{ 'shared.beneficiary.discusionText' | translate }}</p>
+                        <p>{{ 'shared.withdraw-registration.text' | translate }}</p>
                         <div style="text-align: center !important">
                             <button type="button" (click)="deleteRegistration()"
                                     class="btn btn-primary changePassword">
-                                {{'shared.beneficiary.deleteApplication' | translate }}
+                                {{'shared.withdraw-registration.button' | translate }}
                             </button>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayUser" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <p class="beneficiaryMayor center">{{ 'benefRegistration.representativedetails.title' | translate }}</p>
+        <p class="beneficiaryMayor center">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
         <form (ngSubmit)="saveUserChanges()" #profileFormUser="ngForm" *ngIf="editedUser">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
@@ -221,7 +221,7 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMayor" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
               [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <h1 class="beneficiaryMayorModal">{{'benefRegistration.mayor.details' | translate }}</h1>
+        <h1 class="beneficiaryMayorModal">{{'benefRegistration.representativedetails.title' | translate }}</h1>
         <form (ngSubmit)="saveMayorChanges()" #profileFormMayor="ngForm" *ngIf="editedMayor">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
@@ -290,7 +290,7 @@
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMunicipality" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <h1 class="beneficiaryMayorModal">{{'shared.legalentity.label' | translate }}</h1>
+        <h1 class="beneficiaryMayorModal">{{'shared.municipalityDetails.title' | translate }}</h1>
         <form (ngSubmit)="saveMunicipalityChanges()" #profileFormMunicipality="ngForm" *ngIf="editedMunicipality">
             <div class="form-group ui-g">
                 <div class="ui-g-1"></div>
