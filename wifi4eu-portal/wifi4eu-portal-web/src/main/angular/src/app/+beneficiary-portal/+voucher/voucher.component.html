@@ -98,7 +98,7 @@
       </p-column>
     </p-dataTable>
   </div>
-  <div *ngIf="displayMunicipality && !applications[showMunicipalityIndex]" class="ui-g-12">
+  <div *ngIf="displayMunicipality && !applications[shownMunicipalityIndex]" class="ui-g-12">
     <button class="btn btn-primary publish-button" style="width: auto;"
             (click)="applyForVoucher(shownMunicipalityIndex)"
             [disabled]="applications[shownMunicipalityIndex] || loadingButtons[shownMunicipalityIndex] || voucherCompetitionState == 1">
