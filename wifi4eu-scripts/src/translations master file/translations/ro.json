@@ -163,7 +163,6 @@
   "home.footer.top": " | înapoi la începutul paginii",
   "shared.login.label": "Identificare",
   "int.comment.20": "-- END RO Old translations file --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Înregistrare municipalități",
   "itemMenu.suppReg": "Înregistrare companii furnizoare de internet Wi-Fi",
@@ -187,5 +186,6 @@
   "shared.hide.label": "Ascunde",
   "suppRegistration.upload.logo": "Încarcă sigla",
   "discussionForum.add.reply": "Mesaj nou",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

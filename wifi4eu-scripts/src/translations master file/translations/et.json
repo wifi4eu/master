@@ -163,7 +163,6 @@
   "home.footer.top": " | Tagasi üles",
   "shared.login.label": "Sisselogimine",
   "int.comment.20": "-- END ET Old translations file --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Omavalitsuse registreerimine",
   "itemMenu.suppReg": "WiFi ettevõtte registreerimine",
@@ -187,5 +186,6 @@
   "shared.hide.label": "Peida",
   "suppRegistration.upload.logo": "Laadige logo üles",
   "discussionForum.add.reply": "Uus sõnum",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

@@ -163,7 +163,6 @@
   "home.footer.top": " | Na začiatok",
   "shared.login.label": "Prihlásenie",
   "int.comment.20": "-- END SK Old translations file --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Registrácia obcí",
   "itemMenu.suppReg": "Registrácia spoločností dodávajúcich Wi-Fi zariadenia",
@@ -187,5 +186,6 @@
   "shared.hide.label": "Skryť",
   "suppRegistration.upload.logo": "Nahrať logo",
   "discussionForum.add.reply": "Nová správa",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

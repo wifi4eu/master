@@ -521,7 +521,6 @@
   "itemMenu.dissForum": "Diskuse",
   "registration.myOrganisation": "Naše organizace",
   "int.comment.100": "-- END OLD LABELS TO BE REMOVED --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Registrace obcí",
   "itemMenu.suppReg": "Registrace dodavatelů wi-fi zařízení",
@@ -545,5 +544,6 @@
   "shared.hide.label": "Skrýt",
   "suppRegistration.upload.logo": "Nahrát logo",
   "discussionForum.add.reply": "Nová zpráva",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

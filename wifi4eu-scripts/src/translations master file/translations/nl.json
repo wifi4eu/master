@@ -503,7 +503,6 @@
   "itemMenu.dissForum": "Forum",
   "dgConn.user.label": "User",
   "int.comment.100": "-- END NL OLD LABELS TO BE REMOVED --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Inschrijving gemeente",
   "itemMenu.suppReg": "Inschrijving installatiebedrijf",
@@ -527,5 +526,6 @@
   "shared.hide.label": "Verbergen",
   "suppRegistration.upload.logo": "Logo uploaden",
   "discussionForum.add.reply": "Nieuw bericht",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

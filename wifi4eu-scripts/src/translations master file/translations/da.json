@@ -519,7 +519,6 @@
   "voucher.ableApply": "Så snart indkaldelsen af ansøgninger er åben, kan du sende din ansøgning. For at gøre det skal du logge ind med din EU Login-konto og sende din ansøgning om en WiFi4EU-kupon.",
   "voucher.firstServed": "Bemærk, at udvælgelsen sker efter først til mølle-princippet og efter kriterier, der skal sikre en geografisk balance, som beskrevet i CEF-arbejdsprogrammet for 2017.",
   "int.comment.100": "-- END OLD LABELS TO BE REMOVED --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Registrering af kommune",
   "itemMenu.suppReg": "Registrering af wi-fi-virksomhed",
@@ -542,5 +541,6 @@
   "shared.expand.label": "Vis",
   "shared.hide.label": "Skjul",
   "discussionForum.add.reply": "Ny meddelelse",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

@@ -164,7 +164,6 @@
   "home.footer.update": "Senaste uppdatering {{versionDate}} v{{version}}",
   "home.footer.top": " | Till början",
   "int.comment.20": "-- END SV Old translations file --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Kommunregistrering",
   "itemMenu.suppReg": "Wifi-företagsregistrering",
@@ -188,5 +187,6 @@
   "shared.hide.label": "Dölj",
   "suppRegistration.upload.logo": "Ladda upp logotyp",
   "discussionForum.add.reply": "Nytt meddelande",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

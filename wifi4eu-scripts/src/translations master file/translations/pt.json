@@ -513,7 +513,6 @@
   "itemMenu.dissForum": "Espaço de debate",
   "dgConn.user.label": "User",
   "int.comment.100": "-- END PT OLD LABELS TO BE REMOVED --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Inscrição de autarquias",
   "itemMenu.suppReg": "Inscrição de empresas fornecedoras de tecnologias sem fios",
@@ -537,5 +536,6 @@
   "shared.hide.label": "Ocultar",
   "suppRegistration.upload.logo": "Carregar logótipo",
   "discussionForum.add.reply": "Nova mensagem",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }
