@@ -514,6 +514,8 @@
   "benefPortal.voucher.municipalitySuccessApply.title": "You have succesfully applied for voucher!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Stay tuned! WIFI4EU will communcate soon who go the vouchers.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Note that the selection is conducted on a 'first-come first-served' basis as well as criteria to ensure a geographical balance, as detailed in the CEF Work Programme 2017.",
+  "benefPortal.voucher.applied": "Applied",
+  "benefPortal.voucher.registrationSuccess.text": "Note that the registration is the first step in the application for WiFi4EU. Once the call for applications is opened, login with your EU Login user account and submit your application for a WiFi4EU voucher. The submission will only require clicking on the 'apply' button, give that all required information has been filled during registration. Note that the selection of the winners of the WiFi4EU vouchers for each call takes place on a 'first-come first-served' basis as well as criteria to ensure a geographical balance, as detailed in the <b>CEF Work Programme 2017.</b>",
   "int.comment.102": "-- END EN Apply for Voucher file --",
   "int.breakfile": ""
 }
