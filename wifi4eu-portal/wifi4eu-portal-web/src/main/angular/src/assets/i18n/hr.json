@@ -163,7 +163,6 @@
   "home.footer.top": " | Povratak na vrh",
   "shared.login.label": "Prijava",
   "int.comment.20": "-- END HR Old translations file --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Registracija općine",
   "itemMenu.suppReg": "Registracija poduzeća za WiFi",
@@ -187,5 +186,6 @@
   "shared.hide.label": "Skrij",
   "suppRegistration.upload.logo": "Učitajte logotip",
   "discussionForum.add.reply": "Nova poruka",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

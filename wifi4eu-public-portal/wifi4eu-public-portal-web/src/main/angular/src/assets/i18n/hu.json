@@ -163,7 +163,6 @@
   "home.footer.top": " | Vissza az oldal tetejére",
   "shared.login.label": "Bejelentkezés",
   "int.comment.20": "-- END HU Old translations file --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Települések regisztrációja",
   "itemMenu.suppReg": "Internetszolgáltatók regisztrációja",
@@ -187,5 +186,6 @@
   "shared.hide.label": "Elrejtés",
   "suppRegistration.upload.logo": "Logó feltöltése",
   "discussionForum.add.reply": "Új üzenet",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

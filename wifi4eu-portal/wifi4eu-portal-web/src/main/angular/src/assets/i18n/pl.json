@@ -163,7 +163,6 @@
   "home.footer.top": " | początek strony",
   "shared.login.label": "Logowanie",
   "int.comment.20": "-- END PL Old translations file --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Rejestracja gminy",
   "itemMenu.suppReg": "Rejestracja firmy instalującej Wi-Fi",
@@ -187,5 +186,6 @@
   "shared.hide.label": "Ukryj",
   "suppRegistration.upload.logo": "Załaduj logo",
   "discussionForum.add.reply": "Nowa wiadomość",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

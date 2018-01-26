@@ -214,7 +214,7 @@
   "confirmNewPassword.label": "Bevestig uw wachtwoord",
   "activate.account": "Account activeren",
   "shared.change-password.button": "Als u uw huidige wachtwoord kent, kunt u het wijzigen door op de knop hieronder te klikken",
-  "shared.beneficiaryProfile.password": "Wachtwoord wijzigen",
+  "shared.change-password": "Wachtwoord wijzigen",
   "benefPortal.profile.title": "Mijn profiel",
   "benefRegistration.mayor.details": "Gegevens burgemeester",
   "currentPassword.label": "Huidig wachtwoord",
@@ -503,7 +503,6 @@
   "itemMenu.dissForum": "Forum",
   "dgConn.user.label": "User",
   "int.comment.100": "-- END NL OLD LABELS TO BE REMOVED --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Inschrijving gemeente",
   "itemMenu.suppReg": "Inschrijving installatiebedrijf",
@@ -527,5 +526,6 @@
   "shared.hide.label": "Verbergen",
   "suppRegistration.upload.logo": "Logo uploaden",
   "discussionForum.add.reply": "Nieuw bericht",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

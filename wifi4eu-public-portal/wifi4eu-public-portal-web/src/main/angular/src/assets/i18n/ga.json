@@ -163,7 +163,6 @@
   "home.footer.top": " | ar ais go dtí an barr",
   "shared.login.label": "Logáil isteach",
   "int.comment.20": "-- END GA Old translations file --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Clárú an bhardais",
   "itemMenu.suppReg": "Clárú an chuideachta WiFi",
@@ -187,5 +186,6 @@
   "shared.hide.label": "Leathnaigh",
   "suppRegistration.upload.logo": "Uaslódáil lógó",
   "discussionForum.add.reply": "Teachtaireacht nua",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

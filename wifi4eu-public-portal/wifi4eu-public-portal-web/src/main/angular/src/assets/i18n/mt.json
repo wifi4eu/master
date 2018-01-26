@@ -157,13 +157,12 @@
   "shared.submitregistration.failure.title": "Xi ħaġa marret ħażin fir-reġistrazzjoni.",
   "shared.submitregistration.failure.text.part1": "Jekk jogħġbok erġa’ pprova jew ikkonsulta l-Helpdesk.",
   "shared.backtohome.button": "Lura lejn il-paġna ewlenija",
-   "int.comment.6": "-- END MT Company registration file --",
+  "int.comment.6": "-- END MT Company registration file --",
   "int.comment.19": "-- Start MT Old translations file --",
   "home.footer.update": "L-aħħar aġġornament {{versionDate}} v{{version}}",
   "home.footer.top": " | lura 'l fuq",
   "shared.login.label": "Login",
   "int.comment.20": "-- END MT Old translations file --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Reġistrazzjoni tal-muniċipalità",
   "itemMenu.suppReg": "Reġistrazzjoni tal-kumpanija tal-WiFi",
@@ -187,5 +186,6 @@
   "shared.hide.label": "Aħbi",
   "suppRegistration.upload.logo": "Applowdja l-logo",
   "discussionForum.add.reply": "Messaġġ ġdid",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

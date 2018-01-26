@@ -163,7 +163,6 @@
   "home.footer.top": " | Į puslapio pradžią",
   "shared.login.label": "Prisijungti",
   "int.comment.20": "-- END LT Old translations file --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Savivaldybės registracija",
   "itemMenu.suppReg": "Belaidžio ryšio bendrovės registracija",
@@ -187,5 +186,6 @@
   "shared.hide.label": "Slėpti",
   "suppRegistration.upload.logo": "Įkelti logotipą",
   "discussionForum.add.reply": "Nauja žinutė",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

@@ -465,11 +465,11 @@
   "profile.myApplication": "Η αίτησή μου",
   "shared.profile.registrationNotConfirmed": "Η εγγραφή σας δεν έχει ακόμη επιβεβαιωθεί. Επικυρώστε την εγγραφή σας: θα λάβετε σύντομα ηλεκτρονικό μήνυμα επιβεβαίωσης, κάντε κλικ στον σύνδεσμο που περιέχει το ηλεκτρονικό μήνυμα για να επικυρώσετε την υποβολή της αίτησης εγγραφής σας.",
   "shared.submitregistration.success.resendconfirm.part1": "Δεν λάβατε το ηλεκτρονικό μήνυμα; Νέα αποστολή ηλεκτρονικού μηνύματος επιβεβαίωσης",
-   "discussionForum.beneficiary.goDiscussion": "Μεταφορά στον χώρο συζήτησης",
+  "discussionForum.beneficiary.goDiscussion": "Μεταφορά στον χώρο συζήτησης",
   "benefPortal.profile.title": "Η εγγραφή μου",
   "benefRegistration.typeOfRegistration.title": "Είδος εγγραφής",
   "shared.change-password.button": "Κάνε κλικ παρακάτω για να αλλάξετε τον κωδικό σας πρόσβασης",
-  "shared.beneficiaryProfile.password": "Αλλαγή κωδικού πρόσβασης",
+  "shared.change-password": "Αλλαγή κωδικού πρόσβασης",
   "shared.beneficiary.discusionText": "Δεν ενδιαφέρεστε πλέον να κάνετε αίτηση για κουπόνια WiFi4EU; Κάντε κλικ παρακάτω για να αποσύρετε την εγγραφή σας.",
   "shared.beneficiary.deleteApplication": "Απόσυρση εγγραφής",
   "discussionForum.beneficiary.registration1": "Εγγραφή {{selfRegistration}} (εσείς)",
@@ -519,7 +519,6 @@
   "itemMenu.dissForum": "Χώρος συζήτησης",
   "dgConn.user.label": "User",
   "int.comment.100": "-- END OLD LABELS TO BE REMOVED --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Εγγραφή δήμου",
   "itemMenu.suppReg": "Εγγραφή εταιρείας εγκατάστασης WiFi",
@@ -543,5 +542,6 @@
   "shared.hide.label": "Απόκρυψη",
   "suppRegistration.upload.logo": "Τηλεφόρτωση λογοτύπου",
   "discussionForum.add.reply": "Νέο μήνυμα",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

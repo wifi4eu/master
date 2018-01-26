@@ -97,7 +97,7 @@
   "benefRegistration.preview.registrations.check5": "Rahoitusta on saatavilla paikallisen WiFi-verkon perustamiseen tarvittavan yhden tai useamman langattoman internetliityntäpisteen hankkimis- ja asentamiskustannuksia varten. Toimintakustannuksia (kuten liittymäsopimuksia) ei rahoiteta.",
   "benefRegistration.preview.registrations.check6": "WiFi-liityntäpisteiden yhteydessä on käytettävä komission tarjoamaa yhteistä visuaalista identiteettiä, mukaan luettuna yhteinen SSID-verkkotunnus “WiFi4EU”, ja käyttäjille on tarjottava linkkejä aiheeseen liittyviin verkkotyökaluihin.",
   "benefRegistration.preview.registrations.check7": "WiFi4EU-rahoituksen saaja sitoutuu hankkimaan tarvittavat laitteet ja/tai asennuspalvelut voimassa olevan lainsäädännön mukaisesti sen varmistamiseksi, etteivät hankkeet vääristä kilpailua. Rahoituksen saajan on käytettävä uusimpia ja parhaita markkinoilla saatavia WiFi-laitteita.",
-   "benefRegistration.preview.registrations.check9": "Vahvistan, että minulla on oikeus tai lupa tehdä hakemus tällä lomakkeella ilmoitettujen kuntien puolesta.",
+  "benefRegistration.preview.registrations.check9": "Vahvistan, että minulla on oikeus tai lupa tehdä hakemus tällä lomakkeella ilmoitettujen kuntien puolesta.",
   "benefRegistration.preview.registrations.check10": "Vahvistan, että tässä portaalissa ja WiFi4EU-järjestelmän yhteydessä antamani tiedot ovat todenperäisiä, täydellisiä ja tarkkoja. Vahvistan, että Euroopan komissio tai mikä tahansa valtuudet saanut EU:n virasto voivat tarkistaa tässä annetut tiedot lainsäädännön nojalla saatavilla olevista lähteistä.",
   "submitregistration.button": "Lähetä lomake",
   "shared.loading.modal.title3": "Tietoja käsitellään, odota...",
@@ -163,7 +163,6 @@
   "home.footer.top": " | sivun alkuun",
   "shared.login.label": "Sisäänkirjautuminen",
   "int.comment.20": "-- END ET Old translations file --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Kunnan rekisteröinti",
   "itemMenu.suppReg": "WiFi-yrityksen rekisteröinti",
@@ -187,5 +186,6 @@
   "shared.hide.label": "Piilota",
   "suppRegistration.upload.logo": "Lisää logo",
   "discussionForum.add.reply": "Uusi viesti",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

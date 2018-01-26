@@ -170,7 +170,7 @@
   "benefPortal.profile.editRegistrationText": "Pode ver e alterar a sua inscrição até ao lançamento do convite. Clique abaixo para abrir a sua inscrição.",
   "benefPortal.beneficiary.editApplication": "Ver/alterar a inscrição",
   "benefPortal.beneficiary.goDiscussionText": "Há várias inscrições para a autarquia que selecionou. Clique abaixo para resolver este problema antes do convite à apresentação de candidaturas.",
-  "itemMenu.benePortal": "A minha candidatura",
+  "itemMenu.appPortal": "A minha candidatura",
   "submitregistration.success.text.part1": "Valide a sua inscrição",
   "discussionForum.beneficiary.goDiscussion": "Ir para o espaço de debate",
   "profile.title": "A minha inscrição",
@@ -245,7 +245,6 @@
   "select.password": "A sua senha deve conter, pelo menos, oito carateres, incluindo um algarismo e uma letra em maiúscula ou minúscula.",
   "confirmNewPassword.label": "Confirmar a senha",
   "activate.account": "Ativar a sua conta",
-  "shared.beneficiaryProfile.password": "Alterar senha",
   "benefRegistration.mayor.details": "Dados do presidente da autarquia",
   "currentPassword.label": "Senha atual",
   "forgot.password": "Esqueceu-se da senha?",
@@ -514,7 +513,6 @@
   "itemMenu.dissForum": "Espaço de debate",
   "dgConn.user.label": "User",
   "int.comment.100": "-- END PT OLD LABELS TO BE REMOVED --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Inscrição de autarquias",
   "itemMenu.suppReg": "Inscrição de empresas fornecedoras de tecnologias sem fios",
@@ -538,5 +536,6 @@
   "shared.hide.label": "Ocultar",
   "suppRegistration.upload.logo": "Carregar logótipo",
   "discussionForum.add.reply": "Nova mensagem",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }

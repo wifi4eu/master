@@ -164,7 +164,6 @@
   "home.footer.top": " | nazaj na vrh",
   "shared.login.label": "Prijava",
   "int.comment.20": "-- END SL Old translations file --",
-  "int.breakfile": "",
   "int.comment.13": "-- Start EN Missing translations file --",
   "itemMenu.appReg": "Registracija občin",
   "itemMenu.suppReg": "Registracija družb WiFi",
@@ -187,6 +186,7 @@
   "shared.expand.label": "Razširi",
   "shared.hide.label": "Skrij",
   "suppRegistration.upload.logo": "Naloži logotip",
-   "discussionForum.add.reply": "Novo sporočilo",
-  "int.comment.14": "-- END EN Missing translations file --"
+  "discussionForum.add.reply": "Novo sporočilo",
+  "int.comment.14": "-- END EN Missing translations file --",
+  "int.breakfile": ""
 }
