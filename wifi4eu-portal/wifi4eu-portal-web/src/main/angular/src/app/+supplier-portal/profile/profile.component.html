@@ -83,11 +83,11 @@
             <div class="ui-g-12">
                 <div class="ui-g">
                     <div class="ui-g-12 button-content">
-                        <p>{{ 'shared.change-password.button' | translate }}</p>
+                        <p>{{ 'shared.change-password.text' | translate }}</p>
                         <div style="text-align: center !important">
                             <button type="button" (click)="displayModal('password')"
                                     class="btn btn-primary changePassword">
-                                {{'shared.beneficiaryProfile.password' | translate }}
+                                {{'shared.change-password.text' | translate }}
                             </button>
                         </div>
                     </div>
@@ -281,7 +281,7 @@
                 <div class="ui-g-1"></div>
                 <div class="ui-g-10">
                     <div class="form-group">
-                        <label for="logo">{{ 'suppRegistration.logo.label' | translate }}</label>
+                        <label for="logo">{{ 'suppRegistration.company.logo' | translate }}</label>
                         <br>
                         <br>
                         <div class="ui-g-12" style="border: 1px solid #D5D5D5; background: #ffffff;">
@@ -290,7 +290,7 @@
                                 <img id="logo" [src]="supplier.logo" height="75"
                                      style="max-width: 100%; border: 1px solid; box-shadow: 0px 0px 5px black;">
                             </div>
-                            <h2 *ngIf="!supplier.logo" class="ui-g-4">{{'suppRegistration.noLogo.label' |
+                            <h2 *ngIf="!supplier.logo" class="ui-g-4">{{'suppRegistration.upload.logo' |
                                 translate}}</h2>
                             <div class="ui-g-2"></div>
                             <div class="ui-g-5">
