@@ -54,8 +54,9 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.surname = '';
             this.initialUser.address = '';
             this.initialUser.addressNum = '';
+            this.userEmailMatches = true;
             this.initialUser.postalCode = '';
-            this.checkEmailsMatch();
+            /* this.checkEmailsMatch(); */
         }
     }
 
@@ -73,7 +74,7 @@ export class BeneficiaryRegistrationStep3Component {
         this.onBack.emit();
         this.repeatEmail = '';
         this.reset();
-        this.checkEmailsMatch();
+        /* this.checkEmailsMatch(); */
     }
 
     private reset() {
@@ -89,11 +90,11 @@ export class BeneficiaryRegistrationStep3Component {
     }
 
     private submit() {
-        this.onNext.emit();
+        this.onNext.emit();/* 
         if(!this.imMayor){
           this.repeatEmail = '';
            this.checkEmailsMatch();
-        }        
+        }       */  
     }
 
     private preventPaste(event: any) {

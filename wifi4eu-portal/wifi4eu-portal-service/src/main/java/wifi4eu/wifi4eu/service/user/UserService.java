@@ -242,7 +242,7 @@ public class UserService {
         String msgBody = bundle.getString("mail.body");
 
         if (!isLocalHost()) {
-            mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }
     }
 

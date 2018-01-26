@@ -537,6 +537,13 @@ body {
   background-color: white;
 }
 
+.tableTitleVoucher {
+  border-bottom: solid 1px #c1c1c1;
+  margin-left: 0em;
+  margin-right: 0em;
+  background-color: white;
+}
+
 .h2Table {
   font-weight: bold;
   font-size: 1.4em;
@@ -1355,7 +1362,6 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 }
 
 .registrationPanel {
-  border: 1px solid #D5D5D5;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
   border-radius: 3px;
   margin-bottom: 2em;
@@ -1363,7 +1369,6 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 
 .municipality-name {
   color: #14539C;
-  cursor: pointer;
 }
 
 .voucher-status-block {
