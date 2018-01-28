@@ -591,7 +591,6 @@
   "profile.editRegistrationText": "Du kan se og redigere din registrering indtil indkaldelsen åbner. Klik herunder for at åbne din registrering.",
   "profile.myApplication": "Min ansøgning",
   "shared.profile.registrationNotConfirmed": "Din registrering er endnu ikke bekræftet. Valider din registrering: Du vil snart modtage en bekræftelsesmail. Klik på linket i e-mailen for at validere din registrering.",
-  "benefRegistration.typeOfRegistration.title": "Type registrering",
   "shared.beneficiary.discusionText": "Er du ikke længere interesseret i en WiFi4EU-kupon? Klik herunder for at trække din registrering tilbage.",
   "shared.beneficiary.deleteApplication": "Træk min registrering tilbage",
   "shared.newMessage.button": "Indsend",

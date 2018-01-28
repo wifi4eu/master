@@ -607,7 +607,6 @@
   "profile.myApplication": "Moje žádost",
   "shared.profile.registrationNotConfirmed": "Vaše registrace zatím není potvrzena. Ještě je třeba registraci potvrdit: Zanedlouho obdržíte e-mail s potvrzením. Klikněte na odkaz v e-mailu, čímž registraci stvrdíte.",
   "shared.submitregistration.success.resendconfirm.part1": "E-mail nebyl doručen? Zaslat e-mail s potvrzením znovu",
-  "benefRegistration.typeOfRegistration.title": "Typ registrace",
   "shared.change-password": "Změnit heslo",
   "shared.beneficiary.discusionText": "Rozmysleli jste si to a o poukázku už žádat nechcete? Kliknutím níže můžete registraci zrušit.",
   "shared.beneficiary.deleteApplication": "Zrušit registraci",

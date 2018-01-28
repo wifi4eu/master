@@ -609,7 +609,6 @@
   "shared.profile.registrationNotConfirmed": "Votre enregistrement n’est pas encore confirmé. Veuillez le valider: vous allez bientôt recevoir un courriel de confirmation; cliquez sur le lien contenu dans le courriel pour valider votre enregistrement.",
   "shared.submitregistration.success.resendconfirm.part1": "Vous n’avez pas reçu le courriel? Renvoyer le courriel de confirmation",
   "helpdesk.helpdeskform.success": "Your issue was sent successfully sent to your Member State! We'll contact you as soon as possible to give you a solution to your problem.",
-  "benefRegistration.typeOfRegistration.title": "Type d’enregistrement",
   "shared.beneficiary.discusionText": "Vous ne souhaitez plus demander un coupon WiFi4EU? Cliquez ci-dessous pour supprimer votre enregistrement.",
   "shared.beneficiary.deleteApplication": "Supprimer l’enregistrement",
   "shared.newMessage.button": "Envoyer",

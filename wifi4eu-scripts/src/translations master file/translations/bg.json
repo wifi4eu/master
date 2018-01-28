@@ -577,7 +577,6 @@
   "profile.myApplication": "Моята кандидатура",
   "shared.submitregistration.success.text.part1": "Моля, валидирайте вашата регистрация",
   "shared.submitregistration.success.resendconfirm.part1": "Все още не сте получили електронното писмо? Повторно изпращане на електронното писмо",
-  "benefRegistration.typeOfRegistration.title": "Вид регистрация",
   "shared.beneficiary.discusionText": "Вече не искате да кандидатствате за ваучер по WiFi4EU? Щракнете по-долу, за да оттеглите регистрацията си.",
   "shared.beneficiary.deleteApplication": "Оттегляне на регистрация",
   "shared.newMessage.button": "Изпращане",
