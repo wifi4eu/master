@@ -6,6 +6,7 @@ from importlib import reload
 
 reload(sys)
 
+
 # Initialize excel file
 def init_worksheet(filename):
     workbook = xlsxwriter.Workbook(filename + '.xlsx')
@@ -13,6 +14,8 @@ def init_worksheet(filename):
 
     bold = workbook.add_format({'bold': True})
     worksheet.write(0, 0, 'Labels', bold)
+    worksheet.write(0, 1, 'Count', bold)
+    worksheet.write(1, 1, '=COUNTA(C2:ZZ2)')
 
     return workbook, worksheet, bold
 
@@ -38,7 +41,7 @@ def main():
         data = get_data(filename)
 
         # Write headers for each translation file
-        worksheet.write(0, i + 1, filename, bold)
+        worksheet.write(0, i + 2, filename, bold)
 
         aux_data = dict(data)
         # Remove labels not present in base file but in translation file
@@ -54,7 +57,7 @@ def main():
                 aux_data[key] = ''
             if i == 0:
                 worksheet.write(j + 1, i, key)
-            worksheet.write(j + 1, i + 1, aux_data[key])
+            worksheet.write(j + 1, i + 2, aux_data[key])
     workbook.close()
 
 
