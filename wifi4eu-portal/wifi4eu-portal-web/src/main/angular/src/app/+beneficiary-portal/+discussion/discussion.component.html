@@ -3,12 +3,13 @@
 <div class="container font beneficiaryContent">
     <div class="ui-g-12" *ngIf="showAlert">
         <span class="ui-g-2"></span>
-        <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussionForum.discussion.growl' | translate}}</ux-alert>
+        <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussionForum.discussion.growl' | translate}}
+        </ux-alert>
         <span class="ui-g-2"></span>
     </div>
-    <p class="beneficiaryTitle marginTop">{{ 'discussionForum.legalEntity.issues' | translate }}</p>
-    <p>{{ 'discussionForum.issues.warning' | translate }}</p>
-    <p class="beneficiaryMayor marginTopCountdown">{{ 'shared.legalentity.label' | translate }}</p>
+    <p class="beneficiaryTitle marginTop">{{ 'discussionForum.title' | translate }}</p>
+    <p>{{ 'discussionForum.description' | translate }}</p>
+    <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.beneficiary.registrations' | translate }}</p>
     <hr class="beneficiaryHr">
     <ux-accordion-boxes>
         <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true" *ngIf="municipality">
@@ -35,15 +36,15 @@
                     </div>
                     <div class="ui-g-2"></div>
                     <div class="ui-g-4">
-                        <p class="applicationText">{{ 'shared.beneficiary.discusionText' | translate }}</p>
+                        <p class="applicationText">{{ 'discussionForum.editButtons' | translate }}</p>
                         <button type="button" class="btn btn-primary applicationDelete"
                                 (click)="deleteApplication()">
-                            {{ 'shared.beneficiary.deleteApplication' | translate }}
+                            {{ 'discussionForum.withdraw' | translate }}
                         </button>
                         <br>
                         <button type="button" class="btn btn-primary applicationEdit"
                                 (click)="editApplication()">
-                            {{ 'discussionForum.beneficiary.editApplication' | translate }}
+                            {{ 'discussionForum.editRegistration' | translate }}
                         </button>
                     </div>
                 </div>
@@ -78,17 +79,17 @@
         </custom-accordion-box>
     </ux-accordion-boxes>
     <hr class="beneficiaryHr">
-    <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.recentConversations.title' | translate }}</p>
-    <p>{{ 'discussionForum.recentConversations.text' | translate }}</p>
+    <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.discussion' | translate }}</p>
+    <p>{{ 'discussionForum.messagesDescription' | translate }}</p>
     <div *ngIf="!hasMessages" class="ui-g button-content discussion-content">
         <div class="ui-g-12 noPadding">
             <div class="ui-g-8">
-                <p>{{'discussionForum.noRecentConversations.text' | translate }}</p>
+                <!--<p>{{'discussionForum.noRecentConversations.text' | translate }}</p>-->
             </div>
             <div class="ui-g-4">
                 <button type="button" class="btn btn-primary changePassword discussionButton"
                         (click)="newMessage()">
-                    {{'discussionForum.startConversations.text' | translate }}
+                    {{'discussionForum.add.reply' | translate }}
                 </button>
             </div>
         </div>
@@ -113,7 +114,8 @@
                 <div class="ui-g-12">
                     <div class="ui-g-3 backgroundMessage">
                         <p class="authorMessage">
-                            {{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{thread.messages[i].authorId}}
+                            {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
+                            {{thread.messages[i].authorId}}
                         </p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
@@ -181,7 +183,8 @@
                 <div class="beneficiaryTitle center">
                     {{ 'discussionForum.mediationRequest.title' | translate }}
                 </div>
-                <p class="center newMessageDiscussionMargins">{{ 'discussionForum.mediationRequest.text' | translate }}</p>
+                <p class="center newMessageDiscussionMargins">{{ 'discussionForum.mediationRequest.text' | translate
+                    }}</p>
                 <br>
                 <p class="center">{{ 'discussionForum.mediationRequest.selectText' | translate }}</p>
                 <div class="form-group">
