@@ -19,6 +19,7 @@ export class DgConnPublicationComponent {
     private call: CallDTO;
     private newElementForm: boolean;
     private indexRow: number;
+    private today: Date;
 
     constructor(private callApi: CallApi) {
         this.display = false;
@@ -30,20 +31,6 @@ export class DgConnPublicationComponent {
         this.newElementForm = false;
     }
 
-    // addNewElement() {
-    //     this.event = '';
-    //     this.startDate = null;
-    //     this.endDate = null;
-    //     this.startTime = null;
-    //     this.endTime = null;
-    //     this.newElementForm = true;
-    //     this.display = true;
-    //     this.callApi.allCalls().subscribe(
-    //         calls => this.calls = calls,
-    //         error => console.log(error)
-    //     );
-    // }
-
     displayInfo(index) {
         this.call = this.calls[index];
         this.indexRow = index + 1;
@@ -53,23 +40,7 @@ export class DgConnPublicationComponent {
         this.endDate = new Date(this.calls[index].endDate);
         this.newElementForm = false;
         this.display = true;
-        this.callApi.allCalls().subscribe(
-            calls => this.calls = calls,
-            error => console.log(error)
-        );
     }
-
-    // deleteElement(rowData: number) {
-    //     this.callApi.deleteCall(this.calls[rowData].id).subscribe(
-    //         data => {
-    //             this.callApi.allCalls().subscribe(
-    //                 calls => this.calls = calls,
-    //                 error => console.log(error)
-    //             );
-    //         },
-    //         error => console.log(error)
-    //     );
-    // }
 
     cancelPublication() {
         this.newElementForm = false;
@@ -119,7 +90,9 @@ export class DgConnPublicationComponent {
             finalStartDate.setMinutes(this.startTime.getMinutes());
             finalEndDate.setHours(this.endTime.getHours());
             finalEndDate.setMinutes(this.endTime.getMinutes());
-            return finalStartDate < finalEndDate;
+            this.today = new Date();
+            if (finalStartDate > this.today)
+                return finalStartDate < finalEndDate;
         }
         return false;
     }

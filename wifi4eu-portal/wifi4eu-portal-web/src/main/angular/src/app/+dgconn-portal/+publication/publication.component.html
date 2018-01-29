@@ -16,9 +16,10 @@
                     </div>
                 </div>
                 <div class="ui-g-12">
-                    <div class="ui-g-2">
+                    <div class="ui-g-2 ui-md-3">
                         <div class="form-group left">
-                            <label class="labelModal" for="startDate">{{'dgConn.opening.date' | translate }}</label>
+                            <label class="labelModal" for="startDate" style="width: 100%">{{'dgConn.opening.date' |
+                                translate }}</label>
                             <input type="text" value="{{call.startDate | date:'dd-MM-yy'}}"
                                    style="background: white;" disabled><i
                                 class="fa fa-calendar margin-calendar"
@@ -38,9 +39,10 @@
                     <div class="ui-g-6"></div>
                 </div>
                 <div class="ui-g-12">
-                    <div class="ui-g-2">
+                    <div class="ui-g-2 ui-md-3">
                         <div class="form-group left">
-                            <label class="labelModal" for="endDate">{{'dgConn.end.date' | translate }}</label>
+                            <label class="labelModal" for="endDate" style="width: 100%">{{'dgConn.end.date' | translate
+                                }}</label>
                             <input type="text" value="{{call.endDate | date:'dd-MM-yy'}}"
                                    style="background: white;" disabled><i
                                 class="fa fa-calendar margin-calendar"
@@ -74,7 +76,7 @@
                     <div class="form-group ui-g">
                         <div class="ui-g-12">
                             <div class="form-group left">
-                                <label class="labelModal" for="event">Call {{indexRow}}</label>
+                                <p class="beneficiaryMayor" for="event">Call {{indexRow}}</p>
                             </div>
                         </div>
                     </div>
