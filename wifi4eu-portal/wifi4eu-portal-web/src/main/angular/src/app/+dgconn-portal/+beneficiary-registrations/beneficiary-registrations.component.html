@@ -32,10 +32,10 @@
       <p-column [sortable]="true" header="Mediation" styleClass="text-center"></p-column>
       <p-column [sortable]="true" header="Details" styleClass="text-center">
         <ng-template let-lauData="rowData" pTemplate="body">
-          <button style="background:transparent;border-width: 0px;" [routerLink]="['./', lauData.lau.id]">
+          <a [routerLink]="['./', lauData.lau.id]">
             <span class="fa fa-eye"></span>
             <span>View</span>
-          </button>
+          </a>
         </ng-template>
       </p-column>
       <footer>
