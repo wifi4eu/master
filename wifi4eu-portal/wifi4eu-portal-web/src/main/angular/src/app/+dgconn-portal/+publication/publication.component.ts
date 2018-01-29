@@ -18,6 +18,7 @@ export class DgConnPublicationComponent {
     private calls: CallDTO[];
     private call: CallDTO;
     private newElementForm: boolean;
+    private indexRow: number;
 
     constructor(private callApi: CallApi) {
         this.display = false;
@@ -29,27 +30,27 @@ export class DgConnPublicationComponent {
         this.newElementForm = false;
     }
 
-    addNewElement() {
-        this.event = '';
-        this.startDate = null;
-        this.endDate = null;
-        this.startTime = null;
-        this.endTime = null;
-        this.newElementForm = true;
-        this.display = true;
-        this.callApi.allCalls().subscribe(
-            calls => this.calls = calls,
-            error => console.log(error)
-        );
-    }
+    // addNewElement() {
+    //     this.event = '';
+    //     this.startDate = null;
+    //     this.endDate = null;
+    //     this.startTime = null;
+    //     this.endTime = null;
+    //     this.newElementForm = true;
+    //     this.display = true;
+    //     this.callApi.allCalls().subscribe(
+    //         calls => this.calls = calls,
+    //         error => console.log(error)
+    //     );
+    // }
 
-    displayInfo(rowData: CallDTO) {
-        this.call = rowData;
-        this.event = rowData.event;
-        this.startTime = new Date(rowData.startDate);
-        this.endTime = new Date(rowData.endDate);
-        this.startDate = new Date(rowData.startDate);
-        this.endDate = new Date(rowData.endDate);
+    displayInfo(index) {
+        this.call = this.calls[index];
+        this.indexRow = index + 1;
+        this.startTime = new Date(this.calls[index].startDate);
+        this.endTime = new Date(this.calls[index].endDate);
+        this.startDate = new Date(this.calls[index].startDate);
+        this.endDate = new Date(this.calls[index].endDate);
         this.newElementForm = false;
         this.display = true;
         this.callApi.allCalls().subscribe(
@@ -58,17 +59,17 @@ export class DgConnPublicationComponent {
         );
     }
 
-    deleteElement(rowData: number) {
-        this.callApi.deleteCall(this.calls[rowData].id).subscribe(
-            data => {
-                this.callApi.allCalls().subscribe(
-                    calls => this.calls = calls,
-                    error => console.log(error)
-                );
-            },
-            error => console.log(error)
-        );
-    }
+    // deleteElement(rowData: number) {
+    //     this.callApi.deleteCall(this.calls[rowData].id).subscribe(
+    //         data => {
+    //             this.callApi.allCalls().subscribe(
+    //                 calls => this.calls = calls,
+    //                 error => console.log(error)
+    //             );
+    //         },
+    //         error => console.log(error)
+    //     );
+    // }
 
     cancelPublication() {
         this.newElementForm = false;

@@ -1,44 +1,67 @@
-<div class="clearfix"></div>
 <div class="container">
-    <div class="panel-dg" style="margin-top: 5em;">
-      <div class="panel-dg-header">
-        <span class="header-label">{{ 'dgConn.publication.title' | translate }}</span>
-        <span class="right">
-          <a (click)="addNewElement()" class="edit editTable"><img src="assets/images/add-circle-outline-material-icons-regular.png" alt=""> {{'dgConn.newEvent.label' | translate }}</a>
-        </span>
-      </div>
-      <p-dataTable [value]="calls" [rows]="5" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]">
-          <p-column field="event" header="{{ 'dgConn.event.title' | translate }}" [sortable]="true" styleClass="text-center">
-          </p-column>
-          <p-column field="startDate" header="{{ 'dgConn.start.date' | translate }}" [sortable]="true" styleClass="text-center">
-              <template pTemplate="body" let-call="rowData">
-                  <span>{{call.startDate | date: 'dd/MM/yyyy HH:mm'}}</span>
-              </template>
-          </p-column>
-          <p-column field="endDate" header="{{ 'dgConn.end.date' | translate }}" [sortable]="true" styleClass="text-center">
-              <template pTemplate="body" let-call="rowData">
-                  <span>{{call.endDate | date: 'dd/MM/yyyy HH:mm'}}</span>
-              </template>
-          </p-column>
-          <p-column header="{{ 'shared.edit.button' | translate }}" styleClass="text-center">
-              <template pTemplate="body" let-element="rowData" let-rowElement="rowIndex">
-                  <button type="button" class="btn" style="background: none; padding: 0;"
-                          (click)="displayInfo(element)">
-                    <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{ 'shared.edit.button' | translate}}
-                  </button>
-              </template>
-          </p-column>
-          <p-column header="{{ 'shared.delete.button' | translate }}" styleClass="text-center">
-              <template pTemplate="body" let-rowElement="rowIndex">
-                  <button type="button" class="btn" style="background: none; padding: 0;"
-                          (click)="deleteElement(rowElement)">
-                      <i class="fa fa-trash-o" style="font-size: 17px; color: red;" aria-hidden="true"></i>
-                    {{ 'shared.delete.button' | translate }}
-                  </button>
-              </template>
-          </p-column>
-      </p-dataTable>
-    </div>
+    <label class="label beneficiaryMayor">Managment Publication of the call</label>
+    <p-tabView class="white">
+        <p-tabPanel *ngFor="let call of calls; let i=index" [header]="'Call '+(i+1)">
+            <div class="form-group ui-g">
+
+                <div class="ui-g-12">
+                    <div class="ui-g-8">
+                        <p class="beneficiaryMayor">{{ 'dgConn.publication.dashboard' | translate}}</p></div>
+                    <div class="ui-g-2">
+                        <button type="button" class="btn" style="background: none; padding: 0;"
+                                (click)="displayInfo(i)">
+                            <i class="fa fa-pencil" style="font-size: 17px; color: #004494;"></i> {{
+                            'shared.edit.button' | translate}}
+                        </button>
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                    <div class="ui-g-2">
+                        <div class="form-group left">
+                            <label class="labelModal" for="startDate">{{'dgConn.opening.date' | translate }}</label>
+                            <input type="text" value="{{call.startDate | date:'dd-MM-yy'}}"
+                                   style="background: white;" disabled><i
+                                class="fa fa-calendar margin-calendar"
+                                aria-hidden="true" style="margin-left: 0.2em;font-size: 1.3em; color: #254872;"></i>
+
+                        </div>
+                    </div>
+                    <div class="ui-g-1"></div>
+                    <div class="ui-g-2">
+                        <div class="form-group left">
+                            <label class="labelModal" for="startTime">{{'dgConn.start.time' | translate }}</label>
+                            <input type="text" value="{{call.startDate | date:'shortTime'}}"
+                                   style="background: white;"
+                                   disabled>
+                        </div>
+                    </div>
+                    <div class="ui-g-6"></div>
+                </div>
+                <div class="ui-g-12">
+                    <div class="ui-g-2">
+                        <div class="form-group left">
+                            <label class="labelModal" for="endDate">{{'dgConn.end.date' | translate }}</label>
+                            <input type="text" value="{{call.endDate | date:'dd-MM-yy'}}"
+                                   style="background: white;" disabled><i
+                                class="fa fa-calendar margin-calendar"
+                                aria-hidden="true" style="margin-left: 0.2em;font-size: 1.3em; color: #254872;"></i>
+
+                        </div>
+                    </div>
+                    <div class="ui-g-1"></div>
+                    <div class="ui-g-2">
+                        <div class="form-group left">
+                            <label class="labelModal" for="endTime">{{'dgConn.end.time' | translate }}</label>
+                            <input type="text" value="{{call.endDate | date:'shortTime'}}"
+                                   style="background: white;"
+                                   disabled>
+                        </div>
+                    </div>
+                    <div class="ui-g-6"></div>
+                </div>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
     <!--MODALS BELOW-->
     <div class="container font">
         <div class="ui-g-1"></div>
@@ -51,8 +74,7 @@
                     <div class="form-group ui-g">
                         <div class="ui-g-12">
                             <div class="form-group left">
-                                <label class="labelModal" for="event">{{'dgConn.labelModal.timeline' | translate }}</label>
-                                <input type="text" [(ngModel)]="event" id="event" class="form-control" name="event" required>
+                                <label class="labelModal" for="event">Call {{indexRow}}</label>
                             </div>
                         </div>
                     </div>
@@ -69,7 +91,8 @@
                         <div class="ui-g-2">
                             <div class="form-group left">
                                 <label class="labelModal" for="startTime">{{'dgConn.start.time' | translate }}</label>
-                                <p-calendar timeFormat="HH:mm:ss" [timeOnly]="true" [showIcon]="true" type="text" [(ngModel)]="startTime" name="startTime"
+                                <p-calendar timeFormat="HH:mm:ss" [timeOnly]="true" [showIcon]="true" type="text"
+                                            [(ngModel)]="startTime" name="startTime"
                                             onkeydown="return false" required></p-calendar>
                             </div>
                         </div>
@@ -88,7 +111,8 @@
                         <div class="ui-g-2">
                             <div class="form-group left">
                                 <label class="labelModal" for="endTime">{{'dgConn.end.time' | translate }}</label>
-                                <p-calendar timeFormat="HH:mm:ss" [timeOnly]="true" [showIcon]="true" type="text" [(ngModel)]="endTime" name="endTime"
+                                <p-calendar timeFormat="HH:mm:ss" [timeOnly]="true" [showIcon]="true" type="text"
+                                            [(ngModel)]="endTime" name="endTime"
                                             onkeydown="return false" required></p-calendar>
                             </div>
                         </div>
@@ -105,12 +129,8 @@
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
                         <button type="button" (click)="createPublication()" class="btn btn-primary publish-button"
-                                *ngIf="!newElementForm" [disabled]="!(publicationForm.form.valid && checkDate())">
+                                [disabled]="!(publicationForm.form.valid && checkDate())">
                             {{ 'dgConn.change.publication' | translate }}
-                        </button>
-                        <button type="button" (click)="createPublication()" class="btn btn-primary publish-button"
-                                *ngIf="newElementForm" [disabled]="!(publicationForm.form.valid && checkDate())">
-                            {{ 'dgConn.add.publication' | translate }}
                         </button>
                     </div>
                     <div class="ui-g-3"></div>
