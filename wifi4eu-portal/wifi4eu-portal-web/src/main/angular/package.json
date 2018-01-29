@@ -14,7 +14,7 @@
     "clean": "rm -rf dist",
     "build": "npm run clean && ng build",
     "minify": "uglifyjs dist/vendor.bundle.js --screw-ie8 --compress --mangle --output dist/vendor.bundle.js",
-    "build_prod": "npm run build && npm run minify"
+    "build_prod": "npm run build"
   },
   "private": true,
   "dependencies": {

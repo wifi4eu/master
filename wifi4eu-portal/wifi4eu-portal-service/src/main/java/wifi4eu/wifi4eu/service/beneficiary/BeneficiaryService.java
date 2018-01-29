@@ -6,21 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
-import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.security.Right;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
-import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
+import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -30,9 +23,7 @@ import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BeneficiaryService {
@@ -53,6 +44,9 @@ public class BeneficiaryService {
 
     @Autowired
     MayorService mayorService;
+
+    @Autowired
+    LauService lauService;
 
     @Autowired
     RightRepository rightRepository;
@@ -238,6 +232,41 @@ public class BeneficiaryService {
                 _log.info(MessageFormat.format(LOG_STATUS_2_HOLD, aRegistrationDTO.getId()));
             }
         }
+    }
+
+    public List<BeneficiaryListDTO> getListReg(){
+        List<MunicipalityDTO> municipalityDTOSList = municipalityService.getAllMunicipalities();
+
+        List<String> municipalities = new ArrayList<>();
+        List<LauDTO> lauDTOList = new ArrayList<>();
+        List<Integer> numMunicipalities = new ArrayList<>();
+
+        for(MunicipalityDTO municipalityDTO: municipalityDTOSList){
+
+            LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
+            if(municipalities.contains(municipalityDTO.getName())){
+                int index = municipalities.indexOf(municipalityDTO.getName());
+                int numMun = numMunicipalities.get(index);
+                numMun++;
+                numMunicipalities.set(index, numMun);
+            }
+            else{
+                lauDTOList.add(lauDTO);
+                municipalities.add(municipalityDTO.getName());
+                numMunicipalities.add(1);
+                /*registrationsIds.add(new ArrayList<>());*/
+            }
+        }
+
+        List<BeneficiaryListDTO> beneficiaryListDTOS = new ArrayList<>();
+
+        for(int i = 0; i < lauDTOList.size(); i++){
+            BeneficiaryListDTO beneficiaryListDTO = new BeneficiaryListDTO(lauDTOList.get(i), numMunicipalities.get(i));
+            beneficiaryListDTOS.add(beneficiaryListDTO);
+        }
+
+
+        return beneficiaryListDTOS;
     }
 
     public List<BeneficiaryDTO> getBeneficiariesByThreadId(int threadId) {
