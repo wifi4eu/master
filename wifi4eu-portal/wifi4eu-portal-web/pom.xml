@@ -92,9 +92,9 @@
                                     <arguments>
                                         <argument>/c</argument>
                                         <!-- Fix JS size -->
-                                        <argument>"npm run build_prod"</argument>
+                                        <!-- <argument>"npm run build_prod"</argument> -->
                                         <!-- Por defecto -->
-                                        <!-- <argument>"ng build - -base-href /wifi4eu/"</argument> -->
+                                        <argument>"ng build --base-href /wifi4eu/"</argument>
                                         <!-- Si queremos generar para PRODUCCION -->
                                         <!-- <argument>"ng build - -prod - -aot false - -base-href /wifi4eu/"</argument> -->
                                         <argument>--env=${ng.env}</argument>

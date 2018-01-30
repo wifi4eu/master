@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.service.location;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
 import wifi4eu.wifi4eu.mapper.location.LauMapper;
@@ -9,7 +10,7 @@ import wifi4eu.wifi4eu.repository.location.LauRepository;
 
 import java.util.List;
 
-@Service
+@Service("lService")
 public class LauService {
     @Autowired
     LauMapper lauMapper;
@@ -17,6 +18,7 @@ public class LauService {
     @Autowired
     LauRepository lauRepository;
 
+    @Cacheable("laus")
     public LauDTO getLauById(int lauId) {
         return lauMapper.toDTO(lauRepository.findOne(lauId));
     }
@@ -33,6 +35,7 @@ public class LauService {
         return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByNuts3(nuts3)));
     }
 
+    @Cacheable("searchLaus")
     public List<LauDTO> getLausByCountryCodeAndName1ContainingIgnoreCase(String countryCode, String name1) {
         return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByCountryCodeAndName1ContainingIgnoreCase(countryCode, name1)));
     }
