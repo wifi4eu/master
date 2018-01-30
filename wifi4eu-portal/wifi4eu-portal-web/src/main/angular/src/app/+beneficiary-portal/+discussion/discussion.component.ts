@@ -37,7 +37,7 @@ export class DiscussionComponent {
     private displayMediation: boolean = false;
     private mediationBlocked: boolean = false;
     private showAlert: boolean = false;
-    private registration: RegistrationDTOBase[] = [];
+    private registrations: RegistrationDTOBase[] = [];
     private lauId: number;
     private threadId: number;
     private hasMessages: boolean = false;
@@ -68,9 +68,9 @@ export class DiscussionComponent {
         if (this.user != null) {
             if (this.user.type == 2 || this.user.type == 3) {
                 this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-                    (registration: RegistrationDTOBase[]) => {
-                        this.registration = registration;
-                        this.municipalityApi.getMunicipalityById(this.registration[0].municipalityId).subscribe(
+                    (registrations: RegistrationDTOBase[]) => {
+                        this.registrations = registrations;
+                        this.municipalityApi.getMunicipalityById(this.registrations[0].municipalityId).subscribe(
                             (municipality: MunicipalityDTOBase) => {
                                 this.municipality = municipality;
                                 this.lauId = this.municipality.lauId;
@@ -78,9 +78,9 @@ export class DiscussionComponent {
                                     (municipalities: MunicipalityDTOBase[]) => {
                                         for (let i = 0; i < municipalities.length; i++) {
                                             if (this.municipality.id != municipalities[i].id) {
-                                                this.registrationApi.getRegistrationsByMunicipalityId(municipalities[i].id).subscribe(
-                                                    (registrations: RegistrationDTOBase[]) => {
-                                                        if (registrations.length > 0) {
+                                                this.registrationApi.getRegistrationByMunicipalityId(municipalities[i].id).subscribe(
+                                                    (registration: RegistrationDTOBase) => {
+                                                        if (registration) {
                                                             this.municipalities.push(municipalities[i]);
                                                             this.messageAuthors.push(registrations[0]);
                                                             this.counter++;

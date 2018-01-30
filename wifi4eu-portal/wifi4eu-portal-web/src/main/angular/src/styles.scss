@@ -1367,8 +1367,16 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   margin-bottom: 2em;
 }
 
+.applicantDetailsPanel {
+  border: solid 1px #c1c1c1;
+  margin-left: 0em;
+  margin-right: 0em;
+  background-color: white;
+  padding: 1em;
+}
+
 .municipality-name {
-  color: #14539C;
+  color: $dark-blue;
 }
 
 .voucher-status-block {
@@ -1380,6 +1388,59 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 
 .voucher-status-block h2 {
   font-size: 20px;
+}
+
+.applicantDetailsNoMargin {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.link-label {
+  cursor: pointer;
+  color: $dark-blue;
+  font-size: 12px;
+}
+
+.link-label:hover {
+  color: $darkish-blue;
+}
+
+.blueButton {
+  background-color: #004494;
+  height: 50px;
+  font-family: Verdana;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.whiteButton {
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
+  height: 50px;
+  font-family: Verdana;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.warningBadge {
+  padding: 4px 8px;
+  font-style: italic;
+  background-color: #ff9800;
+}
+
+.customCheckbox {
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.customCheckboxLabel {
+  margin-left: 0.4em;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 /* fix blinking issue with the header */

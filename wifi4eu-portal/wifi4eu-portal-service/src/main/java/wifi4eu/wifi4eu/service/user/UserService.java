@@ -340,4 +340,11 @@ public class UserService {
         return "https://ecas.ec.europa.eu/cas/change/changePassword.cgi";
     }
 
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
 }
