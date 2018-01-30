@@ -446,6 +446,16 @@ CREATE TABLE IF NOT EXISTS `dbo`.`temp_tokens` (
     ON UPDATE NO ACTION
 )
   ENGINE = InnoDB;
+  -- -----------------------------------------------------
+-- Table `dbo`.`voucherManagement`
+-- -----------------------------------------------------
+  CREATE TABLE `voucher_management` (
+  `id` int(11) NOT NULL,
+  `call_id` int(11) NOT NULL,
+  `member_state` varchar(250) COLLATE utf8_bin NOT NULL,
+  `minimum` int(11) NOT NULL,
+  `maximum` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `dbo`.`organizations`

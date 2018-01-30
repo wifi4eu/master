@@ -2,6 +2,7 @@ import {Component, Input} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
 import {CallDTO, CallDTOBase} from "../../shared/swagger/model/CallDTO";
 import {CallApi} from "../../shared/swagger/api/CallApi";
+import {VoucherManagementDTO} from "../../shared/swagger/model/VoucherManagementDTO";
 
 @Component({
     templateUrl: 'publication.component.html', providers: [CallApi]
@@ -20,15 +21,26 @@ export class DgConnPublicationComponent {
     private newElementForm: boolean;
     private indexRow: number;
     private today: Date;
+    private callIds: number[];
+    private voucherManagements: VoucherManagementDTO[];
+
 
     constructor(private callApi: CallApi) {
+        this.callIds = [];
         this.display = false;
         this.dgConnDetails = new DgConnDetails();
         this.callApi.allCalls().subscribe(
-            calls => this.calls = calls,
+            calls => {
+                this.calls = calls
+                this.voucherManagements = this.calls[0].voucherManagements;
+            },
             error => console.log(error)
         );
         this.newElementForm = false;
+    }
+
+    changeCall(event) {
+        this.voucherManagements = this.calls[event.index].voucherManagements;
     }
 
     displayInfo(index) {
