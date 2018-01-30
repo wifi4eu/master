@@ -13,6 +13,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -47,6 +48,9 @@ public class BeneficiaryService {
 
     @Autowired
     LauService lauService;
+
+    @Autowired
+    ApplicationService applicationService;
 
     @Autowired
     RightRepository rightRepository;
@@ -234,39 +238,144 @@ public class BeneficiaryService {
         }
     }
 
-    public List<BeneficiaryListDTO> getListReg(){
+    public List<BeneficiaryListDTO> getListBeneficiaryTable() {
+        /* Gets all municipalities */
         List<MunicipalityDTO> municipalityDTOSList = municipalityService.getAllMunicipalities();
 
+        /* Array of municipality names for check duplicates */
         List<String> municipalities = new ArrayList<>();
-        List<LauDTO> lauDTOList = new ArrayList<>();
-        List<Integer> numMunicipalities = new ArrayList<>();
-
-        for(MunicipalityDTO municipalityDTO: municipalityDTOSList){
-
-            LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
-            if(municipalities.contains(municipalityDTO.getName())){
-                int index = municipalities.indexOf(municipalityDTO.getName());
-                int numMun = numMunicipalities.get(index);
-                numMun++;
-                numMunicipalities.set(index, numMun);
-            }
-            else{
-                lauDTOList.add(lauDTO);
-                municipalities.add(municipalityDTO.getName());
-                numMunicipalities.add(1);
-                /*registrationsIds.add(new ArrayList<>());*/
-            }
-        }
 
         List<BeneficiaryListDTO> beneficiaryListDTOS = new ArrayList<>();
 
-        for(int i = 0; i < lauDTOList.size(); i++){
-            BeneficiaryListDTO beneficiaryListDTO = new BeneficiaryListDTO(lauDTOList.get(i), numMunicipalities.get(i));
-            beneficiaryListDTOS.add(beneficiaryListDTO);
+        /* Iterate in municipality list */
+        for(MunicipalityDTO municipalityDTO: municipalityDTOSList){
+            List<RegistrationDTO> listRegistrations = registrationService.getRegistrationsByMunicipalityId(municipalityDTO.getId());
+            BeneficiaryListDTO beneficiaryListDTO = new BeneficiaryListDTO();
+            LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
+
+            /* Checks that the municipality name is in the municipalities array */
+            if(municipalities.contains(municipalityDTO.getName())){
+                /* Get index in the array */
+                int index = municipalities.indexOf(municipalityDTO.getName());
+
+                /* Fills beneficiaryListDTO object with one exisiting in BeneficiaryListDTO list in that position */
+                beneficiaryListDTO = beneficiaryListDTOS.get(index);
+
+                /* Increments number of registrations because it's the same lau */
+                beneficiaryListDTO.setNumRegistrations(beneficiaryListDTO.getNumRegistrations()+1);
+
+                /* Update object in the position of the list of BeneficiaryListDTO */
+                beneficiaryListDTOS.set(index, beneficiaryListDTO);
+
+                /* Adds registrations left in the DTO */
+                List<RegistrationDTO> regs = beneficiaryListDTO.getRegistrations();
+                for(RegistrationDTO reg: listRegistrations){
+                    if(!regs.contains(reg)){
+                        regs.add(reg);
+                    }
+                }
+                beneficiaryListDTO.setRegistrations(regs);
+            }
+            else{
+                municipalities.add(municipalityDTO.getName());
+                beneficiaryListDTO.setNumRegistrations(1);
+                beneficiaryListDTO.setLau(lauDTO);
+                beneficiaryListDTO.setRegistrations(listRegistrations);
+                beneficiaryListDTOS.add(beneficiaryListDTO);
+            }
+        }
+        getIssueOfRegistration(beneficiaryListDTOS);
+        for (BeneficiaryListDTO beneficiaryListDTO: beneficiaryListDTOS){
+            for(RegistrationDTO registrationDTO: beneficiaryListDTO.getRegistrations()){
+                beneficiaryListDTO.setStatus(getStatusApplicationByRegistration(registrationDTO.getId()));
+            }
+            beneficiaryListDTO.setMediation(getMediationStatusByLau(beneficiaryListDTO.getLau().getId()));
         }
 
-
         return beneficiaryListDTOS;
+    }
+
+    public boolean getStatusApplicationByRegistration(int registrationId){
+        /* Get all applications with a registration id */
+        List<ApplicationDTO> applicationDTOList = applicationService.getApplicationsByRegistrationId(registrationId);
+        /* Return true if a application exist (one or more), return false if doesn't have any record */
+        if(applicationDTOList.size() > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public void getIssueOfRegistration(List<BeneficiaryListDTO> beneficiaryListDTOList){
+        /* INVALID -> TODOS LOS REGISTRATIONS TIENE STATUS 1 */
+
+        /* RESOLVED -> UNA 2 DEMAS 1 */
+
+        /* DUPLICATED -> MAS DE UNA 0*/
+
+        /* WARNING -> .eu .com .net .info .28 paises */
+
+        /* NADA -> */
+
+        String validPattern = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.(?:[A-Z]{2,}|com|net|info|org|eu" +
+                "|bg|cs|da|de|el|es|et|fi|fr|ga|hr|hu|it|lt|lv|mt|nl|pl|pt|ro|sk|sl|sv|uk|ie|is|no))*$";
+
+        for(BeneficiaryListDTO beneficiaryListDTO: beneficiaryListDTOList){
+
+            int numDuplicated = 0;
+            int numInvalids = 0;
+            int numResolved = 0;
+
+            for(RegistrationDTO registrationDTO: beneficiaryListDTO.getRegistrations()){
+                UserDTO userDTO = userService.getUserById(registrationDTO.getUserId());
+                if(!userDTO.getEcasEmail().matches(validPattern)){
+                    beneficiaryListDTO.setIssue(1);
+                    break;
+                }
+                switch (registrationDTO.getStatus()){
+                    case 0:
+                        numDuplicated += 1;
+                        break;
+                    case 1:
+                        numInvalids += 1;
+                        break;
+                    case 2:
+                        numResolved += 1;
+
+                }
+            }
+
+            if((numResolved + numInvalids) == beneficiaryListDTO.getRegistrations().size() && numResolved > 0){
+                beneficiaryListDTO.setIssue(3);
+            }
+            else if(numDuplicated > 1){
+                beneficiaryListDTO.setIssue(2);
+            }
+            else if(numInvalids == beneficiaryListDTO.getRegistrations().size()){
+                beneficiaryListDTO.setIssue(4);
+            }
+            else{
+                if(beneficiaryListDTO.getIssue() != null) {
+                    beneficiaryListDTO.setIssue(1);
+                }
+                else{
+                    beneficiaryListDTO.setIssue(0);
+                }
+            }
+        }
+    }
+
+    public boolean getMediationStatusByLau(int laudId) {
+        String lauIdParsed = String.valueOf(laudId);
+        /* Return only threads with type 1 (LAU) and with a specific laud id */
+        ThreadDTO threadDTO = threadService.getThreadByTypeAndReason(Constant.THREAD_REASON_LAU, lauIdParsed);
+        if(threadDTO != null){
+            return threadDTO.isMediation();
+        }
+        else{
+            return false;
+        }
     }
 
     public List<BeneficiaryDTO> getBeneficiariesByThreadId(int threadId) {

@@ -1,17 +1,33 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BeneficiaryListDTO implements Serializable {
-    LauDTO lau;
-    Integer numRegistrations;
+    private LauDTO lau;
+    private Integer numRegistrations;
+    private boolean status;
+    private Integer issue;
+    private boolean mediation;
+    private List<RegistrationDTO> registrations = new ArrayList<>();
 
-    public BeneficiaryListDTO(LauDTO lau, Integer numRegistrations) {
+    public BeneficiaryListDTO(LauDTO lau, Integer numRegistrations, Boolean status, List<RegistrationDTO> registrations) {
         this.lau = lau;
         this.numRegistrations = numRegistrations;
+        this.status = status;
+        this.registrations = registrations;
     }
 
     public BeneficiaryListDTO() {
+    }
+
+    public boolean isMediation() {
+        return mediation;
+    }
+
+    public void setMediation(boolean mediation) {
+        this.mediation = mediation;
     }
 
     public LauDTO getLau() {
@@ -28,5 +44,33 @@ public class BeneficiaryListDTO implements Serializable {
 
     public void setNumRegistrations(Integer numRegistrations) {
         this.numRegistrations = numRegistrations;
+    }
+
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public List<RegistrationDTO> getRegistrations() {
+        return registrations;
+    }
+
+    public void setRegistrations(List<RegistrationDTO> registrations) {
+        this.registrations = registrations;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public Integer getIssue() {
+        return issue;
+    }
+
+    public void setIssue(Integer issue) {
+        this.issue = issue;
     }
 }

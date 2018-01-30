@@ -1344,6 +1344,9 @@ discussion-component .expanded .content, discussion-component .expanded .header,
     &.badge-warning{
       background-color: #ff9800;
     }
+    &.badge-duplicated{
+      background-color: #ff6f00;
+    }
   }
 }
 

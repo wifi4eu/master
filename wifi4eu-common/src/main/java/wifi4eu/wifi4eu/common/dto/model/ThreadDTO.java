@@ -7,6 +7,7 @@ public class ThreadDTO {
     private String title;
     private String reason;
     private int type;
+    private boolean mediation;
     private List<ThreadMessageDTO> messages;
 
     public ThreadDTO() {
@@ -58,5 +59,13 @@ public class ThreadDTO {
 
     public void setMessages(List<ThreadMessageDTO> messages) {
         this.messages = messages;
+    }
+
+    public boolean isMediation() {
+        return mediation;
+    }
+
+    public void setMediation(boolean mediation) {
+        this.mediation = mediation;
     }
 }

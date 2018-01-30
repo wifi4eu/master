@@ -58,7 +58,7 @@ public class BeneficiaryResource {
     @RequestMapping(value = "/beneficiary-list", method = RequestMethod.GET)
     @ResponseBody
     public List<BeneficiaryListDTO> getBeneficiaryRegistrations() {
-        return beneficiaryService.getListReg();
+        return beneficiaryService.getListBeneficiaryTable();
     }
 
 }
