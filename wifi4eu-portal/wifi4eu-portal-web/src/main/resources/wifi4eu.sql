@@ -185,6 +185,7 @@ CREATE TABLE IF NOT EXISTS `dbo`.`threads` (
   `title` VARCHAR(255) NULL,
   `reason`   VARCHAR(255) NULL,
   `type` INT NOT NULL,
+  `mediation` INT DEFAULT 0,
   PRIMARY KEY (`id`)
 
 )
