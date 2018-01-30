@@ -2,6 +2,7 @@ import {Component, Input} from "@angular/core";
 import {DgConnDetails} from "../dgconnportal-details.model";
 import {CallDTO, CallDTOBase} from "../../shared/swagger/model/CallDTO";
 import {CallApi} from "../../shared/swagger/api/CallApi";
+import {VoucherManagementDTO} from "../../shared/swagger/model/VoucherManagementDTO";
 
 @Component({
     templateUrl: 'publication.component.html', providers: [CallApi]
@@ -18,56 +19,39 @@ export class DgConnPublicationComponent {
     private calls: CallDTO[];
     private call: CallDTO;
     private newElementForm: boolean;
+    private indexRow: number;
+    private today: Date;
+    private callIds: number[];
+    private voucherManagements: VoucherManagementDTO[];
+
 
     constructor(private callApi: CallApi) {
+        this.callIds = [];
         this.display = false;
         this.dgConnDetails = new DgConnDetails();
         this.callApi.allCalls().subscribe(
-            calls => this.calls = calls,
-            error => console.log(error)
-        );
-        this.newElementForm = false;
-    }
-
-    addNewElement() {
-        this.event = '';
-        this.startDate = null;
-        this.endDate = null;
-        this.startTime = null;
-        this.endTime = null;
-        this.newElementForm = true;
-        this.display = true;
-        this.callApi.allCalls().subscribe(
-            calls => this.calls = calls,
-            error => console.log(error)
-        );
-    }
-
-    displayInfo(rowData: CallDTO) {
-        this.call = rowData;
-        this.event = rowData.event;
-        this.startTime = new Date(rowData.startDate);
-        this.endTime = new Date(rowData.endDate);
-        this.startDate = new Date(rowData.startDate);
-        this.endDate = new Date(rowData.endDate);
-        this.newElementForm = false;
-        this.display = true;
-        this.callApi.allCalls().subscribe(
-            calls => this.calls = calls,
-            error => console.log(error)
-        );
-    }
-
-    deleteElement(rowData: number) {
-        this.callApi.deleteCall(this.calls[rowData].id).subscribe(
-            data => {
-                this.callApi.allCalls().subscribe(
-                    calls => this.calls = calls,
-                    error => console.log(error)
-                );
+            calls => {
+                this.calls = calls
+                this.voucherManagements = this.calls[0].voucherManagements;
             },
             error => console.log(error)
         );
+        this.newElementForm = false;
+    }
+
+    changeCall(event) {
+        this.voucherManagements = this.calls[event.index].voucherManagements;
+    }
+
+    displayInfo(index) {
+        this.call = this.calls[index];
+        this.indexRow = index + 1;
+        this.startTime = new Date(this.calls[index].startDate);
+        this.endTime = new Date(this.calls[index].endDate);
+        this.startDate = new Date(this.calls[index].startDate);
+        this.endDate = new Date(this.calls[index].endDate);
+        this.newElementForm = false;
+        this.display = true;
     }
 
     cancelPublication() {
@@ -118,7 +102,9 @@ export class DgConnPublicationComponent {
             finalStartDate.setMinutes(this.startTime.getMinutes());
             finalEndDate.setHours(this.endTime.getHours());
             finalEndDate.setMinutes(this.endTime.getMinutes());
-            return finalStartDate < finalEndDate;
+            this.today = new Date();
+            if (finalStartDate > this.today)
+                return finalStartDate < finalEndDate;
         }
         return false;
     }
