@@ -1403,6 +1403,7 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   cursor: pointer;
   color: $dark-blue;
   font-size: 12px;
+  text-decoration: none;
 }
 
 .link-label:hover {
@@ -1445,6 +1446,17 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   cursor: pointer;
   font-size: 15px;
   font-weight: bold;
+}
+
+.searchInputBlock {
+  background-color: white;
+  padding: 2em 1.6em;
+  border: solid 1px rgba(0, 0, 0, 0.3);
+}
+
+.searchInput {
+  vertical-align: middle;
+  margin-right: 1em;
 }
 
 /* fix blinking issue with the header */

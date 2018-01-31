@@ -345,6 +345,7 @@
   "dgConn.duplicatedBeneficiaryDetails.validateMunicipality.error": "An error occurred while trying to validate the municipality. Please, try again later.",
   "dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success": "You successfully invalidated the municipality.",
   "dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error": "An error occurred while trying to invalidate the municipality. Please, try again later.",
+  "dgConn.duplicatedBeneficiaryDetails.searchMessages.Desc": "The messages between the entities are displayed below.",
   "int.comment.32": "-- END Commission Portal --",
   "int.comment.99": "-- Start OLD LABELS TO BE REMOVED --",
   "benefRegistration.registration.step2.instructions": "Chun leanúint ar aghaidh, líon isteach an fhoirm thíos.",

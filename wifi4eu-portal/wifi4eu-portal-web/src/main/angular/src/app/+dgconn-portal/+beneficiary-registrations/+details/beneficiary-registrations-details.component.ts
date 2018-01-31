@@ -11,6 +11,7 @@ import {ThreadDTOBase} from "../../../shared/swagger/model/ThreadDTO";
 import {ResponseDTOBase} from "../../../shared/swagger/model/ResponseDTO";
 import {SharedService} from "../../../shared/shared.service";
 import {DomSanitizer} from "@angular/platform-browser";
+import {ThreadMessageDTOBase} from "../../../shared/swagger/model/ThreadMessageDTO";
 
 @Component({
     templateUrl: 'beneficiary-registrations-details.component.html',
@@ -23,8 +24,10 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     private mayors: MayorDTOBase[] = [];
     private registrations: RegistrationDTOBase[] = [];
     private discussionThread: ThreadDTOBase = null;
+    private displayedMessages: ThreadMessageDTOBase[] = [];
     private entitiesChecked: boolean[] = [];
     private entityCheckboxIndex: number = null;
+    private searchMessagesQuery: string = '';
 
     constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private sharedService: SharedService, private sanitizer: DomSanitizer) {
         this.route.params.subscribe(
@@ -60,6 +63,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
             (thread: ThreadDTOBase) => {
                 if (thread) {
                     this.discussionThread = thread;
+                    this.displayedMessages = thread.messages;
                 }
             }
         );
@@ -92,18 +96,18 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     }
 
     private requestLegalDocuments() {
-        this.registrationApi.requestLegalDocuments(this.registrations[this.entityCheckboxIndex].id).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    let entityNumber = (this.entityCheckboxIndex + 1);
-                    this.sharedService.growlTranslation('An email has been sent to the legal representant of the Entity #' + entityNumber + ' to supply the legal documents for the registration.','dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success', 'success', String(entityNumber));
-                    //this.getRegistrationDetailsInfo();
-                } else {
-                    this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the registration. Please, try again later.','dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.error', 'error');
+        for (let registration of this.registrations) {
+            this.registrationApi.requestLegalDocuments(registration.id).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        let entityNumber = (this.entityCheckboxIndex + 1);
+                        this.sharedService.growlTranslation('An email has been sent to the legal representant of the Entity #' + entityNumber + ' to supply the legal documents for the registration.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success', 'success', String(entityNumber));
+                    } else {
+                        this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the registration. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.error', 'error');
+                    }
                 }
-                console.log(response);
-            }
-        );
+            );
+        }
     }
 
     private assignLegalEntity() {
@@ -113,11 +117,9 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                     if (response.success) {
                         let entityNumber = (this.entityCheckboxIndex + 1);
                         this.sharedService.growlTranslation('You successfully assigned the authentic legal entity to the Entity #' + entityNumber + '.','dgConn.duplicatedBeneficiaryDetails.assignLegalEntity.success', 'success', String(entityNumber));
-                        //this.getRegistrationDetailsInfo();
                     } else {
                         this.sharedService.growlTranslation('An error occurred while trying to assign the authentic legal entity. Please, try again later.','dgConn.duplicatedBeneficiaryDetails.assignLegalEntity.error', 'error');
                     }
-                    console.log(response);
                 }
             );
         }
@@ -150,6 +152,19 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                     }
                 }
             );
+        }
+    }
+
+    private searchMessages() {
+        if (this.searchMessagesQuery.length > 0) {
+            this.displayedMessages = [];
+            for (let message of this.discussionThread.messages) {
+                if (message.message.toLowerCase().indexOf(this.searchMessagesQuery.toLowerCase()) != -1) {
+                    this.displayedMessages.push(message);
+                }
+            }
+        } else {
+            this.displayedMessages = this.discussionThread.messages;
         }
     }
 }
