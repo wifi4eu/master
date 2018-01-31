@@ -125,7 +125,7 @@
     <server.test.port>8080</server.test.port>
     <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
     <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
-    <server.azure.test.address>accenturetest.azurewebsites.nett</server.azure.test.address>
+    <server.azure.test2.address>accenturetest.azurewebsites.net</server.azure.test2.address>
     <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
     <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilterMocked</user.filter.path>
     <enable.security.start></enable.security.start>
@@ -218,7 +218,7 @@
       <properties>
         <ng.env>test</ng.env>
         <schemes>https</schemes>
-        <server.address>${server.azure.test.address}</server.address>
+        <server.address>${server.azure.test2.address}</server.address>
         <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
         <enable.security.start>--&gt;</enable.security.start>
         <enable.security.end>&lt;!--</enable.security.end>
@@ -226,7 +226,7 @@
         <enable.login.end>&lt;!--</enable.login.end>
         <war.output.directory/>
         <ecas.config.base.url>https://ecas.acceptance.ec.europa.eu</ecas.config.base.url>
-        <ecas.server.address>${server.azure.test.address}</ecas.server.address>
+        <ecas.server.address>${server.azure.test2.address}</ecas.server.address>
         <ecas.server.port>${server.azure.port}</ecas.server.port>
         <mail.serv.location>https://accenturetest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
         <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
