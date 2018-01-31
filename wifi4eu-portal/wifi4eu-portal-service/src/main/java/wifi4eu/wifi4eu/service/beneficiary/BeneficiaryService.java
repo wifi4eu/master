@@ -247,7 +247,7 @@ public class BeneficiaryService {
 
         /* Iterate in municipality list */
         for(MunicipalityDTO municipalityDTO: municipalityDTOSList){
-            List<RegistrationDTO> listRegistrations = registrationService.getRegistrationsByMunicipalityId(municipalityDTO.getId());
+            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
             BeneficiaryListDTO beneficiaryListDTO = new BeneficiaryListDTO();
             LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
 
@@ -267,18 +267,17 @@ public class BeneficiaryService {
 
                 /* Adds registrations left in the DTO */
                 List<RegistrationDTO> regs = beneficiaryListDTO.getRegistrations();
-                for(RegistrationDTO reg: listRegistrations){
-                    if(!regs.contains(reg)){
-                        regs.add(reg);
-                    }
+                if (!regs.contains(registration)) {
+                    regs.add(registration);
                 }
                 beneficiaryListDTO.setRegistrations(regs);
-            }
-            else{
+            } else{
                 municipalities.add(municipalityDTO.getName());
                 beneficiaryListDTO.setNumRegistrations(1);
                 beneficiaryListDTO.setLau(lauDTO);
-                beneficiaryListDTO.setRegistrations(listRegistrations);
+                List<RegistrationDTO> regs = new ArrayList<>();
+                regs.add(registration);
+                beneficiaryListDTO.setRegistrations(regs);
                 beneficiaryListDTOS.add(beneficiaryListDTO);
             }
         }
