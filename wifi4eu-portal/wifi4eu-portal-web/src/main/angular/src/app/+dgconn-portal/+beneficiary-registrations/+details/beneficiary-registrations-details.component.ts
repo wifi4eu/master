@@ -10,6 +10,7 @@ import {ThreadApi} from "../../../shared/swagger/api/ThreadApi";
 import {ThreadDTOBase} from "../../../shared/swagger/model/ThreadDTO";
 import {ResponseDTOBase} from "../../../shared/swagger/model/ResponseDTO";
 import {SharedService} from "../../../shared/shared.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
     templateUrl: 'beneficiary-registrations-details.component.html',
@@ -25,7 +26,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     private entitiesChecked: boolean[] = [];
     private entityCheckboxIndex: number = null;
 
-    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private sharedService: SharedService) {
+    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private sharedService: SharedService, private sanitizer: DomSanitizer) {
         this.route.params.subscribe(
             params => {
                 this.lauId = params['id'];
@@ -62,6 +63,19 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                 }
             }
         );
+    }
+
+    private getLegalFileUrl(index: number, fileNumber: number) {
+        switch (fileNumber) {
+            case 1:
+                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile1);
+            case 2:
+                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile2);
+            case 3:
+                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile3);
+            case 4:
+                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile4);
+        }
     }
 
     private checkEntity(index: number) {
