@@ -8,16 +8,18 @@ public class CallDTO {
     private long startDate;
     private long endDate;
     private List<TimelineDTO> timelines;
+    private List<VoucherManagementDTO> voucherManagements;
 
     public CallDTO() {
     }
 
-    public CallDTO(int id, String event, long startDate, long endDate, List<TimelineDTO> timelines) {
+    public CallDTO(int id, String event, long startDate, long endDate, List<TimelineDTO> timelines, List<VoucherManagementDTO> voucherManagements) {
         this.id = id;
         this.event = event;
         this.startDate = startDate;
         this.endDate = endDate;
         this.timelines = timelines;
+        this.voucherManagements = voucherManagements;
     }
 
     public int getId() {
@@ -58,5 +60,13 @@ public class CallDTO {
 
     public void setTimelines(List<TimelineDTO> timelines) {
         this.timelines = timelines;
+    }
+
+    public List<VoucherManagementDTO> getVoucherManagements() {
+        return voucherManagements;
+    }
+
+    public void setVoucherManagements(List<VoucherManagementDTO> voucherManagements) {
+        this.voucherManagements = voucherManagements;
     }
 }

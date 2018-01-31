@@ -9,10 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
+import wifi4eu.wifi4eu.common.dto.model.BeneficiaryListDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 
 import java.util.List;
@@ -45,5 +47,18 @@ public class BeneficiaryResource {
         }
     }
 
+    @ApiOperation(value = "Submit beneficiary registration")
+    @RequestMapping(value = "/beneficiary-dto", method = RequestMethod.GET)
+    @ResponseBody
+    public BeneficiaryListDTO getBeneficiaryListDTO() {
+        return new BeneficiaryListDTO();
+    }
+
+    @ApiOperation(value = "Get beneficiary registration with lau")
+    @RequestMapping(value = "/beneficiary-list", method = RequestMethod.GET)
+    @ResponseBody
+    public List<BeneficiaryListDTO> getBeneficiaryRegistrations() {
+        return beneficiaryService.getListBeneficiaryTable();
+    }
 
 }

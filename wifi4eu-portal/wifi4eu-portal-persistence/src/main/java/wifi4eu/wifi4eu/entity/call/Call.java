@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.entity.call;
 
 import wifi4eu.wifi4eu.entity.timeline.Timeline;
+import wifi4eu.wifi4eu.entity.voucherManagement.VoucherManagement;
 
 import javax.persistence.*;
 import java.util.List;
@@ -26,15 +27,20 @@ public class Call {
     @OneToMany(mappedBy = "call")
     private List<Timeline> timelines;
 
+    @OneToMany(mappedBy = "voucherCall")
+    private List<VoucherManagement> voucherManagements;
+
+
     public Call() {
     }
 
-    public Call(Integer id, String event, Long startDate, Long endDate, List<Timeline> timelines) {
+    public Call(Integer id, String event, Long startDate, Long endDate, List<Timeline> timelines, List<VoucherManagement> voucherManagements) {
         this.id = id;
         this.event = event;
         this.startDate = startDate;
         this.endDate = endDate;
         this.timelines = timelines;
+        this.voucherManagements = voucherManagements;
     }
 
     public Integer getId() {
@@ -75,5 +81,13 @@ public class Call {
 
     public void setTimelines(List<Timeline> timelines) {
         this.timelines = timelines;
+    }
+
+    public List<VoucherManagement> getVoucherManagements() {
+        return voucherManagements;
+    }
+
+    public void setVoucherManagements(List<VoucherManagement> voucherManagements) {
+        this.voucherManagements = voucherManagements;
     }
 }

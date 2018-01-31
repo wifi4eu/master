@@ -1318,7 +1318,8 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   }
 
   .text-center{
-    padding: 1.25rem 0.75rem;
+   /*  padding: 1.25rem 0.75rem; */
+    padding: 1.25rem 0rem;
     text-align: center;
   }
 
@@ -1342,6 +1343,9 @@ discussion-component .expanded .content, discussion-component .expanded .header,
     }
     &.badge-warning{
       background-color: #ff9800;
+    }
+    &.badge-duplicated{
+      background-color: #ff6f00;
     }
   }
 }
