@@ -69,7 +69,7 @@
     <div class="ui-g">
         <div class="ui-g-12">
             <div class="ui-g-6">
-                <p-dataTable [value]="voucherManagements">
+                <p-dataTable [value]="voucherManagementsFirst">
                     <p-column [sortable]="true" field="member_state"
                               header="Member State"></p-column>
                     <p-column [sortable]="true" field="minimum"
@@ -79,7 +79,7 @@
                 </p-dataTable>
             </div>
             <div class="ui-g-6">
-                <p-dataTable [value]="voucherManagements">
+                <p-dataTable [value]="voucherManagementsSecond" *ngIf="displayTable">
                     <p-column [sortable]="true" field="member_state"
                               header="Member State"></p-column>
                     <p-column [sortable]="true" field="minimum"
@@ -112,7 +112,8 @@
                                 <label class="labelModal" for="startDate">{{'dgConn.opening.date' | translate }}</label>
                                 <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"
                                             [showIcon]="true" type="text" dateFormat="dd/mm/yy" [(ngModel)]="startDate"
-                                            name="startDate" onkeydown="return false" required></p-calendar>
+                                            name="startDate" onkeydown="return false" [disabled]="editableField"
+                                            required (onSelect)="checkDate()"></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-1"></div>
@@ -121,7 +122,8 @@
                                 <label class="labelModal" for="startTime">{{'dgConn.start.time' | translate }}</label>
                                 <p-calendar timeFormat="HH:mm:ss" [timeOnly]="true" [showIcon]="true" type="text"
                                             [(ngModel)]="startTime" name="startTime"
-                                            onkeydown="return false" required></p-calendar>
+                                            onkeydown="return false" [disabled]="editableField" required
+                                            (onSelect)="checkDate()"></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-6"></div>
@@ -132,16 +134,19 @@
                                 <label class="labelModal" for="endDate">{{'dgConn.closing.date' | translate }}</label>
                                 <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="2017:2027"
                                             [showIcon]="true" type="text" dateFormat="dd/mm/yy" [(ngModel)]="endDate"
-                                            name="endDate" onkeydown="return false" required></p-calendar>
+                                            name="endDate" onkeydown="return false" required
+                                            (onSelect)="checkDate()"></p-calendar>
                             </div>
                         </div>
-                        <div class="ui-g-1"></div>
+                        <div class=" ui-g-1
+                                ">
+                        </div>
                         <div class="ui-g-2">
                             <div class="form-group left">
                                 <label class="labelModal" for="endTime">{{'dgConn.end.time' | translate }}</label>
                                 <p-calendar timeFormat="HH:mm:ss" [timeOnly]="true" [showIcon]="true" type="text"
                                             [(ngModel)]="endTime" name="endTime"
-                                            onkeydown="return false" required></p-calendar>
+                                            onkeydown="return false" required (onSelect)="checkDate()"></p-calendar>
                             </div>
                         </div>
                         <div class="ui-g-6"></div>
@@ -157,7 +162,7 @@
                     <div class="ui-g-1"></div>
                     <div class="ui-g-2" style="text-align: center !important">
                         <button type="button" (click)="createPublication()" class="btn btn-primary publish-button"
-                                [disabled]="!(publicationForm.form.valid && checkDate())">
+                                [disabled]="!(publicationForm.form.valid && enableButton)">
                             {{ 'dgConn.change.publication' | translate }}
                         </button>
                     </div>

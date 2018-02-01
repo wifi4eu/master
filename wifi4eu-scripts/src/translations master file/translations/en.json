@@ -326,6 +326,8 @@
   "dgConn.beneficiaries.numApplicants": "Number of applicants", 
   "dgConn.beneficiaries.mediation": "Mediation",
   "dgConn.issues": "Issues",
+  "dgConn.wrongDate1": "Wrong period for the call",
+  "dgConn.wrongDate2": "An end date must be later than start date",
   "dgConn.duplicatedBeneficiaryDetails.desc": "This is the information of each municipality that have registered/applied/beneficiary",
   "dgConn.duplicatedBeneficiaryDetails.noMunicipalitiesFound": "No municipalities were found with the LAU ID you were looking for.",
   "dgConn.duplicatedBeneficiaryDetails.entity": "Entity",
