@@ -10,50 +10,38 @@
     "test": "ng test",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
     "e2e": "protractor",
-
     "clean": "rm -rf dist",
     "build": "tsc -p src/tsconfig.json",
-
     "rollup_vendor": "rollup -f iife -c rollup/vendor.rollup.config.js",
     "minify_vendor": "minify dist/vendor.bundle.js --output dist/vendor.bundle.js",
     "uglify_vendor": "uglifyjs dist/vendor.bundle.js --screw-ie8 --compress --mangle --output dist/vendor.bundle.js",
     "compress_vendor": "npm run rollup_vendor && npm run minify_vendor && npm run uglify_vendor",
-
     "rollup_styles": "rollup -f iife -c rollup/styles.rollup.config.js",
     "uglify_styles": "uglifyjs dist/styles.bundle.js --screw-ie8 --compress --mangle --output dist/styles.bundle.js",
     "compress_styles": "npm run rollup_styles && npm run uglify_styles",
-
     "rollup_main": "rollup -f iife -c rollup/main.rollup.config.js",
     "uglify_main": "uglifyjs dist/main.bundle.js --screw-ie8 --compress --mangle --output dist/main.bundle.js",
     "compress_main": "npm run rollup_main && npm run uglify_main",
-
     "rollup_common": "rollup -f iife -c rollup/common.rollup.config.js",
     "uglify_common": "uglifyjs dist/common.chunk.js --screw-ie8 --compress --mangle --output dist/common.chunk.js",
     "compress_common": "npm run rollup_common && npm run uglify_common",
-
     "rollup_dgconnportal": "rollup -f iife -c rollup/dgconnportal.rollup.config.js",
     "uglify_dgconnportal": "uglifyjs dist/dgconnportal.module.chunk.js --screw-ie8 --compress --mangle --output dist/dgconnportal.module.chunk.js",
     "compress_dgconnportal": "npm run rollup_dgconnportal && npm run uglify_dgconnportal",
-
     "rollup_supplierportal": "rollup -f iife -c rollup/supplier-portal.rollup.config.js",
     "uglify_supplierportal": "uglifyjs dist/supplier-portal.module.chunk.js --screw-ie8 --compress --mangle --output dist/supplier-portal.module.chunk.js",
     "compress_supplierportal": "npm run rollup_supplierportal && npm run uglify_supplierportal",
-
     "rollup_beneficiaryportal": "rollup -f iife -c rollup/beneficiary-portal.rollup.config.js",
     "uglify_beneficiaryportal": "uglifyjs dist/beneficiary-portal.module.chunk.js --screw-ie8 --compress --mangle --output dist/beneficiary-portal.module.chunk.js",
     "compress_beneficiaryportal": "npm run rollup_beneficiaryportal && npm run uglify_beneficiaryportal",
-
     "rollup_beneficiaryregistration": "rollup -f iife -c rollup/beneficiary-registration.rollup.config.js",
     "uglify_beneficiaryregistration": "uglifyjs dist/beneficiary-registration.module.chunk.js --screw-ie8 --compress --mangle --output dist/beneficiary-registration.module.chunk.js",
     "compress_beneficiaryregistration": "npm run rollup_beneficiaryregistration && npm run uglify_beneficiaryregistration",
-
     "rollup_supplierregistration": "rollup -f iife -c rollup/supplier-registration.rollup.config.js",
     "uglify_supplierregistration": "uglifyjs dist/supplier-registration.module.chunk.js --screw-ie8 --compress --mangle --output dist/supplier-registration.module.chunk.js",
     "compress_supplierregistration": "npm run rollup_supplierregistration && npm run uglify_supplierregistration",
-
     "uglify_inline": "uglifyjs dist/inline.bundle.js --screw-ie8 --compress --mangle --output dist/inline.bundle.js",
     "compress_inline": "npm run uglify_inline",
-
     "compress_all_js": "npm run compress_vendor && npm run compress_styles && npm run compress_main && npm run compress_common && npm run compress_dgconnportal && npm run compress_supplierportal && npm run compress_beneficiaryportal && npm run compress_beneficiaryregistration && npm run compress_supplierregistration && npm run compress_inline"
   },
   "private": true,
@@ -107,6 +95,7 @@
     "karma-jasmine": "^1.0.2",
     "karma-remap-istanbul": "^0.2.1",
     "protractor": "~4.0.13",
+    "rollup-plugin-node-resolve": "^3.0.2",
     "ts-node": "1.2.1",
     "tslint": "^4.3.0",
     "typescript": "~2.3.2"
