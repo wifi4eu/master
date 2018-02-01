@@ -459,6 +459,65 @@ CREATE TABLE IF NOT EXISTS `dbo`.`temp_tokens` (
 )
   ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `dbo`.`voucher_management`
+-- -----------------------------------------------------
+
+
+CREATE TABLE `voucher_management` (
+  `id` int(11) NOT NULL,
+  `call_id` int(11) NOT NULL,
+  `member_state` varchar(250) COLLATE utf8_bin DEFAULT NULL,
+  `minimum` int(11) DEFAULT NULL,
+  `maximum` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `voucher_management`
+--
+
+INSERT INTO `voucher_management` (`id`, `call_id`, `member_state`, `minimum`, `maximum`) VALUES
+
+(110, 1, 'Austria', 15, 80),
+(120, 1, 'Belgium', 15, 80),
+(130, 1, 'Bulgaria', 15, 80),
+(140, 1, 'Croatia', 15, 80),
+(150, 1, 'Cyprus', 15, 80),
+(160, 1, 'Czech Republic', 15, 80),
+(170, 1, 'Denmark', 15, 80),
+(180, 1, 'Estonia', 15, 80),
+(190, 1, 'Finland', 15, 80),
+(110, 1, 'France', 15, 80),
+(111, 1, 'Germany', 15, 80),
+(112, 1, 'Greece', 15, 80),
+(113, 1, 'Hungary', 15, 80),
+(114, 1, 'Ireland', 15, 80),
+(115, 1, 'Italy', 15, 80),
+(116, 1, 'Latvia', 15, 80),
+(117, 1, 'Lithuania', 15, 80),
+(118, 1, 'Luxembourg', 15, 80),
+(119, 1, 'Malta', 15, 80),
+(120, 1, 'Netherlands', 15, 80),
+(121, 1, 'Poland', 15, 80),
+(122, 1, 'Portugal', 15, 80),
+(123, 1, 'Romania', 15, 80),
+(124, 1, 'Slovakia', 15, 80),
+(125, 1, 'Slovenia', 15, 80),
+(111, 1, 'Spain', 15, 80),
+(127, 1, 'Sweden', 15, 80);
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `voucher_management`
+--
+ALTER TABLE `voucher_management`
+  ADD PRIMARY KEY (`id`);
+
+
+
 -- -----------------------------------------------------
 -- Table `dbo`.`organizations`
 -- -----------------------------------------------------
