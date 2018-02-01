@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
 
-    public final static String FROM_ADDRESS =  "azure_efe0541f6fda2f126859caac07925571@azure.com";
+    public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
 
     @Autowired
     private MailSender mailSender;
