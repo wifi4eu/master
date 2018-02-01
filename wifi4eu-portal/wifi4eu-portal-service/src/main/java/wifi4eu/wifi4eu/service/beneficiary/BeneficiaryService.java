@@ -165,15 +165,14 @@ public class BeneficiaryService {
 
                     /* Añado todos los user threads */
                     for (MunicipalityDTO conflictMunicipality : municipalitiesWithSameLau) {
-                        List<RegistrationDTO> registrationDTOs = registrationService.getRegistrationsByMunicipalityId(conflictMunicipality.getId());
-                        for (RegistrationDTO conflictRegistrationDTO : registrationDTOs) {
+                        RegistrationDTO conflictRegistrationDTO = registrationService.getRegistrationByMunicipalityId(conflictMunicipality.getId());
+                        if (conflictRegistrationDTO != null) {
                             UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
                             userThreadsDTO.setUserId(conflictRegistrationDTO.getUserId());
                             userThreadsDTO.setThreadId(threadDTO.getId());
                             userThreadsService.createUserThreads(userThreadsDTO);
                         }
                     }
-
                 } else {
                     /* añado el nuevo user thread */
                     UserThreadsDTO userThreadsDTO = new UserThreadsDTO();
@@ -228,12 +227,11 @@ public class BeneficiaryService {
 
         /* put all the registrations for a given municiaplity on Hold*/
         for (MunicipalityDTO aMunicipality : municipalitiesWithSameLau) {
-            List<RegistrationDTO> registrations = registrationService.getRegistrationsByMunicipalityId(aMunicipality.getId());
-            for (RegistrationDTO aRegistrationDTO : registrations) {
-                aRegistrationDTO.setStatus(RegistrationStatus.HOLD.getValue());
-                registrationService.createRegistration(aRegistrationDTO);
-
-                _log.info(MessageFormat.format(LOG_STATUS_2_HOLD, aRegistrationDTO.getId()));
+            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(aMunicipality.getId());
+            if (registration != null) {
+                registration.setStatus(RegistrationStatus.HOLD.getValue());
+                registrationService.createRegistration(registration);
+                _log.info(MessageFormat.format(LOG_STATUS_2_HOLD, registration.getId()));
             }
         }
     }
@@ -249,7 +247,7 @@ public class BeneficiaryService {
 
         /* Iterate in municipality list */
         for(MunicipalityDTO municipalityDTO: municipalityDTOSList){
-            List<RegistrationDTO> listRegistrations = registrationService.getRegistrationsByMunicipalityId(municipalityDTO.getId());
+            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
             BeneficiaryListDTO beneficiaryListDTO = new BeneficiaryListDTO();
             LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
 
@@ -269,18 +267,17 @@ public class BeneficiaryService {
 
                 /* Adds registrations left in the DTO */
                 List<RegistrationDTO> regs = beneficiaryListDTO.getRegistrations();
-                for(RegistrationDTO reg: listRegistrations){
-                    if(!regs.contains(reg)){
-                        regs.add(reg);
-                    }
+                if (!regs.contains(registration)) {
+                    regs.add(registration);
                 }
                 beneficiaryListDTO.setRegistrations(regs);
-            }
-            else{
+            } else{
                 municipalities.add(municipalityDTO.getName());
                 beneficiaryListDTO.setNumRegistrations(1);
                 beneficiaryListDTO.setLau(lauDTO);
-                beneficiaryListDTO.setRegistrations(listRegistrations);
+                List<RegistrationDTO> regs = new ArrayList<>();
+                regs.add(registration);
+                beneficiaryListDTO.setRegistrations(regs);
                 beneficiaryListDTOS.add(beneficiaryListDTO);
             }
         }
@@ -385,18 +382,16 @@ public class BeneficiaryService {
         for (MunicipalityDTO municipality : municipalities) {
             System.out.println("MUNICIPALITY whatever");
             BeneficiaryDTO beneficiary = new BeneficiaryDTO();
-            List<RegistrationDTO> registrations = registrationService.getRegistrationsByMunicipalityId(municipality.getId());
-            for (RegistrationDTO registration : registrations) {
-                System.out.println("REGISTRATION something");
+            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipality.getId());
+            if (registration != null) {
                 if (registration.getRole().equals(REPRESENTATIVE)) {
-                    System.out.println("Let's set the user");
                     beneficiary.setUser(userService.getUserById(registration.getUserId()));
                 }
             }
             List<MunicipalityDTO> municipalityList = new ArrayList<>();
             municipalityList.add(municipality);
             beneficiary.setMunicipalities(municipalityList);
-            if (registrations.size() > 1) {
+            if (registration != null) {
                 beneficiary.setRepresentsMultipleMunicipalities(true);
             } else {
                 beneficiary.setRepresentsMultipleMunicipalities(false);

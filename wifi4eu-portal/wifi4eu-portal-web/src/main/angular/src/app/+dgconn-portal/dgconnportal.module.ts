@@ -11,7 +11,7 @@ import {DgConnManageLauComponent} from "./+manage-lau/manage-lau.component";
 import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 import { PaginatorModule } from "primeng/primeng";
 import { SharedModule as SharedNgModule } from 'primeng/primeng';
-import { DgConnBeneficiaryRegistrations2Component } from "app/+dgconn-portal/+beneficiary-registrations2/beneficiary-registrations2.component";
+import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-registrations/+details/beneficiary-registrations-details.component";
 
 @NgModule({
     imports: [
@@ -24,9 +24,9 @@ import { DgConnBeneficiaryRegistrations2Component } from "app/+dgconn-portal/+be
         DgConnStatisticsComponent, 
         DgConnSupplierRegistrationsComponent, 
         DgConnBeneficiaryRegistrationsComponent,
+        DgConnBeneficiaryRegistrationsDetailsComponent,
         DgConnManageLauComponent,
-        DgConnDiscussionComponent,
-        DgConnBeneficiaryRegistrations2Component
+        DgConnDiscussionComponent
     ],
     bootstrap: [DgConnPortalComponent]
 })

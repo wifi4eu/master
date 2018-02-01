@@ -8,7 +8,7 @@ import {DgConnSupplierRegistrationsComponent} from "./+supplier-registrations/su
 import {DgConnBeneficiaryRegistrationsComponent} from "./+beneficiary-registrations/beneficiary-registrations.component";
 import {DgConnManageLauComponent} from "./+manage-lau/manage-lau.component";
 import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
-import { DgConnBeneficiaryRegistrations2Component } from "app/+dgconn-portal/+beneficiary-registrations2/beneficiary-registrations2.component";
+import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-registrations/+details/beneficiary-registrations-details.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -31,9 +31,9 @@ import { DgConnBeneficiaryRegistrations2Component } from "app/+dgconn-portal/+be
             path: 'beneficiary-registrations',
             component: DgConnBeneficiaryRegistrationsComponent,
         }, {
-            path: 'beneficiary-registrations-new',
-            component: DgConnBeneficiaryRegistrations2Component,
-        },{
+            path: 'beneficiary-registrations/:id',
+            component: DgConnBeneficiaryRegistrationsDetailsComponent,
+        }, {
             path: 'manage-lau',
             component: DgConnManageLauComponent,
         }, {
