@@ -10,8 +10,12 @@ import {DiscussionComponent} from "./+discussion/discussion.component";
     imports: [RouterModule.forChild([
         {
             path: '',
+            redirectTo: 'voucher'
+        }, 
+        {
+            path: 'voucher',
             component: SupplierPortalComponent,
-        }, {
+        },{
             path: 'installation/:id',
             component: SupplierInstallationComponent,
         }, {

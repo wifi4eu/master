@@ -126,7 +126,7 @@ export class AppComponent implements OnInit {
         this.children[1] = [
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.suppPortal'),
-                url: '/supplier-portal'
+                url: '/supplier-portal/voucher'
             }),
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.myAccount'),
@@ -140,7 +140,7 @@ export class AppComponent implements OnInit {
             }),
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.appPortal'),
-                url: '/beneficiary-portal'
+                url: '/beneficiary-portal/voucher'
             })
         ];
         this.children[3] = [
@@ -150,7 +150,7 @@ export class AppComponent implements OnInit {
             }),
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.appPortal'),
-                url: '/beneficiary-portal'
+                url: '/beneficiary-portal/voucher'
             })
         ];
         this.children[4] = [
