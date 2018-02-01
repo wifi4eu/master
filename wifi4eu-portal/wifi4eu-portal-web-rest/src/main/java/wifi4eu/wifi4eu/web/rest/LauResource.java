@@ -37,15 +37,7 @@ public class LauResource {
     @ResponseBody
     public LauDTO getLauById(@PathVariable("lauId") final Integer lauId) {
         _log.info(GET_LAU_BY_ID + lauId);
-
-        AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-
-        LauService service = (LauService) context.getBean("lService");
-
-//        ((AbstractApplicationContext) context).close();
-
-        return service.getLauById(lauId);
-        //return lauService.getLauById(lauId);
+        return lauService.getLauById(lauId);
     }
 
     @ApiOperation(value = "Get lau by countryCode and lau2")
@@ -77,29 +69,7 @@ public class LauResource {
     @ResponseBody
     public List<LauDTO> getLausByCountryCodeAndName1ContainingIgnoreCase(@PathVariable("countryCode") final String countryCode, @PathVariable("name1") final String name1) {
         _log.info(GET_LAUS_BY_COUNTRY_CODE_AND_NAME1_STARTING_WITH_IGNORE_CASE + countryCode + "," + name1);
-
-//        AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-//
-//        LauService service = (LauService) context.getBean("lService");
-//        //Coger el obj a devolver
-//        //((AbstractApplicationContext) context).close();
-//
-//        return service.getLausByCountryCodeAndName1ContainingIgnoreCase(countryCode, name1);
-
-
         return lauService.getLausByCountryCodeAndName1ContainingIgnoreCase(countryCode, name1);
-
-
-/*
-        AbstractApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-
-        LauService service = (LauService) context.getBean("lService");
-
-//        ((AbstractApplicationContext) context).close();
-
-        return service.getLauById(lauId);
-        //return lauService.getLauById(lauId);
-*/
     }
 
     @ApiOperation(value = "Update Lau Physical Address")

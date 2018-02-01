@@ -18,7 +18,6 @@ public class LauService {
     @Autowired
     LauRepository lauRepository;
 
-    @Cacheable("laus")
     public LauDTO getLauById(int lauId) {
         return lauMapper.toDTO(lauRepository.findOne(lauId));
     }
