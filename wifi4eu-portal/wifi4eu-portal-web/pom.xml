@@ -53,35 +53,14 @@
                   <goal>exec</goal>
                 </goals>
                 <configuration>
-                  <executable>npm</executable>
-                  <workingDirectory>src/main/angular</workingDirectory>
-                  <arguments>
-                    <argument>run</argument>
-                    <argument>clean</argument>
-
-                    <argument>&amp;&amp;</argument>
-
-                    <argument>ng</argument>
-                    <argument>build</argument>
-                    <argument>--env=${ng.env}</argument>
-
-                    <argument>&amp;&amp;</argument>
-
-                    <argument>npm</argument>
-                    <argument>run</argument>
-                    <argument>compress_all_js</argument>
-                  </arguments>
                   <executable>ng</executable>
                   <workingDirectory>src/main/angular</workingDirectory>
                   <arguments>
                     <argument>build</argument>
                     <argument>--env=${ng.env}</argument>
-                  </arguments>
-                  <executable>npm</executable>
-                  <workingDirectory>src/main/angular</workingDirectory>
-                  <arguments>
-                    <argument>run</argument>
-                    <argument>compress_all_js</argument>
+                    <argument>--prod</argument>
+                    <argument>--aot</argument>
+                    <argument>false</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -109,23 +88,11 @@
                   <workingDirectory>src/main/angular</workingDirectory>
                   <arguments>
                     <argument>/c</argument>
-                    <argument>npm</argument>
-                    <argument>run</argument>
-                    <argument>clean</argument>
-
-                    <argument>&amp;&amp;</argument>
-
-                    <argument>ng</argument>
-                    <argument>build</argument>
-                    <argument>--base-href</argument>
-                    <argument>/wifi4eu/</argument>
+                    <argument>"ng build --base-href /wifi4eu-public/"</argument>
                     <argument>--env=${ng.env}</argument>
-
-                    <argument>&amp;&amp;</argument>
-
-                    <argument>npm</argument>
-                    <argument>run</argument>
-                    <argument>compress_all_js</argument>
+                    <argument>--prod</argument>
+                    <argument>--aot</argument>
+                    <argument>false</argument>
                   </arguments>
                 </configuration>
               </execution>

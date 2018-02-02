@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.MailService;
 
 import java.text.MessageFormat;
 import java.util.*;
@@ -60,6 +61,9 @@ public class BeneficiaryService {
 
     @Autowired
     PermissionChecker permissionChecker;
+
+    @Autowired
+    MailService mailService;
 
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryService.class);
 
@@ -149,7 +153,16 @@ public class BeneficiaryService {
             permissionChecker.addTablePermissions(userDTO, Integer.toString(municipalityDTO.getId()),
                     RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + municipalityDTO.getId() + " - Country: " + municipalityDTO.getCountry() + " - Lau Id: " + municipalityDTO.getLauId());
 
+
             if (municipalitiesWithSameLau.size() > 1) {
+
+                Locale locale = userService.initLocale();
+                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                String subject = bundle.getString("mail.discussionMunicipality.subject");
+                String msgBody = bundle.getString("mail.discussionMunicipality.body");
+                if (!userService.isLocalHost()) {
+                    mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                }
 
                 /* verificamos que existe el thread */
 
@@ -246,13 +259,13 @@ public class BeneficiaryService {
         List<BeneficiaryListDTO> beneficiaryListDTOS = new ArrayList<>();
 
         /* Iterate in municipality list */
-        for(MunicipalityDTO municipalityDTO: municipalityDTOSList){
+        for (MunicipalityDTO municipalityDTO : municipalityDTOSList) {
             RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
             BeneficiaryListDTO beneficiaryListDTO = new BeneficiaryListDTO();
             LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
 
             /* Checks that the municipality name is in the municipalities array */
-            if(municipalities.contains(municipalityDTO.getName())){
+            if (municipalities.contains(municipalityDTO.getName())) {
                 /* Get index in the array */
                 int index = municipalities.indexOf(municipalityDTO.getName());
 
@@ -260,7 +273,7 @@ public class BeneficiaryService {
                 beneficiaryListDTO = beneficiaryListDTOS.get(index);
 
                 /* Increments number of registrations because it's the same lau */
-                beneficiaryListDTO.setNumRegistrations(beneficiaryListDTO.getNumRegistrations()+1);
+                beneficiaryListDTO.setNumRegistrations(beneficiaryListDTO.getNumRegistrations() + 1);
 
                 /* Update object in the position of the list of BeneficiaryListDTO */
                 beneficiaryListDTOS.set(index, beneficiaryListDTO);
@@ -271,7 +284,7 @@ public class BeneficiaryService {
                     regs.add(registration);
                 }
                 beneficiaryListDTO.setRegistrations(regs);
-            } else{
+            } else {
                 municipalities.add(municipalityDTO.getName());
                 beneficiaryListDTO.setNumRegistrations(1);
                 beneficiaryListDTO.setLau(lauDTO);
@@ -282,8 +295,8 @@ public class BeneficiaryService {
             }
         }
         getIssueOfRegistration(beneficiaryListDTOS);
-        for (BeneficiaryListDTO beneficiaryListDTO: beneficiaryListDTOS){
-            for(RegistrationDTO registrationDTO: beneficiaryListDTO.getRegistrations()){
+        for (BeneficiaryListDTO beneficiaryListDTO : beneficiaryListDTOS) {
+            for (RegistrationDTO registrationDTO : beneficiaryListDTO.getRegistrations()) {
                 beneficiaryListDTO.setStatus(getStatusApplicationByRegistration(registrationDTO.getId()));
             }
             beneficiaryListDTO.setMediation(getMediationStatusByLau(beneficiaryListDTO.getLau().getId()));
@@ -292,19 +305,18 @@ public class BeneficiaryService {
         return beneficiaryListDTOS;
     }
 
-    public boolean getStatusApplicationByRegistration(int registrationId){
+    public boolean getStatusApplicationByRegistration(int registrationId) {
         /* Get all applications with a registration id */
         List<ApplicationDTO> applicationDTOList = applicationService.getApplicationsByRegistrationId(registrationId);
         /* Return true if a application exist (one or more), return false if doesn't have any record */
-        if(applicationDTOList.size() > 0){
+        if (applicationDTOList.size() > 0) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    public void getIssueOfRegistration(List<BeneficiaryListDTO> beneficiaryListDTOList){
+    public void getIssueOfRegistration(List<BeneficiaryListDTO> beneficiaryListDTOList) {
         /* INVALID -> TODOS LOS REGISTRATIONS TIENE STATUS 1 */
 
         /* RESOLVED -> UNA 2 DEMAS 1 */
@@ -318,19 +330,19 @@ public class BeneficiaryService {
         String validPattern = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.(?:[A-Z]{2,}|com|net|info|org|eu" +
                 "|bg|cs|da|de|el|es|et|fi|fr|ga|hr|hu|it|lt|lv|mt|nl|pl|pt|ro|sk|sl|sv|uk|ie|is|no))*$";
 
-        for(BeneficiaryListDTO beneficiaryListDTO: beneficiaryListDTOList){
+        for (BeneficiaryListDTO beneficiaryListDTO : beneficiaryListDTOList) {
 
             int numDuplicated = 0;
             int numInvalids = 0;
             int numResolved = 0;
 
-            for(RegistrationDTO registrationDTO: beneficiaryListDTO.getRegistrations()){
+            for (RegistrationDTO registrationDTO : beneficiaryListDTO.getRegistrations()) {
                 UserDTO userDTO = userService.getUserById(registrationDTO.getUserId());
-                if(!userDTO.getEcasEmail().matches(validPattern)){
+                if (!userDTO.getEcasEmail().matches(validPattern)) {
                     beneficiaryListDTO.setIssue(1);
                     break;
                 }
-                switch (registrationDTO.getStatus()){
+                switch (registrationDTO.getStatus()) {
                     case 0:
                         numDuplicated += 1;
                         break;
@@ -343,20 +355,16 @@ public class BeneficiaryService {
                 }
             }
 
-            if((numResolved + numInvalids) == beneficiaryListDTO.getRegistrations().size() && numResolved > 0){
+            if ((numResolved + numInvalids) == beneficiaryListDTO.getRegistrations().size() && numResolved > 0) {
                 beneficiaryListDTO.setIssue(3);
-            }
-            else if(numDuplicated > 1){
+            } else if (numDuplicated > 1) {
                 beneficiaryListDTO.setIssue(2);
-            }
-            else if(numInvalids == beneficiaryListDTO.getRegistrations().size()){
+            } else if (numInvalids == beneficiaryListDTO.getRegistrations().size()) {
                 beneficiaryListDTO.setIssue(4);
-            }
-            else{
-                if(beneficiaryListDTO.getIssue() != null) {
+            } else {
+                if (beneficiaryListDTO.getIssue() != null) {
                     beneficiaryListDTO.setIssue(1);
-                }
-                else{
+                } else {
                     beneficiaryListDTO.setIssue(0);
                 }
             }
@@ -367,10 +375,9 @@ public class BeneficiaryService {
         String lauIdParsed = String.valueOf(laudId);
         /* Return only threads with type 1 (LAU) and with a specific laud id */
         ThreadDTO threadDTO = threadService.getThreadByTypeAndReason(Constant.THREAD_REASON_LAU, lauIdParsed);
-        if(threadDTO != null){
+        if (threadDTO != null) {
             return threadDTO.isMediation();
-        }
-        else{
+        } else {
             return false;
         }
     }
