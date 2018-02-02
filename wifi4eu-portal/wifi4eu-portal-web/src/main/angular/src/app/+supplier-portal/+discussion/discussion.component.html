@@ -3,7 +3,8 @@
 <div class="container font beneficiaryContent">
     <div class="ui-g-12" *ngIf="showAlert">
         <span class="ui-g-2"></span>
-        <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussionForum.discussion.growl' | translate}}</ux-alert>
+        <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussionForum.discussion.growl' | translate}}
+        </ux-alert>
         <span class="ui-g-2"></span>
     </div>
     <p class="beneficiaryTitle marginTop">{{ 'discussionForum.legalEntity.issues' | translate }}</p>
@@ -11,7 +12,7 @@
     <p class="beneficiaryMayor marginTopCountdown">{{ 'shared.legalentity.label' | translate }}</p>
     <hr class="beneficiaryHr">
     <ux-accordion-boxes>
-        <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true">
+        <custom-accordion-box [isExpanded]="true" [rightSide]="true" [closable]="true">
             <div class="ui-g">
                 <p class="discussionForumMayors marginTopCountdown"
                    [innerHTML]="'discussionForum.beneficiary.registration1' | translate:{selfRegistration:user.id}">
@@ -52,7 +53,8 @@
             <div class="ui-g" *ngIf="hasAuthor">
                 <div class="ui-g-6" *ngFor="let supplier of otherSuppliers; let i = index">
                     <p class="discussionForumMayors marginTopCountdown">
-                        {{ 'discussionForum.beneficiary.registrationNumber' | translate }} <span>{{supplier.userId}}</span>
+                        {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
+                        <span>{{supplier.userId}}</span>
                     </p>
 
                     <div class="ui-g discussionForumNoBorders">
@@ -113,7 +115,8 @@
                 <div class="ui-g-12">
                     <div class="ui-g-3 backgroundMessage">
                         <p class="authorMessage">
-                            {{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{thread.messages[i].authorId}}
+                            {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
+                            {{thread.messages[i].authorId}}
                         </p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
@@ -181,7 +184,8 @@
                 <div class="beneficiaryTitle center">
                     {{ 'discussionForum.mediationRequest.title' | translate }}
                 </div>
-                <p class="center newMessageDiscussionMargins">{{ 'discussionForum.mediationRequest.text' | translate }}</p>
+                <p class="center newMessageDiscussionMargins">{{ 'discussionForum.mediationRequest.text' | translate
+                    }}</p>
                 <br>
                 <p class="center">{{ 'discussionForum.mediationRequest.selectText' | translate }}</p>
                 <!--<select class="selectDiscussion">-->

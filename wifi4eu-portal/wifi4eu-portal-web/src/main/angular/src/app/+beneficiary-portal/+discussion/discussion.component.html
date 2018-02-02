@@ -12,7 +12,7 @@
     <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.beneficiary.registrations' | translate }}</p>
     <hr class="beneficiaryHr">
     <ux-accordion-boxes>
-        <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true" *ngIf="municipality">
+        <custom-accordion-box [isExpanded]="true" [rightSide]="true" [closable]="true" *ngIf="municipality">
             <div class="ui-g">
                 <p class="discussionForumMayors marginTopCountdown"
                    [innerHTML]="'discussionForum.beneficiary.registration1' | translate:{selfRegistration:user.id}">
