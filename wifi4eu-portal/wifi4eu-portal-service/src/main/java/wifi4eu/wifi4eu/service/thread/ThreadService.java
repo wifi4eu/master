@@ -47,6 +47,15 @@ public class ThreadService {
         return threadMapper.toDTO(threadRepository.findOne(threadId));
     }
 
+    public ThreadDTO setMediationToThread(int threadId) {
+        ThreadDTO threadDTO = getThreadById(threadId);
+        if(!threadDTO.isMediation()){
+            threadDTO.setMediation(true);
+        }
+        threadDTO.setMessages(null);
+        return threadMapper.toDTO(threadRepository.save(threadMapper.toEntity(threadDTO)));
+    }
+
     @Transactional
     public ThreadDTO createThread(ThreadDTO threadDTO) {
         if (threadDTO.getMessages() == null) {

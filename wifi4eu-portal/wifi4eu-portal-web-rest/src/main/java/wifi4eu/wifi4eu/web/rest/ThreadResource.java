@@ -82,6 +82,21 @@ public class ThreadResource {
         return threadService.getThreadByTypeAndReason(type, reason);
     }
 
+    @ApiOperation(value = "Set mediation to thread")
+    @RequestMapping(value = "{threadId}/setMediation", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO askMediationThread(@PathVariable("threadId") final Integer threadId) {
+        try {
+            _log.info("setMediationThread");
+            ThreadDTO resThread = threadService.setMediationToThread(threadId);
+            return new ResponseDTO(true, resThread, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'setMediationThread' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
 //    @ApiOperation(value = "Get all the thread that a user is in.")
 //    @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
 //    @ResponseBody
