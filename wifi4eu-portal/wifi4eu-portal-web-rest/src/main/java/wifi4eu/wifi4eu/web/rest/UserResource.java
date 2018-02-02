@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,9 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -62,9 +65,6 @@ public class UserResource {
     public UserDTO getUserById(@PathVariable("userId") final Integer userId) {
         _log.info("getUserById: " + userId);
 
-        //check permission
-        permissionChecker.check(RightConstants.USER_TABLE+userId);
-
         UserDTO resUser = userService.getUserById(userId);
         resUser.setPassword(null);
         return resUser;
@@ -92,7 +92,8 @@ public class UserResource {
     @RequestMapping(value = "/saveChanges", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO) {
+    public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO,
+                                       HttpServletResponse response) throws IOException {
         try {
             _log.info("saveUserChanges");
 
@@ -105,18 +106,26 @@ public class UserResource {
             UserDTO resUser = userService.saveUserChanges(userDTO);
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'saveUserChanges' operation.", ade);
+            }
+            response.sendError(HttpStatus.FORBIDDEN.value());
+            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'saveUserChanges' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
 
     @ApiOperation(value = "Delete user by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseDTO deleteUser(@RequestBody final Integer userId) {
+    public ResponseDTO deleteUser(@RequestBody final Integer userId,
+                                  HttpServletResponse response) throws IOException {
         try {
             _log.info("deleteUser: " + userId);
 
@@ -125,11 +134,18 @@ public class UserResource {
             UserDTO resUser = userService.deleteUser(userId);
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'deleteUser' operation.", ade);
+            }
+            response.sendError(HttpStatus.FORBIDDEN.value());
+            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteUser' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
 
