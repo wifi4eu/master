@@ -2,7 +2,6 @@ import {NgModule} from "@angular/core";
 import {SharedModule} from "../shared/shared.module";
 import {DgConnectPortalRoutingModule} from "./dgconnportal-routing.module";
 import {DgConnPortalComponent} from "./dgconnportal.component";
-import {DgConnTimelineComponent} from "./+timeline/timeline.component";
 import {DgConnPublicationComponent} from "./+publication/publication.component";
 import {DgConnVoucherComponent} from "app/+dgconn-portal/+voucher/voucher.component";
 import {DgConnStatisticsComponent} from "./+statistics/statistics.component";
@@ -12,19 +11,20 @@ import {DgConnManageLauComponent} from "./+manage-lau/manage-lau.component";
 import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 import { PaginatorModule } from "primeng/primeng";
 import { SharedModule as SharedNgModule } from 'primeng/primeng';
+import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-registrations/+details/beneficiary-registrations-details.component";
 
 @NgModule({
     imports: [
         SharedModule, DgConnectPortalRoutingModule, SharedNgModule
     ],
     declarations: [
-        DgConnPortalComponent, 
-        DgConnTimelineComponent, 
+        DgConnPortalComponent,
         DgConnPublicationComponent, 
         DgConnVoucherComponent,
         DgConnStatisticsComponent, 
         DgConnSupplierRegistrationsComponent, 
         DgConnBeneficiaryRegistrationsComponent,
+        DgConnBeneficiaryRegistrationsDetailsComponent,
         DgConnManageLauComponent,
         DgConnDiscussionComponent
     ],

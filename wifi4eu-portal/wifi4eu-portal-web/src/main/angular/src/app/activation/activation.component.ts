@@ -24,7 +24,7 @@ export class ActivationComponent implements OnInit {
                     (data: ResponseDTOBase) => {
                         if (data.success) {
                             let translatedString = 'User activation success.';
-                            this.translateService.get('useractivation.success').subscribe(
+                            this.translateService.get('shared.useractivation.success').subscribe(
                                 (translation: string) => {
                                     translatedString = translation;
                                 }
@@ -34,10 +34,10 @@ export class ActivationComponent implements OnInit {
                                 summary: 'SUCCESS',
                                 detail: translatedString
                             });
-                            this.router.navigateByUrl('/home');
+                            this.router.navigateByUrl('/beneficiary-portal');
                         } else {
                             let translatedString = 'Could not activate your account.';
-                            this.translateService.get('useractivation.failure').subscribe(
+                            this.translateService.get('shared.useractivation.failure').subscribe(
                                 (translation: string) => {
                                     translatedString = translation;
                                 }
@@ -51,7 +51,7 @@ export class ActivationComponent implements OnInit {
                         }
                     }, error => {
                         let translatedString = 'Could not activate your account.';
-                        this.translateService.get('useractivation.failure').subscribe(
+                        this.translateService.get('shared.useractivation.failure').subscribe(
                             (translation: string) => {
                                 translatedString = translation;
                             }

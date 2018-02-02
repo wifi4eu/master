@@ -2,7 +2,7 @@
     <div class="ui-g-12 center">
         <div id="component-title">
             <h3 class="beneficiaryTitle labelModal">
-                {{ 'request.additionalInfo.title' | translate }}
+                {{ 'suppPortal.request.additionalInfo.title' | translate }}
             </h3>
         </div>
     </div>
@@ -11,23 +11,23 @@
     <div class="ui-lg-3"></div>
     <div class="ui-g-12 ui-md-12 ui-lg-6">
         <p *ngIf="supplier" class="label" style="text-align: center;"
-           [innerHTML]="'request.additionalInfo.supplier.instructions' | translate">
+           [innerHTML]="'suppPortal.request.additionalInfo.supplier.instructions' | translate">
         </p>
     </div>
     <div class="ui-lg-3"></div>
 </div>
-<form #legalForm="ngForm"(ngSubmit)="onSubmit()" *ngIf="supplier && user">
+<form #legalForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="supplier && user">
     <div class="ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <h2 class="discussionForumMayors marginTopCountdown">
-                {{ 'yourDetails.title' | translate }}</h2>
+                {{ 'benefRegistration.yourDetails.title' | translate }}</h2>
         </div>
         <div class="ui-lg-3"></div>
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="supplier">{{ 'company.name' | translate }}</label>
+                <label class="label" for="supplier">{{ 'suppRegistration.company.name' | translate }}</label>
                 <label class="form-control" id="supplier" name="supplier"><b>{{supplier.name}}</b></label>
             </div>
         </div>
@@ -35,7 +35,7 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="name">{{ 'contact.name' | translate }}</label>
+                <label class="label" for="name">{{ 'suppRegistration.contact.person' | translate }}</label>
                 <label class="form-control" id="name" name="name"><b>{{user.name}}</b></label>
             </div>
         </div>
@@ -43,7 +43,7 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="surname">{{ 'surname.label' | translate }}</label>
+                <label class="label" for="surname">{{ 'shared.surname.label' | translate }}</label>
                 <label class="form-control " id="surname" name="surname"><b>{{user.surname}}</b></label>
             </div>
         </div>
@@ -59,24 +59,26 @@
     <div class="ui-g">
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <p>{{ 'request.additionalInfo.provideDocs1' | translate }}</p>
+            <p>{{ 'suppPortal.request.additionalInfo.provideDocs1' | translate }}</p>
         </div>
         <div class="ui-lg-3"></div>
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="document1">{{ 'request.additionalInfo.supplier.doc1.label' | translate }}</label>
+                <label class="label" for="document1">{{ 'suppPortal.request.additionalInfo.supplier.doc1.label' |
+                    translate }}</label>
                 <input #document1 id="document1" name="document1" (change)="uploadFile($event, 0)"
-                       type="file" class="upload" accept=".doc, .docx, .pdf" required />
+                       type="file" class="upload" accept=".doc, .docx, .pdf" required/>
             </div>
         </div>
         <div class="ui-lg-3"></div>
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
             <div class="form-group">
-                <label class="label" for="document2">{{ 'request.additionalInfo.supplier.doc2.label' | translate }}</label>
+                <label class="label" for="document2">{{ 'benefPortal.request.additionalInfo.supplier.doc2.label' |
+                    translate }}</label>
                 <input #document2 id="document2" name="document2" (change)="uploadFile($event, 1)"
-                       type="file" class="upload" accept=".doc, .docx, .pdf" required />
+                       type="file" class="upload" accept=".doc, .docx, .pdf" required/>
             </div>
         </div>
         <div class="ui-lg-3"></div>
@@ -87,7 +89,7 @@
         <div class="ui-lg-3"></div>
         <div class="ui-lg-3"></div>
         <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <p>{{ 'request.additionalInfo.provideDocs2' | translate }}</p>
+            <p>{{ 'suppPortal.request.additionalInfo.provideDocs2' | translate }}</p>
         </div>
         <div class="ui-lg-3"></div>
     </div>
@@ -95,12 +97,14 @@
         <div class="ui-lg-3"></div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
             <a href="#/supplier-portal">
-                <button type="button" class="btn btn-primary cancel-button">{{ 'cancel.button' | translate }}</button>
+                <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' | translate }}
+                </button>
             </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary publish-button" [disabled]="!legalForm.form.valid || !allFilesUploaded">
-                {{ 'confirm.button' | translate }}
+            <button type="submit" class="btn btn-primary publish-button"
+                    [disabled]="!legalForm.form.valid || !allFilesUploaded">
+                {{ 'shared.confirm.button' | translate }}
             </button>
         </div>
         <div class="ui-lg-3"></div>
@@ -109,6 +113,6 @@
 <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
           [closable]="false" [closeOnEscape]="false">
     <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
-    <h1 class="Modalh1Confirmation">{{ 'loading.modal.title' | translate }}</h1>
-    <p class="ModalpConfirmation">{{ 'loading.modal.title3' | translate }}</p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.title3' | translate }}</p>
 </p-dialog>

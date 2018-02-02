@@ -2,7 +2,7 @@
 <div id="step2-title" class="ui-g">
     <div class="ui-g-12 center">
         <div id="component-title">
-            <h3 class="beneficiaryTitle labelModal">{{ 'step2.supplier' | translate }}</h3>
+            <h3 class="beneficiaryTitle labelModal">{{ 'suppRegistration.step2.supplier' | translate }}</h3>
         </div>
     </div>
 </div>
@@ -12,11 +12,13 @@
     <div class="ui-lg-1"></div>
     <div class="ui-g-12 ui-md-12 ui-lg-5 marginSelect">
         <!-- select countries -->
+        <label class="label">{{ 'suppRegistration.registration.selectCountry' | translate }}</label>
         <p-multiSelect [options]="allCountriesSelect" [(ngModel)]="selectedCountries" (onChange)="checkIfRegionsSelected()"></p-multiSelect>
     </div>
-    <div class="ui-g-12 ui-md-12 ui-lg-5 white">
+    <div class="ui-g-12 ui-md-12 ui-lg-5">
         <!-- select regions from specific country -->
-        <p-tabView>
+        <label class="label">{{ 'suppRegistration.registration.chooseAreas' | translate }}</label>
+        <p-tabView class="white">
             <p-tabPanel *ngFor="let country of selectedCountries;" [header]="country.label">
                 <div class="ui-g">
                     <p-multiSelect [options]="allRegionsSelect[country.label]" [(ngModel)]="selectedRegions[country.label]" (onChange)="checkIfRegionsSelected()">
@@ -32,12 +34,12 @@
     <div class="ui-lg-3"></div>
     <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
         <button type="button" class="btn btn-primary cancel-button" (click)="back()">
-            {{ 'back.button' | translate }}
+            {{ 'shared.back.button' | translate }}
         </button>
     </div>
     <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
         <button type="submit" class="btn btn-primary publish-button" (click)="submit()" [disabled]="!areRegionsSelected">
-            {{ 'next.button' | translate }}
+            {{ 'shared.next.button' | translate }}
         </button>
     </div>
     <div class="ui-lg-3"></div>

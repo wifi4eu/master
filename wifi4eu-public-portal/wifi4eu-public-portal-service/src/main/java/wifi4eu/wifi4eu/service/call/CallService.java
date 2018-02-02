@@ -24,20 +24,4 @@ public class CallService {
     public CallDTO getCallById(int callId) {
         return callMapper.toDTO(callRepository.findOne(callId));
     }
-
-    public CallDTO createCall(CallDTO callDTO) {
-        return callMapper.toDTO(callRepository.save(callMapper.toEntity(callDTO)));
-    }
-
-    public CallDTO deleteCall(int callId) {
-
-        //TODO: change to a logic delete
-        CallDTO callDTO = callMapper.toDTO(callRepository.findOne(callId));
-        if (callDTO != null) {
-            callRepository.delete(callMapper.toEntity(callDTO));
-            return callDTO;
-        } else {
-            return null;
-        }
-    }
 }

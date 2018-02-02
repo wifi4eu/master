@@ -8,6 +8,7 @@ import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.supplier.SuppliedRegion;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
@@ -52,6 +53,7 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.findOne(supplierId));
     }
 
+    @Transactional
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
         if (supplierDTO.getSuppliedRegions().isEmpty()) {
             return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
@@ -73,6 +75,7 @@ public class SupplierService {
         }
     }
 
+    @Transactional
     public SupplierDTO deleteSupplier(int supplierId) {
         //TODO: change to a soft delete
         SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(supplierId));
@@ -184,15 +187,15 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
     }
 
-    public List<SuppliedRegionDTO> getSuppliedRegionsGroupedByRegionId() {
-        return suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsGroupedByRegionId()));
-    }
-
     public List<SupplierDTO> getSuppliersByVat(String vat) {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByVat(vat)));
     }
 
     public List<SupplierDTO> getSuppliersByAccountNumber(String accountNumber) {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByAccountNumber(accountNumber)));
+    }
+
+    public List<Object> getSuppliedRegionsCountGroupedByRegionId() {
+        return Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsCountGroupedByRegionId());
     }
 }

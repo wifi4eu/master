@@ -1,24 +1,24 @@
-import { Component } from "@angular/core";
-import { BeneficiaryApi } from "../../shared/swagger/api/BeneficiaryApi";
-import { ThreadApi } from "../../shared/swagger/api/ThreadApi";
-import { ThreadmessagesApi } from "../../shared/swagger/api/ThreadmessagesApi";
-import { UserApi } from "../../shared/swagger/api/UserApi";
-import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
-import { BeneficiaryDTOBase } from "../../shared/swagger/model/BeneficiaryDTO";
-import { ThreadDTOBase } from "../../shared/swagger/model/ThreadDTO";
-import { ThreadMessageDTOBase } from "../../shared/swagger/model/ThreadMessageDTO";
-import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
-import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
-import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
-import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
-import { LocalStorageService } from "angular-2-local-storage";
-import { SharedService } from "../../shared/shared.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { UserThreadsApi } from "../../shared/swagger/api/UserThreadsApi";
-import { UserThreadsDTO, UserThreadsDTOBase } from "../../shared/swagger/model/UserThreadsDTO";
-import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
+import {Component} from "@angular/core";
+import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
+import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
+import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
+import {UserApi} from "../../shared/swagger/api/UserApi";
+import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
+import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
+import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
+import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
+import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
+import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
+import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
+import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
+import {LocalStorageService} from "angular-2-local-storage";
+import {SharedService} from "../../shared/shared.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
+import {UserThreadsDTO, UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
+import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import index from "@angular/cli/lib/cli";
-import { isNumber } from "util";
+import {isNumber} from "util";
 
 @Component({
     selector: 'discussion-component',
@@ -37,7 +37,7 @@ export class DiscussionComponent {
     private displayMediation: boolean = false;
     private mediationBlocked: boolean = false;
     private showAlert: boolean = false;
-    private registration: RegistrationDTOBase[] = [];
+    private registrations: RegistrationDTOBase[] = [];
     private lauId: number;
     private threadId: number;
     private hasMessages: boolean = false;
@@ -68,9 +68,9 @@ export class DiscussionComponent {
         if (this.user != null) {
             if (this.user.type == 2 || this.user.type == 3) {
                 this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-                    (registration: RegistrationDTOBase[]) => {
-                        this.registration = registration;
-                        this.municipalityApi.getMunicipalityById(this.registration[0].municipalityId).subscribe(
+                    (registrations: RegistrationDTOBase[]) => {
+                        this.registrations = registrations;
+                        this.municipalityApi.getMunicipalityById(this.registrations[0].municipalityId).subscribe(
                             (municipality: MunicipalityDTOBase) => {
                                 this.municipality = municipality;
                                 this.lauId = this.municipality.lauId;
@@ -78,13 +78,15 @@ export class DiscussionComponent {
                                     (municipalities: MunicipalityDTOBase[]) => {
                                         for (let i = 0; i < municipalities.length; i++) {
                                             if (this.municipality.id != municipalities[i].id) {
-                                                this.registrationApi.getRegistrationsByMunicipalityId(municipalities[i].id).subscribe(
-                                                    (registrations: RegistrationDTOBase[]) => {
-                                                        this.municipalities.push(municipalities[i]);
-                                                        this.messageAuthors.push(registrations[0]);
-                                                        this.counter++;
-                                                        if (this.counter >= this.municipalities.length) {
-                                                            this.hasAuthor = true;
+                                                this.registrationApi.getRegistrationByMunicipalityId(municipalities[i].id).subscribe(
+                                                    (registration: RegistrationDTOBase) => {
+                                                        if (registration) {
+                                                            this.municipalities.push(municipalities[i]);
+                                                            this.messageAuthors.push(registrations[0]);
+                                                            this.counter++;
+                                                            if (this.counter >= this.municipalities.length) {
+                                                                this.hasAuthor = true;
+                                                            }
                                                         }
                                                     }, error => {
                                                         console.log(error);
@@ -105,11 +107,11 @@ export class DiscussionComponent {
                     }
                 );
             } else {
-                this.sharedService.growlTranslation('You are not allowed to view this page.', 'error.notallowed', 'warn');
+                this.sharedService.growlTranslation('You are not allowed to view this page.', 'shared.error.notallowed', 'warn');
                 this.router.navigateByUrl('/home');
             }
         } else {
-            this.sharedService.growlTranslation('You are not logged in!', 'error.notloggedin', 'warn');
+            this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
     }
@@ -131,13 +133,13 @@ export class DiscussionComponent {
                     this.thread.messages.push(response.data);
                     // this.messageAuthors.push(this.user);
                     this.hasMessages = true;
-                    this.sharedService.growlTranslation('The message was successfully sent!', 'thread.message.success', 'success');
+                    this.sharedService.growlTranslation('The message was successfully sent!', 'discussionForum.thread.message.success', 'success');
                 } else {
-                    this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'thread.message.error', 'error');
+                    this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
                 }
                 this.displayMessage = false;
             }, error => {
-                this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'thread.message.error', 'error');
+                this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
                 this.displayMessage = false;
             }
         );
@@ -154,10 +156,10 @@ export class DiscussionComponent {
                     this.registrationApi.createRegistration(registration).subscribe(
                         (data: ResponseDTOBase) => {
                             if (data.success) {
-                                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussion.growl', 'success');
+                                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussion.growl', 'success');
                             }
                         }, error => {
-                            this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussion.growl.error', 'error');
+                            this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');
                         }
                     );
                 }
@@ -176,13 +178,13 @@ export class DiscussionComponent {
                             if (data.success) {
                                 registrationCount++;
                                 if (registrationCount >= registrations.length) {
-                                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'beneficiary.deleteApplication.Success', 'success');
+                                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
                                     this.sharedService.logout();
                                     this.router.navigateByUrl('/home');
                                 }
                             }
                         }, error => {
-                            this.sharedService.growlTranslation('An error occurred and your applications could not be deleted.', 'beneficiary.deleteApplication.Failure', 'error');
+                            this.sharedService.growlTranslation('An error occurred and your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
                         }
                     );
                 }

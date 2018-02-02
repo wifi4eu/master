@@ -86,7 +86,7 @@ export class SupplierProfileComponent {
 
             } else {
                 let translatedString = 'You are not allowed to view this page.';
-                this.translateService.get('error.notallowed').subscribe(
+                this.translateService.get('shared.error.notallowed').subscribe(
                     (translation: string) => {
                         translatedString = translation;
                     }
@@ -100,7 +100,7 @@ export class SupplierProfileComponent {
             }
         } else {
             let translatedString = 'You are not logged in!';
-            this.translateService.get('error.notloggedin').subscribe(
+            this.translateService.get('shared.error.notloggedin').subscribe(
                 (translation: string) => {
                     translatedString = translation;
                 }

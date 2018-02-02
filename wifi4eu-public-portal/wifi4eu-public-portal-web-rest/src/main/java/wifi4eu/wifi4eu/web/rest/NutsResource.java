@@ -20,53 +20,23 @@ public class NutsResource {
     @Autowired
     NutsService nutsService;
 
-    Logger _log = LoggerFactory.getLogger(LauResource.class);
+    Logger _log = LoggerFactory.getLogger(NutsResource.class);
 
-    @ApiOperation(value = "Get all nuts")
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<NutsDTO> allNuts() {
-        _log.info("allNuts");
-        return nutsService.getAllNuts();
-    }
-
-    @ApiOperation(value = "get nuts by specific id")
+    @ApiOperation(value = "Get nuts by specific id")
     @RequestMapping(value = "/{nutsId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public NutsDTO getNutsById(@PathVariable("nutsId") final Integer nutsId) {
-        _log.info("getNutsById " + nutsId);
+        _log.info("getNutsById: " + nutsId);
         return nutsService.getNutsById(nutsId);
-    }
-
-    @ApiOperation(value = "get nuts by code")
-    @RequestMapping(value = "/code/{code}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public NutsDTO getNutsByCode(@PathVariable("code") final String code) {
-        _log.info("getNutsByCode " + code);
-        return nutsService.getNutsByCode(code);
     }
 
     @ApiOperation(value = "Get all nuts from a specific level")
     @RequestMapping(value = "/level/{level}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<NutsDTO> getNutsByLevel(@PathVariable("level") final Integer level) {
-        _log.info("getNutsByLevel " + level);
+        if (_log.isInfoEnabled()) {
+            _log.info("getNutsByLevel: " + level);
+        }
         return nutsService.getNutsByLevel(level);
-    }
-
-    @ApiOperation(value = "Get all nuts from a specific countryCode")
-    @RequestMapping(value = "/countryCode/{countryCode}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<NutsDTO> getNutsByCountryCode(@PathVariable("countryCode") final String countryCode) {
-        _log.info("getNutsByCountryCode " + countryCode);
-        return nutsService.getNutsByCountryCode(countryCode);
-    }
-
-    @ApiOperation(value = "Get all nuts from a specific countryCode and level order by Label Asc")
-    @RequestMapping(value = "/countryCode/{countryCode}/level/{level}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<NutsDTO> getNutsByCountryCodeAndLevelOrderByLabelAsc(@PathVariable("countryCode") final String countryCode, @PathVariable("level") final Integer level) {
-        _log.info("getNutsByCountryCodeAndLevelOrderByLabelAsc " + countryCode + level);
-        return nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode, level);
     }
 }

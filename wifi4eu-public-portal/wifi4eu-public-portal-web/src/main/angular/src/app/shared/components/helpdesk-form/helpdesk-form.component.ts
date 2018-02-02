@@ -1,10 +1,11 @@
-import {Component, Input} from "@angular/core";
-import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {HelpdeskissuesApi} from "../../swagger/api/HelpdeskissuesApi";
-import {HelpdeskIssueDTO, HelpdeskIssueDTOBase} from "../../swagger/model/HelpdeskIssueDTO";
-import {NutsApi} from "../../swagger/api/NutsApi";
-import {NutsDTOBase} from "../../swagger/model/NutsDTO";
-import {ResponseDTO} from "../../swagger/model/ResponseDTO";
+import { Component, Input } from "@angular/core";
+import { UxService } from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import { HelpdeskissuesApi } from "../../swagger/api/HelpdeskissuesApi";
+import { HelpdeskIssueDTOBase } from "../../swagger/model/HelpdeskIssueDTO";
+import { NutsApi } from "../../swagger/api/NutsApi";
+import { NutsDTOBase } from "../../swagger/model/NutsDTO";
+import { ResponseDTO } from "../../swagger/model/ResponseDTO";
+import { SharedService } from "../../shared.service";
 
 @Component({
     selector: 'helpdesk-form-component',
@@ -12,14 +13,14 @@ import {ResponseDTO} from "../../swagger/model/ResponseDTO";
     providers: [NutsApi, HelpdeskissuesApi]
 })
 export class HelpdeskFormComponent {
-    private helpdeskIssue: HelpdeskIssueDTO;
+    private helpdeskIssue: HelpdeskIssueDTOBase;
     private expanded: boolean;
     private success: boolean;
     private nuts: NutsDTOBase[];
-    @Input('portal') portal: string;
+    @Input('portal') private portal: string;
     private emailPattern = new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\.)+[a-z0-9]{2,6}?$/i);
 
-    constructor(private uxService: UxService, private nutsApi: NutsApi, private helpdeskApi: HelpdeskissuesApi) {
+    constructor(private uxService: UxService, private nutsApi: NutsApi, private helpdeskApi: HelpdeskissuesApi, private sharedService: SharedService) {
 
         this.helpdeskIssue = new HelpdeskIssueDTOBase();
         this.expanded = false;
@@ -48,18 +49,10 @@ export class HelpdeskFormComponent {
             (issue: ResponseDTO) => {
                 if (issue.success) {
                     this.success = true;
-                    this.uxService.growl({
-                        severity: 'success',
-                        summary: 'SUCCESS',
-                        detail: 'Your message was successfully sent.'
-                    });
+                    this.sharedService.growlTranslation('Your issue was sent successfully sent to your Member State! We\'ll contact you as soon as possible to give you a solution to your problem.', 'helpdesk.helpdeskform.success', 'success');
                 }
             }, error => {
-                this.uxService.growl({
-                    severity: 'error',
-                    summary: 'ERROR',
-                    detail: 'An error occurred when sending your issue. Please try again.'
-                });
+                this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
             }
         );
     }

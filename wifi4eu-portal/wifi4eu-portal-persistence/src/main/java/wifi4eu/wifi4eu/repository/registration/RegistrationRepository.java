@@ -5,6 +5,6 @@ import wifi4eu.wifi4eu.entity.registration.Registration;
 
 public interface RegistrationRepository extends CrudRepository<Registration, Integer> {
     Iterable<Registration> findByUserId(Integer userId);
-    Iterable<Registration> findByMunicipalityId(Integer municipalityId);
+    Registration findByMunicipalityId(Integer municipalityId);
     Registration findByUserIdAndMunicipalityId(Integer userId, Integer municipalityId);
 }

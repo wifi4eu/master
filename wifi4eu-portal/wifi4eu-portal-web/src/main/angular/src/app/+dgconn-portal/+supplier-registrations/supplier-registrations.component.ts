@@ -35,7 +35,7 @@ export class DgConnSupplierRegistrationsComponent implements OnInit {
             supplier => {
               customUserSupply.supplier = supplier;
               this.customUserSupplierArray.push(customUserSupply);
-              
+              this.userSupplierArray.push(customUserSupply);
             },
             error => {
               console.log(error);
@@ -48,7 +48,6 @@ export class DgConnSupplierRegistrationsComponent implements OnInit {
         console.log(error);
       }
     );
-    this.userSupplierArray = this.customUserSupplierArray;
   }
 
   ngOnInit() {
@@ -56,18 +55,22 @@ export class DgConnSupplierRegistrationsComponent implements OnInit {
   }
 
   filterData(stringSearch: string) {
-    if(stringSearch.length > 0){
-      let customUserSupplierArray2 = this.customUserSupplierArray.map(each => {
-        if(each.supplier.name == stringSearch){
-          return each;
+    this.customUserSupplierArray = [...this.userSupplierArray];
+    if(typeof stringSearch != "undefined" && stringSearch != ""){
+      stringSearch = stringSearch.toLocaleLowerCase();
+      let suppliers =  this.customUserSupplierArray.map(
+        (supplierDTO) => {
+          supplierDTO.supplier.name = supplierDTO.supplier.name || "";
+          supplierDTO.supplier.address = supplierDTO.supplier.address || "";
+          return supplierDTO;
         }
-      }).filter(element => {return element !== undefined});
-      this.customUserSupplierArray = [...customUserSupplierArray2]
+      ).filter(supplierF => { 
+        return (supplierF.supplier.name.toLocaleLowerCase().match(stringSearch) || 
+        supplierF.supplier.address.toLocaleLowerCase().match(stringSearch))
+      });
+      this.customUserSupplierArray = [...suppliers]
     }
-    else{
-      this.customUserSupplierArray = [...this.userSupplierArray];
-    }
-    
+
   }
 
 }

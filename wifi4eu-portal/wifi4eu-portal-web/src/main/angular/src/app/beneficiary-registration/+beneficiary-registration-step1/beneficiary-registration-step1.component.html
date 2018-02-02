@@ -4,7 +4,7 @@
         <div class="ui-g-12 center">
             <div id="component-title">
                 <h3 class="beneficiaryTitle labelModal">
-                    {{ 'beneficiaryRegistration.step1.title' | translate }}
+                    {{ 'benefRegistration.beneficiaryRegistration.step1.title' | translate }}
                 </h3>
             </div>
         </div>
@@ -14,7 +14,7 @@
         <div class="ui-g-12 ui-md-12 ui-lg-12 center">
             <div id="component-subtitle">
                 <h6 class="label" style="text-align: center;">
-                    {{ 'beneficiaryRegistration.step1.instructions' | translate }}
+                    {{ 'benefRegistration.registration.step1.instructions' | translate }}
                 </h6>
             </div>
         </div>
@@ -28,13 +28,13 @@
                     <!-- Country selection -->
                     <div class="form-group ui-g">
                         <div class="ui-g-12">
-                            <label class="label" for="country">{{ 'country.label' | translate }}</label>
+                            <label class="label" for="country">{{ 'shared.country.label' | translate }}</label>
                             <select [(ngModel)]="country" (ngModelChange)="selectCountry($event)"
                                     id="country" name="country" class="form-control"
                                     ng-options="option.value as option.name for option in typeOptions"
                                     [disabled]="countries.length < 1">
                                 <option disabled selected [ngValue]="null">
-                                    {{ 'registration.step1.instructions' | translate }}
+                                    {{ 'benefRegistration.registration.step1.instructions' | translate }}
                                 </option>
                                 <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry">
                                     {{currentCountry.label}}
@@ -49,22 +49,7 @@
                 <div class="ui-g-2"></div>
             </div>
         </div>
-        <!-- <div *ngIf="organizations.length < 1" id="represent-option" class="form-group ui-g">
-            <div class="ui-g-5"></div>
-            <div class="ui-g-2">
-                <div [hidden]="!countrySelected">
-                    <p-checkbox name="singleMunicipality" [(ngModel)]="singleMunicipalityCheckbox"
-                                class="beneficiarRegistrationCheck"
-                                binary="true" (onChange)="chooseSingleMunicipality($event)"></p-checkbox>
-                    <br>
-                    <div class="oneMunicipalityImage">
-                        <img class="marginStep1" src="assets/images/oneMunicipality.png" alt="">
-                        <p class="step1Municipality">{{ 'beneficiaryRegistration.step1.option1'| translate}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="ui-g-5"></div>
-        </div> -->
+
         <div id="represent-option" class="form-group ui-g">  <!-- organizations.length > 0 -->
             <div class="ui-g-12"> <!-- *ngIf="countrySelected" -->
                 <div class="ui-g-2"></div>
@@ -72,15 +57,16 @@
                     <!-- Organization selection -->
                     <div class="form-group ui-g">
                         <div class="ui-g-12">
-                            <label class="label" for="organization">{{ 'organization.label' | translate }}</label>
+                            <label class="label" for="organization">{{ 'benefRegistration.organization.label' |
+                                translate }}</label>
                             <select [(ngModel)]="organization" (ngModelChange)="selectOrganization($event)"
                                     id="organization" name="organization" class="form-control"
-                                    ng-options="option.value as option.name for option in typeOptions" 
+                                    ng-options="option.value as option.name for option in typeOptions"
                                     [disabled]="!countrySelected"><!--  [disabled]="organizations.length < 1" -->
                                 <option disabled selected [ngValue]="null">
-                                    {{'registration.selectOrganisation' |translate}}
+                                    {{'benefRegistration.registration.selectOrganisation' |translate}}
                                 </option>
-                                <option ngValue="municipality"> {{ 'municipality.label' | translate }}</option>
+                                <option ngValue="municipality"> {{ 'shared.municipality.label' | translate }}</option>
                                 <option *ngFor="let currentOrganization of organizations"
                                         [ngValue]="currentOrganization">
                                     {{currentOrganization.name}}
@@ -94,57 +80,24 @@
                 </div>
                 <div class="ui-g-2"></div>
             </div>
-          </div>
-            <!-- <div class="ui-g-3"></div>
-            <div class="ui-g-2">
-                <div [hidden]="!countrySelected">
-                    <p-checkbox name="singleMunicipality" [(ngModel)]="singleMunicipalityCheckbox"
-                                binary="true" (onChange)="chooseSingleMunicipality($event)"
-                                class="beneficiarRegistrationCheck"></p-checkbox>
-                    <br>
-                    <div class="oneMunicipalityImage">
-                        <img class="marginStep1" src="assets/images/oneMunicipality.png" alt="">
-                        <p class="step1Municipality">{{ 'beneficiaryRegistration.step1.option1'| translate}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="ui-g-2"></div>
-            <div class="ui-g-2">
-                <div [hidden]="!countrySelected">
-                    <p-checkbox name="multipleMunicipality" [(ngModel)]="multipleMunicipalityCheckbox"
-                                class="beneficiarRegistrationCheck"
-                                binary="true" (onChange)="chooseMultipleMunicipality($event)"></p-checkbox>
-                    <br>
-                    <div class="moreMunicipalitiesImage">
-                        <img class="marginStep1" src="assets/images/moreMunicipalities.png" alt="">
-                        <p class="step1Municipality"> {{ 'beneficiaryRegistration.step1.option2'| translate}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="ui-g-3"></div> -->
-
-        <div class="ui-g">
-            <div class="ui-lg-4"></div>
-            <div class="ui-g-12 ui-md-12 ui-lg-4 center">
-                <div>{{ 'beneficiaryRegistration.step1.information' | translate }}</div>
-            </div>
-            <div class="ui-lg-4"></div>
         </div>
+
         <div id="navigation-buttons" class="form-group ui-g center">
             <div class="ui-lg-3"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <a href="/#/home" class="btn btn-primary cancel-button cancel-link">{{ 'back.button' | translate }}</a>
+                <a href="/#/home" class="btn btn-primary cancel-button cancel-link">{{ 'shared.back.button' | translate
+                    }}</a>
             </div>
             <!-- Next button -->
             <div class="ui-g-6 ui-md-6 ui-lg-3">
                 <button *ngIf="organizations.length < 1" type="submit" class="btn btn-primary publish-button"
                         [disabled]="!registrationForm.valid || !countrySelected || (!singleMunicipalityCheckbox && !multipleMunicipalityCheckbox)">
-                    {{ 'next.button' | translate }}
+                    {{ 'shared.next.button' | translate }}
                 </button>
                 <button *ngIf="organizations.length > 0" type="submit" class="btn btn-primary publish-button"
                         [disabled]="!registrationForm.valid || !countrySelected ||
                         (!singleMunicipalityCheckbox && !multipleMunicipalityCheckbox) || !organizationSelected">
-                    {{ 'next.button' | translate }}
+                    {{ 'shared.next.button' | translate }}
                 </button>
             </div>
             <div class="ui-lg-3"></div>

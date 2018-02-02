@@ -10,8 +10,9 @@ import {UserApi} from "./shared/swagger/api/UserApi";
 import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
 import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
 import {Http} from "@angular/http";
-import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import {Observable} from "rxjs/Observable";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {environment} from '../environments/environment';
 
 enableProdMode();
 
@@ -32,7 +33,9 @@ export class AppComponent implements OnInit {
     private menuTranslations: Map<String, String>;
     private stringsTranslated = new BehaviorSubject<number>(null);
 
+
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
+    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,is"
 
     constructor(private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
         translateService.setDefaultLang('en');
@@ -49,24 +52,21 @@ export class AppComponent implements OnInit {
 
         this.profileUrl = '';
 
-        this.menuLinks = [new UxLayoutLink({
-            label: 'Wifi4EU',
-            children: [
-                new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
-                new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
-            ]
-        })];
+        this.menuLinks = [
+          new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
+          new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
+        ];
 
         this.visibility = [false, false, false, false, false];
         this.children = [];
         this.menuTranslations = new Map();
         this.stringsTranslated.subscribe(
-          (stringsTranslated: number) => {
-            if(stringsTranslated == 7){
-              this.initChildren();
-              this.updateHeader();
+            (stringsTranslated: number) => {
+                if (stringsTranslated == 7) {
+                    this.initChildren();
+                    this.updateHeader();
+                }
             }
-          }
         );
 
         this.initChildren();
@@ -84,7 +84,7 @@ export class AppComponent implements OnInit {
             (response: ResponseDTOBase) => {
                 this.localStorageService.set('user', JSON.stringify(response.data));
                 this.sharedService.update();
-                
+
                 switch (this.user.type) {
                     case 1:
                         this.router.navigateByUrl('/supplier-portal/profile');
@@ -100,12 +100,11 @@ export class AppComponent implements OnInit {
                         //this.router.navigateByUrl('/home');
                         break;
                 }
-               
 
-            },
-            error => {
+
+            }, error => {
                 this.uxService.growl({
-                    severity: 'warning',
+                    severity: 'warn',
                     summary: 'WARNING',
                     detail: 'Could not get ECAS User, ignore this when NG is working in offline mode'
                 });
@@ -211,6 +210,7 @@ export class AppComponent implements OnInit {
             );
         } else {
             //this.logout();
+            this.menuLinks = this.children[0];
         }
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
@@ -223,66 +223,63 @@ export class AppComponent implements OnInit {
         this.updateFooterDate();
     }
 
-    private updateMenuTranslations(){
-      var num = 0;
-      this.translateService.get('itemMenu.appReg').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.appReg', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
-      this.translateService.get('itemMenu.suppReg').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.suppReg', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
-      this.translateService.get('itemMenu.myAccount').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.myAccount', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
-      this.translateService.get('itemMenu.suppPortal').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.suppPortal', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
-      this.translateService.get('itemMenu.dissForum').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.dissForum', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
-      this.translateService.get('itemMenu.appPortal').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.appPortal', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
-      this.translateService.get('itemMenu.dgPortal').subscribe(
-        (translatedString: string) => {
-          this.menuTranslations.set('itemMenu.dgPortal', translatedString);
-          num++;
-          this.stringsTranslated.next(num)
-        }
-      );
+    private updateMenuTranslations() {
+        var num = 0;
+        this.translateService.get('itemMenu.appReg').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.appReg', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.suppReg').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.suppReg', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.myAccount').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.myAccount', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.suppPortal').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.suppPortal', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.dissForum').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.dissForum', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.appPortal').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.appPortal', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.dgPortal').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.dgPortal', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
     }
 
     logout() {
         this.user = null;
         this.localStorage.remove('user');
-        this.menuLinks = [new UxLayoutLink({
-            label: 'Wifi4EU',
-            children: this.children[0]
-        })];
+        this.menuLinks = this.children[0];
         this.profileUrl = null;
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
@@ -295,11 +292,10 @@ export class AppComponent implements OnInit {
         );
         this.userApi.ecasLogout().subscribe(
             (response: ResponseDTOBase) => {
-                if (response.success) {
-                    window.location.href = response.data;
-                }
+                window.location.href = environment['logoutUrl'];
             }, error => {
                 console.log(error);
+                window.location.href = environment['logoutUrl'];
             }
         );
     }

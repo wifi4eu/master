@@ -1,7 +1,7 @@
 <div class="clearfix"></div>
 <div class="jumbotron mb-3" style="background-color: transparent;">
   <div class="container center">
-    <p class="center beneficiaryTitle">{{ 'duplicatedBeneficiary.title' | translate }}</p>
+    <p class="center beneficiaryTitle">{{ 'dgConn.duplicatedBeneficiary.title' | translate }}</p>
   </div>
 </div>
 <div class="container center">
@@ -12,38 +12,47 @@
           <span class="input-group-addon">
             <i class="fa fa-search" aria-hidden="true"></i>
           </span>
-          <input type="text" [(ngModel)]="inputSearch" (keyup.enter)="filterData(inputSearch)" class="form-control" aria-label="Search in list of suppliers"
-            placeholder="Search in list of beneficiaries">
+          <input type="text" [(ngModel)]="inputSearch" (keyup.enter)="filterData(inputSearch)" class="form-control">
           <span class="input-group-btn">
-            <button class="btn btn-primary" (click)="filterData(inputSearch)" type="button">Search</button>
+            <button class="btn btn-primary" (click)="filterData(inputSearch)" type="button">{{ 'shared.search.button' | translate }}</button>
           </span>
         </div>
       </div>
     </div>
   </div>
   <div class="panel-dg">
-    <div class="panel-dg-header">
-      <span class="header-label">List of beneficiaries</span>
-    </div>
-    <p-dataTable #tableBeneficiary [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="customRegistrationList.length" [value]="customRegistrationList"
+    <p-dataTable #tableBeneficiary [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="registrationList.length" [value]="registrationList"
       [rows]="numberRowsTable" [paginator]="true">
-      <p-column field="municipality.name" [sortable]="true" header="Municipality" styleClass="text-center"></p-column>
-      <p-column field="municipality.country" [sortable]="true" header="Country" styleClass="text-center"></p-column>
-      <p-column field="municipality.addressFull" [sortable]="true" header="Address" styleClass="text-center"></p-column>
-      <p-column field="municipality.postalCode" [sortable]="true" header="Postal code" styleClass="text-center"></p-column>
-      <p-column  field="user.userFull" [sortable]="true" header="User" styleClass="text-center separator">
-        <ng-template let-customBen="rowData" pTemplate="body">
-          <span>{{ customBen.user.name + ' ' + customBen.user.surname }}</span>
+      <p-column field="lau.name1" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
+      <p-column field="lau.countryCode" [sortable]="true" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
+      <p-column field="status" header="{{ 'dgConn.status' | translate }}" styleClass="text-center" [sortable]="true">
+        <ng-template let-row="rowData" pTemplate="body">
+          <!-- <span>{{ row.status ? 'Applied' : 'Registered' }}</span> -->
+          <span *ngIf="row.status">{{'dgConn.beneficiaries.applied' | translate }}</span>
+          <span *ngIf="!row.status">{{'dgConn.beneficiaries.registered' | translate }}</span>
         </ng-template>
       </p-column>
-      <p-column field="registration.status" header="Status" styleClass="text-center separator" [sortable]="true">
-        <ng-template let-customBen="rowData" pTemplate="body">
-          <span class="badge" [class.badge-warning]="customBen['registration']['status'] == 0" [class.badge-fail]="customBen['registration']['status'] == 1"
-            [class.badge-success]="customBen['registration']['status'] == 2">
-            <span *ngIf="customBen['registration']['status'] == 0">PENDING</span>
-            <span *ngIf="customBen['registration']['status'] == 1">DUPLICATES</span>
-            <span *ngIf="customBen['registration']['status'] == 2">RESOLVED</span>
-          </span>
+      <p-column field="issue" [sortable]="true" header="{{ 'dgConn.issues' | translate }}" styleClass="text-center">
+        <ng-template let-row="rowData" pTemplate="body">
+            <span class="badge badge-warning" *ngIf="row.issue == 1">{{ 'dgConn.badge.warning' | translate }}</span>
+            <span class="badge badge-duplicated" *ngIf="row.issue == 2">{{ 'dgConn.badge.duplicated' | translate }}</span>
+            <span class="badge badge-success" *ngIf="row.issue == 3">{{ 'dgConn.badge.resolved' | translate }}</span>
+            <span class="badge badge-fail" *ngIf="row.issue == 4">{{ 'dgConn.badge.invalid' | translate }}</span>
+        </ng-template>
+      </p-column>
+      <p-column field="numRegistrations" [sortable]="true" header="{{ 'dgConn.beneficiaries.numApplicants' | translate }}" styleClass="text-center"></p-column>
+      <p-column field="mediation" [sortable]="true" header="{{ 'dgConn.beneficiaries.mediation' | translate }}" styleClass="text-center">
+        <ng-template let-row="rowData" pTemplate="body">
+          <span *ngIf="row.mediation">{{ 'dgConn.yes' | translate }}</span>
+          <span *ngIf="!row.mediation">{{ 'dgConn.no' | translate }}</span>
+        </ng-template>
+      </p-column>
+      <p-column [sortable]="true" header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
+        <ng-template let-lauData="rowData" pTemplate="body">
+          <a [routerLink]="['./', lauData.lau.id]">
+            <span class="fa fa-eye"></span>
+            <span>{{ 'dgConn.view' | translate }}</span>
+          </a>
         </ng-template>
       </p-column>
       <footer>

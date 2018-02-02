@@ -537,6 +537,13 @@ body {
   background-color: white;
 }
 
+.tableTitleVoucher {
+  border-bottom: solid 1px #c1c1c1;
+  margin-left: 0em;
+  margin-right: 0em;
+  background-color: white;
+}
+
 .h2Table {
   font-weight: bold;
   font-size: 1.4em;
@@ -662,7 +669,7 @@ body {
 }
 
 .ui-dialog.ui-widget {
-  width: 50% !important;
+  width: 50%;
 }
 
 .whiteNoInline {
@@ -923,6 +930,10 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 
 .maxWidth {
   max-width: 21em;
+}
+
+.left {
+  float: left;
 }
 
 .right {
@@ -1307,7 +1318,8 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   }
 
   .text-center{
-    padding: 1.25rem 0.75rem;
+   /*  padding: 1.25rem 0.75rem; */
+    padding: 1.25rem 0rem;
     text-align: center;
   }
 
@@ -1332,11 +1344,139 @@ discussion-component .expanded .content, discussion-component .expanded .header,
     &.badge-warning{
       background-color: #ff9800;
     }
+    &.badge-duplicated{
+      background-color: #ff6f00;
+    }
   }
+}
+
+.row-municipality{
+  box-sizing: border-box; 
+  float:left; 
+  width: 100%;
+}
+
+.municipality-icon {
+  width: 1em;
+}
+
+.backgroundPanel {
+  background: #ebedf0;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.registrationPanel {
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+  border-radius: 3px;
+  margin-bottom: 2em;
+}
+
+.applicantDetailsPanel {
+  border: solid 1px #c1c1c1;
+  margin-left: 0em;
+  margin-right: 0em;
+  background-color: white;
+  padding: 1em;
+}
+
+.municipality-name {
+  color: $dark-blue;
+}
+
+.voucher-status-block {
+  text-align: left;
+  border: 2px solid #004494;
+  padding: 20px;
+  margin-bottom: 2em;
+}
+
+.voucher-status-block h2 {
+  font-size: 20px;
+}
+
+.applicantDetailsNoMargin {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.link-label {
+  cursor: pointer;
+  color: $dark-blue;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.link-label:hover {
+  color: $darkish-blue;
+}
+
+.blueButton {
+  background-color: #004494;
+  height: 50px;
+  font-family: Verdana;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.whiteButton {
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
+  height: 50px;
+  font-family: Verdana;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.warningBadge {
+  padding: 4px 8px;
+  font-style: italic;
+  background-color: #ff9800;
+}
+
+.customCheckbox {
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.customCheckboxLabel {
+  margin-left: 0.4em;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.searchInputBlock {
+  background-color: white;
+  padding: 2em 1.6em;
+  border: solid 1px rgba(0, 0, 0, 0.3);
+}
+
+.searchInput {
+  vertical-align: middle;
+  margin-right: 1em;
 }
 
 /* fix blinking issue with the header */
 
 #app-wrapper.shrink-header-active #main #nav-bar{
   position: relative;
+}
+
+p-tabview.white .ui-widget-content.ui-tabview{
+  background: #fff;
+}
+
+@media screen and (min-width: 855px) and (max-width: 1042px){
+  .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow{
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 855px){
+  .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow{
+    width: 90%;
+  }
 }

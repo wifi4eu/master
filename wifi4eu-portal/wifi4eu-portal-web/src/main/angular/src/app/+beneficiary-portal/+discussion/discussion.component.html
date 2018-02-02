@@ -3,28 +3,29 @@
 <div class="container font beneficiaryContent">
     <div class="ui-g-12" *ngIf="showAlert">
         <span class="ui-g-2"></span>
-        <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussion.growl' | translate}}</ux-alert>
+        <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussionForum.discussion.growl' | translate}}
+        </ux-alert>
         <span class="ui-g-2"></span>
     </div>
-    <p class="beneficiaryTitle marginTop">{{ 'legalEntity.issues' | translate }}</p>
-    <p>{{ 'lEissues.warning' | translate }}</p>
-    <p class="beneficiaryMayor marginTopCountdown">{{ 'legalentity.label' | translate }}</p>
+    <p class="beneficiaryTitle marginTop">{{ 'discussionForum.title' | translate }}</p>
+    <p>{{ 'discussionForum.description' | translate }}</p>
+    <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.beneficiary.registrations' | translate }}</p>
     <hr class="beneficiaryHr">
     <ux-accordion-boxes>
         <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true" *ngIf="municipality">
             <div class="ui-g">
                 <p class="discussionForumMayors marginTopCountdown"
-                   [innerHTML]="'beneficiary.registration1' | translate:{selfRegistration:user.id}">
+                   [innerHTML]="'discussionForum.beneficiary.registration1' | translate:{selfRegistration:user.id}">
                 </p>
             </div>
             <div class="ui-g discussionForumNoBorders">
                 <div class="ui-g-12">
                     <div class="ui-g-3">
-                        <p class="profileDataDiscussion">{{ 'country.label' | translate }}</p>
-                        <p>{{ 'municipality.label' | translate }}</p>
-                        <p>{{ 'address.label' | translate }}</p>
-                        <p>{{ 'number.label' | translate }}</p>
-                        <p>{{ 'postal-code.label' | translate }}</p>
+                        <p class="profileDataDiscussion">{{ 'shared.country.label' | translate }}</p>
+                        <p>{{ 'shared.municipality.label' | translate }}</p>
+                        <p>{{ 'benefRegistration.address.label' | translate }}</p>
+                        <p>{{ 'shared.number.label' | translate }}</p>
+                        <p>{{ 'shared.postal-code.label' | translate }}</p>
                     </div>
                     <div class="ui-g-3">
                         <p class="profileDataDiscussion profileData">{{municipality.country}}</p>
@@ -35,15 +36,15 @@
                     </div>
                     <div class="ui-g-2"></div>
                     <div class="ui-g-4">
-                        <p class="applicationText">{{ 'beneficiary.discusionText' | translate }}</p>
+                        <p class="applicationText">{{ 'discussionForum.editButtons' | translate }}</p>
                         <button type="button" class="btn btn-primary applicationDelete"
                                 (click)="deleteApplication()">
-                            {{ 'beneficiary.deleteApplication' | translate }}
+                            {{ 'discussionForum.withdraw' | translate }}
                         </button>
                         <br>
                         <button type="button" class="btn btn-primary applicationEdit"
                                 (click)="editApplication()">
-                            {{ 'beneficiary.editApplication' | translate }}
+                            {{ 'discussionForum.editRegistration' | translate }}
                         </button>
                     </div>
                 </div>
@@ -52,17 +53,17 @@
             <div class="ui-g" *ngIf="hasAuthor && municipalities.length == messageAuthors.length">
                 <div class="ui-g-6" *ngFor="let municipality of municipalities; let i = index">
                     <p class="discussionForumMayors marginTopCountdown">
-                        {{ 'beneficiary.registrationNumber' | translate }} <span>{{messageAuthors[i].userId}}</span>
+                        {{ 'discussionForum.beneficiary.registrationNumber' | translate }} <span>{{messageAuthors[i].userId}}</span>
                     </p>
 
                     <div class="ui-g discussionForumNoBorders">
                         <div class="ui-g-12">
                             <div class="ui-g-3">
-                                <p class="profileDataDiscussion">{{ 'country.label' | translate }}</p>
-                                <p>{{ 'municipality.label' | translate }}</p>
-                                <p>{{ 'address.label' | translate }}</p>
-                                <p>{{ 'number.label' | translate }}</p>
-                                <p>{{ 'postal-code.label' | translate }}</p>
+                                <p class="profileDataDiscussion">{{ 'shared.country.label' | translate }}</p>
+                                <p>{{ 'shared.municipality.label' | translate }}</p>
+                                <p>{{ 'benefRegistration.address.label' | translate }}</p>
+                                <p>{{ 'shared.number.label' | translate }}</p>
+                                <p>{{ 'shared.postal-code.label' | translate }}</p>
                             </div>
                             <div class="ui-g-9">
                                 <p class="profileDataDiscussion profileData">{{ municipality.country }}</p>
@@ -78,17 +79,17 @@
         </custom-accordion-box>
     </ux-accordion-boxes>
     <hr class="beneficiaryHr">
-    <p class="beneficiaryMayor marginTopCountdown">{{ 'recentConversations.title' | translate }}</p>
-    <p>{{ 'recentConversations.text' | translate }}</p>
+    <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.discussion' | translate }}</p>
+    <p>{{ 'discussionForum.messagesDescription' | translate }}</p>
     <div *ngIf="!hasMessages" class="ui-g button-content discussion-content">
         <div class="ui-g-12 noPadding">
             <div class="ui-g-8">
-                <p>{{'noRecentConversations.text' | translate }}</p>
+                <!--<p>{{'discussionForum.noRecentConversations.text' | translate }}</p>-->
             </div>
             <div class="ui-g-4">
                 <button type="button" class="btn btn-primary changePassword discussionButton"
                         (click)="newMessage()">
-                    {{'startConversations.text' | translate }}
+                    {{'discussionForum.add.reply' | translate }}
                 </button>
             </div>
         </div>
@@ -102,7 +103,7 @@
                         <button type="button" class="btn btn-primary changePassword discussionButton"
                                 (click)="newMessage()">
                             <i class="fa fa-plus" aria-hidden="true"></i>
-                            {{'add.repply' | translate }}
+                            {{'discussionForum.add.reply' | translate }}
                         </button>
                     </div>
                 </div>
@@ -113,7 +114,8 @@
                 <div class="ui-g-12">
                     <div class="ui-g-3 backgroundMessage">
                         <p class="authorMessage">
-                            {{ 'beneficiary.registrationNumber' | translate }} {{thread.messages[i].authorId}}
+                            {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
+                            {{thread.messages[i].authorId}}
                         </p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
@@ -130,9 +132,9 @@
                 <div class="ui-g-3">
                     <button type="button" class="btn btn-primary changePassword discussionButton"
                             (click)="displayMediation = true" [disabled]="mediationBlocked">
-                        {{'newMediation.button' | translate }}
+                        {{'discussionForum.newMediation.button' | translate }}
                     </button>
-                    <p class="right">{{'newMediation.text' | translate }}</p>
+                    <p class="right">{{'discussionForum.newMediation.text' | translate }}</p>
                 </div>
             </div>
         </div>
@@ -146,22 +148,22 @@
     <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false"
               [resizable]="false" [draggable]="false" [closeOnEscape]="true">
         <div class="beneficiaryTitle center hiddenScroll">
-            {{ 'sendMessage.title' | translate }}
+            {{ 'discussionForum.sendMessage.title' | translate }}
         </div>
         <form #messagesForm="ngForm" (submit)="sendMessage()">
             <div class="form-group profileDialog">
                 <div class="form-group">
                     <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate }}</p>
-                    <p>{{ 'sendMessage.subject' | translate }}</p>
+                    <p>{{ 'discussionForum.sendMessage.subject' | translate }}</p>
                     <textarea rows="10" cols="20" class="form-control widthMax"
                               name="newMessage" [(ngModel)]="message" required></textarea>
                     <div style="text-align: center !important">
                         <button type="button" class="btn btn-primary changePasswordModal cancel-button"
                                 (click)="closeModal()">
-                            {{ 'cancel.button' | translate }}
+                            {{ 'shared.cancel.button' | translate }}
                         </button>
                         <button type="submit" class="btn btn-primary changePasswordModal publish-button">
-                            {{ 'helpdeskform.sendmessage' | translate }}
+                            {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
                         </button>
                     </div>
                 </div>
@@ -179,20 +181,21 @@
             <div class="form-group profileDialog">
 
                 <div class="beneficiaryTitle center">
-                    {{ 'mediationRequest.title' | translate }}
+                    {{ 'discussionForum.mediationRequest.title' | translate }}
                 </div>
-                <p class="center newMessageDiscussionMargins">{{ 'mediationRequest.text' | translate }}</p>
+                <p class="center newMessageDiscussionMargins">{{ 'discussionForum.mediationRequest.text' | translate
+                    }}</p>
                 <br>
-                <p class="center">{{ 'mediationRequest.selectText' | translate }}</p>
+                <p class="center">{{ 'discussionForum.mediationRequest.selectText' | translate }}</p>
                 <div class="form-group">
                     <div style="text-align: center !important">
                         <button type="button" class="btn btn-primary changePasswordModal cancel-button"
                                 (click)="closeModal()">
-                            {{ 'cancel.button' | translate }}
+                            {{ 'shared.cancel.button' | translate }}
                         </button>
                         <button type="submit" class="btn btn-primary changePasswordModal publish-button"
                                 (click)="askMediation(); closeModal()">
-                            {{ 'helpdeskform.sendmessage' | translate }}
+                            {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
                         </button>
                     </div>
                 </div>

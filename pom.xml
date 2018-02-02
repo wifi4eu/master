@@ -104,6 +104,10 @@
     <ecas.server.address/>
     <ecas.server.port/>
 
+    <!-- NG PROPERTIES -->
+
+    <ng.env>local</ng.env>
+
     <!-- PERSISTENCE PROPERTIES -->
 
     <app.context.root>/wifi4eu</app.context.root>
@@ -115,11 +119,13 @@
     <eclipselink.logging.parameters>true</eclipselink.logging.parameters>
 
     <!-- App settings -->
+    <schemes>http</schemes>
     <server.address>localhost:8080</server.address>
     <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
     <server.test.port>8080</server.test.port>
     <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
     <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
+    <server.azure.test2.address>accenturetest.azurewebsites.net</server.azure.test2.address>
     <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
     <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilterMocked</user.filter.path>
     <enable.security.start></enable.security.start>
@@ -145,6 +151,7 @@
     <profile>
       <id>TEST</id>
       <properties>
+        <ng.env>int</ng.env>
         <server.address>${server.test.address}:${server.test.port}</server.address>
         <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
         <enable.security.start>--&gt;</enable.security.start>
@@ -154,7 +161,7 @@
         <war.output.directory/>
         <ecas.server.address>${server.test.address}</ecas.server.address>
         <ecas.server.port>${server.test.port}</ecas.server.port>
-        <mail.serv.location>http://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
+        <mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
         <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
         <mail.smtp.port>587</mail.smtp.port>
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
@@ -164,6 +171,8 @@
     <profile>
       <id>AZUREDEV</id>
       <properties>
+        <ng.env>dev</ng.env>
+        <schemes>https</schemes>
         <server.address>${server.azure.dev.address}</server.address>
         <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
         <enable.security.start>--&gt;</enable.security.start>
@@ -175,7 +184,7 @@
         <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
         <ecas.server.port>${server.azure.port}</ecas.server.port>
         <ecas.config.strength>BASIC</ecas.config.strength>
-        <mail.serv.location>http://wifi4eudev.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+        <mail.serv.location>https://wifi4eudev.azurewebsites.net/wifi4eu/#/</mail.serv.location>
         <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
         <mail.smtp.port>587</mail.smtp.port>
         <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
@@ -185,6 +194,8 @@
     <profile>
       <id>AZURETEST</id>
       <properties>
+        <ng.env>test</ng.env>
+        <schemes>https</schemes>
         <server.address>${server.azure.test.address}</server.address>
         <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
         <enable.security.start>--&gt;</enable.security.start>
@@ -192,9 +203,32 @@
         <enable.login.start>--&gt;</enable.login.start>
         <enable.login.end>&lt;!--</enable.login.end>
         <war.output.directory/>
+        <ecas.config.base.url>https://ecas.acceptance.ec.europa.eu</ecas.config.base.url>
         <ecas.server.address>${server.azure.test.address}</ecas.server.address>
         <ecas.server.port>${server.azure.port}</ecas.server.port>
-        <mail.serv.location>http://wifi4eutest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+        <mail.serv.location>https://wifi4eutest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+        <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+        <mail.smtp.port>587</mail.smtp.port>
+        <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+        <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+      </properties>
+    </profile>
+    <profile>
+      <id>AZURETEST2</id>
+      <properties>
+        <ng.env>test</ng.env>
+        <schemes>https</schemes>
+        <server.address>${server.azure.test2.address}</server.address>
+        <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+        <enable.security.start>--&gt;</enable.security.start>
+        <enable.security.end>&lt;!--</enable.security.end>
+        <enable.login.start>--&gt;</enable.login.start>
+        <enable.login.end>&lt;!--</enable.login.end>
+        <war.output.directory/>
+        <ecas.config.base.url>https://ecas.acceptance.ec.europa.eu</ecas.config.base.url>
+        <ecas.server.address>${server.azure.test2.address}</ecas.server.address>
+        <ecas.server.port>${server.azure.port}</ecas.server.port>
+        <mail.serv.location>https://accenturetest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
         <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
         <mail.smtp.port>587</mail.smtp.port>
         <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
@@ -204,6 +238,8 @@
     <profile>
       <id>AZUREPROD</id>
       <properties>
+        <ng.env>prod</ng.env>
+        <schemes>https</schemes>
         <server.address>${server.azure.pro.address}</server.address>
         <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
         <enable.security.start>--&gt;</enable.security.start>
@@ -214,7 +250,7 @@
         <ecas.config.base.url>https://ecas.ec.europa.eu</ecas.config.base.url>
         <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
         <ecas.server.port>${server.azure.port}</ecas.server.port>
-        <mail.serv.location>http://wifi4euprod.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+        <mail.serv.location>https://wifi4euprod.azurewebsites.net/wifi4eu/#/</mail.serv.location>
         <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
         <mail.smtp.port>587</mail.smtp.port>
         <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>

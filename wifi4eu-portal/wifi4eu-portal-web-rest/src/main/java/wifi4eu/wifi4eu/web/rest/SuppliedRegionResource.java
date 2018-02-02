@@ -28,9 +28,8 @@ public class SuppliedRegionResource {
     @ApiOperation(value = "Get all the suppliedRegions grouped by regions")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<SuppliedRegionDTO> getSuppliedRegionsGroupedByRegionId() {
+    public ResponseDTO getSuppliedRegionsCountGroupedByRegionId() {
         _log.info("getSuppliedRegionsGroupedByRegionId");
-        return supplierService.getSuppliedRegionsGroupedByRegionId();
+        return new ResponseDTO(true, supplierService.getSuppliedRegionsCountGroupedByRegionId(), null);
     }
-
 }

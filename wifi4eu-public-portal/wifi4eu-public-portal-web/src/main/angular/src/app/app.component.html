@@ -6,7 +6,7 @@
                                       [userInfos]="userInfos" [isCustomRightContent]="true"
                                       logoUrl="https://ec.europa.eu/">
                     <uxLayoutHeaderRightContent>
-                        <ux-language-selector [selectedLanguage]="selectedLanguage"
+                        <ux-language-selector [selectedLanguage]="selectedLanguage" [languageCodes]="newLanguageArray"
                                               (languageChanged)="changeLanguage($event)"></ux-language-selector>
                         <div class="profile-wrapper" isCompact="false">
                             <div class="left-panel">
@@ -15,7 +15,7 @@
                                     </strong>
                                     <a href="../../../wifi4eu">
                                         <button class="headerButton">
-                                            {{ 'login.label' | translate }}
+                                            {{ 'shared.login.label' | translate }}
                                         </button>
                                     </a>
                                 </div>
@@ -31,7 +31,7 @@
                         <div *ngIf="user">
                             <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
                                                                isOverlayPanel="true"
-                                                               userInfos="{{ 'loggedin.as' | translate }} {{user.email}}"
+                                                               userInfos="{{ 'shared.loggedin.as' | translate }} {{user.email}}"
                                                                [links]="menuLinks"
                                                                homeUrl="/home">
                             </custom-layout-nav-bar-action-item>
@@ -41,7 +41,7 @@
                             <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu"
                                                                isOverlayPanel="true"
                                                                [links]="menuLinks" homeUrl="/home">
-                                {{ 'logout.label' | translate }}
+                                {{ 'shared.logout.label' | translate }}
                             </custom-layout-nav-bar-action-item>
                         </div>
                     </ux-layout-nav-bar-actions>
@@ -52,7 +52,7 @@
             </uxLayoutAppMainContentContainer>
             <uxLayoutAppMainFooterContainer>
                 <ux-layout-footer isCompact="true">
-                    {{ 'home.footer.update' | translate:{ActualDate:actualDate} }}<a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
+                    {{ 'home.footer.update' | translate:{version:"1.2.0b2",versionDate:"18/01/2018"} }}<a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
                 </ux-layout-footer>
             </uxLayoutAppMainFooterContainer>
         </ux-layout-app-main>
