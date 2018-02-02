@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import {LocalStorageService} from "angular-2-local-storage";
 
 @Component({
     selector: 'beneficiary-landing', templateUrl: 'beneficiary-landing.component.html', 
@@ -12,4 +13,10 @@ import { Component } from "@angular/core";
 })
 
 export class BeneficiaryLandingComponent {
+    constructor(private localStorageService: LocalStorageService) {
+    }
+
+    private storeRedirectionCookie() {
+        this.localStorageService.set("public-redirection", "/beneficiary-registration");
+    }
 }
