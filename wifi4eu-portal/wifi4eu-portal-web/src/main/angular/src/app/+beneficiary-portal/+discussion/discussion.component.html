@@ -12,7 +12,7 @@
     <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.beneficiary.registrations' | translate }}</p>
     <hr class="beneficiaryHr">
     <ux-accordion-boxes>
-        <custom-accordion-box [isExpanded]="false" [rightSide]="true" [closable]="true" *ngIf="municipality">
+        <custom-accordion-box [isExpanded]="true" [rightSide]="true" [closable]="true" *ngIf="municipality">
             <div class="ui-g">
                 <p class="discussionForumMayors marginTopCountdown"
                    [innerHTML]="'discussionForum.beneficiary.registration1' | translate:{selfRegistration:user.id}">
@@ -87,7 +87,7 @@
                 <!--<p>{{'discussionForum.noRecentConversations.text' | translate }}</p>-->
             </div>
             <div class="ui-g-4">
-                <button type="button" class="btn btn-primary changePassword discussionButton"
+                <button [disabled]="hasMediation" type="button" class="btn btn-primary changePassword discussionButton"
                         (click)="newMessage()">
                     {{'discussionForum.add.reply' | translate }}
                 </button>
@@ -101,7 +101,7 @@
                 <div class="ui-g-3">
                     <div>
                         <button type="button" class="btn btn-primary changePassword discussionButton"
-                                (click)="newMessage()">
+                                (click)="newMessage()" [disabled]="hasMediation">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             {{'discussionForum.add.reply' | translate }}
                         </button>
@@ -131,7 +131,7 @@
                 <div class="ui-g-9"></div>
                 <div class="ui-g-3">
                     <button type="button" class="btn btn-primary changePassword discussionButton"
-                            (click)="displayMediation = true" [disabled]="mediationBlocked">
+                            (click)="displayMediation = true" [disabled]="mediationBlocked || hasMediation">
                         {{'discussionForum.newMediation.button' | translate }}
                     </button>
                     <p class="right">{{'discussionForum.newMediation.text' | translate }}</p>

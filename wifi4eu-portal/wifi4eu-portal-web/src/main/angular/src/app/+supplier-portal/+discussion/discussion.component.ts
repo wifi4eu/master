@@ -41,6 +41,7 @@ export class DiscussionComponent {
     private userThreads: UserThreadsDTOBase [] = [];
     private otherSuppliers: SupplierDTOBase [] = [];
 
+    private hasMediation: boolean = false;
 
     constructor(private userThreadsApi: UserThreadsApi, private supplierApi: SupplierApi, private route: ActivatedRoute, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
 
@@ -51,8 +52,9 @@ export class DiscussionComponent {
 
 
         this.threadApi.getThreadById(this.threadId).subscribe(
-            thread => {
+            (thread : ThreadDTOBase) => {
                 this.thread = thread;
+                this.hasMediation = thread.mediation;
                 if (this.thread.messages.length > 0) {
                     this.hasMessages = true;
                 }
@@ -120,6 +122,9 @@ export class DiscussionComponent {
     }
 
     private sendMessage() {
+        if(this.hasMediation){
+          return;
+        }
         let newMessage = new ThreadMessageDTOBase();
         newMessage.createDate = new Date().getTime();
         newMessage.message = this.message;
@@ -147,22 +152,21 @@ export class DiscussionComponent {
         this.mediationBlocked = true;
         this.showAlert = true;
         window.scrollTo(0, 0);
-        this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-            (registrations: RegistrationDTOBase[]) => {
-                for (let registration of registrations) {
-                    registration.status = 0;
-                    this.registrationApi.createRegistration(registration).subscribe(
-                        (data: ResponseDTOBase) => {
-                            if (data.success) {
-                                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussionForum.discussion.growl', 'success');
-                            }
-                        }, error => {
-                            this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');
-                        }
-                    );
-                }
+        if(this.hasMediation){
+          return;
+        }
+        this.threadApi.askMediationThread(this.thread.id).subscribe(
+          (response: ResponseDTOBase) => {
+            if(response.success){
+              console.log(response.success);
+              this.hasMediation = response.data.mediation;
+              if(response.data.mediation){
+                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussionForum.discussion.growl', 'success');              }
             }
-        );
+          },
+          error => {
+            this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');          }
+        )
     }
 
     private deleteApplication() {

@@ -37,9 +37,9 @@ export class AppComponent implements OnInit {
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,is"
 
-    constructor(private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
+    constructor(private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
         translateService.setDefaultLang('en');
-        let language = this.localStorage.get('lang');
+        let language = this.localStorageService.get('lang');
         if (language) {
             this.translateService.use(language.toString());
             this.uxService.activeLanguage = UxEuLanguages.languagesByCode [language.toString()];
@@ -80,6 +80,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
+        let publicRedirection = this.localStorageService.get("public-redirection");
         this.userApi.ecasLogin().subscribe(
             (response: ResponseDTOBase) => {
                 this.localStorageService.set('user', JSON.stringify(response.data));
@@ -97,6 +98,10 @@ export class AppComponent implements OnInit {
                         this.router.navigateByUrl('/dgconn-portal');
                         break;
                     default:
+                        if (publicRedirection) {
+                            this.router.navigateByUrl(String(publicRedirection));
+                            this.localStorageService.remove("public-redirection");
+                        }
                         //this.router.navigateByUrl('/home');
                         break;
                 }
@@ -126,7 +131,7 @@ export class AppComponent implements OnInit {
         this.children[1] = [
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.suppPortal'),
-                url: '/supplier-portal'
+                url: '/supplier-portal/voucher'
             }),
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.myAccount'),
@@ -140,7 +145,7 @@ export class AppComponent implements OnInit {
             }),
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.appPortal'),
-                url: '/beneficiary-portal'
+                url: '/beneficiary-portal/voucher'
             })
         ];
         this.children[3] = [
@@ -150,7 +155,7 @@ export class AppComponent implements OnInit {
             }),
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.appPortal'),
-                url: '/beneficiary-portal'
+                url: '/beneficiary-portal/voucher'
             })
         ];
         this.children[4] = [
@@ -168,7 +173,7 @@ export class AppComponent implements OnInit {
     }
 
     updateHeader() {
-        let storedUser = this.localStorage.get('user');
+        let storedUser = this.localStorageService.get('user');
 
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
 
@@ -177,7 +182,7 @@ export class AppComponent implements OnInit {
             this.userApi.getUserById(this.user.id).subscribe(
                 (user: UserDTOBase) => {
                     this.user = user;
-                    this.localStorage.set('user', JSON.stringify(user));
+                    this.localStorageService.set('user', JSON.stringify(user));
                     switch (this.user.type) {
                         case 1:
                             this.profileUrl = '/supplier-portal/profile';
@@ -218,7 +223,7 @@ export class AppComponent implements OnInit {
     changeLanguage(language: UxLanguage) {
         this.translateService.use(language.code);
         this.uxService.activeLanguage = language;
-        this.localStorage.set('lang', language.code);
+        this.localStorageService.set('lang', language.code);
         this.updateMenuTranslations();
         this.updateFooterDate();
     }
@@ -278,7 +283,7 @@ export class AppComponent implements OnInit {
 
     logout() {
         this.user = null;
-        this.localStorage.remove('user');
+        this.localStorageService.remove('user');
         this.menuLinks = this.children[0];
         this.profileUrl = null;
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
@@ -305,7 +310,7 @@ export class AppComponent implements OnInit {
     }
 
     private updateFooterDate() {
-        let lang = this.localStorage.get('lang');
+        let lang = this.localStorageService.get('lang');
         if (!lang) lang = 'en';
         this.actualDate = new Date(Date.now()).toLocaleDateString(lang.toString());
     }

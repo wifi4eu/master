@@ -9,6 +9,9 @@ import { AdditionalInfoComponent } from "./+additional-info/additional-info.comp
     imports: [RouterModule.forChild([
         {
             path: '',
+            redirectTo: 'voucher'
+        }, {
+            path: 'voucher',
             component: VoucherComponent,
         }, {
             path: 'discussion-forum/:threadId',
