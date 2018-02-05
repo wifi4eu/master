@@ -316,20 +316,48 @@ public class BeneficiaryService {
         }
     }
 
+    public int getIssueType(List<RegistrationDTO> registrationDTOList) {
+        String validPattern = "^[a-z0-9_-]+(?:\\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\\.)+(|com|net|info|org|eu|bg|cs|da|de|el|es|et|fi|fr|ga|hr|hu|it|lt|lv|mt|nl|pl|pt|ro|sk|sl|sv|uk|ie|is|no)?$";
+
+        int numDuplicated = 0;
+        int numInvalids = 0;
+        int numResolved = 0;
+        int typeIssue = -1;
+        for (RegistrationDTO registrationDTO : registrationDTOList) {
+            UserDTO userDTO = userService.getUserById(registrationDTO.getUserId());
+            if (!userDTO.getEcasEmail().matches(validPattern)) {
+                typeIssue = 1;
+                break;
+            }
+            switch (registrationDTO.getStatus()) {
+                case 0:
+                    numDuplicated += 1;
+                    break;
+                case 1:
+                    numInvalids += 1;
+                    break;
+                case 2:
+                    numResolved += 1;
+                    break;
+                }
+        }
+
+        if ((numResolved + numInvalids) == registrationDTOList.size() && numResolved > 0) {
+            typeIssue = 3;
+        } else if (numDuplicated > 1) {
+            typeIssue  = 2;
+        } else if (numInvalids == registrationDTOList.size()) {
+            typeIssue = 4;
+        } else {
+            if(typeIssue != 1){
+                typeIssue = 0;
+            }
+        }
+        return typeIssue;
+    }
+
     public void getIssueOfRegistration(List<BeneficiaryListDTO> beneficiaryListDTOList) {
-        /* INVALID -> TODOS LOS REGISTRATIONS TIENE STATUS 1 */
-
-        /* RESOLVED -> UNA 2 DEMAS 1 */
-
-        /* DUPLICATED -> MAS DE UNA 0*/
-
-        /* WARNING -> .eu .com .net .info .28 paises */
-
-        /* NADA -> */
-
-        String validPattern = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.(?:[A-Z]{2,}|com|net|info|org|eu" +
-                "|bg|cs|da|de|el|es|et|fi|fr|ga|hr|hu|it|lt|lv|mt|nl|pl|pt|ro|sk|sl|sv|uk|ie|is|no))*$";
-
+        String validPattern = "^[a-z0-9_-]+(?:\\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\\.)+(com|net|info|org|eu|bg|cs|da|de|el|es|et|fi|fr|ga|hr|hu|it|lt|lv|mt|nl|pl|pt|ro|sk|sl|sv|uk|ie|is|no)?$";
         for (BeneficiaryListDTO beneficiaryListDTO : beneficiaryListDTOList) {
 
             int numDuplicated = 0;

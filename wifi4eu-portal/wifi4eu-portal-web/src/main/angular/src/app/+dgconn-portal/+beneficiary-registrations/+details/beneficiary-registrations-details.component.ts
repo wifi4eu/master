@@ -12,10 +12,11 @@ import {ResponseDTOBase} from "../../../shared/swagger/model/ResponseDTO";
 import {SharedService} from "../../../shared/shared.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ThreadMessageDTOBase} from "../../../shared/swagger/model/ThreadMessageDTO";
+import { BeneficiaryApi, ResponseDTO } from "app/shared/swagger";
 
 @Component({
     templateUrl: 'beneficiary-registrations-details.component.html',
-    providers: [MunicipalityApi, MayorApi, RegistrationApi, ThreadApi]
+    providers: [MunicipalityApi, MayorApi, RegistrationApi, ThreadApi, BeneficiaryApi]
 })
 
 export class DgConnBeneficiaryRegistrationsDetailsComponent {
@@ -29,7 +30,9 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     private entityCheckboxIndex: number = null;
     private searchMessagesQuery: string = '';
 
-    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private sharedService: SharedService, private sanitizer: DomSanitizer) {
+    private issueRegistration: number;
+
+    constructor(private route: ActivatedRoute, private beneficiaryApi: BeneficiaryApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private sharedService: SharedService, private sanitizer: DomSanitizer) {
         this.route.params.subscribe(
             params => {
                 this.lauId = params['id'];
@@ -41,7 +44,8 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     private getRegistrationDetailsInfo() {
         this.municipalityApi.getMunicipalitiesByLauId(this.lauId).subscribe(
             (municipalities: MunicipalityDTOBase[]) => {
-                for (let municipality of municipalities) {
+                for (let i = 0; i < municipalities.length; i++) {
+                    let municipality = municipalities[i];
                     this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                         (mayor: MayorDTOBase) => {
                             this.registrationApi.getRegistrationByMunicipalityId(municipality.id).subscribe(
@@ -51,6 +55,9 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                                         this.registrations.push(registration);
                                         this.mayors.push(mayor);
                                         this.municipalities.push(municipality);
+                                        if(this.registrations.length == municipalities.length){
+                                          this.getIssue();
+                                        }
                                     }
                                 }
                             );
@@ -109,11 +116,30 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
         }
     }
 
+    private getIssue(){
+      this.beneficiaryApi.getIssueTypeBeneficiaryRegistrations(JSON.stringify(this.registrations)).subscribe(
+        (response: ResponseDTO) => {
+          if(response.success){
+            this.issueRegistration = response.data;
+          }
+        }
+      )
+    }
+
     private assignLegalEntity() {
         if (this.entityCheckboxIndex != null) {
             this.registrationApi.assignLegalEntity(this.registrations[this.entityCheckboxIndex].id).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
+                        for(let i = 0; i < this.registrations.length; i++){
+                          if(this.registrations[i].id == this.registrations[this.entityCheckboxIndex].id){
+                            this.registrations[i].status = 2;
+                          }
+                          else{
+                            this.registrations[i].status = 1;
+                          }
+                        }
+                        this.getIssue();
                         let entityNumber = (this.entityCheckboxIndex + 1);
                         this.sharedService.growlTranslation('You successfully assigned the authentic legal entity to the Entity #' + entityNumber + '.','dgConn.duplicatedBeneficiaryDetails.assignLegalEntity.success', 'success', {entityNumber: entityNumber});
                     } else {
