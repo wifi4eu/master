@@ -116,7 +116,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                 (response: ResponseDTOBase) => {
                     if (response.success) {
                         let entityNumber = (this.entityCheckboxIndex + 1);
-                        this.sharedService.growlTranslation('You successfully assigned the authentic legal entity to the Entity #' + entityNumber + '.','dgConn.duplicatedBeneficiaryDetails.assignLegalEntity.success', 'success', String(entityNumber));
+                        this.sharedService.growlTranslation('You successfully assigned the authentic legal entity to the Entity #' + entityNumber + '.','dgConn.duplicatedBeneficiaryDetails.assignLegalEntity.success', 'success', {entityNumber: entityNumber});
                     } else {
                         this.sharedService.growlTranslation('An error occurred while trying to assign the authentic legal entity. Please, try again later.','dgConn.duplicatedBeneficiaryDetails.assignLegalEntity.error', 'error');
                     }
