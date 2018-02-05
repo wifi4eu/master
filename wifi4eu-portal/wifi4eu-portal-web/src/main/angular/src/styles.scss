@@ -1504,3 +1504,28 @@ p-tabview.white .ui-widget-content.ui-tabview {
   filter: grayscale(100%);
   opacity: 0.5;
 }
+
+.badge-success{
+  color: #fff;
+  padding: 4px 8px;
+  font-style: italic;
+  background-color: #4caf50;
+}
+.badge-fail{
+  color: #fff;
+  padding: 4px 8px;
+  font-style: italic;
+  background-color: #f44336;
+}
+.badge-warning{
+  color: #fff;
+  padding: 4px 8px;
+  font-style: italic;
+  background-color: #ff9800;
+}
+.badge-duplicated{
+  color: #fff;
+  padding: 4px 8px;
+  font-style: italic;
+  background-color: #ff6f00;
+}
