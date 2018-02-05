@@ -19,11 +19,27 @@ import {UserThreadsDTO, UserThreadsDTOBase} from "../../shared/swagger/model/Use
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import index from "@angular/cli/lib/cli";
 import {isNumber} from "util";
+import { trigger, style, animate, transition } from '@angular/animations';
+
 
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
-    providers: [UserThreadsApi, ThreadApi, BeneficiaryApi, ThreadmessagesApi, UserApi, RegistrationApi, MunicipalityApi]
+    providers: [UserThreadsApi, ThreadApi, BeneficiaryApi, ThreadmessagesApi, UserApi, RegistrationApi, MunicipalityApi],
+    animations: [
+      trigger(
+        'enterSpinner', [
+          transition(':enter', [
+            style({opacity: 0}),
+            animate('200ms', style({opacity: 1}))
+          ]),
+          transition(':leave', [
+            style({opacity: 1}),
+            animate('200ms', style({opacity: 0}))
+          ])
+        ]
+      )
+    ]
 })
 
 export class DiscussionComponent {
@@ -45,6 +61,9 @@ export class DiscussionComponent {
     private counter: number = 0;
 
     private hasMediation: boolean = false;
+
+    private isSendMessage: boolean = false;
+    private isSendedMessage: boolean = false;
 
     constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
         this.route.params.subscribe(params => this.threadId = params['threadId']);
@@ -122,6 +141,7 @@ export class DiscussionComponent {
         if(this.hasMediation){
           return;
         }
+        this.isSendMessage = false;
         this.displayMessage = true;
         this.message = '';
     }
@@ -130,19 +150,23 @@ export class DiscussionComponent {
         if(this.hasMediation){
           return;
         }
+        this.isSendMessage = true;
         let newMessage = new ThreadMessageDTOBase();
         newMessage.createDate = new Date().getTime();
         newMessage.message = this.message;
         newMessage.authorId = this.user.id;
         newMessage.threadId = this.threadId;
+        this.isSendedMessage = false;
         this.threadMessagesApi.createThreadMessage(newMessage).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
+                    this.isSendedMessage = true;
                     this.thread.messages.push(response.data);
                     // this.messageAuthors.push(this.user);
                     this.hasMessages = true;
                     this.sharedService.growlTranslation('The message was successfully sent!', 'discussionForum.thread.message.success', 'success');
-                } else {
+                } else { 
+                    this.isSendedMessage = false;
                     this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
                 }
                 this.displayMessage = false;
@@ -205,6 +229,7 @@ export class DiscussionComponent {
     }
 
     private closeModal() {
+      this.isSendMessage = false;
         this.displayMessage = false;
         this.displayMediation = false;
     }

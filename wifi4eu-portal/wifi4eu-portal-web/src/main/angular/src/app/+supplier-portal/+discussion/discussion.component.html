@@ -157,13 +157,16 @@
                     <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate }}</p>
                     <p>{{ 'discussionForum.sendMessage.subject' | translate }}</p>
                     <textarea rows="10" cols="20" class="form-control widthMax"
-                              name="newMessage" [(ngModel)]="message" required></textarea>
+                              name="newMessage" [(ngModel)]="message" required [readonly]="isSendMessage"></textarea>
                     <div style="text-align: center !important">
-                        <button type="button" class="btn btn-primary changePasswordModal cancel-button"
+                        <button [disabled]="isSendMessage" type="button" class="btn btn-primary changePasswordModal cancel-button"
                                 (click)="closeModal()">
                             {{ 'shared.cancel.button' | translate }}
                         </button>
-                        <button type="submit" class="btn btn-primary changePasswordModal publish-button">
+                        <button [disabled]="isSendMessage" type="submit" class="btn btn-primary changePasswordModal publish-button">
+                            <span style="margin-right: 2px;">
+                              <i *ngIf="isSendMessage && !isSendedMessage" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                            </span>
                             {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
                         </button>
                     </div>

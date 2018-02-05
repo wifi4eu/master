@@ -82,19 +82,19 @@
     -->
     <div class="ui-g-12">
         <div class="ui-g-3 ui-sm-6">
-            <img src="assets/images/check.png" alt="">
+            <img class="greyImage" src="assets/images/check.png" alt="">
             <p><span class="dotSteps">1. </span>{{ 'benefPortal.voucher.step1' | translate}}</p>
         </div>
         <div class="ui-g-3 ui-sm-6">
-            <img src="assets/images/clock.png" alt="">
+            <img class="{{openedCalls}}" src="assets/images/clock.png" alt="">
             <p><span class="dotSteps">2. </span>{{ 'benefPortal.voucher.step2' | translate}}</p>
         </div>
         <div class="ui-g-3 ui-sm-6">
-            <img src="assets/images/apply.png" alt="">
+            <img class="{{voucherApplied}}" src="assets/images/apply.png" alt="">
             <p><span class="dotSteps">3. </span>{{ 'benefPortal.voucher.step3' | translate}}</p>
         </div>
         <div class="ui-g-3 ui-sm-6">
-            <img src="assets/images/voucher.png" alt="">
+            <img class="{{stepCompleted}}" src="assets/images/voucher.png" alt="">
             <p><span class="dotSteps">4. </span>{{ 'benefPortal.voucher.step4' | translate}}</p>
         </div>
     </div>

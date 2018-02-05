@@ -103,12 +103,11 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     }
 
     private requestLegalDocuments() {
-        for (let registration of this.registrations) {
-            this.registrationApi.requestLegalDocuments(registration.id).subscribe(
+        for (let i = 0; i < this.registrations.length; i++) {
+            this.registrationApi.requestLegalDocuments(this.registrations[i].id).subscribe(
                 (response: ResponseDTOBase) => {
-                    if (response.success) {
-                        let entityNumber = (this.entityCheckboxIndex + 1);
-                        this.sharedService.growlTranslation('An email has been sent to the legal representant of the Entity #' + entityNumber + ' to supply the legal documents for the registration.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success', 'success', String(entityNumber));
+                    if (response.success && (i == (this.registrations.length - 1))) {
+                        this.sharedService.growlTranslation('An email has been sent to the representants of the legal entities to supply the legal documents for the registration.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success', 'success');
                     } else {
                         this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the registration. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.error', 'error');
                     }

@@ -36,6 +36,8 @@ export class VoucherComponent {
     private loadingButtons: boolean[] = [];
     private dateNumber: string;
     private hourNumber: string;
+    private voucherApplied: string = "";
+    private openedCalls: string = "";
 
     constructor(private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService) {
         let storedUser = this.localStorage.get('user');
@@ -74,6 +76,7 @@ export class VoucherComponent {
                                                     this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
                                                     if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
                                                         this.voucherCompetitionState = 2;
+                                                        this.openedCalls = "greyImage";
                                                     } else {
                                                         this.voucherCompetitionState = 1;
                                                     }
@@ -86,6 +89,7 @@ export class VoucherComponent {
                                                         }
                                                         if (allApplied) {
                                                             this.voucherCompetitionState = 3;
+                                                            this.voucherApplied = "greyImage";
                                                         }
                                                     }
                                                 }

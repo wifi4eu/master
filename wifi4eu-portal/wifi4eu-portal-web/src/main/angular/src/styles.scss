@@ -573,8 +573,8 @@ body {
   font-weight: bold;
 }
 
-.cancel-button.cancel-link{
-    line-height: 1.6em;
+.cancel-button.cancel-link {
+  line-height: 1.6em;
 }
 
 @media only screen and (max-width: 438px) {
@@ -1222,6 +1222,7 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   color: $dark-blue;
 
 }
+
 .benefLandingLink {
   color: $darkish-blue;
   font-size: 18px;
@@ -1288,71 +1289,71 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   color: white;
 }
 
-.panel-dg{
+.panel-dg {
   background-color: #fff;
   border: 1px solid rgba(187, 187, 187, 0.8196078431372549);
   margin-bottom: 1.25rem;
   position: relative;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.149);
 
-  &.panel-padding{
+  &.panel-padding {
     padding: 20px;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0);
   }
 
-  &.panel-input{
+  &.panel-input {
     text-align: left;
     border: 1px solid rgba(0, 0, 0, 0.09);
   }
 
-  .panel-dg-header{
+  .panel-dg-header {
     text-align: left;
     border-bottom: 1px solid #bbbbbb;
     padding: 1.75rem 1.25rem;
 
-    span.header-label{
+    span.header-label {
       color: #565656;
       font-size: 19px;
       font-weight: 800;
     }
   }
 
-  .text-center{
-   /*  padding: 1.25rem 0.75rem; */
+  .text-center {
+    /*  padding: 1.25rem 0.75rem; */
     padding: 1.25rem 0rem;
     text-align: center;
   }
 
-  .separator{
+  .separator {
     border-left: 1px solid rgba(171, 171, 171, 0.22);
   }
 
-  .ui-datatable table thead th{
-    border-bottom: 1px solid rgba(187, 187, 187, 0.8196078431372549)!important;
+  .ui-datatable table thead th {
+    border-bottom: 1px solid rgba(187, 187, 187, 0.8196078431372549) !important;
   }
 
-  .badge{
+  .badge {
     color: #fff;
     padding: 4px 8px;
     font-style: italic;
-    &.badge-success{
+    &.badge-success {
       background-color: #4caf50;
     }
-    &.badge-fail{
+    &.badge-fail {
       background-color: #f44336;
     }
-    &.badge-warning{
+    &.badge-warning {
       background-color: #ff9800;
     }
-    &.badge-duplicated{
+    &.badge-duplicated {
       background-color: #ff6f00;
     }
   }
 }
 
-.row-municipality{
-  box-sizing: border-box; 
-  float:left; 
+.row-municipality {
+  box-sizing: border-box;
+  float: left;
   width: 100%;
 }
 
@@ -1461,47 +1462,45 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 
 /* fix blinking issue with the header */
 
-#app-wrapper.shrink-header-active #main #nav-bar{
+#app-wrapper.shrink-header-active #main #nav-bar {
   position: relative;
 }
 
-p-tabview.white .ui-widget-content.ui-tabview{
+p-tabview.white .ui-widget-content.ui-tabview {
   background: #fff;
 }
 
-@media screen and (min-width: 855px) and (max-width: 1042px){
-  .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow{
+@media screen and (min-width: 855px) and (max-width: 1042px) {
+  .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow {
     width: 70%;
   }
 }
 
-@media screen and (max-width: 855px){
-  .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow{
+@media screen and (max-width: 855px) {
+  .ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-shadow {
     width: 90%;
   }
 }
 
-.badge-success{
-  color: #fff;
-  padding: 4px 8px;
-  font-style: italic;
-  background-color: #4caf50;
+.loading-icon{
+  animation: loadingIcon infinite 2s;
+  animation-timing-function: linear;
+  -webkit-animation-timing-function: linear;
 }
-.badge-fail{
-  color: #fff;
-  padding: 4px 8px;
-  font-style: italic;
-  background-color: #f44336;
+
+@keyframes loadingIcon{
+  from {
+    transform: rotate(1deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
 }
-.badge-warning{
-  color: #fff;
-  padding: 4px 8px;
-  font-style: italic;
-  background-color: #ff9800;
-}
-.badge-duplicated{
-  color: #fff;
-  padding: 4px 8px;
-  font-style: italic;
-  background-color: #ff6f00;
+
+.greyImage {
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+  opacity: 0.5;
 }
