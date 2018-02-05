@@ -338,7 +338,7 @@
   "dgConn.duplicatedBeneficiaryDetails.assignLegalEntity": "Assign legal entity",
   "dgConn.duplicatedBeneficiaryDetails.validateMunicipality": "Validate municipality",
   "dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality": "Invalidate municipality",
-  "dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success": "An email has been sent to the legal representant of the Entity #{{entityNumber}} to supply the legal documents for the registration.",
+  "dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success": "An email has been sent to the representants of the legal entities to supply the legal documents for the registration.",
   "dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the registration. Please, try again later.",
   "dgConn.duplicatedBeneficiaryDetails.assignLegalEntity.success": "You successfully assigned the authentic legal entity to the Entity #{{entityNumber}}.",
   "dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success": "You successfully validated the municipality.",
