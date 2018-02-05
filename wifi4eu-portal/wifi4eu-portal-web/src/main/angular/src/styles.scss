@@ -1482,17 +1482,17 @@ p-tabview.white .ui-widget-content.ui-tabview {
   }
 }
 
-.loading-icon{
+.loading-icon {
   animation: loadingIcon infinite 2s;
   animation-timing-function: linear;
   -webkit-animation-timing-function: linear;
 }
 
-@keyframes loadingIcon{
+@keyframes loadingIcon {
   from {
     transform: rotate(1deg);
   }
-  to{
+  to {
     transform: rotate(360deg);
   }
 }
@@ -1505,24 +1505,50 @@ p-tabview.white .ui-widget-content.ui-tabview {
   opacity: 0.5;
 }
 
+.voucherButtonsSimulate {
+  color: #ffffff;
+  background-color: #004494;
+  border: solid 2px #004494;
+  margin-top: 0.2em;
+  font-family: Verdana;
+  font-size: 1.2em;
+  font-weight: bold;
+  width: 20em;
+}
+
+.voucherButtonsCancel {
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
+  margin-top: 0.2em;
+  font-family: Verdana;
+  font-size: 1.2em;
+  font-weight: bold;
+  width: 20em;
+
+}
+
 .badge-success{
   color: #fff;
   padding: 4px 8px;
   font-style: italic;
   background-color: #4caf50;
 }
+
 .badge-fail{
   color: #fff;
   padding: 4px 8px;
   font-style: italic;
   background-color: #f44336;
 }
+
 .badge-warning{
   color: #fff;
   padding: 4px 8px;
   font-style: italic;
   background-color: #ff9800;
 }
+
 .badge-duplicated{
   color: #fff;
   padding: 4px 8px;

@@ -30,7 +30,7 @@ export class DgConnPublicationComponent {
     private voucherManagementsSecond: VoucherManagementDTO[] = [];
     private editableField: boolean = false;
 
-    constructor(private callApi: CallApi, private sharedService: SharedService,) {
+    constructor(private callApi: CallApi, private sharedService: SharedService) {
         this.display = false;
         this.dgConnDetails = new DgConnDetails();
         this.callApi.allCalls().subscribe(
