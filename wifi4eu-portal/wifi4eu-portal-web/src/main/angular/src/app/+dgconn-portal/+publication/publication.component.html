@@ -71,21 +71,21 @@
             <div class="ui-g-6">
                 <p-dataTable [value]="voucherManagementsFirst">
                     <p-column [sortable]="true" field="member_state"
-                              header="Member State"></p-column>
+                              header="{{ 'dgConn.helpdesk.memberState' | translate}}"></p-column>
                     <p-column [sortable]="true" field="minimum"
-                              header="Minimum"></p-column>
+                              header="{{ 'dgConn.voucher.minimum' | translate}}"></p-column>
                     <p-column [sortable]="true" field="maximum"
-                              header="Maximum"></p-column>
+                              header="{{ 'dgConn.voucher.maximum' | translate}}"></p-column>
                 </p-dataTable>
             </div>
             <div class="ui-g-6">
                 <p-dataTable [value]="voucherManagementsSecond" *ngIf="displayTable">
                     <p-column [sortable]="true" field="member_state"
-                              header="Member State"></p-column>
+                              header="{{ 'dgConn.helpdesk.memberState' | translate}}"></p-column>
                     <p-column [sortable]="true" field="minimum"
-                              header="Minimum"></p-column>
+                              header="{{ 'dgConn.voucher.minimum' | translate}}"></p-column>
                     <p-column [sortable]="true" field="maximum"
-                              header="Maximum"></p-column>
+                              header="{{ 'dgConn.voucher.maximum' | translate}}"></p-column>
                 </p-dataTable>
             </div>
         </div>
