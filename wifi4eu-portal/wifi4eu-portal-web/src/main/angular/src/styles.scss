@@ -1482,6 +1482,21 @@ p-tabview.white .ui-widget-content.ui-tabview {
   }
 }
 
+.loading-icon{
+  animation: loadingIcon infinite 2s;
+  animation-timing-function: linear;
+  -webkit-animation-timing-function: linear;
+}
+
+@keyframes loadingIcon{
+  from {
+    transform: rotate(1deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+
 .greyImage {
   -webkit-filter: grayscale(100%);
   -moz-filter: grayscale(100%);
