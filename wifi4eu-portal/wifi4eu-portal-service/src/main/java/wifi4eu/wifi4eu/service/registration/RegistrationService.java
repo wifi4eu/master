@@ -100,7 +100,7 @@ public class RegistrationService {
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
                 String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
-                String additionalInfoUrl = userService.getBaseUrl() + "/beneficiary-portal/additional-info";
+                String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/additional-info";
                 msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
                 if (!userService.isLocalHost()) {
                     mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
