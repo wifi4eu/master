@@ -1429,6 +1429,32 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   font-weight: bold;
 }
 
+.greenButton {
+  background-color: #228854;
+  color: #ffffff;
+  border: solid 2px #228854;
+  font-family: Verdana;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.greenButton:hover {
+  background-color: #1C7045;
+}
+
+.redButton {
+  background-color: #D9400E;
+  color: #ffffff;
+  border: solid 2px #D9400E;
+  font-family: Verdana;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.redButton:hover {
+  background-color: #c53b0c;
+}
+
 .warningBadge {
   padding: 4px 8px;
   font-style: italic;

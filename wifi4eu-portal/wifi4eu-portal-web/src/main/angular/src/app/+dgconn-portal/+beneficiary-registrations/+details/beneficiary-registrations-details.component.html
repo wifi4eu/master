@@ -36,6 +36,14 @@
                     <label class="customCheckboxLabel" [for]="'check-'+i">
                         {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}}
                     </label>
+                    <span class="right">
+                        <button type="button" class="btn greenButton" (click)="validateMunicipality(i)">
+                            {{ 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality' | translate }}
+                        </button>
+                        <button type="button" class="btn redButton" (click)="invalidateMunicipality(i)">
+                            {{ 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality' | translate }}
+                        </button>
+                    </span>
                 </div>
                 <div class="row applicantDetailsPanel">
                     <div class="ui-g-6 ui-lg-6 ui-md-8 ui-sm-12">
@@ -128,16 +136,6 @@
             <button type="button" class="btn btn-primary blueButton" *ngIf="municipalities.length > 1"
                     (click)="assignLegalEntity()" [disabled]="entityCheckboxIndex == null">
                 {{ 'dgConn.duplicatedBeneficiaryDetails.assignLegalEntity' | translate }}
-            </button>
-        </div>
-        <div class="ui-g-12 right" *ngIf="municipalities.length == 1">
-            <button type="button" class="btn btn-primary whiteButton"
-                    (click)="invalidateMunicipality()" [disabled]="entityCheckboxIndex == null">
-                {{ 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality' | translate }}
-            </button>
-            <button type="button" class="btn btn-primary blueButton"
-                    (click)="validateMunicipality()" [disabled]="entityCheckboxIndex == null">
-                {{ 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality' | translate }}
             </button>
         </div>
         <div class="ui-g-12" *ngIf="discussionThread">
