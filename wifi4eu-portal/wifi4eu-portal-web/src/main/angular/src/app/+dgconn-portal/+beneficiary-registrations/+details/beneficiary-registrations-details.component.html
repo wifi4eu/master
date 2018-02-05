@@ -8,10 +8,11 @@
         <p>
             <span class="beneficiaryTitle">
                 {{ 'shared.municipalityDetails.title' | translate }}<span *ngIf="municipalities[0]"> - {{municipalities[0].name}}</span>
-            </span>
-            <span *ngIf="municipalities.length > 1" class="warningBadge">
-                {{ 'dgConn.badge.duplicated' | translate }}
-            </span>
+            </span>            
+            <span class="badge badge-warning" *ngIf="issueRegistration == 1">{{ 'dgConn.badge.warning' | translate }}</span>
+            <span class="badge badge-duplicated" *ngIf="issueRegistration == 2">{{ 'dgConn.badge.duplicated' | translate }}</span>
+            <span class="badge badge-success" *ngIf="issueRegistration == 3">{{ 'dgConn.badge.resolved' | translate }}</span>
+            <span class="badge badge-fail" *ngIf="issueRegistration == 4">{{ 'dgConn.badge.invalid' | translate }}</span>
         </p>
         <p *ngIf="municipalities.length == 0">
             {{ 'dgConn.duplicatedBeneficiaryDetails.noMunicipalitiesFound' | translate }}
