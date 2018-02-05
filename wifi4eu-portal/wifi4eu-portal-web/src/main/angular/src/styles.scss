@@ -1480,3 +1480,18 @@ p-tabview.white .ui-widget-content.ui-tabview{
     width: 90%;
   }
 }
+
+.loading-icon{
+  animation: loadingIcon infinite 2s;
+  animation-timing-function: linear;
+  -webkit-animation-timing-function: linear;
+}
+
+@keyframes loadingIcon{
+  from {
+    transform: rotate(1deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
