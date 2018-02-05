@@ -150,10 +150,10 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
         }
     }
 
-    private validateMunicipality() {
-        if (this.entityCheckboxIndex != null) {
-            this.registrations[this.entityCheckboxIndex].status = 2;
-            this.registrationApi.createRegistration(this.registrations[this.entityCheckboxIndex]).subscribe(
+    private validateMunicipality(index: number) {
+        if (index != null) {
+            this.registrations[index].status = 2;
+            this.registrationApi.createRegistration(this.registrations[index]).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
                         this.sharedService.growlTranslation('You successfully validated the municipality.','dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
@@ -165,10 +165,10 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
         }
     }
 
-    private invalidateMunicipality() {
-        if (this.entityCheckboxIndex != null) {
-            this.registrations[this.entityCheckboxIndex].status = 1;
-            this.registrationApi.createRegistration(this.registrations[this.entityCheckboxIndex]).subscribe(
+    private invalidateMunicipality(index: number) {
+        if (index != null) {
+            this.registrations[index].status = 1;
+            this.registrationApi.createRegistration(this.registrations[index]).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
                         this.sharedService.growlTranslation('You successfully invalidated the municipality.','dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
