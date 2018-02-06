@@ -115,7 +115,7 @@
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'shared.confirmemail.label' | translate }}</label>
                     <input class="form-control paddingInput {{css_class_email[0]}}"
-                           name="confirm-email" id="confirm-email"
+                           name="confirm-email" id="confirm-email" type="email"
                            (input)="checkEmailsMatch()" (paste)="preventPaste()"
                            [(ngModel)]="emailConfirmations[0]" maxlength="254">
                 </div>
@@ -229,7 +229,7 @@
                         <div class="ui-g-12">
                             <label class="label floatLeft">{{ 'shared.confirmemail.label' | translate
                                 }}</label>
-                            <input class="form-control paddingInput {{css_class_email[i]}}"
+                            <input class="form-control paddingInput {{css_class_email[i]}}" type="email"
                                    [name]="'confirm-email-'+i" [id]="'confirm-email-'+i"
                                    (input)="checkEmailsMatch()" (paste)="preventPaste()"
                                    [(ngModel)]="emailConfirmations[i]" maxlength="254">
