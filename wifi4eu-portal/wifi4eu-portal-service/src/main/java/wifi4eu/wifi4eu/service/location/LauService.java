@@ -34,7 +34,7 @@ public class LauService {
         return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByNuts3(nuts3)));
     }
 
-    @Cacheable("searchLaus")
+    @Cacheable(value = "searchLaus", key = "#countryCode")
     public List<LauDTO> getLausByCountryCodeAndName1ContainingIgnoreCase(String countryCode, String name1) {
         return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByCountryCodeAndName1ContainingIgnoreCase(countryCode, name1)));
     }
