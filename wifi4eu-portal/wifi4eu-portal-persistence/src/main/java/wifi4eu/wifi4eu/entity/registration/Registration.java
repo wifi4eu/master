@@ -40,10 +40,13 @@ public class Registration {
     @Column(name = "legal_file4")
     private String legalFile4;
 
+    @Column(name = "ip_registration")
+    private String ipRegistration;
+
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -52,6 +55,7 @@ public class Registration {
         this.legalFile2 = legalFile2;
         this.legalFile3 = legalFile3;
         this.legalFile4 = legalFile4;
+        this.ipRegistration = ipRegistration;
     }
 
     public Integer getId() {
@@ -124,5 +128,13 @@ public class Registration {
 
     public void setLegalFile4(String legalFile4) {
         this.legalFile4 = legalFile4;
+    }
+
+    public String getIpRegistration() {
+        return ipRegistration;
+    }
+
+    public void setIpRegistration(String ipRegistration) {
+        this.ipRegistration = ipRegistration;
     }
 }

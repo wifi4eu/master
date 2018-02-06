@@ -72,7 +72,7 @@ public class BeneficiaryService {
     private final String REPRESENTATIVE = "Representative";
 
     @Transactional
-    public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO) throws Exception {
+    public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO, String ip) throws Exception {
 
         /* Get user from ECAS */
         UserDTO user;
@@ -112,7 +112,7 @@ public class BeneficiaryService {
         List<MunicipalityDTO> resMunicipalities = getMunicipalityList(beneficiaryDTO);
 
         /* create registrations between user and municipality */
-        List<RegistrationDTO> registrations = getRegistrationsList(resUser, beneficiaryDTO, resMunicipalities);
+        List<RegistrationDTO> registrations = getRegistrationsList(resUser, beneficiaryDTO, resMunicipalities, ip);
 
         /* send Activate Account Email*/
         userService.sendActivateAccountMail(resUser);
@@ -123,7 +123,7 @@ public class BeneficiaryService {
         return registrations;
     }
 
-    private List<RegistrationDTO> getRegistrationsList(UserDTO userDTO, BeneficiaryDTO beneficiaryDTO, List<MunicipalityDTO> resMunicipalities) {
+    private List<RegistrationDTO> getRegistrationsList(UserDTO userDTO, BeneficiaryDTO beneficiaryDTO, List<MunicipalityDTO> resMunicipalities, String ip) {
         List<RegistrationDTO> registrations = new ArrayList<>();
         for (int i = 0; i < resMunicipalities.size(); i++) {
             MunicipalityDTO municipality = resMunicipalities.get(i);
@@ -137,6 +137,7 @@ public class BeneficiaryService {
 
             /* create registration */
             RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, userDTO.getId());
+            registration.setIpRegistration(ip);
             RegistrationDTO registrationDtoOutput = registrationService.createRegistration(registration);
             registrations.add(registrationDtoOutput);
 
@@ -299,6 +300,9 @@ public class BeneficiaryService {
             for (RegistrationDTO registrationDTO : beneficiaryListDTO.getRegistrations()) {
                 beneficiaryListDTO.setStatus(getStatusApplicationByRegistration(registrationDTO.getId()));
             }
+            if(checkIpDuplicated(beneficiaryListDTO.getRegistrations())){
+                beneficiaryListDTO.setIssue(1);
+            }
             beneficiaryListDTO.setMediation(getMediationStatusByLau(beneficiaryListDTO.getLau().getId()));
         }
 
@@ -353,7 +357,21 @@ public class BeneficiaryService {
                 typeIssue = 0;
             }
         }
+        if(checkIpDuplicated(registrationDTOList)){
+            typeIssue = 1;
+        }
         return typeIssue;
+    }
+
+    public boolean checkIpDuplicated(List<RegistrationDTO> registrationDTOList){
+        Map<String, Integer> mapIps = new HashMap<>();
+        for(RegistrationDTO registrationDTO: registrationDTOList){
+            if(mapIps.containsKey(registrationDTO.getIpRegistration())){
+               return true;
+            }
+            mapIps.put(registrationDTO.getIpRegistration(), 1);
+        }
+        return false;
     }
 
     public void getIssueOfRegistration(List<BeneficiaryListDTO> beneficiaryListDTOList) {
