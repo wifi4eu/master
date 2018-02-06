@@ -12,10 +12,12 @@ public class BeneficiaryListDTO implements Serializable {
     private boolean mediation;
     private List<RegistrationDTO> registrations = new ArrayList<>();
 
-    public BeneficiaryListDTO(LauDTO lau, Integer numRegistrations, Boolean status, List<RegistrationDTO> registrations) {
+    public BeneficiaryListDTO(LauDTO lau, Integer numRegistrations, boolean status, Integer issue, boolean mediation, List<RegistrationDTO> registrations) {
         this.lau = lau;
         this.numRegistrations = numRegistrations;
         this.status = status;
+        this.issue = issue;
+        this.mediation = mediation;
         this.registrations = registrations;
     }
 
@@ -73,4 +75,5 @@ public class BeneficiaryListDTO implements Serializable {
     public void setIssue(Integer issue) {
         this.issue = issue;
     }
+
 }

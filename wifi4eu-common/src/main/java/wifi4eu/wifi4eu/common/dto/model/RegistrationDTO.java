@@ -10,11 +10,12 @@ public class RegistrationDTO {
     private String legalFile2;
     private String legalFile3;
     private String legalFile4;
+    private String ipRegistration;
 
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4) {
+    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration) {
         this.id = id;
         this.userId = userId;
         this.municipalityId = municipalityId;
@@ -24,6 +25,7 @@ public class RegistrationDTO {
         this.legalFile2 = legalFile2;
         this.legalFile3 = legalFile3;
         this.legalFile4 = legalFile4;
+        this.ipRegistration = ipRegistration;
     }
 
     public int getId() {
@@ -96,5 +98,13 @@ public class RegistrationDTO {
 
     public void setLegalFile4(String legalFile4) {
         this.legalFile4 = legalFile4;
+    }
+
+    public String getIpRegistration() {
+        return ipRegistration;
+    }
+
+    public void setIpRegistration(String ipRegistration) {
+        this.ipRegistration = ipRegistration;
     }
 }
