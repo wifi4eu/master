@@ -15,6 +15,7 @@ export class DgConnVoucherComponent {
     private calls: CallDTO[];
     private municipalities: number;
     private applications: number;
+    private displayMessage: boolean = false;
 
     constructor(private municipalityApi: MunicipalityApi, private callApi: CallApi, private applicationApi: ApplicationApi) {
         this.municipalityApi.getMunicipalitiesCountGroupedByLauId().subscribe(
@@ -42,6 +43,10 @@ export class DgConnVoucherComponent {
             }
         );
 
+    }
+
+    displayInfo() {
+        this.displayMessage = true;
     }
 
 
