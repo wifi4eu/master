@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.service.supplier;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
@@ -22,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Service
+@Service("portalSupplierService")
 public class SupplierService {
     @Autowired
     SupplierMapper supplierMapper;
@@ -195,6 +196,7 @@ public class SupplierService {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByAccountNumber(accountNumber)));
     }
 
+    @Cacheable(value = "portalGetSuppliedRegionsCountGroupedByRegionId")
     public List<Object> getSuppliedRegionsCountGroupedByRegionId() {
         return Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsCountGroupedByRegionId());
     }

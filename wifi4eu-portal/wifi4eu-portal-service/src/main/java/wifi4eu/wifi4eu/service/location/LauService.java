@@ -10,7 +10,7 @@ import wifi4eu.wifi4eu.repository.location.LauRepository;
 
 import java.util.List;
 
-@Service("lService")
+@Service("portalLauService")
 public class LauService {
     @Autowired
     LauMapper lauMapper;
@@ -34,7 +34,7 @@ public class LauService {
         return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByNuts3(nuts3)));
     }
 
-    @Cacheable(value = "searchLaus", key = "#countryCode")
+    @Cacheable(value = "portalGetLausByCountryCodeAndName1ContainingIgnoreCase")
     public List<LauDTO> getLausByCountryCodeAndName1ContainingIgnoreCase(String countryCode, String name1) {
         return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByCountryCodeAndName1ContainingIgnoreCase(countryCode, name1)));
     }
