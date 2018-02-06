@@ -1,9 +1,8 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-/**
- * Created by rgarcita on 09/02/2017.
- */
-public class LegalEntityDTO {
+import java.io.Serializable;
+
+public class LegalEntityDTO implements Serializable {
 
     private long legalEntityId;
     private String countryCode;
@@ -16,9 +15,12 @@ public class LegalEntityDTO {
     private boolean legalCheckbox2;
     private boolean legalCheckbox3;
 
-    public LegalEntityDTO(){}
+    private boolean abacStatus;
 
-    public LegalEntityDTO(long legalEntityId, String countryCode, String municipalityCode, String address, String addressNum, String postalCode, boolean legalCheckbox1, boolean legalCheckbox2, boolean legalCheckbox3) {
+    public LegalEntityDTO() {
+    }
+
+    public LegalEntityDTO(long legalEntityId, String countryCode, String municipalityCode, String address, String addressNum, String postalCode, boolean legalCheckbox1, boolean legalCheckbox2, boolean legalCheckbox3, boolean abacStatus) {
         this.legalEntityId = legalEntityId;
         this.countryCode = countryCode;
         this.municipalityCode = municipalityCode;
@@ -28,6 +30,7 @@ public class LegalEntityDTO {
         this.legalCheckbox1 = legalCheckbox1;
         this.legalCheckbox2 = legalCheckbox2;
         this.legalCheckbox3 = legalCheckbox3;
+        this.abacStatus = abacStatus;
     }
 
     public long getLegalEntityId() {
@@ -102,7 +105,15 @@ public class LegalEntityDTO {
         this.legalCheckbox3 = legalCheckbox3;
     }
 
-    public String toString(){
+    public boolean isAbacStatus() {
+        return abacStatus;
+    }
+
+    public void setAbacStatus(boolean abacStatus) {
+        this.abacStatus = abacStatus;
+    }
+
+    public String toString() {
 
         StringBuffer result = new StringBuffer();
 

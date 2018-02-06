@@ -1,0 +1,139 @@
+<!-- Title -->
+<div id="step2-title" class="ui-g">
+    <div class="ui-g-12 center">
+        <div id="component-title">
+            <h3 class="beneficiaryTitle labelModal">{{ 'suppRegistration.step3.supplier' | translate }}</h3>
+        </div>
+    </div>
+</div>
+<!-- Instructions -->
+<div id="step2-instructions" class="ui-g">
+    <div class="ui-g-12 ui-md-12 ui-lg-12 center">
+        <div id="component-subtitle">
+            <h6>{{ 'suppRegistration.contact.description' | translate }}</h6>
+        </div>
+    </div>
+</div>
+<!-- Supplier Form -->
+<form #supplierForm="ngForm" (ngSubmit)="submit()">
+    <div class="ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="form-group">
+                <label class="label floatLeft" for="contactName">{{ 'shared.name.label' | translate }}</label>
+                <input class="form-control paddingInput" type="text" id="contactName" name="contactName"
+                       [(ngModel)]="supplier.contactName" #contactName="ngModel" required>
+                <!--
+                <div class="alert alert-danger" [hidden]="contactName.valid || contactName.pristine">
+                    {{'shared.name.required' | translate }}
+                </div>
+                -->
+                <div class="ui-lg-3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="form-group">
+                <label class="label floatLeft" for="contactSurname">{{ 'shared.surname.label' | translate
+                    }}</label>
+                <input class="form-control paddingInput" type="text"
+                       id="contactSurname" name="contactSurname" [(ngModel)]="supplier.contactSurname"
+                       #contactSurname="ngModel" required>
+                <!--
+                <div class="alert alert-danger" [hidden]="contactSurname.valid || contactSurname.pristine">
+                    {{'shared.surname.required' | translate }}
+                </div>
+                -->
+                <div class="ui-lg-3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-g">
+
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">
+            <div class="form-group">
+                <label class="label floatLeft" for="contactPhonePrefix">{{ 'suppRegistration.prefix.number' | translate
+                    }}</label>
+                <input class="form-control paddingInput" type="text"
+                       id="contactPhonePrefix" name="contactPhonePrefix" pattern="[0-9]{1,4}"
+                       [(ngModel)]="supplier.contactPhonePrefix" #contactPhonePrefix="ngModel" required>
+                <!--
+                <div class="alert alert-danger"
+                     [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine">
+                    {{'shared.prefix.required' | translate }}
+                </div>
+                -->
+            </div>
+        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-3">
+            <div class="form-group">
+                <label class="label floatLeft" for="contactPhoneNumber">{{ 'suppRegistration.phone.number' | translate
+                    }}</label>
+                <input class="form-control paddingInput" type="text"
+                       id="contactPhoneNumber" name="contactPhoneNumber" pattern="[0-9]{1,}"
+                       [(ngModel)]="supplier.contactPhoneNumber" #contactPhoneNumber="ngModel" required>
+                <!--
+                <div class="alert alert-danger"
+                     [hidden]="contactPhoneNumber.valid || contactPhoneNumber.pristine">
+                    {{'benefRegistration.phone.required' | translate }}
+                </div>
+                -->
+            </div>
+        </div>
+        <div class="ui-lg-3"></div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="form-group">
+                <label class="label floatLeft" for="contactEmail">{{ 'shared.email.label' | translate
+                    }}</label>
+                <input class="form-control paddingInput" type="email" id="contactEmail" name="contactEmail"
+                       [(ngModel)]="supplier.contactEmail" #contactEmail="ngModel"
+                       (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
+                <div class="alert alert-danger" [hidden]="contactEmail.valid || contactEmail.pristine">
+                    {{'suppRegistration.warning.emailRequired' | translate}}
+                </div>
+                <div class="ui-lg-3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-12 ui-md-12 ui-lg-6">
+            <div class="form-group">
+                <label class="label floatLeft" for="confirmEmail">{{ 'shared.confirmemail.label' | translate
+                    }}</label>
+                <input class="form-control paddingInput" type="email" id="confirmEmail" name="confirmEmail"
+                       [(ngModel)]="confirmEmailField" #confirmEmail="ngModel" (paste)="preventPaste()"
+                       (input)="checkIfEmailMatches()" [pattern]="emailPattern" required>
+                <div class="alert alert-danger" [hidden]="confirmEmail.valid || confirmEmail.pristine">
+                    {{'suppRegistration.warning.emailRequired' | translate}}
+                </div>
+                <div [hidden]="emailMatches || confirmEmail.pristine" class="alert alert-info">
+                    {{'suppRegistration.warning.emailMatch' | translate}}
+                </div>
+                <div class="ui-lg-3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group ui-g">
+        <div class="ui-lg-3"></div>
+        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+            <button type="button" class="btn btn-primary cancel-button" (click)="back()">{{ 'shared.back.button' |
+                translate
+                }}
+            </button>
+        </div>
+        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+            <button type="submit" class="btn btn-primary publish-button"
+                    [disabled]="!supplierForm.form.valid || !emailMatches">
+                {{ 'shared.confirm.button' | translate }}
+            </button>
+        </div>
+        <div class="ui-lg-3"></div>
+    </div>
+</form>

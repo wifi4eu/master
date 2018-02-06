@@ -1,27 +1,24 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-import java.io.Serializable;
-
-/**
- * Created by rgarcita on 08/02/2017.
- */
-public class LauDTO implements Serializable {
-
-    private Long lauId;
+public class LauDTO {
+    private int id;
+    private String countryCode;
     private String nuts3;
     private String lau1;
     private String lau2;
     private String change;
     private String name1;
     private String name2;
-    private long pop;
-    private long area;
+    private int pop;
+    private int area;
+    private String physicalAddress;
 
     public LauDTO() {
     }
 
-    public LauDTO(Long lauId, String nuts3, String lau1, String lau2, String change, String name1, String name2, long pop, long area) {
-        this.lauId = lauId;
+    public LauDTO(int id, String countryCode, String nuts3, String lau1, String lau2, String change, String name1, String name2, int pop, int area, String physicalAddress) {
+        this.id = id;
+        this.countryCode = countryCode;
         this.nuts3 = nuts3;
         this.lau1 = lau1;
         this.lau2 = lau2;
@@ -30,14 +27,23 @@ public class LauDTO implements Serializable {
         this.name2 = name2;
         this.pop = pop;
         this.area = area;
+        this.physicalAddress = physicalAddress;
     }
 
-    public Long getLauId() {
-        return lauId;
+    public int getId() {
+        return id;
     }
 
-    public void setLauId(Long lauId) {
-        this.lauId = lauId;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     public String getNuts3() {
@@ -88,19 +94,27 @@ public class LauDTO implements Serializable {
         this.name2 = name2;
     }
 
-    public long getPop() {
+    public int getPop() {
         return pop;
     }
 
-    public void setPop(long pop) {
+    public void setPop(int pop) {
         this.pop = pop;
     }
 
-    public long getArea() {
+    public int getArea() {
         return area;
     }
 
-    public void setArea(long area) {
+    public void setArea(int area) {
         this.area = area;
+    }
+
+    public String getPhysicalAddress() {
+        return physicalAddress;
+    }
+
+    public void setPhysicalAddress(String physicalAddress) {
+        this.physicalAddress = physicalAddress;
     }
 }

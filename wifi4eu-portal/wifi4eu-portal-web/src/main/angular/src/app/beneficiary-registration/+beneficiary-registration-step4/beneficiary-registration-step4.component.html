@@ -1,0 +1,289 @@
+<!-- Title -->
+<div class="container">
+    <div id="step3-title" class="ui-g">
+        <div class="ui-g-12 center">
+            <div id="component-title">
+                <h3 class="beneficiaryTitle labelModal">{{ 'benefRegistration.registration.review.title' | translate
+                    }}</h3>
+            </div>
+        </div>
+    </div>
+    <!-- Instructions -->
+    <div id="step2-instructions" class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-12 center">
+            <div id="component-subtitle">
+                <h6>{{ 'benefRegistration.registration.reviewInformation' | translate }}</h6>
+            </div>
+        </div>
+    </div>
+    <!-- Review content -->
+
+
+    <div class="ui-g-12 ui-md-12 ui-lg-12 center">
+        <div *ngIf="country" id="registration_details" class="ui-g-12 ui-md-12 ui-lg-12">
+            <hr>
+            <span class="ui-lg-1"></span>
+            <span class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: left;">
+                <a class="ui-g-2 ui-md-2 ui-lg-2 right" (click)="edit(1)">{{ 'shared.edit.button' | translate }} <i
+                        class="fa fa-pencil" aria-hidden="true"></i></a>
+                <div>
+                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.country.label' | translate }}</span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ country.label }}</b></span>
+                </div>
+            </span>
+            <span class="ui-lg-1"></span>
+        </div>
+        <div id="municipality_details" class="ui-g-12 ui-md-12 ui-lg-12">
+            <hr>
+            <ng-container *ngIf="!multipleMunicipalities && municipalities.length > 0">
+                <span class="ui-lg-1"></span>
+                <span class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: left;">
+                    <p class="ui-g-11 ui-md-11 ui-lg-10 beneficiaryMayor">{{ 'shared.municipalityDetails.title' | translate }}</p>
+                    <a class="ui-g-2 ui-md-2 ui-lg-2 right" (click)="edit(2)">{{ 'shared.edit.button' | translate }} <i
+                            class="fa fa-pencil" aria-hidden="true"></i></a>
+                    <div class="row-municipality">
+                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.municipality.label' | translate }}</span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipalities[0].name }}</b></span>
+                    </div>
+                    <div class="row-municipality">
+                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.address.label' | translate }}</span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipalities[0].address }}</b></span>
+                    </div>
+                    <div class="row-municipality">
+                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.number.label' | translate }}</span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipalities[0].addressNum }}</b></span>
+                    </div>
+                    <div class="row-municipality">
+                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.postal-code.label' | translate }}</span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipalities[0].postalCode }}</b></span>
+                    </div>
+                    <div class="row-municipality">
+                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.name.label' | translate }}</span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[0].name }}</b></span>
+                    </div>
+                    <div class="row-municipality">
+                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.surname.label' | translate }}</span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[0].surname }}</b></span>
+                    </div>
+                    <div class="row-municipality">
+                        <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.email.label' | translate }}</span>
+                        <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[0].email }}</b></span>
+                    </div>
+                </span>
+                <span class="ui-lg-1"></span>
+            </ng-container>
+            <ng-container *ngIf="multipleMunicipalities">
+                <ng-container *ngFor="let municipality of municipalities; let i = index">
+                    <span class="ui-lg-1"></span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: left;">
+                        <div *ngIf="i > 0">
+                            <br><br>
+                        </div>
+                        <span class="ui-g-12">
+                            <h3><b>{{ 'shared.municipality.label' | translate }} #{{ (i + 1) }}</b></h3>
+                        </span>
+                        <p class="ui-g-11 ui-md-11 ui-lg-10 beneficiaryMayor">{{ 'shared.municipalityDetails.title' | translate }}</p>
+                        <a class="ui-g-2 ui-md-2 ui-lg-2 right" (click)="edit(2)">{{ 'shared.edit.button' | translate }} <i
+                                class="fa fa-pencil" aria-hidden="true"></i></a>
+                        <div class="row-municipality">
+                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.municipality.label' | translate }}</span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipality.name }}</b></span>
+                        </div>
+                        <div class="row-municipality">
+                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.address.label' | translate }}</span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipality.address }}</b></span>
+                        </div>
+                        <div class="row-municipality">
+                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.number.label' | translate }}</span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipality.addressNum }}</b></span>
+                        </div>
+                        <div class="row-municipality">
+                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.postal-code.label' | translate }}</span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ municipality.postalCode }}</b></span>
+                        </div>
+                        <div class="row-municipality">
+                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.name.label' | translate }}</span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[i].name }}</b></span>
+                        </div>
+                        <div class="row-municipality">
+                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.surname.label' | translate }}</span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[i].surname }}</b></span>
+                        </div>
+                        <div class="row-municipality">
+                            <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.email.label' | translate }}</span>
+                            <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ mayors[i].email }}</b></span>
+                        </div>
+                    </span>
+                    <span class="ui-lg-1"></span>
+                </ng-container>
+            </ng-container>
+        </div>
+        <div *ngIf="initialUser" id="user_details" class="ui-g-12 ui-md-12 ui-lg-12">
+            <hr>
+            <span class="ui-lg-1"></span>
+            <span class="ui-g-12 ui-md-12 ui-lg-12" style="text-align: left;">
+                <p class="ui-g-11 ui-md-11 ui-lg-10 beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
+                <a class="ui-g-2 ui-md-2 ui-lg-2 right" (click)="edit(3)">{{ 'shared.edit.button' | translate }} <i
+                        class="fa fa-pencil" aria-hidden="true"></i></a>
+                <div class="row-municipality">
+                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.name.label' | translate }}</span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.name }}</b></span>
+                </div>
+                <div class="row-municipality">
+                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.surname.label' | translate }}</span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.surname }}</b></span>
+                </div>
+                <div class="row-municipality">
+                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.email.label' | translate }}</span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.email }}</b></span>
+                </div>
+                <div class="row-municipality">
+                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'benefRegistration.address.label' | translate }}</span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.address }}</b></span>
+                </div>
+                <div class="row-municipality">
+                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.number.label' | translate }}</span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.addressNum }}</b></span>
+                </div>
+                <div class="row-municipality">
+                    <span class="ui-g-12 ui-md-12 ui-lg-4">{{ 'shared.postal-code.label' | translate }}</span>
+                    <span class="ui-g-12 ui-md-12 ui-lg-8"><b>{{ initialUser.postalCode }}</b></span>
+                </div>
+            </span>
+            <span class="ui-lg-1"></span>
+        </div>
+        <hr>
+    </div>
+    <div class="clearfix"></div>
+    <ng-container>
+        <div class="ui-g" style="text-align: left;">
+            <div class="ui-lg-1"></div>
+            <div class="ui-g-12 ui-md-12 ui-lg-10">
+                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_1">
+                    {{ 'benefRegistration.preview.registration.check1' | translate }}
+                </label>
+            </div>
+            <div class="ui-lg-1"></div>
+        </div>
+        <div class="ui-g" style="text-align: left;">
+            <div class="ui-lg-1"></div>
+            <div class="ui-g-12 ui-md-12 ui-lg-10">
+                <label class="ui-g-12 ui-md-12 ui-lg-12">
+                    {{ 'benefRegistration.preview.registration.check2' | translate }}
+                </label>
+            </div>
+            <div class="ui-lg-1"></div>
+        </div>
+        <div class="ui-g" style="text-align: left;">
+            <span class="ui-lg-1"></span>
+            <div class="ui-g-12 ui-md-12 ui-lg-10">
+                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_2"><input type="checkbox" id="check_2"
+                                                                              [(ngModel)]="legalChecks[1]">
+                    {{ 'benefRegistration.preview.registration.check3' | translate }}
+                </label>
+            </div>
+            <span class="ui-lg-1"></span>
+        </div>
+        <div class="ui-g" style="text-align: left;">
+            <span class="ui-lg-1"></span>
+            <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
+                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_3"><input type="checkbox" id="check_3"
+                                                                              [(ngModel)]="legalChecks[2]">
+                    {{ 'benefRegistration.preview.registration.check4' | translate }}
+                </label>
+            </div>
+            <span class="ui-lg-1"></span>
+        </div>
+        <div class="ui-g" style="text-align: left;">
+            <span class="ui-lg-1"></span>
+            <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
+                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_5"><input type="checkbox" id="check_5"
+                                                                              [(ngModel)]="legalChecks[3]">
+                    {{ 'benefRegistration.preview.registrations.check5' | translate }}
+                </label>
+            </div>
+            <span class="ui-lg-1"></span>
+        </div>
+        <div class="ui-g" style="text-align: left;">
+            <span class="ui-lg-1"></span>
+            <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
+                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_6"><input type="checkbox" id="check_6"
+                                                                              [(ngModel)]="legalChecks[4]">
+                    {{ 'benefRegistration.preview.registrations.check6' | translate }}
+                </label>
+            </div>
+            <span class="ui-lg-1"></span>
+        </div>
+        <div class="ui-g" style="text-align: left;">
+            <span class="ui-lg-1"></span>
+            <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
+                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_7"><input type="checkbox" id="check_7"
+                                                                              [(ngModel)]="legalChecks[5]">
+                    {{ 'benefRegistration.preview.registrations.check7' | translate }}
+                </label>
+            </div>
+            <span class="ui-lg-1"></span>
+        </div>
+        <div class="ui-g" style="text-align: left;">
+            <span class="ui-lg-1"></span>
+            <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
+                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_8"><input type="checkbox" id="check_8"
+                                                                              [(ngModel)]="legalChecks[6]">
+                    {{ 'benefRegistration.preview.registrations.check8' | translate }}
+                </label>
+            </div>
+            <span class="ui-lg-1"></span>
+        </div>
+        <div class="ui-g" style="text-align: left;">
+            <span class="ui-lg-1"></span>
+            <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
+                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_9"><input type="checkbox" id="check_9"
+                                                                              [(ngModel)]="legalChecks[7]">
+                    {{ 'benefRegistration.preview.registrations.check9' | translate }}
+                </label>
+            </div>
+            <span class="ui-lg-1"></span>
+        </div>
+        <div class="ui-g" style="text-align: left;">
+            <span class="ui-lg-1"></span>
+            <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
+                <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_10"><input type="checkbox" id="check_10"
+                                                                               [(ngModel)]="legalChecks[8]">
+                    {{ 'benefRegistration.preview.registrations.check10' | translate }}
+                </label>
+            </div>
+            <span class="ui-lg-1"></span>
+        </div>
+
+    </ng-container>
+    <div class="clearfix"></div>
+    <ng-container>
+        <!-- Navigation buttons -->
+        <div id="navigation-buttons" class="form-group ui-g center">
+            <div class="ui-lg-3"></div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3">
+                <button type="button" class="btn btn-primary cancel-button" (click)="back()">
+                    {{ 'shared.back.button' | translate }}
+                </button>
+            </div>
+            <!-- Next button -->
+            <div class="ui-g-6 ui-md-6 ui-lg-3">
+                <button type="submit" class="btn btn-primary publish-button"
+                        [disabled]="!legalChecks[0] || !legalChecks[1] || !legalChecks[2] || !legalChecks[3]
+                        || !legalChecks[4] || !legalChecks[5] || !legalChecks[6] || !legalChecks[7]
+                        || !legalChecks[8]"
+                        (click)="submit()">
+                    {{ 'shared.confirm.button' | translate }}
+                </button>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+          [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.registration.text' | translate}}</p>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog>

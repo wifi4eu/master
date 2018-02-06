@@ -1,42 +1,29 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-/**
- * Created by rgarcita on 09/02/2017.
- */
 public class MayorDTO {
-
-    private long mayorId;
-    private String treatment;
+    private int id;
     private String name;
     private String surname;
     private String email;
-    private String repeatEmail;
+    private int municipalityId;
 
-    public MayorDTO(){}
+    public MayorDTO() {
+    }
 
-    public MayorDTO(long mayorId, String treatment, String name, String surname, String email, String repeatEmail) {
-        this.mayorId = mayorId;
-        this.treatment = treatment;
+    public MayorDTO(int id, String name, String surname, String email, int municipalityId) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.repeatEmail = repeatEmail;
+        this.municipalityId = municipalityId;
     }
 
-    public long getMayorId() {
-        return mayorId;
+    public int getId() {
+        return id;
     }
 
-    public void setMayorId(long mayorId) {
-        this.mayorId = mayorId;
-    }
-
-    public String getTreatment() {
-        return treatment;
-    }
-
-    public void setTreatment(String treatment) {
-        this.treatment = treatment;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -63,11 +50,11 @@ public class MayorDTO {
         this.email = email;
     }
 
-    public String getRepeatEmail() {
-        return repeatEmail;
+    public int getMunicipalityId() {
+        return municipalityId;
     }
 
-    public void setRepeatEmail(String repeatEmail) {
-        this.repeatEmail = repeatEmail;
+    public void setMunicipalityId(int municipalityId) {
+        this.municipalityId = municipalityId;
     }
 }

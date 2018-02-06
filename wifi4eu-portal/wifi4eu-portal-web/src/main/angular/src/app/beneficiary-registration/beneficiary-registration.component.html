@@ -1,0 +1,46 @@
+<custom-wizard-steps [isCustomContent]="true" *ngIf="!(successRegistration || failureRegistration)">
+    <ux-wizard-step label="{{ 'benefRegistration.beneficiaryRegistration.step1.title' | translate }}" [isCompleted]="completed[0]"
+                    [isActive]="active[0]">
+        <uxWizardStepCustomContent>
+            <beneficiary-registration-step1 [countries]="countries" [country]="country"
+                                            [organizations]="organizations"
+                                            [(multipleMunicipalities)]="multipleMunicipalities"
+                                            (countryChange)="selectCountry($event)"
+                                            [(organization)]="organization"
+                                            (onNext)="navigate(2)"></beneficiary-registration-step1>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'benefRegistration.registration.beneficiary.title' | translate }}" [isCompleted]="completed[1]"
+                    [isActive]="active[1]">
+        <uxWizardStepCustomContent>
+            <beneficiary-registration-step2 [country]="country"
+                                            [multipleMunicipalities]="multipleMunicipalities"
+                                            [(municipalities)]="municipalities"
+                                            [(laus)]="laus" [(mayors)]="mayors"
+                                            (onNext)="navigate(3)" (onBack)="navigate(1)"></beneficiary-registration-step2>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'benefRegistration.registration.entity.title' | translate }}" [isCompleted]="completed[2]"
+                    [isActive]="active[2]">
+        <uxWizardStepCustomContent>
+            <beneficiary-registration-step3 [(initialUser)]="initialUser" [mayors]="mayors"
+                                            [multipleMunicipalities]="multipleMunicipalities"
+                                            [municipalities]="municipalities"
+                                            (onNext)="navigate(4)" (onBack)="navigate(2)"></beneficiary-registration-step3>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'benefRegistration.registration.review.title' | translate }}" [isCompleted]="completed[3]"
+                    [isActive]="active[3]">
+        <uxWizardStepCustomContent>
+            <beneficiary-registration-step4 [initialUser]="initialUser" [country]="country"
+                                            [municipalities]="municipalities" [mayors]="mayors"
+                                            [multipleMunicipalities]="multipleMunicipalities"
+                                            (onNext)="submitRegistration()" (onBack)="navigate(3)"
+                                            (onEdit)="navigate($event)"></beneficiary-registration-step4>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+</custom-wizard-steps>
+<!--<success-component *ngIf="successRegistration" [emailConfirmation]="true"-->
+                   <!--[email]="initialUser.email"></success-component>-->
+<failure-component *ngIf="failureRegistration" [alreadyRegistered]="alreadyRegistered"></failure-component>
+<helpdesk-form-component [portal]="beneficiary-registration"></helpdesk-form-component>

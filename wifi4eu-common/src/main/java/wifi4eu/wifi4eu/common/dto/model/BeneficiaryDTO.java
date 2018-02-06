@@ -1,45 +1,53 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 import java.io.Serializable;
+import java.util.List;
 
-/**
- * Created by rgarcita on 09/02/2017.
- */
-public class BeneficiaryDTO implements Serializable{
+public class BeneficiaryDTO implements Serializable {
+    private UserDTO user;
+    private List<MayorDTO> mayors;
+    private List<MunicipalityDTO> municipalities;
+    private boolean representsMultipleMunicipalities;
 
-    private MayorDTO mayorDTO;
-    private RepresentativeDTO representativeDTO;
-    private LegalEntityDTO legalEntityDTO;
-
-    public BeneficiaryDTO (){}
-
-    public BeneficiaryDTO(MayorDTO mayorDTO, RepresentativeDTO representativeDTO, LegalEntityDTO legalEntityDTO) {
-        this.mayorDTO = mayorDTO;
-        this.representativeDTO = representativeDTO;
-        this.legalEntityDTO = legalEntityDTO;
+    public BeneficiaryDTO() {
     }
 
-    public MayorDTO getMayorDTO() {
-        return mayorDTO;
+    public BeneficiaryDTO(UserDTO user, List<MayorDTO> mayors, List<MunicipalityDTO> municipalities, boolean representsMultipleMunicipalities) {
+        this.user = user;
+        this.mayors = mayors;
+        this.municipalities = municipalities;
+        this.representsMultipleMunicipalities = representsMultipleMunicipalities;
     }
 
-    public void setMayorDTO(MayorDTO mayorDTO) {
-        this.mayorDTO = mayorDTO;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public RepresentativeDTO getRepresentativeDTO() {
-        return representativeDTO;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
-    public void setRepresentativeDTO(RepresentativeDTO representativeDTO) {
-        this.representativeDTO = representativeDTO;
+    public List<MayorDTO> getMayors() {
+        return mayors;
     }
 
-    public LegalEntityDTO getLegalEntityDTO() {
-        return legalEntityDTO;
+    public void setMayors(List<MayorDTO> mayors) {
+        this.mayors = mayors;
     }
 
-    public void setLegalEntityDTO(LegalEntityDTO legalEntityDTO) {
-        this.legalEntityDTO = legalEntityDTO;
+    public List<MunicipalityDTO> getMunicipalities() {
+        return municipalities;
+    }
+
+    public void setMunicipalities(List<MunicipalityDTO> municipalities) {
+        this.municipalities = municipalities;
+    }
+
+    public boolean isRepresentsMultipleMunicipalities() {
+        return representsMultipleMunicipalities;
+    }
+
+    public void setRepresentsMultipleMunicipalities(boolean representsMultipleMunicipalities) {
+        this.representsMultipleMunicipalities = representsMultipleMunicipalities;
     }
 }

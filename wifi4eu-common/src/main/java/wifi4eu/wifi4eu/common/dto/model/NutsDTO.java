@@ -1,40 +1,33 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-import java.io.Serializable;
-
-/**
- * Created by rgarcita on 08/02/2017.
- */
-public class NutsDTO implements Serializable {
-
-    private Long nutsId;
+public class NutsDTO {
+    private int id;
     private String code;
-    private String name;
-    private Long level;
+    private String label;
+    private int level;
     private String countryCode;
-    private Long order;
-    private Long sorting;
+    private int order;
+    private int sorting;
 
-    public NutsDTO(){
-
+    public NutsDTO() {
     }
 
-    public NutsDTO(Long nutsId, String code, String name, Long level, String countryCode, Long order, Long sorting) {
-        this.nutsId = nutsId;
+    public NutsDTO(int id, String code, String label, int level, String countryCode, int order, int sorting) {
+        this.id = id;
         this.code = code;
-        this.name = name;
+        this.label = label;
         this.level = level;
         this.countryCode = countryCode;
         this.order = order;
         this.sorting = sorting;
     }
 
-    public Long getNutsId() {
-        return nutsId;
+    public int getId() {
+        return id;
     }
 
-    public void setNutsId(Long nutsId) {
-        this.nutsId = nutsId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCode() {
@@ -45,19 +38,19 @@ public class NutsDTO implements Serializable {
         this.code = code;
     }
 
-    public String getName() {
-        return name;
+    public String getLabel() {
+        return label;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
-    public Long getLevel() {
+    public int getLevel() {
         return level;
     }
 
-    public void setLevel(Long level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 
@@ -69,19 +62,19 @@ public class NutsDTO implements Serializable {
         this.countryCode = countryCode;
     }
 
-    public Long getOrder() {
+    public int getOrder() {
         return order;
     }
 
-    public void setOrder(Long order) {
+    public void setOrder(int order) {
         this.order = order;
     }
 
-    public Long getSorting() {
+    public int getSorting() {
         return sorting;
     }
 
-    public void setSorting(Long sorting) {
+    public void setSorting(int sorting) {
         this.sorting = sorting;
     }
 }
