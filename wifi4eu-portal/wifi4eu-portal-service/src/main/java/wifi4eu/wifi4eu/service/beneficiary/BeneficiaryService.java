@@ -364,17 +364,14 @@ public class BeneficiaryService {
     }
 
     public boolean checkIpDuplicated(List<RegistrationDTO> registrationDTOList){
-        boolean duplicated = false;
         Map<String, Integer> mapIps = new HashMap<>();
         for(RegistrationDTO registrationDTO: registrationDTOList){
             if(mapIps.containsKey(registrationDTO.getIpRegistration())){
-               duplicated = true;
+               return true;
             }
-            else{
-                mapIps.put(registrationDTO.getIpRegistration(), 1);
-            }
+            mapIps.put(registrationDTO.getIpRegistration(), 1);
         }
-        return duplicated;
+        return false;
     }
 
     public void getIssueOfRegistration(List<BeneficiaryListDTO> beneficiaryListDTOList) {
