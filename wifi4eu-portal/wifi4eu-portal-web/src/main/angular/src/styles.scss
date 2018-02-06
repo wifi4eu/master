@@ -1554,30 +1554,34 @@ p-tabview.white .ui-widget-content.ui-tabview {
 
 }
 
-.badge-success{
+.badge-success {
   color: #fff;
   padding: 4px 8px;
   font-style: italic;
   background-color: #4caf50;
 }
 
-.badge-fail{
+.badge-fail {
   color: #fff;
   padding: 4px 8px;
   font-style: italic;
   background-color: #f44336;
 }
 
-.badge-warning{
+.badge-warning {
   color: #fff;
   padding: 4px 8px;
   font-style: italic;
   background-color: #ff9800;
 }
 
-.badge-duplicated{
+.badge-duplicated {
   color: #fff;
   padding: 4px 8px;
   font-style: italic;
   background-color: #ff6f00;
+}
+
+.voucherModal {
+  text-align: center;
 }

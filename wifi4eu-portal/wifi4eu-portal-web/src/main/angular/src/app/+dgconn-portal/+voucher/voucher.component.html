@@ -30,7 +30,7 @@
             </div>
             <div class="ui-g-1"></div>
             <div class="ui-g-4">
-                <button class="btn btn-primary voucherButtonsSimulate">
+                <button class="btn btn-primary voucherButtonsSimulate" (click)="displayInfo()">
                     {{ 'dgConn.voucher.simulate' | translate }}
                 </button>
                 <br>
@@ -63,4 +63,25 @@
             </p-dataTable>
         </p-tabPanel>
     </p-tabView>
+    <!--MODALS BELOW-->
+
+    <div class="container font">
+        <div class="ui-g-1"></div>
+        <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false"
+                  [resizable]="false" [draggable]="false" [closeOnEscape]="true">
+            <div class="beneficiaryTitle center hiddenScroll">
+                {{ 'dgConn.voucher.confirmAssignment' | translate }}
+            </div>
+            <p class="voucherModal" [innerHTML]="'dgConn.voucher.confirmationAssignmentText' | translate"></p>
+            <div class="voucherModal md4Dashboard">
+                <button class="btn btn-primary voucherButtonsCancel">
+                    {{ 'shared.no' | translate }}
+                </button>
+
+                <button class="btn btn-primary voucherButtonsSimulate" (click)="displayInfo()">
+                    {{ 'shared.yes' | translate }}
+                </button>
+            </div>
+        </p-dialog>
+    </div>
 </div>
