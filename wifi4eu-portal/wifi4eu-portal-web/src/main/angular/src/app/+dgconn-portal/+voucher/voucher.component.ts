@@ -1,53 +1,69 @@
-import {Component, Input, EventEmitter, OnInit, Output} from "@angular/core";
-import {SharedService} from "../../shared/shared.service";
+import {Component} from "@angular/core";
 import {CallApi} from "../../shared/swagger/api/CallApi";
-import {VoucherManagementDTO} from "../../shared/swagger/model/VoucherManagementDTO";
-import {CallDTO} from "../../shared/swagger/model/CallDTO";
-import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
+import {CallDTOBase} from "../../shared/swagger/model/CallDTO";
 import {ApplicationApi} from "../../shared/swagger/api/ApplicationApi";
+import {ApplicationVoucherInfoDTOBase} from "../../shared/swagger/model/ApplicationVoucherInfoDTO";
+import {NutsApi} from "../../shared/swagger/api/NutsApi";
+import {NutsDTOBase} from "../../shared/swagger/model/NutsDTO";
 
 @Component({
-    templateUrl: 'voucher.component.html', providers: [CallApi, MunicipalityApi, ApplicationApi]
+    templateUrl: 'voucher.component.html', providers: [CallApi, ApplicationApi, NutsApi]
 })
 
 export class DgConnVoucherComponent {
-    private calls: CallDTO[];
-    private municipalities: number;
-    private applications: number;
+    private calls: CallDTOBase[] = [];
+    private applicationsInfo: ApplicationVoucherInfoDTOBase[][] = [];
+    private shownApplicationsInfo: ApplicationVoucherInfoDTOBase[] = [];
+    private countries: NutsDTOBase[] = [];
+    private chosenCountry: string = null;
+    private totalRequests: number = 0;
     private displayMessage: boolean = false;
 
-    constructor(private municipalityApi: MunicipalityApi, private callApi: CallApi, private applicationApi: ApplicationApi) {
-        this.municipalityApi.getMunicipalitiesCountGroupedByLauId().subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.municipalities = response.data.length;
-                }
-            }, error => {
-                console.log(error);
-            }
-        );
+    constructor(private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi) {
         this.callApi.allCalls().subscribe(
-            calls => {
+            (calls: CallDTOBase[]) => {
                 this.calls = calls;
-                console.log(this.calls[0].voucherManagements[0]);
-            },
-            error => console.log(error)
-        );
-        this.applicationApi.allApplications().subscribe(
-            applications => {
-                this.applications = applications.length;
-
-            }, error => {
-                console.log(error);
+                for (let call of this.calls) {
+                    this.applicationsInfo[call.id] = [];
+                    this.applicationApi.getApplicationsVoucherInfoByCall(call.id).subscribe(
+                        (info: ApplicationVoucherInfoDTOBase[]) => {
+                            if (info != null) {
+                                this.applicationsInfo[call.id] = info;
+                                this.totalRequests += info.length;
+                                for (let item of info) {
+                                    this.shownApplicationsInfo.push(item);
+                                }
+                            }
+                        }
+                    );
+                }
             }
         );
-
+        this.nutsApi.getNutsByLevel(0).subscribe(
+            (countries: NutsDTOBase[]) => {
+                this.countries = countries;
+            }
+        );
     }
 
-    displayInfo() {
+    private displayInfo() {
         this.displayMessage = true;
     }
 
-
+    private chooseCountryApplicationsInfo() {
+        this.shownApplicationsInfo = [];
+        for (let call of this.applicationsInfo) {
+            if (call != null) {
+                for (let application of call) {
+                    if (this.chosenCountry != null && this.chosenCountry != "-") {
+                        if (application.countryName.toLowerCase() == this.chosenCountry.toLowerCase()) {
+                            this.shownApplicationsInfo.push(application);
+                        }
+                    } else {
+                        this.shownApplicationsInfo.push(application);
+                    }
+                }
+            }
+        }
+    }
 }
