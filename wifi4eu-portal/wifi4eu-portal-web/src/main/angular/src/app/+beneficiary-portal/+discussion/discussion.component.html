@@ -1,7 +1,7 @@
 <div class="clearfix"></div>
 <br>
 <div class="container font beneficiaryContent">
-    <div class="ui-g-12" *ngIf="showAlert">
+    <div class="ui-g-12" *ngIf="displayMediationAlert">
         <span class="ui-g-2"></span>
         <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussionForum.discussion.growl' | translate}}
         </ux-alert>
@@ -12,7 +12,7 @@
     <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.beneficiary.registrations' | translate }}</p>
     <hr class="beneficiaryHr">
     <ux-accordion-boxes>
-        <custom-accordion-box [isExpanded]="true" [rightSide]="true" [closable]="true" *ngIf="municipality">
+        <custom-accordion-box [isExpanded]="true" [rightSide]="true" [closable]="true" *ngIf="myMunicipality">
             <div class="ui-g">
                 <p class="discussionForumMayors marginTopCountdown"
                    [innerHTML]="'discussionForum.beneficiary.registration1' | translate:{selfRegistration:user.id}">
@@ -28,11 +28,11 @@
                         <p>{{ 'shared.postal-code.label' | translate }}</p>
                     </div>
                     <div class="ui-g-3">
-                        <p class="profileDataDiscussion profileData">{{municipality.country}}</p>
-                        <p class="profileData">{{municipality.name}}</p>
-                        <p class="profileData">{{municipality.address}}</p>
-                        <p class="profileData">{{municipality.addressNum}}</p>
-                        <p class="profileData">{{municipality.postalCode}}</p>
+                        <p class="profileDataDiscussion profileData">{{myMunicipality.country}}</p>
+                        <p class="profileData">{{myMunicipality.name}}</p>
+                        <p class="profileData">{{myMunicipality.address}}</p>
+                        <p class="profileData">{{myMunicipality.addressNum}}</p>
+                        <p class="profileData">{{myMunicipality.postalCode}}</p>
                     </div>
                     <div class="ui-g-2"></div>
                     <div class="ui-g-4">
@@ -50,10 +50,11 @@
                 </div>
             </div>
 
-            <div class="ui-g" *ngIf="hasAuthor && municipalities.length == messageAuthors.length">
-                <div class="ui-g-6" *ngFor="let municipality of municipalities; let i = index">
+            <!--<div class="ui-g" *ngIf="hasAuthor && municipalities.length == messageAuthors.length">-->
+            <div class="ui-g" *ngIf="otherMunicipalities.length == otherRegistrations.length">
+                <div class="ui-g-6" *ngFor="let municipality of otherMunicipalities; let i = index">
                     <p class="discussionForumMayors marginTopCountdown">
-                        {{ 'discussionForum.beneficiary.registrationNumber' | translate }} <span>{{messageAuthors[i].userId}}</span>
+                        {{ 'discussionForum.beneficiary.registrationNumber' | translate }} <span>{{otherRegistrations[i].userId}}</span>
                     </p>
 
                     <div class="ui-g discussionForumNoBorders">
@@ -81,60 +82,62 @@
     <hr class="beneficiaryHr">
     <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.discussion' | translate }}</p>
     <p>{{ 'discussionForum.messagesDescription' | translate }}</p>
-    <div *ngIf="!hasMessages" class="ui-g button-content discussion-content">
-        <div class="ui-g-12 noPadding">
-            <div class="ui-g-8">
-                <!--<p>{{'discussionForum.noRecentConversations.text' | translate }}</p>-->
-            </div>
-            <div class="ui-g-4">
-                <button [disabled]="hasMediation" type="button" class="btn btn-primary changePassword discussionButton"
-                        (click)="newMessage()">
-                    {{'discussionForum.add.reply' | translate }}
-                </button>
-            </div>
-        </div>
-    </div>
-    <ng-container *ngIf="hasMessages">
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <div class="ui-g-9"></div>
-                <div class="ui-g-3">
-                    <div>
-                        <button type="button" class="btn btn-primary changePassword discussionButton"
-                                (click)="newMessage()" [disabled]="hasMediation">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            {{'discussionForum.add.reply' | translate }}
-                        </button>
-                    </div>
+    <ng-container *ngIf="thread">
+        <div *ngIf="thread.messages.length < 1" class="ui-g button-content discussion-content">
+            <div class="ui-g-12 noPadding">
+                <div class="ui-g-8">
+                    <!--<p>{{'discussionForum.noRecentConversations.text' | translate }}</p>-->
                 </div>
-            </div>
-        </div>
-        <div class="discussion-content" *ngFor="let currentMessage of thread.messages; let i = index">
-            <div class="ui-g discussion-content">
-                <div class="ui-g-12">
-                    <div class="ui-g-3 backgroundMessage">
-                        <p class="authorMessage">
-                            {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
-                            {{thread.messages[i].authorId}}
-                        </p>
-                        <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
-                        <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
-                    </div>
-                    <div class="ui-g-9 paddingMessages arrow_box">
-                        <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <div class="ui-g-9"></div>
-                <div class="ui-g-3">
-                    <button type="button" class="btn btn-primary changePassword discussionButton"
-                            (click)="displayMediation = true" [disabled]="mediationBlocked || hasMediation">
-                        {{'discussionForum.newMediation.button' | translate }}
+                <div class="ui-g-4">
+                    <button [disabled]="thread.mediation" type="button" class="btn btn-primary changePassword discussionButton"
+                            (click)="newMessage()">
+                        {{'discussionForum.add.reply' | translate }}
                     </button>
-                    <p class="right">{{'discussionForum.newMediation.text' | translate }}</p>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="thread.messages.length > 0">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="ui-g-9"></div>
+                    <div class="ui-g-3">
+                        <div>
+                            <button type="button" class="btn btn-primary changePassword discussionButton"
+                                    (click)="newMessage()" [disabled]="thread.mediation">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                {{'discussionForum.add.reply' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="discussion-content" *ngFor="let currentMessage of thread.messages; let i = index">
+                <div class="ui-g discussion-content">
+                    <div class="ui-g-12">
+                        <div class="ui-g-3 backgroundMessage">
+                            <p class="authorMessage">
+                                {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
+                                {{thread.messages[i].authorId}}
+                            </p>
+                            <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
+                            <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
+                        </div>
+                        <div class="ui-g-9 paddingMessages arrow_box">
+                            <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="ui-g-9"></div>
+                    <div class="ui-g-3">
+                        <button type="button" class="btn btn-primary changePassword discussionButton"
+                                (click)="displayMediation = true" [disabled]="thread.mediation">
+                            {{'discussionForum.newMediation.button' | translate }}
+                        </button>
+                        <p class="right">{{'discussionForum.newMediation.text' | translate }}</p>
+                    </div>
                 </div>
             </div>
         </div>

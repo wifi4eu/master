@@ -146,4 +146,12 @@ public class RegistrationResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
+
+    @ApiOperation(value = "Get registration by specific userThread id")
+    @RequestMapping(value = "/userThread/{userThreadId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public RegistrationDTO getRegistrationByUserThreadId(@PathVariable("userThreadId") final Integer userThreadId) {
+        _log.info("getRegistrationByUserThreadId: " + userThreadId);
+        return registrationService.getRegistrationByUserThreadId(userThreadId);
+    }
 }
