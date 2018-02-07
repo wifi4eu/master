@@ -156,6 +156,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
             this.registrationApi.createRegistration(this.registrations[index]).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
+                        this.getIssue();
                         this.sharedService.growlTranslation('You successfully validated the municipality.','dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
                     } else {
                         this.sharedService.growlTranslation('An error occurred while trying to validate the municipality. Please, try again later.','dgConn.duplicatedBeneficiaryDetails.validateMunicipality.error', 'error');
@@ -171,6 +172,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
             this.registrationApi.createRegistration(this.registrations[index]).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
+                      this.getIssue();
                         this.sharedService.growlTranslation('You successfully invalidated the municipality.','dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
                     } else {
                         this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.','dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
