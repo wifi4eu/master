@@ -4,15 +4,14 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.thread.ThreadService;
+import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
@@ -40,6 +39,12 @@ public class RegistrationService {
 
     @Autowired
     MunicipalityService municipalityService;
+
+    @Autowired
+    UserThreadsService userThreadsService;
+
+    @Autowired
+    ThreadService threadService;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -130,5 +135,19 @@ public class RegistrationService {
             return true;
         }
         return false;
+    }
+
+    public RegistrationDTO getRegistrationByUserThreadId(int userThreadId) {
+        UserThreadsDTO userThreadDTO = userThreadsService.getUserThreadsById(userThreadId);
+        ThreadDTO threadDTO = threadService.getThreadById(userThreadDTO.getThreadId());
+        UserDTO userDTO = userService.getUserById(userThreadDTO.getUserId());
+        List<RegistrationDTO> registrations = getRegistrationsByUserId(userDTO.getId());
+        for (RegistrationDTO registration : registrations) {
+            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+            if (threadDTO.getReason().equals(String.valueOf(municipality.getLauId()))) {
+                return registration;
+            };
+        }
+        return null;
     }
 }
