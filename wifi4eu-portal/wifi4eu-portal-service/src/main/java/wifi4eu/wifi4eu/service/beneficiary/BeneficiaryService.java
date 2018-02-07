@@ -262,48 +262,52 @@ public class BeneficiaryService {
         /* Iterate in municipality list */
         for (MunicipalityDTO municipalityDTO : municipalityDTOSList) {
             RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
-            BeneficiaryListDTO beneficiaryListDTO = new BeneficiaryListDTO();
-            LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
+            if(registration != null) {
+                BeneficiaryListDTO beneficiaryListDTO = new BeneficiaryListDTO();
+                LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
 
-            /* Checks that the municipality name is in the municipalities array */
-            if (municipalities.contains(municipalityDTO.getName())) {
-                /* Get index in the array */
-                int index = municipalities.indexOf(municipalityDTO.getName());
+                /* Checks that the municipality name is in the municipalities array */
+                if (municipalities.contains(municipalityDTO.getName())) {
+                    /* Get index in the array */
+                    int index = municipalities.indexOf(municipalityDTO.getName());
 
-                /* Fills beneficiaryListDTO object with one exisiting in BeneficiaryListDTO list in that position */
-                beneficiaryListDTO = beneficiaryListDTOS.get(index);
+                    /* Fills beneficiaryListDTO object with one exisiting in BeneficiaryListDTO list in that position */
+                    beneficiaryListDTO = beneficiaryListDTOS.get(index);
 
-                /* Increments number of registrations because it's the same lau */
-                beneficiaryListDTO.setNumRegistrations(beneficiaryListDTO.getNumRegistrations() + 1);
+                    /* Increments number of registrations because it's the same lau */
+                    beneficiaryListDTO.setNumRegistrations(beneficiaryListDTO.getNumRegistrations() + 1);
 
-                /* Update object in the position of the list of BeneficiaryListDTO */
-                beneficiaryListDTOS.set(index, beneficiaryListDTO);
+                    /* Update object in the position of the list of BeneficiaryListDTO */
+                    beneficiaryListDTOS.set(index, beneficiaryListDTO);
 
-                /* Adds registrations left in the DTO */
-                List<RegistrationDTO> regs = beneficiaryListDTO.getRegistrations();
-                if (!regs.contains(registration)) {
+                    /* Adds registrations left in the DTO */
+                    List<RegistrationDTO> regs = beneficiaryListDTO.getRegistrations();
+                    if (!regs.contains(registration)) {
+                        regs.add(registration);
+                    }
+                    beneficiaryListDTO.setRegistrations(regs);
+                } else {
+                    municipalities.add(municipalityDTO.getName());
+                    beneficiaryListDTO.setNumRegistrations(1);
+                    beneficiaryListDTO.setLau(lauDTO);
+                    List<RegistrationDTO> regs = new ArrayList<>();
                     regs.add(registration);
+                    beneficiaryListDTO.setRegistrations(regs);
+                    beneficiaryListDTOS.add(beneficiaryListDTO);
                 }
-                beneficiaryListDTO.setRegistrations(regs);
-            } else {
-                municipalities.add(municipalityDTO.getName());
-                beneficiaryListDTO.setNumRegistrations(1);
-                beneficiaryListDTO.setLau(lauDTO);
-                List<RegistrationDTO> regs = new ArrayList<>();
-                regs.add(registration);
-                beneficiaryListDTO.setRegistrations(regs);
-                beneficiaryListDTOS.add(beneficiaryListDTO);
             }
         }
-        getIssueOfRegistration(beneficiaryListDTOS);
-        for (BeneficiaryListDTO beneficiaryListDTO : beneficiaryListDTOS) {
-            for (RegistrationDTO registrationDTO : beneficiaryListDTO.getRegistrations()) {
-                beneficiaryListDTO.setStatus(getStatusApplicationByRegistration(registrationDTO.getId()));
+        if(beneficiaryListDTOS.size() > 0){
+            getIssueOfRegistration(beneficiaryListDTOS);
+            for (BeneficiaryListDTO beneficiaryListDTO : beneficiaryListDTOS) {
+                for (RegistrationDTO registrationDTO : beneficiaryListDTO.getRegistrations()) {
+                    beneficiaryListDTO.setStatus(getStatusApplicationByRegistration(registrationDTO.getId()));
+                }
+                if(checkIpDuplicated(beneficiaryListDTO.getRegistrations()) && beneficiaryListDTO.getIssue() != 3 && beneficiaryListDTO.getIssue() != 4){
+                    beneficiaryListDTO.setIssue(1);
+                }
+                beneficiaryListDTO.setMediation(getMediationStatusByLau(beneficiaryListDTO.getLau().getId()));
             }
-            if(checkIpDuplicated(beneficiaryListDTO.getRegistrations())){
-                beneficiaryListDTO.setIssue(1);
-            }
-            beneficiaryListDTO.setMediation(getMediationStatusByLau(beneficiaryListDTO.getLau().getId()));
         }
 
         return beneficiaryListDTOS;
@@ -357,7 +361,7 @@ public class BeneficiaryService {
                 typeIssue = 0;
             }
         }
-        if(checkIpDuplicated(registrationDTOList)){
+        if(checkIpDuplicated(registrationDTOList) && typeIssue != 3 && typeIssue != 4){
             typeIssue = 1;
         }
         return typeIssue;
