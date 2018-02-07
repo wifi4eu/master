@@ -8,9 +8,9 @@
     <div class="ui-g">
         <div class="ui-g-12">
             <div class="ui-g-6">
-                <div class="ui-g-6"><i class="fa fa-paper-plane"></i> {{ 'dgConn.voucher.totalRequest' | translate}} <b>{{applications}}</b>
+                <div class="ui-g-6"><i class="fa fa-paper-plane"></i> {{ 'dgConn.voucher.totalRequest' | translate}} <b>{{totalRequests}}</b>
                 </div>
-                <div class="ui-g-6"><i class="fa fa-globe"></i> {{ 'dgConn.voucher.totalMemberStates' | translate}} <b>{{municipalities}}</b>
+                <div class="ui-g-6"><i class="fa fa-globe"></i> {{ 'dgConn.voucher.totalMemberStates' | translate}} <b>{{countries.length}}</b>
                 </div>
             </div>
         </div>
@@ -18,14 +18,20 @@
 
     <div class="ui-g  panel-dg">
         <div class="ui-g-12">
-            <div class="ui-g-1"></div>
-            <div class="ui-g-3">
-                <p>{{ 'dgConn.voucher.maximumVouchers' | translate}}</p>
+            <div class="ui-g-2">
+                <p>{{ 'shared.country.label' | translate }}</p>
+                <select style="width: 100%" name="chosenCountry" [(ngModel)]="chosenCountry" (change)="chooseCountryApplicationsInfo()">
+                    <option selected>-</option>
+                    <option [value]="country.label" *ngFor="let country of countries">{{country.label}}</option>
+                </select>
+            </div>
+            <div class="ui-g-2">
+                <p>{{ 'dgConn.voucher.maximumVouchers' | translate }}</p>
                 <input type="text" value="1000" disabled>
             </div>
 
-            <div class="ui-g-3">
-                <p>{{ 'dgConn.voucher.minimumVouchers' | translate}}</p>
+            <div class="ui-g-2">
+                <p>{{ 'dgConn.voucher.minimumVouchers' | translate }}</p>
                 <input type="text" value="0" disabled>
             </div>
             <div class="ui-g-1"></div>
@@ -50,16 +56,11 @@
     </div>
     <p-tabView class="white">
         <p-tabPanel *ngFor="let call of calls; let i=index" [header]="'Call '+(i+1)">
-            <p-dataTable [value]="call.voucherManagements" [editable]="true" [responsive]="true"
-                         sortMode="multiple">
-                <p-column [sortable]="true" field="member_state"
-                          header="{{ 'dgConn.helpdesk.memberState' | translate}}"></p-column>
-                <p-column [sortable]="true" field="minimum"
-                          header="{{ 'dgConn.voucher.maximum' | translate}}"></p-column>
-                <p-column [sortable]="true" field="maximum"
-                          header="{{ 'dgConn.voucher.minimum' | translate}}"></p-column>
-                <p-column [sortable]="true" field=""
-                          header="{{ 'dgConn.helpdesk.assigned' | translate}}"></p-column>
+            <p-dataTable [value]="shownApplicationsInfo" [editable]="true" [responsive]="true" sortMode="multiple">
+                <p-column [sortable]="true" field="countryName"
+                          header="{{ 'shared.country.label' | translate}}"></p-column>
+                <p-column [sortable]="true" field="municipalityName"
+                          header="{{ 'shared.municipality.label' | translate}}"></p-column>
             </p-dataTable>
         </p-tabPanel>
     </p-tabView>
