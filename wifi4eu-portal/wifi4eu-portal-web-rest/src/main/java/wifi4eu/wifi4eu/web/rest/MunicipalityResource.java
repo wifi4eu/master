@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
@@ -15,6 +16,8 @@ import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -50,7 +53,8 @@ public class MunicipalityResource {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO createMunicipality(@RequestBody final MunicipalityDTO municipalityDTO) {
+    public ResponseDTO createMunicipality(@RequestBody final MunicipalityDTO municipalityDTO,
+                                          HttpServletResponse response) throws IOException {
         try {
             _log.info("createMunicipality");
 
@@ -60,11 +64,18 @@ public class MunicipalityResource {
 
             MunicipalityDTO resMunicipality = municipalityService.createMunicipality(municipalityDTO);
             return new ResponseDTO(true, resMunicipality, null);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'createMunicipality' operation.", ade);
+            }
+            response.sendError(HttpStatus.FORBIDDEN.value());
+            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createMunicipality' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
 

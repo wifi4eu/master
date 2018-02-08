@@ -23,6 +23,9 @@ public class Thread {
     @Column(name = "type")
     private Integer type;
 
+    @Column(name = "mediation")
+    private boolean mediation;
+
 //    @OneToOne
 //    @JoinColumn(name = "reason")
 //    private Lau lau;
@@ -79,5 +82,13 @@ public class Thread {
 
     public void setMessages(List<ThreadMessage> messages) {
         this.messages = messages;
+    }
+
+    public boolean isMediation() {
+        return mediation;
+    }
+
+    public void setMediation(boolean mediation) {
+        this.mediation = mediation;
     }
 }

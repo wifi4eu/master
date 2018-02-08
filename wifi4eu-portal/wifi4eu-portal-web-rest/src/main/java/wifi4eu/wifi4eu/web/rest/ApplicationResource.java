@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.ApplicationVoucherInfoDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -92,7 +93,7 @@ public class ApplicationResource {
         return applicationService.getApplicationsBySupplierId(supplierId);
     }
 
-    @ApiOperation(value = "Get application by specific id")
+    @ApiOperation(value = "Get application by call and registration id")
     @RequestMapping(value = "/call/{callId}/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId) {
@@ -100,5 +101,39 @@ public class ApplicationResource {
             _log.info("getApplicationByCall: " + callId + " & Registration: " + registrationId);
         }
         return applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
+    }
+
+    @ApiOperation(value = "Get applications voucher info by call id")
+    @RequestMapping(value = "/voucherInfo/call/{callId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(@PathVariable("callId") final Integer callId) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("getApplicationsVoucherInfoByCall: " + callId);
+            }
+            return applicationService.getApplicationsVoucherInfoByCall(callId);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.info("getApplicationsVoucherInfoByCall: " + callId);
+            }
+            return null;
+        }
+    }
+
+    @ApiOperation(value = "Get applications voucher info by call id")
+    @RequestMapping(value = "/voucherInfo/application/{applicationId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ApplicationVoucherInfoDTO getApplicationsVoucherInfoByApplication(@PathVariable("applicationId") final Integer applicationId) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("getApplicationsVoucherInfoByApplication: " + applicationId);
+            }
+            return applicationService.getApplicationsVoucherInfoByApplication(applicationId);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.info("getApplicationsVoucherInfoByApplication: " + applicationId);
+            }
+            return null;
+        }
     }
 }

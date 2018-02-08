@@ -2,7 +2,7 @@ import json
 import os
 import re
 
-parent = "."
+parent = "../../../."
 extensions = ['html', 'js', 'ts']
 ignore_dirs = ['wifi4eu-financial', 'node_modules', 'target', 'dist']
 regex = r"\{\{(.*?)\|"

@@ -1,48 +1,55 @@
 <div class="clearfix"></div>
 <div class="jumbotron mb-3" style="background-color: transparent;">
-  <div class="container center">
-    <p class="center beneficiaryTitle">{{ 'dgConn.duplicatedSuppliers.title' | translate }}</p>
-  </div>
+    <div class="container center">
+        <p class="center beneficiaryTitle">{{ 'dgConn.duplicatedSuppliers.title' | translate }}</p>
+    </div>
 </div>
 <div class="container center ">
-  <!-- registrationsTable-->
+    <!-- registrationsTable-->
 
-  <div class="panel-dg panel-padding panel-input">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="input-group">
+    <div class="panel-dg panel-padding panel-input">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
           <span class="input-group-addon">
             <i class="fa fa-search" aria-hidden="true"></i>
           </span>
-          <input type="text" [(ngModel)]="inputSearch" (keyup.enter)="filterData(inputSearch)" class="form-control">
-          <span class="input-group-btn">
+                    <input type="text" [(ngModel)]="inputSearch" (keyup.enter)="filterData(inputSearch)"
+                           class="form-control">
+                    <span class="input-group-btn">
             <button class="btn btn-primary" (click)="filterData(inputSearch)" type="button">Search</button>
           </span>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <div class="panel-dg">
-    <p-dataTable [editable]="true" [responsive]="true" sortMode="multiple" [value]="customUserSupplierArray" [rows]="10" [paginator]="true">
-      <p-column field="supplier.name" styleClass="text-center" [sortable]="true" header="{{ 'shared.name.label' | translate }}"></p-column>
-      <p-column field="supplier.address" styleClass="text-center" [sortable]="true" header="{{ 'suppRegistration.physical-address.label' | translate }}"></p-column>
-      <p-column header="{{ 'suppRegistration.phone.number' | translate }}" styleClass="text-center">
-        <ng-template let-customSupplier="rowData" pTemplate="body">
-          <span>{{ customSupplier.supplier.contactPhonePrefix }} </span>
-          <span>{{ customSupplier.supplier.contactPhoneNumber }}</span>
-        </ng-template>
-      </p-column>
-      <!-- <p-column field="supplier.website" styleClass="text-center" header="Website" [sortable]="true"></p-column> -->
-      <p-column field="supplier.vat" styleClass="text-center" header="{{ 'suppRegistration.vat.label' | translate}}" [sortable]="true"></p-column>
-      <p-column field="supplier.bic" styleClass="text-center" header="{{ 'suppRegistration.bic.label' | translate }}" [sortable]="true"></p-column>
-      <p-column field="user.name" styleClass="text-center" [sortable]="true" header="{{ 'dgConn.user.label' | translate }}">
-        <ng-template let-customSupplier="rowData" pTemplate="body">
-          <span>{{ customSupplier.user.name }} </span>
-          <span>{{ customSupplier.user.surname }}</span>
-        </ng-template>
-      </p-column>
-     <!--  <p-column field="user.surname" styleClass="text-center" [sortable]="true" header="User surname"></p-column> -->
-    </p-dataTable>
-  </div>
+    <div class="panel-dg">
+        <p-dataTable [editable]="true" [responsive]="true" sortMode="multiple" [value]="customUserSupplierArray"
+                     [rows]="10" [paginator]="true">
+            <p-column field="supplier.name" styleClass="text-center" [sortable]="true"
+                      header="{{ 'shared.name.label' | translate }}"></p-column>
+            <p-column field="supplier.address" styleClass="text-center" [sortable]="true"
+                      header="{{ 'shared.physical-address.label' | translate }}"></p-column>
+            <p-column header="{{ 'suppRegistration.phone.number' | translate }}" styleClass="text-center">
+                <ng-template let-customSupplier="rowData" pTemplate="body">
+                    <span>{{ customSupplier.supplier.contactPhonePrefix }} </span>
+                    <span>{{ customSupplier.supplier.contactPhoneNumber }}</span>
+                </ng-template>
+            </p-column>
+            <!-- <p-column field="supplier.website" styleClass="text-center" header="Website" [sortable]="true"></p-column> -->
+            <p-column field="supplier.vat" styleClass="text-center"
+                      header="{{ 'suppRegistration.vat.label' | translate}}" [sortable]="true"></p-column>
+            <p-column field="supplier.bic" styleClass="text-center"
+                      header="{{ 'suppRegistration.bic.label' | translate }}" [sortable]="true"></p-column>
+            <p-column field="user.name" styleClass="text-center" [sortable]="true"
+                      header="{{ 'dgConn.user.label' | translate }}">
+                <ng-template let-customSupplier="rowData" pTemplate="body">
+                    <span>{{ customSupplier.user.name }} </span>
+                    <span>{{ customSupplier.user.surname }}</span>
+                </ng-template>
+            </p-column>
+            <!--  <p-column field="user.surname" styleClass="text-center" [sortable]="true" header="User surname"></p-column> -->
+        </p-dataTable>
+    </div>
 </div>

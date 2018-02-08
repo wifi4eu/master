@@ -1,170 +1,120 @@
 import {Component} from "@angular/core";
-import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
-import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
-import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
-import {UserApi} from "../../shared/swagger/api/UserApi";
-import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
-import {BeneficiaryDTOBase} from "../../shared/swagger/model/BeneficiaryDTO";
-import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
-import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
-import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
-import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {SharedService} from "../../shared/shared.service";
+import {animate, style, transition, trigger} from "@angular/animations";
 import {ActivatedRoute, Router} from "@angular/router";
+import {LocalStorageService} from "angular-2-local-storage";
+import {ThreadApi} from "../../shared/swagger/api/ThreadApi";
+import {ThreadDTOBase} from "../../shared/swagger/model/ThreadDTO";
 import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
-import {UserThreadsDTO, UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
+import {UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
+import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
-import index from "@angular/cli/lib/cli";
-import {isNumber} from "util";
+import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
+import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
+import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
+import {SharedService} from "../../shared/shared.service";
+import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
+import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
+import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
 
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
-    providers: [UserThreadsApi, ThreadApi, BeneficiaryApi, ThreadmessagesApi, UserApi, RegistrationApi, MunicipalityApi]
+    providers: [ThreadApi, UserThreadsApi, RegistrationApi, MunicipalityApi, ThreadmessagesApi],
+    animations: [
+      trigger(
+        'enterSpinner', [
+          transition(':enter', [
+            style({opacity: 0}),
+            animate('200ms', style({opacity: 1}))
+          ]),
+          transition(':leave', [
+            style({opacity: 1}),
+            animate('200ms', style({opacity: 0}))
+          ])
+        ]
+      )
+    ]
 })
 
 export class DiscussionComponent {
-    private thread: ThreadDTOBase = new ThreadDTOBase();
-    private municipality: MunicipalityDTOBase = new MunicipalityDTOBase();
-    private municipalities: MunicipalityDTOBase[] = [];
-    private user: UserDTOBase = new UserDTOBase();
-    private messageAuthors: RegistrationDTOBase[] = [];
-    private message: string = '';
+    private user: UserDTOBase;
+    private thread: ThreadDTOBase;
+    private myRegistration: RegistrationDTOBase;
+    private myMunicipality: MunicipalityDTOBase;
+    private otherRegistrations: RegistrationDTOBase[] = [];
+    private otherMunicipalities: MunicipalityDTOBase[] = [];
     private displayMessage: boolean = false;
     private displayMediation: boolean = false;
-    private mediationBlocked: boolean = false;
-    private showAlert: boolean = false;
-    private registration: RegistrationDTOBase[] = [];
-    private lauId: number;
-    private threadId: number;
-    private hasMessages: boolean = false;
-    private hasAuthor: boolean = false;
-    private counter: number = 0;
+    private displayMediationAlert: boolean = false;
+    private isSendMessage = false;
+    private isSendedMessage = false;
+    private message: string = '';
 
-
-    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
-        this.route.params.subscribe(params => this.threadId = params['threadId']);
-        this.thread.messages = [];
-        this.messageAuthors = [];
-        this.hasAuthor = false;
-
-        this.threadApi.getThreadById(this.threadId).subscribe(
-            thread => {
-                this.thread = thread;
-                if (this.thread.messages.length > 0) {
-                    this.hasMessages = true;
-                }
-            },
-            error => {
-                console.log(error);
-            }
-        );
-
+    constructor(private localStorageService: LocalStorageService, private route: ActivatedRoute, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private threadmessagesApi: ThreadmessagesApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             if (this.user.type == 2 || this.user.type == 3) {
-                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-                    (registration: RegistrationDTOBase[]) => {
-                        this.registration = registration;
-                        this.municipalityApi.getMunicipalityById(this.registration[0].municipalityId).subscribe(
-                            (municipality: MunicipalityDTOBase) => {
-                                this.municipality = municipality;
-                                this.lauId = this.municipality.lauId;
-                                this.municipalityApi.getMunicipalitiesByLauId(this.lauId).subscribe(
-                                    (municipalities: MunicipalityDTOBase[]) => {
-                                        for (let i = 0; i < municipalities.length; i++) {
-                                            if (this.municipality.id != municipalities[i].id) {
-                                                this.registrationApi.getRegistrationsByMunicipalityId(municipalities[i].id).subscribe(
-                                                    (registrations: RegistrationDTOBase[]) => {
-                                                        if (registrations.length > 0) {
-                                                            this.municipalities.push(municipalities[i]);
-                                                            this.messageAuthors.push(registrations[0]);
-                                                            this.counter++;
-                                                            if (this.counter >= this.municipalities.length) {
-                                                                this.hasAuthor = true;
-                                                            }
+                let threadId;
+                this.route.params.subscribe(params => threadId = params['threadId']);
+                if (threadId != null) {
+                    this.threadApi.getThreadById(threadId).subscribe(
+                        (thread: ThreadDTOBase) => {
+                            if (thread != null) {
+                                this.thread = thread;
+                                this.userThreadsApi.getUsersByThreadId(this.thread.id).subscribe(
+                                    (userThreads: UserThreadsDTOBase[]) => {
+                                        let allowUser = false;
+                                        for (let userThread of userThreads) {
+                                            if (userThread.userId == this.user.id) {
+                                                allowUser = true;
+                                                break;
+                                            }
+                                        }
+                                        if (allowUser) {
+                                            for (let userThread of userThreads) {
+                                                this.registrationApi.getRegistrationByUserThreadId(userThread.id).subscribe(
+                                                    (registration: RegistrationDTOBase) => {
+                                                        if (registration != null) {
+                                                            this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
+                                                                (municipality: MunicipalityDTOBase) => {
+                                                                    if (municipality != null) {
+                                                                        if (userThread.userId == this.user.id) {
+                                                                            this.myMunicipality = municipality;
+                                                                            this.myRegistration = registration;
+                                                                        } else {
+                                                                            this.otherMunicipalities.push(municipality);
+                                                                            this.otherRegistrations.push(registration);
+                                                                        }
+                                                                    }
+                                                                }
+                                                            );
                                                         }
-                                                    }, error => {
-                                                        console.log(error);
                                                     }
                                                 );
                                             }
+                                        } else {
+                                            this.sharedService.growlTranslation('You are not allowed to view this page.', 'shared.error.notallowed', 'warn');
+                                            this.router.navigateByUrl('/beneficiary-portal/profile');
                                         }
-                                    }, error => {
-                                        console.log(error);
                                     }
                                 );
-                            }, error => {
-                                console.log(error);
                             }
-                        );
-                    }, error => {
-                        console.log(error);
-                    }
-                );
-            } else {
-                this.sharedService.growlTranslation('You are not allowed to view this page.', 'shared.error.notallowed', 'warn');
-                this.router.navigateByUrl('/home');
+                        }
+                    );
+                } else {
+                    this.sharedService.growlTranslation('You are not allowed to view this page.', 'shared.error.notallowed', 'warn');
+                    this.router.navigateByUrl('/beneficiary-portal/profile');
+                }
             }
         } else {
-            this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
+            this.sharedService.growlTranslation('You are not allowed to view this page.', 'shared.error.notallowed', 'warn');
             this.router.navigateByUrl('/home');
         }
     }
 
-    private newMessage() {
-        this.displayMessage = true;
-        this.message = '';
-    }
-
-    private sendMessage() {
-        let newMessage = new ThreadMessageDTOBase();
-        newMessage.createDate = new Date().getTime();
-        newMessage.message = this.message;
-        newMessage.authorId = this.user.id;
-        newMessage.threadId = this.threadId;
-        this.threadMessagesApi.createThreadMessage(newMessage).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.thread.messages.push(response.data);
-                    // this.messageAuthors.push(this.user);
-                    this.hasMessages = true;
-                    this.sharedService.growlTranslation('The message was successfully sent!', 'discussionForum.thread.message.success', 'success');
-                } else {
-                    this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
-                }
-                this.displayMessage = false;
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
-                this.displayMessage = false;
-            }
-        );
-    }
-
-    private askMediation() {
-        this.mediationBlocked = true;
-        this.showAlert = true;
-        window.scrollTo(0, 0);
-        this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-            (registrations: RegistrationDTOBase[]) => {
-                for (let registration of registrations) {
-                    registration.status = 0;
-                    this.registrationApi.createRegistration(registration).subscribe(
-                        (data: ResponseDTOBase) => {
-                            if (data.success) {
-                                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussion.growl', 'success');
-                            }
-                        }, error => {
-                            this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');
-                        }
-                    );
-                }
-            }
-        );
+    private editApplication() {
+        this.router.navigateByUrl('/beneficiary-portal/profile');
     }
 
     private deleteApplication() {
@@ -192,13 +142,63 @@ export class DiscussionComponent {
         );
     }
 
-    private editApplication() {
-        this.router.navigateByUrl('/beneficiary-portal/profile');
+    private newMessage() {
+        this.isSendMessage = false;
+        this.displayMessage = true;
+        this.displayMediation = false;
+        this.message = '';
+    }
+
+    private sendMessage() {
+        this.isSendMessage = true;
+        this.isSendedMessage = false;
+        let newMessage = new ThreadMessageDTOBase();
+        newMessage.createDate = new Date().getTime();
+        newMessage.message = this.message;
+        newMessage.authorId = this.user.id;
+        newMessage.threadId = this.thread.id;
+        this.threadmessagesApi.createThreadMessage(newMessage).subscribe(
+            (response: ResponseDTOBase) => {
+                if (response.success) {
+                    this.isSendedMessage = true;
+                    this.isSendMessage = false;
+                    this.thread.messages.push(response.data);
+                    // this.messageAuthors.push(this.user);
+                    // this.hasMessages = true;
+                    this.sharedService.growlTranslation('The message was successfully sent!', 'discussionForum.thread.message.success', 'success');
+                } else {
+                    this.isSendedMessage = false;
+                    this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
+                }
+                this.displayMessage = false;
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
+                this.displayMessage = false;
+            }
+        );
     }
 
     private closeModal() {
+        this.isSendMessage = false;
         this.displayMessage = false;
         this.displayMediation = false;
     }
 
+    private askMediation() {
+        this.displayMediationAlert = true;
+        window.scrollTo(0, 0);
+        this.threadApi.askMediationThread(this.thread.id).subscribe(
+            (response: ResponseDTOBase) => {
+                if (response.success){
+                    this.thread = response.data;
+                    this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussion.growl', 'success');
+                } else {
+                    this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');
+                }
+            },
+            error => {
+                this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');
+            }
+        );
+    }
 }

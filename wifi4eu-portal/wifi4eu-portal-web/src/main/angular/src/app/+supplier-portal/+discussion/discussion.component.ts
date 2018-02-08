@@ -16,11 +16,26 @@ import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
 import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
 import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
 import {UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
+import { trigger, style, animate, transition } from '@angular/animations';
 
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
-    providers: [UserThreadsApi, ThreadApi, ThreadmessagesApi, UserApi, RegistrationApi, SupplierApi]
+    providers: [UserThreadsApi, ThreadApi, ThreadmessagesApi, UserApi, RegistrationApi, SupplierApi],
+    animations: [
+      trigger(
+        'enterSpinner', [
+          transition(':enter', [
+            style({opacity: 0}),
+            animate('200ms', style({opacity: 1}))
+          ]),
+          transition(':leave', [
+            style({opacity: 1}),
+            animate('200ms', style({opacity: 0}))
+          ])
+        ]
+      )
+    ]
 })
 
 export class DiscussionComponent {
@@ -41,6 +56,10 @@ export class DiscussionComponent {
     private userThreads: UserThreadsDTOBase [] = [];
     private otherSuppliers: SupplierDTOBase [] = [];
 
+    private hasMediation: boolean = false;
+
+    private isSendMessage: boolean = false;
+    private isSendedMessage: boolean = false;
 
     constructor(private userThreadsApi: UserThreadsApi, private supplierApi: SupplierApi, private route: ActivatedRoute, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
 
@@ -51,8 +70,9 @@ export class DiscussionComponent {
 
 
         this.threadApi.getThreadById(this.threadId).subscribe(
-            thread => {
+            (thread : ThreadDTOBase) => {
                 this.thread = thread;
+                this.hasMediation = thread.mediation;
                 if (this.thread.messages.length > 0) {
                     this.hasMessages = true;
                 }
@@ -115,24 +135,35 @@ export class DiscussionComponent {
     }
 
     private newMessage() {
+        if(this.hasMediation){
+          return;
+        }
+        this.isSendMessage = false;
         this.displayMessage = true;
         this.message = '';
     }
 
     private sendMessage() {
+        if(this.hasMediation){
+          return;
+        }
+        this.isSendMessage = true;
         let newMessage = new ThreadMessageDTOBase();
         newMessage.createDate = new Date().getTime();
         newMessage.message = this.message;
         newMessage.authorId = this.user.id;
         newMessage.threadId = this.threadId;
+        this.isSendedMessage = false;
         this.threadMessagesApi.createThreadMessage(newMessage).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
+                    this.isSendedMessage = true;
                     this.thread.messages.push(response.data);
                     // this.messageAuthors.push(this.user);
                     this.hasMessages = true;
                     this.sharedService.growlTranslation('The message was successfully sent!', 'discussionForum.thread.message.success', 'success');
                 } else {
+                    this.isSendedMessage = false;
                     this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
                 }
                 this.displayMessage = false;
@@ -147,22 +178,21 @@ export class DiscussionComponent {
         this.mediationBlocked = true;
         this.showAlert = true;
         window.scrollTo(0, 0);
-        this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-            (registrations: RegistrationDTOBase[]) => {
-                for (let registration of registrations) {
-                    registration.status = 0;
-                    this.registrationApi.createRegistration(registration).subscribe(
-                        (data: ResponseDTOBase) => {
-                            if (data.success) {
-                                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussionForum.discussion.growl', 'success');
-                            }
-                        }, error => {
-                            this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');
-                        }
-                    );
-                }
+        if(this.hasMediation){
+          return;
+        }
+        this.threadApi.askMediationThread(this.thread.id).subscribe(
+          (response: ResponseDTOBase) => {
+            if(response.success){
+              console.log(response.success);
+              this.hasMediation = response.data.mediation;
+              if(response.data.mediation){
+                this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussionForum.discussion.growl', 'success');              }
             }
-        );
+          },
+          error => {
+            this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');          }
+        )
     }
 
     private deleteApplication() {
@@ -195,6 +225,7 @@ export class DiscussionComponent {
     }
 
     private closeModal() {
+        this.isSendMessage = false;
         this.displayMessage = false;
         this.displayMediation = false;
     }

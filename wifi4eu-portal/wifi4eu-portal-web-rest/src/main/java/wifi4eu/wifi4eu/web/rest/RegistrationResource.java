@@ -85,9 +85,9 @@ public class RegistrationResource {
     @ApiOperation(value = "Get registrations by specific municipality id")
     @RequestMapping(value = "/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<RegistrationDTO> getRegistrationsByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
+    public RegistrationDTO getRegistrationByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
         _log.info("getRegistrationsByMunicipalityId: " + municipalityId);
-        return registrationService.getRegistrationsByMunicipalityId(municipalityId);
+        return registrationService.getRegistrationByMunicipalityId(municipalityId);
     }
 
     @ApiOperation(value = "Check if a certain user id registration is KO (deleted or suspended).")
@@ -111,5 +111,47 @@ public class RegistrationResource {
     public RegistrationDTO getRegistrationByUserAndMunicipality(@PathVariable("userId") final Integer userId, @PathVariable("municipalityId") final Integer municipalityId) {
         _log.info("getRegistrationByUser: " + userId  + " | AndMunicipality: " + municipalityId);
         return registrationService.getRegistrationByUserAndMunicipality(userId, municipalityId);
+    }
+
+    @ApiOperation(value = "Request legal documents")
+    @RequestMapping(value = "/requestLegalDocuments/{registrationId}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO requestLegalDocuments(@PathVariable("registrationId") final Integer registrationId) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("requestLegalDocuments for registration: " + registrationId);
+            }
+            return new ResponseDTO(registrationService.requestLegalDocuments(registrationId), null, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'requestLegalDocuments' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Assign legal entity")
+    @RequestMapping(value = "/assignLegalEntity/{registrationId}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO assignLegalEntity(@PathVariable("registrationId") final Integer registrationId) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("assignLegalEntity for registration: " + registrationId);
+            }
+            return new ResponseDTO(registrationService.assignLegalEntity(registrationId), null, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'assignLegalEntity' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Get registration by specific userThread id")
+    @RequestMapping(value = "/userThread/{userThreadId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public RegistrationDTO getRegistrationByUserThreadId(@PathVariable("userThreadId") final Integer userThreadId) {
+        _log.info("getRegistrationByUserThreadId: " + userThreadId);
+        return registrationService.getRegistrationByUserThreadId(userThreadId);
     }
 }

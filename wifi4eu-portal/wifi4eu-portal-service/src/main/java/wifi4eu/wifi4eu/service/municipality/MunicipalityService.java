@@ -57,7 +57,8 @@ public class MunicipalityService {
             if (mayor != null) {
                 mayorService.deleteMayor(mayor.getId());
             }
-            for (RegistrationDTO registration : registrationService.getRegistrationsByMunicipalityId(municipalityDTO.getId())) {
+            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
+            if (registration != null) {
                 for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registration.getId())) {
                     applicationService.deleteApplication(application.getId());
                 }

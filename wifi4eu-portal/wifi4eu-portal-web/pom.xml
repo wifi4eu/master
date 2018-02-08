@@ -56,14 +56,11 @@
                                     <executable>ng</executable>
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
-                                        <!-- Esto no lo tengo muy claro si debería ir aquí -->
-                                        <!-- <argument>"npm run build_prod"</argument> -->
-                                        <!-- Si queremos generar para PRODUCCION añadir - -prod - -aot false  y mantener el - -env=${ng.env} -->
-                                        <!-- TODO: Probar en un MacOS -->
                                         <argument>build</argument>
-                                        <!-- Esto ya no sería necesario **** -->
                                         <argument>--env=${ng.env}</argument>
-                                        <!-- ******************************** -->
+                                        <argument>--prod</argument>
+                                        <argument>--aot</argument>
+                                        <argument>false</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -91,13 +88,44 @@
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
                                         <argument>/c</argument>
-                                        <!-- Fix JS size -->
-                                        <!-- <argument>"npm run build_prod"</argument> -->
-                                        <!-- Por defecto -->
-                                        <argument>"ng build --base-href /wifi4eu/"</argument>
-                                        <!-- Si queremos generar para PRODUCCION -->
-                                        <!-- <argument>"ng build - -prod - -aot false - -base-href /wifi4eu/"</argument> -->
+                                        <argument>"ng build --base-href /wifi4eu-public/"</argument>
                                         <argument>--env=${ng.env}</argument>
+                                        <argument>--prod</argument>
+                                        <argument>--aot</argument>
+                                        <argument>false</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>ng-build-jenkins</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.5.0</version>
+                        <executions>
+                            <execution>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>
+                                        /var/quark/binaries/node/node-v6.11.5-linux-x64/lib/node_modules/@angular/cli/bin/ng
+                                    </executable>
+                                    <workingDirectory>src/main/angular</workingDirectory>
+                                    <arguments>
+                                        <argument>build</argument>
+                                        <argument>--env=${ng.env}</argument>
+                                        <argument>--prod</argument>
+                                        <argument>--aot</argument>
+                                        <argument>false</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -137,7 +165,8 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${basedir}/../wifi4eu-portal-web-rest/target/generated-sources/swagger/swagger.json
+                            <inputSpec>
+                                ${basedir}/../wifi4eu-portal-web-rest/target/generated-sources/swagger/swagger.json
                             </inputSpec>
                             <language>wifi4eu.wifi4eu.codegen.TypescriptClientCodegen</language>
                             <output>${basedir}/src/main/angular/src/app/shared/swagger</output>

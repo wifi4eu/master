@@ -1,57 +1,88 @@
-
 <div class="supplier"></div>
 <div class="container">
     <div class="ui-g">
-        <div class="ui-g-4  voucherLabel"><p>{{ 'dgConn.totalCountries' | translate }}: <b>{{totalCountries}}</b></p></div>
-        <div class="ui-g-4  voucherLabel">
-            <div class="ui-g-4">{{ 'shared.country.label' | translate }}</div>
-            <div class="ui-g-8">
-                <p-autoComplete  id="country"
-                                    class="form-control autoComplete"
-                                    name="country"
-                                    field="name"
-                                    placeholder="Espanya"
-                                    ngcontrol="country"
-                                    #country="ngModel"
-                                    [(ngModel)]="nutsDTO"
-                                    [suggestions]="nutsSuggestions"
-                                    [size]="30"
-                                    [minLength]="1"
-                                    (completeMethod)="filterNuts($event)"
-                                    required>
-                    </p-autoComplete>
-            </div>
-        </div>
-        <div class="ui-g-4">
-            <button type="button" class="btn btn-primary voucherButtons" (click)="simulateDistribution()">
-                {{'dgConn.voucher.simulate' | translate }}
-            </button>
+        <div class="ui-g-12">
+            <div class="beneficiaryTitle">{{ 'dgConn.voucher.dashboard' | translate}}</div>
         </div>
     </div>
     <div class="ui-g">
-        <div class="ui-g-4 voucherLabel"><p>{{ 'dgConn.voucher.totalRequest' | translate }}: <b>{{totalRequests}}</b></p></div>
-        <div class="ui-g-4 voucherLabel">
-            <div class="ui-g-4">{{ 'dgConn.voucher.amountVoucher' | translate }}</div>
-            <div class="ui-g-8">
-                <input type="text" name="" class="paddingInput" value="">
+        <div class="ui-g-12">
+            <div class="ui-g-6">
+                <div class="ui-g-6"><i class="fa fa-paper-plane"></i> {{ 'dgConn.voucher.totalRequest' | translate}} <b>{{totalRequests}}</b>
+                </div>
+                <div class="ui-g-6"><i class="fa fa-globe"></i> {{ 'dgConn.voucher.totalMemberStates' | translate}} <b>{{countries.length}}</b>
+                </div>
             </div>
         </div>
-        <div class="ui-g-4">
-            <button type="button"  class="btn btn-primary voucherButtons">
-                {{'dgConn.voucher.cancelAssignment' | translate }}
-            </button>
+    </div>
+
+    <div class="ui-g  panel-dg">
+        <div class="ui-g-12">
+            <div class="ui-g-2">
+                <p>{{ 'shared.country.label' | translate }}</p>
+                <select style="width: 100%" name="chosenCountry" [(ngModel)]="chosenCountry" (change)="chooseCountryApplicationsInfo()">
+                    <option selected>-</option>
+                    <option [value]="country.label" *ngFor="let country of countries">{{country.label}}</option>
+                </select>
+            </div>
+            <div class="ui-g-2">
+                <p>{{ 'dgConn.voucher.maximumVouchers' | translate }}</p>
+                <input type="text" value="1000" disabled>
+            </div>
+
+            <div class="ui-g-2">
+                <p>{{ 'dgConn.voucher.minimumVouchers' | translate }}</p>
+                <input type="text" value="0" disabled>
+            </div>
+            <div class="ui-g-1"></div>
+            <div class="ui-g-4">
+                <button class="btn btn-primary voucherButtonsSimulate" (click)="displayInfo()">
+                    {{ 'dgConn.voucher.simulate' | translate }}
+                </button>
+                <br>
+                <button class="btn btn-primary voucherButtonsCancel">
+                    {{ 'dgConn.voucher.cancelAssignment' | translate }}
+                </button>
+
+            </div>
         </div>
     </div>
-    <div id="map"></div>
-    <div class="panel-dg">
-      <div class="headerTableVoucher">
-        <p><span class="voucherTitle">{{ 'dgConn.voucher.dashboard' | translate }}</span> | <span class="voucherSubtitle">{{ 'dgConn.voucher.simulation' | translate }}</span><a class="downloadData"><i class="fa fa-download" aria-hidden="true"></i> {{'dgConn.voucher.downloadData' | translate}}</a></p>
-      </div>
-      <p-dataTable [value]="mapTableData" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
-              <p-column field="name" header="{{ 'shared.country.label' | translate }}" [sortable]="true" styleClass="text-center"></p-column>
-              <p-column field="municipalities" header="{{ 'dgConn.voucher.municipalities' | translate }}" [sortable]="true" styleClass="text-center"></p-column>
-              <p-column field="requests" header="{{ 'dgConn.voucher.request' | translate }}" [sortable]="true" styleClass="text-center"></p-column>
-              <p-column field="awarded" header="{{ 'dgConn.voucher.assigned' | translate }}" [sortable]="true" styleClass="text-center"></p-column>
-      </p-dataTable>
+
+    <hr class="beneficiaryHr">
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <div class="beneficiaryTitle">{{ 'dgConn.voucher.dashboard' | translate}}</div>
+        </div>
+    </div>
+    <p-tabView class="white">
+        <p-tabPanel *ngFor="let call of calls; let i=index" [header]="'Call '+(i+1)">
+            <p-dataTable [value]="shownApplicationsInfo" [editable]="true" [responsive]="true" sortMode="multiple">
+                <p-column [sortable]="true" field="countryName"
+                          header="{{ 'shared.country.label' | translate}}"></p-column>
+                <p-column [sortable]="true" field="municipalityName"
+                          header="{{ 'shared.municipality.label' | translate}}"></p-column>
+            </p-dataTable>
+        </p-tabPanel>
+    </p-tabView>
+    <!--MODALS BELOW-->
+
+    <div class="container font">
+        <div class="ui-g-1"></div>
+        <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false"
+                  [resizable]="false" [draggable]="false" [closeOnEscape]="true">
+            <div class="beneficiaryTitle center hiddenScroll">
+                {{ 'dgConn.voucher.confirmAssignment' | translate }}
+            </div>
+            <p class="voucherModal" [innerHTML]="'dgConn.voucher.confirmationAssignmentText' | translate"></p>
+            <div class="voucherModal md4Dashboard">
+                <button class="btn btn-primary voucherButtonsCancel">
+                    {{ 'shared.no' | translate }}
+                </button>
+
+                <button class="btn btn-primary voucherButtonsSimulate" (click)="displayInfo()">
+                    {{ 'shared.yes' | translate }}
+                </button>
+            </div>
+        </p-dialog>
     </div>
 </div>

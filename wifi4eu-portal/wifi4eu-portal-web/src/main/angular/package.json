@@ -9,12 +9,7 @@
     "lint": "tslint \"src/**/*.ts\" --project src/tsconfig.json --type-check && tslint \"e2e/**/*.ts\" --project e2e/tsconfig.json --type-check",
     "test": "ng test",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
-    "e2e": "protractor",
-
-    "clean": "rm -rf dist",
-    "build": "npm run clean && ng build",
-    "minify": "uglifyjs dist/vendor.bundle.js --screw-ie8 --compress --mangle --output dist/vendor.bundle.js",
-    "build_prod": "npm run build && npm run minify"
+    "e2e": "protractor"
   },
   "private": true,
   "dependencies": {
@@ -67,6 +62,7 @@
     "karma-jasmine": "^1.0.2",
     "karma-remap-istanbul": "^0.2.1",
     "protractor": "~4.0.13",
+    "rollup-plugin-node-resolve": "^3.0.2",
     "ts-node": "1.2.1",
     "tslint": "^4.3.0",
     "typescript": "~2.3.2"
