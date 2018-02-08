@@ -10,7 +10,7 @@ import wifi4eu.wifi4eu.repository.location.NutsRepository;
 
 import java.util.List;
 
-@Service
+@Service("portalNutsService")
 public class NutsService {
     @Autowired
     NutsMapper nutsMapper;
@@ -39,6 +39,7 @@ public class NutsService {
         return nutsMapper.toDTOList(Lists.newArrayList(nutsRepository.findByCountryCode(countryCode)));
     }
 
+    @Cacheable(value = "portalGetNutsByCountryCodeAndLevelOrderByLabelAsc")
     public List<NutsDTO> getNutsByCountryCodeAndLevelOrderByLabelAsc(String countryCode, Integer level) {
         return nutsMapper.toDTOList(Lists.newArrayList(nutsRepository.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode, level)));
     }

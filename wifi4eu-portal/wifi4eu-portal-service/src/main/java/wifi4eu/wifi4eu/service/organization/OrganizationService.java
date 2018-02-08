@@ -10,7 +10,7 @@ import wifi4eu.wifi4eu.repository.organization.OrganizationRepository;
 
 import java.util.List;
 
-@Service
+@Service("portalOrganizationService")
 public class OrganizationService {
     @Autowired
     OrganizationMapper organizationMapper;
