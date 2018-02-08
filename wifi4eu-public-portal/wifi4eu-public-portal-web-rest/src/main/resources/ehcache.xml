@@ -1,0 +1,33 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="true"
+         monitoring="autodetect"
+         dynamicConfig="true">
+
+    <diskStore path="java.io.tmpdir" />
+
+    <!-- wifi4eu-portal >> wifi4eu-portal-service >> SupplierService -->
+    <cache name="publicGetSuppliedRegionsCountGroupedByRegionId"
+           maxEntriesLocalHeap="100000"
+           maxEntriesLocalDisk="1000000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
+    <!-- wifi4eu-portal >> wifi4eu-portal-service >> MunicipalityService -->
+    <cache name="publicGetMunicipalitiesCountGroupedByLauId"
+           maxEntriesLocalHeap="100000"
+           maxEntriesLocalDisk="1000000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
+</ehcache>

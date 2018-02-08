@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-public class LauDTO {
+import java.io.Serializable;
+
+public class LauDTO implements Serializable {
     private int id;
     private String countryCode;
     private String nuts3;
@@ -116,5 +118,22 @@ public class LauDTO {
 
     public void setPhysicalAddress(String physicalAddress) {
         this.physicalAddress = physicalAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "LauDTO{" +
+                "id=" + id +
+                ", countryCode='" + countryCode + '\'' +
+                ", nuts3='" + nuts3 + '\'' +
+                ", lau1='" + lau1 + '\'' +
+                ", lau2='" + lau2 + '\'' +
+                ", change='" + change + '\'' +
+                ", name1='" + name1 + '\'' +
+                ", name2='" + name2 + '\'' +
+                ", pop=" + pop +
+                ", area=" + area +
+                ", physicalAddress='" + physicalAddress + '\'' +
+                '}';
     }
 }

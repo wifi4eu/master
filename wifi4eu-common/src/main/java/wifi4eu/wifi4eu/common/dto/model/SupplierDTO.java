@@ -1,8 +1,9 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class SupplierDTO {
+public class SupplierDTO implements Serializable {
     private int id;
     private String name;
     private String address;
@@ -198,5 +199,30 @@ public class SupplierDTO {
 
     public void setLegalFile2(String legalFile2) {
         this.legalFile2 = legalFile2;
+    }
+
+    @Override
+    public String toString() {
+        return "SupplierDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", vat='" + vat + '\'' +
+                ", bic='" + bic + '\'' +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", website='" + website + '\'' +
+                ", contactName='" + contactName + '\'' +
+                ", contactSurname='" + contactSurname + '\'' +
+                ", contactPhonePrefix='" + contactPhonePrefix + '\'' +
+                ", contactPhoneNumber='" + contactPhoneNumber + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", logo='" + logo + '\'' +
+                ", userId=" + userId +
+                ", suppliedRegions=" + suppliedRegions +
+                ", legalCheck1=" + legalCheck1 +
+                ", legalCheck2=" + legalCheck2 +
+                ", legalFile1='" + legalFile1 + '\'' +
+                ", legalFile2='" + legalFile2 + '\'' +
+                '}';
     }
 }
