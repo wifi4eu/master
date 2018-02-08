@@ -184,6 +184,7 @@ public class SupplierService {
         }
     }
 
+    @Cacheable(value = "portalGetSupplierByUserId")
     public SupplierDTO getSupplierByUserId(int userId) {
         return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
     }
