@@ -22,6 +22,7 @@ public class NutsService {
         return nutsMapper.toDTOList(Lists.newArrayList(nutsRepository.findAll()));
     }
 
+    @Cacheable(value = "portalGetNutsById")
     public NutsDTO getNutsById(int nutsId) {
         return nutsMapper.toDTO(nutsRepository.findOne(nutsId));
     }
