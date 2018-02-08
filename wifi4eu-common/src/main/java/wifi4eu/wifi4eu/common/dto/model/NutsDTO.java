@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-public class NutsDTO {
+import java.io.Serializable;
+
+public class NutsDTO implements Serializable {
     private int id;
     private String code;
     private String label;
@@ -76,5 +78,18 @@ public class NutsDTO {
 
     public void setSorting(int sorting) {
         this.sorting = sorting;
+    }
+
+    @Override
+    public String toString() {
+        return "NutsDTO{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", label='" + label + '\'' +
+                ", level=" + level +
+                ", countryCode='" + countryCode + '\'' +
+                ", order=" + order +
+                ", sorting=" + sorting +
+                '}';
     }
 }

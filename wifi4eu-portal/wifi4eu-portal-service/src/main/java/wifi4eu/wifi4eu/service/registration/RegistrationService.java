@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.service.registration;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -15,12 +16,13 @@ import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
+import java.util.ArrayList;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-@Service
+@Service("portalRegistrationService")
 public class RegistrationService {
     @Autowired
     RegistrationMapper registrationMapper;
@@ -73,6 +75,7 @@ public class RegistrationService {
         }
     }
 
+    @Cacheable(value = "portalGetRegistrationsByUserId")
     public List<RegistrationDTO> getRegistrationsByUserId(int userId) {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findByUserId(userId)));
     }
@@ -86,7 +89,9 @@ public class RegistrationService {
     }
 
     public boolean checkIfRegistrationIsKO(int userId) {
-        List<RegistrationDTO> registrations = getRegistrationsByUserId(userId);
+        List<RegistrationDTO> registrations = registrationMapper.toDTOList(
+                                                Lists.newArrayList(
+                                                        registrationRepository.findByUserId(userId)));
         for (RegistrationDTO registration : registrations) {
             if (registration.getStatus() == 1) {
                 return true;
