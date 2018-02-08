@@ -1,8 +1,9 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MunicipalityDTO {
+public class MunicipalityDTO implements Serializable {
     private int id;
     private String name;
     private String address;
@@ -88,5 +89,19 @@ public class MunicipalityDTO {
 
     public void setRegistrations(List<RegistrationDTO> registrations) {
         this.registrations = registrations;
+    }
+
+    @Override
+    public String toString() {
+        return "MunicipalityDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", addressNum='" + addressNum + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", country='" + country + '\'' +
+                ", lauId=" + lauId +
+                ", registrations=" + registrations +
+                '}';
     }
 }
