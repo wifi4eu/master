@@ -51,7 +51,7 @@ export class BeneficiaryRegistrationStep4Component {
     private edit(step: number) {
         this.onEdit.emit(step);
         this.legalChecks = [true, false, false, false, false, false, false, false, false];
-        this.sharedService.clean();
+        this.sharedService.clean(step);
     }
 
     private setLanguage() {

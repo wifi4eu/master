@@ -31,8 +31,8 @@ export class SharedService {
         this.emitLogout.next();
     }
 
-    clean() {
-        this.emitClean.next();
+    clean(step) {
+        this.emitClean.next(step);
     }
 
     growlTranslation(translatedString: string, keyToTranslate: string, type: string, params?: any) {

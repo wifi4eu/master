@@ -42,7 +42,7 @@ export class BeneficiaryRegistrationStep1Component {
     if (this.country != null) {
       this.countrySelected = true;
       this.countryChange.emit(this.country);
-      this.sharedService.clean();
+      this.sharedService.clean(1);
     }
   }
 
