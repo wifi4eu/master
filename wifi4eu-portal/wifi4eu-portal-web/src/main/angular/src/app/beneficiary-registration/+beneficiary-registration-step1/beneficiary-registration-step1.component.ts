@@ -85,8 +85,8 @@ export class BeneficiaryRegistrationStep1Component {
       }
       else{
         this.chooseMultipleMunicipality(true);
-        this.organizationCountryChange.emit(this.organization);
       }
+      this.organizationCountryChange.emit(this.organization);
     }
   }
 }
