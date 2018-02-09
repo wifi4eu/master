@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
 import {TranslateService} from "ng2-translate";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
+import { Resolve } from '@angular/router/src/interfaces';
+import { LocalStorageService } from 'angular-2-local-storage';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class SharedService {
@@ -102,4 +105,13 @@ export class SharedService {
             }
         );
     }
+}
+
+@Injectable()
+export class EcasLoginResolver implements Resolve<any> {
+  constructor(private localStorage: LocalStorageService) {}
+
+  resolve() {
+    return Observable.of(this.localStorage.get('user'));
+  }
 }
