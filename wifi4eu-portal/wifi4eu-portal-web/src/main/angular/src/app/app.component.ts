@@ -70,7 +70,6 @@ export class AppComponent implements OnInit {
         );
 
         this.initChildren();
-        this.updateHeader();
 
         this.sharedService.updateEmitter.subscribe(() => this.updateHeader());
         this.sharedService.logoutEmitter.subscribe(() => this.logout());
@@ -81,10 +80,12 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         let publicRedirection = this.localStorageService.get("public-redirection");
+        this.localStorageService.remove('user');
         this.userApi.ecasLogin().subscribe(
             (response: ResponseDTOBase) => {
+              if(response.success){
+                this.user = response.data;
                 this.localStorageService.set('user', JSON.stringify(response.data));
-                this.sharedService.update();
 
                 switch (this.user.type) {
                     case 1:
@@ -105,9 +106,19 @@ export class AppComponent implements OnInit {
                         //this.router.navigateByUrl('/home');
                         break;
                 }
-
+                this.sharedService.update();
+              }
+              else{
+                this.menuLinks = this.children[0];
+                this.uxService.growl({
+                  severity: 'warn',
+                  summary: 'WARNING',
+                  detail: 'Could not get ECAS User, ignore this when NG is working in offline mode'
+                });
+              }
 
             }, error => {
+                this.menuLinks = this.children[0];
                 this.uxService.growl({
                     severity: 'warn',
                     summary: 'WARNING',
@@ -173,13 +184,32 @@ export class AppComponent implements OnInit {
     }
 
     updateHeader() {
-        let storedUser = this.localStorageService.get('user');
+        /* let storedUser = this.localStorageService.get('user');
 
-        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null; */
 
         if (this.user != null) {
+          switch (this.user.type) {
+            case 1:
+                this.profileUrl = '/supplier-portal/profile';
+                this.menuLinks = this.children[1];
+                break;
+            case 2:
+            case 3:
+                this.profileUrl = '/beneficiary-portal/profile';
+                this.menuLinks = this.children[2];
+                break;
+            case 5:
+                this.profileUrl = '/dgconn-portal';
+                this.menuLinks = this.children[5];
+                break;
+            default:
+                this.profileUrl = '/home';
+                this.menuLinks = this.children[0];
+                break;
+          }
 
-            this.userApi.getUserById(this.user.id).subscribe(
+            /* this.userApi.getUserById(this.user.id).subscribe(
                 (user: UserDTOBase) => {
                     this.user = user;
                     this.localStorageService.set('user', JSON.stringify(user));
@@ -209,10 +239,11 @@ export class AppComponent implements OnInit {
                             this.menuLinks = this.children[0];
                             break;
                     }
-                }, error => {
-                    this.logout();
-                }
-            );
+                }, 
+                error => {
+                  
+                } 
+            );*/
         } else {
             //this.logout();
             this.menuLinks = this.children[0];
