@@ -56,11 +56,13 @@ public class ThreadMessageService {
                     if (!userService.isLocalHost()) {
                         for (MunicipalityDTO municipality : municipalities) {
                             UserDTO user = userService.getUserById(municipality.getRegistrations().get(0).getUserId());
-                            Locale locale = userService.initLocale();
-                            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                            String subject = bundle.getString("mail.thread.subject");
-                            String msgBody = bundle.getString("mail.thread.body");
-                            mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            if (user != null) {
+                                Locale locale = userService.initLocale();
+                                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                                String subject = bundle.getString("mail.thread.subject");
+                                String msgBody = bundle.getString("mail.thread.body");
+                                mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            }
                         }
                     }
                 }
@@ -77,11 +79,13 @@ public class ThreadMessageService {
                     if (!userService.isLocalHost()) {
                         for (SupplierDTO supplier : suppliers) {
                             UserDTO user = userService.getUserById(supplier.getUserId());
-                            Locale locale = userService.initLocale();
-                            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                            String subject = bundle.getString("mail.thread.subject");
-                            String msgBody = bundle.getString("mail.thread.body");
-                            mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            if (user != null) {
+                                Locale locale = userService.initLocale();
+                                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                                String subject = bundle.getString("mail.thread.subject");
+                                String msgBody = bundle.getString("mail.thread.body");
+                                mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            }
                         }
                     }
                 }

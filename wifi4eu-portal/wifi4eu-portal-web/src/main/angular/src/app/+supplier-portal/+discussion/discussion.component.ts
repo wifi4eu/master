@@ -21,7 +21,7 @@ import { trigger, style, animate, transition } from '@angular/animations';
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
-    providers: [UserThreadsApi, ThreadApi, ThreadmessagesApi, UserApi, RegistrationApi, SupplierApi],
+    providers: [UserThreadsApi, ThreadApi, ThreadmessagesApi, UserApi, RegistrationApi, SupplierApi, UserApi],
     animations: [
       trigger(
         'enterSpinner', [
@@ -61,7 +61,7 @@ export class DiscussionComponent {
     private isSendMessage: boolean = false;
     private isSendedMessage: boolean = false;
 
-    constructor(private userThreadsApi: UserThreadsApi, private supplierApi: SupplierApi, private route: ActivatedRoute, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
+    constructor(private userThreadsApi: UserThreadsApi, private supplierApi: SupplierApi, private route: ActivatedRoute, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
 
         this.route.params.subscribe(params => this.threadId = params['threadId']);
 
@@ -195,33 +195,21 @@ export class DiscussionComponent {
         )
     }
 
-    private deleteApplication() {
-        this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-            (registrations: RegistrationDTOBase[]) => {
-                let registrationCount = 0;
-                for (let registration of registrations) {
-                    registration.status = 1;
-                    this.registrationApi.createRegistration(registration).subscribe(
-                        (data: ResponseDTOBase) => {
-                            if (data.success) {
-                                registrationCount++;
-                                if (registrationCount >= registrations.length) {
-                                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
-                                    this.sharedService.logout();
-                                    this.router.navigateByUrl('/home');
-                                }
-                            }
-                        }, error => {
-                            this.sharedService.growlTranslation('An error occurred and your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
-                        }
-                    );
-                }
-            }
-        );
+    private editRegistration() {
+        this.router.navigateByUrl('/supplier-portal/profile');
     }
 
-    private editApplication() {
-        this.router.navigateByUrl('/beneficiary-portal/profile');
+    private withdrawRegistration() {
+        this.userApi.deleteUser(this.user.id).subscribe(
+            (data: ResponseDTOBase) => {
+                if (data.success) {
+                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
+                    this.sharedService.logout();
+                }
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
+            }
+        );
     }
 
     private closeModal() {

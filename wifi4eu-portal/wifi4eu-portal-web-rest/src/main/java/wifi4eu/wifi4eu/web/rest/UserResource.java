@@ -66,7 +66,9 @@ public class UserResource {
         _log.info("getUserById: " + userId);
 
         UserDTO resUser = userService.getUserById(userId);
-        resUser.setPassword(null);
+        if (resUser != null) {
+            resUser.setPassword(null);
+        }
         return resUser;
     }
 
