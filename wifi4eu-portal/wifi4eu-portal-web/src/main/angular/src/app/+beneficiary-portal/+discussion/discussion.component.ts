@@ -163,8 +163,6 @@ export class DiscussionComponent {
                     this.isSendedMessage = true;
                     this.isSendMessage = false;
                     this.thread.messages.push(response.data);
-                    // this.messageAuthors.push(this.user);
-                    // this.hasMessages = true;
                     this.sharedService.growlTranslation('The message was successfully sent!', 'discussionForum.thread.message.success', 'success');
                 } else {
                     this.isSendedMessage = false;
@@ -190,7 +188,7 @@ export class DiscussionComponent {
         this.threadApi.askMediationThread(this.thread.id).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success){
-                    this.thread = response.data;
+                    this.thread.mediation = true;
                     this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussion.growl', 'success');
                 } else {
                     this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');
