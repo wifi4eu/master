@@ -14,6 +14,9 @@ import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
 import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 import {Router} from "@angular/router";
 import { LocalStorageService } from "angular-2-local-storage/dist/local-storage.service";
+import { ActivatedRoute } from "@angular/router";
+import { Observable } from "rxjs/Observable";
+import { OnInit } from "@angular/core";
 
 @Component({
     selector: 'beneficiary-registration',
@@ -21,7 +24,7 @@ import { LocalStorageService } from "angular-2-local-storage/dist/local-storage.
     providers: [BeneficiaryApi, NutsApi, OrganizationApi]
 })
 
-export class BeneficiaryRegistrationComponent {
+export class BeneficiaryRegistrationComponent implements OnInit {
     private successRegistration: boolean = false;
     private failureRegistration: boolean = false;
     private completed: boolean[] = [false, false, false, false];
@@ -40,16 +43,24 @@ export class BeneficiaryRegistrationComponent {
     private organization: OrganizationDTOBase = null;
     private userEcas: UserDTOBase;
 
-    constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router,private sharedService: SharedService, private localStorage: LocalStorageService) {
+    constructor(private route: ActivatedRoute, private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router,private sharedService: SharedService, private localStorage: LocalStorageService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
             (nuts: NutsDTOBase[]) => {
                 this.countries = nuts;
             }, error => {
                 console.log(error);
             }
-        );
-        let storedUser = this.localStorage.get('user');
-        this.userEcas = storedUser ? JSON.parse(storedUser.toString()) : null;
+        );    
+    }
+
+    ngOnInit(){
+      Observable.of(this.route.snapshot.data['user']).subscribe(
+        user => {
+          this.userEcas = user ? JSON.parse(user.toString()) : null;
+          this.initialUser.email = this.userEcas.ecasEmail; 
+          console.log(this.initialUser);
+        }
+      )
     }
 
     private selectCountry(country: NutsDTOBase) {
@@ -61,15 +72,25 @@ export class BeneficiaryRegistrationComponent {
                     this.organizations = organizations;
                 }
             );
-            this.laus = [];
-            this.municipalities = [new MunicipalityDTOBase()];
-            this.mayors = [new MayorDTOBase()];
-            this.initialUser = new UserDTOBase();
+            this.resetStep2Data();
         }
     }
 
+    private selectOrganization(organization: OrganizationDTOBase) {
+      if (this.organization != organization) {
+        this.organization = organization;
+        this.resetStep2Data();
+      }
+    }
+
+    private resetStep2Data() {
+      this.laus = [];
+      this.municipalities = [new MunicipalityDTOBase()];
+      this.mayors = [new MayorDTOBase()];
+      this.initialUser = new UserDTOBase();
+    }
+
     private navigate(step: number) {       
-        this.initialUser.email = this.userEcas.ecasEmail; 
         switch (step) {
             case 1:
                 this.completed = [false, false, false, false];

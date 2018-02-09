@@ -9,6 +9,7 @@ import { ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { LocalStorageService } from "angular-2-local-storage/dist/local-storage.service";
 import { Observable } from "rxjs/Observable";
+import { SharedService } from "app/shared/shared.service";
 
 @Component({
     selector: 'beneficiary-registration-step2',
@@ -41,7 +42,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
 
     @ViewChild('municipalityForm') municipalityForm: NgForm;
 
-    constructor(private lauApi: LauApi, private localStorage: LocalStorageService) {
+    constructor(private lauApi: LauApi, private localStorage: LocalStorageService, private sharedService: SharedService) {
         this.mayorsChange = new EventEmitter<UserDTOBase[]>();
         this.municipalitiesChange = new EventEmitter<MunicipalityDTOBase[]>();
         this.lausChange = new EventEmitter<LauDTOBase[]>();
@@ -52,6 +53,14 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         let storedUser = this.localStorage.get('user');
         this.userEcas = storedUser ? JSON.parse(storedUser.toString()) : null;
         this.emailsMatch = true;
+        this.sharedService.cleanEmitter.subscribe(
+          () => {
+            for (let i = 0; i < this.municipalities.length; i++) {
+              this.emailConfirmations[i] = '';
+              this.css_class_email[i] = 'notValid';
+            }            
+          }
+        )
     }
 
     ngOnChanges(changes: SimpleChanges): void {

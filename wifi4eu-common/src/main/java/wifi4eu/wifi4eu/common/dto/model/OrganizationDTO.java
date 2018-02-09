@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-public class OrganizationDTO {
+import java.io.Serializable;
+
+public class OrganizationDTO implements Serializable {
     private int id;
     private String name;
     private String type;
@@ -46,5 +48,15 @@ public class OrganizationDTO {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    @Override
+    public String toString() {
+        return "OrganizationDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", country='" + country + '\'' +
+                '}';
     }
 }

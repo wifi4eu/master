@@ -74,6 +74,7 @@ export class BeneficiaryRegistrationStep3Component {
         this.onBack.emit();
         this.repeatEmail = '';
         this.reset();
+        this.sharedService.clean();
         /* this.checkEmailsMatch(); */
     }
 

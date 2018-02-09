@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-public class RegistrationDTO {
+import java.io.Serializable;
+
+public class RegistrationDTO implements Serializable {
     private int id;
     private int userId;
     private int municipalityId;
@@ -106,5 +108,20 @@ public class RegistrationDTO {
 
     public void setIpRegistration(String ipRegistration) {
         this.ipRegistration = ipRegistration;
+    }
+
+    @Override
+    public String toString() {
+        return "RegistrationDTO{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", municipalityId=" + municipalityId +
+                ", role='" + role + '\'' +
+                ", status=" + status +
+                ", legalFile1='" + legalFile1 + '\'' +
+                ", legalFile2='" + legalFile2 + '\'' +
+                ", legalFile3='" + legalFile3 + '\'' +
+                ", legalFile4='" + legalFile4 + '\'' +
+                '}';
     }
 }

@@ -15,11 +15,12 @@ import {SharedService} from "../../shared/shared.service";
 import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
 import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
+import {UserApi} from "../../shared/swagger/api/UserApi";
 
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
-    providers: [ThreadApi, UserThreadsApi, RegistrationApi, MunicipalityApi, ThreadmessagesApi],
+    providers: [ThreadApi, UserThreadsApi, RegistrationApi, MunicipalityApi, ThreadmessagesApi, UserApi],
     animations: [
       trigger(
         'enterSpinner', [
@@ -50,7 +51,7 @@ export class DiscussionComponent {
     private isSendedMessage = false;
     private message: string = '';
 
-    constructor(private localStorageService: LocalStorageService, private route: ActivatedRoute, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private threadmessagesApi: ThreadmessagesApi, private sharedService: SharedService, private router: Router) {
+    constructor(private localStorageService: LocalStorageService, private route: ActivatedRoute, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private threadmessagesApi: ThreadmessagesApi, private userApi: UserApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -113,31 +114,19 @@ export class DiscussionComponent {
         }
     }
 
-    private editApplication() {
+    private editRegistration() {
         this.router.navigateByUrl('/beneficiary-portal/profile');
     }
 
-    private deleteApplication() {
-        this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-            (registrations: RegistrationDTOBase[]) => {
-                let registrationCount = 0;
-                for (let registration of registrations) {
-                    registration.status = 1;
-                    this.registrationApi.createRegistration(registration).subscribe(
-                        (data: ResponseDTOBase) => {
-                            if (data.success) {
-                                registrationCount++;
-                                if (registrationCount >= registrations.length) {
-                                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
-                                    this.sharedService.logout();
-                                    this.router.navigateByUrl('/home');
-                                }
-                            }
-                        }, error => {
-                            this.sharedService.growlTranslation('An error occurred and your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
-                        }
-                    );
+    private withdrawRegistration() {
+        this.userApi.deleteUser(this.user.id).subscribe(
+            (data: ResponseDTOBase) => {
+                if (data.success) {
+                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
+                    this.sharedService.logout();
                 }
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
             }
         );
     }
@@ -163,8 +152,6 @@ export class DiscussionComponent {
                     this.isSendedMessage = true;
                     this.isSendMessage = false;
                     this.thread.messages.push(response.data);
-                    // this.messageAuthors.push(this.user);
-                    // this.hasMessages = true;
                     this.sharedService.growlTranslation('The message was successfully sent!', 'discussionForum.thread.message.success', 'success');
                 } else {
                     this.isSendedMessage = false;
@@ -190,7 +177,7 @@ export class DiscussionComponent {
         this.threadApi.askMediationThread(this.thread.id).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success){
-                    this.thread = response.data;
+                    this.thread.mediation = true;
                     this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussion.growl', 'success');
                 } else {
                     this.sharedService.growlTranslation('Your request for mediation could not be submited due to an error. Please, try again later.', 'discussionForum.discussion.growl.error', 'error');

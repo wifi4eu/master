@@ -229,6 +229,7 @@
         <enable.login.end>&lt;!--</enable.login.end>
         <war.output.directory/>
         <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
+        <ecas.config.strength>BASIC</ecas.config.strength>
         <ecas.server.address>${server.azure.test2.address}</ecas.server.address>
         <ecas.server.port>${server.azure.port}</ecas.server.port>
         <mail.serv.location>https://accenturetest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
