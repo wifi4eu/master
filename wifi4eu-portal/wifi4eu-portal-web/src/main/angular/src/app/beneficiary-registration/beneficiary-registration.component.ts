@@ -72,11 +72,22 @@ export class BeneficiaryRegistrationComponent implements OnInit {
                     this.organizations = organizations;
                 }
             );
-            this.laus = [];
-            this.municipalities = [new MunicipalityDTOBase()];
-            this.mayors = [new MayorDTOBase()];
-            this.initialUser = new UserDTOBase();
+            this.resetStep2Data();
         }
+    }
+
+    private selectOrganization(organization: OrganizationDTOBase) {
+      if (this.organization != organization) {
+        this.organization = organization;
+        this.resetStep2Data();
+      }
+    }
+
+    private resetStep2Data() {
+      this.laus = [];
+      this.municipalities = [new MunicipalityDTOBase()];
+      this.mayors = [new MayorDTOBase()];
+      this.initialUser = new UserDTOBase();
     }
 
     private navigate(step: number) {       

@@ -27,11 +27,13 @@ export class BeneficiaryRegistrationStep1Component {
 
   @Input('organization') private organization: OrganizationDTOBase;
   @Output() private organizationChange: EventEmitter<OrganizationDTOBase>;
+  @Output() private organizationCountryChange: EventEmitter<OrganizationDTOBase>;
   private organizationSelected: boolean = false;
 
   constructor(private sharedService: SharedService) {
     this.countryChange = new EventEmitter<NutsDTOBase>();
     this.organizationChange = new EventEmitter<OrganizationDTOBase>();
+    this.organizationCountryChange = new EventEmitter<OrganizationDTOBase>();
     this.multipleMunicipalitiesChange = new EventEmitter<boolean>();
     this.onNext = new EventEmitter<any>();
   }
@@ -42,7 +44,7 @@ export class BeneficiaryRegistrationStep1Component {
     if (this.country != null) {
       this.countrySelected = true;
       this.countryChange.emit(this.country);
-      this.sharedService.clean(1);
+      this.sharedService.clean();
     }
   }
 
@@ -83,6 +85,7 @@ export class BeneficiaryRegistrationStep1Component {
       }
       else{
         this.chooseMultipleMunicipality(true);
+        this.organizationCountryChange.emit(this.organization);
       }
     }
   }

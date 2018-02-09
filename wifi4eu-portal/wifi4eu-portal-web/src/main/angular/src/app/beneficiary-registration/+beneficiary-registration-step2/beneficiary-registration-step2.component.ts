@@ -54,16 +54,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         this.userEcas = storedUser ? JSON.parse(storedUser.toString()) : null;
         this.emailsMatch = true;
         this.sharedService.cleanEmitter.subscribe(
-          (step) => {
-            switch(step){
-              case 1:
-                for (let i = 0; i < this.municipalities.length; i++) {
-                  this.mayors[i] = new MayorDTOBase();
-                  this.municipalities[i] = new MunicipalityDTOBase();
-                  this.laus[i] = null;
-                }
-                break;
-            }
+          () => {
             for (let i = 0; i < this.municipalities.length; i++) {
               this.emailConfirmations[i] = '';
               this.css_class_email[i] = 'notValid';
