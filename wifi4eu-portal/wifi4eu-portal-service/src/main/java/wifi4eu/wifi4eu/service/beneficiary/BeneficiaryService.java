@@ -162,7 +162,7 @@ public class BeneficiaryService {
                 String subject = bundle.getString("mail.discussionMunicipality.subject");
                 String msgBody = bundle.getString("mail.discussionMunicipality.body");
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                 }
 
                 /* verificamos que existe el thread */

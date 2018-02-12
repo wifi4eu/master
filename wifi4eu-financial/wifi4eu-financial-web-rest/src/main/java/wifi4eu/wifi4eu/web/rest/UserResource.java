@@ -49,7 +49,7 @@ public class UserResource {
     @ResponseBody
     public ResponseDTO login(@RequestBody final UserDTO userDTO, final HttpServletResponse response) {
         ResponseDTO result;
-        _log.info("userDTO: " + userDTO.getEmail());
+        _log.info("userDTO: " + userDTO.getEcasEmail());
         try {
             UserDTO user = userService.login(userDTO);
 
