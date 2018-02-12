@@ -14,6 +14,12 @@ CREATE SCHEMA IF NOT EXISTS `wifi4eu`
   COLLATE utf8_bin;
 USE `wifi4eu`;
 
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`SEQUENCE` (
+  `SEQ_NAME`  VARCHAR(255) NOT NULL,
+  `SEQ_COUNT` INT,
+  PRIMARY KEY (`SEQ_NAME`)
+);
+
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`audit_data_t`
 -- -----------------------------------------------------
