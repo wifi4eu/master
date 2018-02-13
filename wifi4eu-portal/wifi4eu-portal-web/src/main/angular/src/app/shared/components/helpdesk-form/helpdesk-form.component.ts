@@ -1,10 +1,12 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, Inject} from "@angular/core";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {HelpdeskissuesApi} from "../../swagger/api/HelpdeskissuesApi";
 import {HelpdeskIssueDTO, HelpdeskIssueDTOBase} from "../../swagger/model/HelpdeskIssueDTO";
 import {NutsApi} from "../../swagger/api/NutsApi";
 import {NutsDTOBase} from "../../swagger/model/NutsDTO";
 import {ResponseDTO} from "../../swagger/model/ResponseDTO";
+import { ViewChild, ElementRef } from "@angular/core";
+import { ChangeDetectorRef } from "@angular/core";
 
 @Component({
     selector: 'helpdesk-form-component',
@@ -19,7 +21,9 @@ export class HelpdeskFormComponent {
     @Input('portal') portal: string;
     private emailPattern = new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\.)+[a-z0-9]{2,6}?$/i);
 
-    constructor(private uxService: UxService, private nutsApi: NutsApi, private helpdeskApi: HelpdeskissuesApi) {
+    constructor(private uxService: UxService, private nutsApi: NutsApi, private helpdeskApi: HelpdeskissuesApi,
+      @Inject(ElementRef) private elementRef: ElementRef,
+      @Inject(ChangeDetectorRef) private changeDetectorRef: ChangeDetectorRef) {
         this.helpdeskIssue = new HelpdeskIssueDTOBase();
         this.expanded = false;
         this.expanded = false;
@@ -36,6 +40,24 @@ export class HelpdeskFormComponent {
                 console.log('WARNING: Could not get nuts', error);
             }
         );
+    }
+
+    gotoHelpdeskForm () { 
+      this.expanded = true; 
+      this.changeDetectorRef.detectChanges();
+      const child = this.elementRef.nativeElement.querySelector('#helpdesk-form');
+      child.scrollIntoView({ behavior: 'smooth' });
+    } 
+
+    closeHelpdeskForm(){
+      const parent = this.elementRef.nativeElement.querySelector('.container');
+      const link = this.elementRef.nativeElement.querySelector('.label');
+      window.scrollBy({ 
+        top: -(parent.offsetHeight - link.offsetHeight),
+        behavior: 'smooth' 
+      });
+      let that = this;
+      setTimeout(function(){ that.expanded = false; }, 400);
     }
 
     sendIssue() {
