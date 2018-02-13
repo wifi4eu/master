@@ -16,24 +16,25 @@ import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {ThreadmessagesApi} from "../../shared/swagger/api/ThreadmessagesApi";
 import {ThreadMessageDTOBase} from "../../shared/swagger/model/ThreadMessageDTO";
 import {UserApi} from "../../shared/swagger/api/UserApi";
+import {isEmpty} from "rxjs/operator/isEmpty";
 
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
     providers: [ThreadApi, UserThreadsApi, RegistrationApi, MunicipalityApi, ThreadmessagesApi, UserApi],
     animations: [
-      trigger(
-        'enterSpinner', [
-          transition(':enter', [
-            style({opacity: 0}),
-            animate('200ms', style({opacity: 1}))
-          ]),
-          transition(':leave', [
-            style({opacity: 1}),
-            animate('200ms', style({opacity: 0}))
-          ])
-        ]
-      )
+        trigger(
+            'enterSpinner', [
+                transition(':enter', [
+                    style({opacity: 0}),
+                    animate('200ms', style({opacity: 1}))
+                ]),
+                transition(':leave', [
+                    style({opacity: 1}),
+                    animate('200ms', style({opacity: 0}))
+                ])
+            ]
+        )
     ]
 })
 
@@ -50,6 +51,7 @@ export class DiscussionComponent {
     private isSendMessage = false;
     private isSendedMessage = false;
     private message: string = '';
+    private hasMessage: boolean = false;
 
     constructor(private localStorageService: LocalStorageService, private route: ActivatedRoute, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private threadmessagesApi: ThreadmessagesApi, private userApi: UserApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
@@ -131,6 +133,11 @@ export class DiscussionComponent {
         );
     }
 
+    private checkHasMessage() {
+        this.hasMessage = this.message.length > 1;
+    }
+
+
     private newMessage() {
         this.isSendMessage = false;
         this.displayMessage = true;
@@ -176,7 +183,7 @@ export class DiscussionComponent {
         window.scrollTo(0, 0);
         this.threadApi.askMediationThread(this.thread.id).subscribe(
             (response: ResponseDTOBase) => {
-                if (response.success){
+                if (response.success) {
                     this.thread.mediation = true;
                     this.sharedService.growlTranslation('Your request for mediation has been submited successfully. WIFI4EU mediation service will soon intervene in this conversation.', 'discussionForum.discussion.growl', 'success');
                 } else {

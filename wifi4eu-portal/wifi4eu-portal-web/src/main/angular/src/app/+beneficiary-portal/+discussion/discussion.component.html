@@ -89,7 +89,8 @@
                     <!--<p>{{'discussionForum.noRecentConversations.text' | translate }}</p>-->
                 </div>
                 <div class="ui-g-4">
-                    <button [disabled]="thread.mediation" type="button" class="btn btn-primary changePassword discussionButton"
+                    <button [disabled]="thread.mediation" type="button"
+                            class="btn btn-primary changePassword discussionButton"
                             (click)="newMessage()">
                         {{'discussionForum.add.reply' | translate }}
                     </button>
@@ -159,15 +160,19 @@
                     <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate }}</p>
                     <p>{{ 'discussionForum.sendMessage.subject' | translate }}</p>
                     <textarea rows="10" cols="20" class="form-control widthMax"
-                              name="newMessage" [(ngModel)]="message" required [readonly]="isSendMessage"></textarea>
+                              name="newMessage" (keydown)="checkHasMessage()" [(ngModel)]="message"
+                              [readonly]="isSendMessage" required></textarea>
                     <div style="text-align: center !important">
-                        <button [disabled]="isSendMessage" type="button" class="btn btn-primary changePasswordModal cancel-button"
+                        <button [disabled]="isSendMessage" type="button"
+                                class="btn btn-primary changePasswordModal cancel-button"
                                 (click)="closeModal()">
                             {{ 'shared.cancel.button' | translate }}
                         </button>
-                        <button type="submit" [disabled]="isSendMessage" class="btn btn-primary changePasswordModal publish-button">
+                        <button type="submit" [disabled]="isSendMessage || !hasMessage"
+                                class="btn btn-primary changePasswordModal publish-button">
                           <span style="margin-right: 2px;">
-                            <i *ngIf="isSendMessage && !isSendedMessage" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                            <i *ngIf="isSendMessage && !isSendedMessage" [@enterSpinner]
+                               class="fa fa-spinner loading-icon"></i>
                           </span>
                             {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
                         </button>
