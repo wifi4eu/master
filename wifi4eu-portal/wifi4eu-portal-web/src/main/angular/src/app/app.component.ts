@@ -13,6 +13,7 @@ import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {environment} from '../environments/environment';
+import { Subject } from "rxjs/Subject";
 
 enableProdMode();
 
@@ -32,7 +33,8 @@ export class AppComponent implements OnInit {
     private children: UxLayoutLink[][];
     private menuTranslations: Map<String, String>;
     private stringsTranslated = new BehaviorSubject<number>(null);
-
+    private subjectLoginSuccess = new Subject();
+    loginSuccessEmiter = this.subjectLoginSuccess.asObservable();
 
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,is"
@@ -60,14 +62,18 @@ export class AppComponent implements OnInit {
         this.visibility = [false, false, false, false, false];
         this.children = [];
         this.menuTranslations = new Map();
-        this.stringsTranslated.subscribe(
+
+        this.loginSuccessEmiter.subscribe((userLogged)=> {
+          this.updateMenuTranslations();
+          this.stringsTranslated.subscribe(
             (stringsTranslated: number) => {
                 if (stringsTranslated == 7) {
                     this.initChildren();
-                    this.updateHeader();
+                    this.sharedService.update();
                 }
             }
-        );
+          );
+        })
 
         this.initChildren();
 
@@ -106,7 +112,7 @@ export class AppComponent implements OnInit {
                         //this.router.navigateByUrl('/home');
                         break;
                 }
-                this.sharedService.update();
+                this.subjectLoginSuccess.next(response.data);
               }
               else{
                 this.menuLinks = this.children[0];
@@ -184,71 +190,40 @@ export class AppComponent implements OnInit {
     }
 
     updateHeader() {
-        /* let storedUser = this.localStorageService.get('user');
-
-        this.user = storedUser ? JSON.parse(storedUser.toString()) : null; */
-
-        if (this.user != null) {
-          switch (this.user.type) {
-            case 1:
+      let storedUser = this.localStorageService.get('user');
+      this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+      if (this.user != null) {
+        this.userApi.getUserById(this.user.id).subscribe(
+          (user: UserDTOBase) => {
+            this.user = user;
+            this.localStorageService.set('user', JSON.stringify(user));
+            switch (this.user.type) {
+              case 1:
                 this.profileUrl = '/supplier-portal/profile';
                 this.menuLinks = this.children[1];
                 break;
-            case 2:
-            case 3:
+              case 2:
+              case 3:
                 this.profileUrl = '/beneficiary-portal/profile';
                 this.menuLinks = this.children[2];
                 break;
-            case 5:
+              case 5:
                 this.profileUrl = '/dgconn-portal';
                 this.menuLinks = this.children[5];
                 break;
-            default:
+              default:
                 this.profileUrl = '/home';
                 this.menuLinks = this.children[0];
-                break;
-          }
-
-            /* this.userApi.getUserById(this.user.id).subscribe(
-                (user: UserDTOBase) => {
-                    this.user = user;
-                    this.localStorageService.set('user', JSON.stringify(user));
-                    switch (this.user.type) {
-                        case 1:
-                            this.profileUrl = '/supplier-portal/profile';
-                            this.menuLinks = this.children[1];
-                            break;
-                        case 2:
-                        case 3:
-                            this.registrationApi.checkIfRegistrationIsKO(this.user.id).subscribe(
-                                (response: ResponseDTOBase) => {
-                                    if (response.data) {
-                                        this.logout();
-                                    }
-                                }
-                            );
-                            this.profileUrl = '/beneficiary-portal/profile';
-                            this.menuLinks = this.children[2];
-                            break;
-                        case 5:
-                            this.profileUrl = '/dgconn-portal';
-                            this.menuLinks = this.children[5];
-                            break;
-                        default:
-                            this.profileUrl = '/home';
-                            this.menuLinks = this.children[0];
-                            break;
-                    }
-                }, 
-                error => {
-                  
-                } 
-            );*/
-        } else {
-            //this.logout();
-            this.menuLinks = this.children[0];
-        }
-        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
+              break;
+            }
+          }, 
+          error => {
+          } 
+        );
+      } else {
+        this.menuLinks = this.children[0];
+      }
+      for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
 
     changeLanguage(language: UxLanguage) {
