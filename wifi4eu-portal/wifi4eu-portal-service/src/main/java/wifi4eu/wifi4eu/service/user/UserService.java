@@ -95,7 +95,7 @@ public class UserService {
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
-        UserDTO searchUser = getUserByEmail(userDTO.getEmail());
+        UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
         if (searchUser != null) {
             userDTO.setPassword(searchUser.getPassword());
             throw new Exception("User already registered.");
@@ -112,7 +112,7 @@ public class UserService {
             userDTO.setPassword(searchUser.getPassword());
             UserDTO resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
             permissionChecker.addTablePermissions(userDTO, Integer.toString(resUser.getId()),
-                    RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
+                    RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEcasEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
             return resUser;
         } else {
             throw new Exception("User doesn't exist.");
@@ -141,7 +141,7 @@ public class UserService {
             userDTO = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
 
             permissionChecker.addTablePermissions(userDTO, Integer.toString(userDTO.getId()),
-                    RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
+                    RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEcasEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
 
         }
 
@@ -183,7 +183,7 @@ public class UserService {
     }
 
     public UserDTO login(UserDTO userDTO) {
-        UserDTO resUser = userMapper.toDTO(userRepository.findByEmail(userDTO.getEmail()));
+        UserDTO resUser = userMapper.toDTO(userRepository.findByEmail(userDTO.getEcasEmail()));
         if (resUser != null && userDTO.getPassword().equals(resUser.getPassword())) {
             resUser.setAccessDate(new Date().getTime());
             resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(resUser)));
@@ -225,7 +225,7 @@ public class UserService {
     public void sendActivateAccountMail(UserDTO userDTO) {
         Date now = new Date();
         TempTokenDTO tempTokenDTO = new TempTokenDTO();
-        tempTokenDTO.setEmail(userDTO.getEmail());
+        tempTokenDTO.setEmail(userDTO.getEcasEmail());
         tempTokenDTO.setUserId(userDTO.getId());
         tempTokenDTO.setCreateDate(now.getTime());
         tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserConstants.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());

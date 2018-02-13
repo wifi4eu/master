@@ -113,7 +113,7 @@ public class RegistrationService {
                 String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/additional-info";
                 msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                 }
                 return true;
             }

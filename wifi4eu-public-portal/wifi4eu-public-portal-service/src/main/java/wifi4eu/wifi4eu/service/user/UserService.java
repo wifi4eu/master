@@ -42,7 +42,7 @@ public class UserService {
     MailService mailService;
 
     public UserDTO login(UserDTO userDTO) {
-        UserDTO resUser = userMapper.toDTO(userRepository.findByEmail(userDTO.getEmail()));
+        UserDTO resUser = userMapper.toDTO(userRepository.findByEmail(userDTO.getEcasEmail()));
         if (resUser != null && userDTO.getPassword().equals(resUser.getPassword())) {
             resUser.setAccessDate(new Date().getTime());
             resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(resUser)));
@@ -56,7 +56,7 @@ public class UserService {
     public void sendActivateAccountMail(UserDTO userDTO) {
         Date now = new Date();
         TempTokenDTO tempTokenDTO = new TempTokenDTO();
-        tempTokenDTO.setEmail(userDTO.getEmail());
+        tempTokenDTO.setEmail(userDTO.getEcasEmail());
         tempTokenDTO.setUserId(userDTO.getId());
         tempTokenDTO.setCreateDate(now.getTime());
         tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
@@ -67,7 +67,7 @@ public class UserService {
         //TODO: Translate subject and msgBody
         String subject = "Welcome to WiFi4EU";
         String msgBody = "You have successfully registered to WiFi4EU, access to the next link and activate your account: " + UserService.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
-        mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+        mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
     }
 
     public boolean resendEmail(String email) {

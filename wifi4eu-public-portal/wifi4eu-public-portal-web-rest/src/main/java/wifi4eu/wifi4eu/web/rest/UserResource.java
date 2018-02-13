@@ -31,7 +31,7 @@ public class UserResource {
     @ResponseBody
     public ResponseDTO login(@RequestBody final UserDTO userDTO) {
         try {
-            _log.info("login: " + userDTO.getEmail());
+            _log.info("login: " + userDTO.getEcasEmail());
             UserDTO resUser = userService.login(userDTO);
             resUser.setPassword(null);
             if (registrationService.checkIfRegistrationIsKO(resUser.getId())) {

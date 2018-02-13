@@ -65,7 +65,7 @@ public class ApplicationService {
         }
         if (user != null && municipality != null) {
             msgBody = MessageFormat.format(msgBody, municipality.getName());
-            mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }
