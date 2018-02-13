@@ -90,15 +90,10 @@
             </div>
             <!-- Next button -->
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button *ngIf="organizations.length < 1" type="submit" class="btn btn-primary publish-button"
-                        [disabled]="!registrationForm.valid || !countrySelected || (!singleMunicipalityCheckbox && !multipleMunicipalityCheckbox)">
-                    {{ 'shared.next.button' | translate }}
-                </button>
-                <button *ngIf="organizations.length > 0" type="submit" class="btn btn-primary publish-button"
-                        [disabled]="!registrationForm.valid || !countrySelected ||
-                        (!singleMunicipalityCheckbox && !multipleMunicipalityCheckbox) || !organizationSelected">
-                    {{ 'shared.next.button' | translate }}
-                </button>
+              <button type="submit" class="btn btn-primary publish-button" 
+                [disabled]="!registrationForm.valid || !countrySelected || !organizationSelected">
+                {{ 'shared.next.button' | translate }}
+              </button>
             </div>
             <div class="ui-lg-3"></div>
         </div>
