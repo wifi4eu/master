@@ -125,7 +125,7 @@
     <server.test.port>8080</server.test.port>
     <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
     <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
-    <server.azure.test2.address>accenturetest.azurewebsites.net</server.azure.test2.address>
+    <server.azure.test2.address>wifi4eutest.eu</server.azure.test2.address>
     <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
     <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilterMocked</user.filter.path>
     <server.ecas.stress>https://webgate.stress.ec.europa.eu</server.ecas.stress>
@@ -232,7 +232,7 @@
         <ecas.config.strength>BASIC</ecas.config.strength>
         <ecas.server.address>${server.azure.test2.address}</ecas.server.address>
         <ecas.server.port>${server.azure.port}</ecas.server.port>
-        <mail.serv.location>https://accenturetest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+        <mail.serv.location>https://http://wifi4eutest.eu/wifi4eu/#/</mail.serv.location>
         <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
         <mail.smtp.port>587</mail.smtp.port>
         <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
