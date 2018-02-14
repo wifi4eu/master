@@ -247,4 +247,17 @@ export class SupplierProfileComponent {
             }
         );
     }
+
+    private withdrawRegistration() {
+        this.userApi.deleteUser(this.user.id).subscribe(
+            (data: ResponseDTOBase) => {
+                if (data.success) {
+                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
+                    this.sharedService.logout();
+                }
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
+            }
+        );
+    }
 }
