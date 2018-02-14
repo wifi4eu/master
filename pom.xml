@@ -146,6 +146,7 @@
 
     <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
     <!--<war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>-->
+    <war.output.directory>/media/dsebastm/04A83529A8351A9E/xampp/tomcat/webapps</war.output.directory>
   </properties>
 
 
