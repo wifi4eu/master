@@ -36,7 +36,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private readonly MAX_LENGTH = 2;
     private css_class_municipalities: string[] = ['notValid'];
     private css_class_email: string[] = ['notValid'];
-    private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$';
+    private emailPattern = new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,10}?\.)+[a-z0-9]{2,6}?$/i);
 
     private userEcas: UserDTOBase;
 
@@ -50,8 +50,6 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
 
-        let storedUser = this.localStorage.get('user');
-        this.userEcas = storedUser ? JSON.parse(storedUser.toString()) : null;
         this.emailsMatch = true;
         this.sharedService.cleanEmitter.subscribe(
           () => {

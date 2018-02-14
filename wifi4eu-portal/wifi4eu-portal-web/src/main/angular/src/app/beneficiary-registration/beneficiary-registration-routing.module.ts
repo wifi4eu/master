@@ -7,10 +7,7 @@ import { EcasLoginResolver } from "app/shared/shared.service";
     imports: [RouterModule.forChild([
         {
             path: '',
-            component: BeneficiaryRegistrationComponent,
-            resolve: {
-              user: EcasLoginResolver
-            }
+            component: BeneficiaryRegistrationComponent
         }
     ])], exports: [RouterModule]
 })

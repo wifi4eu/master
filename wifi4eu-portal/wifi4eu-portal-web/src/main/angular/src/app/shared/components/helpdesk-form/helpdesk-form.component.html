@@ -1,8 +1,7 @@
 <div class="clearfix"></div>
 <div class="container">
     <p class="label" style="text-align: center;">
-        {{'helpdesk.helpdeskform.clickhere.label1' | translate}} <a (click)="expanded = true">{{'helpdesk.helpdeskform.clickhere.label2'
-        |
+        {{'helpdesk.helpdeskform.clickhere.label1' | translate}} <a (click)="gotoHelpdeskForm();">{{'helpdesk.helpdeskform.clickhere.label2' |
         translate}}</a>
 
     </p>
@@ -66,7 +65,7 @@
             <div class="form-group ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-                    <button (click)="expanded = false" class="right" class="btn btn-primary changePassword">
+                    <button (click)="closeHelpdeskForm()" type="button" class="right" class="btn btn-primary changePassword">
                         {{ 'shared.close.label' | translate }}
                     </button>
                 </div>

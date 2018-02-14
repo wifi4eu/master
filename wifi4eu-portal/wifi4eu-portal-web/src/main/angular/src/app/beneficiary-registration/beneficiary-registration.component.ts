@@ -54,13 +54,6 @@ export class BeneficiaryRegistrationComponent implements OnInit {
     }
 
     ngOnInit(){
-      Observable.of(this.route.snapshot.data['user']).subscribe(
-        user => {
-          this.userEcas = user ? JSON.parse(user.toString()) : null;
-          this.initialUser.email = this.userEcas.ecasEmail; 
-          console.log(this.initialUser);
-        }
-      )
     }
 
     private selectCountry(country: NutsDTOBase) {
