@@ -50,8 +50,6 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
 
-        let storedUser = this.localStorage.get('user');
-        this.userEcas = storedUser ? JSON.parse(storedUser.toString()) : null;
         this.emailsMatch = true;
         this.sharedService.cleanEmitter.subscribe(
           () => {
