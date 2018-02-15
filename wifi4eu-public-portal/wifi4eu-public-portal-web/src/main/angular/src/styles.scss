@@ -110,7 +110,7 @@ body {
 
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (min-width: 1024px) {
   .second {
     padding-bottom: 16% !important;
   }
@@ -256,6 +256,13 @@ body {
   font-weight: bold;
   line-height: 1.15;
   color: $darkish-blue;
+}
+
+@media only screen and (max-width: 500px) {
+  .apply {
+    font-size: 2.5em;
+  }
+
 }
 
 .apply-text {
