@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.MunicipalityCacheDTO;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -39,5 +40,13 @@ public class MunicipalityResource {
             _log.info("getMunicipalitiesGroupedByLauId");
         }
         return new ResponseDTO(true, municipalityService.getMunicipalitiesCountGroupedByLauId(), null);
+    }
+
+    @ApiOperation(value = "Get municipalities of region")
+    @RequestMapping(value = "/region/{code}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public MunicipalityCacheDTO getMunicipalitiesRegistered(@PathVariable("code") final String code) {
+        _log.info("getMunicipalitiesRegisteredByRegion " + code);
+        return municipalityService.getMunicipalitiesRegisteredByRegion(code);
     }
 }

@@ -105,7 +105,7 @@
             <div class="col-xl-8">
                 <p class="mayor-title counterText" [innerHTML]="'home.counterSection2' | translate:{suppliersCounter:suppliersCounter}" [innerHTML]="'home.counterSection3' | translate:{municipalitiesCounter:municipalitiesCounter}">
                 </p>
-                <a class="btn btn-primary video-button center-block marginSelect" href="" *ngIf="suppliersCounter < 1">
+                <a class="btn btn-primary video-button center-block marginSelect" routerLink="/list-municipalities" *ngIf="suppliersCounter < 1">
                     {{ 'home.counterSectionButton' | translate }}</a>
             </div>
             <div class="col-xl-4"></div>
