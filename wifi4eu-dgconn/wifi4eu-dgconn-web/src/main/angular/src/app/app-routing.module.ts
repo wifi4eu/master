@@ -1,9 +1,7 @@
 import {NgModule} from "@angular/core";
 import {RouterModule} from "@angular/router";
-import {NotFoundComponent} from "./not-found/not-found.component"
 import {AppGuard} from "./app.guard";
-// import {AppGuard} from "./app.guard";
-// import {EcasComponent} from "./+ecas/ecas.component";
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
