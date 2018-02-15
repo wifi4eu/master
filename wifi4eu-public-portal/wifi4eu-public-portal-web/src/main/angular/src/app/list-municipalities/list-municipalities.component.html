@@ -14,16 +14,16 @@
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-12">
-            <h4 class="title">{{ 'listMuniciapalities.title' | translate }}</h4>
-            <p class="subtitle-discover">{{ 'listMuniciapalities.subtitle' | translate }}</p>
-            <p class="updated-on" *ngIf="dateCached">{{ 'listMuniciapalities.subtitle.updateDate' | translate}} {{dateCached}}</p>
+            <h4 class="title">{{ 'listMunicipalities.title' | translate }}</h4>
+            <p class="subtitle-discover">{{ 'listMunicipalities.subtitle' | translate }}</p>
+            <p class="updated-on" *ngIf="dateCached">{{ 'listMunicipalities.subtitle.updateDate' | translate}} {{dateCached}}</p>
           </div>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12 col-md-5">
-        <label class="label-select"  for="memberState">{{ 'listMuniciapalities.memberState.label' | translate }}</label>
+        <label class="label-select"  for="memberState">{{ 'listMunicipalities.memberState.label' | translate }}</label>
         <select name="memberState" id="memberState" [(ngModel)]="country" (ngModelChange)="selectCountry($event)">
           <option disabled>Select</option>
           <option *ngFor="let country of countries" [ngValue]="country">
@@ -32,7 +32,7 @@
         </select>
       </div>
       <div class="col-sm-12 col-md-5">
-        <label class="label-select" for="region">{{ 'listMuniciapalities.region.label' | translate }}</label>
+        <label class="label-select" for="region">{{ 'listMunicipalities.region.label' | translate }}</label>
         <select name="region" id="region" [(ngModel)]="region" (ngModelChange)="selectRegion($event)">
           <option disabled>Select</option>
           <option *ngFor="let region of regions" [ngValue]="region">
@@ -42,10 +42,10 @@
       </div>
       <div class="col-sm-12 col-md-2">
         <label class="label-hidden">*</label>
-        <button class="btn btn-primary btn-apply" (click)="searchMunicipalities()">{{ 'listMuniciapalities.apply.button' | translate }}</button>
+        <button class="btn btn-primary btn-apply" (click)="searchMunicipalities()">{{ 'listMunicipalities.apply.button' | translate }}</button>
       </div>
     </div>
-    <div class="row" [@enterList] *ngIf="country && region && municipalities.length > 0" style="">
+    <div class="row" *ngIf="country && region && municipalities.length > 0">
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-12 municipalities-region">
