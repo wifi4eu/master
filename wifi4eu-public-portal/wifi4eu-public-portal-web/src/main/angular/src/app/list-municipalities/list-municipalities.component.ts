@@ -51,7 +51,7 @@ export class ListMunicipalitiesComponent implements OnInit {
         (municipalityCacheDTO: MunicipalityCacheDTOBase) => {
           this.municipalities = municipalityCacheDTO.municipalityDTOList;
           let date = new Date(municipalityCacheDTO.dateCached);
-          let datePipe = new DatePipe('default').transform(date, 'yyyy-dd-M');
+          let datePipe = new DatePipe('default').transform(date, 'dd/MM/yyyy');
           this.dateCached = datePipe;
         }
       );
