@@ -130,12 +130,12 @@
     <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilterMocked</user.filter.path>
     <server.ecas.stress>https://webgate.stress.ec.europa.eu</server.ecas.stress>
     <server.ecas.acc>https://ecas.acceptance.ec.europa.eu</server.ecas.acc>
-    <enable.security.start></enable.security.start>
-    <enable.security.end></enable.security.end>
-    <enable.login.start></enable.login.start>
-    <enable.login.end></enable.login.end>
     <server.azure.port>80</server.azure.port>
     <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
+    <enable.security.start/>
+    <enable.security.end/>
+    <enable.login.start/>
+    <enable.login.end/>
 
     <!-- SMTP -->
     <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
@@ -145,8 +145,9 @@
     <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
 
     <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
-    <!--<war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>-->
-    <war.output.directory>/media/dsebastm/04A83529A8351A9E/xampp/tomcat/webapps</war.output.directory>
+    <!-- <war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>-->
+    <!-- <war.output.directory>/media/dsebastm/04A83529A8351A9E/xampp/tomcat/webapps</war.output.directory> -->
+    <war.output.directory/>
   </properties>
 
 
