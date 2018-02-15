@@ -24,4 +24,12 @@ public class NutsService {
     public List<NutsDTO> getNutsByLevel(Integer level) {
         return nutsMapper.toDTOList(Lists.newArrayList(nutsRepository.findByLevel(level)));
     }
+
+    public List<NutsDTO> getNutsByCountryCode(String countryCode) {
+        return nutsMapper.toDTOList(Lists.newArrayList(nutsRepository.findByCountryCode(countryCode)));
+    }
+
+    public List<NutsDTO> getNutsByCountryCodeAndLevelOrderByLabelAsc(String countryCode, Integer level) {
+        return nutsMapper.toDTOList(Lists.newArrayList(nutsRepository.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode, level)));
+    }
 }

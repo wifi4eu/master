@@ -39,4 +39,20 @@ public class NutsResource {
         }
         return nutsService.getNutsByLevel(level);
     }
+
+    @ApiOperation(value = "Get all nuts from a specific countryCode")
+    @RequestMapping(value = "/countryCode/{countryCode}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<NutsDTO> getNutsByCountryCode(@PathVariable("countryCode") final String countryCode) {
+        _log.info("getNutsByCountryCode " + countryCode);
+        return nutsService.getNutsByCountryCode(countryCode);
+    }
+
+    @ApiOperation(value = "Get all nuts from a specific countryCode and level order by Label Asc")
+    @RequestMapping(value = "/countryCode/{countryCode}/level/{level}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<NutsDTO> getNutsByCountryCodeAndLevelOrderByLabelAsc(@PathVariable("countryCode") final String countryCode, @PathVariable("level") final Integer level) {
+        _log.info("getNutsByCountryCodeAndLevelOrderByLabelAsc " + countryCode + level);
+        return nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode, level);
+    }
 }
