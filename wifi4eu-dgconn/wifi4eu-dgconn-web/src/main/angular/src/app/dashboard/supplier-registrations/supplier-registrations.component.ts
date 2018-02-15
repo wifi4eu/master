@@ -1,74 +1,47 @@
 import { Component } from "@angular/core";
-import { UserApi } from "../../shared/swagger/api/UserApi";
 import { SupplierApi } from "../../shared/swagger/api/SupplierApi";
-import { OnInit } from "@angular/core";
-import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
-// import 'rxjs/add/operator/map';
+import { SupplierDTOBase } from "../../shared/swagger/model/SupplierDTO";
 
 @Component({
-  templateUrl: 'supplier-registrations.component.html', providers: [UserApi, SupplierApi]
+    templateUrl: 'supplier-registrations.component.html', providers: [SupplierApi]
 })
 
-export class DgConnSupplierRegistrationsComponent implements OnInit {
+export class DgConnSupplierRegistrationsComponent {
+    private suppliers: SupplierDTOBase[] = [];
+    private numRegistrations: number[] = [];
+    private displayedSuppliers: SupplierDTOBase[] = [];
+    private searchSuppliersInput: string = '';
 
-  private users: any[];
-
-  private customUserSupplierArray: any[] = [];
-  private userSupplierArray: any[] = [];
-
-  inputSearch = "";
-
-  constructor(
-    private userApi: UserApi,
-    private supplierApi: SupplierApi
-  ) {
-    this.userApi.getUsersByType(1).subscribe(
-      users => {
-        users.map((user: UserDTOBase) => {
-          let customUserSupply = {
-            'user': user,
-            'supplier': {}
-          }
-          this.supplierApi.getSupplierByUserId(user.id).subscribe(
-            supplier => {
-              customUserSupply.supplier = supplier;
-              this.customUserSupplierArray.push(customUserSupply);
-              this.userSupplierArray.push(customUserSupply);
-            },
-            error => {
-              console.log(error);
+    constructor(private supplierApi: SupplierApi) {
+        this.supplierApi.allSuppliers().subscribe(
+            (suppliers: SupplierDTOBase[]) => {
+                for (let i = 0; i < suppliers.length; i++) {
+                    this.supplierApi.findSimilarSuppliers(suppliers[i].id).subscribe(
+                        (similarSuppliers: SupplierDTOBase[]) => {
+                            if (similarSuppliers != null) {
+                                this.numRegistrations.push(1 + similarSuppliers.length);
+                                this.suppliers.push(suppliers[i]);
+                                this.displayedSuppliers.push(suppliers[i]);
+                            }
+                        }
+                    );
+                }
             }
-          );
-        });
-
-      },
-      error => {
-        console.log(error);
-      }
-    );
-  }
-
-  ngOnInit() {
-
-  }
-
-  filterData(stringSearch: string) {
-    this.customUserSupplierArray = [...this.userSupplierArray];
-    if(typeof stringSearch != "undefined" && stringSearch != ""){
-      stringSearch = stringSearch.toLocaleLowerCase();
-      let suppliers =  this.customUserSupplierArray.map(
-        (supplierDTO) => {
-          supplierDTO.supplier.name = supplierDTO.supplier.name || "";
-          supplierDTO.supplier.address = supplierDTO.supplier.address || "";
-          return supplierDTO;
-        }
-      ).filter(supplierF => { 
-        return (supplierF.supplier.name.toLocaleLowerCase().match(stringSearch) || 
-        supplierF.supplier.address.toLocaleLowerCase().match(stringSearch))
-      });
-      this.customUserSupplierArray = [...suppliers]
+        );
     }
 
-  }
-
+    private searchSuppliers() {
+        if (this.searchSuppliersInput.length > 0) {
+            this.displayedSuppliers = [];
+            for (let supplier of this.suppliers) {
+                if (supplier.name.toLowerCase().indexOf(this.searchSuppliersInput.toLowerCase()) != -1 ||
+                    supplier.website.toLowerCase().indexOf(this.searchSuppliersInput.toLowerCase()) != -1 ||
+                    supplier.vat.toLowerCase().indexOf(this.searchSuppliersInput.toLowerCase()) != -1) {
+                    this.displayedSuppliers.push(supplier);
+                }
+            }
+        } else {
+            this.displayedSuppliers = this.suppliers;
+        }
+    }
 }

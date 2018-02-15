@@ -354,6 +354,8 @@
   "dgConn.helpdesk.assigned": "Asigned",
   "dgConn.voucher.confirmAssignment": "Voucher assignment confirmation",
   "dgConn.voucher.confirmationAssignmentText": "You are about to assing <b> X vouchers in X </b>. Are you sure you want to continue? This action can´t be undone.",
+  "dgConn.number.registrations": "Number of registrations",
+  "dgConn.status.invalidated": "Invalidated",
   "int.comment.32": "-- END Commission Portal --",
   "int.comment.99": "-- Start OLD LABELS TO BE REMOVED --",
   "benefRegistration.registration.step2.instructions": "Kako biste nastavili, ispunite obrazac u nastavku.",

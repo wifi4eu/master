@@ -201,4 +201,28 @@ public class SupplierService {
     public List<Object> getSuppliedRegionsCountGroupedByRegionId() {
         return Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsCountGroupedByRegionId());
     }
+
+    public List<SupplierDTO> findSimilarSuppliers(int supplierId) {
+        List<SupplierDTO> similarSuppliers = new ArrayList<>();
+        SupplierDTO originalSupplier = getSupplierById(supplierId);
+        if (originalSupplier != null) {
+            List<SupplierDTO> suppliersVat = getSuppliersByVat(originalSupplier.getAccountNumber());
+            if (!suppliersVat.isEmpty()) {
+                for (SupplierDTO supp : suppliersVat) {
+                    if (supp.getId() != originalSupplier.getId()) {
+                        similarSuppliers.add(supp);
+                    }
+                }
+            }
+            List<SupplierDTO> suppliersIban = getSuppliersByAccountNumber(originalSupplier.getAccountNumber());
+            if (!suppliersIban.isEmpty()) {
+                for (SupplierDTO supp : suppliersIban) {
+                    if (supp.getId() != originalSupplier.getId()) {
+                        similarSuppliers.add(supp);
+                    }
+                }
+            }
+        }
+        return similarSuppliers;
+    }
 }

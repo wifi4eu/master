@@ -103,4 +103,12 @@ public class SupplierResource {
         _log.info("getSupplierByUserId: " + userId);
         return supplierService.getSupplierByUserId(userId);
     }
+
+    @ApiOperation(value = "Get suppliers that have the same VAT and/or Account Number as the specific supplier")
+    @RequestMapping(value = "/similarSuppliers/{supplierId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<SupplierDTO> findSimilarSuppliers(@PathVariable("supplierId") final Integer supplierId) {
+        _log.info("allSuppliers");
+        return supplierService.findSimilarSuppliers(supplierId);
+    }
 }

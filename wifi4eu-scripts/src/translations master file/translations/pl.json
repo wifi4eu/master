@@ -330,6 +330,8 @@
   "dgConn.voucher.maximum": "Maximum",
   "dgConn.voucher.minimum": "Minimum",
   "dgConn.helpdesk.assigned": "Asigned",
+  "dgConn.number.registrations": "Number of registrations",
+  "dgConn.status.invalidated": "Invalidated",
   "int.comment.32": "-- END Commission Portal --",
   "int.comment.99": "-- Start OLD LABELS TO BE REMOVED --",
   "benefRegistration.registration.step2.instructions": "Aby kontynuować, wypełnij pola poniżej.",
