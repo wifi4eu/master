@@ -161,7 +161,7 @@
   "shared.logout.label": "Déconnexion",
   "helpdeskform.faq.title": "WiFi4EU – Service d’assistance",
   "helpdeskform.faq.text1": "Existe-t-il déjà une réponse à votre question? ",
-  "helpdeskform.faq.text2": "Veuillez consulter notre liste de questions fréquentes: vous y trouverez peut-être la réponse à votre question. ",
+  "helpdeskform.faq.text2": "Veuillez consulter notre liste de <a href='https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu'>questions fréquentes</a>: vous y trouverez peut-être la réponse à votre question. ",
   "helpdeskform.faq.text3": "Sinon, veuillez compléter le formulaire suivant.",
   "helpdesk.helpdeskform.selectproblemtype": "Sélectionnez le type de problème dans la liste",
   "helpdesk.helpdeskform.problemtype.option1": "Vous avez un problème technique (la page ne fonctionne pas correctement)",

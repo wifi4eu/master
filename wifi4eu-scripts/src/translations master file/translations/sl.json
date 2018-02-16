@@ -166,7 +166,7 @@
   "shared.logout.label": "Odjava",
   "helpdeskform.faq.title": "Služba za pomoč WiFi4EU",
   "helpdeskform.faq.text1": "Ste že našli odgovor na svoje vprašanje?",
-  "helpdeskform.faq.text2": "Mogoče boste odgovor našli v pogostih vprašanjih.",
+  "helpdeskform.faq.text2": "Mogoče boste odgovor našli v <a href='https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu'>pogostih vprašanjih</a>.",
   "helpdeskform.faq.text3": "Če odgovora na svoje vprašanje niste našli, izpolnite naslednji obrazec.",
   "helpdesk.helpdeskform.selectproblemtype": "Na seznamu označite vrsto težave",
   "helpdesk.helpdeskform.problemtype.option1": "Imam tehnične težave (stran ne deluje pravilno)",

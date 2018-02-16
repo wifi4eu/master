@@ -164,7 +164,7 @@
   "shared.logout.label": "Terminar sessão",
   "helpdeskform.faq.title": "Serviço de assistência WiFi4EU",
   "helpdeskform.faq.text1": "Será que a sua pergunta já foi respondida?",
-  "helpdeskform.faq.text2": "Consulte primeiro as perguntas frequentes. Talvez encontre aí a resposta à sua pergunta. ",
+  "helpdeskform.faq.text2": "Consulte primeiro as <a href='https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu'>perguntas frequentes</a>. Talvez encontre aí a resposta à sua pergunta. ",
   "helpdeskform.faq.text3": "Se tal não for o caso, preencha o seguinte formulário.",
   "helpdesk.helpdeskform.selectproblemtype": "Selecione o tipo de problema na lista",
   "helpdesk.helpdeskform.problemtype.option1": "Problema técnico (o sítio não está a funcionar corretamente)",
