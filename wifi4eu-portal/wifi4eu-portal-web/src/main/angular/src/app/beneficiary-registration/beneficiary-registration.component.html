@@ -26,7 +26,7 @@
         <uxWizardStepCustomContent>
             <beneficiary-registration-step3 [(initialUser)]="initialUser" [mayors]="mayors"
                                             [multipleMunicipalities]="multipleMunicipalities"
-                                            [municipalities]="municipalities"
+                                            [municipalities]="municipalities" [(associationName)]="associationName"
                                             (onNext)="navigate(4)" (onBack)="navigate(2)"></beneficiary-registration-step3>
         </uxWizardStepCustomContent>
     </ux-wizard-step>

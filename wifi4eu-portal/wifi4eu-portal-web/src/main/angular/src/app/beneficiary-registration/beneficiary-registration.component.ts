@@ -42,6 +42,7 @@ export class BeneficiaryRegistrationComponent implements OnInit {
     private alreadyRegistered: boolean = false;
     private organization: OrganizationDTOBase = null;
     private userEcas: UserDTOBase;
+    private associationName: string = null;
 
     constructor(private route: ActivatedRoute, private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router,private sharedService: SharedService, private localStorage: LocalStorageService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
@@ -107,6 +108,8 @@ export class BeneficiaryRegistrationComponent implements OnInit {
     }
 
     private submitRegistration() {
+        this.finalBeneficiary.organisationId = this.organization.id;
+    this.finalBeneficiary.associationName = this.associationName;
         this.finalBeneficiary.municipalities = [];
         for (let municipality of this.municipalities) {
             this.finalBeneficiary.municipalities.push(municipality);

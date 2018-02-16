@@ -13,11 +13,13 @@ public class RegistrationDTO implements Serializable {
     private String legalFile3;
     private String legalFile4;
     private String ipRegistration;
+    private String associationName;
+    private int organisationId;
 
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration) {
+    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId) {
         this.id = id;
         this.userId = userId;
         this.municipalityId = municipalityId;
@@ -28,6 +30,8 @@ public class RegistrationDTO implements Serializable {
         this.legalFile3 = legalFile3;
         this.legalFile4 = legalFile4;
         this.ipRegistration = ipRegistration;
+        this.associationName = associationName;
+        this.organisationId = organisationId;
     }
 
     public int getId() {
@@ -123,5 +127,21 @@ public class RegistrationDTO implements Serializable {
                 ", legalFile3='" + legalFile3 + '\'' +
                 ", legalFile4='" + legalFile4 + '\'' +
                 '}';
+    }
+
+    public String getAssociationName() {
+        return associationName;
+    }
+
+    public void setAssociationName(String associationName) {
+        this.associationName = associationName;
+    }
+
+    public int getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(int organisationId) {
+        this.organisationId = organisationId;
     }
 }

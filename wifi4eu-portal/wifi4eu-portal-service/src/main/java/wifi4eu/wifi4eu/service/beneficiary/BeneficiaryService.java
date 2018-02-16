@@ -138,6 +138,8 @@ public class BeneficiaryService {
             /* create registration */
             RegistrationDTO registration = generateNewRegistration(REPRESENTATIVE, municipality, userDTO.getId());
             registration.setIpRegistration(ip);
+            registration.setAssociationName(beneficiaryDTO.getAssociationName());
+            registration.setOrganisationId(beneficiaryDTO.getOrganisationId());
             RegistrationDTO registrationDtoOutput = registrationService.createRegistration(registration);
             registrations.add(registrationDtoOutput);
 
@@ -262,7 +264,7 @@ public class BeneficiaryService {
         /* Iterate in municipality list */
         for (MunicipalityDTO municipalityDTO : municipalityDTOSList) {
             RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
-            if(registration != null) {
+            if (registration != null) {
                 BeneficiaryListDTO beneficiaryListDTO = new BeneficiaryListDTO();
                 LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
 
@@ -297,13 +299,13 @@ public class BeneficiaryService {
                 }
             }
         }
-        if(beneficiaryListDTOS.size() > 0){
+        if (beneficiaryListDTOS.size() > 0) {
             getIssueOfRegistration(beneficiaryListDTOS);
             for (BeneficiaryListDTO beneficiaryListDTO : beneficiaryListDTOS) {
                 for (RegistrationDTO registrationDTO : beneficiaryListDTO.getRegistrations()) {
                     beneficiaryListDTO.setStatus(getStatusApplicationByRegistration(registrationDTO.getId()));
                 }
-                if(checkIpDuplicated(beneficiaryListDTO.getRegistrations()) && beneficiaryListDTO.getIssue() != 3 && beneficiaryListDTO.getIssue() != 4){
+                if (checkIpDuplicated(beneficiaryListDTO.getRegistrations()) && beneficiaryListDTO.getIssue() != 3 && beneficiaryListDTO.getIssue() != 4) {
                     beneficiaryListDTO.setIssue(1);
                 }
                 beneficiaryListDTO.setMediation(getMediationStatusByLau(beneficiaryListDTO.getLau().getId()));
@@ -347,31 +349,31 @@ public class BeneficiaryService {
                 case 2:
                     numResolved += 1;
                     break;
-                }
+            }
         }
 
         if ((numResolved + numInvalids) == registrationDTOList.size() && numResolved > 0) {
             typeIssue = 3;
         } else if (numDuplicated > 1) {
-            typeIssue  = 2;
+            typeIssue = 2;
         } else if (numInvalids == registrationDTOList.size()) {
             typeIssue = 4;
         } else {
-            if(typeIssue != 1){
+            if (typeIssue != 1) {
                 typeIssue = 0;
             }
         }
-        if(checkIpDuplicated(registrationDTOList) && typeIssue != 3 && typeIssue != 4){
+        if (checkIpDuplicated(registrationDTOList) && typeIssue != 3 && typeIssue != 4) {
             typeIssue = 1;
         }
         return typeIssue;
     }
 
-    public boolean checkIpDuplicated(List<RegistrationDTO> registrationDTOList){
+    public boolean checkIpDuplicated(List<RegistrationDTO> registrationDTOList) {
         Map<String, Integer> mapIps = new HashMap<>();
-        for(RegistrationDTO registrationDTO: registrationDTOList){
-            if(mapIps.containsKey(registrationDTO.getIpRegistration())){
-               return true;
+        for (RegistrationDTO registrationDTO : registrationDTOList) {
+            if (mapIps.containsKey(registrationDTO.getIpRegistration())) {
+                return true;
             }
             mapIps.put(registrationDTO.getIpRegistration(), 1);
         }

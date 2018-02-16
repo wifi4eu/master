@@ -32,6 +32,18 @@
 <ng-container>
     <form #entityForm="ngForm" (submit)="submit()">
         <div class="form-group ui-g">
+            <div class="ui-g-12" *ngIf="multipleMunicipalities">
+                <div class="ui-g-2"></div>
+                <div class="ui-g-8">
+                    <div>
+                        <label class="label floatLeft" for="associationName">{{ 'shared.name.label' | translate
+                            }}</label>
+                        <input id="associationName" type="text" class="form-control paddingInput" name="associationName"
+                               [(ngModel)]="associationName" required>
+                    </div>
+                </div>
+                <div class="ui-lg-2"></div>
+            </div>
             <div class="ui-g-12">
                 <div class="ui-g-2"></div>
                 <div class="ui-g-8">
@@ -57,7 +69,8 @@
             <div class="ui-g-12">
                 <div class="ui-g-2"></div>
                 <div class="ui-g-4">
-                    <label class="label floatLeft" for="address">{{ 'benefRegistration.address.label' | translate }}</label>
+                    <label class="label floatLeft" for="address">{{ 'benefRegistration.address.label' | translate
+                        }}</label>
                     <input id="address" type="text" class="form-control paddingInput" name="address"
                            [disabled]="imMayor" [(ngModel)]="initialUser.address" required>
                 </div>

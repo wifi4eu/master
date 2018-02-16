@@ -43,10 +43,17 @@ public class Registration {
     @Column(name = "ip_registration")
     private String ipRegistration;
 
+    @Column(name = "association_name")
+    private String associationName;
+
+    @Column(name = "organisation_id")
+    private int organisationId;
+
+
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -56,6 +63,8 @@ public class Registration {
         this.legalFile3 = legalFile3;
         this.legalFile4 = legalFile4;
         this.ipRegistration = ipRegistration;
+        this.associationName = associationName;
+        this.organisationId = organisationId;
     }
 
     public Integer getId() {
@@ -136,5 +145,21 @@ public class Registration {
 
     public void setIpRegistration(String ipRegistration) {
         this.ipRegistration = ipRegistration;
+    }
+
+    public String getAssociationName() {
+        return associationName;
+    }
+
+    public void setAssociationName(String associationName) {
+        this.associationName = associationName;
+    }
+
+    public int getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(int organisationId) {
+        this.organisationId = organisationId;
     }
 }
