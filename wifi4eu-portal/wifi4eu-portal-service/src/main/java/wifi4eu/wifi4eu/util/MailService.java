@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -54,7 +55,7 @@ public class MailService {
             multipart.addBodyPart(bodyPart);
 
             message.setContent(multipart);
-            helper.setSubject(subject);
+            helper.setSubject(subject64);
             helper.setTo(toAddress);
             helper.setFrom(fromAddress);
 
