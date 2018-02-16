@@ -9,7 +9,14 @@
 
         <hr class="center" style="padding-bottom: 2em; margin-top: 2em !important;">
 
-        <form *ngIf="!success" (ngSubmit)="sendIssue()" #issueForm="ngForm">
+        <h4>{{'helpdeskform.faq.title' | translate}}</h4>
+        <p class="label">
+          <span [innerHTML]="'helpdeskform.faq.text1' | translate"></span>
+          <span [innerHTML]="'helpdeskform.faq.text2' | translate"></span>
+        </p>
+        <p class="label" [innerHTML]="'helpdeskform.faq.text3' | translate"></p>
+
+        <form *ngIf="!success" (ngSubmit)="sendIssue()" #issueForm="ngForm" style="margin-top: 45px;">
             <div class="ui-g">
                 <div class="ui-lg-3"></div>
                 <div class="ui-g-12 ui-md-12 ui-lg-6">

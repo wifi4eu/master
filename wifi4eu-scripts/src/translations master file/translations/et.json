@@ -165,7 +165,7 @@
   "shared.logout.label": "Väljalogimine",
   "helpdeskform.faq.title": "WiFi4EU kasutajatugi",
   "helpdeskform.faq.text1": "Võib olla on teie küsimusele juba vastus olemas.",
-  "helpdeskform.faq.text2": "Kontrollige korduma kippuvaid küsimusi. Võib olla leiate sealt oma küsimusele vastuse.",
+  "helpdeskform.faq.text2": "Kontrollige korduma kippuvaid küsimusi. Võib olla leiate <a href='https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu'>sealt oma küsimusele vastuse</a>.",
   "helpdeskform.faq.text3": "Kui te nende hulgast vastust ei leidnud, täitke palun järgmine vorm.",
   "helpdesk.helpdeskform.selectproblemtype": "Valige loetelust probleem",
   "helpdesk.helpdeskform.problemtype.option1": "Tehniline probleem (veebisait ei toimi korrektselt)",
