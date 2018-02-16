@@ -38,7 +38,7 @@ public class MailService {
             byte[] mgsBody64 = msgBody.getBytes("UTF-8");
             byte[] subject64 = subject.getBytes("UTF-8");
 
-            Base64.encode(subject64);
+//            Base64.encode(subject64);
 
 
             message.setHeader("Content-Type", encodingOptions);
