@@ -7,29 +7,31 @@
     <div class="ui-g-12">
         <p>
             <span class="beneficiaryTitle">
-                <!--{{ 'shared.municipalityDetails.title' | translate }}<span *ngIf="municipalities[0]"> - {{municipalities[0].name}}</span>-->
                 <span *ngIf="supplier">{{supplier.name}}</span>
-            </span>            
+            </span>
             <!--<span class="badge badge-warning" *ngIf="issueRegistration == 1">{{ 'dgConn.badge.warning' | translate }}</span>-->
             <!--<span class="badge badge-duplicated" *ngIf="issueRegistration == 2">{{ 'dgConn.badge.duplicated' | translate }}</span>-->
             <!--<span class="badge badge-success" *ngIf="issueRegistration == 3">{{ 'dgConn.badge.resolved' | translate }}</span>-->
             <!--<span class="badge badge-fail" *ngIf="issueRegistration == 4">{{ 'dgConn.badge.invalid' | translate }}</span>-->
         </p>
-        <!--<p *ngIf="municipalities.length == 0">-->
-            <!--{{ 'dgConn.duplicatedBeneficiaryDetails.noMunicipalitiesFound' | translate }}-->
-        <!--</p>-->
-        <!--<p *ngIf="municipalities.length > 0">-->
-            <!--{{ 'dgConn.duplicatedBeneficiaryDetails.desc' | translate }}-->
-        <!--</p>-->
+        <p *ngIf="!supplier">
+            {{ 'dgConn.supplierDetails.noneFound' | translate }}
+        </p>
+        <p *ngIf="supplier">
+            {{ 'dgConn.supplierDetails.desc' | translate }}
+        </p>
     </div>
 
     <div *ngIf="supplier">
+        <hr class="ui-g-12 dgConnDetailsHr">
         <div class="ui-g-12">
-            <hr class="beneficiaryHr">
             <div class="row applicantDetailsPanel">
                 <span class="right">
+                    <button type="button" class="btn btn-primary whiteButton-thin" (click)="requestLegalDocuments(true)">
+                        {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
+                    </button>
                     <button type="button" class="btn redButton" (click)="invalidateSupplier(true)" [disabled]="supplier.status == 0">
-                        {{ 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality' | translate }}
+                        {{ 'dgConn.supplierDetails.invalidateSupplier' | translate }}
                     </button>
                 </span>
             </div>
@@ -103,109 +105,152 @@
             </div>
             <br>
         </div>
-        <div class="ui-g-12" *ngIf="similarSuppliers.length > 0">
+        <div *ngIf="similarSuppliers.length > 0">
+            <hr class="ui-g-12 dgConnDetailsHr">
+            <div class="ui-g-12">
+                <p>
+                    <span class="beneficiaryTitle">
+                        {{ 'dgConn.dupplicatedSuppliers.label' | translate }}
+                    </span>
+                </p>
+                <p>{{ 'dgConn.dupplicatedSuppliers.desc' | translate }}</p>
+            </div>
             <div *ngFor="let similarSupplier of similarSuppliers; let i = index">
-                <hr class="beneficiaryHr">
-                <div class="row applicantDetailsPanel">
-                <span class="right">
-                    <button type="button" class="btn redButton" (click)="invalidateSupplier(false, i)" [disabled]="similarSupplier.status == 0">
-                        {{ 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality' | translate }}
-                    </button>
-                </span>
+                <div class="ui-g-12">
+                    <div class="row applicantDetailsPanel">
+                    <span class="right">
+                        <button type="button" class="btn btn-primary whiteButton-thin" (click)="requestLegalDocuments(false, i)">
+                            {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
+                        </button>
+                        <button type="button" class="btn redButton" (click)="invalidateSupplier(false, i)" [disabled]="similarSupplier.status == 0">
+                            {{ 'dgConn.supplierDetails.invalidateSupplier' | translate }}
+                        </button>
+                    </span>
+                    </div>
+                    <div class="row applicantDetailsPanel">
+                        <div class="ui-g-6 ui-lg-6 ui-md-8 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'suppRegistration.company.details' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
+                                <span class="ui-g-5">{{ 'suppRegistration.company.name' | translate }}</span>
+                                <span class="ui-g-7 profileData">{{ similarSupplier.name }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
+                                <span class="ui-g-5">{{ 'suppRegistration.legal.address' | translate }}</span>
+                                <span class="ui-g-7 profileData">{{ similarSupplier.address }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
+                                <span class="ui-g-5">{{ 'suppRegistration.vat.label' | translate }}</span>
+                                <span class="ui-g-7 profileData">{{ similarSupplier.vat }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
+                                <span class="ui-g-5">{{ 'suppRegistration.bank.account' | translate }}</span>
+                                <span class="ui-g-7 profileData">{{ similarSupplier.accountNumber }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;" *ngIf="similarSupplier.website">
+                                <span class="ui-g-5">{{ 'suppRegistration.company.web' | translate }}</span>
+                                <span class="ui-g-7 profileData">{{ similarSupplier.website }}</span>
+                            </p>
+                        </div>
+                        <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'suppRegistration.contact.person' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'suppRegistration.name.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ similarSupplier.contactName }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'suppRegistration.surname.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ similarSupplier.contactSurname }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'suppRegistration.email.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ similarSupplier.contactEmail }}</span>
+                            </p>
+                        </div>
+                        <div class="ui-g-2 ui-lg-2 ui-md-12 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.documentation' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="!similarSupplier.legalFile1 || !similarSupplier.legalFile2">
+                                <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.noDocuments' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="similarSupplier.legalFile1">
+                                <span class="ui-g-12">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1<br>
+                                    <a class="link-label" [href]="getLegalFileUrl(false, 1, i)" download>
+                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                    </a>
+                                </span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="similarSupplier.legalFile2">
+                                <span class="ui-g-12">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2<br>
+                                    <a class="link-label" [href]="getLegalFileUrl(false, 2, i)" download>
+                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                    </a>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <br>
                 </div>
-                <div class="row applicantDetailsPanel">
-                    <div class="ui-g-6 ui-lg-6 ui-md-8 ui-sm-12">
-                        <p class="applicantDetailsNoMargin municipality-name profileData">
-                            <span class="ui-g-12">{{ 'suppRegistration.company.details' | translate }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
-                            <span class="ui-g-5">{{ 'suppRegistration.company.name' | translate }}</span>
-                            <span class="ui-g-7 profileData">{{ similarSupplier.name }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
-                            <span class="ui-g-5">{{ 'suppRegistration.legal.address' | translate }}</span>
-                            <span class="ui-g-7 profileData">{{ similarSupplier.address }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
-                            <span class="ui-g-5">{{ 'suppRegistration.vat.label' | translate }}</span>
-                            <span class="ui-g-7 profileData">{{ similarSupplier.vat }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
-                            <span class="ui-g-5">{{ 'suppRegistration.bank.account' | translate }}</span>
-                            <span class="ui-g-7 profileData">{{ similarSupplier.accountNumber }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;" *ngIf="similarSupplier.website">
-                            <span class="ui-g-5">{{ 'suppRegistration.company.web' | translate }}</span>
-                            <span class="ui-g-7 profileData">{{ similarSupplier.website }}</span>
-                        </p>
-                    </div>
-                    <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12">
-                        <p class="applicantDetailsNoMargin municipality-name profileData">
-                            <span class="ui-g-12">{{ 'suppRegistration.contact.person' | translate }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'suppRegistration.name.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ similarSupplier.contactName }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'suppRegistration.surname.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ similarSupplier.contactSurname }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'suppRegistration.email.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ similarSupplier.contactEmail }}</span>
-                        </p>
-                    </div>
-                    <div class="ui-g-2 ui-lg-2 ui-md-12 ui-sm-12">
-                        <p class="applicantDetailsNoMargin municipality-name profileData">
-                            <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.documentation' | translate }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="!similarSupplier.legalFile1 || !similarSupplier.legalFile2">
-                            <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.noDocuments' | translate }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="similarSupplier.legalFile1">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1<br>
-                                <a class="link-label" [href]="getLegalFileUrl(false, 1, i)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="similarSupplier.legalFile2">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2<br>
-                                <a class="link-label" [href]="getLegalFileUrl(false, 2, i)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
-                    </div>
-                </div>
-                <br>
             </div>
         </div>
-        <div class="ui-g-12 right">
-            <button type="button" class="btn btn-primary whiteButton" (click)="requestLegalDocuments()">
-                {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
-            </button>
-        </div>
-        <div class="ui-g-12" *ngIf="discussionThread">
-            <div *ngIf="discussionThread.messages.length > 0">
-                <hr class="beneficiaryHr">
+        <div class="ui-g-12" *ngIf="vatThread">
+            <div *ngIf="vatThread.messages.length >= 0">
+                <hr class="dgConnDetailsHr">
                 <p class="beneficiaryMayor">
                     {{ 'discussionForum.discussion' | translate }}
                 </p>
                 <p>
                     {{ 'dgConn.duplicatedBeneficiaryDetails.searchMessages.Desc' | translate }}
                 </p>
-                <form #searchMessagesForm="ngForm" (submit)="searchMessages()"
+                <form #searchMessagesForm="ngForm" (submit)="searchMessages('vat')"
                       class="ux-search-input-container searchInputBlock">
-                    <input type="search" name="searchInput" class="searchInput" [(ngModel)]="searchMessagesQuery">
+                    <input type="search" name="searchInput" class="searchInput" [(ngModel)]="searchVatMessagesQuery">
                     <button type="submit" class="btn btn-primary">
                         <b>{{ 'shared.search.button' | translate }}</b>
                     </button>
                 </form>
-                <div class="discussion-content" *ngFor="let currentMessage of displayedMessages; let i = index">
+                <div class="discussion-content" *ngFor="let currentMessage of displayedVatMessages; let i = index">
+                    <div class="ui-g discussion-content">
+                        <div class="ui-g-12">
+                            <div class="ui-g-3 backgroundMessage">
+                                <p class="authorMessage">
+                                    {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
+                                    {{currentMessage.authorId}}
+                                </p>
+                                <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
+                                <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
+                            </div>
+                            <div class="ui-g-9 paddingMessages arrow_box">
+                                <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui-g-12" *ngIf="ibanThread">
+            <div *ngIf="ibanThread.messages.length >= 0">
+                <hr class="dgConnDetailsHr">
+                <p class="beneficiaryMayor">
+                    {{ 'discussionForum.discussion' | translate }}
+                </p>
+                <p>
+                    {{ 'dgConn.duplicatedBeneficiaryDetails.searchMessages.Desc' | translate }}
+                </p>
+                <form #searchMessagesForm="ngForm" (submit)="searchMessages('iban')"
+                      class="ux-search-input-container searchInputBlock">
+                    <input type="search" name="searchInput" class="searchInput" [(ngModel)]="searchIbanMessagesQuery">
+                    <button type="submit" class="btn btn-primary">
+                        <b>{{ 'shared.search.button' | translate }}</b>
+                    </button>
+                </form>
+                <div class="discussion-content" *ngFor="let currentMessage of displayedIbanMessages; let i = index">
                     <div class="ui-g discussion-content">
                         <div class="ui-g-12">
                             <div class="ui-g-3 backgroundMessage">

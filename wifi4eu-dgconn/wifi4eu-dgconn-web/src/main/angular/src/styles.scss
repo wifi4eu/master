@@ -1455,6 +1455,15 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   background-color: #c53b0c;
 }
 
+.whiteButton-thin {
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
+  font-family: Verdana;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
 .warningBadge {
   padding: 4px 8px;
   font-style: italic;
@@ -1584,4 +1593,10 @@ p-tabview.white .ui-widget-content.ui-tabview {
 
 .voucherModal {
   text-align: center;
+}
+
+.dgConnDetailsHr {
+  background:  none;
+  border-top:  2px solid rgba(0, 0, 0, 0.1);
+  margin: 0;
 }
