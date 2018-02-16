@@ -134,6 +134,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`registrations` (
   `legal_file3`     LONGTEXT     NULL,
   `legal_file4`     LONGTEXT     NULL,
   `ip_registration` VARCHAR(30)  NULL,
+  `organisation_id` INT DEFAULT NULL,
+  `association_id` INT DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_user_idx` (`_user` ASC),
   INDEX `fk_municipality_idx` (`municipality` ASC),
