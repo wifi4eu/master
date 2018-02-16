@@ -71,7 +71,7 @@
   "shared.municipalityDetails.title": "Informações sobre a autarquia",
   "benefRegistration.municipalityDetails.text": "Faculte informações sobre a autarquia ou autarquias que representa.",
   "shared.municipality.label": "Autarquia",
-  "benefRegistration.townHall.address": "Endereço oficial                número",
+  "benefRegistration.townHall.address": "Endereço oficial",
   "shared.postal-code.label": "Código postal",
   "benefRegistration.registration.legalRepresentative": "Representante legal ",
   "benefRegistration.registration.authorisedPerson": "Pessoa legalmente autorizada a assinar em nome da autarquia (regra geral, o presidente)",
