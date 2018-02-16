@@ -408,6 +408,7 @@
   "benefRegistration.surnameMayor.label": "Surname",
   "benefRegistration.emailMayor.label": "E-mail address",
   "benefRegistration.confirmemailMayor.label": "Confirm e-mail address",
+  "benefRegistration.associationName": "Association Name",
   "shared.profile.registrationNotConfirmed": "Your registration is not yet confirmed. Please validate your registration: you will receive a confirmation email shortly, click on the link in the email to validate the submission of your registration.",
   "shared.submitregistration.success.resendconfirm.part1": "You have not received the email? Re-send confirmation email",
   "shared.newMessage.button": "Send",
