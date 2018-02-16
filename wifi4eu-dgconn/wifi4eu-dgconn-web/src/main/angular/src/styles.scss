@@ -1585,3 +1585,15 @@ p-tabview.white .ui-widget-content.ui-tabview {
 .voucherModal {
   text-align: center;
 }
+
+.action-label {
+  cursor: pointer;
+  color: $dark-blue;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.action-label:hover {
+  color: $darkish-blue;
+  text-decoration: underline;
+}
