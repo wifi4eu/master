@@ -37,7 +37,7 @@ public class MailService {
 
 
             byte[] mgsBody64 = msgBody.getBytes("UTF-8");
-            byte[] subject64 = subject.getBytes("UTF-8");
+//            byte[] subject64 = subject.getBytes("UTF-8");
 
 //            Base64.encode(subject64);
 
@@ -55,7 +55,7 @@ public class MailService {
             multipart.addBodyPart(bodyPart);
 
             message.setContent(multipart);
-            helper.setSubject(subject64);
+            helper.setSubject(subject);
             helper.setTo(toAddress);
             helper.setFrom(fromAddress);
 
