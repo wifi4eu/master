@@ -76,9 +76,11 @@ export class SupplierProfileComponent {
                 );
                 this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
                     (userThreads: UserThreadsDTOBase[]) => {
-                        this.userThreads = userThreads[0];
-                        this.threadId = userThreads[0].threadId;
-                        this.hasDiscussion = true;
+                        if (userThreads.length > 0) {
+                            this.userThreads = userThreads[0];
+                            this.threadId = userThreads[0].threadId;
+                            this.hasDiscussion = true;
+                        }
                     }, error => {
                         console.log("service error: ", error);
                     }
