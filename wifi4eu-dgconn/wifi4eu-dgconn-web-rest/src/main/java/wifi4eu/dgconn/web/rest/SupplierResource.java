@@ -111,4 +111,55 @@ public class SupplierResource {
         _log.info("allSuppliers");
         return supplierService.findSimilarSuppliers(supplierId);
     }
+
+    @ApiOperation(value = "Request legal documents")
+    @RequestMapping(value = "/requestLegalDocuments/{supplierId}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO requestLegalDocuments(@PathVariable("supplierId") final Integer supplierId) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("requestLegalDocuments for supplier: " + supplierId);
+            }
+            return new ResponseDTO(supplierService.requestLegalDocuments(supplierId), null, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'requestLegalDocuments' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Update supplier")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO updateSupplier(@RequestBody final SupplierDTO supplierDTO) {
+        try {
+            _log.info("updateSupplier");
+            SupplierDTO resSupplier = supplierService.updateSupplier(supplierDTO);
+            return new ResponseDTO(true, resSupplier, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'updateSupplier' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Invalidate supplier")
+    @RequestMapping(value = "/invalidate", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO invalidateSupplier(@RequestBody final SupplierDTO supplierDTO) {
+        try {
+            _log.info("invalidateSupplier");
+            SupplierDTO resSupplier = supplierService.invalidateSupplier(supplierDTO);
+            return new ResponseDTO(true, resSupplier, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'invalidateSupplier' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
 }
