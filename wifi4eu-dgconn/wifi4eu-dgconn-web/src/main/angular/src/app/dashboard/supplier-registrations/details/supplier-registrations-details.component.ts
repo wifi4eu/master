@@ -4,28 +4,17 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { SharedService } from "../../../shared/shared.service";
 import { SupplierApi } from "../../../shared/swagger/api/SupplierApi";
 import { SupplierDTOBase } from "../../../shared/swagger/model/SupplierDTO";
-import { ThreadApi } from "../../../shared/swagger/api/ThreadApi";
-import { ThreadDTOBase } from "../../../shared/swagger/model/ThreadDTO";
-import { ThreadMessageDTOBase } from "../../../shared/swagger/model/ThreadMessageDTO";
 import { ResponseDTOBase } from "../../../shared/swagger/model/ResponseDTO";
 
 @Component({
-    templateUrl: 'supplier-registrations-details.component.html', providers: [SupplierApi, ThreadApi]
+    templateUrl: 'supplier-registrations-details.component.html', providers: [SupplierApi]
 })
 
 export class DgConnSupplierRegistrationsDetailsComponent {
     private supplier: SupplierDTOBase = null;
     private similarSuppliers: SupplierDTOBase[] = [];
-    //private discussionThread: ThreadDTOBase = null;
-    private vatThread: ThreadDTOBase = null;
-    private ibanThread: ThreadDTOBase = null;
-    private displayedVatMessages: ThreadMessageDTOBase[] = [];
-    private displayedIbanMessages: ThreadMessageDTOBase[] = [];
-    //private displayedMessages: ThreadMessageDTOBase[] = [];
-    private searchVatMessagesQuery: string = '';
-    private searchIbanMessagesQuery: string = '';
 
-    constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer, private sharedService: SharedService, private supplierApi: SupplierApi, private threadApi: ThreadApi) {
+    constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer, private sharedService: SharedService, private supplierApi: SupplierApi) {
         this.route.params.subscribe(
             params => {
                 let supplierId = params['id'];
@@ -38,22 +27,6 @@ export class DgConnSupplierRegistrationsDetailsComponent {
                                         this.similarSuppliers = suppliers;
                                     }
                                     this.supplier = supplier;
-                                }
-                            );
-                            this.threadApi.getThreadByTypeAndReason(2, String(supplier.vat)).subscribe(
-                                (thread: ThreadDTOBase) => {
-                                    if (thread) {
-                                        this.vatThread = thread;
-                                        this.displayedVatMessages = thread.messages;
-                                    }
-                                }
-                            );
-                            this.threadApi.getThreadByTypeAndReason(3, String(supplier.accountNumber)).subscribe(
-                                (thread: ThreadDTOBase) => {
-                                    if (thread) {
-                                        this.ibanThread = thread;
-                                        this.displayedIbanMessages = thread.messages;
-                                    }
                                 }
                             );
                         }
@@ -140,35 +113,6 @@ export class DgConnSupplierRegistrationsDetailsComponent {
                     }
                 );
             }
-        }
-    }
-
-    private searchMessages(reason: string) {
-        switch (reason) {
-            case 'vat':
-                if (this.searchVatMessagesQuery.length > 0) {
-                    this.displayedVatMessages = [];
-                    for (let message of this.vatThread.messages) {
-                        if (message.message.toLowerCase().indexOf(this.searchVatMessagesQuery.toLowerCase()) != -1) {
-                            this.displayedVatMessages.push(message);
-                        }
-                    }
-                } else {
-                    this.displayedVatMessages = this.vatThread.messages;
-                }
-                break;
-            case 'iban':
-                if (this.searchIbanMessagesQuery.length > 0) {
-                    this.displayedIbanMessages = [];
-                    for (let message of this.ibanThread.messages) {
-                        if (message.message.toLowerCase().indexOf(this.searchIbanMessagesQuery.toLowerCase()) != -1) {
-                            this.displayedIbanMessages.push(message);
-                        }
-                    }
-                } else {
-                    this.displayedIbanMessages = this.ibanThread.messages;
-                }
-                break;
         }
     }
 }
