@@ -7,8 +7,8 @@ import {NotFoundComponent} from "./not-found/not-found.component";
     imports: [RouterModule.forRoot([
         {
             path: '',
-            loadChildren: 'app/dashboard/dgconn.dashboard.module#DgConnDashboardModule'
-            // canActivate: [AppGuard],
+            loadChildren: 'app/dashboard/dgconn.dashboard.module#DgConnDashboardModule',
+            canActivate: [AppGuard]
         }, {
             path: 'home',
             redirectTo: ''
