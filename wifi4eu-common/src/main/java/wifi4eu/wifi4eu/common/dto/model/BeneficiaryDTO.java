@@ -8,15 +8,19 @@ public class BeneficiaryDTO implements Serializable {
     private List<MayorDTO> mayors;
     private List<MunicipalityDTO> municipalities;
     private boolean representsMultipleMunicipalities;
+    private String associationName;
+    private int organisationId;
 
     public BeneficiaryDTO() {
     }
 
-    public BeneficiaryDTO(UserDTO user, List<MayorDTO> mayors, List<MunicipalityDTO> municipalities, boolean representsMultipleMunicipalities) {
+    public BeneficiaryDTO(UserDTO user, List<MayorDTO> mayors, List<MunicipalityDTO> municipalities, boolean representsMultipleMunicipalities, String associationName, int organisationId) {
         this.user = user;
         this.mayors = mayors;
         this.municipalities = municipalities;
         this.representsMultipleMunicipalities = representsMultipleMunicipalities;
+        this.associationName = associationName;
+        this.organisationId = organisationId;
     }
 
     public UserDTO getUser() {
@@ -49,5 +53,21 @@ public class BeneficiaryDTO implements Serializable {
 
     public void setRepresentsMultipleMunicipalities(boolean representsMultipleMunicipalities) {
         this.representsMultipleMunicipalities = representsMultipleMunicipalities;
+    }
+
+    public String getAssociationName() {
+        return associationName;
+    }
+
+    public void setAssociationName(String associationName) {
+        this.associationName = associationName;
+    }
+
+    public int getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(int organisationId) {
+        this.organisationId = organisationId;
     }
 }
