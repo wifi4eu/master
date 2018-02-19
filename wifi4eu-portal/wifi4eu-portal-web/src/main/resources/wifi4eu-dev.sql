@@ -124,18 +124,18 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`municipalities` (
 -- Table `wifi4eu`.`registrations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wifi4eu`.`registrations` (
-  `id`              INT          NOT NULL AUTO_INCREMENT,
-  `_user`           INT          NOT NULL,
-  `municipality`    INT          NOT NULL,
-  `role`            VARCHAR(500) NULL,
-  `_status`         INT(1)       NOT NULL, --  0=HOLD; 1=KO; 2=OK
-  `legal_file1`     LONGTEXT     NULL,
-  `legal_file2`     LONGTEXT     NULL,
-  `legal_file3`     LONGTEXT     NULL,
-  `legal_file4`     LONGTEXT     NULL,
-  `ip_registration` VARCHAR(30)  NULL,
-  `organisation_id` INT DEFAULT NULL,
-  `association_id` INT DEFAULT NULL,
+  `id`               INT          NOT NULL AUTO_INCREMENT,
+  `_user`            INT          NOT NULL,
+  `municipality`     INT          NOT NULL,
+  `role`             VARCHAR(500) NULL,
+  `_status`          INT(1)       NOT NULL, --  0=HOLD; 1=KO; 2=OK
+  `legal_file1`      LONGTEXT     NULL,
+  `legal_file2`      LONGTEXT     NULL,
+  `legal_file3`      LONGTEXT     NULL,
+  `legal_file4`      LONGTEXT     NULL,
+  `ip_registration`  VARCHAR(30)  NULL,
+  `organisation_id`  INT                   DEFAULT NULL,
+  `association_name` VARCHAR(500)          DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_user_idx` (`_user` ASC),
   INDEX `fk_municipality_idx` (`municipality` ASC),
