@@ -41,9 +41,9 @@
             </p-column>
             <p-column header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
                 <ng-template let-rowData="rowData" pTemplate="body">
-                    <a [routerLink]="['./', rowData.id]">
+                    <span [routerLink]="['./', rowData.id]" class="action-label">
                         <span class="fa fa-eye"></span> <span>{{ 'dgConn.view' | translate }}</span>
-                    </a>
+                    </span>
                 </ng-template>
             </p-column>
         </p-dataTable>
