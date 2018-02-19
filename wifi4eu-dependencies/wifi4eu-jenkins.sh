@@ -9,6 +9,7 @@ npm config set registry https://ecdevops.eu/repository/npm-all/
 echo "NPM install on angular folders"
 npm install --prefix ./wifi4eu-portal/wifi4eu-portal-web/src/main/angular/
 npm install --prefix ./wifi4eu-public-portal/wifi4eu-public-portal-web/src/main/angular/
+npm install --prefix ./wifi4eu-dgconn/wifi4eu-dgconn-web/src/main/angular/
 echo "Install ECAS dependency"
 mvn install:install-file -Dfile=wifi4eu-dependencies/ecas-tomcat-8.0-4.22.0.jar  -DgroupId=eu.europa.ec.digit.iam.ecas.client -DartifactId=ecas-tomcat-8.0 -Dversion=4.22.0 -Dpackaging=jar
 echo "Compile project"
