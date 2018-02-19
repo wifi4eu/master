@@ -23,11 +23,12 @@ public class SupplierDTO implements Serializable {
     private boolean legalCheck2;
     private String legalFile1;
     private String legalFile2;
+    private int status;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, int userId, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2) {
+    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, int userId, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2, int status) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -47,6 +48,7 @@ public class SupplierDTO implements Serializable {
         this.legalCheck2 = legalCheck2;
         this.legalFile1 = legalFile1;
         this.legalFile2 = legalFile2;
+        this.status = status;
     }
 
     public int getId() {
@@ -201,6 +203,14 @@ public class SupplierDTO implements Serializable {
         this.legalFile2 = legalFile2;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "SupplierDTO{" +
@@ -223,6 +233,7 @@ public class SupplierDTO implements Serializable {
                 ", legalCheck2=" + legalCheck2 +
                 ", legalFile1='" + legalFile1 + '\'' +
                 ", legalFile2='" + legalFile2 + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }
