@@ -103,7 +103,17 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="ui-g">
+                    <div class="ui-g-12 button-content">
+                        <p class="applicationText">{{ 'shared.withdraw-registration.text' | translate }}</p>
+                        <div style="text-align: center !important">
+                            <button type="button" (click)="withdrawRegistration()"
+                                    class="btn btn-primary changePassword">
+                                {{'shared.withdraw-registration.button' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

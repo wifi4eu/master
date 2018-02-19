@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
@@ -23,9 +24,13 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
+import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
+import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -74,6 +79,19 @@ public class UserService {
 
     @Autowired
     SupplierService supplierService;
+
+    @Autowired
+    SupplierMapper supplierMapper;
+
+    @Autowired
+    SupplierRepository supplierRepository;
+
+    @Autowired
+    SuppliedRegionMapper suppliedRegionMapper;
+
+    @Autowired
+    SuppliedRegionRepository suppliedRegionRepository;
+
 
     /**
      * The language used in user browser
@@ -157,14 +175,15 @@ public class UserService {
         if (userDTO != null) {
             switch (userDTO.getType()) {
                 case (int) Constant.ROLE_REPRESENTATIVE:
-                    for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
-                        tempTokenRepository.delete(tempToken);
-                    }
+                    removeTempToken(userDTO);
                     for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
                         municipalityService.deleteMunicipality(municipality.getId());
                     }
                     break;
                 case (int) Constant.ROLE_SUPPLIER:
+                    removeTempToken(userDTO);
+                    removeSuppliedRegion(userDTO);
+
                     SupplierDTO supplier = supplierService.getSupplierByUserId(userDTO.getId());
                     if (supplier != null) {
                         supplierService.deleteSupplier(supplier.getId());
@@ -346,5 +365,19 @@ public class UserService {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+    }
+
+    private void removeTempToken(UserDTO userDTO) {
+        for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
+            tempTokenRepository.delete(tempToken);
+        }
+    }
+
+    private void removeSuppliedRegion(UserDTO userDTO) {
+        SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(userDTO.getId()));
+        List<SuppliedRegionDTO> suppliedRegionDTOList = supplierDTO.getSuppliedRegions();
+        for (SuppliedRegionDTO anElementList : suppliedRegionDTOList) {
+            suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(anElementList));
+        }
     }
 }
