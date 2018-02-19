@@ -167,7 +167,7 @@
   "shared.logout.label": "Atsijungti",
   "helpdeskform.faq.title": "„WiFi4EU“ pagalbos tarnyba",
   "helpdeskform.faq.text1": "Ar jūsų klausimą atsakyta?",
-  "helpdeskform.faq.text2": "Peržvelkite dažnai užduodamus klausimus ir atsakymus į juos – galbūt ten rasite ieškomą informaciją.",
+  "helpdeskform.faq.text2": "Peržvelkite dažnai <a href='https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu'>užduodamus klausimus ir atsakymus</a> į juos – galbūt ten rasite ieškomą informaciją.",
   "helpdeskform.faq.text3": "Jeigu ten atsakymo į savo klausimą neradote, užpildykite pateiktą formą.",
   "helpdesk.helpdeskform.selectproblemtype": "Pasirinkite iš sąrašo problemos rūšį",
   "helpdesk.helpdeskform.problemtype.option1": "Jums iškilo techninė problema (puslapis veikia netinkamai)",

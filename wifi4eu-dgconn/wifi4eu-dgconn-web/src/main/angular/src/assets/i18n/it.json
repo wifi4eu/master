@@ -162,7 +162,7 @@
   "shared.logout.label": "Disconnessione",
   "helpdeskform.faq.title": "Helpdesk di WiFi4EU",
   "helpdeskform.faq.text1": "Hai trovato una risposta alla tua domanda? ",
-  "helpdeskform.faq.text2": "Controlla fra le domande frequenti: lì potresti trovare la risposta alla tua domanda. ",
+  "helpdeskform.faq.text2": "Controlla fra le <a href='https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu'>domande frequenti</a>: lì potresti trovare la risposta alla tua domanda. ",
   "helpdeskform.faq.text3": "Se non hai trovato una risposta alla tua domanda, compila il seguente modulo.",
   "helpdesk.helpdeskform.selectproblemtype": "Seleziona il tipo di problema dall’elenco",
   "helpdesk.helpdeskform.problemtype.option1": "Hai un problema tecnico (la pagina non funziona bene)",
