@@ -15,7 +15,6 @@
         <module>wifi4eu-common</module>
         <module>wifi4eu-portal</module>
         <module>wifi4eu-public-portal</module>
-        <module>wifi4eu-dgconn</module>
         <!--<module>wifi4eu-financial</module>-->
     </modules>
 
