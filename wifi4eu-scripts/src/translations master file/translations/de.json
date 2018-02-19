@@ -162,7 +162,7 @@
   "shared.logout.label": "Abmelden",
   "helpdeskform.faq.title": "WiFi4EU Help-Desk",
   "helpdeskform.faq.text1": "Wurde Ihre Frage bereits beantwortet? ",
-  "helpdeskform.faq.text2": "Bitte überprüfen Sie zunächst, ob Ihre Frage bereits in den „Häufig gestellten Fragen“ beantwortet wurde. ",
+  "helpdeskform.faq.text2": "Bitte überprüfen Sie zunächst, ob Ihre Frage bereits in den <a href='https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu'>„Häufig gestellten Fragen“</a> beantwortet wurde. ",
   "helpdeskform.faq.text3": "Ist dies nicht der Fall, füllen Sie bitte das nachstehende Formular aus.",
   "helpdesk.helpdeskform.selectproblemtype": "Um welche Art von Problem handelt es sich?",
   "helpdesk.helpdeskform.problemtype.option1": "Sie haben ein technisches Problem (Website funktioniert nicht ordnungsgemäß)",

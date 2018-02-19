@@ -11,6 +11,6 @@
 
     <mvc:annotation-driven />
 
-    <context:component-scan base-package="wifi4eu.wifi4eu.web.rest"/>
+    <context:component-scan base-package="wifi4eu.pub.web.rest"/>
 
 </beans>
