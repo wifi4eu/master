@@ -1,15 +1,16 @@
-import {NgModule} from "@angular/core";
-import {RouterModule} from "@angular/router";
-import {DgConnPortalComponent} from "./portal/dgconnportal.component";
-import {DgConnPublicationComponent} from "./publication/publication.component";
-import {DgConnVoucherComponent} from "./voucher/voucher.component";
-import {DgConnStatisticsComponent} from "./statistics/statistics.component";
-import {DgConnHelpdeskComponent} from "./helpdesk/helpdesk.component";
-import {DgConnSupplierRegistrationsComponent} from "./supplier-registrations/supplier-registrations.component";
-import {DgConnBeneficiaryRegistrationsComponent} from "./beneficiary-registrations/beneficiary-registrations.component";
-import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./beneficiary-registrations/details/beneficiary-registrations-details.component";
-import {DgConnManageLauComponent} from "./manage-lau/manage-lau.component";
-import {DgConnDiscussionComponent} from "./discussion/discussion.component";
+import { NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
+import { DgConnPortalComponent } from "./portal/dgconnportal.component";
+import { DgConnPublicationComponent } from "./publication/publication.component";
+import { DgConnVoucherComponent } from "./voucher/voucher.component";
+import { DgConnStatisticsComponent } from "./statistics/statistics.component";
+import { DgConnHelpdeskComponent } from "./helpdesk/helpdesk.component";
+import { DgConnSupplierRegistrationsComponent } from "./supplier-registrations/supplier-registrations.component";
+import { DgConnSupplierRegistrationsDetailsComponent } from "./supplier-registrations/details/supplier-registrations-details.component";
+import { DgConnBeneficiaryRegistrationsComponent } from "./beneficiary-registrations/beneficiary-registrations.component";
+import { DgConnBeneficiaryRegistrationsDetailsComponent } from "./beneficiary-registrations/details/beneficiary-registrations-details.component";
+import { DgConnManageLauComponent } from "./manage-lau/manage-lau.component";
+import { DgConnDiscussionComponent } from "./discussion/discussion.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -34,6 +35,9 @@ import {DgConnDiscussionComponent} from "./discussion/discussion.component";
         }, {
             path: 'supplier-registrations',
             component: DgConnSupplierRegistrationsComponent
+        }, {
+            path: 'supplier-registrations/:id',
+            component: DgConnSupplierRegistrationsDetailsComponent
         }, {
             path: 'beneficiary-registrations',
             component: DgConnBeneficiaryRegistrationsComponent

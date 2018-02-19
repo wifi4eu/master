@@ -17,6 +17,10 @@
       <artifactId>wifi4eu</artifactId>
     </parent>
 
+    <properties>
+        <app.context.root>/dashboard</app.context.root>
+    </properties>
+
     <modules>
         <module>wifi4eu-dgconn-persistence</module>
         <module>wifi4eu-dgconn-service</module>

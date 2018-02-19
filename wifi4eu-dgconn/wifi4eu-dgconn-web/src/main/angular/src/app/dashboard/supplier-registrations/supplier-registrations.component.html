@@ -4,52 +4,48 @@
         <p class="center beneficiaryTitle">{{ 'dgConn.duplicatedSuppliers.title' | translate }}</p>
     </div>
 </div>
-<div class="container center ">
+<div class="container center">
     <!-- registrationsTable-->
-
     <div class="panel-dg panel-padding panel-input">
         <div class="row">
             <div class="col-md-6">
-                <div class="input-group">
-          <span class="input-group-addon">
-            <i class="fa fa-search" aria-hidden="true"></i>
-          </span>
-                    <input type="text" [(ngModel)]="inputSearch" (keyup.enter)="filterData(inputSearch)"
-                           class="form-control">
+                <form #searchSuppliersForm="ngForm" (submit)="searchSuppliers()" class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </span>
+                    <input type="search" name="searchInput" class="form-control" [(ngModel)]="searchSuppliersInput">
                     <span class="input-group-btn">
-            <button class="btn btn-primary" (click)="filterData(inputSearch)" type="button">Search</button>
-          </span>
-                </div>
+                        <button class="btn btn-primary" (click)="filterData(inputSearch)" type="submit">
+                            <b>{{ 'shared.search.button' | translate }}</b>
+                        </button>
+                    </span>
+                </form>
             </div>
         </div>
     </div>
-
     <div class="panel-dg">
-        <p-dataTable [editable]="true" [responsive]="true" sortMode="multiple" [value]="customUserSupplierArray"
-                     [rows]="10" [paginator]="true">
-            <p-column field="supplier.name" styleClass="text-center" [sortable]="true"
-                      header="{{ 'shared.name.label' | translate }}"></p-column>
-            <p-column field="supplier.address" styleClass="text-center" [sortable]="true"
-                      header="{{ 'shared.physical-address.label' | translate }}"></p-column>
-            <p-column header="{{ 'suppRegistration.phone.number' | translate }}" styleClass="text-center">
-                <ng-template let-customSupplier="rowData" pTemplate="body">
-                    <span>{{ customSupplier.supplier.contactPhonePrefix }} </span>
-                    <span>{{ customSupplier.supplier.contactPhoneNumber }}</span>
+        <p-dataTable [value]="displayedSuppliers" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]">
+            <p-column field="name" [sortable]="true" header="{{ 'suppRegistration.company.name' | translate }}" styleClass="text-center"></p-column>
+            <p-column field="website" header="{{ 'suppRegistration.company.web' | translate }}" styleClass="text-center"></p-column>
+            <p-column field="vat" header="{{ 'suppRegistration.vat.label' | translate }}" styleClass="text-center"></p-column>
+            <p-column field="status" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
+                <ng-template let-rowData="rowData" pTemplate="body">
+                    <span *ngIf="rowData.status">{{ 'dgConn.beneficiaries.registered' | translate }}</span>
+                    <span *ngIf="!rowData.status">{{ 'dgConn.status.invalidated' | translate }}</span>
                 </ng-template>
             </p-column>
-            <!-- <p-column field="supplier.website" styleClass="text-center" header="Website" [sortable]="true"></p-column> -->
-            <p-column field="supplier.vat" styleClass="text-center"
-                      header="{{ 'suppRegistration.vat.label' | translate}}" [sortable]="true"></p-column>
-            <p-column field="supplier.bic" styleClass="text-center"
-                      header="{{ 'suppRegistration.bic.label' | translate }}" [sortable]="true"></p-column>
-            <p-column field="user.name" styleClass="text-center" [sortable]="true"
-                      header="{{ 'dgConn.user.label' | translate }}">
-                <ng-template let-customSupplier="rowData" pTemplate="body">
-                    <span>{{ customSupplier.user.name }} </span>
-                    <span>{{ customSupplier.user.surname }}</span>
+            <p-column header="{{ 'dgConn.number.registrations' | translate }}" styleClass="text-center">
+                <ng-template let-rowIndex="rowIndex" pTemplate="body">
+                    {{numRegistrations[rowIndex]}}
                 </ng-template>
             </p-column>
-            <!--  <p-column field="user.surname" styleClass="text-center" [sortable]="true" header="User surname"></p-column> -->
+            <p-column header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
+                <ng-template let-rowData="rowData" pTemplate="body">
+                    <span [routerLink]="['./', rowData.id]" class="action-label">
+                        <span class="fa fa-eye"></span> <span>{{ 'dgConn.view' | translate }}</span>
+                    </span>
+                </ng-template>
+            </p-column>
         </p-dataTable>
     </div>
 </div>
