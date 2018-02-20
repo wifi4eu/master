@@ -29,7 +29,7 @@ describe('wifi4eu test supplier registration', () => {
     element(by.id('accountNumber')).sendKeys('Account Number');
     element(by.id('website')).sendKeys('http://everis.com');
     var path = require('path');
-    var fileToUpload = 'totorito.png';
+    var fileToUpload = 'image.png';
     var absolutePath = path.resolve(__dirname, fileToUpload);
     element(by.css('input[type="file"]')).sendKeys(absolutePath);
     element.all(by.className('publish-button')).first().click().then(() => {
@@ -42,11 +42,11 @@ describe('wifi4eu test supplier registration', () => {
           element(by.cssContainingText('li', 'ESPAÑA')).click();
           var selectCountry = element(by.id('selectRegions'));
           selectCountry.click().then(() => {
-            browser.sleep(1000);
             var input = selectCountry.element(by.className('ui-inputtext'));
             input.sendKeys("Barcelona").then(() => {
               element(by.cssContainingText('li', 'Barcelona')).click();
               element.all(by.className('publish-button')).get(1).click().then(() => {
+
                 // STEP 3
                 element(by.id('contactName')).sendKeys('Contact Name');
                 element(by.id('contactSurname')).sendKeys('Contact Surname');
