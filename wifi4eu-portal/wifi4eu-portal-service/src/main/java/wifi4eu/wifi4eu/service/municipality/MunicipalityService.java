@@ -39,7 +39,6 @@ public class MunicipalityService {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
     }
 
-    @Cacheable(value = "portalGetMunicipalityById")
     public MunicipalityDTO getMunicipalityById(int municipalityId) {
         return municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
     }
