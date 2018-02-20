@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `dbo`.`registrations` (
   `legal_file4`  LONGTEXT     NULL,
   `ip_registration` VARCHAR(30) NULL,
   `organisation_id` INT DEFAULT NULL,
-  `association_id` INT DEFAULT NULL,
+  `association_name` VARCHAR(500) DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_user_idx` (`_user` ASC),
   INDEX `fk_municipality_idx` (`municipality` ASC),
