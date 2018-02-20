@@ -149,6 +149,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         this.municipalitiesChange.emit(this.municipalities);
         this.lausChange.emit(this.laus);
         this.onNext.emit();
+        this.emailsMatch = false;
     }
 
     private back() {
@@ -160,7 +161,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
             this.emailConfirmations[i] = '';
             this.css_class_email[i] = 'notValid';
         }
-        /* this.emailsMatch = false; */
+        this.emailsMatch = false;
     }
 
     private preventPaste(event: any) {
