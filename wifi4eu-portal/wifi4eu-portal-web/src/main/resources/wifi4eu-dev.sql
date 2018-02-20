@@ -252,6 +252,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`suppliers` (
   `_user`                INT          NULL,
   `legal_file1`          LONGTEXT     NULL,
   `legal_file2`          LONGTEXT     NULL,
+  `_status`              TINYINT      NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_suppliers_users_idx` (`_user` ASC),
   CONSTRAINT `fk_suppliers_users`
