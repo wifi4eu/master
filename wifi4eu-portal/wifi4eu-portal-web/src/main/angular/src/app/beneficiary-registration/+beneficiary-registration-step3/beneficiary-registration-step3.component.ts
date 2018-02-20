@@ -4,7 +4,7 @@ import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {SharedService} from "../../shared/shared.service";
 import {LocalStorageService} from "angular-2-local-storage/dist/local-storage.service";
-import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
+
 
 
 @Component({
@@ -96,6 +96,7 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.postalCode = '';
             this.userEmailMatches = true;
         }
+        this.associationName = '';
     }
 
     private submit() {
