@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.SuppliedRegionDTO;
-import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -35,6 +32,7 @@ import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
+import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.util.MailService;
 
 import java.security.SecureRandom;
@@ -92,6 +90,8 @@ public class UserService {
     @Autowired
     SuppliedRegionRepository suppliedRegionRepository;
 
+    @Autowired
+    UserThreadsService userThreadsService;
 
     /**
      * The language used in user browser
@@ -178,6 +178,9 @@ public class UserService {
                     removeTempToken(userDTO);
                     for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
                         municipalityService.deleteMunicipality(municipality.getId());
+                    }
+                    for (UserThreadsDTO userThread : userThreadsService.getThreadsByUserId(userDTO.getId())) {
+                        userThreadsService.deleteUserThreads(userThread.getId());
                     }
                     break;
                 case (int) Constant.ROLE_SUPPLIER:
