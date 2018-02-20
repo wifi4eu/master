@@ -58,9 +58,9 @@ export class BeneficiaryProfileComponent {
                                     this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
                                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                                         (municipality: MunicipalityDTOBase) => {
-                                            this.municipalities.push(municipality);
                                             this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                 (mayor: MayorDTOBase) => {
+                                                    this.municipalities.push(municipality);
                                                     this.mayors.push(mayor);
                                                 }
                                             );
