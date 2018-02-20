@@ -19,6 +19,8 @@ export class ListMunicipalitiesComponent implements OnInit {
   region: NutsDTOBase;
   municipalities: MunicipalityDTOBase[] = [];
   dateCached: string = null;
+  searched: boolean = false;
+  regionNameSearched: string = null;
 
   constructor(private nutsApi: NutsApi, private municipalityApi: MunicipalityApi) {
     this.nutsApi.getNutsByLevel(0).subscribe(
@@ -53,6 +55,8 @@ export class ListMunicipalitiesComponent implements OnInit {
           let date = new Date(municipalityCacheDTO.dateCached);
           let datePipe = new DatePipe('default').transform(date, 'dd/MM/yyyy');
           this.dateCached = datePipe;
+          this.searched = true;
+          this.regionNameSearched = this.region.label;
         }
       );
     }

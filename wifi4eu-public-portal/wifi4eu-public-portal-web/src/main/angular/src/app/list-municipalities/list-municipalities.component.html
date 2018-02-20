@@ -60,5 +60,11 @@
         </div>
       </div>
     </div>
+    <div class="row" *ngIf="searched && municipalities.length == 0">
+      <div class="col-md-12">
+        <!-- TODO: check with connect -->
+        <span class="updated-on">No results found for {{regionNameSearched}}</span>
+      </div>
+    </div>
   </div>
 </div>
