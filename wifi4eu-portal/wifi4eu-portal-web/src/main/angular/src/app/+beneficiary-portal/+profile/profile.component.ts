@@ -31,12 +31,7 @@ export class BeneficiaryProfileComponent {
     private displayUser: boolean = false;
     private displayMunicipality: boolean = false;
     private displayMayor: boolean = false;
-    private displayChangePassword: boolean = false;
     private submittingData = false;
-    private currentPassword: string = '';
-    private newPassword: string = '';
-    private repeatNewPassword: string = '';
-    private passwordsMatch: boolean = false;
     private isRegisterHold: boolean = false;
     private userThreads: UserThreadsDTOBase = new UserThreadsDTOBase();
     private threadId: number;
@@ -58,9 +53,9 @@ export class BeneficiaryProfileComponent {
                                     this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
                                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                                         (municipality: MunicipalityDTOBase) => {
-                                            this.municipalities.push(municipality);
                                             this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                 (mayor: MayorDTOBase) => {
+                                                    this.municipalities.push(municipality);
                                                     this.mayors.push(mayor);
                                                 }
                                             );
@@ -168,20 +163,7 @@ export class BeneficiaryProfileComponent {
         this.displayUser = false;
         this.displayMunicipality = false;
         this.displayMayor = false;
-        this.displayChangePassword = false;
-        this.currentPassword = '';
-        this.newPassword = '';
-        this.repeatNewPassword = '';
-        this.passwordsMatch = false;
         Object.assign(this.editedUser, this.user);
-    }
-
-    private checkPasswordsMatch() {
-        if (this.newPassword.length > 0 && this.newPassword == this.repeatNewPassword) {
-            this.passwordsMatch = true;
-        } else {
-            this.passwordsMatch = false;
-        }
     }
 
     private deleteRegistration() {

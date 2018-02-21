@@ -1,147 +1,185 @@
 <div class="clearfix"></div>
-<br>
-<div class="container font beneficiaryContent">
-    <div class="ui-g-12" *ngIf="showAlert">
-        <span class="ui-g-2"></span>
-        <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussionForum.discussion.growl' | translate}}
-        </ux-alert>
-        <span class="ui-g-2"></span>
-    </div>
-    <p class="beneficiaryTitle marginTop">{{ 'discussionForum.legalEntity.issues' | translate }}</p>
-    <p>{{ 'discussionForum.issues.warning' | translate }}</p>
-    <p class="beneficiaryMayor marginTopCountdown">{{ 'shared.legalentity.label' | translate }}</p>
-    <hr class="beneficiaryHr">
-    <ux-accordion-boxes>
-        <custom-accordion-box [isExpanded]="true" [rightSide]="true" [closable]="true">
-            <div class="ui-g">
-                <p class="discussionForumMayors marginTopCountdown"
-                   [innerHTML]="'discussionForum.beneficiary.registration1' | translate:{selfRegistration:user.id}">
-                </p>
+<div class="container font">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-12" *ngIf="showAlert">
+                <span class="col-sm-2"></span>
+                <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussionForum.discussion.growl' | translate}}
+                </ux-alert>
+                <span class="col-sm-2"></span>
             </div>
-            <div class="ui-g discussionForumNoBorders">
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <p class="profileDataDiscussion">{{ 'suppRegistration.legal.address' | translate }}</p>
-                        <p>{{ 'suppRegistration.company.name' | translate }}</p>
-                        <p>{{ 'suppRegistration.vat.label' | translate }}</p>
-                        <p>{{ 'suppRegistration.bic.label' | translate }}</p>
-                        <p>{{ 'discussionForum.supplier.web.site' | translate }}</p>
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="beneficiaryTitle marginTop">{{ 'discussionForum.legalEntity.issues' | translate }}</p>
+                    <p>{{ 'discussionForum.issues.warning' | translate }}</p>
+                    <p class="beneficiaryMayor marginTopCountdown">{{ 'shared.legalentity.label' | translate }}</p>
+                    <hr class="beneficiaryHr">
+                </div>
+            </div>
+            <ux-accordion-boxes>
+
+
+                <custom-accordion-box [isExpanded]="true" [rightSide]="true" [closable]="true">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p class="discussionForumMayors marginTopCountdown"
+                               [innerHTML]="'discussionForum.beneficiary.registration1' | translate:{selfRegistration:user.id}">
+                            </p>
+                        </div>
                     </div>
-                    <div class="ui-g-3">
-                        <p class="profileDataDiscussion profileData">{{ownSupplier.address}}</p>
-                        <p class="profileData">{{ownSupplier.name}}</p>
-                        <p class="profileData">{{ownSupplier.vat}}</p>
-                        <p class="profileData">{{ownSupplier.bic}}</p>
-                        <p class="profileData">{{ownSupplier.website}}</p>
+                    <div class="row discussionForumNoBorders">
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-sm-4"><p>{{ 'suppRegistration.legal.address' | translate }}</p></div>
+                                <div class="col-sm-8"><p class="profileData">{{ownSupplier.address}}</p></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4"><p>{{ 'suppRegistration.company.name' | translate }}</p></div>
+                                <div class="col-sm-8"><p class="profileData">{{ownSupplier.name}}</p></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4"><p>{{ 'suppRegistration.vat.label' | translate }}</p></div>
+                                <div class="col-sm-8"><p class="profileData">{{ownSupplier.vat}}</p></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4"><p>{{ 'suppRegistration.bic.label' | translate }}</p></div>
+                                <div class="col-sm-8"><p class="profileData">{{ownSupplier.bic}}</p></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4"><p>{{ 'discussionForum.supplier.web.site' | translate }}</p></div>
+                                <div class="col-sm-8"><p class="profileData">{{ownSupplier.website}}</p></div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <p class="applicationText">{{ 'shared.beneficiary.discusionText' | translate }}</p>
+                                <button type="button" class="btn changePassword applicationDelete buttonDiscussion"
+                                        (click)="withdrawRegistration()">
+                                    {{ 'shared.beneficiary.withdrawRegistration' | translate }}
+                                </button>
+                                <br>
+                                <button type="button" class="btn changePassword applicationEdit buttonDiscussion"
+                                        (click)="editRegistration()">
+                                    {{ 'discussionForum.beneficiary.editRegistration' | translate }}
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="ui-g-2"></div>
-                    <div class="ui-g-4">
-                        <p class="applicationText">{{ 'shared.beneficiary.discusionText' | translate }}</p>
-                        <button type="button" class="btn btn-primary applicationDelete"
-                                (click)="withdrawRegistration()">
-                            {{ 'shared.beneficiary.withdrawRegistration' | translate }}
-                        </button>
-                        <br>
-                        <button type="button" class="btn btn-primary applicationEdit"
-                                (click)="editRegistration()">
-                            {{ 'discussionForum.beneficiary.editRegistration' | translate }}
+                    <div class="row" *ngIf="hasAuthor">
+                        <div class="col-sm-6" *ngFor="let supplier of otherSuppliers; let i = index">
+                            <p class="discussionForumMayors marginTopCountdown">
+                                {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
+                                <span>{{supplier.userId}}</span>
+                            </p>
+
+                            <div class="row discussionForumNoBorders">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-4"><p>{{ 'suppRegistration.legal.address' | translate }}</p>
+                                        </div>
+                                        <div class="col-sm-8"><p class="profileData">{{supplier.address}}</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4"><p>{{ 'suppRegistration.company.name' | translate }}</p>
+                                        </div>
+                                        <div class="col-sm-8"><p class="profileData">{{supplier.name}}</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4"><p>{{ 'suppRegistration.vat.label' | translate }}</p>
+                                        </div>
+                                        <div class="col-sm-8"><p class="profileData">{{supplier.vat}}</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4"><p>{{ 'suppRegistration.bic.label' | translate }}</p>
+                                        </div>
+                                        <div class="col-sm-8"><p class="profileData">{{supplier.bic}}</p></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4"><p>{{ 'discussionForum.supplier.web.site' | translate
+                                            }}</p></div>
+                                        <div class="col-sm-8"><p class="profileData">{{supplier.website}}</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </custom-accordion-box>
+
+
+            </ux-accordion-boxes>
+            <div class="row">
+                <div class="col-sm-12">
+                    <hr class="beneficiaryHr">
+                    <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.recentConversations.title' |
+                        translate }}</p>
+                    <p>{{ 'discussionForum.recentConversations.text' | translate }}</p>
+                </div>
+            </div>
+            <div *ngIf="!hasMessages" class="row button-content discussion-content">
+                <div class="col-sm-12 noPadding">
+                    <div class="col-sm-8">
+                        <p>{{'discussionForum.noRecentConversations.text' | translate }}</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <button [disabled]="hasMediation" type="button"
+                                class="btn btn-primary changePassword discussionButton"
+                                (click)="newMessage()">
+                            {{'discussionForum.startConversations.text' | translate }}
                         </button>
                     </div>
                 </div>
             </div>
-
-            <div class="ui-g" *ngIf="hasAuthor">
-                <div class="ui-g-6" *ngFor="let supplier of otherSuppliers; let i = index">
-                    <p class="discussionForumMayors marginTopCountdown">
-                        {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
-                        <span>{{supplier.userId}}</span>
-                    </p>
-
-                    <div class="ui-g discussionForumNoBorders">
-                        <div class="ui-g-12">
-                            <div class="ui-g-3">
-                                <p class="profileDataDiscussion">{{ 'suppRegistration.legal.address' | translate }}</p>
-                                <p>{{ 'suppRegistration.company.name' | translate }}</p>
-                                <p>{{ 'suppRegistration.vat.label' | translate }}</p>
-                                <p>{{ 'suppRegistration.bic.label' | translate }}</p>
-                                <p>{{ 'discussionForum.supplier.web.site' | translate }}</p>
-                            </div>
-                            <div class="ui-g-3">
-                                <p class="profileDataDiscussion profileData">{{supplier.address}}</p>
-                                <p class="profileData">{{supplier.name}}</p>
-                                <p class="profileData">{{supplier.vat}}</p>
-                                <p class="profileData">{{supplier.bic}}</p>
-                                <p class="profileData">{{supplier.website}}</p>
+            <ng-container *ngIf="hasMessages">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-9"></div>
+                        <div class="col-sm-3">
+                            <div>
+                                <button [disabled]="hasMediation" type="button"
+                                        class="btn btn-primary changePassword discussionButton"
+                                        (click)="newMessage()">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                    {{'discussionForum.add.reply' | translate }}
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </custom-accordion-box>
-    </ux-accordion-boxes>
-    <hr class="beneficiaryHr">
-    <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.recentConversations.title' | translate }}</p>
-    <p>{{ 'discussionForum.recentConversations.text' | translate }}</p>
-    <div *ngIf="!hasMessages" class="ui-g button-content discussion-content">
-        <div class="ui-g-12 noPadding">
-            <div class="ui-g-8">
-                <p>{{'discussionForum.noRecentConversations.text' | translate }}</p>
-            </div>
-            <div class="ui-g-4">
-                <button [disabled]="hasMediation" type="button" class="btn btn-primary changePassword discussionButton"
-                        (click)="newMessage()">
-                    {{'discussionForum.startConversations.text' | translate }}
-                </button>
-            </div>
+                <div class="discussion-content" *ngFor="let currentMessage of thread.messages; let i = index">
+                    <div class="row discussion-content">
+                        <div class="col-sm-12">
+                            <div class="col-sm-3 backgroundMessage">
+                                <p class="authorMessage">
+                                    {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
+                                    {{thread.messages[i].authorId}}
+                                </p>
+                                <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
+                                <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
+                            </div>
+                            <div class="col-sm-9 paddingMessages arrow_box">
+                                <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-9"></div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn changePassword discussionButton"
+                                    (click)="displayMediation = true" [disabled]="mediationBlocked || hasMediation">
+                                {{'discussionForum.newMediation.button' | translate }}
+                            </button>
+                            <p class="right">{{'discussionForum.newMediation.text' | translate }}</p>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
         </div>
     </div>
-    <ng-container *ngIf="hasMessages">
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <div class="ui-g-9"></div>
-                <div class="ui-g-3">
-                    <div>
-                        <button [disabled]="hasMediation" type="button" class="btn btn-primary changePassword discussionButton"
-                                (click)="newMessage()">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            {{'discussionForum.add.reply' | translate }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="discussion-content" *ngFor="let currentMessage of thread.messages; let i = index">
-            <div class="ui-g discussion-content">
-                <div class="ui-g-12">
-                    <div class="ui-g-3 backgroundMessage">
-                        <p class="authorMessage">
-                            {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
-                            {{thread.messages[i].authorId}}
-                        </p>
-                        <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
-                        <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
-                    </div>
-                    <div class="ui-g-9 paddingMessages arrow_box">
-                        <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <div class="ui-g-9"></div>
-                <div class="ui-g-3">
-                    <button type="button" class="btn btn-primary changePassword discussionButton"
-                            (click)="displayMediation = true" [disabled]="mediationBlocked || hasMediation">
-                        {{'discussionForum.newMediation.button' | translate }}
-                    </button>
-                    <p class="right">{{'discussionForum.newMediation.text' | translate }}</p>
-                </div>
-            </div>
-        </div>
-    </ng-container>
 </div>
-
 <!--MODALS BELOW-->
 
 <div class="container font">
@@ -154,18 +192,23 @@
         <form #messagesForm="ngForm" (submit)="sendMessage()">
             <div class="form-group profileDialog">
                 <div class="form-group">
-                    <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate }}</p>
+                    <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate
+                        }}</p>
                     <p>{{ 'discussionForum.sendMessage.subject' | translate }}</p>
                     <textarea rows="10" cols="20" class="form-control widthMax"
-                              name="newMessage" [(ngModel)]="message" required [readonly]="isSendMessage"></textarea>
+                              name="newMessage" [(ngModel)]="message" required
+                              [readonly]="isSendMessage"></textarea>
                     <div style="text-align: center !important">
-                        <button [disabled]="isSendMessage" type="button" class="btn btn-primary changePasswordModal cancel-button"
+                        <button [disabled]="isSendMessage" type="button"
+                                class="btn btn-primary changePasswordModal cancel-button"
                                 (click)="closeModal()">
                             {{ 'shared.cancel.button' | translate }}
                         </button>
-                        <button [disabled]="isSendMessage" type="submit" class="btn btn-primary changePasswordModal publish-button">
+                        <button [disabled]="isSendMessage" type="submit"
+                                class="btn btn-primary changePasswordModal publish-button">
                             <span style="margin-right: 2px;">
-                              <i *ngIf="isSendMessage && !isSendedMessage" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                              <i *ngIf="isSendMessage && !isSendedMessage" [@enterSpinner]
+                                 class="fa fa-spinner loading-icon"></i>
                             </span>
                             {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
                         </button>

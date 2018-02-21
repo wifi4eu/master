@@ -134,6 +134,7 @@ export class VoucherComponent {
                         // this.loadingButton = false;
                         this.loadingButtons[registrationNumber] = false;
                         this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
+                        this.voucherApplied = "greyImage";
                     }
                 }
             }

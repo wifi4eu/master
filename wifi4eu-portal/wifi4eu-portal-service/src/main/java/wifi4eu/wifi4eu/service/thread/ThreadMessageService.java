@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.entity.thread.ThreadMessage;
 import wifi4eu.wifi4eu.mapper.thread.ThreadMessageMapper;
 import wifi4eu.wifi4eu.repository.thread.ThreadMessageRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -69,6 +70,10 @@ public class ThreadMessageService {
         return threadMessage;
     }
 
+    public ThreadMessageDTO saveThreadMessage(ThreadMessageDTO threadMessageDTO) {
+        return threadMessageMapper.toDTO(threadMessageRepository.save(threadMessageMapper.toEntity(threadMessageDTO)));
+    }
+
     public ThreadMessageDTO deleteThreadMessage(int threadMessageId) {
         ThreadMessageDTO threadMessageDTO = threadMessageMapper.toDTO(threadMessageRepository.findOne(threadMessageId));
         if (threadMessageDTO != null) {
@@ -77,5 +82,9 @@ public class ThreadMessageService {
         } else {
             return null;
         }
+    }
+
+    public List<ThreadMessageDTO> getThreadMessagesByAuthor(int userId) {
+        return threadMessageMapper.toDTOList(Lists.newArrayList(threadMessageRepository.findByAuthorId(userId)));
     }
 }

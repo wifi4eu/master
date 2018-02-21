@@ -174,7 +174,7 @@ body {
   padding-bottom: 60px;
 }
 
-.azul a {
+.azul a, .buttonDiscussion {
   color: white;
 }
 
@@ -446,7 +446,8 @@ body {
   float: right;
   margin-right: 4.6em;
   min-height: 2.5em;
-  margin-top: 0em;
+  margin-top: 1em;
+  margin-bottom: 1em;
   background-color: #2A9FD8;
   padding-top: 0.6em;
   white-space: normal;
@@ -1092,7 +1093,7 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 }
 
 .applicationDelete {
-  width: 15em;
+  width: 14em;
   background-color: #9ca4ab;
   min-height: 50px;
   font-size: 1.4em;
@@ -1101,7 +1102,7 @@ ul.nav.nav-tabs li, .ui-tabview.ui-tabview-top > .ui-tabview-nav li {
 }
 
 .applicationEdit {
-  width: 15em;
+  width: 14em;
   background-color: #004494;
   margin-top: 0.2em;
   min-height: 50px;
