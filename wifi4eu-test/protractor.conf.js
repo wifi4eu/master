@@ -8,7 +8,8 @@ exports.config = {
   specs: [
     './e2e/single-beneficiary.e2e-spec.ts',
     './e2e/supplier-registration.e2e-spec.ts',
-    './e2e/multiple-beneficiary.e2e-spec.ts'
+    './e2e/multiple-beneficiary.e2e-spec.ts',
+    './e2e/voucher-application.e2e-spec.ts'
   ],
   capabilities: {
     'browserName': 'chrome'
