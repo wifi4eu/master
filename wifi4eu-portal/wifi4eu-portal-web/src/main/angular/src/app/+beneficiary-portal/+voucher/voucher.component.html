@@ -59,7 +59,7 @@
                 </p-column>
                 <p-column header="{{ 'benefPortal.voucher.actions' | translate }}" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" (click)="applyForVoucher(i)" *ngIf="!applications[i]"
+                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i)" *ngIf="!applications[i]"
                                 [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
