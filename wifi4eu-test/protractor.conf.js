@@ -6,16 +6,16 @@ const {SpecReporter} = require('jasmine-spec-reporter');
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
-    // './e2e/single-beneficiary.e2e-spec.ts',
-    // './e2e/supplier-registration.e2e-spec.ts',
-    // './e2e/multiple-beneficiary.e2e-spec.ts',
+    './e2e/single-beneficiary.e2e-spec.ts',
+    './e2e/supplier-registration.e2e-spec.ts',
+    './e2e/multiple-beneficiary.e2e-spec.ts',
     './e2e/voucher-application.e2e-spec.ts'
   ],
   capabilities: {
     'browserName': 'chrome'
   },
   directConnect: true,
-  baseUrl: 'http://localhost:4200',
+  baseUrl: 'http://localhost:8080',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,

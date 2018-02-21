@@ -10,13 +10,13 @@
                 </div>
             </div>
             <div class="row">
+                <br>
                 <div class="col-sm-10">
-                    <p class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</p>
+                    <span class="beneficiaryMayor">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
                 </div>
                 <div class="col-sm-2">
                     <a (click)="displayModal('user')" class="edit">
-                        <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate
-                        }}
+                        <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
                     </a>
                 </div>
             </div>
@@ -40,9 +40,11 @@
             <div class="row" *ngIf="municipalities.length > 0 && municipalities.length == mayors.length">
                 <div class="col-sm-12" *ngFor="let municipality of municipalities; let i = index">
                     <div class="row">
+                        <br>
                         <div class="col-sm-10">
-                            <p class="beneficiaryMayor">{{ 'benefRegistration.representativedetails.title' | translate
-                                }}</p>
+                            <span class="beneficiaryMayor">
+                                {{ 'benefRegistration.representativedetails.title' | translate }}
+                            </span>
                         </div>
                         <div class="col-sm-2">
                             <a (click)="displayModal('mayor', i)" class="edit">
@@ -63,15 +65,12 @@
                         <div class="col-sm-4"><p>{{ 'shared.email.label' | translate }}</p></div>
                         <div class="col-sm-8"><p class="profileData">{{mayors[i].email}}</p></div>
                     </div>
+                    <br>
                     <div class="row">
-                        <div class="col-sm-12">
-                            <hr class="beneficiaryHr">
+                        <br>
+                        <div class="col-sm-10">
+                            <span class="beneficiaryMayor">{{ 'shared.municipalityDetails.title' | translate }}</span>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-10"><p class="beneficiaryMayor">{{ 'shared.municipalityDetails.title' |
-                            translate
-                            }}</p></div>
                         <div class="col-sm-2"><a (click)="displayModal('municipality', i)" class="edit">
                             <i class="fa fa-pencil" aria-hidden="true"></i>
                             {{ 'shared.edit.button' | translate }}
@@ -96,6 +95,11 @@
                     <div class="row">
                         <div class="col-sm-4"><p>{{ 'shared.postal-code.label' | translate }}</p></div>
                         <div class="col-sm-8"><p class="profileData">{{municipality.postalCode}}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <hr class="beneficiaryHr">
+                        </div>
                     </div>
                 </div>
 
@@ -380,59 +384,6 @@
                     </button>
                 </div>
                 <div class="col-lg-2"></div>
-            </div>
-        </form>
-    </p-dialog>
-</div>
-
-<div class="container font">
-    <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayChangePassword" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <h1 class="beneficiaryMayorModal">{{'shared.beneficiaryProfile.password' | translate }}</h1>
-        <form #profileFormPassword="ngForm">
-            <div class="form-group profileDialog">
-                <label class="labelModal" for="currentPassword_field">{{ 'currentPassword.label' | translate
-                    }}</label>
-                <input id="currentPassword_field" type="password" [(ngModel)]="currentPassword"
-                       class="form-control beneficiaryProfileI"
-                       name="currentPassword_field" ngcontrol="currentPassword_field"
-                       #currentPassword_field="ngModel"
-                       required>
-                <div [hidden]="currentPassword_field.valid || currentPassword_field.pristine"
-                     class="alert alert-danger">
-                    {{ 'password.required' | translate }}
-                </div>
-                <a class="forgotPassword" routerLink="/forgot">Forgot password?</a><br>
-                <label class="labelModal" for="newPassword_field">{{ 'shared.password.label' | translate }}</label>
-                <input id="newPassword_field" type="password" [(ngModel)]="newPassword"
-                       class="form-control beneficiaryProfileI" name="newPassword_field"
-                       ngcontrol="newPassword_field" #newPassword_field="ngModel"
-                       (input)="checkPasswordsMatch()" required>
-                <div [hidden]="newPassword_field.valid || newPassword_field.pristine" class="alert alert-danger">
-                    {{ 'password.required' | translate }}
-                </div>
-                <label class="labelModal" for="repeatNewPassword_field">
-                    {{ 'confirmNewPassword.label' | translate }}</label>
-                <input id="repeatNewPassword_field" type="password" [(ngModel)]="repeatNewPassword"
-                       class="form-control beneficiaryProfileI" name="repeatNewPassword_field"
-                       ngcontrol="repeatNewPassword_field" #repeatNewPassword_field="ngModel"
-                       (input)="checkPasswordsMatch()" (paste)="preventPaste()" required>
-                <div [hidden]="repeatNewPassword_field.valid || repeatNewPassword_field.pristine"
-                     class="alert alert-danger">
-                    {{'newPassword.required' | translate }}
-                </div>
-                <div class="form-group">
-                    <div style="text-align: center !important">
-                        <button type="button" class="btn btn-primary changePasswordModal" (click)="closeModal()">
-                            {{ 'shared.cancel.button' | translate }}
-                        </button>
-                        <button type="submit" class="btn btn-primary changePasswordModal"
-                                [disabled]="!profileFormPassword.form.valid || !passwordsMatch">
-                            {{ 'shared.change' | translate }}
-                        </button>
-                    </div>
-                </div>
             </div>
         </form>
     </p-dialog>

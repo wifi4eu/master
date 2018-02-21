@@ -1,62 +1,46 @@
-import {Component} from "@angular/core";
-import {CallDTOBase} from "../shared/swagger/model/CallDTO";
-import {SupplierDTO, SupplierDTOBase} from "../shared/swagger/model/SupplierDTO";
-import {MunicipalityDTO, MunicipalityDTOBase} from "../shared/swagger/model/MunicipalityDTO";
-import {SupplierApi} from "../shared/swagger/api/SupplierApi";
-import {UserDTO} from "../shared/swagger/model/UserDTO";
-import {LocalStorageService} from "angular-2-local-storage";
-import {CallApi} from "../shared/swagger/api/CallApi";
+import { Component } from "@angular/core";
+import { LocalStorageService } from "angular-2-local-storage";
+import { UserDTOBase } from "../shared/swagger/model/UserDTO";
+import { CallApi } from "../shared/swagger/api/CallApi";
+import { CallDTOBase } from "../shared/swagger/model/CallDTO";
 
-@Component({templateUrl: 'supplier-portal.component.html', providers: [SupplierApi, CallApi]})
+@Component({
+    templateUrl: 'supplier-portal.component.html',
+    providers: [CallApi]
+})
+
 export class SupplierPortalComponent {
+    /* -- voucherCompetitionState values --
+    0 = There are no calls created
+    1 = There is a call created, but not started. DISPLAY TIMER
+    2 = There is a call created, already started.
+    3 = Call created & started. Someone has selected you as his supplier.
+     */
     private voucherCompetitionState: number;
-    private user: UserDTO;
-    private currentCall: CallDTOBase;
-    private supplierInfo: SupplierDTO;
-    private municipalitiesThatSelectedMe: MunicipalityDTO[];
-    private errorCause: string;
+    private user: UserDTOBase;
+    private currentCall: CallDTOBase = new CallDTOBase();
 
-    constructor(private localStorage: LocalStorageService, private supplierApi: SupplierApi, private callApi: CallApi) {
-        let u = this.localStorage.get('user');
-        this.user = u ? JSON.parse(u.toString()) : null;
-        this.currentCall = new CallDTOBase();
-        this.supplierInfo = new SupplierDTOBase();
-        this.municipalitiesThatSelectedMe = [];
-    }
-
-    ngOnInit() {
+    constructor(private localStorage: LocalStorageService, private callApi: CallApi) {
+        let storedUser = this.localStorage.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+        // Check if there are Calls
         if (this.user != null) {
-            this.supplierApi.getSupplierById(this.user.id).subscribe(
-                (supplier: SupplierDTOBase) => {
-                    this.supplierInfo = supplier;
-                    this.checkForCalls();
-                }, error => {
-                    console.log(error);
-                    this.supplierInfo = null;
-                    this.voucherCompetitionState = -1;
-                    this.errorCause = "benefPortal.supplierportal.suppliernotfound";
-                }
-            );
+            this.checkForCalls();
         }
     }
 
-    checkForCalls() {
+    private checkForCalls() {
         this.callApi.allCalls().subscribe(
             calls => {
-                this.currentCall = calls[0];
-                if (this.currentCall != null) {
-                    // First, check if the call has already began
-                    if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
-                        this.checkIfSelected();
-                    } else {
-                        // The competition hasn't started, display the timer
-                        this.voucherCompetitionState = 1;
-                    }
+                if (calls[0] != null) {
+                    this.currentCall = calls[0];
+                    this.voucherCompetitionState = 1;
                 } else {
-                    // Display "no competition active" message
+                    this.currentCall = null;
                     this.voucherCompetitionState = 0;
                 }
-            }, error => {
+            },
+            error => {
                 console.log(error);
                 this.currentCall = null;
                 this.voucherCompetitionState = 0;
@@ -64,22 +48,7 @@ export class SupplierPortalComponent {
         );
     }
 
-    checkIfSelected() {
-        this.supplierApi.getSupplierByUserId(this.user.id).subscribe(
-            (entities: MunicipalityDTO[]) => {
-                if (entities.length > 0) {
-                    this.municipalitiesThatSelectedMe = entities;
-                    // Display the 'municipalities' screen
-                    this.voucherCompetitionState = 3;
-                } else {
-                    this.voucherCompetitionState = 2;
-                }
-            }, error => {
-                console.log(error);
-                this.supplierInfo = null;
-                this.voucherCompetitionState = -1;
-                this.errorCause = "benefPortal.supplierportal.couldntgetselectedmunicipalities";
-            }
-        );
+    private openCall() {
+        this.voucherCompetitionState = 0;
     }
 }
