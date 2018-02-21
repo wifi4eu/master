@@ -57,7 +57,7 @@
     <p-tabView class="white">
         <p-tabPanel *ngFor="let call of calls; let i=index" [header]="'Call '+(i+1)">
             <p-dataTable [value]="shownApplicationsInfo" [editable]="true" [responsive]="true" sortMode="multiple">
-                <p-column field= header="{{'dgConn.voucher.euRank' | translate}}">
+                <p-column [sortable]="true" field="applicationId" header="{{'dgConn.voucher.euRank' | translate}}">
                     <ng-template let-index="rowIndex" pTemplate="body">
                       <span>{{index+1}}</span>
                     </ng-template>
