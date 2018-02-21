@@ -1,72 +1,90 @@
 <div class="clearfix"></div>
 <div class="container font">
-    <div class="ui-g">
-        <div class="ui-g-12">
-            <p class="beneficiaryTitle">{{ 'benefPortal.profile.title' | translate }}</p>
-        </div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-8">
-            <hr class="beneficiaryHr">
-            <div class="ui-g">
-                <div class="ui-g-10">
+    <div class="clearfix"></div>
+    <div class="row labelModal">
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="beneficiaryTitle">{{ 'benefPortal.profile.title' | translate }}</p>
+                    <hr class="beneficiaryHr">
+                </div>
+            </div>
+            <div class="row">
+                <br>
+                <div class="col-sm-10">
                     <p class="beneficiaryMayor">{{ 'suppRegistration.contact.person' | translate }}</p>
                 </div>
-                <div class="ui-g-2">
+                <div class="col-sm-2">
                     <a (click)="displayModal('contact')" class="edit">
                         <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
                     </a>
                 </div>
             </div>
-            <div class="ui-g">
-                <div class="ui-g-4">
-                    <p>{{ 'shared.name.label' | translate }}</p>
-                    <p>{{ 'shared.surname.label' | translate }}</p>
-                    <p>{{ 'suppRegistration.phone.number' | translate }}</p>
-                    <p>{{ 'shared.email.label' | translate }}</p>
-                </div>
-                <div class="ui-g-8">
-                    <p class="profileData">{{supplier.contactName}}</p>
-                    <p class="profileData">{{supplier.contactSurname}}</p>
-                    <p class="profileData">{{supplier.contactPhonePrefix}}
-                        {{supplier.contactPhoneNumber}}</p>
-                    <p class="profileData">{{supplier.contactEmail}}</p>
+            <div class="row">
+                <div class="col-sm-4"><p>{{ 'shared.name.label' | translate }}</p></div>
+                <div class="col-sm-8"><p class="profileData">{{supplier.contactName}}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"><p>{{ 'shared.surname.label' | translate }}</p></div>
+                <div class="col-sm-8"><p class="profileData">{{supplier.contactSurname}}</p></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"><p>{{ 'suppRegistration.phone.number' | translate }}</p></div>
+                <div class="col-sm-8"><p class="profileData">
+                    {{supplier.contactPhonePrefix}}{{supplier.contactPhoneNumber}}</p></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"><p>{{ 'shared.email.label' | translate }}</p></div>
+                <div class="col-sm-8"><p class="profileData">{{supplier.contactEmail}}</p></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <hr class="beneficiaryHr">
                 </div>
             </div>
-            <hr class="beneficiaryHr">
-            <div class="ui-g">
-                <div class="ui-g-10">
+            <div class="row">
+                <div class="col-sm-10">
                     <p class="beneficiaryMayor">{{ 'suppRegistration.company.details' | translate }}</p>
                 </div>
-                <div class="ui-g-2">
+                <div class="col-sm-2">
                     <a (click)="displayModal('company')">
                         <i class="fa fa-pencil" aria-hidden="true"></i> {{ 'shared.edit.button' | translate }}
                     </a>
                 </div>
             </div>
-            <div class="ui-g">
-                <div class="ui-g-4">
-                    <p>{{ 'suppRegistration.company.name' | translate }}</p>
-                    <p>{{ 'suppRegistration.legal.address' | translate }}</p>
-                    <p>{{ 'suppRegistration.vat.label' | translate }}</p>
-                    <p>{{ 'suppRegistration.bic.label' | translate }}</p>
-                    <p *ngIf="supplier.logo">{{ 'suppRegistration.upload.logo' | translate }}</p>
-                </div>
-                <div class="ui-g-8">
-                    <p class="profileData">{{supplier.name}}</p>
-                    <p class="profileData">{{supplier.address}}</p>
-                    <p class="profileData">{{supplier.vat}}</p>
-                    <p class="profileData">{{supplier.bic}}</p>
-                    <p *ngIf="supplier.logo" class="profileData"><img [src]="supplier.logo" height="50"></p>
+
+            <div class="row">
+                <div class="col-sm-4"><p>{{ 'suppRegistration.company.name' | translate }}</p></div>
+                <div class="col-sm-8"><p class="profileData">{{supplier.name}}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"><p>{{ 'suppRegistration.legal.address' | translate }}</p></div>
+                <div class="col-sm-8"><p class="profileData">{{supplier.address}}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"><p>{{ 'suppRegistration.vat.label' | translate }}</p></div>
+                <div class="col-sm-8"><p class="profileData"> {{supplier.vat}}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"><p>{{ 'suppRegistration.bic.label' | translate }}</p></div>
+                <div class="col-sm-8"><p class="profileData">{{supplier.bic}}</div>
+            </div>
+            <div class="row" *ngIf="supplier.logo">
+                <div class="col-sm-4"><p>{{ 'suppRegistration.upload.logo' | translate }}</p></div>
+                <div class="col-sm-8"><p class="profileData"><img [src]="supplier.logo" height="50"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <hr class="beneficiaryHr">
                 </div>
             </div>
-            <hr class="beneficiaryHr">
-            <div class="ui-g">
-                <div class="ui-g-10">
+            <div class="row">
+                <div class="col-sm-12">
                     <p class="beneficiaryMayor">{{ 'suppRegistration.entity.support' | translate }}</p>
                     <p-tabView *ngIf="selectedCountriesNames.length > 0">
                         <p-tabPanel *ngFor="let country of selectedCountriesNames;" [header]="country">
-                            <div class="ui-g">
+                            <div class="row">
                                 <p-dataTable [value]="supportedRegions[country]" [paginator]="true"
                                              [rows]="10">
                                     <p-column field="label" [sortable]="true"></p-column>
@@ -79,30 +97,26 @@
 
             </div>
         </div>
-        <div class="ui-g-4">
-            <div class="ui-g-12">
-                <div class="ui-g">
-                    <div class="ui-g-12 button-content">
-                        <p>{{ 'shared.change-password.text' | translate }}</p>
-                        <div style="text-align: center !important">
-                            <button type="button" (click)="displayModal('password')"
-                                    class="btn btn-primary changePassword">
-                                {{'shared.change-password.button' | translate }}
-                            </button>
-                        </div>
-                    </div>
+
+        <div class="col-sm-4">
+            <div class="col-sm-12 margin-top button-content">
+                <p>{{ 'shared.change-password.text' | translate }}</p>
+                <div style="text-align: center !important">
+                    <button type="button" (click)="displayModal('password')"
+                            class="btn btn-primary changePassword">
+                        {{'shared.change-password.button' | translate }}
+                    </button>
+
                 </div>
-                <br>
-                <div class="ui-g">
-                    <div class="ui-g-12 button-content">
-                        <p class="applicationText">{{ 'shared.withdraw-registration.text' | translate }}</p>
-                        <div style="text-align: center !important">
-                            <button type="button" (click)="withdrawRegistration()"
-                                    class="btn btn-primary changePassword">
-                                {{'shared.withdraw-registration.button' | translate }}
-                            </button>
-                        </div>
-                    </div>
+            </div>
+
+            <div class="col-sm-12 margin-top button-content">
+                <p class="applicationText">{{ 'shared.withdraw-registration.text' | translate }}</p>
+                <div style="text-align: center !important">
+                    <button type="button" (click)="withdrawRegistration()"
+                            class="btn btn-primary changePassword">
+                        {{'shared.withdraw-registration.button' | translate }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -153,7 +167,8 @@
                 <div class="ui-g-10" style="padding:0.5em 0">
                     <div class="form-group">
                         <div class="ui-g-5">
-                            <label for="contactPhonePrefix">{{ 'suppRegistration.prefix.number' | translate }}</label>
+                            <label for="contactPhonePrefix">{{ 'suppRegistration.prefix.number' | translate
+                                }}</label>
                             <input id="contactPhonePrefix" type="text"
                                    [(ngModel)]="editedSupplier.contactPhonePrefix"
                                    class="form-control"
@@ -165,7 +180,8 @@
                             </div>
                         </div>
                         <div class="ui-g-5">
-                            <label for="contactPhoneNumber">{{ 'suppRegistration.phone.number' | translate }}</label>
+                            <label for="contactPhoneNumber">{{ 'suppRegistration.phone.number' | translate
+                                }}</label>
                             <input id="contactPhoneNumber" type="text"
                                    [(ngModel)]="editedSupplier.contactPhoneNumber"
                                    class="form-control"
@@ -343,7 +359,8 @@
                     {{ 'password.required' | translate }}
                 </div>
                 <a class="forgotPassword" routerLink="/forgot">Forgot password?</a><br>
-                <label class="labelModal" for="newPassword_field">{{ 'shared.password.label' | translate }}</label>
+                <label class="labelModal" for="newPassword_field">{{ 'shared.password.label' | translate
+                    }}</label>
                 <input id="newPassword_field" type="password" [(ngModel)]="newPassword"
                        class="form-control beneficiaryProfileI" name="newPassword_field"
                        ngcontrol="newPassword_field" #newPassword_field="ngModel"
