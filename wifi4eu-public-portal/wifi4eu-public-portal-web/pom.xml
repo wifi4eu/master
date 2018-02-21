@@ -49,6 +49,7 @@
                         <executions>
                             <execution>
                                 <phase>generate-sources</phase>
+                                <id>1</id>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
@@ -140,6 +141,21 @@
     <build>
         <finalName>wifi4eu-public</finalName>
         <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/angular/src/app/shared/swagger</directory>
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
