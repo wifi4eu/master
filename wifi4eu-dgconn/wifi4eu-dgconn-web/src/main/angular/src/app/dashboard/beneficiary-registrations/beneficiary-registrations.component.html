@@ -25,7 +25,7 @@
       [rows]="numberRowsTable" [paginator]="true">
       <p-column field="lau.name1" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
       <p-column field="lau.countryCode" [sortable]="true" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
-      <p-column field="status" header="{{ 'dgConn.status' | translate }}" styleClass="text-center" [sortable]="true">
+      <p-column field="status" [sortable]="true" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
         <ng-template let-row="rowData" pTemplate="body">
           <!-- <span>{{ row.status ? 'Applied' : 'Registered' }}</span> -->
           <span *ngIf="row.status">{{'dgConn.beneficiaries.applied' | translate }}</span>
@@ -47,12 +47,11 @@
           <span *ngIf="!row.mediation">{{ 'dgConn.no' | translate }}</span>
         </ng-template>
       </p-column>
-      <p-column [sortable]="true" header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
+      <p-column header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
         <ng-template let-lauData="rowData" pTemplate="body">
-          <a [routerLink]="['./', lauData.lau.id]">
-            <span class="fa fa-eye"></span>
-            <span>{{ 'dgConn.view' | translate }}</span>
-          </a>
+          <span [routerLink]="['./', lauData.lau.id]" class="action-label">
+            <span class="fa fa-eye"></span> <span>{{ 'dgConn.view' | translate }}</span>
+          </span>
         </ng-template>
       </p-column>
       <footer>
