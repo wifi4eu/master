@@ -6,6 +6,7 @@ public class ApplicationVoucherInfoDTO {
     private String municipalityName;
     private String countryName;
     private boolean voucherAwarded;
+    private int rankingInCountry;
 
     public ApplicationVoucherInfoDTO() {
     }
@@ -56,5 +57,13 @@ public class ApplicationVoucherInfoDTO {
 
     public void setVoucherAwarded(boolean voucherAwarded) {
         this.voucherAwarded = voucherAwarded;
+    }
+
+    public int getRankingInCountry() {
+        return rankingInCountry;
+    }
+
+    public void setRankingInCountry(int rankingInCountry) {
+        this.rankingInCountry = rankingInCountry;
     }
 }

@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Map;
+import java.util.HashMap;
 
 @Service
 public class ApplicationService {
@@ -106,8 +108,27 @@ public class ApplicationService {
                 }
             }
         }
+        applicationsVoucherInfo = setRankingApplicationsInCountry(applicationsVoucherInfo);
         return applicationsVoucherInfo;
     }
+
+    public List<ApplicationVoucherInfoDTO> setRankingApplicationsInCountry(List<ApplicationVoucherInfoDTO> applicationsVoucherInfo){
+        List<ApplicationVoucherInfoDTO> listApplicationsRanked = new ArrayList<>();
+        Map<String, List<ApplicationVoucherInfoDTO>> map = new HashMap<>();
+        for(ApplicationVoucherInfoDTO applicationVoucherInfoDTO: applicationsVoucherInfo){
+            List<ApplicationVoucherInfoDTO> emptyList = new ArrayList<>();
+            if(map.containsKey(applicationVoucherInfoDTO.getCountryName())){
+                emptyList = new ArrayList<>(map.get(applicationVoucherInfoDTO.getCountryName()));
+            }
+            emptyList.add(applicationVoucherInfoDTO);
+            applicationVoucherInfoDTO.setRankingInCountry(emptyList.size());
+            map.put(applicationVoucherInfoDTO.getCountryName(), emptyList);
+            listApplicationsRanked.add(applicationVoucherInfoDTO);
+        }
+        return listApplicationsRanked;
+    }
+
+
 
     public ApplicationVoucherInfoDTO getApplicationsVoucherInfoByApplication(int applicationId) {
         ApplicationVoucherInfoDTO appVoucherInfoDTO = null;
