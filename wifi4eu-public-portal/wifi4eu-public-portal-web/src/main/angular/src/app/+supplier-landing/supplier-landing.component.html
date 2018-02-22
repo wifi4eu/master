@@ -3,65 +3,74 @@
     <div class="container-fluid header-fluid">
 
         <div class="contenedor row">
-            <div class="col-xl-12">
+            <div class="col-sm-12">
                 <img id="img-wifiLanding" src="assets/images/wifi_benef.png" alt="">
             </div>
         </div>
     </div>
 </div>
-
-<div class="container">
+<div class="container rowMarginBottom">
     <img id="firstBackgroundBenefLanding" src="assets/images/copy-6.png">
-    <div class="ui-g">
-        <div class="ui-g-12">
+    <div class="row">
+        <div class="col-sm-12">
             <h2 class="title-home">{{ 'supp.landingpage.title' | translate }}</h2>
         </div>
     </div>
-    
-    <img id="benefLandingThirdBackground" src="assets/images/copy-6.png">
-    <div class="ui-g-12">
-        <div class="ui-g-6">
-            <p class="landingText" [innerHTML]="'supp.landingpage.elegibleText3' | translate"></p>
-            <p class="landingText" [innerHTML]="'supp.landingpage.elegibleText4' | translate"></p>
+
+    <div class="row">
+        <div class="col-sm-12">
         </div>
-        <div class="ui-g-6">
-            <img id="benefLandingSecondBackground" src="assets/images/copy-6.png">
+    </div>
+    <img id="benefLandingThirdBackground" src="assets/images/copy-6.png">
+    <div class="row">
+        <div class="col-sm-6">
+            <p class="landingText" [innerHTML]="'supp.landingpage.elegibleText3' | translate"></p>
+        </div>
+        <div class="col-sm-6">
             <p class="landingText" [innerHTML]="'supp.landingpage.elegibleText2' | translate"></p>
         </div>
     </div>
-
-    <div class="ui-g-12">
-        <div class="ui-g-2"></div>
-        <div class="ui-g-8">
-            <p class="europeans">{{ 'benefLanding.proceed' | translate }}</p>
-            <!--
-            <p>{{'benefLanding.ecasmessage'| translate }}</p>
-            -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+                <img id="benefLandingSecondBackground" src="assets/images/copy-6.png">
+                <p class="landingText" [innerHTML]="'supp.landingpage.elegibleText4' | translate"></p>
+            </div>
         </div>
-        <div class="ui-g-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <p class="europeans">{{ 'benefLanding.proceed' | translate }}</p>
+                <!--
+                <p>{{'benefLanding.ecasmessage'| translate }}</p>
+                -->
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
     </div>
 
     <!--buttons-->
-    <div id="navigation-buttons" class="form-group center">
-        <div class="ui-g-12">
-            <div class="ui-g-3 ui-sm-1 ui-md-2 ui-lg-3"></div>
-            <div class="ui-g-6 ui-md-4 ui-lg-3 ui-xs-12 ui-sm-5">
-                <a href="/#/home">
-                    <button class="btn btn-primary cancel-button">
-                        {{ 'shared.no' | translate }}
-                    </button>
-                </a>
-            </div>
-            <!-- Next button -->
-            <div class="ui-g-6 ui-md-4 ui-lg-3 ui-xs-12 ui-sm-5">
-                <a href="/wifi4eu/#/supplier-registration" (click)="storeRedirectionCookie()">
-                    <button class="btn btn-primary publish-button">
-                        {{ 'shared.yes' | translate }}
-                    </button>
-                </a>
-            </div>
-            <div class="ui-g-3 ui-md-2 ui-lg-3 hidden-sm-down"></div>
+    <div id="navigation-buttons" class="form-group center row">
+        <div class="col-lg-2"></div>
+        <div class="col-sm-6 col-lg-4">
+            <a href="/#/home">
+                <button class="btn btn-primary cancel-button">
+                    {{ 'shared.no' | translate }}
+                </button>
+            </a>
         </div>
+        <!-- Next button -->
+        <div class="col-sm-6 col-lg-4">
+            <a href="/wifi4eu/#/supplier-registration" (click)="storeRedirectionCookie()">
+                <button class="btn btn-primary publish-button">
+                    {{ 'shared.yes' | translate }}
+                </button>
+            </a>
+        </div>
+        <div class="col-lg-2"></div>
     </div>
 </div>
 
