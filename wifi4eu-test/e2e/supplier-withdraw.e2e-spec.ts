@@ -2,7 +2,7 @@ import {browser, by, element} from 'protractor';
 
 describe('wifi4eu test supplier registration', () => {
 
-  it('should have a title', function() {
+  it('should have a supplier and it will be removed', function() {
     browser.get(browser.baseUrl + "/wifi4eu/#/supplier-portal/profile");
 
     browser.getCurrentUrl().then(function (url) {
