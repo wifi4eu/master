@@ -8,10 +8,10 @@ import java.util.List;
 @Entity
 @Table(name = "threads")
 public class Thread {
-    @Id
-    @SequenceGenerator(name = "thread_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "thread_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "title")
