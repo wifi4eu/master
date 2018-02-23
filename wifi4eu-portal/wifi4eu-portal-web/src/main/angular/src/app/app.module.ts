@@ -15,7 +15,6 @@ import {ActivationComponent} from "./activation/activation.component";
 import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
 import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {NotFoundComponent} from "./not-found/not-found.component"
-// import {AppGuard} from "./app.guard";
 import {LocalStorageModule} from 'angular-2-local-storage';
 import {SharedService} from "./shared/shared.service";
 // import {AbacComponent} from "./+abac/abac.component";
