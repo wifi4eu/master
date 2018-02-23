@@ -1,5 +1,4 @@
 import {Component, enableProdMode, OnInit, Output} from "@angular/core";
-import {Router} from "@angular/router";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {UxLayoutLink, UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
@@ -9,8 +8,6 @@ import {UserDTOBase} from "./shared/swagger/model/UserDTO";
 import {UserApi} from "./shared/swagger/api/UserApi";
 import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
 import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
-import {Http} from "@angular/http";
-import {Observable} from "rxjs/Observable";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {environment} from '../environments/environment';
 import { Subject } from "rxjs/Subject";
@@ -37,9 +34,9 @@ export class AppComponent implements OnInit {
     loginSuccessEmiter = this.subjectLoginSuccess.asObservable();
 
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
-    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,is"
+    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,is";
 
-    constructor(private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
+    constructor(private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
         translateService.setDefaultLang('en');
         let language = this.localStorageService.get('lang');
         if (language) {
@@ -54,10 +51,7 @@ export class AppComponent implements OnInit {
 
         this.profileUrl = '';
 
-        this.menuLinks = [
-          new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
-          new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
-        ];
+        this.menuLinks = [];
 
         this.visibility = [false, false, false, false, false];
         this.children = [];
@@ -73,7 +67,7 @@ export class AppComponent implements OnInit {
                 }
             }
           );
-        })
+        });
 
         this.initChildren();
 
@@ -85,33 +79,13 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        let publicRedirection = this.localStorageService.get("public-redirection");
-        this.localStorageService.remove('user');
         this.userApi.ecasLogin().subscribe(
             (response: ResponseDTOBase) => {
               if(response.success){
                 this.user = response.data;
+                this.localStorageService.remove('user');
                 this.localStorageService.set('user', JSON.stringify(response.data));
 
-                switch (this.user.type) {
-                    case 1:
-                        this.router.navigateByUrl('/supplier-portal/profile');
-                        break;
-                    case 2:
-                    case 3:
-                        this.router.navigateByUrl('/beneficiary-portal/profile');
-                        break;
-                    case 5:
-                        this.router.navigateByUrl('/dgconn-portal');
-                        break;
-                    default:
-                        if (publicRedirection) {
-                            this.router.navigateByUrl(String(publicRedirection));
-                            this.localStorageService.remove("public-redirection");
-                        }
-                        //this.router.navigateByUrl('/home');
-                        break;
-                }
                 this.subjectLoginSuccess.next(response.data);
               }
               else{
