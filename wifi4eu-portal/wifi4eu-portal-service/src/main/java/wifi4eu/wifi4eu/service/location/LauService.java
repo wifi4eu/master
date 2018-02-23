@@ -36,7 +36,7 @@ public class LauService {
 
     @Cacheable(value = "portalGetLausByCountryCodeAndName1ContainingIgnoreCase")
     public List<LauDTO> getLausByCountryCodeAndName1ContainingIgnoreCase(String countryCode, String name1) {
-        return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByCountryCodeAndName1ContainingIgnoreCase(countryCode, name1)));
+        return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByCountryCodeAndName1ContainingIgnoreCaseOrderByName1(countryCode, name1)));
     }
 
     public LauDTO updatePhysicalAddress(LauDTO lauDTO){
