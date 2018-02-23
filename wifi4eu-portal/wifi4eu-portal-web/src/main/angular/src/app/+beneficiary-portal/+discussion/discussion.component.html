@@ -195,23 +195,30 @@
                     <textarea rows="10" cols="20" class="form-control widthMax"
                               name="newMessage" (keydown)="checkHasMessage()" [(ngModel)]="message"
                               [readonly]="isSendMessage" required></textarea>
-                    <div style="text-align: center !important">
-                        <button [disabled]="isSendMessage" type="button"
-                                class="btn btn-primary changePasswordModal cancel-button"
-                                (click)="closeModal()">
-                            {{ 'shared.cancel.button' | translate }}
-                        </button>
-                        <button type="submit" [disabled]="isSendMessage || !hasMessage"
-                                class="btn btn-primary changePasswordModal publish-button">
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4">
+                            <button [disabled]="isSendMessage" type="button"
+                                    class="btn btn-primary changePassword cancel-button"
+                                    (click)="closeModal()">
+                                {{ 'shared.cancel.button' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="submit" [disabled]="isSendMessage || !hasMessage"
+                                    class="btn btn-primary changePassword confirm-button">
                           <span style="margin-right: 2px;">
                             <i *ngIf="isSendMessage && !isSendedMessage" [@enterSpinner]
                                class="fa fa-spinner loading-icon"></i>
                           </span>
-                            {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
-                        </button>
+                                {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-2"></div>
                     </div>
                 </div>
             </div>
+
         </form>
     </p-dialog>
 </div>
