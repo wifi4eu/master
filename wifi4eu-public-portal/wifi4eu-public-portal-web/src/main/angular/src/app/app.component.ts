@@ -6,17 +6,23 @@ import {SharedService} from "./shared/shared.service";
 import {LocalStorageService} from "angular-2-local-storage";
 import {CustomLayoutLink} from "./shared/components/custom-layout-nav-bar-top-menu/custom-layout-link";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {UserApi} from "./shared/swagger/api/UserApi";
+import {UserDTOBase} from "./shared/swagger/model/UserDTO";
+import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
+import {environment} from '../environments/environment';
 
 enableProdMode();
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss'],
+    providers: [UserApi]
 })
 
 export class AppComponent {
     private menuLinks: Array<CustomLayoutLink>;
+    private user: UserDTOBase;
     private visibility: boolean[];
     private actualDate: string;
     private menuTranslations: Map<String, String>;
@@ -24,7 +30,7 @@ export class AppComponent {
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,is";
 
-    constructor(private translateService: TranslateService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService) {
+    constructor(private translateService: TranslateService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private userApi: UserApi) {
         translateService.setDefaultLang('en');
         let language = this.localStorage.get('lang');
         if (language) {
@@ -57,6 +63,9 @@ export class AppComponent {
     }
 
     updateHeader() {
+        let storedUser = this.localStorage.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
 
@@ -89,6 +98,29 @@ export class AppComponent {
                 this.menuTranslations.set('itemMenu.suppReg', translatedString);
                 num++;
                 this.stringsTranslated.next(num)
+            }
+        );
+    }
+
+    logout() {
+        this.user = null;
+        this.localStorage.remove('user');
+
+        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
+
+        this.userApi.doCompleteSignOut().subscribe(
+            (response: string) => {
+                console.log(response);
+            }, error => {
+                console.log(error);
+            }
+        );
+        this.userApi.ecasLogout().subscribe(
+            (response: ResponseDTOBase) => {
+                window.location.href = environment['logoutUrl'];
+            }, error => {
+                console.log(error);
+                window.location.href = environment['logoutUrl'];
             }
         );
     }
