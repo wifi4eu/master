@@ -1,17 +1,19 @@
-import {NgModule} from "@angular/core";
-import {RouterModule} from "@angular/router";
-import {ActivationComponent} from "./activation/activation.component";
-import {ForgotComponent} from "./+forgot/forgot.component";
-import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
-import {NotFoundComponent} from "./not-found/not-found.component"
-import {AppGuard} from "./app.guard";
-import {HomeComponent} from "./home/home.component";
+import { NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
+import { ActivationComponent } from "./activation/activation.component";
+import { ForgotComponent } from "./+forgot/forgot.component";
+import { HelpdeskComponent } from "./+helpdesk/helpdesk.component";
+import { NotFoundComponent } from "./not-found/not-found.component"
+import { AppGuard } from "./app.guard";
+// import {AppGuard} from "./app.guard";
+import { HomeComponent } from "./home/home.component";
+// import {EcasComponent} from "./+ecas/ecas.component";
 
 @NgModule({
     imports: [RouterModule.forRoot([
         {
             path: '',
-            redirectTo: 'home',
+            redirectTo: 'beneficiary-registration',
             pathMatch: 'full'
         }, {
             path: 'home',
@@ -44,7 +46,7 @@ import {HomeComponent} from "./home/home.component";
         }, {
             path: 'supplier-registration',
             loadChildren: 'app/supplier-registration/supplier-registration.module#SupplierRegistrationModule',
-            canActivate: [AppGuard]
+            //canActivate: [AppGuard]
         }, {
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
@@ -57,7 +59,7 @@ import {HomeComponent} from "./home/home.component";
             path: '**',
             redirectTo: 'notfound'
         }
-    ], {useHash: true})],
+    ], { useHash: true })],
     providers: [AppGuard],
     exports: [RouterModule]
 })
