@@ -10,7 +10,15 @@
                                               (languageChanged)="changeLanguage($event)"></ux-language-selector>
                         <div class="profile-wrapper" isCompact="false">
                             <div class="left-panel">
-                                <div class="user-infos">
+                                <div *ngIf="user" class="user-infos">
+                                    <span class="wellcomeHeader">{{ 'shared.loggedin.as' | translate }}: <a
+                                            [routerLink]="profileUrl">
+                                        <strong class="color-primary">{{user.ecasUsername}}</strong></a></span><br>
+                                    <button (click)="logout()" class="headerButton">
+                                        {{ 'shared.logout.label' | translate }}
+                                    </button>
+                                </div>
+                                <div *ngIf="!user" class="user-infos">
                                     <strong class="color-primary">
                                     </strong>
                                     <a href="../../../wifi4eu">
