@@ -145,20 +145,18 @@
                     </div>
                 </div>
             </div>
-            <div class="discussion-content" *ngFor="let currentMessage of thread.messages; let i = index">
-                <div class="row discussion-content">
-                    <div class="col-sm-12">
-                        <div class="col-sm-3 backgroundMessage">
-                            <p class="authorMessage">
-                                {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
-                                {{thread.messages[i].authorId}}
-                            </p>
-                            <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
-                            <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
-                        </div>
-                        <div class="col-sm-9 paddingMessages arrow_box">
-                            <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
-                        </div>
+            <div class="discussion-content row" *ngFor="let currentMessage of thread.messages; let i = index">
+                <div class=" discussion-content">
+                    <div class="col-sm-3 backgroundMessage">
+                        <p class="authorMessage">
+                            {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
+                            {{thread.messages[i].authorId}}
+                        </p>
+                        <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
+                        <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
+                    </div>
+                    <div class="col-sm-9 paddingMessages arrow_box">
+                        <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
                     </div>
                 </div>
             </div>
