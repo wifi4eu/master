@@ -118,13 +118,17 @@
         <eclipselink.logging.level>FINE</eclipselink.logging.level>
         <eclipselink.logging.level.sql>FINE</eclipselink.logging.level.sql>
         <eclipselink.logging.parameters>true</eclipselink.logging.parameters>
+        <eclipselink.target.database>SQLServer</eclipselink.target.database>
 
         <!-- App settings -->
         <schemes>http</schemes>
         <server.address>localhost:8080</server.address>
         <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
         <server.test.port>8080</server.test.port>
+        <!--
         <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
+        -->
+        <server.azure.dev.address>wifi4eu-dev.everincloud.com</server.azure.dev.address>
         <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
         <server.azure.test2.address>wifi4eutest.eu</server.azure.test2.address>
         <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
@@ -188,7 +192,7 @@
                 <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <ecas.config.strength>BASIC</ecas.config.strength>
-                <mail.serv.location>https://wifi4eudev.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+                <mail.serv.location>https://dev.wifi4eu.everincloud.com/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
@@ -207,7 +211,7 @@
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
                 <war.output.directory/>
-                <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
                 <ecas.server.address>${server.azure.test.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <mail.serv.location>https://wifi4eutest.azurewebsites.net/wifi4eu/#/</mail.serv.location>

@@ -298,6 +298,8 @@
   "dgConn.voucher.amountVoucher": "Amount of vouchers",
   "dgConn.voucher.cancelAssignment": "Cancel simulation",
   "dgConn.voucher.totalRequest": "Total Requests:",
+  "dgConn.voucher.euRank": "EU Rank",
+  "dgConn.voucher.countryRank": "Country Rank",
   "dgConn.stats.downloadData": "Download Data",
   "dgConn.applications": "Applications",
   "dgConn.verifications": "Verifications",

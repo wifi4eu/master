@@ -12,7 +12,7 @@
 
     <appender name="FILE_APPENDER" class="org.apache.log4j.RollingFileAppender">
         <param name="append" value="false"/>
-        <param name="file" value="${catalina.home}/logs/wifi4eu_app.log"/>
+        <param name="file" value="${catalina.home}/logs/wifi4eu-public_app.log"/>
         <!--Taille max pour le fichier de log -->
         <param name="MaxFileSize" value="10MB"/>
         <!-- Nombre de fichiers de logs (sauvegardes). -->

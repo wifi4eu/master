@@ -19,8 +19,7 @@ CREATE TABLE dbo.users (
   [type]          INT          NULL     DEFAULT NULL,
   [verified]      SMALLINT      NOT NULL DEFAULT 0,
   PRIMARY KEY ([id])
-)
- ;
+);
 
 -- -----------------------------------------------------
 -- Table `dbo`.`rights`
@@ -31,8 +30,7 @@ CREATE TABLE dbo.rights (
   [rightdesc] VARCHAR(255) NULL,
   [type]      INT          NULL     DEFAULT NULL,
   PRIMARY KEY ([id])
-)
- ;
+);
 
 -- -----------------------------------------------------
 -- Table `dbo`.`laus`
@@ -50,8 +48,7 @@ CREATE TABLE dbo.laus (
   [area]             VARCHAR(255) NULL,
   [physical_address] VARCHAR(255) NULL,
   PRIMARY KEY ([id])
-)
- ;
+);
 
 -- -----------------------------------------------------
 -- Table `dbo`.`municipalities`
@@ -71,8 +68,7 @@ CREATE TABLE dbo.municipalities (
   REFERENCES dbo.laus ([id])
     ON DELETE CASCADE
     ON UPDATE CASCADE
-)
- ;
+);
 
 CREATE INDEX [fk_municipalities_laus1_idx] ON dbo.municipalities ([lau] ASC);
 
@@ -145,8 +141,7 @@ CREATE TABLE dbo.threads (
   [type]      INT          NOT NULL,
   [mediation] INT                   DEFAULT 0,
   PRIMARY KEY ([id])
-)
- ;
+);
 
 -- -----------------------------------------------------
 -- Table `dbo`.`thread_messages`
@@ -169,8 +164,7 @@ CREATE TABLE dbo.thread_messages (
   REFERENCES dbo.users ([id])
     ON DELETE CASCADE
     ON UPDATE CASCADE
-)
- ;
+);
 
 CREATE INDEX [fk_thread_idx] ON dbo.thread_messages ([thread] ASC);
 CREATE INDEX [fk_author_idx] ON dbo.thread_messages ([author] ASC);
@@ -195,6 +189,7 @@ CREATE TABLE dbo.suppliers (
   [_user]                INT          NULL,
   [legal_file1]          VARCHAR(max)     NULL,
   [legal_file2]          VARCHAR(max)     NULL,
+  [_status]              INT      NULL,
   PRIMARY KEY ([id])
  ,
   CONSTRAINT [fk_suppliers_users]
@@ -202,8 +197,7 @@ CREATE TABLE dbo.suppliers (
   REFERENCES dbo.users ([id])
     ON DELETE CASCADE
     ON UPDATE CASCADE
-)
- ;
+);
 
 CREATE INDEX [fk_suppliers_users_idx] ON dbo.suppliers ([_user] ASC);
 
