@@ -13,6 +13,8 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpSession;
+
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/user", description = "User object REST API services")
@@ -59,6 +61,45 @@ public class UserResource {
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'resendEmail' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Logout session")
+    @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String doCompleteSignOut()  {
+        _log.debug("Logging out");
+
+        final HttpSession session = RecoverHttpSession.session();
+        String outMessage = "page.logout";
+
+        if (session == null) {
+            _log.info("Session is expired.");
+            outMessage = "page.not.session";
+        } else {
+            _log.info("Expiring session.");
+            doLogout(session);
+        }
+
+        return outMessage;
+    }
+
+    private void doLogout(HttpSession session) {
+        session.invalidate();
+    }
+
+    @ApiOperation(value = "Service to do Login with a ECAS User")
+    @RequestMapping(value = "/ecaslogout", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO ecasLogout() {
+        try {
+            _log.info("[i] ecasLogout");
+            return new ResponseDTO(true, userService.getLogoutEnviroment(), null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'login' with ECAS operation.", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }

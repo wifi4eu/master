@@ -32,14 +32,16 @@ def init_worksheet(filename):
 
     # Add format conditionals
     # Red if less than 24 translations for a key
-    worksheet.conditional_format('B2:B3000', {'type': 'cell', 'criteria': 'less than', 'value': 24, 'format': format1})
+    worksheet.conditional_format('B2:B3000', {
+                                 'type': 'cell', 'criteria': 'less than', 'value': 24, 'format': format1})
     # Yellow if it is an internal key
     worksheet.conditional_format('A2:A3000', {'type': 'text',
                                               'criteria': 'begins with',
                                               'value': 'int.',
                                               'format': format2})
     # Red if a field is blank
-    worksheet.conditional_format('C2:Z3000', {'type': 'blanks', 'format': format1})
+    worksheet.conditional_format(
+        'C2:Z3000', {'type': 'blanks', 'format': format1})
 
     return workbook, worksheet, bold
 
@@ -68,7 +70,8 @@ def main():
         worksheet.write(0, i + 2, filename, bold)
 
         # Add vertical counts per language
-        worksheet.write(1, i + 2, '=COUNTA(%c3:%c3000)' % (chr(i + 99), chr(i + 99)), bold)
+        worksheet.write(1, i + 2, '=COUNTA(%c3:%c3000)' %
+                        (chr(i + 99), chr(i + 99)), bold)
 
         aux_data = dict(data)
         # Remove labels not present in base file but in translation file
@@ -85,7 +88,8 @@ def main():
             if i == 0:
                 worksheet.write(j + 2, i, key)
                 # Add horizontal counts
-                worksheet.write(j + 2, i + 1, '=COUNTA(C%d:ZZ%d)' % (j + 3, j + 3), bold)
+                worksheet.write(j + 2, i + 1, '=COUNTA(C%d:ZZ%d)' %
+                                (j + 3, j + 3), bold)
             worksheet.write(j + 2, i + 2, aux_data[key])
 
     workbook.close()

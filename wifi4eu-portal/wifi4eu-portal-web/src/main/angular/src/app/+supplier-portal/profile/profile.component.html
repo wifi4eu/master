@@ -102,7 +102,7 @@
             <div class="col-sm-12 margin-top button-content">
                 <p>{{ 'shared.change-password.text' | translate }}</p>
                 <div style="text-align: center !important">
-                    <button type="button" (click)="displayModal('password')"
+                    <button id="changePassword" type="button" (click)="displayModal('password')"
                             class="btn btn-primary changePassword">
                         {{'shared.change-password.button' | translate }}
                     </button>
@@ -113,7 +113,7 @@
             <div class="col-sm-12 margin-top button-content">
                 <p class="applicationText">{{ 'shared.withdraw-registration.text' | translate }}</p>
                 <div style="text-align: center !important">
-                    <button type="button" (click)="withdrawRegistration()"
+                    <button id="withdrawRegistration" type="button" (click)="withdrawRegistration()"
                             class="btn btn-primary changePassword">
                         {{'shared.withdraw-registration.button' | translate }}
                     </button>

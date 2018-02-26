@@ -48,25 +48,27 @@
                         <div class="col-sm-4"><p>{{ 'shared.postal-code.label' | translate }}</p></div>
                         <div class="col-sm-8"><p class="profileData">{{myMunicipality.postalCode}}</p></div>
                     </div>
-
                 </div>
 
-
-                <div class="row">
-                    <div class="col-sm-4">
-                        <p class="applicationText">{{ 'discussionForum.editButtons' | translate }}</p>
-                        <button type="button" class="btn btn-primary applicationDelete"
-                                (click)="withdrawRegistration()">
-                            {{ 'discussionForum.withdraw' | translate }}
-                        </button>
-                        <br>
-                        <button type="button" class="btn btn-primary applicationEdit"
-                                (click)="editRegistration()">
-                            {{ 'discussionForum.editRegistration' | translate }}
-                        </button>
+                <div class="col-sm-4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p class="applicationText">{{ 'discussionForum.editButtons' | translate }}</p>
+                            <button type="button" class="btn btn-primary changePassword applicationDelete"
+                                    (click)="withdrawRegistration()">
+                                {{ 'discussionForum.withdraw' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-primary changePassword applicationEdit"
+                                    (click)="editRegistration()">
+                                {{ 'discussionForum.editRegistration' | translate }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+
 
             <!--<div class="ui-g" *ngIf="hasAuthor && municipalities.length == messageAuthors.length">-->
             <div class="row" *ngIf="otherMunicipalities.length == otherRegistrations.length">
@@ -143,20 +145,18 @@
                     </div>
                 </div>
             </div>
-            <div class="discussion-content" *ngFor="let currentMessage of thread.messages; let i = index">
-                <div class="row discussion-content">
-                    <div class="col-sm-12">
-                        <div class="col-sm-3 backgroundMessage">
-                            <p class="authorMessage">
-                                {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
-                                {{thread.messages[i].authorId}}
-                            </p>
-                            <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
-                            <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
-                        </div>
-                        <div class="col-sm-9 paddingMessages arrow_box">
-                            <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
-                        </div>
+            <div class="discussion-content row" *ngFor="let currentMessage of thread.messages; let i = index">
+                <div class=" discussion-content">
+                    <div class="col-sm-3 backgroundMessage">
+                        <p class="authorMessage">
+                            {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
+                            {{thread.messages[i].authorId}}
+                        </p>
+                        <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
+                        <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
+                    </div>
+                    <div class="col-sm-9 paddingMessages arrow_box">
+                        <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
                     </div>
                 </div>
             </div>
@@ -193,23 +193,30 @@
                     <textarea rows="10" cols="20" class="form-control widthMax"
                               name="newMessage" (keydown)="checkHasMessage()" [(ngModel)]="message"
                               [readonly]="isSendMessage" required></textarea>
-                    <div style="text-align: center !important">
-                        <button [disabled]="isSendMessage" type="button"
-                                class="btn btn-primary changePasswordModal cancel-button"
-                                (click)="closeModal()">
-                            {{ 'shared.cancel.button' | translate }}
-                        </button>
-                        <button type="submit" [disabled]="isSendMessage || !hasMessage"
-                                class="btn btn-primary changePasswordModal publish-button">
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4">
+                            <button [disabled]="isSendMessage" type="button"
+                                    class="btn btn-primary changePassword cancel-button"
+                                    (click)="closeModal()">
+                                {{ 'shared.cancel.button' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="submit" [disabled]="isSendMessage || !hasMessage"
+                                    class="btn btn-primary changePassword confirm-button">
                           <span style="margin-right: 2px;">
                             <i *ngIf="isSendMessage && !isSendedMessage" [@enterSpinner]
                                class="fa fa-spinner loading-icon"></i>
                           </span>
-                            {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
-                        </button>
+                                {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-2"></div>
                     </div>
                 </div>
             </div>
+
         </form>
     </p-dialog>
 </div>

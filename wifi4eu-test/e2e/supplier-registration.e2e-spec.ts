@@ -29,7 +29,7 @@ describe('wifi4eu test supplier registration', () => {
     element(by.id('accountNumber')).sendKeys('Account Number');
     element(by.id('website')).sendKeys('http://everis.com');
     var path = require('path');
-    var fileToUpload = 'image.png';
+    var fileToUpload = 'image.PNG';
     var absolutePath = path.resolve(__dirname, fileToUpload);
     element(by.css('input[type="file"]')).sendKeys(absolutePath);
     element.all(by.className('publish-button')).first().click().then(() => {

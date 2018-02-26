@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Router, CanActivate, ActivatedRouteSnapshot} from '@angular/router';
-import {UserDTO} from "./shared/swagger/model/UserDTO";
-import {LocalStorageService} from "angular-2-local-storage";
+import { Injectable } from '@angular/core';
+import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
+import { UserDTO } from "./shared/swagger/model/UserDTO";
+import { LocalStorageService } from "angular-2-local-storage";
 
 @Injectable()
 export class AppGuard implements CanActivate {
@@ -49,11 +49,11 @@ export class AppGuard implements CanActivate {
     }
 
     canActivateBeneficiaryRegistration() {
-        if (this.user === null){
+        if (this.user === null) {
             return true;
-        }else if(this.user != null && (this.user.type==2 || this.user.type==3)){
+        } else if (this.user != null && (this.user.type == 2 || this.user.type == 3)) {
             this.router.navigateByUrl("beneficiary-portal");
-        }else if(this.user != null && (this.user.type==1)){
+        } else if (this.user != null && (this.user.type == 1)) {
             this.router.navigateByUrl("supplier-portal");
         }
 
@@ -61,11 +61,11 @@ export class AppGuard implements CanActivate {
     }
 
     canActivateSupplierRegistration() {
-        if (this.user === null){
+        if (this.user === null) {
             return true;
-        }else if(this.user != null && (this.user.type==2 || this.user.type==3)){
+        } else if (this.user != null && (this.user.type == 2 || this.user.type == 3)) {
             this.router.navigateByUrl("beneficiary-portal");
-        }else if(this.user != null && (this.user.type==1)){
+        } else if (this.user != null && (this.user.type == 1)) {
             this.router.navigateByUrl("supplier-portal");
         }
 

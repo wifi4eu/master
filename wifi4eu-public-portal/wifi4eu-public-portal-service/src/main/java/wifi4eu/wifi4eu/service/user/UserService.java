@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
@@ -77,6 +79,17 @@ public class UserService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public String getLogoutEnviroment() {
+        UserContext userContext = UserHolder.getUser();
+        final String MOCKED_MAIL = "tester@test.com";
+
+        if (!MOCKED_MAIL.equals(userContext.getEmail())) {
+            return "https://ecas.ec.europa.eu/cas/logout";
+        } else {
+            return "http://localhost:8080/wifi4eu/#/beneficiary-registration";
         }
     }
 }
