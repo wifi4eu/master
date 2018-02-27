@@ -109,19 +109,11 @@ export class AppComponent {
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
         this.userApi.doCompleteSignOut().subscribe(
-            (response: string) => {
-                console.log(response);
-            }, error => {
-                console.log(error);
-            }
-        );
-        this.userApi.ecasLogout().subscribe(
-            (response: ResponseDTOBase) => {
-                window.location.href = environment['logoutUrl'];
-            }, error => {
-                console.log(error);
-                window.location.href = environment['logoutUrl'];
-            }
+          (response: string) => {
+            window.location.href = environment['logoutUrl'];
+          }, error => {
+            console.log(error);
+          }
         );
     }
 
