@@ -1,14 +1,14 @@
 <!-- Competition & user registration status -->
 <div id="upper-block" class="ui-g-12 center">
     <div *ngIf="voucherCompetitionState == 0 || voucherCompetitionState == 1" class="ui-g-12">
-        <success-component [status]="shared.submitregistration.success.title"></success-component>
+        <success-component status="shared.submitregistration.success.title"></success-component>
     </div>
     <div *ngIf="voucherCompetitionState == 2" class="ui-g-12">
         <i class="fa fa-info-circle success-failure-icon" style="color: #0074CA" aria-hidden="true"></i>
         <br>
         <br>
         <h2 class="beneficiaryTitle">{{ 'benefPortal.voucher.statusmessage4' | translate }}</h2>
-        <success-component [status]="benefPortal.voucher.apply.title"></success-component>
+        <success-component status="benefPortal.voucher.apply.title"></success-component>
     </div>
     <div *ngIf="voucherCompetitionState == 3" class="ui-g-12">
         <i class="fa fa-check-circle success-failure-icon" style="color: green" aria-hidden="true"></i>

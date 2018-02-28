@@ -6,15 +6,8 @@ import { TranslateService } from "ng2-translate";
 
 @Component({
   selector: "success-component",
-  templateUrl: "success.component.html",
-  providers: [UserApi]
+  templateUrl: "success.component.html"
 })
 export class SuccessComponent {
   @Input() status: string = "shared.submitregistration.success.title";
-
-  constructor(
-    private uxService: UxService,
-    private translateService: TranslateService,
-    private userApi: UserApi
-  ) {}
 }
