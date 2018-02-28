@@ -1,8 +1,8 @@
-import { Component } from "@angular/core";
-import { LocalStorageService } from "angular-2-local-storage";
-import { UserDTOBase } from "../shared/swagger/model/UserDTO";
-import { CallApi } from "../shared/swagger/api/CallApi";
-import { CallDTOBase } from "../shared/swagger/model/CallDTO";
+import {Component} from "@angular/core";
+import {LocalStorageService} from "angular-2-local-storage";
+import {UserDTOBase} from "../shared/swagger/model/UserDTO";
+import {CallApi} from "../shared/swagger/api/CallApi";
+import {CallDTOBase} from "../shared/swagger/model/CallDTO";
 
 @Component({
     templateUrl: 'supplier-portal.component.html',
