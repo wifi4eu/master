@@ -1,17 +1,9 @@
 <div class="ui-g">
     <div class="ui-g-12 center">
-        <i class="fa fa-check-circle success-failure-icon" style="color: green" aria-hidden="true"></i>
-        <br>
-        <br>
         <h2 class="beneficiaryTitle">{{ 'shared.submitregistration.success.title' | translate }}</h2>
         <br>
-        <p>
-            {{ 'shared.submitregistration.success.text.part1' | translate }}: {{ status | translate }}
-        </p>
-        <br>
-        <p>
-            {{ 'benefPortal.voucher.call.label2' | translate }}
-        </p>
+        <p>{{ 'shared.submitregistration.success.text.part1' | translate }}: {{ status | translate }}</p>
+        <p>{{ 'benefPortal.voucher.call.label2' | translate }}</p>
         <br>
         <button class="btn btn-primary" routerLink="/home" routerLinkActive="active">{{ 'shared.backtohome.button' | translate }}
         </button>
