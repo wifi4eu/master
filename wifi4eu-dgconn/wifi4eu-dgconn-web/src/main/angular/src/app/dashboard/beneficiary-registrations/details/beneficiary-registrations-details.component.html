@@ -1,6 +1,6 @@
 <div class="container">
     <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
-        <a class="link-label" routerLink="/dgconn-portal/beneficiary-registrations" routerLinkActive="active">
+        <a class="link-label" routerLink="/beneficiary-registrations" routerLinkActive="active">
             <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
         </a>
     </div>
@@ -32,14 +32,12 @@
             <hr class="beneficiaryHr">
             <div *ngFor="let municipality of municipalities; let i = index">
                 <div class="row applicantDetailsPanel">
-                    <input class="customCheckbox" type="checkbox" [id]="'check-'+i" [(ngModel)]="entitiesChecked[i]"
-                    (change)="checkEntity(i)">
                     <label class="customCheckboxLabel" [for]="'check-'+i">
                         {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}}
                     </label>
                     <span class="right">
-                        <button type="button" class="btn greenButton" (click)="validateMunicipality(i)">
-                            {{ 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality' | translate }}
+                        <button type="button" class="btn btn-primary whiteButton-thin" (click)="requestLegalDocuments(i)">
+                            {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
                         </button>
                         <button type="button" class="btn redButton" (click)="invalidateMunicipality(i)">
                             {{ 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality' | translate }}
@@ -128,16 +126,6 @@
                 </div>
                 <br>
             </div>
-        </div>
-        <div class="ui-g-12 right">
-            <button type="button" class="btn btn-primary whiteButton"
-                    (click)="requestLegalDocuments()">
-                {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
-            </button>
-            <button type="button" class="btn btn-primary blueButton" *ngIf="municipalities.length > 1"
-                    (click)="assignLegalEntity()" [disabled]="entityCheckboxIndex == null">
-                {{ 'dgConn.duplicatedBeneficiaryDetails.assignLegalEntity' | translate }}
-            </button>
         </div>
         <div class="ui-g-12" *ngIf="discussionThread">
             <div *ngIf="discussionThread.messages.length > 0">
