@@ -21,10 +21,10 @@ import {DiscussionComponent} from "./+discussion/discussion.component";
         }, {
             path: 'discussion-forum/:threadId',
             component: DiscussionComponent
-        }, {
+        }/* , {
             path: 'profile',
             component: SupplierProfileComponent,
-        }, {
+        } */, {
             path: 'additional-info',
             component: AdditionalInfoComponent
         }

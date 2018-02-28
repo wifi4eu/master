@@ -149,11 +149,11 @@ export class AppComponent implements OnInit {
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.suppPortal'),
                 url: '/supplier-portal/voucher'
-            }),
+            })/* ,
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.myAccount'),
                 url: '/supplier-portal/profile'
-            })
+            }) */
         ];
         this.children[2] = [
             new UxLayoutLink({
