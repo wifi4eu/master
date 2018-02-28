@@ -62,7 +62,8 @@ public class UserFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (Exception e) {
-            throw new AppException(e);
+            e.printStackTrace();
+            response.sendError(401);
         } finally {
             UserHolder.clearUser();
         }
