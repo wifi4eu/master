@@ -10,7 +10,7 @@
 <div id="step2-instructions" class="ui-g">
     <div class="ui-g-12 ui-md-12 ui-lg-12 center">
         <div id="component-subtitle">
-            <h6>{{ 'benefRegistration.registration.step1.instructions' | translate }}</h6>
+            <h6>{{ 'registration.contactInformation' | translate }}</h6>
         </div>
     </div>
 </div>
@@ -21,8 +21,7 @@
         <div class="ui-g-8">
             <div *ngIf="!multipleMunicipalities">
                 <label>
-                    <input type="checkbox" [(ngModel)]="sameDetails" (click)="fillMayorData()">
-                    {{ 'benefRegistration.beneficiaryRegistration.sameDetails' | translate }}
+                    <input type="checkbox" [(ngModel)]="sameDetails" (click)="fillMayorData()"> {{ 'benefRegistration.beneficiaryRegistration.sameDetails' | translate }}
                 </label>
             </div>
         </div>
@@ -36,22 +35,27 @@
                 <div class="ui-g-2"></div>
                 <div class="ui-g-8">
                     <div>
-                        <label class="label floatLeft" for="associationName">{{ 'benefRegistration.associationName' |
-                            translate
-                            }}</label>
-                        <input id="associationName" type="text" class="form-control paddingInput" name="associationName"
-                               [(ngModel)]="associationName" required>
+                        <label class="label floatLeft" for="associationName">{{ 'benefRegistration.associationName' | translate }}
+                        </label>
+                        <input id="associationName" type="text" class="form-control paddingInput" name="associationName" [(ngModel)]="associationName"
+                            required>
                     </div>
                 </div>
                 <div class="ui-lg-2"></div>
+            </div>
+            <div id="legal-representative" class="form-group ui-g">
+                <div class="ui-g-12">
+                    <h3 class="beneficiaryTitle">{{ 'benefRegistration.yourDetails.title' | translate }}
+                    </h3>
+                </div>
             </div>
             <div class="ui-g-12">
                 <div class="ui-g-2"></div>
                 <div class="ui-g-8">
                     <div>
                         <label class="label floatLeft" for="name">{{ 'shared.name.label' | translate }}</label>
-                        <input id="nameStep3" type="text" class="form-control paddingInput" name="name"
-                               [disabled]="imMayor" [(ngModel)]="initialUser.name" required>
+                        <input id="nameStep3" type="text" class="form-control paddingInput" name="name" [disabled]="imMayor" [(ngModel)]="initialUser.name"
+                            required>
                     </div>
                 </div>
                 <div class="ui-lg-2"></div>
@@ -61,8 +65,8 @@
                 <div class="ui-g-8">
                     <div class="form-group">
                         <label class="label floatLeft" for="surname">{{ 'shared.surname.label' | translate }}</label>
-                        <input id="surnameStep3" type="text" class="form-control paddingInput" name="surname"
-                               [disabled]="imMayor" [(ngModel)]="initialUser.surname" required>
+                        <input id="surnameStep3" type="text" class="form-control paddingInput" name="surname" [disabled]="imMayor" [(ngModel)]="initialUser.surname"
+                            required>
                     </div>
                 </div>
                 <div class="ui-lg-2"></div>
@@ -70,18 +74,17 @@
             <div class="ui-g-12">
                 <div class="ui-g-2"></div>
                 <div class="ui-g-4">
-                    <label class="label floatLeft" for="address">{{ 'benefRegistration.address.label' | translate
-                        }}</label>
-                    <input id="addressStep3" type="text" class="form-control paddingInput" name="address"
-                           [disabled]="imMayor" [(ngModel)]="initialUser.address" required>
+                    <label class="label floatLeft" for="address">{{ 'benefRegistration.address.label' | translate }}
+                    </label>
+                    <input id="addressStep3" type="text" class="form-control paddingInput" name="address" [disabled]="imMayor" [(ngModel)]="initialUser.address"
+                        required>
                 </div>
                 <div class="ui-g-2">
                     <label class="label floatLeft" for="addressNum">
                         {{ 'shared.number.label' | translate }}
                     </label>
-                    <input type="text" class="form-control paddingInput"
-                           id="addressNumStep3" name="addressNum" [disabled]="imMayor" [(ngModel)]="initialUser.addressNum"
-                           required>
+                    <input type="text" class="form-control paddingInput" id="addressNumStep3" name="addressNum" [disabled]="imMayor" [(ngModel)]="initialUser.addressNum"
+                        required>
                 </div>
                 <div class="ui-g-2"></div>
             </div>
@@ -91,9 +94,8 @@
                     <label class="label floatLeft" for="postalCode">
                         {{ 'shared.postal-code.label' | translate }}
                     </label>
-                    <input type="text" class="form-control paddingInput"
-                           id="postalCodeStep3" name="postalCode" [disabled]="imMayor" [(ngModel)]="initialUser.postalCode"
-                           required>
+                    <input type="text" class="form-control paddingInput" id="postalCodeStep3" name="postalCode" [disabled]="imMayor" [(ngModel)]="initialUser.postalCode"
+                        required>
                 </div>
                 <div class="ui-g-2"></div>
             </div>
@@ -107,8 +109,7 @@
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button type="submit" id="navigate-step4" class="btn btn-primary publish-button"
-                        [disabled]="!imMayor && (!entityForm.valid || !userEmailMatches)">
+                <button type="submit" id="navigate-step4" class="btn btn-primary publish-button" [disabled]="!imMayor && (!entityForm.valid || !userEmailMatches)">
                     {{ 'shared.next.button' | translate }}
                 </button>
             </div>
