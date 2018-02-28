@@ -1,11 +1,11 @@
-import { Component } from "@angular/core";
-import { MunicipalityApi } from "../shared/swagger/api/MunicipalityApi";
-import { SupplierApi } from "../shared/swagger/api/SupplierApi";
-import { SuppliedRegionApi } from "../shared/swagger/api/SuppliedRegionApi";
-import { UserDTOBase } from "../shared/swagger/model/UserDTO";
-import { CallDTOBase } from "../shared/swagger/model/CallDTO";
-import { LocalStorageService } from "angular-2-local-storage";
-import { CallApi } from "../shared/swagger/api/CallApi";
+import {Component} from "@angular/core";
+import {MunicipalityApi} from "../shared/swagger/api/MunicipalityApi";
+import {SupplierApi} from "../shared/swagger/api/SupplierApi";
+import {SuppliedRegionApi} from "../shared/swagger/api/SuppliedRegionApi";
+import {UserDTOBase} from "../shared/swagger/model/UserDTO";
+import {CallDTOBase} from "../shared/swagger/model/CallDTO";
+import {LocalStorageService} from "angular-2-local-storage";
+import {CallApi} from "../shared/swagger/api/CallApi";
 import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 
 @Component({
@@ -54,12 +54,17 @@ export class HomeComponent {
         this.callApi.allCalls().subscribe(
             calls => {
                 this.currentCall = calls[0];
-                this.showTimeline = true;
-                this.showTimer = true;
-                let date = new Date(this.currentCall.startDate);
-                date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-                this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth()+1)).slice(-2) + "/" + date.getFullYear();
-                this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
+                if (this.currentCall) {
+                    this.showTimeline = true;
+                    this.showTimer = true;
+                    let date = new Date(this.currentCall.startDate);
+                    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+                    this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
+                    this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
+                } else {
+                    this.showTimeline = false;
+                    this.showTimer = false;
+                }
             }, error => {
                 console.log(error);
                 this.currentCall = null;
