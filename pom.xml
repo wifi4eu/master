@@ -135,6 +135,8 @@
         <enable.security.end></enable.security.end>
         <enable.login.start></enable.login.start>
         <enable.login.end></enable.login.end>
+        <enable.appinsights.start></enable.appinsights.start>
+        <enable.appinsights.end></enable.appinsights.end>
         <server.azure.port>80</server.azure.port>
         <mail.serv.location>http://localhost:8080/wifi4eu/#/</mail.serv.location>
 
@@ -183,6 +185,8 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
+                <enable.appinsights.start>--&gt;</enable.appinsights.start>
+                <enable.appinsights.end>&lt;!--</enable.appinsights.end>
                 <war.output.directory/>
                 <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
                 <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
