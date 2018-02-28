@@ -39,7 +39,7 @@
                         <button type="button" class="btn btn-primary whiteButton-thin" (click)="requestLegalDocuments(i)">
                             {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
                         </button>
-                        <button type="button" class="btn redButton" (click)="invalidateMunicipality(i)">
+                        <button type="button" class="btn redButton" (click)="invalidateMunicipality(i)" [disabled]="registrations[i].status == 1">
                             {{ 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality' | translate }}
                         </button>
                     </span>
