@@ -50,8 +50,18 @@ public class UserResource {
     @ApiOperation(value = "Get all the users")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserDTO> allUsers() {
+    public List<UserDTO> allUsers(HttpServletResponse response) throws IOException {
         _log.info("allUsers");
+        try{
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(userDTO.getType() != 5){
+                throw new AccessDeniedException("");
+            }
+        }
+        catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
         List<UserDTO> resUsers = userService.getAllUsers();
         for (UserDTO resUser : resUsers) {
             resUser.setPassword(null);
@@ -62,12 +72,26 @@ public class UserResource {
     @ApiOperation(value = "Get user by specific id")
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public UserDTO getUserById(@PathVariable("userId") final Integer userId) {
-        _log.info("getUserById: " + userId);
-
+    public UserDTO getUserById(@PathVariable("userId") final Integer userId, HttpServletResponse response) throws IOException {
         UserDTO resUser = userService.getUserById(userId);
-        if (resUser != null) {
-            resUser.setPassword(null);
+        try {
+
+            _log.info("getUserById: " + userId);
+            //check permission
+            permissionChecker.check(RightConstants.USER_TABLE+userId);
+            if (resUser != null) {
+                resUser.setPassword(null);
+            }
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'getUserById' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getUserById' operation.", e);
+            }
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return resUser;
     }
