@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output, ViewChild} from "@angular/core";
 import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 import {Observable} from "rxjs/Rx";
+import { TranslateService } from "ng2-translate/ng2-translate";
 
 @Component({
     selector: 'supplier-registration-step1', templateUrl: 'supplier-registration-step1.component.html'
@@ -18,7 +19,7 @@ export class SupplierRegistrationStep1Component {
     private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,3}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
 
 
-    constructor(private uxService: UxService) {
+    constructor(private translate: TranslateService, private uxService: UxService) {
         this.supplierChange = new EventEmitter<SupplierDTOBase>();
         this.logoUrlChange = new EventEmitter<FileReader>();
         this.onNext = new EventEmitter<any>();
@@ -72,11 +73,17 @@ export class SupplierRegistrationStep1Component {
     }
 
     uploadWrong() : any {
+        let detailTranslation = 'The file you uploaded is not a valid image file.';
+        this.translate.get('shared.growl.fileNotValid').subscribe(
+            (res: string) => {
+                detailTranslation = res;
+            }
+        );
         this.clearLogoFile();
         this.uxService.growl({
             severity: 'error',
             summary: 'ERROR',
-            detail: 'The file you uploaded is not a valid image file.'
+            detail: detailTranslation
         });
     }
 
