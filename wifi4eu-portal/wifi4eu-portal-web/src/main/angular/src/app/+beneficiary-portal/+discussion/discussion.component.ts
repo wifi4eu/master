@@ -65,13 +65,15 @@ export class DiscussionComponent {
                         (thread: ThreadDTOBase) => {
                             if (thread != null) {
                                 this.thread = thread;
-                                this.userThreadsApi.getUsersByThreadId(this.thread.id).subscribe(
+                                this.userThreadsApi.getUserThreadsByThreadId(this.thread.id).subscribe(
                                     (userThreads: UserThreadsDTOBase[]) => {
                                         let allowUser = false;
-                                        for (let userThread of userThreads) {
-                                            if (userThread.userId == this.user.id) {
-                                                allowUser = true;
-                                                break;
+                                        if (userThreads.length > 1) {
+                                            for (let userThread of userThreads) {
+                                                if (userThread.userId == this.user.id) {
+                                                    allowUser = true;
+                                                    break;
+                                                }
                                             }
                                         }
                                         if (allowUser) {

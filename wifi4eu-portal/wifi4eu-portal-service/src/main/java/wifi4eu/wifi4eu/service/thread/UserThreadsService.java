@@ -43,11 +43,11 @@ public class UserThreadsService {
         }
     }
 
-    public List<UserThreadsDTO> getThreadsByUserId(int userId) {
+    public List<UserThreadsDTO> getUserThreadsByUserId(int userId) {
         return userThreadsMapper.toDTOList(Lists.newArrayList(userThreadsRepository.findByUserId(userId)));
     }
 
-    public List<UserThreadsDTO> getUsersByThreadId(int threadId) {
+    public List<UserThreadsDTO> getUserThreadsByThreadId(int threadId) {
         return userThreadsMapper.toDTOList(Lists.newArrayList(userThreadsRepository.findByThreadId(threadId)));
     }
 
