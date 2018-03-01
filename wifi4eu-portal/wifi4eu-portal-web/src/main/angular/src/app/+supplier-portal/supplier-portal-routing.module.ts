@@ -11,20 +11,20 @@ import {DiscussionComponent} from "./+discussion/discussion.component";
         {
             path: '',
             redirectTo: 'voucher'
-        }, 
+        }/* , 
         {
             path: 'voucher',
             component: SupplierPortalComponent,
-        },{
+        } */,{
             path: 'installation/:id',
             component: SupplierInstallationComponent,
         }, {
             path: 'discussion-forum/:threadId',
             component: DiscussionComponent
-        }/* , {
+        }, {
             path: 'profile',
             component: SupplierProfileComponent,
-        } */, {
+        }, {
             path: 'additional-info',
             component: AdditionalInfoComponent
         }
