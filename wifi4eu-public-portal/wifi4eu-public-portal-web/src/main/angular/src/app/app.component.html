@@ -11,8 +11,8 @@
                         <div class="profile-wrapper" isCompact="false">
                             <div class="left-panel">
                                 <div *ngIf="user" class="user-infos">
-                                    <span class="wellcomeHeader">{{ 'shared.loggedin.as' | translate }}: <a
-                                            [routerLink]="profileUrl">
+                                    <span class="wellcomeHeader">{{ 'shared.loggedin.as' | translate }}:
+                                        <a href="/wifi4eu/#/">
                                         <strong class="color-primary">{{user.ecasUsername}}</strong></a></span><br>
                                     <button (click)="logout()" class="headerButton">
                                         {{ 'shared.logout.label' | translate }}
