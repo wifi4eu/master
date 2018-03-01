@@ -3,7 +3,6 @@ package wifi4eu.wifi4eu.web.filter;
 
 import eu.cec.digit.ecas.client.jaas.DetailedUser;
 import wifi4eu.wifi4eu.common.dto.security.RoleDTO;
-import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -39,7 +38,7 @@ public class UserFilter extends OncePerRequestFilter {
             UserContext user = new UserContext(ecasPrincipal.getDomainUsername());
             user.setEmail(ecasPrincipal.getEmail());
             user.setDomain(ecasPrincipal.getDomain());
-            if(ecasPrincipal.getEmployeeNumber() != null) {
+            if (ecasPrincipal.getEmployeeNumber() != null) {
                 user.setPerId(new Long(ecasPrincipal.getEmployeeNumber()));
             }
             user.setDetailedUser(ecasPrincipal);
