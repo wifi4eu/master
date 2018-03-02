@@ -5,14 +5,16 @@
         </a>
     </div>
     <div class="ui-g-12">
-        <p>
+        <p *ngIf="supplier">
             <span class="beneficiaryTitle">
-                <span *ngIf="supplier">{{supplier.name}}</span>
+                <span>{{supplier.name}}</span>
             </span>
-            <!--<span class="badge badge-warning" *ngIf="issueRegistration == 1">{{ 'dgConn.badge.warning' | translate }}</span>-->
-            <!--<span class="badge badge-duplicated" *ngIf="issueRegistration == 2">{{ 'dgConn.badge.duplicated' | translate }}</span>-->
-            <!--<span class="badge badge-success" *ngIf="issueRegistration == 3">{{ 'dgConn.badge.resolved' | translate }}</span>-->
-            <!--<span class="badge badge-fail" *ngIf="issueRegistration == 4">{{ 'dgConn.badge.invalid' | translate }}</span>-->
+            <span class="badge badge-success" *ngIf="supplier.status">
+                {{ 'dgConn.beneficiaries.registered' | translate | uppercase }}
+            </span>
+            <span class="badge badge-fail" *ngIf="!supplier.status">
+                {{ 'dgConn.badge.invalid' | translate | uppercase }}
+            </span>
         </p>
         <p *ngIf="!supplier">
             {{ 'dgConn.supplierDetails.noneFound' | translate }}

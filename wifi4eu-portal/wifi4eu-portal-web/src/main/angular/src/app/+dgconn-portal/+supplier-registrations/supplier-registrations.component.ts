@@ -19,7 +19,13 @@ export class DgConnSupplierRegistrationsComponent {
                     this.supplierApi.findSimilarSuppliers(suppliers[i].id).subscribe(
                         (similarSuppliers: SupplierDTOBase[]) => {
                             if (similarSuppliers != null) {
-                                this.numRegistrations.push(1 + similarSuppliers.length);
+                                let numRegistrations = 1;
+                                for (let similarSupp of similarSuppliers) {
+                                    if (similarSupp.status != 0) {
+                                        numRegistrations++;
+                                    }
+                                }
+                                this.numRegistrations.push(numRegistrations);
                                 this.suppliers.push(suppliers[i]);
                                 this.displayedSuppliers.push(suppliers[i]);
                             }

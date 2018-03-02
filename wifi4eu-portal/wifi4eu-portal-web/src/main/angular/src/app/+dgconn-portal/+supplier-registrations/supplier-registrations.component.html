@@ -30,11 +30,11 @@
             <p-column field="vat" [sortable]="true" header="{{ 'suppRegistration.vat.label' | translate }}" styleClass="text-center"></p-column>
             <p-column field="status" [sortable]="true" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
                 <ng-template let-rowData="rowData" pTemplate="body">
-                    <span *ngIf="rowData.status">{{ 'dgConn.beneficiaries.registered' | translate }}</span>
-                    <span *ngIf="!rowData.status">{{ 'dgConn.status.invalidated' | translate }}</span>
+                    <span class="badge badge-success" *ngIf="rowData.status">{{ 'dgConn.beneficiaries.registered' | translate | uppercase }}</span>
+                    <span class="badge badge-fail" *ngIf="!rowData.status">{{ 'dgConn.badge.invalid' | translate | uppercase }}</span>
                 </ng-template>
             </p-column>
-            <p-column header="{{ 'dgConn.number.registrations' | translate }}" styleClass="text-center">
+            <p-column [sortable]="true" header="{{ 'dgConn.number.registrations' | translate }}" styleClass="text-center">
                 <ng-template let-rowIndex="rowIndex" pTemplate="body">
                     {{numRegistrations[rowIndex]}}
                 </ng-template>
