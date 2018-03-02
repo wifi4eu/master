@@ -555,11 +555,18 @@ body {
 .publish-button {
   background-color: #004494;
   width: 10em;
-  margin-top: 2em;
   height: 50px;
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
+
+}
+
+.row.vertical-align {
+  display: flex;
+  align-items: center;
+  margin-top: 1em;
+
 }
 
 .cancel-button {
@@ -567,7 +574,6 @@ body {
   color: #004494;
   border: solid 2px #004494;
   width: 10em;
-  margin-top: 2em;
   height: 50px;
   font-family: Verdana;
   font-size: 1.4em;
