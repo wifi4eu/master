@@ -236,18 +236,22 @@
                     }}</p>
                 <br>
                 <p class="center">{{ 'discussionForum.mediationRequest.selectText' | translate }}</p>
-                <div class="form-group">
-                    <div style="text-align: center !important">
-                        <button type="button" class="btn btn-primary changePasswordModal cancel-button"
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-primary changePassword cancel-button"
                                 (click)="closeModal()">
                             {{ 'shared.cancel.button' | translate }}
                         </button>
-                        <button type="submit" class="btn btn-primary changePasswordModal publish-button"
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="submit" class="btn btn-primary changePassword confirm-button"
                                 (click)="askMediation(); closeModal()">
                             {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
                         </button>
                     </div>
                 </div>
+                <div class="col-sm-2"></div>
             </div>
         </form>
     </p-dialog>
