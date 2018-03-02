@@ -299,7 +299,7 @@
   "dgConn.charts.totalPending": "Pending Issues",
   "dgConn.charts.totalIssues": "Total Issues",
   "dgConn.duplicatedSuppliers.title": "Supplier registrations",
-  "dgConn.duplicatedBeneficiary.title": "Beneficiary registrations",
+  "dgConn.duplicatedBeneficiary.title": "Manage beneficiary registrations",
   "dgConn.beneficiary.registrations": "Registrations",
   "dgConn.issueStatus.pending": "PENDING",
   "dgConn.issueStatus.resolved": "RESOLVED",
