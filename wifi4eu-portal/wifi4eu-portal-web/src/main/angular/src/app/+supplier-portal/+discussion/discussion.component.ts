@@ -96,7 +96,7 @@ export class DiscussionComponent {
                     }
                 );
 
-                this.userThreadsApi.getUsersByThreadId(this.threadId).subscribe(
+                this.userThreadsApi.getUserThreadsByThreadId(this.threadId).subscribe(
                     (userThread: UserThreadsDTOBase[]) => {
                         for (var i = 0; i < userThread.length; i++) {
                             this.userThreads = userThread;

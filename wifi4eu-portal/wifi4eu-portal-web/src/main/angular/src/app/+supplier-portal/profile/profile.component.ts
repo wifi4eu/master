@@ -26,6 +26,7 @@ export class SupplierProfileComponent {
     private displayCompany: boolean = false;
     private submittingData: boolean = false;
     private isLogoUploaded: boolean = false;
+    private deletingLogo: boolean = false;
     private logoUrl: FileReader = new FileReader();
     private logoFile: File;
     @ViewChild('logoInput') private logoInput: any;
@@ -90,6 +91,7 @@ export class SupplierProfileComponent {
     private closeModal() {
         this.displayContact = false;
         this.displayCompany = false;
+        this.deletingLogo = false;
         this.clearLogoFile();
         Object.assign(this.editedSupplier, this.supplier);
     }
@@ -174,5 +176,9 @@ export class SupplierProfileComponent {
             }
         );
     }
-    
+
+    private deleteLogo(){
+        this.deletingLogo = true;
+        this.clearLogoFile();
+    }
 }

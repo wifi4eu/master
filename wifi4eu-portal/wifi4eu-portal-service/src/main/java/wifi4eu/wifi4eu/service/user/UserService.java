@@ -179,7 +179,7 @@ public class UserService {
                     for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
                         municipalityService.deleteMunicipality(municipality.getId());
                     }
-                    for (UserThreadsDTO userThread : userThreadsService.getThreadsByUserId(userDTO.getId())) {
+                    for (UserThreadsDTO userThread : userThreadsService.getUserThreadsByUserId(userDTO.getId())) {
                         userThreadsService.deleteUserThreads(userThread.getId());
                     }
                     break;

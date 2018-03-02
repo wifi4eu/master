@@ -146,10 +146,10 @@ export class AppComponent implements OnInit {
             })
         ];
         this.children[1] = [
-            new UxLayoutLink({
+            /* new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.suppPortal'),
                 url: '/supplier-portal/voucher'
-            }),
+            }), */
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.myAccount'),
                 url: '/supplier-portal/profile'
