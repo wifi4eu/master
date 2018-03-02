@@ -1459,8 +1459,8 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   font-weight: bold;
 }
 
-.redButton:hover {
-  background-color: #c53b0c;
+.redButton:hover, .redButton:focus {
+  background-color: #c53b0c !important;
 }
 
 .warningBadge {
@@ -1492,6 +1492,13 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 .searchInput {
   vertical-align: middle;
   margin-right: 1em;
+}
+
+.profileLogoImage {
+  height: 75px;
+  max-width: 100%;
+  border: 1px solid;
+  box-shadow: 0px 0px 5px black;
 }
 
 /* fix blinking issue with the header */
