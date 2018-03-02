@@ -13,6 +13,10 @@ import { ResponseDTOBase } from "../../../shared/swagger/model/ResponseDTO";
 export class DgConnSupplierRegistrationsDetailsComponent {
     private supplier: SupplierDTOBase = null;
     private similarSuppliers: SupplierDTOBase[] = [];
+    private displayInvalidate: boolean = false;
+    private selectedMainSupplier: boolean = null;
+    private selectedIndex: number = null;
+    private processingRequest: boolean = false;
 
     constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer, private sharedService: SharedService, private supplierApi: SupplierApi) {
         this.route.params.subscribe(
@@ -80,38 +84,64 @@ export class DgConnSupplierRegistrationsDetailsComponent {
         }
     }
 
-    private invalidateSupplier(mainSupplier: boolean, index?: number) {
-        if (mainSupplier) {
-            let modifiedSupplier = this.supplier;
-            modifiedSupplier.status = 0;
-            this.supplierApi.invalidateSupplier(modifiedSupplier).subscribe(
-                (response: ResponseDTOBase) => {
-                    if (response.success) {
-                        if (response.data != null) {
-                            this.supplier = response.data;
-                            this.sharedService.growlTranslation('You successfully invalidated the supplier.','dgConn.supplierDetails.invalidateSupplier.success', 'success');
-                        }
-                    } else {
-                        this.sharedService.growlTranslation('An error occurred while trying to invalidate the supplier. Please, try again later.','dgConn.supplierDetails.invalidateSupplier.error', 'error');
-                    }
-                }
-            );
-        } else {
-            if (index != null) {
-                let modifiedSupplier = this.similarSuppliers[index];
+    private displayInvalidateModal(mainSupplier: boolean, index?: number) {
+        this.selectedMainSupplier = mainSupplier;
+        if (index != null) {
+            this.selectedIndex = index;
+        }
+        this.displayInvalidate = true;
+    }
+
+    private closeModal() {
+        this.selectedMainSupplier = null;
+        this.selectedIndex = null;
+        this.displayInvalidate = false;
+        this.processingRequest = false;
+    }
+
+    private invalidateSupplier() {
+        if (!this.processingRequest) {
+            this.processingRequest = true;
+            if (this.selectedMainSupplier) {
+                let modifiedSupplier = this.supplier;
                 modifiedSupplier.status = 0;
                 this.supplierApi.invalidateSupplier(modifiedSupplier).subscribe(
                     (response: ResponseDTOBase) => {
                         if (response.success) {
                             if (response.data != null) {
-                                this.similarSuppliers[index] = response.data;
-                                this.sharedService.growlTranslation('You successfully invalidated the supplier.','dgConn.supplierDetails.invalidateSupplier.success', 'success');
+                                this.supplier = response.data;
+                                this.sharedService.growlTranslation('You successfully invalidated the supplier.', 'dgConn.supplierDetails.invalidateSupplier.success', 'success');
                             }
                         } else {
-                            this.sharedService.growlTranslation('An error occurred while trying to invalidate the supplier. Please, try again later.','dgConn.supplierDetails.invalidateSupplier.error', 'error');
+                            this.sharedService.growlTranslation('An error occurred while trying to invalidate the supplier. Please, try again later.', 'dgConn.supplierDetails.invalidateSupplier.error', 'error');
                         }
+                        this.closeModal();
+                    }, error => {
+                        this.sharedService.growlTranslation('An error occurred while trying to invalidate the supplier. Please, try again later.', 'dgConn.supplierDetails.invalidateSupplier.error', 'error');
+                        this.closeModal();
                     }
                 );
+            } else {
+                if (this.selectedIndex != null) {
+                    let modifiedSupplier = this.similarSuppliers[this.selectedIndex];
+                    modifiedSupplier.status = 0;
+                    this.supplierApi.invalidateSupplier(modifiedSupplier).subscribe(
+                        (response: ResponseDTOBase) => {
+                            if (response.success) {
+                                if (response.data != null) {
+                                    this.similarSuppliers[this.selectedIndex] = response.data;
+                                    this.sharedService.growlTranslation('You successfully invalidated the supplier.', 'dgConn.supplierDetails.invalidateSupplier.success', 'success');
+                                }
+                            } else {
+                                this.sharedService.growlTranslation('An error occurred while trying to invalidate the supplier. Please, try again later.', 'dgConn.supplierDetails.invalidateSupplier.error', 'error');
+                            }
+                            this.closeModal();
+                        }, error => {
+                            this.sharedService.growlTranslation('An error occurred while trying to invalidate the supplier. Please, try again later.', 'dgConn.supplierDetails.invalidateSupplier.error', 'error');
+                            this.closeModal();
+                        }
+                    );
+                }
             }
         }
     }

@@ -33,7 +33,7 @@
                             (click)="requestLegalDocuments(true)">
                         {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
                     </button>
-                    <button type="button" class="btn redButton" (click)="invalidateSupplier(true)"
+                    <button type="button" class="btn redButton" (click)="displayInvalidateModal(true)"
                             [disabled]="supplier.status == 0">
                         {{ 'dgConn.supplierDetails.invalidateSupplier' | translate }}
                     </button>
@@ -132,7 +132,7 @@
                                 (click)="requestLegalDocuments(false, i)">
                             {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
                         </button>
-                        <button type="button" class="btn redButton" (click)="invalidateSupplier(false, i)"
+                        <button type="button" class="btn redButton" (click)="displayInvalidateModal(false, i)"
                                 [disabled]="similarSupplier.status == 0">
                             {{ 'dgConn.supplierDetails.invalidateSupplier' | translate }}
                         </button>
@@ -219,4 +219,28 @@
         </div>
     </div>
     <br><br>
+</div>
+<div class="container font">
+    <p-dialog [(visible)]="displayInvalidate" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+        <form (ngSubmit)="invalidateSupplier()" #invalidateConfirmationForm="ngForm">
+            <div class="ui-g-12 center">
+                <h2 class="beneficiaryMayor">Do you really want to invalidate this registration?</h2>
+            </div>
+            <div class="ui-g-12 center">
+                <div class="ui-g-6">
+                    <button type="button" class="btn btn-primary cancel-button"
+                            [disabled]="processingRequest" (click)="closeModal()">
+                        {{ 'shared.no' | translate }}
+                    </button>
+                </div>
+                <div class="ui-g-6">
+                    <button type="submit" class="btn btn-primary publish-button"
+                            [disabled]="processingRequest">
+                        {{ 'shared.yes' | translate }}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
 </div>
