@@ -465,6 +465,7 @@
   "listMunicipalities.memberState.label": "Member state",
   "listMunicipalities.region.label": "Region",
   "listMunicipalities.apply.button": "Apply",
+  "listMunicipalities.noresults.text": "No results found for ",
   "suppRegistration.webFormat": "Enter a correct format",
   "suppRegistration.bic.required": "BIC is required",
   "suppRegistration.address.required": "Address is required",
