@@ -72,6 +72,7 @@
   "shared.municipality.label": "Municipality",
   "benefRegistration.townHall.address": "Official address",
   "benefRegistration.registration.legalRepresentative": "Legal representative ",
+  "benefRegistration.legalRepresentative.details": "Legal representative details",
   "benefRegistration.registration.authorisedPerson": "Person legally authorised to sign on behalf of the municipality, typically the Mayor of a municipality",
   "shared.name.label": "Name",
   "shared.surname.label": "Surname",

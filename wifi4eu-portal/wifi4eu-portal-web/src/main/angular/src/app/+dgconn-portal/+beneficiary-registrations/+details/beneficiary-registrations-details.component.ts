@@ -1,4 +1,5 @@
 import {Component} from "@angular/core";
+import {DomSanitizer} from "@angular/platform-browser";
 import {ActivatedRoute} from "@angular/router";
 import {MunicipalityApi} from "../../../shared/swagger/api/MunicipalityApi";
 import {MunicipalityDTOBase} from "../../../shared/swagger/model/MunicipalityDTO";
@@ -6,17 +7,20 @@ import {MayorApi} from "../../../shared/swagger/api/MayorApi";
 import {MayorDTOBase} from "../../../shared/swagger/model/MayorDTO";
 import {RegistrationApi} from "../../../shared/swagger/api/RegistrationApi";
 import {RegistrationDTOBase} from "../../../shared/swagger/model/RegistrationDTO";
+import {UserApi} from "../../../shared/swagger/api/UserApi";
+import {UserDTOBase} from "../../../shared/swagger/model/UserDTO";
+import {OrganizationApi} from "../../../shared/swagger/api/OrganizationApi";
+import {OrganizationDTOBase} from "../../../shared/swagger/model/OrganizationDTO";
 import {ThreadApi} from "../../../shared/swagger/api/ThreadApi";
 import {ThreadDTOBase} from "../../../shared/swagger/model/ThreadDTO";
 import {ResponseDTOBase} from "../../../shared/swagger/model/ResponseDTO";
-import {SharedService} from "../../../shared/shared.service";
-import {DomSanitizer} from "@angular/platform-browser";
 import {ThreadMessageDTOBase} from "../../../shared/swagger/model/ThreadMessageDTO";
 import {BeneficiaryApi} from "../../../shared/swagger/api/BeneficiaryApi";
+import {SharedService} from "../../../shared/shared.service";
 
 @Component({
     templateUrl: 'beneficiary-registrations-details.component.html',
-    providers: [MunicipalityApi, MayorApi, RegistrationApi, ThreadApi, BeneficiaryApi]
+    providers: [MunicipalityApi, MayorApi, RegistrationApi, UserApi, OrganizationApi, ThreadApi, BeneficiaryApi]
 })
 
 export class DgConnBeneficiaryRegistrationsDetailsComponent {
@@ -24,6 +28,8 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     private municipalities: MunicipalityDTOBase[] = [];
     private mayors: MayorDTOBase[] = [];
     private registrations: RegistrationDTOBase[] = [];
+    private contactUsers: UserDTOBase[] = [];
+    private organizations: OrganizationDTOBase[] = [];
     private discussionThread: ThreadDTOBase = null;
     private displayedMessages: ThreadMessageDTOBase[] = [];
     private entitiesChecked: boolean[] = [];
@@ -31,7 +37,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     private searchMessagesQuery: string = '';
     private issueRegistration: number;
 
-    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private beneficiaryApi: BeneficiaryApi, private sharedService: SharedService, private sanitizer: DomSanitizer) {
+    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private userApi: UserApi, private organizationApi: OrganizationApi, private threadApi: ThreadApi, private beneficiaryApi: BeneficiaryApi, private sharedService: SharedService, private sanitizer: DomSanitizer) {
         this.route.params.subscribe(
             params => {
                 this.lauId = params['id'];
@@ -50,13 +56,27 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                             this.registrationApi.getRegistrationByMunicipalityId(municipality.id).subscribe(
                                 (registration: RegistrationDTOBase) => {
                                     if (registration) {
-                                        this.entitiesChecked.push(false);
-                                        this.registrations.push(registration);
-                                        this.mayors.push(mayor);
-                                        this.municipalities.push(municipality);
-                                        if(this.registrations.length == municipalities.length){
-                                            this.getIssue();
-                                        }
+                                        this.userApi.getUserById(registration.userId).subscribe(
+                                            (user: UserDTOBase) => {
+                                                if (user) {
+                                                    this.organizationApi.getOrganizationById(registration.organisationId).subscribe(
+                                                        (organization: OrganizationDTOBase) => {
+                                                            if (organization) {
+                                                                this.organizations.push(organization);
+                                                            }
+                                                            this.entitiesChecked.push(false);
+                                                            this.contactUsers.push(user);
+                                                            this.registrations.push(registration);
+                                                            this.mayors.push(mayor);
+                                                            this.municipalities.push(municipality);
+                                                            if(this.registrations.length == municipalities.length){
+                                                                this.getIssue();
+                                                            }
+                                                        }
+                                                    );
+                                                }
+                                            }
+                                        );
                                     }
                                 }
                             );

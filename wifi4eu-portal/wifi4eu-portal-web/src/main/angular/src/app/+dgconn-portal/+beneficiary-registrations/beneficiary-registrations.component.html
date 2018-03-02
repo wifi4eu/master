@@ -21,8 +21,8 @@
     </div>
   </div>
   <div class="panel-dg">
-    <p-dataTable #tableBeneficiary [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="registrationList.length" [value]="registrationList"
-                 [rows]="numberRowsTable" [paginator]="true">
+    <p-dataTable #tableBeneficiary [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="registrationList.length"
+                 [value]="registrationList" [rows]="numberRowsTable" [paginator]="true">
       <p-column field="lau.name1" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
       <p-column field="lau.countryCode" [sortable]="true" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
       <p-column field="status" [sortable]="true" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
@@ -40,7 +40,7 @@
           <span class="badge badge-fail" *ngIf="row.issue == 4">{{ 'dgConn.badge.invalid' | translate }}</span>
         </ng-template>
       </p-column>
-      <p-column field="numRegistrations" [sortable]="true" header="{{ 'dgConn.beneficiaries.numApplicants' | translate }}" styleClass="text-center"></p-column>
+      <p-column field="numRegistrations" [sortable]="true" header="{{ 'dgConn.number.registrations' | translate }}" styleClass="text-center"></p-column>
       <p-column field="mediation" [sortable]="true" header="{{ 'dgConn.beneficiaries.mediation' | translate }}" styleClass="text-center">
         <ng-template let-row="rowData" pTemplate="body">
           <span *ngIf="row.mediation">{{ 'dgConn.yes' | translate }}</span>
