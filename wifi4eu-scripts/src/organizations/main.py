@@ -18,12 +18,6 @@ def main():
                     id += 1
                 else:
                     continue
-        # with open(country_code + '.sql', 'w') as f:
-        #     for j in range(2, s.nrows):
-        #         association = s.row_values(j)[i]
-        #             name = unidecode.unidecode(association)
-        #             f.write(
-        #                 "INSERT INTO " + sys.argv[2] + ".organizations (name, country_code) VALUES ('" + name + "','" + country_code + "');")
 
 
 if __name__ == '__main__':
