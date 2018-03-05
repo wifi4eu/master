@@ -112,6 +112,11 @@ export class SupplierProfileComponent {
     private changeLogo(event) {
         if (event.target.files.length > 0) {
             this.logoFile = event.target.files[0];
+            if (this.logoFile.size > 2560000) {
+                this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 2.5 MB.', 'benefPortal.file.toobig.maxsize', 'warn', {size: '2.5 MB'});
+                this.clearLogoFile();
+                return;
+            }
             let imageStatus = "";
             let image = new Image();
             image.onload = function () {
