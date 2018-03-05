@@ -29,7 +29,7 @@ public class MunicipalityService {
         return Lists.newArrayList(municipalityRepository.findMunicipalitiesCountGroupedByLauId());
     }
 
-//    @Cacheable(value = "publicGetMunicipalitiesRegisteredByRegion")
+    @Cacheable(value = "publicGetMunicipalitiesRegisteredByRegion")
     public MunicipalityCacheDTO getMunicipalitiesRegisteredByRegion(String code) {
         Date today = new Date();
         MunicipalityCacheDTO municipalityCacheDTO = new MunicipalityCacheDTO();
