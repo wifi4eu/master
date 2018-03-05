@@ -121,17 +121,7 @@ export class AppComponent implements OnInit {
 
             }, error => {
                 this.menuLinks = this.children[0];
-                let detailTranslation = 'Could not get ECAS User, ignore this when NG is working in offline mode';
-                this.translate.get('shared.growl.noECAS').subscribe(
-                    (res: string) => {
-                        detailTranslation = res;
-                    }
-                );
-                this.uxService.growl({
-                    severity: 'warn',
-                    summary: 'WARNING',
-                    detail: detailTranslation
-                });
+                this.sharedService.growlTranslation('Could not get ECAS User, ignore this when NG is working in offline mode', 'shared.growl.noECAS', 'warn');
             });
     }
 
