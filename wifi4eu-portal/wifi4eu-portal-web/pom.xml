@@ -55,8 +55,7 @@
                                 </goals>
                                 <configuration>
                                     <executable>bash</executable>
-                                    <workingDirectory>../../wifi4eu-scripts/src/translations
-                                    </workingDirectory>
+                                    <workingDirectory>../../wifi4eu-scripts/src/translations</workingDirectory>
                                     <arguments>
                                         <argument>copy_to_i18.sh</argument>
                                     </arguments>
