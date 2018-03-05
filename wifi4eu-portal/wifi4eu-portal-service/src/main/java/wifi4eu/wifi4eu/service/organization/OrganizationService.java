@@ -42,6 +42,6 @@ public class OrganizationService {
 
     @Cacheable(value = "portalGetOrganizationsByCountry")
     public List<OrganizationDTO> getOrganizationsByCountry(String country) {
-        return organizationMapper.toDTOList(Lists.newArrayList(organizationRepository.findByCountry(country)));
+        return organizationMapper.toDTOList(Lists.newArrayList(organizationRepository.findByCountryOrderByName(country)));
     }
 }

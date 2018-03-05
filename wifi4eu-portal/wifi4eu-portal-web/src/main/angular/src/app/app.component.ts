@@ -147,10 +147,10 @@ export class AppComponent implements OnInit {
             })
         ];
         this.children[1] = [
-            new UxLayoutLink({
+            /* new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.suppPortal'),
                 url: '/supplier-portal/voucher'
-            }),
+            }), */
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.myAccount'),
                 url: '/supplier-portal/profile'
@@ -298,7 +298,8 @@ export class AppComponent implements OnInit {
         this.userApi.doCompleteSignOut().subscribe(
             (response: string) => {
                 window.location.href = environment['logoutUrl'];
-            }, error => {
+            }, (error) => {
+                window.location.href = environment['logoutUrl'];
                 console.log(error);
             }
         );

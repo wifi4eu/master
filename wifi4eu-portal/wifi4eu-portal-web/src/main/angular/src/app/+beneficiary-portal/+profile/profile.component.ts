@@ -13,11 +13,13 @@ import { UserThreadsApi } from "../../shared/swagger/api/UserThreadsApi";
 import { UserThreadsDTOBase } from "../../shared/swagger/model/UserThreadsDTO";
 import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
+import { ThreadApi } from "../../shared/swagger/api/ThreadApi";
+import { ThreadDTOBase } from "../../shared/swagger/model/ThreadDTO";
 
 @Component({
     selector: 'beneficiary-profile',
     templateUrl: 'profile.component.html',
-    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi]
+    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi]
 })
 
 export class BeneficiaryProfileComponent {
@@ -33,12 +35,11 @@ export class BeneficiaryProfileComponent {
     private displayMayor: boolean = false;
     private submittingData = false;
     private isRegisterHold: boolean = false;
-    private userThreads: UserThreadsDTOBase = new UserThreadsDTOBase();
     private threadId: number;
     private hasDiscussion: boolean = false;
+    private discussionThreads: ThreadDTOBase[] = [];
 
-
-    constructor(private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+    constructor(private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -73,12 +74,28 @@ export class BeneficiaryProfileComponent {
                     this.router.navigateByUrl('/home');
                 }
             );
-            this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
-                (userThreads: UserThreadsDTOBase[]) => {
-                    if (userThreads.length > 0) {
-                        this.userThreads = userThreads[0];
-                        this.threadId = userThreads[0].threadId;
-                        this.hasDiscussion = true;
+            this.userThreadsApi.getUserThreadsByUserId(this.user.id).subscribe(
+                (utsByUser: UserThreadsDTOBase[]) => {
+                    for (let utByUser of utsByUser) {
+                        this.threadApi.getThreadById(utByUser.threadId).subscribe(
+                            (thread: ThreadDTOBase) => {
+                                if (thread != null) {
+                                    this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
+                                        (utsByThread: UserThreadsDTOBase[]) => {
+                                            this.discussionThreads.push(thread);
+                                            if (utsByThread.length > 1) {
+                                                for (let utByThread of utsByThread) {
+                                                    if (utByThread.userId != this.user.id && !this.hasDiscussion) {
+                                                        this.threadId = thread.id;
+                                                        this.hasDiscussion = true;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    );
+                                }
+                            }
+                        );
                     }
                 }, error => {
                     console.log("service error: ", error);
@@ -180,15 +197,7 @@ export class BeneficiaryProfileComponent {
     }
 
     private goToDiscussion() {
-        this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
-            (userThreads: UserThreadsDTOBase[]) => {
-                this.userThreads = userThreads[0];
-                this.threadId = userThreads[0].threadId;
-                this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
-            }, error => {
-                console.log("service error: ", error);
-            }
-        );
+        this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
     }
 
     private preventPaste(event: any) {
