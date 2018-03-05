@@ -75,10 +75,12 @@ public class UserResource {
     public UserDTO getUserById(@PathVariable("userId") final Integer userId, HttpServletResponse response) throws IOException {
         UserDTO resUser = userService.getUserById(userId);
         try {
-
             _log.info("getUserById: " + userId);
+            UserDTO userConnected = userService.getUserByUserContext(UserHolder.getUser());
+            if(userConnected.getType() != 5){
+                permissionChecker.check(RightConstants.USER_TABLE+userId);
+            }
             //check permission
-            permissionChecker.check(RightConstants.USER_TABLE+userId);
             if (resUser != null) {
                 resUser.setPassword(null);
             }

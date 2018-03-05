@@ -69,7 +69,7 @@ public class SupplierResource {
         try {
             _log.info("getSupplierById: " + supplierId);
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(supplierDTO.getUserId() != userDTO.getId()){
+            if(supplierDTO.getUserId() != userDTO.getId() && userDTO.getType() != 5){
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             supplierDTO = supplierService.getSupplierById(supplierId);
