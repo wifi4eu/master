@@ -16,10 +16,10 @@ import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.MailService;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.MessageFormat;
+import java.util.*;
 
 @Service("portalSupplierService")
 public class SupplierService {
@@ -43,6 +43,9 @@ public class SupplierService {
 
     @Autowired
     UserThreadsService userThreadsService;
+
+    @Autowired
+    MailService mailService;
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -135,5 +138,72 @@ public class SupplierService {
     @Cacheable(value = "portalGetSuppliedRegionsCountGroupedByRegionId")
     public List<Object> getSuppliedRegionsCountGroupedByRegionId() {
         return Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsCountGroupedByRegionId());
+    }
+
+    public List<SupplierDTO> findSimilarSuppliers(int supplierId) {
+        List<SupplierDTO> similarSuppliers = new ArrayList<>();
+        SupplierDTO originalSupplier = getSupplierById(supplierId);
+        if (originalSupplier != null) {
+            List<SupplierDTO> suppliersVat = getSuppliersByVat(originalSupplier.getAccountNumber());
+            if (!suppliersVat.isEmpty()) {
+                for (SupplierDTO supp : suppliersVat) {
+                    if (supp.getId() != originalSupplier.getId()) {
+                        similarSuppliers.add(supp);
+                    }
+                }
+            }
+            List<SupplierDTO> suppliersIban = getSuppliersByAccountNumber(originalSupplier.getAccountNumber());
+            if (!suppliersIban.isEmpty()) {
+                for (SupplierDTO supp : suppliersIban) {
+                    if (supp.getId() != originalSupplier.getId()) {
+                        similarSuppliers.add(supp);
+                    }
+                }
+            }
+        }
+        return similarSuppliers;
+    }
+
+    @Transactional
+    public boolean requestLegalDocuments(int supplierId) {
+        SupplierDTO supplier = getSupplierById(supplierId);
+        if (supplier != null) {
+            UserDTO user = userService.getUserById(supplier.getUserId());
+            if (user != null) {
+                Locale locale = userService.initLocale();
+                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
+                String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
+                String additionalInfoUrl = userService.getBaseUrl() + "supplier-portal/additional-info";
+                msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
+                if (!userService.isLocalHost()) {
+                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Transactional
+    public SupplierDTO updateSupplier(SupplierDTO supplierDTO) {
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+    }
+
+    @Transactional
+    public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) {
+        supplierDTO.setStatus(0);
+        supplierDTO = updateSupplier(supplierDTO);
+        UserDTO user = userService.getUserById(supplierDTO.getUserId());
+        if (user != null) {
+            Locale locale = userService.initLocale();
+            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+            String subject = bundle.getString("mail.dgConn.invalidateSupplier.subject");
+            String msgBody = bundle.getString("mail.dgConn.invalidateSupplier.body");
+            if (!userService.isLocalHost()) {
+                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            }
+        }
+        return supplierDTO;
     }
 }
