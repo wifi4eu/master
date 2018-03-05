@@ -11,6 +11,7 @@ public interface MunicipalityRepository extends CrudRepository<Municipality, Int
     @Query(value = "SELECT COUNT(id),lau FROM municipalities GROUP BY lau", nativeQuery = true)
     Iterable<Object> findMunicipalitiesCountGroupedByLauId();
 
-    @Query("SELECT m FROM Lau l INNER JOIN Municipality m WHERE m.lau.id = l.id AND l.nuts3 =:code GROUP BY l")
-    List<Municipality> getMunicipalitiesRegisteredByRegion(@Param("code") String code);
+    @Query("SELECT m.name FROM Municipality m INNER JOIN Lau l ON m.lau.id = l.id AND l.nuts3 =:code GROUP BY m.name")
+    List<String> getMunicipalitiesRegisteredByRegion(@Param("code") String code);
+
 }
