@@ -11,11 +11,11 @@ import {DiscussionComponent} from "./+discussion/discussion.component";
         {
             path: '',
             redirectTo: 'voucher'
-        }, 
+        }/* , 
         {
             path: 'voucher',
             component: SupplierPortalComponent,
-        },{
+        } */,{
             path: 'installation/:id',
             component: SupplierInstallationComponent,
         }, {

@@ -1,19 +1,19 @@
-import { Component, enableProdMode, OnInit, Output } from "@angular/core";
-import { Router } from "@angular/router";
-import { TranslateService } from "ng2-translate/ng2-translate";
-import { UxLayoutLink, UxService } from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import { UxEuLanguages, UxLanguage } from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
-import { SharedService } from "./shared/shared.service";
-import { LocalStorageService } from "angular-2-local-storage";
-import { UserDTOBase } from "./shared/swagger/model/UserDTO";
-import { UserApi } from "./shared/swagger/api/UserApi";
-import { RegistrationApi } from "./shared/swagger/api/RegistrationApi";
-import { ResponseDTOBase } from "./shared/swagger/model/ResponseDTO";
-import { Http } from "@angular/http";
-import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { environment } from '../environments/environment';
-import { Subject } from "rxjs/Subject";
+import {Component, enableProdMode, OnInit, Output} from "@angular/core";
+import {Router} from "@angular/router";
+import {TranslateService} from "ng2-translate/ng2-translate";
+import {UxLayoutLink, UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import {SharedService} from "./shared/shared.service";
+import {LocalStorageService} from "angular-2-local-storage";
+import {UserDTOBase} from "./shared/swagger/model/UserDTO";
+import {UserApi} from "./shared/swagger/api/UserApi";
+import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
+import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
+import {Http} from "@angular/http";
+import {Observable} from "rxjs/Observable";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {environment} from '../environments/environment';
+import {Subject} from "rxjs/Subject";
 
 enableProdMode();
 
@@ -55,8 +55,8 @@ export class AppComponent implements OnInit {
         this.profileUrl = '';
 
         this.menuLinks = [
-            new UxLayoutLink({ label: 'Beneficiary Registration', url: '/beneficiary-registration' }),
-            new UxLayoutLink({ label: 'Supplier Registration', url: '/supplier-registration' })
+            new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
+            new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
         ];
 
         this.visibility = [false, false, false, false, false];
@@ -146,10 +146,10 @@ export class AppComponent implements OnInit {
             })
         ];
         this.children[1] = [
-            new UxLayoutLink({
+            /* new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.suppPortal'),
                 url: '/supplier-portal/voucher'
-            }),
+            }), */
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.myAccount'),
                 url: '/supplier-portal/profile'
@@ -288,19 +288,20 @@ export class AppComponent implements OnInit {
     }
 
     logout() {
-      this.user = null;
-      this.localStorageService.remove('user');
-      this.menuLinks = this.children[0];
-      this.profileUrl = null;
-      for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
+        this.user = null;
+        this.localStorageService.remove('user');
+        this.menuLinks = this.children[0];
+        this.profileUrl = null;
+        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
-      this.userApi.doCompleteSignOut().subscribe(
-        (response: string) => {
-          window.location.href = environment['logoutUrl'];
-        }, error => {
-          console.log(error);
-        }
-      );
+        this.userApi.doCompleteSignOut().subscribe(
+            (response: string) => {
+                window.location.href = environment['logoutUrl'];
+            }, (error) => {
+                window.location.href = environment['logoutUrl'];
+                console.log(error);
+            }
+        );
     }
 
     private goToTop() {

@@ -301,7 +301,8 @@
                         <label for="email_mayor">{{ 'shared.email.label' | translate }}</label>
                         <input id="email_mayor" type="text" [(ngModel)]="editedMayor.email" class="form-control"
                                name="email_mayor" ngcontrol="email_mayor"
-                               #email_mayor="ngModel" required disabled>
+                               #email_mayor="ngModel" required>
+
                         <div [hidden]="email_mayor.valid || email_mayor.pristine" class="alert alert-danger">
                             {{ 'email.required' | translate }}
                         </div>
