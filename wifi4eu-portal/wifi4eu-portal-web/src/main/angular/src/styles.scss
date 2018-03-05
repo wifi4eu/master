@@ -1471,6 +1471,19 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   background-color: #c53b0c !important;
 }
 
+.whiteButton-thin {
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
+  font-family: Verdana;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.redButton:hover {
+  background-color: #c53b0c;
+}
+
 .warningBadge {
   padding: 4px 8px;
   font-style: italic;
@@ -1489,6 +1502,13 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   cursor: pointer;
   font-size: 15px;
   font-weight: bold;
+}
+
+.customDetailsPanelLabel {
+  margin-left: 0.4em;
+  font-size: 17px;
+  font-weight: bold;
+  font-family: Verdana;
 }
 
 .searchInputBlock {
@@ -1607,4 +1627,22 @@ p-tabview.white .ui-widget-content.ui-tabview {
 
 .voucherModal {
   text-align: center;
+}
+
+.dgConnDetailsHr {
+  background:  none;
+  border-top:  2px solid rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+.action-label {
+  cursor: pointer;
+  color: $dark-blue;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.action-label:hover {
+  color: $darkish-blue;
+  text-decoration: underline;
 }
