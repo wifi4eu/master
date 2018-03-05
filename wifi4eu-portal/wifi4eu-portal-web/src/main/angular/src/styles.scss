@@ -415,6 +415,14 @@ body {
   background: none;
 }
 
+.genericHr {
+  border: 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  background: none;
+  margin: 1.5em 0em !important;
+  height: 100%;
+}
+
 .button-content {
   border: solid 1px rgba(0, 0, 0, 0.3);
   padding-bottom: 52px;
@@ -555,11 +563,18 @@ body {
 .publish-button {
   background-color: #004494;
   width: 10em;
-  margin-top: 2em;
   height: 50px;
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
+
+}
+
+.row.vertical-align {
+  display: flex;
+  align-items: center;
+  margin-top: 1em;
+
 }
 
 .cancel-button {
@@ -567,7 +582,6 @@ body {
   color: #004494;
   border: solid 2px #004494;
   width: 10em;
-  margin-top: 2em;
   height: 50px;
   font-family: Verdana;
   font-size: 1.4em;
@@ -1453,8 +1467,8 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   font-weight: bold;
 }
 
-.redButton:hover {
-  background-color: #c53b0c;
+.redButton:hover, .redButton:focus {
+  background-color: #c53b0c !important;
 }
 
 .warningBadge {
@@ -1486,6 +1500,13 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 .searchInput {
   vertical-align: middle;
   margin-right: 1em;
+}
+
+.profileLogoImage {
+  height: 75px;
+  max-width: 100%;
+  border: 1px solid;
+  box-shadow: 0px 0px 5px black;
 }
 
 /* fix blinking issue with the header */

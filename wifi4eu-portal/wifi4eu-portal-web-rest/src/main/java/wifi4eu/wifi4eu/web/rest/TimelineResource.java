@@ -6,13 +6,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.TimelineDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.service.timeline.TimelineService;
+import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -22,6 +28,9 @@ import java.util.List;
 public class TimelineResource {
     @Autowired
     private TimelineService timelineService;
+
+    @Autowired
+    private UserService userService;
 
     Logger _log = LoggerFactory.getLogger(CallResource.class);
 
@@ -44,10 +53,16 @@ public class TimelineResource {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO createTimeline(@RequestBody final TimelineDTO timelineDTO) {
+    public ResponseDTO createTimeline(@RequestBody final TimelineDTO timelineDTO, HttpServletResponse response) {
         try {
-            _log.info("createTimeline");
-            TimelineDTO resTimeline = timelineService.createTimeline(timelineDTO);
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            TimelineDTO resTimeline = new TimelineDTO();
+            if(userDTO.getType() != 5){
+                response.sendError(HttpStatus.NOT_FOUND.value());
+            }else {
+                _log.info("createTimeline");
+                resTimeline = timelineService.createTimeline(timelineDTO);
+            }
             return new ResponseDTO(true, resTimeline, null);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
@@ -61,12 +76,21 @@ public class TimelineResource {
     @ApiOperation(value = "Delete timeline by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseDTO deleteTimeline(@RequestBody final Integer timelineId) {
+    public ResponseDTO deleteTimeline(@RequestBody final Integer timelineId, HttpServletResponse response) throws IOException {
         try {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(userDTO.getType() != 5){
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
             _log.info("deleteTimeline: " + timelineId);
             TimelineDTO resTimeline = timelineService.deleteTimeline(timelineId);
             return new ResponseDTO(true, resTimeline, null);
-        } catch (Exception e) {
+        }
+        catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), ade.getMessage()));
+        }
+        catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteTimeline' operation.", e);
             }

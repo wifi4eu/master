@@ -179,6 +179,7 @@ INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT',
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC11','1008','no',N'Alpignano',N'ALPIGNANO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH51','33002','no',N'Alseno',N'ALSENO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC42','13006','no',N'Alserio',N'ALSERIO');
+INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH51','033049','no',N'Alta Val Tidone',N'ALTA VAL TIDONE');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC42','013253','no',N'Alta Valle Intelvi',N'ALTA VALLE INTELVI');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF47','072004','no',N'Altamura',N'ALTAMURA');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC32','009005','no',N'Altare',N'ALTARE');
@@ -195,6 +196,7 @@ INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT',
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH34','026001','no',N'Altivole',N'ALTIVOLE');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC16','004005','no',N'Alto',N'ALTO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH55','037062','no',N'Alto Reno Terme',N'ALTO RENO TERME');
+INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC12','002170','no',N'Alto Sermenza',N'ALTO SERMENZA');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITG12','082005','no',N'Altofonte',N'ALTOFONTE');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF61','078009','no',N'Altomonte',N'ALTOMONTE');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITI12','046001','no',N'Altopascio',N'ALTOPASCIO');
@@ -794,6 +796,7 @@ INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT',
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC12','002015','no',N'Borgo d''Ale',N'BORGO D''ALE');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC46','016032','no',N'Borgo di Terzo',N'BORGO DI TERZO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH20','022239','no',N'Borgo Lares',N'BORGO LARES');
+INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC4B','020072','no',N'Borgo Mantovano',N'BORGO MANTOVANO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITI31','041006','no',N'Borgo Pace',N'BORGO PACE');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC48','018016','no',N'Borgo Priolo',N'BORGO PRIOLO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC16','004025','no',N'Borgo San Dalmazzo',N'BORGO SAN DALMAZZO');
@@ -1463,6 +1466,7 @@ INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT',
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH55','037012','no',N'Casalfiumanese (Bologna)',N'CASALFIUMANESE (BOLOGNA)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH53','035012','no',N'Casalgrande (Reggio nell''Emilia)',N'CASALGRANDE (REGGIO NELL''EMILIA)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC16','004045','no',N'Casalgrasso (Cuneo)',N'CASALGRASSO (CUNEO)');
+INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF61','078156','no',N'Casali del Manco (Cosenza)',N'CASALI DEL MANCO (COSENZA)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF14','069016','no',N'Casalincontrada (Chieti)',N'CASALINCONTRADA (CHIETI)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC15','003040','no',N'Casalino (Novara)',N'CASALINO (NOVARA)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC4A','019021','no',N'Casalmaggiore (Cremona)',N'CASALMAGGIORE (CREMONA)');
@@ -1641,6 +1645,7 @@ INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT',
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF32','062016','no',N'Castelfranco in Miscano (Benevento)',N'CASTELFRANCO IN MISCANO (BENEVENTO)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITI18','051040','no',N'Castelfranco Piandiscò (Arezzo)',N'CASTELFRANCO PIANDISCÒ (AREZZO)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH34','026012','no',N'Castelfranco Veneto (Treviso)',N'CASTELFRANCO VENETO (TREVISO)');
+INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC49','098062','no',N'Castelgerundo (Lodi)',N'CASTELGERUNDO (LODI)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH32','024028','no',N'Castelgomberto (Vicenza)',N'CASTELGOMBERTO (VICENZA)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF51','076021','no',N'Castelgrande (Potenza)',N'CASTELGRANDE (POTENZA)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH37','029011','no',N'Castelguglielmo (Rovigo)',N'CASTELGUGLIELMO (ROVIGO)');
@@ -1902,6 +1907,7 @@ INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT',
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH56','038004','no',N'Cento (Ferrara)',N'CENTO (FERRARA)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF35','065039','no',N'Centola (Salerno)',N'CENTOLA (SALERNO)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF63','079025','no',N'Centrache (Catanzaro)',N'CENTRACHE (CATANZARO)');
+INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC42','013254','no',N'Centro Valle Intelvi (Como)',N'CENTRO VALLE INTELVI (COMO)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITG16','086007','no',N'Centuripe (Enna)',N'CENTURIPE (ENNA)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF13','068011','no',N'Cepagatti (Pescara)',N'CEPAGATTI (PESCARA)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF32','062022','no',N'Ceppaloni (Benevento)',N'CEPPALONI (BENEVENTO)');
@@ -3645,6 +3651,7 @@ INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT',
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITI31','041022','no',N'Lunano',N'LUNANO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC48','018084','no',N'Lungavilla',N'LUNGAVILLA');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF61','078069','no',N'Lungro',N'LUNGRO');
+INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC34','011020','no',N'Luni',N'LUNI');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF34','064045','no',N'Luogosano',N'LUOGOSANO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITG29','104014','no',N'Luogosanto',N'LUOGOSANTO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF22','070034','no',N'Lupara',N'LUPARA');
@@ -3772,6 +3779,7 @@ INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT',
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH42','030055','no',N'Manzano',N'MANZANO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITI43','058054','no',N'Manziana',N'MANZIANA');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC46','016132','no',N'Mapello',N'MAPELLO');
+INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC11','001316','no',N'Mappano',N'MAPPANO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITG25','090038','no',N'Mara',N'MARA');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITG27','092037','no',N'Maracalagonis',N'MARACALAGONIS');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH54','036019','no',N'Maranello',N'MARANELLO');
@@ -6667,6 +6675,7 @@ INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT',
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC48','018148','no',N'Semiana',N'SEMIANA');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF65','080086','no',N'Seminara',N'SEMINARA');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITI1A','053028','no',N'Semproniano',N'SEMPRONIANO');
+INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH20','022250','no',N'Sèn Jan di Fassa',N'SÈN JAN DI FASSA');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC4C','015206','no',N'Senago',N'SENAGO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH10','021091','no',N'Senales',N'SENALES');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH10','021118','no',N'Senale-San Felice',N'SENALE-SAN FELICE');
@@ -7431,6 +7440,7 @@ INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT',
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC48','018166','no',N'Val di Nizza',N'VAL DI NIZZA');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH10','021107','no',N'Val di Vizze',N'VAL DI VIZZE');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH33','025073','no',N'Val di Zoldo',N'VAL DI ZOLDO');
+INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH32','024123','no',N'Val Liona',N'VAL LIONA');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC44','014074','no',N'Val Masino',N'VAL MASINO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC42','013233','no',N'Val Rezzo',N'VAL REZZO');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC46','016223','no',N'Valbondione',N'VALBONDIONE');
@@ -7526,6 +7536,7 @@ INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT',
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC46','016229','no',N'Valtorta',N'VALTORTA');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC20','007071','no',N'Valtournenche',N'VALTOURNENCHE');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITF35','065155','no',N'Valva',N'VALVA');
+INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC43','097093','no',N'Valvarrone',N'VALVARRONE');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITH41','093053','no',N'Valvasone Arzene',N'VALVASONE ARZENE');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITC48','018170','no',N'Valverde (Pavia)',N'VALVERDE (PAVIA)');
 INSERT INTO dbo.laus (country_code,nuts3,lau1,_change,name1,name2) VALUES ('IT','ITG17','087052','no',N'Valverde (Catania)',N'VALVERDE (CATANIA)');

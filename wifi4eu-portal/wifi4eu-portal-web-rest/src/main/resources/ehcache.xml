@@ -78,32 +78,8 @@
         <persistence strategy="localTempSwap" />
     </cache>
 
-    <!-- wifi4eu-portal >> wifi4eu-portal-service >> SupplierService -->
-    <cache name="portalGetSupplierByUserId"
-           maxEntriesLocalHeap="100000"
-           maxEntriesLocalDisk="1000000"
-           eternal="false"
-           timeToIdleSeconds="300"
-           timeToLiveSeconds="600"
-           memoryStoreEvictionPolicy="LFU"
-           transactionalMode="off">
-        <persistence strategy="localTempSwap" />
-    </cache>
-
     <!-- wifi4eu-portal >> wifi4eu-portal-service >> NutsService -->
     <cache name="portalGetNutsById"
-           maxEntriesLocalHeap="100000"
-           maxEntriesLocalDisk="1000000"
-           eternal="false"
-           timeToIdleSeconds="300"
-           timeToLiveSeconds="600"
-           memoryStoreEvictionPolicy="LFU"
-           transactionalMode="off">
-        <persistence strategy="localTempSwap" />
-    </cache>
-
-    <!-- wifi4eu-portal >> wifi4eu-portal-service >> RegistrationService -->
-    <cache name="portalGetRegistrationsByUserId"
            maxEntriesLocalHeap="100000"
            maxEntriesLocalDisk="1000000"
            eternal="false"

@@ -10,11 +10,14 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -31,21 +34,40 @@ public class MayorResource {
     @Autowired
     private PermissionChecker permissionChecker;
 
+    @Autowired
+    private UserService userService;
+
     Logger _log = LoggerFactory.getLogger(MayorResource.class);
 
     @ApiOperation(value = "Get all the mayors")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<MayorDTO> allMayors() {
+    public List<MayorDTO> allMayors(HttpServletResponse response) throws IOException {
         _log.info("allMayors");
+        try{
+            if(userService.getUserByUserContext(UserHolder.getUser()).getType() != 5){
+                throw new AccessDeniedException("");
+            }
+        }catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception e){
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
         return mayorService.getAllMayors();
     }
 
     @ApiOperation(value = "Get mayor by specific id")
     @RequestMapping(value = "/{mayorId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public MayorDTO getMayorById(@PathVariable("mayorId") final Integer mayorId) {
+    public MayorDTO getMayorById(@PathVariable("mayorId") final Integer mayorId, HttpServletResponse response) throws IOException {
         _log.info("getMayorById: " + mayorId);
+        try {
+            permissionChecker.check(RightConstants.MAYORS_TABLE+mayorId);
+        }catch (AccessDeniedException ade){
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception e){
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
         return mayorService.getMayorById(mayorId);
     }
 
@@ -82,12 +104,18 @@ public class MayorResource {
     @ApiOperation(value = "Delete mayor by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseDTO deleteMayor(@RequestBody final Integer mayorId) {
+    public ResponseDTO deleteMayor(@RequestBody final Integer mayorId, HttpServletResponse response) throws IOException {
         try {
             _log.info("deleteMayor: " + mayorId);
+            permissionChecker.check(RightConstants.MAYORS_TABLE+mayorId);
             MayorDTO resMayor = mayorService.deleteMayor(mayorId);
             return new ResponseDTO(true, resMayor, null);
-        } catch (Exception e) {
+        }
+        catch (AccessDeniedException ade){
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+        catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteMayor' operation.", e);
             }
