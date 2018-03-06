@@ -36,7 +36,10 @@ public class UserFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        String requestUri = "Unknown resource";
         try {
+            requestUri = request.getRequestURI();
+
             UserContext user = null;
             DetailedUser ecasPrincipal = (DetailedUser) request.getUserPrincipal();
             if (ecasPrincipal != null) {
@@ -60,23 +63,27 @@ public class UserFilter extends OncePerRequestFilter {
                 String newSession = session.getId();
 
                 if (_log.isDebugEnabled()) {
-                    _log.debug("Login user from eCas " + ecasPrincipal.getEmail() + " with previous session '" + session.getId() + "' and new session '" + newSession + "' for the request: " + request.getRequestURI());
+                    _log.debug("Login user from eCas " + ecasPrincipal.getEmail() + " with previous session '" + previousSession + "' and new session '" + newSession + "' for the request: " + requestUri);
                 }
 
                 Cookie userCookie = new Cookie("JSESSIONID", newSession);
                 response.addCookie(userCookie);
             } else if (_log.isDebugEnabled()) {
-                _log.debug("Unauthenticated request: " + request.getRequestURI());
+                _log.debug("Unauthenticated request: " + requestUri);
             }
 
             user = (UserContext) request.getSession().getAttribute(Constant.USER);
             UserHolder.setUser(user);
 
-            if (user == null && request.getRequestURI().equalsIgnoreCase("/wifi4eu/")) {
+            if (user == null && requestUri.equalsIgnoreCase("/wifi4eu/")) {
                 response.sendRedirect(request.getContextPath() + "/index.jsp");
                 return;
             } else {
-                filterChain.doFilter(request, response);
+                try {
+                    filterChain.doFilter(request, response);
+                } catch (Exception ex) {
+                    _log.error("Error processing request: " + requestUri, ex);
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();

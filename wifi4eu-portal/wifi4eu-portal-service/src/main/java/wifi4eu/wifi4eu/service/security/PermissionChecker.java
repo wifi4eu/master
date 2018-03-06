@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.security.RightDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.Right;
 import wifi4eu.wifi4eu.entity.user.User;
@@ -55,8 +56,8 @@ public class PermissionChecker {
 
         List<RightDTO> rightDTOs = rightMapper.toDTOList(Lists.newArrayList(rightRepository.findByRightdescAndUserId(rightDesc,userDTO.getId())));
 
-        if(rightDTOs.isEmpty()){
-            throw new AccessDeniedException("403 FORBIDDEN");
+        if (rightDTOs.isEmpty()) {
+            throw new AppException(403, "FORBIDDEN");
         }
 
         return true;

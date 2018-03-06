@@ -1,11 +1,10 @@
 package wifi4eu.wifi4eu.common.ecas;
 
 import org.apache.log4j.Logger;
+import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import org.apache.commons.lang.StringUtils;
 
-
-import wifi4eu.wifi4eu.common.exception.person.IdentityNotFoundException;
 import eu.cec.digit.ecas.client.jaas.DetailedUser;
 import eu.cec.digit.ecas.client.jaas.SubjectNotFoundException;
 import eu.cec.digit.ecas.client.jaas.SubjectUtil;
@@ -36,7 +35,7 @@ public class UserHolder {
         try {
             return SubjectUtil.getCurrentEcasUser();
         } catch (SubjectNotFoundException e) {
-            throw new IdentityNotFoundException("No ECAS DetailedUser", "Unknown", e);
+            throw new AppException("No ECAS detail user", e);
         }
     }
 
@@ -46,8 +45,7 @@ public class UserHolder {
         try {
             return StringUtils.isEmpty(employeeNumber)? null:Long.valueOf(employeeNumber);
         } catch (NumberFormatException e) {
-            throw new IdentityNotFoundException("ECAS DetailedUser employeeNumber NOT Numeric: ", employeeNumber, detailedUser.getName(), e);
+            throw new AppException("ECAS detail user employeeNumber NOT numeric '" + employeeNumber + "' for user " + detailedUser.getName(), e);
         }
-    }    
-
+    }
 }

@@ -72,28 +72,17 @@ public class UserResource {
     @ApiOperation(value = "Get user by specific id")
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public UserDTO getUserById(@PathVariable("userId") final Integer userId, HttpServletResponse response) throws IOException {
+    public UserDTO getUserById(@PathVariable("userId") final Integer userId, HttpServletResponse response) {
         UserDTO resUser = userService.getUserById(userId);
-        try {
-            _log.info("getUserById: " + userId);
-            UserDTO userConnected = userService.getUserByUserContext(UserHolder.getUser());
-            if(userConnected.getType() != 5){
-                permissionChecker.check(RightConstants.USER_TABLE+userId);
-            }
-            //check permission
-            if (resUser != null) {
-                resUser.setPassword(null);
-            }
-        } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'getUserById' operation.", ade);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getUserById' operation.", e);
-            }
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+        _log.info("getUserById: " + userId);
+        UserDTO userConnected = userService.getUserByUserContext(UserHolder.getUser());
+        if(userConnected.getType() != 5){
+            permissionChecker.check(RightConstants.USER_TABLE+userId);
+        }
+        //check permission
+        if (resUser != null) {
+            resUser.setPassword(null);
         }
         return resUser;
     }
