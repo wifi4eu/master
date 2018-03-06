@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.web.filter;
 
 import eu.cec.digit.ecas.client.jaas.DetailedUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.security.RoleDTO;
@@ -10,6 +12,7 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,6 +20,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 public class UserFilter extends OncePerRequestFilter {
+
+    Logger _log = LoggerFactory.getLogger(UserFilter.class);
 
     @Override
     protected String getAlreadyFilteredAttributeName() {
@@ -47,10 +52,21 @@ public class UserFilter extends OncePerRequestFilter {
                 user.setRoleList(new LinkedList<RoleDTO>());
 
                 HttpSession session = request.getSession();
+                String previousSession = session.getId();
                 session.invalidate();
 
                 session = request.getSession(true);
                 session.setAttribute(Constant.USER, user);
+                String newSession = session.getId();
+
+                if (_log.isDebugEnabled()) {
+                    _log.debug("Login user from eCas " + ecasPrincipal.getEmail() + " with previous session '" + session.getId() + "' and new session '" + newSession + "' for the request: " + request.getRequestURI());
+                }
+
+                Cookie userCookie = new Cookie("JSESSIONID", newSession);
+                response.addCookie(userCookie);
+            } else if (_log.isDebugEnabled()) {
+                _log.debug("Unauthenticated request: " + request.getRequestURI());
             }
 
             user = (UserContext) request.getSession().getAttribute(Constant.USER);
