@@ -361,6 +361,12 @@ body {
   margin-top: -131px;
 }
 
+@media only screen and (min-width: 1024px) {
+  #img-scnd img {
+    padding-top: 3em;
+  }
+}
+
 @media only screen and (max-width: 1024px) {
   #img-scnd img, #img-europeans img {
     width: 100%;
@@ -1315,8 +1321,9 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 }
 
 /* fix blinking issue with the header */
-#app-wrapper.shrink-header-active #main #nav-bar {}
+#app-wrapper.shrink-header-active #main #nav-bar {
+}
 
-timer-component .center{
+timer-component .center {
   padding: 0.5em 0px;
 }
