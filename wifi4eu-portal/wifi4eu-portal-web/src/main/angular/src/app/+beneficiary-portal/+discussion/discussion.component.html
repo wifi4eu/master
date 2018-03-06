@@ -191,7 +191,7 @@
                     <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate }}</p>
                     <p>{{ 'discussionForum.sendMessage.subject' | translate }}</p>
                     <textarea rows="10" cols="20" class="form-control widthMax"
-                              name="newMessage" (keydown)="checkHasMessage()" [(ngModel)]="message"
+                              name="newMessage" [(ngModel)]="message"
                               [readonly]="isSendMessage" required></textarea>
                     <div class="row">
                         <div class="col-sm-2"></div>
@@ -203,7 +203,7 @@
                             </button>
                         </div>
                         <div class="col-sm-4">
-                            <button type="submit" [disabled]="isSendMessage || !hasMessage"
+                            <button type="submit" [disabled]="isSendMessage || message.length < 1"
                                     class="btn btn-primary changePassword confirm-button">
                           <span style="margin-right: 2px;">
                             <i *ngIf="isSendMessage && !isSendedMessage" [@enterSpinner]
