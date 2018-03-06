@@ -93,10 +93,17 @@ public class SupplierResource {
     @ResponseBody
     public ResponseDTO createSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
         try {
-            response.sendError(HttpStatus.NOT_FOUND.value());
             _log.info("createSupplier");
-//            SupplierDTO resSupplier = supplierService.createSupplier(supplierDTO);
-            return new ResponseDTO(true, null, null);
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(supplierDTO.getUserId() != userDTO.getId()){
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            SupplierDTO resSupplier = supplierService.createSupplier(supplierDTO);
+            return new ResponseDTO(true, resSupplier, null);
+        }
+        catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
         catch (Exception e) {
             if (_log.isErrorEnabled()) {
