@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-@Component({selector: 'home-component', templateUrl: 'home.component.html'})
+@Component({ selector: 'home-component', templateUrl: 'home.component.html' })
 export class HomeComponent {
 
-    ngOnInit(){
-        window.location.href="/#/home";
+    ngOnInit() {
+        window.location.href = "/#/home";
     }
 
 }

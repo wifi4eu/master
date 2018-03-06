@@ -1,18 +1,18 @@
-import {Component, enableProdMode, OnInit, Output} from "@angular/core";
-import {Router} from "@angular/router";
-import {TranslateService} from "ng2-translate/ng2-translate";
-import {UxLayoutLink, UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
-import {SharedService} from "./shared/shared.service";
-import {LocalStorageService} from "angular-2-local-storage";
-import {UserDTOBase} from "./shared/swagger/model/UserDTO";
-import {UserApi} from "./shared/swagger/api/UserApi";
-import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
-import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
-import {Http} from "@angular/http";
-import {Observable} from "rxjs/Observable";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {environment} from '../environments/environment';
+import { Component, enableProdMode, OnInit, Output } from "@angular/core";
+import { Router } from "@angular/router";
+import { TranslateService } from "ng2-translate/ng2-translate";
+import { UxLayoutLink, UxService } from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import { UxEuLanguages, UxLanguage } from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import { SharedService } from "./shared/shared.service";
+import { LocalStorageService } from "angular-2-local-storage";
+import { UserDTOBase } from "./shared/swagger/model/UserDTO";
+import { UserApi } from "./shared/swagger/api/UserApi";
+import { RegistrationApi } from "./shared/swagger/api/RegistrationApi";
+import { ResponseDTOBase } from "./shared/swagger/model/ResponseDTO";
+import { Http } from "@angular/http";
+import { Observable } from "rxjs/Observable";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { environment } from '../environments/environment';
 import { Subject } from "rxjs/Subject";
 
 enableProdMode();
@@ -36,43 +36,43 @@ export class AppComponent implements OnInit {
     private subjectLoginSuccess = new Subject();
     loginSuccessEmiter = this.subjectLoginSuccess.asObservable();
 
-    @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
-    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,is"
+    @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
+    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr"
 
     constructor(private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
         translateService.setDefaultLang('en');
         let language = this.localStorageService.get('lang');
         if (language) {
             this.translateService.use(language.toString());
-            this.uxService.activeLanguage = UxEuLanguages.languagesByCode [language.toString()];
-            this.selectedLanguage = UxEuLanguages.languagesByCode [language.toString()];
+            this.uxService.activeLanguage = UxEuLanguages.languagesByCode[language.toString()];
+            this.selectedLanguage = UxEuLanguages.languagesByCode[language.toString()];
         } else {
             translateService.use('en');
-            this.uxService.activeLanguage = UxEuLanguages.languagesByCode ['en'];
-            this.selectedLanguage = UxEuLanguages.languagesByCode ['en'];
+            this.uxService.activeLanguage = UxEuLanguages.languagesByCode['en'];
+            this.selectedLanguage = UxEuLanguages.languagesByCode['en'];
         }
 
         this.profileUrl = '';
 
         this.menuLinks = [
-          new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
-          new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
+            new UxLayoutLink({ label: 'Beneficiary Registration', url: '/beneficiary-registration' }),
+            new UxLayoutLink({ label: 'Supplier Registration', url: '/supplier-registration' })
         ];
 
         this.visibility = [false, false, false, false, false];
         this.children = [];
         this.menuTranslations = new Map();
 
-        this.loginSuccessEmiter.subscribe((userLogged)=> {
-          this.updateMenuTranslations();
-          this.stringsTranslated.subscribe(
-            (stringsTranslated: number) => {
-                if (stringsTranslated == 7) {
-                    this.initChildren();
-                    this.sharedService.update();
+        this.loginSuccessEmiter.subscribe((userLogged) => {
+            this.updateMenuTranslations();
+            this.stringsTranslated.subscribe(
+                (stringsTranslated: number) => {
+                    if (stringsTranslated == 7) {
+                        this.initChildren();
+                        this.sharedService.update();
+                    }
                 }
-            }
-          );
+            );
         })
 
         this.initChildren();
@@ -89,39 +89,39 @@ export class AppComponent implements OnInit {
         this.localStorageService.remove('user');
         this.userApi.ecasLogin().subscribe(
             (response: ResponseDTOBase) => {
-              if(response.success){
-                this.user = response.data;
-                this.localStorageService.set('user', JSON.stringify(response.data));
+                if (response.success) {
+                    this.user = response.data;
+                    this.localStorageService.set('user', JSON.stringify(response.data));
 
-                switch (this.user.type) {
-                    case 1:
-                        this.router.navigateByUrl('/supplier-portal/profile');
-                        break;
-                    case 2:
-                    case 3:
-                        this.router.navigateByUrl('/beneficiary-portal/profile');
-                        break;
-                    case 5:
-                        this.router.navigateByUrl('/dgconn-portal');
-                        break;
-                    default:
-                        if (publicRedirection) {
-                            this.router.navigateByUrl(String(publicRedirection));
-                            this.localStorageService.remove("public-redirection");
-                        }
-                        //this.router.navigateByUrl('/home');
-                        break;
+                    switch (this.user.type) {
+                        case 1:
+                            this.router.navigateByUrl('/supplier-portal/profile');
+                            break;
+                        case 2:
+                        case 3:
+                            this.router.navigateByUrl('/beneficiary-portal/profile');
+                            break;
+                        case 5:
+                            this.router.navigateByUrl('/dgconn-portal');
+                            break;
+                        default:
+                            if (publicRedirection) {
+                                this.router.navigateByUrl(String(publicRedirection));
+                                this.localStorageService.remove("public-redirection");
+                            }
+                            //this.router.navigateByUrl('/home');
+                            break;
+                    }
+                    this.subjectLoginSuccess.next(response.data);
                 }
-                this.subjectLoginSuccess.next(response.data);
-              }
-              else{
-                this.menuLinks = this.children[0];
-                this.uxService.growl({
-                  severity: 'warn',
-                  summary: 'WARNING',
-                  detail: 'Could not get ECAS User, ignore this when NG is working in offline mode'
-                });
-              }
+                else {
+                    this.menuLinks = this.children[0];
+                    this.uxService.growl({
+                        severity: 'warn',
+                        summary: 'WARNING',
+                        detail: 'Could not get ECAS User, ignore this when NG is working in offline mode'
+                    });
+                }
 
             }, error => {
                 this.menuLinks = this.children[0];
@@ -190,40 +190,40 @@ export class AppComponent implements OnInit {
     }
 
     updateHeader() {
-      let storedUser = this.localStorageService.get('user');
-      this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-      if (this.user != null) {
-        this.userApi.getUserById(this.user.id).subscribe(
-          (user: UserDTOBase) => {
-            this.user = user;
-            this.localStorageService.set('user', JSON.stringify(user));
-            switch (this.user.type) {
-              case 1:
-                this.profileUrl = '/supplier-portal/profile';
-                this.menuLinks = this.children[1];
-                break;
-              case 2:
-              case 3:
-                this.profileUrl = '/beneficiary-portal/profile';
-                this.menuLinks = this.children[2];
-                break;
-              case 5:
-                this.profileUrl = '/dgconn-portal';
-                this.menuLinks = this.children[5];
-                break;
-              default:
-                this.profileUrl = '/home';
-                this.menuLinks = this.children[0];
-              break;
-            }
-          }, 
-          error => {
-          } 
-        );
-      } else {
-        this.menuLinks = this.children[0];
-      }
-      for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
+        let storedUser = this.localStorageService.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+        if (this.user != null) {
+            this.userApi.getUserById(this.user.id).subscribe(
+                (user: UserDTOBase) => {
+                    this.user = user;
+                    this.localStorageService.set('user', JSON.stringify(user));
+                    switch (this.user.type) {
+                        case 1:
+                            this.profileUrl = '/supplier-portal/profile';
+                            this.menuLinks = this.children[1];
+                            break;
+                        case 2:
+                        case 3:
+                            this.profileUrl = '/beneficiary-portal/profile';
+                            this.menuLinks = this.children[2];
+                            break;
+                        case 5:
+                            this.profileUrl = '/dgconn-portal';
+                            this.menuLinks = this.children[5];
+                            break;
+                        default:
+                            this.profileUrl = '/home';
+                            this.menuLinks = this.children[0];
+                            break;
+                    }
+                },
+                error => {
+                }
+            );
+        } else {
+            this.menuLinks = this.children[0];
+        }
+        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
 
     changeLanguage(language: UxLanguage) {
@@ -288,27 +288,19 @@ export class AppComponent implements OnInit {
     }
 
     logout() {
-        this.user = null;
-        this.localStorageService.remove('user');
-        this.menuLinks = this.children[0];
-        this.profileUrl = null;
-        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
+      this.user = null;
+      this.localStorageService.remove('user');
+      this.menuLinks = this.children[0];
+      this.profileUrl = null;
+      for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
-        this.userApi.doCompleteSignOut().subscribe(
-            (response: string) => {
-                console.log(response);
-            }, error => {
-                console.log(error);
-            }
-        );
-        this.userApi.ecasLogout().subscribe(
-            (response: ResponseDTOBase) => {
-                window.location.href = environment['logoutUrl'];
-            }, error => {
-                console.log(error);
-                window.location.href = environment['logoutUrl'];
-            }
-        );
+      this.userApi.doCompleteSignOut().subscribe(
+        (response: string) => {
+          window.location.href = environment['logoutUrl'];
+        }, error => {
+          console.log(error);
+        }
+      );
     }
 
     private goToTop() {

@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `AUDIT_DATA_T` (
   `USER_ID`          INT(11)          DEFAULT NULL
 )
   ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
+  DEFAULT CHARACTER SET = utf8
   COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
@@ -66,7 +66,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`users` (
   `verified`    TINYINT      NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`laus`
@@ -85,7 +87,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`laus` (
   `physical_address` VARCHAR(255) NULL,
   PRIMARY KEY (`id`)
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`municipalities`
@@ -106,7 +110,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`municipalities` (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`registrations`
@@ -135,7 +141,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`registrations` (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`calls`
@@ -147,7 +155,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`calls` (
   `end_date`   BIGINT       NULL,
   PRIMARY KEY (`id`)
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`nuts`
@@ -162,7 +172,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`nuts` (
   `sorting`      INT          NULL,
   PRIMARY KEY (`id`)
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`threads`
@@ -179,7 +191,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`threads` (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`thread_messages`
@@ -204,7 +218,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`thread_messages` (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`suppliers`
@@ -275,7 +291,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`applications` (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`mayors`
@@ -295,7 +313,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`mayors` (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`representations`
@@ -318,7 +338,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`representations` (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`access_points`
@@ -339,7 +361,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`access_points` (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`supplied_regions`
@@ -445,7 +469,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`temp_tokens` (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 
 -- -----------------------------------------------------
 -- Table `wifi4eu`.`organizations`
@@ -457,7 +483,9 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`organizations` (
   `country` VARCHAR(255) NULL,
   PRIMARY KEY (`id`)
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8
+  COLLATE = utf8_bin;
 INSERT INTO `wifi4eu`.`organizations` (name, type, country)
 VALUES ('Everis', 'private', 'ES');
 

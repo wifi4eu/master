@@ -50,7 +50,7 @@
                 <div class="ui-g-8">
                     <div>
                         <label class="label floatLeft" for="name">{{ 'shared.name.label' | translate }}</label>
-                        <input id="name" type="text" class="form-control paddingInput" name="name"
+                        <input id="nameStep3" type="text" class="form-control paddingInput" name="name"
                                [disabled]="imMayor" [(ngModel)]="initialUser.name" required>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                 <div class="ui-g-8">
                     <div class="form-group">
                         <label class="label floatLeft" for="surname">{{ 'shared.surname.label' | translate }}</label>
-                        <input id="surname" type="text" class="form-control paddingInput" name="surname"
+                        <input id="surnameStep3" type="text" class="form-control paddingInput" name="surname"
                                [disabled]="imMayor" [(ngModel)]="initialUser.surname" required>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                 <div class="ui-g-4">
                     <label class="label floatLeft" for="address">{{ 'benefRegistration.address.label' | translate
                         }}</label>
-                    <input id="address" type="text" class="form-control paddingInput" name="address"
+                    <input id="addressStep3" type="text" class="form-control paddingInput" name="address"
                            [disabled]="imMayor" [(ngModel)]="initialUser.address" required>
                 </div>
                 <div class="ui-g-2">
@@ -80,7 +80,7 @@
                         {{ 'shared.number.label' | translate }}
                     </label>
                     <input type="text" class="form-control paddingInput"
-                           id="addressNum" name="addressNum" [disabled]="imMayor" [(ngModel)]="initialUser.addressNum"
+                           id="addressNumStep3" name="addressNum" [disabled]="imMayor" [(ngModel)]="initialUser.addressNum"
                            required>
                 </div>
                 <div class="ui-g-2"></div>
@@ -92,7 +92,7 @@
                         {{ 'shared.postal-code.label' | translate }}
                     </label>
                     <input type="text" class="form-control paddingInput"
-                           id="postalCode" name="postalCode" [disabled]="imMayor" [(ngModel)]="initialUser.postalCode"
+                           id="postalCodeStep3" name="postalCode" [disabled]="imMayor" [(ngModel)]="initialUser.postalCode"
                            required>
                 </div>
                 <div class="ui-g-2"></div>
@@ -107,7 +107,7 @@
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button type="submit" class="btn btn-primary publish-button"
+                <button type="submit" id="navigate-step4" class="btn btn-primary publish-button"
                         [disabled]="!imMayor && (!entityForm.valid || !userEmailMatches)">
                     {{ 'shared.next.button' | translate }}
                 </button>

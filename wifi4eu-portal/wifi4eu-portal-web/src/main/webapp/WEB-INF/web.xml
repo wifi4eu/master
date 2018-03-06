@@ -127,7 +127,7 @@
         <web-resource-collection>
             <web-resource-name>ecas-demo</web-resource-name>
             <description>Requires users to be authenticated but does not require them to be authorized</description>
-            <url-pattern>/*</url-pattern>
+            <url-pattern>/index.jsp</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description>allow users with any role</description>

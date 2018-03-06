@@ -2,6 +2,8 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class MayorResource {
     Logger _log = LoggerFactory.getLogger(MayorResource.class);
 
     @ApiOperation(value = "Get all the mayors")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MayorDTO> allMayors() {
@@ -42,6 +47,9 @@ public class MayorResource {
     }
 
     @ApiOperation(value = "Get mayor by specific id")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(value = "/{mayorId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public MayorDTO getMayorById(@PathVariable("mayorId") final Integer mayorId) {
@@ -96,7 +104,10 @@ public class MayorResource {
     }
 
     @ApiOperation(value = "Get mayor by specific municipality id")
-    @RequestMapping(value = "/municipalityId/{municipalityId}",method = RequestMethod.GET, produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
+    @RequestMapping(value = "/municipalityId/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public MayorDTO getMayorByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
         if (_log.isInfoEnabled()) {
