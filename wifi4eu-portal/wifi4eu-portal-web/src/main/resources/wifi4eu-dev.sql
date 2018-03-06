@@ -416,6 +416,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`helpdesk_issues` (
   `summary`      MEDIUMTEXT   NULL,
   `create_date`  BIGINT       NULL,
   `_status`      INT          NOT NULL DEFAULT 0,
+  `_ticket`      INT          NOT NULL DEFAULT 0
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
