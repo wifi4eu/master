@@ -75,7 +75,6 @@ public class RegistrationService {
         }
     }
 
-    @Cacheable(value = "portalGetRegistrationsByUserId")
     public List<RegistrationDTO> getRegistrationsByUserId(int userId) {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findByUserId(userId)));
     }

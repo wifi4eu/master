@@ -117,6 +117,10 @@ export class AppComponent {
         );
     }
 
+    myAccount() {
+        window.location.href = environment['myAccountUrl'];
+    }
+
     private goToTop() {
         window.scrollTo(0, 0);
     }

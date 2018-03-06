@@ -95,17 +95,4 @@ public class ThreadService {
     public ThreadDTO getThreadByTypeAndReason(int type, String reason) {
         return threadMapper.toDTO(threadRepository.findByTypeAndReason(type, reason));
     }
-
-    public List<ThreadDTO> getUserThreads(int userId) {
-        List<ThreadDTO> threads = new ArrayList<>();
-        for (RegistrationDTO registration : registrationService.getRegistrationsByUserId(userId)) {
-            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-            ThreadDTO thread = getThreadByTypeAndReason(4, String.valueOf(municipality.getLauId()));
-            if (thread != null) {
-                threads.add(thread);
-            }
-        }
-        return threads;
-    }
-
 }

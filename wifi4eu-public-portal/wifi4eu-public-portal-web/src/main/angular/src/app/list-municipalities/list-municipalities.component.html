@@ -52,7 +52,7 @@
             <p-dataGrid [value]="municipalities" [paginator]="true" [rows]="21">
               <ng-template let-municipality pTemplate="item">
                 <div class="municipality-item">
-                  <span>{{municipality.name}}</span>
+                  <span>{{municipality}}</span>
                 </div>
               </ng-template>
             </p-dataGrid>
@@ -63,7 +63,7 @@
     <div class="row" *ngIf="searched && municipalities.length == 0">
       <div class="col-md-12">
         <!-- TODO: check with connect -->
-        <span class="updated-on">No results found for {{regionNameSearched}}</span>
+        <span class="updated-on">{{ 'listMunicipalities.noresults.text' | translate }} {{regionNameSearched}}</span>
       </div>
     </div>
   </div>

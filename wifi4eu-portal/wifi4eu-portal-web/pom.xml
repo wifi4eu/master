@@ -55,8 +55,7 @@
                                 </goals>
                                 <configuration>
                                     <executable>bash</executable>
-                                    <workingDirectory>../../wifi4eu-scripts/src/translations master file
-                                    </workingDirectory>
+                                    <workingDirectory>../../wifi4eu-scripts/src/translations</workingDirectory>
                                     <arguments>
                                         <argument>copy_to_i18.sh</argument>
                                     </arguments>
@@ -74,7 +73,6 @@
                                     <arguments>
                                         <argument>build</argument>
                                         <argument>--env=${ng.env}</argument>
-                                        <argument>--prod</argument>
                                         <argument>--aot</argument>
                                         <argument>false</argument>
                                     </arguments>

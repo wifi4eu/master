@@ -33,6 +33,7 @@
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
 
+    <!-- ${enable.appinsights.start}
     <filter>
         <filter-name>ApplicationInsightsWebFilter</filter-name>
         <filter-class>
@@ -43,7 +44,7 @@
         <filter-name>ApplicationInsightsWebFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
+    ${enable.appinsights.end} -->
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

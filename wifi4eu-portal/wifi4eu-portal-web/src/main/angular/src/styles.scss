@@ -415,6 +415,14 @@ body {
   background: none;
 }
 
+.genericHr {
+  border: 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  background: none;
+  margin: 1.5em 0em !important;
+  height: 100%;
+}
+
 .button-content {
   border: solid 1px rgba(0, 0, 0, 0.3);
   padding-bottom: 52px;
@@ -555,11 +563,18 @@ body {
 .publish-button {
   background-color: #004494;
   width: 10em;
-  margin-top: 2em;
   height: 50px;
   font-family: Verdana;
   font-size: 1.4em;
   font-weight: bold;
+
+}
+
+.row.vertical-align {
+  display: flex;
+  align-items: center;
+  margin-top: 1em;
+
 }
 
 .cancel-button {
@@ -567,7 +582,6 @@ body {
   color: #004494;
   border: solid 2px #004494;
   width: 10em;
-  margin-top: 2em;
   height: 50px;
   font-family: Verdana;
   font-size: 1.4em;
@@ -1453,6 +1467,19 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   font-weight: bold;
 }
 
+.redButton:hover, .redButton:focus {
+  background-color: #c53b0c !important;
+}
+
+.whiteButton-thin {
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
+  font-family: Verdana;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
 .redButton:hover {
   background-color: #c53b0c;
 }
@@ -1477,6 +1504,13 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   font-weight: bold;
 }
 
+.customDetailsPanelLabel {
+  margin-left: 0.4em;
+  font-size: 17px;
+  font-weight: bold;
+  font-family: Verdana;
+}
+
 .searchInputBlock {
   background-color: white;
   padding: 2em 1.6em;
@@ -1486,6 +1520,13 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 .searchInput {
   vertical-align: middle;
   margin-right: 1em;
+}
+
+.profileLogoImage {
+  height: 75px;
+  max-width: 100%;
+  border: 1px solid;
+  box-shadow: 0px 0px 5px black;
 }
 
 /* fix blinking issue with the header */
@@ -1586,4 +1627,22 @@ p-tabview.white .ui-widget-content.ui-tabview {
 
 .voucherModal {
   text-align: center;
+}
+
+.dgConnDetailsHr {
+  background:  none;
+  border-top:  2px solid rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+.action-label {
+  cursor: pointer;
+  color: $dark-blue;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.action-label:hover {
+  color: $darkish-blue;
+  text-decoration: underline;
 }

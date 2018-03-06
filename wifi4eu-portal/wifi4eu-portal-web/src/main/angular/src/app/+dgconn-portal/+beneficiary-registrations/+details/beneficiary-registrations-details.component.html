@@ -1,6 +1,6 @@
 <div class="container">
     <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
-        <a class="link-label" routerLink="/dgconn-portal/beneficiary-registrations" routerLinkActive="active">
+        <a class="link-label" routerLink=".." routerLinkActive="active">
             <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
         </a>
     </div>
@@ -8,7 +8,7 @@
         <p>
             <span class="beneficiaryTitle">
                 {{ 'shared.municipalityDetails.title' | translate }}<span *ngIf="municipalities[0]"> - {{municipalities[0].name}}</span>
-            </span>            
+            </span>
             <span class="badge badge-warning" *ngIf="issueRegistration == 1">{{ 'dgConn.badge.warning' | translate }}</span>
             <span class="badge badge-duplicated" *ngIf="issueRegistration == 2">{{ 'dgConn.badge.duplicated' | translate }}</span>
             <span class="badge badge-success" *ngIf="issueRegistration == 3">{{ 'dgConn.badge.resolved' | translate }}</span>
@@ -32,112 +32,130 @@
             <hr class="beneficiaryHr">
             <div *ngFor="let municipality of municipalities; let i = index">
                 <div class="row applicantDetailsPanel">
-                    <input class="customCheckbox" type="checkbox" [id]="'check-'+i" [(ngModel)]="entitiesChecked[i]"
-                    (change)="checkEntity(i)">
-                    <label class="customCheckboxLabel" [for]="'check-'+i">
-                        {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}}
+                    <label class="customDetailsPanelLabel">
+                        {{ 'dgConn.duplicatedBeneficiaryDetails.entity' | translate }} {{(i + 1)}}
                     </label>
                     <span class="right">
-                        <button type="button" class="btn greenButton" (click)="validateMunicipality(i)">
-                            {{ 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality' | translate }}
-                        </button>
-                        <button type="button" class="btn redButton" (click)="invalidateMunicipality(i)">
+                        <button type="button" class="btn redButton" (click)="invalidateMunicipality(i)" [disabled]="registrations[i].status == 1">
                             {{ 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality' | translate }}
+                        </button>
+                        <button type="button" class="btn btn-primary whiteButton-thin" (click)="requestLegalDocuments(i)">
+                            {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
                         </button>
                     </span>
                 </div>
-                <div class="row applicantDetailsPanel">
-                    <div class="ui-g-6 ui-lg-6 ui-md-8 ui-sm-12">
-                        <p class="applicantDetailsNoMargin municipality-name profileData">
-                            <span class="ui-g-12">{{ 'benefRegistration.mayor.details' | translate }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
+                <div class="applicantDetailsPanel">
+                    <div class="row" style="padding: 1em;">
+                        <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'suppRegistration.legalentity.label' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.country.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ municipality.country }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'benefRegistration.address.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ municipality.address }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.number.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ municipality.addressNum }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.postal-code.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ municipality.postalCode }}</span>
+                            </p>
+                        </div>
+                        <div class="ui-g-6 ui-lg-6 ui-md-8 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.name.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ contactUsers[i].name }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.surname.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ contactUsers[i].surname }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.email.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ contactUsers[i].ecasEmail }}</span>
+                            </p>
+                        </div>
+                        <div class="ui-g-2 ui-lg-2 ui-md-12 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.documentation' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="!registrations[i].legalFile1 || !registrations[i].legalFile2 || !registrations[i].legalFile3 || !registrations[i].legalFile4">
+                                <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.noDocuments' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile1">
+                                <span class="ui-g-12">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1<br>
+                                    <a class="link-label" [href]="getLegalFileUrl(i, 1)" download>
+                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                    </a>
+                                </span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile2">
+                                <span class="ui-g-12">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2<br>
+                                    <a class="link-label" [href]="getLegalFileUrl(i, 2)" download>
+                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                    </a>
+                                </span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile3">
+                                <span class="ui-g-12">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3<br>
+                                    <a class="link-label" [href]="getLegalFileUrl(i, 3)" download>
+                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                    </a>
+                                </span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile4">
+                                <span class="ui-g-12">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4<br>
+                                    <a class="link-label" [href]="getLegalFileUrl(i, 4)" download>
+                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                    </a>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row" style="padding: 1em;">
+                        <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                            <span class="ui-g-12">{{ 'benefRegistration.legalRepresentative.details' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
                             <span class="ui-g-6">{{ 'shared.name.label' | translate }}</span>
                             <span class="ui-g-6 profileData">{{ mayors[i].name }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
+                            </p>
+                            <p class="applicantDetailsNoMargin">
                             <span class="ui-g-6">{{ 'shared.surname.label' | translate }}</span>
                             <span class="ui-g-6 profileData">{{ mayors[i].surname }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
+                            </p>
+                            <p class="applicantDetailsNoMargin">
                             <span class="ui-g-6">{{ 'shared.email.label' | translate }}</span>
                             <span class="ui-g-6 profileData">{{ mayors[i].email }}</span>
-                        </p>
-                    </div>
-                    <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12">
-                        <p class="applicantDetailsNoMargin municipality-name profileData">
-                            <span class="ui-g-12">{{ 'suppRegistration.legalentity.label' | translate }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'shared.country.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ municipality.country }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'benefRegistration.address.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ municipality.address }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'shared.number.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ municipality.addressNum }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'shared.postal-code.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ municipality.postalCode }}</span>
-                        </p>
-                    </div>
-                    <div class="ui-g-2 ui-lg-2 ui-md-12 ui-sm-12">
-                        <p class="applicantDetailsNoMargin municipality-name profileData">
-                            <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.documentation' | translate }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="!registrations[i].legalFile1 || !registrations[i].legalFile2 || !registrations[i].legalFile3 || !registrations[i].legalFile4">
-                            <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.noDocuments' | translate }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile1">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1<br>
-                                <a class="link-label" [href]="getLegalFileUrl(i, 1)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile2">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2<br>
-                                <a class="link-label" [href]="getLegalFileUrl(i, 2)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile3">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3<br>
-                                <a class="link-label" [href]="getLegalFileUrl(i, 3)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile4">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4<br>
-                                <a class="link-label" [href]="getLegalFileUrl(i, 4)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
+                            </p>
+                        </div>
+                        <div class="ui-g-8 ui-lg-8 ui-md-8 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'benefRegistration.associationName' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span *ngIf="organizations[i]" class="ui-g-12 profileData">{{ organizations[i].name }}</span>
+                                <span *ngIf="!organizations[i]" class="ui-g-12 profileData">-</span>
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <br>
             </div>
-        </div>
-        <div class="ui-g-12 right">
-            <button type="button" class="btn btn-primary whiteButton"
-                    (click)="requestLegalDocuments()">
-                {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
-            </button>
-            <button type="button" class="btn btn-primary blueButton" *ngIf="municipalities.length > 1"
-                    (click)="assignLegalEntity()" [disabled]="entityCheckboxIndex == null">
-                {{ 'dgConn.duplicatedBeneficiaryDetails.assignLegalEntity' | translate }}
-            </button>
         </div>
         <div class="ui-g-12" *ngIf="discussionThread">
             <div *ngIf="discussionThread.messages.length > 0">
