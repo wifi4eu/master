@@ -180,43 +180,40 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false"
+    <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="true"
               [resizable]="false" [draggable]="false" [closeOnEscape]="true">
         <div class="beneficiaryTitle center hiddenScroll">
             {{ 'shared.sendMessage.title' | translate }}
         </div>
         <form #messagesForm="ngForm" (submit)="sendMessage()">
-            <div class="form-group profileDialog">
-                <div class="form-group">
-                    <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate }}</p>
+            <div class="form-group">
+                <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate }}</p>
+                <div style="padding: 2em; padding-top: 0em;">
                     <p>{{ 'discussionForum.sendMessage.subject' | translate }}</p>
                     <textarea rows="10" cols="20" class="form-control widthMax"
                               name="newMessage" (keydown)="checkHasMessage()" [(ngModel)]="message"
-                              [readonly]="isSendMessage" required></textarea>
-                    <div class="row">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-4">
-                            <button [disabled]="isSendMessage" type="button"
-                                    class="btn btn-primary changePassword cancel-button"
-                                    (click)="closeModal()">
-                                {{ 'shared.cancel.button' | translate }}
-                            </button>
-                        </div>
-                        <div class="col-sm-4">
-                            <button type="submit" [disabled]="isSendMessage || !hasMessage"
-                                    class="btn btn-primary changePassword confirm-button">
+                              [readonly]="sendingMessage" required></textarea>
+                </div>
+                <div class="row center">
+                    <div class="col-sm-6">
+                        <button [disabled]="sendingMessage" type="button"
+                                class="btn btn-primary changePassword cancel-button"
+                                (click)="closeModal()">
+                            {{ 'shared.cancel.button' | translate }}
+                        </button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="submit" [disabled]="sendingMessage || !hasMessage"
+                                class="btn btn-primary changePassword confirm-button">
                           <span style="margin-right: 2px;">
-                            <i *ngIf="isSendMessage && !isSendedMessage" [@enterSpinner]
+                            <i *ngIf="sendingMessage && !messageSentSuccess" [@enterSpinner]
                                class="fa fa-spinner loading-icon"></i>
                           </span>
-                                {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
-                            </button>
-                        </div>
-                        <div class="col-sm-2"></div>
+                            {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
+                        </button>
                     </div>
                 </div>
             </div>
-
         </form>
     </p-dialog>
 </div>
@@ -224,34 +221,33 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closeOnEscape]="true">
+    <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true"
+              [resizable]="false" [draggable]="false" [closeOnEscape]="true">
         <form #messagesForm="ngForm">
             <div class="form-group profileDialog">
 
                 <div class="beneficiaryTitle center">
                     {{ 'discussionForum.mediationRequest.title' | translate }}
                 </div>
-                <p class="center newMessageDiscussionMargins">{{ 'discussionForum.mediationRequest.text' | translate
-                    }}</p>
+                <p class="center newMessageDiscussionMargins">
+                    {{ 'discussionForum.mediationRequest.text' | translate }}
+                </p>
                 <br>
                 <p class="center">{{ 'discussionForum.mediationRequest.selectText' | translate }}</p>
-                <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-4">
+                <div class="row center">
+                    <div class="col-sm-6">
                         <button type="button" class="btn btn-primary changePassword cancel-button"
                                 (click)="closeModal()">
                             {{ 'shared.cancel.button' | translate }}
                         </button>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-6">
                         <button type="submit" class="btn btn-primary changePassword confirm-button"
                                 (click)="askMediation(); closeModal()">
                             {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
                         </button>
                     </div>
                 </div>
-                <div class="col-sm-2"></div>
             </div>
         </form>
     </p-dialog>
