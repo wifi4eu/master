@@ -115,7 +115,7 @@
                 <div style="text-align: center !important">
                     <button id="withdrawRegistration" type="button" (click)="withdrawRegistration()"
                             class="btn btn-primary changePassword" [disabled]="withdrawingRegistration || withdrawnSuccess">
-                        {{'shared.withdraw-registration.button' | translate }}
+                        {{ 'shared.withdraw-registration.button' | translate }}
                     </button>
                 </div>
             </div>
@@ -406,7 +406,7 @@
 
 <p-dialog [(visible)]="withdrawingRegistration" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
-    <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+    <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
     <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
     <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
