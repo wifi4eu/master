@@ -5,23 +5,23 @@ import java.util.Date;
 import java.util.List;
 
 public class MunicipalityCacheDTO implements Serializable {
-    private List<MunicipalityDTO> municipalityDTOList;
+    private List<String> municipalities;
     private Date dateCached;
 
-    public MunicipalityCacheDTO(List<MunicipalityDTO> municipalityDTOList, Date dateCached) {
-        this.municipalityDTOList = municipalityDTOList;
+    public MunicipalityCacheDTO(List<String> municipalities, Date dateCached) {
+        this.municipalities = municipalities;
         this.dateCached = dateCached;
     }
 
     public MunicipalityCacheDTO() {
     }
 
-    public List<MunicipalityDTO> getMunicipalityDTOList() {
-        return municipalityDTOList;
+    public List<String> getMunicipalities() {
+        return municipalities;
     }
 
-    public void setMunicipalityDTOList(List<MunicipalityDTO> municipalityDTOList) {
-        this.municipalityDTOList = municipalityDTOList;
+    public void setMunicipalities(List<String> municipalities) {
+        this.municipalities = municipalities;
     }
 
     public Date getDateCached() {

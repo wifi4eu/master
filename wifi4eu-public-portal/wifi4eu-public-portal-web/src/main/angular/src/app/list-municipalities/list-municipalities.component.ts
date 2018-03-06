@@ -17,7 +17,7 @@ export class ListMunicipalitiesComponent implements OnInit {
   regions: NutsDTOBase[] = [];
   country: NutsDTOBase;
   region: NutsDTOBase;
-  municipalities: MunicipalityDTOBase[] = [];
+  municipalities: string[] = [];
   dateCached: string = null;
   searched: boolean = false;
   regionNameSearched: string = null;
@@ -51,7 +51,7 @@ export class ListMunicipalitiesComponent implements OnInit {
     if(this.country && this.region){
       this.municipalityApi.getMunicipalitiesRegistered(this.region.code).subscribe(
         (municipalityCacheDTO: MunicipalityCacheDTOBase) => {
-          this.municipalities = municipalityCacheDTO.municipalityDTOList;
+          this.municipalities = municipalityCacheDTO.municipalities;
           let date = new Date(municipalityCacheDTO.dateCached);
           let datePipe = new DatePipe('default').transform(date, 'dd/MM/yyyy');
           this.dateCached = datePipe;
