@@ -55,7 +55,7 @@
                         <div class="col-sm-12">
                             <p class="applicationText">{{ 'discussionForum.editButtons' | translate }}</p>
                             <button type="button" class="btn btn-primary changePassword applicationDelete"
-                                    (click)="withdrawRegistration()">
+                                    (click)="withdrawRegistration()" [disabled]="withdrawingRegistration || withdrawnSuccess">
                                 {{ 'discussionForum.withdraw' | translate }}
                             </button>
                         </div>
@@ -221,7 +221,6 @@
     </p-dialog>
 </div>
 
-
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true" [resizable]="false"
@@ -256,3 +255,10 @@
         </form>
     </p-dialog>
 </div>
+
+<p-dialog [(visible)]="withdrawingRegistration" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog>
