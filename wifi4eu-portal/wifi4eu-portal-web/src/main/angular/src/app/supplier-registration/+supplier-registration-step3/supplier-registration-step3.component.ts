@@ -35,7 +35,7 @@ export class SupplierRegistrationStep3Component {
     private checkIfEmailMatches() {
         this.emailMatches = false;
         this.css_class_email = 'notValid';
-        if (this.supplier.contactEmail === this.confirmEmailField) {
+        if (this.supplier.contactEmail === this.confirmEmailField || this.confirmEmailField.length > 1) {
             this.emailMatches = true;
             this.css_class_email = 'isValid';
         }
