@@ -195,10 +195,14 @@
 
 <p-dialog [(visible)]="displayModal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
           [closable]="true" [closeOnEscape]="true">
+    <div class="ui-g-8" style="text-align: center !important">
+    </div>
     <div class="ui-g-2" style="text-align: center !important">
         <button type="submit" class="btn btn-primary publish-button" (click)="submit()">
             {{ 'shared.confirm.button' | translate }}
         </button>
+    </div>
+    <div class="ui-g-2" style="text-align: center !important">
     </div>
 </p-dialog>
 
