@@ -1,4 +1,4 @@
-import {Component, enableProdMode, OnInit, Output} from "@angular/core";
+import {Component, enableProdMode, Output} from "@angular/core";
 import {Router} from "@angular/router";
 import {TranslateService} from "ng2-translate/ng2-translate";
 import {UxLayoutLink, UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
@@ -9,11 +9,8 @@ import {UserDTOBase} from "./shared/swagger/model/UserDTO";
 import {UserApi} from "./shared/swagger/api/UserApi";
 import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
 import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
-import {Http} from "@angular/http";
-import {Observable} from "rxjs/Observable";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {environment} from '../environments/environment';
-import {Subject} from "rxjs/Subject";
 
 enableProdMode();
 
@@ -23,7 +20,8 @@ enableProdMode();
     styleUrls: ['./app.component.scss'],
     providers: [UserApi, RegistrationApi]
 })
-export class AppComponent implements OnInit {
+
+export class AppComponent {
     private menuLinks: Array<UxLayoutLink>;
     private user: UserDTOBase;
     private visibility: boolean[];
@@ -33,11 +31,9 @@ export class AppComponent implements OnInit {
     private children: UxLayoutLink[][];
     private menuTranslations: Map<String, String>;
     private stringsTranslated = new BehaviorSubject<number>(null);
-    private subjectLoginSuccess = new Subject();
-    loginSuccessEmiter = this.subjectLoginSuccess.asObservable();
 
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
-    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr"
+    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr";
 
     constructor(private translate: TranslateService, private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
         translateService.setDefaultLang('en');
@@ -53,79 +49,51 @@ export class AppComponent implements OnInit {
         }
 
         this.profileUrl = '';
-
-        this.menuLinks = [
-            new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
-            new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
-        ];
+        this.menuLinks = [];
 
         this.visibility = [false, false, false, false, false];
         this.children = [];
         this.menuTranslations = new Map();
 
-        this.loginSuccessEmiter.subscribe((userLogged) => {
-            this.updateMenuTranslations();
+        this.initChildren();
+        this.getUserData();
+
+        this.sharedService.updateEmitter.subscribe(() => this.updateHeader());
+        this.sharedService.logoutEmitter.subscribe(() => this.logout());
+
+        this.sharedService.loginEmitter.subscribe(() => {
             this.stringsTranslated.subscribe(
                 (stringsTranslated: number) => {
                     if (stringsTranslated == 7) {
                         this.initChildren();
+                        this.updateHeader();
                         this.sharedService.update();
                     }
                 }
             );
-        })
-
-        this.initChildren();
-
-        this.sharedService.updateEmitter.subscribe(() => this.updateHeader());
-        this.sharedService.logoutEmitter.subscribe(() => this.logout());
+        });
 
         this.updateFooterDate();
         this.updateMenuTranslations();
     }
 
-    ngOnInit() {
-        let publicRedirection = this.localStorageService.get("public-redirection");
-        this.localStorageService.remove('user');
+    private getUserData() {
+        let publicRedirection = this.localStorageService.get('public-redirection');
         this.userApi.ecasLogin().subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.user = response.data;
                     this.localStorageService.set('user', JSON.stringify(response.data));
-
-                    switch (this.user.type) {
-                        case 1:
-                            this.router.navigateByUrl('/supplier-portal/profile');
-                            break;
-                        case 2:
-                        case 3:
-                            this.router.navigateByUrl('/beneficiary-portal/profile');
-                            break;
-                        case 5:
-                            this.router.navigateByUrl('/dgconn-portal');
-                            break;
-                        default:
-                            if (publicRedirection) {
-                                this.router.navigateByUrl(String(publicRedirection));
-                                this.localStorageService.remove("public-redirection");
-                            }
-                            //this.router.navigateByUrl('/home');
-                            break;
+                    if (this.user.type == 0 && publicRedirection) {
+                        this.router.navigateByUrl(String(publicRedirection));
                     }
-                    this.subjectLoginSuccess.next(response.data);
+                    this.sharedService.login(this.user);
                 }
-                else {
-                    this.menuLinks = this.children[0];
-                    this.sharedService.growlTranslation('Could not get ECAS User, ignore this when NG is working in offline mode', 'shared.growl.noECAS', 'warn');
-                }
-
-            }, error => {
-                this.menuLinks = this.children[0];
-                this.sharedService.growlTranslation('Could not get ECAS User, ignore this when NG is working in offline mode', 'shared.growl.noECAS', 'warn');
-            });
+            }
+        );
     }
 
-    initChildren() {
+    private initChildren() {
         this.children[0] = [
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.appReg'),
@@ -180,10 +148,10 @@ export class AppComponent implements OnInit {
         ];
     }
 
-    updateHeader() {
+    private updateHeader() {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-        if (this.user != null) {
+        if (this.user) {
             this.userApi.getUserById(this.user.id).subscribe(
                 (user: UserDTOBase) => {
                     this.user = user;
@@ -207,8 +175,9 @@ export class AppComponent implements OnInit {
                             this.menuLinks = this.children[0];
                             break;
                     }
-                },
-                error => {
+                    if (this.user.type != 0) {
+                        this.localStorageService.remove('public-redirection');
+                    }
                 }
             );
         } else {
@@ -217,7 +186,7 @@ export class AppComponent implements OnInit {
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
     }
 
-    changeLanguage(language: UxLanguage) {
+    private changeLanguage(language: UxLanguage) {
         this.translateService.use(language.code);
         this.uxService.activeLanguage = language;
         this.localStorageService.set('lang', language.code);
@@ -226,7 +195,7 @@ export class AppComponent implements OnInit {
     }
 
     private updateMenuTranslations() {
-        var num = 0;
+        let num = 0;
         this.translateService.get('itemMenu.appReg').subscribe(
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.appReg', translatedString);
@@ -278,9 +247,10 @@ export class AppComponent implements OnInit {
         );
     }
 
-    logout() {
+    private logout() {
         this.user = null;
         this.localStorageService.remove('user');
+        this.localStorageService.remove('public-redirection');
         this.menuLinks = this.children[0];
         this.profileUrl = null;
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;

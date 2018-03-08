@@ -5,17 +5,22 @@ import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux
 import { Resolve } from '@angular/router/src/interfaces';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { Observable } from 'rxjs/Observable';
+import {UserDTOBase} from "./swagger/model/UserDTO";
 
 @Injectable()
 export class SharedService {
 
     private emitUpdate = new Subject<any>();
+    private emitLogin = new Subject<any>();
     private emitLogout = new Subject<any>();
     private emitClean = new Subject<any>();
 
     updateEmitter = this.emitUpdate.asObservable();
+    loginEmitter = this.emitLogin.asObservable();
     logoutEmitter = this.emitLogout.asObservable();
     cleanEmitter = this.emitClean.asObservable();
+
+    user: UserDTOBase = null;
 
     constructor(private translateService: TranslateService, private uxService: UxService) {
     }
@@ -24,7 +29,9 @@ export class SharedService {
         this.emitUpdate.next();
     }
 
-    login() {
+    login(user: UserDTOBase) {
+        this.user = user;
+        this.emitLogin.next();
     }
 
     logout() {
