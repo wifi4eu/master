@@ -24,6 +24,8 @@ export class SupplierProfileComponent {
     private selectedCountriesNames: string[] = [];
     private displayContact: boolean = false;
     private displayCompany: boolean = false;
+    private withdrawingRegistration: boolean = false;
+    private withdrawnSuccess: boolean = false;
     private submittingData: boolean = false;
     private isLogoUploaded: boolean = false;
     private deletingLogo: boolean = false;
@@ -170,16 +172,23 @@ export class SupplierProfileComponent {
     }
 
     private withdrawRegistration() {
-        this.userApi.deleteUser(this.user.id).subscribe(
-            (data: ResponseDTOBase) => {
-                if (data.success) {
-                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
-                    this.sharedService.logout();
+        if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
+            this.withdrawingRegistration = true;
+            this.userApi.deleteUser(this.user.id).subscribe(
+                (data: ResponseDTOBase) => {
+                    if (data.success) {
+                        this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
+                        this.sharedService.logout();
+                        this.withdrawingRegistration = false;
+                        this.withdrawnSuccess = true;
+                    }
+                }, error => {
+                    this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
+                    this.withdrawingRegistration = false;
+                    this.withdrawnSuccess = false;
                 }
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
-            }
-        );
+            );
+        }
     }
 
     private deleteLogo(){
