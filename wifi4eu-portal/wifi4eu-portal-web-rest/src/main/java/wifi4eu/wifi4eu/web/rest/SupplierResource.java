@@ -69,7 +69,7 @@ public class SupplierResource {
         try {
             _log.info("getSupplierById: " + supplierId);
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(supplierDTO.getUserId() != userDTO.getId()){
+            if(supplierDTO.getUserId() != userDTO.getId() && userDTO.getType() != 5){
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             supplierDTO = supplierService.getSupplierById(supplierId);
@@ -93,10 +93,17 @@ public class SupplierResource {
     @ResponseBody
     public ResponseDTO createSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
         try {
-            response.sendError(HttpStatus.NOT_FOUND.value());
             _log.info("createSupplier");
-//            SupplierDTO resSupplier = supplierService.createSupplier(supplierDTO);
-            return new ResponseDTO(true, null, null);
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(supplierDTO.getUserId() != userDTO.getId()){
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            SupplierDTO resSupplier = supplierService.createSupplier(supplierDTO);
+            return new ResponseDTO(true, resSupplier, null);
+        }
+        catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
         catch (Exception e) {
             if (_log.isErrorEnabled()) {
@@ -164,5 +171,47 @@ public class SupplierResource {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return supplierService.getSupplierByUserId(userId);
+    }
+
+    @ApiOperation(value = "Get suppliers that have the same VAT and/or Account Number as the specific supplier")
+    @RequestMapping(value = "/similarSuppliers/{supplierId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<SupplierDTO> findSimilarSuppliers(@PathVariable("supplierId") final Integer supplierId) {
+        _log.info("allSuppliers");
+        return supplierService.findSimilarSuppliers(supplierId);
+    }
+
+    @ApiOperation(value = "Request legal documents")
+    @RequestMapping(value = "/requestLegalDocuments/{supplierId}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO requestLegalDocuments(@PathVariable("supplierId") final Integer supplierId) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("requestLegalDocuments for supplier: " + supplierId);
+            }
+            return new ResponseDTO(supplierService.requestLegalDocuments(supplierId), null, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'requestLegalDocuments' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Invalidate supplier")
+    @RequestMapping(value = "/invalidate", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO invalidateSupplier(@RequestBody final SupplierDTO supplierDTO) {
+        try {
+            _log.info("invalidateSupplier");
+            SupplierDTO resSupplier = supplierService.invalidateSupplier(supplierDTO);
+            return new ResponseDTO(true, resSupplier, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'invalidateSupplier' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
     }
 }

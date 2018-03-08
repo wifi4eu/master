@@ -1,19 +1,19 @@
-import { Component, enableProdMode, OnInit, Output } from "@angular/core";
-import { Router } from "@angular/router";
-import { TranslateService } from "ng2-translate/ng2-translate";
-import { UxLayoutLink, UxService } from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import { UxEuLanguages, UxLanguage } from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
-import { SharedService } from "./shared/shared.service";
-import { LocalStorageService } from "angular-2-local-storage";
-import { UserDTOBase } from "./shared/swagger/model/UserDTO";
-import { UserApi } from "./shared/swagger/api/UserApi";
-import { RegistrationApi } from "./shared/swagger/api/RegistrationApi";
-import { ResponseDTOBase } from "./shared/swagger/model/ResponseDTO";
-import { Http } from "@angular/http";
-import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { environment } from '../environments/environment';
-import { Subject } from "rxjs/Subject";
+import {Component, enableProdMode, OnInit, Output} from "@angular/core";
+import {Router} from "@angular/router";
+import {TranslateService} from "ng2-translate/ng2-translate";
+import {UxLayoutLink, UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import {UxEuLanguages, UxLanguage} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import {SharedService} from "./shared/shared.service";
+import {LocalStorageService} from "angular-2-local-storage";
+import {UserDTOBase} from "./shared/swagger/model/UserDTO";
+import {UserApi} from "./shared/swagger/api/UserApi";
+import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
+import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
+import {Http} from "@angular/http";
+import {Observable} from "rxjs/Observable";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {environment} from '../environments/environment';
+import {Subject} from "rxjs/Subject";
 
 enableProdMode();
 
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr"
 
-    constructor(private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
+    constructor(private translate: TranslateService, private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
         translateService.setDefaultLang('en');
         let language = this.localStorageService.get('lang');
         if (language) {
@@ -55,8 +55,8 @@ export class AppComponent implements OnInit {
         this.profileUrl = '';
 
         this.menuLinks = [
-            new UxLayoutLink({ label: 'Beneficiary Registration', url: '/beneficiary-registration' }),
-            new UxLayoutLink({ label: 'Supplier Registration', url: '/supplier-registration' })
+            new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
+            new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
         ];
 
         this.visibility = [false, false, false, false, false];
@@ -116,21 +116,12 @@ export class AppComponent implements OnInit {
                 }
                 else {
                     this.menuLinks = this.children[0];
-                    this.uxService.growl({
-                        severity: 'warn',
-                        summary: 'WARNING',
-                        detail: 'Could not get ECAS User, ignore this when NG is working in offline mode'
-                    });
+                    this.sharedService.growlTranslation('Could not get ECAS User, ignore this when NG is working in offline mode', 'shared.growl.noECAS', 'warn');
                 }
 
             }, error => {
                 this.menuLinks = this.children[0];
-                this.uxService.growl({
-                    severity: 'warn',
-                    summary: 'WARNING',
-                    detail: 'Could not get ECAS User, ignore this when NG is working in offline mode'
-                });
-                console.log('WARNING : Could not get ECAS User, ignore this when NG is working in offline mode');
+                this.sharedService.growlTranslation('Could not get ECAS User, ignore this when NG is working in offline mode', 'shared.growl.noECAS', 'warn');
             });
     }
 
@@ -288,19 +279,20 @@ export class AppComponent implements OnInit {
     }
 
     logout() {
-      this.user = null;
-      this.localStorageService.remove('user');
-      this.menuLinks = this.children[0];
-      this.profileUrl = null;
-      for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
+        this.user = null;
+        this.localStorageService.remove('user');
+        this.menuLinks = this.children[0];
+        this.profileUrl = null;
+        for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
-      this.userApi.doCompleteSignOut().subscribe(
-        (response: string) => {
-          window.location.href = environment['logoutUrl'];
-        }, error => {
-          console.log(error);
-        }
-      );
+        this.userApi.doCompleteSignOut().subscribe(
+            (response: string) => {
+                window.location.href = environment['logoutUrl'];
+            }, (error) => {
+                window.location.href = environment['logoutUrl'];
+                console.log(error);
+            }
+        );
     }
 
     private goToTop() {

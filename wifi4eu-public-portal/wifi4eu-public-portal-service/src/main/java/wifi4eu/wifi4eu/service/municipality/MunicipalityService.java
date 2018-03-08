@@ -34,7 +34,7 @@ public class MunicipalityService {
         Date today = new Date();
         MunicipalityCacheDTO municipalityCacheDTO = new MunicipalityCacheDTO();
         municipalityCacheDTO.setDateCached(today);
-        municipalityCacheDTO.setMunicipalityDTOList(municipalityMapper.toDTOList(municipalityRepository.getMunicipalitiesRegisteredByRegion(code)));
+        municipalityCacheDTO.setMunicipalities(municipalityRepository.getMunicipalitiesRegisteredByRegion(code));
         return municipalityCacheDTO;
     }
 }
