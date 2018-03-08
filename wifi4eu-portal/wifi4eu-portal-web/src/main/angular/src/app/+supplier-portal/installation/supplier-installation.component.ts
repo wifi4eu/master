@@ -8,6 +8,8 @@ import {ActivatedRoute} from "@angular/router";
 import {UserDTO} from "../../shared/swagger/model/UserDTO";
 import {LauDTO} from "../../shared/swagger/model/LauDTO";
 import {ResponseDTO} from "../../shared/swagger/model/ResponseDTO";
+import { SharedService } from "../../shared/shared.service";
+
 
 @Component({templateUrl: 'supplier-installation.component.html', providers: [SupplierApi, LauApi]})
 
