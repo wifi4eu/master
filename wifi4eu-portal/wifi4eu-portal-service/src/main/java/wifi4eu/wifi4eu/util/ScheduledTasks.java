@@ -8,6 +8,7 @@ import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.entity.helpdesk.HelpdeskIssue;
+import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -27,9 +28,12 @@ public class ScheduledTasks {
     private HelpdeskService helpdeskService;
 
     @Autowired
+    private HelpdeskIssueMapper helpdeskIssueMapper;
+
+    @Autowired
     private UserService userService;
 
-    @Scheduled(cron = "*/30 * * * * ?")
+    @Scheduled(cron = "0 0/30 * * * ?")
     public void scheduleHelpdeskIssues() {
 
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
@@ -41,7 +45,7 @@ public class ScheduledTasks {
 
             helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
 
-            UserDTO userDTO = userService.getUserByEmail(helpdeskIssue.getFromEmail());
+            UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
 
             helpdeskTicketDTO.setFirstname(userDTO.getName());
             helpdeskTicketDTO.setLastname(userDTO.getSurname());
@@ -49,17 +53,19 @@ public class ScheduledTasks {
             helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
             helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
 
-            //helpdeskIssue.setTicket(true);
+            System.out.println("After - " + helpdeskTicketDTO.toString());
 
-            //HelpdeskIssueDTO issueDTO = helpdeskService.createHelpdeskIssue(helpdeskIssue);
-            //System.out.println("After - " + issueDTO);
-            executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+            String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+            if(result.contains("</html>message\"></p>g()\">line-height: 2.9;\">8\" src=\"JavaScript/Thankyou.js\"></script>www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">")){
+                helpdeskIssue.setTicket(true);
+                helpdeskService.createHelpdeskIssue(helpdeskIssue);
+            }
+            System.out.println("executePost - " + result);
         }
     }
 
     public static String executePost(String targetURL, String urlParameters) {
         HttpURLConnection connection = null;
-
         try {
             //Create connection
             URL url = new URL(targetURL);
@@ -68,9 +74,14 @@ public class ScheduledTasks {
             connection.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");
 
+            connection.setRequestProperty("Connection", "keep-alive");
             connection.setRequestProperty("Content-Length",
                     Integer.toString(urlParameters.getBytes().length));
-            connection.setRequestProperty("Content-Language", "en-US");
+            connection.setRequestProperty("Content-Language", "en-US,en;q=0.9,es-ES;q=0.8,es;q=0.7");
+            connection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+            connection.setRequestProperty("Referer", "https://forms.communi-k.eu/livewebtools/WebForms/Standard/Standard.php?en");
+            connection.setRequestProperty("Origin", "https://forms.communi-k.eu");
+            connection.setRequestProperty("Host", "webtools.ec.europa.eu");
 
             connection.setUseCaches(false);
             connection.setDoOutput(true);

@@ -1,27 +1,29 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import wifi4eu.wifi4eu.common.Constant;
+
 public class HelpdeskTicketDTO {
 
     private final int form_tools_form_id = 1180;
     private final String uuid = "_5qd9hpabh";
-    private String lang = "lang";
+    private String lang = Constant.PREF_LANG_DEFAULT;
+    private String browser = Constant.BROWSER;
+    private String gender = Constant.GENDER_DEFAULT;
+    private String firstname = Constant.FIRSTNAME_DEFAULT;
+    private String lastname = Constant.LASTNAME_DEFAULT;
+    private String emailAdress = Constant.EMAIL_DEFAULT;
+    private String emailAdressconf = emailAdress;
+    private String nationality = Constant.NATIONALITY_DEFAULT;
+    private String resid_country = nationality;
+    private String econom_categ = Constant.ECOM_CATEG_DEFAULT;
+    private String pref_lg = Constant.PREF_LANG_DEFAULT;
+    private String pref_lg2 = pref_lg;
+    private String txtsubjext = "";
+    private String question = "";
 
-    private String browser = "+User+App+-+Mozilla%2F5.0+%28X11%3B+Linux+x86_64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F64.0.3282.186+Safari%2F537.3";
-    private String gender = "M";
-    private String firstname = "aa";
-    private String lastname = "bb";
-    private String emailAdress = "cc%40cc.cc";
-    private String emailAdressconf = "cc%40cc.cc";
-    private String nationality = "AT";
-    private String resid_country = "AT";
-    private String econom_categ = "Business";
-    private String pref_lg = "en";
-    private String pref_lg2 = "es";
-    private String  txtsubjext = "dd";
-    private String question = "ee";
-    private String agreemail ="Agreed";
-    private String agreement ="Agreed";
-    private String submit = "Submit";
+    private final String agreemail ="Agreed";
+    private final String agreement ="Agreed";
+    private final String submit = "Submit";
 
     public HelpdeskTicketDTO() {
     }
@@ -166,23 +168,23 @@ public class HelpdeskTicketDTO {
     @Override
     public String toString() {
         return "form_tools_form_id=" + form_tools_form_id +
-                "&uuid='" + uuid + '\'' +
-                "&lang='" + lang + '\'' +
-                "&browser='" + browser + '\'' +
-                "&gender='" + gender + '\'' +
-                "&firstname='" + firstname + '\'' +
-                "&lastname='" + lastname + '\'' +
-                "&emailAdress='" + emailAdress + '\'' +
-                "&emailAdressconf='" + emailAdressconf + '\'' +
-                "&nationality='" + nationality + '\'' +
-                "&resid_country='" + resid_country + '\'' +
-                "&econom_categ='" + econom_categ + '\'' +
-                "&pref_lg='" + pref_lg + '\'' +
-                "&pref_lg2='" + pref_lg2 + '\'' +
-                "&txtsubjext='" + txtsubjext + '\'' +
-                "&question='" + question + '\'' +
-                "&agreemail='" + agreemail + '\'' +
-                "&agreement='" + agreement + '\'' +
-                "&submit='" + submit + '\'';
+                "&uuid=" + uuid +
+                "&lang=" + lang +
+                "&browser=" + browser +
+                "&gender=" + gender +
+                "&firstname=" + firstname +
+                "&lastname=" + lastname +
+                "&emailAdress=" + emailAdress +
+                "&emailAdressconf=" + emailAdressconf +
+                "&nationality=" + nationality +
+                "&resid_country=" + resid_country +
+                "&econom_categ=" + econom_categ +
+                "&pref_lg=" + pref_lg +
+                "&pref_lg2=" + pref_lg2 +
+                "&txtsubjext=" + txtsubjext +
+                "&question=" + question +
+                "&agreemail=" + agreemail +
+                "&agreement=" + agreement +
+                "&submit=" + submit;
     }
 }
