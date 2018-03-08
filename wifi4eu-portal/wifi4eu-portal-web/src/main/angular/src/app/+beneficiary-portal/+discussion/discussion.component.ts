@@ -50,6 +50,8 @@ export class DiscussionComponent {
     private displayMediationAlert: boolean = false;
     private sendingMessage = false;
     private messageSentSuccess = false;
+    private withdrawingRegistration: boolean = false;
+    private withdrawnSuccess: boolean = false;
     private message: string = '';
 
     constructor(private localStorageService: LocalStorageService, private route: ActivatedRoute, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private threadmessagesApi: ThreadmessagesApi, private userApi: UserApi, private sharedService: SharedService, private router: Router) {
@@ -122,16 +124,23 @@ export class DiscussionComponent {
     }
 
     private withdrawRegistration() {
-        this.userApi.deleteUser(this.user.id).subscribe(
-            (data: ResponseDTOBase) => {
-                if (data.success) {
-                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
-                    this.sharedService.logout();
+        if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
+            this.withdrawingRegistration = true;
+            this.userApi.deleteUser(this.user.id).subscribe(
+                (data: ResponseDTOBase) => {
+                    if (data.success) {
+                        this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
+                        this.sharedService.logout();
+                        this.withdrawingRegistration = false;
+                        this.withdrawnSuccess = true;
+                    }
+                }, error => {
+                    this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
+                    this.withdrawingRegistration = false;
+                    this.withdrawnSuccess = false;
                 }
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
-            }
-        );
+            );
+        }
     }
 
     private newMessage() {

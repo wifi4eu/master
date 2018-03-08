@@ -217,7 +217,6 @@
     </p-dialog>
 </div>
 
-
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true"
@@ -251,3 +250,10 @@
         </form>
     </p-dialog>
 </div>
+<helpdesk-form-component portal="beneficiary-discussion"></helpdesk-form-component>
+<p-dialog [(visible)]="withdrawingRegistration" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog>
