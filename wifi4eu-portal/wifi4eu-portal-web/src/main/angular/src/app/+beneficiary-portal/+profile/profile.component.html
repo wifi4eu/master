@@ -223,7 +223,7 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="email_user">{{ 'shared.email.label' | translate }}</label>
-                        <input id="email_user" type="text" [(ngModel)]="editedUser.email" class="form-control" name="email_user" ngcontrol="email_user"
+                        <input id="email_user" type="text" [(ngModel)]="editedUser.email" class="form-control email_profile" name="email_user" ngcontrol="email_user"
                            #emailInput autocomplete="off" #email_user="ngModel" required disabled>
                         <div [hidden]="email_user.valid || email_user.pristine" class="alert alert-danger">
                             {{ 'email.required' | translate }}
@@ -291,7 +291,7 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="email_mayor">{{ 'shared.email.label' | translate }}</label>
-                        <input id="email_mayor" type="text" [(ngModel)]="editedMayor.email" class="form-control" name="email_mayor" ngcontrol="email_mayor"
+                        <input id="email_mayor" type="text" [(ngModel)]="editedMayor.email" class="form-control email_profile" name="email_mayor" ngcontrol="email_mayor"
                           #emailMayor autocomplete="off"  #email_mayor="ngModel" required disabled>
                         <div [hidden]="email_mayor.valid || email_mayor.pristine" class="alert alert-danger">
                             {{ 'email.required' | translate }}

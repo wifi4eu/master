@@ -110,18 +110,23 @@ export class BeneficiaryProfileComponent {
     }
 
     private disableEvent(event) {
-      event.preventDefault();
+      if(event.cancelable){
+        event.preventDefault();
+      }      
       return false;
+    }
+
+    private addEventListeners(events, element) {
+      events.forEach(event => {
+        element.addEventListener(event, this.disableEvent.bind(this));
+      });
     }
 
     private displayModal(name: string, index?: number) {
         switch (name) {
             case 'user':
                 this.displayUser = true;
-                this.emailInput.nativeElement.addEventListener('dragenter', this.disableEvent.bind(this));
-                this.emailInput.nativeElement.addEventListener('dragover', this.disableEvent.bind(this));
-                this.emailInput.nativeElement.addEventListener('drop', this.disableEvent.bind(this));
-                this.emailInput.nativeElement.addEventListener('keydown', this.disableEvent.bind(this));
+                this.addEventListeners(['dragenter', 'dragover', 'drop', 'keydown', 'paste', 'cut'], this.emailInput.nativeElement);
                 break;
             case 'municipality':
                 this.currentEditIndex = index;
@@ -132,10 +137,7 @@ export class BeneficiaryProfileComponent {
                 this.currentEditIndex = index;
                 Object.assign(this.editedMayor, this.mayors[index]);
                 this.displayMayor = true;
-                this.emailMayor.nativeElement.addEventListener('dragenter', this.disableEvent.bind(this));
-                this.emailMayor.nativeElement.addEventListener('dragover', this.disableEvent.bind(this));
-                this.emailMayor.nativeElement.addEventListener('drop', this.disableEvent.bind(this));
-                this.emailMayor.nativeElement.addEventListener('keydown', this.disableEvent.bind(this));
+                this.addEventListeners(['dragenter', 'dragover', 'drop', 'keydown', 'paste', 'cut'], this.emailMayor.nativeElement);
                 break;
             case 'password':
                 this.userApi.ecasChangePassword().subscribe(
