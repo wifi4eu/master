@@ -13,10 +13,10 @@ import {SharedService} from "../shared/shared.service";
 import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
 import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 import {Router} from "@angular/router";
-import { LocalStorageService } from "angular-2-local-storage/dist/local-storage.service";
-import { ActivatedRoute } from "@angular/router";
-import { Observable } from "rxjs/Observable";
-import { OnInit } from "@angular/core";
+import {LocalStorageService} from "angular-2-local-storage/dist/local-storage.service";
+import {ActivatedRoute} from "@angular/router";
+import {Observable} from "rxjs/Observable";
+import {OnInit} from "@angular/core";
 
 @Component({
     selector: 'beneficiary-registration',
@@ -44,17 +44,17 @@ export class BeneficiaryRegistrationComponent implements OnInit {
     private userEcas: UserDTOBase;
     private associationName: string = null;
 
-    constructor(private route: ActivatedRoute, private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router,private sharedService: SharedService, private localStorage: LocalStorageService) {
+    constructor(private route: ActivatedRoute, private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router, private sharedService: SharedService, private localStorage: LocalStorageService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
             (nuts: NutsDTOBase[]) => {
                 this.countries = nuts;
             }, error => {
                 console.log(error);
             }
-        );    
+        );
     }
 
-    ngOnInit(){
+    ngOnInit() {
     }
 
     private selectCountry(country: NutsDTOBase) {
@@ -71,20 +71,20 @@ export class BeneficiaryRegistrationComponent implements OnInit {
     }
 
     private selectOrganization(organization: OrganizationDTOBase) {
-      if (this.organization != organization) {
-        this.organization = organization;
-        this.resetStep2Data();
-      }
+        if (this.organization != organization) {
+            this.organization = organization;
+            this.resetStep2Data();
+        }
     }
 
     private resetStep2Data() {
-      this.laus = [];
-      this.municipalities = [new MunicipalityDTOBase()];
-      this.mayors = [new MayorDTOBase()];
-      this.initialUser = new UserDTOBase();
+        this.laus = [];
+        this.municipalities = [new MunicipalityDTOBase()];
+        this.mayors = [new MayorDTOBase()];
+        this.initialUser = new UserDTOBase();
     }
 
-    private navigate(step: number) {       
+    private navigate(step: number) {
         switch (step) {
             case 1:
                 this.completed = [false, false, false, false];
@@ -99,7 +99,7 @@ export class BeneficiaryRegistrationComponent implements OnInit {
                 this.active = [false, false, true, false];
                 break;
             case 4:
-                
+
                 this.completed = [true, true, true, false];
                 this.active = [false, false, false, true];
                 break;
@@ -109,12 +109,20 @@ export class BeneficiaryRegistrationComponent implements OnInit {
 
     private submitRegistration() {
         this.finalBeneficiary.organisationId = this.organization.id;
-    this.finalBeneficiary.associationName = this.associationName;
+        this.finalBeneficiary.associationName = this.associationName;
         this.finalBeneficiary.municipalities = [];
         for (let municipality of this.municipalities) {
             this.finalBeneficiary.municipalities.push(municipality);
         }
         this.finalBeneficiary.mayors = [];
+
+        let language = this.localStorage.get('lang');
+        if (!language) {
+            language = 'en';
+        }
+
+        this.finalBeneficiary.user.lang = language.toString();
+
         for (let mayor of this.mayors) {
             this.finalBeneficiary.mayors.push(mayor);
         }
