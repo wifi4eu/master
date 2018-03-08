@@ -33,7 +33,8 @@ public class ScheduledTasks {
     @Autowired
     private UserService userService;
 
-    @Scheduled(cron = "0 0/30 * * * ?")
+    @Scheduled(cron = "0 0/30 * * * ?") // Every 30 minutes
+    //@Scheduled(cron = "*/10 * * * * ?") Every 10 seconds
     public void scheduleHelpdeskIssues() {
 
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
@@ -44,6 +45,7 @@ public class ScheduledTasks {
             HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
 
             helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
+            helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
 
             UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
 
@@ -53,14 +55,11 @@ public class ScheduledTasks {
             helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
             helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
 
-            System.out.println("After - " + helpdeskTicketDTO.toString());
-
             String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
-            if(result.contains("</html>message\"></p>g()\">line-height: 2.9;\">8\" src=\"JavaScript/Thankyou.js\"></script>www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">")){
+            if(result != null && result.contains("Thankyou.js")){
                 helpdeskIssue.setTicket(true);
                 helpdeskService.createHelpdeskIssue(helpdeskIssue);
             }
-            System.out.println("executePost - " + result);
         }
     }
 
@@ -104,7 +103,7 @@ public class ScheduledTasks {
             rd.close();
             return response.toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         } finally {
             if (connection != null) {
