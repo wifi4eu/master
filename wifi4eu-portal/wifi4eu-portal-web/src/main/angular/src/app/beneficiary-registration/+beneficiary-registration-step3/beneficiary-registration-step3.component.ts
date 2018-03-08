@@ -5,22 +5,18 @@ import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {SharedService} from "../../shared/shared.service";
 import {LocalStorageService} from "angular-2-local-storage/dist/local-storage.service";
 
-
-
 @Component({
     selector: 'beneficiary-registration-step3',
     templateUrl: 'beneficiary-registration-step3.component.html'
 })
 
 export class BeneficiaryRegistrationStep3Component {
-
     @Input('initialUser') private initialUser: UserDTOBase;
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
     @Input('mayors') private mayors: MayorDTOBase[];
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
     @Input('sameDetails') private sameDetails: boolean;
     @Input('associationName') private associationName: string;
-
 
     private imMayor: boolean;
     private repeatEmail: string;
@@ -78,6 +74,7 @@ export class BeneficiaryRegistrationStep3Component {
 
     private back() {
         this.onBack.emit();
+        this.associationNameChange.emit(this.associationName);
         this.repeatEmail = '';
         this.sharedService.clean();
         /* this.checkEmailsMatch(); */
