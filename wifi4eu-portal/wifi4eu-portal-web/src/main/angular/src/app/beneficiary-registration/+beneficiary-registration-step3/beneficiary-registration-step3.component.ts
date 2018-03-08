@@ -41,9 +41,7 @@ export class BeneficiaryRegistrationStep3Component {
         this.imMayor = false;
         this.userEmailMatches = true;
         this.sameDetails = false;
-        this.sharedService.cleanEmitter.subscribe(() => {
-            this.reset()
-        });
+        this.sharedService.cleanEmitter.subscribe(() => { this.reset(); });
     }
 
     private fillMayorData() {
@@ -81,7 +79,6 @@ export class BeneficiaryRegistrationStep3Component {
     private back() {
         this.onBack.emit();
         this.repeatEmail = '';
-        this.reset();
         this.sharedService.clean();
         /* this.checkEmailsMatch(); */
     }
@@ -95,8 +92,8 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.addressNum = '';
             this.initialUser.postalCode = '';
             this.userEmailMatches = true;
+            this.associationName = '';
         }
-        this.associationName = '';
     }
 
     private submit() {
