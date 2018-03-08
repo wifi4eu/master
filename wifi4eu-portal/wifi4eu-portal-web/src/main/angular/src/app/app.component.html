@@ -35,7 +35,7 @@
             </uxLayoutAppMainHeaderContainer>
             <uxLayoutAppMainNavBarContainer>
                 <ux-layout-nav-bar>
-                    <custom-layout-nav-bar-top-menu homeUrl="../home" [links]="menuLinks"></custom-layout-nav-bar-top-menu>
+                    <custom-layout-nav-bar-top-menu [links]="menuLinks" homeUrl="../home" goToHomeButton="true"></custom-layout-nav-bar-top-menu>
                     <ux-layout-nav-bar-actions>
                         <div *ngIf="user">
                             <custom-layout-nav-bar-action-item iconClass="fa-bars" itemClass="app-menu" isOverlayPanel="true"
