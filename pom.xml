@@ -150,6 +150,7 @@
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
         <mail.smtp.password>bcf74eb9b6</mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
+        <mail.serv.enable>true</mail.serv.enable>
 
         <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
         <!--<war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>-->
@@ -182,7 +183,7 @@
             <id>AZUREDEV</id>
             <properties>
                 <ng.env>dev</ng.env>
-                <schemes>https</schemes>
+                <schemes>http</schemes>
                 <server.address>${server.azure.dev.address}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
@@ -196,6 +197,7 @@
                 <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <ecas.config.strength>BASIC</ecas.config.strength>
+                <mail.serv.enable>false</mail.serv.enable>
                 <mail.serv.location>https://dev.wifi4eu.everincloud.com/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>

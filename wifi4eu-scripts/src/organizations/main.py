@@ -14,7 +14,7 @@ def main():
             for a in aa:
                 if len(a) > 0:
                     f.write(
-                        "INSERT INTO organizations (id, name, country) VALUES ('" + str(id) + "',N'" + a.strip() + "',N'" + c + "');\n")
+                        "INSERT INTO organizations (id, name, country) VALUES ('" + str(id) + "',N'" + a.strip().replace("'", "\''") + "',N'" + c + "');\n")
                     id += 1
                 else:
                     continue

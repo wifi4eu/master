@@ -13,6 +13,7 @@ export class SupplierRegistrationStep3Component {
     private confirmEmailField: string = '';
     private emailMatches: boolean = false;
     private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$';
+    private css_class_email: string = 'notValid';
 
     constructor() {
         this.supplierChange = new EventEmitter<SupplierDTOBase>();
@@ -33,8 +34,10 @@ export class SupplierRegistrationStep3Component {
 
     private checkIfEmailMatches() {
         this.emailMatches = false;
-        if (this.supplier.contactEmail === this.confirmEmailField) {
+        this.css_class_email = 'notValid';
+        if (this.supplier.contactEmail === this.confirmEmailField && this.confirmEmailField.length > 0) {
             this.emailMatches = true;
+            this.css_class_email = 'isValid';
         }
     }
 
