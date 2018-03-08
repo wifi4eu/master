@@ -49,7 +49,9 @@ public class MailService {
 
             MimeBodyPart bodyPart = new MimeBodyPart();
             bodyPart.setHeader("Content-Type", "text/html; charset=utf-8");
-            bodyPart.setContent(new String(mgsBody64, "UTF-8"), "text/html");
+            //bodyPart.setContent(new String(mgsBody64, "UTF-8"), "text/html");
+            //bodyPart.setText(msgBody, "utf-8"); //I added this line
+            bodyPart.setContent(new String(mgsBody64, "UTF-8"), "text/html; charset=utf-8");
 
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(bodyPart);

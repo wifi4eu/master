@@ -55,7 +55,7 @@
                         <div class="col-sm-12">
                             <p class="applicationText">{{ 'discussionForum.editButtons' | translate }}</p>
                             <button type="button" class="btn btn-primary changePassword applicationDelete"
-                                    (click)="withdrawRegistration()" [disabled]="withdrawingRegistration || withdrawnSuccess">
+                                    (click)="withdrawRegistration()">
                                 {{ 'discussionForum.withdraw' | translate }}
                             </button>
                         </div>
@@ -168,7 +168,6 @@
                                 (click)="displayMediation = true" [disabled]="thread.mediation">
                             {{'discussionForum.newMediation.button' | translate }}
                         </button>
-                        <p class="right">{{'discussionForum.newMediation.text' | translate }}</p>
                     </div>
                 </div>
             </div>
@@ -191,7 +190,7 @@
                     <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate }}</p>
                     <p>{{ 'discussionForum.sendMessage.subject' | translate }}</p>
                     <textarea rows="10" cols="20" class="form-control widthMax"
-                              name="newMessage" (keydown)="checkHasMessage()" [(ngModel)]="message"
+                              name="newMessage" [(ngModel)]="message"
                               [readonly]="isSendMessage" required></textarea>
                     <div class="row">
                         <div class="col-sm-2"></div>
@@ -203,7 +202,7 @@
                             </button>
                         </div>
                         <div class="col-sm-4">
-                            <button type="submit" [disabled]="isSendMessage || !hasMessage"
+                            <button type="submit" [disabled]="isSendMessage || message.length < 1"
                                     class="btn btn-primary changePassword confirm-button">
                           <span style="margin-right: 2px;">
                             <i *ngIf="isSendMessage && !isSendedMessage" [@enterSpinner]
@@ -255,7 +254,7 @@
         </form>
     </p-dialog>
 </div>
-
+<helpdesk-form-component portal="beneficiary-discussion"></helpdesk-form-component>
 <p-dialog [(visible)]="withdrawingRegistration" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
