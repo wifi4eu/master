@@ -168,7 +168,6 @@
                                 (click)="displayMediation = true" [disabled]="thread.mediation">
                             {{'discussionForum.newMediation.button' | translate }}
                         </button>
-                        <p class="right">{{'discussionForum.newMediation.text' | translate }}</p>
                     </div>
                 </div>
             </div>
@@ -191,7 +190,7 @@
                 <div style="padding: 2em; padding-top: 0em;">
                     <p>{{ 'discussionForum.sendMessage.subject' | translate }}</p>
                     <textarea rows="10" cols="20" class="form-control widthMax"
-                              name="newMessage" (keydown)="checkHasMessage()" [(ngModel)]="message"
+                              name="newMessage" [(ngModel)]="message"
                               [readonly]="sendingMessage" required></textarea>
                 </div>
                 <div class="row center">

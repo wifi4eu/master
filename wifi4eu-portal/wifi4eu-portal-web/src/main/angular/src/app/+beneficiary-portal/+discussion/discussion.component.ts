@@ -51,7 +51,6 @@ export class DiscussionComponent {
     private sendingMessage = false;
     private messageSentSuccess = false;
     private message: string = '';
-    private hasMessage: boolean = false;
 
     constructor(private localStorageService: LocalStorageService, private route: ActivatedRoute, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private threadmessagesApi: ThreadmessagesApi, private userApi: UserApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
@@ -134,11 +133,6 @@ export class DiscussionComponent {
             }
         );
     }
-
-    private checkHasMessage() {
-        this.hasMessage = this.message.length > 1;
-    }
-
 
     private newMessage() {
         this.sendingMessage = false;
