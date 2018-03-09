@@ -86,10 +86,18 @@ export class DgConnSupplierRegistrationsDetailsComponent {
 
     private displayInvalidateModal(mainSupplier: boolean, index?: number) {
         this.selectedMainSupplier = mainSupplier;
-        if (index != null) {
-            this.selectedIndex = index;
+        if (this.selectedMainSupplier) {
+            if (this.supplier.status != 0) {
+                this.displayInvalidate = true;
+            }
+        } else {
+            if (index != null) {
+                if (this.similarSuppliers[index].status != 0) {
+                    this.selectedIndex = index;
+                    this.displayInvalidate = true;
+                }
+            }
         }
-        this.displayInvalidate = true;
     }
 
     private closeModal() {
