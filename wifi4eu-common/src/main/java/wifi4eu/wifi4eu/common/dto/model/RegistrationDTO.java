@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-public class RegistrationDTO {
+import java.io.Serializable;
+
+public class RegistrationDTO implements Serializable {
     private int id;
     private int userId;
     private int municipalityId;
@@ -10,11 +12,14 @@ public class RegistrationDTO {
     private String legalFile2;
     private String legalFile3;
     private String legalFile4;
+    private String ipRegistration;
+    private String associationName;
+    private int organisationId;
 
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4) {
+    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId) {
         this.id = id;
         this.userId = userId;
         this.municipalityId = municipalityId;
@@ -24,6 +29,9 @@ public class RegistrationDTO {
         this.legalFile2 = legalFile2;
         this.legalFile3 = legalFile3;
         this.legalFile4 = legalFile4;
+        this.ipRegistration = ipRegistration;
+        this.associationName = associationName;
+        this.organisationId = organisationId;
     }
 
     public int getId() {
@@ -96,5 +104,44 @@ public class RegistrationDTO {
 
     public void setLegalFile4(String legalFile4) {
         this.legalFile4 = legalFile4;
+    }
+
+    public String getIpRegistration() {
+        return ipRegistration;
+    }
+
+    public void setIpRegistration(String ipRegistration) {
+        this.ipRegistration = ipRegistration;
+    }
+
+    @Override
+    public String toString() {
+        return "RegistrationDTO{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", municipalityId=" + municipalityId +
+                ", role='" + role + '\'' +
+                ", status=" + status +
+                ", legalFile1='" + legalFile1 + '\'' +
+                ", legalFile2='" + legalFile2 + '\'' +
+                ", legalFile3='" + legalFile3 + '\'' +
+                ", legalFile4='" + legalFile4 + '\'' +
+                '}';
+    }
+
+    public String getAssociationName() {
+        return associationName;
+    }
+
+    public void setAssociationName(String associationName) {
+        this.associationName = associationName;
+    }
+
+    public int getOrganisationId() {
+        return organisationId;
+    }
+
+    public void setOrganisationId(int organisationId) {
+        this.organisationId = organisationId;
     }
 }

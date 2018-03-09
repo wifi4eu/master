@@ -50,7 +50,7 @@ public class UserService {
 
     public UserDTO login(UserDTO userDTO) {
 
-        UserDTO persUserDTO = getUserByEmail(userDTO.getEmail());
+        UserDTO persUserDTO = getUserByEmail(userDTO.getEcasEmail());
 
         if (persUserDTO != null && userDTO.getPassword().equals(persUserDTO.getPassword())) {
             persUserDTO.setAccessDate(new Date());
@@ -91,7 +91,7 @@ public class UserService {
         Date now = new Date();
 
         TempTokenDTO tempTokenDTO = new TempTokenDTO();
-        tempTokenDTO.setEmail(userDTO.getEmail());
+        tempTokenDTO.setEmail(userDTO.getEcasEmail());
         tempTokenDTO.setUserId(userDTO.getUserId());
         tempTokenDTO.setCreateDate(now);
         tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS));
@@ -103,7 +103,7 @@ public class UserService {
         String subject = "Welcome to wifi4eu";
         String msgBody = "You have successfully registered to wifi4eu, access to the next link and activate your account " + UserService.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
 
-        mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+        mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
     }
 
 

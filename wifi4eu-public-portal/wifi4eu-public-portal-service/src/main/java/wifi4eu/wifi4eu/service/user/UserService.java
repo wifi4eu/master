@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
@@ -42,7 +44,7 @@ public class UserService {
     MailService mailService;
 
     public UserDTO login(UserDTO userDTO) {
-        UserDTO resUser = userMapper.toDTO(userRepository.findByEmail(userDTO.getEmail()));
+        UserDTO resUser = userMapper.toDTO(userRepository.findByEmail(userDTO.getEcasEmail()));
         if (resUser != null && userDTO.getPassword().equals(resUser.getPassword())) {
             resUser.setAccessDate(new Date().getTime());
             resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(resUser)));
@@ -56,7 +58,7 @@ public class UserService {
     public void sendActivateAccountMail(UserDTO userDTO) {
         Date now = new Date();
         TempTokenDTO tempTokenDTO = new TempTokenDTO();
-        tempTokenDTO.setEmail(userDTO.getEmail());
+        tempTokenDTO.setEmail(userDTO.getEcasEmail());
         tempTokenDTO.setUserId(userDTO.getId());
         tempTokenDTO.setCreateDate(now.getTime());
         tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
@@ -67,7 +69,7 @@ public class UserService {
         //TODO: Translate subject and msgBody
         String subject = "Welcome to WiFi4EU";
         String msgBody = "You have successfully registered to WiFi4EU, access to the next link and activate your account: " + UserService.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
-        mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+        mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
     }
 
     public boolean resendEmail(String email) {
@@ -77,6 +79,17 @@ public class UserService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public String getLogoutEnviroment() {
+        UserContext userContext = UserHolder.getUser();
+        final String MOCKED_MAIL = "tester@test.com";
+
+        if (!MOCKED_MAIL.equals(userContext.getEmail())) {
+            return "https://ecas.ec.europa.eu/cas/logout";
+        } else {
+            return "http://localhost:8080/wifi4eu/#/beneficiary-registration";
         }
     }
 }

@@ -12,10 +12,11 @@ import {ResponseDTOBase} from "../../../shared/swagger/model/ResponseDTO";
 import {SharedService} from "../../../shared/shared.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {ThreadMessageDTOBase} from "../../../shared/swagger/model/ThreadMessageDTO";
+import {BeneficiaryApi} from "../../../shared/swagger/api/BeneficiaryApi";
 
 @Component({
     templateUrl: 'beneficiary-registrations-details.component.html',
-    providers: [MunicipalityApi, MayorApi, RegistrationApi, ThreadApi]
+    providers: [MunicipalityApi, MayorApi, RegistrationApi, ThreadApi, BeneficiaryApi]
 })
 
 export class DgConnBeneficiaryRegistrationsDetailsComponent {
@@ -28,8 +29,12 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     private entitiesChecked: boolean[] = [];
     private entityCheckboxIndex: number = null;
     private searchMessagesQuery: string = '';
+    private issueRegistration: number;
+    private selectedIndex = null;
+    private displayInvalidate = false;
+    private processingRequest = false;
 
-    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private sharedService: SharedService, private sanitizer: DomSanitizer) {
+    constructor(private route: ActivatedRoute, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private beneficiaryApi: BeneficiaryApi, private sharedService: SharedService, private sanitizer: DomSanitizer) {
         this.route.params.subscribe(
             params => {
                 this.lauId = params['id'];
@@ -41,7 +46,8 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     private getRegistrationDetailsInfo() {
         this.municipalityApi.getMunicipalitiesByLauId(this.lauId).subscribe(
             (municipalities: MunicipalityDTOBase[]) => {
-                for (let municipality of municipalities) {
+                for (let i = 0; i < municipalities.length; i++) {
+                    let municipality = municipalities[i];
                     this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                         (mayor: MayorDTOBase) => {
                             this.registrationApi.getRegistrationByMunicipalityId(municipality.id).subscribe(
@@ -51,6 +57,9 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                                         this.registrations.push(registration);
                                         this.mayors.push(mayor);
                                         this.municipalities.push(municipality);
+                                        if(this.registrations.length == municipalities.length){
+                                            this.getIssue();
+                                        }
                                     }
                                 }
                             );
@@ -95,13 +104,12 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
         }
     }
 
-    private requestLegalDocuments() {
-        for (let registration of this.registrations) {
-            this.registrationApi.requestLegalDocuments(registration.id).subscribe(
+    private requestLegalDocuments(index: number) {
+        if (index != null) {
+            this.registrationApi.requestLegalDocuments(this.registrations[index].id).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
-                        let entityNumber = (this.entityCheckboxIndex + 1);
-                        this.sharedService.growlTranslation('An email has been sent to the legal representant of the Entity #' + entityNumber + ' to supply the legal documents for the registration.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success', 'success', String(entityNumber));
+                        this.sharedService.growlTranslation('An email has been sent to the representants of the legal entities to supply the legal documents for the registration.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success', 'success');
                     } else {
                         this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the registration. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.error', 'error');
                     }
@@ -110,48 +118,56 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
         }
     }
 
-    private assignLegalEntity() {
-        if (this.entityCheckboxIndex != null) {
-            this.registrationApi.assignLegalEntity(this.registrations[this.entityCheckboxIndex].id).subscribe(
-                (response: ResponseDTOBase) => {
-                    if (response.success) {
-                        let entityNumber = (this.entityCheckboxIndex + 1);
-                        this.sharedService.growlTranslation('You successfully assigned the authentic legal entity to the Entity #' + entityNumber + '.','dgConn.duplicatedBeneficiaryDetails.assignLegalEntity.success', 'success', String(entityNumber));
-                    } else {
-                        this.sharedService.growlTranslation('An error occurred while trying to assign the authentic legal entity. Please, try again later.','dgConn.duplicatedBeneficiaryDetails.assignLegalEntity.error', 'error');
-                    }
-                }
-            );
+    private displayInvalidateModal(index: number) {
+        if (index != null) {
+            if (this.registrations[index].status != 1) {
+                this.selectedIndex = index;
+                this.displayInvalidate = true;
+            }
         }
     }
 
-    private validateMunicipality() {
-        if (this.entityCheckboxIndex != null) {
-            this.registrations[this.entityCheckboxIndex].status = 2;
-            this.registrationApi.createRegistration(this.registrations[this.entityCheckboxIndex]).subscribe(
-                (response: ResponseDTOBase) => {
-                    if (response.success) {
-                        this.sharedService.growlTranslation('You successfully validated the municipality.','dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
-                    } else {
-                        this.sharedService.growlTranslation('An error occurred while trying to validate the municipality. Please, try again later.','dgConn.duplicatedBeneficiaryDetails.validateMunicipality.error', 'error');
-                    }
+    private closeModal() {
+        this.selectedIndex = null;
+        this.displayInvalidate = false;
+        this.processingRequest = false;
+    }
+
+    private getIssue(){
+        this.beneficiaryApi.getIssueTypeBeneficiaryRegistrations(JSON.stringify(this.registrations)).subscribe(
+            (response: ResponseDTOBase) => {
+                if(response.success){
+                    this.issueRegistration = response.data;
                 }
-            );
-        }
+            }
+        )
     }
 
     private invalidateMunicipality() {
-        if (this.entityCheckboxIndex != null) {
-            this.registrations[this.entityCheckboxIndex].status = 1;
-            this.registrationApi.createRegistration(this.registrations[this.entityCheckboxIndex]).subscribe(
-                (response: ResponseDTOBase) => {
-                    if (response.success) {
-                        this.sharedService.growlTranslation('You successfully invalidated the municipality.','dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
-                    } else {
-                        this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.','dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
+        if (!this.processingRequest) {
+            this.processingRequest = true;
+            if (this.selectedIndex != null) {
+                this.registrations[this.selectedIndex].status = 1;
+                this.registrationApi.createRegistration(this.registrations[this.selectedIndex]).subscribe(
+                    (response: ResponseDTOBase) => {
+                        if (response.success) {
+                            if (response.data != null) {
+                                this.registrations[this.selectedIndex] = response.data;
+                                this.getIssue();
+                                this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
+                            } else {
+                                this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
+                            }
+                        } else {
+                            this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
+                        }
+                        this.closeModal();
+                    }, error => {
+                        this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
+                        this.closeModal();
                     }
-                }
-            );
+                );
+            }
         }
     }
 

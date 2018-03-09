@@ -33,6 +33,18 @@
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
 
+    <!-- ${enable.appinsights.start}
+    <filter>
+        <filter-name>ApplicationInsightsWebFilter</filter-name>
+        <filter-class>
+            com.microsoft.applicationinsights.web.internal.WebRequestTrackingFilter
+        </filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ApplicationInsightsWebFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    ${enable.appinsights.end} -->
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -70,8 +82,6 @@
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
-
 
 
     <!-- This is an example security constraint for a resource that requires only authentication but not authorization: -->

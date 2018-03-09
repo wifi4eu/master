@@ -36,6 +36,8 @@ export class VoucherComponent {
     private loadingButtons: boolean[] = [];
     private dateNumber: string;
     private hourNumber: string;
+    private voucherApplied: string = "";
+    private openedCalls: string = "";
 
     constructor(private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService) {
         let storedUser = this.localStorage.get('user');
@@ -52,7 +54,7 @@ export class VoucherComponent {
 
     private checkForCalls(registrations: RegistrationDTOBase[]) {
         this.callApi.allCalls().subscribe(
-            calls => {
+            (calls: CallDTOBase[]) => {
                 this.currentCall = calls[0];
                 for (let registration of registrations) {
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
@@ -66,7 +68,9 @@ export class VoucherComponent {
                                                     this.registrations.push(registration);
                                                     this.municipalities.push(municipality);
                                                     this.mayors.push(mayor);
-                                                    this.applications.push(application);
+                                                    if(application.id != 0){
+                                                      this.applications.push(application);
+                                                    }                                                   
                                                     this.loadingButtons.push(false);
                                                     let date = new Date(this.currentCall.startDate);
                                                     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
@@ -74,6 +78,7 @@ export class VoucherComponent {
                                                     this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
                                                     if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
                                                         this.voucherCompetitionState = 2;
+                                                        this.openedCalls = "greyImage";
                                                     } else {
                                                         this.voucherCompetitionState = 1;
                                                     }
@@ -86,6 +91,7 @@ export class VoucherComponent {
                                                         }
                                                         if (allApplied) {
                                                             this.voucherCompetitionState = 3;
+                                                            this.voucherApplied = "greyImage";
                                                         }
                                                     }
                                                 }
@@ -130,6 +136,7 @@ export class VoucherComponent {
                         // this.loadingButton = false;
                         this.loadingButtons[registrationNumber] = false;
                         this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
+                        this.voucherApplied = "greyImage";
                     }
                 }
             }

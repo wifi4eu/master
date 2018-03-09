@@ -13,6 +13,7 @@ import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {environment} from '../environments/environment';
+import {Subject} from "rxjs/Subject";
 
 enableProdMode();
 
@@ -32,45 +33,49 @@ export class AppComponent implements OnInit {
     private children: UxLayoutLink[][];
     private menuTranslations: Map<String, String>;
     private stringsTranslated = new BehaviorSubject<number>(null);
+    private subjectLoginSuccess = new Subject();
+    loginSuccessEmiter = this.subjectLoginSuccess.asObservable();
 
+    @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
+    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr"
 
-    @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
-    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,is"
-
-    constructor(private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
+    constructor(private translate: TranslateService, private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
         translateService.setDefaultLang('en');
         let language = this.localStorageService.get('lang');
         if (language) {
             this.translateService.use(language.toString());
-            this.uxService.activeLanguage = UxEuLanguages.languagesByCode [language.toString()];
-            this.selectedLanguage = UxEuLanguages.languagesByCode [language.toString()];
+            this.uxService.activeLanguage = UxEuLanguages.languagesByCode[language.toString()];
+            this.selectedLanguage = UxEuLanguages.languagesByCode[language.toString()];
         } else {
             translateService.use('en');
-            this.uxService.activeLanguage = UxEuLanguages.languagesByCode ['en'];
-            this.selectedLanguage = UxEuLanguages.languagesByCode ['en'];
+            this.uxService.activeLanguage = UxEuLanguages.languagesByCode['en'];
+            this.selectedLanguage = UxEuLanguages.languagesByCode['en'];
         }
 
         this.profileUrl = '';
 
         this.menuLinks = [
-          new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
-          new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
+            new UxLayoutLink({label: 'Beneficiary Registration', url: '/beneficiary-registration'}),
+            new UxLayoutLink({label: 'Supplier Registration', url: '/supplier-registration'})
         ];
 
         this.visibility = [false, false, false, false, false];
         this.children = [];
         this.menuTranslations = new Map();
-        this.stringsTranslated.subscribe(
-            (stringsTranslated: number) => {
-                if (stringsTranslated == 7) {
-                    this.initChildren();
-                    this.updateHeader();
+
+        this.loginSuccessEmiter.subscribe((userLogged) => {
+            this.updateMenuTranslations();
+            this.stringsTranslated.subscribe(
+                (stringsTranslated: number) => {
+                    if (stringsTranslated == 7) {
+                        this.initChildren();
+                        this.sharedService.update();
+                    }
                 }
-            }
-        );
+            );
+        })
 
         this.initChildren();
-        this.updateHeader();
 
         this.sharedService.updateEmitter.subscribe(() => this.updateHeader());
         this.sharedService.logoutEmitter.subscribe(() => this.logout());
@@ -81,39 +86,42 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         let publicRedirection = this.localStorageService.get("public-redirection");
+        this.localStorageService.remove('user');
         this.userApi.ecasLogin().subscribe(
             (response: ResponseDTOBase) => {
-                this.localStorageService.set('user', JSON.stringify(response.data));
-                this.sharedService.update();
+                if (response.success) {
+                    this.user = response.data;
+                    this.localStorageService.set('user', JSON.stringify(response.data));
 
-                switch (this.user.type) {
-                    case 1:
-                        this.router.navigateByUrl('/supplier-portal/profile');
-                        break;
-                    case 2:
-                    case 3:
-                        this.router.navigateByUrl('/beneficiary-portal/profile');
-                        break;
-                    case 5:
-                        this.router.navigateByUrl('/dgconn-portal');
-                        break;
-                    default:
-                        if (publicRedirection) {
-                            this.router.navigateByUrl(String(publicRedirection));
-                            this.localStorageService.remove("public-redirection");
-                        }
-                        //this.router.navigateByUrl('/home');
-                        break;
+                    switch (this.user.type) {
+                        case 1:
+                            this.router.navigateByUrl('/supplier-portal/profile');
+                            break;
+                        case 2:
+                        case 3:
+                            this.router.navigateByUrl('/beneficiary-portal/profile');
+                            break;
+                        case 5:
+                            this.router.navigateByUrl('/dgconn-portal');
+                            break;
+                        default:
+                            if (publicRedirection) {
+                                this.router.navigateByUrl(String(publicRedirection));
+                                this.localStorageService.remove("public-redirection");
+                            }
+                            //this.router.navigateByUrl('/home');
+                            break;
+                    }
+                    this.subjectLoginSuccess.next(response.data);
+                }
+                else {
+                    this.menuLinks = this.children[0];
+                    this.sharedService.growlTranslation('Could not get ECAS User, ignore this when NG is working in offline mode', 'shared.growl.noECAS', 'warn');
                 }
 
-
             }, error => {
-                this.uxService.growl({
-                    severity: 'warn',
-                    summary: 'WARNING',
-                    detail: 'Could not get ECAS User, ignore this when NG is working in offline mode'
-                });
-                console.log('WARNING : Could not get ECAS User, ignore this when NG is working in offline mode');
+                this.menuLinks = this.children[0];
+                this.sharedService.growlTranslation('Could not get ECAS User, ignore this when NG is working in offline mode', 'shared.growl.noECAS', 'warn');
             });
     }
 
@@ -129,10 +137,10 @@ export class AppComponent implements OnInit {
             })
         ];
         this.children[1] = [
-            new UxLayoutLink({
+            /* new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.suppPortal'),
                 url: '/supplier-portal/voucher'
-            }),
+            }), */
             new UxLayoutLink({
                 label: this.menuTranslations.get('itemMenu.myAccount'),
                 url: '/supplier-portal/profile'
@@ -174,11 +182,8 @@ export class AppComponent implements OnInit {
 
     updateHeader() {
         let storedUser = this.localStorageService.get('user');
-
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-
         if (this.user != null) {
-
             this.userApi.getUserById(this.user.id).subscribe(
                 (user: UserDTOBase) => {
                     this.user = user;
@@ -190,13 +195,6 @@ export class AppComponent implements OnInit {
                             break;
                         case 2:
                         case 3:
-                            this.registrationApi.checkIfRegistrationIsKO(this.user.id).subscribe(
-                                (response: ResponseDTOBase) => {
-                                    if (response.data) {
-                                        this.logout();
-                                    }
-                                }
-                            );
                             this.profileUrl = '/beneficiary-portal/profile';
                             this.menuLinks = this.children[2];
                             break;
@@ -209,12 +207,11 @@ export class AppComponent implements OnInit {
                             this.menuLinks = this.children[0];
                             break;
                     }
-                }, error => {
-                    this.logout();
+                },
+                error => {
                 }
             );
         } else {
-            //this.logout();
             this.menuLinks = this.children[0];
         }
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
@@ -290,17 +287,10 @@ export class AppComponent implements OnInit {
 
         this.userApi.doCompleteSignOut().subscribe(
             (response: string) => {
-                console.log(response);
-            }, error => {
-                console.log(error);
-            }
-        );
-        this.userApi.ecasLogout().subscribe(
-            (response: ResponseDTOBase) => {
                 window.location.href = environment['logoutUrl'];
-            }, error => {
-                console.log(error);
+            }, (error) => {
                 window.location.href = environment['logoutUrl'];
+                console.log(error);
             }
         );
     }

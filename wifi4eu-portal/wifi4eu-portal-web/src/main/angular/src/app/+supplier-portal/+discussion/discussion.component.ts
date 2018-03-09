@@ -16,11 +16,26 @@ import {UserThreadsApi} from "../../shared/swagger/api/UserThreadsApi";
 import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
 import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
 import {UserThreadsDTOBase} from "../../shared/swagger/model/UserThreadsDTO";
+import { trigger, style, animate, transition } from '@angular/animations';
 
 @Component({
     selector: 'discussion-component',
     templateUrl: 'discussion.component.html',
-    providers: [UserThreadsApi, ThreadApi, ThreadmessagesApi, UserApi, RegistrationApi, SupplierApi]
+    providers: [UserThreadsApi, ThreadApi, ThreadmessagesApi, UserApi, RegistrationApi, SupplierApi, UserApi],
+    animations: [
+      trigger(
+        'enterSpinner', [
+          transition(':enter', [
+            style({opacity: 0}),
+            animate('200ms', style({opacity: 1}))
+          ]),
+          transition(':leave', [
+            style({opacity: 1}),
+            animate('200ms', style({opacity: 0}))
+          ])
+        ]
+      )
+    ]
 })
 
 export class DiscussionComponent {
@@ -43,7 +58,10 @@ export class DiscussionComponent {
 
     private hasMediation: boolean = false;
 
-    constructor(private userThreadsApi: UserThreadsApi, private supplierApi: SupplierApi, private route: ActivatedRoute, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
+    private isSendMessage: boolean = false;
+    private isSendedMessage: boolean = false;
+
+    constructor(private userThreadsApi: UserThreadsApi, private supplierApi: SupplierApi, private route: ActivatedRoute, private threadApi: ThreadApi, private threadMessagesApi: ThreadmessagesApi, private registrationApi: RegistrationApi, private userApi: UserApi, private localStorageService: LocalStorageService, private sharedService: SharedService, private router: Router) {
 
         this.route.params.subscribe(params => this.threadId = params['threadId']);
 
@@ -78,7 +96,7 @@ export class DiscussionComponent {
                     }
                 );
 
-                this.userThreadsApi.getUsersByThreadId(this.threadId).subscribe(
+                this.userThreadsApi.getUserThreadsByThreadId(this.threadId).subscribe(
                     (userThread: UserThreadsDTOBase[]) => {
                         for (var i = 0; i < userThread.length; i++) {
                             this.userThreads = userThread;
@@ -117,6 +135,10 @@ export class DiscussionComponent {
     }
 
     private newMessage() {
+        if(this.hasMediation){
+          return;
+        }
+        this.isSendMessage = false;
         this.displayMessage = true;
         this.message = '';
     }
@@ -125,19 +147,23 @@ export class DiscussionComponent {
         if(this.hasMediation){
           return;
         }
+        this.isSendMessage = true;
         let newMessage = new ThreadMessageDTOBase();
         newMessage.createDate = new Date().getTime();
         newMessage.message = this.message;
         newMessage.authorId = this.user.id;
         newMessage.threadId = this.threadId;
+        this.isSendedMessage = false;
         this.threadMessagesApi.createThreadMessage(newMessage).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
+                    this.isSendedMessage = true;
                     this.thread.messages.push(response.data);
                     // this.messageAuthors.push(this.user);
                     this.hasMessages = true;
                     this.sharedService.growlTranslation('The message was successfully sent!', 'discussionForum.thread.message.success', 'success');
                 } else {
+                    this.isSendedMessage = false;
                     this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
                 }
                 this.displayMessage = false;
@@ -169,36 +195,25 @@ export class DiscussionComponent {
         )
     }
 
-    private deleteApplication() {
-        this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
-            (registrations: RegistrationDTOBase[]) => {
-                let registrationCount = 0;
-                for (let registration of registrations) {
-                    registration.status = 1;
-                    this.registrationApi.createRegistration(registration).subscribe(
-                        (data: ResponseDTOBase) => {
-                            if (data.success) {
-                                registrationCount++;
-                                if (registrationCount >= registrations.length) {
-                                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
-                                    this.sharedService.logout();
-                                    this.router.navigateByUrl('/home');
-                                }
-                            }
-                        }, error => {
-                            this.sharedService.growlTranslation('An error occurred and your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
-                        }
-                    );
+    private editRegistration() {
+        this.router.navigateByUrl('/supplier-portal/profile');
+    }
+
+    private withdrawRegistration() {
+        this.userApi.deleteUser(this.user.id).subscribe(
+            (data: ResponseDTOBase) => {
+                if (data.success) {
+                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
+                    this.sharedService.logout();
                 }
+            }, error => {
+                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
             }
         );
     }
 
-    private editApplication() {
-        this.router.navigateByUrl('/beneficiary-portal/profile');
-    }
-
     private closeModal() {
+        this.isSendMessage = false;
         this.displayMessage = false;
         this.displayMediation = false;
     }

@@ -6,7 +6,8 @@
                                             [organizations]="organizations"
                                             [(multipleMunicipalities)]="multipleMunicipalities"
                                             (countryChange)="selectCountry($event)"
-                                            [(organization)]="organization"
+                                            [organization]="organization"
+                                            (organizationChange)="selectOrganization($event)"
                                             (onNext)="navigate(2)"></beneficiary-registration-step1>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
@@ -25,7 +26,7 @@
         <uxWizardStepCustomContent>
             <beneficiary-registration-step3 [(initialUser)]="initialUser" [mayors]="mayors"
                                             [multipleMunicipalities]="multipleMunicipalities"
-                                            [municipalities]="municipalities"
+                                            [municipalities]="municipalities" [(associationName)]="associationName"
                                             (onNext)="navigate(4)" (onBack)="navigate(2)"></beneficiary-registration-step3>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
@@ -43,4 +44,4 @@
 <!--<success-component *ngIf="successRegistration" [emailConfirmation]="true"-->
                    <!--[email]="initialUser.email"></success-component>-->
 <failure-component *ngIf="failureRegistration" [alreadyRegistered]="alreadyRegistered"></failure-component>
-<helpdesk-form-component [portal]="beneficiary-registration"></helpdesk-form-component>
+<helpdesk-form-component portal="beneficiary-registration"></helpdesk-form-component>

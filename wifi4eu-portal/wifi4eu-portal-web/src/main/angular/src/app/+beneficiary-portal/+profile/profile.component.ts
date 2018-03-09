@@ -13,11 +13,13 @@ import { UserThreadsApi } from "../../shared/swagger/api/UserThreadsApi";
 import { UserThreadsDTOBase } from "../../shared/swagger/model/UserThreadsDTO";
 import { MayorApi } from "../../shared/swagger/api/MayorApi";
 import { MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
+import { ThreadApi } from "../../shared/swagger/api/ThreadApi";
+import { ThreadDTOBase } from "../../shared/swagger/model/ThreadDTO";
 
 @Component({
     selector: 'beneficiary-profile',
     templateUrl: 'profile.component.html',
-    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi]
+    providers: [UserApi, RegistrationApi, MunicipalityApi, UserThreadsApi, MayorApi, ThreadApi]
 })
 
 export class BeneficiaryProfileComponent {
@@ -31,19 +33,15 @@ export class BeneficiaryProfileComponent {
     private displayUser: boolean = false;
     private displayMunicipality: boolean = false;
     private displayMayor: boolean = false;
-    private displayChangePassword: boolean = false;
     private submittingData = false;
-    private currentPassword: string = '';
-    private newPassword: string = '';
-    private repeatNewPassword: string = '';
-    private passwordsMatch: boolean = false;
     private isRegisterHold: boolean = false;
-    private userThreads: UserThreadsDTOBase = new UserThreadsDTOBase();
+    private withdrawingRegistration: boolean = false;
+    private withdrawnSuccess: boolean = false;
     private threadId: number;
     private hasDiscussion: boolean = false;
+    private discussionThreads: ThreadDTOBase[] = [];
 
-
-    constructor(private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+    constructor(private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
@@ -58,9 +56,9 @@ export class BeneficiaryProfileComponent {
                                     this.isRegisterHold = (registration.status == 0); // 0 status is HOLD
                                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                                         (municipality: MunicipalityDTOBase) => {
-                                            this.municipalities.push(municipality);
                                             this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                 (mayor: MayorDTOBase) => {
+                                                    this.municipalities.push(municipality);
                                                     this.mayors.push(mayor);
                                                 }
                                             );
@@ -78,12 +76,28 @@ export class BeneficiaryProfileComponent {
                     this.router.navigateByUrl('/home');
                 }
             );
-            this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
-                (userThreads: UserThreadsDTOBase[]) => {
-                    if (userThreads.length > 0) {
-                        this.userThreads = userThreads[0];
-                        this.threadId = userThreads[0].threadId;
-                        this.hasDiscussion = true;
+            this.userThreadsApi.getUserThreadsByUserId(this.user.id).subscribe(
+                (utsByUser: UserThreadsDTOBase[]) => {
+                    for (let utByUser of utsByUser) {
+                        this.threadApi.getThreadById(utByUser.threadId).subscribe(
+                            (thread: ThreadDTOBase) => {
+                                if (thread != null) {
+                                    this.userThreadsApi.getUserThreadsByThreadId(thread.id).subscribe(
+                                        (utsByThread: UserThreadsDTOBase[]) => {
+                                            this.discussionThreads.push(thread);
+                                            if (utsByThread.length > 1) {
+                                                for (let utByThread of utsByThread) {
+                                                    if (utByThread.userId != this.user.id && !this.hasDiscussion) {
+                                                        this.threadId = thread.id;
+                                                        this.hasDiscussion = true;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    );
+                                }
+                            }
+                        );
                     }
                 }, error => {
                     console.log("service error: ", error);
@@ -168,45 +182,31 @@ export class BeneficiaryProfileComponent {
         this.displayUser = false;
         this.displayMunicipality = false;
         this.displayMayor = false;
-        this.displayChangePassword = false;
-        this.currentPassword = '';
-        this.newPassword = '';
-        this.repeatNewPassword = '';
-        this.passwordsMatch = false;
         Object.assign(this.editedUser, this.user);
     }
 
-    private checkPasswordsMatch() {
-        if (this.newPassword.length > 0 && this.newPassword == this.repeatNewPassword) {
-            this.passwordsMatch = true;
-        } else {
-            this.passwordsMatch = false;
+    private deleteRegistration() {
+        if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
+            this.withdrawingRegistration = true;
+            this.userApi.deleteUser(this.user.id).subscribe(
+                (data: ResponseDTOBase) => {
+                    if (data.success) {
+                        this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
+                        this.sharedService.logout();
+                        this.withdrawingRegistration = false;
+                        this.withdrawnSuccess = true;
+                    }
+                }, error => {
+                    this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
+                    this.withdrawingRegistration = false;
+                    this.withdrawnSuccess = true;
+                }
+            );
         }
     }
 
-    private deleteRegistration() {
-        this.userApi.deleteUser(this.user.id).subscribe(
-            (data: ResponseDTOBase) => {
-                if (data.success) {
-                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
-                    this.sharedService.logout();
-                }
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
-            }
-        );
-    }
-
     private goToDiscussion() {
-        this.userThreadsApi.getThreadsByUserId(this.user.id).subscribe(
-            (userThreads: UserThreadsDTOBase[]) => {
-                this.userThreads = userThreads[0];
-                this.threadId = userThreads[0].threadId;
-                this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
-            }, error => {
-                console.log("service error: ", error);
-            }
-        );
+        this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
     }
 
     private preventPaste(event: any) {

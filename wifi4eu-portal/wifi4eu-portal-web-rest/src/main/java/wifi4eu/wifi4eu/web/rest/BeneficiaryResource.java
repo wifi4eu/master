@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.web.rest;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -17,6 +19,9 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -34,14 +39,32 @@ public class BeneficiaryResource {
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO submitBeneficiaryRegistration(@RequestBody final BeneficiaryDTO beneficiaryDTO) {
+    public ResponseDTO submitBeneficiaryRegistration(@RequestBody final BeneficiaryDTO beneficiaryDTO,  HttpServletRequest request) {
         try {
             _log.info("submitBeneficiaryRegistration");
-            List<RegistrationDTO> resRegistrations = beneficiaryService.submitBeneficiaryRegistration(beneficiaryDTO);
+            List<RegistrationDTO> resRegistrations = beneficiaryService.submitBeneficiaryRegistration(beneficiaryDTO, request.getRemoteAddr());
             return new ResponseDTO(true, resRegistrations, null);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'submitBeneficiaryRegistration' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Get issue type of beneficiary registrations")
+    @RequestMapping(value = "/beneficiary/issue", method = RequestMethod.POST, consumes = {"application/json"})
+    @ResponseBody
+    public ResponseDTO getIssueTypeBeneficiaryRegistrations(@RequestBody final String jsonString) {
+        try {
+            Gson g = new Gson();
+            RegistrationDTO[] registrationsArray = g.fromJson(jsonString, RegistrationDTO[].class);
+            List<RegistrationDTO> registrationList = new ArrayList<>(Arrays.asList(registrationsArray));
+            _log.info("getIssueTypeBeneficiaryRegistrations");
+            return new ResponseDTO(true, beneficiaryService.getIssueType(registrationList), null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getIssueTypeBeneficiaryRegistrations' operation.", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }

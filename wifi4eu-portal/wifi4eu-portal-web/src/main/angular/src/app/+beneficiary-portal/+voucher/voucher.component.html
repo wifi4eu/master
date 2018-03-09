@@ -1,14 +1,24 @@
 <!-- Competition & user registration status -->
 <div id="upper-block" class="ui-g-12 center">
     <div *ngIf="voucherCompetitionState == 0 || voucherCompetitionState == 1" class="ui-g-12">
-        <success-component emailConfirmation="true" [email]="user.email"></success-component>
+        <i class="fa fa-check-circle success-failure-icon" style="color: green" aria-hidden="true"></i>
+        <br>
+        <br>
+        <h2 class="beneficiaryTitle">{{ 'shared.submitregistration.success.title' | translate }}</h2>
+        <br>
+        <success-component status="shared.submitregistration.success.title"></success-component>
     </div>
     <div *ngIf="voucherCompetitionState == 2" class="ui-g-12">
-        <i class="fa fa-info-circle success-failure-icon" style="color: #0074CA" aria-hidden="true"></i><br><br>
+        <i class="fa fa-info-circle success-failure-icon" style="color: #0074CA" aria-hidden="true"></i>
+        <br>
+        <br>
         <h2 class="beneficiaryTitle">{{ 'benefPortal.voucher.statusmessage4' | translate }}</h2>
+        <success-component status="benefPortal.voucher.apply.title"></success-component>
     </div>
     <div *ngIf="voucherCompetitionState == 3" class="ui-g-12">
-        <i class="fa fa-check-circle success-failure-icon" style="color: green" aria-hidden="true"></i><br><br>
+        <i class="fa fa-check-circle success-failure-icon" style="color: green" aria-hidden="true"></i>
+        <br>
+        <br>
         <h2 class="beneficiaryTitle offset-lg-2 ui-lg-8 ui-g-12">
             {{ 'benefPortal.voucher.statusmessage5' | translate }}
         </h2>
@@ -34,44 +44,41 @@
     </p>
     <timer-component *ngIf="voucherCompetitionState == 1" class="offset-lg-3 ui-lg-6 ui-g-12"
                      (timerEvent)="openApplyForVoucher()"
-                     [expirationTimestamp]="currentCall.startDate"></timer-component>
+                     [expirationTimestamp]="currentCall.startDate">
+    </timer-component>
     <div class="offset-lg-3 ui-lg-6 ui-g-12">
         <div class="marginTop registrationPanel">
-            <div class="row tableTitleVoucher">
-                <div class="col-md-10">
-                    <div class="ui-g-12">
-                        <p class="beneficiaryMayor left">
-                            {{ 'benefPortal.voucher.yourMunicipalities' | translate}}
-                        </p>
-                    </div>
-                </div>
-            </div>
             <p-dataTable [value]="municipalities">
-                <p-column field="name" header="{{ 'shared.municipality.label' | translate }}"
-                          [sortable]="true" styleClass="label">
+                <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true"
+                          styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-            <span>
-              <img alt="" class="municipality-icon"
-                   src="assets/images/account-balance-material-icons-regular.png">
-              <span class="municipality-name">{{municipality.name}}</span>
-            </span>
+                        <span>
+                            <img alt="" class="municipality-icon"
+                                 src="assets/images/account-balance-material-icons-regular.png">
+                            <span class="municipality-name">{{municipality.name}}</span>
+                        </span>
                     </template>
                 </p-column>
-                <p-column header="{{ 'benefPortal.voucher.actions' | translate }}" styleClass="label">
+                <p-column header="" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" (click)="applyForVoucher(i)" *ngIf="!applications[i]"
+                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i)"
+                                *ngIf="!applications[i]"
                                 [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
                         <span *ngIf="applications[i]">
-              <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
-              {{ 'benefPortal.voucher.applied' | translate }}
-            </span>
+                            <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
+                            {{ 'benefPortal.voucher.applied' | translate }}
+                        </span>
                     </template>
                 </p-column>
             </p-dataTable>
         </div>
     </div>
+</div>
+
+<div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
+    <p>{{ 'shared.application.fifo.text' | translate }}</p>
 </div>
 
 <!-- "What's next?" steps -->
@@ -81,25 +88,21 @@
     <p>{{ 'benefPortal.voucher.steps' | translate }}</p>
     -->
     <div class="ui-g-12">
-        <div class="ui-g-3 ui-sm-6">
-            <img src="assets/images/check.png" alt="">
-            <p><span class="dotSteps">1. </span>{{ 'benefPortal.voucher.step1' | translate}}</p>
+        <div class="ui-g-4 ui-sm-6">
+            <img class="{{openedCalls}}" src="assets/images/clock.png" alt="">
+            <p>
+                <span class="dotSteps">1. </span>{{ 'benefPortal.voucher.step2' | translate}}</p>
         </div>
-        <div class="ui-g-3 ui-sm-6">
-            <img src="assets/images/clock.png" alt="">
-            <p><span class="dotSteps">2. </span>{{ 'benefPortal.voucher.step2' | translate}}</p>
+        <div class="ui-g-4 ui-sm-6">
+            <img class="{{voucherApplied}}" src="assets/images/apply.png" alt="">
+            <p>
+                <span class="dotSteps">2. </span>{{ 'benefPortal.voucher.step3' | translate}}</p>
         </div>
-        <div class="ui-g-3 ui-sm-6">
-            <img src="assets/images/apply.png" alt="">
-            <p><span class="dotSteps">3. </span>{{ 'benefPortal.voucher.step3' | translate}}</p>
-        </div>
-        <div class="ui-g-3 ui-sm-6">
-            <img src="assets/images/voucher.png" alt="">
-            <p><span class="dotSteps">4. </span>{{ 'benefPortal.voucher.step4' | translate}}</p>
+        <div class="ui-g-4 ui-sm-6">
+            <img class="{{stepCompleted}}" src="assets/images/voucher.png" alt="">
+            <p>
+                <span class="dotSteps">3. </span>{{ 'benefPortal.voucher.step4' | translate}}</p>
         </div>
     </div>
 </div>
-
-
-
-
+<helpdesk-form-component portal="beneficiary-voucher"></helpdesk-form-component>

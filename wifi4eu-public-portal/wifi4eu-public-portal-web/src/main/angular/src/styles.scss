@@ -110,7 +110,7 @@ body {
 
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (min-width: 1024px) {
   .second {
     padding-bottom: 16% !important;
   }
@@ -235,7 +235,7 @@ body {
 .video-button {
   background-color: $darkish-blue;
   width: 56%;
-  height: 50px;
+  height: 58px;
   font-family: Verdana;
   font-size: 20px;
   font-weight: bold;
@@ -256,6 +256,13 @@ body {
   font-weight: bold;
   line-height: 1.15;
   color: $darkish-blue;
+}
+
+@media only screen and (max-width: 500px) {
+  .apply {
+    font-size: 2.5em;
+  }
+
 }
 
 .apply-text {
@@ -354,6 +361,12 @@ body {
   margin-top: -131px;
 }
 
+@media only screen and (min-width: 1024px) {
+  #img-scnd img {
+    padding-top: 3em;
+  }
+}
+
 @media only screen and (max-width: 1024px) {
   #img-scnd img, #img-europeans img {
     width: 100%;
@@ -365,6 +378,7 @@ body {
   }
   .title-home {
     font-size: 44px;
+    text-align: center;
   }
   .second {
     padding-bottom: 32%;
@@ -1301,13 +1315,15 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   color: yellow;
 }
 
-/* fix blinking issue with the header */
-
-#app-wrapper.shrink-header-active #main #nav-bar {
-  position: relative;
-}
-
 #navigation-buttons {
   z-index: 999;
   position: relative;
+}
+
+/* fix blinking issue with the header */
+#app-wrapper.shrink-header-active #main #nav-bar {
+}
+
+timer-component .center {
+  padding: 0.5em 0px;
 }

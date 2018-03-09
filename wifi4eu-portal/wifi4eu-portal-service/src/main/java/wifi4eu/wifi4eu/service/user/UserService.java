@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.Constant;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -23,13 +21,18 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
+import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
+import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
+import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.util.MailService;
 
 import java.security.SecureRandom;
@@ -75,6 +78,21 @@ public class UserService {
     @Autowired
     SupplierService supplierService;
 
+    @Autowired
+    SupplierMapper supplierMapper;
+
+    @Autowired
+    SupplierRepository supplierRepository;
+
+    @Autowired
+    SuppliedRegionMapper suppliedRegionMapper;
+
+    @Autowired
+    SuppliedRegionRepository suppliedRegionRepository;
+
+    @Autowired
+    UserThreadsService userThreadsService;
+
     /**
      * The language used in user browser
      */
@@ -95,7 +113,7 @@ public class UserService {
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
-        UserDTO searchUser = getUserByEmail(userDTO.getEmail());
+        UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
         if (searchUser != null) {
             userDTO.setPassword(searchUser.getPassword());
             throw new Exception("User already registered.");
@@ -112,7 +130,7 @@ public class UserService {
             userDTO.setPassword(searchUser.getPassword());
             UserDTO resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
             permissionChecker.addTablePermissions(userDTO, Integer.toString(resUser.getId()),
-                    RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
+                    RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEcasEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
             return resUser;
         } else {
             throw new Exception("User doesn't exist.");
@@ -141,7 +159,7 @@ public class UserService {
             userDTO = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
 
             permissionChecker.addTablePermissions(userDTO, Integer.toString(userDTO.getId()),
-                    RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
+                    RightConstants.USER_TABLE, "[USER] - id: " + userDTO.getId() + " - Email: " + userDTO.getEcasEmail() + " - EcasUsername: " + userDTO.getEcasUsername());
 
         }
 
@@ -157,14 +175,18 @@ public class UserService {
         if (userDTO != null) {
             switch (userDTO.getType()) {
                 case (int) Constant.ROLE_REPRESENTATIVE:
-                    for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
-                        tempTokenRepository.delete(tempToken);
-                    }
+                    removeTempToken(userDTO);
                     for (MunicipalityDTO municipality : municipalityService.getMunicipalitiesByUserId(userDTO.getId())) {
                         municipalityService.deleteMunicipality(municipality.getId());
                     }
+                    for (UserThreadsDTO userThread : userThreadsService.getUserThreadsByUserId(userDTO.getId())) {
+                        userThreadsService.deleteUserThreads(userThread.getId());
+                    }
                     break;
                 case (int) Constant.ROLE_SUPPLIER:
+                    removeTempToken(userDTO);
+                    removeSuppliedRegion(userDTO);
+
                     SupplierDTO supplier = supplierService.getSupplierByUserId(userDTO.getId());
                     if (supplier != null) {
                         supplierService.deleteSupplier(supplier.getId());
@@ -183,7 +205,7 @@ public class UserService {
     }
 
     public UserDTO login(UserDTO userDTO) {
-        UserDTO resUser = userMapper.toDTO(userRepository.findByEmail(userDTO.getEmail()));
+        UserDTO resUser = userMapper.toDTO(userRepository.findByEmail(userDTO.getEcasEmail()));
         if (resUser != null && userDTO.getPassword().equals(resUser.getPassword())) {
             resUser.setAccessDate(new Date().getTime());
             resUser = userMapper.toDTO(userRepository.save(userMapper.toEntity(resUser)));
@@ -225,7 +247,7 @@ public class UserService {
     public void sendActivateAccountMail(UserDTO userDTO) {
         Date now = new Date();
         TempTokenDTO tempTokenDTO = new TempTokenDTO();
-        tempTokenDTO.setEmail(userDTO.getEmail());
+        tempTokenDTO.setEmail(userDTO.getEcasEmail());
         tempTokenDTO.setUserId(userDTO.getId());
         tempTokenDTO.setCreateDate(now.getTime());
         tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserConstants.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
@@ -263,12 +285,12 @@ public class UserService {
         UserDTO user = getUserByUserContext(userContext);
 
         if (user == null) {
-      /* validate email variable is not null or empty */
+            /* validate email variable is not null or empty */
             if (email != null && !StringUtils.isEmpty(email)) {
                 UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
-        /* validate if user exist in wifi4eu portal */
+                /* validate if user exist in wifi4eu portal */
                 if (userDTO != null) {
-          /* Create a temporal key for activation and reset password functionalities */
+                    /* Create a temporal key for activation and reset password functionalities */
                     TempTokenDTO tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.findByEmail(email));
                     if (tempTokenDTO == null) {
                         tempTokenDTO = new TempTokenDTO();
@@ -284,7 +306,7 @@ public class UserService {
 
                     tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO));
 
-          /* Send email with */
+                    /* Send email with */
                     String fromAddress = MailService.FROM_ADDRESS;
                     //TODO: translate subject and msgBody
                     String subject = "wifi4eu portal Forgot Password";
@@ -346,5 +368,19 @@ public class UserService {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+    }
+
+    private void removeTempToken(UserDTO userDTO) {
+        for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
+            tempTokenRepository.delete(tempToken);
+        }
+    }
+
+    private void removeSuppliedRegion(UserDTO userDTO) {
+        SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findByUserId(userDTO.getId()));
+        List<SuppliedRegionDTO> suppliedRegionDTOList = supplierDTO.getSuppliedRegions();
+        for (SuppliedRegionDTO anElementList : suppliedRegionDTOList) {
+            suppliedRegionRepository.delete(suppliedRegionMapper.toEntity(anElementList));
+        }
     }
 }

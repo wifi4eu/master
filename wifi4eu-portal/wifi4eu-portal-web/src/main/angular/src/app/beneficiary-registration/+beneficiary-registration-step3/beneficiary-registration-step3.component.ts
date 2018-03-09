@@ -3,7 +3,7 @@ import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {SharedService} from "../../shared/shared.service";
-
+import {LocalStorageService} from "angular-2-local-storage/dist/local-storage.service";
 
 @Component({
     selector: 'beneficiary-registration-step3',
@@ -11,12 +11,12 @@ import {SharedService} from "../../shared/shared.service";
 })
 
 export class BeneficiaryRegistrationStep3Component {
-
     @Input('initialUser') private initialUser: UserDTOBase;
     @Input('multipleMunicipalities') private multipleMunicipalities: boolean;
     @Input('mayors') private mayors: MayorDTOBase[];
     @Input('municipalities') private municipalities: MunicipalityDTOBase[];
     @Input('sameDetails') private sameDetails: boolean;
+    @Input('associationName') private associationName: string;
 
     private imMayor: boolean;
     private repeatEmail: string;
@@ -24,18 +24,20 @@ export class BeneficiaryRegistrationStep3Component {
 
     @Output() private onNext: EventEmitter<any>;
     @Output() private onBack: EventEmitter<any>;
+    @Output() private associationNameChange: EventEmitter<string>;
 
     private css_class_email: string = '';
     /* private emailPattern = '^[a-zA-Z0-9](\\.?[a-zA-Z0-9_-]){0,}@[a-zA-Z0-9-]+\\.([a-zA-Z]{1,6}\\.)?[a-zA-Z]{2,6}$'; */
-    private emailPattern =  new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\.)+[a-z0-9]{2,6}?$/i);
+    private emailPattern = new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\.)+[a-z0-9]{2,6}?$/i);
 
-    constructor(private sharedService: SharedService) {
+    constructor(private sharedService: SharedService, private localStorage: LocalStorageService) {
         this.onNext = new EventEmitter<any>();
         this.onBack = new EventEmitter<any>();
+        this.associationNameChange = new EventEmitter<string>();
         this.imMayor = false;
         this.userEmailMatches = true;
         this.sameDetails = false;
-        this.sharedService.cleanEmitter.subscribe(() => {this.reset()});
+        this.sharedService.cleanEmitter.subscribe(() => { this.reset(); });
     }
 
     private fillMayorData() {
@@ -72,8 +74,9 @@ export class BeneficiaryRegistrationStep3Component {
 
     private back() {
         this.onBack.emit();
+        this.associationNameChange.emit(this.associationName);
         this.repeatEmail = '';
-        this.reset();
+        this.sharedService.clean();
         /* this.checkEmailsMatch(); */
     }
 
@@ -86,15 +89,17 @@ export class BeneficiaryRegistrationStep3Component {
             this.initialUser.addressNum = '';
             this.initialUser.postalCode = '';
             this.userEmailMatches = true;
+            this.associationName = '';
         }
     }
 
     private submit() {
-        this.onNext.emit();/* 
-        if(!this.imMayor){
-          this.repeatEmail = '';
-           this.checkEmailsMatch();
-        }       */  
+        const storedUser = this.localStorage.get('user');
+        const userEcas = storedUser ? JSON.parse(storedUser.toString()) : null;
+        this.initialUser.email = userEcas.ecasEmail;
+        this.initialUser.ecasEmail = userEcas.ecasEmail;
+        this.onNext.emit();
+        this.associationNameChange.emit(this.associationName);
     }
 
     private preventPaste(event: any) {

@@ -1,14 +1,16 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-public class SuppliedRegionDTO {
+import java.io.Serializable;
+
+public class SuppliedRegionDTO implements Serializable{
     private int id;
     private int supplierId;
-    private int regionId;
+    private NutsDTO regionId;
 
     public SuppliedRegionDTO() {
     }
 
-    public SuppliedRegionDTO(int id, int supplierId, int regionId) {
+    public SuppliedRegionDTO(int id, int supplierId, NutsDTO regionId) {
         this.id = id;
         this.supplierId = supplierId;
         this.regionId = regionId;
@@ -30,11 +32,20 @@ public class SuppliedRegionDTO {
         this.supplierId = supplierId;
     }
 
-    public int getRegionId() {
+    public NutsDTO getRegionId() {
         return regionId;
     }
 
-    public void setRegionId(int regionId) {
+    public void setRegionId(NutsDTO regionId) {
         this.regionId = regionId;
+    }
+
+    @Override
+    public String toString() {
+        return "SuppliedRegionDTO{" +
+                "id=" + id +
+                ", supplierId=" + supplierId +
+                ", regionId=" + regionId +
+                '}';
     }
 }

@@ -82,12 +82,20 @@ public class MunicipalityResource {
     @ApiOperation(value = "Delete municipality by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseDTO deleteMunicipality(@RequestBody final Integer municipalityId) {
+    public ResponseDTO deleteMunicipality(@RequestBody final Integer municipalityId, HttpServletResponse response) throws IOException {
         try {
             _log.info("deleteMunicipality: " + municipalityId);
+
+            //check permisssion
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE+municipalityId);
             MunicipalityDTO resMunicipality = municipalityService.deleteMunicipality(municipalityId);
             return new ResponseDTO(true, resMunicipality, null);
-        } catch (Exception e) {
+        }
+        catch (AccessDeniedException ade){
+            response.sendError(HttpStatus.FORBIDDEN.value());
+            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
+        }
+        catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteMunicipality' operation.", e);
             }
@@ -108,10 +116,27 @@ public class MunicipalityResource {
     @ApiOperation(value = "Get municipalities by specific user id")
     @RequestMapping(value = "/userId/{userId}",method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<MunicipalityDTO> getMunicipalitiesByUserId(@PathVariable("userId") final Integer userId) {
+    public List<MunicipalityDTO> getMunicipalitiesByUserId(@PathVariable("userId") final Integer userId,
+                                                           HttpServletResponse response) throws IOException {
         if (_log.isInfoEnabled()) {
             _log.info("getMunicipalitiesByUserId:" + userId);
         }
+
+        try {
+            permissionChecker.check(RightConstants.USER_TABLE+userId);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'getMunicipalitiesByUserId' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getMunicipalitiesByUserId' operation.", e);
+            }
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+
         return municipalityService.getMunicipalitiesByUserId(userId);
     }
 

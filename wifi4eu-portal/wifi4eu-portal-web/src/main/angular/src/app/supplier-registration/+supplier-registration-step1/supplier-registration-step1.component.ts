@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, Output, ViewChild} from "@angular/core";
 import {SupplierDTOBase} from "../../shared/swagger/model/SupplierDTO";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 import {Observable} from "rxjs/Rx";
+import {TranslateService} from "ng2-translate/ng2-translate";
+import {SharedService} from "../../shared/shared.service";
 
 @Component({
     selector: 'supplier-registration-step1', templateUrl: 'supplier-registration-step1.component.html'
@@ -15,23 +17,29 @@ export class SupplierRegistrationStep1Component {
     @Output() private logoUrlChange: EventEmitter<FileReader>;
     @ViewChild('logoInput') private logoInput: any;
     private logoFile: File;
-    private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\/\/([wW][wW][wW]\\.)?))[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)+";
+    private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,3}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
 
-    constructor(private uxService: UxService) {
+
+    constructor(private sharedService: SharedService, private uxService: UxService) {
         this.supplierChange = new EventEmitter<SupplierDTOBase>();
         this.logoUrlChange = new EventEmitter<FileReader>();
         this.onNext = new EventEmitter<any>();
     }
 
-    submit() {
+    private submit() {
         this.supplierChange.emit(this.supplier);
         this.logoUrlChange.emit(this.logoUrl);
         this.onNext.emit();
     }
 
-    changeLogo(event) {
+    private changeLogo(event) {
         if (event.target.files.length > 0) {
             this.logoFile = event.target.files[0];
+            if (this.logoFile.size > 2560000) {
+                this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 2.5 MB.', 'benefPortal.file.toobig.maxsize', 'warn', {size: '2.5 MB'});
+                this.clearLogoFile();
+                return;
+            }
             let imageStatus = "";
             let image = new Image();
             image.onload = function () {
@@ -43,7 +51,7 @@ export class SupplierRegistrationStep1Component {
             image.src = URL.createObjectURL(this.logoFile);
             let subscription = Observable.interval(200).subscribe(
                 x => {
-                    switch(imageStatus) {
+                    switch (imageStatus) {
                         case "correct":
                             this.uploadCorrect();
                             subscription.unsubscribe();
@@ -58,7 +66,7 @@ export class SupplierRegistrationStep1Component {
         }
     }
 
-    uploadCorrect() : any {
+    private uploadCorrect(): any {
         this.logoUrl.readAsDataURL(this.logoFile);
         let subscription = Observable.interval(200).subscribe(
             x => {
@@ -70,16 +78,12 @@ export class SupplierRegistrationStep1Component {
         );
     }
 
-    uploadWrong() : any {
+    private uploadWrong(): any {
         this.clearLogoFile();
-        this.uxService.growl({
-            severity: 'error',
-            summary: 'ERROR',
-            detail: 'The file you uploaded is not a valid image file.'
-        });
+        this.sharedService.growlTranslation('The file you uploaded is not a valid image file.', 'shared.growl.fileNotValid', 'error');
     }
 
-    clearLogoFile() {
+    private clearLogoFile() {
         this.logoInput.nativeElement.value = "";
         this.logoFile = null;
         this.supplier.logo = null;

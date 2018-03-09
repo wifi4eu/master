@@ -1,118 +1,153 @@
 <div class="clearfix"></div>
 <br>
 <div class="container font beneficiaryContent">
-    <div class="ui-g-12" *ngIf="showAlert">
-        <span class="ui-g-2"></span>
+    <div class="row" *ngIf="displayMediationAlert">
+        <span class="col-sm-2"></span>
         <ux-alert styleClass="alert-success" class="ui-g-8">{{ 'discussionForum.discussion.growl' | translate}}
         </ux-alert>
-        <span class="ui-g-2"></span>
+        <span class="col-sm-2"></span>
     </div>
-    <p class="beneficiaryTitle marginTop">{{ 'discussionForum.title' | translate }}</p>
-    <p>{{ 'discussionForum.description' | translate }}</p>
-    <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.beneficiary.registrations' | translate }}</p>
-    <hr class="beneficiaryHr">
+    <div class="row">
+        <div class="col-sm-12">
+            <p class="beneficiaryTitle marginTop">{{ 'discussionForum.title' | translate }}</p>
+            <p>{{ 'discussionForum.description' | translate }}</p>
+            <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.beneficiary.registrations' | translate
+                }}</p>
+            <hr class="beneficiaryHr">
+        </div>
+    </div>
     <ux-accordion-boxes>
-        <custom-accordion-box [isExpanded]="true" [rightSide]="true" [closable]="true" *ngIf="municipality">
-            <div class="ui-g">
-                <p class="discussionForumMayors marginTopCountdown"
-                   [innerHTML]="'discussionForum.beneficiary.registration1' | translate:{selfRegistration:user.id}">
-                </p>
+        <custom-accordion-box [isExpanded]="true" [rightSide]="true" [closable]="true" *ngIf="myMunicipality">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="discussionForumMayors marginTopCountdown"
+                       [innerHTML]="'discussionForum.beneficiary.registration1' | translate:{selfRegistration:user.id}">
+                    </p>
+                </div>
             </div>
-            <div class="ui-g discussionForumNoBorders">
-                <div class="ui-g-12">
-                    <div class="ui-g-3">
-                        <p class="profileDataDiscussion">{{ 'shared.country.label' | translate }}</p>
-                        <p>{{ 'shared.municipality.label' | translate }}</p>
-                        <p>{{ 'benefRegistration.address.label' | translate }}</p>
-                        <p>{{ 'shared.number.label' | translate }}</p>
-                        <p>{{ 'shared.postal-code.label' | translate }}</p>
+            <div class="row discussionForumNoBorders">
+
+                <div class="col-sm-8">
+                    <div class="row">
+                        <div class="col-sm-4"><p>{{ 'shared.country.label' | translate }}</p></div>
+                        <div class="col-sm-8"><p class="profileData">{{myMunicipality.country}}</p></div>
                     </div>
-                    <div class="ui-g-3">
-                        <p class="profileDataDiscussion profileData">{{municipality.country}}</p>
-                        <p class="profileData">{{municipality.name}}</p>
-                        <p class="profileData">{{municipality.address}}</p>
-                        <p class="profileData">{{municipality.addressNum}}</p>
-                        <p class="profileData">{{municipality.postalCode}}</p>
+                    <div class="row">
+                        <div class="col-sm-4"><p>{{ 'shared.municipality.label' | translate }}</p></div>
+                        <div class="col-sm-8"><p class="profileData">{{myMunicipality.name}}</p></div>
                     </div>
-                    <div class="ui-g-2"></div>
-                    <div class="ui-g-4">
-                        <p class="applicationText">{{ 'discussionForum.editButtons' | translate }}</p>
-                        <button type="button" class="btn btn-primary applicationDelete"
-                                (click)="deleteApplication()">
-                            {{ 'discussionForum.withdraw' | translate }}
-                        </button>
-                        <br>
-                        <button type="button" class="btn btn-primary applicationEdit"
-                                (click)="editApplication()">
-                            {{ 'discussionForum.editRegistration' | translate }}
-                        </button>
+                    <div class="row">
+                        <div class="col-sm-4"><p>{{ 'benefRegistration.address.label' | translate }}</p></div>
+                        <div class="col-sm-8"><p class="profileData">{{myMunicipality.address}}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4"><p>{{ 'shared.number.label' | translate }}</p></div>
+                        <div class="col-sm-8"><p class="profileData">{{myMunicipality.addressNum}}</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4"><p>{{ 'shared.postal-code.label' | translate }}</p></div>
+                        <div class="col-sm-8"><p class="profileData">{{myMunicipality.postalCode}}</p></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p class="applicationText">{{ 'discussionForum.editButtons' | translate }}</p>
+                            <button type="button" class="btn btn-primary changePassword applicationDelete"
+                                    (click)="withdrawRegistration()">
+                                {{ 'discussionForum.withdraw' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-primary changePassword applicationEdit"
+                                    (click)="editRegistration()">
+                                {{ 'discussionForum.editRegistration' | translate }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="ui-g" *ngIf="hasAuthor && municipalities.length == messageAuthors.length">
-                <div class="ui-g-6" *ngFor="let municipality of municipalities; let i = index">
+
+            <!--<div class="ui-g" *ngIf="hasAuthor && municipalities.length == messageAuthors.length">-->
+            <div class="row" *ngIf="otherMunicipalities.length == otherRegistrations.length">
+                <div class="col-sm-6" *ngFor="let municipality of otherMunicipalities; let i = index">
                     <p class="discussionForumMayors marginTopCountdown">
-                        {{ 'discussionForum.beneficiary.registrationNumber' | translate }} <span>{{messageAuthors[i].userId}}</span>
+                        {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
+                        <span>{{otherRegistrations[i].userId}}</span>
                     </p>
 
-                    <div class="ui-g discussionForumNoBorders">
-                        <div class="ui-g-12">
-                            <div class="ui-g-3">
-                                <p class="profileDataDiscussion">{{ 'shared.country.label' | translate }}</p>
-                                <p>{{ 'shared.municipality.label' | translate }}</p>
-                                <p>{{ 'benefRegistration.address.label' | translate }}</p>
-                                <p>{{ 'shared.number.label' | translate }}</p>
-                                <p>{{ 'shared.postal-code.label' | translate }}</p>
+                    <div class="row discussionForumNoBorders">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-4"><p>{{ 'shared.country.label' | translate }}</p></div>
+                                <div class="col-sm-8"><p class="profileData">{{municipality.country}}</p></div>
                             </div>
-                            <div class="ui-g-9">
-                                <p class="profileDataDiscussion profileData">{{ municipality.country }}</p>
-                                <p class="profileData">{{ municipality.name }}</p>
-                                <p class="profileData">{{ municipality.address }}</p>
-                                <p class="profileData">{{ municipality.addressNum }}</p>
-                                <p class="profileData">{{ municipality.postalCode }}</p>
+                            <div class="row">
+                                <div class="col-sm-4"><p>{{ 'shared.municipality.label' | translate }}</p></div>
+                                <div class="col-sm-8"><p class="profileData">{{municipality.name}}</p></div>
                             </div>
+                            <div class="row">
+                                <div class="col-sm-4"><p>{{ 'benefRegistration.address.label' | translate }}</p></div>
+                                <div class="col-sm-8"><p class="profileData">{{municipality.address}}</p></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4"><p>{{ 'shared.number.label' | translate }}</p></div>
+                                <div class="col-sm-8"><p class="profileData">{{municipality.addressNum}}</p></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4"><p>{{ 'shared.postal-code.label' | translate }}</p></div>
+                                <div class="col-sm-8"><p class="profileData">{{municipality.postalCode}}</p></div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
             </div>
         </custom-accordion-box>
     </ux-accordion-boxes>
-    <hr class="beneficiaryHr">
-    <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.discussion' | translate }}</p>
-    <p>{{ 'discussionForum.messagesDescription' | translate }}</p>
-    <div *ngIf="!hasMessages" class="ui-g button-content discussion-content">
-        <div class="ui-g-12 noPadding">
-            <div class="ui-g-8">
-                <!--<p>{{'discussionForum.noRecentConversations.text' | translate }}</p>-->
-            </div>
-            <div class="ui-g-4">
-                <button [disabled]="hasMediation" type="button" class="btn btn-primary changePassword discussionButton"
-                        (click)="newMessage()">
-                    {{'discussionForum.add.reply' | translate }}
-                </button>
-            </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <hr class="beneficiaryHr">
+            <p class="beneficiaryMayor marginTopCountdown">{{ 'discussionForum.discussion' | translate }}</p>
+            <p>{{ 'discussionForum.messagesDescription' | translate }}</p>
         </div>
     </div>
-    <ng-container *ngIf="hasMessages">
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <div class="ui-g-9"></div>
-                <div class="ui-g-3">
-                    <div>
-                        <button type="button" class="btn btn-primary changePassword discussionButton"
-                                (click)="newMessage()" [disabled]="hasMediation">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            {{'discussionForum.add.reply' | translate }}
-                        </button>
-                    </div>
+    <ng-container *ngIf="thread">
+        <div *ngIf="thread.messages.length < 1" class="row button-content discussion-content">
+            <div class="col-sm-12 noPadding">
+                <div class="col-sm-8">
+                    <!--<p>{{'discussionForum.noRecentConversations.text' | translate }}</p>-->
+                </div>
+                <div class="col-sm-4">
+                    <button [disabled]="thread.mediation" type="button"
+                            class="btn btn-primary changePassword discussionButton"
+                            (click)="newMessage()">
+                        {{'discussionForum.add.reply' | translate }}
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="discussion-content" *ngFor="let currentMessage of thread.messages; let i = index">
-            <div class="ui-g discussion-content">
+        <div *ngIf="thread.messages.length > 0">
+            <div class="ui-g">
                 <div class="ui-g-12">
-                    <div class="ui-g-3 backgroundMessage">
+                    <div class="ui-g-9"></div>
+                    <div class="ui-g-3">
+                        <div>
+                            <button type="button" class="btn btn-primary changePassword discussionButton"
+                                    (click)="newMessage()" [disabled]="thread.mediation">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                {{'discussionForum.add.reply' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="discussion-content row" *ngFor="let currentMessage of thread.messages; let i = index">
+                <div class=" discussion-content">
+                    <div class="col-sm-3 backgroundMessage">
                         <p class="authorMessage">
                             {{ 'discussionForum.beneficiary.registrationNumber' | translate }}
                             {{thread.messages[i].authorId}}
@@ -120,21 +155,20 @@
                         <p class="authorTime">{{currentMessage.createDate | date: 'dd/MM/yyyy'}}</p>
                         <p class="authorTime">{{currentMessage.createDate | date: 'HH:mm'}}</p>
                     </div>
-                    <div class="ui-g-9 paddingMessages arrow_box">
+                    <div class="col-sm-9 paddingMessages arrow_box">
                         <textarea disabled="disabled" class="messageDiv">{{currentMessage.message}}</textarea>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <div class="ui-g-9"></div>
-                <div class="ui-g-3">
-                    <button type="button" class="btn btn-primary changePassword discussionButton"
-                            (click)="displayMediation = true" [disabled]="mediationBlocked || hasMediation">
-                        {{'discussionForum.newMediation.button' | translate }}
-                    </button>
-                    <p class="right">{{'discussionForum.newMediation.text' | translate }}</p>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="col-sm-9"></div>
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-primary changePassword discussionButton"
+                                (click)="displayMediation = true" [disabled]="thread.mediation">
+                            {{'discussionForum.newMediation.button' | translate }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -145,24 +179,35 @@
 
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false"
+    <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="true"
               [resizable]="false" [draggable]="false" [closeOnEscape]="true">
         <div class="beneficiaryTitle center hiddenScroll">
-            {{ 'discussionForum.sendMessage.title' | translate }}
+            {{ 'shared.sendMessage.title' | translate }}
         </div>
         <form #messagesForm="ngForm" (submit)="sendMessage()">
-            <div class="form-group profileDialog">
-                <div class="form-group">
-                    <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate }}</p>
+            <div class="form-group">
+                <p class="center newMessageDiscussionMargins">{{ 'discussionForum.sendMessage' | translate }}</p>
+                <div style="padding: 2em; padding-top: 0em;">
                     <p>{{ 'discussionForum.sendMessage.subject' | translate }}</p>
                     <textarea rows="10" cols="20" class="form-control widthMax"
-                              name="newMessage" [(ngModel)]="message" required></textarea>
-                    <div style="text-align: center !important">
-                        <button type="button" class="btn btn-primary changePasswordModal cancel-button"
+                              name="newMessage" [(ngModel)]="message"
+                              [readonly]="sendingMessage" required></textarea>
+                </div>
+                <div class="row center">
+                    <div class="col-sm-6">
+                        <button [disabled]="sendingMessage" type="button"
+                                class="btn btn-primary changePassword cancel-button"
                                 (click)="closeModal()">
                             {{ 'shared.cancel.button' | translate }}
                         </button>
-                        <button type="submit" class="btn btn-primary changePasswordModal publish-button">
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="submit" [disabled]="sendingMessage || message.length < 1"
+                                class="btn btn-primary changePassword confirm-button">
+                          <span style="margin-right: 2px;">
+                            <i *ngIf="sendingMessage && !messageSentSuccess" [@enterSpinner]
+                               class="fa fa-spinner loading-icon"></i>
+                          </span>
                             {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
                         </button>
                     </div>
@@ -172,28 +217,30 @@
     </p-dialog>
 </div>
 
-
 <div class="container font">
     <div class="ui-g-1"></div>
-    <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closeOnEscape]="true">
+    <p-dialog [(visible)]="displayMediation" [modal]="true" [responsive]="true"
+              [resizable]="false" [draggable]="false" [closeOnEscape]="true">
         <form #messagesForm="ngForm">
             <div class="form-group profileDialog">
 
                 <div class="beneficiaryTitle center">
                     {{ 'discussionForum.mediationRequest.title' | translate }}
                 </div>
-                <p class="center newMessageDiscussionMargins">{{ 'discussionForum.mediationRequest.text' | translate
-                    }}</p>
+                <p class="center newMessageDiscussionMargins">
+                    {{ 'discussionForum.mediationRequest.text' | translate }}
+                </p>
                 <br>
                 <p class="center">{{ 'discussionForum.mediationRequest.selectText' | translate }}</p>
-                <div class="form-group">
-                    <div style="text-align: center !important">
-                        <button type="button" class="btn btn-primary changePasswordModal cancel-button"
+                <div class="row center">
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-primary changePassword cancel-button"
                                 (click)="closeModal()">
                             {{ 'shared.cancel.button' | translate }}
                         </button>
-                        <button type="submit" class="btn btn-primary changePasswordModal publish-button"
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn btn-primary changePassword confirm-button"
                                 (click)="askMediation(); closeModal()">
                             {{ 'helpdesk.helpdeskform.sendmessage' | translate }}
                         </button>
@@ -203,3 +250,10 @@
         </form>
     </p-dialog>
 </div>
+<helpdesk-form-component portal="beneficiary-discussion"></helpdesk-form-component>
+<p-dialog [(visible)]="withdrawingRegistration" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog>

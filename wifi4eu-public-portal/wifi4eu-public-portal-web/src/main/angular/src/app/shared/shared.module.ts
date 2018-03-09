@@ -6,7 +6,6 @@ import { UxLanguageSelectorComponent } from "@ec-digit-uxatec/eui-angular2-ux-la
 import { UxSearchInputComponent } from "@ec-digit-uxatec/eui-angular2-ux-search-input";
 import { UxModule } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.module";
 import { GrowlModule, BlockUIModule } from "primeng/primeng";
-import { HelpdeskFormComponent } from "../shared/components/helpdesk-form/helpdesk-form.component";
 import { TimerComponent } from "../shared/components/timer/timer.component";
 import { CustomLayoutHeaderComponent } from "./components/custom-layout-header/custom-layout-header";
 import { CustomLayoutNavBarActionItemComponent } from "./components/custom-layout-nav-bar-action-item/custom-layout-nav-bar-action-item";
@@ -30,7 +29,6 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         CustomLayoutHeaderComponent,
         CustomLayoutNavBarActionItemComponent,
         CustomLayoutNavBarTopMenuComponent,
-        HelpdeskFormComponent,
         TimerComponent
     ],
     exports: [
@@ -44,7 +42,6 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         CustomLayoutHeaderComponent,
         CustomLayoutNavBarActionItemComponent,
         CustomLayoutNavBarTopMenuComponent,
-        HelpdeskFormComponent,
         TimerComponent
     ],
     providers: [

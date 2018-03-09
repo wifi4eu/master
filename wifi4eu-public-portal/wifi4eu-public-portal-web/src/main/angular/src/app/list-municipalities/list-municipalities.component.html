@@ -1,0 +1,70 @@
+<div class="first">
+  <img id="first-background" src="assets/images/skyline.png" alt="">
+  <div class="container-fluid header-fluid">
+    <div class="contenedor row">
+      <div class="col-xl-12">
+        <img id="img-wifiLanding" src="assets/images/wifi_benef.png" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="panel">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">{{ 'listMunicipalities.title' | translate }}</h4>
+            <p class="subtitle-discover">{{ 'listMunicipalities.subtitle' | translate }}</p>
+            <p class="updated-on" *ngIf="dateCached">{{ 'listMunicipalities.subtitle.updateDate' | translate}} {{dateCached}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-5">
+        <label class="label-select"  for="memberState">{{ 'listMunicipalities.memberState.label' | translate }}</label>
+        <select name="memberState" id="memberState" [(ngModel)]="country" (ngModelChange)="selectCountry($event)">
+          <option disabled>Select</option>
+          <option *ngFor="let country of countries" [ngValue]="country">
+            {{ country.label }}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-12 col-md-5">
+        <label class="label-select" for="region">{{ 'listMunicipalities.region.label' | translate }}</label>
+        <select name="region" id="region" [(ngModel)]="region" (ngModelChange)="selectRegion($event)">
+          <option disabled>Select</option>
+          <option *ngFor="let region of regions" [ngValue]="region">
+            {{ region.label }}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-12 col-md-2">
+        <label class="label-hidden">*</label>
+        <button class="btn btn-primary btn-apply" (click)="searchMunicipalities()" [disabled]="country == null || region == null">{{ 'listMunicipalities.apply.button' | translate }}</button>
+      </div>
+    </div>
+    <div class="row" *ngIf="country && region && municipalities.length > 0">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12 municipalities-region">
+            <p-dataGrid [value]="municipalities" [paginator]="true" [rows]="21">
+              <ng-template let-municipality pTemplate="item">
+                <div class="municipality-item">
+                  <span>{{municipality}}</span>
+                </div>
+              </ng-template>
+            </p-dataGrid>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="searched && municipalities.length == 0">
+      <div class="col-md-12">
+        <!-- TODO: check with connect -->
+        <span class="updated-on">{{ 'listMunicipalities.noresults.text' | translate }} {{regionNameSearched}}</span>
+      </div>
+    </div>
+  </div>
+</div>

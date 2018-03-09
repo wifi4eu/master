@@ -12,6 +12,9 @@ import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { CoreModule } from "./core/core.module";
 import { SharedService } from "./shared/shared.service";
+import { DataGridModule } from "primeng/primeng";
+import { ListMunicipalitiesComponent } from "app/list-municipalities/list-municipalities.component";
+import { CustomUxTrackScrollDirective } from "./shared/components/custom-track-scroll/custom-track-scroll.directive";
 
 // import { BrowserModule } from "@angular/platform-browser";
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -44,7 +47,9 @@ export function translateFactory(http: Http) {
         HomeComponent,
         NotFoundComponent,
         BeneficiaryLandingComponent,
-        SupplierLandingComponent
+        SupplierLandingComponent,
+        ListMunicipalitiesComponent,
+        CustomUxTrackScrollDirective
     ],
     exports: [
         NotFoundComponent,
@@ -52,6 +57,7 @@ export function translateFactory(http: Http) {
     imports: [
         CoreModule,
         BrowserModule,
+        DataGridModule,
         // BrowserAnimationsModule,
         TranslateModule.forRoot({
             provide: TranslateLoader,

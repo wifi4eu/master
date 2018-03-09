@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -17,6 +14,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -67,7 +65,7 @@ public class ApplicationService {
         }
         if (user != null && municipality != null) {
             msgBody = MessageFormat.format(msgBody, municipality.getName());
-            mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }
@@ -93,5 +91,36 @@ public class ApplicationService {
 
     public List<ApplicationDTO> getApplicationsByRegistrationId(int registrationId) {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
+    }
+
+    public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(int callId) {
+        List<ApplicationVoucherInfoDTO> applicationsVoucherInfo = new ArrayList<>();
+        List<ApplicationDTO> applications = applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallId(callId)));
+        for (final ApplicationDTO appDTO : applications) {
+            RegistrationDTO regDTO = registrationService.getRegistrationById(appDTO.getRegistrationId());
+            if (regDTO != null) {
+                final MunicipalityDTO munDTO = municipalityService.getMunicipalityById(regDTO.getMunicipalityId());
+                if (munDTO != null) {
+                    ApplicationVoucherInfoDTO appVoucherInfoItem = new ApplicationVoucherInfoDTO(callId, appDTO.getId(), munDTO.getName(), munDTO.getCountry(), appDTO.isVoucherAwarded());
+                    applicationsVoucherInfo.add(appVoucherInfoItem);
+                }
+            }
+        }
+        return applicationsVoucherInfo;
+    }
+
+    public ApplicationVoucherInfoDTO getApplicationsVoucherInfoByApplication(int applicationId) {
+        ApplicationVoucherInfoDTO appVoucherInfoDTO = null;
+        ApplicationDTO appDTO = getApplicationById(applicationId);
+        if (appDTO != null) {
+            RegistrationDTO regDTO = registrationService.getRegistrationById(appDTO.getRegistrationId());
+            if (regDTO != null) {
+                MunicipalityDTO munDTO = municipalityService.getMunicipalityById(regDTO.getMunicipalityId());
+                if (munDTO != null) {
+                    appVoucherInfoDTO = new ApplicationVoucherInfoDTO(appDTO.getCallId(), applicationId, munDTO.getName(), munDTO.getCountry(), appDTO.isVoucherAwarded());
+                }
+            }
+        }
+        return appVoucherInfoDTO;
     }
 }

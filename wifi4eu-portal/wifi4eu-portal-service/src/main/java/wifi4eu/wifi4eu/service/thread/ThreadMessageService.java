@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.entity.thread.ThreadMessage;
 import wifi4eu.wifi4eu.mapper.thread.ThreadMessageMapper;
 import wifi4eu.wifi4eu.repository.thread.ThreadMessageRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -49,46 +50,28 @@ public class ThreadMessageService {
     public ThreadMessageDTO createThreadMessage(ThreadMessageDTO threadMessageDTO) {
         ThreadMessageDTO threadMessage = threadMessageMapper.toDTO(threadMessageRepository.save(threadMessageMapper.toEntity(threadMessageDTO)));
         ThreadDTO thread = threadService.getThreadById(threadMessage.getThreadId());
-        switch (thread.getType()) {
-            case 1:
-                List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(Integer.valueOf(thread.getReason()));
-                if (municipalities.size() <= 10) {
-                    if (!userService.isLocalHost()) {
-                        for (MunicipalityDTO municipality : municipalities) {
-                            UserDTO user = userService.getUserById(municipality.getRegistrations().get(0).getUserId());
+        if (thread.getType() == 1) {
+            List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(Integer.valueOf(thread.getReason()));
+            if (municipalities.size() <= 10) {
+                if (!userService.isLocalHost()) {
+                    for (MunicipalityDTO municipality : municipalities) {
+                        UserDTO user = userService.getUserById(municipality.getRegistrations().get(0).getUserId());
+                        if (user != null) {
                             Locale locale = userService.initLocale();
                             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                             String subject = bundle.getString("mail.thread.subject");
                             String msgBody = bundle.getString("mail.thread.body");
-                            mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                         }
                     }
                 }
-                break;
-            case 2:
-            case 3: {
-                List<SupplierDTO> suppliers = null;
-                if (thread.getType() == 2) {
-                    suppliers = supplierService.getSuppliersByVat(thread.getReason());
-                } else if (thread.getType() == 3) {
-                    suppliers = supplierService.getSuppliersByAccountNumber(thread.getReason());
-                }
-                if (suppliers.size() <= 10) {
-                    if (!userService.isLocalHost()) {
-                        for (SupplierDTO supplier : suppliers) {
-                            UserDTO user = userService.getUserById(supplier.getUserId());
-                            Locale locale = userService.initLocale();
-                            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                            String subject = bundle.getString("mail.thread.subject");
-                            String msgBody = bundle.getString("mail.thread.body");
-                            mailService.sendEmail(user.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-                        }
-                    }
-                }
-                break;
             }
         }
         return threadMessage;
+    }
+
+    public ThreadMessageDTO saveThreadMessage(ThreadMessageDTO threadMessageDTO) {
+        return threadMessageMapper.toDTO(threadMessageRepository.save(threadMessageMapper.toEntity(threadMessageDTO)));
     }
 
     public ThreadMessageDTO deleteThreadMessage(int threadMessageId) {
@@ -99,5 +82,9 @@ public class ThreadMessageService {
         } else {
             return null;
         }
+    }
+
+    public List<ThreadMessageDTO> getThreadMessagesByAuthor(int userId) {
+        return threadMessageMapper.toDTOList(Lists.newArrayList(threadMessageRepository.findByAuthorId(userId)));
     }
 }

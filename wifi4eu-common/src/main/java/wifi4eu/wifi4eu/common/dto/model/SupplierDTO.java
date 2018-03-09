@@ -1,8 +1,9 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class SupplierDTO {
+public class SupplierDTO implements Serializable {
     private int id;
     private String name;
     private String address;
@@ -22,11 +23,12 @@ public class SupplierDTO {
     private boolean legalCheck2;
     private String legalFile1;
     private String legalFile2;
+    private int status;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, int userId, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2) {
+    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, int userId, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2, int status) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -46,6 +48,7 @@ public class SupplierDTO {
         this.legalCheck2 = legalCheck2;
         this.legalFile1 = legalFile1;
         this.legalFile2 = legalFile2;
+        this.status = status;
     }
 
     public int getId() {
@@ -198,5 +201,39 @@ public class SupplierDTO {
 
     public void setLegalFile2(String legalFile2) {
         this.legalFile2 = legalFile2;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "SupplierDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", vat='" + vat + '\'' +
+                ", bic='" + bic + '\'' +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", website='" + website + '\'' +
+                ", contactName='" + contactName + '\'' +
+                ", contactSurname='" + contactSurname + '\'' +
+                ", contactPhonePrefix='" + contactPhonePrefix + '\'' +
+                ", contactPhoneNumber='" + contactPhoneNumber + '\'' +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", logo='" + logo + '\'' +
+                ", userId=" + userId +
+                ", suppliedRegions=" + suppliedRegions +
+                ", legalCheck1=" + legalCheck1 +
+                ", legalCheck2=" + legalCheck2 +
+                ", legalFile1='" + legalFile1 + '\'' +
+                ", legalFile2='" + legalFile2 + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

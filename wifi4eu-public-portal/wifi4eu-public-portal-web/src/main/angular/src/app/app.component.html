@@ -1,4 +1,4 @@
-<ux-layout-app uxTrackScroll>
+<ux-layout-app customUxTrackScroll>
     <uxLayoutAppMainContainer>
         <ux-layout-app-main>
             <uxLayoutAppMainHeaderContainer>
@@ -10,7 +10,15 @@
                                               (languageChanged)="changeLanguage($event)"></ux-language-selector>
                         <div class="profile-wrapper" isCompact="false">
                             <div class="left-panel">
-                                <div class="user-infos">
+                                <div *ngIf="user" class="user-infos">
+                                    <span class="wellcomeHeader">{{ 'shared.loggedin.as' | translate }}:
+                                        <a (click)="myAccount()">
+                                        <strong class="color-primary">{{user.ecasUsername}}</strong></a></span><br>
+                                    <button (click)="logout()" class="headerButton">
+                                        {{ 'shared.logout.label' | translate }}
+                                    </button>
+                                </div>
+                                <div *ngIf="!user" class="user-infos">
                                     <strong class="color-primary">
                                     </strong>
                                     <a href="../../../wifi4eu">
@@ -52,7 +60,8 @@
             </uxLayoutAppMainContentContainer>
             <uxLayoutAppMainFooterContainer>
                 <ux-layout-footer isCompact="true">
-                    {{ 'home.footer.update' | translate:{version:"1.2.0b2",versionDate:"18/01/2018"} }}<a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
+                    {{ 'home.footer.update' | translate:{version:"1.8.0-rc4",versionDate:"09/03/2018"} }}
+                    <a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
                 </ux-layout-footer>
             </uxLayoutAppMainFooterContainer>
         </ux-layout-app-main>

@@ -44,7 +44,7 @@
                             <label class="label floatLeft" for="address">{{ 'benefRegistration.townHall.address' |
                                 translate }}</label>
                             <input type="text" class="form-control paddingInput" min="1"
-                                   id="address" name="address" [(ngModel)]="municipalities[0].address" required>
+                                   id="addressStep2" name="address" [(ngModel)]="municipalities[0].address" required>
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                             <label class="label floatLeft" for="address">{{ 'shared.number.label' | translate
                                 }}</label>
                             <input type="text" class="form-control paddingInput"
-                                   id="addressNum" name="addressNum" [(ngModel)]="municipalities[0].addressNum"
+                                   id="addressNumStep2" name="addressNum" [(ngModel)]="municipalities[0].addressNum"
                                    required>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                             <label class="label floatLeft" for="postalCode">{{ 'shared.postal-code.label' | translate
                                 }}</label>
                             <input type="text" class="form-control paddingInput"
-                                   id="postalCode" name="postalCode" [(ngModel)]="municipalities[0].postalCode"
+                                   id="postalCodeStep2" name="postalCode" [(ngModel)]="municipalities[0].postalCode"
                                    required>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
             <div id="mayor-name" class="form-group ui-g">
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'shared.name.label' | translate }}</label>
-                    <input class="form-control paddingInput" type="text" name="name" id="name"
+                    <input class="form-control paddingInput" type="text" name="name" id="nameStep2"
                            [(ngModel)]="mayors[0].name" required>
                 </div>
             </div>
@@ -94,7 +94,7 @@
             <div id="mayor-last-name" class="form-group ui-g">
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'shared.surname.label' | translate }}</label>
-                    <input class="form-control paddingInput" type="text" name="surname" id="surname"
+                    <input class="form-control paddingInput" type="text" name="surname" id="surnameStep2"
                            [(ngModel)]="mayors[0].surname" required>
                 </div>
             </div>
@@ -103,7 +103,7 @@
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'shared.email.label' | translate }}</label>
                     <input class="form-control paddingInput" type="email" [pattern]="emailPattern"
-                           [(ngModel)]="mayors[0].email" id="email" name="email"
+                           [(ngModel)]="mayors[0].email" id="emailStep2" name="email"
                            (input)="checkEmailsMatch()" maxlength="254" required>
                     <label class="field-desc" style="margin-top: 10px;color: gray;">
                         {{ 'benefRegistration.email.fielddesc' | translate }}
@@ -115,7 +115,7 @@
                 <div class="ui-g-12">
                     <label class="label floatLeft">{{ 'shared.confirmemail.label' | translate }}</label>
                     <input class="form-control paddingInput {{css_class_email[0]}}"
-                           name="confirm-email" id="confirm-email"
+                           name="confirm-email" id="confirm-emailStep2" type="email"
                            (input)="checkEmailsMatch()" (paste)="preventPaste()"
                            [(ngModel)]="emailConfirmations[0]" maxlength="254">
                 </div>
@@ -123,9 +123,9 @@
         </ng-container>
         <ng-container *ngIf="multipleMunicipalities">
             <ux-accordion-boxes>
-                <custom-accordion-box *ngFor="let mayor of mayors; let i = index" [isExpanded]="true"
-                                      [rightSide]="true">
-                    <hr *ngIf="i != 0">
+                <div *ngFor="let mayor of mayors; let i = index">
+                    <hr class="genericHr" *ngIf="i != 0">
+                    <custom-accordion-box [isExpanded]="true" [rightSide]="true">
                     <div class="ui-g">
                         <div class="ui-g-12">
                             <h3 class="beneficiaryTitle">{{ 'shared.municipalityDetails.title' | translate }}</h3>
@@ -175,7 +175,7 @@
                         <div class="ui-g-12">
                             <div class="ui-g-4">
                                 <div class="form-group">
-                                    <label class="label floatLeft" for="postalCode">
+                                    <label class="label floatLeft" [for]="'postalCode-'+i">
                                         {{ 'shared.postal-code.label' | translate }}</label>
                                     <input type="text" class="form-control paddingInput"
                                            [id]="'postalCode-'+i" [name]="'postalCode-'+i"
@@ -205,8 +205,9 @@
                     <!-- Mayor last name -->
                     <div [id]="'mayor-last-name-'+i" class="form-group ui-g">
                         <div class="ui-g-12">
-                            <label class="label floatLeft">{{ 'shared.surname.label' | translate
-                                }}</label>
+                            <label class="label floatLeft">
+                                {{ 'shared.surname.label' | translate }}
+                            </label>
                             <input class="form-control paddingInput" type="text" [name]="'surname-'+i"
                                    [id]="'surname-'+i"
                                    [(ngModel)]="mayors[i].surname" required>
@@ -215,8 +216,9 @@
                     <!-- Mayor email -->
                     <div [id]="'mayor-email-'+i" class="form-group ui-g">
                         <div class="ui-g-12">
-                            <label class="label floatLeft">{{ 'shared.email.label' | translate
-                                }}</label>
+                            <label class="label floatLeft">
+                                {{ 'shared.email.label' | translate }}
+                            </label>
                             <input class="form-control paddingInput" type="email" [pattern]="emailPattern"
                                    [(ngModel)]="mayors[i].email" [id]="'email-'+i" [name]="'email-'+i"
                                    (input)="checkEmailsMatch()" maxlength="254" required>
@@ -227,26 +229,28 @@
                     <!-- Mayor confirmation email -->
                     <div [id]="'mayor-confirm-email-'+i" class="form-group ui-g">
                         <div class="ui-g-12">
-                            <label class="label floatLeft">{{ 'shared.confirmemail.label' | translate
-                                }}</label>
-                            <input class="form-control paddingInput {{css_class_email[i]}}"
+                            <label class="label floatLeft">
+                                {{ 'shared.confirmemail.label' | translate }}
+                            </label>
+                            <input class="form-control paddingInput {{css_class_email[i]}}" type="email"
                                    [name]="'confirm-email-'+i" [id]="'confirm-email-'+i"
                                    (input)="checkEmailsMatch()" (paste)="preventPaste()"
                                    [(ngModel)]="emailConfirmations[i]" maxlength="254">
                         </div>
                     </div>
-                    <div class="form-group ui-g center" *ngIf="i > 0">
-                        <button type="button" (click)="removeMunicipality(i)">
-                            {{'benefRegistration.removeMunicipality.label' |
-                            translate}}
+                    <div class="form-group ui-g-12 right" *ngIf="i > 0">
+                        <button class="btn redButton" type="button" (click)="removeMunicipality(i)">
+                            {{'benefRegistration.removeMunicipality.label' | translate}}
                         </button>
                     </div>
                     <br><br>
                 </custom-accordion-box>
+                </div>
             </ux-accordion-boxes>
-            <div class="form-group ui-g center">
-                <button type="button" (click)="addMunicipality()">{{'benefRegistration.addMunicipalty.label' |
-                    translate}}
+            <div class="form-group ui-g">
+                <button class="btn greenButton" type="button" (click)="addMunicipality()"
+                    style="margin-top: 1.5em;">
+                    {{'benefRegistration.addMunicipalty.label' | translate}}
                 </button>
             </div>
         </ng-container>
@@ -259,7 +263,7 @@
             </div>
             <!-- Next button -->
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button type="submit" class="btn btn-primary publish-button"
+                <button type="submit" id="navigate-step3" class="btn btn-primary publish-button"
                         [disabled]="!municipalityForm.form.valid || !municipalitiesSelected || !emailsMatch">
                     {{ 'shared.next.button' | translate }}
                 </button>
