@@ -100,7 +100,13 @@ public class ApplicationResource {
         if (_log.isInfoEnabled()) {
             _log.info("getApplicationByCall: " + callId + " & Registration: " + registrationId);
         }
-        return applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
+
+        ApplicationDTO response = applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
+        if(response == null){
+            response = new ApplicationDTO();
+        }
+
+        return response;
     }
 
     @ApiOperation(value = "Get applications voucher info by call id")

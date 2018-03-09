@@ -54,7 +54,7 @@ export class VoucherComponent {
 
     private checkForCalls(registrations: RegistrationDTOBase[]) {
         this.callApi.allCalls().subscribe(
-            calls => {
+            (calls: CallDTOBase[]) => {
                 this.currentCall = calls[0];
                 for (let registration of registrations) {
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
@@ -68,7 +68,9 @@ export class VoucherComponent {
                                                     this.registrations.push(registration);
                                                     this.municipalities.push(municipality);
                                                     this.mayors.push(mayor);
-                                                    this.applications.push(application);
+                                                    if(application.id != 0){
+                                                      this.applications.push(application);
+                                                    }                                                   
                                                     this.loadingButtons.push(false);
                                                     let date = new Date(this.currentCall.startDate);
                                                     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
