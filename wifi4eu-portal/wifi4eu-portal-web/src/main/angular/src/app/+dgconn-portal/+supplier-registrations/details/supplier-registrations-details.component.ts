@@ -58,6 +58,32 @@ export class DgConnSupplierRegistrationsDetailsComponent {
         }
     }
 
+    private requestLegalDocuments(mainSupplier: boolean, index?: number) {
+        if (mainSupplier) {
+            this.supplierApi.requestLegalDocuments(this.supplier.id).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        this.sharedService.growlTranslation('An email has been sent to the contact person to supply the legal documents for the registration.', 'dgConn.supplierDetails.requestLegalDocuments.success', 'success');
+                    } else {
+                        this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the supplier. Please, try again later.', 'dgConn.supplierDetails.requestLegalDocuments.error', 'error');
+                    }
+                }
+            );
+        } else {
+            if (index != null) {
+                this.supplierApi.requestLegalDocuments(this.similarSuppliers[index].id).subscribe(
+                    (response: ResponseDTOBase) => {
+                        if (response.success) {
+                            this.sharedService.growlTranslation('An email has been sent to the contact person to supply the legal documents for the registration.', 'dgConn.supplierDetails.requestLegalDocuments.success', 'success');
+                        } else {
+                            this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the supplier. Please, try again later.', 'dgConn.supplierDetails.requestLegalDocuments.error', 'error');
+                        }
+                    }
+                );
+            }
+        }
+    }
+
     private displayInvalidateModal(mainSupplier: boolean, index?: number) {
         this.selectedMainSupplier = mainSupplier;
         if (index != null) {
