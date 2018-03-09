@@ -202,7 +202,7 @@
                         </button>
                     </div>
                     <div class="col-sm-6">
-                        <button type="submit" [disabled]="sendingMessage || !hasMessage"
+                        <button type="submit" [disabled]="sendingMessage || message.length < 1"
                                 class="btn btn-primary changePassword confirm-button">
                           <span style="margin-right: 2px;">
                             <i *ngIf="sendingMessage && !messageSentSuccess" [@enterSpinner]
