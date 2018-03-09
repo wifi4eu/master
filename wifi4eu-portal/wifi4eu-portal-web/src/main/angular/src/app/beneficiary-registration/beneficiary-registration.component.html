@@ -6,8 +6,8 @@
                                             [organizations]="organizations"
                                             [(multipleMunicipalities)]="multipleMunicipalities"
                                             (countryChange)="selectCountry($event)"
-                                            (organizationCountryChange)="resetStep2Data()"
-                                            [(organization)]="organization"
+                                            [organization]="organization"
+                                            (organizationChange)="selectOrganization($event)"
                                             (onNext)="navigate(2)"></beneficiary-registration-step1>
         </uxWizardStepCustomContent>
     </ux-wizard-step>
