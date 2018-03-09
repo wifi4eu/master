@@ -13,7 +13,7 @@
   "home.part2.text1": "Naslednji javni razpis za prijavo projektov bo objavljen dne {{date}} ob {{hour}} (po srednjeevropskem času).",
   "home.part2.subtitle4": "Na razpis se lahko prijavijo:",
   "home.part2.list1": "- občine",
-  "home.part2.subtitle5": "Seznam upravičenih subjektov v vaši državi.",
+  "home.part2.subtitle5": "<a target='_blank' href='https://ec.europa.eu/digital-single-market/news-redirect/613784'>Seznam upravičenih subjektov v vaši državi.</a>",
   "home.part2.list2": "- subjekti, ki delujejo v imenu občine  ",
   "home.part2.subtitle6": "Z bonom programa WiFi4EU bo mogoče financirati stroške nakupa in namestitve opreme (javne točke za dostop do interneta). Upravičenci se zavežejo, da bodo krili stroške povezljivosti (internetna naročnina) in vzdrževanje opreme ter zagotavljali brezplačno in visokokakovostno brezžično povezljivost najmanj tri leta.",
   "home.part2.subtitle2": "Kaj lahko pričakujete",

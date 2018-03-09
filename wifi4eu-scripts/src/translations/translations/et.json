@@ -13,7 +13,7 @@
   "home.part2.text1": "Järgmine projektikonkurss avaldatakse {{date}} kl {{hour}} (Kesk-Euroopa aja järgi).",
   "home.part2.subtitle4": "Sellel saavad osaleda:",
   "home.part2.list1": "- omavalitsused",
-  "home.part2.subtitle5": "Tutvuge teie riigi toetuskõlblike üksustega.",
+  "home.part2.subtitle5": "<a target='_blank' href='https://ec.europa.eu/digital-single-market/news-redirect/613784'>Tutvuge teie riigi toetuskõlblike üksustega.</a>",
   "home.part2.list2": "- omavalitsuse nimel tegutsevad üksused  ",
   "home.part2.subtitle6": "WiFi4EU vautšeri alusel hüvitatakse WiFi kuumkoha seadmete ja paigaldamise kulud. Toetusesaajad võtavad kohustuse tasuda vähemalt 3 aasta jooksul tasuta ja kvaliteetse WiFi ühenduse jaoks vajaliku internetiühenduse tellimuse ja seadmete hoolduskulude eest.",
   "home.part2.subtitle2": "Mida algatuse raames pakutakse?",
