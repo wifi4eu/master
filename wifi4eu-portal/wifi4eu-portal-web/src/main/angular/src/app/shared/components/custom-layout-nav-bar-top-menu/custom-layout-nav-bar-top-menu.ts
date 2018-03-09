@@ -55,7 +55,6 @@ export class CustomLayoutNavBarTopMenuComponent extends UxLayoutNavBarTopMenuCom
     }
 
     goToHome() {
-        console.log("rouga fufuken!")
         window.location.href = "/#/home";
     }
 }

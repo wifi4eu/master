@@ -26,6 +26,7 @@ export class SharedService {
     }
 
     update() {
+        this.user = null;
         this.emitUpdate.next();
     }
 
@@ -35,6 +36,7 @@ export class SharedService {
     }
 
     logout() {
+        this.user = null;
         this.emitLogout.next();
     }
 
