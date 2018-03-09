@@ -13,7 +13,7 @@
   "home.part2.text1": "Seuraava hakuilmoitus julkaistaan {{date}} klo {{hour}} (Keski-Euroopan aikaa).",
   "home.part2.subtitle4": "Rahoitusta voivat hakea",
   "home.part2.list1": "- kunnat",
-  "home.part2.subtitle5": "Hakukelpoiset kunnat/yhteisöt maittain",
+  "home.part2.subtitle5": "<a target='_blank' href='https://ec.europa.eu/digital-single-market/news-redirect/613784'>Hakukelpoiset kunnat/yhteisöt maittain</a>",
   "home.part2.list2": "- kuntia edustavat yhteisöt  ",
   "home.part2.subtitle6": "WiFi4EU-järjestelmän rahoitus kattaa WiFi-verkon laitteisto- ja asennuskulut. Tuensaajat sitoutuvat maksamaan internetyhteyden (liittymätilauksen) ja laitteiden ylläpidon sekä tarjoamaan maksuttoman ja laadukkaan verkkoyhteyden vähintään 3 vuoden ajan.",
   "home.part2.subtitle2": "Mitä komission tuki kattaa?",
