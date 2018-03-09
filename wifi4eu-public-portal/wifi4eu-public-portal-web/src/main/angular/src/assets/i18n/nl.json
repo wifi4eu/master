@@ -13,7 +13,7 @@
   "home.part2.text1": "De volgende ronde voor het indienen van projectvoorstellen begint op {{date}} om {{hour}} (Midden-Europese tijd).",
   "home.part2.subtitle4": "Aanvragen kunnen worden ingediend door:",
   "home.part2.list1": "- gemeenten",
-  "home.part2.subtitle5": "Zie de lijst van entiteiten in uw land die in aanmerking komen.",
+  "home.part2.subtitle5": "<a target='_blank' href='https://ec.europa.eu/digital-single-market/news-redirect/613784'>Zie de lijst van entiteiten in uw land die in aanmerking komen.</a>",
   "home.part2.list2": "- andere entiteiten namens een gemeente  ",
   "home.part2.subtitle6": "De WiFi4EU-voucher dekt de apparatuur- en installatiekosten van wifi-hotspots. De gemeenten moeten zelf minstens drie jaar lang het internetabonnement en het onderhoud betalen van de apparatuur die nodig is om gratis en snelle wifi-hotspots te kunnen bieden.",
   "home.part2.subtitle2": "Wat kunt u verwachten?",

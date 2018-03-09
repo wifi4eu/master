@@ -13,7 +13,7 @@
   "home.part2.text1": "Den næste indkaldelse af ansøgninger lanceres den {{date}}, kl.{{hour}} (dansk tid).",
   "home.part2.subtitle4": "Indkaldelsen er åben for:",
   "home.part2.list1": "- Kommuner",
-  "home.part2.subtitle5": "Se listen over enheder, som kan ansøge i dit land.",
+  "home.part2.subtitle5": "<a target='_blank' href='https://ec.europa.eu/digital-single-market/news-redirect/613784'>Se listen over enheder, som kan ansøge i dit land.</a>",
   "home.part2.list2": "- Enheder, som handler på vegne af kommuner  ",
   "home.part2.subtitle6": "WiFi4EU-kuponen dækker udstyret og udgifterne til installation af wi-fi-hotspots. Modtagerne forpligter sig til at betale for opkoblingen (internetabonnementet) og vedligeholdelsen af det udstyr, der er nødvendigt for at kunne tilbyde en gratis wi-fi-forbindelse af høj kvalitet i mindst tre år.",
   "home.part2.subtitle2": "Hvad kan du forvente?",
