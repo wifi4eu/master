@@ -5,12 +5,12 @@ import java.io.Serializable;
 public class SuppliedRegionDTO implements Serializable{
     private int id;
     private int supplierId;
-    private int regionId;
+    private NutsDTO regionId;
 
     public SuppliedRegionDTO() {
     }
 
-    public SuppliedRegionDTO(int id, int supplierId, int regionId) {
+    public SuppliedRegionDTO(int id, int supplierId, NutsDTO regionId) {
         this.id = id;
         this.supplierId = supplierId;
         this.regionId = regionId;
@@ -32,11 +32,11 @@ public class SuppliedRegionDTO implements Serializable{
         this.supplierId = supplierId;
     }
 
-    public int getRegionId() {
+    public NutsDTO getRegionId() {
         return regionId;
     }
 
-    public void setRegionId(int regionId) {
+    public void setRegionId(NutsDTO regionId) {
         this.regionId = regionId;
     }
 

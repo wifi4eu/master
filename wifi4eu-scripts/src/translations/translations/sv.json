@@ -13,7 +13,7 @@
   "home.part2.text1": "Den första ansökningsomgången startar den {{date}} kl. {{hour}} (svensk tid).",
   "home.part2.subtitle4": "Den är öppen för",
   "home.part2.list1": "- kommuner",
-  "home.part2.subtitle5": "Se vilka organ som kan söka i ditt land",
+  "home.part2.subtitle5": "<a target='_blank' href='https://ec.europa.eu/digital-single-market/news-redirect/613784'>Se vilka organ som kan söka i ditt land</a>",
   "home.part2.list2": "- organ som agerar på uppdrag av kommuner",
   "home.part2.subtitle6": "Bidragsmottagarna får checkar som ska täcka kostnaden för utrustning och installation av offentliga surfpunkter. Däremot får de själva stå för internetabonnemang och underhåll i minst tre år.",
   "home.part2.subtitle2": "Hur går det till?",
