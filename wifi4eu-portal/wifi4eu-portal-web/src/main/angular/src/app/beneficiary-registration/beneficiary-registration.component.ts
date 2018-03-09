@@ -1,22 +1,20 @@
-import {Component} from "@angular/core";
-import {UserDTOBase} from "../shared/swagger/model/UserDTO";
-import {MunicipalityDTOBase} from "../shared/swagger/model/MunicipalityDTO";
-import {BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
-import {OrganizationDTOBase} from "../shared/swagger/model/OrganizationDTO";
-import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
-import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
-import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
-import {NutsApi} from "../shared/swagger/api/NutsApi";
-import {OrganizationApi} from "../shared/swagger/api/OrganizationApi";
-import {Subscription} from "rxjs/Subscription";
-import {SharedService} from "../shared/shared.service";
-import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
-import {LauDTOBase} from "../shared/swagger/model/LauDTO";
-import {Router} from "@angular/router";
+import { Component } from "@angular/core";
+import { UserDTOBase } from "../shared/swagger/model/UserDTO";
+import { MunicipalityDTOBase } from "../shared/swagger/model/MunicipalityDTO";
+import { BeneficiaryDTOBase } from "../shared/swagger/model/BeneficiaryDTO";
+import { OrganizationDTOBase } from "../shared/swagger/model/OrganizationDTO";
+import { BeneficiaryApi } from "../shared/swagger/api/BeneficiaryApi";
+import { ResponseDTOBase } from "../shared/swagger/model/ResponseDTO";
+import { NutsDTOBase } from "../shared/swagger/model/NutsDTO";
+import { NutsApi } from "../shared/swagger/api/NutsApi";
+import { OrganizationApi } from "../shared/swagger/api/OrganizationApi";
+import { Subscription } from "rxjs/Subscription";
+import { SharedService } from "../shared/shared.service";
+import { MayorDTOBase } from "../shared/swagger/model/MayorDTO";
+import { LauDTOBase } from "../shared/swagger/model/LauDTO";
+import { Router } from "@angular/router";
 import { LocalStorageService } from "angular-2-local-storage/dist/local-storage.service";
 import { ActivatedRoute } from "@angular/router";
-import { Observable } from "rxjs/Observable";
-import { OnInit } from "@angular/core";
 
 @Component({
     selector: 'beneficiary-registration',
@@ -24,7 +22,7 @@ import { OnInit } from "@angular/core";
     providers: [BeneficiaryApi, NutsApi, OrganizationApi]
 })
 
-export class BeneficiaryRegistrationComponent implements OnInit {
+export class BeneficiaryRegistrationComponent {
     private successRegistration: boolean = false;
     private failureRegistration: boolean = false;
     private completed: boolean[] = [false, false, false, false];
@@ -41,7 +39,6 @@ export class BeneficiaryRegistrationComponent implements OnInit {
     private organizationsSubscription: Subscription = new Subscription();
     private alreadyRegistered: boolean = false;
     private organization: OrganizationDTOBase = null;
-    private userEcas: UserDTOBase;
     private associationName: string = null;
 
     constructor(private route: ActivatedRoute, private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router,private sharedService: SharedService, private localStorage: LocalStorageService) {
@@ -51,10 +48,7 @@ export class BeneficiaryRegistrationComponent implements OnInit {
             }, error => {
                 console.log(error);
             }
-        );    
-    }
-
-    ngOnInit(){
+        );
     }
 
     private selectCountry(country: NutsDTOBase) {
@@ -67,24 +61,26 @@ export class BeneficiaryRegistrationComponent implements OnInit {
                 }
             );
             this.resetStep2Data();
+            this.associationName = '';
         }
     }
 
     private selectOrganization(organization: OrganizationDTOBase) {
-      if (this.organization != organization) {
-        this.organization = organization;
-        this.resetStep2Data();
-      }
+        if (this.organization != organization) {
+            this.organization = organization;
+            this.resetStep2Data();
+            this.associationName = '';
+        }
     }
 
     private resetStep2Data() {
-      this.laus = [];
-      this.municipalities = [new MunicipalityDTOBase()];
-      this.mayors = [new MayorDTOBase()];
-      this.initialUser = new UserDTOBase();
+        this.laus = [];
+        this.municipalities = [new MunicipalityDTOBase()];
+        this.mayors = [new MayorDTOBase()];
+        this.initialUser = new UserDTOBase();
     }
 
-    private navigate(step: number) {       
+    private navigate(step: number) {
         switch (step) {
             case 1:
                 this.completed = [false, false, false, false];
@@ -99,7 +95,7 @@ export class BeneficiaryRegistrationComponent implements OnInit {
                 this.active = [false, false, true, false];
                 break;
             case 4:
-                
+
                 this.completed = [true, true, true, false];
                 this.active = [false, false, false, true];
                 break;
@@ -109,7 +105,7 @@ export class BeneficiaryRegistrationComponent implements OnInit {
 
     private submitRegistration() {
         this.finalBeneficiary.organisationId = this.organization.id;
-    this.finalBeneficiary.associationName = this.associationName;
+        this.finalBeneficiary.associationName = this.associationName;
         this.finalBeneficiary.municipalities = [];
         for (let municipality of this.municipalities) {
             this.finalBeneficiary.municipalities.push(municipality);
