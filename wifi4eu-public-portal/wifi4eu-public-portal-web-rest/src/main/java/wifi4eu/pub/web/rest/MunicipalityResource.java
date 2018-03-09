@@ -49,4 +49,12 @@ public class MunicipalityResource {
         _log.info("getMunicipalitiesRegisteredByRegion " + code);
         return municipalityService.getMunicipalitiesRegisteredByRegion(code);
     }
+
+    @ApiOperation(value = "Get municipalities by country")
+    @RequestMapping(value = "/country/{countryCode}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public MunicipalityCacheDTO getMunicipalitiesRegisteredByCountry(@PathVariable("countryCode") final String code) {
+        _log.info("getMunicipalitiesRegisteredByRegion " + code);
+        return municipalityService.getMunicipalitiesByCountry(code);
+    }
 }
