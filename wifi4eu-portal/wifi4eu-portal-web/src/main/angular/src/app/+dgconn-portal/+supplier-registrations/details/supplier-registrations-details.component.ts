@@ -40,24 +40,6 @@ export class DgConnSupplierRegistrationsDetailsComponent {
         );
     }
 
-    private getLegalFileUrl(mainSupplier: boolean, fileNumber: number, index?: number) {
-        if (mainSupplier) {
-            switch (fileNumber) {
-                case 1:
-                    return this.sanitizer.bypassSecurityTrustUrl(this.supplier.legalFile1);
-                case 2:
-                    return this.sanitizer.bypassSecurityTrustUrl(this.supplier.legalFile2);
-            }
-        } else {
-            switch (fileNumber) {
-                case 1:
-                    return this.sanitizer.bypassSecurityTrustUrl(this.similarSuppliers[index].legalFile1);
-                case 2:
-                    return this.sanitizer.bypassSecurityTrustUrl(this.similarSuppliers[index].legalFile2);
-            }
-        }
-    }
-
     private requestLegalDocuments(mainSupplier: boolean, index?: number) {
         if (mainSupplier) {
             this.supplierApi.requestLegalDocuments(this.supplier.id).subscribe(
