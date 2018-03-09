@@ -29,10 +29,6 @@
         <div class="ui-g-12">
             <div class="row applicantDetailsPanel">
                 <span class="right">
-                    <button type="button" class="btn btn-primary whiteButton-thin"
-                            (click)="requestLegalDocuments(true)">
-                        {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
-                    </button>
                     <button type="button" class="btn redButton" (click)="displayInvalidateModal(true)"
                             [disabled]="supplier.status == 0">
                         {{ 'dgConn.supplierDetails.invalidateSupplier' | translate }}
@@ -128,10 +124,6 @@
                 <div class="ui-g-12">
                     <div class="row applicantDetailsPanel">
                     <span class="right">
-                        <button type="button" class="btn btn-primary whiteButton-thin"
-                                (click)="requestLegalDocuments(false, i)">
-                            {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
-                        </button>
                         <button type="button" class="btn redButton" (click)="displayInvalidateModal(false, i)"
                                 [disabled]="similarSupplier.status == 0">
                             {{ 'dgConn.supplierDetails.invalidateSupplier' | translate }}
