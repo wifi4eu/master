@@ -8,6 +8,7 @@ import {SupplierApi} from "../../shared/swagger/api/SupplierApi";
 import {CallDTOBase} from "../../shared/swagger/model/CallDTO";
 import {LauDTO} from "../../shared/swagger/model/LauDTO";
 import {NutsDTO} from "../../shared/swagger/model/NutsDTO";
+import { SharedService } from "../../shared/shared.service";
 import {UserDTO} from "../../shared/swagger/model/UserDTO";
 
 @Component({selector: 'supplier-municipalities-component', templateUrl: 'supplier-municipalities.component.html', providers: [SupplierApi, BeneficiaryApi, CallApi, NutsApi, LauApi]})

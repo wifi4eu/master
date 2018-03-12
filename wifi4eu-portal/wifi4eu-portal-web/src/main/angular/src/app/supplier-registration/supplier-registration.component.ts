@@ -86,7 +86,7 @@ export class SupplierRegistrationComponent {
         for (let selectedCountry in this.selectedRegions) {
             for (let selectedRegion of this.selectedRegions[selectedCountry]) {
                 let suppliedRegion = new SuppliedRegionDTOBase();
-                suppliedRegion.regionId = selectedRegion.id;
+                suppliedRegion.regionId = selectedRegion;
                 this.supplier.suppliedRegions.push(suppliedRegion);
             }
         }

@@ -1,20 +1,19 @@
-import {Component} from "@angular/core";
-import {UserDTOBase} from "../shared/swagger/model/UserDTO";
-import {MunicipalityDTOBase} from "../shared/swagger/model/MunicipalityDTO";
-import {BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
-import {OrganizationDTOBase} from "../shared/swagger/model/OrganizationDTO";
-import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
-import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
-import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
-import {NutsApi} from "../shared/swagger/api/NutsApi";
-import {OrganizationApi} from "../shared/swagger/api/OrganizationApi";
-import {Subscription} from "rxjs/Subscription";
-import {SharedService} from "../shared/shared.service";
-import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
-import {LauDTOBase} from "../shared/swagger/model/LauDTO";
-import {Router} from "@angular/router";
-import {OnInit} from "@angular/core";
-import {TranslateService} from "ng2-translate";
+import { Component } from "@angular/core";
+import { UserDTOBase } from "../shared/swagger/model/UserDTO";
+import { MunicipalityDTOBase } from "../shared/swagger/model/MunicipalityDTO";
+import { BeneficiaryDTOBase } from "../shared/swagger/model/BeneficiaryDTO";
+import { OrganizationDTOBase } from "../shared/swagger/model/OrganizationDTO";
+import { BeneficiaryApi } from "../shared/swagger/api/BeneficiaryApi";
+import { ResponseDTOBase } from "../shared/swagger/model/ResponseDTO";
+import { NutsDTOBase } from "../shared/swagger/model/NutsDTO";
+import { NutsApi } from "../shared/swagger/api/NutsApi";
+import { OrganizationApi } from "../shared/swagger/api/OrganizationApi";
+import { Subscription } from "rxjs/Subscription";
+import { SharedService } from "../shared/shared.service";
+import { MayorDTOBase } from "../shared/swagger/model/MayorDTO";
+import { LauDTOBase } from "../shared/swagger/model/LauDTO";
+import { Router } from "@angular/router";
+import { TranslateService } from "ng2-translate";
 
 @Component({
     selector: 'beneficiary-registration',
@@ -22,7 +21,7 @@ import {TranslateService} from "ng2-translate";
     providers: [BeneficiaryApi, NutsApi, OrganizationApi]
 })
 
-export class BeneficiaryRegistrationComponent implements OnInit {
+export class BeneficiaryRegistrationComponent {
     private successRegistration: boolean = false;
     private failureRegistration: boolean = false;
     private completed: boolean[] = [false, false, false, false];
@@ -39,7 +38,6 @@ export class BeneficiaryRegistrationComponent implements OnInit {
     private organizationsSubscription: Subscription = new Subscription();
     private alreadyRegistered: boolean = false;
     private organization: OrganizationDTOBase = null;
-    private userEcas: UserDTOBase;
     private associationName: string = null;
 
     constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
@@ -52,9 +50,6 @@ export class BeneficiaryRegistrationComponent implements OnInit {
         );
     }
 
-    ngOnInit() {
-    }
-
     private selectCountry(country: NutsDTOBase) {
         if (this.country != country) {
             this.country = country;
@@ -65,6 +60,7 @@ export class BeneficiaryRegistrationComponent implements OnInit {
                 }
             );
             this.resetStep2Data();
+            this.associationName = '';
         }
     }
 
@@ -97,7 +93,6 @@ export class BeneficiaryRegistrationComponent implements OnInit {
                 this.active = [false, false, true, false];
                 break;
             case 4:
-
                 this.completed = [true, true, true, false];
                 this.active = [false, false, false, true];
                 break;

@@ -29,11 +29,14 @@ public class MailService {
 
     public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
         try {
+
+            _log.debug("subject: " + subject);
+            _log.debug("msgBody: " + msgBody);
+
             MimeMessage message = mailSender.createMimeMessage();
             message.setSubject(subject, "UTF-8");
             MimeMessageHelper helper = new MimeMessageHelper(message);
             String encodingOptions = "text/html; charset=UTF-8";
-            String font = "'Open Sans', sans-serif";
 
 
             byte[] mgsBody64 = msgBody.getBytes("UTF-8");
@@ -44,12 +47,13 @@ public class MailService {
 
             message.setHeader("Content-Type", encodingOptions);
             message.setHeader("Content-Type", "multipart/mixed");
-            message.setHeader("font-family", font);
 
 
             MimeBodyPart bodyPart = new MimeBodyPart();
             bodyPart.setHeader("Content-Type", "text/html; charset=utf-8");
-            bodyPart.setContent(new String(mgsBody64, "UTF-8"), "text/html");
+            //bodyPart.setContent(new String(mgsBody64, "UTF-8"), "text/html");
+            //bodyPart.setText(msgBody, "utf-8"); //I added this line
+            bodyPart.setContent(new String(mgsBody64, "UTF-8"), "text/html; charset=utf-8");
 
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(bodyPart);

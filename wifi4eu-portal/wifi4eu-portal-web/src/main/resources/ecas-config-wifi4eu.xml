@@ -27,9 +27,14 @@
 
     <applicationServer>tomcat</applicationServer>
 
-        <acceptStrengths>
-            <strength>${ecas.config.strength}</strength>
-        </acceptStrengths>
+    <acceptStrengths>
+        <strength>${ecas.config.strength}</strength>
+    </acceptStrengths>
+
+    <!-- maxConnections equal to the Tomcat threads per instance -->
+    <maxConnections>200</maxConnections>
+    <connectionTimeout>30000</connectionTimeout>
+
     <!--
             <cas:renew>${ecas.config.renew}</cas:renew>
 
