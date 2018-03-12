@@ -13,7 +13,9 @@
         <div class="ui-g-12 ui-md-12 ui-lg-5 marginSelect">
             <!-- select countries -->
             <label class="label">{{ 'suppRegistration.registration.selectCountry' | translate }}</label>
-            <p-multiSelect id="selectCountry" [options]="allCountriesSelect" [(ngModel)]="selectedCountries"
+            <p-multiSelect id="selectCountry" #selectCountry
+                           defaultLabel="{{ 'shared.choose.label' | translate }}"
+                           [options]="allCountriesSelect" [(ngModel)]="selectedCountries"
                            (onChange)="checkIfRegionsSelected()"></p-multiSelect>
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-5">
@@ -22,7 +24,8 @@
             <p-tabView class="white">
                 <p-tabPanel *ngFor="let country of selectedCountries;" [header]="country.label">
                     <div class="ui-g">
-                        <p-multiSelect id="selectRegions" [options]="allRegionsSelect[country.label]"
+                        <p-multiSelect #selectRegions defaultLabel="{{ 'shared.choose.label' | translate }}" id="selectRegions"
+                                       [options]="allRegionsSelect[country.label]"
                                        [(ngModel)]="selectedRegions[country.label]"
                                        (onChange)="checkIfRegionsSelected()">
                         </p-multiSelect>
