@@ -13,10 +13,8 @@ import {SharedService} from "../shared/shared.service";
 import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
 import {LauDTOBase} from "../shared/swagger/model/LauDTO";
 import {Router} from "@angular/router";
-import {LocalStorageService} from "angular-2-local-storage/dist/local-storage.service";
-import {ActivatedRoute} from "@angular/router";
-import {Observable} from "rxjs/Observable";
 import {OnInit} from "@angular/core";
+import {TranslateService} from "ng2-translate";
 
 @Component({
     selector: 'beneficiary-registration',
@@ -44,7 +42,7 @@ export class BeneficiaryRegistrationComponent implements OnInit {
     private userEcas: UserDTOBase;
     private associationName: string = null;
 
-    constructor(private route: ActivatedRoute, private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router, private sharedService: SharedService, private localStorage: LocalStorageService) {
+    constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
             (nuts: NutsDTOBase[]) => {
                 this.countries = nuts;
@@ -116,12 +114,11 @@ export class BeneficiaryRegistrationComponent implements OnInit {
         }
         this.finalBeneficiary.mayors = [];
 
-        let language = this.localStorage.get('lang');
+        let language = this.translateService.currentLang;
         if (!language) {
             language = 'en';
         }
-
-        this.finalBeneficiary.user.lang = language.toString();
+        this.finalBeneficiary.lang = language;
 
         for (let mayor of this.mayors) {
             this.finalBeneficiary.mayors.push(mayor);

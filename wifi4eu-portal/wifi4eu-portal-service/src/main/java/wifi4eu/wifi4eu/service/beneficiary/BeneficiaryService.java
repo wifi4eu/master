@@ -99,6 +99,7 @@ public class BeneficiaryService {
         }
 
         user.setCreateDate(new Date().getTime());
+        user.setLang(beneficiaryDTO.getLang());
 
         UserDTO resUser;
         if (isEcasUser) {
