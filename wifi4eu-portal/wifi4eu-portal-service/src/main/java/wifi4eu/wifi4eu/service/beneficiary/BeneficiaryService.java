@@ -159,8 +159,7 @@ public class BeneficiaryService {
 
 
             if (municipalitiesWithSameLau.size() > 1) {
-
-                Locale locale = userService.initLocale();
+                Locale locale = new Locale(userDTO.getLang());
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.discussionMunicipality.subject");
                 String msgBody = bundle.getString("mail.discussionMunicipality.body");

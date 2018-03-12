@@ -54,10 +54,6 @@ public class ApplicationService {
 
     @Transactional
     public ApplicationDTO createApplication(ApplicationDTO applicationDTO) {
-        Locale locale = userService.initLocale();
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.voucherApply.subject");
-        String msgBody = bundle.getString("mail.voucherApply.body");
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
         UserDTO user = null;
         MunicipalityDTO municipality = null;
@@ -66,6 +62,10 @@ public class ApplicationService {
             municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
         }
         if (user != null && municipality != null) {
+            Locale locale = new Locale(user.getLang());
+            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+            String subject = bundle.getString("mail.voucherApply.subject");
+            String msgBody = bundle.getString("mail.voucherApply.body");
             msgBody = MessageFormat.format(msgBody, municipality.getName());
             mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }

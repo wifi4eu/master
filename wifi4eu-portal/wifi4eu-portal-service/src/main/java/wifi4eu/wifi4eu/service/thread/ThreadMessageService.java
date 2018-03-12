@@ -57,7 +57,7 @@ public class ThreadMessageService {
                     for (MunicipalityDTO municipality : municipalities) {
                         UserDTO user = userService.getUserById(municipality.getRegistrations().get(0).getUserId());
                         if (user != null) {
-                            Locale locale = userService.initLocale();
+                            Locale locale = new Locale(user.getLang());
                             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                             String subject = bundle.getString("mail.thread.subject");
                             String msgBody = bundle.getString("mail.thread.body");

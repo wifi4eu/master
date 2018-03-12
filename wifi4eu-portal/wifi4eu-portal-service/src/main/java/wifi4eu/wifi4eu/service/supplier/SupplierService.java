@@ -171,7 +171,7 @@ public class SupplierService {
         if (supplier != null) {
             UserDTO user = userService.getUserById(supplier.getUserId());
             if (user != null) {
-                Locale locale = userService.initLocale();
+                Locale locale = new Locale(user.getLang());
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
                 String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
@@ -197,7 +197,7 @@ public class SupplierService {
         supplierDTO = updateSupplier(supplierDTO);
         UserDTO user = userService.getUserById(supplierDTO.getUserId());
         if (user != null) {
-            Locale locale = userService.initLocale();
+            Locale locale = new Locale(user.getLang());
             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
             String subject = bundle.getString("mail.dgConn.invalidateSupplier.subject");
             String msgBody = bundle.getString("mail.dgConn.invalidateSupplier.body");

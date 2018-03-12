@@ -105,7 +105,7 @@ public class RegistrationService {
         if (registration != null) {
             UserDTO user = userService.getUserById(registration.getUserId());
             if (user != null) {
-                Locale locale = userService.initLocale();
+                Locale locale = new Locale(user.getLang());
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
                 String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
