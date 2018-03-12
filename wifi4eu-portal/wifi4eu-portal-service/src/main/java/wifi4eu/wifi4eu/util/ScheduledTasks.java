@@ -49,6 +49,10 @@ public class ScheduledTasks {
 
             UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
 
+            if(userDTO == null){
+              break;
+            }
+
             helpdeskTicketDTO.setFirstname(userDTO.getName());
             helpdeskTicketDTO.setLastname(userDTO.getSurname());
 
