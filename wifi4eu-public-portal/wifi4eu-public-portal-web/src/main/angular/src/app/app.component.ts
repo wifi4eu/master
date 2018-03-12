@@ -28,7 +28,7 @@ export class AppComponent {
     private menuTranslations: Map<String, String>;
     private stringsTranslated = new BehaviorSubject<number>(null);
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
-    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,is";
+    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr"
 
     constructor(private translateService: TranslateService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private userApi: UserApi) {
         translateService.setDefaultLang('en');
@@ -66,21 +66,37 @@ export class AppComponent {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
 
-        if(this.user != null) {
-          switch (this.user.type) {
-            case 1:
-              this.menuLinks = [
-                new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.myAccount'), url: '../../../wifi4eu/#/supplier-portal/profile', externalUrl: true}),
-                new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.suppPortal'), url: '../../../wifi4eu/#/supplier-portal/voucher', externalUrl: true})
-              ]
-              break;
-            case 3:
-              this.menuLinks = [
-                  new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.myAccount'), url: '../../../wifi4eu/#/beneficiary-portal/profile', externalUrl: true}),
-                  new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.appPortal'), url: '../../../wifi4eu/#/beneficiary-portal/voucher', externalUrl: true})
-              ]
-              break;
-          }
+        if (this.user != null) {
+            switch (this.user.type) {
+                case 1:
+                    this.menuLinks = [
+                        new CustomLayoutLink({
+                            label: this.menuTranslations.get('itemMenu.myAccount'),
+                            url: '../../../wifi4eu/#/supplier-portal/profile',
+                            externalUrl: true
+                        }),
+                        new CustomLayoutLink({
+                            label: this.menuTranslations.get('itemMenu.suppPortal'),
+                            url: '../../../wifi4eu/#/supplier-portal/voucher',
+                            externalUrl: true
+                        })
+                    ]
+                    break;
+                case 3:
+                    this.menuLinks = [
+                        new CustomLayoutLink({
+                            label: this.menuTranslations.get('itemMenu.myAccount'),
+                            url: '../../../wifi4eu/#/beneficiary-portal/profile',
+                            externalUrl: true
+                        }),
+                        new CustomLayoutLink({
+                            label: this.menuTranslations.get('itemMenu.appPortal'),
+                            url: '../../../wifi4eu/#/beneficiary-portal/voucher',
+                            externalUrl: true
+                        })
+                    ]
+                    break;
+            }
         }
 
 
@@ -103,43 +119,43 @@ export class AppComponent {
     }
 
     private updateMenuTranslations() {
-      var num = 0;
-      this.translateService.get('itemMenu.appReg').subscribe(
-          (translatedString: string) => {
-              this.menuTranslations.set('itemMenu.appReg', translatedString);
-              num++;
-              this.stringsTranslated.next(num)
-          }
-      );
-      this.translateService.get('itemMenu.suppReg').subscribe(
-          (translatedString: string) => {
-              this.menuTranslations.set('itemMenu.suppReg', translatedString);
-              num++;
-              this.stringsTranslated.next(num)
-          }
-      );
-      this.translateService.get('itemMenu.myAccount').subscribe(
-          (translatedString: string) => {
-              this.menuTranslations.set('itemMenu.myAccount', translatedString);
-              num++;
-              this.stringsTranslated.next(num)
-          }
-      );
-      this.translateService.get('itemMenu.suppPortal').subscribe(
-          (translatedString: string) => {
-              this.menuTranslations.set('itemMenu.suppPortal', translatedString);
-              num++;
-              this.stringsTranslated.next(num)
-          }
-      );
-      this.translateService.get('itemMenu.appPortal').subscribe(
-          (translatedString: string) => {
-              this.menuTranslations.set('itemMenu.appPortal', translatedString);
-              num++;
-              this.stringsTranslated.next(num)
-          }
-      );
-  }
+        var num = 0;
+        this.translateService.get('itemMenu.appReg').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.appReg', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.suppReg').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.suppReg', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.myAccount').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.myAccount', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.suppPortal').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.suppPortal', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+        this.translateService.get('itemMenu.appPortal').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.appPortal', translatedString);
+                num++;
+                this.stringsTranslated.next(num)
+            }
+        );
+    }
 
     logout() {
         this.user = null;
@@ -153,11 +169,11 @@ export class AppComponent {
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
         this.userApi.doCompleteSignOut().subscribe(
-          (response: string) => {
-            window.location.href = environment['logoutUrl'];
-          }, error => {
-            console.log(error);
-          }
+            (response: string) => {
+                window.location.href = environment['logoutUrl'];
+            }, error => {
+                console.log(error);
+            }
         );
     }
 
