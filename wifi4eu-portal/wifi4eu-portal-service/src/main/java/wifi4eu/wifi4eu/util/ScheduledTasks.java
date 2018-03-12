@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -7,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.entity.helpdesk.HelpdeskIssue;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -33,15 +34,15 @@ public class ScheduledTasks {
     @Autowired
     private UserService userService;
 
+    private static final Logger _log = LoggerFactory.getLogger(ScheduledTasks.class);
+
     @Scheduled(cron = "0 0/30 * * * ?") // Every 30 minutes
-    //@Scheduled(cron = "*/10 * * * * ?") Every 10 seconds
+    //@Scheduled(cron = "*/10 * * * * ?") //Every 10 seconds
     public void scheduleHelpdeskIssues() {
 
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
 
         for (HelpdeskIssueDTO helpdeskIssue: helpdeskIssueDTOS) {
-            System.out.println("before - " + helpdeskIssueDTOS);
-
             HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
 
             helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
@@ -103,7 +104,7 @@ public class ScheduledTasks {
             rd.close();
             return response.toString();
         } catch (Exception e) {
-            //e.printStackTrace();
+            _log.error(e.getMessage());
             return null;
         } finally {
             if (connection != null) {
