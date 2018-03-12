@@ -192,6 +192,8 @@
                 <enable.login.end>&lt;!--</enable.login.end>
                 <enable.appinsights.start>--&gt;</enable.appinsights.start>
                 <enable.appinsights.end>&lt;!--</enable.appinsights.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
                 <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
                 <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
@@ -216,6 +218,8 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
                 <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
                 <ecas.server.address>${server.azure.test.address}</ecas.server.address>
@@ -238,6 +242,8 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
                 <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
                 <ecas.config.strength>BASIC</ecas.config.strength>
@@ -261,6 +267,8 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
                 <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
