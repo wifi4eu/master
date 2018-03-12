@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
@@ -62,7 +63,10 @@ public class ApplicationService {
             municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
         }
         if (user != null && municipality != null) {
-            Locale locale = new Locale(user.getLang());
+            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+            if (user.getLang() != null) {
+                locale = new Locale(user.getLang());
+            }
             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
             String subject = bundle.getString("mail.voucherApply.subject");
             String msgBody = bundle.getString("mail.voucherApply.body");

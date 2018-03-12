@@ -258,7 +258,10 @@ public class UserService {
         permissionChecker.addTablePermissions(userDTO, Long.toString(tempTokenDTO.getId()),
                 RightConstants.TEMP_TOKENS_TABLE, "[TEMP_TOKENS] - id: " + tempTokenDTO.getId() + " - User Id: " + tempTokenDTO.getUserId() + " - TOKEN: " + tempTokenDTO.getToken());
 
-        Locale locale = new Locale(userDTO.getLang());
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        if (userDTO.getLang() != null) {
+            locale = new Locale(userDTO.getLang());
+        }
         ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
         String subject = bundle.getString("mail.subject");
         String msgBody = bundle.getString("mail.body");
