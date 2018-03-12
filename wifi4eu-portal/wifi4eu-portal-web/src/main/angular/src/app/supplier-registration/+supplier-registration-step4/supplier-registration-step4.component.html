@@ -163,6 +163,11 @@
     <div class="ui-g" style="text-align: left;">
         <span class="ui-lg-1"></span>
         <div class="ui-g-10 ui-md-10 ui-lg-10">
+            <br>
+            <br>
+            <br>
+            <br>
+
             <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_2"><input type="checkbox" id="check_2"
                                                                           [(ngModel)]="legalChecks[1]">
                 {{ 'suppRegistration.submit.application' | translate }}
@@ -181,7 +186,7 @@
             </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn  btn-primary publish-button" (click)="openModal()"
+            <button type="submit" class="btn  btn-primary publish-button" (click)="submit()"
                     [disabled]=" !legalChecks[1]|| !legalChecks[2] || !legalChecks[3] || !legalChecks[4]">
                 {{ 'shared.confirm.button' | translate}}
             </button>
@@ -193,23 +198,23 @@
 </div>
 <!--MODAL-->
 
-<p-dialog [(visible)]="displayModal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
-          [closable]="true" [closeOnEscape]="true">
-    <div class="ui-g-8" style="text-align: center !important">
-    </div>
-    <div class="ui-g-2" style="text-align: center !important">
-        <button type="submit" class="btn btn-primary publish-button" (click)="submit()">
-            {{ 'shared.confirm.button' | translate }}
-        </button>
-    </div>
-    <div class="ui-g-2" style="text-align: center !important">
-    </div>
-</p-dialog>
+<!--<p-dialog [(visible)]="displayModal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"-->
+<!--[closable]="true" [closeOnEscape]="true">-->
+<!--<div class="ui-g-8" style="text-align: center !important">-->
+<!--</div>-->
+<!--<div class="ui-g-2" style="text-align: center !important">-->
+<!--<button type="submit" class="btn btn-primary publish-button" (click)="submit()">-->
+<!--{{ 'shared.confirm.button' | translate }}-->
+<!--</button>-->
+<!--</div>-->
+<!--<div class="ui-g-2" style="text-align: center !important">-->
+<!--</div>-->
+<!--</p-dialog>-->
 
-<p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
-          [closable]="false" [closeOnEscape]="false">
-    <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
-    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
-    <p class="ModalpConfirmation">{{ 'shared.loading.modal.registration.text' | translate}}</p>
-    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
-</p-dialog>
+<!--<p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"-->
+<!--[closable]="false" [closeOnEscape]="false">-->
+<!--<p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>-->
+<!--<h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>-->
+<!--<p class="ModalpConfirmation">{{ 'shared.loading.modal.registration.text' | translate}}</p>-->
+<!--<p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>-->
+<!--</p-dialog>-->
