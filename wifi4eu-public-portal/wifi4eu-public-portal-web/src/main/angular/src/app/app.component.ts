@@ -70,15 +70,16 @@ export class AppComponent {
           switch (this.user.type) {
             case 1:
               this.menuLinks = [
-                new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.myAccount'), url: '../../../wifi4eu/#/supplier-portal/profile', externalUrl: true}),
-                new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.suppPortal'), url: '../../../wifi4eu/#/supplier-portal/voucher', externalUrl: true})
-              ]
+                // new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.myAccount'), url: '../../../wifi4eu/#/supplier-portal/profile', externalUrl: true}),
+                // new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.suppPortal'), url: '../../../wifi4eu/#/supplier-portal/voucher', externalUrl: true})
+                  new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.myAccount'), url: '../../../wifi4eu/#/supplier-portal/profile', externalUrl: true})
+              ];
               break;
             case 3:
               this.menuLinks = [
                   new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.myAccount'), url: '../../../wifi4eu/#/beneficiary-portal/profile', externalUrl: true}),
                   new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.appPortal'), url: '../../../wifi4eu/#/beneficiary-portal/voucher', externalUrl: true})
-              ]
+              ];
               break;
           }
         }
