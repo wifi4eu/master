@@ -13,14 +13,16 @@ import { HomeComponent } from "./home/home.component";
     imports: [RouterModule.forRoot([
         {
             path: '',
-            redirectTo: 'beneficiary-registration',
+            redirectTo: 'home',
             pathMatch: 'full'
         }, {
             path: 'home',
-            component: HomeComponent
+            component: HomeComponent,
+            canActivate: [AppGuard]
         }, {
             path: 'index.jsp',
-            redirectTo: 'beneficiary-portal'
+            redirectTo: 'beneficiary-portal',
+            canActivate: [AppGuard]
         }, {
             path: 'activation',
             component: ActivationComponent
@@ -46,7 +48,7 @@ import { HomeComponent } from "./home/home.component";
         }, {
             path: 'supplier-registration',
             loadChildren: 'app/supplier-registration/supplier-registration.module#SupplierRegistrationModule',
-            //canActivate: [AppGuard]
+            canActivate: [AppGuard]
         }, {
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',

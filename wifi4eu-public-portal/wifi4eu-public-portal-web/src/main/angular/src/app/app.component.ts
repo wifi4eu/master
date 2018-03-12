@@ -28,7 +28,7 @@ export class AppComponent {
     private menuTranslations: Map<String, String>;
     private stringsTranslated = new BehaviorSubject<number>(null);
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
-    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr"
+    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr";
 
     constructor(private translateService: TranslateService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private userApi: UserApi) {
         translateService.setDefaultLang('en');
@@ -70,17 +70,14 @@ export class AppComponent {
             switch (this.user.type) {
                 case 1:
                     this.menuLinks = [
+                        // new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.myAccount'), url: '../../../wifi4eu/#/supplier-portal/profile', externalUrl: true}),
+                        // new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.suppPortal'), url: '../../../wifi4eu/#/supplier-portal/voucher', externalUrl: true})
                         new CustomLayoutLink({
                             label: this.menuTranslations.get('itemMenu.myAccount'),
                             url: '../../../wifi4eu/#/supplier-portal/profile',
                             externalUrl: true
-                        }),
-                        new CustomLayoutLink({
-                            label: this.menuTranslations.get('itemMenu.suppPortal'),
-                            url: '../../../wifi4eu/#/supplier-portal/voucher',
-                            externalUrl: true
                         })
-                    ]
+                    ];
                     break;
                 case 3:
                     this.menuLinks = [
@@ -94,7 +91,7 @@ export class AppComponent {
                             url: '../../../wifi4eu/#/beneficiary-portal/voucher',
                             externalUrl: true
                         })
-                    ]
+                    ];
                     break;
             }
         }
