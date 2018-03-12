@@ -1327,3 +1327,23 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 timer-component .center {
   padding: 0.5em 0px;
 }
+
+.counter-container { 
+  padding-bottom: 0px!important;
+  padding-left: 0px;
+  .counter {
+    height: 600px;
+    background-size: contain;
+
+    .changePassword {
+      margin-top: 1.5em;
+    }
+    
+  }
+}
+
+@media (max-width: 1200px) {
+  .counter-container > .counter {
+    background-size: cover;
+  }
+}
