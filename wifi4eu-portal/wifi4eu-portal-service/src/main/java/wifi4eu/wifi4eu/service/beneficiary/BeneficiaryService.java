@@ -309,7 +309,10 @@ public class BeneficiaryService {
                 for (RegistrationDTO registrationDTO : beneficiaryListDTO.getRegistrations()) {
                     beneficiaryListDTO.setStatus(getStatusApplicationByRegistration(registrationDTO.getId()));
                 }
-                if (checkIpDuplicated(beneficiaryListDTO.getRegistrations()) && beneficiaryListDTO.getIssue() != 3 && beneficiaryListDTO.getIssue() != 4) {
+                if (checkIpDuplicated(beneficiaryListDTO.getRegistrations()) &&
+                        beneficiaryListDTO.getIssue() != 3 &&
+                        beneficiaryListDTO.getIssue() != 4 &&
+                        beneficiaryListDTO.getIssue() != 5) {
                     beneficiaryListDTO.setIssue(1);
                 }
                 beneficiaryListDTO.setMediation(getMediationStatusByLau(beneficiaryListDTO.getLau().getId()));
@@ -387,7 +390,7 @@ public class BeneficiaryService {
     public void getIssueOfRegistration(List<BeneficiaryListDTO> beneficiaryListDTOList) {
         String validPattern = "^[a-z0-9_-]+(?:\\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\\.)+(com|net|info|org|eu|bg|cs|da|de|el|es|et|fi|fr|ga|hr|hu|it|lt|lv|mt|nl|pl|pt|ro|sk|sl|sv|uk|ie|is|no)?$";
         for (BeneficiaryListDTO beneficiaryListDTO : beneficiaryListDTOList) {
-
+            beneficiaryListDTO.setIssue(0);
             int numDuplicated = 0;
             int numInvalids = 0;
             int numResolved = 0;
@@ -409,20 +412,24 @@ public class BeneficiaryService {
                         numResolved += 1;
 
                 }
+                MunicipalityDTO mun = municipalityService.getMunicipalityById(registrationDTO.getMunicipalityId());
+                if (mun != null) {
+                    LauDTO lau = lauService.getLauById(mun.getLauId());
+                    if (lau != null) {
+                        if (userDTO.getLang() != null) {
+                            if (!lau.getCountryCode().toUpperCase().equals(userDTO.getLang().toUpperCase())) {
+                                beneficiaryListDTO.setIssue(5);
+                            }
+                        }
+                    }
+                }
             }
-
             if ((numResolved + numInvalids) == beneficiaryListDTO.getRegistrations().size() && numResolved > 0) {
                 beneficiaryListDTO.setIssue(3);
             } else if (numDuplicated > 1) {
                 beneficiaryListDTO.setIssue(2);
             } else if (numInvalids == beneficiaryListDTO.getRegistrations().size()) {
                 beneficiaryListDTO.setIssue(4);
-            } else {
-                if (beneficiaryListDTO.getIssue() != null) {
-                    beneficiaryListDTO.setIssue(1);
-                } else {
-                    beneficiaryListDTO.setIssue(0);
-                }
             }
         }
     }
