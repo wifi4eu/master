@@ -120,16 +120,54 @@
     <div class="ui-g" style="text-align: left;">
         <span class="ui-lg-1"></span>
         <div class="ui-g-10 ui-md-10 ui-lg-10">
-            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_1"><input type="checkbox" id="check_1"
-                                                                          [(ngModel)]="legalChecks[0]">
+            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_1">
                 {{ 'suppRegistration.eu.requirements' | translate }}
             </label>
         </div>
         <div class="ui-lg-1"></div>
     </div>
+
     <div class="ui-g" style="text-align: left;">
         <span class="ui-lg-1"></span>
         <div class="ui-g-10 ui-md-10 ui-lg-10">
+            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_3"><input type="checkbox" id="check_3"
+                                                                          [(ngModel)]="legalChecks[2]">
+                {{ 'suppRegistration.eu.requirementsTitle' | translate }}
+            </label>
+        </div>
+
+        <div class="ui-lg-1"></div>
+    </div>
+    <div class="ui-g" style="text-align: left;">
+        <span class="ui-lg-1"></span>
+        <div class="ui-g-10 ui-md-10 ui-lg-10">
+            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_4"><input type="checkbox" id="check_4"
+                                                                          [(ngModel)]="legalChecks[3]">
+                {{ 'suppRegistration.eu.requirements2' | translate }}
+            </label>
+        </div>
+
+        <div class="ui-lg-1"></div>
+    </div>
+    <div class="ui-g" style="text-align: left;">
+        <span class="ui-lg-1"></span>
+        <div class="ui-g-10 ui-md-10 ui-lg-10">
+            <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_5"><input type="checkbox" id="check_5"
+                                                                          [(ngModel)]="legalChecks[4]">
+                {{ 'suppRegistration.eu.requirements3' | translate }}
+            </label>
+        </div>
+
+        <div class="ui-lg-1"></div>
+    </div>
+    <div class="ui-g" style="text-align: left;">
+        <span class="ui-lg-1"></span>
+        <div class="ui-g-10 ui-md-10 ui-lg-10">
+            <br>
+            <br>
+            <br>
+            <br>
+
             <label class="ui-g-12 ui-md-12 ui-lg-12" for="check_2"><input type="checkbox" id="check_2"
                                                                           [(ngModel)]="legalChecks[1]">
                 {{ 'suppRegistration.submit.application' | translate }}
@@ -148,8 +186,8 @@
             </a>
         </div>
         <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn  btn-primary publish-button" (click)="openModal()"
-                    [disabled]="!legalChecks[0] || !legalChecks[1]">
+            <button type="submit" class="btn  btn-primary publish-button" (click)="submit()"
+                    [disabled]=" !legalChecks[1]|| !legalChecks[2] || !legalChecks[3] || !legalChecks[4]">
                 {{ 'shared.confirm.button' | translate}}
             </button>
         </div>
@@ -160,24 +198,23 @@
 </div>
 <!--MODAL-->
 
-<p-dialog [(visible)]="displayModal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
-          [closable]="true" [closeOnEscape]="true">
-    <p class="beneficiaryMayor">{{ 'suppRegistration.requirements.head' | translate }}</p>
-
-    <p>{{ 'suppRegistration.eu.requirementsTitle' | translate}}</p>
-    <p>{{ 'suppRegistration.eu.requirements2' | translate}}</p>
-    <p>{{ 'suppRegistration.eu.requirements3' | translate}}</p>
-    <div class="ui-g-2" style="text-align: center !important">
-        <button type="submit" class="btn btn-primary publish-button" (click)="submit()">
-            {{ 'shared.confirm.button' | translate }}
-        </button>
-    </div>
-</p-dialog>
+<!--<p-dialog [(visible)]="displayModal" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"-->
+<!--[closable]="true" [closeOnEscape]="true">-->
+<!--<div class="ui-g-8" style="text-align: center !important">-->
+<!--</div>-->
+<!--<div class="ui-g-2" style="text-align: center !important">-->
+<!--<button type="submit" class="btn btn-primary publish-button" (click)="submit()">-->
+<!--{{ 'shared.confirm.button' | translate }}-->
+<!--</button>-->
+<!--</div>-->
+<!--<div class="ui-g-2" style="text-align: center !important">-->
+<!--</div>-->
+<!--</p-dialog>-->
 
 <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
-          [closable]="false" [closeOnEscape]="false">
-    <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
-    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
-    <p class="ModalpConfirmation">{{ 'shared.loading.modal.registration.text' | translate}}</p>
-    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+[closable]="false" [closeOnEscape]="false">
+<p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+<h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+<p class="ModalpConfirmation">{{ 'shared.loading.modal.registration.text' | translate}}</p>
+<p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
 </p-dialog>
