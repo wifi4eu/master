@@ -120,9 +120,9 @@ export class VoucherComponent {
 
     private applyForVoucher(registrationNumber: number) {
         let startCallDate = this.currentCall.startDate;
-        let dateTime = new Date().getTime();
+        let actualDateTime = new Date().getTime();
 
-        if  (startCallDate > dateTime) {
+        if  (startCallDate > actualDateTime) {
             console.error("Invalid operation")
         } else {
             // TODO: Llamar al nuevo servicio de Apply for voucher
