@@ -106,7 +106,6 @@ export class SupplierRegistrationStep2Component {
                     this.selectRegions.defaultLabel = translatedString;
                     this.selectRegions.updateLabel();
                 }
-                console.log(translatedString);
             }
         );
     }
