@@ -32,6 +32,9 @@ public class User {
     @Column(name = "email", updatable = false)
     private String email;
 
+    @Column(name = "lang")
+    private String lang;
+
     @Column(name = "password")
     private String password;
 
@@ -56,7 +59,8 @@ public class User {
     public User() {
     }
 
-    public User(String treatment, String name, String surname, String email, String password, Long createDate, Long accessDate, boolean verified, Integer type, String ecasEmail, String ecasUsername) {
+
+    public User(String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername) {
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
@@ -64,11 +68,12 @@ public class User {
         this.addressNum = addressNum;
         this.postalCode = postalCode;
         this.email = email;
+        this.lang = lang;
         this.password = password;
         this.createDate = createDate;
         this.accessDate = accessDate;
-        this.verified = verified;
         this.type = type;
+        this.verified = verified;
         this.ecasEmail = ecasEmail;
         this.ecasUsername = ecasUsername;
     }
@@ -183,6 +188,14 @@ public class User {
 
     public void setEcasEmail(String ecasEmail) {
         this.ecasEmail = ecasEmail;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     public String getEcasUsername() {

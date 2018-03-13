@@ -13,6 +13,7 @@ public class UserDTO {
     private String postalCode;
     private String email;
     private String password;
+    private String lang;
     private long createDate;
     private long accessDate;
     private int type;
@@ -21,8 +22,10 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(int id, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, long createDate, long accessDate, int type, boolean verified, String ecasEmail, String ecasUsername) {
+    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified) {
         this.id = id;
+        this.ecasUsername = ecasUsername;
+        this.ecasEmail = ecasEmail;
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
@@ -31,12 +34,11 @@ public class UserDTO {
         this.postalCode = postalCode;
         this.email = email;
         this.password = password;
+        this.lang = lang;
         this.createDate = createDate;
         this.accessDate = accessDate;
         this.type = type;
         this.verified = verified;
-        this.ecasEmail = ecasEmail;
-        this.ecasUsername = ecasUsername;
     }
 
     public int getId() {
@@ -145,6 +147,14 @@ public class UserDTO {
 
     public String getEcasUsername() {
         return ecasUsername;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     public void setEcasUsername(String ecasUsername) {

@@ -116,6 +116,7 @@ public class SupplierService {
         userDTO.setCreateDate(new Date().getTime());
         userDTO.setType(1);
         userDTO.setVerified(false);
+        userDTO.setLang(supplierDTO.getLang());
         userDTO = userService.saveUserChanges(userDTO);
         userService.sendActivateAccountMail(userDTO);
         supplierDTO.setUserId(userDTO.getId());
