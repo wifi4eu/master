@@ -354,7 +354,7 @@
   "benefPortal.voucher.call.label1": "Is-sejħa għall-applikazzjonijiet hi miftuħa, tista' tapplika għal vawċer",
   "benefPortal.voucher.call.label2": "Ladarba tiftaħ is-sejħa għall-applikazzjonijiet, tkun tista’ tapplika.",
   "benefPortal.voucher.competition.timeleft.title": "Is-sejħa għall-applikazzjonijiet li jmiss se tiftaħ nhar",
-  "benefPortal.voucher.counterSubtitle": "Is-sejħiet għall-applikazzjonijiet fetħu nhar {{data}}  f’{{ħin}} (Ħin tal-Ewropa Ċentrali).",
+  "benefPortal.voucher.counterSubtitle": "Is-sejħiet għall-applikazzjonijiet fetħu nhar {{date}}  f’{{hour}} (Ħin tal-Ewropa Ċentrali).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Irnexxielek tapplika għal vawċer!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Ibqa’ segwina! WiFi4EU se jikkomunika liema applikanti ġew magħżula għal vawċer.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Innota li l-għażla ssir fuq bażi ta’ “min jiġi l-ewwel jinqeda l-ewwel” (data u ħin tal-applikazzjoni) kif ukoll kriterji biex jiġi żgurat bilanċ ġeografiku, kif spjegat fid-dettall fil-Programm ta’ Ħidma tas-CEF.",

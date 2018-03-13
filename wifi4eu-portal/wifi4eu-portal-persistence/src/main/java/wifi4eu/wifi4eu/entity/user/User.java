@@ -29,7 +29,7 @@ public class User {
     @Column(name = "postal_code")
     private String postalCode;
 
-    @Column(name = "email")
+    @Column(name = "email", updatable = false)
     private String email;
 
     @Column(name = "lang")

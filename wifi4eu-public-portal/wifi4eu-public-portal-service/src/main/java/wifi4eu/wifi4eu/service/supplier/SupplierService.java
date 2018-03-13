@@ -29,9 +29,4 @@ public class SupplierService {
     public SupplierDTO getSupplierByUserId(int userId) {
         return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
     }
-
-    @Cacheable(value = "publicGetSuppliedRegionsCountGroupedByRegionId")
-    public List<Object> getSuppliedRegionsCountGroupedByRegionId() {
-        return Lists.newArrayList(suppliedRegionRepository.findSuppliedRegionsCountGroupedByRegionId());
-    }
 }

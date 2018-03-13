@@ -354,7 +354,7 @@
   "benefPortal.voucher.call.label1": "Výzva na predloženie žiadostí je uverejnená, môžete požiadať o poukaz.",
   "benefPortal.voucher.call.label2": "Podať žiadosť budete môcť hneď, ako sa zverejní výzva na podávanie žiadostí.",
   "benefPortal.voucher.competition.timeleft.title": "Zostávajúci čas do otvorenia výzvy na podávanie žiadostí – dni",
-  "benefPortal.voucher.counterSubtitle": "Výzvy na podávanie žiadostí otvorené {{dňa}} o {{hodine}} (stredoeurópskeho času).",
+  "benefPortal.voucher.counterSubtitle": "Výzvy na podávanie žiadostí otvorené {{date}} o {{hour}} (stredoeurópskeho času).",
   "benefPortal.voucher.municipalitySuccessApply.title": "Žiadosť o poukaz úspešne podaná!",
   "benefPortal.voucher.municipalitySuccessApply.part1": "Sledujte nás! V rámci iniciatívy WiFi4EU oznámime, ktorým žiadateľom sa poskytne poukaz.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Upozorňujeme, že výber sa uskutoční podľa poradia, v akom boli žiadosti predložené (dátum a čas podania), pričom sa zohľadnia kritériá na zaručenie zemepisnej vyváženosti. Podrobnosti nájdete v pracovnom programe NPE.",
