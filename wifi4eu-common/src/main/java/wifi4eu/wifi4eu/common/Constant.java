@@ -19,4 +19,14 @@ public abstract class Constant {
 	public static final int THREAD_REASON_LAU = 1;
 	public static final int THREAD_REASON_VAT = 2;
 	public static final int THREAD_REASON_IBAN = 3;
+
+	//HELPDESK
+	public static final String BROWSER = "+User+App+-+Mozilla%2F5.0+%28X11%3B+Linux+x86_64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F64.0.3282.186+Safari%2F537.36";
+	public static final String GENDER_DEFAULT = "M";
+	public static final String FIRSTNAME_DEFAULT = "notRegisteredName";
+	public static final String LASTNAME_DEFAULT = "notRegisteredSurname";
+	public static final String EMAIL_DEFAULT = "notRegistered@domain.com";
+	public static final String NATIONALITY_DEFAULT = "BE";
+	public static final String ECOM_CATEG_DEFAULT = "Government (local, regional, national, European)";
+	public static final String PREF_LANG_DEFAULT = "en";
 }

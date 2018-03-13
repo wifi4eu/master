@@ -37,6 +37,10 @@ public class HelpdeskService {
         return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.findOne(helpdeskIssueId));
     }
 
+    public List<HelpdeskIssueDTO> getAllHelpdeskIssueNoSubmited(){
+        return helpdeskIssueMapper.toDTOList(helpdeskIssueRepository.findAllByTicketFalse());
+    }
+
     public HelpdeskIssueDTO createHelpdeskIssue(HelpdeskIssueDTO helpdeskIssueDTO) {
         return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.save(helpdeskIssueMapper.toEntity(helpdeskIssueDTO)));
 
