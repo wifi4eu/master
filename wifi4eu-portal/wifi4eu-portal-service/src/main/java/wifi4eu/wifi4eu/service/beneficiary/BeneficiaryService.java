@@ -417,7 +417,7 @@ public class BeneficiaryService {
                     LauDTO lau = lauService.getLauById(mun.getLauId());
                     if (lau != null) {
                         if (userDTO.getLang() != null) {
-                            if (!lau.getCountryCode().toUpperCase().equals(userDTO.getLang().toUpperCase())) {
+                            if (!checkIfUserLanguageIsCorrect(userDTO.getLang().toUpperCase(), lau.getCountryCode().toUpperCase())) {
                                 beneficiaryListDTO.setIssue(5);
                             }
                         }
@@ -432,6 +432,188 @@ public class BeneficiaryService {
                 beneficiaryListDTO.setIssue(4);
             }
         }
+    }
+
+    private boolean checkIfUserLanguageIsCorrect(String userLanguage, String municipalityCountryCode) {
+        boolean correct = false;
+        switch (municipalityCountryCode) {
+            case "BE":
+                if (userLanguage.equals("NL") || userLanguage.equals("FR") || userLanguage.equals("DE")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "DK":
+                if (userLanguage.equals("DA")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "DE":
+                if (userLanguage.equals("DE")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "EE":
+                if (userLanguage.equals("ET")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "ES":
+                if (userLanguage.equals("ES")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "FR":
+                if (userLanguage.equals("FR")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "HR":
+                if (userLanguage.equals("HR")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "IE":
+                if (userLanguage.equals("EN")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "IT":
+                if (userLanguage.equals("IT")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "LV":
+                if (userLanguage.equals("LV")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "LT":
+                if (userLanguage.equals("LT")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "LU":
+                if (userLanguage.equals("FR") || userLanguage.equals("DE")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "HU":
+                if (userLanguage.equals("HU")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "MT":
+                if (userLanguage.equals("MT") || userLanguage.equals("EN")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "NL":
+                if (userLanguage.equals("NL")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "PL":
+                if (userLanguage.equals("PL")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "PT":
+                if (userLanguage.equals("PT")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "RO":
+                if (userLanguage.equals("RO")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "SI":
+                if (userLanguage.equals("SL")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "SK":
+                if (userLanguage.equals("SK")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "FI":
+                if (userLanguage.equals("FI") || userLanguage.equals("SV")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "SE":
+                if (userLanguage.equals("SV")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "UK":
+                if (userLanguage.equals("EN")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "AT":
+                if (userLanguage.equals("DE")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "CZ":
+                if (userLanguage.equals("CS")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+        }
+        return correct;
     }
 
     public boolean getMediationStatusByLau(int laudId) {
