@@ -11,6 +11,7 @@ import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
@@ -60,11 +61,6 @@ public class ApplicationService {
         if  (startCallDate > actualDateTime) {
             throw new DateTimeException("The call is not available at the moment");
         }
-
-        Locale locale = userService.initLocale();
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.voucherApply.subject");
-        String msgBody = bundle.getString("mail.voucherApply.body");
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
         UserDTO user = null;
         MunicipalityDTO municipality = null;
@@ -73,6 +69,13 @@ public class ApplicationService {
             municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
         }
         if (user != null && municipality != null) {
+            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+            if (user.getLang() != null) {
+                locale = new Locale(user.getLang());
+            }
+            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+            String subject = bundle.getString("mail.voucherApply.subject");
+            String msgBody = bundle.getString("mail.voucherApply.body");
             msgBody = MessageFormat.format(msgBody, municipality.getName());
             mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }

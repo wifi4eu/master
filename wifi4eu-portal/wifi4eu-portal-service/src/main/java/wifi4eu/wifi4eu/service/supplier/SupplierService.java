@@ -15,6 +15,7 @@ import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
@@ -171,7 +172,10 @@ public class SupplierService {
         if (supplier != null) {
             UserDTO user = userService.getUserById(supplier.getUserId());
             if (user != null) {
-                Locale locale = userService.initLocale();
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (user.getLang() != null) {
+                    locale = new Locale(user.getLang());
+                }
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
                 String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
@@ -197,7 +201,10 @@ public class SupplierService {
         supplierDTO = updateSupplier(supplierDTO);
         UserDTO user = userService.getUserById(supplierDTO.getUserId());
         if (user != null) {
-            Locale locale = userService.initLocale();
+            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+            if (user.getLang() != null) {
+                locale = new Locale(user.getLang());
+            }
             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
             String subject = bundle.getString("mail.dgConn.invalidateSupplier.subject");
             String msgBody = bundle.getString("mail.dgConn.invalidateSupplier.body");
