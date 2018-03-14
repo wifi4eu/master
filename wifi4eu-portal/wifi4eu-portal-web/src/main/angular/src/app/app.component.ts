@@ -241,6 +241,8 @@ export class AppComponent {
         this.uxService.activeLanguage = language;
         this.localStorageService.set('lang', language.code);
         this.updateMenuTranslations();
+        this.initChildren();
+        this.childrenInitialized.subscribe(() => this.updateHeader());
         this.updateFooterDate();
     }
 
