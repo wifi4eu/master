@@ -352,6 +352,7 @@ CREATE TABLE dbo.helpdesk_issues (
   [summary]      VARCHAR(max)   NULL,
   [create_date]  BIGINT       NULL,
   [_status]      INT          NOT NULL DEFAULT 0,
+  [_ticket]      INT          NOT NULL DEFAULT 0,
   PRIMARY KEY ([id])
 )
  ;

@@ -28,7 +28,7 @@
 <!-- Timer & "Apply For Voucher" -->
 <div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
     <h2 *ngIf="voucherCompetitionState != 1" class="beneficiaryTitle marginTop">
-        {{ 'suppPortal.voucher.competition' | translate }}
+        {{ 'itemMenu.appPortal' | translate }}
     </h2>
     <h2 *ngIf="voucherCompetitionState == 1" class="beneficiaryTitle marginTop">
         {{ 'benefPortal.voucher.timeleft.title' | translate }}
@@ -42,23 +42,28 @@
     <p *ngIf="voucherCompetitionState == 2 || voucherCompetitionState == 3">
         {{ 'benefPortal.voucher.counterSubtitle' | translate:{date:dateNumber,hour:hourNumber} }}
     </p>
-    <timer-component *ngIf="voucherCompetitionState == 1" class="offset-lg-3 ui-lg-6 ui-g-12" (timerEvent)="openApplyForVoucher()"
-        [expirationTimestamp]="currentCall.startDate">
+    <timer-component *ngIf="voucherCompetitionState == 1" class="offset-lg-3 ui-lg-6 ui-g-12"
+                     (timerEvent)="openApplyForVoucher()"
+                     [expirationTimestamp]="currentCall.startDate">
     </timer-component>
     <div class="offset-lg-3 ui-lg-6 ui-g-12">
         <div class="marginTop registrationPanel">
             <p-dataTable [value]="municipalities">
-                <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
+                <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true"
+                          styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <span>
-                            <img alt="" class="municipality-icon" src="assets/images/account-balance-material-icons-regular.png">
+                            <img alt="" class="municipality-icon"
+                                 src="assets/images/account-balance-material-icons-regular.png">
                             <span class="municipality-name">{{municipality.name}}</span>
                         </span>
                     </template>
                 </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1">
+                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i)"
+                                *ngIf="!applications[i]"
+                                [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
                         <span *ngIf="applications[i]">
@@ -100,3 +105,4 @@
         </div>
     </div>
 </div>
+<helpdesk-form-component portal="beneficiary-voucher"></helpdesk-form-component>

@@ -54,7 +54,7 @@ export class VoucherComponent {
 
     private checkForCalls(registrations: RegistrationDTOBase[]) {
         this.callApi.allCalls().subscribe(
-            calls => {
+            (calls: CallDTOBase[]) => {
                 this.currentCall = calls[0];
                 for (let registration of registrations) {
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
@@ -68,7 +68,9 @@ export class VoucherComponent {
                                                     this.registrations.push(registration);
                                                     this.municipalities.push(municipality);
                                                     this.mayors.push(mayor);
-                                                    this.applications.push(application);
+                                                    if(application.id != 0){
+                                                      this.applications.push(application);
+                                                    }                                                   
                                                     this.loadingButtons.push(false);
                                                     let date = new Date(this.currentCall.startDate);
                                                     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
@@ -117,28 +119,33 @@ export class VoucherComponent {
     }
 
     private applyForVoucher(registrationNumber: number) {
-        // TODO: Llamar al nuevo servicio de Apply for voucher
-        // this.loadingButton = true;
-        this.loadingButtons[registrationNumber] = true;
-        let newApplication = new ApplicationDTOBase();
-        newApplication.callId = this.currentCall.id;
-        newApplication.registrationId = this.registrations[registrationNumber].id;
-        newApplication.date = new Date().getTime();
-        newApplication.supplierId = null;
-        this.applicationApi.createApplication(newApplication).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    if (response.data) {
-                        this.applications[registrationNumber] = response.data;
-                        this.voucherCompetitionState = 3;
-                        // this.loadingButton = false;
-                        this.loadingButtons[registrationNumber] = false;
-                        this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
-                        this.voucherApplied = "greyImage";
+        let startCallDate = this.currentCall.startDate;
+        let actualDateTime = new Date().getTime();
+
+        if  (startCallDate <= actualDateTime) {
+            // TODO: Llamar al nuevo servicio de Apply for voucher
+            // this.loadingButton = true;
+            this.loadingButtons[registrationNumber] = true;
+            let newApplication = new ApplicationDTOBase();
+            newApplication.callId = this.currentCall.id;
+            newApplication.registrationId = this.registrations[registrationNumber].id;
+            newApplication.date = new Date().getTime();
+            newApplication.supplierId = null;
+            this.applicationApi.createApplication(newApplication).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        if (response.data) {
+                            this.applications[registrationNumber] = response.data;
+                            this.voucherCompetitionState = 3;
+                            // this.loadingButton = false;
+                            this.loadingButtons[registrationNumber] = false;
+                            this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
+                            this.voucherApplied = "greyImage";
+                        }
                     }
                 }
-            }
-        );
+            );
+        }
     }
 
     private openApplyForVoucher() {

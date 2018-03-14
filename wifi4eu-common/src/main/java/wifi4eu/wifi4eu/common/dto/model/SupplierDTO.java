@@ -24,11 +24,12 @@ public class SupplierDTO implements Serializable {
     private String legalFile1;
     private String legalFile2;
     private int status;
+    private String lang;
 
     public SupplierDTO() {
     }
 
-    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, int userId, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2, int status) {
+    public SupplierDTO(int id, String name, String address, String vat, String bic, String accountNumber, String website, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber, String contactEmail, String logo, int userId, List<SuppliedRegionDTO> suppliedRegions, boolean legalCheck1, boolean legalCheck2, String legalFile1, String legalFile2, int status, String lang) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -49,6 +50,7 @@ public class SupplierDTO implements Serializable {
         this.legalFile1 = legalFile1;
         this.legalFile2 = legalFile2;
         this.status = status;
+        this.lang = lang;
     }
 
     public int getId() {
@@ -209,6 +211,14 @@ public class SupplierDTO implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     @Override

@@ -112,6 +112,10 @@ public class UserService {
         return userMapper.toDTO(userRepository.findByEmail(email));
     }
 
+    public UserDTO getUserByEcasEmail(String email){
+        return userMapper.toDTO(userRepository.findByEcasEmail(email));
+    }
+
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
         UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
@@ -254,7 +258,10 @@ public class UserService {
         permissionChecker.addTablePermissions(userDTO, Long.toString(tempTokenDTO.getId()),
                 RightConstants.TEMP_TOKENS_TABLE, "[TEMP_TOKENS] - id: " + tempTokenDTO.getId() + " - User Id: " + tempTokenDTO.getUserId() + " - TOKEN: " + tempTokenDTO.getToken());
 
-        Locale locale = initLocale();
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        if (userDTO.getLang() != null) {
+            locale = new Locale(userDTO.getLang());
+        }
         ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
         String subject = bundle.getString("mail.subject");
         String msgBody = bundle.getString("mail.body");
@@ -281,12 +288,12 @@ public class UserService {
         UserDTO user = getUserByUserContext(userContext);
 
         if (user == null) {
-      /* validate email variable is not null or empty */
+            /* validate email variable is not null or empty */
             if (email != null && !StringUtils.isEmpty(email)) {
                 UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
-        /* validate if user exist in wifi4eu portal */
+                /* validate if user exist in wifi4eu portal */
                 if (userDTO != null) {
-          /* Create a temporal key for activation and reset password functionalities */
+                    /* Create a temporal key for activation and reset password functionalities */
                     TempTokenDTO tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.findByEmail(email));
                     if (tempTokenDTO == null) {
                         tempTokenDTO = new TempTokenDTO();
@@ -302,7 +309,7 @@ public class UserService {
 
                     tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO));
 
-          /* Send email with */
+                    /* Send email with */
                     String fromAddress = MailService.FROM_ADDRESS;
                     //TODO: translate subject and msgBody
                     String subject = "wifi4eu portal Forgot Password";

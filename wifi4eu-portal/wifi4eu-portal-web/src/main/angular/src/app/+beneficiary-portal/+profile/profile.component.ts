@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild, ElementRef } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { UserApi } from "../../shared/swagger/api/UserApi";
 import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
@@ -35,12 +35,16 @@ export class BeneficiaryProfileComponent {
     private displayMayor: boolean = false;
     private submittingData = false;
     private isRegisterHold: boolean = false;
+    private withdrawingRegistration: boolean = false;
+    private withdrawnSuccess: boolean = false;
     private threadId: number;
     private hasDiscussion: boolean = false;
     private discussionThreads: ThreadDTOBase[] = [];
+    @ViewChild("emailInput") emailInput: ElementRef;
+    @ViewChild("emailMayor") emailMayor: ElementRef;
 
     constructor(private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
-        let storedUser = this.localStorageService.get('user');
+      let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             this.userApi.getUserById(this.user.id).subscribe(
@@ -107,10 +111,24 @@ export class BeneficiaryProfileComponent {
         }
     }
 
+    private disableEvent(event) {
+      if(event.cancelable){
+        event.preventDefault();
+      }      
+      return false;
+    }
+
+    private addEventListeners(events, element) {
+      events.forEach(event => {
+        element.addEventListener(event, this.disableEvent.bind(this));
+      });
+    }
+
     private displayModal(name: string, index?: number) {
         switch (name) {
             case 'user':
                 this.displayUser = true;
+                this.addEventListeners(['dragenter', 'dragover', 'drop', 'keydown', 'paste', 'cut'], this.emailInput.nativeElement);
                 break;
             case 'municipality':
                 this.currentEditIndex = index;
@@ -121,6 +139,7 @@ export class BeneficiaryProfileComponent {
                 this.currentEditIndex = index;
                 Object.assign(this.editedMayor, this.mayors[index]);
                 this.displayMayor = true;
+                this.addEventListeners(['dragenter', 'dragover', 'drop', 'keydown', 'paste', 'cut'], this.emailMayor.nativeElement);
                 break;
             case 'password':
                 this.userApi.ecasChangePassword().subscribe(
@@ -137,6 +156,9 @@ export class BeneficiaryProfileComponent {
     }
 
     private saveUserChanges() {
+        if(this.editedUser.email != this.user.email){
+          this.editedUser.email = this.user.email;
+        }
         this.submittingData = true;
         this.userApi.saveUserChanges(this.editedUser).subscribe(
             (response: ResponseDTOBase) => {
@@ -163,6 +185,9 @@ export class BeneficiaryProfileComponent {
     }
 
     private saveMayorChanges() {
+        if(this.editedMayor.email != this.mayors[this.currentEditIndex].email){
+          this.editedMayor.email = this.mayors[this.currentEditIndex].email;
+        }
         this.submittingData = true;
         this.mayorApi.createMayor(this.editedMayor).subscribe(
             (response: ResponseDTOBase) => {
@@ -184,16 +209,23 @@ export class BeneficiaryProfileComponent {
     }
 
     private deleteRegistration() {
-        this.userApi.deleteUser(this.user.id).subscribe(
-            (data: ResponseDTOBase) => {
-                if (data.success) {
-                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
-                    this.sharedService.logout();
+        if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
+            this.withdrawingRegistration = true;
+            this.userApi.deleteUser(this.user.id).subscribe(
+                (data: ResponseDTOBase) => {
+                    if (data.success) {
+                        this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.deleteApplication.Success', 'success');
+                        this.sharedService.logout();
+                        this.withdrawingRegistration = false;
+                        this.withdrawnSuccess = true;
+                    }
+                }, error => {
+                    this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
+                    this.withdrawingRegistration = false;
+                    this.withdrawnSuccess = true;
                 }
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.deleteApplication.Failure', 'error');
-            }
-        );
+            );
+        }
     }
 
     private goToDiscussion() {

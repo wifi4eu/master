@@ -132,6 +132,7 @@
         <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
         <server.azure.test2.address>wifi4eutest.eu</server.azure.test2.address>
         <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
+        <server.pro.address>www.wifi4eu.eu</server.pro.address>
         <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilterMocked</user.filter.path>
         <server.ecas.stress>https://webgate.stress.ec.europa.eu</server.ecas.stress>
         <server.ecas.acc>https://ecas.acceptance.ec.europa.eu</server.ecas.acc>
@@ -273,6 +274,27 @@
                 <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
                 <ecas.server.port>${server.azure.port}</ecas.server.port>
                 <mail.serv.location>https://wifi4euprod.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+                <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
+                <mail.smtp.port>587</mail.smtp.port>
+                <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
+                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>PROD</id>
+            <properties>
+                <ng.env>prod</ng.env>
+                <schemes>https</schemes>
+                <server.address>${server.pro.address}</server.address>
+                <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
+                <enable.security.start>--&gt;</enable.security.start>
+                <enable.security.end>&lt;!--</enable.security.end>
+                <enable.login.start>--&gt;</enable.login.start>
+                <enable.login.end>&lt;!--</enable.login.end>
+                <war.output.directory/>
+                <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
+                <ecas.server.port>${server.azure.port}</ecas.server.port>
+                <mail.serv.location>https://www.wifi4eu.eu/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>

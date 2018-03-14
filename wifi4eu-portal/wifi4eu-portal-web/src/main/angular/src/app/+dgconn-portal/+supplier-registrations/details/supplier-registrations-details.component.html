@@ -29,10 +29,6 @@
         <div class="ui-g-12">
             <div class="row applicantDetailsPanel">
                 <span class="right">
-                    <button type="button" class="btn btn-primary whiteButton-thin"
-                            (click)="requestLegalDocuments(true)">
-                        {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
-                    </button>
                     <button type="button" class="btn redButton" (click)="displayInvalidateModal(true)"
                             [disabled]="supplier.status == 0">
                         {{ 'dgConn.supplierDetails.invalidateSupplier' | translate }}
@@ -40,7 +36,7 @@
                 </span>
             </div>
             <div class="row applicantDetailsPanel">
-                <div class="ui-g-6 ui-lg-6 ui-md-8 ui-sm-12">
+                <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
                     <p class="applicantDetailsNoMargin municipality-name profileData">
                         <span class="ui-g-12">{{ 'suppRegistration.company.details' | translate }}</span>
                     </p>
@@ -69,7 +65,7 @@
                         <span class="ui-g-7 profileData"><img [src]="supplier.logo" height="50"></span>
                     </p>
                 </div>
-                <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12">
+                <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
                     <p class="applicantDetailsNoMargin municipality-name profileData">
                         <span class="ui-g-12">{{ 'suppRegistration.contact.person' | translate }}</span>
                     </p>
@@ -84,31 +80,6 @@
                     <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;">
                         <span class="ui-g-6">{{ 'suppRegistration.email.label' | translate }}</span>
                         <span class="ui-g-6 profileData">{{ supplier.contactEmail }}</span>
-                    </p>
-                </div>
-                <div class="ui-g-2 ui-lg-2 ui-md-12 ui-sm-12">
-                    <p class="applicantDetailsNoMargin municipality-name profileData">
-                        <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.documentation' | translate }}</span>
-                    </p>
-                    <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;"
-                       *ngIf="!supplier.legalFile1 || !supplier.legalFile2">
-                        <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.noDocuments' | translate }}</span>
-                    </p>
-                    <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;" *ngIf="supplier.legalFile1">
-                        <span class="ui-g-12">
-                            <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1<br>
-                            <a class="link-label" [href]="getLegalFileUrl(true, 1)" download>
-                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                            </a>
-                        </span>
-                    </p>
-                    <p class="applicantDetailsNoMargin ui-g-12" style="padding: 0em;" *ngIf="supplier.legalFile2">
-                        <span class="ui-g-12">
-                            <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2<br>
-                            <a class="link-label" [href]="getLegalFileUrl(true, 2)" download>
-                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                            </a>
-                        </span>
                     </p>
                 </div>
             </div>
@@ -128,10 +99,6 @@
                 <div class="ui-g-12">
                     <div class="row applicantDetailsPanel">
                     <span class="right">
-                        <button type="button" class="btn btn-primary whiteButton-thin"
-                                (click)="requestLegalDocuments(false, i)">
-                            {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
-                        </button>
                         <button type="button" class="btn redButton" (click)="displayInvalidateModal(false, i)"
                                 [disabled]="similarSupplier.status == 0">
                             {{ 'dgConn.supplierDetails.invalidateSupplier' | translate }}
@@ -139,7 +106,7 @@
                     </span>
                     </div>
                     <div class="row applicantDetailsPanel">
-                        <div class="ui-g-6 ui-lg-6 ui-md-8 ui-sm-12">
+                        <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
                             <p class="applicantDetailsNoMargin municipality-name profileData">
                                 <span class="ui-g-12">{{ 'suppRegistration.company.details' | translate }}</span>
                             </p>
@@ -170,7 +137,7 @@
                                 <span class="ui-g-7 profileData"><img [src]="similarSupplier.logo" height="50"></span>
                             </p>
                         </div>
-                        <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12">
+                        <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
                             <p class="applicantDetailsNoMargin municipality-name profileData">
                                 <span class="ui-g-12">{{ 'suppRegistration.contact.person' | translate }}</span>
                             </p>
@@ -185,31 +152,6 @@
                             <p class="applicantDetailsNoMargin">
                                 <span class="ui-g-6">{{ 'suppRegistration.email.label' | translate }}</span>
                                 <span class="ui-g-6 profileData">{{ similarSupplier.contactEmail }}</span>
-                            </p>
-                        </div>
-                        <div class="ui-g-2 ui-lg-2 ui-md-12 ui-sm-12">
-                            <p class="applicantDetailsNoMargin municipality-name profileData">
-                                <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.documentation' | translate }}</span>
-                            </p>
-                            <p class="applicantDetailsNoMargin"
-                               *ngIf="!similarSupplier.legalFile1 || !similarSupplier.legalFile2">
-                                <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.noDocuments' | translate }}</span>
-                            </p>
-                            <p class="applicantDetailsNoMargin" *ngIf="similarSupplier.legalFile1">
-                                <span class="ui-g-12">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1<br>
-                                    <a class="link-label" [href]="getLegalFileUrl(false, 1, i)" download>
-                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                    </a>
-                                </span>
-                            </p>
-                            <p class="applicantDetailsNoMargin" *ngIf="similarSupplier.legalFile2">
-                                <span class="ui-g-12">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2<br>
-                                    <a class="link-label" [href]="getLegalFileUrl(false, 2, i)" download>
-                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                    </a>
-                                </span>
                             </p>
                         </div>
                     </div>

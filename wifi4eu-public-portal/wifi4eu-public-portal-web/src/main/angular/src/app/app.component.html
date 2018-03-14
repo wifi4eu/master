@@ -1,8 +1,8 @@
-<ux-layout-app uxTrackScroll> <!-- uxTrackScroll -->
+<ux-layout-app customUxTrackScroll>
     <uxLayoutAppMainContainer>
         <ux-layout-app-main>
             <uxLayoutAppMainHeaderContainer>
-                <custom-layout-header appFullName="Wifi4EU Free Wifi for Europeans" appShortName="App"
+                <custom-layout-header appFullName="WiFi4EU Portal" appShortName="App"
                                       [userInfos]="userInfos" [isCustomRightContent]="true"
                                       logoUrl="https://ec.europa.eu/">
                     <uxLayoutHeaderRightContent>
@@ -60,7 +60,7 @@
             </uxLayoutAppMainContentContainer>
             <uxLayoutAppMainFooterContainer>
                 <ux-layout-footer isCompact="true">
-                    {{ 'home.footer.update' | translate:{version:"1.8.0-rc2",versionDate:"08/03/2018"} }}
+                    {{ 'home.footer.update' | translate:{version:"1.8.0-rc6",versionDate:"13/03/2018"} }}
                     <a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
                 </ux-layout-footer>
             </uxLayoutAppMainFooterContainer>

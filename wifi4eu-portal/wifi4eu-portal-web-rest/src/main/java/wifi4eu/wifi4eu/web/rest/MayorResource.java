@@ -93,6 +93,10 @@ public class MayorResource {
             int mayorId = mayorDTO.getId();
             permissionChecker.check(RightConstants.MAYORS_TABLE+mayorId);
 
+            MayorDTO mayorDTO1 = mayorService.getMayorByMunicipalityId(mayorDTO.getMunicipalityId());
+            if(mayorDTO1 != null) {
+                resMayor.setEmail(mayorDTO1.getEmail());
+            }
             return new ResponseDTO(true, resMayor, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {

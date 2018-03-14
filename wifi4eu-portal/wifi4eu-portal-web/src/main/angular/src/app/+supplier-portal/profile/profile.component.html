@@ -82,15 +82,11 @@
             <div class="row">
                 <div class="col-sm-12">
                     <p class="beneficiaryMayor">{{ 'suppRegistration.entity.support' | translate }}</p>
-                    <p-tabView *ngIf="selectedCountriesNames.length > 0">
-                        <p-tabPanel *ngFor="let country of selectedCountriesNames;" [header]="country">
-                            <div class="row">
-                                <p-dataTable [value]="supportedRegions[country]" [paginator]="true"
-                                             [rows]="10">
-                                    <p-column field="label" [sortable]="true"></p-column>
-                                </p-dataTable>
-                            </div>
-                        </p-tabPanel>
+                    <p-tabView *ngIf="selectedCountriesNames.length > 0" (onChange)="selectCountry($event, tableRegions)">
+                        <p-tabPanel *ngFor="let country of selectedCountriesNames;" [header]="country"></p-tabPanel>
+                        <p-dataTable #tableRegions [value]="regionsToRender" [paginator]="true" [rows]="10">
+                          <p-column field="label" [sortable]="true"></p-column>
+                        </p-dataTable>
                     </p-tabView>
                     <b *ngIf="selectedCountriesNames.length == 0"><i></i></b>
                 </div>
@@ -114,8 +110,8 @@
                 <p class="applicationText">{{ 'shared.withdraw-registration.text' | translate }}</p>
                 <div style="text-align: center !important">
                     <button id="withdrawRegistration" type="button" (click)="withdrawRegistration()"
-                            class="btn btn-primary changePassword">
-                        {{'shared.withdraw-registration.button' | translate }}
+                            class="btn btn-primary changePassword" [disabled]="withdrawingRegistration || withdrawnSuccess">
+                        {{ 'shared.withdraw-registration.button' | translate }}
                     </button>
                 </div>
             </div>
@@ -403,3 +399,10 @@
         </form>
     </p-dialog>
 </div>
+<helpdesk-form-component portal="supplier-profile"></helpdesk-form-component>
+<p-dialog [(visible)]="withdrawingRegistration" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog>

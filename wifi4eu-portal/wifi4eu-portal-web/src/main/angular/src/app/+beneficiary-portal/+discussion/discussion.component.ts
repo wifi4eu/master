@@ -48,8 +48,10 @@ export class DiscussionComponent {
     private displayMessage: boolean = false;
     private displayMediation: boolean = false;
     private displayMediationAlert: boolean = false;
-    private isSendMessage = false;
-    private isSendedMessage = false;
+    private sendingMessage = false;
+    private messageSentSuccess = false;
+    private withdrawingRegistration: boolean = false;
+    private withdrawnSuccess: boolean = false;
     private message: string = '';
 
     constructor(private localStorageService: LocalStorageService, private route: ActivatedRoute, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private threadmessagesApi: ThreadmessagesApi, private userApi: UserApi, private sharedService: SharedService, private router: Router) {
@@ -122,54 +124,66 @@ export class DiscussionComponent {
     }
 
     private withdrawRegistration() {
-        this.userApi.deleteUser(this.user.id).subscribe(
-            (data: ResponseDTOBase) => {
-                if (data.success) {
-                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
-                    this.sharedService.logout();
+        if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
+            this.withdrawingRegistration = true;
+            this.userApi.deleteUser(this.user.id).subscribe(
+                (data: ResponseDTOBase) => {
+                    if (data.success) {
+                        this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
+                        this.sharedService.logout();
+                        this.withdrawingRegistration = false;
+                        this.withdrawnSuccess = true;
+                    }
+                }, error => {
+                    this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
+                    this.withdrawingRegistration = false;
+                    this.withdrawnSuccess = false;
                 }
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
-            }
-        );
+            );
+        }
     }
 
     private newMessage() {
-        this.isSendMessage = false;
+        this.sendingMessage = false;
         this.displayMessage = true;
         this.displayMediation = false;
         this.message = '';
     }
 
     private sendMessage() {
-        this.isSendMessage = true;
-        this.isSendedMessage = false;
-        let newMessage = new ThreadMessageDTOBase();
-        newMessage.createDate = new Date().getTime();
-        newMessage.message = this.message;
-        newMessage.authorId = this.user.id;
-        newMessage.threadId = this.thread.id;
-        this.threadmessagesApi.createThreadMessage(newMessage).subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.isSendedMessage = true;
-                    this.isSendMessage = false;
-                    this.thread.messages.push(response.data);
-                    this.sharedService.growlTranslation('The message was successfully sent!', 'discussionForum.thread.message.success', 'success');
-                } else {
-                    this.isSendedMessage = false;
+        if (!this.sendingMessage) {
+            this.sendingMessage = true;
+            this.messageSentSuccess = false;
+            let newMessage = new ThreadMessageDTOBase();
+            newMessage.createDate = new Date().getTime();
+            newMessage.message = this.message;
+            newMessage.authorId = this.user.id;
+            newMessage.threadId = this.thread.id;
+            this.threadmessagesApi.createThreadMessage(newMessage).subscribe(
+                (response: ResponseDTOBase) => {
+                    if (response.success) {
+                        this.thread.messages.push(response.data);
+                        this.sharedService.growlTranslation('The message was successfully sent!', 'discussionForum.thread.message.success', 'success');
+                        this.messageSentSuccess = true;
+                        this.sendingMessage = false;
+                    } else {
+                        this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
+                        this.messageSentSuccess = false;
+                        this.sendingMessage = false;
+                    }
+                    this.displayMessage = false;
+                }, error => {
                     this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
+                    this.messageSentSuccess = false;
+                    this.sendingMessage = false;
+                    this.displayMessage = false;
                 }
-                this.displayMessage = false;
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred while trying to send the message. Please, try again later.', 'discussionForum.thread.message.error', 'error');
-                this.displayMessage = false;
-            }
-        );
+            );
+        }
     }
 
     private closeModal() {
-        this.isSendMessage = false;
+        this.sendingMessage = false;
         this.displayMessage = false;
         this.displayMediation = false;
     }

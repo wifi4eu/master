@@ -1,4 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, ViewChild, OnInit } from "@angular/core";
 import { LocalStorageService } from "angular-2-local-storage";
 import { Observable } from "rxjs/Observable";
 import { SharedService } from "../../shared/shared.service";
@@ -9,6 +9,7 @@ import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
 import { SupplierDTOBase } from "../../shared/swagger/model/SupplierDTO";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import { SuppliedRegionDTOBase } from "../../shared/swagger";
 
 @Component({
     selector: 'supplier-profile',
@@ -24,12 +25,16 @@ export class SupplierProfileComponent {
     private selectedCountriesNames: string[] = [];
     private displayContact: boolean = false;
     private displayCompany: boolean = false;
+    private withdrawingRegistration: boolean = false;
+    private withdrawnSuccess: boolean = false;
     private submittingData: boolean = false;
     private isLogoUploaded: boolean = false;
     private deletingLogo: boolean = false;
     private logoUrl: FileReader = new FileReader();
     private logoFile: File;
     @ViewChild('logoInput') private logoInput: any;
+
+    regionsToRender: NutsDTOBase[] = [];
 
     constructor(private localStorageService: LocalStorageService, private sharedService: SharedService, private supplierApi: SupplierApi, private nutsApi: NutsApi, private userApi: UserApi) {
         let storedUser = this.localStorageService.get('user');
@@ -42,28 +47,30 @@ export class SupplierProfileComponent {
                         Object.assign(this.editedSupplier, this.supplier);
                         this.nutsApi.getNutsByLevel(0).subscribe(
                             (countries: NutsDTOBase[]) => {
-                                for (let suppliedRegion of this.supplier.suppliedRegions) {
-                                    this.nutsApi.getNutsById(suppliedRegion.regionId).subscribe(
-                                        (region: NutsDTOBase) => {
-                                            for (let country of countries) {
-                                                if (region.countryCode == country.countryCode) {
-                                                    if (!this.supportedRegions[country.label]) {
-                                                        this.selectedCountriesNames.push(country.label);
-                                                        this.supportedRegions[country.label] = [];
-                                                    }
-                                                    this.supportedRegions[country.label].push(region);
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    );
-                                }
+                              this.supplier.suppliedRegions;
+                              for(let country of countries) {
+                                let regions = this.supplier.suppliedRegions.filter(x => x.regionId.countryCode == country.countryCode );
+                                regions.map((filtered) => {
+                                  if (!this.supportedRegions[country.label]) {
+                                    this.selectedCountriesNames.push(country.label);
+                                    this.supportedRegions[country.label] = [];
+                                  }
+                                  this.supportedRegions[country.label].push(filtered.regionId);
+                                });
+                              }
+                              this.regionsToRender = this.supportedRegions[this.selectedCountriesNames[0]];
                             }
                         );
                     }
                 }
             );
         }
+    }
+
+    private selectCountry (event, tableReference) {
+      var name = this.selectedCountriesNames[event.index];
+      this.regionsToRender = this.supportedRegions[name];
+      tableReference.reset();
     }
 
     private displayModal(name: string) {
@@ -170,16 +177,23 @@ export class SupplierProfileComponent {
     }
 
     private withdrawRegistration() {
-        this.userApi.deleteUser(this.user.id).subscribe(
-            (data: ResponseDTOBase) => {
-                if (data.success) {
-                    this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
-                    this.sharedService.logout();
+        if (!this.withdrawingRegistration && !this.withdrawnSuccess) {
+            this.withdrawingRegistration = true;
+            this.userApi.deleteUser(this.user.id).subscribe(
+                (data: ResponseDTOBase) => {
+                    if (data.success) {
+                        this.sharedService.growlTranslation('Your applications were succesfully deleted.', 'benefPortal.beneficiary.withdrawRegistration.Success', 'success');
+                        this.sharedService.logout();
+                        this.withdrawingRegistration = false;
+                        this.withdrawnSuccess = true;
+                    }
+                }, error => {
+                    this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
+                    this.withdrawingRegistration = false;
+                    this.withdrawnSuccess = false;
                 }
-            }, error => {
-                this.sharedService.growlTranslation('An error occurred an your applications could not be deleted.', 'benefPortal.beneficiary.withdrawRegistration.Failure', 'error');
-            }
-        );
+            );
+        }
     }
 
     private deleteLogo(){

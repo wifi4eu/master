@@ -5,9 +5,9 @@ import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
 import {SuppliedRegionDTOBase} from "../shared/swagger/model/SuppliedRegionDTO";
 import {NutsApi} from "../shared/swagger/api/NutsApi";
 import {SupplierApi} from "../shared/swagger/api/SupplierApi";
-import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
 import {SharedService} from "../shared/shared.service";
 import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
+import {TranslateService} from "ng2-translate";
 
 @Component({
     selector: 'supplier-registration',
@@ -27,7 +27,7 @@ export class SupplierRegistrationComponent {
     private allRegionsSelect: SelectItem[][] = [];
     private logoUrl: FileReader = new FileReader();
 
-    constructor(private nutsApi: NutsApi, private supplierApi: SupplierApi, private uxService: UxService,private sharedService: SharedService) {
+    constructor(private nutsApi: NutsApi, private supplierApi: SupplierApi, private sharedService: SharedService, private translateService: TranslateService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
             (countries: NutsDTOBase[]) => {
                 for (let country of countries) {
@@ -86,10 +86,15 @@ export class SupplierRegistrationComponent {
         for (let selectedCountry in this.selectedRegions) {
             for (let selectedRegion of this.selectedRegions[selectedCountry]) {
                 let suppliedRegion = new SuppliedRegionDTOBase();
-                suppliedRegion.regionId = selectedRegion.id;
+                suppliedRegion.regionId = selectedRegion;
                 this.supplier.suppliedRegions.push(suppliedRegion);
             }
         }
+        let language = this.translateService.currentLang;
+        if (!language) {
+            language = 'en';
+        }
+        this.supplier.lang = language;
         this.supplierApi.submitSupplierRegistration(this.supplier).subscribe(
             (data: ResponseDTOBase) => {
                 if (data.success) {

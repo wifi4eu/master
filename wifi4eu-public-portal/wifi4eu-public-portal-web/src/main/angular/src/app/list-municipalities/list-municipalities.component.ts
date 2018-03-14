@@ -21,8 +21,14 @@ export class ListMunicipalitiesComponent implements OnInit {
   dateCached: string = null;
   searched: boolean = false;
   regionNameSearched: string = null;
-
+  defaultRegion = new NutsDTOBase();
+  
   constructor(private nutsApi: NutsApi, private municipalityApi: MunicipalityApi) {
+    this.defaultRegion.code = "ALL";
+    this.defaultRegion.label = "All";
+    this.defaultRegion.id = 0;
+    this.defaultRegion.countryCode = "ALL";
+    this.regions.push(this.defaultRegion);    
     this.nutsApi.getNutsByLevel(0).subscribe(
       (countries: NutsDTOBase[]) => {
         this.countries = countries;
@@ -36,9 +42,10 @@ export class ListMunicipalitiesComponent implements OnInit {
   }
 
   selectCountry(country){
+    this.region = this.defaultRegion;
     this.nutsApi.getNutsByCountryCodeAndLevelOrderByLabelAsc(country.code, 3).subscribe(
       (regions: NutsDTOBase[]) => {
-        this.regions = regions;
+        this.regions = [this.defaultRegion, ...regions];
       }
     );
   }
@@ -49,16 +56,29 @@ export class ListMunicipalitiesComponent implements OnInit {
 
   searchMunicipalities(){
     if(this.country && this.region){
-      this.municipalityApi.getMunicipalitiesRegistered(this.region.code).subscribe(
-        (municipalityCacheDTO: MunicipalityCacheDTOBase) => {
-          this.municipalities = municipalityCacheDTO.municipalities;
-          let date = new Date(municipalityCacheDTO.dateCached);
-          let datePipe = new DatePipe('default').transform(date, 'dd/MM/yyyy');
-          this.dateCached = datePipe;
-          this.searched = true;
-          this.regionNameSearched = this.region.label;
-        }
-      );
+      if(this.region.id != 0){
+        this.municipalityApi.getMunicipalitiesRegistered(this.region.code).subscribe(
+          (municipalityCacheDTO: MunicipalityCacheDTOBase) => {
+            this.municipalities = municipalityCacheDTO.municipalities;
+            let date = new Date(municipalityCacheDTO.dateCached);
+            let datePipe = new DatePipe('default').transform(date, 'dd/MM/yyyy');
+            this.dateCached = datePipe;
+            this.searched = true;
+            this.regionNameSearched = this.region.label;
+          }
+        );
+      }
+      else {
+        this.municipalityApi.getMunicipalitiesRegisteredByCountry(this.country.countryCode).subscribe(
+          (municipalityCacheDTO: MunicipalityCacheDTOBase) => {
+            this.municipalities = municipalityCacheDTO.municipalities;
+            let date = new Date(municipalityCacheDTO.dateCached);
+            let datePipe = new DatePipe('default').transform(date, 'dd/MM/yyyy');
+            this.dateCached = datePipe;
+            this.searched = true;
+            this.regionNameSearched = this.country.label;
+          });
+      }
     }
   }
 

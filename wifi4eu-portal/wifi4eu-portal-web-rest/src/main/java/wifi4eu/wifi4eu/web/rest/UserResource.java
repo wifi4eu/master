@@ -120,7 +120,10 @@ public class UserResource {
             int userId = userDTO.getId();
             permissionChecker.check(RightConstants.USER_TABLE+userId);
 
+            UserDTO user = userService.getUserById(userDTO.getId());
+
             UserDTO resUser = userService.saveUserChanges(userDTO);
+            resUser.setEmail(user.getEmail());
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
         } catch (AccessDeniedException ade) {

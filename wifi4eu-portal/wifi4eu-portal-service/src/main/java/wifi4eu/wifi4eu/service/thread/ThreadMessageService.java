@@ -9,6 +9,7 @@ import wifi4eu.wifi4eu.mapper.thread.ThreadMessageMapper;
 import wifi4eu.wifi4eu.repository.thread.ThreadMessageRepository;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
@@ -57,7 +58,10 @@ public class ThreadMessageService {
                     for (MunicipalityDTO municipality : municipalities) {
                         UserDTO user = userService.getUserById(municipality.getRegistrations().get(0).getUserId());
                         if (user != null) {
-                            Locale locale = userService.initLocale();
+                            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                            if (user.getLang() != null) {
+                                locale = new Locale(user.getLang());
+                            }
                             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                             String subject = bundle.getString("mail.thread.subject");
                             String msgBody = bundle.getString("mail.thread.body");
