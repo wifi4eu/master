@@ -8,16 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.time.DateTimeException;
+import java.util.*;
 
 @Service
 public class ApplicationService {
@@ -42,6 +42,9 @@ public class ApplicationService {
     @Autowired
     MunicipalityService municipalityService;
 
+    @Autowired
+    CallService callService;
+
     public List<ApplicationDTO> getAllApplications() {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findAll()));
     }
@@ -52,10 +55,12 @@ public class ApplicationService {
 
     @Transactional
     public ApplicationDTO createApplication(ApplicationDTO applicationDTO) {
-        Locale locale = userService.initLocale();
-        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-        String subject = bundle.getString("mail.voucherApply.subject");
-        String msgBody = bundle.getString("mail.voucherApply.body");
+        CallDTO actualCall = callService.getCallById(applicationDTO.getCallId());
+        long startCallDate = actualCall.getStartDate();
+        long actualDateTime = (new Date()).getTime();
+        if  (startCallDate > actualDateTime) {
+            throw new DateTimeException("The call is not available at the moment");
+        }
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
         UserDTO user = null;
         MunicipalityDTO municipality = null;
@@ -64,6 +69,13 @@ public class ApplicationService {
             municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
         }
         if (user != null && municipality != null) {
+            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+            if (user.getLang() != null) {
+                locale = new Locale(user.getLang());
+            }
+            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+            String subject = bundle.getString("mail.voucherApply.subject");
+            String msgBody = bundle.getString("mail.voucherApply.body");
             msgBody = MessageFormat.format(msgBody, municipality.getName());
             mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
         }

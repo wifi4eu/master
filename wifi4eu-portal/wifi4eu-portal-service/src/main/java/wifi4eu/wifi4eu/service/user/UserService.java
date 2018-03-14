@@ -111,6 +111,10 @@ public class UserService {
         return userMapper.toDTO(userRepository.findByEmail(email));
     }
 
+    public UserDTO getUserByEcasEmail(String email){
+        return userMapper.toDTO(userRepository.findByEcasEmail(email));
+    }
+
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
         UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
@@ -258,7 +262,10 @@ public class UserService {
         permissionChecker.addTablePermissions(userDTO, Long.toString(tempTokenDTO.getId()),
                 RightConstants.TEMP_TOKENS_TABLE, "[TEMP_TOKENS] - id: " + tempTokenDTO.getId() + " - User Id: " + tempTokenDTO.getUserId() + " - TOKEN: " + tempTokenDTO.getToken());
 
-        Locale locale = initLocale();
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        if (userDTO.getLang() != null) {
+            locale = new Locale(userDTO.getLang());
+        }
         ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
         String subject = bundle.getString("mail.subject");
         String msgBody = bundle.getString("mail.body");

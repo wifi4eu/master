@@ -1646,3 +1646,7 @@ p-tabview.white .ui-widget-content.ui-tabview {
   color: $darkish-blue;
   text-decoration: underline;
 }
+
+input.email_profile::-ms-clear{
+  display:none;
+}

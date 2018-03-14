@@ -21,6 +21,7 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
@@ -99,6 +100,7 @@ public class BeneficiaryService {
         }
 
         user.setCreateDate(new Date().getTime());
+        user.setLang(beneficiaryDTO.getLang());
 
         UserDTO resUser;
         if (isEcasUser) {
@@ -158,8 +160,10 @@ public class BeneficiaryService {
 
 
             if (municipalitiesWithSameLau.size() > 1) {
-
-                Locale locale = userService.initLocale();
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (userDTO.getLang() != null) {
+                    locale = new Locale(userDTO.getLang());
+                }
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.discussionMunicipality.subject");
                 String msgBody = bundle.getString("mail.discussionMunicipality.body");

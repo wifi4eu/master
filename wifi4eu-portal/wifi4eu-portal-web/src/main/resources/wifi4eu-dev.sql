@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`users` (
   `access_date`   BIGINT       NULL,
   `ecas_email`    VARCHAR(255) NULL,
   `ecas_username` VARCHAR(255) NULL,
+  `lang`          VARCHAR(255) NULL,
   `type`          INT          NULL     DEFAULT NULL,
   `verified`      TINYINT      NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
@@ -416,6 +417,7 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`helpdesk_issues` (
   `summary`      MEDIUMTEXT   NULL,
   `create_date`  BIGINT       NULL,
   `_status`      INT          NOT NULL DEFAULT 0,
+  `_ticket`      INT          NOT NULL DEFAULT 0
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
