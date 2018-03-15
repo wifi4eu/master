@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Votre message",
   "shared.back.button": "Retour",
   "discussionForum.title": "Discussion entre entreprises – Enregistrements multiples",
-  "discussionForum.description": "Le système a détecté que {{duplicateCount}} autre(s) représentant(s) a/ont enregistré [Municipality] comme entité admissible. Vous pouvez entamer une discussion avec l'/les autre(s) candidat(s). Veuillez noter qu’il ne peut e{{duplicateCount}}ister qu’un seul enregistrement pour cette municipalité au moment du lancement de l’appel à candidatures. Si aucun accord n’est trouvé sur l’enregistrement valide, vous pouvez solliciter l'intervention de la Commission européenne.",
+  "discussionForum.description": "Le système a détecté que {{duplicateCount}} autre(s) représentant(s) a/ont enregistré {{municipality}} comme entité admissible. Vous pouvez entamer une discussion avec l'/les autre(s) candidat(s). Veuillez noter qu’il ne peut e{{duplicateCount}}ister qu’un seul enregistrement pour cette municipalité au moment du lancement de l’appel à candidatures. Si aucun accord n’est trouvé sur l’enregistrement valide, vous pouvez solliciter l'intervention de la Commission européenne.",
   "discussionForum.beneficiary.registrations": "Enregistrements ",
   "discussionForum.beneficiary.registration1": "Enregistrement {{selfRegistration}} (vous)",
   "shared.postal-code.label": "Code postal",

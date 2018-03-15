@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Mesajul dumneavoastră",
   "shared.back.button": "Înapoi",
   "discussionForum.title": "Discuții între companii pe marginea înregistrărilor multiple",
-  "discussionForum.description": "Sistemul a detectat că alți {{duplicateCount}} reprezentanți au înregistrat [Municipality] ca entitate eligibilă. Puteți începe o discuție cu celălalt solicitant (ceilalți solicitanți). Menționăm că, în momentul lansării cererii de proiecte, în sistem trebuie să e{{duplicateCount}}iste o singură înregistrare pentru municipalitatea dumneavoastră. Dacă nu ajungeți la un acord cu privire la înregistrarea validă, îi puteți cere Comisiei Europene să intervină.",
+  "discussionForum.description": "Sistemul a detectat că alți {{duplicateCount}} reprezentanți au înregistrat {{municipality}} ca entitate eligibilă. Puteți începe o discuție cu celălalt solicitant (ceilalți solicitanți). Menționăm că, în momentul lansării cererii de proiecte, în sistem trebuie să e{{duplicateCount}}iste o singură înregistrare pentru municipalitatea dumneavoastră. Dacă nu ajungeți la un acord cu privire la înregistrarea validă, îi puteți cere Comisiei Europene să intervină.",
   "discussionForum.beneficiary.registrations": "Înregistrări",
   "discussionForum.beneficiary.registration1": "Înregistrarea 1 {{selfRegistration}} (dumneavoastră)",
   "shared.postal-code.label": "Codul poștal",

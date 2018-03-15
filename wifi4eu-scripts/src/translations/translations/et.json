@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Teie sõnum",
   "shared.back.button": "Tagasi",
   "discussionForum.title": "Ettevõtjate vaheline vestlus seoses mitme registreeringuga",
-  "discussionForum.description": "Süsteem tuvastas, et {{duplicateCount}} teine esindaja / teist esindajat on seoses organisatsiooniga [Municipality] end toetuskõlblikuks üksuseks juba registreerinud. Saate hakata teiste taotlejatega vestlema. Ärge unustage, et ühe osalemiskutse ajal saab registreeruda ainult ühe korra. Kui kehtiva registreeringu osas kokkuleppele ei jõuta, võite paluda Euroopa Komisjonil sekkuda.",
+  "discussionForum.description": "Süsteem tuvastas, et {{duplicateCount}} teine esindaja / teist esindajat on seoses organisatsiooniga {{municipality}} end toetuskõlblikuks üksuseks juba registreerinud. Saate hakata teiste taotlejatega vestlema. Ärge unustage, et ühe osalemiskutse ajal saab registreeruda ainult ühe korra. Kui kehtiva registreeringu osas kokkuleppele ei jõuta, võite paluda Euroopa Komisjonil sekkuda.",
   "discussionForum.beneficiary.registrations": "Registreeringud",
   "discussionForum.beneficiary.registration1": "Registreering {{selfRegistration}} (teie)",
   "shared.postal-code.label": "Sihtnumber",

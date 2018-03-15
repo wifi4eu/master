@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Jūsu ziņojums",
   "shared.back.button": "Atpakaļ",
   "discussionForum.title": "Uzņēmumu diskusijas par vairākkārtējām reģistrācijām",
-  "discussionForum.description": "Sistēma ir konstatējusi, ka pašvaldību [Municipality] kā pieteikšanās kritērijiem atbilstīgu juridisku personu ir reģistrējis(-uši) vēl {{duplicateCount}} pārstāvis(-ji). Varat ar pārējiem pieteikuma iesniedzējiem sākt saraksti. Ņemiet vērā, ka uzaicinājuma izsludināšanas brīdī konkrētā pašvaldība drīkst būt reģistrēta tikai vienreiz. Ja nav iespējams panākt vienošanos par to, kura reģistrācija ir derīga, varat lūgt iesaistīties Eiropas Komisiju.",
+  "discussionForum.description": "Sistēma ir konstatējusi, ka pašvaldību {{municipality}} kā pieteikšanās kritērijiem atbilstīgu juridisku personu ir reģistrējis(-uši) vēl {{duplicateCount}} pārstāvis(-ji). Varat ar pārējiem pieteikuma iesniedzējiem sākt saraksti. Ņemiet vērā, ka uzaicinājuma izsludināšanas brīdī konkrētā pašvaldība drīkst būt reģistrēta tikai vienreiz. Ja nav iespējams panākt vienošanos par to, kura reģistrācija ir derīga, varat lūgt iesaistīties Eiropas Komisiju.",
   "discussionForum.beneficiary.registrations": "Reģistrācijas ",
   "discussionForum.beneficiary.registration1": "{{selfRegistration}}. reģistrācija (jūs)",
   "shared.postal-code.label": "Pasta indekss",

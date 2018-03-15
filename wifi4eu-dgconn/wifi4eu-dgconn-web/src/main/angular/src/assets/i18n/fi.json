@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Viestisi",
   "shared.back.button": "Edellinen",
   "discussionForum.title": "Yritysten välinen keskustelu päällekkäisistä rekisteröinneistä",
-  "discussionForum.description": "Järjestelmä on havainnut, että {{duplicateCount}} muu(ta) edustaja(a) on rekisteröinyt kunnan [Municipality]. Voit aloittaa asiasta keskustelun muiden hakijoiden kanssa. Huomaa, että hakukierroksen alkaessa kunnalla voi olla vain yksi rekisteröinti. Jos rekisteröinnistä ei päästä yksimielisyyteen, voit kääntyä Euroopan komission puoleen.",
+  "discussionForum.description": "Järjestelmä on havainnut, että {{duplicateCount}} muu(ta) edustaja(a) on rekisteröinyt kunnan {{municipality}}. Voit aloittaa asiasta keskustelun muiden hakijoiden kanssa. Huomaa, että hakukierroksen alkaessa kunnalla voi olla vain yksi rekisteröinti. Jos rekisteröinnistä ei päästä yksimielisyyteen, voit kääntyä Euroopan komission puoleen.",
   "discussionForum.beneficiary.registrations": "Rekisteröinnit ",
   "discussionForum.beneficiary.registration1": "Rekisteröinti {{selfRegistration}} (sinä)",
   "shared.postal-code.label": "Postinumero",

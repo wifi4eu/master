@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Vaše zpráva",
   "shared.back.button": "Zpět",
   "discussionForum.title": "Diskuse k vyjasnění duplicitní registrace",
-  "discussionForum.description": "Systém zjistil, že u obce [Municipality] se jako způsobilý subjekt zaregistrovalo {{duplicateCount}} dalších zájemců. Pokuste se s ostatními žadateli spojit a vše si vyjasnit. Vezměte prosím na vědomí, že v okamžiku zahájení výzvy smí být podána pouze jedna registrace. Pokud se vám nepodaří dosáhnout dohody ohledně toho, která z registrací bude platit, můžete požádat Evropskou komisi, aby zasáhla.",
+  "discussionForum.description": "Systém zjistil, že u obce {{municipality}} se jako způsobilý subjekt zaregistrovalo {{duplicateCount}} dalších zájemců. Pokuste se s ostatními žadateli spojit a vše si vyjasnit. Vezměte prosím na vědomí, že v okamžiku zahájení výzvy smí být podána pouze jedna registrace. Pokud se vám nepodaří dosáhnout dohody ohledně toho, která z registrací bude platit, můžete požádat Evropskou komisi, aby zasáhla.",
   "discussionForum.beneficiary.registrations": "Registrace",
   "discussionForum.beneficiary.registration1": "Registrace {{selfRegistration}} (vaše)",
   "shared.postal-code.label": "PSČ",

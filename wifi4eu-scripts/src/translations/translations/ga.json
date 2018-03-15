@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Do theachtaireacht",
   "shared.back.button": "Siar",
   "discussionForum.title": "Plé idir cuideachtaí – Ilchlárúcháin",
-  "discussionForum.description": "Bhraith an córas gur chláraigh {{duplicateCount}} ionadaí eile mar eintiteas incháilithe do [ainm an bhardais]. Is féidir leat an cheist a phlé leis na hiarratasóirí eile. Tabhair do d'aire nár cheart ach clárúchán amháin a chlárú nuair a sheolfar an glao. Mura féidir teacht ar chomhaontú maidir le cé acu clárúchán atá bailí, is féidir iarraidh ar an gCoimisiún Eorpach idirghabháil a dhéanamh.",
+  "discussionForum.description": "Bhraith an córas gur chláraigh {{duplicateCount}} ionadaí eile mar eintiteas incháilithe do {{municipality}} Is féidir leat an cheist a phlé leis na hiarratasóirí eile. Tabhair do d'aire nár cheart ach clárúchán amháin a chlárú nuair a sheolfar an glao. Mura féidir teacht ar chomhaontú maidir le cé acu clárúchán atá bailí, is féidir iarraidh ar an gCoimisiún Eorpach idirghabháil a dhéanamh.",
   "discussionForum.beneficiary.registrations": "Clárúcháin",
   "discussionForum.beneficiary.registration1": "Clárúchán {{selfRegistration}} (tusa)",
   "shared.postal-code.label": "Cód poist",

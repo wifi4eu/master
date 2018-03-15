@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Din meddelelse",
   "shared.back.button": "Tilbage",
   "discussionForum.title": "Diskussion mellem virksomheder i tilfælde af flere registreringer",
-  "discussionForum.description": "Systemet har opdaget, at {{duplicateCount}} andre repræsentanter har registreret sig for [Municipality]. Her kan du kan starte en samtale med den eller de andre ansøgere. Vær opmærksom på, at der kun må være en registrering, når indkaldelsen åbner. Hvis I ikke kan blive enige om den gældende registrering, kan I bede Europa-Kommissionen om hjælp.",
+  "discussionForum.description": "Systemet har opdaget, at {{duplicateCount}} andre repræsentanter har registreret sig for {{municipality}}.  Her kan du kan starte en samtale med den eller de andre ansøgere. Vær opmærksom på, at der kun må være en registrering, når indkaldelsen åbner. Hvis I ikke kan blive enige om den gældende registrering, kan I bede Europa-Kommissionen om hjælp.",
   "discussionForum.beneficiary.registrations": "Registreringer",
   "discussionForum.beneficiary.registration1": "Registrering {{selfRegistration}} (dig)",
   "shared.postal-code.label": "Postnr.",

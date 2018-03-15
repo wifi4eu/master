@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Ihre Nachricht",
   "shared.back.button": "Zurück",
   "discussionForum.title": "Diskussion zwischen Unternehmen im Falle von Mehrfachregistrierungen",
-  "discussionForum.description": "Im System haben sich bereits {{duplicateCount}} andere Vertreter für [Municipality] als förderfähige Einrichtung registriert. Sie können einen Dialog mit den anderen Antragstellern beginnen. Bitte beachten Sie, dass zum Zeitpunkt der Veröffentlichung der Aufforderung nur eine Registrierung vorliegen sollte. Wenn Sie keine Einigung erzielen, können Sie die Europäische Kommission als Vermittler hinzuziehen.",
+  "discussionForum.description": "Im System haben sich bereits {{duplicateCount}} andere Vertreter für {{municipality}} als förderfähige Einrichtung registriert. Sie können einen Dialog mit den anderen Antragstellern beginnen. Bitte beachten Sie, dass zum Zeitpunkt der Veröffentlichung der Aufforderung nur eine Registrierung vorliegen sollte. Wenn Sie keine Einigung erzielen, können Sie die Europäische Kommission als Vermittler hinzuziehen.",
   "discussionForum.beneficiary.registrations": "Registrierungen",
   "discussionForum.beneficiary.registration1": "Registrierung Nr. {{selfRegistration}} (Sie)",
   "shared.postal-code.label": "PLZ",

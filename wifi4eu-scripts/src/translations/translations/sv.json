@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Ditt meddelande",
   "shared.back.button": "Tillbaka",
   "discussionForum.title": "Forum för företag vid dubbelregistrering",
-  "discussionForum.description": "Systemet har upptäckt att {{duplicateCount}} andra ombud har registrerat [Municipality] som sökande organ. Du bör ta kontakt med övriga sökande. Det får bara finnas en registrering när ansökningsomgången startar. Om du inte kan lösa problemet kan du be Europeiska kommissionen om hjälp.",
+  "discussionForum.description": "Systemet har upptäckt att {{duplicateCount}} andra ombud har registrerat {{municipality}} som sökande organ. Du bör ta kontakt med övriga sökande. Det får bara finnas en registrering när ansökningsomgången startar. Om du inte kan lösa problemet kan du be Europeiska kommissionen om hjälp.",
   "discussionForum.beneficiary.registrations": "Registreringar",
   "discussionForum.beneficiary.registration1": "Registrering 1 (du)",
   "shared.postal-code.label": "Postnummer",

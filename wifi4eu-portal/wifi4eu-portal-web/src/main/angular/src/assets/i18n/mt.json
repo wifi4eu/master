@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Il-messaġġ tiegħek",
   "shared.back.button": "Lura",
   "discussionForum.title": "Diskussjoni bejn kumpaniji għal reġistrazzjonijiet multipli",
-  "discussionForum.description": "Is-sistema sabet li {{duplicateCount}} rappreżentanti oħra rreġistraw għal [Muniċipalità] bħala entità eliġibbli. Tista’ tibda konverżazzjoni mal-applikant(i) l-ieħor/l-oħra. Jekk jogħġbok kun af li reġistrazzjoni waħda biss għandha tiġi rreġistrata fil-mument tal-varar tas-sejħa. Jekk ma jintlaħaq ebda ftehim dwar ir-reġistrazzjoni valida, tista’ titlob lill-Kummissjoni Ewropea bie{{duplicateCount}} tintervjeni.",
+  "discussionForum.description": "Is-sistema sabet li {{duplicateCount}} rappreżentanti oħra rreġistraw għal {{municipality}} bħala entità eliġibbli. Tista’ tibda konverżazzjoni mal-applikant(i) l-ieħor/l-oħra. Jekk jogħġbok kun af li reġistrazzjoni waħda biss għandha tiġi rreġistrata fil-mument tal-varar tas-sejħa. Jekk ma jintlaħaq ebda ftehim dwar ir-reġistrazzjoni valida, tista’ titlob lill-Kummissjoni Ewropea bie{{duplicateCount}} tintervjeni.",
   "discussionForum.beneficiary.registrations": "Reġistrazzjonijiet",
   "discussionForum.beneficiary.registration1": "Reġistrazzjoni {{selfRegistration}} (inti)",
   "shared.postal-code.label": "Kodiċi postali",
