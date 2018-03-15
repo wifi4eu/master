@@ -4,7 +4,6 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.queue.CloudQueue;
 import com.microsoft.azure.storage.queue.CloudQueueMessage;
 import com.microsoft.azure.storage.queue.MessageUpdateFields;
-import wifi4eu.wifi4eu.azure.constants.QueueConstants;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -14,9 +13,8 @@ public class Queue {
 
     private final QueueUtils utils;
 
-    public Queue(){
-        //TODO: change QueueConstants.QUEUE_NAME in constructor
-        utils = new QueueUtils(QueueConstants.QUEUE_NAME);
+    public Queue(final String queueName){
+        utils = new QueueUtils(queueName);
     }
 
     public void createAzureQueue() throws URISyntaxException,
