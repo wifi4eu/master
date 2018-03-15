@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from "@angular/core";
+import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { UserApi } from "../../shared/swagger/api/UserApi";
 import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
@@ -40,11 +40,9 @@ export class BeneficiaryProfileComponent {
     private threadId: number;
     private hasDiscussion: boolean = false;
     private discussionThreads: ThreadDTOBase[] = [];
-    @ViewChild("emailInput") emailInput: ElementRef;
-    @ViewChild("emailMayor") emailMayor: ElementRef;
 
     constructor(private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private userApi: UserApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private localStorageService: LocalStorageService, private router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
-      let storedUser = this.localStorageService.get('user');
+        let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
             this.userApi.getUserById(this.user.id).subscribe(
@@ -111,24 +109,11 @@ export class BeneficiaryProfileComponent {
         }
     }
 
-    private disableEvent(event) {
-      if(event.cancelable){
-        event.preventDefault();
-      }      
-      return false;
-    }
-
-    private addEventListeners(events, element) {
-      events.forEach(event => {
-        element.addEventListener(event, this.disableEvent.bind(this));
-      });
-    }
-
     private displayModal(name: string, index?: number) {
         switch (name) {
             case 'user':
+                Object.assign(this.editedUser, this.user);
                 this.displayUser = true;
-                this.addEventListeners(['dragenter', 'dragover', 'drop', 'keydown', 'paste', 'cut'], this.emailInput.nativeElement);
                 break;
             case 'municipality':
                 this.currentEditIndex = index;
@@ -139,7 +124,6 @@ export class BeneficiaryProfileComponent {
                 this.currentEditIndex = index;
                 Object.assign(this.editedMayor, this.mayors[index]);
                 this.displayMayor = true;
-                this.addEventListeners(['dragenter', 'dragover', 'drop', 'keydown', 'paste', 'cut'], this.emailMayor.nativeElement);
                 break;
             case 'password':
                 this.userApi.ecasChangePassword().subscribe(
@@ -156,8 +140,8 @@ export class BeneficiaryProfileComponent {
     }
 
     private saveUserChanges() {
-        if(this.editedUser.email != this.user.email){
-          this.editedUser.email = this.user.email;
+        if (this.editedUser.email != this.user.email) {
+            this.editedUser.email = this.user.email;
         }
         this.submittingData = true;
         this.userApi.saveUserChanges(this.editedUser).subscribe(
@@ -172,6 +156,12 @@ export class BeneficiaryProfileComponent {
     }
 
     private saveMunicipalityChanges() {
+        if (this.editedMunicipality.country != this.editedMunicipality[this.currentEditIndex].country) {
+            this.editedMunicipality.country = this.editedMunicipality[this.currentEditIndex].country;
+        }
+        if (this.editedMunicipality.name != this.editedMunicipality[this.currentEditIndex].name) {
+            this.editedMunicipality.name = this.editedMunicipality[this.currentEditIndex].name;
+        }
         this.submittingData = true;
         this.municipalityApi.createMunicipality(this.editedMunicipality).subscribe(
             (response: ResponseDTOBase) => {
@@ -185,8 +175,8 @@ export class BeneficiaryProfileComponent {
     }
 
     private saveMayorChanges() {
-        if(this.editedMayor.email != this.mayors[this.currentEditIndex].email){
-          this.editedMayor.email = this.mayors[this.currentEditIndex].email;
+        if (this.editedMayor.email != this.mayors[this.currentEditIndex].email) {
+            this.editedMayor.email = this.mayors[this.currentEditIndex].email;
         }
         this.submittingData = true;
         this.mayorApi.createMayor(this.editedMayor).subscribe(
@@ -205,7 +195,6 @@ export class BeneficiaryProfileComponent {
         this.displayUser = false;
         this.displayMunicipality = false;
         this.displayMayor = false;
-        Object.assign(this.editedUser, this.user);
     }
 
     private deleteRegistration() {
@@ -230,9 +219,5 @@ export class BeneficiaryProfileComponent {
 
     private goToDiscussion() {
         this.router.navigate(['../discussion-forum/', this.threadId], {relativeTo: this.route});
-    }
-
-    private preventPaste(event: any) {
-        return false;
     }
 }

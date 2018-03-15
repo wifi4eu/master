@@ -27,11 +27,11 @@ public class Municipality {
     @Column(name = "postal_code")
     private String postalCode;
 
-    @Column(name = "country")
+    @Column(name = "country", updatable = false)
     private String country;
 
     @ManyToOne
-    @JoinColumn(name = "lau")
+    @JoinColumn(name = "lau", updatable = false)
     private Lau lau;
 
     @OneToMany(mappedBy = "municipality")

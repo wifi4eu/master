@@ -122,8 +122,7 @@
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayContact" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false"
-              [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+              [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <p class="beneficiaryMayor center">{{ 'suppRegistration.contact.person' | translate }}</p>
         <form (ngSubmit)="saveSupplierChanges()" #profileFormContact="ngForm">
             <div class="form-group ui-g">
@@ -132,8 +131,8 @@
                     <div class="form-group">
                         <label for="contactName">{{ 'shared.name.label' | translate }}</label>
                         <input id="contactName" type="text" [(ngModel)]="editedSupplier.contactName"
-                               class="form-control"
-                               name="contactName" ngcontrol="contactName" #contactName="ngModel" required>
+                               class="form-control" name="contactName" ngcontrol="contactName"
+                               #contactName="ngModel" required>
                         <div [hidden]="contactName.valid || contactName.pristine" class="alert alert-danger">
                             {{ 'shared.name.required' | translate }}
                         </div>
@@ -147,11 +146,9 @@
                     <div class="form-group">
                         <label for="contactSurname">{{ 'shared.surname.label' | translate }}</label>
                         <input id="contactSurname" type="text" [(ngModel)]="editedSupplier.contactSurname"
-                               class="form-control"
-                               name="contactSurname" ngcontrol="contactSurname" #contactSurname="ngModel"
-                               required>
-                        <div [hidden]="contactSurname.valid || contactSurname.pristine"
-                             class="alert alert-danger">
+                               class="form-control" name="contactSurname" ngcontrol="contactSurname"
+                               #contactSurname="ngModel" required>
+                        <div [hidden]="contactSurname.valid || contactSurname.pristine" class="alert alert-danger">
                             {{ 'shared.surname.required' | translate }}
                         </div>
                     </div>
@@ -176,8 +173,9 @@
                             </div>
                         </div>
                         <div class="ui-g-5">
-                            <label for="contactPhoneNumber">{{ 'suppRegistration.phone.number' | translate
-                                }}</label>
+                            <label for="contactPhoneNumber">
+                                {{ 'suppRegistration.phone.number' | translate }}
+                            </label>
                             <input id="contactPhoneNumber" type="text"
                                    [(ngModel)]="editedSupplier.contactPhoneNumber"
                                    class="form-control"
@@ -198,13 +196,9 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="contactEmail">{{ 'shared.email.label' | translate }}</label>
-                        <input id="contactEmail" type="text" [(ngModel)]="editedSupplier.contactEmail"
-                               class="form-control"
-                               name="contactEmail" ngcontrol="contactEmail" #contactEmail="ngModel" required
-                               disabled>
-                        <div [hidden]="contactEmail.valid || contactEmail.pristine" class="alert alert-danger">
-                            {{ 'email.required' | translate }}
-                        </div>
+                        <label class="form-control" id="contactEmail" name="contactEmail">
+                            <b>{{editedSupplier.contactEmail}}</b>
+                        </label>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -228,8 +222,7 @@
 <div class="container font">
     <div class="ui-g-1"></div>
     <p-dialog [(visible)]="displayCompany" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false"
-              [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+              [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <p class="beneficiaryMayor center">{{ 'suppRegistration.company.details' | translate }}</p>
         <form (ngSubmit)="saveSupplierChanges()" #profileFormCompany="ngForm">
             <div class="form-group ui-g">
@@ -252,8 +245,7 @@
                     <div class="form-group">
                         <label for="address">{{ 'suppRegistration.legal.address' | translate }}</label>
                         <input id="address" type="text" [(ngModel)]="editedSupplier.address"
-                               class="form-control"
-                               name="address" ngcontrol="address" #address="ngModel" required>
+                               class="form-control" name="address" ngcontrol="address" #address="ngModel" required>
                         <div [hidden]="address.valid || address.pristine" class="alert alert-danger">
                             {{'suppRegistration.address.required' | translate }}
                         </div>
@@ -350,8 +342,9 @@
         <p class="beneficiaryMayorModal">{{'shared.beneficiaryProfile.password' | translate }}</p>
         <form #profileFormPassword="ngForm">
             <div class="form-group profileDialog">
-                <label class="labelModal" for="currentPassword_field">{{ 'currentPassword.label' | translate
-                    }}</label>
+                <label class="labelModal" for="currentPassword_field">
+                    {{ 'currentPassword.label' | translate }}
+                </label>
                 <input id="currentPassword_field" type="password" [(ngModel)]="currentPassword"
                        class="form-control beneficiaryProfileI"
                        name="currentPassword_field" ngcontrol="currentPassword_field"
@@ -362,8 +355,9 @@
                     {{ 'password.required' | translate }}
                 </div>
                 <a class="forgotPassword" routerLink="/forgot">Forgot password?</a><br>
-                <label class="labelModal" for="newPassword_field">{{ 'shared.password.label' | translate
-                    }}</label>
+                <label class="labelModal" for="newPassword_field">
+                    {{ 'shared.password.label' | translate }}
+                </label>
                 <input id="newPassword_field" type="password" [(ngModel)]="newPassword"
                        class="form-control beneficiaryProfileI" name="newPassword_field"
                        ngcontrol="newPassword_field" #newPassword_field="ngModel"
