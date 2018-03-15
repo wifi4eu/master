@@ -45,8 +45,19 @@ export class QueueComponent implements AzureQueue{
         return message;
     }
 
-    public updateMessageAzureQueue(): void {
-
+    public updateMessageAzureQueue(searchMessageContent: string, updateMessageId: string, updateMessageContent: string): void {
+        this.queueSvc.getMessages('myqueue', function(error, result, response){
+            if(!error){
+                this.queueSvc.updateMessage('myqueue', updateMessageId, updateMessageContent, 10, {messageText: updateMessageContent},
+                    function(error, result, response){
+                        if(error){
+                            console.error("QueueComponent - updateMessageAzureQueue", error);
+                        } else {
+                            console.log("Updated message ", updateMessageContent, searchMessageContent);
+                        }
+                });
+            }
+        });
     }
 
     public removeMessageAzureQueue(): void {
