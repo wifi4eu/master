@@ -4,6 +4,7 @@ export class QueueComponent implements AzureQueue{
 
     private azure = require('azure-storage');
     private queueSvc = this.azure.createQueueService();
+    private queueName = this.queueName;
 
     constructor() {
 
@@ -11,7 +12,7 @@ export class QueueComponent implements AzureQueue{
 
 
     public createAzureQueue(): void {
-        this.queueSvc.createQueueIfNotExists('myqueue', function(error, result, response){
+        this.queueSvc.createQueueIfNotExists(this.queueName, function(error, result, response){
             if(error){
                 console.error("QueueComponent - createAzureQueue", error);
             } else {
@@ -21,7 +22,7 @@ export class QueueComponent implements AzureQueue{
     }
 
     public addMessageAzureQueue(messageContent: string): void {
-        this.queueSvc.createMessage('myqueue', messageContent, function(error, result, response){
+        this.queueSvc.createMessage(this.queueName, messageContent, function(error, result, response){
             if(error){
                 console.error("QueueComponent - addMessageAzureQueue", error);
             } else {
@@ -33,7 +34,7 @@ export class QueueComponent implements AzureQueue{
     public peekMessageAzureQueue(): string {
         let message: string = "";
 
-        this.queueSvc.peekMessages('myqueue', function(error, result, response){
+        this.queueSvc.peekMessages(this.queueName, function(error, result, response){
             if(error){
                 console.error("QueueComponent - peekMessageAzureQueue", error);
             } else {
@@ -46,9 +47,9 @@ export class QueueComponent implements AzureQueue{
     }
 
     public updateMessageAzureQueue(searchMessageContent: string, updateMessageId: string, updateMessageContent: string): void {
-        this.queueSvc.getMessages('myqueue', function(error, result, response){
+        this.queueSvc.getMessages(this.queueName, function(error, result, response){
             if(!error){
-                this.queueSvc.updateMessage('myqueue', updateMessageId, updateMessageContent, 10, {messageText: updateMessageContent},
+                this.queueSvc.updateMessage(this.queueName, updateMessageId, updateMessageContent, 10, {messageText: updateMessageContent},
                     function(error, result, response){
                         if(error){
                             console.error("QueueComponent - updateMessageAzureQueue", error);
@@ -61,11 +62,11 @@ export class QueueComponent implements AzureQueue{
     }
 
     public removeMessageAzureQueue(): void {
-        this.queueSvc.getMessages('myqueue', function(error, result, response){
+        this.queueSvc.getMessages(this.queueName, function(error, result, response){
             if(!error){
                 // Message text is in messages[0].messageText
                 let message = result[0];
-                this.queueSvc.deleteMessage('myqueue', message.messageId, message.popReceipt, function(error, response){
+                this.queueSvc.deleteMessage(this.queueName, message.messageId, message.popReceipt, function(error, response){
                     if(error){
                         console.error("QueueComponent - removeMessageAzureQueue", error);
                     } else {
@@ -78,7 +79,7 @@ export class QueueComponent implements AzureQueue{
 
     public sizeAzureQueue(): number {
         let size = 0;
-        this.queueSvc.getQueueMetadata('myqueue', function(error, result, response){
+        this.queueSvc.getQueueMetadata(this.queueName, function(error, result, response){
             if(error){
                 console.error("QueueComponent - sizeAzureQueue", error);
             } else {
