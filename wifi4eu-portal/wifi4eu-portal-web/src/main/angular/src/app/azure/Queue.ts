@@ -23,16 +23,26 @@ export class QueueComponent implements AzureQueue{
     public addMessageAzureQueue(messageContent: string): void {
         this.queueSvc.createMessage('myqueue', messageContent, function(error, result, response){
             if(error){
-                console.error("QueueComponent - createAzureQueue", error);
+                console.error("QueueComponent - addMessageAzureQueue", error);
             } else {
-                console.log("Queue created or exists");
+                console.log("Added ", messageContent);
             }
         });
     }
 
     public peekMessageAzureQueue(): string {
+        let message: string = "";
 
-        return "";
+        this.queueSvc.peekMessages('myqueue', function(error, result, response){
+            if(error){
+                console.error("QueueComponent - peekMessageAzureQueue", error);
+            } else {
+                console.log("Message text is ", result[0].messageText);
+                message = result[0].messageText;
+            }
+        });
+
+        return message;
     }
 
     public updateMessageAzureQueue(): void {
