@@ -156,11 +156,11 @@ export class BeneficiaryProfileComponent {
     }
 
     private saveMunicipalityChanges() {
-        if (this.editedMunicipality.country != this.editedMunicipality[this.currentEditIndex].country) {
-            this.editedMunicipality.country = this.editedMunicipality[this.currentEditIndex].country;
+        if (this.editedMunicipality.country != this.municipalities[this.currentEditIndex].country) {
+            this.editedMunicipality.country = this.municipalities[this.currentEditIndex].country;
         }
-        if (this.editedMunicipality.name != this.editedMunicipality[this.currentEditIndex].name) {
-            this.editedMunicipality.name = this.editedMunicipality[this.currentEditIndex].name;
+        if (this.editedMunicipality.name != this.municipalities[this.currentEditIndex].name) {
+            this.editedMunicipality.name = this.municipalities[this.currentEditIndex].name;
         }
         this.submittingData = true;
         this.municipalityApi.createMunicipality(this.editedMunicipality).subscribe(
