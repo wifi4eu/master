@@ -10,7 +10,15 @@ export class QueueComponent implements AzureQueue{
 
 
     public createAzureQueue(): void {
+        let queueSvc = this.azure.createQueueService();
 
+        queueSvc.createQueueIfNotExists('myqueue', function(error, result, response){
+            if(error){
+                console.error("QueueComponent - createAzureQueue", error);
+            } else {
+                console.log("Queue created or exists");
+            }
+        });
     }
 
     public peekMessageAzureQueue(): string {
