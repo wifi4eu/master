@@ -38,21 +38,39 @@ public class Queue {
                                                                             StorageException,
                                                                             InvalidKeyException {
 
-            // Retrieve storage account from connection-string.
-            CloudStorageAccount storageAccount =
-                    CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
+        // Retrieve storage account from connection-string.
+        CloudStorageAccount storageAccount =
+                CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
 
-            // Create the queue client.
-            CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
+        // Create the queue client.
+        CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
 
-            // Retrieve a reference to a queue.
-            CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
+        // Retrieve a reference to a queue.
+        CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
 
-            // Create the queue if it doesn't already exist.
-            queue.createIfNotExists();
+        // Create the queue if it doesn't already exist.
+        queue.createIfNotExists();
 
-            // Create a message and add it to the queue.
-            CloudQueueMessage message = new CloudQueueMessage(messageContent);
-            queue.addMessage(message);
+        // Create a message and add it to the queue.
+        CloudQueueMessage message = new CloudQueueMessage(messageContent);
+        queue.addMessage(message);
+    }
+
+    public CloudQueueMessage peekMessageAzureQueue() throws URISyntaxException,
+                                                                InvalidKeyException,
+                                                                StorageException {
+
+        // Retrieve storage account from connection-string.
+        CloudStorageAccount storageAccount =
+                CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
+
+        // Create the queue client.
+        CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
+
+        // Retrieve a reference to a queue.
+        CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
+
+        // Peek at the next message.
+        return queue.peekMessage();
     }
 }
