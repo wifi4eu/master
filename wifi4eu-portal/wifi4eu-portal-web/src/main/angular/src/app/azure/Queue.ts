@@ -77,7 +77,17 @@ export class QueueComponent implements AzureQueue{
     }
 
     public sizeAzureQueue(): number {
-        return 0;
+        let size = 0;
+        this.queueSvc.getQueueMetadata('myqueue', function(error, result, response){
+            if(error){
+                console.error("QueueComponent - sizeAzureQueue", error);
+            } else {
+                size = result.approximateMessageCount;
+                console.log("Queue length is ", size);
+            }
+        });
+
+        return size;
     }
 
 
