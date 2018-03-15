@@ -4,17 +4,24 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.queue.CloudQueue;
 import com.microsoft.azure.storage.queue.CloudQueueMessage;
 import com.microsoft.azure.storage.queue.MessageUpdateFields;
+import org.springframework.stereotype.Component;
+import wifi4eu.wifi4eu.azure.constants.QueueConstants;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.EnumSet;
 
-public class Queue {
+@Component
+public class Queue implements AzureQueue {
 
-    private final QueueUtils utils;
+    private final Utils utils;
+
+    public Queue(){
+        utils = new Utils(QueueConstants.DEFAULT_QUEUE_NAME);
+    }
 
     public Queue(final String queueName){
-        utils = new QueueUtils(queueName);
+        utils = new Utils(queueName);
     }
 
     public void createAzureQueue() throws URISyntaxException,
@@ -106,5 +113,13 @@ public class Queue {
 
         // Retrieve the newly cached approximate message count.
         return queue.getApproximateMessageCount();
+    }
+
+    public String getQueueName() {
+        return utils.getUsedQueue();
+    }
+
+    public void setQueueName(final String name) {
+        utils.setUsedQueue(name);
     }
 }

@@ -5,20 +5,19 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.queue.CloudQueue;
 import com.microsoft.azure.storage.queue.CloudQueueClient;
 import wifi4eu.wifi4eu.azure.constants.ConectionConstants;
-import wifi4eu.wifi4eu.azure.constants.QueueConstants;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 
-public class QueueUtils {
+public class Utils {
 
-    private final String usedQueue;
+    private String usedQueue;
 
-    public QueueUtils(final String workingQueue) {
+    Utils(final String workingQueue) {
         this.usedQueue = workingQueue;
     }
 
-    public CloudQueue generateCloudQueue() throws URISyntaxException,
+    CloudQueue generateCloudQueue() throws URISyntaxException,
                                                     StorageException,
                                                     InvalidKeyException {
 
@@ -30,8 +29,14 @@ public class QueueUtils {
         CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
 
         // Retrieve a reference to a queue.
-        return queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
+        return queueClient.getQueueReference(usedQueue);
     }
 
+    String getUsedQueue() {
+        return usedQueue;
+    }
 
+    void setUsedQueue(String anUsedQueue) {
+        this.usedQueue = anUsedQueue;
+    }
 }
