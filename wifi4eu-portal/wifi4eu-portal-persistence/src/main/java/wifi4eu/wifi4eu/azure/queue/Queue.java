@@ -16,7 +16,9 @@ import java.util.EnumSet;
 public class Queue {
 
 
-    public Queue(){}
+    public Queue(){
+        //TODO: change QueueConstants.QUEUE_NAME in constructor
+    }
 
     public void createAzureQueue() throws URISyntaxException,
                                             StorageException,
@@ -80,35 +82,56 @@ public class Queue {
                                                                                                                         URISyntaxException,
                                                                                                                         InvalidKeyException {
 
-            // Retrieve storage account from connection-string.
-            CloudStorageAccount storageAccount =
-                    CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
+        // Retrieve storage account from connection-string.
+        CloudStorageAccount storageAccount =
+                CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
 
-            // Create the queue client.
-            CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
+        // Create the queue client.
+        CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
 
-            // Retrieve a reference to a queue.
-            CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
+        // Retrieve a reference to a queue.
+        CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
 
-            // The maximum number of messages that can be retrieved is 32.
-            final int MAX_NUMBER_OF_MESSAGES_TO_PEEK = 32;
+        // The maximum number of messages that can be retrieved is 32.
+        final int MAX_NUMBER_OF_MESSAGES_TO_PEEK = 32;
 
-            // Loop through the messages in the queue.
-            for (CloudQueueMessage message : queue.retrieveMessages(MAX_NUMBER_OF_MESSAGES_TO_PEEK,1,null,null)) {
+        // Loop through the messages in the queue.
+        for (CloudQueueMessage message : queue.retrieveMessages(MAX_NUMBER_OF_MESSAGES_TO_PEEK,1,null,null)) {
 
-                // Check for a specific string.
-                if (message.getMessageContentAsString().equals(searchMessageContent)) {
+            // Check for a specific string.
+            if (message.getMessageContentAsString().equals(searchMessageContent)) {
 
-                    // Modify the content of the first matching message.
-                    message.setMessageContent(updateMessageContent);
-                    // Set it to be visible in 30 seconds.
-                    EnumSet<MessageUpdateFields> updateFields =
-                            EnumSet.of(MessageUpdateFields.CONTENT,
-                                    MessageUpdateFields.VISIBILITY);
-                    // Update the message.
-                    queue.updateMessage(message, 30, updateFields, null, null);
-                    break;
-                }
+                // Modify the content of the first matching message.
+                message.setMessageContent(updateMessageContent);
+                // Set it to be visible in 30 seconds.
+                EnumSet<MessageUpdateFields> updateFields =
+                        EnumSet.of(MessageUpdateFields.CONTENT,
+                                MessageUpdateFields.VISIBILITY);
+                // Update the message.
+                queue.updateMessage(message, 30, updateFields, null, null);
+                break;
             }
+        }
+    }
+
+    public long sizeAzureQueue() throws URISyntaxException,
+                                            InvalidKeyException,
+                                            StorageException {
+
+        // Retrieve storage account from connection-string.
+        CloudStorageAccount storageAccount =
+                CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
+
+        // Create the queue client.
+        CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
+
+        // Retrieve a reference to a queue.
+        CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
+
+        // Download the approximate message count from the server.
+        queue.downloadAttributes();
+
+        // Retrieve the newly cached approximate message count.
+        return queue.getApproximateMessageCount();
     }
 }
