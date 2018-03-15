@@ -50,7 +50,19 @@ export class QueueComponent implements AzureQueue{
     }
 
     public removeMessageAzureQueue(): void {
-
+        this.queueSvc.getMessages('myqueue', function(error, result, response){
+            if(!error){
+                // Message text is in messages[0].messageText
+                let message = result[0];
+                this.queueSvc.deleteMessage('myqueue', message.messageId, message.popReceipt, function(error, response){
+                    if(error){
+                        console.error("QueueComponent - removeMessageAzureQueue", error);
+                    } else {
+                        console.log("Message deleted");
+                    }
+                });
+            }
+        });
     }
 
     public sizeAzureQueue(): number {
