@@ -89,7 +89,7 @@
   "benefRegistration.preview.registration.check2": "Saskaņā ar Eiropas Parlamenta un Padomes 2017. gada 25. oktobra Regulu (ES) 2017/1953 esmu izlasījis šādus WiFi4EU iniciatīvas nosacījumus un tiem piekrītu. ",
   "benefRegistration.preview.registration.check3": "Jebkura iniciatīvas WiFi4EU atbalstīta bezvadu interneta ierīkošana tiks veikta, izmantojot ātrdarbīgu platjoslas savienojamību, kas ļaus lietotājiem nodrošināt kvalitatīvu internetu. Piekļuve internetam būs bez maksas un tiks nodrošināta bez diskriminējošiem nosacījumiem vismaz trīs gadus. ",
   "benefRegistration.preview.registration.check4": "Bezvadu interneta piekļuves punkti, kas dublējas ar esošiem līdzīga rakstura, tostarp kvalitātes, bezmaksas privātiem vai publiskiem piedāvājumiem tajā pašā sabiedriskajā telpā, nav tiesīgi saņemt WiFi4EU finansējumu. No šādas dublēšanās var izvairīties, nodrošinot, ka saskaņā ar šo iniciatīvu finansēto piekļuves punktu darbības rādiuss tiek plānots tā, lai tas vispirms aptvertu publiskas vietas un nepārklātos ar esošiem līdzīga rakstura privātiem vai publiskiem piedāvājumiem.",
-  "benefRegistration.preview.registrations.check5": "Finansējums ir pieejams, lai segtu viena vai vairāku interneta piekļuves punktu, kas paredzēti lokāla bezvadu interneta tīkla izveidei, iegādes un ierīkošanas izmaksas. Finansējumu nevar saņemt darbības izmaksām (ieskaitot pieslēgumu jeb interneta abonementu).",
+  "benefRegistration.preview.registrations.check5": "Finansējums ir pieejams, lai segtu interneta piekļuves punktu, kas paredzēti lokāla bezvadu interneta tīkla izveidei, iegādes un ierīkošanas izmaksas. Finansējumu nevar saņemt darbības izmaksām (ieskaitot pieslēgumu jeb interneta abonementu).",
   "benefRegistration.preview.registrations.check6": "Bezvadu interneta piekļuves punktiem būs Komisijas nodrošināts vienots vizuālais noformējums, ieskaitot kopēju SSID ar nosaukumu \"WiFi4EU\" un saites uz saistītajiem tiešsaistes rīkiem.",
   "benefRegistration.preview.registrations.check7": "WiFi4EU vaučera saņēmējs apņemsies iepirkt vajadzīgo aprīkojumu un/vai saistītos ierīkošanas pakalpojumus saskaņā ar piemērojamiem tiesību aktiem, lai nodrošinātu, ka projekti nepamatoti nekropļo konkurenci. Saņēmējs izmantos jaunāko un labāko tirgū pieejamo bezvadu interneta aprīkojumu.",
   "benefRegistration.preview.registrations.check9": "Apliecinu, ka esmu pilnvarots vai man ir atļauts iesniegt pieteikumu šajā veidlapā norādītās(-o) pašvaldības(-u) vārdā.",
@@ -200,7 +200,7 @@
   "mediationRequest.selectText": "Šīs mediācijas procedūras mērķis ir noteikt, kura reģistrācija ir uzskatāma par pašvaldības {{municipality}} reģistrāciju.",
   "discussionForum.sendMessage.subject": "Jūsu ziņojums",
   "shared.back.button": "Atpakaļ",
-  "discussionForum.title": "Uzņēmumu diskusijas par vairākkārtējām reģistrācijām",
+  "discussionForum.title": "Pašvaldības diskusijas par vairākkārtējām reģistrācijām",
   "discussionForum.description": "Sistēma ir konstatējusi, ka pašvaldību {{municipality}} kā pieteikšanās kritērijiem atbilstīgu juridisku personu ir reģistrējis(-uši) vēl {{duplicateCount}} pārstāvis(-ji). Varat ar pārējiem pieteikuma iesniedzējiem sākt saraksti. Ņemiet vērā, ka uzaicinājuma izsludināšanas brīdī konkrētā pašvaldība drīkst būt reģistrēta tikai vienreiz. Ja nav iespējams panākt vienošanos par to, kura reģistrācija ir derīga, varat lūgt iesaistīties Eiropas Komisiju.",
   "discussionForum.beneficiary.registrations": "Reģistrācijas ",
   "discussionForum.beneficiary.registration1": "{{selfRegistration}}. reģistrācija (jūs)",
@@ -210,7 +210,7 @@
   "discussionForum.editRegistration": "Labot manu reģistrāciju",
   "discussionForum.mediationButton": "Noklikšķiniet uz zemāk redzamās pogas, lai lūgtu WiFi4EU iejaukties un atrisināt problēmu.",
   "discussionForum.askMediation": "Lūgt mediāciju",
-  "discussionForum.beneficiary.registrationNumber": "2. reģistrācija",
+  "discussionForum.beneficiary.registrationNumber": ". reģistrācija",
   "discussionForum.discussion": "Diskusija",
   "discussionForum.messagesDescription": "Zemāk redzama jūsu sarakste ar citiem uzņēmumiem.",
   "discussionForum.search": "Meklēt diskusijā",
@@ -308,7 +308,7 @@
   "benefPortal.voucher.applyforvoucher": "Pieprasīt vaučeru",
   "benefPortal.voucher.alreadyapplied": "Jūs jau esat pieprasījis vaučeru",
   "benefPortal.voucher.timeleft.title": "Pieteikumu iesniegšanā sāksies pēc",
-  "benefPortal.voucher.timeleft.subtitle": "Pieteikumu iesniegšanā sāksies pēc",
+  "benefPortal.voucher.timeleft.subtitle": "Nākamais konkurss (uzaicinājums iesniegt pieteikumus) tiks izsludināts {{date}} plkst. {{hour}} (pēc Centrāleiropas laika). ",
   "home.whatch.video": "Skatīties video",
   "home.part3.text4": "Līdz konkursa izsludināšanai atlikušais laiks:",
   "home.part4.subtitle": "Sekojiet šīm saitēm, ja vajadzīga sīkāka informācija par šo projektu:",
@@ -477,5 +477,6 @@
   "benefPortal.beneficiary.withdrawRegistration.Failure": "Kļūdas dēļ jūsu reģistrācija nav izdzēsta.",
   "shared.choose.label": "Izvēlēties",
   "benefRegistration.legalRepresentative.details": "Likumīgais pārstāvis ",
-  "suppPortal.profile.deleteLogo": "Dzēst Uzņēmuma logo"
+  "suppPortal.profile.deleteLogo": "Dzēst Uzņēmuma logo",
+  "suppPortal.withdraw-registration.text": "Vairs nevēlaties piegādāt aprīkojumu un veikt uzstādīšanas darbus saistībā ar iniciatīvu WiFi4EU? Noklikšķiniet zemāk, lai atceltu savu reģistrāciju."
 }

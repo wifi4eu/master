@@ -89,7 +89,7 @@
   "benefRegistration.preview.registration.check2": "De conformidad con el Reglamento (UE) 2017/1953 del Parlamento Europeo y del Consejo, de 25 de octubre de 2017, he leído y aceptado las condiciones siguientes de la iniciativa: ",
   "benefRegistration.preview.registration.check3": "Todas las instalaciones wifi realizadas dentro de la iniciativa WiFi4EU se basarán en una conectividad de banda ancha de alta velocidad capaz de ofrecer a los usuarios una experiencia de internet de alta calidad. El acceso a internet será gratuito y sin condiciones discriminatorias durante un período mínimo de tres años. ",
   "benefRegistration.preview.registration.check4": "No podrán optar a la ayuda financiera de la iniciativa WiFi4EU los puntos de acceso wifi que dupliquen ofertas gratuitas públicas o privadas de características similares, calidad incluida, existentes en el mismo ámbito público. Dicha duplicación podrá evitarse garantizando que el conjunto de puntos de acceso financiados en virtud de la presente iniciativa esté diseñado para cubrir principalmente espacios públicos y no se solape con ofertas públicas o privadas ya existentes de características similares.",
-  "benefRegistration.preview.registrations.check5": "La financiación se destina a cubrir los costes de compra e instalación de uno o más puntos de acceso inalámbrico a internet para crear una red wifi local. Los gastos de funcionamiento (incluida cualquier suscripción de conectividad) no son subvencionables.",
+  "benefRegistration.preview.registrations.check5": "La financiación se destina a cubrir los costes de compra e instalación de puntos de acceso inalámbrico a internet para crear una red wifi local. Los gastos de funcionamiento (incluida cualquier suscripción de conectividad) no son subvencionables.",
   "benefRegistration.preview.registrations.check6": "Los puntos de acceso wifi seguirán una identidad visual común que será facilitada por la Comisión, incluido un SSID común denominado \"WiFi4EU\" y enlaces a las herramientas en línea asociadas.",
   "benefRegistration.preview.registrations.check7": "El beneficiario de un bono WiFi4EU se compromete a adquirir el equipo necesario y/o los servicios de instalación correspondientes de conformidad con la normativa aplicable para garantizar que los proyectos no falseen la competencia indebidamente. Utilizará los mejores y más recientes equipos wifi disponibles en el mercado.",
   "benefRegistration.preview.registrations.check9": "Confirmo que tengo autoridad o autorización para presentar una solicitud en nombre del municipio o municipios indicados en el presente formulario.",
@@ -200,7 +200,7 @@
   "mediationRequest.selectText": "El objetivo del procedimiento de mediación es determinar qué inscripción debe asignarse a {{municipality}}",
   "discussionForum.sendMessage.subject": "Su mensaje",
   "shared.back.button": "Atrás",
-  "discussionForum.title": "Debate entre empresas sobre inscripciones múltiples",
+  "discussionForum.title": "Debate entre municipios por inscripciones múltiples",
   "discussionForum.description": "El sistema ha detectado que otro u otros {{duplicateCount}} representantes se han inscrito en nombre de {{municipality}} como entidad elegible. Puede iniciar una conversación con los demás solicitantes. Tenga en cuenta que solo puede hacerse una inscripción por municipio en el momento de la publicación de la convocatoria. Si no se llega a un acuerdo sobre la inscripción válida, podrá solicitar la intervención de la Comisión Europea.",
   "discussionForum.beneficiary.registrations": "Inscripciones",
   "discussionForum.beneficiary.registration1": "Inscripción {{selfRegistration}} (la suya)",
@@ -305,7 +305,7 @@
   "benefPortal.voucher.backhome": "Volver a la página principal",
   "benefPortal.voucher.apply.title": "Ya puedes inscribirte como proveedor",
   "benefPortal.voucher.apply.subtitle": "Y ofrecer a tus ciudadanos conexión en cualquier parte.",
-  "benefPortal.voucher.applyforvoucher": "Inscribirse como proveedor",
+  "benefPortal.voucher.applyforvoucher": "Solicitar un cupón",
   "benefPortal.voucher.alreadyapplied": "Ya has solicitado un cupón",
   "benefPortal.voucher.timeleft.title": "Tiempo restante para la competición",
   "benefPortal.voucher.timeleft.subtitle": "La próxima convocatoria de aplicaciones se abrirá el {{date}} a las {{hour}} (Hora Central Europea). ",
@@ -503,5 +503,6 @@
   "benefPortal.beneficiary.withdrawRegistration.Failure": "Se ha producido un error y su inscripción no puede eliminarse.",
   "shared.choose.label": "Elegir",
   "benefRegistration.legalRepresentative.details": "Representante legal ",
-  "suppPortal.profile.deleteLogo": "Eliminar Logotipo de la empresa"
+  "suppPortal.profile.deleteLogo": "Eliminar Logotipo de la empresa",
+  "suppPortal.withdraw-registration.text": "¿Ya no está interesado en proporcionar material y servicios de instalación para WiFi4EU? Pulse en el siguiente enlace para retirar su inscripción."
 }
