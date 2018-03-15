@@ -64,11 +64,8 @@ public class Queue implements AzureQueue {
 
         CloudQueue queue = utils.generateCloudQueue();
 
-        // The maximum number of messages that can be retrieved is 32.
-        final int MAX_NUMBER_OF_MESSAGES_TO_PEEK = 32;
-
         // Loop through the messages in the queue.
-        for (CloudQueueMessage message : queue.retrieveMessages(MAX_NUMBER_OF_MESSAGES_TO_PEEK,1,null,null)) {
+        for (CloudQueueMessage message : queue.retrieveMessages(QueueConstants.MAX_NUMBER_OF_MESSAGES_TO_PEEK,1,null,null)) {
 
             // Check for a specific string.
             if (message.getMessageContentAsString().equals(searchMessageContent)) {
@@ -80,7 +77,7 @@ public class Queue implements AzureQueue {
                         EnumSet.of(MessageUpdateFields.CONTENT,
                                 MessageUpdateFields.VISIBILITY);
                 // Update the message.
-                queue.updateMessage(message, 30, updateFields, null, null);
+                queue.updateMessage(message, QueueConstants.VISIBILITY_TIMEOUT_SECONDS, updateFields, null, null);
                 break;
             }
         }
