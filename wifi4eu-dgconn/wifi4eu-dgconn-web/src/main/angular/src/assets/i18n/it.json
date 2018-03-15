@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Il tuo messaggio",
   "shared.back.button": "Indietro",
   "discussionForum.title": "Discussione tra le imprese per registrazioni multiple",
-  "discussionForum.description": "Il sistema ha rilevato che {{duplicateCount}} altri rappresentanti si sono registrati per [comune] come un soggetto giuridico ammissibile. Puoi avviare una conversazione con gli altri candidati. Attenzione: una sola registrazione dovrebbe essere registrata al momento della pubblicazione dell’invito a presentare candidature. Se non viene raggiunto un accordo sulla registrazione valida, si può chiedere alla Commissione europea di intervenire.",
+  "discussionForum.description": "Il sistema ha rilevato che {{duplicateCount}} altri rappresentanti si sono registrati per {{municipality}} come un soggetto giuridico ammissibile. Puoi avviare una conversazione con gli altri candidati. Attenzione: una sola registrazione dovrebbe essere registrata al momento della pubblicazione dell’invito a presentare candidature. Se non viene raggiunto un accordo sulla registrazione valida, si può chiedere alla Commissione europea di intervenire.",
   "discussionForum.beneficiary.registrations": "Registrazioni",
   "discussionForum.beneficiary.registration1": "Registrazione {{selfRegistration}} (tu)",
   "shared.postal-code.label": "Codice postale",

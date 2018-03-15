@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Uw bericht",
   "shared.back.button": "Terug",
   "discussionForum.title": "Overleg tussen inschrijvers van hetzelfde bedrijf",
-  "discussionForum.description": "Uit de gegevens van WiFi4EU blijkt dat zich {{duplicateCount}} anderen hebben ingeschreven namens [Municipality]. U kunt met de andere inschrijver(s) overleggen. Let op: Bij de start van de aanvraagronde mag er per gemeente maar één aanvraag worden ingediend. Wordt u het niet eens over de inschrijving, dan kunt u de Europese Commissie vragen om te bemiddelen.",
+  "discussionForum.description": "Uit de gegevens van WiFi4EU blijkt dat zich {{duplicateCount}} anderen hebben ingeschreven namens {{municipality}}. U kunt met de andere inschrijver(s) overleggen. Let op: Bij de start van de aanvraagronde mag er per gemeente maar één aanvraag worden ingediend. Wordt u het niet eens over de inschrijving, dan kunt u de Europese Commissie vragen om te bemiddelen.",
   "discussionForum.beneficiary.registrations": "Inschrijvingen",
   "discussionForum.beneficiary.registration1": "Inschrijving {{selfRegistration}} (uw inschrijving)",
   "shared.postal-code.label": "Postcode",
