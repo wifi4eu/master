@@ -114,6 +114,30 @@ public class Queue {
         }
     }
 
+    public void removeMessageAzureQueue() throws URISyntaxException,
+                                                    StorageException,
+                                                    InvalidKeyException {
+
+        // Retrieve storage account from connection-string.
+        CloudStorageAccount storageAccount =
+                CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
+
+        // Create the queue client.
+        CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
+
+        // Retrieve a reference to a queue.
+        CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
+
+        // Retrieve the first visible message in the queue.
+        CloudQueueMessage retrievedMessage = queue.retrieveMessage();
+
+        if (retrievedMessage != null) {
+
+            // Process the message in less than 30 seconds, and then delete the message.
+            queue.deleteMessage(retrievedMessage);
+        }
+    }
+
     public long sizeAzureQueue() throws URISyntaxException,
                                             InvalidKeyException,
                                             StorageException {
