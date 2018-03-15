@@ -89,7 +89,7 @@
   "benefRegistration.preview.registration.check2": "I enlighet med Europaparlamentets och rådets förordning (EU) 2017/1953 av den 25 oktober 2017 har jag läst och godkänner följande villkor: ",
   "benefRegistration.preview.registration.check3": "Alla wifi-installationer som får stöd från WiFi4EU ska bygga på snabbt bredband, så att användarna får en bra upplevelse. Tillgången till internet ska vara gratis och erbjudas i minst tre år, utan några diskriminerande villkor. ",
   "benefRegistration.preview.registration.check4": "Man kan inte få bidrag för åtkomstpunkter på samma offentliga plats som överlappar befintliga kostnadsfria privata eller offentliga erbjudanden med liknande egenskaper och kvalitet. De åtkomstpunkter som finansieras av initiativet bör därför i första hand täcka offentliga platser och inte överlappa täckningsområdet för befintliga privata eller offentliga erbjudanden med liknande egenskaper.",
-  "benefRegistration.preview.registrations.check5": "Bidraget ska täcka kostnader för inköp och installation av en eller flera wifi-åtkomstpunkter för att skapa ett lokalt trådlöst nätverk. Kommunerna måste själva stå för driftskostnader och eventuella internetabonnemang.",
+  "benefRegistration.preview.registrations.check5": "Bidraget ska täcka kostnader för inköp och installation av wifi-åtkomstpunkter för att skapa ett lokalt trådlöst nätverk. Kommunerna måste själva stå för driftskostnader och eventuella internetabonnemang.",
   "benefRegistration.preview.registrations.check6": "Wifi-åtkomstpunkterna ska använda en gemensam visuell identitet som kommissionen ska ta fram, med bland annat nätverksnamnet ”WiFi4EU” och länkar till relevanta verktyg på nätet.",
   "benefRegistration.preview.registrations.check7": "Mottagarna av WiFi4EU-checkar förbinder sig att upphandla nödvändig utrustning och/eller tillhörande installationstjänster i enlighet med gällande lagstiftning så att projekten inte snedvrider konkurrensen. De ska använda den senaste och bästa wifi-utrustningen som finns på marknaden.",
   "benefRegistration.preview.registrations.check9": "Jag bekräftar att jag har befogenhet att skicka in ansökan på uppdrag av den eller de kommuner som anges i formuläret.",
@@ -200,7 +200,7 @@
   "mediationRequest.selectText": "Kommissionen kommer att hjälpa er att fastställa vilken registrering som gäller för {{municipality}}.",
   "discussionForum.sendMessage.subject": "Ditt meddelande",
   "shared.back.button": "Tillbaka",
-  "discussionForum.title": "Forum för företag vid dubbelregistrering",
+  "discussionForum.title": "Forum för kommuner vid dubbelregistrering",
   "discussionForum.description": "Systemet har upptäckt att {{duplicateCount}} andra ombud har registrerat {{municipality}} som sökande organ. Du bör ta kontakt med övriga sökande. Det får bara finnas en registrering när ansökningsomgången startar. Om du inte kan lösa problemet kan du be Europeiska kommissionen om hjälp.",
   "discussionForum.beneficiary.registrations": "Registreringar",
   "discussionForum.beneficiary.registration1": "Registrering 1 (du)",
@@ -210,7 +210,7 @@
   "discussionForum.editRegistration": "Ändra registrering",
   "discussionForum.mediationButton": "Klicka nedan om du vill be WiFi4EU-teamet om hjälp med att lösa problemet.",
   "discussionForum.askMediation": "Be om hjälp",
-  "discussionForum.beneficiary.registrationNumber": "Registrering 2",
+  "discussionForum.beneficiary.registrationNumber": "Registrering ",
   "discussionForum.discussion": "Forum",
   "discussionForum.messagesDescription": "Nedan ser du dina och de andra användarnas meddelanden.",
   "discussionForum.search": "Sök i forumet",
@@ -308,7 +308,7 @@
   "benefPortal.voucher.applyforvoucher": "Ansök om check",
   "benefPortal.voucher.alreadyapplied": "Du har redan ansökt om en check",
   "benefPortal.voucher.timeleft.title": "Ansökningsomgången för checkar börjar om",
-  "benefPortal.voucher.timeleft.subtitle": "Ansökningsomgången för checkar börjar om",
+  "benefPortal.voucher.timeleft.subtitle": "Nästa ansökningsomgång startar den {{date}} kl. {{hour}} (svensk tid). ",
   "home.whatch.video": "Se videoklippet",
   "home.part3.text4": "Hur långt är det kvar till ansökningsomgången?",
   "home.part4.subtitle": "Här kan du läsa mer om projektet:",
@@ -477,5 +477,6 @@
   "benefPortal.beneficiary.withdrawRegistration.Failure": "Ett fel har inträffat. Din registrering gick inte att ta bort.",
   "shared.choose.label": "Välj",
   "benefRegistration.legalRepresentative.details": "Juridiskt ombud ",
-  "suppPortal.profile.deleteLogo": "Ta bort Företagets logotyp"
+  "suppPortal.profile.deleteLogo": "Ta bort Företagets logotyp",
+  "suppPortal.withdraw-registration.text": "Vill du inte längre tillhandahålla utrustning och installationstjänster för WiFi4EU? Klicka nedan för att återkalla din registrering."
 }

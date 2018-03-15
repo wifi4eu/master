@@ -89,7 +89,7 @@
   "benefRegistration.preview.registration.check2": "U skladu s Uredbom (EU) 2017/1953 Europskog parlamenta i Vijeća od 25. listopada 2017., pročitao/pročitala sam i prihvaćam sljedeće uvjete programa: ",
   "benefRegistration.preview.registration.check3": "Svaka točka s pristupom bežičnom internetu koja dobiva potporu iz programa WiFi4EU nudit će brzu širokopojasnu povezivost koja će korisnicima omogućavati iskustvo visokokvalitetnog interneta. Pristup internetu bit će besplatan i pružat će se bez diskriminirajućih uvjeta najmanje tri godine. ",
   "benefRegistration.preview.registration.check4": "Točke s pristupom bežičnom internetu koje se u istom javnom prostoru podudaraju s postojećim besplatnim privatnim ili javnim ponudama sličnih obilježja, uključujući kvalitetu, nisu prihvatljive za financiranje iz programa WiFi4EU. Takvo podudaranje može se izbjeći osiguravanjem da raspon pristupnih točaka financiranih na temelju ovog programa bude osmišljen tako da obuhvaća ponajprije javne prostore te da se ne preklapa s postojećim privatnim ili javnim ponudama sličnih obilježja.",
-  "benefRegistration.preview.registrations.check5": "Financiranjem koje je dostupno za uspostavu lokalne bežične mreže pokrivaju se troškovi kupnje i ugradnje jedne točke s pristupom bežičnom internetu ili više njih. Operativni troškovi (uključujući pretplatu na povezivost) nisu prihvatljivi za financiranje.",
+  "benefRegistration.preview.registrations.check5": "Financiranjem koje je dostupno za uspostavu lokalne bežične mreže pokrivaju se troškovi kupnje i ugradnje točke s pristupom bežičnom internetu ili više njih. Operativni troškovi (uključujući pretplatu na povezivost) nisu prihvatljivi za financiranje.",
   "benefRegistration.preview.registrations.check6": "Točke s pristupom bežičnom internetu imat će zajednički vizualni identitet koji će utvrditi Komisija, uključujući zajednički SSID pod nazivom „WiFi4EU” i poveznice na odgovarajuće internetske alate.",
   "benefRegistration.preview.registrations.check7": "Korisnik kupona WiFi4EU obvezat će se da će potrebnu opremu i/ili povezane usluge ugradnje zajamčiti u skladu s primjenjivim pravom kako bi se osiguralo da projekti neopravdano ne narušavaju tržišno natjecanje. Koristit će se najnovijom i najboljom dostupnom Wi-Fi opremom na tržištu.",
   "benefRegistration.preview.registrations.check9": "Potvrđujem da sam ovlašten ili imam odobrenje za podnošenje prijave uime općine/općina navedene/navedenih u ovom obrascu.",
@@ -200,7 +200,7 @@
   "mediationRequest.selectText": "Svrha je postupka posredovanja utvrditi koja je registracija valjana za [općina].",
   "discussionForum.sendMessage.subject": "Vaša poruka",
   "shared.back.button": "Natrag",
-  "discussionForum.title": "Rasprava među poduzećima o višestrukim registracijama",
+  "discussionForum.title": "Rasprava među općine prijave o višestrukim registracijama",
   "discussionForum.description": "Sustav je otkrio da je {{duplicateCount}} drugih zastupnika registriralo {{municipality}} kao subjekt koji ispunjava uvjete. Možete započeti razgovor s drugim podnositeljima prijave. Imajte na umu da bi u trenutku otvaranja poziva trebala biti unesena samo jedna registracija. Ako nije postignut dogovor o valjanoj registraciji, možete zatražiti pomoć Europske komisije.",
   "discussionForum.beneficiary.registrations": "Registracije",
   "discussionForum.beneficiary.registration1": "Registracija {{selfRegistration}}. (Vi)",
@@ -210,7 +210,7 @@
   "discussionForum.editRegistration": "Uredi registraciju",
   "discussionForum.mediationButton": "Kliknite dolje kako biste od WiFi4EU zatražili pomoć u rješavanju problema.",
   "discussionForum.askMediation": "Traženje posredovanja",
-  "discussionForum.beneficiary.registrationNumber": "Registracija 2.",
+  "discussionForum.beneficiary.registrationNumber": "Registracija . ",
   "discussionForum.discussion": "Rasprava",
   "discussionForum.messagesDescription": "Vaše poruke i poruke drugih poduzeća prikazane su u nastavku.",
   "discussionForum.search": "Pretraži raspravu",
@@ -308,7 +308,7 @@
   "benefPortal.voucher.applyforvoucher": "Podnesi zahtjev za kupone",
   "benefPortal.voucher.alreadyapplied": "Već ste podnijeli zahtjev za kupone",
   "benefPortal.voucher.timeleft.title": "Natječaj za kupone otvara se za",
-  "benefPortal.voucher.timeleft.subtitle": "Natječaj za kupone otvara se za",
+  "benefPortal.voucher.timeleft.subtitle": "Sljedeći poziv na podnošenje prijava otvorit će se {{date}} u {{hour}} (prema srednjoeuropskom vremenu). ",
   "home.whatch.video": "Pogledaj videozapis",
   "home.part3.text4": "Preostalo vrijeme do otvaranja poziva:",
   "home.part4.subtitle": "Na sljedećim poveznicama možete pronaći više informacija o projektu:",
@@ -477,5 +477,6 @@
   "benefPortal.beneficiary.withdrawRegistration.Failure": "Došlo je do pogreške i vaša registracija nije izbrisana.",
   "shared.choose.label": "Odaberite",
   "benefRegistration.legalRepresentative.details": "Pravni zastupnik ",
-  "suppPortal.profile.deleteLogo": "Izbriši Logotip poduzeća"
+  "suppPortal.profile.deleteLogo": "Izbriši Logotip poduzeća",
+  "suppPortal.withdraw-registration.text": "Više ne želite osiguravati opremu i usluge ugradnje u okviru programa WiFi4EU? Kliknite ispod kako biste povukli registraciju."
 }

@@ -89,7 +89,7 @@
   "benefRegistration.preview.registration.check2": "V súlade s nariadením Európskeho parlamentu a Rady (EÚ) 2017/1953 z 25. októbra 2017 som si prečítal tieto podmienky programu a súhlasím s nimi: ",
   "benefRegistration.preview.registration.check3": "Všetky inštalácie bezdrôtového pripojenia s podporou programu WiFi4EU sa budú opierať o vysokorýchlostné širokopásmové pripojenie, ktoré umožní používateľom prístup k vysokokvalitnému internetu. Tento prístup k internetu bude minimálne tri roky bezplatný a bez diskriminačných podmienok. ",
   "benefRegistration.preview.registration.check4": "Prístupové body Wi-Fi, ktoré kopírujú existujúce bezplatné súkromné alebo verejné ponuky s podobnými vlastnosťami vrátane kvality na tom istom verejnom mieste, nie sú oprávnené získať financovanie z programu WiFi4EU. Takémuto kopírovaniu sa možno vyhnúť tým, že sa zabezpečí, aby sa dosah prístupových bodov financovaných v rámci tohto programu navrhol tak, že bude pokrývať predovšetkým verejné miesta a nebude sa prekrývať s dosahom existujúcich súkromných alebo verejných ponúk s podobnými vlastnosťami.",
-  "benefRegistration.preview.registrations.check5": "Dostupné finančné prostriedky sú určené na pokrytie nákladov na nákup a inštaláciu jedného alebo viacerých bezdrôtových prístupových bodov, pomocou ktorých sa má vytvoriť miestna sieť Wi-Fi. Prevádzkové náklady (vrátane poplatkov za pripojenie) nie sú na financovanie oprávnené.",
+  "benefRegistration.preview.registrations.check5": "Dostupné finančné prostriedky sú určené na pokrytie nákladov na nákup a inštaláciu bezdrôtových prístupových bodov, pomocou ktorých sa má vytvoriť miestna sieť Wi-Fi. Prevádzkové náklady (vrátane poplatkov za pripojenie) nie sú na financovanie oprávnené.",
   "benefRegistration.preview.registrations.check6": "Prístupové body Wi-Fi sa budú riadiť pravidlami spoločnej vizuálnej identity, ktorú poskytne Komisia, a to vrátane spoločného SSID s názvom „WiFi4EU“ a odkazov na súvisiace online nástroje.",
   "benefRegistration.preview.registrations.check7": "Príjemca poukazu WiFi4EU sa zaväzuje zabezpečiť potrebné vybavenie a/alebo súvisiace služby inštalácie v súlade s uplatniteľným právom, aby sa predišlo tomu, že tieto projekty neprimerane narušia hospodársku súťaž. Použije pritom najnovšie a najkvalitnejšie Wi-Fi zariadenie dostupné na trhu.",
   "benefRegistration.preview.registrations.check9": "Potvrdzujem, že mám oprávnenie alebo povolenie podať žiadosť v mene obce/obcí uvedených v tomto formulári.",
@@ -200,7 +200,7 @@
   "mediationRequest.selectText": "Cieľom sprostredkovania je zistiť, ktorá registrácia bude platná pre obec [obec].",
   "discussionForum.sendMessage.subject": "Vaša správa",
   "shared.back.button": "Späť",
-  "discussionForum.title": "Diskusia medzi spoločnosťami s viacerými registráciami",
+  "discussionForum.title": "Diskusia medzi obce o viacnásobných registráciách",
   "discussionForum.description": "Systém zistil, že obec {{municipality}} zaregistrovalo ako oprávnený subjekt {{duplicateCount}} žiadateľov. Môžete to s ostatnými žiadateľmi prediskutovať. Nezabudnite, že v čase zverejnenia výzvy by mala každá obec mať len jednu registráciu. Ak sa nedosiahne dohoda o tom, ktorá registrácia bude platná, môžete sa obrátiť na Európsku komisiu.",
   "discussionForum.beneficiary.registrations": "Registrácie",
   "discussionForum.beneficiary.registration1": "Registrácia č. {{selfRegistration}} (vy)",
@@ -210,7 +210,7 @@
   "discussionForum.editRegistration": "Upraviť registráciu",
   "discussionForum.mediationButton": "Ak chcete požiadať tím WiFi4EU o vyriešenie tohto problému, kliknite sem",
   "discussionForum.askMediation": "Žiadosť o mediáciu",
-  "discussionForum.beneficiary.registrationNumber": "Registrácia č. ",
+  "discussionForum.beneficiary.registrationNumber": "Registrácia č. ",
   "discussionForum.discussion": "Diskusia",
   "discussionForum.messagesDescription": "Správy medzi vami a ďalšími spoločnosťami sú zobrazené nižšie.",
   "discussionForum.search": "Hľadať v diskusii",
@@ -308,7 +308,7 @@
   "benefPortal.voucher.applyforvoucher": "Požiadať o poukážku",
   "benefPortal.voucher.alreadyapplied": "Už ste požiadali o poukážku.",
   "benefPortal.voucher.timeleft.title": "Zostávajúci čas do otvorenia súťaže o poukážky:",
-  "benefPortal.voucher.timeleft.subtitle": "Zostávajúci čas do otvorenia súťaže o poukážky:",
+  "benefPortal.voucher.timeleft.subtitle": "Ďalšia výzva na podávanie žiadostí sa zverejní dňa {{date}} o {{hour}} (stredoeurópskeho času).",
   "home.whatch.video": "Pozrite si video",
   "home.part3.text4": "Do otvorenia výzvy ostáva:",
   "home.part4.subtitle": "Ďalšie informácie o projekte nájdete na týchto odkazoch:",
@@ -477,5 +477,6 @@
   "benefPortal.beneficiary.withdrawRegistration.Failure": "Vyskytla sa chyba a vašu registráciu nemožno vymazať.",
   "shared.choose.label": "Vyberte",
   "benefRegistration.legalRepresentative.details": "Právny zástupca ",
-  "suppPortal.profile.deleteLogo": "Vymazať Logo spoločnosti"
+  "suppPortal.profile.deleteLogo": "Vymazať Logo spoločnosti",
+  "suppPortal.withdraw-registration.text": "Už nemáte záujem poskytovať vybavenie a inštalačné služby pre iniciatívu WiFi4EU? Ak chcete zrušiť svoju registráciu, kliknite na tento odkaz."
 }
