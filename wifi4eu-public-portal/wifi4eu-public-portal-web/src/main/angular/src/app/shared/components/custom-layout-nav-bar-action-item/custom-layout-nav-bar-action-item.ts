@@ -1,7 +1,7 @@
-import {Component, Directive, EventEmitter, Input, Output} from "@angular/core";
-import {UxLayoutNavBarActionItemComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/ux-layout-nav-bar-action-item.component";
-import {UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/models/ux-layout-link";
-import {UxLayoutNavBarActionsComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/ux-layout-nav-bar-actions.component";
+import { Component, Input } from "@angular/core";
+import { UxLayoutNavBarActionItemComponent } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/ux-layout-nav-bar-action-item.component";
+import { UxLayoutNavBarActionsComponent } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/ux-layout-nav-bar-actions.component";
+import { CustomLayoutLink } from "../custom-layout-nav-bar-top-menu/custom-layout-link";
 
 @Component({
     selector: "custom-layout-nav-bar-action-item",
@@ -67,7 +67,8 @@ import {UxLayoutNavBarActionsComponent} from "@ec-digit-uxatec/eui-angular2-ux-c
                                         <a class="disabled">{{childLink.label}}</a>
                                     </template>
                                     <template [ngIf]="!childLink.disabled">
-                                        <a [routerLink]="childLink.url">{{childLink.label}}</a>
+                                        <a *ngIf="childLink.externalUrl" [href]="childLink.url">{{childLink.label}}</a>
+                                        <a *ngIf="!childLink.externalUrl" [routerLink]="childLink.url">{{childLink.label}}</a>
                                     </template>   
                                 </li>
                             </ul>                    
@@ -75,7 +76,8 @@ import {UxLayoutNavBarActionsComponent} from "@ec-digit-uxatec/eui-angular2-ux-c
                         <template [ngIf]="!link.hasChildren">
                             <ul>
                                 <li routerLinkActive="active">
-                                    <a [routerLink]="link.url">{{link.label}}</a>
+                                    <a *ngIf="link.externalUrl" [href]="link.url">{{link.label}}</a>
+                                    <a *ngIf="!link.externalUrl" [routerLink]="link.url">{{link.label}}</a>
                                 </li>
                             </ul>
                         </template>
@@ -100,7 +102,7 @@ export class CustomLayoutNavBarActionItemComponent extends UxLayoutNavBarActionI
     @Input() isToggleContent: boolean = true;
     @Input() isOverlayPanel: boolean = false;
     @Input() isOverlayPanelCustomContent: boolean = false;
-    @Input() links: Array<UxLayoutLink> = [];
+    @Input() links: Array<CustomLayoutLink> = [];
     @Input() isShowHome: boolean = true;
     @Input() homeUrl: string = '/screen/home';
     @Input() iconClass: string;
@@ -117,5 +119,9 @@ export class CustomLayoutNavBarActionItemComponent extends UxLayoutNavBarActionI
 
     toggle(event: Event) {
         super.toggle(event);
+    }
+
+    onClick(event: Event) {
+        event.stopImmediatePropagation();
     }
 }

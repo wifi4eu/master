@@ -1,15 +1,14 @@
-import {Component, enableProdMode, Output} from "@angular/core";
-import {TranslateService} from "ng2-translate/ng2-translate";
-import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
-import {UxLanguage, UxEuLanguages} from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
-import {SharedService} from "./shared/shared.service";
-import {LocalStorageService} from "angular-2-local-storage";
-import {CustomLayoutLink} from "./shared/components/custom-layout-nav-bar-top-menu/custom-layout-link";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {UserApi} from "./shared/swagger/api/UserApi";
-import {UserDTOBase} from "./shared/swagger/model/UserDTO";
-import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
-import {environment} from '../environments/environment';
+import { Component, enableProdMode, Output } from "@angular/core";
+import { TranslateService } from "ng2-translate/ng2-translate";
+import { UxService } from "@ec-digit-uxatec/eui-angular2-ux-commons";
+import { UxLanguage, UxEuLanguages } from "@ec-digit-uxatec/eui-angular2-ux-language-selector";
+import { SharedService } from "./shared/shared.service";
+import { LocalStorageService } from "angular-2-local-storage";
+import { CustomLayoutLink } from "./shared/components/custom-layout-nav-bar-top-menu/custom-layout-link";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { UserApi } from "./shared/swagger/api/UserApi";
+import { UserDTOBase } from "./shared/swagger/model/UserDTO";
+import { environment } from '../environments/environment';
 
 enableProdMode();
 
@@ -70,11 +69,9 @@ export class AppComponent {
             switch (this.user.type) {
                 case 1:
                     this.menuLinks = [
-                        // new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.myAccount'), url: '../../../wifi4eu/#/supplier-portal/profile', externalUrl: true}),
-                        // new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.suppPortal'), url: '../../../wifi4eu/#/supplier-portal/voucher', externalUrl: true})
                         new CustomLayoutLink({
                             label: this.menuTranslations.get('itemMenu.myAccount'),
-                            url: '../../../wifi4eu/#/supplier-portal/profile',
+                            url: '/wifi4eu/#/supplier-portal/profile',
                             externalUrl: true
                         })
                     ];
@@ -83,12 +80,12 @@ export class AppComponent {
                     this.menuLinks = [
                         new CustomLayoutLink({
                             label: this.menuTranslations.get('itemMenu.myAccount'),
-                            url: '../../../wifi4eu/#/beneficiary-portal/profile',
+                            url: '/wifi4eu/#/beneficiary-portal/profile',
                             externalUrl: true
                         }),
                         new CustomLayoutLink({
                             label: this.menuTranslations.get('itemMenu.appPortal'),
-                            url: '../../../wifi4eu/#/beneficiary-portal/voucher',
+                            url: '/wifi4eu/#/beneficiary-portal/voucher',
                             externalUrl: true
                         })
                     ];
