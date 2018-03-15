@@ -1,12 +1,9 @@
 package wifi4eu.wifi4eu.azure.queue;
 
-import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.queue.CloudQueue;
-import com.microsoft.azure.storage.queue.CloudQueueClient;
 import com.microsoft.azure.storage.queue.CloudQueueMessage;
 import com.microsoft.azure.storage.queue.MessageUpdateFields;
-import wifi4eu.wifi4eu.azure.constants.ConectionConstants;
 import wifi4eu.wifi4eu.azure.constants.QueueConstants;
 
 import java.net.URISyntaxException;
@@ -15,24 +12,18 @@ import java.util.EnumSet;
 
 public class Queue {
 
+    private final QueueUtils utils;
 
     public Queue(){
         //TODO: change QueueConstants.QUEUE_NAME in constructor
+        utils = new QueueUtils(QueueConstants.QUEUE_NAME);
     }
 
     public void createAzureQueue() throws URISyntaxException,
                                             StorageException,
                                             InvalidKeyException {
 
-        // Retrieve storage account from connection-string.
-        CloudStorageAccount storageAccount =
-                CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
-
-        // Create the queue client.
-        CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
-
-        // Retrieve a reference to a queue.
-        CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
+        CloudQueue queue = utils.generateCloudQueue();
 
         // Create the queue if it doesn't already exist.
         queue.createIfNotExists();
@@ -42,15 +33,7 @@ public class Queue {
                                                                             StorageException,
                                                                             InvalidKeyException {
 
-        // Retrieve storage account from connection-string.
-        CloudStorageAccount storageAccount =
-                CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
-
-        // Create the queue client.
-        CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
-
-        // Retrieve a reference to a queue.
-        CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
+        CloudQueue queue = utils.generateCloudQueue();
 
         // Create the queue if it doesn't already exist.
         queue.createIfNotExists();
@@ -64,15 +47,7 @@ public class Queue {
                                                                 InvalidKeyException,
                                                                 StorageException {
 
-        // Retrieve storage account from connection-string.
-        CloudStorageAccount storageAccount =
-                CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
-
-        // Create the queue client.
-        CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
-
-        // Retrieve a reference to a queue.
-        CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
+        CloudQueue queue = utils.generateCloudQueue();
 
         // Peek at the next message.
         return queue.peekMessage();
@@ -82,15 +57,7 @@ public class Queue {
                                                                                                                         URISyntaxException,
                                                                                                                         InvalidKeyException {
 
-        // Retrieve storage account from connection-string.
-        CloudStorageAccount storageAccount =
-                CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
-
-        // Create the queue client.
-        CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
-
-        // Retrieve a reference to a queue.
-        CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
+        CloudQueue queue = utils.generateCloudQueue();
 
         // The maximum number of messages that can be retrieved is 32.
         final int MAX_NUMBER_OF_MESSAGES_TO_PEEK = 32;
@@ -118,15 +85,7 @@ public class Queue {
                                                     StorageException,
                                                     InvalidKeyException {
 
-        // Retrieve storage account from connection-string.
-        CloudStorageAccount storageAccount =
-                CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
-
-        // Create the queue client.
-        CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
-
-        // Retrieve a reference to a queue.
-        CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
+        CloudQueue queue = utils.generateCloudQueue();
 
         // Retrieve the first visible message in the queue.
         CloudQueueMessage retrievedMessage = queue.retrieveMessage();
@@ -142,15 +101,7 @@ public class Queue {
                                             InvalidKeyException,
                                             StorageException {
 
-        // Retrieve storage account from connection-string.
-        CloudStorageAccount storageAccount =
-                CloudStorageAccount.parse(ConectionConstants.STORAGE_CONNECTION_STRING);
-
-        // Create the queue client.
-        CloudQueueClient queueClient = storageAccount.createCloudQueueClient();
-
-        // Retrieve a reference to a queue.
-        CloudQueue queue = queueClient.getQueueReference(QueueConstants.QUEUE_NAME);
+        CloudQueue queue = utils.generateCloudQueue();
 
         // Download the approximate message count from the server.
         queue.downloadAttributes();
