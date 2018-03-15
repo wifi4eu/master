@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Az Ön üzenete",
   "shared.back.button": "Vissza",
   "discussionForum.title": "Vitafórum arra az esetre, ha egyszerre több cég regisztrált",
-  "discussionForum.description": "Nyilvántartásunk szerint [Municipality] település vonatkozásában {{duplicateCount}} másik képviselő regisztrált jogosult szervezet nevében. Javasoljuk, hogy egyeztessen a másik (többi) jelentkezővel. Felhívjuk figyelmét, hogy a pályázati felhívás közzétételének időpontjában egy adott település tekintetében egyetlen regisztrációra kerülhet sor. Ha nem születik megállapodás az érvényes regisztrációról, felkérheti az Európai Bizottságot, hogy járjon el az ügyben.",
+  "discussionForum.description": "Nyilvántartásunk szerint {{municipality}} település vonatkozásában {{duplicateCount}} másik képviselő regisztrált jogosult szervezet nevében. Javasoljuk, hogy egyeztessen a másik (többi) jelentkezővel. Felhívjuk figyelmét, hogy a pályázati felhívás közzétételének időpontjában egy adott település tekintetében egyetlen regisztrációra kerülhet sor. Ha nem születik megállapodás az érvényes regisztrációról, felkérheti az Európai Bizottságot, hogy járjon el az ügyben.",
   "discussionForum.beneficiary.registrations": "Regisztrációk",
   "discussionForum.beneficiary.registration1": "{{selfRegistration}}. regisztráció (Ön)",
   "shared.postal-code.label": "Irányítószám",

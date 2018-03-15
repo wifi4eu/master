@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Su mensaje",
   "shared.back.button": "Atrás",
   "discussionForum.title": "Debate entre empresas sobre inscripciones múltiples",
-  "discussionForum.description": "El sistema ha detectado que otro u otros {{duplicateCount}} representantes se han inscrito en nombre de [municipio] como entidad elegible. Puede iniciar una conversación con los demás solicitantes. Tenga en cuenta que solo puede hacerse una inscripción por municipio en el momento de la publicación de la convocatoria. Si no se llega a un acuerdo sobre la inscripción válida, podrá solicitar la intervención de la Comisión Europea.",
+  "discussionForum.description": "El sistema ha detectado que otro u otros {{duplicateCount}} representantes se han inscrito en nombre de {{municipality}} como entidad elegible. Puede iniciar una conversación con los demás solicitantes. Tenga en cuenta que solo puede hacerse una inscripción por municipio en el momento de la publicación de la convocatoria. Si no se llega a un acuerdo sobre la inscripción válida, podrá solicitar la intervención de la Comisión Europea.",
   "discussionForum.beneficiary.registrations": "Inscripciones",
   "discussionForum.beneficiary.registration1": "Inscripción {{selfRegistration}} (la suya)",
   "shared.postal-code.label": "Código postal",

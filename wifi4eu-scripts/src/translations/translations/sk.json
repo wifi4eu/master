@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Vaša správa",
   "shared.back.button": "Späť",
   "discussionForum.title": "Diskusia medzi spoločnosťami s viacerými registráciami",
-  "discussionForum.description": "Systém zistil, že obec zaregistrovalo ako oprávnený subjekt {{duplicateCount}} žiadateľov. Môžete to s ostatnými žiadateľmi prediskutovať. Nezabudnite, že v čase zverejnenia výzvy by mala každá obec mať len jednu registráciu. Ak sa nedosiahne dohoda o tom, ktorá registrácia bude platná, môžete sa obrátiť na Európsku komisiu.",
+  "discussionForum.description": "Systém zistil, že obec {{municipality}} zaregistrovalo ako oprávnený subjekt {{duplicateCount}} žiadateľov. Môžete to s ostatnými žiadateľmi prediskutovať. Nezabudnite, že v čase zverejnenia výzvy by mala každá obec mať len jednu registráciu. Ak sa nedosiahne dohoda o tom, ktorá registrácia bude platná, môžete sa obrátiť na Európsku komisiu.",
   "discussionForum.beneficiary.registrations": "Registrácie",
   "discussionForum.beneficiary.registration1": "Registrácia č. {{selfRegistration}} (vy)",
   "shared.postal-code.label": "PSČ",

@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Twoja wiadomość",
   "shared.back.button": "Wstecz",
   "discussionForum.title": "Dyskusja między firmami, które dokonały rejestracji przy użyciu tych samych danych",
-  "discussionForum.description": "System wykrył, że {{duplicateCount}} innych przedstawicieli zarejestrowało gminę [Municipality] jako uprawniony podmiot. Możesz rozpocząć dyskusję z innym wnioskodawcą / innymi wnioskodawcami. Pamiętaj, że w momencie ogłoszenia zaproszenia do składania wniosków ta sama gmina może być zarejestrowana tylko raz. Jeśli nie uda Ci się ustalić z innym wnioskodawcą, który wniosek jest ważny, możesz zwrócić się do Komisji Europejskiej o mediację.",
+  "discussionForum.description": "System wykrył, że {{duplicateCount}} innych przedstawicieli zarejestrowało gminę {{municipality}} jako uprawniony podmiot. Możesz rozpocząć dyskusję z innym wnioskodawcą / innymi wnioskodawcami. Pamiętaj, że w momencie ogłoszenia zaproszenia do składania wniosków ta sama gmina może być zarejestrowana tylko raz. Jeśli nie uda Ci się ustalić z innym wnioskodawcą, który wniosek jest ważny, możesz zwrócić się do Komisji Europejskiej o mediację.",
   "discussionForum.beneficiary.registrations": "Rejestracje",
   "discussionForum.beneficiary.registration1": "Rejestracja {{selfRegistration}} (Ty)",
   "shared.postal-code.label": "Kod pocztowy",

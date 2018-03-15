@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Your message",
   "shared.back.button": "Back",
   "discussionForum.title": "Discussion between companies for multiple registrations",
-  "discussionForum.description": "The system has detected that {{duplicateCount}} other representatives have registered for [Municipality] as an eligible entity. You may start a conversation with the other applicant(s). Please be aware that only one registration should be registered at the time of the launch of the call. If no agreement is reached on the valid registration, you may ask the European Commission to intervene.",
+  "discussionForum.description": "The system has detected that {{duplicateCount}} other representatives have registered for {{municipality}} as an eligible entity. You may start a conversation with the other applicant(s). Please be aware that only one registration should be registered at the time of the launch of the call. If no agreement is reached on the valid registration, you may ask the European Commission to intervene.",
   "discussionForum.beneficiary.registrations": "Registrations",
   "discussionForum.beneficiary.registration1": "Registration {{selfRegistration}} (you)",
   "shared.postal-code.label": "Postal code",

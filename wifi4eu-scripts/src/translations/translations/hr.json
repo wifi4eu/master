@@ -201,7 +201,7 @@
   "discussionForum.sendMessage.subject": "Vaša poruka",
   "shared.back.button": "Natrag",
   "discussionForum.title": "Rasprava među poduzećima o višestrukim registracijama",
-  "discussionForum.description": "Sustav je otkrio da je {{duplicateCount}} drugih zastupnika registriralo [općina] kao subjekt koji ispunjava uvjete. Možete započeti razgovor s drugim podnositeljima prijave. Imajte na umu da bi u trenutku otvaranja poziva trebala biti unesena samo jedna registracija. Ako nije postignut dogovor o valjanoj registraciji, možete zatražiti pomoć Europske komisije.",
+  "discussionForum.description": "Sustav je otkrio da je {{duplicateCount}} drugih zastupnika registriralo {{municipality}} kao subjekt koji ispunjava uvjete. Možete započeti razgovor s drugim podnositeljima prijave. Imajte na umu da bi u trenutku otvaranja poziva trebala biti unesena samo jedna registracija. Ako nije postignut dogovor o valjanoj registraciji, možete zatražiti pomoć Europske komisije.",
   "discussionForum.beneficiary.registrations": "Registracije",
   "discussionForum.beneficiary.registration1": "Registracija {{selfRegistration}}. (Vi)",
   "shared.postal-code.label": "Poštanski broj",
