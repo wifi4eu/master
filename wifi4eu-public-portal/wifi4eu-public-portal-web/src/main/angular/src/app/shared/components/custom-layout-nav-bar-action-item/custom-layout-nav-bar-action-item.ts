@@ -120,4 +120,8 @@ export class CustomLayoutNavBarActionItemComponent extends UxLayoutNavBarActionI
     toggle(event: Event) {
         super.toggle(event);
     }
+
+    onClick(event: Event) {
+        event.stopImmediatePropagation();
+    }
 }
