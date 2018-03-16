@@ -82,10 +82,11 @@
             <div class="row">
                 <div class="col-sm-12">
                     <p class="beneficiaryMayor">{{ 'suppRegistration.entity.support' | translate }}</p>
-                    <p-tabView *ngIf="selectedCountriesNames.length > 0" (onChange)="selectCountry($event, tableRegions)">
+                    <p-tabView *ngIf="selectedCountriesNames.length > 0"
+                               (onChange)="selectCountry($event, tableRegions)">
                         <p-tabPanel *ngFor="let country of selectedCountriesNames;" [header]="country"></p-tabPanel>
                         <p-dataTable #tableRegions [value]="regionsToRender" [paginator]="true" [rows]="10">
-                          <p-column field="label" [sortable]="true"></p-column>
+                            <p-column field="label" [sortable]="true"></p-column>
                         </p-dataTable>
                     </p-tabView>
                     <b *ngIf="selectedCountriesNames.length == 0"><i></i></b>
@@ -107,10 +108,11 @@
             </div>
 
             <div class="col-sm-12 margin-top button-content">
-                <p class="applicationText">{{ 'shared.withdraw-registration.text' | translate }}</p>
+                <p class="applicationText">{{ 'suppPortal.withdraw-registration.text' | translate }}</p>
                 <div style="text-align: center !important">
                     <button id="withdrawRegistration" type="button" (click)="withdrawRegistration()"
-                            class="btn btn-primary changePassword" [disabled]="withdrawingRegistration || withdrawnSuccess">
+                            class="btn btn-primary changePassword"
+                            [disabled]="withdrawingRegistration || withdrawnSuccess">
                         {{ 'shared.withdraw-registration.button' | translate }}
                     </button>
                 </div>
@@ -168,7 +170,7 @@
                             </label>
                             <input id="contactPhonePrefix" type="text"
                                    [(ngModel)]="editedSupplier.contactPhonePrefix"
-                                   class="form-control" name="contactPhonePrefix"ngcontrol="contactPhonePrefix"
+                                   class="form-control" name="contactPhonePrefix" ngcontrol="contactPhonePrefix"
                                    #contactPhonePrefix="ngModel" required>
                             <div [hidden]="contactPhonePrefix.valid || contactPhonePrefix.pristine"
                                  class="alert alert-danger">
@@ -318,7 +320,8 @@
                             </div>
                             <div class="ui-g-12 center">
                                 <br>
-                                <button type="button" class="btn redButton" (click)="deleteLogo()" [disabled]="!supplier.logo || deletingLogo">
+                                <button type="button" class="btn redButton" (click)="deleteLogo()"
+                                        [disabled]="!supplier.logo || deletingLogo">
                                     {{ 'suppPortal.profile.deleteLogo' | translate }}
                                 </button>
                             </div>
