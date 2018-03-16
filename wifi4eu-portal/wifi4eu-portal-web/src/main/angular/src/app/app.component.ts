@@ -141,6 +141,10 @@ export class AppComponent {
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.suppReg'),
                     url: '/supplier-registration'
+                }),
+                new UxLayoutLink({
+                  label: 'Registered suppliers',
+                  url: 'list-suppliers'
                 })
             ];
             this.children[1] = [
@@ -151,6 +155,10 @@ export class AppComponent {
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.myAccount'),
                     url: '/supplier-portal/profile'
+                }),
+                new UxLayoutLink({
+                  label: 'Registered suppliers',
+                  url: 'list-suppliers'
                 })
             ];
             this.children[2] = [
@@ -161,6 +169,10 @@ export class AppComponent {
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.appPortal'),
                     url: '/beneficiary-portal/voucher'
+                }),
+                new UxLayoutLink({
+                  label: 'Registered suppliers',
+                  url: 'list-suppliers'
                 })
             ];
             this.children[3] = [
@@ -171,13 +183,17 @@ export class AppComponent {
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.appPortal'),
                     url: '/beneficiary-portal/voucher'
+                }),
+                new UxLayoutLink({
+                  label: 'Registered suppliers',
+                  url: 'list-suppliers'
                 })
             ];
             this.children[4] = [
                 new UxLayoutLink({
                     label: 'Member State Portal',
                     url: '#'
-                })
+                }),
             ];
             this.children[5] = [
                 new UxLayoutLink({

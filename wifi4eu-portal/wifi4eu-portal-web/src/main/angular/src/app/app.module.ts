@@ -24,6 +24,8 @@ import { HomeComponent } from "./home/home.component";
 import { ChartsModule } from "ng2-charts";
 import { ForgotComponent } from "./+forgot/forgot.component";
 import { AppGuard } from "./app.guard";
+import { ListSuppliersComponent } from './list-suppliers/list-suppliers.component';
+import { DataGridModule } from "primeng/primeng";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -37,7 +39,8 @@ export function translateFactory(http: Http) {
         HelpdeskComponent,
         HomeComponent,
         // EcasComponent,
-        NotFoundComponent
+        NotFoundComponent,
+        ListSuppliersComponent
     ],
     exports: [
         // MapComponent,
@@ -52,6 +55,7 @@ export function translateFactory(http: Http) {
         CoreModule,
         BrowserModule,
         BrowserAnimationsModule,
+        DataGridModule,
         TranslateModule.forRoot({
             provide: TranslateLoader,
             useFactory: translateFactory,

@@ -9,10 +9,12 @@ import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.supplier.SuppliedRegion;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
@@ -38,6 +40,9 @@ public class SupplierService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    NutsService nutsService;
 
     @Autowired
     ThreadService threadService;
@@ -213,5 +218,25 @@ public class SupplierService {
             }
         }
         return supplierDTO;
+    }
+
+    public List<String> getSuppliersByRegion(int regionId){
+        Set<String> supplierNames = new HashSet<>();
+        for (SuppliedRegionDTO suppliedRegion: suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findByRegionId(regionId)))) {
+            SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(suppliedRegion.getSupplierId()));
+            if(!supplierNames.contains(supplierDTO.getName())){
+                supplierNames.add(supplierDTO.getName());
+            }
+        }
+        return new ArrayList<>(supplierNames);
+    }
+
+    public SuppliersCacheDTO getSuppliersByCountry(String countryCode){
+        Set<String> supplierNames = new HashSet<>();
+        List<NutsDTO> regions = nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode,3);
+        for(NutsDTO nutsDTO: regions){
+            supplierNames.addAll(getSuppliersByRegion(nutsDTO.getId()));
+        }
+        return new SuppliersCacheDTO(new ArrayList<>(supplierNames), new Date());
     }
 }

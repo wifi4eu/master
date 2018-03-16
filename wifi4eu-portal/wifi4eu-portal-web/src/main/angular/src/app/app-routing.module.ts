@@ -7,6 +7,7 @@ import { NotFoundComponent } from "./not-found/not-found.component"
 import { AppGuard } from "./app.guard";
 // import {AppGuard} from "./app.guard";
 import { HomeComponent } from "./home/home.component";
+import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.component";
 // import {EcasComponent} from "./+ecas/ecas.component";
 
 @NgModule({
@@ -54,6 +55,10 @@ import { HomeComponent } from "./home/home.component";
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
             canActivate: [AppGuard]
 
+        },
+        {
+            path: 'list-suppliers',
+            component: ListSuppliersComponent
         }, {
             path: 'notfound',
             component: NotFoundComponent

@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="panel">
+    <div class="row">
+      <div class="col-xs-12">
+        <h4 class="title">List of registered Wi-Fi installation companies</h4>
+        <p class="subtitle-discover">Search for the Wi-Fi installation companies that have already been registered</p>
+        <p class="updated-on" *ngIf="dateCached">{{ 'listMunicipalities.subtitle.updateDate' | translate}} {{dateCached}}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-4">
+        <label class="label-select"  for="memberState">DKAS</label>
+        <select name="memberState" id="memberState" [(ngModel)]="country" (ngModelChange)="selectCountry($event)">
+          <option disabled>Select</option>
+          <option *ngFor="let country of countries" [ngValue]="country">
+            {{ country.label }}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <label class="label-select" for="region">{{ 'listMunicipalities.region.label' | translate }}</label>
+        <select name="region" id="region" [(ngModel)]="region" (ngModelChange)="selectRegion($event)">
+          <option disabled>Select</option>
+          <option *ngFor="let region of regions" [ngValue]="region">
+            {{ region.label }}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <label class="label-hidden">*</label>
+        <button class="btn btn-primary btn-apply" (click)="searchSuppliers()" [disabled]="country == null || region == null">{{ 'listMunicipalities.apply.button' | translate }}</button>
+      </div>
+    </div>
+    <div class="row" *ngIf="country && region && originalSuppliers.length > 0">
+      <div class="col-xs-12 col-md-5">
+        <label for="search-supplier" class="label-select">{{'shared.search.button' | translate}}</label>
+        <input type="text" class="form-control paddingInput" name="search-supplier" (input)="filterResults($event)">
+      </div>
+    </div>
+    <div class="row" *ngIf="country && region && suppliers.length > 0">
+      <div class="col-xs-12 supplier-region">
+        <p-dataGrid [value]="suppliers" [paginator]="true" [rows]="21">
+          <ng-template let-supplier pTemplate="item">
+            <div class="supplier-item">
+              <span>{{ supplier }}</span>
+            </div>
+          </ng-template>
+        </p-dataGrid>
+      </div>
+    </div>
+    <div class="row" *ngIf="searched && suppliers.length == 0">
+      <div class="col-md-12">
+        <span class="updated-on">{{ 'listMunicipalities.noresults.text' | translate }} {{regionNameSearched}}</span>
+      </div>
+    </div>
+  </div>
+</div>

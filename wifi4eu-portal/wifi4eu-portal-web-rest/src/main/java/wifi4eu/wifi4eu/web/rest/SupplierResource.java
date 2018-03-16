@@ -10,6 +10,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.SuppliersCacheDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -21,6 +22,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -214,4 +216,19 @@ public class SupplierResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
+
+    @ApiOperation(value = "Get suppliers registered by region")
+    @RequestMapping(value = "/all/region/{regionId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public SuppliersCacheDTO getSuppliersRegisteredByRegion(@PathVariable("regionId") int regionId){
+        return new SuppliersCacheDTO(supplierService.getSuppliersByRegion(regionId), new Date());
+    }
+
+    @ApiOperation(value = "Get suppliers registered by country")
+    @RequestMapping(value = "/all/country/{countryCode}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public SuppliersCacheDTO getSuppliersRegisteredByCountry(@PathVariable("countryCode") String countryCode){
+        return supplierService.getSuppliersByCountry(countryCode);
+    }
+
 }
