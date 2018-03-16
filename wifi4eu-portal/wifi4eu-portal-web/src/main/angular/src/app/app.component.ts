@@ -23,7 +23,7 @@ enableProdMode();
 
 export class AppComponent {
     private actualDate: string;
-    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr";
+    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
     private user: UserDTOBase;
     private profileUrl: string;
     private menuLinks: Array<UxLayoutLink>;
@@ -241,6 +241,8 @@ export class AppComponent {
         this.uxService.activeLanguage = language;
         this.localStorageService.set('lang', language.code);
         this.updateMenuTranslations();
+        this.initChildren();
+        this.childrenInitialized.subscribe(() => this.updateHeader());
         this.updateFooterDate();
     }
 

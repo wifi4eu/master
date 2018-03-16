@@ -12,13 +12,13 @@
 
 
     <parent>
-      <groupId>wifi4eu.wifi4eu</groupId>
-      <version>0.0.1-SNAPSHOT</version>
-      <artifactId>wifi4eu</artifactId>
+        <groupId>wifi4eu.wifi4eu</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+        <artifactId>wifi4eu</artifactId>
     </parent>
 
     <properties>
-        <app.context.root>/wifi4eu-public</app.context.root>
+        <app.context.root></app.context.root>
     </properties>
 
     <modules>

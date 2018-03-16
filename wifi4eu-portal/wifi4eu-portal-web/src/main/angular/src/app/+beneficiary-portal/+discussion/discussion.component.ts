@@ -53,6 +53,7 @@ export class DiscussionComponent {
     private withdrawingRegistration: boolean = false;
     private withdrawnSuccess: boolean = false;
     private message: string = '';
+    private municipalityName: String = "";
 
     constructor(private localStorageService: LocalStorageService, private route: ActivatedRoute, private threadApi: ThreadApi, private userThreadsApi: UserThreadsApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private threadmessagesApi: ThreadmessagesApi, private userApi: UserApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
@@ -88,6 +89,8 @@ export class DiscussionComponent {
                                                                         if (userThread.userId == this.user.id) {
                                                                             this.myMunicipality = municipality;
                                                                             this.myRegistration = registration;
+                                                                            this.municipalityName = this.myMunicipality.name;
+
                                                                         } else {
                                                                             this.otherMunicipalities.push(municipality);
                                                                             this.otherRegistrations.push(registration);

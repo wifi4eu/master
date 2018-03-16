@@ -8,7 +8,6 @@ import {CustomLayoutLink} from "./shared/components/custom-layout-nav-bar-top-me
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {UserApi} from "./shared/swagger/api/UserApi";
 import {UserDTOBase} from "./shared/swagger/model/UserDTO";
-import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
 import {environment} from '../environments/environment';
 
 enableProdMode();
@@ -28,7 +27,7 @@ export class AppComponent {
     private menuTranslations: Map<String, String>;
     private stringsTranslated = new BehaviorSubject<number>(null);
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
-    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr";
+    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
 
     constructor(private translateService: TranslateService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private userApi: UserApi) {
         translateService.setDefaultLang('en');
@@ -70,11 +69,9 @@ export class AppComponent {
             switch (this.user.type) {
                 case 1:
                     this.menuLinks = [
-                        // new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.myAccount'), url: '../../../wifi4eu/#/supplier-portal/profile', externalUrl: true}),
-                        // new CustomLayoutLink({label: this.menuTranslations.get('itemMenu.suppPortal'), url: '../../../wifi4eu/#/supplier-portal/voucher', externalUrl: true})
                         new CustomLayoutLink({
                             label: this.menuTranslations.get('itemMenu.myAccount'),
-                            url: '../../../wifi4eu/#/supplier-portal/profile',
+                            url: '/wifi4eu/#/supplier-portal/profile',
                             externalUrl: true
                         })
                     ];
@@ -83,12 +80,12 @@ export class AppComponent {
                     this.menuLinks = [
                         new CustomLayoutLink({
                             label: this.menuTranslations.get('itemMenu.myAccount'),
-                            url: '../../../wifi4eu/#/beneficiary-portal/profile',
+                            url: '/wifi4eu/#/beneficiary-portal/profile',
                             externalUrl: true
                         }),
                         new CustomLayoutLink({
                             label: this.menuTranslations.get('itemMenu.appPortal'),
-                            url: '../../../wifi4eu/#/beneficiary-portal/voucher',
+                            url: '/wifi4eu/#/beneficiary-portal/voucher',
                             externalUrl: true
                         })
                     ];

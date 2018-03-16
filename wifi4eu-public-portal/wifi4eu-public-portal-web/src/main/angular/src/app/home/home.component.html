@@ -44,7 +44,7 @@
                 <li>{{ 'home.part2.list2' | translate}}</li>
             </ul>
             <a href="https://ec.europa.eu/digital-single-market/news-redirect/613784">
-                <p class="europeans-text" [innerHTML]="'home.part2.subtitle5' | translate"></p>
+                <p class="europeans-text underline" [innerHTML]="'home.part2.subtitle5' | translate"></p>
             </a>
             <p class="europeans-text">{{ 'home.part2.subtitle6' | translate}}</p>
             <div id="img-scnd" class="img-scnd-top">
@@ -135,7 +135,8 @@
     <div class="row contenedor">
         <div class="col-xl-6">
             <p class="white-links">
-                <a target="_blank" href="https://ec.europa.eu/digital-single-market/en/news/factsheet-wifi4eu">
+                <a target="_blank"
+                   href="https://ec.europa.eu/digital-single-market/en/faq/wifi4eu-questions-and-answers">
                     {{'home.part4.link1' | translate }}</a>
             </p>
             <p class="white-links">
@@ -146,7 +147,9 @@
         </div>
         <div class="col-xl-6">
             <img class="phoneIcon" src="assets/images/phone.PNG" alt="">
-            <p class="white-links" [innerHTML]="'home.part4.link4' | translate"></p>
+            <a target="_blank" href="https://europa.eu/european-union/contact/write-to-us_en">
+                <p class="white-links" [innerHTML]="'home.part4.link4' | translate"></p>
+            </a>
         </div>
     </div>
 </div>
