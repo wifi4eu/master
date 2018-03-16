@@ -6,7 +6,7 @@ import { UxLayoutNavBarActionsComponent } from "@ec-digit-uxatec/eui-angular2-ux
 @Component({
     selector: "custom-layout-nav-bar-action-item",
     template: `
-        <li class="action-item {{itemClass}}" (click)="toggle($event)" [class.selected]="isActive" [class.hidden-sm-down]="isHiddenMobile">
+        <li class="action-item {{itemClass}}" (click)="toggle($event)" [class.selected]="isActive" [class.hidden-sm-down]="isHiddenMobile" style="position: absolute;right: 0;">
         <span class="fa {{iconClass}}">
             <span *ngIf="tagCount" class="tag">{{tagCount}}</span>
         </span>
