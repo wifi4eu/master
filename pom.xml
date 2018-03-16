@@ -185,7 +185,7 @@
             <id>AZUREDEV</id>
             <properties>
                 <ng.env>dev</ng.env>
-                <schemes>http</schemes>
+                <schemes>https</schemes>
                 <server.address>${server.azure.dev.address}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
