@@ -115,8 +115,8 @@
         <app.datasource.name>wifi4euDS</app.datasource.name>
         <jndi.datasource.name>wififoreu</jndi.datasource.name>
         <persistence.unit.name>wifi4euPersistence</persistence.unit.name>
-        <eclipselink.logging.level>FINE</eclipselink.logging.level>
-        <eclipselink.logging.level.sql>FINE</eclipselink.logging.level.sql>
+        <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+        <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
         <eclipselink.logging.parameters>true</eclipselink.logging.parameters>
         <eclipselink.target.database>SQLServer</eclipselink.target.database>
 
