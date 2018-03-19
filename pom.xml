@@ -133,8 +133,8 @@
         <server.azure.test2.address>wifi4eutest.eu</server.azure.test2.address>
         <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
         <server.azure.port>80</server.azure.port>
-        <server.pro.address>wifi4eu.eu</server.pro.address>
-        <server.pro.port>80</server.pro.port>
+        <server.pro.address>www.wifi4eu.eu</server.pro.address>
+        <server.pro.port>443</server.pro.port>
         <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilterMocked</user.filter.path>
         <server.ecas.stress>https://webgate.stress.ec.europa.eu</server.ecas.stress>
         <server.ecas.acc>https://ecas.acceptance.ec.europa.eu</server.ecas.acc>
@@ -285,7 +285,7 @@
             <id>PROD</id>
             <properties>
                 <ng.env>prod</ng.env>
-                <schemes>http</schemes>
+                <schemes>https</schemes>
                 <server.address>${server.pro.address}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
