@@ -55,16 +55,7 @@ public class UserFilter extends OncePerRequestFilter {
                 user.setRoleList(new LinkedList<RoleDTO>());
 
                 HttpSession session = request.getSession();
-                String previousSession = session.getId();
-                session.invalidate();
-
-                session = request.getSession(true);
-                session.setAttribute(Constant.USER, user);
                 String newSession = session.getId();
-
-                if (_log.isDebugEnabled()) {
-                    _log.debug("Login user from eCas " + ecasPrincipal.getEmail() + " with previous session '" + previousSession + "' and new session '" + newSession + "' for the request: " + requestUri);
-                }
 
                 Cookie userCookie = new Cookie("JSESSIONID", newSession);
                 response.addCookie(userCookie);
