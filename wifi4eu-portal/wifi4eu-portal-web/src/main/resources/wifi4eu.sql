@@ -19,7 +19,7 @@ CREATE TABLE dbo.users
   [ecas_username] VARCHAR(255) NULL,
   [type] INT NULL DEFAULT NULL,
   [verified] SMALLINT NOT NULL DEFAULT 0,
-  [lang] VARCHAR(255) NOT NULL DEFAULT 0,
+  [lang] VARCHAR(255) DEFAULT 'en',
   PRIMARY KEY ([id])
 );
 -- -----------------------------------------------------
