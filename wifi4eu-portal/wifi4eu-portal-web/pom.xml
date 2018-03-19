@@ -72,6 +72,7 @@
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
                                         <argument>build</argument>
+                                        <argument>--prod</argument>
                                         <argument>--env=${ng.env}</argument>
                                         <argument>--aot</argument>
                                         <argument>false</argument>

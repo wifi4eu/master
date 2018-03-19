@@ -21,9 +21,10 @@
 
     <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
     <assuranceLevel>${ecas.config.assuranceLevel}</assuranceLevel>
-    <serverProtocol>http</serverProtocol>
+    <serverProtocol>${schemes}</serverProtocol>
     <cas:serverName>${ecas.server.address}</cas:serverName>
     <serverPort>${ecas.server.port}</serverPort>
+    <serverSSLPort>${ecas.server.port}</serverSSLPort>
 
     <applicationServer>tomcat</applicationServer>
 
