@@ -8,11 +8,11 @@ import { UxLayoutLink } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-l
         <nav id="top-menu">
             <ul>
                 <li class="icon-menu-item" style="max-height:50px" routerLinkActive="selected" [routerLinkActiveOptions]="{exact:true}">
-                    <a *ngIf="!goToHomeButton" style="line-height:19px" [routerLink]="homeUrl" (click)="onLinkClick({id:'home',url:homeUrl})">
-                        <span class="fa fa-home" ></span>
+                    <a *ngIf="!goToHomeButton" [routerLink]="homeUrl" (click)="onLinkClick({id:'home',url:homeUrl})">
+                        <span class="fa fa-home" style="line-height: 27px; vertical-align: bottom;"></span>
                     </a>
-                    <a *ngIf="goToHomeButton" style="line-height:19px" (click)="goToHome()">
-                        <span class="fa fa-home" ></span>
+                    <a *ngIf="goToHomeButton" (click)="goToHome()">
+                        <span class="fa fa-home" style="line-height: 27px; vertical-align: bottom;"></span>
                     </a>
                 </li>
 

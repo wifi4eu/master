@@ -7,8 +7,8 @@ import { CustomLayoutLink } from "./custom-layout-link";
         <nav id="top-menu">
             <ul>
                 <li class="icon-menu-item" style="max-height:50px" routerLinkActive="selected" [routerLinkActiveOptions]="{exact:true}">
-                    <a style="line-height:19px" [routerLink]="homeUrl" (click)="onLinkClick({id:'home',url:homeUrl})">
-                        <span class="fa fa-home" ></span>
+                    <a [routerLink]="homeUrl" (click)="onLinkClick({id:'home',url:homeUrl})">
+                        <span class="fa fa-home" style="line-height: 27px; vertical-align: bottom;"></span>
                     </a>
                 </li>
 
