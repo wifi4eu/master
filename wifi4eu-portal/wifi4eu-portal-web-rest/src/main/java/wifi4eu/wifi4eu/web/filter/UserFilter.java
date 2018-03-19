@@ -39,6 +39,7 @@ public class UserFilter extends OncePerRequestFilter {
         String requestUri = "Unknown resource";
         try {
             requestUri = request.getRequestURI();
+            HttpSession session = request.getSession();
 
             UserContext user = null;
             DetailedUser ecasPrincipal = (DetailedUser) request.getUserPrincipal();
@@ -54,16 +55,12 @@ public class UserFilter extends OncePerRequestFilter {
                 user.setLastName(ecasPrincipal.getLastName());
                 user.setRoleList(new LinkedList<RoleDTO>());
 
-                HttpSession session = request.getSession();
-                String newSession = session.getId();
-
-                Cookie userCookie = new Cookie("JSESSIONID", newSession);
-                response.addCookie(userCookie);
+                session.setAttribute(Constant.USER, user);
             } else if (_log.isDebugEnabled()) {
                 _log.debug("Unauthenticated request: " + requestUri);
             }
 
-            user = (UserContext) request.getSession().getAttribute(Constant.USER);
+            user = (UserContext) session.getAttribute(Constant.USER);
             UserHolder.setUser(user);
 
             if (user == null && requestUri.equalsIgnoreCase("/wifi4eu/")) {
