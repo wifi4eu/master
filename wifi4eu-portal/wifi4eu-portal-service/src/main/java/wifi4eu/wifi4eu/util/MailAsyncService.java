@@ -17,17 +17,28 @@ import javax.mail.internet.MimeMultipart;
  * Created by rgarcita on 11/02/2017.
  */
 
-@Service
-public class MailService {
+public class MailAsyncService implements Runnable {
 
     public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final Logger _log = LoggerFactory.getLogger(MailAsyncService.class);
 
-    private final Logger _log = LoggerFactory.getLogger(MailService.class);
+    private String toAddress = null;
+    private String fromAddress = null;
+    private String subject = null;
+    private String msgBody = null;
+    private JavaMailSender mailSender = null;
 
-    public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
+    public MailAsyncService(String toAddress, String fromAddress, String subject, String msgBody, JavaMailSender mailSender) {
+        this.toAddress = toAddress;
+        this.fromAddress = fromAddress;
+        this.subject = subject;
+        this.msgBody = msgBody;
+        this.mailSender = mailSender;
+    }
+
+    @Override
+    public void run() {
         try {
             if (_log.isDebugEnabled()) {
                 _log.debug("Sending async mail: " + fromAddress + " " + subject + " " + msgBody);
@@ -39,9 +50,9 @@ public class MailService {
             String encodingOptions = "text/html; charset=UTF-8";
 
             byte[] mgsBody64 = msgBody.getBytes("UTF-8");
+
             message.setHeader("Content-Type", encodingOptions);
             message.setHeader("Content-Type", "multipart/mixed");
-
 
             MimeBodyPart bodyPart = new MimeBodyPart();
             bodyPart.setHeader("Content-Type", "text/html; charset=utf-8");
@@ -59,12 +70,5 @@ public class MailService {
         } catch (Exception ex) {
             _log.error(ex.getMessage());
         }
-
-    }
-
-    public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody) {
-        MailAsyncService asyncService = new MailAsyncService(toAddress, fromAddress, subject, msgBody, this.mailSender);
-        Thread thread = new Thread(asyncService);
-        thread.start();
     }
 }
