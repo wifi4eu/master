@@ -81,6 +81,12 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         }
     }
 
+    clearMunicipality(index){
+      if(typeof this.laus[index] == "string"){
+        this.laus[index] = null;
+      }
+    }
+
     private checkMunicipalitiesSelected() {
         this.municipalitiesSelected = true;
         for (let i = 0; i < this.laus.length; i++) {
