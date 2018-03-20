@@ -31,7 +31,8 @@
                                                 name="municipality" field="name1" [(ngModel)]="laus[0]"
                                                 [suggestions]="lauSuggestions" (completeMethod)="search($event)"
                                                 (onSelect)="checkMunicipalitiesSelected()"
-                                                (input)="checkMunicipalitiesSelected()" required></p-autoComplete>
+                                                (input)="checkMunicipalitiesSelected()"
+                                                (focusout)="clearMunicipality(0)" required></p-autoComplete>
                             </div>
                         </div>
                     </div>
@@ -142,6 +143,7 @@
                                                         [suggestions]="lauSuggestions" (completeMethod)="search($event)"
                                                         (onSelect)="checkMunicipalitiesSelected()"
                                                         (input)="checkMunicipalitiesSelected()"
+                                                        (focusout)="clearMunicipality(i)"
                                                         required></p-autoComplete>
                                     </div>
                                 </div>
