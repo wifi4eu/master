@@ -96,7 +96,7 @@ public class AppException extends RuntimeException {
 			.append("uuid=")
 			.append(getUuid())
 			.append(" ")
-			.append(super.toString())
+			.append(this.responseCode == HttpStatus.SC_INTERNAL_SERVER_ERROR || responseCode == 0 ? super.toString() : "")
 			.toString();
 	}
 }
