@@ -22,22 +22,61 @@
         </layout>
     </appender>
 
-    <!--<appender name="FILE_APPENDER" class="org.apache.log4j.RollingFileAppender">
-        <param name="file" value="server.log"/>
-        &lt;!&ndash; Taille max pour le fichier de log &ndash;&gt;
+
+    <appender name="ECAS_CLIENT_FILE" class="org.apache.log4j.RollingFileAppender">
+        <param name="append" value="false"/>
+        <param name="file" value="${catalina.home}/logs/ecas-client.log"/>
+        <!--Taille max pour le fichier de log -->
         <param name="MaxFileSize" value="10MB"/>
-        &lt;!&ndash; Nombre de fichiers de logs (sauvegardes). &ndash;&gt;
+        <!-- Nombre de fichiers de logs (sauvegardes). -->
         <param name="MaxBackupIndex" value="10"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d [%t] %-5p %c{1} - %x - %m%n"/>
         </layout>
-    </appender>-->
+    </appender>
 
 
-    <!--<category name="org.apache.commons.digester">
-        <level value="debug"/>
+    <logger name="eu.cec.digit.ecas.client.j2ee.tomcat" additivity="true">
+        <level value="info"/>
         <appender-ref ref="CONSOLE_APPENDER"/>
-    </category>-->
+        <appender-ref ref="ECAS_CLIENT_FILE"/>
+    </logger>
+
+    <logger name="eu.cec.digit.ecas.util.httpclient" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="ECAS_CLIENT_FILE"/>
+    </logger>
+
+    <logger name="eu.cec.digit.commons" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="ECAS_CLIENT_FILE"/>
+    </logger>
+
+    <logger name="eu.cec.digit.ecas.client.filter.MetaFilter" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="ECAS_CLIENT_FILE"/>
+    </logger>
+
+    <logger name="eu.cec.digit.ecas.util.dependencies" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="ECAS_CLIENT_FILE"/>
+    </logger>
+
+    <logger name="httpclient.wire" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="ECAS_CLIENT_FILE"/>
+    </logger>
+
+    <logger name="org.apache" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="ECAS_CLIENT_FILE"/>
+    </logger>
 
     <logger name="wifi4eu" additivity="true">
         <level value="error"/>

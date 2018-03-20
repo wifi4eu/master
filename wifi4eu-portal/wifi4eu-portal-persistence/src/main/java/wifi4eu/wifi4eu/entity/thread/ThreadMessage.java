@@ -7,10 +7,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "thread_messages")
 public class ThreadMessage {
-    @Id
-    @SequenceGenerator(name = "thmessage_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "thmessage_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne

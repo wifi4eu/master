@@ -21,9 +21,10 @@
 
     <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
     <assuranceLevel>${ecas.config.assuranceLevel}</assuranceLevel>
-    <serverProtocol>http</serverProtocol>
+    <serverProtocol>${schemes}</serverProtocol>
     <cas:serverName>${ecas.server.address}</cas:serverName>
     <serverPort>${ecas.server.port}</serverPort>
+    <serverSSLPort>${ecas.server.port}</serverSSLPort>
 
     <applicationServer>tomcat</applicationServer>
 
@@ -33,7 +34,7 @@
 
     <!-- maxConnections equal to the Tomcat threads per instance -->
     <maxConnections>200</maxConnections>
-    <connectionTimeout>30000</connectionTimeout>
+    <connectionTimeout>180000</connectionTimeout>
 
     <!--
             <cas:renew>${ecas.config.renew}</cas:renew>

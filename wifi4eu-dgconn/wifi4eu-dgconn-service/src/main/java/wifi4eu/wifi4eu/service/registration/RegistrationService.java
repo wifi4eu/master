@@ -13,6 +13,7 @@ import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
@@ -106,7 +107,10 @@ public class RegistrationService {
         if (registration != null) {
             UserDTO user = userService.getUserById(registration.getUserId());
             if (user != null) {
-                Locale locale = userService.initLocale();
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (user.getLang() != null) {
+                    locale = new Locale(user.getLang());
+                }
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
                 String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");

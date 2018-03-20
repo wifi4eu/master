@@ -21,6 +21,7 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
@@ -75,7 +76,7 @@ public class BeneficiaryService {
     public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO, String ip) throws Exception {
 
         /* Get user from ECAS */
-        UserDTO user;
+        UserDTO user = new UserDTO();
         UserContext userContext = UserHolder.getUser();
         boolean isEcasUser = false;
 
@@ -90,22 +91,14 @@ public class BeneficiaryService {
             user.setEmail(beneficiaryDTO.getUser().getEmail());
             user.setType(beneficiaryDTO.getUser().getType());
             isEcasUser = true;
-        } else {
-            /* Deprecated: TODO: remove it */
-            user = beneficiaryDTO.getUser();
-            String password = "12345678";
-            user.setPassword(password);
-            isEcasUser = false;
         }
 
         user.setCreateDate(new Date().getTime());
+        user.setLang(beneficiaryDTO.getLang());
 
-        UserDTO resUser;
+        UserDTO resUser = new UserDTO();
         if (isEcasUser) {
             resUser = userService.saveUserChanges(user);
-        } else {
-            /*deprecated_: TODO: remove it */
-            resUser = userService.createUser(user);
         }
 
         /* create municipalities and check duplicates */
@@ -158,13 +151,15 @@ public class BeneficiaryService {
 
 
             if (municipalitiesWithSameLau.size() > 1) {
-
-                Locale locale = userService.initLocale();
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (userDTO.getLang() != null) {
+                    locale = new Locale(userDTO.getLang());
+                }
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.discussionMunicipality.subject");
                 String msgBody = bundle.getString("mail.discussionMunicipality.body");
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                 }
 
                 /* verificamos que existe el thread */

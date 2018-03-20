@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { MunicipalityApi } from "../shared/swagger/api/MunicipalityApi";
 import { SupplierApi } from "../shared/swagger/api/SupplierApi";
-import { SuppliedRegionApi } from "../shared/swagger/api/SuppliedRegionApi";
 import { UserDTOBase } from "../shared/swagger/model/UserDTO";
 import { CallDTOBase } from "../shared/swagger/model/CallDTO";
 import { LocalStorageService } from "angular-2-local-storage";
@@ -11,12 +10,11 @@ import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 @Component({
     selector: 'app-home',
     templateUrl: 'home.component.html',
-    providers: [MunicipalityApi, SuppliedRegionApi, CallApi, SupplierApi]
+    providers: [MunicipalityApi, CallApi, SupplierApi]
 })
 
 export class HomeComponent {
     private municipalitiesCounter: number;
-    private suppliersCounter: number;
     private user: UserDTOBase;
     private currentCall: CallDTOBase;
     private dateNumber: string;
@@ -24,7 +22,7 @@ export class HomeComponent {
     private showTimeline: boolean = false;
     private showTimer: boolean = false;
 
-    constructor(private municipalityApi: MunicipalityApi, private suppliedRegionApi: SuppliedRegionApi, private localStorage: LocalStorageService, private callApi: CallApi, private supplierApi: SupplierApi) {
+    constructor(private municipalityApi: MunicipalityApi, private localStorage: LocalStorageService, private callApi: CallApi, private supplierApi: SupplierApi) {
         let u = this.localStorage.get('user');
         this.user = u ? JSON.parse(u.toString()) : null;
         this.currentCall = new CallDTOBase();
@@ -38,15 +36,6 @@ export class HomeComponent {
                 console.log(error);
             }
         );
-        this.suppliedRegionApi.getSuppliedRegionsCountGroupedByRegionId().subscribe(
-            (response: ResponseDTOBase) => {
-                if (response.success) {
-                    this.suppliersCounter = response.data.length;
-                }
-            }, error => {
-                console.log(error);
-            }
-        );
         this.checkForCalls();
     }
 
@@ -54,12 +43,17 @@ export class HomeComponent {
         this.callApi.allCalls().subscribe(
             calls => {
                 this.currentCall = calls[0];
-                this.showTimeline = true;
-                this.showTimer = true;
-                let date = new Date(this.currentCall.startDate);
-                date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-                this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth()+1)).slice(-2) + "/" + date.getFullYear();
-                this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
+                if (this.currentCall) {
+                    this.showTimeline = true;
+                    this.showTimer = true;
+                    let date = new Date(this.currentCall.startDate);
+                    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+                    this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
+                    this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
+                } else {
+                    this.showTimeline = false;
+                    this.showTimer = false;
+                }
             }, error => {
                 console.log(error);
                 this.currentCall = null;

@@ -10,8 +10,9 @@ import java.util.List;
 @Table(name = "voucher_management")
 public class VoucherManagement {
 
-    @Id
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "minimum")

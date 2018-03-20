@@ -1,7 +1,7 @@
-import {Component, Directive, EventEmitter, Input, Output} from "@angular/core";
-import {UxLayoutNavBarActionItemComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/ux-layout-nav-bar-action-item.component";
-import {UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/models/ux-layout-link";
-import {UxLayoutNavBarActionsComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/ux-layout-nav-bar-actions.component";
+import { Component, Input } from "@angular/core";
+import { UxLayoutNavBarActionItemComponent } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/ux-layout-nav-bar-action-item.component";
+import { UxLayoutLink } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/models/ux-layout-link";
+import { UxLayoutNavBarActionsComponent } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/ux-layout-nav-bar-actions.component";
 
 @Component({
     selector: "custom-layout-nav-bar-action-item",
@@ -52,7 +52,10 @@ import {UxLayoutNavBarActionsComponent} from "@ec-digit-uxatec/eui-angular2-ux-c
                     
                     <ul *ngIf="isShowHome">
                         <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                            <a [routerLink]="homeUrl">
+                            <a *ngIf="!goToHomeButton" [routerLink]="homeUrl">
+                                {{ 'shared.home.label' | translate }}
+                            </a>
+                            <a *ngIf="goToHomeButton" (click)="goToHome()">
                                 {{ 'shared.home.label' | translate }}
                             </a>
                         </li>
@@ -112,10 +115,15 @@ export class CustomLayoutNavBarActionItemComponent extends UxLayoutNavBarActionI
     @Input() isHiddenMobile: boolean;
     @Input() isShowProfilePicture: boolean = true;
     @Input() profilePictureIconClass: string = 'fa-user';
+    @Input() goToHomeButton: boolean = false;
 
     uxLayoutNavBarActionsComponent: UxLayoutNavBarActionsComponent;
 
     toggle(event: Event) {
         super.toggle(event);
+    }
+
+    goToHome() {
+        window.location.href = "/#/home";
     }
 }

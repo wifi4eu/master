@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import io.swagger.codegen.CliOption;
@@ -210,7 +211,13 @@ public class TypescriptClientCodegen extends AbstractTypescriptClientCodegen {
                     throw new RuntimeException("Unknown HTTP Method " + op.httpMethod + " not allowed");
             }
 
-
+            List<CodegenParameter> removeHeaderParams = new ArrayList<CodegenParameter>();
+            for (CodegenParameter p : op.allParams) {
+                if (p != null && p.isHeaderParam != null && p.isHeaderParam) {
+                    removeHeaderParams.add(p);
+                }
+            }
+            op.allParams.removeAll(removeHeaderParams);
 
             // Convert path to TypeScript template string
             op.path = op.path.replaceAll("\\{(.*?)\\}", "\\$\\{$1\\}");

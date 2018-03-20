@@ -154,13 +154,9 @@ export class {{classname}} implements I{{classname}} {
             queryParameters.set('{{baseName}}', <any>{{paramName}});
         }
 {{/queryParams}}
-
-{{#headers}}
-        headers.set('{{baseName}}', String({{paramName}}));
-
-{{/headers}}
-
-
+{{#headerParams}}
+        headers.set('{{baseName}}', '{{description}}');
+{{/headerParams}}
 {{#authMethods}}
         // authentication ({{name}}) required
 {{#isApiKey}}

@@ -3,6 +3,10 @@ p-autocomplete {
   border: 0 !important;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
 .ui-autocomplete {
   display: block;
 }
@@ -1311,6 +1315,14 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   margin-right: 2em;
 }
 
+@media (max-width: 500px) {
+  .phoneNum {
+    display: block;
+    white-space: nowrap;
+  }
+
+}
+
 .phoneNum {
   color: yellow;
 }
@@ -1326,4 +1338,24 @@ discussion-component .expanded .content, discussion-component .expanded .header,
 
 timer-component .center {
   padding: 0.5em 0px;
+}
+
+.counter-container {
+  padding-bottom: 0px !important;
+  padding-left: 0px;
+  .counter {
+    height: 600px;
+    background-size: contain;
+
+    .changePassword {
+      margin-top: 1.5em;
+    }
+
+  }
+}
+
+@media (max-width: 1200px) {
+  .counter-container > .counter {
+    background-size: cover;
+  }
 }

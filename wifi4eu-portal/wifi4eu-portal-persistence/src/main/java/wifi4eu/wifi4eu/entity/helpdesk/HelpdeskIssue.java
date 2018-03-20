@@ -6,10 +6,10 @@ import java.util.List;
 @Entity
 @Table(name = "helpdesk_issues")
 public class HelpdeskIssue {
-    @Id
-    @SequenceGenerator(name = "hdissue_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hdissue_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "from_email")
@@ -36,13 +36,16 @@ public class HelpdeskIssue {
     @Column(name = "_status")
     private Integer status;
 
+    @Column(name = "_ticket")
+    private boolean ticket;
+
     @OneToMany(mappedBy = "issue")
     private List<HelpdeskComment> comments;
 
     public HelpdeskIssue() {
     }
 
-    public HelpdeskIssue(Integer id, String fromEmail, String assignedTo, String topic, String portal, String memberState, String summary, Long createDate, Integer status, List<HelpdeskComment> comments) {
+    public HelpdeskIssue(Integer id, String fromEmail, String assignedTo, String topic, String portal, String memberState, String summary, Long createDate, Integer status, boolean ticket, List<HelpdeskComment> comments) {
         this.id = id;
         this.fromEmail = fromEmail;
         this.assignedTo = assignedTo;
@@ -53,6 +56,7 @@ public class HelpdeskIssue {
         this.createDate = createDate;
         this.status = status;
         this.comments = comments;
+        this.ticket = ticket;
     }
 
     public Integer getId() {
@@ -133,5 +137,13 @@ public class HelpdeskIssue {
 
     public void setComments(List<HelpdeskComment> comments) {
         this.comments = comments;
+    }
+
+    public boolean isTicket() {
+        return ticket;
+    }
+
+    public void setTicket(boolean ticket) {
+        this.ticket = ticket;
     }
 }
