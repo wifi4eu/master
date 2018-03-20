@@ -188,8 +188,6 @@ public class UserResource {
         try {
             _log.info("[i] ecasLogin");
             UserContext userContext = UserHolder.getUser();
-            _log.debug("user Email: " + userContext.getEmail());
-            _log.debug("user PerId: " + userContext.getPerId());
             UserDTO userDTO = userService.getUserByUserContext(userContext);
             _log.info("[f] ecasLogin");
             return new ResponseDTO(true, userDTO, null);

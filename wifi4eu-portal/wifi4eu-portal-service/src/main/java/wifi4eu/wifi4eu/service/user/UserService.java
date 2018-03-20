@@ -149,6 +149,10 @@ public class UserService {
             throw new AppException("User context not defined");
         }
 
+        if(_log.isDebugEnabled()){
+            _log.debug("user Email: " + userContext.getEmail() + " user PerId: " + userContext.getPerId());
+        }
+
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
         if (userDTO == null) {
             userDTO = new UserDTO();
