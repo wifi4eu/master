@@ -6,10 +6,10 @@ import java.util.List;
 @Entity
 @Table(name = "helpdesk_issues")
 public class HelpdeskIssue {
-    @Id
-    @SequenceGenerator(name = "hdissue_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hdissue_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "from_email")

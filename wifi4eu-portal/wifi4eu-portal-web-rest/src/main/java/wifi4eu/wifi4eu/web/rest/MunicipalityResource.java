@@ -2,6 +2,8 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class MunicipalityResource {
     Logger _log = LoggerFactory.getLogger(MunicipalityResource.class);
 
     @ApiOperation(value = "Get all the municipalities")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> allMunicipalities() {
@@ -42,6 +47,9 @@ public class MunicipalityResource {
     }
 
     @ApiOperation(value = "Get municipality by specific id")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(value = "/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public MunicipalityDTO getMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId) {
@@ -104,6 +112,9 @@ public class MunicipalityResource {
     }
 
     @ApiOperation(value = "Get municipalities by specific lau id")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(value = "/lauId/{lauId}",method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByLauId(@PathVariable("lauId") final Integer lauId) {
@@ -114,6 +125,9 @@ public class MunicipalityResource {
     }
 
     @ApiOperation(value = "Get municipalities by specific user id")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(value = "/userId/{userId}",method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByUserId(@PathVariable("userId") final Integer userId,
@@ -141,6 +155,9 @@ public class MunicipalityResource {
     }
 
     @ApiOperation(value = "Get municipalities grouped by lau id")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(value = "/groupedByLauId", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO getMunicipalitiesCountGroupedByLauId() {

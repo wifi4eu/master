@@ -17,6 +17,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
@@ -144,14 +145,16 @@ public class UserService {
     @Transactional
     public UserDTO getUserByUserContext(UserContext userContext) {
 
-        _log.debug("[i] getUserByEcasPerId");
+        if (userContext == null) {
+            throw new AppException("User context not defined");
+        }
+
+        if(_log.isDebugEnabled()){
+            _log.debug("user Email: " + userContext.getEmail() + " user PerId: " + userContext.getPerId());
+        }
 
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
-
-        _log.debug("after search userDTO: " + userDTO);
-
         if (userDTO == null) {
-
             userDTO = new UserDTO();
             userDTO.setAccessDate(new Date().getTime());
             userDTO.setEcasEmail(userContext.getEmail());
@@ -167,9 +170,6 @@ public class UserService {
 
         }
 
-        _log.debug("after create userDTO: " + userDTO);
-
-        _log.debug("[f] getUserByEcasPerId");
         return userDTO;
     }
 

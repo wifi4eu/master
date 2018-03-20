@@ -9,10 +9,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "applications")
 public class Application {
+
     @Id
-    @SequenceGenerator(name = "application_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "application_seq")
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne

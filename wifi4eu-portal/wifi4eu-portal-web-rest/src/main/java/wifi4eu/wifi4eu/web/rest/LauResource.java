@@ -2,6 +2,8 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class LauResource {
     private Logger _log = LoggerFactory.getLogger(LauResource.class);
 
     @ApiOperation(value = "Get lau by specific id")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(value = "/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public LauDTO getLauById(@PathVariable("lauId") final Integer lauId) {
@@ -41,6 +46,9 @@ public class LauResource {
     }
 
     @ApiOperation(value = "Get lau by countryCode and lau2")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(value = "/countryCode/{countryCode}/lau2/{lau2}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public LauDTO getLauByCountryCodeAndLau2(@PathVariable("countryCode") final String countryCode, @PathVariable("lau2") final String lau2) {
@@ -49,6 +57,9 @@ public class LauResource {
     }
 
     @ApiOperation(value = "Get laus by countryCode")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(value = "/countryCode/{countryCode}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<LauDTO> getLausByCountryCode(@PathVariable("countryCode") final String countryCode) {
@@ -57,6 +68,9 @@ public class LauResource {
     }
 
     @ApiOperation(value = "Get laus by nuts3")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(value = "/nuts3/{nuts3}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<LauDTO> getLausByNuts3(@PathVariable("nuts3") final String nuts3) {
@@ -65,6 +79,9 @@ public class LauResource {
     }
 
     @ApiOperation(value = "Get laus by countryCode that start with name1, ignoring case")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(value = "/countryCode/{countryCode}/name/{name1}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<LauDTO> getLausByCountryCodeAndName1ContainingIgnoreCase(@PathVariable("countryCode") final String countryCode, @PathVariable("name1") final String name1) {
