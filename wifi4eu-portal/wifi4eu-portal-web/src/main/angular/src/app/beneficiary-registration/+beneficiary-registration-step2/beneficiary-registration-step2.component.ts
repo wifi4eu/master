@@ -36,7 +36,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private readonly MAX_LENGTH = 2;
     private css_class_municipalities: string[] = ['notValid'];
     private css_class_email: string[] = ['notValid'];
-    private emailPattern = new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:([a-z0-9][-]?){2,10}?\.)+[a-z0-9]{2,6}?$/i);
+    private emailPattern = new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:([a-z0-9][-]?){2,320}?\.)+[a-z0-9]{2,6}?$/i);
 
     private userEcas: UserDTOBase;
 
