@@ -220,6 +220,7 @@ public class SupplierService {
         return supplierDTO;
     }
 
+    @Cacheable(value = "portalGetListSuppliersByRegion")
     public List<String> getSuppliersByRegion(int regionId){
         Set<String> supplierNames = new HashSet<>();
         for (SuppliedRegionDTO suppliedRegion: suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findByRegionId(regionId)))) {
@@ -231,6 +232,7 @@ public class SupplierService {
         return new ArrayList<>(supplierNames);
     }
 
+    @Cacheable(value = "portalGetListSuppliersByCountry")
     public SuppliersCacheDTO getSuppliersByCountry(String countryCode){
         Set<String> supplierNames = new HashSet<>();
         List<NutsDTO> regions = nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode,3);

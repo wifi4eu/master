@@ -464,7 +464,7 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Yhteenliittymän nimi",
+  "benefRegistration.associationName": "Organisaatiosi nimi",
   "(beneficary portal additional info)": "Juridisen yksikön nimittämä edustaja:",
   "shared.submitregistration.success.text.part2": "Rekisteröitymisesi on valmis.",
   "shared.application.fifo.text": "Huomaa, että rahoituksen saajat valitaan hakemusten saapumisjärjestyksessä sekä alueellisen tasapuolisuuden varmistavien kriteerien mukaan. Kriteerit on esitetty Verkkojen Eurooppa -välineen vuoden 2017 työohjelmassa.",

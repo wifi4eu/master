@@ -1,27 +1,46 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { NutsDTOBase, NutsApi, SupplierApi, ResponseDTO } from '../shared/swagger';
 import { SuppliersCacheDTO, SuppliersCacheDTOBase } from '../shared/swagger/model/SuppliersCacheDTO';
 import { DatePipe } from '@angular/common';
+import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
+import { DataGrid } from 'primeng/primeng';
 
 @Component({
   selector: 'app-list-suppliers',
   templateUrl: './list-suppliers.component.html',
   styleUrls: ['./list-suppliers.component.scss'],
   providers: [NutsApi, SupplierApi],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  animations: [
+    trigger('expandCollapse', [
+      state('*', style({opacity: 1 , 'overflow-y': 'hidden'})),
+      state('void', style({'overflow-y': 'hidden', opacity: 0})),
+      transition('* => void', [
+        style({height: '*', opacity: 1}),
+        animate('0.4s cubic-bezier(.8, -0.6, 0.2, 1.5)', style({height: 0}))
+      ]),
+      transition('void => *', [
+        style({height: 0, opacity: 0}),
+        animate('0.4s cubic-bezier(.8, -0.6, 0.2, 1.5)', style({height: '*'})),
+        animate('0.6s ease-in', style({opacity: 1}))
+      ])
+    ])
+  ]
 })
 export class ListSuppliersComponent implements OnInit {
 
   countries: NutsDTOBase[] = [];
   regions: NutsDTOBase[] = [];
-  country: NutsDTOBase;
-  region: NutsDTOBase;
+  country: NutsDTOBase = null;
+  region: NutsDTOBase = null;
   suppliers: string[] = [];
   dateCached: string = null;
   searched: boolean = false;
   regionNameSearched: string = null;
   defaultRegion = new NutsDTOBase();
   originalSuppliers: string[] = [];
+
+  @ViewChild("gridSuppliers") gridSuppliers: DataGrid;
 
   constructor(private nutsApi: NutsApi, private supplierApi: SupplierApi) {}
 
@@ -85,7 +104,7 @@ export class ListSuppliersComponent implements OnInit {
 
   private filterResults(event) {
     var results = this.originalSuppliers.filter((supplier) => { return supplier.toLowerCase().match(event.target.value.toLowerCase()) ? supplier : null; })
-    this.suppliers = [...results]
+    this.suppliers = [...results];
   }
 
 }

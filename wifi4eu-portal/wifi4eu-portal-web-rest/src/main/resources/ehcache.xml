@@ -90,4 +90,26 @@
         <persistence strategy="localTempSwap" />
     </cache>
 
+    <cache name="portalGetListSuppliersByRegion"
+           maxEntriesLocalHeap="100000"
+           maxEntriesLocalDisk="1000000"
+           eternal="false"
+           timeToIdleSeconds="86400"
+           timeToLiveSeconds="86400"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
+    <cache name="portalGetListSuppliersByCountry"
+           maxEntriesLocalHeap="100000"
+           maxEntriesLocalDisk="1000000"
+           eternal="false"
+           timeToIdleSeconds="86400"
+           timeToLiveSeconds="86400"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
 </ehcache>

@@ -465,7 +465,7 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Název sdružení",
+  "benefRegistration.associationName": "Název vaší organizace",
   "(beneficary portal additional info)": "Jmenovaný zástupce právního subjektu (LEAR):",
   "shared.submitregistration.success.text.part2": "Vaše registrace je dokončena.",
   "shared.application.fifo.text": "Přednost budou mít při výběru ti, kteří zažádají dříve. Dále Komise dodrží zeměpisnou vyváženost, jak je podrobně uvedeno v pracovním programu pro Nástroj pro propojení Evropy na rok 2017.",

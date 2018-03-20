@@ -464,7 +464,7 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Ühingu nimi",
+  "benefRegistration.associationName": "Oma organisatsiooni nimi",
   "(beneficary portal additional info)": "Õigussubjekti määratud esindaja (LEAR):",
   "shared.submitregistration.success.text.part2": "Teie registreerimine on lõpule viidud.",
   "shared.application.fifo.text": "Vautšeri saajad valitakse välja taotluse esitamise järjekorra alusel, võttes arvesse ka vajadust tagada ühtlane geograafiline jaotus, nagu on märgitud Euroopa ühendamise rahastu 2017. aasta tööprogrammis.",

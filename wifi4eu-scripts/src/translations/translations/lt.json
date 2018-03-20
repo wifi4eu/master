@@ -465,7 +465,7 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Asociacijos pavadinimas",
+  "benefRegistration.associationName": "Savo organizacijąs pavadinimas",
   "(beneficary portal additional info)": "Teisinio subjekto paskirtasis atstovas (TSPA):",
   "shared.submitregistration.success.text.part2": "Jūsų registracija baigta.",
   "shared.application.fifo.text": "Atkreipkite dėmesį, kad atranka vykdoma eiliškumo principu ir remiantis geografinės pusiausvyros užtikrinimo kriterijais, kaip nurodyta 2017 m. Europos infrastruktūros tinklų priemonės darbo programoje.",

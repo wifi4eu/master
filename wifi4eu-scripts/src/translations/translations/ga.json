@@ -464,7 +464,7 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Ainm an chomhlachais",
+  "benefRegistration.associationName": "Ainm na eagraíocht s'agatsa",
   "(beneficary portal additional info)": "An t-ionadaí ceaptha ar an eintiteas dlíthiúil (LEAR):",
   "shared.submitregistration.success.text.part2": "Tá tú cláraithe.",
   "shared.application.fifo.text": "Tabhair do d'aire go ndéanfar an roghnú ar bhonn \"tús freastail ar an gceann is túisce\" agus ar bhonn critéar ar leith d'fhonn cothromaíocht gheografach a chinntiú , mar atá leagtha síos i gClár Oibre na Saoráide um Chónascadh na hEorpa 2017.",

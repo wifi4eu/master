@@ -465,7 +465,7 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Naziv udruženja",
+  "benefRegistration.associationName": "Naziv svoju organizacije",
   "(beneficary portal additional info)": "Imenovani zastupnik pravne osobe:",
   "shared.submitregistration.success.text.part2": "Vaša je registracija završena.",
   "shared.application.fifo.text": "Imajte na umu da se odabir provodi prema redoslijedu podnošenja prijava i na temelju kriterija kojima se osigurava zemljopisna ravnoteža, kako je opisano u radnom programu CEF-a za 2017.",

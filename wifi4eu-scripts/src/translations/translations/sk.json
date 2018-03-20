@@ -465,7 +465,7 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Názov združenia",
+  "benefRegistration.associationName": "Názov si organizácie",
   "(beneficary portal additional info)": "Ustanovený zástupca právneho subjektu (LEAR):",
   "shared.submitregistration.success.text.part2": "Registrácia je dokončená",
   "shared.application.fifo.text": "Upozorňujeme, že výber sa uskutoční podľa poradia, v akom boli predložené žiadosti, a zohľadnia sa aj kritériá na zaručenie zemepisnej vyváženosti. Podrobnosti nájdete v pracovnom programe NPE na rok 2017.",

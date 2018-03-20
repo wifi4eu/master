@@ -465,7 +465,7 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Nome da associação",
+  "benefRegistration.associationName": "Nome da sua organização",
   "(beneficary portal additional info)": "Representante nomeado da entidade jurídica:",
   "shared.submitregistration.success.text.part2": "A sua inscrição está concluída.",
   "shared.application.fifo.text": "Nota: A seleção dos candidatos é feita com base no princípio «primeiro a chegar, primeiro a ser servido», bem como em critérios para garantir o equilíbrio geográfico, conforme especificado no programa de trabalho do Mecanismo Interligar a Europa de 2017.",

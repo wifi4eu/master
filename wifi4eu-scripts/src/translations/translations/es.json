@@ -491,7 +491,7 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Nombre de la asociación",
+  "benefRegistration.associationName": "Nombre de su organización",
   "(beneficary portal additional info)": "Representante designado de la entidad jurídica:",
   "shared.submitregistration.success.text.part2": "Ha completado su inscripción.",
   "shared.application.fifo.text": "Tenga en cuenta que el proceso de selección se realiza por orden de llegada de las solicitudes y de acuerdo con criterios para garantizar el equilibrio geográfico, tal como se indica en el programa de trabajo 2017 del MCE.",

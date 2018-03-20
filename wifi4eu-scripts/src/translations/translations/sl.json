@@ -465,7 +465,7 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Ime zveze",
+  "benefRegistration.associationName": "Ime svojo organizacije",
   "(beneficary portal additional info)": "Pooblaščeni zastopnik pravnega subjekta:",
   "shared.submitregistration.success.text.part2": "Registracija je zaključena.",
   "shared.application.fifo.text": "Izbor projektov poteka po načelu „kdor prej pride, prej melje“ ter po kriterijih, ki zagotavljajo geografsko uravnoteženost, kot je določeno v delovnem programu IPE 2017.",

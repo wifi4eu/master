@@ -465,7 +465,7 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Επωνυμία φορέα",
+  "benefRegistration.associationName": "Ονομασία του οργανισμού σας",
   "(beneficary portal additional info)": "Διορισμένος εκπρόσωπος νομικής οντότητας (LEAR):",
   "shared.submitregistration.success.text.part2": "Η εγγραφή σας ολοκληρώθηκε.",
   "shared.application.fifo.text": "Πρέπει να γνωρίζετε ότι η επιλογή γίνεται κατά σειρά προτεραιότητας υποβολής της αίτησης, καθώς και βάσει κριτηρίων που εξασφαλίζουν γεωγραφική ισορροπία, όπως περιγράφεται λεπτομερώς στο πρόγραμμα εργασίας της ΔΣΕ για το 2017.",

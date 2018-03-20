@@ -465,7 +465,7 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Isem tal-assoċjazzjoni",
+  "benefRegistration.associationName": "Isem l-organizzazzjoni tiegħek",
   "(beneficary portal additional info)": "Rappreżentant Maħtur tal-Entità Legali (LEAR):",
   "shared.submitregistration.success.text.part2": "Ir-reġistrazzjoni tiegħek hija kompluta.",
   "shared.application.fifo.text": "Innota li l-għażla ssir fuq bażi ta’ “min jiġi l-ewwel jinqeda l-ewwel” kif ukoll kriterji biex jiġi żgurat bilanċ ġeografiku, kif spjegat fid-dettall fil-Programm ta’ Ħidma tas-CEF tal-2017.",
