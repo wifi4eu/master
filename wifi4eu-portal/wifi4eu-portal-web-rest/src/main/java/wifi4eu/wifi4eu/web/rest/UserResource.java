@@ -300,16 +300,6 @@ public class UserResource {
         }
     }
 
-    @ApiOperation(value = "Set the user language")
-    @RequestMapping(value = "/lang/{lang}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public String setUserLang(@PathVariable("lang") final String userLang) {
-        _log.info("setUserLang: " + userLang);
-        userService.setLang(userLang);
-
-        return userService.getLang();
-    }
-
     @ApiOperation(value = "Logout session")
     @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
