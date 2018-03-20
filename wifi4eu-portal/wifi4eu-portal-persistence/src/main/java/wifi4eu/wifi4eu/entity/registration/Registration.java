@@ -8,10 +8,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "registrations")
 public class Registration {
-    @Id
-    @SequenceGenerator(name = "registratrion_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "registration_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne

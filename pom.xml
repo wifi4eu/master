@@ -115,16 +115,20 @@
         <app.datasource.name>wifi4euDS</app.datasource.name>
         <jndi.datasource.name>wififoreu</jndi.datasource.name>
         <persistence.unit.name>wifi4euPersistence</persistence.unit.name>
-        <eclipselink.logging.level>FINE</eclipselink.logging.level>
-        <eclipselink.logging.level.sql>FINE</eclipselink.logging.level.sql>
+        <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+        <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
         <eclipselink.logging.parameters>true</eclipselink.logging.parameters>
+        <eclipselink.target.database>SQLServer</eclipselink.target.database>
 
         <!-- App settings -->
         <schemes>http</schemes>
         <server.address>localhost:8080</server.address>
         <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
         <server.test.port>8080</server.test.port>
+        <!--
         <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
+        -->
+        <server.azure.dev.address>wifi4eu-dev.everincloud.com</server.azure.dev.address>
         <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
         <server.azure.test2.address>wifi4eutest.eu</server.azure.test2.address>
         <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
@@ -148,6 +152,7 @@
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
         <mail.smtp.password>bcf74eb9b6</mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
+        <mail.serv.enable>true</mail.serv.enable>
 
         <!-- <war.output.directory>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\</war.output.directory> -->
         <!--<war.output.directory>C:\xampp\tomcat\webapps\</war.output.directory>-->
@@ -168,7 +173,7 @@
                 <war.output.directory/>
                 <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
                 <ecas.server.address>${server.test.address}</ecas.server.address>
-                <ecas.server.port>${server.test.port}</ecas.server.port>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
                 <mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
@@ -189,12 +194,15 @@
                 <enable.login.end>&lt;!--</enable.login.end>
                 <enable.appinsights.start>--&gt;</enable.appinsights.start>
                 <enable.appinsights.end>&lt;!--</enable.appinsights.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
                 <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
                 <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
-                <ecas.server.port>${server.azure.port}</ecas.server.port>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
                 <ecas.config.strength>BASIC</ecas.config.strength>
-                <mail.serv.location>https://wifi4eudev.azurewebsites.net/wifi4eu/#/</mail.serv.location>
+                <mail.serv.enable>false</mail.serv.enable>
+                <mail.serv.location>https://dev.wifi4eu.everincloud.com/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
@@ -212,10 +220,12 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
-                <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
                 <ecas.server.address>${server.azure.test.address}</ecas.server.address>
-                <ecas.server.port>${server.azure.port}</ecas.server.port>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
                 <mail.serv.location>https://wifi4eutest.azurewebsites.net/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
@@ -234,11 +244,13 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
                 <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
                 <ecas.config.strength>BASIC</ecas.config.strength>
                 <ecas.server.address>${server.azure.test2.address}</ecas.server.address>
-                <ecas.server.port>${server.azure.port}</ecas.server.port>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
                 <mail.serv.location>https://http://wifi4eutest.eu/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
@@ -257,9 +269,11 @@
                 <enable.security.end>&lt;!--</enable.security.end>
                 <enable.login.start>--&gt;</enable.login.start>
                 <enable.login.end>&lt;!--</enable.login.end>
+                <eclipselink.logging.level>WARNING</eclipselink.logging.level>
+                <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
                 <ecas.server.address>${server.azure.pro.address}</ecas.server.address>
-                <ecas.server.port>${server.azure.port}</ecas.server.port>
+                <ecas.server.port>${server.pro.port}</ecas.server.port>
                 <mail.serv.location>https://wifi4euprod.azurewebsites.net/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>

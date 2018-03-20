@@ -7,8 +7,7 @@ import java.util.List;
 @Table(name = "helpdesk_issues")
 public class HelpdeskIssue {
     @Id
-    @SequenceGenerator(name = "hdissue_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hdissue_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 

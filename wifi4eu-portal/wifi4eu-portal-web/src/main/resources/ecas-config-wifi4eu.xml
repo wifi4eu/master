@@ -34,7 +34,7 @@
 
     <!-- maxConnections equal to the Tomcat threads per instance -->
     <maxConnections>200</maxConnections>
-    <connectionTimeout>30000</connectionTimeout>
+    <connectionTimeout>180000</connectionTimeout>
 
     <!--
             <cas:renew>${ecas.config.renew}</cas:renew>

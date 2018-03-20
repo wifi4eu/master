@@ -33,10 +33,10 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private municipalitiesSelected: boolean = false;
     private emailsMatch: boolean = false;
     private emailConfirmations: string[] = [''];
-    private readonly MAX_LENGTH = 2;
+    private readonly MAX_LENGTH = 3;
     private css_class_municipalities: string[] = ['notValid'];
     private css_class_email: string[] = ['notValid'];
-    private emailPattern = new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:([a-z0-9][-]?){2,10}?\.)+[a-z0-9]{2,6}?$/i);
+    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
 
     private userEcas: UserDTOBase;
 
@@ -69,7 +69,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     }
 
     private search(event: any) {
-        let query = event.query;
+        let query = encodeURIComponent(event.query);
         if (this.country != null && query.length >= this.MAX_LENGTH) {
             this.lauApi.getLausByCountryCodeAndName1ContainingIgnoreCase(this.country.countryCode, query).subscribe(
                 (laus: LauDTOBase[]) => {
