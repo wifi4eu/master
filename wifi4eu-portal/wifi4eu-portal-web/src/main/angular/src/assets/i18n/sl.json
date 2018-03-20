@@ -478,5 +478,6 @@
   "shared.choose.label": "Επιλέξτε",
   "benefRegistration.legalRepresentative.details": "Zakoniti zastopnik ",
   "suppPortal.profile.deleteLogo": "Izbriši Logotip podjetja",
-  "suppPortal.withdraw-registration.text": "Niste več zainteresirani ponudnik za dobavo in namestitev opreme v okviru sheme WiFi4EU? Kliknite spodaj in umaknite registracijo."
+  "suppPortal.withdraw-registration.text": "Niste več zainteresirani ponudnik za dobavo in namestitev opreme v okviru sheme WiFi4EU? Kliknite spodaj in umaknite registracijo.",
+  "shared.municipality-autocomplete.label": "Občina"
 }

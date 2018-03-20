@@ -477,5 +477,6 @@
   "shared.choose.label": "Valitse",
   "benefRegistration.legalRepresentative.details": "Laillinen edustaja ",
   "suppPortal.profile.deleteLogo": "Poista Yrityksen logo",
-  "suppPortal.withdraw-registration.text": "Etkö ole enää kiinnostunut toimittamaan laitteita ja asennuspalveluja WiFi4EU-järjestelmään? Voit peruuttaa rekisteröitymisesi seuraavalla painikkeella."
+  "suppPortal.withdraw-registration.text": "Etkö ole enää kiinnostunut toimittamaan laitteita ja asennuspalveluja WiFi4EU-järjestelmään? Voit peruuttaa rekisteröitymisesi seuraavalla painikkeella.",
+  "shared.municipality-autocomplete.label": "Kunta"
 }

@@ -478,5 +478,6 @@
   "shared.choose.label": "Selecionar",
   "benefRegistration.legalRepresentative.details": "Representante legal ",
   "suppPortal.profile.deleteLogo": "Apagar Logótipo da empresa",
-  "suppPortal.withdraw-registration.text": "Já não está interessado em fornecer equipamento e serviços de instalação no âmbito da WiFi4EU? Clique abaixo para anular a sua inscrição."
+  "suppPortal.withdraw-registration.text": "Já não está interessado em fornecer equipamento e serviços de instalação no âmbito da WiFi4EU? Clique abaixo para anular a sua inscrição.",
+  "shared.municipality-autocomplete.label": "Autarquia (Escreve e selecione da lista)"
 }

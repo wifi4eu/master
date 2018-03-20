@@ -477,5 +477,6 @@
   "shared.choose.label": "Maak uw keuze",
   "benefRegistration.legalRepresentative.details": "Wettelijke vertegenwoordiger ",
   "suppPortal.profile.deleteLogo": "Wissen Bedrijfslogo",
-  "suppPortal.withdraw-registration.text": "Geen belangstelling meer voor de levering en installatie van apparatuur voor WiFi4EU? Klik hieronder om uw inschrijving in te trekken."
+  "suppPortal.withdraw-registration.text": "Geen belangstelling meer voor de levering en installatie van apparatuur voor WiFi4EU? Klik hieronder om uw inschrijving in te trekken.",
+  "shared.municipality-autocomplete.label": "Gemeente"
 }

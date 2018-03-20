@@ -478,5 +478,6 @@
   "shared.choose.label": "Roghnaigh",
   "benefRegistration.legalRepresentative.details": "Reprezentantul legal ",
   "suppPortal.profile.deleteLogo": "Șterge Sigla companiei",
-  "suppPortal.withdraw-registration.text": "Nu mai doriți să furnizați echipamente și servicii de instalare în cadrul inițiativei WiFi4EU? Faceți clic mai jos pentru a vă retrage înregistrarea."
+  "suppPortal.withdraw-registration.text": "Nu mai doriți să furnizați echipamente și servicii de instalare în cadrul inițiativei WiFi4EU? Faceți clic mai jos pentru a vă retrage înregistrarea.",
+  "shared.municipality-autocomplete.label": "Municipalitatea"
 }

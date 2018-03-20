@@ -477,5 +477,6 @@
   "shared.choose.label": "Valige",
   "benefRegistration.legalRepresentative.details": "Seaduslik esindaja ",
   "suppPortal.profile.deleteLogo": "Kustuta Ettevõtte logo",
-  "suppPortal.withdraw-registration.text": "Te pole enam huvitatud WiFi4EU jaoks seadmete ja paigalduse pakkumisest? Registreeringu tagasivõtmiseks klõpsake allpool."
+  "suppPortal.withdraw-registration.text": "Te pole enam huvitatud WiFi4EU jaoks seadmete ja paigalduse pakkumisest? Registreeringu tagasivõtmiseks klõpsake allpool.",
+  "shared.municipality-autocomplete.label": "Omavalitsus"
 }

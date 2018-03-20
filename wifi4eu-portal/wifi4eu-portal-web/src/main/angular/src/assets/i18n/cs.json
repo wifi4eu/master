@@ -478,5 +478,6 @@
   "shared.choose.label": "Zvolte",
   "benefRegistration.legalRepresentative.details": "Zákonný zástupce ",
   "suppPortal.profile.deleteLogo": "Odstranit Logo společnosti",
-  "suppPortal.withdraw-registration.text": "Nemáte již o zakázky na vybavení a jeho instalaci v rámci projektu WiFi4EU zájem? Kliknutím níže můžete registraci zrušit."
+  "suppPortal.withdraw-registration.text": "Nemáte již o zakázky na vybavení a jeho instalaci v rámci projektu WiFi4EU zájem? Kliknutím níže můžete registraci zrušit.",
+  "shared.municipality-autocomplete.label": "Obec"
 }

@@ -518,5 +518,6 @@
   "listSuppliers.title": "List of registered Wi-Fi installation companies",
   "listSuppliers.subtitle": "Search for the Wi-Fi installation companies that have already been registered",
   "(maintenance screen)": "This site is being updated, please try again in a few minutes.",
-  "(dropdown menu explanation)": "please start typing and select from the dropdown menu"
+  "(dropdown menu explanation)": "please start typing and select from the dropdown menu",
+  "shared.municipality-autocomplete.label": "Municipality (Type and select from the list)"
 }

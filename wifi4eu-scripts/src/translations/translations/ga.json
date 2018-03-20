@@ -477,5 +477,6 @@
   "shared.choose.label": "Roghnaigh",
   "benefRegistration.legalRepresentative.details": "Ionadaí dlíthiúil ",
   "suppPortal.profile.deleteLogo": "Scrios Lógó na cuideachta",
-  "suppPortal.withdraw-registration.text": "Níl spéis agat a thuilleadh trealamh agus seirbhísí suiteála a sholáthar do WiFi4EU? Cliceáil thíos chun an clárúchán a tharraingt siar."
+  "suppPortal.withdraw-registration.text": "Níl spéis agat a thuilleadh trealamh agus seirbhísí suiteála a sholáthar do WiFi4EU? Cliceáil thíos chun an clárúchán a tharraingt siar.",
+  "shared.municipality-autocomplete.label": "An bardas"
 }

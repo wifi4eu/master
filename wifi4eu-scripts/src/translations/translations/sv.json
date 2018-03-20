@@ -478,5 +478,6 @@
   "shared.choose.label": "Välj",
   "benefRegistration.legalRepresentative.details": "Juridiskt ombud ",
   "suppPortal.profile.deleteLogo": "Ta bort Företagets logotyp",
-  "suppPortal.withdraw-registration.text": "Vill du inte längre tillhandahålla utrustning och installationstjänster för WiFi4EU? Klicka nedan för att återkalla din registrering."
+  "suppPortal.withdraw-registration.text": "Vill du inte längre tillhandahålla utrustning och installationstjänster för WiFi4EU? Klicka nedan för att återkalla din registrering.",
+  "shared.municipality-autocomplete.label": "Kommun"
 }

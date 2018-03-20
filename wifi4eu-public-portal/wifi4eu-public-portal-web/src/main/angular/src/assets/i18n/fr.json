@@ -479,5 +479,6 @@
   "shared.choose.label": "Choisir",
   "benefRegistration.legalRepresentative.details": "Représentant légal ",
   "suppPortal.profile.deleteLogo": "Supprimer Logo de l’entreprise",
-  "suppPortal.withdraw-registration.text": "Vous ne souhaitez plus fournir d’équipements et de services d’installation dans le cadre de WiFi4EU?  Cliquez ci-dessous pour supprimer votre enregistrement."
+  "suppPortal.withdraw-registration.text": "Vous ne souhaitez plus fournir d’équipements et de services d’installation dans le cadre de WiFi4EU?  Cliquez ci-dessous pour supprimer votre enregistrement.",
+  "shared.municipality-autocomplete.label": "Municipalité (Tapez et sélectionnez a partir de la liste)"
 }
