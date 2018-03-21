@@ -17,7 +17,7 @@ export class SupplierRegistrationStep1Component {
     @Output() private logoUrlChange: EventEmitter<FileReader>;
     @ViewChild('logoInput') private logoInput: any;
     private logoFile: File;
-    private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,3}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
+    private websitePattern: string = "(([wW][wW][wW]\\.)|([hH][tT][tT][pP][sS]?:\\/\\/([wW][wW][wW]\\.)?))?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,256}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
 
 
     constructor(private sharedService: SharedService, private uxService: UxService) {
