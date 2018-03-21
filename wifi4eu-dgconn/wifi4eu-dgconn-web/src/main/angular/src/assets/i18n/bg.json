@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -402,7 +402,7 @@
   "listMunicipalities.subtitle.updateDate": "Актуализирано на:",
   "listMunicipalities.memberState.label": "Страна",
   "listMunicipalities.region.label": "Регион",
-  "listMunicipalities.apply.button": "Кандидатствайте",
+  "listMunicipalities.apply.button": "Търсене",
   "suppRegistration.webFormat": "Въведете правилен формат",
   "suppRegistration.bic.required": "Посочването на BIC е задължително",
   "suppRegistration.address.required": "Посочването на адрес е задължително",
@@ -465,8 +465,8 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Наименование на сдружението",
-  "(beneficary portal additional info)": "Назначен представител на правния субект (LEAR):",
+  "benefRegistration.associationName": "Наименование на вашата организацията",
+  "(beneficary portal additional info)": "Законен представител :",
   "shared.submitregistration.success.text.part2": "Вашата регистрация е завършена.",
   "shared.application.fifo.text": "Имайте предвид, че подборът ще се извършва по реда на подаване на кандидатурите, а също и съгласно критерии за гарантиране на географския баланс, както е посочено в работната програма на Механизма за свързване на Европа.",
   "(WiFi installation companies list new label)": "Резултати",
@@ -478,5 +478,6 @@
   "shared.choose.label": "Изберете",
   "benefRegistration.legalRepresentative.details": "Законен представител",
   "suppPortal.profile.deleteLogo": "Изтриване Лого на дружеството",
-  "suppPortal.withdraw-registration.text": "Вече не се интересувате от предоставянето на оборудване и услуги по инсталиране за схемата WiFi4EU?  Щракнете по-долу, за да оттеглите регистрацията си."
+  "suppPortal.withdraw-registration.text": "Вече не се интересувате от предоставянето на оборудване и услуги по инсталиране за схемата WiFi4EU?  Щракнете по-долу, за да оттеглите регистрацията си.",
+  "shared.municipality-autocomplete.label": "Община"
 }

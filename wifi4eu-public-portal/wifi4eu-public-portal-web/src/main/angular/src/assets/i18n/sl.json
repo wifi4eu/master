@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -402,7 +402,7 @@
   "listMunicipalities.subtitle.updateDate": "Posodobljeno: ",
   "listMunicipalities.memberState.label": "Država ",
   "listMunicipalities.region.label": "Regija ",
-  "listMunicipalities.apply.button": "Prijava",
+  "listMunicipalities.apply.button": "Išči",
   "suppRegistration.webFormat": "Vpišite pravilno obliko",
   "suppRegistration.bic.required": "BIC je obvezen",
   "suppRegistration.address.required": "Naslov je obvezen",
@@ -465,8 +465,8 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Ime zveze",
-  "(beneficary portal additional info)": "Pooblaščeni zastopnik pravnega subjekta:",
+  "benefRegistration.associationName": "Ime svojo organizacije",
+  "(beneficary portal additional info)": "Zakoniti zastopnik :",
   "shared.submitregistration.success.text.part2": "Registracija je zaključena.",
   "shared.application.fifo.text": "Izbor projektov poteka po načelu „kdor prej pride, prej melje“ ter po kriterijih, ki zagotavljajo geografsko uravnoteženost, kot je določeno v delovnem programu IPE 2017.",
   "(WiFi installation companies list new label)": "zadetkov",
@@ -478,5 +478,6 @@
   "shared.choose.label": "Επιλέξτε",
   "benefRegistration.legalRepresentative.details": "Zakoniti zastopnik ",
   "suppPortal.profile.deleteLogo": "Izbriši Logotip podjetja",
-  "suppPortal.withdraw-registration.text": "Niste več zainteresirani ponudnik za dobavo in namestitev opreme v okviru sheme WiFi4EU? Kliknite spodaj in umaknite registracijo."
+  "suppPortal.withdraw-registration.text": "Niste več zainteresirani ponudnik za dobavo in namestitev opreme v okviru sheme WiFi4EU? Kliknite spodaj in umaknite registracijo.",
+  "shared.municipality-autocomplete.label": "Občina"
 }

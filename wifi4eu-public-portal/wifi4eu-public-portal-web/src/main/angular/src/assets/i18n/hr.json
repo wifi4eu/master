@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -402,7 +402,7 @@
   "listMunicipalities.subtitle.updateDate": "Ažurirano:",
   "listMunicipalities.memberState.label": "Država",
   "listMunicipalities.region.label": "Regija",
-  "listMunicipalities.apply.button": "Podnesite prijavu",
+  "listMunicipalities.apply.button": "Pretraži",
   "suppRegistration.webFormat": "Unesite ispravan format",
   "suppRegistration.bic.required": "Obvezno je navesti BIC",
   "suppRegistration.address.required": "Obvezno je navesti adresu",
@@ -465,8 +465,8 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Naziv udruženja",
-  "(beneficary portal additional info)": "Imenovani zastupnik pravne osobe:",
+  "benefRegistration.associationName": "Naziv svoju organizacije",
+  "(beneficary portal additional info)": "Pravni zastupnik :",
   "shared.submitregistration.success.text.part2": "Vaša je registracija završena.",
   "shared.application.fifo.text": "Imajte na umu da se odabir provodi prema redoslijedu podnošenja prijava i na temelju kriterija kojima se osigurava zemljopisna ravnoteža, kako je opisano u radnom programu CEF-a za 2017.",
   "(WiFi installation companies list new label)": "rezultata",
@@ -478,5 +478,6 @@
   "shared.choose.label": "Odaberite",
   "benefRegistration.legalRepresentative.details": "Pravni zastupnik ",
   "suppPortal.profile.deleteLogo": "Izbriši Logotip poduzeća",
-  "suppPortal.withdraw-registration.text": "Više ne želite osiguravati opremu i usluge ugradnje u okviru programa WiFi4EU? Kliknite ispod kako biste povukli registraciju."
+  "suppPortal.withdraw-registration.text": "Više ne želite osiguravati opremu i usluge ugradnje u okviru programa WiFi4EU? Kliknite ispod kako biste povukli registraciju.",
+  "shared.municipality-autocomplete.label": "Općina"
 }
