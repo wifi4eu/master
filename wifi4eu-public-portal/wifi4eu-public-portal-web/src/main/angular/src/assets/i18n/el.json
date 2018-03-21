@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -402,7 +402,7 @@
   "listMunicipalities.subtitle.updateDate": "Επικαιροποιήθηκε στις: ",
   "listMunicipalities.memberState.label": "Χώρα ",
   "listMunicipalities.region.label": "Περιφέρεια ",
-  "listMunicipalities.apply.button": "Κάντε αίτηση",
+  "listMunicipalities.apply.button": "Αναζήτηση",
   "suppRegistration.webFormat": "Καταχωρίστε τα με τον σωστό μορφότυπο",
   "suppRegistration.bic.required": "Το BIC είναι υποχρεωτικό",
   "suppRegistration.address.required": "Η διεύθυνση είναι υποχρεωτική",
@@ -465,8 +465,8 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Επωνυμία φορέα",
-  "(beneficary portal additional info)": "Διορισμένος εκπρόσωπος νομικής οντότητας (LEAR):",
+  "benefRegistration.associationName": "Ονομασία του οργανισμού σας",
+  "(beneficary portal additional info)": "Νόμιμος εκπρόσωπος :",
   "shared.submitregistration.success.text.part2": "Η εγγραφή σας ολοκληρώθηκε.",
   "shared.application.fifo.text": "Πρέπει να γνωρίζετε ότι η επιλογή γίνεται κατά σειρά προτεραιότητας υποβολής της αίτησης, καθώς και βάσει κριτηρίων που εξασφαλίζουν γεωγραφική ισορροπία, όπως περιγράφεται λεπτομερώς στο πρόγραμμα εργασίας της ΔΣΕ για το 2017.",
   "(WiFi installation companies list new label)": "αποτελέσματα",
@@ -478,5 +478,6 @@
   "shared.choose.label": "Izberi",
   "benefRegistration.legalRepresentative.details": "Νόμιμος εκπρόσωπος ",
   "suppPortal.profile.deleteLogo": "Διαγραφή Λογότυπος της εταιρείας",
-  "suppPortal.withdraw-registration.text": "Δεν επιθυμείτε πλέον να παρέχετε υπηρεσίες παροχής εξοπλισμού και εγκατάστασης WiFi4EU; Κάντε κλικ παρακάτω για να αποσύρετε την εγγραφή σας."
+  "suppPortal.withdraw-registration.text": "Δεν επιθυμείτε πλέον να παρέχετε υπηρεσίες παροχής εξοπλισμού και εγκατάστασης WiFi4EU; Κάντε κλικ παρακάτω για να αποσύρετε την εγγραφή σας.",
+  "shared.municipality-autocomplete.label": "Δήμος"
 }

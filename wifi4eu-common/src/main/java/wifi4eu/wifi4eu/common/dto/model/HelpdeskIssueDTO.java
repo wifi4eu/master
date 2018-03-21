@@ -14,12 +14,13 @@ public class HelpdeskIssueDTO {
     private long createDate;
     private int status;
     private boolean ticket;
+    private String lang;
     private List<HelpdeskCommentDTO> comments;
 
     public HelpdeskIssueDTO() {
     }
 
-    public HelpdeskIssueDTO(int id, String fromEmail, String assignedTo, String topic, String portal, String memberState, String summary, long createDate, int status, boolean ticket, List<HelpdeskCommentDTO> comments) {
+    public HelpdeskIssueDTO(int id, String fromEmail, String assignedTo, String topic, String portal, String memberState, String summary, long createDate, int status, boolean ticket, List<HelpdeskCommentDTO> comments, String lang) {
         this.id = id;
         this.fromEmail = fromEmail;
         this.assignedTo = assignedTo;
@@ -31,6 +32,7 @@ public class HelpdeskIssueDTO {
         this.status = status;
         this.comments = comments;
         this.ticket = ticket;
+        this.lang = lang;
     }
 
     public int getId() {
@@ -119,5 +121,13 @@ public class HelpdeskIssueDTO {
 
     public void setTicket(boolean ticket) {
         this.ticket = ticket;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 }

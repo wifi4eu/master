@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -402,7 +402,7 @@
   "listMunicipalities.subtitle.updateDate": "Atnaujinta:",
   "listMunicipalities.memberState.label": "Šalis",
   "listMunicipalities.region.label": "Regionas",
-  "listMunicipalities.apply.button": "Pateikite paraišką",
+  "listMunicipalities.apply.button": "Ieškoti",
   "suppRegistration.webFormat": "Įrašykite teisingu formatu",
   "suppRegistration.bic.required": "Reikia nurodyti BIC",
   "suppRegistration.address.required": "Reikia nurodyti adresą",
@@ -465,8 +465,8 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Asociacijos pavadinimas",
-  "(beneficary portal additional info)": "Teisinio subjekto paskirtasis atstovas (TSPA):",
+  "benefRegistration.associationName": "Savo organizacijąs pavadinimas",
+  "(beneficary portal additional info)": "Teisinis atstovas:",
   "shared.submitregistration.success.text.part2": "Jūsų registracija baigta.",
   "shared.application.fifo.text": "Atkreipkite dėmesį, kad atranka vykdoma eiliškumo principu ir remiantis geografinės pusiausvyros užtikrinimo kriterijais, kaip nurodyta 2017 m. Europos infrastruktūros tinklų priemonės darbo programoje.",
   "(WiFi installation companies list new label)": "rezultatai (-ų)",
@@ -478,5 +478,6 @@
   "shared.choose.label": "Pasirinkite",
   "benefRegistration.legalRepresentative.details": "Teisinis atstovas ",
   "suppPortal.profile.deleteLogo": "Šalinti Bendrovės logotipas",
-  "suppPortal.withdraw-registration.text": "Nebenorite teikti įrangos ir įrengimo paslaugų pagal programą „WiFi4EU“? Spustelėkite nuorodą žemiau, kad pašalintumėte savo registraciją."
+  "suppPortal.withdraw-registration.text": "Nebenorite teikti įrangos ir įrengimo paslaugų pagal programą „WiFi4EU“? Spustelėkite nuorodą žemiau, kad pašalintumėte savo registraciją.",
+  "shared.municipality-autocomplete.label": "Savivaldybė"
 }
