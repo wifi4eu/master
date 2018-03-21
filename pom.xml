@@ -173,7 +173,7 @@
                 <war.output.directory/>
                 <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
                 <ecas.server.address>${server.test.address}</ecas.server.address>
-                <ecas.server.port>${server.pro.port}</ecas.server.port>
+                <ecas.server.port>8080</ecas.server.port>
                 <mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>

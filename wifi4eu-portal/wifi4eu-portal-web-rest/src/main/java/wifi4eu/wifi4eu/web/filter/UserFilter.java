@@ -12,7 +12,6 @@ import wifi4eu.wifi4eu.common.security.UserContext;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -57,7 +56,7 @@ public class UserFilter extends OncePerRequestFilter {
 
                 session.setAttribute(Constant.USER, user);
             } else if (_log.isDebugEnabled()) {
-                _log.debug("Unauthenticated request: " + requestUri);
+                _log.info("Unauthenticated request: " + requestUri);
             }
 
             user = (UserContext) session.getAttribute(Constant.USER);

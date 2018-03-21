@@ -49,6 +49,7 @@ export class BeneficiaryProfileComponent {
         if (this.user != null) {
             this.userApi.getUserById(this.user.id).subscribe(
                 (user: UserDTOBase) => {
+                  if(this.user != null){
                     this.user = user;
                     if (this.user.type == 2 || this.user.type == 3) {
                         Object.assign(this.editedUser, this.user);
@@ -73,9 +74,10 @@ export class BeneficiaryProfileComponent {
                         this.sharedService.growlTranslation('You are not allowed to view this page.', 'shared.error.notallowed', 'warn');
                         this.router.navigateByUrl('/home');
                     }
-                }, error => {
-                    this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'shared.error.api.generic', 'error');
-                    this.router.navigateByUrl('/home');
+                  }
+                }, error => {                 
+                  this.localStorageService.remove('user');
+                  this.sharedService.growlTranslation('An error occurred while trying to retrieve the data from the server. Please, try again later."', 'shared.error.api.generic', 'error');
                 }
             );
             this.userThreadsApi.getUserThreadsByUserId(this.user.id).subscribe(

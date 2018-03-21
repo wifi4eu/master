@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.service.user;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,7 +147,7 @@ public class UserService {
     public UserDTO getUserByUserContext(UserContext userContext) {
 
         if (userContext == null) {
-            throw new AppException("User context not defined");
+            throw new AppException("User context not defined", HttpStatus.SC_FORBIDDEN, "");
         }
 
         if(_log.isDebugEnabled()){
