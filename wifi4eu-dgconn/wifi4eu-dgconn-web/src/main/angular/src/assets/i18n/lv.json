@@ -479,5 +479,5 @@
   "benefRegistration.legalRepresentative.details": "Likumīgais pārstāvis ",
   "suppPortal.profile.deleteLogo": "Dzēst Uzņēmuma logo",
   "suppPortal.withdraw-registration.text": "Vairs nevēlaties piegādāt aprīkojumu un veikt uzstādīšanas darbus saistībā ar iniciatīvu WiFi4EU? Noklikšķiniet zemāk, lai atceltu savu reģistrāciju.",
-  "shared.municipality-autocomplete.label": "Pašvaldība"
+  "benefRegistration.municipalityDropdown": "sāciet ievadīt nosaukumu un izvēlieties kādu no piedāvātajiem variantiem."
 }

@@ -32,11 +32,11 @@
   "home.part3.text2": "Rekisteröidy verkkopalveluun ja ilmoita, millä alueilla yrityksesi toimii. Rekisteröityneiden yritysten luettelo julkaistaan verkossa, jotta kunnat saavat tiedon omalla alueellaan toimivista palveluntarjoajista. ",
   "home.part3.text5": "Huom. Luettelo ei ole millään tavalla sitova, vaan tuensaajat voivat valita vapaasti yrityksen, joka asentaa WiFi-yhteydet. Ne voivat valita myös sellaisen yrityksen, joka ei ole luettelossa. ",
   "home.part3.title2": "Kuntien rekisteröinti",
-  "home.register": "Rekisteröi kunta",
+  "home.register": "Rekisteröidy nyt",
   "home.part3.title3": "WiFi-verkkoyhteyksiä asentavien yritysten rekisteröinti",
-  "home.counterSection2": "Rekisteröi WiFi-yritys",
-  "home.counterSection3": "{{suppliersCounter}} WiFi-yritystä on jo rekisteröitynyt.",
-  "home.counterSectionButton": "{{municipalitiesCounter}} kuntaa on jo rekisteröitynyt.",
+  "home.counterSection2": "{{suppliersCounter}} WiFi-yritystä on jo rekisteröitynyt.",
+  "home.counterSection3": "{{municipalitiesCounter}} kuntaa on jo rekisteröitynyt.",
+  "home.counterSectionButton": "Näytä rekisteröityneiden nimet",
   "home.part4.title1": "Haluatko lisätietoa?",
   "home.part4.link1": "Usein kysyttyä",
   "home.part4.link2": "Tietoa WiFi4EU-aloitteesta",
@@ -478,5 +478,5 @@
   "benefRegistration.legalRepresentative.details": "Laillinen edustaja ",
   "suppPortal.profile.deleteLogo": "Poista Yrityksen logo",
   "suppPortal.withdraw-registration.text": "Etkö ole enää kiinnostunut toimittamaan laitteita ja asennuspalveluja WiFi4EU-järjestelmään? Voit peruuttaa rekisteröitymisesi seuraavalla painikkeella.",
-  "shared.municipality-autocomplete.label": "Kunta"
+  "benefRegistration.municipalityDropdown": "Kirjoita ensimmäiset merkit ja valitse jokin pudotusvalikon vaihtoehdoista"
 }

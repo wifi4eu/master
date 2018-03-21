@@ -478,5 +478,5 @@
   "benefRegistration.legalRepresentative.details": "Rechtsvertreter ",
   "suppPortal.profile.deleteLogo": "Löschen Logo des Unternehmens",
   "suppPortal.withdraw-registration.text": "Sie sind nicht mehr an einem Lieferauftrag für WiFI4EU interessiert? Unten können Sie Ihre Registrierung mit einem Klick zurückziehen.",
-  "shared.municipality-autocomplete.label": "Gemeinde (Eingeben und wählen aus der Liste)"
+  "benefRegistration.municipalityDropdown": "Beginnen Sie mit der Eingabe und treffen Sie dann eine Auswahl im Aufklappmenü"
 }

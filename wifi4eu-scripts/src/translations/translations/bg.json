@@ -479,5 +479,5 @@
   "benefRegistration.legalRepresentative.details": "Законен представител",
   "suppPortal.profile.deleteLogo": "Изтриване Лого на дружеството",
   "suppPortal.withdraw-registration.text": "Вече не се интересувате от предоставянето на оборудване и услуги по инсталиране за схемата WiFi4EU?  Щракнете по-долу, за да оттеглите регистрацията си.",
-  "shared.municipality-autocomplete.label": "Община"
+  "benefRegistration.municipalityDropdown": "започнете да пишете и изберете от падащото меню"
 }

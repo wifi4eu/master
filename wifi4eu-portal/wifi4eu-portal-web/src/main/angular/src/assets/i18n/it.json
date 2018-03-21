@@ -479,5 +479,5 @@
   "benefRegistration.legalRepresentative.details": "Rappresentante legale ",
   "suppPortal.profile.deleteLogo": "Elimina Logo aziendale",
   "suppPortal.withdraw-registration.text": "Clicca qui sotto per ritirare la registrazione.Non ti interessa più fornire attrezzature e servizi per l'installazione per WiFi4EU? ",
-  "shared.municipality-autocomplete.label": "Comune"
+  "benefRegistration.municipalityDropdown": "iniziare a digitare e selezionare dal menu a discesa"
 }
