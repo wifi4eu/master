@@ -1,14 +1,15 @@
-import { Component, Input, Inject } from "@angular/core";
-import { ChangeDetectorRef } from "@angular/core";
-import { ElementRef } from "@angular/core";
-import { LocalStorageService } from "angular-2-local-storage";
-import { SharedService } from "../../shared.service";
-import { HelpdeskissuesApi } from "../../swagger/api/HelpdeskissuesApi";
-import { HelpdeskIssueDTOBase } from "../../swagger/model/HelpdeskIssueDTO";
-import { NutsApi } from "../../swagger/api/NutsApi";
-import { NutsDTOBase } from "../../swagger/model/NutsDTO";
-import { ResponseDTOBase } from "../../swagger/model/ResponseDTO";
+import {Component, Input, Inject} from "@angular/core";
+import {ChangeDetectorRef} from "@angular/core";
+import {ElementRef} from "@angular/core";
+import {LocalStorageService} from "angular-2-local-storage";
+import {SharedService} from "../../shared.service";
+import {HelpdeskissuesApi} from "../../swagger/api/HelpdeskissuesApi";
+import {HelpdeskIssueDTOBase} from "../../swagger/model/HelpdeskIssueDTO";
+import {NutsApi} from "../../swagger/api/NutsApi";
+import {NutsDTOBase} from "../../swagger/model/NutsDTO";
+import {ResponseDTOBase} from "../../swagger/model/ResponseDTO";
 import {UserDTOBase} from "../../swagger/model/UserDTO";
+import {lang} from "moment";
 
 @Component({
     selector: 'helpdesk-form-component',
@@ -22,12 +23,14 @@ export class HelpdeskFormComponent {
     private success: boolean = false;
     private countries: NutsDTOBase[] = [];
     @Input('portal') portal: string;
+    @Input('problem_desc') problem_desc: string;
 
-    constructor(private sharedService: SharedService, private localStorageService: LocalStorageService, private nutsApi: NutsApi, private helpdeskApi: HelpdeskissuesApi,
+    constructor(private localStorage: LocalStorageService, private sharedService: SharedService, private localStorageService: LocalStorageService, private nutsApi: NutsApi, private helpdeskApi: HelpdeskissuesApi,
                 @Inject(ElementRef) private elementRef: ElementRef,
                 @Inject(ChangeDetectorRef) private changeDetectorRef: ChangeDetectorRef) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+        let language = this.localStorage.get('lang');
         this.nutsApi.getNutsByLevel(0).subscribe(
             nuts => {
                 this.countries = nuts;
@@ -38,14 +41,14 @@ export class HelpdeskFormComponent {
         );
     }
 
-    private gotoHelpdeskForm () {
+    private gotoHelpdeskForm() {
         this.expanded = true;
         this.changeDetectorRef.detectChanges();
         const child = this.elementRef.nativeElement.querySelector('#helpdesk-form');
-        child.scrollIntoView({ behavior: 'smooth' });
+        child.scrollIntoView({behavior: 'smooth'});
     }
 
-    private closeHelpdeskForm(){
+    private closeHelpdeskForm() {
         const parent = this.elementRef.nativeElement.querySelector('.container');
         const link = this.elementRef.nativeElement.querySelector('.label');
         window.scrollBy({
@@ -53,16 +56,25 @@ export class HelpdeskFormComponent {
             behavior: 'smooth'
         });
         let that = this;
-        setTimeout(function(){ that.expanded = false; }, 400);
+        setTimeout(function () {
+            that.expanded = false;
+        }, 400);
     }
+
 
     private sendIssue() {
         if (this.user != null) {
+            let language = this.localStorage.get('lang');
+            if (!language) {
+                language = 'en';
+            }
             this.helpdeskIssue.portal = this.portal;
             this.helpdeskIssue.createDate = Date.now();
             this.helpdeskIssue.assignedTo = 'Member State';
             this.helpdeskIssue.status = 0;
             this.helpdeskIssue.fromEmail = this.user.ecasEmail;
+            this.helpdeskIssue.summary = 'WiFi4EU: ' + this.problem_desc;
+            this.helpdeskIssue.lang = language.toString();
             this.helpdeskApi.createHelpdeskIssue(this.helpdeskIssue).subscribe(
                 (response: ResponseDTOBase) => {
                     if (response.success) {
