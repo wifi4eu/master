@@ -41,13 +41,14 @@
             </div>
             <div class="row">
               <div class="col-xs-12">
-                <p-dataGrid #gridSuppliers [value]="suppliers" styleClass="supplier-region" [paginator]="originalSuppliers.length > gridSuppliers.rows ? true : false" [rows]="21">
+                <p-dataGrid #gridSuppliers [value]="suppliers" styleClass="supplier-region"><!--  originalSuppliers.length > gridSuppliers.rows ? true : false -->
                   <ng-template let-supplier pTemplate="item">
                     <div class="supplier-item">
                       <span>{{ supplier }}</span>
                     </div>
                   </ng-template>
                 </p-dataGrid>
+                <p-paginator #paginator pageLinkSize="pageLinks" (onPageChange)="paginate($event)"></p-paginator>
               </div>
             </div>
       </div>

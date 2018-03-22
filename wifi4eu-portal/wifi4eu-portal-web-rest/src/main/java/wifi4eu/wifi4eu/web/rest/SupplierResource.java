@@ -5,7 +5,10 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -220,15 +223,38 @@ public class SupplierResource {
     @ApiOperation(value = "Get suppliers registered by region")
     @RequestMapping(value = "/all/region/{regionId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public SuppliersCacheDTO getSuppliersRegisteredByRegion(@PathVariable("regionId") int regionId){
-        return new SuppliersCacheDTO(supplierService.getSuppliersByRegion(regionId), new Date());
+    public SuppliersCacheDTO getSuppliersRegisteredByRegion(@PathVariable("regionId") int regionId, @RequestParam("page") int page, @RequestParam("size") int size){
+
+        if(page < 0) {
+            page = 0;
+        }
+        if(size < 0) {
+            size = 0;
+        }
+
+        Pageable pageable = new PageRequest(page, size);
+        return new SuppliersCacheDTO(supplierService.getSuppliersByRegion(regionId, pageable), new Date());
     }
 
     @ApiOperation(value = "Get suppliers registered by country")
     @RequestMapping(value = "/all/country/{countryCode}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public SuppliersCacheDTO getSuppliersRegisteredByCountry(@PathVariable("countryCode") String countryCode){
-        return supplierService.getSuppliersByCountry(countryCode);
+    public SuppliersCacheDTO getSuppliersRegisteredByCountry(@PathVariable("countryCode") String countryCode, @RequestParam("page") int page, @RequestParam("size") int size){
+        if(page < 0) {
+            page = 0;
+        }
+        if(size < 0) {
+            size = 0;
+        }
+        Pageable pageable = new PageRequest(page, size);
+        return supplierService.getSuppliersByCountry(countryCode, pageable);
+    }
+
+    @ApiOperation(value = "Get count of suppliers registered in all regions")
+    @RequestMapping(value = "/all/country/count", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public Object getCountSuppliersAllRegions(){
+        return supplierService.getSuppliersAllRegionsCount();
     }
 
 }

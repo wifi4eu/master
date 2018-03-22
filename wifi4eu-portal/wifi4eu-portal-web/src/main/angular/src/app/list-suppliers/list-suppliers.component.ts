@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { NutsDTOBase, NutsApi, SupplierApi, ResponseDTO } from '../shared/swagger';
 import { SuppliersCacheDTO, SuppliersCacheDTOBase } from '../shared/swagger/model/SuppliersCacheDTO';
 import { DatePipe } from '@angular/common';
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
-import { DataGrid } from 'primeng/primeng';
+import { DataGrid, Paginator } from 'primeng/primeng';
 
 @Component({
   selector: 'app-list-suppliers',
@@ -39,12 +39,22 @@ export class ListSuppliersComponent implements OnInit {
   regionNameSearched: string = null;
   defaultRegion = new NutsDTOBase();
   originalSuppliers: string[] = [];
+  countRegions: any[] = [];
+
+  page = 0;
+  size = 21;
+  pageLinks = 10;
 
   @ViewChild("gridSuppliers") gridSuppliers: DataGrid;
+  @ViewChild("paginator") paginator: Paginator;
 
   constructor(private nutsApi: NutsApi, private supplierApi: SupplierApi) {}
 
   ngOnInit() {
+    this.supplierApi.getCountSuppliersAllRegions().subscribe((count) => {
+      this.countRegions = count;
+      console.log(this.countRegions);
+    })
     this.nutsApi.getNutsByLevel(0).subscribe(
       (countries: NutsDTOBase[]) => {
         this.countries = countries;
@@ -78,16 +88,26 @@ export class ListSuppliersComponent implements OnInit {
     this.searched = false;
     if(this.country && this.region){
       if(this.region.id != 0){
-        this.supplierApi.getSuppliersRegisteredByRegion(this.region.id).subscribe((response: SuppliersCacheDTO) => {
+        var result = this.countRegions.filter((regionCount) => {
+          return regionCount[1] == this.region.id ? regionCount : null;
+        });
+        console.log("count selected ", result);
+        this.supplierApi.getSuppliersRegisteredByRegion(this.region.id, this.page, this.size).subscribe((response: SuppliersCacheDTO) => {
           this.suppliers = response.suppliers;
           this.dateCached = this.transformDate(response.dateCached);
           this.originalSuppliers = this.suppliers;
           this.searched = true;
           this.regionNameSearched = this.region.label;
+          result[0][0] = 20;
+          this.pageLinks = Math.ceil(result[0][0]/10);
+          console.log(this.pageLinks);
+          this.paginator.updatePageLinks();
+          //this.pageLinks = (result[0]/this.size) > 0 ? (result[0]/this.size) : 1;
+          
         });
         return;
       }
-      this.supplierApi.getSuppliersRegisteredByCountry(this.country.countryCode).subscribe((response: SuppliersCacheDTO) => {
+      this.supplierApi.getSuppliersRegisteredByCountry(this.country.countryCode, this.page, this.size).subscribe((response: SuppliersCacheDTO) => {
         this.suppliers = response.suppliers;
         this.dateCached = this.transformDate(response.dateCached);
         this.originalSuppliers = this.suppliers;
@@ -101,6 +121,14 @@ export class ListSuppliersComponent implements OnInit {
     let datePipe = new DatePipe('default').transform(dateArg, 'dd/MM/yyyy');
     return datePipe;
   }
+
+  paginate(event) {
+    console.log(event);
+    //event.first = Index of the first record
+    //event.rows = Number of rows to display in new page
+    //event.page = Index of the new page
+    //event.pageCount = Total number of pages
+}
 
   private filterResults(event) {
     var results = this.originalSuppliers.filter((supplier) => { return supplier.toLowerCase().match(event.target.value.toLowerCase()) ? supplier : null; })

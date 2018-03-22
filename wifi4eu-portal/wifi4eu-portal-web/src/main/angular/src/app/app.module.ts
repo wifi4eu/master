@@ -25,7 +25,7 @@ import { ChartsModule } from "ng2-charts";
 import { ForgotComponent } from "./+forgot/forgot.component";
 import { AppGuard } from "./app.guard";
 import { ListSuppliersComponent } from './list-suppliers/list-suppliers.component';
-import { DataGridModule } from "primeng/primeng";
+import { DataGridModule, PaginatorModule } from "primeng/primeng";
 
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
@@ -56,6 +56,7 @@ export function translateFactory(http: Http) {
         BrowserModule,
         BrowserAnimationsModule,
         DataGridModule,
+        PaginatorModule,
         TranslateModule.forRoot({
             provide: TranslateLoader,
             useFactory: translateFactory,

@@ -3,6 +3,8 @@ package wifi4eu.wifi4eu.service.supplier;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
@@ -220,10 +222,10 @@ public class SupplierService {
         return supplierDTO;
     }
 
-    @Cacheable(value = "portalGetListSuppliersByRegion")
-    public List<String> getSuppliersByRegion(int regionId){
+    public List<String> getSuppliersByRegion(int regionId, Pageable pageable){
         Set<String> supplierNames = new HashSet<>();
-        for (SuppliedRegionDTO suppliedRegion: suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findByRegionId(regionId)))) {
+        Page<SuppliedRegion> suppliedRegions = suppliedRegionRepository.findByRegionId(pageable, regionId);
+        for (SuppliedRegionDTO suppliedRegion: suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegions.getContent()))) {
             SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(suppliedRegion.getSupplierId()));
             if(!supplierNames.contains(supplierDTO.getName())){
                 supplierNames.add(supplierDTO.getName());
@@ -232,13 +234,16 @@ public class SupplierService {
         return new ArrayList<>(supplierNames);
     }
 
-    @Cacheable(value = "portalGetListSuppliersByCountry")
-    public SuppliersCacheDTO getSuppliersByCountry(String countryCode){
+    public SuppliersCacheDTO getSuppliersByCountry(String countryCode, Pageable pageable){
         Set<String> supplierNames = new HashSet<>();
         List<NutsDTO> regions = nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode,3);
         for(NutsDTO nutsDTO: regions){
-            supplierNames.addAll(getSuppliersByRegion(nutsDTO.getId()));
+            supplierNames.addAll(getSuppliersByRegion(nutsDTO.getId(),pageable));
         }
         return new SuppliersCacheDTO(new ArrayList<>(supplierNames), new Date());
+    }
+
+    public Object getSuppliersAllRegionsCount() {
+        return suppliedRegionRepository.findNumSupplierAllRegions();
     }
 }
