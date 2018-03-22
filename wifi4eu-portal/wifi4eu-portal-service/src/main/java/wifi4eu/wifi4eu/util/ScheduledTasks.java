@@ -41,28 +41,27 @@ public class ScheduledTasks {
 
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
 
-        for (HelpdeskIssueDTO helpdeskIssue: helpdeskIssueDTOS) {
+        for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
             HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
 
             helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
             helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
+            helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
 
             UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
 
-            if(userDTO == null){
-              break;
-            }
+            if (userDTO != null) {
+                helpdeskTicketDTO.setFirstname(userDTO.getName());
+                helpdeskTicketDTO.setLastname(userDTO.getSurname());
 
-            helpdeskTicketDTO.setFirstname(userDTO.getName());
-            helpdeskTicketDTO.setLastname(userDTO.getSurname());
+                helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
+                helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
 
-            helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
-            helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
-
-            String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
-            if(result != null && result.contains("Thankyou.js")){
-                helpdeskIssue.setTicket(true);
-                helpdeskService.createHelpdeskIssue(helpdeskIssue);
+                String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+                if (result != null && result.contains("Thankyou.js")) {
+                    helpdeskIssue.setTicket(true);
+                    helpdeskService.createHelpdeskIssue(helpdeskIssue);
+                }
             }
         }
     }
@@ -88,7 +87,7 @@ public class ScheduledTasks {
             connection.setUseCaches(false);
             connection.setDoOutput(true);
 
-            DataOutputStream wr = new DataOutputStream (
+            DataOutputStream wr = new DataOutputStream(
                     connection.getOutputStream());
             wr.writeBytes(urlParameters);
             wr.close();
