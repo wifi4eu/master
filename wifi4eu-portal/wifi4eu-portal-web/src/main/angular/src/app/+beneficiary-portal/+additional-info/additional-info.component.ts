@@ -1,53 +1,69 @@
-import { Component, ViewChild } from "@angular/core";
-import { Router } from "@angular/router";
-import { LocalStorageService } from "angular-2-local-storage";
-import { Observable } from "rxjs/Observable";
-import { UserDTOBase } from "../../shared/swagger/model/UserDTO";
-import { MunicipalityDTOBase } from "../../shared/swagger/model/MunicipalityDTO";
-import { MunicipalityApi } from "../../shared/swagger/api/MunicipalityApi";
-import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
-import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
-import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
-import { SharedService } from "../../shared/shared.service";
+import {Component, ViewChild} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {LocalStorageService} from "angular-2-local-storage";
+import {Observable} from "rxjs/Observable";
+import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
+import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
+import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
+import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
+import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
+import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
+import {SharedService} from "../../shared/shared.service";
+import {DomSanitizer} from "@angular/platform-browser";
+import {MayorApi} from "../../shared/swagger/api/MayorApi";
+import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
+
 
 @Component({
     selector: 'beneficiary-additional-info-component',
     templateUrl: 'additional-info.component.html',
-    providers: [MunicipalityApi]
+    providers: [MunicipalityApi, MayorApi]
 })
 
 export class AdditionalInfoComponent {
     private user: UserDTOBase;
     private municipality: MunicipalityDTOBase;
     private registration: RegistrationDTOBase;
+    private mayor: MayorDTOBase;
     private documentFiles: File[] = [];
     private documentUrls: string[] = [];
     private reader: FileReader = new FileReader();
-    private allFilesUploaded: boolean = false;
+    private filesUploaded: boolean = false;
+    private isMayor: boolean = false;
     @ViewChild('document1') private document1: any;
     @ViewChild('document2') private document2: any;
     @ViewChild('document3') private document3: any;
     @ViewChild('document4') private document4: any;
     private displayConfirmingData: boolean = false;
 
-    constructor(private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
+    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
-            this.municipalityApi.getMunicipalitiesByUserId(this.user.id).subscribe(
-                (municipalities: MunicipalityDTOBase[]) => {
-                    if (municipalities.length > 0) {
-                        this.municipality = municipalities[0];
-                        this.registrationApi.getRegistrationByUserAndMunicipality(this.user.id, this.municipality.id).subscribe(
+            let municipalityId;
+            this.route.params.subscribe(params => municipalityId = params['municipalityId']);
+            if (municipalityId != null) {
+                this.municipalityApi.getMunicipalityById(municipalityId).subscribe(
+                    (municipality: MunicipalityDTOBase) => {
+                        this.municipality = municipality;
+                        this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 this.registration = registration;
-                            }
-                        );
+                            }, error => {
+                            });
+                    }, error => {
                     }
-                }, error => {
-                    console.log(error);
-                }
-            );
+                );
+                this.mayorApi.getMayorByMunicipalityId(municipalityId).subscribe(
+                    (mayor: MayorDTOBase) => {
+                        this.mayor = mayor;
+                        if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname)
+                            this.isMayor = true;
+                    }, error => {
+                    }
+                );
+            }
+
         } else {
             this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
@@ -55,6 +71,7 @@ export class AdditionalInfoComponent {
     }
 
     private uploadFile(event: any, index: number = 0) {
+        this.filesUploaded = true;
         if (event.target.files[0]) {
             if (event.target.files[0].size > 1024000) {
                 this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'benefPortal.file.toobig.maxsize', 'warn', {size: '1 MB'});
@@ -67,11 +84,8 @@ export class AdditionalInfoComponent {
                 x => {
                     if (this.reader.result != "") {
                         this.documentUrls[index] = this.reader.result;
-                        if (this.documentUrls[0] && this.documentUrls[1] && this.documentUrls[2] && this.documentUrls[3]) {
-                            this.allFilesUploaded = true;
-                        } else {
-                            this.allFilesUploaded = false;
-                        }
+                        if (this.documentUrls[0] && this.documentUrls[1] && this.documentUrls[2] && this.documentUrls[3])
+                            this.filesUploaded = true;
                         subscription.unsubscribe();
                     }
                 }
@@ -84,7 +98,6 @@ export class AdditionalInfoComponent {
     private removeFile(index: number) {
         this.documentFiles[index] = null;
         this.documentUrls[index] = '';
-        this.allFilesUploaded = false;
         switch (index) {
             case 0:
                 this.document1.nativeElement.value = '';
@@ -101,7 +114,22 @@ export class AdditionalInfoComponent {
         }
     }
 
+
+    private getLegalFileUrl(fileNumber: number) {
+        switch (fileNumber) {
+            case 1:
+                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile1);
+            case 2:
+                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile2);
+            case 3:
+                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile3);
+            case 4:
+                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile4);
+        }
+    }
+
     private onSubmit() {
+
         if (this.documentUrls[0]) {
             this.registration.legalFile1 = this.documentUrls[0];
         }
@@ -114,6 +142,7 @@ export class AdditionalInfoComponent {
         if (this.documentUrls[3]) {
             this.registration.legalFile4 = this.documentUrls[3];
         }
+
         this.displayConfirmingData = true;
         this.registrationApi.createRegistration(this.registration).subscribe(
             (response: ResponseDTOBase) => {
@@ -121,6 +150,7 @@ export class AdditionalInfoComponent {
                 if (response.success) {
                     this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
                     this.registration = response.data;
+                    this.router.navigateByUrl('/beneficiary-portal/voucher');
                 } else {
                     this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
                 }

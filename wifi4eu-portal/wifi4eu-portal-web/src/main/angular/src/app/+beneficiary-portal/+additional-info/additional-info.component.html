@@ -1,139 +1,226 @@
-<div id="step2-title" class="ui-g">
-    <div class="ui-g-12 center">
-        <div id="component-title">
+<div class="container" *ngIf="municipality">
+    <div id="step2-title" class="row">
+        <div class="col-sm-6">
+            <div id="component-title">
+                <h3 class="beneficiaryTitle labelModal">
+                    {{ 'shared.municipality.label' | translate }} {{ municipality.name}}
+                </h3>
+            </div>
+        </div>
+        <div class="col-sm-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
             <h3 class="beneficiaryTitle labelModal">
-                {{ 'suppPortal.request.additionalInfo.title' | translate }}
+                {{ 'shared.supportingDocuments' | translate }}
             </h3>
         </div>
+        <div class="col-sm-6"></div>
     </div>
-</div>
-<div class="ui-g">
-    <div class="ui-lg-3"></div>
-    <div class="ui-g-12 ui-md-12 ui-lg-6">
-        <p *ngIf="municipality" class="label" style="text-align: center;"
-           [innerHTML]="'benefPortal.request.additionalInfo.instructions' | translate:{municipality: municipality.name}">
-        </p>
+    <div class="row">
+        <div class="col-sm-12">
+            <p class="labelModal">
+                {{ 'shared.supportingDocuments.info' | translate }}
+            </p>
+        </div>
     </div>
-    <div class="ui-lg-3"></div>
-</div>
-<form #legalForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="municipality && user">
-    <div class="ui-g">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <h2 class="discussionForumMayors marginTopCountdown">
-                {{ 'benefRegistration.yourDetails.title' | translate }}</h2>
+    <div class="row">
+        <div class="col-sm-12">
+            <p class="labelModal">
+                {{ 'shared.supportingDocuments.info2' | translate }}
+            </p>
         </div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <div class="form-group">
-                <label class="label" for="municipality">{{ 'shared.municipality.label' | translate }}</label>
-                <label class="form-control" id="municipality" name="municipality"><b>{{municipality.name}}</b></label>
-            </div>
-        </div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <div class="form-group">
-                <label class="label" for="name">{{ 'shared.name.label' | translate }}</label>
-                <label class="form-control" id="name" name="name"><b>{{user.name}}</b></label>
-            </div>
-        </div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <div class="form-group">
-                <label class="label" for="surname">{{ 'shared.surname.label' | translate }}</label>
-                <label class="form-control " id="surname" name="surname"><b>{{user.surname}}</b></label>
-            </div>
-        </div>
-        <div class="ui-lg-3"></div>
     </div>
-    <div class="ui-g">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <hr class="beneficiaryHr marginHr">
+    <div class="row">
+        <div class="col-sm-12">
+            <p class="labelModal profileData">
+                {{ 'shared.supportingDocuments.provide' | translate }}
+            </p>
         </div>
-        <div class="ui-lg-3"></div>
     </div>
-    <div class="ui-g">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <p>{{ 'suppPortal.request.additionalInfo.provideDocs1' | translate }}</p>
+    <form #legalForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="municipality && user">
+        <div class="col-sm-6">
+
+
+            <div class="row">
+                <div class="col-offset-12">
+                    <label class="label" for="document1">{{ 'benefPortal.request.additionalInfo.doc1.label' | translate
+                        }}
+                    </label>
+                </div>
+                <div class="col-offset-12">
+                    <div class="left">
+                        <div class="fileUpload btn btn-primary">
+                            <span>{{ 'benefDocs.copyMayorsID' | translate }}</span>
+                            <input #document1 id="document1" name="document1"
+                                   (change)="uploadFile($event, 0)" type="file" class="upload"
+                                   accept=".doc, .docx, .pdf"
+                            />
+                        </div>
+                    </div>
+                    <span class="ui-g-12" *ngIf="registration">
+                    <span *ngIf="registration.legalFile1 && !documentUrls[0]">
+                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
+                                <a sclass="link-label" [href]="getLegalFileUrl(1)" download>
+                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                </a>
+                    </span>
+                    <span *ngIf="documentUrls[0]">
+                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
+                                <a sclass="link-label" (click)="removeFile(0)"
+                                   removeFile>{{ 'shared.remove.label' | translate}}</a>
+                    </span>
+
+                </span>
+                </div>
+            </div>
+            <div class="row" *ngIf="!isMayor">
+                <div class="col-offset-12">
+                    <label class="label" for="document2">{{ 'benefPortal.request.additionalInfo.doc3.label' |
+                        translate
+                        }}</label>
+                </div>
+                <div class="col-offset-12">
+                    <div class="left">
+                        <div class="fileUpload btn btn-primary">
+                            <span>{{ 'benefDocs.copyYourID' | translate }}</span>
+                            <input #document1 id="document2" name="document3"
+                                   (change)="uploadFile($event, 1)" type="file" class="upload"
+                                   accept=".doc, .docx, .pdf"
+                            />
+                        </div>
+                    </div>
+                    <span class="ui-g-12" *ngIf="registration">
+                        <span *ngIf="registration.legalFile2 && !documentUrls[1]">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3
+                                    <a class="link-label" [href]="getLegalFileUrl(2)"
+                                       download>
+                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                    </a>
+                        </span>
+                         <span *ngIf="documentUrls[1]">
+                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3
+                                <a sclass="link-label" (click)="removeFile(1)"
+                                   removeFile>{{ 'shared.remove.label' | translate}}</a>
+                    </span>
+                    </span>
+                </div>
+            </div>
+
         </div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <div class="form-group">
-                <label class="label" for="document1">{{ 'benefPortal.request.additionalInfo.doc1.label' | translate
-                    }}</label>
-                <input #document1 id="document1" name="document1" (change)="uploadFile($event, 0)"
-                       type="file" class="upload" accept=".doc, .docx, .pdf" required/>
+
+
+        <div class="col-sm-6">
+
+            <div class="row">
+                <div class="col-offset-12">
+                    <label class="label" for="document3">{{ 'benefPortal.request.additionalInfo.doc2.label' |
+                        translate
+                        }}</label>
+                </div>
+                <div class="col-offset-12">
+
+                    <div class="left">
+                        <div class="fileUpload btn btn-primary">
+                            <span>{{ 'benefDocs.proofNomination' | translate }}</span>
+                            <input #document2 id="document3" name="document2"
+                                   (change)="uploadFile($event, 2)" type="file" class="upload"
+                                   accept=".doc, .docx, .pdf"
+                            />
+                        </div>
+                    </div>
+                    <span class="ui-g-12" *ngIf="registration">
+                         <span *ngIf="registration.legalFile3 && !documentUrls[2]">
+                            <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2
+                            <a class="link-label" [href]="getLegalFileUrl(3)"
+                               download>
+                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                            </a>
+                        </span>
+                         <span *ngIf="documentUrls[2]">
+                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2
+                                <a sclass="link-label" (click)="removeFile(2)"
+                                   removeFile>{{ 'shared.remove.label' | translate}}</a>
+                    </span>
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="row" *ngIf="!isMayor">
+                <div class="col-sm-12 col-lg-12 col-md-12">
+                    <label class="label" for="document4">{{ 'benefPortal.request.additionalInfo.doc4.label' |
+                        translate}}</label>
+                </div>
+                <div class="col-offset-12">
+                    <div class="left">
+                        <div class="fileUpload btn btn-primary">
+                            <span>{{ 'benefDocs.authorisedSign' | translate }}</span>
+                            <input #document4 id="document4" name="document4"
+                                   (change)="uploadFile($event, 3)" type="file" class="upload"
+                                   accept=".doc, .docx, .pdf"
+                            />
+                        </div>
+                    </div>
+                    <span class="ui-g-12" *ngIf="registration">
+                        <span *ngIf="registration.legalFile4 && !documentUrls[3]">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4
+                                    <a class="link-label" [href]="getLegalFileUrl(4)"
+                                       download>
+                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                    </a>
+                        </span>
+                         <span *ngIf="documentUrls[3]">
+                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4
+                                <a sclass="link-label" (click)="removeFile(3)"
+                                   removeFile>{{ 'shared.remove.label' | translate}}</a>
+                    </span>
+                 </span>
+                </div>
             </div>
         </div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <div class="form-group">
-                <label class="label" for="document2">{{ 'benefPortal.request.additionalInfo.doc2.label' | translate
-                    }}</label>
-                <input #document2 id="document2" name="document2" (change)="uploadFile($event, 1)"
-                       type="file" class="upload" accept=".doc, .docx, .pdf" required/>
+        <div class="row">
+            <div class="col-sm-12">
+                <hr class="beneficiaryHr marginHr">
             </div>
         </div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <hr class="beneficiaryHr marginHr">
-        </div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <p>{{ 'suppPortal.request.additionalInfo.provideDocs2' | translate }}</p>
-        </div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <div class="form-group">
-                <label class="label" for="document3">{{ 'benefPortal.request.additionalInfo.doc3.label' | translate
-                    }}</label>
-                <input #document3 id="document3" name="document3" (change)="uploadFile($event, 2)"
-                       type="file" class="upload" accept=".doc, .docx, .pdf" required/>
+        <div class="row">
+            <div class="col-sm-12 label">
+                <p>{{ 'benefPortal.voucher.call.label2' | translate }}</p>
+                <p>{{ 'benefPortal.voucher.municipalitySuccessApply.part2' | translate }}</p>
             </div>
         </div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-12 ui-md-12 ui-lg-6">
-            <div class="form-group">
-                <label class="label" for="document4">{{ 'benefPortal.request.additionalInfo.doc4.label' | translate
-                    }}</label>
-                <input #document4 id="document4" name="document4" (change)="uploadFile($event, 3)"
-                       type="file" class="upload" accept=".doc, .docx, .pdf" required/>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <hr class="beneficiaryHr marginHr">
             </div>
         </div>
-        <div class="ui-lg-3"></div>
-    </div>
-    <div class="form-group ui-g">
-        <div class="ui-lg-3"></div>
-        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <a href="#/beneficiary-portal">
-                <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' | translate }}
+        <div class="form-group ui-g">
+            <div class="ui-lg-3"></div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                <a href="#/beneficiary-portal">
+                    <button type="button" class="btn btn-primary cancel-button">{{ 'shared.cancel.button' |
+                        translate }}
+                    </button>
+                </a>
+            </div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
+                <button type="submit" class="btn btn-primary publish-button"
+                        [disabled]="!legalForm.form.valid || !filesUploaded">
+                    {{ 'shared.confirm.button' | translate }}
                 </button>
-            </a>
+            </div>
+            <div class="ui-lg-3"></div>
         </div>
-        <div class="ui-g-6 ui-md-6 ui-lg-3" style="text-align: center !important">
-            <button type="submit" class="btn btn-primary publish-button"
-                    [disabled]="!legalForm.form.valid || !allFilesUploaded">
-                {{ 'shared.confirm.button' | translate }}
-            </button>
-        </div>
-        <div class="ui-lg-3"></div>
-    </div>
-</form>
-<p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
-          [closable]="false" [closeOnEscape]="false">
-    <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
-    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title' | translate }}</h1>
-    <p class="ModalpConfirmation">{{ 'shared.loading.modal.title3' | translate }}</p>
-</p-dialog>
-<helpdesk-form-component portal="beneficiary-additional-info"></helpdesk-form-component>
+
+    </form>
+    <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false"
+              [closable]="false" [closeOnEscape]="false">
+        <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+        <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title' | translate }}</h1>
+        <p class="ModalpConfirmation">{{ 'shared.loading.modal.title3' | translate }}</p>
+    </p-dialog>
+    <helpdesk-form-component portal="beneficiary-additional-info"></helpdesk-form-component>
+</div>

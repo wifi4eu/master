@@ -13,6 +13,7 @@ import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {SharedService} from "../../shared/shared.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     templateUrl: 'voucher.component.html',
@@ -39,7 +40,7 @@ export class VoucherComponent {
     private voucherApplied: string = "";
     private openedCalls: string = "";
 
-    constructor(private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService) {
+    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         // Check if there are Calls
@@ -68,9 +69,9 @@ export class VoucherComponent {
                                                     this.registrations.push(registration);
                                                     this.municipalities.push(municipality);
                                                     this.mayors.push(mayor);
-                                                    if(application.id != 0){
-                                                      this.applications.push(application);
-                                                    }                                                   
+                                                    if (application.id != 0) {
+                                                        this.applications.push(application);
+                                                    }
                                                     this.loadingButtons.push(false);
                                                     let date = new Date(this.currentCall.startDate);
                                                     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
@@ -118,11 +119,15 @@ export class VoucherComponent {
         );
     }
 
+    private goToDocuments(registrationNumber: number) {
+        this.router.navigate(['../additional-info/', this.registrations[registrationNumber].municipalityId], {relativeTo: this.route});
+    }
+
     private applyForVoucher(registrationNumber: number) {
         let startCallDate = this.currentCall.startDate;
         let actualDateTime = new Date().getTime();
 
-        if  (startCallDate <= actualDateTime) {
+        if (startCallDate <= actualDateTime) {
             // TODO: Llamar al nuevo servicio de Apply for voucher
             // this.loadingButton = true;
             this.loadingButtons[registrationNumber] = true;
