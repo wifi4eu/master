@@ -2,20 +2,15 @@ package wifi4eu.wifi4eu.azure.constants;
 
 public class ConectionConstants {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //https://docs.microsoft.com/es-es/azure/storage/queues/storage-java-how-to-use-queue-storage#setup-an-azure-storage-connection-string//
     private static final String PROTOCOL = "http";
-    private static final String STORAGE_ACCOUNT = "???@everis.com"; //TODO: user - to make a subscription
-    private static final String STORAGE_ACCOUNT_KEY = "???"; //TODO: pass - to make a subscription
+    private static final String STORAGE_ACCOUNT = "w4equeuestorage";
+    private static final String STORAGE_ACCOUNT_KEY = "sWvFubVoxStR9G4qMDYdEhASMIYD9Ls2g5/KZdnD563NBeojhP9ehEm1qY0qc/5teR60kOjzIvl5zj0zDsW+1A==";
 
     // Define the connection-string with your values.
     public static final String STORAGE_CONNECTION_STRING =
             "DefaultEndpointsProtocol="+PROTOCOL+";" +
                     "AccountName="+STORAGE_ACCOUNT+";" +
-                    "AccountKey="+STORAGE_ACCOUNT_KEY+"";
-
-
-    //https://docs.microsoft.com/es-es/azure/storage/queues/storage-java-how-to-use-queue-storage#setup-an-azure-storage-connection-string//
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    "AccountKey="+STORAGE_ACCOUNT_KEY+";"+
+                    "EndpointSuffix=core.windows.net";
 
 }
