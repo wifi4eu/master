@@ -3,6 +3,8 @@ package wifi4eu.wifi4eu.service.beneficiary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
@@ -11,7 +13,9 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryRepository;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
@@ -56,6 +60,12 @@ public class BeneficiaryService {
 
     @Autowired
     RightRepository rightRepository;
+
+    @Autowired
+    BeneficiaryRepository beneficiaryRepository;
+
+    @Autowired
+    BeneficiaryListMapper beneficiaryListMapper;
 
     @Autowired
     UserMapper userMapper;
@@ -248,64 +258,72 @@ public class BeneficiaryService {
     }
 
     public List<BeneficiaryListDTO> getListBeneficiaryTable() {
-        /* Gets all municipalities */
-        List<MunicipalityDTO> municipalityDTOSList = municipalityService.getAllMunicipalities();
 
-        /* Array of municipality names for check duplicates */
-        List<String> municipalities = new ArrayList<>();
 
-        List<BeneficiaryListDTO> beneficiaryListDTOS = new ArrayList<>();
+        Pageable pageable = new PageRequest(0, 20);
 
-        /* Iterate in municipality list */
-        for (MunicipalityDTO municipalityDTO : municipalityDTOSList) {
-            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
-            if (registration != null) {
-                BeneficiaryListDTO beneficiaryListDTO = new BeneficiaryListDTO();
-                LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
+        List<BeneficiaryListDTO> beneficiaryListDTOS = beneficiaryListMapper.toDTOList(beneficiaryRepository.findBeneficiaryListAll(pageable));
 
-                /* Checks that the municipality name is in the municipalities array */
-                if (municipalities.contains(municipalityDTO.getName())) {
-                    /* Get index in the array */
-                    int index = municipalities.indexOf(municipalityDTO.getName());
 
-                    /* Fills beneficiaryListDTO object with one exisiting in BeneficiaryListDTO list in that position */
-                    beneficiaryListDTO = beneficiaryListDTOS.get(index);
-
-                    /* Increments number of registrations because it's the same lau */
-                    beneficiaryListDTO.setNumRegistrations(beneficiaryListDTO.getNumRegistrations() + 1);
-
-                    /* Update object in the position of the list of BeneficiaryListDTO */
-                    beneficiaryListDTOS.set(index, beneficiaryListDTO);
-
-                    /* Adds registrations left in the DTO */
-                    List<RegistrationDTO> regs = beneficiaryListDTO.getRegistrations();
-                    if (!regs.contains(registration)) {
-                        regs.add(registration);
-                    }
-                    beneficiaryListDTO.setRegistrations(regs);
-                } else {
-                    municipalities.add(municipalityDTO.getName());
-                    beneficiaryListDTO.setNumRegistrations(1);
-                    beneficiaryListDTO.setLau(lauDTO);
-                    List<RegistrationDTO> regs = new ArrayList<>();
-                    regs.add(registration);
-                    beneficiaryListDTO.setRegistrations(regs);
-                    beneficiaryListDTOS.add(beneficiaryListDTO);
-                }
-            }
-        }
-        if (beneficiaryListDTOS.size() > 0) {
-            getIssueOfRegistration(beneficiaryListDTOS);
-            for (BeneficiaryListDTO beneficiaryListDTO : beneficiaryListDTOS) {
-                for (RegistrationDTO registrationDTO : beneficiaryListDTO.getRegistrations()) {
-                    beneficiaryListDTO.setStatus(getStatusApplicationByRegistration(registrationDTO.getId()));
-                }
-                if (checkIpDuplicated(beneficiaryListDTO.getRegistrations()) && beneficiaryListDTO.getIssue() != 3 && beneficiaryListDTO.getIssue() != 4) {
-                    beneficiaryListDTO.setIssue(1);
-                }
-                beneficiaryListDTO.setMediation(getMediationStatusByLau(beneficiaryListDTO.getLau().getId()));
-            }
-        }
+//
+//        /* Gets all municipalities */
+//        List<MunicipalityDTO> municipalityDTOSList = municipalityService.getAllMunicipalities();
+//
+//        /* Array of municipality names for check duplicates */
+//        List<String> municipalities = new ArrayList<>();
+//
+//        List<BeneficiaryListDTO> beneficiaryListDTOS = new ArrayList<>();
+//
+//        /* Iterate in municipality list */
+//        for (MunicipalityDTO municipalityDTO : municipalityDTOSList) {
+//            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
+//            if (registration != null) {
+//                BeneficiaryListDTO beneficiaryListDTO = new BeneficiaryListDTO();
+//                LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
+//
+//                /* Checks that the municipality name is in the municipalities array */
+//                if (municipalities.contains(municipalityDTO.getName())) {
+//                    /* Get index in the array */
+//                    int index = municipalities.indexOf(municipalityDTO.getName());
+//
+//                    /* Fills beneficiaryListDTO object with one exisiting in BeneficiaryListDTO list in that position */
+//                    beneficiaryListDTO = beneficiaryListDTOS.get(index);
+//
+//                    /* Increments number of registrations because it's the same lau */
+//                    beneficiaryListDTO.setNumRegistrations(beneficiaryListDTO.getNumRegistrations() + 1);
+//
+//                    /* Update object in the position of the list of BeneficiaryListDTO */
+//                    beneficiaryListDTOS.set(index, beneficiaryListDTO);
+//
+//                    /* Adds registrations left in the DTO */
+//                    List<RegistrationDTO> regs = beneficiaryListDTO.getRegistrations();
+//                    if (!regs.contains(registration)) {
+//                        regs.add(registration);
+//                    }
+//                    beneficiaryListDTO.setRegistrations(regs);
+//                } else {
+//                    municipalities.add(municipalityDTO.getName());
+//                    beneficiaryListDTO.setNumRegistrations(1);
+//                    beneficiaryListDTO.setLau(lauDTO);
+//                    List<RegistrationDTO> regs = new ArrayList<>();
+//                    regs.add(registration);
+//                    beneficiaryListDTO.setRegistrations(regs);
+//                    beneficiaryListDTOS.add(beneficiaryListDTO);
+//                }
+//            }
+//        }
+//        if (beneficiaryListDTOS.size() > 0) {
+//            getIssueOfRegistration(beneficiaryListDTOS);
+//            for (BeneficiaryListDTO beneficiaryListDTO : beneficiaryListDTOS) {
+//                for (RegistrationDTO registrationDTO : beneficiaryListDTO.getRegistrations()) {
+//                    beneficiaryListDTO.setStatus(getStatusApplicationByRegistration(registrationDTO.getId()));
+//                }
+//                if (checkIpDuplicated(beneficiaryListDTO.getRegistrations()) && beneficiaryListDTO.getIssue() != 3 && beneficiaryListDTO.getIssue() != 4) {
+//                    beneficiaryListDTO.setIssue(1);
+//                }
+//                beneficiaryListDTO.setMediation(getMediationStatusByLau(beneficiaryListDTO.getLau().getId()));
+//            }
+//        }
 
         return beneficiaryListDTOS;
     }
