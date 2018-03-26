@@ -11,12 +11,12 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 
 @Service
-public class QueueService {
+public class AzureQueueService {
 
     @Autowired
     AzureQueue azureQueue;
 
-    public QueueService() {}
+    public AzureQueueService() {}
 
 
     public void addMessageAzureQueue(AzureQueueDTO azureQueueDTO) throws StorageException, InvalidKeyException, URISyntaxException {

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.AzureQueueDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.service.azurequeue.QueueService;
+import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class AzureQueueResource {
 
 
     @Autowired
-    QueueService queueService;
+    AzureQueueService azureQueueService;
 
 
     @ApiOperation(value = "Create mayor")
@@ -39,7 +39,7 @@ public class AzureQueueResource {
         try {
             _log.info("addMessageAzureQueue");
 
-            queueService.addMessageAzureQueue(anAzureQueueMessageDTO);
+            azureQueueService.addMessageAzureQueue(anAzureQueueMessageDTO);
 
             return new ResponseDTO(true, anAzureQueueMessageDTO, null);
         } catch (AccessDeniedException ade) {
