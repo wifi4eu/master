@@ -2,9 +2,15 @@ import {AzureQueue} from "./AzureQueue";
 
 export class QueueComponent implements AzureQueue{
 
+/*
+createQueueService:
+
+"w4equeuestorage" "sWvFubVoxStR9G4qMDYdEhASMIYD9Ls2g5/KZdnD563NBeojhP9ehEm1qY0qc/5teR60kOjzIvl5zj0zDsW+1A=="
+"DefaultEndpointsProtocol=https;AccountName=w4equeuestorage;AccountKey=sWvFubVoxStR9G4qMDYdEhASMIYD9Ls2g5/KZdnD563NBeojhP9ehEm1qY0qc/5teR60kOjzIvl5zj0zDsW+1A==;EndpointSuffix=core.windows.net"
+*/
     private azure = require('azure-storage');
-    private queueSvc = this.azure.createQueueService();
-    private queueName = this.queueName;
+    private queueSvc = this.azure.createQueueService("DefaultEndpointsProtocol=https;AccountName=w4equeuestorage;AccountKey=sWvFubVoxStR9G4qMDYdEhASMIYD9Ls2g5/KZdnD563NBeojhP9ehEm1qY0qc/5teR60kOjzIvl5zj0zDsW+1A==;EndpointSuffix=core.windows.net");
+    private queueName = "myqueue";
 
     constructor() {
 

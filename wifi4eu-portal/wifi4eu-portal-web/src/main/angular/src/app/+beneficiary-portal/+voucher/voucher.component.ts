@@ -13,10 +13,13 @@ import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {SharedService} from "../../shared/shared.service";
+import {AzurequeueApi, AzureQueueDTOBase} from "../../shared/swagger";
+import {AzureQueue} from "../../azure/AzureQueue";
+import {QueueComponent} from "../../azure/Queue";
 
 @Component({
     templateUrl: 'voucher.component.html',
-    providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi]
+    providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi, AzurequeueApi]
 })
 
 export class VoucherComponent {
@@ -39,7 +42,7 @@ export class VoucherComponent {
     private voucherApplied: string = "";
     private openedCalls: string = "";
 
-    constructor(private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService) {
+    constructor(private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private azurequeueApi: AzurequeueApi, private sharedService: SharedService) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         // Check if there are Calls
@@ -122,29 +125,49 @@ export class VoucherComponent {
         let startCallDate = this.currentCall.startDate;
         let actualDateTime = new Date().getTime();
 
+        console.log("1. startCallDate: ", startCallDate);
+
+        let jNewMessageApplication = new AzureQueueDTOBase();
+        jNewMessageApplication.message = "JAVA - New msg for [some place] @ " + actualDateTime + " (" + registrationNumber + ")";
+
+        let azureQueue : AzureQueue = new QueueComponent();
+        let aNewMessageApplication = new AzureQueueDTOBase();
+        aNewMessageApplication.message = "ANGULAR - New msg for [some place] @ " + actualDateTime + " (" + registrationNumber + ")";
+
+
+        // console.log("3. ANGULAR queue created");
+        // azureQueue.addMessageAzureQueue( aNewMessageApplication.message );
+
+        console.log("4. JAVA Process: ", actualDateTime);
         if  (startCallDate <= actualDateTime) {
-            // TODO: Llamar al nuevo servicio de Apply for voucher
-            // this.loadingButton = true;
-            this.loadingButtons[registrationNumber] = true;
-            let newApplication = new ApplicationDTOBase();
-            newApplication.callId = this.currentCall.id;
-            newApplication.registrationId = this.registrations[registrationNumber].id;
-            newApplication.date = new Date().getTime();
-            newApplication.supplierId = null;
-            this.applicationApi.createApplication(newApplication).subscribe(
+            console.log("5. Starting process");
+            this.azurequeueApi.addMessageAzureQueue(jNewMessageApplication).subscribe(
                 (response: ResponseDTOBase) => {
-                    if (response.success) {
-                        if (response.data) {
-                            this.applications[registrationNumber] = response.data;
-                            this.voucherCompetitionState = 3;
-                            // this.loadingButton = false;
-                            this.loadingButtons[registrationNumber] = false;
-                            this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
-                            this.voucherApplied = "greyImage";
-                        }
-                    }
+                    console.log("6. ", response);
                 }
-            );
+        );
+            // // TODO: Llamar al nuevo servicio de Apply for voucher
+            // // this.loadingButton = true;
+            // this.loadingButtons[registrationNumber] = true;
+            // let newApplication = new ApplicationDTOBase();
+            // newApplication.callId = this.currentCall.id;
+            // newApplication.registrationId = this.registrations[registrationNumber].id;
+            // newApplication.date = new Date().getTime();
+            // newApplication.supplierId = null;
+            // this.applicationApi.createApplication(newApplication).subscribe(
+            //     (response: ResponseDTOBase) => {
+            //         if (response.success) {
+            //             if (response.data) {
+            //                 this.applications[registrationNumber] = response.data;
+            //                 this.voucherCompetitionState = 3;
+            //                 // this.loadingButton = false;
+            //                 this.loadingButtons[registrationNumber] = false;
+            //                 this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
+            //                 this.voucherApplied = "greyImage";
+            //             }
+            //         }
+            //     }
+            // );
         }
     }
 
