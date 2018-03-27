@@ -32,28 +32,30 @@
         <button class="btn btn-primary btn-apply" (click)="searchSuppliers()" [disabled]="country == null || region == null">{{ 'listMunicipalities.apply.button' | translate }}</button>
       </div>
     </div>
-    <div class="row" *ngIf="country && region && originalSuppliers.length > 0; else notFound" [@expandCollapse]>
+    <div class="row" *ngIf="country && region && suppliers.length > 0; else notFound" [@expandCollapse]>
       <div class="col-xs-12">
-          <div class="row input-row">
-              <div class="col-xs-12 col-md-5">
-                <input type="text" class="form-control paddingInput" placeholder="{{'shared.search.button' | translate}}" name="search-supplier" (input)="filterResults($event)">
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12">
-                <p-dataGrid #gridSuppliers [value]="suppliers" styleClass="supplier-region"><!--  originalSuppliers.length > gridSuppliers.rows ? true : false -->
-                  <ng-template let-supplier pTemplate="item">
-                    <div class="supplier-item">
-                      <span>{{ supplier }}</span>
-                    </div>
-                  </ng-template>
-                </p-dataGrid>
-                <p-paginator #paginator pageLinkSize="pageLinks" (onPageChange)="paginate($event)"></p-paginator>
-              </div>
-            </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <p-dataGrid #gridSuppliers [value]="suppliers" styleClass="supplier-region"><!--  originalSuppliers.length > gridSuppliers.rows ? true : false -->
+              <ng-template let-supplier pTemplate="item">
+                <div class="supplier-item">
+                  <span>{{ supplier }}</span>
+                </div>
+              </ng-template>
+            </p-dataGrid>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row" *ngIf="searched && originalSuppliers.length == 0">
+    <div class="row" [class.hide]="suppliers.length <= 0">
+      <div class="col-sx-12" style="position: relative;">
+          <p-paginator #paginator (onPageChange)="paginate($event)"></p-paginator>
+          <div style="position: absolute; top: 50%; transform: translateY(-50%); left: 20px;">
+              <span style="color: #929292;">Total records: {{totalItems}} </span>
+          </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="searched && suppliers.length == 0">
       <div class="col-md-12">
         <span class="updated-on">{{ 'listMunicipalities.noresults.text' | translate }} {{regionNameSearched}}</span>
       </div>

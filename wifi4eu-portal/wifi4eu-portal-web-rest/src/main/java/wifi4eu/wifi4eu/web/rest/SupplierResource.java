@@ -1,14 +1,13 @@
 package wifi4eu.wifi4eu.web.rest;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", exposedHeaders = "*, X-Total-Count")
 @Controller
 @Api(value = "/supplier", description = "Supplier object REST API services")
 @RequestMapping("supplier")
@@ -221,40 +220,40 @@ public class SupplierResource {
     }
 
     @ApiOperation(value = "Get suppliers registered by region")
-    @RequestMapping(value = "/all/region/{regionId}", method = RequestMethod.GET, produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
+    @RequestMapping(value = "/all/region/{regionId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public SuppliersCacheDTO getSuppliersRegisteredByRegion(@PathVariable("regionId") int regionId, @RequestParam("page") int page, @RequestParam("size") int size){
+    public ResponseDTO getSuppliersRegisteredByRegion(@PathVariable("regionId") int regionId,
+                                                      @RequestParam("page") int page, @RequestParam("size") int size){
+        if(page < 0) { page = 0; }
+        if(size < 0) { size = 0; }
 
-        if(page < 0) {
-            page = 0;
-        }
-        if(size < 0) {
-            size = 0;
-        }
-
-        Pageable pageable = new PageRequest(page, size);
-        return new SuppliersCacheDTO(supplierService.getSuppliersByRegion(regionId, pageable), new Date());
+        Page<String> pageObj = supplierService.getSuppliersByRegionOrCountry("", regionId, new PageRequest(page, size));
+        return new ResponseDTO(
+                true,
+                new SuppliersCacheDTO(pageObj.getContent(), new Date()),
+                pageObj.getTotalElements(),
+                null);
     }
 
     @ApiOperation(value = "Get suppliers registered by country")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
+    })
     @RequestMapping(value = "/all/country/{countryCode}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public SuppliersCacheDTO getSuppliersRegisteredByCountry(@PathVariable("countryCode") String countryCode, @RequestParam("page") int page, @RequestParam("size") int size){
-        if(page < 0) {
-            page = 0;
-        }
-        if(size < 0) {
-            size = 0;
-        }
-        Pageable pageable = new PageRequest(page, size);
-        return supplierService.getSuppliersByCountry(countryCode, pageable);
-    }
-
-    @ApiOperation(value = "Get count of suppliers registered in all regions")
-    @RequestMapping(value = "/all/country/count", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public Object getCountSuppliersAllRegions(){
-        return supplierService.getSuppliersAllRegionsCount();
+    public ResponseDTO getSuppliersRegisteredByCountry(@PathVariable("countryCode") String countryCode,
+                                                       @RequestParam("page") int page, @RequestParam("size") int size){
+        if(page < 0) { page = 0; }
+        if(size < 0) { size = 0; }
+        Page<String> pageObj = supplierService.getSuppliersByRegionOrCountry(countryCode, 0, new PageRequest(page, size));
+        return new ResponseDTO(
+                true,
+                new SuppliersCacheDTO(pageObj.getContent(), new Date()),
+                pageObj.getTotalElements(),
+                null);
     }
 
 }

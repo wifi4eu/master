@@ -222,28 +222,11 @@ public class SupplierService {
         return supplierDTO;
     }
 
-    public List<String> getSuppliersByRegion(int regionId, Pageable pageable){
-        Set<String> supplierNames = new HashSet<>();
-        Page<SuppliedRegion> suppliedRegions = suppliedRegionRepository.findByRegionId(pageable, regionId);
-        for (SuppliedRegionDTO suppliedRegion: suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegions.getContent()))) {
-            SupplierDTO supplierDTO = supplierMapper.toDTO(supplierRepository.findOne(suppliedRegion.getSupplierId()));
-            if(!supplierNames.contains(supplierDTO.getName())){
-                supplierNames.add(supplierDTO.getName());
-            }
+    public Page<String> getSuppliersByRegionOrCountry(String countryCode, int regionId, Pageable pageable){
+        if (regionId == 0) {
+            return supplierRepository.findSuppliersByCountryCode(countryCode,pageable);
         }
-        return new ArrayList<>(supplierNames);
+        return supplierRepository.findSuppliersByRegion(regionId, pageable);
     }
 
-    public SuppliersCacheDTO getSuppliersByCountry(String countryCode, Pageable pageable){
-        Set<String> supplierNames = new HashSet<>();
-        List<NutsDTO> regions = nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode,3);
-        for(NutsDTO nutsDTO: regions){
-            supplierNames.addAll(getSuppliersByRegion(nutsDTO.getId(),pageable));
-        }
-        return new SuppliersCacheDTO(new ArrayList<>(supplierNames), new Date());
-    }
-
-    public Object getSuppliersAllRegionsCount() {
-        return suppliedRegionRepository.findNumSupplierAllRegions();
-    }
 }
