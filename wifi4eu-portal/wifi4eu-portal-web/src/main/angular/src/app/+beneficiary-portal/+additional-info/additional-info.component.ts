@@ -160,4 +160,38 @@ export class AdditionalInfoComponent {
             }
         );
     }
+
+    private deleteFromServer(index: number) {
+        switch (index) {
+            case 0:
+                this.registration.legalFile1 = null;
+                break;
+            case 1:
+                this.registration.legalFile2 = null;
+                break;
+            case 2:
+                this.registration.legalFile3 = null;
+                break;
+            case 3:
+                this.registration.legalFile4 = null;
+                break;
+        }
+
+        this.displayConfirmingData = true;
+        this.registrationApi.createRegistration(this.registration).subscribe(
+            (response: ResponseDTOBase) => {
+                this.displayConfirmingData = false;
+                if (response.success) {
+                    this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                    this.registration = response.data;
+                    // this.router.navigateByUrl('/beneficiary-portal/voucher');
+                } else {
+                    this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
+                }
+            }, error => {
+                this.displayConfirmingData = false;
+                this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
+            }
+        );
+    }
 }

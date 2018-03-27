@@ -59,19 +59,18 @@
                         </div>
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
-                    <span *ngIf="registration.legalFile1 && !documentUrls[0]">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
-                                <a sclass="link-label" [href]="getLegalFileUrl(1)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                    </span>
-                    <span *ngIf="documentUrls[0]">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
-                                <a sclass="link-label" (click)="removeFile(0)"
-                                   removeFile>{{ 'shared.remove.label' | translate}}</a>
-                    </span>
+                        <span *ngIf="registration.legalFile1 && !documentUrls[0]">
+                            <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
+                            <a class="link-label" (click)="deleteFromServer(0)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" [href]="getLegalFileUrl(1)" download><i class="fa fa-download"
+                                                                                          aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
+                        </span>
 
-                </span>
+                        <span *ngIf="documentUrls[0]">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
+                                    <a sclass="link-label" (click)="removeFile(0)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                        </span>
+                    </span>
                 </div>
             </div>
             <div class="row" *ngIf="!isMayor">
@@ -92,17 +91,15 @@
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
                         <span *ngIf="registration.legalFile2 && !documentUrls[1]">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3
-                                    <a class="link-label" [href]="getLegalFileUrl(2)"
-                                       download>
-                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                    </a>
+                            <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3
+                            <a class="link-label" (click)="deleteFromServer(1)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" [href]="getLegalFileUrl(2)" download><i class="fa fa-download"
+                                                                                          aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
-                         <span *ngIf="documentUrls[1]">
+                        <span *ngIf="documentUrls[1]">
                                 <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3
-                                <a sclass="link-label" (click)="removeFile(1)"
-                                   removeFile>{{ 'shared.remove.label' | translate}}</a>
-                    </span>
+                                <a class="link-label" (click)="removeFile(1)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
+                        </span>
                     </span>
                 </div>
             </div>
@@ -130,17 +127,15 @@
                         </div>
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
-                         <span *ngIf="registration.legalFile3 && !documentUrls[2]">
+                        <span *ngIf="registration.legalFile3 && !documentUrls[2]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2
-                            <a class="link-label" [href]="getLegalFileUrl(3)"
-                               download>
-                                <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                            </a>
+                            <a class="link-label" (click)="deleteFromServer(2)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" [href]="getLegalFileUrl(3)" download><i class="fa fa-download"
+                                                                                          aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
                          <span *ngIf="documentUrls[2]">
                                 <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2
-                                <a sclass="link-label" (click)="removeFile(2)"
-                                   removeFile>{{ 'shared.remove.label' | translate}}</a>
+                                <a class="link-label" (click)="removeFile(2)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
                     </span>
                     </span>
                 </div>
@@ -163,17 +158,15 @@
                         </div>
                     </div>
                     <span class="ui-g-12" *ngIf="registration">
-                        <span *ngIf="registration.legalFile4 && !documentUrls[3]">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4
-                                    <a class="link-label" [href]="getLegalFileUrl(4)"
-                                       download>
-                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                    </a>
+                         <span *ngIf="registration.legalFile4 && !documentUrls[3]">
+                            <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4
+                            <a class="link-label" (click)="deleteFromServer(3)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" [href]="getLegalFileUrl(4)" download><i class="fa fa-download"
+                                                                                          aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
                          <span *ngIf="documentUrls[3]">
                                 <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4
-                                <a sclass="link-label" (click)="removeFile(3)"
-                                   removeFile>{{ 'shared.remove.label' | translate}}</a>
+                                <a class="link-label" (click)="removeFile(3)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a>
                     </span>
                  </span>
                 </div>
