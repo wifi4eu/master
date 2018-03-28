@@ -143,6 +143,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
         this.css_class_email.splice(index, deleteCount);
         this.css_class_municipalities.splice(index, deleteCount);
         this.checkMunicipalitiesSelected();
+        this.checkEmailsMatch();
     }
 
     private submit() {
