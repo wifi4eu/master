@@ -37,6 +37,8 @@ export class VoucherComponent {
     private loadingButtons: boolean[] = [];
     private dateNumber: string;
     private hourNumber: string;
+    private uploadDate: string[] = [];
+    private uploadHour: string[] = [];
     private voucherApplied: string = "";
     private openedCalls: string = "";
     private isMayor: boolean = true;
@@ -107,6 +109,7 @@ export class VoucherComponent {
                                                     } else {
                                                         this.voucherCompetitionState = 1;
                                                     }
+
                                                     this.checkForDocuments();
                                                     if (this.applications.length == this.registrations.length) {
                                                         let allApplied = true;
@@ -189,20 +192,27 @@ export class VoucherComponent {
 
     private checkForDocuments() {
         if (this.isMayor) {
-            for (let i = 0; i < this.registrations.length; i++) {
+            this.docsOpen[0] = (this.registrations[0].legalFile1 != null && this.registrations[0].legalFile4 == null && this.registrations[0].legalFile2 == null && this.registrations[0].legalFile3 != null);
 
-                console.log(this.registrations[i]);
-                this.docsOpen[i] = (this.registrations[i].legalFile1 != null && this.registrations[i].legalFile4 == null && this.registrations[i].legalFile2 == null && this.registrations[i].legalFile3 != null);
-                console.log(this.docsOpen[i]);
+            if (this.docsOpen[0]) {
+                let uploaddate = new Date(this.registrations[0].uploadTime);
+                uploaddate.setMinutes(uploaddate.getMinutes() + uploaddate.getTimezoneOffset());
+                this.uploadDate[0] = ('0' + uploaddate.getUTCDate()).slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                this.uploadHour[0] = ('0' + uploaddate.getHours()).slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+
             }
         } else {
             for (let i = 0; i < this.registrations.length; i++) {
-
-                console.log(this.docsOpen);
-                console.log(this.registrations[i]);
                 this.docsOpen[i] = (this.registrations[i].legalFile1 != null && this.registrations[i].legalFile4 != null && this.registrations[i].legalFile2 != null && this.registrations[i].legalFile3 != null);
-                console.log(this.docsOpen[i]);
+                if (this.docsOpen[i]) {
+                    let uploaddate = new Date(this.registrations[i].uploadTime);
+                    uploaddate.setMinutes(uploaddate.getMinutes() + uploaddate.getTimezoneOffset());
+                    this.uploadDate[i] = ('0' + uploaddate.getUTCDate()).slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                    this.uploadHour[i] = ('0' + uploaddate.getHours()).slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+                }
             }
+
+
         }
     }
 }

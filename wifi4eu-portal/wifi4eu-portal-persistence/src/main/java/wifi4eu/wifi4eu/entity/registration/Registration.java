@@ -49,11 +49,20 @@ public class Registration {
     @Column(name = "organisation_id")
     private int organisationId;
 
+    @Column(name = "upload_time")
+    private Long uploadTime;
+
+    @Column(name = "allFiles_flag")
+    private int allFilesFlag;
+
+    @Column(name = "mail_counter")
+    private int mailCounter;
+
 
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -65,6 +74,9 @@ public class Registration {
         this.ipRegistration = ipRegistration;
         this.associationName = associationName;
         this.organisationId = organisationId;
+        this.uploadTime = uploadTime;
+        this.allFilesFlag = allFilesFlag;
+        this.mailCounter = mailCounter;
     }
 
     public Integer getId() {
@@ -161,5 +173,29 @@ public class Registration {
 
     public void setOrganisationId(int organisationId) {
         this.organisationId = organisationId;
+    }
+
+    public Long getUploadTime() {
+        return uploadTime;
+    }
+
+    public void setUploadTime(Long uploadTime) {
+        this.uploadTime = uploadTime;
+    }
+
+    public int getAllFilesFlag() {
+        return allFilesFlag;
+    }
+
+    public void setAllFilesFlag(int allFilesFlag) {
+        this.allFilesFlag = allFilesFlag;
+    }
+
+    public int getMailCounter() {
+        return mailCounter;
+    }
+
+    public void setMailCounter(int mailCounter) {
+        this.mailCounter = mailCounter;
     }
 }

@@ -35,6 +35,7 @@ export class AdditionalInfoComponent {
     @ViewChild('document3') private document3: any;
     @ViewChild('document4') private document4: any;
     private displayConfirmingData: boolean = false;
+    private date: number;
 
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
@@ -71,27 +72,33 @@ export class AdditionalInfoComponent {
     }
 
     private uploadFile(event: any, index: number = 0) {
-        this.filesUploaded = true;
-        if (event.target.files[0]) {
-            if (event.target.files[0].size > 1024000) {
-                this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'benefPortal.file.toobig.maxsize', 'warn', {size: '1 MB'});
-                this.removeFile(index);
-                return;
-            }
-            this.documentFiles[index] = event.target.files[0];
-            this.reader.readAsDataURL(this.documentFiles[index]);
-            let subscription = Observable.interval(200).subscribe(
-                x => {
-                    if (this.reader.result != "") {
-                        this.documentUrls[index] = this.reader.result;
-                        if (this.documentUrls[0] && this.documentUrls[1] && this.documentUrls[2] && this.documentUrls[3])
-                            this.filesUploaded = true;
-                        subscription.unsubscribe();
-                    }
+        if (this.registration.allFilesFlag != 1) {
+            this.filesUploaded = true;
+            if (event.target.files[0]) {
+                if (event.target.files[0].size > 1024000) {
+                    this.sharedService.growlTranslation('The file you uploaded is too big. Max file size allowed is 1 MB.', 'benefPortal.file.toobig.maxsize', 'warn', {size: '1 MB'});
+                    this.removeFile(index);
+                    return;
                 }
-            );
+                this.documentFiles[index] = event.target.files[0];
+                this.reader.readAsDataURL(this.documentFiles[index]);
+                let subscription = Observable.interval(200).subscribe(
+                    x => {
+                        if (this.reader.result != "") {
+                            this.documentUrls[index] = this.reader.result;
+                            if (this.documentUrls[0] && this.documentUrls[1] && this.documentUrls[2] && this.documentUrls[3])
+                                this.filesUploaded = true;
+                            subscription.unsubscribe();
+                        }
+                    }
+                );
+            } else {
+                this.removeFile(index);
+            }
         } else {
-            this.removeFile(index);
+            this.sharedService.growlTranslation('You cant upload documents right now', 'shared.cantUploadDocs', 'error');
+            this.filesUploaded = false;
+
         }
     }
 
@@ -129,70 +136,111 @@ export class AdditionalInfoComponent {
     }
 
     private onSubmit() {
+        if (this.registration.allFilesFlag != 1) {
 
-        if (this.documentUrls[0]) {
-            this.registration.legalFile1 = this.documentUrls[0];
-        }
-        if (this.documentUrls[1]) {
-            this.registration.legalFile2 = this.documentUrls[1];
-        }
-        if (this.documentUrls[2]) {
-            this.registration.legalFile3 = this.documentUrls[2];
-        }
-        if (this.documentUrls[3]) {
-            this.registration.legalFile4 = this.documentUrls[3];
-        }
+            if (this.documentUrls[0]) {
+                this.registration.legalFile1 = this.documentUrls[0];
+            }
+            if (this.documentUrls[1]) {
+                this.registration.legalFile2 = this.documentUrls[1];
+            }
+            if (this.documentUrls[2]) {
+                this.registration.legalFile3 = this.documentUrls[2];
+            }
+            if (this.documentUrls[3]) {
+                this.registration.legalFile4 = this.documentUrls[3];
+            }
 
-        this.displayConfirmingData = true;
-        this.registrationApi.createRegistration(this.registration).subscribe(
-            (response: ResponseDTOBase) => {
-                this.displayConfirmingData = false;
-                if (response.success) {
-                    this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
-                    this.registration = response.data;
-                    this.router.navigateByUrl('/beneficiary-portal/voucher');
-                } else {
+            this.displayConfirmingData = true;
+            this.updateMailings();
+            this.registrationApi.createRegistration(this.registration).subscribe(
+                (response: ResponseDTOBase) => {
+                    this.displayConfirmingData = false;
+                    if (response.success) {
+                        this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                        this.registration = response.data;
+
+
+                        this.router.navigateByUrl('/beneficiary-portal/voucher');
+                    } else {
+                        this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
+                    }
+                }, error => {
+                    this.displayConfirmingData = false;
                     this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
                 }
-            }, error => {
-                this.displayConfirmingData = false;
-                this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
+            );
+        } else {
+            this.sharedService.growlTranslation('You cant upload documents right now', 'shared.cantUploadDocs', 'error');
+            this.filesUploaded = false;
+
+        }
+    }
+
+    private updateMailings() {
+        if (!this.isMayor) {
+            let date = new Date();
+            this.date = date.getTime();
+
+            if (this.registration.legalFile1 && this.registration.legalFile2 && this.registration.legalFile3 && this.registration.legalFile4) {
+                this.registration.allFilesFlag = 1;
+                this.registration.uploadTime = this.date;
+                this.registration.mailCounter = 0;
+            } else {
+                this.registration.allFilesFlag = 0;
+                this.registration.uploadTime = 0;
+                this.registration.mailCounter = 3;
             }
-        );
+        } else {
+            if (this.registration.legalFile1 && this.registration.legalFile4) {
+                this.registration.allFilesFlag = 1;
+                this.registration.uploadTime = this.date;
+                this.registration.mailCounter = 0;
+            } else {
+                this.registration.allFilesFlag = 0;
+                this.registration.uploadTime = 0;
+                this.registration.mailCounter = 3;
+            }
+        }
     }
 
     private deleteFromServer(index: number) {
-        this.filesUploaded = true;
-        switch (index) {
-            case 0:
-                this.registration.legalFile1 = null;
-                break;
-            case 1:
-                this.registration.legalFile2 = null;
-                break;
-            case 2:
-                this.registration.legalFile3 = null;
-                break;
-            case 3:
-                this.registration.legalFile4 = null;
-                break;
-        }
-
-        this.displayConfirmingData = true;
-        this.registrationApi.createRegistration(this.registration).subscribe(
-            (response: ResponseDTOBase) => {
-                this.displayConfirmingData = false;
-                if (response.success) {
-                    this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
-                    this.registration = response.data;
-                    // this.router.navigateByUrl('/beneficiary-portal/voucher');
-                } else {
+        if (this.registration.allFilesFlag != 1) {
+            this.filesUploaded = true;
+            switch (index) {
+                case 0:
+                    this.registration.legalFile1 = null;
+                    break;
+                case 1:
+                    this.registration.legalFile2 = null;
+                    break;
+                case 2:
+                    this.registration.legalFile3 = null;
+                    break;
+                case 3:
+                    this.registration.legalFile4 = null;
+                    break;
+            }
+            this.updateMailings();
+            this.displayConfirmingData = true;
+            this.registrationApi.createRegistration(this.registration).subscribe(
+                (response: ResponseDTOBase) => {
+                    this.displayConfirmingData = false;
+                    if (response.success) {
+                        this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
+                        this.registration = response.data;
+                        // this.router.navigateByUrl('/beneficiary-portal/voucher');
+                    } else {
+                        this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
+                    }
+                }, error => {
+                    this.displayConfirmingData = false;
                     this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
                 }
-            }, error => {
-                this.displayConfirmingData = false;
-                this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
-            }
-        );
+            );
+        } else {
+            this.sharedService.growlTranslation('You cant upload documents right now', 'shared.cantUploadDocs', 'error');
+            this.filesUploaded = false;
+        }
     }
 }
