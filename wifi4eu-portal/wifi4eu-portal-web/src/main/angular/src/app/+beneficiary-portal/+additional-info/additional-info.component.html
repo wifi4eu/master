@@ -1,4 +1,17 @@
 <div class="container" *ngIf="municipality">
+    <div class="row" *ngIf="registration">
+
+        <div class="ui-g-12 center">
+            <div class="ui-md-8 center">
+                <ux-alert *ngIf="registration.allFilesFlag != 1" styleClass="alert-info">{{
+                    'shared.statusUploadDocs' | translate}}
+                </ux-alert>
+                <ux-alert *ngIf="registration.allFilesFlag == 1" styleClass="alert-info">{{
+                    'shared.statusDocsUploaded' | translate}}
+                </ux-alert>
+            </div>
+        </div>
+    </div>
     <div id="step2-title" class="row">
         <div class="col-sm-6">
             <div id="component-title">

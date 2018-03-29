@@ -192,7 +192,7 @@ export class AdditionalInfoComponent {
                 this.registration.mailCounter = 3;
             }
         } else {
-            if (this.registration.legalFile1 && this.registration.legalFile4) {
+            if (this.registration.legalFile1 && this.registration.legalFile3) {
                 this.registration.allFilesFlag = 1;
                 this.registration.uploadTime = this.date;
                 this.registration.mailCounter = 0;
