@@ -20,9 +20,7 @@ import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -41,8 +39,14 @@ public class BeneficiaryResource {
     @ResponseBody
     public ResponseDTO submitBeneficiaryRegistration(@RequestBody final BeneficiaryDTO beneficiaryDTO,  HttpServletRequest request) {
         try {
+            String forwardedHeaderIp = request.getHeader("X-Forwarded-For");
+            String ip = "";
+            if(forwardedHeaderIp != null) {
+                String[] forwardedListIp = forwardedHeaderIp.split(", ");
+                ip = forwardedListIp[0];
+            }
             _log.info("submitBeneficiaryRegistration");
-            List<RegistrationDTO> resRegistrations = beneficiaryService.submitBeneficiaryRegistration(beneficiaryDTO, request.getRemoteAddr());
+            List<RegistrationDTO> resRegistrations = beneficiaryService.submitBeneficiaryRegistration(beneficiaryDTO, ip);
             return new ResponseDTO(true, resRegistrations, null);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
