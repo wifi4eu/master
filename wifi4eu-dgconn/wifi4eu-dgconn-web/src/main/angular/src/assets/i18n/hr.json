@@ -479,5 +479,5 @@
   "benefRegistration.legalRepresentative.details": "Pravni zastupnik ",
   "suppPortal.profile.deleteLogo": "Izbriši Logotip poduzeća",
   "suppPortal.withdraw-registration.text": "Više ne želite osiguravati opremu i usluge ugradnje u okviru programa WiFi4EU? Kliknite ispod kako biste povukli registraciju.",
-  "shared.municipality-autocomplete.label": "Općina"
+  "benefRegistration.municipalityDropdown": "upišite početna slova i zatim odaberite s padajućeg izbornika"
 }

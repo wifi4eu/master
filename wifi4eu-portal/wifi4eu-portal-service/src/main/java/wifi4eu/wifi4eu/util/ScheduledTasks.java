@@ -58,23 +58,23 @@ public class ScheduledTasks {
 
             helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
             helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
+            helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
 
             UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
 
-            if (userDTO == null) {
-                break;
-            }
 
-            helpdeskTicketDTO.setFirstname(userDTO.getName());
-            helpdeskTicketDTO.setLastname(userDTO.getSurname());
+            if (userDTO != null) {
+                helpdeskTicketDTO.setFirstname(userDTO.getName());
+                helpdeskTicketDTO.setLastname(userDTO.getSurname());
 
-            helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
-            helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
+                helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
+                helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
 
-            String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
-            if (result != null && result.contains("Thankyou.js")) {
-                helpdeskIssue.setTicket(true);
-                helpdeskService.createHelpdeskIssue(helpdeskIssue);
+                String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+                if (result != null && result.contains("Thankyou.js")) {
+                    helpdeskIssue.setTicket(true);
+                    helpdeskService.createHelpdeskIssue(helpdeskIssue);
+                }
             }
         }
     }

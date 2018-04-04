@@ -479,5 +479,5 @@
   "benefRegistration.legalRepresentative.details": "Právny zástupca ",
   "suppPortal.profile.deleteLogo": "Vymazať Logo spoločnosti",
   "suppPortal.withdraw-registration.text": "Už nemáte záujem poskytovať vybavenie a inštalačné služby pre iniciatívu WiFi4EU? Ak chcete zrušiť svoju registráciu, kliknite na tento odkaz.",
-  "shared.municipality-autocomplete.label": "Obec"
+  "benefRegistration.municipalityDropdown": "začnite písať a vyberte si z ponuky s rozbaľovaním zoznamom"
 }

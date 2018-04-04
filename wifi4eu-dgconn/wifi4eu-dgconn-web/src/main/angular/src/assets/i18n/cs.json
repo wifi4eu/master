@@ -311,7 +311,7 @@
   "benefPortal.voucher.timeleft.subtitle": "Další výzva k předkládání projektů bude zahájena {{date}} v {{hour}} (SEČ). ",
   "home.whatch.video": "Přehrát video",
   "home.part3.text4": "Zbývající doba do zahájení výzvy:",
-  "home.part4.subtitle": "Časté otázky",
+  "home.part4.subtitle": "K dalším informacím o projektu vás dovedou následující odkazy.",
   "shared.password.label": "Nové heslo",
   "shared.forgot.title": "Zapomněl(a) jsem heslo",
   "email.forgot": "Zadejte svou e-mailovou adresu. Zašleme vám na ni e-mail s instrukcemi, jak si vytvořit nové heslo.",
@@ -479,5 +479,5 @@
   "benefRegistration.legalRepresentative.details": "Zákonný zástupce ",
   "suppPortal.profile.deleteLogo": "Odstranit Logo společnosti",
   "suppPortal.withdraw-registration.text": "Nemáte již o zakázky na vybavení a jeho instalaci v rámci projektu WiFi4EU zájem? Kliknutím níže můžete registraci zrušit.",
-  "shared.municipality-autocomplete.label": "Obec"
+  "benefRegistration.municipalityDropdown": "začněte psát a vyberte si z nabídky"
 }
