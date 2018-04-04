@@ -479,5 +479,5 @@
   "benefRegistration.legalRepresentative.details": "Teisinis atstovas ",
   "suppPortal.profile.deleteLogo": "Šalinti Bendrovės logotipas",
   "suppPortal.withdraw-registration.text": "Nebenorite teikti įrangos ir įrengimo paslaugų pagal programą „WiFi4EU“? Spustelėkite nuorodą žemiau, kad pašalintumėte savo registraciją.",
-  "shared.municipality-autocomplete.label": "Savivaldybė"
+  "benefRegistration.municipalityDropdown": "pradėkite rašyti ir pasirinkite iš išskleidžiamojo meniu"
 }

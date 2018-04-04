@@ -479,5 +479,5 @@
   "benefRegistration.legalRepresentative.details": "Νόμιμος εκπρόσωπος ",
   "suppPortal.profile.deleteLogo": "Διαγραφή Λογότυπος της εταιρείας",
   "suppPortal.withdraw-registration.text": "Δεν επιθυμείτε πλέον να παρέχετε υπηρεσίες παροχής εξοπλισμού και εγκατάστασης WiFi4EU; Κάντε κλικ παρακάτω για να αποσύρετε την εγγραφή σας.",
-  "shared.municipality-autocomplete.label": "Δήμος"
+  "benefRegistration.municipalityDropdown": "αρχίστε να πληκτρολογείτε και κάντε μια επιλογή από το πτυσσόμενο μενού"
 }

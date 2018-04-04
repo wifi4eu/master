@@ -74,7 +74,7 @@
   "shared.surname.label": "Achternaam",
   "shared.email.label": "E-mailadres",
   "shared.confirmemail.label": "E-mailadres bevestigen",
-  "benefRegistration.email.fielddesc": "Vul het officiële e-mailadres van uw werk in. We sturen alle informatie naar dit adres.",
+  "benefRegistration.email.fielddesc": "Vul het officiële e-mailadres van uw werk in. We kunnen dit adres gebruiken om informatie te sturen.",
   "benefRegistration.removeMunicipality.label": "Gemeente verwijderen",
   "benefRegistration.addMunicipalty.label": "Gemeente toevoegen",
   "shared.number.label": "nummer",
@@ -478,5 +478,5 @@
   "benefRegistration.legalRepresentative.details": "Wettelijke vertegenwoordiger ",
   "suppPortal.profile.deleteLogo": "Wissen Bedrijfslogo",
   "suppPortal.withdraw-registration.text": "Geen belangstelling meer voor de levering en installatie van apparatuur voor WiFi4EU? Klik hieronder om uw inschrijving in te trekken.",
-  "shared.municipality-autocomplete.label": "Gemeente"
+  "benefRegistration.municipalityDropdown": "begin te typen en selecteer uit het dropdown-menu"
 }

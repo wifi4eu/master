@@ -478,5 +478,5 @@
   "benefRegistration.legalRepresentative.details": "Jogi képviselő ",
   "suppPortal.profile.deleteLogo": "Törlés Céglogó",
   "suppPortal.withdraw-registration.text": "Már nem szeretne berendezéseket és/vagy kapcsolódó kiépítési szolgáltatásokat nyújtani a WiFi4EU kezdeményezés keretében? Kattintson a lenti gombra a regisztráció visszavonásához.",
-  "shared.municipality-autocomplete.label": "Település"
+  "benefRegistration.municipalityDropdown": "kezdje el begépelni a település nevét, majd válasszon a legördülő listáról"
 }

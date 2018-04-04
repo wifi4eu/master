@@ -479,5 +479,5 @@
   "benefRegistration.legalRepresentative.details": "Reprezentantul legal ",
   "suppPortal.profile.deleteLogo": "Șterge Sigla companiei",
   "suppPortal.withdraw-registration.text": "Nu mai doriți să furnizați echipamente și servicii de instalare în cadrul inițiativei WiFi4EU? Faceți clic mai jos pentru a vă retrage înregistrarea.",
-  "shared.municipality-autocomplete.label": "Municipalitatea"
+  "benefRegistration.municipalityDropdown": "Începeți să scrieți și selectați numele din meniul derulant"
 }
