@@ -13,6 +13,7 @@ import { PaginatorModule } from "primeng/primeng";
 import { SharedModule as SharedNgModule } from 'primeng/primeng';
 import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-registrations/+details/beneficiary-registrations-details.component";
 import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrations/details/supplier-registrations-details.component";
+import {DgConnExportImportComponent} from "./+exportImport/exportImport.component";
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrat
         DgConnBeneficiaryRegistrationsDetailsComponent,
         DgConnSupplierRegistrationsDetailsComponent,
         DgConnManageLauComponent,
-        DgConnDiscussionComponent
+        DgConnDiscussionComponent,
+        DgConnExportImportComponent
     ],
     bootstrap: [DgConnPortalComponent]
 })

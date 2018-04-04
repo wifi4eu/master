@@ -10,6 +10,7 @@ import {DgConnManageLauComponent} from "./+manage-lau/manage-lau.component";
 import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-registrations/+details/beneficiary-registrations-details.component";
 import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrations/details/supplier-registrations-details.component";
+import {DgConnExportImportComponent} from "./+exportImport/exportImport.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -43,9 +44,10 @@ import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrat
         }, {
             path: 'discussion',
             component: DgConnDiscussionComponent,
+        }, {
+            path: 'exportImport',
+            component: DgConnExportImportComponent,
         }
-
-
     ])],
     exports: [RouterModule]
 })
