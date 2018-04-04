@@ -64,8 +64,11 @@ export class VoucherComponent {
                             (mayor: MayorDTOBase) => {
                                 this.mayor = mayor;
                                 // HERE WE CHECK IF ITS REPRESENTATIVE OR NOT
-                                if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname)
+                                if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname) {
                                     this.isMayor = true;
+                                } else {
+                                    this.isMayor = false;
+                                }
                             }, error => {
                             }
                         );
