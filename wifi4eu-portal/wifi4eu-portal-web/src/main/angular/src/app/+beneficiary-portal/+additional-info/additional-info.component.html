@@ -4,9 +4,11 @@
         <div class="ui-g-12 center">
             <div class="ui-md-8 center">
                 <ux-alert *ngIf="registration.allFilesFlag != 1" styleClass="alert-info">{{
+                    'shared.statusLabel' | translate}} {{
                     'shared.statusUploadDocs' | translate}}
                 </ux-alert>
                 <ux-alert *ngIf="registration.allFilesFlag == 1" styleClass="alert-info">{{
+                    'shared.statusLabel' | translate}}{{
                     'shared.statusDocsUploaded' | translate}}
                 </ux-alert>
             </div>

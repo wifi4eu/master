@@ -96,7 +96,7 @@ export class AdditionalInfoComponent {
                 this.removeFile(index);
             }
         } else {
-            this.sharedService.growlTranslation('You cant upload documents right now', 'shared.cantUploadDocs', 'error');
+            this.sharedService.growlTranslation('You can\'t upload documents right now', 'shared.cantUploadDocs', 'error');
             this.filesUploaded = false;
 
         }

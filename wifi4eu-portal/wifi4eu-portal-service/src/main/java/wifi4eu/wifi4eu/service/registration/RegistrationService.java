@@ -61,6 +61,7 @@ public class RegistrationService {
 
     @Transactional
     public RegistrationDTO createRegistration(RegistrationDTO registrationDTO) {
+        registrationDTO.setMailCounter(3);
         return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
     }
 

@@ -80,7 +80,7 @@ public class ScheduledTasks {
     }
 
 
-    @Scheduled(cron = "0 0 12 ? * MON")
+    @Scheduled(cron = "0 12 * * 1 ?")
     public void sendDocRequest() {
         List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
         for (RegistrationDTO registrationDTO : registrationDTOS) {
