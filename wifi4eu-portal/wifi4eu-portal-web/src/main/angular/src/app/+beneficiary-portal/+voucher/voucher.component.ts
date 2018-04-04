@@ -153,7 +153,7 @@ export class VoucherComponent {
     }
 
     private applyForVoucher(registrationNumber: number) {
-        if (this.registrations[registrationNumber].allFilesFlag != 1) {
+        if (this.registrations[registrationNumber].allFilesFlag == 1) {
             let startCallDate = this.currentCall.startDate;
             let actualDateTime = new Date().getTime();
 
