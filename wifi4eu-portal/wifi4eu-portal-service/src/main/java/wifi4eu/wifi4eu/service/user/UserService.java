@@ -49,7 +49,6 @@ import java.util.ResourceBundle;
 public class UserService {
     private final Logger _log = LoggerFactory.getLogger(UserService.class);
 
-
     @Value("${mail.server.location}")
     private String baseUrl;
 
