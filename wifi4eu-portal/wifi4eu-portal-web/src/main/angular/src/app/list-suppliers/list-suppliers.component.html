@@ -1,16 +1,15 @@
 <div class="container">
   <div class="panel">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-12 header">
         <h4 class="title"> {{ 'listSuppliers.title' | translate }}</h4>
         <p class="subtitle-discover">{{ 'listSuppliers.subtitle' | translate }}</p>
-        <div style="clear: both;">
-          <p class="updated-on" *ngIf="dateCached && !searching">{{ 'listMunicipalities.subtitle.updateDate' | translate}} {{dateCached}}</p>
-          <p class="updated-on-loading" *ngIf="searching"></p>
+        <div style="clear: both;" *ngIf="(searching || searched) && country && region" [@opacityTransition]>
+          <p class="updated-on"><span *ngIf="dateCached" [@opacityTransition]>{{ 'listMunicipalities.subtitle.updateDate' | translate}} {{dateCached}}</span>
+          <span class="dateCached" *ngIf="!searched || !dateCached" [@opacityTransition]></span></p>
         </div>
       </div>
     </div>
-
     <div class="row">
       <div class="col-sm-12 col-md-4">
         <label class="label-select"  for="memberState">{{ 'listMunicipalities.memberState.label' | translate }}</label>
@@ -35,7 +34,7 @@
         <button class="btn btn-primary btn-apply" (click)="searchSuppliers()" [disabled]="country == null || region == null">{{ 'listMunicipalities.apply.button' | translate }}</button>
       </div>
     </div>
-    <div class="row" *ngIf="country && region && suppliers.length > 0" [@expandCollapse]>
+    <div class="row" *ngIf="searched && country && region && suppliers.length > 0" [@opacityTransition]>
       <div class="col-xs-12">
         <div class="row">
           <div class="col-xs-12">
@@ -50,10 +49,10 @@
         </div>
       </div>
     </div>
-    <div class="row" [class.hide]="suppliers.length <= 0">
+    <div class="row" [class.hide]="suppliers.length <= 0 || !searched">
       <div class="col-sx-12" style="position: relative;">
         <p-paginator class="paginator-panel" #paginator (onPageChange)="paginate($event)" [rowsPerPageOptions]="itemsPerPageSelector"></p-paginator>
-          <div style="position: absolute; top: 50%; transform: translateY(-50%); left: 20px;">
+          <div class="totalRecords">
             <span style="color: #929292;">{{ 'shared.totalRecords' | translate }}: {{totalItems}} </span>
           </div>
       </div>

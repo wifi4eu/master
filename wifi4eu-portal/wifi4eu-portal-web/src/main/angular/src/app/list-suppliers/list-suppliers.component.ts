@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
+import { Directive, Component, OnInit, ViewEncapsulation, ViewChild, ElementRef  } from '@angular/core';
 import { NutsDTOBase, NutsApi, SupplierApi, ResponseDTO } from '../shared/swagger';
 import { DatePipe } from '@angular/common';
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
@@ -16,24 +16,11 @@ import { DataGrid, Paginator } from 'primeng/primeng';
       state('void', style({opacity: 0})),
       transition('* => void', [
         style({opacity: 1}),
-        animate('0.6s ease-in', style({opacity: 0}))
+        animate('0.2s linear', style({opacity: 0}))
       ]),
       transition('void => *', [
         style({opacity: 0}),
-        animate('0.6s ease-in', style({opacity: 1}))
-      ])
-    ]),
-    trigger('expandCollapse', [
-      state('*', style({opacity: 1 , 'overflow-y': 'hidden'})),
-      state('void', style({'overflow-y': 'hidden', opacity: 0})),
-      transition('* => void', [
-        style({height: '*', opacity: 1}),
-        animate('0.4s cubic-bezier(.8, -0.6, 0.2, 1.5)', style({height: 0}))
-      ]),
-      transition('void => *', [
-        style({height: 0, opacity: 0}),
-        animate('0.4s cubic-bezier(.8, -0.6, 0.2, 1.5)', style({height: '*'})),
-        animate('0.6s ease-in', style({opacity: 1}))
+        animate('0.2s linear', style({opacity: 1}))
       ])
     ])
   ]
@@ -50,10 +37,10 @@ export class ListSuppliersComponent implements OnInit {
   regionNameSearched: string = null;
   defaultRegion = new NutsDTOBase();
 
-  itemsPerPageSelector = [10, 20, 50];
+  itemsPerPageSelector = [10, 20, 50, 100];
   totalItems: any = 0;
   page: any = 0;
-  itemsPerPage: any = this.itemsPerPageSelector[0];
+  itemsPerPage: any = this.itemsPerPageSelector[1];
   pageLinks: any;
   searching: boolean = false;  
 
@@ -75,13 +62,12 @@ export class ListSuppliersComponent implements OnInit {
           this.defaultRegion.countryCode = "ALL";
           this.regions.push(this.defaultRegion);
         }
-      }, error => {
-        console.log(error);
       }
     );
   }
 
   selectCountry(country){
+    this.searched = false;
     this.nutsApi.getNutsByCountryCodeAndLevelOrderByLabelAsc(country.code, 3).subscribe(
       (regions: NutsDTOBase[]) => {
         this.regions = [this.defaultRegion, ...regions];
@@ -95,12 +81,10 @@ export class ListSuppliersComponent implements OnInit {
 
   searchSuppliers(){
     this.searching = true;
-    this.searched = false;
     this.loadPage();
   }
 
   loadPage() {
-    this.searching = true;
     if(this.country && this.region){
       if(this.region.id != 0){
         this.supplierApi.getSuppliersRegisteredByRegion(this.region.id, this.page, this.itemsPerPage).subscribe((response: ResponseDTO) => {
@@ -126,14 +110,13 @@ export class ListSuppliersComponent implements OnInit {
   }
 
   fillPaginator(response) {
-    this.searched = true;
     this.totalItems = response.xtotalCount;
     this.pageLinks = Math.ceil(this.totalItems / this.itemsPerPage);
-    /* this.hidePaginator = this.pageLinks > 1 ? false : true; */
     this.paginator.rows = this.itemsPerPage;
     this.paginator.pageLinkSize = this.pageLinks;
     this.paginator.totalRecords = this.totalItems;
     this.searching = false;
+    this.searched = true;
   }
 
   paginate(event) {

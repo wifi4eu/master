@@ -1,3 +1,22 @@
+$base-color: #ddd;
+$shine-color: #e8e8e8;
+$animation-duration: 1.6s;
+$avatar-offset: 52 + 16;
+
+@mixin background-gradient {
+  background-image: linear-gradient(90deg, $base-color 0px, $shine-color 40px, $base-color 80px) ;
+  background-size: 600px;
+}
+
+@keyframes shine-lines {
+  0% {
+    background-position: 100%;
+  }
+  40%, 100% {
+  background-position: -50%;
+  }
+}
+
 .panel{
   margin: 18px;
   background: #fff;
@@ -36,6 +55,14 @@
     margin-bottom: 1em;
   }
 
+  .header .subtitle-discover:only-child{
+    
+  }
+
+  .subtitle-discover ~ div{
+    margin-bottom: 1rem;
+  }
+
 }
 
 .row.hide{
@@ -59,38 +86,66 @@
   font-size: 16px;
 }
 
+.totalRecords{
+  position: relative;
+  margin-top: 10px; 
+  text-align: center;
+}
+
+.panel .paginator-panel select{
+  display: block;
+  margin: auto;
+  width: initial;
+} 
+
+@media only screen and (min-width: 1024px) {
+  .totalRecords{
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    left: 20px;
+    margin-top: 0px; 
+  }
+}
+
 @media only screen and (min-width: 768px) {
   .supplier-item{
     padding: 20px;
-   /*  width: 33%;
-    min-width: 33%;
-    max-width: 33%; */
-
     width: 25%;
     min-width: 25%;
     max-width: 25%;
-
     justify-content: center;
     text-align: center;
     font-size: 16px;
   }
 
-.loading-suppliers .line {
-    float: left;
-    width: calc(25% - 10px);
+  .panel .paginator-panel select{
+    display: inline-block;
+    margin-left: 1em;
+  } 
+
+  .dateCached:empty{
+    position: absolute;
+    left: -2px;
+    display: inline-block;
+    top: 2px;
+     width: calc(25% - 10px);
     margin-right: 10px;
-    height: 30px;
-    margin-top: 12px;
-    margin-bottom: 12px;
+    height: 15px;
     border-radius: 7px;
-   // background-image: linear-gradient(90deg, #cccccc 0px, #d1d1d1 40px, #cccccc 80px);
-    background-image: linear-gradient(90deg, 
-    rgb(221, 221, 221) 0px, 
-    rgb(232, 232, 232) 40%, 
-    rgb(221, 221, 221) 80%);
+    background-image: 
+      linear-gradient(90deg, 
+      rgb(221, 221, 221) 0px, 
+      rgb(232, 232, 232) 40%, 
+      rgb(221, 221, 221) 80%);
     background-size: 600px;
+    -webkit-animation: shine-lines 1s infinite ease-out;
     animation: shine-lines 1s infinite ease-out;
   }
+}
+
+.updated-on:empty{
+  margin-bottom: 10px;
 }
 
 .supplier-region.ui-datagrid.ui-widget .ui-widget-content{
@@ -124,13 +179,13 @@
 
 .updated-on{
   color: #979797;
-  font-size: 14px;
+  position: relative;
+  min-height: 15px;
+  font-size: 0.97rem;
   font-style: italic;
 }
 
-.panel .paginator-panel select{
-  width: initial;
-} 
+
 
 .updated-on-loading{
   width: 20%;
@@ -138,19 +193,6 @@
   margin: 0px;
   height: 20px;
   border-radius: 2px;
-  background-image: linear-gradient(90deg, 
-  rgb(221, 221, 221) 0px, 
-  rgb(232, 232, 232) 40%, 
-  rgb(221, 221, 221) 80%);
-  background-size: 600px;
+  @include background-gradient;
   animation: shine-lines 1.4s infinite linear;
-}
-
-@keyframes shine-lines {
-  0% {
-    background-position: 100%;
-  }
-  40%, 100% {
-  background-position: -50%;
-  }
 }
