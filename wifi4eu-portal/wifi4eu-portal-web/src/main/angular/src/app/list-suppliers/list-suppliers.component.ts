@@ -11,6 +11,18 @@ import { DataGrid, Paginator } from 'primeng/primeng';
   providers: [NutsApi, SupplierApi],
   encapsulation: ViewEncapsulation.None,
   animations: [
+    trigger('opacityTransition', [
+      state('*', style({opacity: 1})),
+      state('void', style({opacity: 0})),
+      transition('* => void', [
+        style({opacity: 1}),
+        animate('0.6s ease-in', style({opacity: 0}))
+      ]),
+      transition('void => *', [
+        style({opacity: 0}),
+        animate('0.6s ease-in', style({opacity: 1}))
+      ])
+    ]),
     trigger('expandCollapse', [
       state('*', style({opacity: 1 , 'overflow-y': 'hidden'})),
       state('void', style({'overflow-y': 'hidden', opacity: 0})),
@@ -38,11 +50,12 @@ export class ListSuppliersComponent implements OnInit {
   regionNameSearched: string = null;
   defaultRegion = new NutsDTOBase();
 
+  itemsPerPageSelector = [10, 20, 50];
   totalItems: any = 0;
   page: any = 0;
-  itemsPerPage: any = 21;
+  itemsPerPage: any = this.itemsPerPageSelector[0];
   pageLinks: any;
-  searching: boolean = false;
+  searching: boolean = false;  
 
   hidePaginator: boolean = true;
 
@@ -83,20 +96,21 @@ export class ListSuppliersComponent implements OnInit {
   searchSuppliers(){
     this.searching = true;
     this.searched = false;
-    this.loadPage(this.page);
+    this.loadPage();
   }
 
-  loadPage(page) {
+  loadPage() {
+    this.searching = true;
     if(this.country && this.region){
       if(this.region.id != 0){
-        this.supplierApi.getSuppliersRegisteredByRegion(this.region.id, page, this.itemsPerPage).subscribe((response: ResponseDTO) => {
+        this.supplierApi.getSuppliersRegisteredByRegion(this.region.id, this.page, this.itemsPerPage).subscribe((response: ResponseDTO) => {
           this.suppliers = response.data['suppliers'];
           this.dateCached = this.transformDate(response.data['dateCached']);
           this.regionNameSearched = this.region.label;
           this.fillPaginator(response);
         }); 
       }else{
-        this.supplierApi.getSuppliersRegisteredByCountry(this.country.countryCode, page, this.itemsPerPage).subscribe((response: ResponseDTO) => {
+        this.supplierApi.getSuppliersRegisteredByCountry(this.country.countryCode, this.page, this.itemsPerPage).subscribe((response: ResponseDTO) => {
           this.suppliers = response.data['suppliers'];
           this.dateCached = this.transformDate(response.data['dateCached']);
           this.regionNameSearched = this.country.label;        
@@ -119,10 +133,13 @@ export class ListSuppliersComponent implements OnInit {
     this.paginator.rows = this.itemsPerPage;
     this.paginator.pageLinkSize = this.pageLinks;
     this.paginator.totalRecords = this.totalItems;
+    this.searching = false;
   }
 
   paginate(event) {
-    this.loadPage(event.page);
+    this.itemsPerPage = event.rows;
+    this.page = event.page;
+    this.loadPage();
   }
 
 }

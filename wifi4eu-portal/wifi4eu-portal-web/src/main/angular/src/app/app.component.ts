@@ -70,7 +70,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.appReg', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
@@ -79,7 +79,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.suppReg', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
@@ -88,7 +88,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.myAccount', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
@@ -97,7 +97,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.suppPortal', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
@@ -106,7 +106,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.dissForum', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
@@ -115,7 +115,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.appPortal', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
@@ -124,11 +124,20 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.dgPortal', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
         );
+        this.translateService.get('itemMenu.listSuppliers').subscribe(
+          (translatedString: string) => {
+              this.menuTranslations.set('itemMenu.listSuppliers', translatedString);
+              translatedItems++;
+              if (translatedItems == 8) {
+                  this.stringsTranslated.next();
+              }
+          }
+      );
     }
 
     private initChildren() {
@@ -143,7 +152,7 @@ export class AppComponent {
                     url: '/supplier-registration'
                 }),
                 new UxLayoutLink({
-                  label: 'Registered suppliers',
+                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
                   url: 'list-suppliers'
                 })
             ];
@@ -157,7 +166,7 @@ export class AppComponent {
                     url: '/supplier-portal/profile'
                 }),
                 new UxLayoutLink({
-                  label: 'Registered suppliers',
+                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
                   url: 'list-suppliers'
                 })
             ];
@@ -171,7 +180,7 @@ export class AppComponent {
                     url: '/beneficiary-portal/voucher'
                 }),
                 new UxLayoutLink({
-                  label: 'Registered suppliers',
+                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
                   url: 'list-suppliers'
                 })
             ];

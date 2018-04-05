@@ -6,6 +6,7 @@
   -moz-perspective: 1000;
   border: 1px solid rgba(175, 175, 175, 0.52);
   padding: 30px 50px 20px 50px;
+  position: relative;
 
   & .paddingInput {
     padding: 0.7rem 1rem;
@@ -61,12 +62,34 @@
 @media only screen and (min-width: 768px) {
   .supplier-item{
     padding: 20px;
-    width: 33%;
+   /*  width: 33%;
     min-width: 33%;
-    max-width: 33%;
+    max-width: 33%; */
+
+    width: 25%;
+    min-width: 25%;
+    max-width: 25%;
+
     justify-content: center;
     text-align: center;
     font-size: 16px;
+  }
+
+.loading-suppliers .line {
+    float: left;
+    width: calc(25% - 10px);
+    margin-right: 10px;
+    height: 30px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    border-radius: 7px;
+   // background-image: linear-gradient(90deg, #cccccc 0px, #d1d1d1 40px, #cccccc 80px);
+    background-image: linear-gradient(90deg, 
+    rgb(221, 221, 221) 0px, 
+    rgb(232, 232, 232) 40%, 
+    rgb(221, 221, 221) 80%);
+    background-size: 600px;
+    animation: shine-lines 1s infinite ease-out;
   }
 }
 
@@ -103,4 +126,31 @@
   color: #979797;
   font-size: 14px;
   font-style: italic;
+}
+
+.panel .paginator-panel select{
+  width: initial;
+} 
+
+.updated-on-loading{
+  width: 20%;
+  float: left;
+  margin: 0px;
+  height: 20px;
+  border-radius: 2px;
+  background-image: linear-gradient(90deg, 
+  rgb(221, 221, 221) 0px, 
+  rgb(232, 232, 232) 40%, 
+  rgb(221, 221, 221) 80%);
+  background-size: 600px;
+  animation: shine-lines 1.4s infinite linear;
+}
+
+@keyframes shine-lines {
+  0% {
+    background-position: 100%;
+  }
+  40%, 100% {
+  background-position: -50%;
+  }
 }
