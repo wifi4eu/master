@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -402,7 +402,7 @@
   "listMunicipalities.subtitle.updateDate": "Atualizado em: ",
   "listMunicipalities.memberState.label": "País ",
   "listMunicipalities.region.label": "Região ",
-  "listMunicipalities.apply.button": "Candidatura",
+  "listMunicipalities.apply.button": "Procurar",
   "suppRegistration.webFormat": "Insira um formato correto",
   "suppRegistration.bic.required": "É obrigatório indicar o código BIC",
   "suppRegistration.address.required": "É obrigatório indicar o endereço",
@@ -465,8 +465,8 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Nome da associação",
-  "(beneficary portal additional info)": "Representante nomeado da entidade jurídica:",
+  "benefRegistration.associationName": "Nome da sua organização",
+  "(beneficary portal additional info)": "Representante Legal :",
   "shared.submitregistration.success.text.part2": "A sua inscrição está concluída.",
   "shared.application.fifo.text": "Nota: A seleção dos candidatos é feita com base no princípio «primeiro a chegar, primeiro a ser servido», bem como em critérios para garantir o equilíbrio geográfico, conforme especificado no programa de trabalho do Mecanismo Interligar a Europa de 2017.",
   "(WiFi installation companies list new label)": "resultados",
@@ -478,5 +478,6 @@
   "shared.choose.label": "Selecionar",
   "benefRegistration.legalRepresentative.details": "Representante legal ",
   "suppPortal.profile.deleteLogo": "Apagar Logótipo da empresa",
-  "suppPortal.withdraw-registration.text": "Já não está interessado em fornecer equipamento e serviços de instalação no âmbito da WiFi4EU? Clique abaixo para anular a sua inscrição."
+  "suppPortal.withdraw-registration.text": "Já não está interessado em fornecer equipamento e serviços de instalação no âmbito da WiFi4EU? Clique abaixo para anular a sua inscrição.",
+  "benefRegistration.municipalityDropdown": "comece a escrever o nome e selecione a opção adequada no menu pendente"
 }

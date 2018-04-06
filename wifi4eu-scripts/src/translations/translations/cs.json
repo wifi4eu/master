@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -311,7 +311,7 @@
   "benefPortal.voucher.timeleft.subtitle": "Další výzva k předkládání projektů bude zahájena {{date}} v {{hour}} (SEČ). ",
   "home.whatch.video": "Přehrát video",
   "home.part3.text4": "Zbývající doba do zahájení výzvy:",
-  "home.part4.subtitle": "Časté otázky",
+  "home.part4.subtitle": "K dalším informacím o projektu vás dovedou následující odkazy.",
   "shared.password.label": "Nové heslo",
   "shared.forgot.title": "Zapomněl(a) jsem heslo",
   "email.forgot": "Zadejte svou e-mailovou adresu. Zašleme vám na ni e-mail s instrukcemi, jak si vytvořit nové heslo.",
@@ -402,7 +402,7 @@
   "listMunicipalities.subtitle.updateDate": "Datum aktualizace: ",
   "listMunicipalities.memberState.label": "Země ",
   "listMunicipalities.region.label": "Region ",
-  "listMunicipalities.apply.button": "Podejte přihlášku",
+  "listMunicipalities.apply.button": "Vyhledat",
   "suppRegistration.webFormat": "Zadejte údaje ve správném formátu",
   "suppRegistration.bic.required": "Je třeba zadat BIC",
   "suppRegistration.address.required": "Je třeba zadat adresu",
@@ -466,7 +466,7 @@
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
   "benefRegistration.associationName": "Název vaší organizace",
-  "(beneficary portal additional info)": "Jmenovaný zástupce právního subjektu (LEAR):",
+  "(beneficary portal additional info)": "Zákonný zástupce :",
   "shared.submitregistration.success.text.part2": "Vaše registrace je dokončena.",
   "shared.application.fifo.text": "Přednost budou mít při výběru ti, kteří zažádají dříve. Dále Komise dodrží zeměpisnou vyváženost, jak je podrobně uvedeno v pracovním programu pro Nástroj pro propojení Evropy na rok 2017.",
   "(WiFi installation companies list new label)": "Počet výsledků:",
@@ -478,5 +478,6 @@
   "shared.choose.label": "Zvolte",
   "benefRegistration.legalRepresentative.details": "Zákonný zástupce ",
   "suppPortal.profile.deleteLogo": "Odstranit Logo společnosti",
-  "suppPortal.withdraw-registration.text": "Nemáte již o zakázky na vybavení a jeho instalaci v rámci projektu WiFi4EU zájem? Kliknutím níže můžete registraci zrušit."
+  "suppPortal.withdraw-registration.text": "Nemáte již o zakázky na vybavení a jeho instalaci v rámci projektu WiFi4EU zájem? Kliknutím níže můžete registraci zrušit.",
+  "benefRegistration.municipalityDropdown": "začněte psát a vyberte si z nabídky"
 }

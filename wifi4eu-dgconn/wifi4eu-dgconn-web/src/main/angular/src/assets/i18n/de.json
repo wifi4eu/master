@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -401,7 +401,7 @@
   "listMunicipalities.subtitle.updateDate": "Aktualisiert am:",
   "listMunicipalities.memberState.label": "Land",
   "listMunicipalities.region.label": "Region",
-  "listMunicipalities.apply.button": "Antrag stellen",
+  "listMunicipalities.apply.button": "Suchen",
   "suppRegistration.webFormat": "Falsches Format",
   "suppRegistration.bic.required": "BIC angeben",
   "suppRegistration.address.required": "Anschrift angeben",
@@ -464,8 +464,8 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Name der Vereinigung",
-  "(beneficary portal additional info)": "Benannter Vertreter der Rechtsperson (LEAR):",
+  "benefRegistration.associationName": "Name Ihrer Organisation",
+  "(beneficary portal additional info)": "Gesetzlicher Vertreter:",
   "shared.submitregistration.success.text.part2": "Ihre Registrierung ist abgeschlossen.",
   "shared.application.fifo.text": "Beachten Sie, dass die Auswahl nach dem Windhundverfahren sowie nach Kriterien zur Gewährleistung einer geografischen Ausgewogenheit erfolgt – im Einklang mit dem Arbeitsprogramm 2017 der Fazilität „Connecting Europe“.",
   "(WiFi installation companies list new label)": "Ergebnisse ",
@@ -477,5 +477,6 @@
   "shared.choose.label": "Bitte auswählen",
   "benefRegistration.legalRepresentative.details": "Rechtsvertreter ",
   "suppPortal.profile.deleteLogo": "Löschen Logo des Unternehmens",
-  "suppPortal.withdraw-registration.text": "Sie sind nicht mehr an einem Lieferauftrag für WiFI4EU interessiert? Unten können Sie Ihre Registrierung mit einem Klick zurückziehen."
+  "suppPortal.withdraw-registration.text": "Sie sind nicht mehr an einem Lieferauftrag für WiFI4EU interessiert? Unten können Sie Ihre Registrierung mit einem Klick zurückziehen.",
+  "benefRegistration.municipalityDropdown": "Beginnen Sie mit der Eingabe und treffen Sie dann eine Auswahl im Aufklappmenü"
 }

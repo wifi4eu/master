@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -402,7 +402,7 @@
   "listMunicipalities.subtitle.updateDate": "Aġġornata nhar:",
   "listMunicipalities.memberState.label": "Pajjiż",
   "listMunicipalities.region.label": "Reġjun",
-  "listMunicipalities.apply.button": "Applika",
+  "listMunicipalities.apply.button": "Fittex",
   "suppRegistration.webFormat": "Daħħal format korrett",
   "suppRegistration.bic.required": "Il-BIC hu meħtieġ",
   "suppRegistration.address.required": "L-Indirizz hu meħtieġ",
@@ -466,7 +466,7 @@
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
   "benefRegistration.associationName": "Isem l-organizzazzjoni tiegħek",
-  "(beneficary portal additional info)": "Rappreżentant Maħtur tal-Entità Legali (LEAR):",
+  "(beneficary portal additional info)": "Rappreżentant legali :",
   "shared.submitregistration.success.text.part2": "Ir-reġistrazzjoni tiegħek hija kompluta.",
   "shared.application.fifo.text": "Innota li l-għażla ssir fuq bażi ta’ “min jiġi l-ewwel jinqeda l-ewwel” kif ukoll kriterji biex jiġi żgurat bilanċ ġeografiku, kif spjegat fid-dettall fil-Programm ta’ Ħidma tas-CEF tal-2017.",
   "(WiFi installation companies list new label)": "riżultati",
@@ -478,5 +478,6 @@
   "shared.choose.label": "Agħżel",
   "benefRegistration.legalRepresentative.details": "Rappreżentant legali ",
   "suppPortal.profile.deleteLogo": "Ħassar Logo tal-kumpanija",
-  "suppPortal.withdraw-registration.text": "Ma għadekx interessat li tipprovdi tagħmir u servizzi ta’ stallazzjoni għal WiFi4EU? Ikklikkja hawn taħt biex tirtira r-reġistrazzjoni tiegħek."
+  "suppPortal.withdraw-registration.text": "Ma għadekx interessat li tipprovdi tagħmir u servizzi ta’ stallazzjoni għal WiFi4EU? Ikklikkja hawn taħt biex tirtira r-reġistrazzjoni tiegħek.",
+  "benefRegistration.municipalityDropdown": "jekk jogħġbok ibda ttajpja u agħżel mill-menù li jinżel"
 }

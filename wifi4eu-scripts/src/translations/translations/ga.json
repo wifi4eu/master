@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -401,7 +401,7 @@
   "listMunicipalities.subtitle.updateDate": "Arna nuashonrú:",
   "listMunicipalities.memberState.label": "Tír",
   "listMunicipalities.region.label": "Réigiún",
-  "listMunicipalities.apply.button": "Iarratas a dhéanamh",
+  "listMunicipalities.apply.button": "Cuardach",
   "suppRegistration.webFormat": "Iontráil formáid bhailí",
   "suppRegistration.bic.required": "Is réimse éigeantach é ‘BIC’",
   "suppRegistration.address.required": "Is réimse éigeantach é ‘Seoladh’",
@@ -465,7 +465,7 @@
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
   "benefRegistration.associationName": "Ainm na eagraíocht s'agatsa",
-  "(beneficary portal additional info)": "An t-ionadaí ceaptha ar an eintiteas dlíthiúil (LEAR):",
+  "(beneficary portal additional info)": "Ionadaí dlíthiúil :",
   "shared.submitregistration.success.text.part2": "Tá tú cláraithe.",
   "shared.application.fifo.text": "Tabhair do d'aire go ndéanfar an roghnú ar bhonn \"tús freastail ar an gceann is túisce\" agus ar bhonn critéar ar leith d'fhonn cothromaíocht gheografach a chinntiú , mar atá leagtha síos i gClár Oibre na Saoráide um Chónascadh na hEorpa 2017.",
   "(WiFi installation companies list new label)": "toradh",
@@ -477,5 +477,6 @@
   "shared.choose.label": "Roghnaigh",
   "benefRegistration.legalRepresentative.details": "Ionadaí dlíthiúil ",
   "suppPortal.profile.deleteLogo": "Scrios Lógó na cuideachta",
-  "suppPortal.withdraw-registration.text": "Níl spéis agat a thuilleadh trealamh agus seirbhísí suiteála a sholáthar do WiFi4EU? Cliceáil thíos chun an clárúchán a tharraingt siar."
+  "suppPortal.withdraw-registration.text": "Níl spéis agat a thuilleadh trealamh agus seirbhísí suiteála a sholáthar do WiFi4EU? Cliceáil thíos chun an clárúchán a tharraingt siar.",
+  "benefRegistration.municipalityDropdown": "tosaigh ag clóscríobh agus pioc ceann de na roghanna ón roghchlár anuas"
 }

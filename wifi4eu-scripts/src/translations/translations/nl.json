@@ -74,7 +74,7 @@
   "shared.surname.label": "Achternaam",
   "shared.email.label": "E-mailadres",
   "shared.confirmemail.label": "E-mailadres bevestigen",
-  "benefRegistration.email.fielddesc": "Vul het officiële e-mailadres van uw werk in. We sturen alle informatie naar dit adres.",
+  "benefRegistration.email.fielddesc": "Vul het officiële e-mailadres van uw werk in. We kunnen dit adres gebruiken om informatie te sturen.",
   "benefRegistration.removeMunicipality.label": "Gemeente verwijderen",
   "benefRegistration.addMunicipalty.label": "Gemeente toevoegen",
   "shared.number.label": "nummer",
@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -401,7 +401,7 @@
   "listMunicipalities.subtitle.updateDate": "Bijgewerkt op:",
   "listMunicipalities.memberState.label": "Land",
   "listMunicipalities.region.label": "Regio",
-  "listMunicipalities.apply.button": "Uw aanvraag indienen",
+  "listMunicipalities.apply.button": "Zoeken",
   "suppRegistration.webFormat": "Geef een correct formaat op.",
   "suppRegistration.bic.required": "BIC is verplicht",
   "suppRegistration.address.required": "Adres is verplicht",
@@ -465,7 +465,7 @@
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
   "benefRegistration.associationName": "Naam van uw organisatie",
-  "(beneficary portal additional info)": "Aangewezen vertegenwoordiger van de juridische entiteit:",
+  "(beneficary portal additional info)": "Wettelijke vertegenwoordiger:",
   "shared.submitregistration.success.text.part2": "We hebben uw inschrijvingsformulier ontvangen.",
   "shared.application.fifo.text": "Let op: We hanteren de regel \"Wie het eerst komt, het eerst maalt\" en criteria voor een evenwichtige geografische spreiding als beschreven in het CEF-werkprogramma 2017.",
   "(WiFi installation companies list new label)": "resultaten",
@@ -477,5 +477,6 @@
   "shared.choose.label": "Maak uw keuze",
   "benefRegistration.legalRepresentative.details": "Wettelijke vertegenwoordiger ",
   "suppPortal.profile.deleteLogo": "Wissen Bedrijfslogo",
-  "suppPortal.withdraw-registration.text": "Geen belangstelling meer voor de levering en installatie van apparatuur voor WiFi4EU? Klik hieronder om uw inschrijving in te trekken."
+  "suppPortal.withdraw-registration.text": "Geen belangstelling meer voor de levering en installatie van apparatuur voor WiFi4EU? Klik hieronder om uw inschrijving in te trekken.",
+  "benefRegistration.municipalityDropdown": "begin te typen en selecteer uit het dropdown-menu"
 }

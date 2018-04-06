@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -402,7 +402,7 @@
   "listMunicipalities.subtitle.updateDate": "Atjaunināts: ",
   "listMunicipalities.memberState.label": "Valsts ",
   "listMunicipalities.region.label": "Reģions ",
-  "listMunicipalities.apply.button": "Piesakieties",
+  "listMunicipalities.apply.button": "Meklēt",
   "suppRegistration.webFormat": "Ievadiet pareizu formātu",
   "suppRegistration.bic.required": "Obligāti jānorāda uzņēmuma identifikācijas kods (BIC)",
   "suppRegistration.address.required": "Obligāti jānorāda adrese",
@@ -465,8 +465,8 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Apvienības nosaukums",
-  "(beneficary portal additional info)": "Juridiskas personas iecelts pārstāvis:",
+  "benefRegistration.associationName": "Savu organizāciju nosaukums",
+  "(beneficary portal additional info)": "Likumīgais pārstāvis :",
   "shared.submitregistration.success.text.part2": "Jūsu reģistrācija ir pabeigta.",
   "shared.application.fifo.text": "Ņemiet vērā, ka atlase notiek pieteikšanās secībā, kā arī saskaņā ar kritērijiem ģeogrāfiskā līdzsvara nodrošināšanai, kā izklāstīts 2017. gada EISI darba programmā.",
   "(WiFi installation companies list new label)": "Rezultāti",
@@ -478,5 +478,6 @@
   "shared.choose.label": "Izvēlēties",
   "benefRegistration.legalRepresentative.details": "Likumīgais pārstāvis ",
   "suppPortal.profile.deleteLogo": "Dzēst Uzņēmuma logo",
-  "suppPortal.withdraw-registration.text": "Vairs nevēlaties piegādāt aprīkojumu un veikt uzstādīšanas darbus saistībā ar iniciatīvu WiFi4EU? Noklikšķiniet zemāk, lai atceltu savu reģistrāciju."
+  "suppPortal.withdraw-registration.text": "Vairs nevēlaties piegādāt aprīkojumu un veikt uzstādīšanas darbus saistībā ar iniciatīvu WiFi4EU? Noklikšķiniet zemāk, lai atceltu savu reģistrāciju.",
+  "benefRegistration.municipalityDropdown": "sāciet ievadīt nosaukumu un izvēlieties kādu no piedāvātajiem variantiem."
 }

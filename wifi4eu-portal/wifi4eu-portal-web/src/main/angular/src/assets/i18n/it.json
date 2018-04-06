@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -402,7 +402,7 @@
   "listMunicipalities.subtitle.updateDate": "Aggiornato il:",
   "listMunicipalities.memberState.label": "Paese",
   "listMunicipalities.region.label": "Regione",
-  "listMunicipalities.apply.button": "Candidati",
+  "listMunicipalities.apply.button": "Cerca",
   "suppRegistration.webFormat": "Inserire un formato corretto",
   "suppRegistration.bic.required": "Indicare il BIC",
   "suppRegistration.address.required": "Indicare l'indirizzo",
@@ -465,8 +465,8 @@
   "dgConn.supplierDetails.invalidateSupplier.error": "An error occurred while trying to invalidate the supplier. Please, try again later.",
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
-  "benefRegistration.associationName": "Nome dell’associazione",
-  "(beneficary portal additional info)": "Rappresentante nominato del soggetto giuridico (LEAR):",
+  "benefRegistration.associationName": "Nome della tua organizzazione",
+  "(beneficary portal additional info)": "Rappresentante legale :",
   "shared.submitregistration.success.text.part2": "La registrazione è completata.",
   "shared.application.fifo.text": "Attenzione: la selezione avviene in base al principio \"primo arrivato, primo servito\" e secondo determinati criteri per assicurare un equilibrio geografico, come indicato nel programma di lavoro 2017 del CEF.",
   "(WiFi installation companies list new label)": "Risultati",
@@ -478,5 +478,6 @@
   "shared.choose.label": "Scegli",
   "benefRegistration.legalRepresentative.details": "Rappresentante legale ",
   "suppPortal.profile.deleteLogo": "Elimina Logo aziendale",
-  "suppPortal.withdraw-registration.text": "Clicca qui sotto per ritirare la registrazione.Non ti interessa più fornire attrezzature e servizi per l'installazione per WiFi4EU? "
+  "suppPortal.withdraw-registration.text": "Clicca qui sotto per ritirare la registrazione.Non ti interessa più fornire attrezzature e servizi per l'installazione per WiFi4EU? ",
+  "benefRegistration.municipalityDropdown": "iniziare a digitare e selezionare dal menu a discesa"
 }

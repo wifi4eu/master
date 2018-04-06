@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.service.security;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class PermissionChecker {
         List<RightDTO> rightDTOs = rightMapper.toDTOList(Lists.newArrayList(rightRepository.findByRightdescAndUserId(rightDesc,userDTO.getId())));
 
         if (rightDTOs.isEmpty()) {
-            throw new AppException(403, "FORBIDDEN");
+            throw new AppException("Permission error", HttpStatus.SC_FORBIDDEN, "");
         }
 
         return true;

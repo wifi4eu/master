@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -403,7 +403,7 @@
   "listMunicipalities.subtitle.updateDate": "Mise à jour le: ",
   "listMunicipalities.memberState.label": "Pays ",
   "listMunicipalities.region.label": "Région ",
-  "listMunicipalities.apply.button": "Soumettre sa candidature",
+  "listMunicipalities.apply.button": "Rechercher",
   "suppRegistration.webFormat": "Veuillez saisir les données dans un format correct",
   "suppRegistration.bic.required": "Vous devez indiquer le BIC",
   "suppRegistration.address.required": "Vous devez indiquer l’adresse",
@@ -467,7 +467,7 @@
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
   "benefRegistration.associationName": "Nom de votre organisation",
-  "(beneficary portal additional info)": "Représentant désigné de l’entité juridique (LEAR – Legal Entity Appointed Representative):",
+  "(beneficary portal additional info)": "Représentant légal :",
   "shared.submitregistration.success.text.part2": "Votre enregistrement est terminé.",
   "shared.application.fifo.text": "Veuillez noter que la sélection repose sur le principe du «premier arrivé, premier servi», ainsi que sur des critères visant à garantir l’équilibre géographique, comme expliqué dans le programme de travail 2017 du MIE.",
   "(WiFi installation companies list new label)": "résultats",
@@ -479,5 +479,6 @@
   "shared.choose.label": "Choisir",
   "benefRegistration.legalRepresentative.details": "Représentant légal ",
   "suppPortal.profile.deleteLogo": "Supprimer Logo de l’entreprise",
-  "suppPortal.withdraw-registration.text": "Vous ne souhaitez plus fournir d’équipements et de services d’installation dans le cadre de WiFi4EU?  Cliquez ci-dessous pour supprimer votre enregistrement."
+  "suppPortal.withdraw-registration.text": "Vous ne souhaitez plus fournir d’équipements et de services d’installation dans le cadre de WiFi4EU?  Cliquez ci-dessous pour supprimer votre enregistrement.",
+  "benefRegistration.municipalityDropdown": "commencez à taper, puis sélectionnez une municipalité dans le menu déroulant"
 }

@@ -257,7 +257,7 @@
   "dgConn.issueDetails": "Issue details",
   "dgConn.dgConnectComments": "Commission Comments",
   "dgconn.dashboard.card.managelau": "Manage LAUs",
-  "dgconn.dashboard.card.beneficiaries": "Beneficiary Registrations",
+  "dgconn.dashboard.card.beneficiaries": "Municipality Registrations",
   "dgconn.dashboard.card.suppliers": "Supplier Registrations",
   "dgConn.manage-lau.country-instructions": "Select a country and type some characters to display a list of LAUs",
   "dgConn.setAsResolved": "Set as Resolved",
@@ -402,7 +402,7 @@
   "listMunicipalities.subtitle.updateDate": "Aktualizovaný dňa: ",
   "listMunicipalities.memberState.label": "Krajina ",
   "listMunicipalities.region.label": "Región ",
-  "listMunicipalities.apply.button": "Podajte žiadosť",
+  "listMunicipalities.apply.button": "Hľadať",
   "suppRegistration.webFormat": "Uveďte správny formát",
   "suppRegistration.bic.required": "BIC je povinný údaj",
   "suppRegistration.address.required": "Adresa je povinný údaj",
@@ -466,7 +466,7 @@
   "dgConn.supplierDetails.requestLegalDocuments.success": "An email has been sent to the contact person to supply the legal documents for the registration.",
   "dgConn.supplierDetails.requestLegalDocuments.error": "An error occurred while trying to request the legal documents of the supplier. Please, try again later.",
   "benefRegistration.associationName": "Názov si organizácie",
-  "(beneficary portal additional info)": "Ustanovený zástupca právneho subjektu (LEAR):",
+  "(beneficary portal additional info)": "Zákonný zástupca :",
   "shared.submitregistration.success.text.part2": "Registrácia je dokončená",
   "shared.application.fifo.text": "Upozorňujeme, že výber sa uskutoční podľa poradia, v akom boli predložené žiadosti, a zohľadnia sa aj kritériá na zaručenie zemepisnej vyváženosti. Podrobnosti nájdete v pracovnom programe NPE na rok 2017.",
   "(WiFi installation companies list new label)": "výsledky",
@@ -478,5 +478,6 @@
   "shared.choose.label": "Vyberte",
   "benefRegistration.legalRepresentative.details": "Právny zástupca ",
   "suppPortal.profile.deleteLogo": "Vymazať Logo spoločnosti",
-  "suppPortal.withdraw-registration.text": "Už nemáte záujem poskytovať vybavenie a inštalačné služby pre iniciatívu WiFi4EU? Ak chcete zrušiť svoju registráciu, kliknite na tento odkaz."
+  "suppPortal.withdraw-registration.text": "Už nemáte záujem poskytovať vybavenie a inštalačné služby pre iniciatívu WiFi4EU? Ak chcete zrušiť svoju registráciu, kliknite na tento odkaz.",
+  "benefRegistration.municipalityDropdown": "začnite písať a vyberte si z ponuky s rozbaľovaním zoznamom"
 }
