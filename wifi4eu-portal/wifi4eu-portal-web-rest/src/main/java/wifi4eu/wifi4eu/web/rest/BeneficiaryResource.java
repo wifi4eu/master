@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.web.rest;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.common.net.InetAddresses;
 import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +45,12 @@ public class BeneficiaryResource {
             if(forwardedHeaderIp != null) {
                 String[] forwardedListIp = forwardedHeaderIp.split(", ");
                 ip = forwardedListIp[0];
+                if(!InetAddresses.isInetAddress(ip)){
+                    ip = "0:0:0:0:0:0:0:1";
+                }
+            }
+            else{
+                ip = request.getRemoteAddr();
             }
             _log.info("submitBeneficiaryRegistration");
             List<RegistrationDTO> resRegistrations = beneficiaryService.submitBeneficiaryRegistration(beneficiaryDTO, ip);
