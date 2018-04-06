@@ -13,10 +13,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class CreateExcelFile {
 
+public CreateExcelFile(){}
 
 public void createExcelFile(String [] header,  String [][] document){
-        String nombreArchivo="Export.csv";
+        String nombreArchivo="ExportRegistrationData.csv";
         String rutaArchivo= "C:\\exportFiles\\"+nombreArchivo;
+        //String rutaArchivo= "C:\\Users\\"+nombreArchivo;
+        //String rutaArchivo= nombreArchivo;
         String hoja="Sheet1";
 
         XSSFWorkbook libro= new XSSFWorkbook();

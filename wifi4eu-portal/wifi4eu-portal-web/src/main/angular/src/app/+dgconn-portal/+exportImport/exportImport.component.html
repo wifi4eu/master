@@ -1,11 +1,19 @@
 <div class="exportImport"></div>
 <div class="container">
+    <br>
     <div class="ui-g">
-        <div class="ui-g-12">
-            <button (click)="export()">{{ 'dgConn.export.dashboard' | translate}}</button>
+        <!--div class="ui-g-12"-->
+        <div class="text-center">
+            <span class="input-group-btn">
+                <!--button class="btn btn-primary" (click)="filterData(inputSearch)" type="button">{{ 'shared.search.button' | translate }}</button-->
+                <button class="btn btn-primary" (click)="export()" type="button">{{ 'dgConn.export.dashboard' | translate}}</button>
+            </span>
         </div>
-        <div class="ui-g-12">
-            <button (click)="import()">{{ 'dgConn.import.dashboard' | translate}}</button>
+        <!--div class="ui-g-12"-->
+        <div class="text-center">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" (click)="import()" type="button">{{ 'dgConn.import.dashboard' | translate}}</button>
+            </span>
         </div>
     </div>
 </div>

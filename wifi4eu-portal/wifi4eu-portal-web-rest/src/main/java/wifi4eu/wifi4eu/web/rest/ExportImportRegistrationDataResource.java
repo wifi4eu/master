@@ -28,7 +28,7 @@ public class ExportImportRegistrationDataResource {
 
     private final Logger _log = LoggerFactory.getLogger(ExportImportRegistrationDataResource.class);
 
-    @ApiOperation(value = "Export registartion data")
+    @ApiOperation(value = "Export registration data")
     @RequestMapping(value = "/export", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -66,7 +66,7 @@ public class ExportImportRegistrationDataResource {
 //        }
     }
 
-    @ApiOperation(value = "Import registartion data")
+    @ApiOperation(value = "Import registration data")
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
