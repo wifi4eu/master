@@ -12,13 +12,14 @@ public class ExportImportRegistrationDataDTO implements Serializable {
     private String uName;
     private String uEcasEmail;
     private String uEcasUserName;
+    private String uType;
     private String abacReference;
     private String abacStandarName;
     private Integer municipality;
 
     public ExportImportRegistrationDataDTO() {}
 
-    public ExportImportRegistrationDataDTO(Integer id, Integer rId, String mCountry, String mName, String uName, String uEcasEmail, String uEcasUserName, String abacReference, String abacStandarName, Integer municipality) {
+    public ExportImportRegistrationDataDTO(Integer id, Integer rId, String mCountry, String mName, String uName, String uEcasEmail, String uEcasUserName, String uType, String abacReference, String abacStandarName, Integer municipality) {
         this.id = id;
         this.rId = rId;
         this.mCountry = mCountry;
@@ -26,6 +27,7 @@ public class ExportImportRegistrationDataDTO implements Serializable {
         this.uName = uName;
         this.uEcasEmail = uEcasEmail;
         this.uEcasUserName = uEcasUserName;
+        this.uType = uType;
         this.abacReference = abacReference;
         this.abacStandarName = abacStandarName;
         this.municipality = municipality;
@@ -82,6 +84,14 @@ public class ExportImportRegistrationDataDTO implements Serializable {
 
     public void setuEcasUserName(String uEcasUserName) {
         this.uEcasUserName = uEcasUserName;
+    }
+
+    public String getuType() {
+        return uType;
+    }
+
+    public void setuType(String uType) {
+        this.uType = uType;
     }
 
     public String getAbacReference() {

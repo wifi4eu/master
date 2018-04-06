@@ -18,6 +18,7 @@ export class DgConnExportImportComponent {
                 (response: ResponseDTO)  => {
                     if(response.success){
                         this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
+                        alert("Your file have been exported correctly!");
                     }
                 },
                 //response => {},
@@ -31,6 +32,7 @@ export class DgConnExportImportComponent {
                 (response: ResponseDTO)  => {
                     if(response.success){
                         this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                        alert("Your file have been imported correctly!");
                     }
                 },
                 //response => {},

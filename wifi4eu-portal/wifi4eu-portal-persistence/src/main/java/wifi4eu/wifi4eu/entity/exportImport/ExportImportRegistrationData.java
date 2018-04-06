@@ -33,6 +33,9 @@ public class ExportImportRegistrationData {
     @Column(name = "uEcasUserName")
     private String uEcasUserName;
 
+    @Column(name = "uType")
+    private String uType;
+
     @Column(name = "abacReference")
     private String abacReference;
 
@@ -44,7 +47,7 @@ public class ExportImportRegistrationData {
 
     public ExportImportRegistrationData() {}
 
-    public ExportImportRegistrationData(Integer id, Integer rId, String mCountry, String mName, String uName, String uEcasEmail, String uEcasUserName, String abacReference, String abacStandarName, Integer municipality) {
+    public ExportImportRegistrationData(Integer id, Integer rId, String mCountry, String mName, String uName, String uEcasEmail, String uEcasUserName, String uType, String abacReference, String abacStandarName, Integer municipality) {
         this.id = id;
         this.rId = rId;
         this.mCountry = mCountry;
@@ -52,6 +55,7 @@ public class ExportImportRegistrationData {
         this.uName = uName;
         this.uEcasEmail = uEcasEmail;
         this.uEcasUserName = uEcasUserName;
+        this.uType = uType;
         this.abacReference = abacReference;
         this.abacStandarName = abacStandarName;
         this.municipality = municipality;
@@ -104,6 +108,14 @@ public class ExportImportRegistrationData {
 
     public void setuEcasEmail(String uEcasEmail) {
         this.uEcasEmail = uEcasEmail;
+    }
+
+    public String getuType() {
+        return uType;
+    }
+
+    public void setuType(String uType) {
+        this.uType = uType;
     }
 
     public String getuEcasUserName() {

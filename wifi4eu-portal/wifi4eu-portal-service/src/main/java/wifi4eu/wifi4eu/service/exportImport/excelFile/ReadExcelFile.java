@@ -89,6 +89,7 @@ public class ReadExcelFile {
                           eI.setuName("null");
                           eI.setuEcasEmail("null");
                           eI.setuEcasUserName("null");
+                          eI.setuType("null");
                           eI.setAbacReference(row.getCell(6).getStringCellValue());
                           eI.setAbacStandarName(row.getCell(7).getStringCellValue());
                           eI.setMunicipality(Integer.parseInt(row.getCell(0).getStringCellValue()));

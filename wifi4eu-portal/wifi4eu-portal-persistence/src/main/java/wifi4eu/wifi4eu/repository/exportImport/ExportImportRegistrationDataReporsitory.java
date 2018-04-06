@@ -8,13 +8,17 @@ import wifi4eu.wifi4eu.entity.municipality.Municipality;
 //public interface ExportImportRegistrationDataReporsitory{
 public interface ExportImportRegistrationDataReporsitory extends CrudRepository<ExportImportRegistrationData,Integer> {
     @Query(value = "select \n" +
+            "r.id as id, \n" +
             "r.id as rId, \n" +
             "m.country as mCountry, \n" +
             "m.name as mName, \n" +
             "u.name as uName, \n" +
-            "u.EcasEmail as uEcasEmail, \n" +
-            "u.EcasUserName as uEcasUserName, \n" +
-            "r.type as uType \n" +
+            "u.ecas_email as uEcasEmail, \n" +
+            "u.ecas_username as uEcasUserName, \n" +
+            "u.type as uType, \n" +
+            "r.id as abacReference, \n" +
+            "r.id as abacStandarName, \n" +
+            "r.id as municipality \n" +
             "from \n" +
             "registrations as r \n" +
             "left join \n" +
