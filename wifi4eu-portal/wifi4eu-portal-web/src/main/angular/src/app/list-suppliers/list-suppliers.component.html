@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="panel">
+    <div class="row">
+      <div class="col-xs-12 header">
+        <h4 class="title"> {{ 'listSuppliers.title' | translate }}</h4>
+        <p class="subtitle-discover">{{ 'listSuppliers.subtitle' | translate }}</p>
+        <div style="clear: both;" *ngIf="(searching || searched) && country && region" [@opacityTransition]>
+          <p class="updated-on"><span *ngIf="dateCached" [@opacityTransition]>{{ 'listMunicipalities.subtitle.updateDate' | translate}} {{dateCached}}</span>
+          <span class="dateCached" *ngIf="!searched || !dateCached" [@opacityTransition]></span></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-4">
+        <label class="label-select"  for="memberState">{{ 'listMunicipalities.memberState.label' | translate }}</label>
+        <select name="memberState" id="memberState" [(ngModel)]="country" (ngModelChange)="selectCountry($event)">
+          <option disabled selected [ngValue]="null">{{'shared.choose.label' | translate}}</option>
+          <option *ngFor="let country of countries" [ngValue]="country">
+            {{ country.label }}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <label class="label-select" for="region">{{ 'listMunicipalities.region.label' | translate }}</label>
+        <select name="region" id="region" [(ngModel)]="region" (ngModelChange)="selectRegion($event)">
+          <option disabled selected [ngValue]="null">{{'shared.choose.label' | translate}}</option>
+          <option *ngFor="let region of regions" [ngValue]="region">
+            {{ region.label }}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <label class="label-hidden">*</label>
+        <button class="btn btn-primary btn-apply" (click)="searchSuppliers()" [disabled]="country == null || region == null">{{ 'listMunicipalities.apply.button' | translate }}</button>
+      </div>
+    </div>
+    <div class="row" *ngIf="searched && country && region && suppliers.length > 0" [@opacityTransition]>
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col-xs-12">
+              <p-dataGrid #gridSuppliers [value]="suppliers" styleClass="supplier-region">
+              <ng-template let-supplier pTemplate="item">
+                <div class="supplier-item">
+                  <span>{{ supplier }}</span>
+                </div>
+              </ng-template>
+            </p-dataGrid>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" [class.hide]="suppliers.length <= 0 || !searched">
+      <div class="col-sx-12" style="position: relative;">
+        <p-paginator class="paginator-panel" #paginator (onPageChange)="paginate($event)" [rowsPerPageOptions]="itemsPerPageSelector"></p-paginator>
+          <div class="totalRecords">
+            <span style="color: #929292;">{{ 'shared.totalRecords' | translate }}: {{totalItems}} </span>
+          </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="searched && suppliers.length == 0">
+      <div class="col-md-12">
+        <span class="updated-on">{{ 'listMunicipalities.noresults.text' | translate }} {{regionNameSearched}}</span>
+      </div>
+    </div>
+  </div>
+</div>

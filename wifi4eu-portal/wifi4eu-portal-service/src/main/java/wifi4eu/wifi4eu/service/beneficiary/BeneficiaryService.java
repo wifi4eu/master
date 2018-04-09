@@ -76,7 +76,7 @@ public class BeneficiaryService {
     public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO, String ip) throws Exception {
 
         /* Get user from ECAS */
-        UserDTO user;
+        UserDTO user = new UserDTO();
         UserContext userContext = UserHolder.getUser();
         boolean isEcasUser = false;
 
@@ -91,23 +91,14 @@ public class BeneficiaryService {
             user.setEmail(beneficiaryDTO.getUser().getEmail());
             user.setType(beneficiaryDTO.getUser().getType());
             isEcasUser = true;
-        } else {
-            /* Deprecated: TODO: remove it */
-            user = beneficiaryDTO.getUser();
-            String password = "12345678";
-            user.setPassword(password);
-            isEcasUser = false;
         }
 
         user.setCreateDate(new Date().getTime());
         user.setLang(beneficiaryDTO.getLang());
 
-        UserDTO resUser;
+        UserDTO resUser = new UserDTO();
         if (isEcasUser) {
             resUser = userService.saveUserChanges(user);
-        } else {
-            /*deprecated_: TODO: remove it */
-            resUser = userService.createUser(user);
         }
 
         /* create municipalities and check duplicates */
@@ -168,7 +159,28 @@ public class BeneficiaryService {
                 String subject = bundle.getString("mail.discussionMunicipality.subject");
                 String msgBody = bundle.getString("mail.discussionMunicipality.body");
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                  mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                }
+
+                if(municipalitiesWithSameLau.size() <= 10){
+                    for(MunicipalityDTO municipality: municipalitiesWithSameLau){
+                        RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipality.getId());
+                        if(registrationDTO == null) {
+                          continue;
+                        }
+                        UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
+                        if(userRegistration.getId() == userDTO.getId() || userRegistration == null) {
+                          continue;
+                        }
+                        locale = new Locale(userRegistration.getLang());
+                        bundle = ResourceBundle.getBundle("MailBundle", locale);
+                        subject = bundle.getString("mail.discussionMunicipality.subject");
+                        msgBody = bundle.getString("mail.discussionMunicipality.body");
+                        if (!userService.isLocalHost()) {
+                          mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                        }
+
+                    }
                 }
 
                 /* verificamos que existe el thread */
@@ -309,7 +321,10 @@ public class BeneficiaryService {
                 for (RegistrationDTO registrationDTO : beneficiaryListDTO.getRegistrations()) {
                     beneficiaryListDTO.setStatus(getStatusApplicationByRegistration(registrationDTO.getId()));
                 }
-                if (checkIpDuplicated(beneficiaryListDTO.getRegistrations()) && beneficiaryListDTO.getIssue() != 3 && beneficiaryListDTO.getIssue() != 4) {
+                if (checkIpDuplicated(beneficiaryListDTO.getRegistrations()) &&
+                        beneficiaryListDTO.getIssue() != 3 &&
+                        beneficiaryListDTO.getIssue() != 4 &&
+                        beneficiaryListDTO.getIssue() != 5) {
                     beneficiaryListDTO.setIssue(1);
                 }
                 beneficiaryListDTO.setMediation(getMediationStatusByLau(beneficiaryListDTO.getLau().getId()));
@@ -387,7 +402,7 @@ public class BeneficiaryService {
     public void getIssueOfRegistration(List<BeneficiaryListDTO> beneficiaryListDTOList) {
         String validPattern = "^[a-z0-9_-]+(?:\\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\\.)+(com|net|info|org|eu|bg|cs|da|de|el|es|et|fi|fr|ga|hr|hu|it|lt|lv|mt|nl|pl|pt|ro|sk|sl|sv|uk|ie|is|no)?$";
         for (BeneficiaryListDTO beneficiaryListDTO : beneficiaryListDTOList) {
-
+            beneficiaryListDTO.setIssue(0);
             int numDuplicated = 0;
             int numInvalids = 0;
             int numResolved = 0;
@@ -409,22 +424,208 @@ public class BeneficiaryService {
                         numResolved += 1;
 
                 }
+                MunicipalityDTO mun = municipalityService.getMunicipalityById(registrationDTO.getMunicipalityId());
+                if (mun != null) {
+                    LauDTO lau = lauService.getLauById(mun.getLauId());
+                    if (lau != null) {
+                        if (userDTO.getLang() != null) {
+                            if (!checkIfUserLanguageIsCorrect(userDTO.getLang().toUpperCase(), lau.getCountryCode().toUpperCase())) {
+                                beneficiaryListDTO.setIssue(5);
+                            }
+                        }
+                    }
+                }
             }
-
             if ((numResolved + numInvalids) == beneficiaryListDTO.getRegistrations().size() && numResolved > 0) {
                 beneficiaryListDTO.setIssue(3);
             } else if (numDuplicated > 1) {
                 beneficiaryListDTO.setIssue(2);
             } else if (numInvalids == beneficiaryListDTO.getRegistrations().size()) {
                 beneficiaryListDTO.setIssue(4);
-            } else {
-                if (beneficiaryListDTO.getIssue() != null) {
-                    beneficiaryListDTO.setIssue(1);
-                } else {
-                    beneficiaryListDTO.setIssue(0);
-                }
             }
         }
+    }
+
+    private boolean checkIfUserLanguageIsCorrect(String userLanguage, String municipalityCountryCode) {
+        boolean correct = false;
+        switch (municipalityCountryCode) {
+            case "BE":
+                if (userLanguage.equals("NL") || userLanguage.equals("FR") || userLanguage.equals("DE")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "DK":
+                if (userLanguage.equals("DA")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "DE":
+                if (userLanguage.equals("DE")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "EE":
+                if (userLanguage.equals("ET")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "ES":
+                if (userLanguage.equals("ES")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "FR":
+                if (userLanguage.equals("FR")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "HR":
+                if (userLanguage.equals("HR")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "IE":
+                if (userLanguage.equals("EN")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "IT":
+                if (userLanguage.equals("IT")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "LV":
+                if (userLanguage.equals("LV")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "LT":
+                if (userLanguage.equals("LT")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "LU":
+                if (userLanguage.equals("FR") || userLanguage.equals("DE")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "HU":
+                if (userLanguage.equals("HU")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "MT":
+                if (userLanguage.equals("MT") || userLanguage.equals("EN")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "NL":
+                if (userLanguage.equals("NL")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "PL":
+                if (userLanguage.equals("PL")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "PT":
+                if (userLanguage.equals("PT")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "RO":
+                if (userLanguage.equals("RO")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "SI":
+                if (userLanguage.equals("SL")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "SK":
+                if (userLanguage.equals("SK")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "FI":
+                if (userLanguage.equals("FI") || userLanguage.equals("SV")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "SE":
+                if (userLanguage.equals("SV")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "UK":
+                if (userLanguage.equals("EN")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "AT":
+                if (userLanguage.equals("DE")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+            case "CZ":
+                if (userLanguage.equals("CS")) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+                break;
+        }
+        return correct;
     }
 
     public boolean getMediationStatusByLau(int laudId) {

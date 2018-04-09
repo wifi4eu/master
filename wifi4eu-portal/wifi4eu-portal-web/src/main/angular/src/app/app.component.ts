@@ -23,7 +23,7 @@ enableProdMode();
 
 export class AppComponent {
     private actualDate: string;
-    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr";
+    private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
     private user: UserDTOBase;
     private profileUrl: string;
     private menuLinks: Array<UxLayoutLink>;
@@ -70,7 +70,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.appReg', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
@@ -79,7 +79,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.suppReg', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
@@ -88,7 +88,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.myAccount', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
@@ -97,7 +97,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.suppPortal', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
@@ -106,7 +106,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.dissForum', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
@@ -115,7 +115,7 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.appPortal', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
@@ -124,11 +124,20 @@ export class AppComponent {
             (translatedString: string) => {
                 this.menuTranslations.set('itemMenu.dgPortal', translatedString);
                 translatedItems++;
-                if (translatedItems == 7) {
+                if (translatedItems == 8) {
                     this.stringsTranslated.next();
                 }
             }
         );
+        this.translateService.get('itemMenu.listSuppliers').subscribe(
+          (translatedString: string) => {
+              this.menuTranslations.set('itemMenu.listSuppliers', translatedString);
+              translatedItems++;
+              if (translatedItems == 8) {
+                  this.stringsTranslated.next();
+              }
+          }
+      );
     }
 
     private initChildren() {
@@ -141,6 +150,10 @@ export class AppComponent {
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.suppReg'),
                     url: '/supplier-registration'
+                }),
+                new UxLayoutLink({
+                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                  url: 'list-suppliers'
                 })
             ];
             this.children[1] = [
@@ -151,6 +164,10 @@ export class AppComponent {
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.myAccount'),
                     url: '/supplier-portal/profile'
+                }),
+                new UxLayoutLink({
+                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                  url: 'list-suppliers'
                 })
             ];
             this.children[2] = [
@@ -161,6 +178,10 @@ export class AppComponent {
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.appPortal'),
                     url: '/beneficiary-portal/voucher'
+                }),
+                new UxLayoutLink({
+                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                  url: 'list-suppliers'
                 })
             ];
             this.children[3] = [
@@ -171,13 +192,17 @@ export class AppComponent {
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.appPortal'),
                     url: '/beneficiary-portal/voucher'
+                }),
+                new UxLayoutLink({
+                  label: 'Registered suppliers',
+                  url: 'list-suppliers'
                 })
             ];
             this.children[4] = [
                 new UxLayoutLink({
                     label: 'Member State Portal',
                     url: '#'
-                })
+                }),
             ];
             this.children[5] = [
                 new UxLayoutLink({

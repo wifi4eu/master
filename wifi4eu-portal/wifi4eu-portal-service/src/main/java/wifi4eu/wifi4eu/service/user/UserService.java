@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.service.user;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
@@ -46,7 +48,6 @@ import java.util.ResourceBundle;
 @Service
 public class UserService {
     private final Logger _log = LoggerFactory.getLogger(UserService.class);
-
 
     @Value("${mail.server.location}")
     private String baseUrl;
@@ -93,12 +94,6 @@ public class UserService {
     @Autowired
     UserThreadsService userThreadsService;
 
-    /**
-     * The language used in user browser
-     */
-    private String lang = null;
-
-
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
     }
@@ -144,14 +139,16 @@ public class UserService {
     @Transactional
     public UserDTO getUserByUserContext(UserContext userContext) {
 
-        _log.debug("[i] getUserByEcasPerId");
+        if (userContext == null) {
+            throw new AppException("User context not defined", HttpStatus.SC_FORBIDDEN, "");
+        }
+
+        if(_log.isDebugEnabled()){
+            _log.debug("user Email: " + userContext.getEmail() + " user PerId: " + userContext.getPerId());
+        }
 
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
-
-        _log.debug("after search userDTO: " + userDTO);
-
         if (userDTO == null) {
-
             userDTO = new UserDTO();
             userDTO.setAccessDate(new Date().getTime());
             userDTO.setEcasEmail(userContext.getEmail());
@@ -167,9 +164,6 @@ public class UserService {
 
         }
 
-        _log.debug("after create userDTO: " + userDTO);
-
-        _log.debug("[f] getUserByEcasPerId");
         return userDTO;
     }
 
@@ -330,29 +324,8 @@ public class UserService {
         }
     }
 
-    public void setLang(String lang) {
-        this.lang = lang;
-    }
-
-    public String getLang() {
-        return this.lang;
-    }
-
     public boolean isLocalHost() {
         return baseUrl.contains(UserConstants.LOCAL);
-    }
-
-    public Locale initLocale() {
-        Locale locale;
-
-        if (lang != null) {
-            locale = new Locale(lang);
-
-        } else {
-            locale = new Locale(UserConstants.DEFAULT_LANG);
-        }
-
-        return locale;
     }
 
     public String getLogoutEnviroment() {

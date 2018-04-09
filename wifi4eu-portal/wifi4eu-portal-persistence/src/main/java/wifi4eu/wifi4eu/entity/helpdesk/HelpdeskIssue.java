@@ -6,10 +6,10 @@ import java.util.List;
 @Entity
 @Table(name = "helpdesk_issues")
 public class HelpdeskIssue {
-    @Id
-    @SequenceGenerator(name = "hdissue_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hdissue_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "from_email")
@@ -39,13 +39,16 @@ public class HelpdeskIssue {
     @Column(name = "_ticket")
     private boolean ticket;
 
+    @Column(name = "lang")
+    private String lang;
+
     @OneToMany(mappedBy = "issue")
     private List<HelpdeskComment> comments;
 
     public HelpdeskIssue() {
     }
 
-    public HelpdeskIssue(Integer id, String fromEmail, String assignedTo, String topic, String portal, String memberState, String summary, Long createDate, Integer status, boolean ticket, List<HelpdeskComment> comments) {
+    public HelpdeskIssue(Integer id, String fromEmail, String assignedTo, String topic, String portal, String memberState, String summary, Long createDate, Integer status, boolean ticket, List<HelpdeskComment> comments, String lang) {
         this.id = id;
         this.fromEmail = fromEmail;
         this.assignedTo = assignedTo;
@@ -57,6 +60,7 @@ public class HelpdeskIssue {
         this.status = status;
         this.comments = comments;
         this.ticket = ticket;
+        this.lang = lang;
     }
 
     public Integer getId() {
@@ -146,4 +150,13 @@ public class HelpdeskIssue {
     public void setTicket(boolean ticket) {
         this.ticket = ticket;
     }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
 }

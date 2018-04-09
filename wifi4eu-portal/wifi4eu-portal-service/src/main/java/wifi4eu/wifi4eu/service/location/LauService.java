@@ -34,12 +34,12 @@ public class LauService {
         return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByNuts3(nuts3)));
     }
 
-    @Cacheable(value = "portalGetLausByCountryCodeAndName1ContainingIgnoreCase")
+    // on the performance test we identified the cache on this method has a low reuse. Not recomended to cache this service.
     public List<LauDTO> getLausByCountryCodeAndName1ContainingIgnoreCase(String countryCode, String name1) {
         return lauMapper.toDTOList(Lists.newArrayList(lauRepository.findByCountryCodeAndName1ContainingIgnoreCaseOrderByName1(countryCode, name1)));
     }
 
-    public LauDTO updatePhysicalAddress(LauDTO lauDTO){
+    public LauDTO updatePhysicalAddress(LauDTO lauDTO) {
         return lauMapper.toDTO(lauRepository.save(lauMapper.toEntity(lauDTO)));
     }
 }

@@ -6,7 +6,6 @@ import eu.cec.digit.ecas.client.validation.DetailedAuthenticationSuccess;
 import eu.cec.digit.ecas.client.validation.ExtraGroupHandlingException;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
-import wifi4eu.wifi4eu.common.exception.person.IdentityNotFoundException;
 import wifi4eu.wifi4eu.service.security.SecurityService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.context.ContextLoader;

@@ -72,28 +72,17 @@ public class UserResource {
     @ApiOperation(value = "Get user by specific id")
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public UserDTO getUserById(@PathVariable("userId") final Integer userId, HttpServletResponse response) throws IOException {
+    public UserDTO getUserById(@PathVariable("userId") final Integer userId, HttpServletResponse response) {
         UserDTO resUser = userService.getUserById(userId);
-        try {
-            _log.info("getUserById: " + userId);
-            UserDTO userConnected = userService.getUserByUserContext(UserHolder.getUser());
-            if(userConnected.getType() != 5){
-                permissionChecker.check(RightConstants.USER_TABLE+userId);
-            }
-            //check permission
-            if (resUser != null) {
-                resUser.setPassword(null);
-            }
-        } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'getUserById' operation.", ade);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getUserById' operation.", e);
-            }
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+        _log.info("getUserById: " + userId);
+        UserDTO userConnected = userService.getUserByUserContext(UserHolder.getUser());
+        if(userConnected.getType() != 5){
+            permissionChecker.check(RightConstants.USER_TABLE+userId);
+        }
+        //check permission
+        if (resUser != null) {
+            resUser.setPassword(null);
         }
         return resUser;
     }
@@ -199,8 +188,6 @@ public class UserResource {
         try {
             _log.info("[i] ecasLogin");
             UserContext userContext = UserHolder.getUser();
-            _log.debug("user Email: " + userContext.getEmail());
-            _log.debug("user PerId: " + userContext.getPerId());
             UserDTO userDTO = userService.getUserByUserContext(userContext);
             _log.info("[f] ecasLogin");
             return new ResponseDTO(true, userDTO, null);
@@ -311,16 +298,6 @@ public class UserResource {
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-    }
-
-    @ApiOperation(value = "Set the user language")
-    @RequestMapping(value = "/lang/{lang}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public String setUserLang(@PathVariable("lang") final String userLang) {
-        _log.info("setUserLang: " + userLang);
-        userService.setLang(userLang);
-
-        return userService.getLang();
     }
 
     @ApiOperation(value = "Logout session")

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from "@angular/core";
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from "@angular/core";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {LauDTOBase} from "../../shared/swagger/model/LauDTO";
@@ -36,7 +36,7 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
     private readonly MAX_LENGTH = 2;
     private css_class_municipalities: string[] = ['notValid'];
     private css_class_email: string[] = ['notValid'];
-    private emailPattern = new RegExp(/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)*@(?:([a-z0-9][-]?){2,10}?\.)+[a-z0-9]{2,6}?$/i);
+    private emailPattern = new RegExp("(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\\])");
 
     private userEcas: UserDTOBase;
 
@@ -63,13 +63,13 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.hasOwnProperty('multipleMunicipalities')) {
-            if (!this.multipleMunicipalities)
-                this.removeMunicipality(1, this.municipalities.length - 1);
+            if (!this.multipleMunicipalities) 
+              this.removeMunicipality(1, this.municipalities.length - 1);
         }
     }
 
     private search(event: any) {
-        let query = event.query;
+        let query = encodeURIComponent(event.query);
         if (this.country != null && query.length >= this.MAX_LENGTH) {
             this.lauApi.getLausByCountryCodeAndName1ContainingIgnoreCase(this.country.countryCode, query).subscribe(
                 (laus: LauDTOBase[]) => {
@@ -78,6 +78,12 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
             );
         } else {
             this.lauSuggestions = [];
+        }
+    }
+
+    clearMunicipality(index) {
+        if (typeof this.laus[index] == "string") {
+            this.laus[index] = null;
         }
     }
 
@@ -115,28 +121,36 @@ export class BeneficiaryRegistrationStep2Component implements OnChanges {
                 this.css_class_email[i] = 'isValid';
             }
         }
+        if(this.municipalitiesSelected && this.emailsMatch){
+          const keys = Object.keys(this.municipalityForm.controls);
+          keys.forEach(key => {
+            this.municipalityForm.controls[key].setErrors({'incorrect': true});
+            this.municipalityForm.controls[key].setErrors(null);
+          });
+      }
     }
 
     private addMunicipality() {
-        if (this.multipleMunicipalities) {
-            this.municipalities.push(new MunicipalityDTOBase());
-            //this.laus.push();
-            this.mayors.push(new UserDTOBase());
-            this.emailConfirmations.push('');
-            this.css_class_email.push('notValid');
-            this.css_class_municipalities.push('notValid');
-        }
-        this.checkMunicipalitiesSelected();
+      if (this.multipleMunicipalities) {
+        this.municipalities.push(new MunicipalityDTOBase());
+        //this.laus.push();
+        this.mayors.push(new UserDTOBase());
+        this.emailConfirmations.push('');
+        this.css_class_email.push('notValid');
+        this.css_class_municipalities.push('notValid');
+      }
+      this.checkMunicipalitiesSelected();
     }
 
     private removeMunicipality(index: number, deleteCount: number = 1) {
-        this.municipalities.splice(index, deleteCount);
-        this.laus.splice(index, deleteCount);
-        this.mayors.splice(index, deleteCount);
-        this.emailConfirmations.splice(index, deleteCount);
-        this.css_class_email.splice(index, deleteCount);
-        this.css_class_municipalities.splice(index, deleteCount);
-        this.checkMunicipalitiesSelected();
+      this.municipalities.splice(index, deleteCount);
+      this.laus.splice(index, deleteCount);
+      this.mayors.splice(index, deleteCount);
+      this.emailConfirmations.splice(index, deleteCount);
+      this.css_class_email.splice(index, deleteCount);
+      this.css_class_municipalities.splice(index, deleteCount);
+      this.checkMunicipalitiesSelected();
+      this.checkEmailsMatch(); 
     }
 
     private submit() {

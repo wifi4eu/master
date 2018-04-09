@@ -13,13 +13,11 @@ import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {SharedService} from "../../shared/shared.service";
-import {AzurequeueApi, AzureQueueDTOBase} from "../../shared/swagger";
-import {AzureQueue} from "../../azure/AzureQueue";
-import {QueueComponent} from "../../azure/Queue";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     templateUrl: 'voucher.component.html',
-    providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi, AzurequeueApi]
+    providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi]
 })
 
 export class VoucherComponent {
@@ -39,17 +37,46 @@ export class VoucherComponent {
     private loadingButtons: boolean[] = [];
     private dateNumber: string;
     private hourNumber: string;
+    private uploadDate: string[] = [];
+    private uploadHour: string[] = [];
     private voucherApplied: string = "";
     private openedCalls: string = "";
+    private isMayor: boolean = true;
+    private registration: RegistrationDTOBase;
+    private mayor: MayorDTOBase;
+    private docsOpen: boolean [] = [];
+    private registrationsDocs: RegistrationDTOBase[] = [];
 
-    constructor(private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private azurequeueApi: AzurequeueApi, private sharedService: SharedService) {
+
+    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         // Check if there are Calls
         if (this.user != null) {
             this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
                 (registrations: RegistrationDTOBase[]) => {
+                    this.registrationsDocs = registrations;
                     this.checkForCalls(registrations);
+                    if (registrations.length < 2) {
+                        // JUST FOR ONE MUNICIPALITY
+                        this.registration = registrations[0];
+                        this.mayorApi.getMayorByMunicipalityId(registrations[0].municipalityId).subscribe(
+                            (mayor: MayorDTOBase) => {
+                                this.mayor = mayor;
+                                // HERE WE CHECK IF ITS REPRESENTATIVE OR NOT
+                                if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname) {
+                                    this.isMayor = true;
+                                } else {
+                                    this.isMayor = false;
+                                }
+                            }, error => {
+                            }
+                        );
+
+                    } else {
+                        // MULTIPLE MUNICIPALITIES CONDITIONAL
+                        this.isMayor = false;
+                    }
                 }
             );
         }
@@ -71,9 +98,9 @@ export class VoucherComponent {
                                                     this.registrations.push(registration);
                                                     this.municipalities.push(municipality);
                                                     this.mayors.push(mayor);
-                                                    if(application.id != 0){
-                                                      this.applications.push(application);
-                                                    }                                                   
+                                                    if (application.id != 0) {
+                                                        this.applications.push(application);
+                                                    }
                                                     this.loadingButtons.push(false);
                                                     let date = new Date(this.currentCall.startDate);
                                                     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
@@ -85,6 +112,8 @@ export class VoucherComponent {
                                                     } else {
                                                         this.voucherCompetitionState = 1;
                                                     }
+
+                                                    this.checkForDocuments();
                                                     if (this.applications.length == this.registrations.length) {
                                                         let allApplied = true;
                                                         for (let app of this.applications) {
@@ -99,6 +128,7 @@ export class VoucherComponent {
                                                     }
                                                 }
                                             );
+
                                         } else {
                                             this.registrations.push(registration);
                                             this.municipalities.push(municipality);
@@ -121,53 +151,42 @@ export class VoucherComponent {
         );
     }
 
+    private goToDocuments(registrationNumber: number) {
+        this.router.navigate(['../additional-info/', this.registrations[registrationNumber].municipalityId], {relativeTo: this.route});
+    }
+
     private applyForVoucher(registrationNumber: number) {
-        let startCallDate = this.currentCall.startDate;
-        let actualDateTime = new Date().getTime();
+        if (this.registrations[registrationNumber].allFilesFlag == 1) {
+            let startCallDate = this.currentCall.startDate;
+            let actualDateTime = new Date().getTime();
 
-        console.log("1. startCallDate: ", startCallDate);
+            if (startCallDate <= actualDateTime) {
+                // TODO: Llamar al nuevo servicio de Apply for voucher
+                // this.loadingButton = true;
+                this.loadingButtons[registrationNumber] = true;
+                let newApplication = new ApplicationDTOBase();
+                newApplication.callId = this.currentCall.id;
+                newApplication.registrationId = this.registrations[registrationNumber].id;
+                newApplication.date = new Date().getTime();
+                newApplication.supplierId = null;
+                this.applicationApi.createApplication(newApplication).subscribe(
+                    (response: ResponseDTOBase) => {
+                        if (response.success) {
+                            if (response.data) {
+                                this.applications[registrationNumber] = response.data;
+                                this.voucherCompetitionState = 3;
+                                // this.loadingButton = false;
+                                this.loadingButtons[registrationNumber] = false;
+                                this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
+                                this.voucherApplied = "greyImage";
+                            }
+                        }
+                    }
+                );
+            }
+        } else {
+            this.sharedService.growlTranslation('You can\'t apply untill you upload all the documents.', 'shared.cantApply.voucher', 'warn');
 
-        let jNewMessageApplication = new AzureQueueDTOBase();
-        jNewMessageApplication.message = "JAVA - New msg for [some place] @ " + actualDateTime + " (" + registrationNumber + ")";
-
-        let azureQueue : AzureQueue = new QueueComponent();
-        let aNewMessageApplication = new AzureQueueDTOBase();
-        aNewMessageApplication.message = "ANGULAR - New msg for [some place] @ " + actualDateTime + " (" + registrationNumber + ")";
-
-
-        // console.log("3. ANGULAR queue created");
-        // azureQueue.addMessageAzureQueue( aNewMessageApplication.message );
-
-        console.log("4. JAVA Process: ", actualDateTime);
-        if  (startCallDate <= actualDateTime) {
-            console.log("5. Starting process");
-            this.azurequeueApi.addMessageAzureQueue(jNewMessageApplication).subscribe(
-                (response: ResponseDTOBase) => {
-                    console.log("6. ", response);
-                }
-        );
-            // // TODO: Llamar al nuevo servicio de Apply for voucher
-            // // this.loadingButton = true;
-            // this.loadingButtons[registrationNumber] = true;
-            // let newApplication = new ApplicationDTOBase();
-            // newApplication.callId = this.currentCall.id;
-            // newApplication.registrationId = this.registrations[registrationNumber].id;
-            // newApplication.date = new Date().getTime();
-            // newApplication.supplierId = null;
-            // this.applicationApi.createApplication(newApplication).subscribe(
-            //     (response: ResponseDTOBase) => {
-            //         if (response.success) {
-            //             if (response.data) {
-            //                 this.applications[registrationNumber] = response.data;
-            //                 this.voucherCompetitionState = 3;
-            //                 // this.loadingButton = false;
-            //                 this.loadingButtons[registrationNumber] = false;
-            //                 this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
-            //                 this.voucherApplied = "greyImage";
-            //             }
-            //         }
-            //     }
-            // );
         }
     }
 
@@ -177,5 +196,31 @@ export class VoucherComponent {
 
     private goToProfile() {
         window.location.href = "/#/beneficiary-portal/profile";
+    }
+
+    private checkForDocuments() {
+        if (this.isMayor) {
+            this.docsOpen[0] = (this.registrations[0].legalFile1 != null && this.registrations[0].legalFile4 == null && this.registrations[0].legalFile2 == null && this.registrations[0].legalFile3 != null);
+
+            if (this.docsOpen[0]) {
+                let uploaddate = new Date(this.registrations[0].uploadTime);
+                uploaddate.setMinutes(uploaddate.getMinutes() + uploaddate.getTimezoneOffset());
+                this.uploadDate[0] = ('0' + uploaddate.getUTCDate()).slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                this.uploadHour[0] = ('0' + uploaddate.getHours()).slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+
+            }
+        } else {
+            for (let i = 0; i < this.registrations.length; i++) {
+                this.docsOpen[i] = (this.registrations[i].legalFile1 != null && this.registrations[i].legalFile4 != null && this.registrations[i].legalFile2 != null && this.registrations[i].legalFile3 != null);
+                if (this.docsOpen[i]) {
+                    let uploaddate = new Date(this.registrations[i].uploadTime);
+                    uploaddate.setMinutes(uploaddate.getMinutes() + uploaddate.getTimezoneOffset());
+                    this.uploadDate[i] = ('0' + uploaddate.getUTCDate()).slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                    this.uploadHour[i] = ('0' + uploaddate.getHours()).slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+                }
+            }
+
+
+        }
     }
 }

@@ -8,10 +8,10 @@ import javax.persistence.*;
 @Table(name = "rights")
 public class Right {
 
-    @Id
-    @SequenceGenerator(name = "right_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "right_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
@@ -24,7 +24,7 @@ public class Right {
     @Column(name = "type")
     private Integer type;
 
-    public Right(){
+    public Right() {
 
     }
 

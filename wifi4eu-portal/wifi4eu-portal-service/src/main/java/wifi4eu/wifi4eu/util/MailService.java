@@ -29,30 +29,22 @@ public class MailService {
 
     public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
         try {
-
-            _log.debug("subject: " + subject);
-            _log.debug("msgBody: " + msgBody);
+            if (_log.isDebugEnabled()) {
+                _log.debug("Sending async mail: " + fromAddress + " " + subject + " " + msgBody);
+            }
 
             MimeMessage message = mailSender.createMimeMessage();
             message.setSubject(subject, "UTF-8");
             MimeMessageHelper helper = new MimeMessageHelper(message);
             String encodingOptions = "text/html; charset=UTF-8";
 
-
             byte[] mgsBody64 = msgBody.getBytes("UTF-8");
-//            byte[] subject64 = subject.getBytes("UTF-8");
-
-//            Base64.encode(subject64);
-
-
             message.setHeader("Content-Type", encodingOptions);
             message.setHeader("Content-Type", "multipart/mixed");
 
 
             MimeBodyPart bodyPart = new MimeBodyPart();
             bodyPart.setHeader("Content-Type", "text/html; charset=utf-8");
-            //bodyPart.setContent(new String(mgsBody64, "UTF-8"), "text/html");
-            //bodyPart.setText(msgBody, "utf-8"); //I added this line
             bodyPart.setContent(new String(mgsBody64, "UTF-8"), "text/html; charset=utf-8");
 
             Multipart multipart = new MimeMultipart();
@@ -63,7 +55,6 @@ public class MailService {
             helper.setTo(toAddress);
             helper.setFrom(fromAddress);
 
-
             mailSender.send(message);
         } catch (Exception ex) {
             _log.error(ex.getMessage());
@@ -71,4 +62,9 @@ public class MailService {
 
     }
 
+    public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody) {
+        MailAsyncService asyncService = new MailAsyncService(toAddress, fromAddress, subject, msgBody, this.mailSender);
+        Thread thread = new Thread(asyncService);
+        thread.start();
+    }
 }
