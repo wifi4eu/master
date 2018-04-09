@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.entity.registration;
 
+import wifi4eu.wifi4eu.entity.status.BeneficiaryStatus;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
@@ -49,11 +50,15 @@ public class Registration {
     @Column(name = "organisation_id")
     private int organisationId;
 
+    @ManyToOne
+    @JoinColumn(name = "id_status_beneficiary")
+    private BeneficiaryStatus idStatusBeneficiary;
+
 
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId , BeneficiaryStatus idStatusBeneficiary) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -65,6 +70,7 @@ public class Registration {
         this.ipRegistration = ipRegistration;
         this.associationName = associationName;
         this.organisationId = organisationId;
+        this.idStatusBeneficiary = idStatusBeneficiary;
     }
 
     public Integer getId() {
@@ -161,5 +167,13 @@ public class Registration {
 
     public void setOrganisationId(int organisationId) {
         this.organisationId = organisationId;
+    }
+
+    public BeneficiaryStatus getIdStatusBeneficiary() {
+        return idStatusBeneficiary;
+    }
+
+    public void setIdStatusBeneficiary(BeneficiaryStatus idStatusBeneficiary) {
+        this.idStatusBeneficiary = idStatusBeneficiary;
     }
 }

@@ -1,9 +1,11 @@
 package wifi4eu.wifi4eu.entity.registration;
 
+import wifi4eu.wifi4eu.entity.status.BeneficiaryStatus;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "registrations")
@@ -43,10 +45,47 @@ public class Registration {
     @Column(name = "ip_registration")
     private String ipRegistration;
 
+    @ManyToOne
+    @JoinColumn(name = "id_status_beneficiary")
+    private BeneficiaryStatus idStatusBeneficiary;
+
+    @Column(name = "compliance")
+    private int compliance;
+
+    @Column(name = "short_member_state")
+    private String shortMemberState;
+
+    @Column(name = "member_state")
+    private String memberState;
+
+    @Column(name = "call_number")
+    private String call;
+
+    @Column(name = "action_to_be_taken")
+    private int actionToBeTaken;
+
+    @Column(name = "action_taken")
+    private int actionTaken;
+
+    @Column(name = "beneficiary_indicator")
+    private int beneficiaryIndicator;
+
+    @Column(name = "wifi_indicator")
+    private int wifiIndicator;
+
+    @Column(name = "conformity")
+    private int conformity;
+
+    @Column(name = "first_false_check")
+    private Date firstFalseCheck;
+
+    @Column(name = "date_registered")
+    private Date dateRegistered;
+
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, BeneficiaryStatus idStatusBeneficiary) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -56,6 +95,7 @@ public class Registration {
         this.legalFile3 = legalFile3;
         this.legalFile4 = legalFile4;
         this.ipRegistration = ipRegistration;
+        this.idStatusBeneficiary = idStatusBeneficiary;
     }
 
     public Integer getId() {
@@ -136,5 +176,13 @@ public class Registration {
 
     public void setIpRegistration(String ipRegistration) {
         this.ipRegistration = ipRegistration;
+    }
+
+    public BeneficiaryStatus getIdStatusBeneficiary() {
+        return idStatusBeneficiary;
+    }
+
+    public void setIdStatusBeneficiary(BeneficiaryStatus idStatusBeneficiary) {
+        this.idStatusBeneficiary = idStatusBeneficiary;
     }
 }
