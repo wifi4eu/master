@@ -49,7 +49,6 @@ import java.util.ResourceBundle;
 public class UserService {
     private final Logger _log = LoggerFactory.getLogger(UserService.class);
 
-
     @Value("${mail.server.location}")
     private String baseUrl;
 
@@ -94,12 +93,6 @@ public class UserService {
 
     @Autowired
     UserThreadsService userThreadsService;
-
-    /**
-     * The language used in user browser
-     */
-    private String lang = null;
-
 
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
@@ -331,29 +324,8 @@ public class UserService {
         }
     }
 
-    public void setLang(String lang) {
-        this.lang = lang;
-    }
-
-    public String getLang() {
-        return this.lang;
-    }
-
     public boolean isLocalHost() {
         return baseUrl.contains(UserConstants.LOCAL);
-    }
-
-    public Locale initLocale() {
-        Locale locale;
-
-        if (lang != null) {
-            locale = new Locale(lang);
-
-        } else {
-            locale = new Locale(UserConstants.DEFAULT_LANG);
-        }
-
-        return locale;
     }
 
     public String getLogoutEnviroment() {

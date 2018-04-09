@@ -13,6 +13,7 @@ import {MayorDTOBase} from "../../shared/swagger/model/MayorDTO";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {SharedService} from "../../shared/shared.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     templateUrl: 'voucher.component.html',
@@ -38,15 +39,39 @@ export class VoucherComponent {
     private hourNumber: string;
     private voucherApplied: string = "";
     private openedCalls: string = "";
+    private isMayor: boolean = true;
+    private registration: RegistrationDTOBase;
+    private mayor: MayorDTOBase;
+    private docsOpen: boolean [] = [];
+    private registrationsDocs: RegistrationDTOBase[] = [];
 
-    constructor(private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService) {
+
+    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         // Check if there are Calls
         if (this.user != null) {
             this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
                 (registrations: RegistrationDTOBase[]) => {
+                    this.registrationsDocs = registrations;
                     this.checkForCalls(registrations);
+                    if (registrations.length < 2) {
+                        // JUST FOR ONE MUNICIPALITY
+                        this.registration = registrations[0];
+                        this.mayorApi.getMayorByMunicipalityId(registrations[0].municipalityId).subscribe(
+                            (mayor: MayorDTOBase) => {
+                                this.mayor = mayor;
+                                // HERE WE CHECK IF ITS REPRESENTATIVE OR NOT
+                                if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname)
+                                    this.isMayor = true;
+                            }, error => {
+                            }
+                        );
+
+                    } else {
+                        // MULTIPLE MUNICIPALITIES CONDITIONAL
+                        this.isMayor = false;
+                    }
                 }
             );
         }
@@ -68,9 +93,9 @@ export class VoucherComponent {
                                                     this.registrations.push(registration);
                                                     this.municipalities.push(municipality);
                                                     this.mayors.push(mayor);
-                                                    if(application.id != 0){
-                                                      this.applications.push(application);
-                                                    }                                                   
+                                                    if (application.id != 0) {
+                                                        this.applications.push(application);
+                                                    }
                                                     this.loadingButtons.push(false);
                                                     let date = new Date(this.currentCall.startDate);
                                                     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
@@ -82,6 +107,7 @@ export class VoucherComponent {
                                                     } else {
                                                         this.voucherCompetitionState = 1;
                                                     }
+                                                    this.checkForDocuments();
                                                     if (this.applications.length == this.registrations.length) {
                                                         let allApplied = true;
                                                         for (let app of this.applications) {
@@ -96,6 +122,7 @@ export class VoucherComponent {
                                                     }
                                                 }
                                             );
+
                                         } else {
                                             this.registrations.push(registration);
                                             this.municipalities.push(municipality);
@@ -118,11 +145,15 @@ export class VoucherComponent {
         );
     }
 
+    private goToDocuments(registrationNumber: number) {
+        this.router.navigate(['../additional-info/', this.registrations[registrationNumber].municipalityId], {relativeTo: this.route});
+    }
+
     private applyForVoucher(registrationNumber: number) {
         let startCallDate = this.currentCall.startDate;
         let actualDateTime = new Date().getTime();
 
-        if  (startCallDate <= actualDateTime) {
+        if (startCallDate <= actualDateTime) {
             // TODO: Llamar al nuevo servicio de Apply for voucher
             // this.loadingButton = true;
             this.loadingButtons[registrationNumber] = true;
@@ -154,5 +185,24 @@ export class VoucherComponent {
 
     private goToProfile() {
         window.location.href = "/#/beneficiary-portal/profile";
+    }
+
+    private checkForDocuments() {
+        if (this.isMayor) {
+            for (let i = 0; i < this.registrations.length; i++) {
+
+                console.log(this.registrations[i]);
+                this.docsOpen[i] = (this.registrations[i].legalFile1 != null && this.registrations[i].legalFile4 == null && this.registrations[i].legalFile2 == null && this.registrations[i].legalFile3 != null);
+                console.log(this.docsOpen[i]);
+            }
+        } else {
+            for (let i = 0; i < this.registrations.length; i++) {
+
+                console.log(this.docsOpen);
+                console.log(this.registrations[i]);
+                this.docsOpen[i] = (this.registrations[i].legalFile1 != null && this.registrations[i].legalFile4 != null && this.registrations[i].legalFile2 != null && this.registrations[i].legalFile3 != null);
+                console.log(this.docsOpen[i]);
+            }
+        }
     }
 }
