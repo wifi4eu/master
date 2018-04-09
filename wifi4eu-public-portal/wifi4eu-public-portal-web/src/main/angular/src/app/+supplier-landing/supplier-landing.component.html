@@ -35,7 +35,7 @@
             <div class="col-sm-6"></div>
             <div class="col-sm-6">
                 <img id="benefLandingSecondBackground" src="assets/images/copy-6.png">
-                <p class="landingText" [innerHTML]="'supp.landingpage.elegibleText4' | translate"></p>
+                <p class="landingText">{{ 'supp.landingpage.elegibleText4' | translate }}</p>
             </div>
         </div>
     </div>
@@ -44,16 +44,12 @@
             <div class="col-sm-2"></div>
             <div class="col-sm-8">
                 <p class="europeans">{{ 'benefLanding.proceed' | translate }}</p>
-                <!--
-                <p>{{'benefLanding.ecasmessage'| translate }}</p>
-                -->
             </div>
             <div class="col-sm-2"></div>
         </div>
     </div>
-
     <!--buttons-->
-    <div id="navigation-buttons" class="form-group center row">
+    <div id="navigation-buttons supplier" class="form-group center row">
         <div class="col-lg-2"></div>
         <div class="col-sm-6 col-lg-4">
             <a href="/#/home">
