@@ -162,6 +162,7 @@ export class AdditionalInfoComponent {
     }
 
     private deleteFromServer(index: number) {
+        this.filesUploaded = true;
         switch (index) {
             case 0:
                 this.registration.legalFile1 = null;
