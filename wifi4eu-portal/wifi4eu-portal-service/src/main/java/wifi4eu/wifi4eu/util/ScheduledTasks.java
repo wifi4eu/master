@@ -8,9 +8,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.io.BufferedReader;
@@ -19,7 +22,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @EnableScheduling
 @Controller
@@ -29,10 +35,16 @@ public class ScheduledTasks {
     private HelpdeskService helpdeskService;
 
     @Autowired
+    MailService mailService;
+
+    @Autowired
     private HelpdeskIssueMapper helpdeskIssueMapper;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RegistrationService registrationService;
 
     private static final Logger _log = LoggerFactory.getLogger(ScheduledTasks.class);
 
@@ -50,6 +62,7 @@ public class ScheduledTasks {
 
             UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
 
+
             if (userDTO != null) {
                 helpdeskTicketDTO.setFirstname(userDTO.getName());
                 helpdeskTicketDTO.setLastname(userDTO.getSurname());
@@ -63,6 +76,36 @@ public class ScheduledTasks {
                     helpdeskService.createHelpdeskIssue(helpdeskIssue);
                 }
             }
+        }
+    }
+
+
+    @Scheduled(cron = "0 12 * * 1 ?")
+    public void sendDocRequest() {
+        List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
+        for (RegistrationDTO registrationDTO : registrationDTOS) {
+            if (registrationDTO != null && registrationDTO.getMailCounter() > 0) {
+                UserDTO user = userService.getUserById(registrationDTO.getUserId());
+                if (user != null && user.getEcasEmail() != null) {
+                    if (!userService.isLocalHost()) {
+                        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                        if (user.getLang() != null) {
+                            locale = new Locale(user.getLang());
+                        }
+                        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                        String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
+                        String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
+                        String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/additional-info";
+                        msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
+
+                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    }
+                    int mailCounter = registrationDTO.getMailCounter() - 1;
+                    registrationDTO.setMailCounter(mailCounter);
+                    registrationService.createRegistration(registrationDTO);
+                }
+            }
+
         }
     }
 

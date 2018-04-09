@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.service.registration;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -17,6 +18,7 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.text.MessageFormat;
 import java.util.List;
@@ -59,6 +61,9 @@ public class RegistrationService {
 
     @Transactional
     public RegistrationDTO createRegistration(RegistrationDTO registrationDTO) {
+        if (registrationDTO.getId() == 0) {
+            registrationDTO.setMailCounter(3);
+        }
         return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
     }
 
@@ -90,8 +95,8 @@ public class RegistrationService {
 
     public boolean checkIfRegistrationIsKO(int userId) {
         List<RegistrationDTO> registrations = registrationMapper.toDTOList(
-                                                Lists.newArrayList(
-                                                        registrationRepository.findByUserId(userId)));
+                Lists.newArrayList(
+                        registrationRepository.findByUserId(userId)));
         for (RegistrationDTO registration : registrations) {
             if (registration.getStatus() == 1) {
                 return true;
@@ -124,6 +129,7 @@ public class RegistrationService {
         return false;
     }
 
+
     @Transactional
     public boolean assignLegalEntity(int registrationId) {
         RegistrationDTO registration = getRegistrationById(registrationId);
@@ -154,7 +160,8 @@ public class RegistrationService {
             MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
             if (threadDTO.getReason().equals(String.valueOf(municipality.getLauId()))) {
                 return registration;
-            };
+            }
+            ;
         }
         return null;
     }

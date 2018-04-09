@@ -37,6 +37,8 @@ export class VoucherComponent {
     private loadingButtons: boolean[] = [];
     private dateNumber: string;
     private hourNumber: string;
+    private uploadDate: string[] = [];
+    private uploadHour: string[] = [];
     private voucherApplied: string = "";
     private openedCalls: string = "";
     private isMayor: boolean = true;
@@ -62,8 +64,11 @@ export class VoucherComponent {
                             (mayor: MayorDTOBase) => {
                                 this.mayor = mayor;
                                 // HERE WE CHECK IF ITS REPRESENTATIVE OR NOT
-                                if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname)
+                                if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname) {
                                     this.isMayor = true;
+                                } else {
+                                    this.isMayor = false;
+                                }
                             }, error => {
                             }
                         );
@@ -107,6 +112,7 @@ export class VoucherComponent {
                                                     } else {
                                                         this.voucherCompetitionState = 1;
                                                     }
+
                                                     this.checkForDocuments();
                                                     if (this.applications.length == this.registrations.length) {
                                                         let allApplied = true;
@@ -150,32 +156,37 @@ export class VoucherComponent {
     }
 
     private applyForVoucher(registrationNumber: number) {
-        let startCallDate = this.currentCall.startDate;
-        let actualDateTime = new Date().getTime();
+        if (this.registrations[registrationNumber].allFilesFlag == 1) {
+            let startCallDate = this.currentCall.startDate;
+            let actualDateTime = new Date().getTime();
 
-        if (startCallDate <= actualDateTime) {
-            // TODO: Llamar al nuevo servicio de Apply for voucher
-            // this.loadingButton = true;
-            this.loadingButtons[registrationNumber] = true;
-            let newApplication = new ApplicationDTOBase();
-            newApplication.callId = this.currentCall.id;
-            newApplication.registrationId = this.registrations[registrationNumber].id;
-            newApplication.date = new Date().getTime();
-            newApplication.supplierId = null;
-            this.applicationApi.createApplication(newApplication).subscribe(
-                (response: ResponseDTOBase) => {
-                    if (response.success) {
-                        if (response.data) {
-                            this.applications[registrationNumber] = response.data;
-                            this.voucherCompetitionState = 3;
-                            // this.loadingButton = false;
-                            this.loadingButtons[registrationNumber] = false;
-                            this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
-                            this.voucherApplied = "greyImage";
+            if (startCallDate <= actualDateTime) {
+                // TODO: Llamar al nuevo servicio de Apply for voucher
+                // this.loadingButton = true;
+                this.loadingButtons[registrationNumber] = true;
+                let newApplication = new ApplicationDTOBase();
+                newApplication.callId = this.currentCall.id;
+                newApplication.registrationId = this.registrations[registrationNumber].id;
+                newApplication.date = new Date().getTime();
+                newApplication.supplierId = null;
+                this.applicationApi.createApplication(newApplication).subscribe(
+                    (response: ResponseDTOBase) => {
+                        if (response.success) {
+                            if (response.data) {
+                                this.applications[registrationNumber] = response.data;
+                                this.voucherCompetitionState = 3;
+                                // this.loadingButton = false;
+                                this.loadingButtons[registrationNumber] = false;
+                                this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
+                                this.voucherApplied = "greyImage";
+                            }
                         }
                     }
-                }
-            );
+                );
+            }
+        } else {
+            this.sharedService.growlTranslation('You can\'t apply untill you upload all the documents.', 'shared.cantApply.voucher', 'warn');
+
         }
     }
 
@@ -189,20 +200,27 @@ export class VoucherComponent {
 
     private checkForDocuments() {
         if (this.isMayor) {
-            for (let i = 0; i < this.registrations.length; i++) {
+            this.docsOpen[0] = (this.registrations[0].legalFile1 != null && this.registrations[0].legalFile4 == null && this.registrations[0].legalFile2 == null && this.registrations[0].legalFile3 != null);
 
-                console.log(this.registrations[i]);
-                this.docsOpen[i] = (this.registrations[i].legalFile1 != null && this.registrations[i].legalFile4 == null && this.registrations[i].legalFile2 == null && this.registrations[i].legalFile3 != null);
-                console.log(this.docsOpen[i]);
+            if (this.docsOpen[0]) {
+                let uploaddate = new Date(this.registrations[0].uploadTime);
+                uploaddate.setMinutes(uploaddate.getMinutes() + uploaddate.getTimezoneOffset());
+                this.uploadDate[0] = ('0' + uploaddate.getUTCDate()).slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                this.uploadHour[0] = ('0' + uploaddate.getHours()).slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+
             }
         } else {
             for (let i = 0; i < this.registrations.length; i++) {
-
-                console.log(this.docsOpen);
-                console.log(this.registrations[i]);
                 this.docsOpen[i] = (this.registrations[i].legalFile1 != null && this.registrations[i].legalFile4 != null && this.registrations[i].legalFile2 != null && this.registrations[i].legalFile3 != null);
-                console.log(this.docsOpen[i]);
+                if (this.docsOpen[i]) {
+                    let uploaddate = new Date(this.registrations[i].uploadTime);
+                    uploaddate.setMinutes(uploaddate.getMinutes() + uploaddate.getTimezoneOffset());
+                    this.uploadDate[i] = ('0' + uploaddate.getUTCDate()).slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                    this.uploadHour[i] = ('0' + uploaddate.getHours()).slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+                }
             }
+
+
         }
     }
 }
