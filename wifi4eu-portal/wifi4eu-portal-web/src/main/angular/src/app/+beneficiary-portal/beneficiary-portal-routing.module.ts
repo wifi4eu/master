@@ -20,7 +20,7 @@ import { AdditionalInfoComponent } from "./+additional-info/additional-info.comp
             path: 'profile',
             component: BeneficiaryProfileComponent
         }, {
-            path: 'additional-info',
+            path: 'additional-info/:municipalityId',
             component: AdditionalInfoComponent
         }
     ])],

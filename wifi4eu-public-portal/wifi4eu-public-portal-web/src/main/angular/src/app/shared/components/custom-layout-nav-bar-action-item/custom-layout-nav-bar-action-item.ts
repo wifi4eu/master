@@ -14,11 +14,8 @@ import { CustomLayoutLink } from "../custom-layout-nav-bar-top-menu/custom-layou
 
         <template [ngIf]="isOverlayPanel">
         <div class="overlay-panel right-position white state-open hidden-lg-up" [class.hidden]="!isActive" (click)="onClick($event)">
-            <div class="overlay-panel-toggle">
-                <a (click)="toggle($event)">
-                    <span class="label-open">
-                    <span class="fa fa-chevron-right"></span>
-                    </span>
+            <div>
+                <a (click)="toggle($event)" class="overlay-panel-close-button">
                     <span class="label-close">
                     <span class="fa fa-times"></span>
                     </span>
@@ -94,7 +91,11 @@ import { CustomLayoutLink } from "../custom-layout-nav-bar-top-menu/custom-layou
             <ng-content></ng-content>       
         </aside>
         </template>
-    `
+    `,
+    styles: [
+        '.overlay-panel-close-button { position: fixed; padding: 0.75em; } .overlay-panel-close-button:hover { background: whitesmoke; }',
+        '.overlay-panel { height: unset; padding-bottom: 1em; }'
+    ]
 })
 
 export class CustomLayoutNavBarActionItemComponent extends UxLayoutNavBarActionItemComponent {
