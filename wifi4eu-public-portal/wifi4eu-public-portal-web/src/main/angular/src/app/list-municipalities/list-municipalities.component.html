@@ -16,7 +16,7 @@
           <div class="col-md-12">
             <h4 class="title">{{ 'listMunicipalities.title' | translate }}</h4>
             <p class="subtitle-discover">{{ 'listMunicipalities.subtitle' | translate }}</p>
-            <p class="updated-on" *ngIf="dateCached">{{ 'listMunicipalities.subtitle.updateDate' | translate}} {{dateCached}}</p>
+            <p class="updated-on" *ngIf="dateCached">{{ 'listMunicipalities.subtitle.updateDate' | translate}} {{dateCached | date: 'dd/MM/yyyy'}}</p>
           </div>
         </div>
       </div>
@@ -25,18 +25,18 @@
       <div class="col-sm-12 col-md-5">
         <label class="label-select"  for="memberState">{{ 'listMunicipalities.memberState.label' | translate }}</label>
         <select name="memberState" id="memberState" [(ngModel)]="country" (ngModelChange)="selectCountry($event)">
-          <option disabled>Select</option>
-          <option *ngFor="let country of countries" [ngValue]="country">
-            {{ country.label }}
+          <option [ngValue]="null" disabled selected>Select</option>
+          <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry">
+            {{ currentCountry.label }}
           </option>
         </select>
       </div>
       <div class="col-sm-12 col-md-5">
         <label class="label-select" for="region">{{ 'listMunicipalities.region.label' | translate }}</label>
         <select name="region" id="region" [(ngModel)]="region" (ngModelChange)="selectRegion($event)">
-          <option disabled>Select</option>
-          <option *ngFor="let region of regions" [ngValue]="region">
-            {{ region.label }}
+          <option [ngValue]="null" disabled selected>Select</option>
+          <option *ngFor="let currentRegion of regions" [ngValue]="currentRegion">
+            {{ currentRegion.label }}
           </option>
         </select>
       </div>
@@ -62,7 +62,6 @@
     </div>
     <div class="row" *ngIf="searched && municipalities.length == 0">
       <div class="col-md-12">
-        <!-- TODO: check with connect -->
         <span class="updated-on">{{ 'listMunicipalities.noresults.text' | translate }} {{regionNameSearched}}</span>
       </div>
     </div>
