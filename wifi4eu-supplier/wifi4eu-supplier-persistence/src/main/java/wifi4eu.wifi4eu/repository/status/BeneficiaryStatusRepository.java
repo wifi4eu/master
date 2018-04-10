@@ -1,8 +1,8 @@
-package ec.europa.digit.euwifiops.euwifiops.repository.status;
+package wifi4eu.wifi4eu.repository.status;
 
-import ec.europa.digit.euwifiops.euwifiops.entity.status.BeneficiaryStatus;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.entity.status.BeneficiaryStatus;
 
 @Transactional
 public interface BeneficiaryStatusRepository extends PagingAndSortingRepository<BeneficiaryStatus,Long> {

@@ -1,5 +1,10 @@
-package wifi4eu.wifi4eu.entity.registration;
+package wifi4eu.wifi4eu.entity.installation;
 
+import ec.europa.digit.euwifiops.euwifiops.entity.status.Status;
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "installation_site")
@@ -17,7 +22,7 @@ public class InstallationSite {
 
     @ManyToOne
     @JoinColumn(name = "id_status")
-    private Status idStatus;
+    private Status status;
 
     @Column(name = "id_network_snippet", length = 75)
     private String idNetworkSnippet;
@@ -34,9 +39,9 @@ public class InstallationSite {
     @Column(name = "url")
     private String url;
 
-    public InstallationSite(Municipality municipality, Status id_status, String idNetworkSnippet, String name, Date dateRegistered, String domainName, String url) {
+    public InstallationSite(Municipality municipality, Status status, String idNetworkSnippet, String name, Timestamp dateRegistered, String domainName, String url) {
         this.municipality = municipality;
-        this.id_status = id_status;
+        this.status = status;
         this.idNetworkSnippet = idNetworkSnippet;
         this.name = name;
         this.dateRegistered = dateRegistered;
@@ -61,11 +66,11 @@ public class InstallationSite {
     }
 
     public Status getId_status() {
-        return id_status;
+        return status;
     }
 
     public void setId_status(Status id_status) {
-        this.id_status = id_status;
+        this.status = id_status;
     }
 
     public String getIdNetworkSnippet() {
@@ -84,11 +89,11 @@ public class InstallationSite {
         this.name = name;
     }
 
-    public Date getDateRegistered() {
+    public Timestamp getDateRegistered() {
         return dateRegistered;
     }
 
-    public void setDateRegistered(Date dateRegistered) {
+    public void setDateRegistered(Timestamp dateRegistered) {
         this.dateRegistered = dateRegistered;
     }
 

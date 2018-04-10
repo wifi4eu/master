@@ -1,9 +1,12 @@
-package wifi4eu.wifi4eu.entity.registration;
+package wifi4eu.wifi4eu.entity.installation;
 
+import wifi4eu.wifi4eu.entity.installation.InstallationSite;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "access_points")
-public class AccessPoints {
+public class AccessPoint {
 
     @Id
     @SequenceGenerator(name = "access_points_seq", allocationSize = 1, initialValue = 100)
@@ -42,7 +45,7 @@ public class AccessPoints {
     @Column(name = "mac_address", length = 17)
     private String macAddress;
 
-    public AccessPoints(InstallationSite installationSite, String modelNumber, String serialNumber, boolean isIndoor, String deviceBrand, String location, String locationType, double latitude, double longitude, String macAddress) {
+    public AccessPoint(InstallationSite installationSite, String modelNumber, String serialNumber, boolean isIndoor, String deviceBrand, String location, String locationType, double latitude, double longitude, String macAddress) {
         this.installationSite = installationSite;
         this.modelNumber = modelNumber;
         this.serialNumber = serialNumber;

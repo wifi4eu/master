@@ -1,4 +1,4 @@
-package ec.europa.digit.euwifiops.euwifiops.repository.status;
+package wifi4eu.wifi4eu.repository.status;
 
 import ec.europa.digit.euwifiops.euwifiops.entity.status.Status;
 import org.springframework.data.repository.PagingAndSortingRepository;
