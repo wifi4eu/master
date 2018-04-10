@@ -5,7 +5,7 @@ import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Table(name = "registrations")
@@ -44,6 +44,12 @@ public class Registration {
 
     @Column(name = "ip_registration")
     private String ipRegistration;
+
+    @Column(name = "organisation_id")
+    private int organisation_id;
+
+    @Column(name = "association_name")
+    private String association_name;
 
     @ManyToOne
     @JoinColumn(name = "id_status_beneficiary")
@@ -85,8 +91,7 @@ public class Registration {
     public Registration() {
     }
 
-
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, BeneficiaryStatus idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, int organisation_id, String association_name, BeneficiaryStatus idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -96,6 +101,8 @@ public class Registration {
         this.legalFile3 = legalFile3;
         this.legalFile4 = legalFile4;
         this.ipRegistration = ipRegistration;
+        this.organisation_id = organisation_id;
+        this.association_name = association_name;
         this.idStatusBeneficiary = idStatusBeneficiary;
         this.compliance = compliance;
         this.shortMemberState = shortMemberState;
@@ -188,6 +195,22 @@ public class Registration {
 
     public void setIpRegistration(String ipRegistration) {
         this.ipRegistration = ipRegistration;
+    }
+
+    public int getOrganisation_id() {
+        return organisation_id;
+    }
+
+    public void setOrganisation_id(int organisation_id) {
+        this.organisation_id = organisation_id;
+    }
+
+    public String getAssociation_name() {
+        return association_name;
+    }
+
+    public void setAssociation_name(String association_name) {
+        this.association_name = association_name;
     }
 
     public BeneficiaryStatus getIdStatusBeneficiary() {

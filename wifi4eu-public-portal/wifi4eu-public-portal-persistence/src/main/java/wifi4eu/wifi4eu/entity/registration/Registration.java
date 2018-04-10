@@ -5,7 +5,7 @@ import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
 import javax.persistence.*;
-
+import java.sql.Timestamp;
 @Entity
 @Table(name = "registrations")
 public class Registration {
@@ -50,10 +50,43 @@ public class Registration {
     @JoinColumn(name = "id_status_beneficiary")
     private BeneficiaryStatus idStatusBeneficiary;
 
+    @Column(name = "compliance")
+    private boolean compliance;
+
+    @Column(name = "short_member_state", length = 75)
+    private String shortMemberState;
+
+    @Column(name = "member_state", length = 75)
+    private String memberState;
+
+    @Column(name = "call_number" , length = 75)
+    private String call;
+
+    @Column(name = "action_to_be_taken")
+    private int actionToBeTaken;
+
+    @Column(name = "action_taken")
+    private int actionTaken;
+
+    @Column(name = "beneficiary_indicator")
+    private boolean beneficiaryIndicator;
+
+    @Column(name = "wifi_indicator")
+    private boolean wifiIndicator;
+
+    @Column(name = "conformity")
+    private boolean conformity;
+
+    @Column(name = "first_false_check")
+    private Timestamp firstFalseCheck;
+
+    @Column(name = "date_registered")
+    private Timestamp dateRegistered;
+
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String associationName, int organisationId, BeneficiaryStatus idStatusBeneficiary) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String associationName, int organisationId, BeneficiaryStatus idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -65,6 +98,17 @@ public class Registration {
         this.associationName = associationName;
         this.organisationId = organisationId;
         this.idStatusBeneficiary = idStatusBeneficiary;
+        this.compliance = compliance;
+        this.shortMemberState = shortMemberState;
+        this.memberState = memberState;
+        this.call = call;
+        this.actionToBeTaken = actionToBeTaken;
+        this.actionTaken = actionTaken;
+        this.beneficiaryIndicator = beneficiaryIndicator;
+        this.wifiIndicator = wifiIndicator;
+        this.conformity = conformity;
+        this.firstFalseCheck = firstFalseCheck;
+        this.dateRegistered = dateRegistered;
     }
 
     public Integer getId() {
@@ -161,5 +205,93 @@ public class Registration {
 
     public void setIdStatusBeneficiary(BeneficiaryStatus idStatusBeneficiary) {
         this.idStatusBeneficiary = idStatusBeneficiary;
+    }
+
+    public boolean isCompliance() {
+        return compliance;
+    }
+
+    public void setCompliance(boolean compliance) {
+        this.compliance = compliance;
+    }
+
+    public String getShortMemberState() {
+        return shortMemberState;
+    }
+
+    public void setShortMemberState(String shortMemberState) {
+        this.shortMemberState = shortMemberState;
+    }
+
+    public String getMemberState() {
+        return memberState;
+    }
+
+    public void setMemberState(String memberState) {
+        this.memberState = memberState;
+    }
+
+    public String getCall() {
+        return call;
+    }
+
+    public void setCall(String call) {
+        this.call = call;
+    }
+
+    public int getActionToBeTaken() {
+        return actionToBeTaken;
+    }
+
+    public void setActionToBeTaken(int actionToBeTaken) {
+        this.actionToBeTaken = actionToBeTaken;
+    }
+
+    public int getActionTaken() {
+        return actionTaken;
+    }
+
+    public void setActionTaken(int actionTaken) {
+        this.actionTaken = actionTaken;
+    }
+
+    public boolean isBeneficiaryIndicator() {
+        return beneficiaryIndicator;
+    }
+
+    public void setBeneficiaryIndicator(boolean beneficiaryIndicator) {
+        this.beneficiaryIndicator = beneficiaryIndicator;
+    }
+
+    public boolean isWifiIndicator() {
+        return wifiIndicator;
+    }
+
+    public void setWifiIndicator(boolean wifiIndicator) {
+        this.wifiIndicator = wifiIndicator;
+    }
+
+    public boolean isConformity() {
+        return conformity;
+    }
+
+    public void setConformity(boolean conformity) {
+        this.conformity = conformity;
+    }
+
+    public Timestamp getFirstFalseCheck() {
+        return firstFalseCheck;
+    }
+
+    public void setFirstFalseCheck(Timestamp firstFalseCheck) {
+        this.firstFalseCheck = firstFalseCheck;
+    }
+
+    public Timestamp getDateRegistered() {
+        return dateRegistered;
+    }
+
+    public void setDateRegistered(Timestamp dateRegistered) {
+        this.dateRegistered = dateRegistered;
     }
 }
