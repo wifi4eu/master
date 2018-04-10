@@ -551,5 +551,6 @@
   "shared.totalRecords": "Total Records",
   "dgconn.dashboard.card.messageExport": "Your file have been exported correctly!",
   "dgconn.dashboard.card.messageImport": "Your file have been imported correctly!",
-  "shared.supportingDocuments": "Supporting documents"
+  "shared.supportingDocuments": "Supporting documents",
+  "(supporting documents pop-up)": "You have not confirmed.  This will discard any document you uploaded. If you wish to save the documents you uploaded, please return to the page and press Confirm. Are you sure you want to discard your documents?"
 }
