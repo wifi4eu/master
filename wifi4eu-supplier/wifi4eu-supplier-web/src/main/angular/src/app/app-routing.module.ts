@@ -8,7 +8,7 @@ import { AccessPointComponent } from "./access-point/access-point.component";
     imports:[RouterModule.forRoot([
         {
             path: '',
-            redirectTo: 'home',
+            redirectTo: 'installation-report',
             pathMatch: 'full'
         },{
             path: 'installation-report',

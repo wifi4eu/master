@@ -9,8 +9,15 @@ import { AppRoutingModule } from './app-routing.module';
     CommonModule,
     AppRoutingModule
   ],
-  declarations: [InstallationReportComponent, AccessPointComponent]
+  declarations: [
+    InstallationReportComponent,
+    AccessPointComponent
+  ],
+  exports:[
+    InstallationReportComponent,
+    AccessPointComponent
+  ]
 })
 export class AppModule {
-  
- }
+
+}
