@@ -6,5 +6,6 @@ export abstract class AzureQueue {
     abstract updateMessageAzureQueue(searchMessageContent: string, updateMessageId: string, updateMessageContent: string): void;
     abstract removeMessageAzureQueue(): void;
     abstract sizeAzureQueue(): number;
+    abstract getMessagesAzureQueue(): void;
 
 }

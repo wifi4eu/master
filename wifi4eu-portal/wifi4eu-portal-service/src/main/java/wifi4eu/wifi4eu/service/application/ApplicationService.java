@@ -78,7 +78,9 @@ public class ApplicationService {
                 String subject = bundle.getString("mail.voucherApply.subject");
                 String msgBody = bundle.getString("mail.voucherApply.body");
                 msgBody = MessageFormat.format(msgBody, municipality.getName());
-                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                if(!userService.isLocalHost()){
+                  mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                }               
             }
             return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
         }

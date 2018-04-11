@@ -5,6 +5,7 @@ import com.microsoft.azure.storage.queue.CloudQueueMessage;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.List;
 
 public interface AzureQueue {
 
@@ -17,5 +18,6 @@ public interface AzureQueue {
 
     String getQueueName();
     void setQueueName(final String name);
+    List<CloudQueueMessage> getMessagesAzureQueue() throws StorageException, InvalidKeyException, URISyntaxException;
 
 }

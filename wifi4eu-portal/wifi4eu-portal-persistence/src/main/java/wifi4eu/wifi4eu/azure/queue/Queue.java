@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.azure.queue;
 
+import com.google.common.collect.Lists;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.queue.CloudQueue;
 import com.microsoft.azure.storage.queue.CloudQueueMessage;
@@ -9,7 +10,9 @@ import wifi4eu.wifi4eu.azure.constants.QueueConstants;
 
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 @Component
 public class Queue implements AzureQueue {
@@ -32,6 +35,14 @@ public class Queue implements AzureQueue {
 
         // Create the queue if it doesn't already exist.
         queue.createIfNotExists();
+    }
+
+    public List<CloudQueueMessage> getMessagesAzureQueue() throws StorageException, InvalidKeyException, URISyntaxException {
+        CloudQueue queue = utils.generateCloudQueue();
+
+        List<CloudQueueMessage> list = Lists.newArrayList(queue.retrieveMessages(QueueConstants.MAX_NUMBER_OF_MESSAGES_TO_PEEK,1,null,null));
+
+        return list;
     }
 
     public void addMessageAzureQueue(final String messageContent) throws URISyntaxException,

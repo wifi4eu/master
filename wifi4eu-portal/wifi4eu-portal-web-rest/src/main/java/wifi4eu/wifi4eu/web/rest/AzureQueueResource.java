@@ -1,6 +1,7 @@
 package wifi4eu.wifi4eu.web.rest;
 
 
+import com.microsoft.azure.storage.queue.CloudQueueMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -24,7 +26,6 @@ import java.io.IOException;
 public class AzureQueueResource {
 
     Logger _log = LoggerFactory.getLogger(MayorResource.class);
-
 
     @Autowired
     AzureQueueService azureQueueService;
@@ -39,7 +40,8 @@ public class AzureQueueResource {
         try {
             _log.info("addMessageAzureQueue");
 
-            azureQueueService.addMessageAzureQueue(anAzureQueueMessageDTO);
+            /*azureQueueService.createAzureQueue("stressqueue");
+            azureQueueService.addMessageAzureQueue(anAzureQueueMessageDTO);*/
 
             return new ResponseDTO(true, anAzureQueueMessageDTO, null);
         } catch (AccessDeniedException ade) {
