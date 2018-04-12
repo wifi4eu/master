@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NutsApi, NutsDTOBase, MunicipalityDTOBase, MunicipalityApi, ResponseDTO } from 'app/shared/swagger';
 import { ViewEncapsulation } from '@angular/core';
 import { MunicipalityCacheDTO, MunicipalityCacheDTOBase } from 'app/shared/swagger/model/MunicipalityCacheDTO';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-list-municipalities',
@@ -15,8 +14,8 @@ export class ListMunicipalitiesComponent implements OnInit {
 
   countries: NutsDTOBase[] = [];
   regions: NutsDTOBase[] = [];
-  country: NutsDTOBase;
-  region: NutsDTOBase;
+  country: NutsDTOBase = null;
+  region: NutsDTOBase = null;
   municipalities: string[] = [];
   dateCached: string = null;
   searched: boolean = false;
@@ -60,9 +59,7 @@ export class ListMunicipalitiesComponent implements OnInit {
         this.municipalityApi.getMunicipalitiesRegistered(this.region.code).subscribe(
           (municipalityCacheDTO: MunicipalityCacheDTOBase) => {
             this.municipalities = municipalityCacheDTO.municipalities;
-            let date = new Date(municipalityCacheDTO.dateCached);
-            let datePipe = new DatePipe('default').transform(date, 'dd/MM/yyyy');
-            this.dateCached = datePipe;
+            this.dateCached = municipalityCacheDTO.dateCached.toString();
             this.searched = true;
             this.regionNameSearched = this.region.label;
           }
@@ -72,9 +69,7 @@ export class ListMunicipalitiesComponent implements OnInit {
         this.municipalityApi.getMunicipalitiesRegisteredByCountry(this.country.countryCode).subscribe(
           (municipalityCacheDTO: MunicipalityCacheDTOBase) => {
             this.municipalities = municipalityCacheDTO.municipalities;
-            let date = new Date(municipalityCacheDTO.dateCached);
-            let datePipe = new DatePipe('default').transform(date, 'dd/MM/yyyy');
-            this.dateCached = datePipe;
+            this.dateCached = municipalityCacheDTO.dateCached.toString();
             this.searched = true;
             this.regionNameSearched = this.country.label;
           });

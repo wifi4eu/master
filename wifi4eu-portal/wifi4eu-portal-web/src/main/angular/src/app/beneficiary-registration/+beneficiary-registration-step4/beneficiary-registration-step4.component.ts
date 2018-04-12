@@ -37,7 +37,6 @@ export class BeneficiaryRegistrationStep4Component {
 
     private submit() {
         if (this.legalChecks) {
-            this.setLanguage();
             this.displayConfirmingData = true;
             this.onNext.emit();
         }
@@ -52,20 +51,5 @@ export class BeneficiaryRegistrationStep4Component {
         this.onEdit.emit(step);
         this.legalChecks = [true, false, false, false, false, false, false, false, false];
         this.sharedService.clean();
-    }
-
-    private setLanguage() {
-        let language = this.localStorage.get('lang');
-        if (!language) {
-            language = 'en';
-        }
-
-        this.userApi.setUserLang(language.toString()).subscribe(
-            (language: string) => {
-                console.log("The mail will send in " + language);
-            }, error => {
-                console.log(error);
-            }
-        );
     }
 }
