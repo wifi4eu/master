@@ -19,12 +19,6 @@ import java.util.List;
 
 @Service
 public class ExportImportRegistrationDataService {
-//    @Autowired
-//    MunicipalityMapper municipalityMapper;
-//
-//    @Autowired
-//    MunicipalityRepository municipalityRepository;
-
     @Autowired
     ExportImportRegistrationDataMapper exportImportRegistrationDataMapper;
 
@@ -35,45 +29,39 @@ public class ExportImportRegistrationDataService {
 
     public void exportRegistrationData() throws Exception {
           _log.info("exportRegistrationData");
-           //List<MunicipalityDTO> municipalityList = municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
            List<ExportImportRegistrationDataDTO> exportImportRegistrationDataList = exportImportRegistrationDataMapper.toDTOList(Lists.newArrayList(exportImportRegistrationDataReporsitory.findExportImport()));
            CreateExcelFile cF=new CreateExcelFile();
-           //String [] header={"id", "name", "address", "addressNum", "postalCode", "country", "lauId"};
            String [] header={"EU Rank", "Country Rank", "Country Name", "Municipality name", "Issue", "Number of registrations"};
            String [][] document=new String[exportImportRegistrationDataList.size()][7];
-//           for(int i=0; i<municipalityList.size(); i++){
-//               document[i][0]=String.valueOf(municipalityList.get(i).getId());
-//               document[i][1]=municipalityList.get(i).getName();
-//               document[i][2]=municipalityList.get(i).getAddress();
-//               document[i][3]=municipalityList.get(i).getAddressNum();
-//               document[i][4]=municipalityList.get(i).getPostalCode();
-//               document[i][5]=municipalityList.get(i).getCountry();
-//               document[i][6]=String.valueOf(municipalityList.get(i).getLauId());
-//           }
+           //Crear operaciones para eurank, countryrank, issue i number Rgistration
             for(int i=0; i<exportImportRegistrationDataList.size(); i++){
-                document[i][0]=String.valueOf(exportImportRegistrationDataList.get(i).getrId());
-                document[i][1]=exportImportRegistrationDataList.get(i).getmCountry();
-                document[i][2]=exportImportRegistrationDataList.get(i).getmCountry();
-                document[i][3]=exportImportRegistrationDataList.get(i).getmName();
-                document[i][4]=exportImportRegistrationDataList.get(i).getmName();
-                document[i][5]=exportImportRegistrationDataList.get(i).getmName();
+                String country=exportImportRegistrationDataList.get(i).getCountryName();
+                String municipailty=exportImportRegistrationDataList.get(i).getMunicipalityName();
+                int countCountry=0;
+                int countMunicipality=0;
+                for(int u=0; u<exportImportRegistrationDataList.size(); u++){
+                    if(country.equals(exportImportRegistrationDataList.get(u).getCountryName())){
+                        countCountry++;
+                    }
+                    if(municipailty.equals(exportImportRegistrationDataList.get(u).getMunicipalityName())){
+                        countMunicipality++;
+                    }
+                }
+                document[i][0]=String.valueOf(exportImportRegistrationDataList.get(i).getEuRank());
+                document[i][1]=String.valueOf(countCountry);
+                document[i][2]=exportImportRegistrationDataList.get(i).getCountryName();
+                document[i][3]=exportImportRegistrationDataList.get(i).getMunicipalityName();
+                document[i][4]=String.valueOf(exportImportRegistrationDataList.get(i).getEuRank());
+                document[i][5]=String.valueOf(countMunicipality);
             }
            cF.createExcelFile(header, document);
-//           List<MunicipalityDTO> municipalityList = municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findExport()));
-//           xportRegistrationDataDTO exportRegistrationDataDTO = exportRegistrationDataMapper.toDTOList(Lists.newArrayList(exportRegistrationDataRepository.findAll()));
     }
 
     @Transactional
-    //public void importRegistrationData(String name) throws Exception{
-        public void importRegistrationData() throws Exception{
+    public void importRegistrationData() throws Exception{
           _log.info("importRegistrationData");
-          //ReadExcelFile rF=new ReadExcelFile(municipalityRepository, municipalityMapper, exportImportRegistrationDataReporsitory, exportImportRegistrationDataMapper);
           ReadExcelFile rF=new ReadExcelFile(exportImportRegistrationDataReporsitory, exportImportRegistrationDataMapper);
           rF.readExcelFile();
-//        // pides el nombre del archivo excel y lo vas a buscar a la carpeta predefinida
-//        // lee archivo y mientras lees archivo
-//        mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
-//        //end for
     }
 
 

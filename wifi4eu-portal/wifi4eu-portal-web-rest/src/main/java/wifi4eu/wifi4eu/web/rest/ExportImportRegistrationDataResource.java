@@ -32,9 +32,7 @@ public class ExportImportRegistrationDataResource {
     @RequestMapping(value = "/export", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    //public ResponseDTO exportRegistrationData(@RequestBody HttpServletRequest request) {
-        //public ResponseDTO exportRegistrationData(HttpServletRequest response) {
-        public ResponseDTO exportRegistrationData() {
+    public ResponseDTO exportRegistrationData() {
         try {
             _log.info("exportRegistrationData");
             if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
@@ -42,38 +40,18 @@ public class ExportImportRegistrationDataResource {
             }
             exportImportRegistrationDataService.exportRegistrationData();
             return new ResponseDTO(true, null, null);
-           //Si retorno el excel directamente me lo bajará?
-           //return new ResponseDTO(true, excel, null);
         } catch (AccessDeniedException ade) {
-            //response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, null));
         } catch (Exception e) {
-            //response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-
-//        try {
-//            _log.info("exportRegistrationData");
-//            exportImportRegistrationDataService.exportRegistrationData();
-//            return new ResponseDTO(true, null, null);
-//            //Si retorno el excel directamente me lo bajará?
-//            //return new ResponseDTO(true, excel, null);
-//        } catch (Exception e) {
-//            if (_log.isErrorEnabled()) {
-//                _log.error("Error on 'submitBeneficiaryRegistration' operation.", e);
-//            }
-//            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-//        }
     }
 
     @ApiOperation(value = "Import registration data")
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-     //public ResponseDTO importRegistrationData(@RequestBody HttpServletRequest request) {
-        //public ResponseDTO importRegistrationData(HttpServletRequest response) {
-        public ResponseDTO importRegistrationData() {
-
+    public ResponseDTO importRegistrationData() {
         try {
             _log.info("importRegistrationData");
             exportImportRegistrationDataService.importRegistrationData();
@@ -82,27 +60,13 @@ public class ExportImportRegistrationDataResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'createMayor' operation.", ade);
             }
-            //response.sendError(HttpStatus.FORBIDDEN.value());
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createMayor' operation.", e);
             }
-            //response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
-//        try {
-//            _log.info("importRegistrationData");
-//            exportImportRegistrationDataService.importRegistrationData();
-//            return new ResponseDTO(true, null, null);
-//            //Si retorno el excel directamente me lo bajará?
-//            //return new ResponseDTO(true, excel, null);
-//        } catch (Exception e) {
-//            if (_log.isErrorEnabled()) {
-//                _log.error("Error on 'submitBeneficiaryRegistration' operation.", e);
-//            }
-//            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-//        }
     }
 
 }

@@ -1,10 +1,6 @@
 package wifi4eu.wifi4eu.entity.exportImport;
 
-import wifi4eu.wifi4eu.entity.location.Lau;
-import wifi4eu.wifi4eu.entity.registration.Registration;
-
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "municipalities_abac")
@@ -15,29 +11,26 @@ public class ExportImportRegistrationData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "rId")
-    private Integer rId;
+    @Column(name = "euRank")
+    private Integer euRank;
 
-    @Column(name = "mCountry")
-    private String mCountry;
+    @Column(name = "countryRank")
+    private Integer countryRank;
 
-    @Column(name = "mName")
-    private String mName;
+    @Column(name = "countryName")
+    private String countryName;
 
-    @Column(name = "uName")
-    private String uName;
+    @Column(name = "municipalityName")
+    private String municipalityName;
 
-    @Column(name = "uEcasEmail")
-    private String uEcasEmail;
+    @Column(name = "issue")
+    private String issue;
 
-    @Column(name = "uEcasUserName")
-    private String uEcasUserName;
-
-    @Column(name = "uType")
-    private String uType;
+    @Column(name = "numberOfRegistrations")
+    private Integer numberOfRegistrations;
 
     @Column(name = "abacReference")
-    private String abacReference;
+    private Integer abacReference;
 
     @Column(name = "abacStandarName")
     private String abacStandarName;
@@ -47,19 +40,17 @@ public class ExportImportRegistrationData {
 
     public ExportImportRegistrationData() {}
 
-    public ExportImportRegistrationData(Integer id, Integer rId, String mCountry, String mName, String uName, String uEcasEmail, String uEcasUserName, String uType, String abacReference, String abacStandarName, Integer municipality) {
+    public ExportImportRegistrationData(Integer id, Integer euRank, Integer countryRank, String countryName, String municipalityName, String issue, Integer numberOfRegistrations, Integer abacReference, String abacStandarName, Integer municipality) {
         this.id = id;
-        this.rId = rId;
-        this.mCountry = mCountry;
-        this.mName = mName;
-        this.uName = uName;
-        this.uEcasEmail = uEcasEmail;
-        this.uEcasUserName = uEcasUserName;
-        this.uType = uType;
+        this.euRank = euRank;
+        this.countryRank = countryRank;
+        this.countryName = countryName;
+        this.municipalityName = municipalityName;
+        this.issue = issue;
+        this.numberOfRegistrations = numberOfRegistrations;
         this.abacReference = abacReference;
         this.abacStandarName = abacStandarName;
         this.municipality = municipality;
-
     }
 
     public Integer getId() {
@@ -70,67 +61,59 @@ public class ExportImportRegistrationData {
         this.id = id;
     }
 
-    public Integer getrId() {
-        return rId;
+    public Integer getEuRank() {
+        return euRank;
     }
 
-    public void setrId(Integer rId) {
-        this.rId = rId;
+    public void setEuRank(Integer euRank) {
+        this.euRank = euRank;
     }
 
-    public String getmCountry() {
-        return mCountry;
+    public Integer getCountryRank() {
+        return countryRank;
     }
 
-    public void setmCountry(String mCountry) {
-        this.mCountry = mCountry;
+    public void setCountryRank(Integer countryRank) {
+        this.countryRank = countryRank;
     }
 
-    public String getmName() {
-        return mName;
+    public String getCountryName() {
+        return countryName;
     }
 
-    public void setmName(String mName) {
-        this.mName = mName;
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 
-    public String getuName() {
-        return uName;
+    public String getMunicipalityName() {
+        return municipalityName;
     }
 
-    public void setuName(String uName) {
-        this.uName = uName;
+    public void setMunicipalityName(String municipalityName) {
+        this.municipalityName = municipalityName;
     }
 
-    public String getuEcasEmail() {
-        return uEcasEmail;
+    public String getIssue() {
+        return issue;
     }
 
-    public void setuEcasEmail(String uEcasEmail) {
-        this.uEcasEmail = uEcasEmail;
+    public void setIssue(String issue) {
+        this.issue = issue;
     }
 
-    public String getuType() {
-        return uType;
+    public Integer getNumberOfRegistrations() {
+        return numberOfRegistrations;
     }
 
-    public void setuType(String uType) {
-        this.uType = uType;
+    public void setNumberOfRegistrations(Integer numberOfRegistrations) {
+        this.numberOfRegistrations = numberOfRegistrations;
     }
 
-    public String getuEcasUserName() {
-        return uEcasUserName;
-    }
-
-    public void setuEcasUserName(String uEcasUserName) {
-        this.uEcasUserName = uEcasUserName;
-    }
-
-    public String getAbacReference() {
+    public Integer getAbacReference() {
         return abacReference;
     }
 
-    public void setAbacReference(String abacReference) {
+    public void setAbacReference(Integer abacReference) {
         this.abacReference = abacReference;
     }
 

@@ -5,100 +5,95 @@ import java.io.Serializable;
 
 public class ExportImportRegistrationDataDTO implements Serializable {
 
-    private Integer id;
-    private Integer rId;
-    private String mCountry;
-    private String mName;
-    private String uName;
-    private String uEcasEmail;
-    private String uEcasUserName;
-    private String uType;
-    private String abacReference;
+    private int id;
+    private int euRank;
+    private int countryRank;
+    private String countryName;
+    private String municipalityName;
+    private String issue;
+    private int numberOfRegistrations;
+    private int abacReference;
     private String abacStandarName;
-    private Integer municipality;
+    private int municipality;
 
     public ExportImportRegistrationDataDTO() {}
 
-    public ExportImportRegistrationDataDTO(Integer id, Integer rId, String mCountry, String mName, String uName, String uEcasEmail, String uEcasUserName, String uType, String abacReference, String abacStandarName, Integer municipality) {
+    public ExportImportRegistrationDataDTO(int id, int euRank, int countryRank, String countryName, String municipalityName, String issue, int numberOfRegistrations, int abacReference, String abacStandarName, int municipality) {
         this.id = id;
-        this.rId = rId;
-        this.mCountry = mCountry;
-        this.mName = mName;
-        this.uName = uName;
-        this.uEcasEmail = uEcasEmail;
-        this.uEcasUserName = uEcasUserName;
-        this.uType = uType;
+        this.euRank = euRank;
+        this.countryRank = countryRank;
+        this.countryName = countryName;
+        this.municipalityName = municipalityName;
+        this.issue = issue;
+        this.numberOfRegistrations = numberOfRegistrations;
         this.abacReference = abacReference;
         this.abacStandarName = abacStandarName;
         this.municipality = municipality;
-
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getrId() {
-        return rId;
+    public int getEuRank() {
+        return euRank;
     }
 
-    public void setrId(Integer rId) {
-        this.rId = rId;
+    public void setEuRank(int euRank) {
+        this.euRank = euRank;
     }
 
-    public String getmCountry() { return mCountry; }
-
-    public void setmCountry(String mCountry) {
-        this.mCountry = mCountry;
+    public int getCountryRank() {
+        return countryRank;
     }
 
-    public String getmName() { return mName; }
-
-    public void setmName(String mName) {
-        this.mName = mName;
+    public void setCountryRank(int countryRank) {
+        this.countryRank = countryRank;
     }
 
-    public String getuName() {
-        return uName;
+    public String getCountryName() {
+        return countryName;
     }
 
-    public void setuName(String uName) {
-        this.uName = uName;
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 
-    public String getuEcasEmail() {
-        return uEcasEmail;
+    public String getMunicipalityName() {
+        return municipalityName;
     }
 
-    public void setuEcasEmail(String uEcasEmail) {
-        this.uEcasEmail = uEcasEmail;
+    public void setMunicipalityName(String municipalityName) {
+        this.municipalityName = municipalityName;
     }
 
-    public String getuEcasUserName() {
-        return uEcasUserName;
+    public String getIssue() {
+        return issue;
     }
 
-    public void setuEcasUserName(String uEcasUserName) {
-        this.uEcasUserName = uEcasUserName;
+    public void setIssue(String issue) {
+        this.issue = issue;
     }
 
-    public String getuType() {
-        return uType;
+    public int getNumberOfRegistrations() {
+        return numberOfRegistrations;
     }
 
-    public void setuType(String uType) {
-        this.uType = uType;
+    public void setNumberOfRegistrations(int numberOfRegistrations) {
+        this.numberOfRegistrations = numberOfRegistrations;
     }
 
-    public String getAbacReference() {
+    public int getAbacReference() {
         return abacReference;
     }
 
-    public void setAbacReference(String abacReference) { this.abacReference = abacReference; }
+    public void setAbacReference(int abacReference) {
+        this.abacReference = abacReference;
+    }
 
     public String getAbacStandarName() {
         return abacStandarName;
@@ -108,11 +103,11 @@ public class ExportImportRegistrationDataDTO implements Serializable {
         this.abacStandarName = abacStandarName;
     }
 
-    public Integer getMunicipality() {
+    public int getMunicipality() {
         return municipality;
     }
 
-    public void setMunicipality(Integer municipality) {
+    public void setMunicipality(int municipality) {
         this.municipality = municipality;
     }
 
@@ -120,16 +115,17 @@ public class ExportImportRegistrationDataDTO implements Serializable {
     public String toString() {
         return "ExportImportRegistrationDataDTO{" +
                 "id=" + id + '\'' +
-                ", rId=" + rId + '\'' +
-                ", mCountry=" + mCountry + '\'' +
-                ", mName=" + mName + '\'' +
-                ", uName=" + uName + '\'' +
-                ", uEcasEmail=" + uEcasEmail + '\'' +
-                ", uEcasUserName=" + uEcasUserName + '\'' +
+                ", euRank=" + euRank + '\'' +
+                ", countryRank=" + countryRank + '\'' +
+                ", countryName=" + countryName + '\'' +
+                ", municipalityName=" + municipalityName + '\'' +
+                ", issue=" + issue + '\'' +
+                ", numberOfRegistrations=" + numberOfRegistrations + '\'' +
                 ", abacReference='" + abacReference + '\'' +
                 ", abacStandarName='" + abacStandarName + '\'' +
                 ", municipality='" + municipality +
                 '}';
     }
+
 }
 
