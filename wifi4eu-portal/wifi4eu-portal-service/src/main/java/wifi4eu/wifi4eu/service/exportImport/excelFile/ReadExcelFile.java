@@ -48,7 +48,6 @@ public class ReadExcelFile {
             XSSFSheet sheet = worbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
             Row row;
-
             int count=0;
             while (rowIterator.hasNext()) {
                 row = rowIterator.next();
@@ -61,8 +60,7 @@ public class ReadExcelFile {
                       eI.setMunicipalityName(row.getCell(3).getStringCellValue());
                       eI.setIssue(row.getCell(4).getStringCellValue());
                       eI.setNumberOfRegistrations(Integer.parseInt(row.getCell(5).getStringCellValue()));
-                      //eI.setAbacReference((int)row.getCell(6).getNumericCellValue());
-                      eI.setAbacReference(Integer.parseInt(row.getCell(6).getStringCellValue()));
+                      eI.setAbacReference(row.getCell(6).getStringCellValue());
                       eI.setAbacStandarName(row.getCell(7).getStringCellValue());
                       eI.setMunicipality(Integer.parseInt(row.getCell(0).getStringCellValue()));
                       exportImportRegistrationDataReporsitory.save(exportImportRegistrationDataMapper.toEntity(eI));

@@ -484,15 +484,15 @@ CREATE TABLE dbo.user_threads
 -- -----------------------------------------------------
 -- Table `dbo`.`municipalities_abac`
 -- -----------------------------------------------------
-CREATE TABLE dbo.municipalities_abac (
-  [id] INT NOT NULL,
-  [euRank] INT NOT NULL,
-  [countryRank] INT DEFAULT NULL,
-  [countryName] varchar(255) NULL,
-  [municipalityName] varchar(255) NULL,
-  [issue] varchar(255) NULL,
-  [numberOfRegistrations] INT DEFAULT NULL,
-  [abacReference] INT DEFAULT NULL,
-  [abacStandarName] varchar(255) NULL,
-  [municipality] INT NOT NULL
-) ;
+CREATE TABLE [dbo].[municipalities_abac](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[euRank] [int] NOT NULL,
+	[countryRank] [int] NULL,
+	[countryName] [varchar](255) NULL,
+	[municipalityName] [varchar](255) NULL,
+	[issue] [varchar](255) NULL,
+	[numberOfRegistrations] [int] NULL,
+	[abacReference] [varchar](255) NULL,
+	[abacStandarName] [varchar](255) NULL,
+	[municipality] [int] NOT NULL
+) ON [PRIMARY]

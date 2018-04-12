@@ -6,16 +6,16 @@ import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
 
 public interface ExportImportRegistrationDataReporsitory extends CrudRepository<ExportImportRegistrationData,Integer> {
     @Query(value = "select \n" +
-        "r.id as id, \n" +
-        "r.id as euRank, \n" +
-        "r.id as countryRank, \n" +
+        "r.municipality as id, \n" +
+        "r.municipality as euRank, \n" +
+        "r.municipality as countryRank, \n" +
         "m.country  as countryName, \n" +
         "m.name as municipalityName, \n" +
-        "r.id as issue, \n" +
-        "r.id as numberOfRegistartions, \n" +
-        "r.id as abacReference, \n" +
-        "r.id as abacStandarName, \n" +
-        "r.id as municipality \n" +
+        "r.municipality as issue, \n" +
+        "r.municipality as numberOfRegistartions, \n" +
+        "m.name as abacReference, \n" +
+        "m.name as abacStandarName, \n" +
+        "r.municipality as municipality \n" +
         "from \n" +
         "registrations as r \n" +
         "left join \n" +

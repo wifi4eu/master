@@ -12,13 +12,13 @@ public class ExportImportRegistrationDataDTO implements Serializable {
     private String municipalityName;
     private String issue;
     private int numberOfRegistrations;
-    private int abacReference;
+    private String abacReference;
     private String abacStandarName;
     private int municipality;
 
     public ExportImportRegistrationDataDTO() {}
 
-    public ExportImportRegistrationDataDTO(int id, int euRank, int countryRank, String countryName, String municipalityName, String issue, int numberOfRegistrations, int abacReference, String abacStandarName, int municipality) {
+    public ExportImportRegistrationDataDTO(int id, int euRank, int countryRank, String countryName, String municipalityName, String issue, int numberOfRegistrations, String abacReference, String abacStandarName, int municipality) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;
@@ -87,11 +87,11 @@ public class ExportImportRegistrationDataDTO implements Serializable {
         this.numberOfRegistrations = numberOfRegistrations;
     }
 
-    public int getAbacReference() {
+    public String getAbacReference() {
         return abacReference;
     }
 
-    public void setAbacReference(int abacReference) {
+    public void setAbacReference(String abacReference) {
         this.abacReference = abacReference;
     }
 

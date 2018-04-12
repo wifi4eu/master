@@ -4,6 +4,7 @@ import {ApplicationApi} from "../../shared/swagger/api/ApplicationApi";
 import {ExportImportApi} from "../../shared/swagger/api/ExportImportApi";
 import {SharedService} from "../../shared/shared.service";
 import { ResponseDTO } from '../../shared/swagger/model/ResponseDTO';
+import {TranslateService} from "ng2-translate";
 
 @Component({
     templateUrl: 'exportImport.component.html', providers: [CallApi, ApplicationApi, ExportImportApi]
@@ -11,17 +12,22 @@ import { ResponseDTO } from '../../shared/swagger/model/ResponseDTO';
 
 export class DgConnExportImportComponent {
 
-     constructor(private exportImportApi: ExportImportApi, private sharedService: SharedService) {}
+     constructor(private exportImportApi: ExportImportApi, private sharedService: SharedService, private translateService: TranslateService) {}
 
      export(){
             this.exportImportApi.exportRegistrationData().subscribe(
                 (response: ResponseDTO)  => {
                     if(response.success){
                         this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
-                        alert("Your file have been exported correctly!");
+                        this.translateService.get("dgconn.dashboard.card.messageExport").subscribe(
+                            (translation: string) => {
+                                if (translation) {
+                                    window.alert(translation);
+                                }
+                            }
+                        );
                     }
                 },
-                //response => {},
                 error => {
                 }
             );
@@ -32,10 +38,15 @@ export class DgConnExportImportComponent {
                 (response: ResponseDTO)  => {
                     if(response.success){
                         this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
-                        alert("Your file have been imported correctly!");
+                        this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                            (translation: string) => {
+                                if (translation) {
+                                    window.alert(translation);
+                                }
+                            }
+                        );
                     }
                 },
-                //response => {},
                 error => {
                 }
             );

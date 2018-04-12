@@ -39,8 +39,9 @@ public class ExportImportRegistrationDataService {
                 int countMunicipality=0;
                 for(int u=0; u<exportImportRegistrationDataList.size(); u++){
                     if(country.equals(exportImportRegistrationDataList.get(u).getCountryName())){
-                        countryCount[u][0]=countCountry++;
-                        countryCount[u][1]=exportImportRegistrationDataList.get(i).getEuRank();
+                        countCountry++;
+                        countryCount[u][0]=countCountry;
+                        countryCount[u][1]=exportImportRegistrationDataList.get(u).getEuRank();
 
                     }
                     if(municipailty.equals(exportImportRegistrationDataList.get(u).getMunicipalityName())){
@@ -49,8 +50,10 @@ public class ExportImportRegistrationDataService {
                 }
                 document[i][0]=String.valueOf(exportImportRegistrationDataList.get(i).getEuRank());
                 for(int w=0; w<countryCount.length; w++){
-                    if(exportImportRegistrationDataList.get(i).getEuRank()==countryCount[w][1]){
-                        document[i][1] = String.valueOf(countryCount[w][0]);
+                    if(null!=countryCount[w][0]){
+                        if(exportImportRegistrationDataList.get(i).getEuRank()==countryCount[w][1]){
+                            document[i][1] = String.valueOf(countryCount[w][0]);
+                        }
                     }
                 }
                 document[i][2]=exportImportRegistrationDataList.get(i).getCountryName();

@@ -30,7 +30,7 @@ public class ExportImportRegistrationData {
     private Integer numberOfRegistrations;
 
     @Column(name = "abacReference")
-    private Integer abacReference;
+    private String abacReference;
 
     @Column(name = "abacStandarName")
     private String abacStandarName;
@@ -40,7 +40,7 @@ public class ExportImportRegistrationData {
 
     public ExportImportRegistrationData() {}
 
-    public ExportImportRegistrationData(Integer id, Integer euRank, Integer countryRank, String countryName, String municipalityName, String issue, Integer numberOfRegistrations, Integer abacReference, String abacStandarName, Integer municipality) {
+    public ExportImportRegistrationData(Integer id, Integer euRank, Integer countryRank, String countryName, String municipalityName, String issue, Integer numberOfRegistrations, String abacReference, String abacStandarName, Integer municipality) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;
@@ -109,11 +109,11 @@ public class ExportImportRegistrationData {
         this.numberOfRegistrations = numberOfRegistrations;
     }
 
-    public Integer getAbacReference() {
+    public String getAbacReference() {
         return abacReference;
     }
 
-    public void setAbacReference(Integer abacReference) {
+    public void setAbacReference(String abacReference) {
         this.abacReference = abacReference;
     }
 
