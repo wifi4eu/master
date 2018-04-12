@@ -5,9 +5,25 @@ import { SharedService } from "../../../shared/shared.service";
 import { SupplierApi } from "../../../shared/swagger/api/SupplierApi";
 import { SupplierDTOBase } from "../../../shared/swagger/model/SupplierDTO";
 import { ResponseDTOBase } from "../../../shared/swagger/model/ResponseDTO";
+import { animate, style, transition, trigger } from "@angular/animations";
 
 @Component({
-    templateUrl: 'supplier-registrations-details.component.html', providers: [SupplierApi]
+    templateUrl: 'supplier-registrations-details.component.html',
+    providers: [SupplierApi],
+    animations: [
+        trigger(
+            'enterSpinner', [
+                transition(':enter', [
+                    style({opacity: 0}),
+                    animate('200ms', style({opacity: 1}))
+                ]),
+                transition(':leave', [
+                    style({opacity: 1}),
+                    animate('200ms', style({opacity: 0}))
+                ])
+            ]
+        )
+    ]
 })
 
 export class DgConnSupplierRegistrationsDetailsComponent {
@@ -17,8 +33,10 @@ export class DgConnSupplierRegistrationsDetailsComponent {
     private selectedMainSupplier: boolean = null;
     private selectedIndex: number = null;
     private processingRequest: boolean = false;
+    private loadingData: boolean = false;
 
     constructor(private route: ActivatedRoute, private sanitizer: DomSanitizer, private sharedService: SharedService, private supplierApi: SupplierApi) {
+        this.loadingData = true;
         this.route.params.subscribe(
             params => {
                 let supplierId = params['id'];
@@ -31,8 +49,11 @@ export class DgConnSupplierRegistrationsDetailsComponent {
                                         this.similarSuppliers = suppliers;
                                     }
                                     this.supplier = supplier;
+                                    this.loadingData = false;
                                 }
                             );
+                        } else {
+                            this.loadingData = false;
                         }
                     }
                 );
@@ -87,12 +108,12 @@ export class DgConnSupplierRegistrationsDetailsComponent {
     private displayInvalidateModal(mainSupplier: boolean, index?: number) {
         this.selectedMainSupplier = mainSupplier;
         if (this.selectedMainSupplier) {
-            if (this.supplier.status != 0) {
+            if (this.supplier.status != 1) {
                 this.displayInvalidate = true;
             }
         } else {
             if (index != null) {
-                if (this.similarSuppliers[index].status != 0) {
+                if (this.similarSuppliers[index].status != 1) {
                     this.selectedIndex = index;
                     this.displayInvalidate = true;
                 }
