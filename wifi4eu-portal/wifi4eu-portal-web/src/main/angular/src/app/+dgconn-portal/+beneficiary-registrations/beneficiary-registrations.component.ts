@@ -1,61 +1,86 @@
-import { Component, Input, IterableDifferFactory } from "@angular/core";
-import { LauDTO, LauDTOBase } from "../../shared/swagger/model/LauDTO";
-import { MayorDTO, MayorDTOBase } from "../../shared/swagger/model/MayorDTO";
-import { MayorApi } from "../../shared/swagger/api/MayorApi";
+import { Component } from "@angular/core";
+import { animate, style, transition, trigger } from "@angular/animations";
 import { BeneficiaryApi } from "../../shared/swagger/api/BeneficiaryApi";
-import { LauApi } from "../../shared/swagger/api/LauApi";
-import { UserDTO, UserDTOBase } from "../../shared/swagger/model/UserDTO";
-import { UserApi } from "../../shared/swagger/api/UserApi";
-import { RegistrationApi } from "../../shared/swagger/api/RegistrationApi";
-import { RegistrationDTO, RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
-
-import Any = jasmine.Any;
-import { SelectItem, DataTable } from "primeng/primeng";
-import { MunicipalityApi } from "app/shared/swagger";
-import { ViewChild } from "@angular/core";
+import { BeneficiaryListItemDTOBase } from "../../shared/swagger/model/BeneficiaryListItemDTO";
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
 
 @Component({
-    templateUrl: 'beneficiary-registrations.component.html', providers: [BeneficiaryApi, LauApi, MayorApi, UserApi, MunicipalityApi]
+    templateUrl: 'beneficiary-registrations.component.html',
+    providers: [BeneficiaryApi],
+    animations: [
+        trigger(
+            'enterSpinner', [
+                transition(':enter', [
+                    style({opacity: 0}),
+                    animate('200ms', style({opacity: 1}))
+                ]),
+                transition(':leave', [
+                    style({opacity: 1}),
+                    animate('200ms', style({opacity: 0}))
+                ])
+            ]
+        )
+    ]
 })
 
 export class DgConnBeneficiaryRegistrationsComponent {
+    private inputSearch: string = '';
+    private beneficiaryListItems: BeneficiaryListItemDTOBase[] = [];
+    private totalItems: number = 0;
+    private page: number = 0;
+    private itemsPerPage: number = 5;
+    private totalPages: number = 1;
+    private rowsPerPageOptions: number[] = [5, 10, 20];
+    private sortField: string = 'name';
+    private sortOrder: number = 1;
+    private loadingData: boolean = false;
 
-    @ViewChild('tableBeneficiary') tableBeneficiary: DataTable;
-
-    registrationListOriginal: any[] = [];
-    rowsPerPageOptions = [5, 10, 20];
-    numberRowsTable = this.rowsPerPageOptions[1];
-    inputSearch = "";
-
-    registrationList: any[] = [];
-
-    constructor(private registrationApi: RegistrationApi, private beneficiaryApi: BeneficiaryApi, private userApi: UserApi, private lauApi: LauApi, private mayorApi: MayorApi, private municipalityApi: MunicipalityApi) {
-
-        this.beneficiaryApi.getBeneficiaryRegistrations().subscribe(
-            data => {
-                this.registrationList = data;
-                this.registrationListOriginal = data;
-            }
-        )
+    constructor(private beneficiaryApi: BeneficiaryApi) {
     }
 
-    filterData(stringSearch: string) {
-        if(typeof stringSearch != "undefined" && stringSearch != ""){
-            stringSearch = stringSearch.toLocaleLowerCase();
-            let registrations =  this.registrationListOriginal.map(
-                (registration) => {
-                    registration.lau.name1 = registration.lau.name1 || "";
-                    registration.lau.countryCode = registration.lau.countryCode || "";
-                    return registration;
+    private inputSearchMunicipalities() {
+        this.page = 0;
+        this.searchMunicipalities();
+    }
+
+    private searchMunicipalities() {
+        this.loadingData = true;
+        if (this.inputSearch.trim().length > 0) {
+            this.beneficiaryApi.findDgconnBeneficiaresListSearchingName(this.inputSearch.trim(), this.itemsPerPage * this.page, this.itemsPerPage, this.sortField, this.sortOrder).subscribe(
+                (response: ResponseDTOBase) => {
+                    this.loadingData = false;
+                    if (response.success) {
+                        this.totalItems = response.xtotalCount;
+                        this.totalPages = this.totalItems / this.itemsPerPage;
+                        this.beneficiaryListItems = response.data;
+                    }
                 }
-            ).filter(element => {
-                return (element.lau.name1.toLocaleLowerCase().match(stringSearch) || element.lau.countryCode.toLocaleLowerCase().match(stringSearch))
-            });
-            this.registrationList = [...registrations];
-        }
-        else{
-            this.registrationList = [...this.registrationListOriginal];
+            );
+        } else {
+            this.beneficiaryApi.findDgconnBeneficiaresList(this.itemsPerPage * this.page, this.itemsPerPage, this.sortField, this.sortOrder).subscribe(
+                (response: ResponseDTOBase) => {
+                    this.loadingData = false;
+                    if (response.success) {
+                        this.totalItems = response.xtotalCount;
+                        this.totalPages = this.totalItems / this.itemsPerPage;
+                        this.beneficiaryListItems = response.data;
+                    }
+                }
+            );
         }
     }
 
+    private loadData(event) {
+        if (event['rows'] != null)
+            this.itemsPerPage = event['rows'];
+        if (event['first'] != null)
+            this.page = event['first'] / this.itemsPerPage;
+        if (event['pageCount'] != null)
+            this.totalPages = event['pageCount'];
+        if (event['sortField'] != null)
+            this.sortField = event['sortField'];
+        if (event['sortOrder'] != null)
+            this.sortOrder = event['sortOrder'];
+        this.searchMunicipalities();
+    }
 }
