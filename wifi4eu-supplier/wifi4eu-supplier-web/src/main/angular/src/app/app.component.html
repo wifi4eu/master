@@ -1,0 +1,51 @@
+<ux-layout-app-shell [isScrollHandlerActive]="true" headerAppFullName="WiFi4EU web portal" headerAppShortName="WiFi4EU - Supp"
+    [headerUserInfos]="userInfos" (headerLanguageChanged)="onLanguageChanged($event)" [navBarNotificationLinks]="" [navBarTopMenuLinks]="menuLinks"
+    [isFooterStyleInverse]="true">
+
+    <!-- <uxAppShellNavBarItemsContent> -->
+    <!-- <ux-layout-nav-bar-action-item iconClass="fa-info-circle">
+            <ul>
+                <li><a href="http://www.google.be" target="_blank">About</a></li>
+                <li><a>Contact</a></li>
+            </ul>
+            <ul>
+                <li><a>Legal notice</a></li>
+                <li><a>...</a></li>
+            </ul>
+        </ux-layout-nav-bar-action-item>
+
+        <ux-layout-nav-bar-action-item iconClass="fa-search" contentClass="search-bar">
+            <app-search-input></app-search-input>
+        </ux-layout-nav-bar-action-item> -->
+    <!-- </uxAppShellNavBarItemsContent> -->
+
+    <!-- <uxAppShellFooterContent>
+            <ul>
+                <span>Last update 11/04/2018</span>
+                 <span><i class="fa fa-copyright" aria-hidden="true"></i>&nbsp;2017-2020&nbsp;European Commission</span> 
+                <li>
+                    <a href="/">About</a>
+                </li>
+                <li>
+                    <a (click)="uxService.openModal('modal_feedback')">Feedback</a>
+                </li>
+                <li>
+                    <a href="/">Confidentiality</a>
+                </li>
+                <li>
+                    <a href="/">Terms and conditions</a>
+                </li>
+            </ul>
+        </uxAppShellFooterContent> -->
+
+
+    <uxAppShellFooterContent>
+        <ul>
+                {{ 'home.footer.update' | translate:{version:"1.8.0-rc11",versionDate:"22/03/2018"} }}
+            <li>
+                <a (click)="goToTop()">{{ 'home.footer.top' | translate }}</a>
+            </li>
+        </ul>
+    </uxAppShellFooterContent>
+    
+</ux-layout-app-shell>

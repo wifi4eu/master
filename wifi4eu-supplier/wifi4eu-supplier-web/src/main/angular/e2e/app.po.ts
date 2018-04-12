@@ -1,19 +1,11 @@
-import { browser, element, by } from 'protractor';
+import { browser, by, element } from 'protractor';
 
-export class IndexPage {
-	navigateTo() {
-		return browser.get('/');
-	}
+export class AppPage {
+    navigateTo() {
+        return browser.get('/');
+    }
 
-	getH1Text() {
-		return element(by.tagName('h1')).getText();
-	}
-
-	clickOnBeneficiaryRegistrationButton() {
-		return element(by.className('btn btn-primary video-button center-block video-button')).click();
-	}
-
-	getLegalEntityComponent() {
-		return element(by.tagName('legal-entity-component')).isPresent();
-	}
+    getHeaderApplicationName() {
+        return element(by.css('#app-header h1.full')).getText();
+    }
 }
