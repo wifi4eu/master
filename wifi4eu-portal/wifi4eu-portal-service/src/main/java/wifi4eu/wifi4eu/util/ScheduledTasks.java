@@ -69,13 +69,11 @@ public class ScheduledTasks {
 
     @Scheduled(cron = "0 0/5 * * * ?")
     public void scheduleAzureQueue() throws InvalidKeyException, StorageException, URISyntaxException {
-        azureQueueService.createAzureQueue("stressqueue");
-        List<CloudQueueMessage> list = azureQueueService.getMessagesAzureQueue();
+        azureQueueService.createAzureQueue("stressqueue-1");
+        List<CloudQueueMessage> list = azureQueueService.peekMessagesAzureQueue(32, 600);
 
         for (CloudQueueMessage cloudQueueMessage: list) {
-
             String queueMessage = cloudQueueMessage.getMessageContentAsString();
-
             String idRegistration = queueMessage.substring(queueMessage.indexOf("(") + 1);
             idRegistration = idRegistration.substring(0, idRegistration.indexOf(")"));
 
@@ -92,7 +90,7 @@ public class ScheduledTasks {
               applicationService.createApplication(applicationDTO);
             }
 
-            azureQueueService.removeMessageAzureQueue();
+            azureQueueService.removeMessageAzureQueue(cloudQueueMessage);
         }
     }
 

@@ -5,6 +5,7 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.queue.CloudQueue;
 import com.microsoft.azure.storage.queue.CloudQueueMessage;
 import com.microsoft.azure.storage.queue.MessageUpdateFields;
+import com.microsoft.azure.storage.queue.QueueRequestOptions;
 import org.springframework.stereotype.Component;
 import wifi4eu.wifi4eu.azure.constants.QueueConstants;
 
@@ -41,6 +42,14 @@ public class Queue implements AzureQueue {
         CloudQueue queue = utils.generateCloudQueue();
 
         List<CloudQueueMessage> list = Lists.newArrayList(queue.retrieveMessages(QueueConstants.MAX_NUMBER_OF_MESSAGES_TO_PEEK,1,null,null));
+
+        return list;
+    }
+
+    public List<CloudQueueMessage> peekMessagesAzureQueue(final int peekNumber, final int visibilityTimeout) throws StorageException, InvalidKeyException, URISyntaxException {
+        CloudQueue queue = utils.generateCloudQueue();
+
+        List<CloudQueueMessage> list = Lists.newArrayList(queue.retrieveMessages(peekNumber,visibilityTimeout,null,null));
 
         return list;
     }
@@ -94,6 +103,19 @@ public class Queue implements AzureQueue {
         }
     }
 
+    public void removeMessages() throws URISyntaxException,
+            StorageException,
+            InvalidKeyException{
+        CloudQueue queue = utils.generateCloudQueue();
+
+        // Retrieve the first visible message in the queue.
+
+        List<CloudQueueMessage> list = Lists.newArrayList(queue.retrieveMessages(QueueConstants.MAX_NUMBER_OF_MESSAGES_TO_PEEK,1,null,null));
+        for(CloudQueueMessage cloudQueueMessage: list){
+            queue.deleteMessage(cloudQueueMessage);
+        }
+    }
+
     public void removeMessageAzureQueue() throws URISyntaxException,
                                                     StorageException,
                                                     InvalidKeyException {
@@ -109,6 +131,19 @@ public class Queue implements AzureQueue {
             queue.deleteMessage(retrievedMessage);
         }
     }
+
+    public void removeMessageAzureQueue(CloudQueueMessage message) throws URISyntaxException,
+            StorageException,
+            InvalidKeyException {
+
+        CloudQueue queue = utils.generateCloudQueue();
+
+        if (message != null) {
+            // Process the message in less than 30 seconds, and then delete the message.
+            queue.deleteMessage(message);
+        }
+    }
+
 
     public long sizeAzureQueue() throws URISyntaxException,
                                             InvalidKeyException,

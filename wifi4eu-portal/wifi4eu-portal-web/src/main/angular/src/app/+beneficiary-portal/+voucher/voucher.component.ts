@@ -133,13 +133,16 @@ export class VoucherComponent {
                                                         if(element){
                                                           if(element['expires_in'] < Math.floor(new Date().getTime() / 1000)){
                                                              this.disableQueuing[index] = null;
+                                                             this.loadingButtons[index] = false;
                                                           }else{
-                                                            if(this.applications[index] == null){
-                                                              var newdate = new Date();
-                                                              newdate.setMinutes(newdate.getMinutes() + 5);
-                                                              this.disableQueuing[index]['expires_in'] = Math.floor(newdate.getTime() / 1000);
-                                                            }else{
+                                                            if(this.applications[index] != null){
+                                                              this.loadingButtons[index] = true;
                                                               this.disableQueuing[index] = null;
+                                                              
+                                                            }else{
+                                                              /* var newdate = new Date();
+                                                              newdate.setMinutes(newdate.getMinutes() + 5);
+                                                              this.disableQueuing[index]['expires_in'] = Math.floor(newdate.getTime() / 1000); */
                                                             }
                                                           }
                                                         }                                                        
@@ -198,34 +201,36 @@ export class VoucherComponent {
         let startCallDate = this.currentCall.startDate;
         let actualDateTime = new Date().getTime();
 
-
-
         if  (startCallDate <= actualDateTime) {
-          
-          var queueComponent = new QueueComponent();
 
-          let aNewMessageApplication = new AzureQueueDTOBase();
-          aNewMessageApplication.message = "Apply voucher (" + this.registrations[registrationNumber].id + ") @"+this.currentCall.id+"@";
+          if(!this.loadingButtons[registrationNumber]){
 
-          queueComponent.createAzureQueue().then((res) => {
-            queueComponent.addMessageAzureQueue(aNewMessageApplication.message).then((response) => {
-              event.target.style.pointerEvents = "none";
-              event.target.style.opacity = "0.5";
-              event.target.disabled = true;
-              this.loadingButtons[registrationNumber] = false;
-              this.voucherApplied = "greyImage";
-              this.voucherCompetitionState = 3;
+            var queueComponent = new QueueComponent();
 
-              var oneHourLater = new Date();
-              oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
-              var timestamp = Math.floor(oneHourLater.getTime()/1000);
+            let aNewMessageApplication = new AzureQueueDTOBase();
+            aNewMessageApplication.message = "Apply voucher (" + this.registrations[registrationNumber].id + ") @"+this.currentCall.id+"@";
 
-              var queueStored = {expires_in: timestamp, idRegistration: this.registrations[registrationNumber].id, call: this.currentCall.id };
-              this.storedRegistrationQueues.push(queueStored);
-              this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
-              this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
-            });
-          });       
+            event.target.style.pointerEvents = "none";
+            event.target.style.opacity = "0.5";
+            event.target.disabled = true;
+            
+            queueComponent.createAzureQueue().then((res) => {
+              queueComponent.addMessageAzureQueue(aNewMessageApplication.message).then((response) => {
+                this.loadingButtons[registrationNumber] = true;
+                this.voucherApplied = "greyImage";
+                this.voucherCompetitionState = 3;
+
+                var oneHourLater = new Date();
+                oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
+                var timestamp = Math.floor(oneHourLater.getTime()/1000);
+
+                var queueStored = {expires_in: timestamp, idRegistration: this.registrations[registrationNumber].id, call: this.currentCall.id };
+                this.storedRegistrationQueues.push(queueStored);
+                this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
+                this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
+              });
+            }); 
+          }     
         }
     }
 

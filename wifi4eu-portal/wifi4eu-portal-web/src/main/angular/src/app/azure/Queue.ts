@@ -4,7 +4,7 @@ declare var AzureStorage: any;
 export class QueueComponent {
 
   private encoder = new AzureStorage.Queue.QueueMessageEncoder.TextBase64QueueMessageEncoder();
-  private queueName = "stressqueue";
+  private queueName = "stressqueue-1";
   private queueSvc = AzureStorage.Queue.createQueueService("DefaultEndpointsProtocol=https;AccountName=w4equeuestorage;AccountKey=sWvFubVoxStR9G4qMDYdEhASMIYD9Ls2g5/KZdnD563NBeojhP9ehEm1qY0qc/5teR60kOjzIvl5zj0zDsW+1A==;EndpointSuffix=core.windows.net");
 
   constructor() {}

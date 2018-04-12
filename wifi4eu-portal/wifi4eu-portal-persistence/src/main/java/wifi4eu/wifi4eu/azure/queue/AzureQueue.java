@@ -19,5 +19,7 @@ public interface AzureQueue {
     String getQueueName();
     void setQueueName(final String name);
     List<CloudQueueMessage> getMessagesAzureQueue() throws StorageException, InvalidKeyException, URISyntaxException;
-
+    List<CloudQueueMessage> peekMessagesAzureQueue(final int peekNumber, final int visibilityTimeout) throws StorageException, InvalidKeyException, URISyntaxException;
+    void removeMessages() throws URISyntaxException, InvalidKeyException, StorageException;
+    void removeMessageAzureQueue(CloudQueueMessage message) throws URISyntaxException, StorageException, InvalidKeyException;
 }

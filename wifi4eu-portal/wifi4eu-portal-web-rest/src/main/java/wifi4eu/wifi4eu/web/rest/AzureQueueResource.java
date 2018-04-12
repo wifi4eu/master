@@ -40,8 +40,9 @@ public class AzureQueueResource {
         try {
             _log.info("addMessageAzureQueue");
 
-            /*azureQueueService.createAzureQueue("stressqueue");
+            azureQueueService.createAzureQueue("stressqueue-1");/*
             azureQueueService.addMessageAzureQueue(anAzureQueueMessageDTO);*/
+            azureQueueService.removeMessagesQueue();
 
             return new ResponseDTO(true, anAzureQueueMessageDTO, null);
         } catch (AccessDeniedException ade) {

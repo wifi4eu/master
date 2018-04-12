@@ -37,11 +37,27 @@ public class AzureQueueService {
         return azureQueue.peekMessageAzureQueue();
     }
 
+    public List<CloudQueueMessage> peekMessagesAzureQueue(int peek, int visibility) throws StorageException, InvalidKeyException, URISyntaxException {
+        return azureQueue.peekMessagesAzureQueue(peek,visibility);
+    }
+
     public List<CloudQueueMessage> getMessagesAzureQueue() throws StorageException, InvalidKeyException, URISyntaxException {
         return azureQueue.getMessagesAzureQueue();
     }
 
     public void removeMessageAzureQueue() throws StorageException, InvalidKeyException, URISyntaxException {
         azureQueue.removeMessageAzureQueue();
+    }
+
+    public void removeMessageAzureQueue(CloudQueueMessage cloudQueueMessage) throws StorageException, InvalidKeyException, URISyntaxException {
+        azureQueue.removeMessageAzureQueue(cloudQueueMessage);
+    }
+
+    public int sizeAzureQueue() throws InvalidKeyException, StorageException, URISyntaxException {
+        return (int) azureQueue.sizeAzureQueue();
+    }
+
+    public void removeMessagesQueue() throws InvalidKeyException, StorageException, URISyntaxException {
+        azureQueue.removeMessages();
     }
 }
