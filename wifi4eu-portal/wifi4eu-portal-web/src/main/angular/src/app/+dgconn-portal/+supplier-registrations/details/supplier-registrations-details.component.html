@@ -9,17 +9,20 @@
             <span class="beneficiaryTitle">
                 <span>{{supplier.name}}</span>
             </span>
-            <span class="badge badge-success" *ngIf="supplier.status">
+            <span class="badge badge-success" *ngIf="!supplier.status">
                 {{ 'dgConn.beneficiaries.registered' | translate | uppercase }}
             </span>
-            <span class="badge badge-fail" *ngIf="!supplier.status">
+            <span class="badge badge-fail" *ngIf="supplier.status">
                 {{ 'dgConn.badge.invalid' | translate | uppercase }}
             </span>
         </p>
-        <p *ngIf="!supplier">
+        <p *ngIf="loadingData">
+            <i [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+        </p>
+        <p *ngIf="!supplier && !loadingData">
             {{ 'dgConn.supplierDetails.noneFound' | translate }}
         </p>
-        <p *ngIf="supplier">
+        <p *ngIf="supplier && !loadingData">
             {{ 'dgConn.supplierDetails.desc' | translate }}
         </p>
     </div>
@@ -30,7 +33,7 @@
             <div class="row applicantDetailsPanel">
                 <span class="right">
                     <button type="button" class="btn redButton" (click)="displayInvalidateModal(true)"
-                            [disabled]="supplier.status == 0">
+                            [disabled]="supplier.status == 1">
                         {{ 'dgConn.supplierDetails.invalidateSupplier' | translate }}
                     </button>
                 </span>
@@ -100,7 +103,7 @@
                     <div class="row applicantDetailsPanel">
                     <span class="right">
                         <button type="button" class="btn redButton" (click)="displayInvalidateModal(false, i)"
-                                [disabled]="similarSupplier.status == 0">
+                                [disabled]="similarSupplier.status == 1">
                             {{ 'dgConn.supplierDetails.invalidateSupplier' | translate }}
                         </button>
                     </span>
