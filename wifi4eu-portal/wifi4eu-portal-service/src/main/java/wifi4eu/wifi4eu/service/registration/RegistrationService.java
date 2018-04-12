@@ -158,4 +158,8 @@ public class RegistrationService {
         }
         return null;
     }
+
+    public List<RegistrationDTO> getRegistrationsByIp(String ip) {
+        return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findByIpRegistration(ip)));
+    }
 }
