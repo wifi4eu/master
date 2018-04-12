@@ -11,7 +11,7 @@ DECLARE @m_id VARCHAR(255) = ''
 DECLARE @u_id VARCHAR(255) = ''
 DECLARE @r_id VARCHAR(255) = ''
 DECLARE @t_id VARCHAR(255) = ''
-WHILE @i < 10
+WHILE @i < 30000
 BEGIN
   SET @i = @i + 1
   set @u = 'uid'+RIGHT(CONCAT('00000', CONVERT(VARCHAR, @i)), 5)
@@ -42,7 +42,7 @@ BEGIN
   -- Add registration
   INSERT INTO registrations
     (_user, municipality, role, _status, legal_file1, legal_file2, legal_file3, legal_file4, ip_registration, organisation_id, association_name, upload_time, allFiles_flag, mail_counter)
-  VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', '127.0.0.1', 0, ' ', 0, 1, 0)
+  VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, '127.0.0.1', 0, '', 0, 1, 0)
   -- Add registration link
   SET @r_id = (SELECT TOP 1
     id
@@ -89,7 +89,7 @@ VALUES
 -- Add registration
 INSERT INTO registrations
   (_user, municipality, role, _status, legal_file1, legal_file2, legal_file3, legal_file4, ip_registration, organisation_id, association_name, upload_time, allFiles_flag, mail_counter)
-VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', '127.0.0.1', 0, ' ', 0, 1, 0)
+VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, '127.0.0.1', 0, '', 0, 1, 0)
 -- Add registration link
 SET @r_id = (SELECT TOP 1
   id
@@ -135,7 +135,7 @@ VALUES
 -- Add registration
 INSERT INTO registrations
   (_user, municipality, role, _status, legal_file1, legal_file2, legal_file3, legal_file4, ip_registration, organisation_id, association_name, upload_time, allFiles_flag, mail_counter)
-VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', '127.0.0.1', 0, ' ', 0, 1, 0)
+VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, '127.0.0.1', 0, '', 0, 1, 0)
 -- Add registration link
 SET @r_id = (SELECT TOP 1
   id
@@ -181,7 +181,7 @@ VALUES
 -- Add registration
 INSERT INTO registrations
   (_user, municipality, role, _status, legal_file1, legal_file2, legal_file3, legal_file4, ip_registration, organisation_id, association_name, upload_time, allFiles_flag, mail_counter)
-VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', '127.0.0.1', 0, ' ', 0, 1, 0)
+VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, '127.0.0.1', 0, '', 0, 1, 0)
 -- Add registration link
 SET @r_id = (SELECT TOP 1
   id
@@ -227,7 +227,7 @@ VALUES
 -- Add registration
 INSERT INTO registrations
   (_user, municipality, role, _status, legal_file1, legal_file2, legal_file3, legal_file4, ip_registration, organisation_id, association_name, upload_time, allFiles_flag, mail_counter)
-VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', '127.0.0.1', 0, ' ', 0, 1, 0)
+VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, '127.0.0.1', 0, '', 0, 1, 0)
 -- Add registration link
 SET @r_id = (SELECT TOP 1
   id
@@ -273,7 +273,7 @@ VALUES
 -- Add registration
 INSERT INTO registrations
   (_user, municipality, role, _status, legal_file1, legal_file2, legal_file3, legal_file4, ip_registration, organisation_id, association_name, upload_time, allFiles_flag, mail_counter)
-VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', '127.0.0.1', 0, ' ', 0, 1, 0)
+VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, '127.0.0.1', 0, '', 0, 1, 0)
 -- Add registration link
 SET @r_id = (SELECT TOP 1
   id
@@ -319,7 +319,7 @@ VALUES
 -- Add registration
 INSERT INTO registrations
   (_user, municipality, role, _status, legal_file1, legal_file2, legal_file3, legal_file4, ip_registration, organisation_id, association_name, upload_time, allFiles_flag, mail_counter)
-VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', '127.0.0.1', 0, ' ', 0, 1, 0)
+VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, '127.0.0.1', 0, '', 0, 1, 0)
 -- Add registration link
 SET @r_id = (SELECT TOP 1
   id
@@ -365,7 +365,7 @@ VALUES
 -- Add registration
 INSERT INTO registrations
   (_user, municipality, role, _status, legal_file1, legal_file2, legal_file3, legal_file4, ip_registration, organisation_id, association_name, upload_time, allFiles_flag, mail_counter)
-VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', '127.0.0.1', 0, ' ', 0, 1, 0)
+VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, '127.0.0.1', 0, '', 0, 1, 0)
 -- Add registration link
 SET @r_id = (SELECT TOP 1
   id
@@ -411,7 +411,7 @@ VALUES
 -- Add registration
 INSERT INTO registrations
   (_user, municipality, role, _status, legal_file1, legal_file2, legal_file3, legal_file4, ip_registration, organisation_id, association_name, upload_time, allFiles_flag, mail_counter)
-VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', '127.0.0.1', 0, ' ', 0, 1, 0)
+VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, '127.0.0.1', 0, '', 0, 1, 0)
 -- Add registration link
 SET @r_id = (SELECT TOP 1
   id
@@ -457,7 +457,7 @@ VALUES
 -- Add registration
 INSERT INTO registrations
   (_user, municipality, role, _status, legal_file1, legal_file2, legal_file3, legal_file4, ip_registration, organisation_id, association_name, upload_time, allFiles_flag, mail_counter)
-VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', '127.0.0.1', 0, ' ', 0, 1, 0)
+VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, '127.0.0.1', 0, '', 0, 1, 0)
 -- Add registration link
 SET @r_id = (SELECT TOP 1
   id
@@ -503,7 +503,7 @@ VALUES
 -- Add registration
 INSERT INTO registrations
   (_user, municipality, role, _status, legal_file1, legal_file2, legal_file3, legal_file4, ip_registration, organisation_id, association_name, upload_time, allFiles_flag, mail_counter)
-VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', '', '127.0.0.1', 0, ' ', 0, 1, 0)
+VALUES(@u_id, @m_id, 'Representative', 0, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, 'data:application/pdf;base64,JVBERi0xLjQNJeLjz9', NULL, '127.0.0.1', 0, '', 0, 1, 0)
 -- Add registration link
 SET @r_id = (SELECT TOP 1
   id
@@ -528,23 +528,3 @@ VALUES
   (@u_id, 'registrations_'+@r_id, 3),
   (@u_id, 'temp_tokens_'+@t_id, 3),
   (@u_id, 'mayors_'+@t_id, 3)
--- select count(*)
--- from users
--- select top 5
---   *
--- from users
--- select top 5
---   *
--- from registrations
--- select top 5
---   *
--- from municipalities
--- select top 5
---   *
--- from mayors
--- select top 5
---   *
--- from rights
--- select top 5
---   *
--- from temp_tokens
