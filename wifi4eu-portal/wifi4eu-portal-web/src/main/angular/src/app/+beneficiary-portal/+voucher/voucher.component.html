@@ -52,24 +52,22 @@
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <span>
                             <img alt="" class="municipality-icon" src="assets/images/account-balance-material-icons-regular.png">
-                            <!-- <a (click)="goToDocuments(i)"> -->
-                            <span class="municipality-name">{{municipality.name}}</span>
-                            <!-- </a> -->
+                            <a (click)="goToDocuments(i)">
+                                <span class="municipality-name">{{municipality.name}}</span>
+                            </a>
                         </span>
                     </template>
                 </p-column>
-                <!-- <p-column header="" styleClass="label">
+                <p-column header="" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="muncicipalityButton" (click)="goToDocuments(i)"
-                                [disabled]="docsOpen[i]"
-                        >{{ 'shared.uploadDocuments' | translate}}
+                        <button class="btn btn-primary" id="muncicipalityButton" (click)="goToDocuments(i)" [disabled]="docsOpen[i]">{{ 'shared.uploadDocuments' | translate}}
                         </button>
                         <span *ngIf="applications[i]">
                             <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
                             Documents uploaded.
                         </span>
                     </template>
-                </p-column> -->
+                </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1">
