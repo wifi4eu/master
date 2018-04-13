@@ -98,7 +98,7 @@ export class VoucherComponent {
                                                     }
                                                     this.loadingButtons.push(false);
                                                     let date = new Date(this.currentCall.startDate);
-                                                    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+                                                    // date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
                                                     this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
                                                     this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
                                                     if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
