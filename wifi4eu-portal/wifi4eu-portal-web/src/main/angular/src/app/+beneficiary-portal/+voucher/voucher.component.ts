@@ -107,7 +107,7 @@ export class VoucherComponent {
                                                     } else {
                                                         this.voucherCompetitionState = 1;
                                                     }
-                                                    this.checkForDocuments();
+                                                    // this.checkForDocuments();
                                                     if (this.applications.length == this.registrations.length) {
                                                         let allApplied = true;
                                                         for (let app of this.applications) {
