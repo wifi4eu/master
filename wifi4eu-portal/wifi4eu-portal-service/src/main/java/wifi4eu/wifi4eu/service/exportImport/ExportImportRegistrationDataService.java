@@ -11,10 +11,8 @@ import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataReporsitory;
 import wifi4eu.wifi4eu.service.exportImport.excelFile.CreateExcelFile;
 import wifi4eu.wifi4eu.service.exportImport.excelFile.ReadExcelFile;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import java.util.List;
+
 
 @Service
 public class ExportImportRegistrationDataService {
@@ -23,10 +21,6 @@ public class ExportImportRegistrationDataService {
 
     @Autowired
     ExportImportRegistrationDataReporsitory exportImportRegistrationDataReporsitory;
-
-    private @Autowired HttpServletRequest request;
-
-    private @Autowired HttpServletResponse response;
 
     private final Logger _log = LoggerFactory.getLogger(ExportImportRegistrationDataService.class);
 
@@ -66,7 +60,7 @@ public class ExportImportRegistrationDataService {
                 document[i][4]=String.valueOf(exportImportRegistrationDataList.get(i).getEuRank());
                 document[i][5]=String.valueOf(countMunicipality);
             }
-           cF.createExcelFile(header, document, request, response);
+           cF.createExcelFile(header, document);
     }
 
     @Transactional

@@ -1,34 +1,35 @@
 package wifi4eu.wifi4eu.service.exportImport.excelFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
-import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.URISyntaxException;
+import java.net.MalformedURLException;
+import java.awt.Desktop;
+
 
 public class CreateExcelFile{
 
-public CreateExcelFile(){}
+    public CreateExcelFile(){}
 
-public void createExcelFile(String [] header, String [][] document, HttpServletRequest request, HttpServletResponse response)throws UnsupportedEncodingException{
+    public void createExcelFile(String [] header, String [][] document)throws UnsupportedEncodingException, IOException{
         //String nombreArchivo="ExportRegistrationData.csv";
         //String rutaArchivo= "C:\\exportFiles\\"+nombreArchivo;
-    String path = this.getClass().getClassLoader().getResource("").getPath();
-    String fullPath = URLDecoder.decode(path, "UTF-8");
-    String pathArr[] = fullPath.split("/WEB-INF/classes/");
-    System.out.println(fullPath);
-    System.out.println(pathArr[0]);
-    fullPath = pathArr[0];
+        String path = this.getClass().getClassLoader().getResource("").getPath();
+        String fullPath = URLDecoder.decode(path, "UTF-8");
+        String pathArr[] = fullPath.split("/WEB-INF/classes/");
+        System.out.println(fullPath);
+        System.out.println(pathArr[0]);
+        fullPath = pathArr[0];
+        fullPath=fullPath.substring(1,fullPath.length());
         String rutaArchivo= fullPath+"/ExportRegistrationData.csv";
         String hoja="Sheet1";
         XSSFWorkbook libro= new XSSFWorkbook();
@@ -52,8 +53,7 @@ public void createExcelFile(String [] header, String [][] document, HttpServletR
             }
         }
 
-        File file;
-        file = new File(rutaArchivo);
+        File file = new File(rutaArchivo);
         try (FileOutputStream fileOuS = new FileOutputStream(file)){
             if (file.exists()) {
                 file.delete();
@@ -62,14 +62,25 @@ public void createExcelFile(String [] header, String [][] document, HttpServletR
             libro.write(fileOuS);
             fileOuS.flush();
             fileOuS.close();
-
-            FileDownload fD=new FileDownload();
-            fD.doGet(request, response);
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }catch (IOException e) {
             e.printStackTrace();
+        }
+
+        String host = InetAddress.getLocalHost().getCanonicalHostName();
+        try {
+            String fullUrlPath="http://"+host+":8080/wifi4eu/ExportRegistrationData.csv";
+            URL url = new URL(fullUrlPath);
+            try {
+                Desktop.getDesktop().browse(url.toURI());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
         }
     }
 }
