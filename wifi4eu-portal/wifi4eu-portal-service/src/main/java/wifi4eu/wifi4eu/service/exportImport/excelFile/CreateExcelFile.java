@@ -11,20 +11,25 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import javax.servlet.http.*;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
-public class CreateExcelFile extends HttpServlet {
+public class CreateExcelFile{
 
 public CreateExcelFile(){}
 
-public void createExcelFile(String [] header,  String [][] document){
+public void createExcelFile(String [] header, String [][] document, HttpServletRequest request, HttpServletResponse response)throws UnsupportedEncodingException{
         //String nombreArchivo="ExportRegistrationData.csv";
         //String rutaArchivo= "C:\\exportFiles\\"+nombreArchivo;
-        String rutaArchivo= "ExportRegistrationData.csv";
+    String path = this.getClass().getClassLoader().getResource("").getPath();
+    String fullPath = URLDecoder.decode(path, "UTF-8");
+    String pathArr[] = fullPath.split("/WEB-INF/classes/");
+    System.out.println(fullPath);
+    System.out.println(pathArr[0]);
+    fullPath = pathArr[0];
+        String rutaArchivo= fullPath+"/ExportRegistrationData.csv";
         String hoja="Sheet1";
         XSSFWorkbook libro= new XSSFWorkbook();
         XSSFSheet hoja1 = libro.createSheet(hoja);
@@ -58,13 +63,9 @@ public void createExcelFile(String [] header,  String [][] document){
             fileOuS.flush();
             fileOuS.close();
 
-            HttpServletRequest request; // Returns Null Pointer Exception
-            HttpSession session = request.getSession(false);
-            HttpServletResponse response; // Returns Null Pointer Exception
-
             FileDownload fD=new FileDownload();
-
             fD.doGet(request, response);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }catch (IOException e) {
