@@ -11,13 +11,20 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class CreateExcelFile {
+import javax.servlet.http.*;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class CreateExcelFile extends HttpServlet {
 
 public CreateExcelFile(){}
 
 public void createExcelFile(String [] header,  String [][] document){
-        String nombreArchivo="ExportRegistrationData.csv";
-        String rutaArchivo= "C:\\exportFiles\\"+nombreArchivo;
+        //String nombreArchivo="ExportRegistrationData.csv";
+        //String rutaArchivo= "C:\\exportFiles\\"+nombreArchivo;
+        String rutaArchivo= "ExportRegistrationData.csv";
         String hoja="Sheet1";
         XSSFWorkbook libro= new XSSFWorkbook();
         XSSFSheet hoja1 = libro.createSheet(hoja);
@@ -50,6 +57,14 @@ public void createExcelFile(String [] header,  String [][] document){
             libro.write(fileOuS);
             fileOuS.flush();
             fileOuS.close();
+
+            HttpServletRequest request; // Returns Null Pointer Exception
+            HttpSession session = request.getSession(false);
+            HttpServletResponse response; // Returns Null Pointer Exception
+
+            FileDownload fD=new FileDownload();
+
+            fD.doGet(request, response);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }catch (IOException e) {
