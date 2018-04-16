@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -23,6 +25,12 @@ import java.util.*;
 public class ApplicationService {
     @Value("${mail.server.location}")
     private String baseUrl;
+    
+    @Autowired
+    ApplicantListItemMapper applicantListItemMapper;
+
+    @Autowired
+    ApplicantListItemRepository applicantListItemRepository;
 
     @Autowired
     ApplicationMapper applicationMapper;
@@ -134,5 +142,107 @@ public class ApplicationService {
             }
         }
         return appVoucherInfoDTO;
+    }
+
+    public List<ApplicantListItemDTO> findDgconnApplicantsList(String name, int offset, int count, String orderField, int orderType) {
+        List<ApplicantListItemDTO> applicantsList;
+        switch (orderField) {
+            case "name":
+                if (orderType == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByNameDesc(name, offset, count));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByNameDesc(offset, count));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByNameAsc(name, offset, count));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByNameAsc(offset, count));
+                }
+                break;
+            case "countryCode":
+                if (orderType == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByCountryCodeDesc(name, offset, count));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByCountryCodeDesc(offset, count));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByCountryCodeAsc(name, offset, count));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByCountryCodeAsc(offset, count));
+                }
+                break;
+            case "counter":
+                if (orderType == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByCounterDesc(name, offset, count));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByCounterDesc(offset, count));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByCounterAsc(name, offset, count));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByCounterAsc(offset, count));
+                }
+                break;
+            case "mediation":
+                if (orderType == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByMediationDesc(name, offset, count));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByMediationDesc(offset, count));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByMediationAsc(name, offset, count));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByMediationAsc(offset, count));
+                }
+                break;
+            default:
+                if (orderType == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByLauIdDesc(name, offset, count));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByLauIdDesc(offset, count));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByLauIdAsc(name, offset, count));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByLauIdAsc(offset, count));
+                }
+                break;
+        }
+        return applicantsList;
     }
 }

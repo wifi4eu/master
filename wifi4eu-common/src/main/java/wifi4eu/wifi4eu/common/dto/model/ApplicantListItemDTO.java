@@ -1,7 +1,8 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-public class ApplicationListItemDTO {
+public class ApplicantListItemDTO {
     private Integer lauId;
+    private Integer euRanking;
     private Integer countryRanking;
     private String countryCode;
     private String name;
@@ -9,11 +10,22 @@ public class ApplicationListItemDTO {
     private Boolean mediation;
     private Integer issueStatus;
 
-    public ApplicationListItemDTO() {
+    public ApplicantListItemDTO() {
     }
 
-    public ApplicationListItemDTO(Integer lauId, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation, Integer issueStatus) {
+    public ApplicantListItemDTO(Integer lauId, Integer euRanking, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation) {
         this.lauId = lauId;
+        this.euRanking = euRanking;
+        this.countryRanking = countryRanking;
+        this.countryCode = countryCode;
+        this.name = name;
+        this.counter = counter;
+        this.mediation = mediation;
+    }
+
+    public ApplicantListItemDTO(Integer lauId, Integer euRanking, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation, Integer issueStatus) {
+        this.lauId = lauId;
+        this.euRanking = euRanking;
         this.countryRanking = countryRanking;
         this.countryCode = countryCode;
         this.name = name;
@@ -28,6 +40,14 @@ public class ApplicationListItemDTO {
 
     public void setLauId(Integer lauId) {
         this.lauId = lauId;
+    }
+
+    public Integer getEuRanking() {
+        return euRanking;
+    }
+
+    public void setEuRanking(Integer euRanking) {
+        this.euRanking = euRanking;
     }
 
     public Integer getCountryRanking() {

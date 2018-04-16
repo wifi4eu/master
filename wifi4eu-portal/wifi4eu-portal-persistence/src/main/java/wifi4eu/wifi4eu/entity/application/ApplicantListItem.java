@@ -7,6 +7,7 @@ import javax.persistence.Id;
 public class ApplicantListItem {
     @Id
     private Integer lauId;
+    private Integer euRanking;
     private Integer countryRanking;
     private String countryCode;
     private String name;
@@ -17,8 +18,9 @@ public class ApplicantListItem {
     public ApplicantListItem() {
     }
 
-    public ApplicantListItem(Integer lauId, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation) {
+    public ApplicantListItem(Integer lauId, Integer euRanking, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation) {
         this.lauId = lauId;
+        this.euRanking = euRanking;
         this.countryRanking = countryRanking;
         this.countryCode = countryCode;
         this.name = name;
@@ -26,8 +28,9 @@ public class ApplicantListItem {
         this.mediation = mediation;
     }
 
-    public ApplicantListItem(Integer lauId, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation, Integer issueStatus) {
+    public ApplicantListItem(Integer lauId, Integer euRanking, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation, Integer issueStatus) {
         this.lauId = lauId;
+        this.euRanking = euRanking;
         this.countryRanking = countryRanking;
         this.countryCode = countryCode;
         this.name = name;
@@ -42,6 +45,14 @@ public class ApplicantListItem {
 
     public void setLauId(Integer lauId) {
         this.lauId = lauId;
+    }
+
+    public Integer getEuRanking() {
+        return euRanking;
+    }
+
+    public void setEuRanking(Integer euRanking) {
+        this.euRanking = euRanking;
     }
 
     public Integer getCountryRanking() {

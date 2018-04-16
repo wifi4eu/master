@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.ApplicantListItemDTO;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationVoucherInfoDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
@@ -140,6 +141,47 @@ public class ApplicationResource {
                 _log.info("getApplicationsVoucherInfoByApplication: " + applicationId);
             }
             return null;
+        }
+    }
+
+    @ApiOperation(value = "getApplicantListItem")
+    @RequestMapping(value = "/getApplicantListItem", method = RequestMethod.GET)
+    @ResponseBody
+    public ApplicantListItemDTO getApplicantListItem() {
+        return new ApplicantListItemDTO();
+    }
+
+    @ApiOperation(value = "findDgconnApplicantsList")
+    @RequestMapping(value = "/findDgconnApplicantsList", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO findDgconnApplicantsList(@RequestParam("offset") final Integer offset, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType) {
+        try {
+            ResponseDTO res = new ResponseDTO(true, null, null);
+            res.setData(applicationService.findDgconnApplicantsList(null, offset, count, orderField, orderType));
+            // res.setXTotalCount(applicationService.getCountDistinctMunicipalities());
+            return res;
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("can't retrieve beneficiaries", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "findDgconnApplicantsListSearchingName")
+    @RequestMapping(value = "/findDgconnApplicantsListSearchingName", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO findDgconnApplicantsListSearchingName(@RequestParam("name") final String name, @RequestParam("offset") final Integer offset, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType) {
+        try {
+            ResponseDTO res = new ResponseDTO(true, null, null);
+            res.setData(applicationService.findDgconnApplicantsList(name, offset, count, orderField, orderType));
+            // res.setXTotalCount(applicationService.getCountDistinctMunicipalitiesContainingName(name));
+            return res;
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("can't retrieve beneficiaries", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 }
