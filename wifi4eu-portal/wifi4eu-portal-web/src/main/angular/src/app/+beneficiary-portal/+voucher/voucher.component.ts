@@ -138,11 +138,6 @@ export class VoucherComponent {
                                                             if(this.applications[index] != null){
                                                               this.loadingButtons[index] = true;
                                                               this.disableQueuing[index] = null;
-                                                              
-                                                            }else{
-                                                              /* var newdate = new Date();
-                                                              newdate.setMinutes(newdate.getMinutes() + 5);
-                                                              this.disableQueuing[index]['expires_in'] = Math.floor(newdate.getTime() / 1000); */
                                                             }
                                                           }
                                                         }                                                        
