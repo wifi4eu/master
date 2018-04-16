@@ -37,13 +37,13 @@ public class ReadExcelFile {
 
     public void readExcelFile(){
         JFileChooser fc = new JFileChooser();
-        int respuesta = fc.showOpenDialog(null);
-        File archivoElegido=null;
-        if (respuesta == JFileChooser.APPROVE_OPTION) {
-            archivoElegido = fc.getSelectedFile();
+        int response = fc.showOpenDialog(null);
+        File fil=null;
+        if (response == JFileChooser.APPROVE_OPTION) {
+            fil = fc.getSelectedFile();
         }
 
-        try (FileInputStream file = new FileInputStream(archivoElegido)) {
+        try (FileInputStream file = new FileInputStream(fil)) {
             XSSFWorkbook worbook = new XSSFWorkbook(file);
             XSSFSheet sheet = worbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();

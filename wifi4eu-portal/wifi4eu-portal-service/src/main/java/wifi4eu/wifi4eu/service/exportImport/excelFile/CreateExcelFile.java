@@ -14,28 +14,35 @@ import java.net.URL;
 import java.net.URISyntaxException;
 import java.net.MalformedURLException;
 import java.awt.Desktop;
-
+import javax.servlet.http.HttpServletRequest;
 
 public class CreateExcelFile{
+    public HttpServletRequest httpServletRequest;
 
     public CreateExcelFile(){}
 
+    public CreateExcelFile(HttpServletRequest httpServletRequest){
+        this.httpServletRequest=httpServletRequest;
+    }
+
     public void createExcelFile(String [] header, String [][] document)throws UnsupportedEncodingException, IOException{
-        //String nombreArchivo="ExportRegistrationData.csv";
-        //String rutaArchivo= "C:\\exportFiles\\"+nombreArchivo;
         String path = this.getClass().getClassLoader().getResource("").getPath();
         String fullPath = URLDecoder.decode(path, "UTF-8");
         String pathArr[] = fullPath.split("/WEB-INF/classes/");
-        System.out.println(fullPath);
-        System.out.println(pathArr[0]);
         fullPath = pathArr[0];
         fullPath=fullPath.substring(1,fullPath.length());
-        String rutaArchivo= fullPath+"/ExportRegistrationData.csv";
-        String hoja="Sheet1";
-        XSSFWorkbook libro= new XSSFWorkbook();
-        XSSFSheet hoja1 = libro.createSheet(hoja);
-        CellStyle style = libro.createCellStyle();
-        Font font = libro.createFont();
+        String protocol=httpServletRequest.getScheme();
+        String port=String.valueOf(httpServletRequest.getServerPort());
+        //String hostName=httpServletRequest.getServerName();
+        String hostName = InetAddress.getLocalHost().getCanonicalHostName();
+        String app=httpServletRequest.getContextPath();
+        String fileName="ExportRegistrationData.csv";
+        String filePath= fullPath+"/"+fileName;
+        String sheet="Sheet1";
+        XSSFWorkbook book= new XSSFWorkbook();
+        XSSFSheet hoja1 = book.createSheet(sheet);
+        CellStyle style = book.createCellStyle();
+        Font font = book.createFont();
         font.setBold(true);
         style.setFont(font);
 
@@ -53,13 +60,13 @@ public class CreateExcelFile{
             }
         }
 
-        File file = new File(rutaArchivo);
+        File file = new File(filePath);
         try (FileOutputStream fileOuS = new FileOutputStream(file)){
             if (file.exists()) {
                 file.delete();
 
             }
-            libro.write(fileOuS);
+            book.write(fileOuS);
             fileOuS.flush();
             fileOuS.close();
         } catch (FileNotFoundException e) {
@@ -68,9 +75,8 @@ public class CreateExcelFile{
             e.printStackTrace();
         }
 
-        String host = InetAddress.getLocalHost().getCanonicalHostName();
         try {
-            String fullUrlPath="http://"+host+":8080/wifi4eu/ExportRegistrationData.csv";
+            String fullUrlPath = protocol+"://"+hostName+":"+port+app+"/"+fileName;
             URL url = new URL(fullUrlPath);
             try {
                 Desktop.getDesktop().browse(url.toURI());
