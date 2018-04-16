@@ -18,7 +18,7 @@
 
             <property name="eclipselink.deploy-on-startup" value="true"/>
             <!-- <property name="eclipselink.target-server" value="WebLogic_10"/> -->
-            <property name="eclipselink.target-database" value="auto"/>
+            <property name="eclipselink.target-database" value="${eclipselink.target.database}"/>
             <property name="eclipselink.cache.shared.default" value="false"/>
             <property name="javax.persistence.schema-generation.database.action"
                       value="create"/>

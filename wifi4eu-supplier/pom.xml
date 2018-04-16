@@ -18,11 +18,11 @@
     </parent>
 
     <modules>
-        <module>wifi4eu-supplier-service</module>
         <module>wifi4eu-supplier-persistence</module>
-        <module>wifi4eu-supplier-web</module>
+        <module>wifi4eu-supplier-service</module>
+        <module>wifi4eu-supplier-web-rest-swagger</module>
         <module>wifi4eu-supplier-web-rest</module>
-        <module>wifi4eu-supplier-web-swagger</module>
+        <module>wifi4eu-supplier-web</module>
     </modules>
 
 

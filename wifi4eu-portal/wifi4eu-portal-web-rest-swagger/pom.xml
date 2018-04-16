@@ -12,7 +12,7 @@
 	<artifactId>wifi4eu-portal-web-rest-swagger</artifactId>
 	<packaging>jar</packaging>
 
-	<name>WiFi4EU Portal web REST swagger generator module</name>
+	<name>WiFi4EU Public Portal web REST swagger generator module</name>
 
 	<dependencies>
 		<dependency>
