@@ -64,13 +64,13 @@
                         </button>
                         <span *ngIf="applications[i]">
                             <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
-                            Documents uploaded.
+                          <span>{{ 'shared.documentsUploaded' | translate:{date:uploadDate[i],time:uploadHour[i]} }}</span>
                         </span>
                     </template>
                 </p-column>
                 <p-column header="" styleClass="label">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1">
+                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1">
                             {{ 'benefPortal.voucher.applyforvoucher' | translate }}
                         </button>
                         <span *ngIf="applications[i]">

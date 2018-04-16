@@ -14,10 +14,13 @@ import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {SharedService} from "../../shared/shared.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {AzurequeueApi, AzureQueueDTOBase} from "../../shared/swagger";
+import {AzureQueue} from "../../azure/AzureQueue";
+import {QueueComponent} from "../../azure/Queue";
 
 @Component({
     templateUrl: 'voucher.component.html',
-    providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi]
+    providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi, AzurequeueApi]
 })
 
 export class VoucherComponent {
@@ -37,18 +40,23 @@ export class VoucherComponent {
     private loadingButtons: boolean[] = [];
     private dateNumber: string;
     private hourNumber: string;
+    private uploadDate: string[] = [];
+    private uploadHour: string[] = [];
     private voucherApplied: string = "";
     private openedCalls: string = "";
-    private isMayor: boolean = true;
+    private isMayor: boolean = false;
     private registration: RegistrationDTOBase;
     private mayor: MayorDTOBase;
     private docsOpen: boolean [] = [];
     private registrationsDocs: RegistrationDTOBase[] = [];
+    private storedRegistrationQueues = [];
+    private disableQueuing = [];
 
-
-    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService) {
+    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private azurequeueApi: AzurequeueApi, private sharedService: SharedService) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+        let storedRegistrations = this.localStorage.get('registrationQueue') ? JSON.parse(this.localStorage.get('registrationQueue').toString()) : null;
+        this.storedRegistrationQueues = storedRegistrations ? storedRegistrations : [];
         // Check if there are Calls
         if (this.user != null) {
             this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
@@ -62,8 +70,11 @@ export class VoucherComponent {
                             (mayor: MayorDTOBase) => {
                                 this.mayor = mayor;
                                 // HERE WE CHECK IF ITS REPRESENTATIVE OR NOT
-                                if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname)
+                                if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname) {
                                     this.isMayor = true;
+                                } else {
+                                    this.isMayor = false;
+                                }
                             }, error => {
                             }
                         );
@@ -81,7 +92,7 @@ export class VoucherComponent {
         this.callApi.allCalls().subscribe(
             (calls: CallDTOBase[]) => {
                 this.currentCall = calls[0];
-                for (let registration of registrations) {
+                for (let registration of registrations) {                    
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
                             if (municipality != null) {
@@ -89,13 +100,20 @@ export class VoucherComponent {
                                     (mayor: MayorDTOBase) => {
                                         if (this.currentCall) {
                                             this.applicationApi.getApplicationByCallIdAndRegistrationId(this.currentCall.id, registration.id).subscribe(
-                                                (application: ApplicationDTOBase) => {
+                                                (application: ApplicationDTOBase) => {                                                    
                                                     this.registrations.push(registration);
                                                     this.municipalities.push(municipality);
                                                     this.mayors.push(mayor);
                                                     if (application.id != 0) {
-                                                        this.applications.push(application);
+                                                      this.applications.push(application);
+                                                    }else{
+                                                      this.applications.push(null);
                                                     }
+                                                    var res = this.storedRegistrationQueues.filter((queue) => {
+                                                      return registration.id == queue['idRegistration'];
+                                                    })
+                                                    this.disableQueuing.push(res[0] ? res[0] : null);
+                                                    
                                                     this.loadingButtons.push(false);
                                                     let date = new Date(this.currentCall.startDate);
                                                     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
@@ -107,18 +125,43 @@ export class VoucherComponent {
                                                     } else {
                                                         this.voucherCompetitionState = 1;
                                                     }
+
                                                     this.checkForDocuments();
-                                                    if (this.applications.length == this.registrations.length) {
-                                                        let allApplied = true;
-                                                        for (let app of this.applications) {
-                                                            if (!app) {
-                                                                allApplied = false;
+                                                    if (this.applications.length == registrations.length) {
+
+                                                      this.disableQueuing.forEach((element, index) => {
+                                                        if(element){
+                                                          if(element['expires_in'] < Math.floor(new Date().getTime() / 1000)){
+                                                             this.disableQueuing[index] = null;
+                                                             this.loadingButtons[index] = false;
+                                                          }else{
+                                                            if(this.applications[index] != null){
+                                                              this.loadingButtons[index] = true;
+                                                              this.disableQueuing[index] = null;
                                                             }
-                                                        }
-                                                        if (allApplied) {
-                                                            this.voucherCompetitionState = 3;
-                                                            this.voucherApplied = "greyImage";
-                                                        }
+                                                          }
+                                                        }                                                        
+                                                      });
+ 
+                                                      var newStoredRegistrationQueues = [];
+                                                      this.disableQueuing.forEach((disableQueuingEl, index) => {
+                                                        this.loadingButtons[index] = disableQueuingEl ? true : false;
+                                                        if(disableQueuingEl != null) newStoredRegistrationQueues.push(disableQueuingEl);
+                                                      });
+                                                      
+                                                      this.storedRegistrationQueues = newStoredRegistrationQueues;
+                                                      this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
+
+                                                      let allApplied = true;
+                                                      for (let app of this.applications) {
+                                                          if (!app) {
+                                                              allApplied = false;
+                                                          }
+                                                      }
+                                                      if (allApplied) {
+                                                          this.voucherCompetitionState = 3;
+                                                          this.voucherApplied = "greyImage";
+                                                      }
                                                     }
                                                 }
                                             );
@@ -149,33 +192,40 @@ export class VoucherComponent {
         this.router.navigate(['../additional-info/', this.registrations[registrationNumber].municipalityId], {relativeTo: this.route});
     }
 
-    private applyForVoucher(registrationNumber: number) {
+    private applyForVoucher(registrationNumber: number, event) {
         let startCallDate = this.currentCall.startDate;
         let actualDateTime = new Date().getTime();
 
-        if (startCallDate <= actualDateTime) {
-            // TODO: Llamar al nuevo servicio de Apply for voucher
-            // this.loadingButton = true;
-            this.loadingButtons[registrationNumber] = true;
-            let newApplication = new ApplicationDTOBase();
-            newApplication.callId = this.currentCall.id;
-            newApplication.registrationId = this.registrations[registrationNumber].id;
-            newApplication.date = new Date().getTime();
-            newApplication.supplierId = null;
-            this.applicationApi.createApplication(newApplication).subscribe(
-                (response: ResponseDTOBase) => {
-                    if (response.success) {
-                        if (response.data) {
-                            this.applications[registrationNumber] = response.data;
-                            this.voucherCompetitionState = 3;
-                            // this.loadingButton = false;
-                            this.loadingButtons[registrationNumber] = false;
-                            this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
-                            this.voucherApplied = "greyImage";
-                        }
-                    }
-                }
-            );
+        if  (startCallDate <= actualDateTime) {
+
+          if(!this.loadingButtons[registrationNumber]){
+
+            var queueComponent = new QueueComponent();
+
+            let aNewMessageApplication = new AzureQueueDTOBase();
+            aNewMessageApplication.message = "Apply voucher (" + this.registrations[registrationNumber].id + ") @"+this.currentCall.id+"@";
+
+            event.target.style.pointerEvents = "none";
+            event.target.style.opacity = "0.5";
+            event.target.disabled = true;
+            
+            queueComponent.createAzureQueue().then((res) => {
+              queueComponent.addMessageAzureQueue(aNewMessageApplication.message).then((response) => {
+                this.loadingButtons[registrationNumber] = true;
+                this.voucherApplied = "greyImage";
+                this.voucherCompetitionState = 3;
+
+                var oneHourLater = new Date();
+                oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
+                var timestamp = Math.floor(oneHourLater.getTime()/1000);
+
+                var queueStored = {expires_in: timestamp, idRegistration: this.registrations[registrationNumber].id, call: this.currentCall.id };
+                this.storedRegistrationQueues.push(queueStored);
+                this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
+                this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
+              });
+            }); 
+          }     
         }
     }
 
@@ -189,20 +239,27 @@ export class VoucherComponent {
 
     private checkForDocuments() {
         if (this.isMayor) {
-            for (let i = 0; i < this.registrations.length; i++) {
+            this.docsOpen[0] = (this.registrations[0].legalFile1 != null && this.registrations[0].legalFile4 == null && this.registrations[0].legalFile2 == null && this.registrations[0].legalFile3 != null);
 
-                console.log(this.registrations[i]);
-                this.docsOpen[i] = (this.registrations[i].legalFile1 != null && this.registrations[i].legalFile4 == null && this.registrations[i].legalFile2 == null && this.registrations[i].legalFile3 != null);
-                console.log(this.docsOpen[i]);
+            if (this.docsOpen[0]) {
+                let uploaddate = new Date(this.registrations[0].uploadTime);
+                uploaddate.setMinutes(uploaddate.getMinutes() + uploaddate.getTimezoneOffset());
+                this.uploadDate[0] = ('0' + uploaddate.getUTCDate()).slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                this.uploadHour[0] = ('0' + uploaddate.getHours()).slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+
             }
         } else {
             for (let i = 0; i < this.registrations.length; i++) {
-
-                console.log(this.docsOpen);
-                console.log(this.registrations[i]);
                 this.docsOpen[i] = (this.registrations[i].legalFile1 != null && this.registrations[i].legalFile4 != null && this.registrations[i].legalFile2 != null && this.registrations[i].legalFile3 != null);
-                console.log(this.docsOpen[i]);
+                if (this.docsOpen[i]) {
+                    let uploaddate = new Date(this.registrations[i].uploadTime);
+                    uploaddate.setMinutes(uploaddate.getMinutes() + uploaddate.getTimezoneOffset());
+                    this.uploadDate[i] = ('0' + uploaddate.getUTCDate()).slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
+                    this.uploadHour[i] = ('0' + uploaddate.getHours()).slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
+                }
             }
+
+
         }
     }
 }

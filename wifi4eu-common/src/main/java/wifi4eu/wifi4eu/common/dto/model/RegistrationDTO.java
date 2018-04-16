@@ -15,11 +15,14 @@ public class RegistrationDTO implements Serializable {
     private String ipRegistration;
     private String associationName;
     private int organisationId;
+    private long uploadTime;
+    private int allFilesFlag;
+    private int mailCounter;
 
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId) {
+    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, long uploadTime, int allFilesFlag, int mailCounter) {
         this.id = id;
         this.userId = userId;
         this.municipalityId = municipalityId;
@@ -32,6 +35,9 @@ public class RegistrationDTO implements Serializable {
         this.ipRegistration = ipRegistration;
         this.associationName = associationName;
         this.organisationId = organisationId;
+        this.uploadTime = uploadTime;
+        this.allFilesFlag = allFilesFlag;
+        this.mailCounter = mailCounter;
     }
 
     public int getId() {
@@ -126,6 +132,9 @@ public class RegistrationDTO implements Serializable {
                 ", legalFile2='" + legalFile2 + '\'' +
                 ", legalFile3='" + legalFile3 + '\'' +
                 ", legalFile4='" + legalFile4 + '\'' +
+                ", upload_time='" + uploadTime + '\'' +
+                ", allFiles_flag='" + allFilesFlag + '\'' +
+                ", mail_counter='" + mailCounter + '\'' +
                 '}';
     }
 
@@ -143,5 +152,29 @@ public class RegistrationDTO implements Serializable {
 
     public void setOrganisationId(int organisationId) {
         this.organisationId = organisationId;
+    }
+
+    public long getUploadTime() {
+        return uploadTime;
+    }
+
+    public void setUploadTime(long uploadTime) {
+        this.uploadTime = uploadTime;
+    }
+
+    public int getAllFilesFlag() {
+        return allFilesFlag;
+    }
+
+    public void setAllFilesFlag(int allFilesFlag) {
+        this.allFilesFlag = allFilesFlag;
+    }
+
+    public int getMailCounter() {
+        return mailCounter;
+    }
+
+    public void setMailCounter(int mailCounter) {
+        this.mailCounter = mailCounter;
     }
 }
