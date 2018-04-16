@@ -9,55 +9,62 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="input-group">
-          <span class="input-group-addon">
-            <i class="fa fa-search" aria-hidden="true"></i>
-          </span>
-                    <input type="text" [(ngModel)]="inputSearch" (keyup.enter)="filterData(inputSearch)" class="form-control">
+                    <span class="input-group-addon">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </span>
+                    <input type="text" [(ngModel)]="inputSearch" class="form-control"
+                           [disabled]="loadingData" (keyup.enter)="inputSearchMunicipalities()">
                     <span class="input-group-btn">
-            <button class="btn btn-primary" (click)="filterData(inputSearch)" type="button">{{ 'shared.search.button' | translate }}</button>
-          </span>
+                        <button class="btn btn-primary" (click)="inputSearchMunicipalities()" type="button" [disabled]="loadingData">
+                            <span *ngIf="!loadingData">{{ 'shared.search.button' | translate }}</span>
+                            <span *ngIf="loadingData">
+                                <i [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                            </span>
+                        </button>
+                    </span>
                 </div>
             </div>
         </div>
     </div>
     <div class="panel-dg">
-        <p-dataTable #tableBeneficiary [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="registrationList.length"
-                     [value]="registrationList" [rows]="numberRowsTable" [paginator]="true">
-            <p-column field="lau.name1" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
-            <p-column field="lau.countryCode" [sortable]="true" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
+        <p-dataTable #tableBeneficiary [totalRecords]="totalItems" [value]="beneficiaryListItems" [lazy]="true" (onLazyLoad)="loadData($event)"
+                     [paginator]="true" [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="totalItems" [rows]="itemsPerPage">
+            <p-column field="name" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
+            <p-column field="countryCode" [sortable]="true" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
             <p-column field="status" [sortable]="true" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
                 <ng-template let-row="rowData" pTemplate="body">
-                    <!-- <span>{{ row.status ? 'Applied' : 'Registered' }}</span> -->
                     <span *ngIf="row.status">{{'dgConn.beneficiaries.applied' | translate }}</span>
                     <span *ngIf="!row.status">{{'dgConn.beneficiaries.registered' | translate }}</span>
                 </ng-template>
             </p-column>
-            <p-column field="issue" [sortable]="true" header="{{ 'dgConn.issues' | translate }}" styleClass="text-center">
-                <ng-template let-row="rowData" pTemplate="body">
-                    <span class="badge badge-warning" *ngIf="row.issue == 1">{{ 'dgConn.badge.warning' | translate }}</span>
-                    <span class="badge badge-duplicated" *ngIf="row.issue == 2">{{ 'dgConn.badge.duplicated' | translate }}</span>
-                    <span class="badge badge-success" *ngIf="row.issue == 3">{{ 'dgConn.badge.resolved' | translate }}</span>
-                    <span class="badge badge-fail" *ngIf="row.issue == 4">{{ 'dgConn.badge.invalid' | translate }}</span>
-                    <span class="badge badge-warning-yellow" *ngIf="row.issue == 5">{{ 'dgConn.badge.warning' | translate }}</span>
-                </ng-template>
-            </p-column>
-            <p-column field="numRegistrations" [sortable]="true" header="{{ 'dgConn.number.registrations' | translate }}" styleClass="text-center"></p-column>
+            <p-column field="counter" [sortable]="true" header="{{ 'dgConn.number.registrations' | translate }}" styleClass="text-center"></p-column>
             <p-column field="mediation" [sortable]="true" header="{{ 'dgConn.beneficiaries.mediation' | translate }}" styleClass="text-center">
                 <ng-template let-row="rowData" pTemplate="body">
-                    <span *ngIf="row.mediation">{{ 'dgConn.yes' | translate }}</span>
-                    <span *ngIf="!row.mediation">{{ 'dgConn.no' | translate }}</span>
+                    <span *ngIf="row.mediation">{{'dgConn.yes' | translate }}</span>
+                    <span *ngIf="!row.mediation">{{'dgConn.no' | translate }}</span>
                 </ng-template>
             </p-column>
-            <p-column header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
-                <ng-template let-lauData="rowData" pTemplate="body">
-          <span [routerLink]="['./', lauData.lau.id]" class="action-label">
-            <span class="fa fa-eye"></span> <span>{{ 'dgConn.view' | translate }}</span>
-          </span>
+            <p-column field="issueStatus" [sortable]="false" header="{{ 'dgConn.issues' | translate }}" styleClass="text-center">
+                <ng-template let-row="rowData" pTemplate="body">
+                    <span *ngIf="row.issueStatus == 1 || row.issueStatus == 2" class="badge badge-warning">{{ 'dgConn.badge.warning' | translate }}</span>
+                    <span *ngIf="row.issueStatus == 3" class="badge badge-warning-yellow">{{ 'dgConn.badge.warning' | translate }}</span>
+                </ng-template>
+            </p-column>
+            <p-column [sortable]="false" header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
+                <ng-template let-row="rowData" pTemplate="body">
+                    <span [routerLink]="['./', row.lauId]" class="action-label">
+                        <span class="fa fa-eye"></span> <span>{{ 'dgConn.view' | translate }}</span>
+                    </span>
                 </ng-template>
             </p-column>
             <footer>
                 <div style="position: absolute; bottom: 25px; left: 20px;">
-                    <span>Total records: {{tableBeneficiary.totalRecords}} </span>
+                    <span *ngIf="!loadingData">
+                        Total records: {{tableBeneficiary.totalRecords}}
+                    </span>
+                    <span *ngIf="loadingData">
+                        {{ 'shared.loading.modal.title' | translate }} <i [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                    </span>
                 </div>
             </footer>
         </p-dataTable>

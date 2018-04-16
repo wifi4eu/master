@@ -40,4 +40,4 @@ npm-debug.log
 cleanEnv.sh
 .settings/*
 .project
-.classpath
+bin
