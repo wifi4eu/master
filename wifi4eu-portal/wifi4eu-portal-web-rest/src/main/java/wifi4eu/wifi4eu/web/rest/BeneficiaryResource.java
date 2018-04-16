@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
-import wifi4eu.wifi4eu.common.dto.model.BeneficiaryListDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.registration.Registration;
@@ -81,18 +78,44 @@ public class BeneficiaryResource {
         }
     }
 
-    @ApiOperation(value = "Submit beneficiary registration")
-    @RequestMapping(value = "/beneficiary-dto", method = RequestMethod.GET)
+    @ApiOperation(value = "getBeneficiaryListItem")
+    @RequestMapping(value = "/getBeneficiaryListItem", method = RequestMethod.GET)
     @ResponseBody
-    public BeneficiaryListDTO getBeneficiaryListDTO() {
-        return new BeneficiaryListDTO();
+    public BeneficiaryListItemDTO getBeneficiaryListItem() {
+        return new BeneficiaryListItemDTO();
     }
 
-    @ApiOperation(value = "Get beneficiary registration with lau")
-    @RequestMapping(value = "/beneficiary-list", method = RequestMethod.GET)
+    @ApiOperation(value = "findDgconnBeneficiaresList")
+    @RequestMapping(value = "/findDgconnBeneficiaresList", method = RequestMethod.POST)
     @ResponseBody
-    public List<BeneficiaryListDTO> getBeneficiaryRegistrations() {
-        return beneficiaryService.getListBeneficiaryTable();
+    public ResponseDTO findDgconnBeneficiaresList(@RequestParam("offset") final Integer offset, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType) {
+        try {
+            ResponseDTO res = new ResponseDTO(true, null, null);
+            res.setData(beneficiaryService.findDgconnBeneficiaresList(null, offset, count, orderField, orderType));
+            res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalities());
+            return res;
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("can't retrieve beneficiaries", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
     }
 
+    @ApiOperation(value = "findDgconnBeneficiaresListSearchingName")
+    @RequestMapping(value = "/findDgconnBeneficiaresListSearchingName", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO findDgconnBeneficiaresListSearchingName(@RequestParam("name") final String name, @RequestParam("offset") final Integer offset, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType) {
+        try {
+            ResponseDTO res = new ResponseDTO(true, null, null);
+            res.setData(beneficiaryService.findDgconnBeneficiaresList(name, offset, count, orderField, orderType));
+            res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalitiesContainingName(name));
+            return res;
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("can't retrieve beneficiaries", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
 }
