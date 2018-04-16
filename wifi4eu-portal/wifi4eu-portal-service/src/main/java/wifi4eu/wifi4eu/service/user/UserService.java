@@ -106,7 +106,7 @@ public class UserService {
         return userMapper.toDTO(userRepository.findByEmail(email));
     }
 
-    public UserDTO getUserByEcasEmail(String email){
+    public UserDTO getUserByEcasEmail(String email) {
         return userMapper.toDTO(userRepository.findByEcasEmail(email));
     }
 
@@ -143,7 +143,7 @@ public class UserService {
             throw new AppException("User context not defined", HttpStatus.SC_FORBIDDEN, "");
         }
 
-        if(_log.isDebugEnabled()){
+        if (_log.isDebugEnabled()) {
             _log.debug("user Email: " + userContext.getEmail() + " user PerId: " + userContext.getPerId());
         }
 
@@ -151,7 +151,12 @@ public class UserService {
         if (userDTO == null) {
             userDTO = new UserDTO();
             userDTO.setAccessDate(new Date().getTime());
-            userDTO.setEcasEmail(userContext.getEmail());
+            if (userDTO.getEcasEmail() == null) {
+                userDTO.setHasECASEmail(false);
+            } else {
+                userDTO.setEcasEmail(userContext.getEmail());
+                userDTO.setHasECASEmail(true);
+            }
             userDTO.setEcasUsername(userContext.getUsername());
             userDTO.setName(userContext.getFirstName());
             userDTO.setSurname(userContext.getLastName());

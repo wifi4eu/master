@@ -1,19 +1,20 @@
-import { Component } from "@angular/core";
-import { UserDTOBase } from "../shared/swagger/model/UserDTO";
-import { MunicipalityDTOBase } from "../shared/swagger/model/MunicipalityDTO";
-import { BeneficiaryDTOBase } from "../shared/swagger/model/BeneficiaryDTO";
-import { OrganizationDTOBase } from "../shared/swagger/model/OrganizationDTO";
-import { BeneficiaryApi } from "../shared/swagger/api/BeneficiaryApi";
-import { ResponseDTOBase } from "../shared/swagger/model/ResponseDTO";
-import { NutsDTOBase } from "../shared/swagger/model/NutsDTO";
-import { NutsApi } from "../shared/swagger/api/NutsApi";
-import { OrganizationApi } from "../shared/swagger/api/OrganizationApi";
-import { Subscription } from "rxjs/Subscription";
-import { SharedService } from "../shared/shared.service";
-import { MayorDTOBase } from "../shared/swagger/model/MayorDTO";
-import { LauDTOBase } from "../shared/swagger/model/LauDTO";
-import { Router } from "@angular/router";
-import { TranslateService } from "ng2-translate";
+import {Component} from "@angular/core";
+import {UserDTOBase} from "../shared/swagger/model/UserDTO";
+import {MunicipalityDTOBase} from "../shared/swagger/model/MunicipalityDTO";
+import {BeneficiaryDTOBase} from "../shared/swagger/model/BeneficiaryDTO";
+import {OrganizationDTOBase} from "../shared/swagger/model/OrganizationDTO";
+import {BeneficiaryApi} from "../shared/swagger/api/BeneficiaryApi";
+import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
+import {NutsDTOBase} from "../shared/swagger/model/NutsDTO";
+import {NutsApi} from "../shared/swagger/api/NutsApi";
+import {OrganizationApi} from "../shared/swagger/api/OrganizationApi";
+import {Subscription} from "rxjs/Subscription";
+import {SharedService} from "../shared/shared.service";
+import {MayorDTOBase} from "../shared/swagger/model/MayorDTO";
+import {LauDTOBase} from "../shared/swagger/model/LauDTO";
+import {Router} from "@angular/router";
+import {TranslateService} from "ng2-translate";
+import {LocalStorageService} from "angular-2-local-storage";
 
 @Component({
     selector: 'beneficiary-registration',
@@ -39,8 +40,9 @@ export class BeneficiaryRegistrationComponent {
     private alreadyRegistered: boolean = false;
     private organization: OrganizationDTOBase = null;
     private associationName: string = null;
+    private hasEcasMail: boolean = false;
 
-    constructor(private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
+    constructor(private localStorage: LocalStorageService, private beneficiaryApi: BeneficiaryApi, private nutsApi: NutsApi, private organizationApi: OrganizationApi, private router: Router, private sharedService: SharedService, private translateService: TranslateService) {
         this.nutsApi.getNutsByLevel(0).subscribe(
             (nuts: NutsDTOBase[]) => {
                 this.countries = nuts;
@@ -48,6 +50,13 @@ export class BeneficiaryRegistrationComponent {
                 console.log(error);
             }
         );
+        const storedUser = this.localStorage.get('user');
+        const userEcas = storedUser ? JSON.parse(storedUser.toString()) : null;
+        if (userEcas.hasECASEmail) {
+            this.hasEcasMail = true;
+        } else {
+            this.hasEcasMail = false;
+        }
     }
 
     private selectCountry(country: NutsDTOBase) {

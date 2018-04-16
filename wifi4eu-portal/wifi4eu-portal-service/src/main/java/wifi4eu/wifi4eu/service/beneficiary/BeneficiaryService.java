@@ -98,6 +98,7 @@ public class BeneficiaryService {
             user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
             user.setEmail(beneficiaryDTO.getUser().getEmail());
             user.setType(beneficiaryDTO.getUser().getType());
+            user.setEcasEmail(beneficiaryDTO.getUser().getEmail());
             isEcasUser = true;
         }
 
@@ -170,14 +171,14 @@ public class BeneficiaryService {
                     mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                 }
 
-                if(municipalitiesWithSameLau.size() <= 10){
-                    for(MunicipalityDTO municipality: municipalitiesWithSameLau){
+                if (municipalitiesWithSameLau.size() <= 10) {
+                    for (MunicipalityDTO municipality : municipalitiesWithSameLau) {
                         RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipality.getId());
-                        if(registrationDTO == null) {
+                        if (registrationDTO == null) {
                             continue;
                         }
                         UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
-                        if(userRegistration.getId() == userDTO.getId() || userRegistration == null) {
+                        if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
                             continue;
                         }
                         locale = new Locale(userRegistration.getLang());
