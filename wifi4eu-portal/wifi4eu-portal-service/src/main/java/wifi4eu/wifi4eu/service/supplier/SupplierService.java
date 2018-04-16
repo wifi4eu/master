@@ -271,4 +271,11 @@ public class SupplierService {
     public Long getCountAllSuppliersContainingName(String name) {
         return supplierRepository.countByNameContainingIgnoreCase(name);
     }
+
+    public Page<String> getSuppliersByRegionOrCountry(String countryCode, int regionId, Pageable pageable){
+        if (regionId == 0) {
+            return supplierRepository.findSuppliersByCountryCode(countryCode,pageable);
+        }
+        return supplierRepository.findSuppliersByRegion(regionId, pageable);
+    }
 }

@@ -13,6 +13,9 @@ public interface SupplierRepository extends JpaRepository<Supplier,Integer> {
     Iterable<Supplier> findByVat(String vat);
     Iterable<Supplier> findByAccountNumber(String accountNumber);
 
+    Page<Supplier> findByNameContainingIgnoreCase(Pageable pageable, String name);
+    Long countByNameContainingIgnoreCase(String name);
+
     @Query("SELECT distinct s.name FROM SuppliedRegion sr JOIN sr.region r JOIN sr.supplier s WHERE r.id = :regionId")
     Page<String> findSuppliersByRegion(@Param("regionId") int regionId, Pageable pageable);
 
