@@ -36,9 +36,9 @@
                         {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}}
                     </label>
                     <span class="right">
-                        <button type="button" class="btn btn-primary whiteButton-thin" (click)="requestLegalDocuments(i)">
-                            {{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}
-                        </button>
+                        <!--<button type="button" class="btn btn-primary whiteButton-thin" (click)="requestLegalDocuments(i)">-->
+                        <!--{{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}-->
+                        <!--</button>-->
                         <button type="button" class="btn redButton" (click)="displayInvalidateModal(i)" [disabled]="registrations[i].status == 1">
                             {{ 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality' | translate }}
                         </button>

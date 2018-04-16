@@ -50,19 +50,21 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                     let municipality = municipalities[i];
                     this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                         (mayor: MayorDTOBase) => {
-                            this.registrationApi.getRegistrationByMunicipalityId(municipality.id).subscribe(
-                                (registration: RegistrationDTOBase) => {
-                                    if (registration) {
-                                        this.entitiesChecked.push(false);
-                                        this.registrations.push(registration);
-                                        this.mayors.push(mayor);
-                                        this.municipalities.push(municipality);
-                                        if(this.registrations.length == municipalities.length){
-                                            this.getIssue();
+                            if (mayor) {
+                                this.registrationApi.getRegistrationByMunicipalityId(municipality.id).subscribe(
+                                    (registration: RegistrationDTOBase) => {
+                                        if (registration) {
+                                            this.entitiesChecked.push(false);
+                                            this.registrations.push(registration);
+                                            this.mayors.push(mayor);
+                                            this.municipalities.push(municipality);
+                                            if (this.registrations.length == municipalities.length) {
+                                                this.getIssue();
+                                            }
                                         }
                                     }
-                                }
-                            );
+                                );
+                            }
                         }
                     );
                 }

@@ -1,16 +1,20 @@
 package wifi4eu.wifi4eu.util;
 
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.queue.CloudQueueMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
-import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
-import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.azurequeue.AzureQueueService;
+import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
@@ -21,8 +25,11 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.InvalidKeyException;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -32,21 +39,60 @@ import java.util.ResourceBundle;
 public class ScheduledTasks {
 
     @Autowired
-    private HelpdeskService helpdeskService;
+    private MailService mailService;
 
     @Autowired
-    MailService mailService;
+    private HelpdeskService helpdeskService;
 
     @Autowired
     private HelpdeskIssueMapper helpdeskIssueMapper;
 
     @Autowired
+    private RegistrationService registrationService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
-    private RegistrationService registrationService;
+    private AzureQueueService azureQueueService;
+
+    @Autowired
+    private ApplicationMapper applicationMapper;
+
+    @Autowired
+    private ApplicationService applicationService;
+
+    @Autowired
+    private CallService callService;
 
     private static final Logger _log = LoggerFactory.getLogger(ScheduledTasks.class);
+
+    @Scheduled(cron = "0 0/5 * * * ?")
+    public void scheduleAzureQueue() throws InvalidKeyException, StorageException, URISyntaxException {
+        azureQueueService.createAzureQueue("stressqueue-1");
+        List<CloudQueueMessage> list = azureQueueService.peekMessagesAzureQueue(32, 600);
+
+        for (CloudQueueMessage cloudQueueMessage: list) {
+            String queueMessage = cloudQueueMessage.getMessageContentAsString();
+            String idRegistration = queueMessage.substring(queueMessage.indexOf("(") + 1);
+            idRegistration = idRegistration.substring(0, idRegistration.indexOf(")"));
+
+            String idCall = queueMessage.substring(queueMessage.indexOf("@")+1);
+            idCall = idCall.substring(0, idCall.indexOf("@"));
+
+            ApplicationDTO applicationDTO = new ApplicationDTO();
+
+            applicationDTO.setRegistrationId(Integer.parseInt(idRegistration));
+            applicationDTO.setDate(new Date().getTime());
+            applicationDTO.setCallId(Integer.parseInt(idCall));
+
+            if (applicationService.getApplicationsByRegistrationId(applicationDTO.getRegistrationId()).size() == 0) {
+              applicationService.createApplication(applicationDTO);
+            }
+
+            azureQueueService.removeMessageAzureQueue(cloudQueueMessage);
+        }
+    }
 
     @Scheduled(cron = "0 0/30 * * * ?")
     public void scheduleHelpdeskIssues() {

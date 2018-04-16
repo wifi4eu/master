@@ -1,6 +1,9 @@
 package wifi4eu.wifi4eu.web.rest;
 
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierListItemDTO;
 import wifi4eu.wifi4eu.common.dto.model.SuppliersCacheDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
@@ -27,7 +31,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-@CrossOrigin(origins = "*", exposedHeaders = "*, X-Total-Count")
+@CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/supplier", description = "Supplier object REST API services")
 @RequestMapping("supplier")
@@ -219,6 +223,41 @@ public class SupplierResource {
         }
     }
 
+    @ApiOperation(value = "getSupplierListItemDTO")
+    @RequestMapping(value = "/getSupplierListItemDTO", method = RequestMethod.GET)
+    @ResponseBody
+    public SupplierListItemDTO getSupplierListItemDTO() {
+        return new SupplierListItemDTO();
+    }
+
+    @ApiOperation(value = "findDgconnSuppliersList")
+    @RequestMapping(value = "/findDgconnSuppliersList", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO findDgconnSuppliersList(@RequestParam("page") final Integer page, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType) {
+        try {
+            return new ResponseDTO(true, supplierService.findDgconnSuppliersList(null, page, count, orderField, orderType), supplierService.getCountAllSuppliers(), null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'findDgconnSuppliersList': ", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "findDgconnSuppliersListSearchingName")
+    @RequestMapping(value = "/findDgconnSuppliersListSearchingName", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO findDgconnSuppliersListSearchingName(@RequestParam("name") final String name, @RequestParam("page") final Integer page, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType) {
+        try {
+            return new ResponseDTO(true, supplierService.findDgconnSuppliersList(name, page, count, orderField, orderType), supplierService.getCountAllSuppliersContainingName(name), null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'findDgconnSuppliersListSearchingName' (" + name + "): ", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
     @ApiOperation(value = "Get suppliers registered by region")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
@@ -255,5 +294,4 @@ public class SupplierResource {
                 pageObj.getTotalElements(),
                 null);
     }
-
 }

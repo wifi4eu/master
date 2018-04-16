@@ -57,4 +57,3 @@ public class ResponseDTO {
         this.XTotalCount = XTotalCount;
     }
 }
-
