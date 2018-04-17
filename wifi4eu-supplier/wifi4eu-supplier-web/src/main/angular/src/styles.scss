@@ -69,3 +69,22 @@ body {
     width:  100%;
     display: inline-block;
 } 
+
+p-autocomplete {
+    padding: 0 !important;
+    border: 0 !important;
+  }
+
+  .ui-autocomplete {
+    display:  inline-block;
+  }
+
+  .ui-autocomplete .ui-widget {
+    padding: 1rem 1rem;
+  }
+
+  
+.autoComplete {
+    width: 13em;
+    display: inline-block;
+  }

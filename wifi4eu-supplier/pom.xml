@@ -11,6 +11,11 @@
     <name>wifi4eu-supplier</name>
     <description>Supplier WiFi4EU</description>
 
+    <properties>
+        <app.context.root>/supplier</app.context.root>
+    </properties>
+
+
     <parent>
         <artifactId>wifi4eu</artifactId>
         <groupId>wifi4eu.wifi4eu</groupId>

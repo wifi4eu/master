@@ -10,6 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wifi4eu-supplier-web</artifactId>
+    <packaging>war</packaging>
+    <name>WiFi4EU Supplier web module</name>
 
     <dependencies>
         <!--
@@ -103,7 +105,7 @@
                                     <workingDirectory>src/main/angular</workingDirectory>
                                     <arguments>
                                         <argument>/c</argument>
-                                        <argument>"ng build --base-href /wifi4eu/"</argument>
+                                        <argument>"ng build --base-href /supplier/"</argument>
                                         <argument>--env=${ng.env}</argument>
                                         <argument>--prod</argument>
                                         <argument>--aot</argument>
@@ -152,7 +154,7 @@
     </profiles>
 
     <build>
-        <finalName>wifi4eu</finalName>
+        <finalName>supplier</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>

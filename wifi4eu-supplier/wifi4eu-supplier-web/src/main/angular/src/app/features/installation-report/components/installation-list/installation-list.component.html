@@ -6,9 +6,13 @@
     
         <div class="form-group instalReportBeneficiary col-md-3">
             <label for="selectBeneficiary">{{ 'installationReport.beneficiary' | translate }}</label>
-            <input type="text" class="form-control" placeholder="{{'app.search.button' | translate}}">
-            <!-- [(ngModel)]="searchParametersService.parameters.criteria.keywords" -->
-            <!-- (keyup)="onBeneficiaryKeyPress()"> -->
+            <p-autoComplete id="selectBeneficiary" name="selectBeneficiary" 
+            placeholder="{{'app.search.button' | translate}}"
+            [(ngModel)]="beneficiarySelected"
+            [suggestions]="beneficiarySuggestions"
+            (completeMethod)="getBenegiciarySuggestions()"
+            (onSelect)="onBeneficiarySelected()"></p-autoComplete> 
+            
         </div>
     
         <div class="results">
