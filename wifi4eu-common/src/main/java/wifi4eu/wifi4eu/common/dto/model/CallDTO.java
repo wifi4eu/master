@@ -7,6 +7,8 @@ public class CallDTO {
     private String event;
     private long startDate;
     private long endDate;
+    private int budget;
+    private int budgetVoucher;
     private List<TimelineDTO> timelines;
     private List<VoucherManagementDTO> voucherManagements;
 
@@ -19,6 +21,17 @@ public class CallDTO {
         this.startDate = startDate;
         this.endDate = endDate;
         this.timelines = timelines;
+        this.voucherManagements = voucherManagements;
+    }
+
+    public CallDTO(int id, String event, long startDate, long endDate, int budget, int budgetVoucher, List<TimelineDTO> timelines, List<VoucherManagementDTO> voucherManagements) {
+        this.id = id;
+        this.event = event;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.budget = budget;
+        this.timelines = timelines;
+        this.budgetVoucher = budgetVoucher;
         this.voucherManagements = voucherManagements;
     }
 
@@ -68,5 +81,21 @@ public class CallDTO {
 
     public void setVoucherManagements(List<VoucherManagementDTO> voucherManagements) {
         this.voucherManagements = voucherManagements;
+    }
+
+    public int getBudget() {
+        return budget;
+    }
+
+    public void setBudget(int budget) {
+        this.budget = budget;
+    }
+
+    public int getBudgetVoucher() {
+        return budgetVoucher;
+    }
+
+    public void setBudgetVoucher(int budgetVoucher) {
+        this.budgetVoucher = budgetVoucher;
     }
 }

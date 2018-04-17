@@ -12,6 +12,7 @@ import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationVoucherInfoDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 
 import java.util.List;
@@ -118,6 +119,23 @@ public class ApplicationResource {
                 _log.info("getApplicationsVoucherInfoByCall: " + callId);
             }
             return applicationService.getApplicationsVoucherInfoByCall(callId);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.info("getApplicationsVoucherInfoByCall: " + callId);
+            }
+            return null;
+        }
+    }
+
+    @ApiOperation(value = "Get applications voucher2 info by call id")
+    @RequestMapping(value = "/voucherInfo2/call/{callId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<ApplicationDTO> getApplicationsByRegistrationNotInvalidated(@PathVariable("callId") final Integer callId) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("getApplicationsVoucherInfoByCall: " + callId);
+            }
+            return applicationService.getApplicationsByRegistrationNotInvalidated(callId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.info("getApplicationsVoucherInfoByCall: " + callId);

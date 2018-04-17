@@ -12,16 +12,18 @@ public class VoucherManagementDTO {
     private String member_state;
     private int minimum;
     private int maximum;
+    private int reserve;
 
     public VoucherManagementDTO() {
     }
 
-    public VoucherManagementDTO(int id, int call_id, String member_state, int minimum, int maximum) {
+    public VoucherManagementDTO(int id, int call_id, String member_state, int minimum, int maximum, int reserve) {
         this.id = id;
         this.call_id = call_id;
         this.member_state = member_state;
         this.minimum = minimum;
         this.maximum = maximum;
+        this.reserve = reserve;
     }
 
     public int getId() {
@@ -64,4 +66,11 @@ public class VoucherManagementDTO {
         this.maximum = maximum;
     }
 
+    public int getReserve() {
+        return reserve;
+    }
+
+    public void setReserve(int reserve) {
+        this.reserve = reserve;
+    }
 }

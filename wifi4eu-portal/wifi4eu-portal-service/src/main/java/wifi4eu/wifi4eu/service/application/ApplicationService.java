@@ -140,4 +140,8 @@ public class ApplicationService {
         }
         return appVoucherInfoDTO;
     }
+
+    public List<ApplicationDTO> getApplicationsByRegistrationNotInvalidated(int callId) {
+        return  applicationMapper.toDTOList(applicationRepository.findApplicationsByRegistrationNotInvalidated(callId));
+    }
 }

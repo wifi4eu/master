@@ -23,6 +23,12 @@ public class Call {
 
     @Column(name = "end_date")
     private Long endDate;
+    
+    @Column(name = "budget")
+    private Integer budget;
+
+    @Column(name = "budget_voucher")
+    private Integer budgetVoucher;
 
     @OneToMany(mappedBy = "call")
     private List<Timeline> timelines;
@@ -39,6 +45,17 @@ public class Call {
         this.event = event;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.timelines = timelines;
+        this.voucherManagements = voucherManagements;
+    }
+
+    public Call(Integer id, String event, Long startDate, Long endDate, Integer budget, Integer budgetVoucher, List<Timeline> timelines, List<VoucherManagement> voucherManagements) {
+        this.id = id;
+        this.event = event;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.budget = budget;
+        this.budgetVoucher = budgetVoucher;
         this.timelines = timelines;
         this.voucherManagements = voucherManagements;
     }
@@ -89,5 +106,21 @@ public class Call {
 
     public void setVoucherManagements(List<VoucherManagement> voucherManagements) {
         this.voucherManagements = voucherManagements;
+    }
+
+    public Integer getBudget() {
+        return budget;
+    }
+
+    public void setBudget(Integer budget) {
+        this.budget = budget;
+    }
+
+    public Integer getBudgetVoucher() {
+        return budgetVoucher;
+    }
+
+    public void setBudgetVoucher(Integer budgetVoucher) {
+        this.budgetVoucher = budgetVoucher;
     }
 }

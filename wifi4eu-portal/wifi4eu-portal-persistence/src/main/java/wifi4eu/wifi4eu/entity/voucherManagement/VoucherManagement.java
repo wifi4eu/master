@@ -24,15 +24,19 @@ public class VoucherManagement {
     @Column(name = "member_state")
     private String member_state;
 
+    @Column(name = "reserve")
+    private Integer reserve;
+
     @ManyToOne
     @JoinColumn(name = "call_id")
     private Call voucherCall;
 
-    public VoucherManagement(Integer id, Integer minimum, Integer maximum, String member_state, Call voucherCall) {
+    public VoucherManagement(Integer id, Integer minimum, Integer maximum, String member_state, Integer reserve, Call voucherCall) {
         this.id = id;
         this.minimum = minimum;
         this.maximum = maximum;
         this.member_state = member_state;
+        this.reserve = reserve;
         this.voucherCall = voucherCall;
     }
 
@@ -77,5 +81,13 @@ public class VoucherManagement {
 
     public void setVoucherCall(Call voucherCall) {
         this.voucherCall = voucherCall;
+    }
+
+    public Integer getReserve() {
+        return reserve;
+    }
+
+    public void setReserve(Integer reserve) {
+        this.reserve = reserve;
     }
 }

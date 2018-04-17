@@ -1,4 +1,4 @@
-<div class="supplier"></div>
+<!-- <div class="supplier"></div>
 <div class="container">
     <div class="ui-g">
         <div class="ui-g-12">
@@ -64,7 +64,7 @@
             </p-dataTable>
         </p-tabPanel>
     </p-tabView>
-    <!--MODALS BELOW-->
+   
 
     <div class="container font">
         <div class="ui-g-1"></div>
@@ -84,5 +84,104 @@
                 </button>
             </div>
         </p-dialog>
+    </div>
+</div>
+ -->
+<!--MODALS BELOW-->
+
+<div class="container voucher__assignment">
+    <div class="row">
+        <div class="col-md-12">
+            <div style="padding-bottom: 2rem;">
+              <a routerLink="../">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i><span style="padding-left: 5px;">Back</span>
+              </a>
+            </div>
+            <div class="beneficiaryTitle" style="padding-bottom: 3.5rem;">{{ 'dgConn.voucher.dashboard' | translate}}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p-tabView (onChange)="handleChange($event)" class="voucher_call_tabs">
+                <p-tabPanel *ngFor="let call of calls; let i=index" [header]="'Call '+(i+1)">
+                    <div class="row" style="margin-top: 18px;">
+                        <div class="col-md-4 col-sm-12">
+                            <h6>Status</h6>
+                            <div style="height: 140px; width: 140px; display: flex; align-items: center; justify-content: center;" class="voucher-status simulation">
+                                <div class="voucher-status-info" style="text-align: center; color: #fff;">
+                                    <span class="fa fa-info" style="font-size: 2.5rem;border: 2px solid #fff;
+                                      width: 50px; height: 50px;padding-top: 7px;border-radius: 100%;
+                                      margin: 0 auto;"></span>
+                                    <span style="font-size: 1.2rem;margin-top: 10px;">Simulation</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <h6>Call {{i+1}} information: </h6>
+                            <div>
+                                <div>
+                                    <p>
+                                        <i class="fa fa-university" style="font-size: 20px;"></i>
+                                        <span>Total of valid applications for the call: <b class="value-voucher-call">{{validApplications.length}}</b></span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <p>
+                                        <i class="fa fa-suitcase" style="font-size: 20px;    padding-right: 3px;"></i>
+                                        <span>Total budget foreseen for the all in EUR: <b class="value-voucher-call">{{call.budget | number}}</b></span> 
+                                    </p>
+                                </div>
+                                <div>
+                                    <p>
+                                        <i class="fa fa-pie-chart" style="font-size: 20px;    padding-right: 3px;"></i>
+                                        <span>
+                                      The % of total budget as a maximum budgeted for each Country: <b class="value-voucher-call">10%</b>
+                                    </span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <p>
+                                        <i class="fa fa-ticket" style="font-size: 20px;    padding-right: 4px;"></i>
+                                        <span>Value of each voucher: <b class="value-voucher-call"> {{call.budgetVoucher | number}}</b></span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <div class="collection-ticket-icons" style="display: inline-block;padding-right: 25px; ">
+                                        <i class="fa fa-ticket fa-stroke-width ticket-1"></i>
+                                        <i class="fa fa-ticket ticket-1"></i>
+                                        <i class="fa fa-ticket fa-stroke-width ticket-2"></i>
+                                        <i class="fa fa-ticket ticket-2"></i>
+                                        <i class="fa fa-ticket fa-stroke-width ticket-3"></i>
+                                        <i class="fa fa-ticket ticket-3"></i>
+                                    </div>
+                                    <span>Total of vouchers foreseen for the call: <b class="value-voucher-call">{{numVoucher[i]}}</b></span>
+                                </div>
+                                <div>
+                                    <p>
+                                        <i class="fa fa-lock" style="font-size: 20px; padding-left: 4px;padding-right: 8px;"></i>
+                                        <span>Maximum number of reserve vouchers per country: <b class="value-voucher-call">{{calls[i]?.voucherManagements[0]?.reserve ? calls[i]?.voucherManagements[0]?.reserve : '0'}}</b></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-offset-2 col-md-4">
+                        <span>dasdas</span>
+
+
+
+
+
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        Table
+                      </div>
+                    </div>
+                </p-tabPanel>
+            </p-tabView>
+        </div>
     </div>
 </div>

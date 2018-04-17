@@ -117,6 +117,8 @@ CREATE TABLE dbo.calls
   [event] VARCHAR(500) NULL,
   [start_date] BIGINT NULL,
   [end_date] BIGINT NULL,
+  [budget] INT DEFAULT 0 NOT NULL,
+  [budget_voucher] INT DEFAULT 1000 NOT NULL,
   PRIMARY KEY ([id])
 );
 -- -----------------------------------------------------
@@ -440,39 +442,40 @@ CREATE TABLE voucher_management
   [member_state] VARCHAR(255) NULL,
   [minimum] INT NULL,
   [maximum] INT NULL,
+  [reserve] INT DEFAULT 50,
   PRIMARY KEY ([id])
 )
 ;
 INSERT INTO voucher_management
-  (call_id, member_state, minimum, maximum)
+  (call_id, member_state, minimum, maximum, reserve)
 VALUES
-  (1, 'Austria', 15, 80),
-  (1, 'Belgium', 15, 80),
-  (1, 'Bulgaria', 15, 80),
-  (1, 'Croatia', 15, 80),
-  (1, 'Cyprus', 15, 80),
-  (1, 'Czech Republic', 15, 80),
-  (1, 'Denmark', 15, 80),
-  (1, 'Estonia', 15, 80),
-  (1, 'Finland', 15, 80),
-  (1, 'France', 15, 80),
-  (1, 'Germany', 15, 80),
-  (1, 'Greece', 15, 80),
-  (1, 'Hungary', 15, 80),
-  (1, 'Ireland', 15, 80),
-  (1, 'Italy', 15, 80),
-  (1, 'Latvia', 15, 80),
-  (1, 'Lithuania', 15, 80),
-  (1, 'Luxembourg', 15, 80),
-  (1, 'Malta', 15, 80),
-  (1, 'Netherlands', 15, 80),
-  (1, 'Poland', 15, 80),
-  (1, 'Portugal', 15, 80),
-  (1, 'Romania', 15, 80),
-  (1, 'Slovakia', 15, 80),
-  (1, 'Slovenia', 15, 80),
-  (1, 'Spain', 15, 80),
-  (1, 'Sweden', 15, 80);
+  (1, 'Austria', 15, 80, 5),
+  (1, 'Belgium', 15, 80, 5),
+  (1, 'Bulgaria', 15, 80, 5),
+  (1, 'Croatia', 15, 80, 5),
+  (1, 'Cyprus', 15, 80, 5),
+  (1, 'Czech Republic', 15, 80, 5),
+  (1, 'Denmark', 15, 80, 5),
+  (1, 'Estonia', 15, 80, 5),
+  (1, 'Finland', 15, 80, 5),
+  (1, 'France', 15, 80, 5),
+  (1, 'Germany', 15, 80, 5),
+  (1, 'Greece', 15, 80, 5),
+  (1, 'Hungary', 15, 80, 5),
+  (1, 'Ireland', 15, 80, 5),
+  (1, 'Italy', 15, 80, 5),
+  (1, 'Latvia', 15, 80, 5),
+  (1, 'Lithuania', 15, 80, 5),
+  (1, 'Luxembourg', 15, 80, 5),
+  (1, 'Malta', 15, 80, 5),
+  (1, 'Netherlands', 15, 80, 5),
+  (1, 'Poland', 15, 80, 5),
+  (1, 'Portugal', 15, 80, 5),
+  (1, 'Romania', 15, 80, 5),
+  (1, 'Slovakia', 15, 80, 5),
+  (1, 'Slovenia', 15, 80, 5),
+  (1, 'Spain', 15, 80, 5),
+  (1, 'Sweden', 15, 80, 5);
 -- -----------------------------------------------------
 -- Table `dbo`.`user_threads`
 -- -----------------------------------------------------
