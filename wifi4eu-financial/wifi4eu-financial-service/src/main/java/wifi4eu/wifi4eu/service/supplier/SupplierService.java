@@ -25,6 +25,7 @@ import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.security.UserService;
 import wifi4eu.wifi4eu.entity.supplier.Supplier;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -84,51 +85,23 @@ public class SupplierService {
 
     @Transactional
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
-
-        _log.info("[i] create Supplier");
-
-        // set the create date
-        supplierDTO.setCreateDate(new Date());
-
-        /*
-            TODO: enable a validation to avoid user duplicity
-        */
-
-        // get supplier email
-        String email = supplierDTO.getContactEmail();
-
-        UserDTO persUserDTO = userService.getUserByEmail(email);
-
-        if (persUserDTO == null) {
-            _log.info("Nom: " + supplierDTO.getName());
-
-            // create supplier user
-            UserDTO userDTO = new UserDTO();
-            userDTO.setCreateDate(new Date());
-            userDTO.setEmail(email);
-            userDTO.setUserType(Constant.ROLE_SUPPLIER);
-
-            // create temporal password
-            String password = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
-            userDTO.setPassword(password);
-
-            Supplier supTemp = supplierMapper.toEntity(supplierDTO);
-            Supplier savedSupplier = supplierRepository.save(supTemp);
-            SupplierDTO perSupplierDTO = supplierMapper.toDTO(savedSupplier);
-
-            //link supplier and user and store user
-            userDTO.setUserTypeId(perSupplierDTO.getSupplierId());
-            userDTO = userService.saveUser(userDTO);
-
-            //send activate account mail
-            userService.sendActivateAccountMail(userDTO);
-
-            _log.info("[f] create Supplier");
-
-            return perSupplierDTO;
+        if (supplierDTO.getSuppliedRegions().isEmpty()) {
+            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
         } else {
-            _log.warn("trying to duplicate user");
-            return null;
+            Integer supplierId = supplierDTO.getId();
+            List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
+            List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
+            if (supplierId == 0) {
+                supplierDTO.setSuppliedRegions(null);
+                supplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+                supplierId = supplierDTO.getId();
+            }
+            for (SuppliedRegionDTO region : originalRegions) {
+                region.setSupplierId(supplierId);
+                correctRegions.add(region);
+            }
+            supplierDTO.setSuppliedRegions(correctRegions);
+            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
         }
     }
 

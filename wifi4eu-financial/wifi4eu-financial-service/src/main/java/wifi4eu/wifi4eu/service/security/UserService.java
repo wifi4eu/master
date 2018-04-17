@@ -12,6 +12,7 @@ import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.dto.security.UserDTO;
+//import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.security.UserMapper;
 import wifi4eu.wifi4eu.repository.security.SecurityTempTokenRepository;
@@ -50,7 +51,7 @@ public class UserService {
 
     public UserDTO login(UserDTO userDTO) {
 
-        UserDTO persUserDTO = getUserByEmail(userDTO.getEcasEmail());
+        UserDTO persUserDTO = getUserByEmail(userDTO.getEmail());
 
         if (persUserDTO != null && userDTO.getPassword().equals(persUserDTO.getPassword())) {
             persUserDTO.setAccessDate(new Date());
@@ -61,28 +62,28 @@ public class UserService {
     }
 
     public void resendEmail(BeneficiaryDTO beneficiaryDTO) {
-        if (beneficiaryDTO != null) {
-
-            String email;
-
-            if (beneficiaryDTO.getRepresentativeDTO().getEmail() != null) {
-                email = beneficiaryDTO.getRepresentativeDTO().getEmail();
-                beneficiaryDTO.setRepresented(true);
-            } else {
-                email = beneficiaryDTO.getMayorDTO().getEmail();
-            }
-
-            UserDTO userDTO = getUserByEmail(email);
-
-            if (userDTO != null) {
-                sendActivateAccountMail(userDTO);
-            } else {
-                _log.error("Trying to resend activation account email with an unregistered user");
-            }
-
-        } else {
-            _log.error("Trying to resend activation account email with an unregistered beneficiary");
-        }
+//        if (beneficiaryDTO != null) {
+//
+//            String email;
+//
+//            if (beneficiaryDTO.getRepresentativeDTO().getEmail() != null) {
+//                email = beneficiaryDTO.getRepresentativeDTO().getEmail();
+//                beneficiaryDTO.setRepresented(true);
+//            } else {
+//                email = beneficiaryDTO.getMayorDTO().getEmail();
+//            }
+//
+//            UserDTO userDTO = getUserByEmail(email);
+//
+//            if (userDTO != null) {
+//                sendActivateAccountMail(userDTO);
+//            } else {
+//                _log.error("Trying to resend activation account email with an unregistered user");
+//            }
+//
+//        } else {
+//            _log.error("Trying to resend activation account email with an unregistered beneficiary");
+//        }
     }
 
     public void sendActivateAccountMail(UserDTO userDTO) {
@@ -91,10 +92,11 @@ public class UserService {
         Date now = new Date();
 
         TempTokenDTO tempTokenDTO = new TempTokenDTO();
-        tempTokenDTO.setEmail(userDTO.getEcasEmail());
-        tempTokenDTO.setUserId(userDTO.getUserId());
-        tempTokenDTO.setCreateDate(now);
-        tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS));
+        tempTokenDTO.setEmail(userDTO.getEmail());
+        Long value=userDTO.getUserId();
+        tempTokenDTO.setUserId(value.intValue());
+        tempTokenDTO.setCreateDate(now.getTime());
+        tempTokenDTO.setExpiryDate(DateUtils.addHours(now, UserService.TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
         SecureRandom secureRandom = new SecureRandom();
         String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
         tempTokenDTO.setToken(token);
@@ -103,7 +105,7 @@ public class UserService {
         String subject = "Welcome to wifi4eu";
         String msgBody = "You have successfully registered to wifi4eu, access to the next link and activate your account " + UserService.ACTIVATE_ACCOUNT_URL + tempTokenDTO.getToken();
 
-        mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+        mailService.sendEmail(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
     }
 
 
@@ -131,12 +133,13 @@ public class UserService {
                 if (tempTokenDTO == null) {
                     tempTokenDTO = new TempTokenDTO();
                     tempTokenDTO.setEmail(email);
-                    tempTokenDTO.setUserId(userDTO.getUserId());
+                    Long value=userDTO.getUserId();
+                    tempTokenDTO.setUserId(value.intValue());
                 }
 
                 Date now = new Date();
-                tempTokenDTO.setCreateDate(now);
-                tempTokenDTO.setExpiryDate(DateUtils.addHours(now, TIMEFRAME_ACTIVATE_ACCOUNT_HOURS));
+                tempTokenDTO.setCreateDate(now.getTime());
+                tempTokenDTO.setExpiryDate(DateUtils.addHours(now, TIMEFRAME_ACTIVATE_ACCOUNT_HOURS).getTime());
                 SecureRandom secureRandom = new SecureRandom();
                 String token = Long.toString(secureRandom.nextLong()).concat(Long.toString(now.getTime())).replaceAll("-", "");
                 tempTokenDTO.setToken(token);
@@ -175,9 +178,11 @@ public class UserService {
         if (tempTokenDTO != null) {
             /* check if it is expired */
             _log.info("tempToken is not null and expiryDate: " + tempTokenDTO.getExpiryDate());
-            if (tempTokenDTO.getExpiryDate().after(now)) {
+            //if (tempTokenDTO.getExpiryDate().after(now)) {
+            if (new Date(tempTokenDTO.getExpiryDate()).after(now)) {
                 /* get user */
-                UserDTO userDTO = userMapper.toDTO(securityUserRepository.findByUserId(tempTokenDTO.getUserId()));
+                Integer value=tempTokenDTO.getUserId();
+                UserDTO userDTO = userMapper.toDTO(securityUserRepository.findByUserId(value.longValue()));
 
                 /* update password */
                 userDTO.setPassword(activateAccountDTO.getPassword());

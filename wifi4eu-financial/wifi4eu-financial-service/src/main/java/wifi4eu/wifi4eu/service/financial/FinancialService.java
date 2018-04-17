@@ -83,15 +83,20 @@ public class FinancialService {
                 SupplierDTO supplier = gson.fromJson(applicationJson.getAsJsonObject("supplier"), SupplierDTO.class);
                 application.setAwarded(applicationJson.get("awarded").getAsBoolean());
                 application.setDate(new Date(applicationJson.get("date").getAsLong()));
-                application.setPublicationId(call.getCallId());
+                //application.setPublicationId(call.getCallId());
+                Integer value=call.getId();
+                application.setPublicationId(value.longValue());
                 application.setBeneficiaryId(legalEntity.getLegalEntityId());
                 legalEntityRepository.save(legalEntityMapper.toEntity(legalEntity));
                 mayorRepository.save(mayorMapper.toEntity(mayor));
                 userRepository.save(userMapper.toEntity(user));
-                if (supplier.getSupplierId() != null) {
-                    application.setSupplierId(supplier.getSupplierId());
+//                if (supplier.getSupplierId() != null) {
+//                    application.setSupplierId(supplier.getSupplierId());
+//                if (supplier.getId()) {
+                    Integer value2=supplier.getId();
+                    application.setSupplierId(value2.longValue());
                     supplierRepository.save(supplierMapper.toEntity(supplier));
-                }
+//                }
                 Long importDate = new Date().getTime();
                 application.setLefImport(importDate);
                 application.setBcImport(importDate);
