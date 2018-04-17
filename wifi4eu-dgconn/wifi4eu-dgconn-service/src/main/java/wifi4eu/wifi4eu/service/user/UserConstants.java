@@ -11,7 +11,7 @@ public class UserConstants {
     public final static String DEFAULT_LANG = "en";
 
     public final static String MOCKED_USER_NAME = "Mr. Tester";
-    public final static String MOCKED_MAIL = "test@test.com";
+    public final static String MOCKED_MAIL = "tester@test.com";
     public final static String MOCKED_DOMAIN = "TemporalDom";
     public final static DetailedUser MOCKED_DETAILED_USER = null;
     public final static String MOCKED_FIRST_NAME = "Tester Name";

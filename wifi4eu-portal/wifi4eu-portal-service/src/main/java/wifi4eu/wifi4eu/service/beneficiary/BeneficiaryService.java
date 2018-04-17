@@ -98,7 +98,9 @@ public class BeneficiaryService {
             user.setPostalCode(beneficiaryDTO.getUser().getPostalCode());
             user.setEmail(beneficiaryDTO.getUser().getEmail());
             user.setType(beneficiaryDTO.getUser().getType());
-            user.setEcasEmail(beneficiaryDTO.getUser().getEmail());
+            if (!user.isHasECASEmail()) {
+                user.setEcasEmail(beneficiaryDTO.getUser().getEmail());
+            }
             isEcasUser = true;
         }
 

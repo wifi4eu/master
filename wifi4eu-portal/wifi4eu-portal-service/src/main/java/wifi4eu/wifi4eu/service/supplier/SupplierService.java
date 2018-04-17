@@ -73,6 +73,7 @@ public class SupplierService {
             List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
             if (supplierId == 0) {
                 supplierDTO.setSuppliedRegions(null);
+
                 supplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
                 supplierId = supplierDTO.getId();
             }
@@ -116,6 +117,9 @@ public class SupplierService {
             userDTO = new UserDTO();
             String password = "12345678";
             userDTO.setPassword(password);
+        }
+        if (!userDTO.isHasECASEmail()) {
+            userDTO.setEcasEmail(supplierDTO.getContactEmail());
         }
 
         userDTO.setName(supplierDTO.getContactName());
