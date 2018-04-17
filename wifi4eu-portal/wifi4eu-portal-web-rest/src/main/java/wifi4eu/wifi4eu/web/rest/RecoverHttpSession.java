@@ -1,4 +1,4 @@
-package wifi4eu.supplier.web.rest;
+package wifi4eu.wifi4eu.web.rest;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
