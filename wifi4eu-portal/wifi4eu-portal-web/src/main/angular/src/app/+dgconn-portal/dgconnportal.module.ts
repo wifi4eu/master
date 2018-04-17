@@ -10,6 +10,7 @@ import {DgConnSupplierRegistrationsComponent} from "./+supplier-registrations/su
 import {DgConnApplicantRegistrationsComponent} from "./+applicant-registrations/applicant-registrations.component";
 import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-registrations/+details/beneficiary-registrations-details.component";
 import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrations/details/supplier-registrations-details.component";
+import {DgConnApplicantRegistrationsDetailsComponent} from "./+applicant-registrations/+details/applicant-registrations-details.component";
 import {DgConnManageLauComponent} from "./+manage-lau/manage-lau.component";
 import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 import {SharedModule as SharedNgModule} from 'primeng/primeng';
@@ -28,6 +29,7 @@ import {SharedModule as SharedNgModule} from 'primeng/primeng';
         DgConnApplicantRegistrationsComponent,
         DgConnBeneficiaryRegistrationsDetailsComponent,
         DgConnSupplierRegistrationsDetailsComponent,
+        DgConnApplicantRegistrationsDetailsComponent,
         DgConnManageLauComponent,
         DgConnDiscussionComponent
     ],

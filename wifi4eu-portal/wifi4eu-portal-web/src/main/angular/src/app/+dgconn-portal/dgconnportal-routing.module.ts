@@ -11,6 +11,7 @@ import {DgConnManageLauComponent} from "./+manage-lau/manage-lau.component";
 import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-registrations/+details/beneficiary-registrations-details.component";
 import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrations/details/supplier-registrations-details.component";
+import {DgConnApplicantRegistrationsDetailsComponent} from "./+applicant-registrations/+details/applicant-registrations-details.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -41,6 +42,9 @@ import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrat
         }, {
             path: 'applicant-registrations',
             component: DgConnApplicantRegistrationsComponent,
+        }, {
+            path: 'applicant-registrations/:lauId/call/:callId',
+            component: DgConnApplicantRegistrationsDetailsComponent,
         }, {
             path: 'manage-lau',
             component: DgConnManageLauComponent,
