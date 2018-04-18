@@ -21,7 +21,8 @@
   "private": true,
   "dependencies": {
     "@eui/deps-base": "2.4.7",
-    "primeng": "^1.1.1"
+    "primeng": "^4.3.0",
+    "angular-2-local-storage": "^1.0.1"
   },
   "devDependencies": {
     "@angular/cli": "1.6.8",

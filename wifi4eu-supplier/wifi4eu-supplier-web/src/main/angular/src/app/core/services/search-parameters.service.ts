@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs/Subject';
 import { SearchParameters } from '../models/search-parameters.model';
 
 @Injectable()

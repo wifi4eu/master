@@ -11,6 +11,8 @@ import { HttpClientModule, HttpClient, HttpHandler } from '@angular/common/http'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { createTranslateLoader } from './shared/translate/translate.factory';
 
+import { LocalStorageModule } from 'angular-2-local-storage';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -27,7 +29,11 @@ import { createTranslateLoader } from './shared/translate/translate.factory';
                 useFactory: createTranslateLoader,
                 deps: [HttpClient]
             }
-        })
+        }),
+        LocalStorageModule.withConfig({
+            prefix: 'wifi4eu',
+            storageType: 'localStorage'
+        }),
     ],
     exports: [
     ],

@@ -16,6 +16,8 @@ body {
     }
 }
 
+
+/*InstallationReport*/
 .instalReportBeneficiary {
     padding-left: 0px;
 }
@@ -44,10 +46,6 @@ body {
     margin-bottom: 10px;
 }
 
-.installSites-table-body{
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-}
 
 .btn-flat-link {
     color: #004494 !important;
@@ -88,3 +86,82 @@ p-autocomplete {
     width: 13em;
     display: inline-block;
   }
+
+  /*table with the installation sites*/
+.ui-datatable-emptymessage{
+        font-family: Verdana;
+        text-align: center;
+        color: #888888;
+ }
+ 
+
+ .ui-datatable-emptymessage-row{
+    height: 400px;
+ }
+
+ .ui-datatable thead tr {
+    background: #fff;
+}
+
+.ui-widget-content{
+    border : 0px;
+}
+
+/*modal confirm installation*/
+.ui-chkbox-label{
+    display: initial;
+}
+
+p-checkbox{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.checkBoxContainer{
+    margin: 0 60px 0 60px;
+    text-align: left;
+}
+
+.modal-header{
+    border-bottom:0px;
+    color: #004494;
+}
+
+.modal-title{
+    font-family: Verdana;
+    font-size: 22px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.23;
+    letter-spacing: normal;
+    text-align: center;
+}
+
+.modal-body{
+    padding-left: 38px;
+    padding-right: 38px;
+}
+
+.ux-modal__footer{
+    background-color: #fff;
+    border-top: 0px;
+    display:inline-block;
+    text-align: center;
+}
+
+.ux-modal__footer button{
+    font-family: Verdana;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/*update installation site*/
+#updateInstallationSite{
+    font-size:16px;
+}
+
+.fa-question-circle{
+    color: #004494;
+}

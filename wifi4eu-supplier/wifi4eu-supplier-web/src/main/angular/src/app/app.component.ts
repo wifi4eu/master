@@ -5,6 +5,8 @@ import { Store } from '@ngrx/store';
 // import { autoSaveHandler as autoSaveHandlerModule1 } from '@app/module1';
 
 import { UxService, UxLink, UxLanguage } from '@eui/ux-commons';
+import {LocalStorageService} from 'angular-2-local-storage'
+
 import {
     CONFIG_TOKEN,
     AppState,
@@ -34,10 +36,13 @@ export class AppComponent implements OnInit {
         private translateService: TranslateService,
         private uxService: UxService,
         private store: Store<any>,
-        private userDetailsService: UserDetailsService
+        private userDetailsService: UserDetailsService,
+        private localStorageService: LocalStorageService
     ) {
         translateService.setDefaultLang('en');
         translateService.use('en');
+
+        this.localStorageService.set('supplierId',1);
     }
 
     ngOnInit() {
@@ -116,4 +121,6 @@ export class AppComponent implements OnInit {
                 this.userInfos = 'Name Firstname';
             });
     }
+
+    
 }

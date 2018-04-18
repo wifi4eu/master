@@ -1,0 +1,24 @@
+<ux-modal id="updateInstallationSite" titleLabel="{{ 'installationReport.addSite' | translate }}" isOverflowVisible="true"
+        [isHandleCloseOnAccept]="false" [isSizeSmall]="false" (onDismiss)="closeConfirmInstallation()">
+        <uxModalBody>
+                <form>
+                        <div class="form-group">
+                                <label for="siteName">{{ 'installationReport.siteName' | translate }}</label>
+                                <input type="text" class="form-control" id="siteName" placeholder="">
+                        </div>
+                        <div class="form-group">
+                                <label for="captivePortal">{{ 'updateInstallationReport.captivePortal' | translate }}</label>
+                                <ux-button [isFlat]="true" iconClass="fa-question-circle" pTooltip="{{ 'updateInstallationReport.tooltipText' | translate }}"  tooltipPosition="bottom" tooltipEvent="focus"></ux-button>
+                                <input type="text" class="form-control" id="captivePortal" placeholder="">
+                        </div>
+                        <div class="form-group">
+                                <label for="captivePortalRepeat">{{ 'updateInstallationReport.confirmCaptivePortal' | translate }}</label>
+                                <input type="text" class="form-control" id="captivePortalRepeat" placeholder="">
+                        </div>
+                </form>
+        </uxModalBody>
+        <uxModalFooter>
+                <ux-button typeClass="primary" [isSecondary]="true" (click)="closeUpdateInstallationSite()" [isLarge]="true">{{ 'shared.close' | translate }}</ux-button>
+                <ux-button typeClass="primary" (click)="closeUpdateInstallationSite()" [isDisabled]="true" [isLarge]="true">{{ 'shared.add' | translate }}</ux-button>
+        </uxModalFooter>
+</ux-modal>
