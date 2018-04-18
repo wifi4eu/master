@@ -28,4 +28,21 @@ public class ApplicationService {
     public List<ApplicationDTO> getApplicationsBySupplierId(int supplierId) {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findBySupplierId(supplierId)));
     }
+
+
+    @Transactional
+    public ApplicationDTO deleteApplication(int applicationId) {
+        ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
+        if (applicationDTO != null) {
+            applicationRepository.delete(applicationMapper.toEntity(applicationDTO));
+            return applicationDTO;
+        } else {
+            return null;
+        }
+    }
+
+
+    public List<ApplicationDTO> getApplicationsByRegistrationId(int registrationId) {
+        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
+    }
 }

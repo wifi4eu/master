@@ -45,6 +45,9 @@ public class AccessPoint {
     @Column(name = "mac_address", length = 17)
     private String macAddress;
 
+    public AccessPoint() {
+    }
+
     public AccessPoint(InstallationSite installationSite, String modelNumber, String serialNumber, boolean isIndoor, String deviceBrand, String location, String locationType, double latitude, double longitude, String macAddress) {
         this.installationSite = installationSite;
         this.modelNumber = modelNumber;

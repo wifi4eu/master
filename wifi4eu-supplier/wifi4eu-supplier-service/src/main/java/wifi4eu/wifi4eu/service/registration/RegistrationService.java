@@ -63,4 +63,8 @@ public class RegistrationService {
         return false;
     }
 
+    public List<RegistrationDTO> getRegistrationsByUserId(int userId) {
+        return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findByUserId(userId)));
+    }
+
 }

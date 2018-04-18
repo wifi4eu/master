@@ -6,11 +6,13 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
+import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 
 import java.util.ArrayList;
@@ -29,6 +31,9 @@ public class MunicipalityService {
     RegistrationService registrationService;
 
     @Autowired
+    MayorService mayorService;
+
+    @Autowired
     ApplicationService applicationService;
 
     public MunicipalityDTO getMunicipalityById(int municipalityId) {
@@ -40,6 +45,37 @@ public class MunicipalityService {
         List<ApplicationDTO> applications = applicationService.getApplicationsBySupplierId(supplierId);
         for (ApplicationDTO application : applications){
             RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
+            municipalities.add(getMunicipalityById(registration.getMunicipalityId()));
+        }
+        return municipalities;
+    }
+
+    @Transactional
+    public MunicipalityDTO deleteMunicipality(int municipalityId) {
+        MunicipalityDTO municipalityDTO = municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
+        if (municipalityDTO != null) {
+            MayorDTO mayor = mayorService.getMayorByMunicipalityId(municipalityDTO.getId());
+            if (mayor != null) {
+                mayorService.deleteMayor(mayor.getId());
+            }
+            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
+            if (registration != null) {
+                for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registration.getId())) {
+                    applicationService.deleteApplication(application.getId());
+                }
+            }
+            municipalityRepository.delete(municipalityMapper.toEntity(municipalityDTO));
+            return municipalityDTO;
+        } else {
+            return null;
+        }
+    }
+
+
+    public List<MunicipalityDTO> getMunicipalitiesByUserId(int userId) {
+        List<MunicipalityDTO> municipalities = new ArrayList<>();
+        List<RegistrationDTO> registrations = registrationService.getRegistrationsByUserId(userId);
+        for (RegistrationDTO registration : registrations) {
             municipalities.add(getMunicipalityById(registration.getMunicipalityId()));
         }
         return municipalities;

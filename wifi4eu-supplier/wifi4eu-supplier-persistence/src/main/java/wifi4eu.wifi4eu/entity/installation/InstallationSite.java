@@ -39,6 +39,9 @@ public class InstallationSite {
     @Column(name = "url")
     private String url;
 
+    public InstallationSite() {
+    }
+
     public InstallationSite(Municipality municipality, Status status, String idNetworkSnippet, String name, Timestamp dateRegistered, String domainName, String url) {
         this.municipality = municipality;
         this.status = status;
