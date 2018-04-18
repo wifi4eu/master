@@ -16,11 +16,13 @@ public class ApplicationDTO {
     private long lcExport;
     private long lcImport;
     private int lcStatus;
+    private int status;
+    private String invalidateReason;
 
     public ApplicationDTO() {
     }
 
-    public ApplicationDTO(int id, int callId, int registrationId, int supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus) {
+    public ApplicationDTO(int id, int callId, int registrationId, int supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -36,6 +38,8 @@ public class ApplicationDTO {
         this.lcExport = lcExport;
         this.lcImport = lcImport;
         this.lcStatus = lcStatus;
+        this.status = status;
+        this.invalidateReason = invalidateReason;
     }
 
     public int getId() {
@@ -156,5 +160,21 @@ public class ApplicationDTO {
 
     public void setLcStatus(int lcStatus) {
         this.lcStatus = lcStatus;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getInvalidateReason() {
+        return invalidateReason;
+    }
+
+    public void setInvalidateReason(String invalidateReason) {
+        this.invalidateReason = invalidateReason;
     }
 }

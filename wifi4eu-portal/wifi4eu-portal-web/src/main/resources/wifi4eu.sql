@@ -218,6 +218,8 @@ CREATE TABLE dbo.applications
   [lc_export] BIGINT NULL,
   [lc_import] BIGINT NULL,
   [lc_status] INT NULL DEFAULT 0,
+  [_status] INT NOT NULL DEFAULT 0,
+  [invalidate_reason] VARCHAR(max) NULL,
   PRIMARY KEY ([id])
  ,
   CONSTRAINT [fk_applications_calls]
