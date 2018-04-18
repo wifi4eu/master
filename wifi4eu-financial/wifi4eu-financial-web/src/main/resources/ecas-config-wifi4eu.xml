@@ -11,7 +11,7 @@
     <!--<serviceResolver>eu.cec.digit.ecas.client.resolver.service.ReverseProxyAwareServiceResolver</serviceResolver>-->
 
 
-    <serverContextPath>/wifi4eu</serverContextPath>
+    <serverContextPath>/wifi4eu-financial</serverContextPath>
 
     <requestingUserDetails>true</requestingUserDetails>
 

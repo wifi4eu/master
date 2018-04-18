@@ -59,7 +59,7 @@ export class AppComponent {
         this.user = u ? JSON.parse(u.toString()) : null;
 
         if (this.user != null) {
-            switch (this.user.userType) {
+            switch (this.user.type) {
                 case 1:
                     this.profileUrl = "/supplier-portal/profile";
                     break;
@@ -76,7 +76,7 @@ export class AppComponent {
 
         for (let i = 0; i < this.visibility.length; i++) this.visibility[i] = false;
 
-        let i = (this.user) ? this.user.userType : 0;
+        let i = (this.user) ? this.user.type : 0;
 
         this.menuLinks = [new UxLayoutLink({
             label: 'Wifi4EU',

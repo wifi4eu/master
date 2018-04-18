@@ -1,7 +1,7 @@
 import {Component, Input} from "@angular/core";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {HelpdeskApi} from "../../swagger/api/HelpdeskApi";
-import {HelpdeskDTO, HelpdeskDTOBase} from "../../swagger/model/HelpdeskDTO";
+import {HelpdeskIssueDTO} from "../../swagger/model/HelpdeskIssueDTO";
 import {NutsApi} from "../../swagger/api/NutsApi";
 import {NutsDTOBase} from "../../swagger/model/NutsDTO";
 import {ResponseDTO} from "../../swagger/model/ResponseDTO";
@@ -10,14 +10,14 @@ import {ResponseDTO} from "../../swagger/model/ResponseDTO";
     selector: 'helpdesk-form-component', templateUrl: 'helpdesk-form.component.html', providers: [NutsApi, HelpdeskApi]
 })
 export class HelpdeskFormComponent {
-    private helpdeskIssue: HelpdeskDTO;
+    private helpdeskIssue: HelpdeskIssueDTO;
     private expanded: boolean;
     private success: boolean;
     private nuts: NutsDTOBase[];
     @Input('portal') portal: string;
 
     constructor(private uxService: UxService, private nutsApi: NutsApi, private helpdeskApi: HelpdeskApi) {
-        this.helpdeskIssue = new HelpdeskDTOBase();
+        //this.helpdeskIssue = new HelpdeskDTOBase();
         this.expanded = false;
         this.expanded = false;
         this.nutsApi.findNutsByLevel(0).subscribe(
@@ -37,9 +37,10 @@ export class HelpdeskFormComponent {
 
     sendIssue() {
         this.helpdeskIssue.portal = this.portal;
-        this.helpdeskIssue.date = new Date();
+        this.helpdeskIssue.createDate = new Date().getTime();
         this.helpdeskIssue.assignedTo = "Member State";
-        this.helpdeskIssue.status = "Pending";
+        //this.helpdeskIssue.status = "Pending";
+        this.helpdeskIssue.status = 1;
         this.helpdeskApi.createHelpdeskIssue(this.helpdeskIssue).subscribe(
             (issue: ResponseDTO) => {
                 if (issue.success) {
