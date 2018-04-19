@@ -10,7 +10,6 @@ export class QueueComponent {
   constructor() {}
 
   public setAzureQueue(randomQueue: number) {
-    if(randomQueue >= 10) { randomQueue = 9; }
     this.queueName = "stress-"+randomQueue;
   }
 
