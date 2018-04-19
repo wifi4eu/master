@@ -152,6 +152,21 @@
             </div>
         </div>
         <div class="col-sm-4">
+
+            <div class="col-sm-12 margin-top  button-content" *ngIf="!documentUploaded || !allDocumentsUploaded">
+                <p>{{ ' shared.uploadDocumentsBox' | translate }}</p>
+                <div style="text-align: center !important">
+                    <button type="button" (click)="goToapplyForVOucher()"
+                            *ngIf="allDocumentsUploaded && !oneRegsitration"
+                            class="btn btn-primary changePassword">
+                        {{' shared.uploadDocumentsBoxButton' | translate }}
+                    </button>
+                    <button type="button" (click)="goToUploadDocuments()" *ngIf="oneRegsitration"
+                            class="btn btn-primary changePassword">
+                        {{' shared.uploadDocumentsBoxButton' | translate }}
+                    </button>
+                </div>
+            </div>
             <div class="col-sm-12 margin-top  button-content" *ngIf="hasDiscussion">
                 <p>{{ 'benefPortal.beneficiary.goDiscussionText' | translate }}</p>
                 <div style="text-align: center !important">
@@ -173,7 +188,8 @@
                 <p>{{ 'shared.withdraw-registration.text' | translate }}</p>
                 <div style="text-align: center !important">
                     <button type="button" (click)="deleteRegistration()"
-                            class="btn btn-primary changePassword" [disabled]="withdrawingRegistration || withdrawnSuccess">
+                            class="btn btn-primary changePassword"
+                            [disabled]="withdrawingRegistration || withdrawnSuccess">
                         {{ 'shared.withdraw-registration.button' | translate }}
                     </button>
                 </div>
@@ -227,7 +243,8 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="email_user">{{ 'shared.email.label' | translate }}</label>
-                        <label class="form-control" id="email_user" name="email_user"><b>{{editedUser.email}}</b></label>
+                        <label class="form-control" id="email_user"
+                               name="email_user"><b>{{editedUser.email}}</b></label>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -295,7 +312,8 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="email_mayor">{{ 'shared.email.label' | translate }}</label>
-                        <label class="form-control" id="email_mayor" name="email_mayor"><b>{{editedMayor.email}}</b></label>
+                        <label class="form-control" id="email_mayor"
+                               name="email_mayor"><b>{{editedMayor.email}}</b></label>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
