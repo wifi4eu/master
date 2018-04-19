@@ -9,14 +9,17 @@ export class QueueComponent {
 
   constructor() {}
 
+  public setAzureQueue(randomQueue: number) {
+    if(randomQueue >= 10) { randomQueue = 9; }
+    this.queueName = "stress-"+randomQueue;
+  }
+
   public createAzureQueue(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.queueSvc.createQueueIfNotExists(this.queueName, function(error, result, response){
         if(error){  
-            console.error("QueueComponent - createAzureQueue", error);
             return resolve({error: error});
         } else {
-            console.log("Queue created or exists");
             return resolve({error: null});
         }
       });

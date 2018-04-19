@@ -208,22 +208,22 @@ export class VoucherComponent {
             event.target.style.pointerEvents = "none";
             event.target.style.opacity = "0.5";
             event.target.disabled = true;
+
+            queueComponent.setAzureQueue(Math.floor(Math.random()*10));
             
-            queueComponent.createAzureQueue().then((res) => {
-              queueComponent.addMessageAzureQueue(aNewMessageApplication.message).then((response) => {
-                this.loadingButtons[registrationNumber] = true;
-                this.voucherApplied = "greyImage";
-                this.voucherCompetitionState = 3;
+            queueComponent.addMessageAzureQueue(aNewMessageApplication.message).then((response) => {
+              this.loadingButtons[registrationNumber] = true;
+              this.voucherApplied = "greyImage";
+              this.voucherCompetitionState = 3;
 
-                var oneHourLater = new Date();
-                oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
-                var timestamp = Math.floor(oneHourLater.getTime()/1000);
+              var oneHourLater = new Date();
+              oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
+              var timestamp = Math.floor(oneHourLater.getTime()/1000);
 
-                var queueStored = {expires_in: timestamp, idRegistration: this.registrations[registrationNumber].id, call: this.currentCall.id };
-                this.storedRegistrationQueues.push(queueStored);
-                this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
-                this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
-              });
+              var queueStored = {expires_in: timestamp, idRegistration: this.registrations[registrationNumber].id, call: this.currentCall.id };
+              this.storedRegistrationQueues.push(queueStored);
+              this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
+              this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
             }); 
           }     
         }
