@@ -197,7 +197,6 @@ export class AdditionalInfoComponent {
 
             if (this.registration.legalFile1 && this.registration.legalFile2 && this.registration.legalFile3 && this.registration.legalFile4) {
                 this.registration.allFilesFlag = 1;
-                this.registration.uploadTime = this.date;
                 this.registration.mailCounter = 0;
             } else {
                 this.registration.allFilesFlag = 0;
@@ -207,13 +206,13 @@ export class AdditionalInfoComponent {
         } else {
             if (this.registration.legalFile1 && this.registration.legalFile3) {
                 this.registration.allFilesFlag = 1;
-                this.registration.uploadTime = this.date;
                 this.registration.mailCounter = 0;
             } else {
                 this.registration.allFilesFlag = 0;
                 this.registration.uploadTime = 0;
                 this.registration.mailCounter = 3;
             }
+            this.registration.uploadTime = this.date;
         }
     }
 
