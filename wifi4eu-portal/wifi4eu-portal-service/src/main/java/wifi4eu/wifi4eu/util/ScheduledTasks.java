@@ -68,6 +68,7 @@ public class ScheduledTasks {
     private static final Logger _log = LoggerFactory.getLogger(ScheduledTasks.class);
 
     @Scheduled(cron = "0 0/5 * * * ?")
+//@Scheduled(cron = "0 0 * * * *")
     public void scheduleAzureQueue() throws InvalidKeyException, StorageException, URISyntaxException {
         azureQueueService.createAzureQueue("stressqueue-1");
         List<CloudQueueMessage> list = azureQueueService.peekMessagesAzureQueue(32, 600);
@@ -94,7 +95,8 @@ public class ScheduledTasks {
         }
     }
 
-    @Scheduled(cron = "0 0/30 * * * ?")
+    @Scheduled(cron = "0 0/1 * * * ?")
+//@Scheduled(cron = "0 0 * * * *")
     public void scheduleHelpdeskIssues() {
 
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
@@ -104,7 +106,8 @@ public class ScheduledTasks {
 
             helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
             helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
-            helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
+            //TODO Remove the new ID
+            helpdeskTicketDTO.setUuid("wifi4eu_T5_NewHeaders" + helpdeskIssue.getId());
 
             UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
 
@@ -127,6 +130,7 @@ public class ScheduledTasks {
 
 
     @Scheduled(cron = "0 12 * * 1 ?")
+//@Scheduled(cron = "0 0 * * * *")
     public void sendDocRequest() {
         List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
         for (RegistrationDTO registrationDTO : registrationDTOS) {
@@ -160,18 +164,25 @@ public class ScheduledTasks {
         try {
             URL url = new URL(targetURL);
             connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
 
+            connection.setRequestMethod("POST");
+
+            connection.setRequestProperty("Host", "webtools.ec.europa.eu");
             connection.setRequestProperty("Connection", "keep-alive");
-            connection.setRequestProperty("Content-Length",
-                    Integer.toString(urlParameters.getBytes().length));
-            connection.setRequestProperty("Content-Language", "en-US,en;q=0.9,es-ES;q=0.8,es;q=0.7");
+            connection.setRequestProperty("Content-Length", Integer.toString(urlParameters.getBytes().length));
+                connection.setRequestProperty("Cache-Control", "max-age=0");
+            connection.setRequestProperty("Origin", "https://forms.communi-k.eu");
+                connection.setRequestProperty("Upgrade-Insecure-Requests", "1");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+//            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
             connection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
             connection.setRequestProperty("Referer", "https://forms.communi-k.eu/livewebtools/WebForms/Standard/Standard.php?en");
-            connection.setRequestProperty("Origin", "https://forms.communi-k.eu");
-            connection.setRequestProperty("Host", "webtools.ec.europa.eu");
+                connection.setRequestProperty("Accept-Encoding", "gzip, deflate, br");
+            connection.setRequestProperty("Content-Language", "en-US,en;q=0.9,es-ES;q=0.8,es;q=0.7");
+
+//            connection.setRequestProperty("Accept-Charset", "utf-8, iso-8859-1;q=0.5");
+//            connection.setRequestProperty("Content-Type", "text/html; charset=utf-8");
 
             connection.setUseCaches(false);
             connection.setDoOutput(true);
