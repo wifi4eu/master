@@ -47,6 +47,10 @@
         display: block;
     }
     
+    .voucher-status {
+      transition: .2s background-color linear;
+    }
+
     .voucher-status.simulation {
         background-color: #004494;
     }
@@ -55,6 +59,60 @@
         background-color: #03A9F4;
     }
     
-    .voucher-status.save {
+    .voucher-status.saved {
         background-color: #228854s;
     }
+
+    .panel-padding-no-margin{
+      margin-bottom: 0;
+    }
+
+    .download_pre-selection{
+      float: right;
+
+      &.disabled{
+        pointer-events: none;
+        opacity: 0.5;
+      }
+    }
+
+    .panel-dg-voucher{
+      box-shadow: none;
+      border-width: 0px 1px 1px 1px;
+      border-color: rgba(187, 187, 187, 0.6);
+    }
+
+    .panel-dg-header{
+      padding: 22px 25px;
+      border-color: rgba(187, 187, 187, 0.6);
+      border-width: 1px 1px 0px 1px;
+      border-style: solid;
+     /*  font-family: Verdana; */
+    }
+
+    .panel-dg-header-title{
+    }
+
+    .voucher-dg-screen *:not(.fa) {
+      font-family: Verdana!important;
+    }
+
+    .simulate-button{
+      float: right;
+      background-color: #ffffff;
+      color: #004494;
+      border: solid 2px #004494;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 11px 17px;
+    }
+
+    .voucher-dg-screen .panel-dg.panel-dg-voucher .text-center{
+      padding: 1.25rem 0.5rem;
+
+    }
+    .panel-dg-voucher thead > .ui-state-default > th, .panel-dg-voucher thead > .ui-state-default{
+      border-width: 1px 0px 1px 0px;
+    }
+
+    

@@ -28,6 +28,10 @@ public class AzureQueueService {
         }
     }
 
+    public void setQueue(String queueName) throws StorageException, InvalidKeyException, URISyntaxException{
+        azureQueue.setQueueName(queueName);
+    }
+
     public void createAzureQueue(String queueName) throws StorageException, InvalidKeyException, URISyntaxException {
         azureQueue.setQueueName(queueName);
         azureQueue.createAzureQueue();
