@@ -66,7 +66,4 @@ export class InstallationListComponent {
         this.uxService.openModal('updateInstallationSite');
     }
 
-    closeUpdateInstallationSite(){
-        this.uxService.closeModal('updateInstallationSite');
-    }
 }

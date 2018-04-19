@@ -29,6 +29,6 @@
     "updateInstallationReport.captivePortal": "URL of the captive portal",
     "updateInstallationReport.confirmCaptivePortal": "Confirm URL of the captive portal",
     "updateInstallationReport.charactersAllowed": "Characters Allowed",
-    "updateInstallationReport.tooltipText": "Please, use only the following characters: 0-9, a-z, -, ., :, /. For example, http://www.captiveportalname.com/"
-
+    "updateInstallationReport.tooltipText": "Please, use only the following characters: 0-9, a-z, -, ., :, /. For example, http://www.captiveportalname.com/",
+    "updateInstallationReport.captivePortalMatches": "The URLs does not match, please provide the same url."
 }
