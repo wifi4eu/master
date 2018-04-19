@@ -1,24 +1,34 @@
 <ux-modal id="updateInstallationSite" titleLabel="{{ 'installationReport.addSite' | translate }}" isOverflowVisible="true"
-        [isHandleCloseOnAccept]="false" [isSizeSmall]="false" (onDismiss)="closeConfirmInstallation()">
+        [isHandleCloseOnAccept]="false" [isFooterVisible]="false" [isSizeSmall]="false" (onClose)="closeUpdateInstallationSite()">
         <uxModalBody>
-                <form>
+                <p class="modal-subtitle">{{'updateInstallationReport.subtitle' | translate}}</p>
+                <form (ngSubmit)="onSubmit(installationSiteForm)" #installationSiteForm="ngForm">
                         <div class="form-group">
                                 <label for="siteName">{{ 'installationReport.siteName' | translate }}</label>
-                                <input type="text" class="form-control" id="siteName" placeholder="">
+                                <input type="text" class="form-control" id="siteName" name="siteName" placeholder="" [(ngModel)]="nameSiteInput" #siteName="ngModel"
+                                        required>
                         </div>
                         <div class="form-group">
                                 <label for="captivePortal">{{ 'updateInstallationReport.captivePortal' | translate }}</label>
-                                <ux-button [isFlat]="true" iconClass="fa-question-circle" pTooltip="{{ 'updateInstallationReport.tooltipText' | translate }}"  tooltipPosition="bottom" tooltipEvent="focus"></ux-button>
-                                <input type="text" class="form-control" id="captivePortal" placeholder="">
+                                <p pTooltip="{{ 'updateInstallationReport.tooltipText' | translate}} " tooltipPosition="bottom">
+                                        <i class="fa fa-question-circle"></i>
+                                </p>
+                                <input type="text" class="form-control" id="captivePortal" name="captivePortal" placeholder="" oncopy="return false" onpaste="return false"
+                                        pattern="{{regexUrlPortal}}" [(ngModel)]="captivePortalInput" #captivePortal="ngModel" validateEquals="captivePortalRepeat"
+                                        required>
                         </div>
                         <div class="form-group">
                                 <label for="captivePortalRepeat">{{ 'updateInstallationReport.confirmCaptivePortal' | translate }}</label>
-                                <input type="text" class="form-control" id="captivePortalRepeat" placeholder="">
+                                <input type="text" class="form-control {{css_class_email}}" id="captivePortalRepeat" name="captivePortalRepeat" placeholder=""
+                                        oncopy="return false" pattern="{{regexUrlPortal}}" validateEquals="captivePortal" onpaste="return false"
+                                        [(ngModel)]="repeatCaptivePortalInput" #repeatCaptivePortal="ngModel" required>
+                        </div>
+                        <div class="modal-footer ux-modal__footer">
+                                <ux-button typeClass="primary" [isSecondary]="true" (click)="closeUpdateInstallationSite();" [isLarge]="true">{{ 'shared.close' | translate }}</ux-button>
+                                <ux-button type="submit" typeClass="primary" [isDisabled]="!installationSiteForm.form.valid"
+                                        [isLarge]="true">{{ 'shared.add' | translate }}</ux-button>
                         </div>
                 </form>
         </uxModalBody>
-        <uxModalFooter>
-                <ux-button typeClass="primary" [isSecondary]="true" (click)="closeUpdateInstallationSite()" [isLarge]="true">{{ 'shared.close' | translate }}</ux-button>
-                <ux-button typeClass="primary" (click)="closeUpdateInstallationSite()" [isDisabled]="true" [isLarge]="true">{{ 'shared.add' | translate }}</ux-button>
-        </uxModalFooter>
+
 </ux-modal>
