@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
@@ -248,4 +249,16 @@ public class ApplicationService {
         }
         return applicantsList;
     }
+
+    public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
+        applicationDTO.setStatus(ApplicationStatus.OK.getValue());
+        ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        return validatedApplication;
     }
+
+    public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO) {
+        applicationDTO.setStatus(ApplicationStatus.KO.getValue());
+        ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        return invalidatedApplication;
+    }
+}

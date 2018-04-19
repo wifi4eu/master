@@ -40,92 +40,126 @@
                         <!--<button type="button" class="btn btn-primary whiteButton-thin" (click)="requestLegalDocuments(i)">-->
                         <!--{{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}-->
                         <!--</button>-->
-                        <button type="button" class="btn greenButton" (click)="displayValidateModal(i)" [disabled]="registrations[i].status == 2">
-                            {{ 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality' | translate }}
+                        <button type="button" class="btn greenButton" (click)="displayValidateModal(i)" [disabled]="applications[i].status == 2">
+                            {{ 'dgConn.applicantDetails.validateApplication.title' | translate }}
                         </button>
-                        <button type="button" class="btn redButton" (click)="displayInvalidateModal(i)" [disabled]="registrations[i].status == 1">
-                            {{ 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality' | translate }}
+                        <button type="button" class="btn redButton" (click)="displayInvalidateModal(i)" [disabled]="applications[i].status == 1">
+                            {{ 'dgConn.applicantDetails.invalidateApplication.title' | translate }}
                         </button>
                     </span>
                 </div>
                 <div class="row applicantDetailsPanel">
-                    <div class="ui-g-6 ui-lg-6 ui-md-8 ui-sm-12">
-                        <p class="applicantDetailsNoMargin municipality-name profileData">
-                            <span class="ui-g-12">{{ 'benefRegistration.mayor.details' | translate }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'shared.name.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ mayors[i].name }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'shared.surname.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ mayors[i].surname }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'shared.email.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ mayors[i].email }}</span>
-                        </p>
+                    <div class="ui-g-12">
+                        <div class="ui-g-5 ui-lg-5 ui-md-7 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'suppRegistration.legalentity.label' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.country.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ municipality.country }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'benefRegistration.address.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ municipality.address }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.number.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ municipality.addressNum }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.postal-code.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ municipality.postalCode }}</span>
+                            </p>
+                        </div>
+                        <div class="ui-g-5 ui-lg-5 ui-md-5 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.name.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ users[i].name }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.surname.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ users[i].surname }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.email.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ users[i].ecasEmail }}</span>
+                            </p>
+                        </div>
+                        <div class="ui-g-2 ui-lg-2 ui-md-12 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.documentation' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="!registrations[i].legalFile1 || !registrations[i].legalFile2 || !registrations[i].legalFile3 || !registrations[i].legalFile4">
+                                <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.noDocuments' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile1">
+                                <span class="ui-g-12">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1<br>
+                                    <a class="link-label" [href]="getLegalFileUrl(i, 1)" download>
+                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                    </a>
+                                </span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile2">
+                                <span class="ui-g-12">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2<br>
+                                    <a class="link-label" [href]="getLegalFileUrl(i, 2)" download>
+                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                    </a>
+                                </span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile3">
+                                <span class="ui-g-12">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3<br>
+                                    <a class="link-label" [href]="getLegalFileUrl(i, 3)" download>
+                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                    </a>
+                                </span>
+                            </p>
+                            <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile4">
+                                <span class="ui-g-12">
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4<br>
+                                    <a class="link-label" [href]="getLegalFileUrl(i, 4)" download>
+                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                    </a>
+                                </span>
+                            </p>
+                        </div>
                     </div>
-                    <div class="ui-g-4 ui-lg-4 ui-md-4 ui-sm-12">
-                        <p class="applicantDetailsNoMargin municipality-name profileData">
-                            <span class="ui-g-12">{{ 'suppRegistration.legalentity.label' | translate }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'shared.country.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ municipality.country }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'benefRegistration.address.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ municipality.address }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'shared.number.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ municipality.addressNum }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin">
-                            <span class="ui-g-6">{{ 'shared.postal-code.label' | translate }}</span>
-                            <span class="ui-g-6 profileData">{{ municipality.postalCode }}</span>
-                        </p>
-                    </div>
-                    <div class="ui-g-2 ui-lg-2 ui-md-12 ui-sm-12">
-                        <p class="applicantDetailsNoMargin municipality-name profileData">
-                            <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.documentation' | translate }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="!registrations[i].legalFile1 || !registrations[i].legalFile2 || !registrations[i].legalFile3 || !registrations[i].legalFile4">
-                            <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.noDocuments' | translate }}</span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile1">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1<br>
-                                <a class="link-label" [href]="getLegalFileUrl(i, 1)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile2">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2<br>
-                                <a class="link-label" [href]="getLegalFileUrl(i, 2)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile3">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3<br>
-                                <a class="link-label" [href]="getLegalFileUrl(i, 3)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
-                        <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile4">
-                            <span class="ui-g-12">
-                                <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4<br>
-                                <a class="link-label" [href]="getLegalFileUrl(i, 4)" download>
-                                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                </a>
-                            </span>
-                        </p>
+                    <div class="ui-g-12">
+                        <div class="ui-g-6 ui-lg-6 ui-md-8 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'benefRegistration.mayor.details' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.name.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ mayors[i].name }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.surname.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ mayors[i].surname }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-6">{{ 'shared.email.label' | translate }}</span>
+                                <span class="ui-g-6 profileData">{{ mayors[i].email }}</span>
+                            </p>
+                        </div>
+                        <div class="ui-g-6 ui-lg-6 ui-md-4 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'registration.nameOrganisation' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span *ngIf="registrations[i].associationName.trim().length > 0" class="ui-g-12">
+                                    {{ registrations[i].associationName }}
+                                </span>
+                                <span *ngIf="registrations[i].associationName.trim().length < 1" class="ui-g-12">
+                                    -
+                                </span>
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <br>
@@ -172,44 +206,60 @@
 <div class="container font">
     <p-dialog [(visible)]="displayValidate" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <form (ngSubmit)="validateMunicipality()" #invalidateConfirmationForm="ngForm">
-            <div class="ui-g-12 center">
-                <h2 class="beneficiaryMayor">Do you really want to validate this registration?</h2>
-            </div>
-            <div class="ui-g-12 center">
-                <div class="ui-g-6">
-                    <button type="button" class="btn btn-primary cancel-button"
-                            [disabled]="processingRequest" (click)="closeModal()">
-                        {{ 'shared.no' | translate }}
-                    </button>
+        <form (ngSubmit)="validateApplication()" #invalidateConfirmationForm="ngForm">
+            <div class="form-group">
+                <div style="padding: 2em; padding-top: 0em;" class="center">
+                    <h2 class="beneficiaryMayor">{{ 'dgConn.applicantDetails.validateApplication.title' | translate }}</h2>
+                    <p [innerHTML]="'dgConn.applicantDetails.validateApplication.desc' | translate"></p>
                 </div>
-                <div class="ui-g-6">
-                    <button type="submit" class="btn btn-primary publish-button"
-                            [disabled]="processingRequest">
-                        {{ 'shared.yes' | translate }}
-                    </button>
+                <div style="padding: 2em; padding-top: 0em;">
+                    <div class="row center">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-primary cancel-button"
+                                    [disabled]="processingRequest" (click)="closeModal()">
+                                {{ 'shared.no' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-primary publish-button"
+                                    [disabled]="processingRequest">
+                                {{ 'shared.yes' | translate }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
     </p-dialog>
     <p-dialog [(visible)]="displayInvalidate" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <form (ngSubmit)="invalidateMunicipality()" #invalidateConfirmationForm="ngForm">
-            <div class="ui-g-12 center">
-                <h2 class="beneficiaryMayor">Do you really want to invalidate this registration?</h2>
-            </div>
-            <div class="ui-g-12 center">
-                <div class="ui-g-6">
-                    <button type="button" class="btn btn-primary cancel-button"
-                            [disabled]="processingRequest" (click)="closeModal()">
-                        {{ 'shared.no' | translate }}
-                    </button>
+        <form (ngSubmit)="invalidateApplication()" #invalidateConfirmationForm="ngForm">
+            <div class="form-group">
+                <div style="padding: 2em; padding-top: 0em;" class="center">
+                    <h2 class="beneficiaryMayor">{{ 'dgConn.applicantDetails.invalidateApplication.title' | translate }}</h2>
+                    <p [innerHTML]="'dgConn.applicantDetails.invalidateApplication.desc' | translate"></p>
                 </div>
-                <div class="ui-g-6">
-                    <button type="submit" class="btn btn-primary publish-button"
-                            [disabled]="processingRequest">
-                        {{ 'shared.yes' | translate }}
-                    </button>
+                <div style="padding: 2em; padding-top: 0em;">
+                    <p>{{ 'shared.comment.mandatory' | translate }}</p>
+                    <textarea rows="5" class="form-control widthMax"
+                              name="newMessage" [(ngModel)]="invalidateReason"
+                              [disabled]="processingRequest"></textarea>
+                </div>
+                <div style="padding: 2em; padding-top: 0em;">
+                    <div class="row center">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-primary cancel-button"
+                                    [disabled]="processingRequest" (click)="closeModal()">
+                                {{ 'shared.no' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-primary publish-button"
+                                    [disabled]="processingRequest || invalidateReason.trim().length < 1">
+                                {{ 'shared.yes' | translate }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>

@@ -229,4 +229,40 @@ public class ApplicationResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
+
+    @ApiOperation(value = "Validate application")
+    @RequestMapping(value = "/validate", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO validateApplication(@RequestBody final ApplicationDTO applicationDTO) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("validateApplication");
+            }
+            ApplicationDTO resApplication = applicationService.validateApplication(applicationDTO);
+            return new ResponseDTO(true, resApplication, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'validateApplication' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Invalidate application")
+    @RequestMapping(value = "/invalidate", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO invalidateApplication(@RequestBody final ApplicationDTO applicationDTO) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("invalidateApplication");
+            }
+            ApplicationDTO resApplication = applicationService.invalidateApplication(applicationDTO);
+            return new ResponseDTO(true, resApplication, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'invalidateApplication' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
 }
