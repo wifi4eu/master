@@ -90,9 +90,9 @@ CREATE TABLE dbo.registrations
   [ip_registration] VARCHAR(30) NULL,
   [organisation_id] INT DEFAULT NULL,
   [association_name] VARCHAR(max) DEFAULT NULL,
-  [upload_time] BIGINT (20) DEFAULT NULL,
-  [allFiles_flag] INT(1) DEFAULT NULL,
-  [mail_counter] INT(1) NOT NULL DEFAULT '3',
+  [upload_time] BIGINT DEFAULT NULL,
+  [allFiles_flag] INT DEFAULT NULL,
+  [mail_counter] INT NOT NULL DEFAULT '3',
   PRIMARY KEY ([id])
  ,
   CONSTRAINT [fk_registrations_users]
@@ -483,3 +483,4 @@ CREATE TABLE dbo.user_threads
   [thread] INT NOT NULL,
   PRIMARY KEY ([id])
 );
+
