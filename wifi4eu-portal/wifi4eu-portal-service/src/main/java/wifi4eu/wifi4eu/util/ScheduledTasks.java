@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Random;
 
 @EnableScheduling
 @Controller
@@ -69,7 +70,9 @@ public class ScheduledTasks {
 
     @Scheduled(cron = "0 0/5 * * * ?")
     public void scheduleAzureQueue() throws InvalidKeyException, StorageException, URISyntaxException {
-        azureQueueService.createAzureQueue("stressqueue-1");
+        Random rand = new Random();
+        int randomQueue = rand.nextInt(10);
+        azureQueueService.setAzureQueue("stress-"+randomQueue);
         List<CloudQueueMessage> list = azureQueueService.peekMessagesAzureQueue(32, 600);
 
         for (CloudQueueMessage cloudQueueMessage: list) {

@@ -114,3 +114,22 @@
     </div>
 </div>
 <helpdesk-form-component portal="beneficiary-voucher"></helpdesk-form-component>
+
+<div class="container font">
+  <div class="ui-g-1"></div>
+  <p-dialog [(visible)]="displayError" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false" 
+    [closeOnEscape]="false" (onAfterHide)="closeModal()">
+    <div class="row">
+      <div class="col-xs-12">
+        <span>{{errorMessage}}</span>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 30px;">
+      <div class="col-xs-12 col-lg-6 offset-lg-3" style="text-align: center;">
+        <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+          {{ 'shared.confirm.button' | translate }}
+        </button>
+      </div>
+    </div>
+  </p-dialog>
+</div>
