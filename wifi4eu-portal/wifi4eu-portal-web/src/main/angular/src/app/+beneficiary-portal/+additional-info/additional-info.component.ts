@@ -55,14 +55,27 @@ export class AdditionalInfoComponent {
                     }, error => {
                     }
                 );
-                this.mayorApi.getMayorByMunicipalityId(municipalityId).subscribe(
-                    (mayor: MayorDTOBase) => {
-                        this.mayor = mayor;
-                        if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname)
-                            this.isMayor = true;
-                    }, error => {
+                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                    (registrations: RegistrationDTOBase[]) => {
+                        if (registrations.length == 1) {
+                            this.mayorApi.getMayorByMunicipalityId(municipalityId).subscribe(
+                                (mayor: MayorDTOBase) => {
+                                    this.mayor = mayor;
+                                    if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname) {
+                                        this.isMayor = true;
+                                    } else {
+                                        this.isMayor = false
+                                    }
+                                }, error => {
+                                    this.isMayor = false;
+                                }
+                            );
+                        } else {
+                            this.isMayor = false;
+                        }
                     }
                 );
+
             }
 
         } else {
