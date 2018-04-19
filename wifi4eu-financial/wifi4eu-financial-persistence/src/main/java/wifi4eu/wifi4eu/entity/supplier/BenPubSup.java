@@ -24,6 +24,7 @@ public class BenPubSup {
     @Column(name = "AWARDED")
     private boolean awarded;
 
+    @Temporal( TemporalType.DATE )
     @Column(name = "DATE")
     private Date date;
 

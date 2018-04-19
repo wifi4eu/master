@@ -15,7 +15,8 @@
     <context:load-time-weaver/>
     <tx:annotation-driven/>
 
-    <jee:jndi-lookup id="${jndi.datasource.name}" jndi-name="jdbc/${jndi.datasource.name}" expected-type="javax.sql.DataSource"/>
+    <!--<jee:jndi-lookup id="${jndi.datasource.name}" jndi-name="jdbc/${jndi.datasource.name}" expected-type="javax.sql.DataSource"/>-->
+    <jee:jndi-lookup id="${jndi.datasource.name}" jndi-name="${jndi.datasource.name}" expected-type="javax.sql.DataSource"/>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"/>
 
