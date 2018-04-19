@@ -45,7 +45,7 @@ export class DgConnTimelineComponent {
 
     displayInfo(rowData: TimelineDTO) {
         this.timeline = rowData;
-        this.event = rowData.event;
+        //this.event = rowData.event;
         this.startDate = new Date(rowData.startDate);
         this.endDate = new Date(rowData.endDate);
         this.startTime = new Date(rowData.startDate);
@@ -79,7 +79,7 @@ export class DgConnTimelineComponent {
         let timeline = (this.timeline) ? this.timeline : new TimelineDTOBase();
         let finalStartDate = this.startDate;
         let finalEndDate = this.endDate;
-        timeline.event = this.event;
+        //timeline.event = this.event;
         finalStartDate.setHours(this.startTime.getHours());
         finalStartDate.setMinutes(this.startTime.getMinutes());
         timeline.startDate = finalStartDate.getTime();

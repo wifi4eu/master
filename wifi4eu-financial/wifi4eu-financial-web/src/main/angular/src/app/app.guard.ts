@@ -41,27 +41,27 @@ export class AppGuard implements CanActivate {
         if (this.user === null) {
             return false;
         }
-        return (this.user.userType == 2 || this.user.userType == 3) ? true : false;
+        return (this.user.type == 2 || this.user.type == 3) ? true : false;
     }
 
     canActivateSupplier() {
         if (this.user === null) {
             return false;
         }
-        return (this.user.userType == 1) ? true : false;
+        return (this.user.type == 1) ? true : false;
     }
 
     canActivateMemberState() {
         if (this.user === null) {
             return false;
         }
-        return (this.user.userType == 4) ? true : false;
+        return (this.user.type == 4) ? true : false;
     }
 
     canActivateDgConn() {
         if (this.user === null) {
             return false;
         }
-        return (this.user.userType == 5) ? true : false;
+        return (this.user.type == 5) ? true : false;
     }
 }
