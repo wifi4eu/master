@@ -212,8 +212,9 @@ export class AdditionalInfoComponent {
                 this.registration.uploadTime = 0;
                 this.registration.mailCounter = 3;
             }
-            this.registration.uploadTime = this.date;
+
         }
+        this.registration.uploadTime = this.date;
     }
 
     private deleteFromServer(index: number) {
