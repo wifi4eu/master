@@ -55,14 +55,27 @@ export class AdditionalInfoComponent {
                     }, error => {
                     }
                 );
-                this.mayorApi.getMayorByMunicipalityId(municipalityId).subscribe(
-                    (mayor: MayorDTOBase) => {
-                        this.mayor = mayor;
-                        if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname)
-                            this.isMayor = true;
-                    }, error => {
+                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                    (registrations: RegistrationDTOBase[]) => {
+                        if (registrations.length == 1) {
+                            this.mayorApi.getMayorByMunicipalityId(municipalityId).subscribe(
+                                (mayor: MayorDTOBase) => {
+                                    this.mayor = mayor;
+                                    if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname) {
+                                        this.isMayor = true;
+                                    } else {
+                                        this.isMayor = false
+                                    }
+                                }, error => {
+                                    this.isMayor = false;
+                                }
+                            );
+                        } else {
+                            this.isMayor = false;
+                        }
                     }
                 );
+
             }
 
         } else {
@@ -184,7 +197,6 @@ export class AdditionalInfoComponent {
 
             if (this.registration.legalFile1 && this.registration.legalFile2 && this.registration.legalFile3 && this.registration.legalFile4) {
                 this.registration.allFilesFlag = 1;
-                this.registration.uploadTime = this.date;
                 this.registration.mailCounter = 0;
             } else {
                 this.registration.allFilesFlag = 0;
@@ -194,14 +206,15 @@ export class AdditionalInfoComponent {
         } else {
             if (this.registration.legalFile1 && this.registration.legalFile3) {
                 this.registration.allFilesFlag = 1;
-                this.registration.uploadTime = this.date;
                 this.registration.mailCounter = 0;
             } else {
                 this.registration.allFilesFlag = 0;
                 this.registration.uploadTime = 0;
                 this.registration.mailCounter = 3;
             }
+
         }
+        this.registration.uploadTime = this.date;
     }
 
     private deleteFromServer(index: number) {
