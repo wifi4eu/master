@@ -18,7 +18,8 @@ import {
     TabViewModule,
     DropdownModule,
     FileUploadModule,
-    DataListModule
+    DataListModule,
+    PaginatorModule
 } from "primeng/primeng";
 // import {APP_DIRECTIVES} from "./components/index";
 import {Ng2GoogleRecaptchaModule} from "ng2-google-recaptcha";
@@ -54,6 +55,7 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         DropdownModule,
         FileUploadModule,
         DataListModule,
+        PaginatorModule,
         Ng2GoogleRecaptchaModule
     ],
     declarations: [
@@ -91,6 +93,7 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
         DropdownModule,
         FileUploadModule,
         DataListModule,
+        PaginatorModule,
         SuccessComponent,
         FailureComponent,
         CustomAccordionBoxComponent,

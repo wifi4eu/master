@@ -24,6 +24,7 @@
                 "styles.scss"
             ],
             "scripts": [
+              "assets/js/azure-storage.queue.js"
             ],
             "environmentSource": "environments/environment.ts",
             "environments": {
