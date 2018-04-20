@@ -152,6 +152,21 @@
             </div>
         </div>
         <div class="col-sm-4">
+
+            <div class="col-sm-12 margin-top  button-content" *ngIf="!documentUploaded || !allDocumentsUploaded">
+                <p>{{ 'shared.statusUploadDocs' | translate }}</p>
+                <div style="text-align: center !important">
+                    <button type="button" (click)="goToapplyForVOucher()"
+                            *ngIf="allDocumentsUploaded && !oneRegsitration"
+                            class="btn btn-primary changePassword">
+                        {{'shared.uploadDocuments' | translate }}
+                    </button>
+                    <button type="button" (click)="goToUploadDocuments()" *ngIf="oneRegsitration"
+                            class="btn btn-primary changePassword">
+                        {{'shared.uploadDocuments' | translate }}
+                    </button>
+                </div>
+            </div>
             <div class="col-sm-12 margin-top  button-content" *ngIf="hasDiscussion">
                 <p>{{ 'benefPortal.beneficiary.goDiscussionText' | translate }}</p>
                 <div style="text-align: center !important">
@@ -173,7 +188,8 @@
                 <p>{{ 'shared.withdraw-registration.text' | translate }}</p>
                 <div style="text-align: center !important">
                     <button type="button" (click)="deleteRegistration()"
-                            class="btn btn-primary changePassword" [disabled]="withdrawingRegistration || withdrawnSuccess">
+                            class="btn btn-primary changePassword"
+                            [disabled]="withdrawingRegistration || withdrawnSuccess">
                         {{ 'shared.withdraw-registration.button' | translate }}
                     </button>
                 </div>
@@ -227,11 +243,8 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="email_user">{{ 'shared.email.label' | translate }}</label>
-                        <input id="email_user" type="text" [(ngModel)]="editedUser.email" class="form-control email_profile" name="email_user" ngcontrol="email_user"
-                           #emailInput autocomplete="off" #email_user="ngModel" required disabled>
-                        <div [hidden]="email_user.valid || email_user.pristine" class="alert alert-danger">
-                            {{ 'email.required' | translate }}
-                        </div>
+                        <label class="form-control" id="email_user"
+                               name="email_user"><b>{{editedUser.email}}</b></label>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -299,11 +312,8 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="email_mayor">{{ 'shared.email.label' | translate }}</label>
-                        <input id="email_mayor" type="text" [(ngModel)]="editedMayor.email" class="form-control email_profile" name="email_mayor" ngcontrol="email_mayor"
-                              #emailMayor autocomplete="off"  #email_mayor="ngModel" required disabled>
-                        <div [hidden]="email_mayor.valid || email_mayor.pristine" class="alert alert-danger">
-                            {{ 'email.required' | translate }}
-                        </div>
+                        <label class="form-control" id="email_mayor"
+                               name="email_mayor"><b>{{editedMayor.email}}</b></label>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -339,13 +349,9 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="country_municipality">{{ 'shared.country.label' | translate }}</label>
-                        <input id="country_municipality" type="text" [(ngModel)]="editedMunicipality.country"
-                               class="form-control" name="country_municipality"
-                               ngcontrol="country_municipality" #country_municipality="ngModel" required disabled>
-                        <div [hidden]="country_municipality.valid || country_municipality.pristine"
-                             class="alert alert-danger">
-                            {{ 'benefRegistration.country.required' | translate }}
-                        </div>
+                        <label class="form-control" id="country_municipality" name="country_municipality">
+                            <b>{{editedMunicipality.country}}</b>
+                        </label>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>
@@ -356,13 +362,9 @@
                 <div class="ui-g-10">
                     <div class="form-group">
                         <label for="name_municipality">{{ 'shared.municipality.label' | translate }}</label>
-                        <input id="name_municipality" type="text" [(ngModel)]="editedMunicipality.name"
-                               class="form-control" name="name_municipality"
-                               ngcontrol="name_municipality" #name_municipality="ngModel" required disabled>
-                        <div [hidden]="name_municipality.valid || name_municipality.pristine"
-                             class="alert alert-danger">
-                            {{ 'benefRegistration.municipality.required' | translate }}
-                        </div>
+                        <label class="form-control" id="name_municipality" name="name_municipality">
+                            <b>{{editedMunicipality.name}}</b>
+                        </label>
                     </div>
                 </div>
                 <div class="ui-g-1"></div>

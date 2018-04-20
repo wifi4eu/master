@@ -3,16 +3,22 @@ package wifi4eu.wifi4eu.service.supplier;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.supplier.SuppliedRegion;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
@@ -38,6 +44,9 @@ public class SupplierService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    NutsService nutsService;
 
     @Autowired
     ThreadService threadService;
@@ -146,19 +155,23 @@ public class SupplierService {
         List<SupplierDTO> similarSuppliers = new ArrayList<>();
         SupplierDTO originalSupplier = getSupplierById(supplierId);
         if (originalSupplier != null) {
-            List<SupplierDTO> suppliersVat = getSuppliersByVat(originalSupplier.getAccountNumber());
-            if (!suppliersVat.isEmpty()) {
-                for (SupplierDTO supp : suppliersVat) {
-                    if (supp.getId() != originalSupplier.getId()) {
-                        similarSuppliers.add(supp);
-                    }
+            List<SupplierDTO> suppliersVat = getSuppliersByVat(originalSupplier.getVat());
+            for (SupplierDTO suppVat : suppliersVat) {
+                if (suppVat.getId() != originalSupplier.getId()) {
+                    similarSuppliers.add(suppVat);
                 }
             }
             List<SupplierDTO> suppliersIban = getSuppliersByAccountNumber(originalSupplier.getAccountNumber());
-            if (!suppliersIban.isEmpty()) {
-                for (SupplierDTO supp : suppliersIban) {
-                    if (supp.getId() != originalSupplier.getId()) {
-                        similarSuppliers.add(supp);
+            for (SupplierDTO suppIban : suppliersIban) {
+                if (suppIban.getId() != originalSupplier.getId()) {
+                    boolean alreadyAddedd = false;
+                    for (SupplierDTO suppVat : suppliersVat) {
+                        if (suppVat.getId() == suppIban.getId()) {
+                            alreadyAddedd = true;
+                        }
+                    }
+                    if (!alreadyAddedd) {
+                        similarSuppliers.add(suppIban);
                     }
                 }
             }
@@ -197,7 +210,7 @@ public class SupplierService {
 
     @Transactional
     public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) {
-        supplierDTO.setStatus(0);
+        supplierDTO.setStatus(1);
         supplierDTO = updateSupplier(supplierDTO);
         UserDTO user = userService.getUserById(supplierDTO.getUserId());
         if (user != null) {
@@ -213,5 +226,56 @@ public class SupplierService {
             }
         }
         return supplierDTO;
+    }
+
+    public List<SupplierListItemDTO> findDgconnSuppliersList(String name, int page, int count, String orderField, int orderType) {
+        List<SupplierListItemDTO> suppliersList = new ArrayList<>();
+        Direction direction;
+        if (orderType == -1) {
+            direction = Direction.DESC;
+        } else {
+            direction = Direction.ASC;
+        }
+        List<SupplierDTO> suppliers;
+        if (name != null) {
+            if (!name.trim().isEmpty()) {
+                suppliers = supplierMapper.toDTOList(supplierRepository.findByNameContainingIgnoreCase(new PageRequest(page, count, direction, orderField), name).getContent());
+            } else {
+                suppliers = supplierMapper.toDTOList(supplierRepository.findAll(new PageRequest(page, count, direction, orderField)).getContent());
+            }
+        } else {
+            suppliers = supplierMapper.toDTOList(supplierRepository.findAll(new PageRequest(page, count, direction, orderField)).getContent());
+        }
+        for (SupplierDTO supplier : suppliers) {
+            SupplierListItemDTO supplierItem = new SupplierListItemDTO(supplier.getId(), supplier.getName(), supplier.getWebsite(), supplier.getVat(), supplier.getAccountNumber(), supplier.getStatus());
+            List<SupplierDTO> similarSuppliers = findSimilarSuppliers(supplierItem.getId());
+            int numberRegistrations = 0;
+            if (supplierItem.getStatus() != 1) {
+                numberRegistrations = 1;
+            }
+            for (SupplierDTO similarSupplier : similarSuppliers) {
+                if (similarSupplier.getStatus() != 1) {
+                    numberRegistrations++;
+                }
+            }
+            supplierItem.setNumberRegistrations(numberRegistrations);
+            suppliersList.add(supplierItem);
+        }
+        return suppliersList;
+    }
+
+    public Long getCountAllSuppliers() {
+        return supplierRepository.count();
+    }
+
+    public Long getCountAllSuppliersContainingName(String name) {
+        return supplierRepository.countByNameContainingIgnoreCase(name);
+    }
+
+    public Page<String> getSuppliersByRegionOrCountry(String countryCode, int regionId, Pageable pageable){
+        if (regionId == 0) {
+            return supplierRepository.findSuppliersByCountryCode(countryCode,pageable);
+        }
+        return supplierRepository.findSuppliersByRegion(regionId, pageable);
     }
 }

@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
-import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -85,5 +82,13 @@ public class MunicipalityService {
     @Cacheable(value = "portalGetMunicipalitiesCountGroupedByLauId")
     public List<Object> getMunicipalitiesCountGroupedByLauId() {
         return Lists.newArrayList(municipalityRepository.findMunicipalitiesCountGroupedByLauId());
+    }
+
+    public Integer getCountDistinctMunicipalities() {
+        return municipalityRepository.countDistinctMunicipalities();
+    }
+
+    public Integer getCountDistinctMunicipalitiesContainingName(String name) {
+        return municipalityRepository.countDistinctMunicipalitiesContainingName(name);
     }
 }

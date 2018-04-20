@@ -11,7 +11,9 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
+import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
@@ -30,6 +32,12 @@ import java.util.*;
 
 @Service
 public class BeneficiaryService {
+    @Autowired
+    BeneficiaryListItemMapper beneficiaryListItemMapper;
+
+    @Autowired
+    BeneficiaryListItemRepository beneficiaryListItemRepository;
+
     @Autowired
     UserService userService;
 
@@ -159,7 +167,49 @@ public class BeneficiaryService {
                 String subject = bundle.getString("mail.discussionMunicipality.subject");
                 String msgBody = bundle.getString("mail.discussionMunicipality.body");
                 if (!userService.isLocalHost()) {
-                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                  mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                }
+
+                if(municipalitiesWithSameLau.size() <= 10){
+                    for(MunicipalityDTO municipality: municipalitiesWithSameLau){
+                        RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipality.getId());
+                        if(registrationDTO == null) {
+                          continue;
+                        }
+                        UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
+                        if(userRegistration.getId() == userDTO.getId() || userRegistration == null) {
+                          continue;
+                        }
+                        locale = new Locale(userRegistration.getLang());
+                        bundle = ResourceBundle.getBundle("MailBundle", locale);
+                        subject = bundle.getString("mail.discussionMunicipality.subject");
+                        msgBody = bundle.getString("mail.discussionMunicipality.body");
+                        if (!userService.isLocalHost()) {
+                          mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                        }
+
+                    }
+                }
+
+                if(municipalitiesWithSameLau.size() <= 10){
+                    for(MunicipalityDTO municipality: municipalitiesWithSameLau){
+                        RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipality.getId());
+                        if(registrationDTO == null) {
+                            continue;
+                        }
+                        UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
+                        if(userRegistration.getId() == userDTO.getId() || userRegistration == null) {
+                            continue;
+                        }
+                        locale = new Locale(userRegistration.getLang());
+                        bundle = ResourceBundle.getBundle("MailBundle", locale);
+                        subject = bundle.getString("mail.discussionMunicipality.subject");
+                        msgBody = bundle.getString("mail.discussionMunicipality.body");
+                        if (!userService.isLocalHost()) {
+                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                        }
+
+                    }
                 }
 
                 /* verificamos que existe el thread */
@@ -247,78 +297,497 @@ public class BeneficiaryService {
         }
     }
 
-    public List<BeneficiaryListDTO> getListBeneficiaryTable() {
-        /* Gets all municipalities */
-        List<MunicipalityDTO> municipalityDTOSList = municipalityService.getAllMunicipalities();
-
-        /* Array of municipality names for check duplicates */
-        List<String> municipalities = new ArrayList<>();
-
-        List<BeneficiaryListDTO> beneficiaryListDTOS = new ArrayList<>();
-
-        /* Iterate in municipality list */
-        for (MunicipalityDTO municipalityDTO : municipalityDTOSList) {
-            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
-            if (registration != null) {
-                BeneficiaryListDTO beneficiaryListDTO = new BeneficiaryListDTO();
-                LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
-
-                /* Checks that the municipality name is in the municipalities array */
-                if (municipalities.contains(municipalityDTO.getName())) {
-                    /* Get index in the array */
-                    int index = municipalities.indexOf(municipalityDTO.getName());
-
-                    /* Fills beneficiaryListDTO object with one exisiting in BeneficiaryListDTO list in that position */
-                    beneficiaryListDTO = beneficiaryListDTOS.get(index);
-
-                    /* Increments number of registrations because it's the same lau */
-                    beneficiaryListDTO.setNumRegistrations(beneficiaryListDTO.getNumRegistrations() + 1);
-
-                    /* Update object in the position of the list of BeneficiaryListDTO */
-                    beneficiaryListDTOS.set(index, beneficiaryListDTO);
-
-                    /* Adds registrations left in the DTO */
-                    List<RegistrationDTO> regs = beneficiaryListDTO.getRegistrations();
-                    if (!regs.contains(registration)) {
-                        regs.add(registration);
+    private Integer setIssueToDgconnBeneficiary(Integer lauId) {
+        Integer issueType = 0;
+//        boolean duplicated = false;
+        LauDTO lau = lauService.getLauById(lauId);
+        List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(lauId);
+//        if (municipalities.size() > 1) {
+//            duplicated = true;
+//        }
+        for (MunicipalityDTO municipality : municipalities) {
+            MayorDTO mayor = mayorService.getMayorByMunicipalityId(municipality.getId());
+            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipality.getId());
+            if (registration != null && mayor != null) {
+                UserDTO user = userService.getUserById(registration.getUserId());
+                if (user != null) {
+                    switch (lau.getCountryCode().toUpperCase()) {
+                        case "AT":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".at") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".at") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".at")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("de"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "BE":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".be") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".be") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".be")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("de") ||
+                                    user.getLang().toLowerCase().equals("nl") ||
+                                    user.getLang().toLowerCase().equals("fr"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "BG":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".bg") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".bg") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".bg")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("bg"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "HR":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".hr") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".hr") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".hr")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("hr"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "CY":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".cy") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".cy") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".cy")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("el"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "CZ":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".cz") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".cz") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".cz")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("cs"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "DK":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".dk") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".dk") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".dk")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("da"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "EE":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".ee") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".ee") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".ee")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("et"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "FI":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".fi") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".fi") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".fi")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("fi") ||
+                                    user.getLang().toLowerCase().equals("sv"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "FR":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".fr") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".fr") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".fr")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("fr"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "DE":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".de") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".de") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".de")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("de"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "EL":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".el") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".el") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".el")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("el"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "HU":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".hu") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".hu") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".hu")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("hu"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "IS":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".is") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".is") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".is")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("en"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "IE":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".ie") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".ie") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".ie")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("en") ||
+                                    user.getLang().toLowerCase().equals("ga"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "IT":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".it") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".it") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".it")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("it"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "LV":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".lv") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".lv") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".lv")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("lv"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "LT":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".lt") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".lt") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".lt")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("lt"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "LU":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".lu") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".lu") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".lu")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("fr") ||
+                                    user.getLang().toLowerCase().equals("de"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "MT":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".mt") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".mt") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".mt")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("mt") ||
+                                    user.getLang().toLowerCase().equals("en"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "NL":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".nl") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".nl") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".nl")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("nl"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "NO":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".no") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".no") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".no")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("en"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "PL":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".pl") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".pl") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".pl")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("pl"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "PT":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".pt") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".pt") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".pt")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("pt"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "RO":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".ro") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".ro") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".ro")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("ro"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "SK":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".sk") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".sk") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".sk")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("sk"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "SI":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".si") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".si") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".si")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("sl"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "ES":
+                            if (!(
+                                    user.getEmail().trim().toLowerCase().endsWith(".es") ||
+                                            user.getEmail().trim().toLowerCase().endsWith(".cat") ||
+                                            user.getEmail().trim().toLowerCase().endsWith(".gal") ||
+                                            user.getEmail().trim().toLowerCase().endsWith(".eus")
+                            ) || !(
+                                    user.getEcasEmail().trim().toLowerCase().endsWith(".es") ||
+                                            user.getEcasEmail().trim().toLowerCase().endsWith(".cat") ||
+                                            user.getEcasEmail().trim().toLowerCase().endsWith(".gal") ||
+                                            user.getEcasEmail().trim().toLowerCase().endsWith(".eus")
+                            ) || !(
+                                    mayor.getEmail().trim().toLowerCase().endsWith(".es") ||
+                                            mayor.getEmail().trim().toLowerCase().endsWith(".cat") ||
+                                            mayor.getEmail().trim().toLowerCase().endsWith(".gal") ||
+                                            mayor.getEmail().trim().toLowerCase().endsWith(".eus")
+                            )) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("es"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "SE":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".se") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".se") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".se")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("sv"))) {
+                                issueType = 3;
+                            }
+                            break;
+                        case "UK":
+                            if (!user.getEmail().trim().toLowerCase().endsWith(".uk") ||
+                                    !user.getEcasEmail().trim().toLowerCase().endsWith(".uk") ||
+                                    !mayor.getEmail().trim().toLowerCase().endsWith(".uk")) {
+                                issueType = 1;
+                            }
+                            if (!(user.getLang().toLowerCase().equals("en"))) {
+                                issueType = 3;
+                            }
+                            break;
                     }
-                    beneficiaryListDTO.setRegistrations(regs);
-                } else {
-                    municipalities.add(municipalityDTO.getName());
-                    beneficiaryListDTO.setNumRegistrations(1);
-                    beneficiaryListDTO.setLau(lauDTO);
-                    List<RegistrationDTO> regs = new ArrayList<>();
-                    regs.add(registration);
-                    beneficiaryListDTO.setRegistrations(regs);
-                    beneficiaryListDTOS.add(beneficiaryListDTO);
-                }
-            }
-        }
-        if (beneficiaryListDTOS.size() > 0) {
-            getIssueOfRegistration(beneficiaryListDTOS);
-            for (BeneficiaryListDTO beneficiaryListDTO : beneficiaryListDTOS) {
-                for (RegistrationDTO registrationDTO : beneficiaryListDTO.getRegistrations()) {
-                    beneficiaryListDTO.setStatus(getStatusApplicationByRegistration(registrationDTO.getId()));
-                }
-                if (checkIpDuplicated(beneficiaryListDTO.getRegistrations()) && beneficiaryListDTO.getIssue() != 3 && beneficiaryListDTO.getIssue() != 4) {
-                    beneficiaryListDTO.setIssue(1);
-                }
-                beneficiaryListDTO.setMediation(getMediationStatusByLau(beneficiaryListDTO.getLau().getId()));
-            }
-        }
 
-        return beneficiaryListDTOS;
+                    //ToDo: replace it with a count strategy, in case there are a lot of items with the same ip
+                    /*
+                    List<RegistrationDTO> ipRegistrations = registrationService.getRegistrationsByIp(registration.getIpRegistration());
+                    for (RegistrationDTO ipRegistration : ipRegistrations) {
+                        MunicipalityDTO ipMunicipality = municipalityService.getMunicipalityById(ipRegistration.getMunicipalityId());
+                        if (ipRegistration.getId() != registration.getId() &&
+                                ipMunicipality.getLauId() == municipality.getLauId()) {
+                            issueType = 2;
+                        }
+                    }
+                    */
+                } else {
+                    return -1;
+                }
+            } else {
+                return -1;
+            }
+        }
+        return issueType;
     }
 
-    public boolean getStatusApplicationByRegistration(int registrationId) {
-        /* Get all applications with a registration id */
-        List<ApplicationDTO> applicationDTOList = applicationService.getApplicationsByRegistrationId(registrationId);
-        /* Return true if a application exist (one or more), return false if doesn't have any record */
-        if (applicationDTOList.size() > 0) {
-            return true;
-        } else {
-            return false;
+    public List<BeneficiaryListItemDTO> findDgconnBeneficiaresList(String name, int offset, int count, String orderField, int orderType) {
+        List<BeneficiaryListItemDTO> beneficiariesList;
+        switch (orderField) {
+            case "name":
+                if (orderType == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByNameDesc(name, offset, count));
+                            break;
+                        }
+                    }
+                    beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByNameDesc(offset, count));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByNameAsc(name, offset, count));
+                            break;
+                        }
+                    }
+                    beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByNameAsc(offset, count));
+                }
+                break;
+            case "countryCode":
+                if (orderType == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByCountryCodeDesc(name, offset, count));
+                            break;
+                        }
+                    }
+                    beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByCountryCodeDesc(offset, count));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByCountryCodeAsc(name, offset, count));
+                            break;
+                        }
+                    }
+                    beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByCountryCodeAsc(offset, count));
+                }
+                break;
+            case "counter":
+                if (orderType == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByCounterDesc(name, offset, count));
+                            break;
+                        }
+                    }
+                    beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByCounterDesc(offset, count));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByCounterAsc(name, offset, count));
+                            break;
+                        }
+                    }
+                    beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByCounterAsc(offset, count));
+                }
+                break;
+            case "status":
+                if (orderType == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByStatusDesc(name, offset, count));
+                            break;
+                        }
+                    }
+                    beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByStatusDesc(offset, count));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByStatusAsc(name, offset, count));
+                            break;
+                        }
+                    }
+                    beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByStatusAsc(offset, count));
+                }
+                break;
+            case "mediation":
+                if (orderType == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByMediationDesc(name, offset, count));
+                            break;
+                        }
+                    }
+                    beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByMediationDesc(offset, count));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByMediationAsc(name, offset, count));
+                            break;
+                        }
+                    }
+                    beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByMediationAsc(offset, count));
+                }
+                break;
+            default:
+                if (orderType == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByLauIdDesc(name, offset, count));
+                            break;
+                        }
+                    }
+                    beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByLauIdDesc(offset, count));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByLauIdAsc(name, offset, count));
+                            break;
+                        }
+                    }
+                    beneficiariesList = beneficiaryListItemMapper.toDTOList(beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByLauIdAsc(offset, count));
+                }
+                break;
         }
+        List<BeneficiaryListItemDTO> finalList = new ArrayList<>();
+        for (BeneficiaryListItemDTO item : beneficiariesList) {
+            item.setIssueStatus(setIssueToDgconnBeneficiary(item.getLauId()));
+            if (item.getIssueStatus() != null) {
+                finalList.add(item);
+            }
+        }
+        return finalList;
+    }
+
+    public Integer getCountDistinctMunicipalities() {
+        return municipalityService.getCountDistinctMunicipalities();
+    }
+
+    public Integer getCountDistinctMunicipalitiesContainingName(String name) {
+        return municipalityService.getCountDistinctMunicipalitiesContainingName(name);
     }
 
     public int getIssueType(List<RegistrationDTO> registrationDTOList) {
@@ -373,85 +842,5 @@ public class BeneficiaryService {
             mapIps.put(registrationDTO.getIpRegistration(), 1);
         }
         return false;
-    }
-
-    public void getIssueOfRegistration(List<BeneficiaryListDTO> beneficiaryListDTOList) {
-        String validPattern = "^[a-z0-9_-]+(?:\\.[a-z0-9_-]+)*@(?:[a-z0-9]{2,6}?\\.)+(com|net|info|org|eu|bg|cs|da|de|el|es|et|fi|fr|ga|hr|hu|it|lt|lv|mt|nl|pl|pt|ro|sk|sl|sv|uk|ie|is|no)?$";
-        for (BeneficiaryListDTO beneficiaryListDTO : beneficiaryListDTOList) {
-
-            int numDuplicated = 0;
-            int numInvalids = 0;
-            int numResolved = 0;
-
-            for (RegistrationDTO registrationDTO : beneficiaryListDTO.getRegistrations()) {
-                UserDTO userDTO = userService.getUserById(registrationDTO.getUserId());
-                if (!userDTO.getEcasEmail().matches(validPattern)) {
-                    beneficiaryListDTO.setIssue(1);
-                    break;
-                }
-                switch (registrationDTO.getStatus()) {
-                    case 0:
-                        numDuplicated += 1;
-                        break;
-                    case 1:
-                        numInvalids += 1;
-                        break;
-                    case 2:
-                        numResolved += 1;
-
-                }
-            }
-
-            if ((numResolved + numInvalids) == beneficiaryListDTO.getRegistrations().size() && numResolved > 0) {
-                beneficiaryListDTO.setIssue(3);
-            } else if (numDuplicated > 1) {
-                beneficiaryListDTO.setIssue(2);
-            } else if (numInvalids == beneficiaryListDTO.getRegistrations().size()) {
-                beneficiaryListDTO.setIssue(4);
-            } else {
-                if (beneficiaryListDTO.getIssue() != null) {
-                    beneficiaryListDTO.setIssue(1);
-                } else {
-                    beneficiaryListDTO.setIssue(0);
-                }
-            }
-        }
-    }
-
-    public boolean getMediationStatusByLau(int laudId) {
-        String lauIdParsed = String.valueOf(laudId);
-        /* Return only threads with type 1 (LAU) and with a specific laud id */
-        ThreadDTO threadDTO = threadService.getThreadByTypeAndReason(Constant.THREAD_REASON_LAU, lauIdParsed);
-        if (threadDTO != null) {
-            return threadDTO.isMediation();
-        } else {
-            return false;
-        }
-    }
-
-    public List<BeneficiaryDTO> getBeneficiariesByThreadId(int threadId) {
-        List<BeneficiaryDTO> beneficiaries = new ArrayList<>();
-        ThreadDTO thread = threadService.getThreadById(threadId);
-        List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(Integer.parseInt(thread.getReason()));
-        for (MunicipalityDTO municipality : municipalities) {
-            System.out.println("MUNICIPALITY whatever");
-            BeneficiaryDTO beneficiary = new BeneficiaryDTO();
-            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipality.getId());
-            if (registration != null) {
-                if (registration.getRole().equals(REPRESENTATIVE)) {
-                    beneficiary.setUser(userService.getUserById(registration.getUserId()));
-                }
-            }
-            List<MunicipalityDTO> municipalityList = new ArrayList<>();
-            municipalityList.add(municipality);
-            beneficiary.setMunicipalities(municipalityList);
-            if (registration != null) {
-                beneficiary.setRepresentsMultipleMunicipalities(true);
-            } else {
-                beneficiary.setRepresentsMultipleMunicipalities(false);
-            }
-            beneficiaries.add(beneficiary);
-        }
-        return beneficiaries;
     }
 }

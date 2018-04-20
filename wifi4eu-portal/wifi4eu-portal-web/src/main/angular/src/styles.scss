@@ -1349,7 +1349,6 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   }
 
   .badge {
-    color: #fff;
     padding: 4px 8px;
     font-style: italic;
     &.badge-success {
@@ -1623,6 +1622,13 @@ p-tabview.white .ui-widget-content.ui-tabview {
   padding: 4px 8px;
   font-style: italic;
   background-color: #ff6f00;
+}
+
+.badge-warning-yellow {
+  color: #000;
+  padding: 4px 8px;
+  font-style: italic;
+  background-color: #ffeb3b;
 }
 
 .voucherModal {
