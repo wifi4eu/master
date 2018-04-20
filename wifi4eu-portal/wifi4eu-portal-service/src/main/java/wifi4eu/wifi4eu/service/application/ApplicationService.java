@@ -251,14 +251,75 @@ public class ApplicationService {
     }
 
     public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
-        applicationDTO.setStatus(ApplicationStatus.OK.getValue());
-        ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        ApplicationDTO validatedApplication = applicationDTO;
+        RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
+        if (registration != null) {
+            UserDTO user = userService.getUserById(registration.getUserId());
+            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+            if (user != null && municipality != null) {
+                List<ApplicationDTO> repeatedApplications = getApplicationsByCallIdAndLauId(applicationDTO.getCallId(), municipality.getLauId());
+                for (ApplicationDTO repeatedApplication : repeatedApplications) {
+                    if (repeatedApplication.getId() == applicationDTO.getId()) {
+                        repeatedApplication.setStatus(ApplicationStatus.OK.getValue());
+                        repeatedApplication.setInvalidateReason(null);
+                        validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+                        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                        if (user.getLang() != null) {
+                            locale = new Locale(user.getLang());
+                        }
+                        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                        String subject = bundle.getString("mail.validateApplication.subject");
+                        String msgBody = bundle.getString("mail.validateApplication.body");
+                        msgBody = MessageFormat.format(msgBody, municipality.getName());
+                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    } else {
+                        invalidateApplication(repeatedApplication);
+                    }
+                }
+            }
+        }
         return validatedApplication;
     }
 
     public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO) {
         applicationDTO.setStatus(ApplicationStatus.KO.getValue());
         ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());
+        if (registration != null) {
+            UserDTO user = userService.getUserById(registration.getUserId());
+            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+            if (user != null && municipality != null) {
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (user.getLang() != null) {
+                    locale = new Locale(user.getLang());
+                }
+                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                String subject = bundle.getString("mail.invalidateApplication.subject");
+                String msgBody = bundle.getString("mail.invalidateApplication.body");
+                msgBody = MessageFormat.format(msgBody, municipality.getName());
+                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            }
+        }
         return invalidatedApplication;
+    }
+
+    public List<ApplicationDTO> getApplicationsByCallId(int callId) {
+        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallId(callId)));
+    }
+
+    public List<ApplicationDTO> getApplicationsByCallIdAndLauId(int callId, int lauId) {
+        List<ApplicationDTO> applications = new ArrayList<>();
+        for (ApplicationDTO application : getApplicationsByCallId(callId)) {
+            RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
+            if (registration != null) {
+                MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+                if (municipality != null) {
+                    if (municipality.getLauId() == lauId) {
+                        applications.add(application);
+                    }
+                }
+            }
+        }
+        return applications;
     }
 }

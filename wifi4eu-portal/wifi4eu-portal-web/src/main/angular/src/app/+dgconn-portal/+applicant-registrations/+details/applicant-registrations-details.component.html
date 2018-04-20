@@ -35,6 +35,7 @@
                 <div class="row applicantDetailsPanel">
                     <label class="customCheckboxLabel" [for]="'check-'+i">
                         {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}}
+                        ({{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{users[i].id}})
                     </label>
                     <span class="right">
                         <!--<button type="button" class="btn btn-primary whiteButton-thin" (click)="requestLegalDocuments(i)">-->
@@ -50,42 +51,74 @@
                 </div>
                 <div class="row applicantDetailsPanel">
                     <div class="ui-g-12">
-                        <div class="ui-g-5 ui-lg-5 ui-md-7 ui-sm-12">
+                        <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
                             <p class="applicantDetailsNoMargin municipality-name profileData">
                                 <span class="ui-g-12">{{ 'suppRegistration.legalentity.label' | translate }}</span>
                             </p>
                             <p class="applicantDetailsNoMargin">
-                                <span class="ui-g-6">{{ 'shared.country.label' | translate }}</span>
-                                <span class="ui-g-6 profileData">{{ municipality.country }}</span>
+                                <span class="ui-g-3 ui-sm-6">{{ 'shared.country.label' | translate }}</span>
+                                <span class="ui-g-9 ui-sm-6 profileData">{{ municipality.country }}</span>
                             </p>
                             <p class="applicantDetailsNoMargin">
-                                <span class="ui-g-6">{{ 'benefRegistration.address.label' | translate }}</span>
-                                <span class="ui-g-6 profileData">{{ municipality.address }}</span>
+                                <span class="ui-g-3 ui-sm-6">{{ 'benefRegistration.address.label' | translate }}</span>
+                                <span class="ui-g-9 ui-sm-6 profileData">{{ municipality.address }}</span>
                             </p>
                             <p class="applicantDetailsNoMargin">
-                                <span class="ui-g-6">{{ 'shared.number.label' | translate }}</span>
-                                <span class="ui-g-6 profileData">{{ municipality.addressNum }}</span>
+                                <span class="ui-g-3 ui-sm-6">{{ 'shared.number.label' | translate }}</span>
+                                <span class="ui-g-9 ui-sm-6 profileData">{{ municipality.addressNum }}</span>
                             </p>
                             <p class="applicantDetailsNoMargin">
-                                <span class="ui-g-6">{{ 'shared.postal-code.label' | translate }}</span>
-                                <span class="ui-g-6 profileData">{{ municipality.postalCode }}</span>
+                                <span class="ui-g-3 ui-sm-6">{{ 'shared.postal-code.label' | translate }}</span>
+                                <span class="ui-g-9 ui-sm-6 profileData">{{ municipality.postalCode }}</span>
                             </p>
                         </div>
-                        <div class="ui-g-5 ui-lg-5 ui-md-5 ui-sm-12">
+                        <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
                             <p class="applicantDetailsNoMargin municipality-name profileData">
                                 <span class="ui-g-12">{{ 'benefRegistration.yourDetails.title' | translate }}</span>
                             </p>
                             <p class="applicantDetailsNoMargin">
-                                <span class="ui-g-6">{{ 'shared.name.label' | translate }}</span>
-                                <span class="ui-g-6 profileData">{{ users[i].name }}</span>
+                                <span class="ui-g-3 ui-sm-6">{{ 'shared.name.label' | translate }}</span>
+                                <span class="ui-g-9 ui-sm-6 profileData">{{ users[i].name }}</span>
                             </p>
                             <p class="applicantDetailsNoMargin">
-                                <span class="ui-g-6">{{ 'shared.surname.label' | translate }}</span>
-                                <span class="ui-g-6 profileData">{{ users[i].surname }}</span>
+                                <span class="ui-g-3 ui-sm-6">{{ 'shared.surname.label' | translate }}</span>
+                                <span class="ui-g-9 ui-sm-6 profileData">{{ users[i].surname }}</span>
                             </p>
                             <p class="applicantDetailsNoMargin">
-                                <span class="ui-g-6">{{ 'shared.email.label' | translate }}</span>
-                                <span class="ui-g-6 profileData">{{ users[i].ecasEmail }}</span>
+                                <span class="ui-g-3 ui-sm-6">{{ 'shared.email.label' | translate }}</span>
+                                <span class="ui-g-9 ui-sm-6 profileData">{{ users[i].ecasEmail }}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'benefRegistration.mayor.details' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-3 ui-sm-6">{{ 'shared.name.label' | translate }}</span>
+                                <span class="ui-g-9 ui-sm-6 profileData">{{ mayors[i].name }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-3 ui-sm-6">{{ 'shared.surname.label' | translate }}</span>
+                                <span class="ui-g-9 ui-sm-6 profileData">{{ mayors[i].surname }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-3 ui-sm-6">{{ 'shared.email.label' | translate }}</span>
+                                <span class="ui-g-9 ui-sm-6 profileData">{{ mayors[i].email }}</span>
+                            </p>
+                        </div>
+                        <div class="ui-g-4 ui-lg-4 ui-md-12 ui-sm-12">
+                            <p class="applicantDetailsNoMargin municipality-name profileData">
+                                <span class="ui-g-12">{{ 'registration.nameOrganisation' | translate }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span *ngIf="registrations[i].associationName.trim().length > 0" class="ui-g-12">
+                                    {{ registrations[i].associationName }}
+                                </span>
+                                <span *ngIf="registrations[i].associationName.trim().length < 1" class="ui-g-12">
+                                    -
+                                </span>
                             </p>
                         </div>
                         <div class="ui-g-2 ui-lg-2 ui-md-12 ui-sm-12">
@@ -125,38 +158,6 @@
                                     <a class="link-label" [href]="getLegalFileUrl(i, 4)" download>
                                         <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                     </a>
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="ui-g-12">
-                        <div class="ui-g-6 ui-lg-6 ui-md-8 ui-sm-12">
-                            <p class="applicantDetailsNoMargin municipality-name profileData">
-                                <span class="ui-g-12">{{ 'benefRegistration.mayor.details' | translate }}</span>
-                            </p>
-                            <p class="applicantDetailsNoMargin">
-                                <span class="ui-g-6">{{ 'shared.name.label' | translate }}</span>
-                                <span class="ui-g-6 profileData">{{ mayors[i].name }}</span>
-                            </p>
-                            <p class="applicantDetailsNoMargin">
-                                <span class="ui-g-6">{{ 'shared.surname.label' | translate }}</span>
-                                <span class="ui-g-6 profileData">{{ mayors[i].surname }}</span>
-                            </p>
-                            <p class="applicantDetailsNoMargin">
-                                <span class="ui-g-6">{{ 'shared.email.label' | translate }}</span>
-                                <span class="ui-g-6 profileData">{{ mayors[i].email }}</span>
-                            </p>
-                        </div>
-                        <div class="ui-g-6 ui-lg-6 ui-md-4 ui-sm-12">
-                            <p class="applicantDetailsNoMargin municipality-name profileData">
-                                <span class="ui-g-12">{{ 'registration.nameOrganisation' | translate }}</span>
-                            </p>
-                            <p class="applicantDetailsNoMargin">
-                                <span *ngIf="registrations[i].associationName.trim().length > 0" class="ui-g-12">
-                                    {{ registrations[i].associationName }}
-                                </span>
-                                <span *ngIf="registrations[i].associationName.trim().length < 1" class="ui-g-12">
-                                    -
                                 </span>
                             </p>
                         </div>

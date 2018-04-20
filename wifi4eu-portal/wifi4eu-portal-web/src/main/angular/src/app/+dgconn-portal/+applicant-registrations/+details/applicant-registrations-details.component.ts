@@ -49,7 +49,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private users: UserDTOBase[] = [];
     private discussionThread: ThreadDTOBase = null;
     private displayedMessages: ThreadMessageDTOBase[] = [];
-    private entitiesChecked: boolean[] = [];
     private entityCheckboxIndex: number = null;
     private searchMessagesQuery: string = '';
     private issueRegistration: number;
@@ -60,7 +59,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private loadingData = false;
     private processingRequest = false;
 
-    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private mayorApi: MayorApi, private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private userApi: UserApi) {
+    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi) {
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
@@ -76,6 +75,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             this.beneficiaryApi.getAppliedMunicipalitiesDetailsByLauIdAndCallId(this.lauId, this.callId).subscribe(
                 (municipalitiesDetails: MunicipalityDetailsDTOBase[]) => {
                     console.log(municipalitiesDetails);
+                    this.clearPageInfo();
                     for (let municipalityDetails of municipalitiesDetails) {
                         if (municipalityDetails.municipality && municipalityDetails.registration) {
                             this.userApi.getUserById(municipalityDetails.registration.userId).subscribe(
@@ -84,7 +84,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                         if (municipalityDetails.applications != null) {
                                             for (let application of municipalityDetails.applications) {
                                                 if (application.callId == this.callId) {
-                                                    this.entitiesChecked.push(false);
                                                     if (municipalityDetails.mayor) {
                                                         this.mayors.push(municipalityDetails.mayor);
                                                     } else {
@@ -106,15 +105,25 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                     break;
                                                 }
                                             }
+                                            this.loadingData = false;
                                         }
                                     }
+                                }, error => {
+                                    this.loadingData = false;
                                 }
                             );
                         }
                     }
-                    this.loadingData = false;
                 }, error => {
                     this.loadingData = false;
+                }
+            );
+            this.threadApi.getThreadByTypeAndReason(1, String(this.lauId)).subscribe(
+                (thread: ThreadDTOBase) => {
+                    if (thread) {
+                        this.discussionThread = thread;
+                        this.displayedMessages = thread.messages;
+                    }
                 }
             );
         }
@@ -130,19 +139,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile3);
             case 4:
                 return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile4);
-        }
-    }
-
-    private checkEntity(index: number) {
-        if (!this.entitiesChecked[index]) {
-            this.entityCheckboxIndex = null;
-        } else {
-            this.entityCheckboxIndex = index;
-            for (let i = 0; i < this.entitiesChecked.length; i++) {
-                if (i != index) {
-                    this.entitiesChecked[i] = false;
-                }
-            }
         }
     }
 
@@ -205,8 +201,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     (response: ResponseDTOBase) => {
                         if (response.success) {
                             if (response.data != null) {
-                                this.applications[this.selectedIndex] = response.data;
-                                this.getIssue();
+                                this.getApplicationDetailsInfo();
                                 this.sharedService.growlTranslation('You successfully validated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
                             } else {
                                 this.sharedService.growlTranslation('An error occurred while trying to validate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.error', 'error');
@@ -234,8 +229,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     (response: ResponseDTOBase) => {
                         if (response.success) {
                             if (response.data != null) {
-                                this.applications[this.selectedIndex] = response.data;
-                                this.getIssue();
+                                this.getApplicationDetailsInfo();
                                 this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
                             } else {
                                 this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
@@ -264,5 +258,13 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         } else {
             this.displayedMessages = this.discussionThread.messages;
         }
+    }
+
+    private clearPageInfo() {
+        this.municipalities = [];
+        this.mayors = [];
+        this.registrations = [];
+        this.applications = [];
+        this.users = [];
     }
 }
