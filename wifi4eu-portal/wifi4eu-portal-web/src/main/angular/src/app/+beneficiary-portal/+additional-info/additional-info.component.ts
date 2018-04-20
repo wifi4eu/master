@@ -192,8 +192,7 @@ export class AdditionalInfoComponent {
 
     private updateMailings() {
         if (!this.isMayor) {
-            let date = new Date();
-            this.date = date.getTime();
+
 
             if (this.registration.legalFile1 && this.registration.legalFile2 && this.registration.legalFile3 && this.registration.legalFile4) {
                 this.registration.allFilesFlag = 1;
@@ -214,6 +213,8 @@ export class AdditionalInfoComponent {
             }
 
         }
+        let date = new Date();
+        this.date = date.getTime();
         this.registration.uploadTime = this.date;
     }
 
