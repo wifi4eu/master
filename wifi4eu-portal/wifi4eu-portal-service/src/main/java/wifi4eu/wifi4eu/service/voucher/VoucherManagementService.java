@@ -21,7 +21,7 @@ public class VoucherManagementService {
 
 
     public List<VoucherManagementDTO> getVoucherManagementByCall(int callId) {
-        return voucherManagementMapper.toDTOList(voucherManagementRepository.findAllByVoucherCall(callId));
+        return voucherManagementMapper.toDTOList(voucherManagementRepository.findAllByVoucherCallId(callId));
     }
 
 

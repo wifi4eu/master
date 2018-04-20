@@ -144,4 +144,12 @@ public class ApplicationService {
     public List<ApplicationDTO> getApplicationsByRegistrationNotInvalidated(int callId) {
         return  applicationMapper.toDTOList(applicationRepository.findApplicationsByRegistrationNotInvalidated(callId));
     }
+
+    public List<ApplicationDTO> getApplicationsByCall(int callId) {
+        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdOrderByIdAsc(callId)));
+    }
+
+    public List<ApplicationDTO> getApplicationByCountry(int callId, String country) {
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsByCountry(callId, country));
+    }
 }

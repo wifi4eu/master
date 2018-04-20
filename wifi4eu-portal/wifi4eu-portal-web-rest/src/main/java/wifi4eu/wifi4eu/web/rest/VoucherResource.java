@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.web.rest;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/voucher", description = "Application object REST API services")
-@RequestMapping("application")
+@RequestMapping("voucher")
 public class VoucherResource {
     @Autowired
     VoucherService voucherService;
@@ -69,6 +68,7 @@ public class VoucherResource {
     }
 
     @ApiOperation(value = "Create voucher assignment")
+    @ResponseHeader(name = "Cache-control", response = String.class, description = "no-cache")
     @RequestMapping(value = "/assignment/simulate", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody

@@ -7,6 +7,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface VoucherManagementRepository extends CrudRepository<VoucherManagement, Integer> {
-    List<VoucherManagement> findAllByVoucherCall(Integer callId);
+    List<VoucherManagement> findAllByVoucherCallId(Integer callId);
 
 }
