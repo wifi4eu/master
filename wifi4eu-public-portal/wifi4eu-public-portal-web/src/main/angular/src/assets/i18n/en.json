@@ -530,7 +530,7 @@
   "dgConn.invalidateRegistration.modal.title": "Do you really want to invalidate this registration?",
   "dgConn.discussionForum.writeMessage.desc": "This button will be enabled when there is mediation",
   "dgConn.applicantDetails.validateApplication.title": "Validate application",
-  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to <b>validate</b> this application? An email will be sent to the applicant.",
+  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.applicantDetails.invalidateApplication.title": "Invalidate application",
   "dgConn.applicantDetails.invalidateApplication.desc": "Are you sure you want to <b>invalidate</b> this application? An email will be sent to the applicant.",
   "dgConn.publicationCall.title": "Management Publication of the call"

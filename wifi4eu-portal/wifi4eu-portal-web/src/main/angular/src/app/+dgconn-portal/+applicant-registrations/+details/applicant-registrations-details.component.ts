@@ -74,7 +74,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         if (this.lauId && this.callId) {
             this.beneficiaryApi.getAppliedMunicipalitiesDetailsByLauIdAndCallId(this.lauId, this.callId).subscribe(
                 (municipalitiesDetails: MunicipalityDetailsDTOBase[]) => {
-                    console.log(municipalitiesDetails);
                     this.clearPageInfo();
                     for (let municipalityDetails of municipalitiesDetails) {
                         if (municipalityDetails.municipality && municipalityDetails.registration) {

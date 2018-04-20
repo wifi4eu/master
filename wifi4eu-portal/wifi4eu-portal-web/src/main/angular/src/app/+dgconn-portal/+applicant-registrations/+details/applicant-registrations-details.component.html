@@ -38,9 +38,6 @@
                         ({{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{users[i].id}})
                     </label>
                     <span class="right">
-                        <!--<button type="button" class="btn btn-primary whiteButton-thin" (click)="requestLegalDocuments(i)">-->
-                        <!--{{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}-->
-                        <!--</button>-->
                         <button type="button" class="btn greenButton" (click)="displayValidateModal(i)" [disabled]="applications[i].status == 2">
                             {{ 'dgConn.applicantDetails.validateApplication.title' | translate }}
                         </button>
@@ -206,7 +203,7 @@
 </div>
 <div class="container font">
     <p-dialog [(visible)]="displayValidate" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+              [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <form (ngSubmit)="validateApplication()" #invalidateConfirmationForm="ngForm">
             <div class="form-group">
                 <div style="padding: 2em; padding-top: 0em;" class="center">
@@ -218,13 +215,13 @@
                         <div class="col-sm-6">
                             <button type="button" class="btn btn-primary cancel-button"
                                     [disabled]="processingRequest" (click)="closeModal()">
-                                {{ 'shared.no' | translate }}
+                                {{ 'shared.cancel.button' | translate }}
                             </button>
                         </div>
                         <div class="col-sm-6">
                             <button type="submit" class="btn btn-primary publish-button"
                                     [disabled]="processingRequest">
-                                {{ 'shared.yes' | translate }}
+                                {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
                     </div>
@@ -233,7 +230,7 @@
         </form>
     </p-dialog>
     <p-dialog [(visible)]="displayInvalidate" [modal]="true" [responsive]="true" [resizable]="false"
-              [draggable]="false" [closable]="true" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+              [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
         <form (ngSubmit)="invalidateApplication()" #invalidateConfirmationForm="ngForm">
             <div class="form-group">
                 <div style="padding: 2em; padding-top: 0em;" class="center">
@@ -251,13 +248,13 @@
                         <div class="col-sm-6">
                             <button type="button" class="btn btn-primary cancel-button"
                                     [disabled]="processingRequest" (click)="closeModal()">
-                                {{ 'shared.no' | translate }}
+                                {{ 'shared.cancel.button' | translate }}
                             </button>
                         </div>
                         <div class="col-sm-6">
                             <button type="submit" class="btn btn-primary publish-button"
                                     [disabled]="processingRequest || invalidateReason.trim().length < 1">
-                                {{ 'shared.yes' | translate }}
+                                {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
                     </div>
