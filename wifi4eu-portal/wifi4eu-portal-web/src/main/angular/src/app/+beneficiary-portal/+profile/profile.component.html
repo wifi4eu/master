@@ -154,16 +154,16 @@
         <div class="col-sm-4">
 
             <div class="col-sm-12 margin-top  button-content" *ngIf="!documentUploaded || !allDocumentsUploaded">
-                <p>{{ ' shared.uploadDocumentsBox' | translate }}</p>
+                <p>{{ 'shared.uploadDocumentsBox' | translate }}</p>
                 <div style="text-align: center !important">
                     <button type="button" (click)="goToapplyForVOucher()"
                             *ngIf="allDocumentsUploaded && !oneRegsitration"
                             class="btn btn-primary changePassword">
-                        {{' shared.uploadDocumentsBoxButton' | translate }}
+                        {{'shared.uploadDocumentsBoxButton' | translate }}
                     </button>
                     <button type="button" (click)="goToUploadDocuments()" *ngIf="oneRegsitration"
                             class="btn btn-primary changePassword">
-                        {{' shared.uploadDocumentsBoxButton' | translate }}
+                        {{'shared.uploadDocumentsBoxButton' | translate }}
                     </button>
                 </div>
             </div>
