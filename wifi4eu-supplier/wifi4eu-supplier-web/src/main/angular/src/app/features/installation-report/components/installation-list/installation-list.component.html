@@ -69,5 +69,5 @@
                 <ux-button typeClass="primary" (click)="closeConfirmInstallation()" [isLarge]="true"  [isDisabled]="!legalChecks[0] || !legalChecks[1] || !legalChecks[2]">{{ 'shared.confirm' | translate }}</ux-button>
         </uxModalFooter>
     </ux-modal>
-    <update-installation-site></update-installation-site>
+    <update-installation-site [installationSite]='null'></update-installation-site>
 </div>

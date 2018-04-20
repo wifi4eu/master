@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { InstallationReportRoutingModule } from './installation-report-routing.module';
 import { InstallationReportComponent } from './installation-report.component';
-import { Page2Component } from './components/page2/page2.component';
+import { InstallationDetailsComponent } from './components/installation-details/installation-details.component';
 
 import { SharedModule } from '../../shared/shared.module';
 import { InstallationListComponent } from './components/installation-list/installation-list.component';
@@ -23,7 +23,8 @@ import { EqualValidator } from '../../core/directives/validate-equals.directive'
         InstallationListComponent,
         UpdateInstallationSite,
         EqualValidator,
-        Page2Component
+        InstallationDetailsComponent
+    
     ],
     providers: [
         SearchParametersService

@@ -10,12 +10,16 @@ body {
     h1 {
         color: #004494;
         font-weight: bold;
+        font-size: 25px;
     }
     p {
-        font-size: 16px;
+        font-size: 14px;
     }
 }
 
+.back-button{
+    margin-bottom: 30px;
+}
 
 /*InstallationReport*/
 .instalReportBeneficiary {
@@ -71,6 +75,7 @@ body {
 p-autocomplete {
     padding: 0 !important;
     border: 0 !important;
+    display: block;
   }
 
   .ui-autocomplete {
@@ -210,4 +215,19 @@ p-checkbox{
     position: relative;
     width: 100%;
     top: -27px;
+}
+/*installation details buttons*/
+.detailsButtons .ux-button__icon{
+    margin-right:10px;
+    font-size: 14px;
+}
+
+.detailsButtons button{
+    font-size: 14px;
+}
+
+.results-row{
+    padding-left: 35px;
+    padding-top: 5px;
+    padding-bottom: 22px;
 }
