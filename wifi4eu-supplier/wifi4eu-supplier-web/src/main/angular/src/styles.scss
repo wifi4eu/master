@@ -231,3 +231,17 @@ p-checkbox{
     padding-top: 5px;
     padding-bottom: 22px;
 }
+
+/*success confirmation*/
+#success {
+    font-size: 30px;
+    color: #4caf50;
+    margin: 20px 0 40px 0;
+    display: none;
+    h1{
+        color: #004494;
+        font-weight: bold;
+        font-size: 20px;
+        margin-top: 10px;
+    }
+}

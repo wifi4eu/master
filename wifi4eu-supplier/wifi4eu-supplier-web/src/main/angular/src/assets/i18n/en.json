@@ -38,5 +38,7 @@
     "installationDetails.captivePortal": "Captive portal name",
     "installationDetails.removeModalTitle": "Remove installation site",
     "installationDetails.removeModalAreYouSure": "Are you sure you want to remove this installation site?",
-    "installationDetails.removeModalThisAction": "This action will delete any information regarding the access points related to this WiFi installation site."
+    "installationDetails.removeModalThisAction": "This action will delete any information regarding the access points related to this WiFi installation site.",
+    "installationReport.successH1": "Your confirmation of installation for the beneficiary ",
+    "installationReport.successH2": "has been successfully submited to WiFi4EU."
 }
