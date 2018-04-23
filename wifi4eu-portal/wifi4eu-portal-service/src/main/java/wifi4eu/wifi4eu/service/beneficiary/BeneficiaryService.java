@@ -118,6 +118,9 @@ public class BeneficiaryService {
         /* send Activate Account Email*/
         userService.sendActivateAccountMail(resUser);
 
+        /*send request for documents email*/
+        registrationService.requestLegalDocuments(registrations.get(0).getId());
+
         /* check Duplicates and crate Threads if apply */
         checkDuplicates(resUser, resMunicipalities);
 
@@ -167,38 +170,38 @@ public class BeneficiaryService {
                 String subject = bundle.getString("mail.discussionMunicipality.subject");
                 String msgBody = bundle.getString("mail.discussionMunicipality.body");
                 if (!userService.isLocalHost()) {
-                  mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                 }
 
-                if(municipalitiesWithSameLau.size() <= 10){
-                    for(MunicipalityDTO municipality: municipalitiesWithSameLau){
+                if (municipalitiesWithSameLau.size() <= 10) {
+                    for (MunicipalityDTO municipality : municipalitiesWithSameLau) {
                         RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipality.getId());
-                        if(registrationDTO == null) {
-                          continue;
+                        if (registrationDTO == null) {
+                            continue;
                         }
                         UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
-                        if(userRegistration.getId() == userDTO.getId() || userRegistration == null) {
-                          continue;
+                        if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
+                            continue;
                         }
                         locale = new Locale(userRegistration.getLang());
                         bundle = ResourceBundle.getBundle("MailBundle", locale);
                         subject = bundle.getString("mail.discussionMunicipality.subject");
                         msgBody = bundle.getString("mail.discussionMunicipality.body");
                         if (!userService.isLocalHost()) {
-                          mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                         }
 
                     }
                 }
 
-                if(municipalitiesWithSameLau.size() <= 10){
-                    for(MunicipalityDTO municipality: municipalitiesWithSameLau){
+                if (municipalitiesWithSameLau.size() <= 10) {
+                    for (MunicipalityDTO municipality : municipalitiesWithSameLau) {
                         RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipality.getId());
-                        if(registrationDTO == null) {
+                        if (registrationDTO == null) {
                             continue;
                         }
                         UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
-                        if(userRegistration.getId() == userDTO.getId() || userRegistration == null) {
+                        if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
                             continue;
                         }
                         locale = new Locale(userRegistration.getLang());
