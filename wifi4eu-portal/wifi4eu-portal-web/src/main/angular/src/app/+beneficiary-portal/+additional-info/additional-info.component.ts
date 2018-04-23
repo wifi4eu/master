@@ -36,6 +36,7 @@ export class AdditionalInfoComponent {
     @ViewChild('document4') private document4: any;
     private displayConfirmingData: boolean = false;
     private date: number;
+    private deleteBlocker: boolean = false;
 
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
@@ -50,6 +51,8 @@ export class AdditionalInfoComponent {
                         this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 this.registration = registration;
+                                this.checkFirstDocuments();
+
                             }, error => {
                             });
                     }, error => {
@@ -81,6 +84,14 @@ export class AdditionalInfoComponent {
         } else {
             this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
+        }
+    }
+
+    private checkFirstDocuments() {
+        if (this.registration.legalFile1 == null || this.registration.legalFile3 == null) {
+            this.deleteBlocker = true;
+        } else {
+            this.deleteBlocker = false;
         }
     }
 
@@ -156,6 +167,7 @@ export class AdditionalInfoComponent {
                 }
                 break;
         }
+        this.checkFirstDocuments();
     }
 
 
@@ -212,6 +224,7 @@ export class AdditionalInfoComponent {
             this.filesUploaded = false;
 
         }
+        this.checkFirstDocuments();
     }
 
     private updateMailings() {

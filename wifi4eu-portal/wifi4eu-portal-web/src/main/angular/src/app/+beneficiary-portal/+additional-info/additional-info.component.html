@@ -76,8 +76,8 @@
                     <span class="ui-g-12" *ngIf="registration">
                         <span *ngIf="registration.legalFile1 && !documentUrls[0]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
-                            <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(0)"><i
-                                    class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" *ngIf="!registration.allFilesFlag && deleteBlocker"
+                               (click)="deleteFromServer(0)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
                             <a class="link-label" [href]="getLegalFileUrl(1)" download><i class="fa fa-download"
                                                                                           aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
@@ -146,8 +146,8 @@
                     <span class="ui-g-12" *ngIf="registration">
                         <span *ngIf="registration.legalFile3 && !documentUrls[2]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2
-                            <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(2)"><i
-                                    class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" *ngIf="!registration.allFilesFlag && deleteBlocker"
+                               (click)="deleteFromServer(2)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
                             <a class="link-label" [href]="getLegalFileUrl(3)" download><i class="fa fa-download"
                                                                                           aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
