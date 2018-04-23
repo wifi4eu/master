@@ -51,7 +51,7 @@ export class AdditionalInfoComponent {
                         this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 this.registration = registration;
-                                this.checkFistDocuments();
+                                this.checkFirstDocuments();
 
                             }, error => {
                             });
@@ -87,7 +87,7 @@ export class AdditionalInfoComponent {
         }
     }
 
-    private checkFistDocuments() {
+    private checkFirstDocuments() {
         if (this.registration.legalFile1 == null || this.registration.legalFile3 == null) {
             this.deleteBlocker = true;
         } else {
@@ -167,7 +167,7 @@ export class AdditionalInfoComponent {
                 }
                 break;
         }
-        this.checkFistDocuments();
+        this.checkFirstDocuments();
     }
 
 
@@ -224,7 +224,7 @@ export class AdditionalInfoComponent {
             this.filesUploaded = false;
 
         }
-        this.checkFistDocuments();
+        this.checkFirstDocuments();
     }
 
     private updateMailings() {
