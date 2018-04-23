@@ -72,15 +72,15 @@ public class ScheduledTasks {
     public void scheduleAzureQueue() throws InvalidKeyException, StorageException, URISyntaxException {
         Random rand = new Random();
         int randomQueue = rand.nextInt(10);
-        azureQueueService.setAzureQueue("stress-"+randomQueue);
+        azureQueueService.setAzureQueue("stress-" + randomQueue);
         List<CloudQueueMessage> list = azureQueueService.peekMessagesAzureQueue(32, 600);
 
-        for (CloudQueueMessage cloudQueueMessage: list) {
+        for (CloudQueueMessage cloudQueueMessage : list) {
             String queueMessage = cloudQueueMessage.getMessageContentAsString();
             String idRegistration = queueMessage.substring(queueMessage.indexOf("(") + 1);
             idRegistration = idRegistration.substring(0, idRegistration.indexOf(")"));
 
-            String idCall = queueMessage.substring(queueMessage.indexOf("@")+1);
+            String idCall = queueMessage.substring(queueMessage.indexOf("@") + 1);
             idCall = idCall.substring(0, idCall.indexOf("@"));
 
             ApplicationDTO applicationDTO = new ApplicationDTO();
@@ -90,7 +90,7 @@ public class ScheduledTasks {
             applicationDTO.setCallId(Integer.parseInt(idCall));
 
             if (applicationService.getApplicationsByRegistrationId(applicationDTO.getRegistrationId()).size() == 0) {
-              applicationService.createApplication(applicationDTO);
+                applicationService.createApplication(applicationDTO);
             }
 
             azureQueueService.removeMessageAzureQueue(cloudQueueMessage);
@@ -129,7 +129,7 @@ public class ScheduledTasks {
     }
 
 
-    @Scheduled(cron = "0 12 * * 1 ?")
+    @Scheduled(cron = "0 0 6 ? * MON")
     public void sendDocRequest() {
         List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
         for (RegistrationDTO registrationDTO : registrationDTOS) {
