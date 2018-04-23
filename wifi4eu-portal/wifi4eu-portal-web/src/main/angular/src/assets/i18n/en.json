@@ -521,8 +521,6 @@
   "benefRegistration.municipalityDropdown": "please start typing and select from the dropdown menu",
   "shared.submit": "Submit",
   "shared.totalRecords": "Total records:",
-  "shared.euRanking": "EU Ranking",
-  "shared.countryRanking": "Country Ranking",
   "shared.call.number": "Call {{number}}",
   "shared.comment.mandatory": "Comment (mandatory)",
   "dgConn.manageApplications.title": "Manage municipality applications",
@@ -533,5 +531,7 @@
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.applicantDetails.invalidateApplication.title": "Invalidate application",
   "dgConn.applicantDetails.invalidateApplication.desc": "Are you sure you want to <b>invalidate</b> this application? An email will be sent to the applicant.",
-  "dgConn.publicationCall.title": "Management Publication of the call"
+  "dgConn.publicationCall.title": "Management Publication of the call",
+  "dgConn.euRanking": "EU Ranking",
+  "dgConn.countryRanking": "Country Ranking"
 }
