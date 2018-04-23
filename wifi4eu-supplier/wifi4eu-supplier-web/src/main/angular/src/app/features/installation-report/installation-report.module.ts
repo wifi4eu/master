@@ -9,6 +9,7 @@ import { UpdateInstallationSite } from "./components/update-installation-site/up
 import { SearchParametersService } from '../../core/services/search-parameters.service';
 import {AutoCompleteModule, DataTableModule, CheckboxModule, TooltipModule} from "primeng/primeng";
 import { EqualValidator } from '../../core/directives/validate-equals.directive'; 
+import { BeneficiaryService } from '../../core/services/beneficiary-service';
 
 @NgModule({
     imports: [
@@ -27,7 +28,8 @@ import { EqualValidator } from '../../core/directives/validate-equals.directive'
     
     ],
     providers: [
-        SearchParametersService
+        SearchParametersService,
+        BeneficiaryService
     ],
     bootstrap: [
         InstallationListComponent
