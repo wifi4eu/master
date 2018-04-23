@@ -28,6 +28,12 @@
             </div>
         </div>
         <div class="panel-dg">
+            <div class="ui-g-12" style="padding: 1em 2em;border-bottom: 1px solid #bdbdbd;">
+                <!--<span class="left"><b>List of registrations</b>b></span>-->
+                <a class="link-label right" [class.link-disabled]="loadingData || downloadingCSV" (click)="exportListCSV()">
+                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }} <i *ngIf="downloadingCSV" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                </a>
+            </div>
             <p-dataTable #tableBeneficiary [totalRecords]="totalItems" [value]="beneficiaryListItems" [lazy]="true" (onLazyLoad)="loadData($event)"
                          [paginator]="true" [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="totalItems" [rows]="itemsPerPage">
                 <p-column field="name" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
@@ -61,7 +67,7 @@
                 <footer>
                     <div style="position: absolute; bottom: 25px; left: 20px;">
                     <span *ngIf="!loadingData">
-                        Total records: {{tableBeneficiary.totalRecords}}
+                        {{ 'dgConn.totalRecords' | translate }} {{tableBeneficiary.totalRecords}}
                     </span>
                         <span *ngIf="loadingData">
                         {{ 'shared.loading.modal.title' | translate }} <i [@enterSpinner] class="fa fa-spinner loading-icon"></i>

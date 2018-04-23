@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
@@ -27,6 +28,7 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
+import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -876,5 +878,51 @@ public class BeneficiaryService {
             }
         }
         return finalMunsDetails;
+    }
+
+    public String exportCSVDGConnBeneficiariesList() {
+        int totalCount = getCountDistinctMunicipalities();
+        int pageSize = totalCount;
+        List<BeneficiaryListItem> beneficiaries = beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByLauIdAsc(0, pageSize);
+        return generateCSVBeneficiaries(beneficiaries, true);
+    }
+
+    public String exportCSVDGConnBeneficiariesListSearchingName(String name) {
+        int totalCount = getCountDistinctMunicipalitiesContainingName(name);
+        int pageSize = totalCount;
+        List<BeneficiaryListItem> beneficiaries = beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByLauIdAsc(name, 0, pageSize);
+        return generateCSVBeneficiaries(beneficiaries, true);
+    }
+
+    private String generateCSVBeneficiaries(List<BeneficiaryListItem> beneficiaryListItems, boolean columnHeaders) {
+        StringBuilder sb = new StringBuilder();
+        if (columnHeaders) {
+            sb.append("Name,LauID,CountryCode,NumberRegistrations,Status,Mediation,IssueStatus,");
+            sb.append("\n");
+        }
+        for (BeneficiaryListItem beneficiaryListItem : beneficiaryListItems) {
+            sb.append(beneficiaryListItem.getName());
+            sb.append(",");
+            sb.append(beneficiaryListItem.getLauId());
+            sb.append(",");
+            sb.append(beneficiaryListItem.getCountryCode());
+            sb.append(",");
+            if (beneficiaryListItem.getStatus()) {
+                sb.append("Applied");
+            } else {
+                sb.append("Registered");
+            }
+            sb.append(",");
+            if (beneficiaryListItem.getMediation()) {
+                sb.append("YES");
+            } else {
+                sb.append("NO");
+            }
+            sb.append(",");
+            sb.append(beneficiaryListItem.getIssueStatus());
+            sb.append(",");
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }

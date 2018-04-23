@@ -133,4 +133,24 @@ public class BeneficiaryResource {
     public List<MunicipalityDetailsDTO> getAppliedMunicipalitiesDetailsByLauIdAndCallId(@RequestParam("lauId") final Integer lauId, @RequestParam("callId") final Integer callId) {
         return beneficiaryService.getAppliedMunicipalitiesDetailsByLauIdAndCallId(lauId, callId);
     }
+
+    @ApiOperation(value = "exportCSVDGConnBeneficiariesList")
+    @RequestMapping(value = "/exportCSVDGConnBeneficiariesList", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO exportCSVDGConnBeneficiariesList() {
+        ResponseDTO res = new ResponseDTO(true, null, null);
+        res.setData(beneficiaryService.exportCSVDGConnBeneficiariesList());
+        res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalities());
+        return res;
+    }
+
+    @ApiOperation(value = "exportCSVDGConnBeneficiariesListSearchingName")
+    @RequestMapping(value = "/exportCSVDGConnBeneficiariesListSearchingName", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO exportCSVDGConnBeneficiariesListSearchingName(@RequestParam("name") final String name) {
+        ResponseDTO res = new ResponseDTO(true, null, null);
+        res.setData(beneficiaryService.exportCSVDGConnBeneficiariesListSearchingName(name));
+        res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalitiesContainingName(name));
+        return res;
+    }
 }

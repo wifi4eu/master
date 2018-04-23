@@ -1426,6 +1426,11 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   color: $darkish-blue;
 }
 
+.link-disabled {
+  color: #787878;
+  cursor: not-allowed;
+}
+
 .blueButton {
   background-color: #004494;
   height: 50px;
