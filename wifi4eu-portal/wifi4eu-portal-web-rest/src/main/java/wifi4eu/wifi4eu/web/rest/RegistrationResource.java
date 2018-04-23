@@ -44,13 +44,13 @@ public class RegistrationResource {
     @ResponseBody
     public List<RegistrationDTO> allRegistrations(HttpServletResponse response) throws IOException {
         _log.info("allRegistrations");
-        try{
-            if(userService.getUserByUserContext(UserHolder.getUser()).getType() != 5){
+        try {
+            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-        }catch (AccessDeniedException ade) {
+        } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e){
+        } catch (Exception e) {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return registrationService.getAllRegistrations();
@@ -62,10 +62,9 @@ public class RegistrationResource {
     public RegistrationDTO getRegistrationById(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
         _log.info("getRegistrationById: " + registrationId);
 
-        try{
-            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE+registrationId);
-        }
-        catch (AccessDeniedException ade) {
+        try {
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
+        } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'getRegistrationById' operation.", ade);
             }
@@ -104,18 +103,16 @@ public class RegistrationResource {
         try {
             RegistrationDTO registrationDTO = registrationService.getRegistrationById(registrationId);
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getId() != registrationDTO.getUserId()){
+            if (userDTO.getId() != registrationDTO.getUserId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             _log.info("deleteRegistration: " + registrationId);
             RegistrationDTO resRegistration = registrationService.deleteRegistration(registrationId);
             return new ResponseDTO(true, resRegistration, null);
-        }
-        catch (AccessDeniedException ade){
+        } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), ade.getMessage()));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteRegistration' operation.", e);
             }
@@ -127,15 +124,18 @@ public class RegistrationResource {
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<RegistrationDTO> getRegistrationsByUserId(@PathVariable("userId") final Integer userId) {
-        permissionChecker.check(RightConstants.USER_TABLE+userId);
+        permissionChecker.check(RightConstants.USER_TABLE + userId);
         return registrationService.getRegistrationsByUserId(userId);
     }
 
     @ApiOperation(value = "Get registrations by specific municipality id")
     @RequestMapping(value = "/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public RegistrationDTO getRegistrationByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
+    public RegistrationDTO getRegistrationByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse httpServletResponse) {
         _log.info("getRegistrationsByMunicipalityId: " + municipalityId);
+        httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        httpServletResponse.setDateHeader("Expires", 0); // Proxies.
         return registrationService.getRegistrationByMunicipalityId(municipalityId);
     }
 
@@ -158,14 +158,14 @@ public class RegistrationResource {
     @RequestMapping(value = "/user/{userId}/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public RegistrationDTO getRegistrationByUserAndMunicipality(@PathVariable("userId") final Integer userId, @PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
-        _log.info("getRegistrationByUser: " + userId  + " | AndMunicipality: " + municipalityId);
+        _log.info("getRegistrationByUser: " + userId + " | AndMunicipality: " + municipalityId);
 
-        try{
-            permissionChecker.check(RightConstants.USER_TABLE+userId);
-            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE+municipalityId);
-        } catch (AccessDeniedException ade){
+        try {
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+        } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e){
+        } catch (Exception e) {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
 
