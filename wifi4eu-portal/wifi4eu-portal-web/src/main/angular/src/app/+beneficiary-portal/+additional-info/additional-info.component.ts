@@ -121,15 +121,39 @@ export class AdditionalInfoComponent {
         switch (index) {
             case 0:
                 this.document1.nativeElement.value = '';
+                if (this.documentUrls[1] == '' || this.documentUrls[2] == '' || this.documentUrls[3] == '') {
+                    this.filesUploaded = false;
+
+                } else {
+                    this.filesUploaded = true;
+                }
                 break;
             case 1:
                 this.document2.nativeElement.value = '';
+                if (this.documentUrls[0] == '' || this.documentUrls[2] == '' || this.documentUrls[3] == '') {
+                    this.filesUploaded = false;
+
+                } else {
+                    this.filesUploaded = true;
+                }
                 break;
             case 2:
                 this.document3.nativeElement.value = '';
+                if (this.documentUrls[1] == '' || this.documentUrls[0] == '' || this.documentUrls[3] == '') {
+                    this.filesUploaded = false;
+
+                } else {
+                    this.filesUploaded = true;
+                }
                 break;
             case 3:
                 this.document4.nativeElement.value = '';
+                if (this.documentUrls[1] == '' || this.documentUrls[2] == '' || this.documentUrls[0] == '') {
+                    this.filesUploaded = false;
+
+                } else {
+                    this.filesUploaded = true;
+                }
                 break;
         }
     }
