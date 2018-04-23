@@ -108,7 +108,8 @@
                     <span class="ui-g-12" *ngIf="registration">
                         <span *ngIf="registration.legalFile2 && !documentUrls[1]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3
-                            <a class="link-label" (click)="deleteFromServer(1)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(1)"><i
+                                    class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
                             <a class="link-label" [href]="getLegalFileUrl(2)" download><i class="fa fa-download"
                                                                                           aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
@@ -177,7 +178,8 @@
                     <span class="ui-g-12" *ngIf="registration">
                          <span *ngIf="registration.legalFile4 && !documentUrls[3]">
                             <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4
-                            <a class="link-label" (click)="deleteFromServer(3)"><i class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
+                            <a class="link-label" *ngIf="!registration.allFilesFlag" (click)="deleteFromServer(3)"><i
+                                    class="fa fa-trash"></i> {{ 'shared.remove.label' | translate}}</a> |
                             <a class="link-label" [href]="getLegalFileUrl(4)" download><i class="fa fa-download"
                                                                                           aria-hidden="true"></i> {{ 'shared.download' | translate }}</a>
                         </span>
