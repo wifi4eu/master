@@ -20,7 +20,7 @@ public interface ApplicationMapper {
             @Mapping(source = "vo.callId", target = "call.id"),
             @Mapping(source = "vo.registrationId", target = "registration.id")
     })
-    Application toEntity(ApplicationDTO vo);
+    Application toEntity(App    licationDTO vo);
     List<ApplicationDTO> toDTOList(List<Application> list);
     List<Application> toEntityList(List<ApplicationDTO> list);
 }
