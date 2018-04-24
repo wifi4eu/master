@@ -1,4 +1,4 @@
-package wifi4eu.supplier.web.rest;
+package wifi4eu.supplier.web.rest.installation;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +27,7 @@ public class InstallationSiteResource {
 
 
     @ApiOperation(value="Get all installation sites by beneficiary")
-    @RequestMapping(value="/installation-site-list", method = RequestMethod.POST)
+    @RequestMapping(value="/installation-site-list", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO getInstallationSiteListByBeneficiary(@RequestBody final Map<String, Object> installationText){
         return installationSiteService.findInstallationSitesByBeneficiariesOrdered(installationText);

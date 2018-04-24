@@ -10,4 +10,6 @@ public interface InstallationSiteRepository extends PagingAndSortingRepository<I
     List<InstallationSite> findInstallationSitesByBeneficiary(Pageable pageable);
     */
 
+    Long countInstallationSiteById(Integer id);
+
 }

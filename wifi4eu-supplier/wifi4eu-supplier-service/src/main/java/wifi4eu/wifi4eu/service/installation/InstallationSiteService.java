@@ -47,7 +47,7 @@ public class InstallationSiteService {
 
                 id_beneficiary = (int) map.get("id_beneficiary");
 
-               //  try {
+                try {
 
                     if (map.containsKey("page") && (int) map.get("page") > 0) {
                         page = (int) map.get("page");
@@ -75,14 +75,13 @@ public class InstallationSiteService {
                     int countResults = installationSiteRepository.countInstallationSitesByBeneficiary(page, delta, id_beneficiary, field, order);
                     mapResult.put("data", installationSites);
                     mapResult.put("count", countResults);
-                    // mapResult.put("empty","empty");
                     response.setSuccess(true);
                     response.setData(mapResult);
-                    /*
+
                 } catch (Exception ex) {
                     response.setSuccess(false);
                     response.setError(new ErrorDTO(404, "Error - Invalid integers / fields"));
-                }*/
+                }
             } else {
                 response.setSuccess(false);
                 response.setError(new ErrorDTO(404, "Municipality not found"));
