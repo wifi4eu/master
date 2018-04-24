@@ -18,6 +18,8 @@ import { HomeComponent } from './components/home/home.component';
 import { SearchInputComponent } from './components/shell/search-input/search-input.component';
 
 import { SharedModule } from '../shared/shared.module';
+import { BeneficiaryService } from './services/beneficiary-service';
+import { InstallationSite } from './models/installation-site.model';
 
 @NgModule({
     imports: [
@@ -37,7 +39,8 @@ import { SharedModule } from '../shared/shared.module';
         SearchInputComponent
     ],
     providers: [
-        UserDetailsService
+        UserDetailsService,
+        BeneficiaryService
     ]
 })
 export class CoreModule {

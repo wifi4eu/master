@@ -1,0 +1,58 @@
+<div class="container">
+
+    <div class="header">
+        <h1>{{ 'accessPoint.title' | translate }}</h1>
+        <p>{{ 'accessPoint.thisPageIsUsedTo' | translate }}</p>
+    </div>
+
+    <div class="form-group col-md-12 row">
+        <p>{{ 'shared.beneficiary.label' | translate }}:
+            <span class="font-weight-bold">{{beneficiary.name}}</span>
+            <br> {{ 'accessPoint.installationSite' | translate }}
+            <span class="font-weight-bold">{{installationSite}}</span>
+        </p>
+    </div>
+
+    <div class="results">
+        <div class="row table-filters-header align-items-end">
+            <div class="col-md-8">
+                <p>{{ 'accessPoint.listTitle' | translate}}
+                    <span class="font-weight-bold">installation Site</span>
+                    {{ 'accessPoint.listTitleOf' | translate}}
+                    <span class="font-weight-bold">{{beneficiary.name}}</span>
+                </p>
+            </div>
+            <div class="col-md-4 text-right btn-flat-link">
+                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link">+ {{ 'accessPoint.add' | translate }}</ux-button>
+                <!-- (click)="openUpdateInstallationSite()" -->
+            </div>
+        </div>
+
+    <p-dataTable [value]="accessPoints" [rows]="searchParametersService.parameters.delta" [paginator]="true" [rowsPerPageOptions]="[5,10,20]"
+        [totalRecords]="totalResults" [first]="searchParametersService.parameters.page" [lazy]="true" (onLazyLoad)="onPage($event)"
+        [immutable]="false">
+        <p-column header="{{'shared.number.label' | translate }}" sortable="true"></p-column>
+        <p-column header="{{'accessPoint.locationType' | translate }}" sortable="true"></p-column>
+        <p-column header="{{'accessPoint.locationName' | translate }}" sortable="true"></p-column>
+        <p-column header="{{'accessPoint.geoLocation' | translate }}" sortable="true"></p-column>
+        <p-column header="{{'accessPoint.deviceType' | translate }}" sortable="true"></p-column>
+        <p-column header="{{'accessPoint.deviceBrand' | translate }}" sortable="true"></p-column>
+        <p-column header="{{'accessPoint.deviceModel' | translate }}" sortable="true"></p-column>
+        <p-column header="{{'accessPoint.deviceSerial' | translate }}" sortable="true"></p-column>
+        <p-column header="{{'accessPoint.macAddress' | translate }}" sortable="true"></p-column>
+        <p-column field="details" header="{{'shared.details' | translate }}">
+            <ng-template let-installationSite="rowData" pTemplate="body">
+                <div class="my-center-text">
+                    <ux-button [isFlat]="true" iconClass="fas fa-eye" [routerLink]="['./details']" routerLinkActive="active">{{ 'shared.view' | translate }}</ux-button>
+                    <!-- [routerLink]="['../details/', beneficiary.id]" -->
+                </div>
+            </ng-template>
+        </p-column>
+
+        <ng-template pTemplate="emptymessage">
+            {{'shared.noResults' | translate}}
+        </ng-template>
+    </p-dataTable>
+</div>
+
+</div>
