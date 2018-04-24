@@ -42,7 +42,8 @@ public class InstallationSite {
     public InstallationSite() {
     }
 
-    public InstallationSite(Municipality municipality, Status status, String idNetworkSnippet, String name, Timestamp dateRegistered, String domainName, String url) {
+    public InstallationSite(Integer id, Municipality municipality, Status status, String idNetworkSnippet, String name, Timestamp dateRegistered, String domainName, String url) {
+        this.id = id;
         this.municipality = municipality;
         this.status = status;
         this.idNetworkSnippet = idNetworkSnippet;
