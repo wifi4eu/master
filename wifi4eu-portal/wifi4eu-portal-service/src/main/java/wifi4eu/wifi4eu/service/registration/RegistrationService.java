@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.service.registration;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import java.util.ResourceBundle;
 
 @Service("portalRegistrationService")
 public class RegistrationService {
+
     @Autowired
     RegistrationMapper registrationMapper;
 
@@ -118,7 +120,7 @@ public class RegistrationService {
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
                 String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
-                String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/additional-info";
+                String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
                 msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
                 if (!userService.isLocalHost()) {
                     mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
