@@ -1,4 +1,4 @@
-package wifi4eu.supplier.web.rest;
+package wifi4eu.supplier.web.rest.municipality;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
