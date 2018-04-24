@@ -24,41 +24,45 @@ public class InstallationSiteRepositoryImpl implements InstallationSiteRepositor
 
 
     @Override
-    public List<InstallationSite> searchInstallationSitesByBeneficiary(int page, int delta, int id, String fieldName, String orderField) {
-
-        String queryString = "SELECT i.id, i.name, i.domain_name FROM installation_site i INNER JOIN municipalities m ON m.id = i.id_municipality WHERE m.id = ?1";
-
-        StringBuilder sqlBuilder = new StringBuilder(queryString);
-
-        sqlBuilder.append(" ")
-                .append("ORDER BY ")
-                .append("i."+fieldName)
-                .append(" ")
-                .append(orderField);
-
-        sqlBuilder.append(" OFFSET ")
-                .append(page)
-                .append(" ROWS FETCH NEXT ")
-                .append(delta)
-                .append(" ROWS ONLY");
-
-        _log.info(sqlBuilder.toString());
-
-
-        Query query = entityManager.createNativeQuery(sqlBuilder.toString(), InstallationSite.class);
-
-        query.setParameter(1, id);
-
+    public List<InstallationSite> searchInstallationSitesByBeneficiary(int page, int delta, int id_beneficiary, String fieldName, String orderField) {
+        Query query = generateSqlInstallationSites(page,delta,id_beneficiary,fieldName,orderField, false);
         return query.getResultList();
-
-        /*String queryString = "SELECT * FROM installation_site";
-        // Query query = entityManager.createNativeQuery(queryString, InstallationSite.class);
-        Query query = entityManager.createNativeQuery(queryString);
-        return query.getResultList();*/
     }
 
     @Override
-    public int countInstallationSitesByBeneficiary(int id) {
-        return 0;
+    public int countInstallationSitesByBeneficiary(int page, int delta, int id_beneficiary, String fieldName, String orderField) {
+        Query query = generateSqlInstallationSites(page,delta,id_beneficiary,fieldName,orderField, true);
+        return (int) query.getSingleResult();
+    }
+
+    private Query generateSqlInstallationSites(int page, int delta, int id_beneficiary, String fieldName, String orderField, boolean count){
+        String queryString = "SELECT i.id, i.name, i.domain_name FROM installation_site i INNER JOIN municipalities m ON m.id = i.id_municipality WHERE m.id = ?1";
+        Query query = null;
+        if (count){
+            queryString = "SELECT COUNT(i.name) FROM installation_site i INNER JOIN municipalities m ON m.id = i.id_municipality WHERE m.id = ?1";
+        }
+
+        StringBuilder sqlBuilder = new StringBuilder(queryString);
+        query = entityManager.createNativeQuery(sqlBuilder.toString());
+        if (!count) {
+            sqlBuilder.append(" ")
+                    .append("ORDER BY ")
+                    .append("i." + fieldName)
+                    .append(" ")
+                    .append(orderField);
+
+            sqlBuilder.append(" OFFSET ")
+                    .append(page)
+                    .append(" ROWS FETCH NEXT ")
+                    .append(delta)
+                    .append(" ROWS ONLY");
+            query = entityManager.createNativeQuery(sqlBuilder.toString(), InstallationSite.class);
+        }
+
+        _log.info(sqlBuilder.toString());
+
+        query.setParameter(1, id_beneficiary);
+
+        return query;
     }
 }

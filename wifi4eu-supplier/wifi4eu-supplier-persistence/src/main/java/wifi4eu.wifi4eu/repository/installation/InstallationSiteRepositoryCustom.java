@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface InstallationSiteRepositoryCustom {
 
-    List<InstallationSite> searchInstallationSitesByBeneficiary(int page, int delta, int id, String fieldName, String orderField);
+    List<InstallationSite> searchInstallationSitesByBeneficiary(int page, int delta, int id_beneficiary, String fieldName, String orderField);
 
-    int countInstallationSitesByBeneficiary(int id);
+    int countInstallationSitesByBeneficiary(int page, int delta, int id_beneficiary, String fieldName, String orderField);
 }
