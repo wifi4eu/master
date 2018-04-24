@@ -5,6 +5,7 @@ import { VoucherComponent } from "../+beneficiary-portal/+voucher/voucher.compon
 import { DiscussionComponent } from "./+discussion/discussion.component";
 import { BeneficiaryProfileComponent } from "./+profile/profile.component";
 import { AdditionalInfoComponent } from "./+additional-info/additional-info.component";
+import {ManageInstallationComponent} from "./manage-installation/manage-installation.component";
 // import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplier.component";
 
 @NgModule({
@@ -15,7 +16,8 @@ import { AdditionalInfoComponent } from "./+additional-info/additional-info.comp
         VoucherComponent,
         DiscussionComponent,
         BeneficiaryProfileComponent,
-        AdditionalInfoComponent
+        AdditionalInfoComponent,
+        ManageInstallationComponent
         // SelectSupplierComponent
     ]
     // ,

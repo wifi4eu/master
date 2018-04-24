@@ -1,9 +1,10 @@
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
-import { VoucherComponent } from "./+voucher/voucher.component";
-import { DiscussionComponent } from "./+discussion/discussion.component";
-import { BeneficiaryProfileComponent } from "./+profile/profile.component";
-import { AdditionalInfoComponent } from "./+additional-info/additional-info.component";
+import {NgModule} from "@angular/core";
+import {RouterModule} from "@angular/router";
+import {VoucherComponent} from "./+voucher/voucher.component";
+import {DiscussionComponent} from "./+discussion/discussion.component";
+import {BeneficiaryProfileComponent} from "./+profile/profile.component";
+import {AdditionalInfoComponent} from "./+additional-info/additional-info.component";
+import {ManageInstallationComponent} from "./manage-installation/manage-installation.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -22,6 +23,9 @@ import { AdditionalInfoComponent } from "./+additional-info/additional-info.comp
         }, {
             path: 'additional-info/:municipalityId',
             component: AdditionalInfoComponent
+        }, {
+            path: 'installations/:municipalityId',
+            component: ManageInstallationComponent
         }
     ])],
     exports: [RouterModule]
