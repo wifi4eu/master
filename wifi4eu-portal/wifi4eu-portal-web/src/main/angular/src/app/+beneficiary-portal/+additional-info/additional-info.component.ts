@@ -37,6 +37,10 @@ export class AdditionalInfoComponent {
     private displayConfirmingData: boolean = false;
     private date: number;
     private deleteBlocker: boolean = false;
+    private doc1: boolean = false;
+    private doc2: boolean = false;
+    private doc3: boolean = false;
+    private doc4: boolean = false;
 
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
@@ -110,8 +114,22 @@ export class AdditionalInfoComponent {
                     x => {
                         if (this.reader.result != "") {
                             this.documentUrls[index] = this.reader.result;
-                            if (this.documentUrls[0] && this.documentUrls[1] && this.documentUrls[2] && this.documentUrls[3])
-                                this.filesUploaded = true;
+                            this.filesUploaded = true;
+                            switch (index) {
+                                case 0:
+                                    this.doc1 = true;
+                                    break;
+                                case 1:
+                                    this.doc2 = true;
+                                    break;
+                                case 2:
+                                    this.doc3 = true;
+                                    ;
+                                    break;
+                                case 3:
+                                    this.doc4 = true;
+                                    break;
+                            }
                             subscription.unsubscribe();
                         }
                     }
@@ -128,44 +146,32 @@ export class AdditionalInfoComponent {
 
     private removeFile(index: number) {
         this.documentFiles[index] = null;
+        this.filesUploaded = false;
         this.documentUrls[index] = '';
         switch (index) {
             case 0:
                 this.document1.nativeElement.value = '';
-                if (this.documentUrls[1] == '' || this.documentUrls[2] == '' || this.documentUrls[3] == '') {
-                    this.filesUploaded = false;
-
-                } else {
-                    this.filesUploaded = true;
-                }
+                this.doc1 = false;
                 break;
             case 1:
                 this.document2.nativeElement.value = '';
-                if (this.documentUrls[0] == '' || this.documentUrls[2] == '' || this.documentUrls[3] == '') {
-                    this.filesUploaded = false;
-
-                } else {
-                    this.filesUploaded = true;
-                }
+                this.doc2 = false;
                 break;
             case 2:
                 this.document3.nativeElement.value = '';
-                if (this.documentUrls[1] == '' || this.documentUrls[0] == '' || this.documentUrls[3] == '') {
-                    this.filesUploaded = false;
-
-                } else {
-                    this.filesUploaded = true;
-                }
+                this.doc3 = false;
                 break;
             case 3:
                 this.document4.nativeElement.value = '';
-                if (this.documentUrls[1] == '' || this.documentUrls[2] == '' || this.documentUrls[0] == '') {
-                    this.filesUploaded = false;
-
-                } else {
-                    this.filesUploaded = true;
-                }
+                this.doc4 = false;
                 break;
+        }
+        console.log("0: ", this.doc1);
+        console.log("1: ", this.doc2);
+        console.log("2: ", this.doc3);
+        console.log("3: ", this.doc4);
+        if (this.doc1 || this.doc2 || this.doc3 || this.doc4) {
+            this.filesUploaded = true;
         }
         this.checkFirstDocuments();
     }
