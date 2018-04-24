@@ -259,11 +259,6 @@ export class VoucherComponent {
                 let uploaddate = new Date(this.registrations[0].uploadTime);
                 this.uploadDate[0] = ('0' + uploaddate.getUTCDate()).slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
                 this.uploadHour[0] = ('0' + uploaddate.getHours()).slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
-                console.log(uploaddate);
-                console.log('0' + uploaddate.getUTCDate().toString().slice(-2));
-                console.log('0' + (uploaddate.getMonth() + 1).toString().slice(-2));
-                console.log(this.uploadDate[0]);
-                console.log(this.uploadHour[0]);
             }
         } else {
             for (let i = 0; i < this.registrations.length; i++) {
@@ -272,11 +267,6 @@ export class VoucherComponent {
                     let uploaddate = new Date(this.registrations[i].uploadTime);
                     this.uploadDate[i] = ('0' + uploaddate.getUTCDate()).toString().slice(-2) + "/" + ('0' + (uploaddate.getMonth() + 1)).slice(-2) + "/" + uploaddate.getFullYear();
                     this.uploadHour[i] = ('0' + uploaddate.getHours()).toString().slice(-2) + ":" + ('0' + uploaddate.getMinutes()).slice(-2);
-                    console.log(uploaddate);
-                    console.log('0' + uploaddate.getUTCDate().toString().slice(-2));
-                    console.log('0' + (uploaddate.getMonth() + 1).toString().slice(-2));
-                    console.log(this.uploadDate[i]);
-                    console.log(this.uploadHour[i]);
                 }
             }
 
