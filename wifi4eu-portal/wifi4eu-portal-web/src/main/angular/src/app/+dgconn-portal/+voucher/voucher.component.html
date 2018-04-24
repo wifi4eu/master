@@ -117,7 +117,9 @@
                       <span class="fa fa-info" style="font-size: 2.5rem;border: 2px solid #fff;
                                       width: 50px; height: 50px;padding-top: 7px;border-radius: 100%;
                                       margin: 0 auto;"></span>
-                      <span style="font-size: 1.2rem;margin-top: 10px;">Simulation</span>
+                      <span style="font-size: 1.2rem;margin-top: 10px;">Simulation</span><!-- 
+                      <span style="font-size: 1.2rem;margin-top: 10px;">Pre-selection <br> List Saved</span>
+                      <span style="font-size: 1.2rem;margin-top: 10px;">Final List <br> saved</span> -->
                     </div>
                   </div>
                 </div>
@@ -167,7 +169,7 @@
                         <i class="fa fa-ticket ticket-3"></i>
                       </div>
                       <span>Total of vouchers foreseen for the call:
-                        <b class="value-voucher-call">{{numVoucher[i]}}</b>
+                        <b class="value-voucher-call">{{numVoucher[i] | number}}</b>
                       </span>
                     </div>
                     <div>

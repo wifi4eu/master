@@ -14,6 +14,7 @@ public class VoucherSimulation {
     private Integer id;
 
     @Column(name = "eu_rank")
+    @OrderColumn
     private Integer euRank;
 
     @Column(name = "country_rank")
@@ -30,7 +31,7 @@ public class VoucherSimulation {
     private Integer issues;
 
     @Column(name = "num_applications")
-    private String numApplications;
+    private Integer numApplications;
 
     @Column(name = "rejected")
     private Integer rejected;
@@ -42,7 +43,7 @@ public class VoucherSimulation {
     public VoucherSimulation() {
     }
 
-    public VoucherSimulation(Integer id, Integer euRank, Integer countryRank, String country, Municipality municipality, Integer issues, String numApplications, Integer rejected, VoucherAssignment voucherAssignment) {
+    public VoucherSimulation(Integer id, Integer euRank, Integer countryRank, String country, Municipality municipality, Integer issues, Integer numApplications, Integer rejected, VoucherAssignment voucherAssignment) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;
@@ -102,11 +103,11 @@ public class VoucherSimulation {
         this.issues = issues;
     }
 
-    public String getNumApplications() {
+    public Integer getNumApplications() {
         return numApplications;
     }
 
-    public void setNumApplications(String numApplications) {
+    public void setNumApplications(Integer numApplications) {
         this.numApplications = numApplications;
     }
 

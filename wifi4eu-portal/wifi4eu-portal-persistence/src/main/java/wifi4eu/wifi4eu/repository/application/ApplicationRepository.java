@@ -19,4 +19,7 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
 
     @Query("SELECT ap FROM Application ap JOIN ap.registration r JOIN r.municipality m JOIN m.lau l WHERE l.countryCode =:countryCode AND ap.call.id = :callId")
     List<Application> findApplicationsByCountry(@Param("callId") int callId, @Param("countryCode") String countryCode);
+
+    @Query("SELECT count(m) FROM Application a JOIN a.registration r JOIN r.municipality m WHERE m.lau.id =:lauId AND m.id =:municipalityId")
+    Integer findApplicationsWithSameLau(@Param("lauId") int lauId, @Param("municipalityId") int municipalityId);
 }

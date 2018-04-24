@@ -8,14 +8,14 @@ public class VoucherSimulationDTO {
     private String country;
     private MunicipalityDTO municipality;
     private int issues;
-    private String numApplications;
+    private int numApplications;
     private int rejected;
     private int voucherAssignment;
 
     public VoucherSimulationDTO() {
     }
 
-    public VoucherSimulationDTO(int id, int euRank, int countryRank, String country, MunicipalityDTO municipality, int issues, String numApplications, int rejected, int voucherAssignment) {
+    public VoucherSimulationDTO(int id, int euRank, int countryRank, String country, MunicipalityDTO municipality, int issues, int numApplications, int rejected, int voucherAssignment) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;
@@ -27,7 +27,7 @@ public class VoucherSimulationDTO {
         this.voucherAssignment = voucherAssignment;
     }
 
-    public VoucherSimulationDTO(int euRank, int countryRank, String country, MunicipalityDTO municipality, int issues, String numApplications, int rejected, int voucherAssignment) {
+    public VoucherSimulationDTO(int euRank, int countryRank, String country, MunicipalityDTO municipality, int issues, int numApplications, int rejected, int voucherAssignment) {
         this.euRank = euRank;
         this.countryRank = countryRank;
         this.country = country;
@@ -86,11 +86,11 @@ public class VoucherSimulationDTO {
         this.issues = issues;
     }
 
-    public String getNumApplications() {
+    public int getNumApplications() {
         return numApplications;
     }
 
-    public void setNumApplications(String numApplications) {
+    public void setNumApplications(int numApplications) {
         this.numApplications = numApplications;
     }
 

@@ -113,8 +113,9 @@ export class DgConnVoucherComponent {
 
   private simulateVoucherAssignment(){
     if(this.callVoucherAssignment == null || this.callVoucherAssignment.status == 1){
-      this.voucherApi.simulateVoucherAssignment(this.callSelected).subscribe(() => {
+      this.voucherApi.simulateVoucherAssignment(this.callSelected).subscribe((data) => {
         console.log("SIMULATE");
+        console.log(data);
       })
     }
   }
