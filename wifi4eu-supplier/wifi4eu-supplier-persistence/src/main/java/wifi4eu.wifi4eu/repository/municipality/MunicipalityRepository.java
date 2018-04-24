@@ -12,12 +12,12 @@ public interface MunicipalityRepository extends CrudRepository<Municipality, Int
     @Query(value = "SELECT COUNT(id),lau FROM municipalities GROUP BY lau", nativeQuery = true)
     Iterable<Object> findMunicipalitiesCountGroupedByLauId();
 
-
     //TODO change the current query to retrieve the beneficiaries associated to supplier
 
+    /*
     @Query(value = "SELECT new wifi4eu.wifi4eu.common.dto.model.BeneficiaryDisplayedListDTO(m.name, m.id) FROM municipalities m INNER JOIN registrations r ON r.municipality = m.id INNER JOIN users u ON u.id = r._user WHERE r._status = 2", nativeQuery = true)
     List<BeneficiaryDisplayedListDTO> findBeneficiariesList();
-
+    */
 
     Long countMunicipalitiesById (Integer id);
 }

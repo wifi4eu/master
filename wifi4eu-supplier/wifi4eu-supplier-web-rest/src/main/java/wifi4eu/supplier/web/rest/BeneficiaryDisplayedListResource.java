@@ -29,7 +29,7 @@ public class BeneficiaryDisplayedListResource {
     @ApiOperation(value = "Get all beneficiaries")
     @RequestMapping(value = "/beneficiaries-list", method= RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<BeneficiaryDisplayedListDTO> getBeneficiariesList(){
+    public ResponseDTO getBeneficiariesList(){
         return beneficiaryDisplayedListService.findBeneficiariesList();
     }
 
