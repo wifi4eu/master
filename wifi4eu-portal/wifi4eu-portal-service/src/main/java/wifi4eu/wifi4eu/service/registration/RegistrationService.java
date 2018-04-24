@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.service.registration;
 
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,6 +30,8 @@ import java.util.ResourceBundle;
 
 @Service("portalRegistrationService")
 public class RegistrationService {
+    private final Logger _log = LoggerFactory.getLogger(RegistrationService.class);
+
 
     @Autowired
     RegistrationMapper registrationMapper;
@@ -122,6 +126,7 @@ public class RegistrationService {
                 String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
                 String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
                 msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
+                _log.error("additionalInfoUrl: " + additionalInfoUrl + " msgBody: " + msgBody + " language: " + locale.getLanguage());
                 if (!userService.isLocalHost()) {
                     mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                 }
