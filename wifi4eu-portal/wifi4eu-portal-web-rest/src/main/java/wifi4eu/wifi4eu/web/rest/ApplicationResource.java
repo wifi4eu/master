@@ -14,6 +14,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -96,16 +97,18 @@ public class ApplicationResource {
     @ApiOperation(value = "Get application by call and registration id")
     @RequestMapping(value = "/call/{callId}/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId) {
+    public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse httpServletResponse) {
         if (_log.isInfoEnabled()) {
             _log.info("getApplicationByCall: " + callId + " & Registration: " + registrationId);
         }
 
         ApplicationDTO response = applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
-        if(response == null){
+        if (response == null) {
             response = new ApplicationDTO();
         }
-
+        httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+        httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+        httpServletResponse.setDateHeader("Expires", 0); // Proxies.
         return response;
     }
 
