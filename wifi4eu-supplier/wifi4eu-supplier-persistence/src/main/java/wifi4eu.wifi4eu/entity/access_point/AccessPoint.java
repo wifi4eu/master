@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.entity.installation;
+package wifi4eu.wifi4eu.entity.access_point;
 
 import wifi4eu.wifi4eu.entity.installation.InstallationSite;
 
