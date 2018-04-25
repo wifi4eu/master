@@ -97,7 +97,7 @@ public class ApplicationResource {
     @ApiOperation(value = "Get application by call and registration id")
     @RequestMapping(value = "/call/{callId}/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse httpServletResponse) {
+    public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId) {
         if (_log.isInfoEnabled()) {
             _log.info("getApplicationByCall: " + callId + " & Registration: " + registrationId);
         }
@@ -106,9 +106,6 @@ public class ApplicationResource {
         if (response == null) {
             response = new ApplicationDTO();
         }
-        httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        httpServletResponse.setDateHeader("Expires", 0); // Proxies.
         return response;
     }
 
