@@ -41,17 +41,16 @@
                 <ng-template let-installationSite="rowData" pTemplate="body">
                     <div class="my-center-text">
                         <ux-button [isFlat]="true" iconClass="fas fa-eye" [routerLink]="['./details']" routerLinkActive="active">{{ 'shared.view' | translate }}</ux-button>
-                        <!-- [routerLink]="['../details/', beneficiary.id]" -->
                     </div>
                 </ng-template>
             </p-column>
             <p-column field="goToDetails" header="{{'installationReport.accessPoint' | translate }}">
-                    <ng-template let-installationSite="rowData" pTemplate="body">
-                            <div class="my-center-text">
-                                <ux-button [isFlat]="true" iconClass="fas fa-list-ul" [routerLink]="['./../access-point']" routerLinkActive="active">{{ 'installationReport.goToAccessPoint' | translate }}</ux-button>
-                                <!-- [routerLink]="['../details/', beneficiary.id]" -->
-                            </div>
-                        </ng-template>
+                <ng-template let-installationSite="rowData" pTemplate="body">
+                    <div class="my-center-text">
+                        <ux-button [isFlat]="true" iconClass="fas fa-list-ul" [routerLink]="['./../access-point/', installationSite.number, installationSite.name]"
+                            routerLinkActive="active">{{ 'installationReport.goToAccessPoint' | translate }}</ux-button>
+                    </div>
+                </ng-template>
             </p-column>
 
             <ng-template pTemplate="emptymessage">

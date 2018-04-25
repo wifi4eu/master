@@ -54,6 +54,11 @@
     "accessPoint.deviceBrand": "Device brand",
     "accessPoint.deviceModel": "Device model",
     "accessPoint.deviceSerial": "Device serial",
-    "accessPoint.macAddress": "MAC address"
-
+    "accessPoint.macAddress": "MAC address",
+    "updateAccessPoint.editTitle": "Edit access point",
+    "updateAccessPoint.subtitle": "Please specify the details of the access point",
+    "updateAccessPoint.latitudePlaceholder": "Latitude",
+    "updateAccessPoint.longitudePlaceholder": "Longitude",
+    "updateAccessPoint.getGeoLocation": "Get Geo Location",
+    "updateAccessPoint.deviceSerialNumber": "Device serial number"
 }

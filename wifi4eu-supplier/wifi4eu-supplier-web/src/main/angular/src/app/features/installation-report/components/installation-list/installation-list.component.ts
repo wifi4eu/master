@@ -24,7 +24,7 @@ export class InstallationListComponent {
     beneficiarySuggestions: BeneficiaryDisplayedListDTOBase[] = [];
     supplier: {};
     private legalChecks: boolean[] = [false, false, false];
-    private installationSites: InstallationSite[] = [];
+    private installationSites: InstallationSite[];
 
     constructor(private beneficiaryApi: BeneficiaryApi, private localStorageService: LocalStorageService,
         public searchParametersService: SearchParametersService, private uxService: UxService,
@@ -57,7 +57,6 @@ export class InstallationListComponent {
 
     onPage(event: any) {
         if (this.isBeneficiarySelected) {
-            console.log(event.sortField, ' ', event.sortOrder);
             this.searchParametersService.parameters.delta = event.rows;
             this.searchParametersService.parameters.page = event.first;
             this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "number";

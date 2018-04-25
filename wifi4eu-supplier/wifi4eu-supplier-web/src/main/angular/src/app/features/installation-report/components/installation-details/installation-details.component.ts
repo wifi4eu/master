@@ -34,7 +34,6 @@ export class InstallationDetailsComponent {
     }
 
     submitRemoveInstallationSite() {
-        console.log('submit removeInstallationSite');
         this.closeRemoveInstallationSite();
         this.router.navigate(['screen/installation-report']);
     }
