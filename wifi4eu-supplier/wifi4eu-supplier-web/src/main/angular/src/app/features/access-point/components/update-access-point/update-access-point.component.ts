@@ -2,14 +2,14 @@ import { Component, Input, ViewChild, OnChanges, SimpleChange, SimpleChanges } f
 import { UxService } from '@eui/ux-commons';
 import { PatternValidator, NgForm } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { AccessPoint } from '../../../../core/models/access-point.model';
+import { AccessPointBase } from '../../../../shared/swagger/model/AccessPoint';
 
 @Component({
   selector: 'update-access-point',
   templateUrl: './update-access-point.component.html'
 })
 export class UpdateAccessPoint implements OnChanges {
-  @Input('accessPoint') accessPoint: AccessPoint = new AccessPoint(0, '', '', '', '', '', '', '', '', '');
+  @Input('accessPoint') accessPoint: AccessPointBase = new AccessPointBase();
   @Input('isEdit') isEdit: boolean = false;
   @ViewChild('accessPointForm') form: NgForm;
   private modalTitle: string;
@@ -44,7 +44,7 @@ export class UpdateAccessPoint implements OnChanges {
 
     if (!this.isEdit) {
       modalJsonString = 'accessPoint.add';
-      this.accessPoint = new AccessPoint(0, '', '', '', '', '', '', '', '', '');
+      this.accessPoint = new AccessPointBase();
     } else {
       modalJsonString = 'updateAccessPoint.editTitle';
     }

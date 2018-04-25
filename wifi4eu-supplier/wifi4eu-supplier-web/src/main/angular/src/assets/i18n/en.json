@@ -60,5 +60,9 @@
     "updateAccessPoint.latitudePlaceholder": "Latitude",
     "updateAccessPoint.longitudePlaceholder": "Longitude",
     "updateAccessPoint.getGeoLocation": "Get Geo Location",
-    "updateAccessPoint.deviceSerialNumber": "Device serial number"
+    "updateAccessPoint.deviceSerialNumber": "Device serial number",
+
+
+    "accessPoint.indoor": "Indoor",
+    "accessPoint.outdoor": "Outdoor"
 }

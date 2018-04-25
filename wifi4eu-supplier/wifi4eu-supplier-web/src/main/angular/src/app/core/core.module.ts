@@ -19,7 +19,6 @@ import { SearchInputComponent } from './components/shell/search-input/search-inp
 
 import { SharedModule } from '../shared/shared.module';
 import { BeneficiaryService } from './services/beneficiary-service';
-import { InstallationSite } from './models/installation-site.model';
 
 @NgModule({
     imports: [

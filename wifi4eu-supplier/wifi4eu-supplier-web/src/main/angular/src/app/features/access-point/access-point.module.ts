@@ -7,6 +7,7 @@ import { AccessPointListComponent } from './components/access-point-list/access-
 import { DataTableModule, DropdownModule} from "primeng/primeng";
 import { SearchParametersService } from '../../core/services/search-parameters.service';
 import { UpdateAccessPoint } from './components/update-access-point/update-access-point.component';
+import { AccesspointsApi } from '../../shared/swagger/api/AccesspointsApi';
 
 @NgModule({
     imports: [
@@ -21,7 +22,8 @@ import { UpdateAccessPoint } from './components/update-access-point/update-acces
         UpdateAccessPoint
     ],
     providers: [
-        SearchParametersService
+        SearchParametersService,
+        AccesspointsApi
     ],
     bootstrap: [
         AccessPointComponent

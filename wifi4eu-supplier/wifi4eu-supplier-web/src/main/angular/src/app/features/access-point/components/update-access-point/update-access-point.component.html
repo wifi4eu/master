@@ -14,7 +14,7 @@
 
                         <div class="form-group">
                                 <label for="locationName">{{ 'accessPoint.locationName' | translate }}</label>
-                                <input type="text" class="form-control" id="locationName" name="locationName" placeholder="" [(ngModel)]="accessPoint.locationName"
+                                <input type="text" class="form-control" id="locationName" name="locationName" placeholder="" [(ngModel)]="accessPoint.location"
                                         #locationName="ngModel" required>
                         </div>
 
@@ -32,7 +32,7 @@
 
                         <div class="form-group">
                                 <label for="deviceType">{{ 'accessPoint.deviceType' | translate }}</label>
-                                <p-dropdown [options]="deviceTypes" class="form-control" id="deviceType" name="deviceType" [(ngModel)]="accessPoint.deviceType"
+                                <p-dropdown [options]="deviceTypes" class="form-control" id="deviceType" name="deviceType" [(ngModel)]="accessPoint.indoor"
                                         #deviceType="ngModel" placeholder="{{ 'app.search.button' | translate}}" required></p-dropdown>
                         </div>
 
@@ -43,12 +43,12 @@
                         </div>
                         <div class="form-group">
                                 <label for="deviceModel">{{ 'accessPoint.deviceModel' | translate }}</label>
-                                <input type="text" class="form-control" id="deviceModel" name="deviceModel" placeholder="" [(ngModel)]="accessPoint.deviceModel"
+                                <input type="text" class="form-control" id="deviceModel" name="deviceModel" placeholder="" [(ngModel)]="accessPoint.modelNumber"
                                         #deviceModel="ngModel" required>
                         </div>
                         <div class="form-group">
                                 <label for="deviceSerialNumber">{{ 'accessPoint.deviceSerial' | translate }}</label>
-                                <input type="text" class="form-control" id="deviceSerialNumber" name="deviceSerialNumber" placeholder="" [(ngModel)]="accessPoint.deviceSerialNumber"
+                                <input type="text" class="form-control" id="deviceSerialNumber" name="deviceSerialNumber" placeholder="" [(ngModel)]="accessPoint.serialNumber"
                                         #deviceSerialNumber="ngModel" required>
                         </div>
                         <div class="form-group">

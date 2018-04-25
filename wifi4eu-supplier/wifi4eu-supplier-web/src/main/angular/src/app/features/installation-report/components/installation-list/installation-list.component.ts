@@ -78,7 +78,7 @@ export class InstallationListComponent {
             if (response.success) {
                 this.installationSites = response.data.data;
                 this.totalResults = response.data.count;
-    }
+            }
         })
     }
 

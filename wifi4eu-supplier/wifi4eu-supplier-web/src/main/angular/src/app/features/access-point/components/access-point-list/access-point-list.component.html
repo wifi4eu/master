@@ -36,7 +36,7 @@
             [immutable]="false">
             <p-column field="number" header="{{'shared.number.label' | translate }}" sortable="true"></p-column>
             <p-column field="locationType" header="{{'accessPoint.locationType' | translate }}" sortable="true"></p-column>
-            <p-column field="locationName" header="{{'accessPoint.locationName' | translate }}" sortable="true"></p-column>
+            <p-column field="location" header="{{'accessPoint.locationName' | translate }}" sortable="true"></p-column>
             <p-column header="{{'accessPoint.geoLocation' | translate }}" sortable="true">
                 <ng-template let-col let-accessPoint="rowData" pTemplate="body">
                     <span>
@@ -44,10 +44,15 @@
                     </span>
                 </ng-template>
             </p-column>
-            <p-column field="deviceType" header="{{'accessPoint.deviceType' | translate }}" sortable="true"></p-column>
+            <p-column field="indoor" header="{{'accessPoint.deviceType' | translate }}" sortable="true">
+                    <ng-template let-col let-accessPoint="rowData" pTemplate="body">
+                            <span *ngIf="accessPoint.indoor; else outdoor"> {{ 'accessPoint.indoor' | translate }}</span>
+                            <ng-template  #outdoor>{{ 'accessPoint.outdoor' |translate }}</ng-template>
+                        </ng-template>
+            </p-column>
             <p-column field="deviceBrand" header="{{'accessPoint.deviceBrand' | translate }}" sortable="true"></p-column>
-            <p-column field="deviceModel" header="{{'accessPoint.deviceModel' | translate }}" sortable="true"></p-column>
-            <p-column field="deviceSerialNumber" header="{{'accessPoint.deviceSerial' | translate }}" sortable="true"></p-column>
+            <p-column field="modelNumber" header="{{'accessPoint.deviceModel' | translate }}" sortable="true"></p-column>
+            <p-column field="serialNumber" header="{{'accessPoint.deviceSerial' | translate }}" sortable="true"></p-column>
             <p-column field="macAddress" header="{{'accessPoint.macAddress' | translate }}" sortable="true"></p-column>
             <p-column header="{{'shared.details' | translate }}">
                 <ng-template let-accessPoint="rowData" pTemplate="body">
