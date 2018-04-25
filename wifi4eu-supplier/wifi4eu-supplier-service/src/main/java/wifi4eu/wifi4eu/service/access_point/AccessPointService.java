@@ -24,11 +24,10 @@ public class AccessPointService {
 
     // TODO missing field number (not appears on DB)
     // TODO missing device_type field
-    private String[] FIELDS_ACCESS_POINTS_ORDER = {"id", "location", "location_type", "device_brand", "device_type", "model_number", "serial_number", "mac_address"};
+    private String[] FIELDS_ACCESS_POINTS_ORDER = {"id", "location", "location_type", "device_brand", "device_type", "model_number", "serial_number", "mac_address","isIndoor"};
 
     public ResponseDTO findAccessPointsPerInstallationSite(Map<String, Object> map){
         ResponseDTO response = new ResponseDTO();
-
         // we should check if it's null. We don't have the class Validation
         if (!map.isEmpty()){
             String order = "asc";
