@@ -53,7 +53,7 @@ export class VoucherComponent {
     private disableQueuing = [];
     private displayError = false;
     private errorMessage = null;
-  private rabbitmqURI: string = "http://wifi4eu.everisdigitalchannels.com:8080/queue";
+    private rabbitmqURI: string = "https://wifi4eu-dev.everincloud.com/queue";
 
     constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private azurequeueApi: AzurequeueApi, private sharedService: SharedService, private http: Http) {
         let storedUser = this.localStorage.get('user');
