@@ -19,5 +19,7 @@ public interface MunicipalityRepository extends CrudRepository<Municipality, Int
     List<BeneficiaryDisplayedListDTO> findBeneficiariesList();
     */
 
+    Municipality findMuncipalityById(Integer id);
+
     Long countMunicipalitiesById (Integer id);
 }

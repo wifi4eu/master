@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.repository.installation;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import wifi4eu.wifi4eu.entity.installation.InstallationSite;
 
@@ -11,5 +12,10 @@ public interface InstallationSiteRepository extends PagingAndSortingRepository<I
     */
 
     Long countInstallationSiteById(Integer id);
+
+    @Query(value = "SELECT COUNT(id) FROM installation_site WHERE id_municipality = ?1" , nativeQuery = true)
+    Long countInstallationSiteByMunicipality(Integer id);
+
+    InstallationSite findInstallationSiteById(Integer id);
 
 }

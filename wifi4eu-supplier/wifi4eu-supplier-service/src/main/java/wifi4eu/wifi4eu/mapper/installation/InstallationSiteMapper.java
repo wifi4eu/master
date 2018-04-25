@@ -10,10 +10,12 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface InstallationSiteMapper {
 
+    /*
     @Mapping(source = "entity.municipality.id", target = "municipality.id")
     InstallationSiteDTO toDTO(InstallationSite entity);
     @Mapping(source = "vo.municipality.id", target = "municipality.id")
     InstallationSite toEntity(InstallationSiteDTO vo);
     List<InstallationSiteDTO> toDTOList(List<InstallationSite> list);
     List<InstallationSite> toEntityList(List<InstallationSiteDTO> list);
+    */
 }
