@@ -26,7 +26,7 @@ public class AccessPointService {
 
     // TODO missing field number (not appears on DB)
     // TODO missing device_type field
-    private String[] FIELDS_ACCESS_POINTS_ORDER = {"id", "location", "location_type", "device_brand", "device_type", "model_number", "serial_number", "mac_address","isIndoor"};
+    private String[] FIELDS_ACCESS_POINTS_ORDER = {"number", "location", "location_type", "device_brand", "device_type", "model_number", "serial_number", "mac_address","isIndoor"};
 
 
 

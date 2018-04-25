@@ -32,7 +32,7 @@ public class InstallationSiteService {
     private final Logger _log = LoggerFactory.getLogger(InstallationSiteService.class);
 
     // TODO missing field number (not appears on DB)
-    private String[] FIELDS_INSTALLATION_SITE_ACCEPT = {"name", "domain_name", "id"};
+    private String[] FIELDS_INSTALLATION_SITE_ACCEPT = {"name", "domain_name", "number"};
 
     public ResponseDTO findInstallationSitesByBeneficiariesOrdered(Map<String, Object> map) {
         ResponseDTO response = new ResponseDTO();
