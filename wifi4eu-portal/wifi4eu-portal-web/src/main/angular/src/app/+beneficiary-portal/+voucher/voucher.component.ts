@@ -61,7 +61,7 @@ export class VoucherComponent {
         this.storedRegistrationQueues = storedRegistrations ? storedRegistrations : [];
         // Check if there are Calls
         if (this.user != null) {
-            this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+            this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                 (registrations: RegistrationDTOBase[]) => {
                     this.registrationsDocs = registrations;
                     this.checkForCalls(registrations);

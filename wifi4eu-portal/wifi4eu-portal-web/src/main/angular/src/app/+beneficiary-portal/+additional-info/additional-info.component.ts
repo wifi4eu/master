@@ -62,7 +62,7 @@ export class AdditionalInfoComponent {
                     }, error => {
                     }
                 );
-                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                     (registrations: RegistrationDTOBase[]) => {
                         if (registrations.length == 1) {
                             this.mayorApi.getMayorByMunicipalityId(municipalityId).subscribe(
