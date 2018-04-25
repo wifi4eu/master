@@ -28,7 +28,7 @@ public class InstallationSiteResource {
 
 
     @ApiOperation(value="Get all installation sites by beneficiary")
-    @RequestMapping(value="/installation-site-list", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value="/list", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO getInstallationSiteListByBeneficiary(@RequestBody final Map<String, Object> installationText){
         return installationSiteService.findInstallationSitesByBeneficiariesOrdered(installationText);
@@ -45,28 +45,28 @@ public class InstallationSiteResource {
     }
 
     @ApiOperation(value = "Add a new installation site")
-    @RequestMapping(value= "/add-installation-site", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value= "/add", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO addInstallationSite(@RequestBody final Map<String, Object> installationText){
         return installationSiteService.addAndUpdateInstallationSite(installationText);
     }
 
     @ApiOperation(value = "Update an installation site")
-    @RequestMapping(value= "/update-installation-site", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value= "/update", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO updateInstallationSite(@RequestBody final Map<String, Object> installationText){
         return installationSiteService.addAndUpdateInstallationSite(installationText);
     }
 
     @ApiOperation(value = "Get installation site details")
-    @RequestMapping(value = "/get-installation-site/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseDTO getInstallationSite(@PathVariable("id") int id){
         return installationSiteService.getInstallationReport(id);
     }
 
     @ApiOperation(value = "Remove an installation site")
-    @RequestMapping(value = "/remove-installation-site/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseDTO removeInstallSite(@PathVariable("id") int id){
         return installationSiteService.removeInstallationReport(id);
