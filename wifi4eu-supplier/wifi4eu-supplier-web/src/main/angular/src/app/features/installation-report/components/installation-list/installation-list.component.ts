@@ -5,9 +5,10 @@ import { BeneficiaryApi } from '../../../../shared/swagger/api/BeneficiaryApi';
 import { LocalStorageService } from "angular-2-local-storage";
 import { UxService } from '@eui/ux-commons';
 
-import { InstallationSite } from '../../../../core/models/installation-site.model';
-import { BeneficiaryDisplayedListDTOBase } from '../../../../shared/swagger';
+import { BeneficiaryDisplayedListDTOBase, ResponseDTOBase, ResponseDTO } from '../../../../shared/swagger';
 import { BeneficiaryService } from '../../../../core/services/beneficiary-service';
+import { InstallationsiteApi } from '../../../../shared/swagger/api/InstallationsiteApi';
+import { InstallationSite } from '../../../../shared/swagger/model/InstallationSite';
 
 @Component({
     templateUrl: './installation-list.component.html',
@@ -18,18 +19,21 @@ export class InstallationListComponent {
     //-- Component properties
     _timeout: any = null;
     totalResults: number = 0;
-    beneficiarySelected: BeneficiaryDisplayedListDTOBase = new BeneficiaryDisplayedListDTOBase;
-    isBeneficiarySelected: boolean = false;
-    isReportSent: boolean = false;
-    beneficiarySuggestions: BeneficiaryDisplayedListDTOBase[] = [];
-    supplier: {};
-    private legalChecks: boolean[] = [false, false, false];
-    private installationSites: InstallationSite[] = [];
 
-    constructor(private beneficiaryApi: BeneficiaryApi, private localStorageService: LocalStorageService,
+    private beneficiarySelected: BeneficiaryDisplayedListDTOBase = new BeneficiaryDisplayedListDTOBase;
+    private beneficiarySuggestions: BeneficiaryDisplayedListDTOBase[] = [];
+    private isBeneficiarySelected: boolean = false;
+    private installationSites: InstallationSite[] = [];
+    private isReportSent: boolean = false;
+    private supplier: {};
+    private legalChecks: boolean[] = [false, false, false];
+
+
+    constructor(private beneficiaryApi: BeneficiaryApi, private installationSiteApi: InstallationsiteApi,
+        private localStorageService: LocalStorageService,
         public searchParametersService: SearchParametersService, private uxService: UxService,
         private beneficiaryService: BeneficiaryService) {
-        this.supplier = this.localStorageService.get('supplierId');
+        // this.supplier = this.localStorageService.get('supplierId');
         if (this.beneficiaryService.beneficiarySelected != undefined) {
             this.beneficiarySelected = this.beneficiaryService.beneficiarySelected;
             this.isBeneficiarySelected = true;
@@ -41,9 +45,10 @@ export class InstallationListComponent {
     getBenegiciarySuggestions(event) {
         let query = encodeURIComponent(event.query);
 
-        this.beneficiaryApi.getBeneficiariesList().subscribe((data: BeneficiaryDisplayedListDTOBase[]) => {
-            this.beneficiarySuggestions = data;
-            this.totalResults = this.beneficiarySuggestions.length;
+        this.beneficiaryApi.getBeneficiariesList().subscribe((response: ResponseDTOBase) => {
+            if (response.success) {
+                this.beneficiarySuggestions = response.data;
+            }
         });
     }
 
@@ -51,16 +56,16 @@ export class InstallationListComponent {
         //get installation sites from this beneficiary
         this.isBeneficiarySelected = true;
         this.beneficiaryService.beneficiarySelected = this.beneficiarySelected;
+        this.searchParametersService.parameters.id_beneficiary = this.beneficiarySelected.id;
         this.onSearch();
     }
 
 
     onPage(event: any) {
         if (this.isBeneficiarySelected) {
-            console.log(event.sortField, ' ', event.sortOrder);
             this.searchParametersService.parameters.delta = event.rows;
             this.searchParametersService.parameters.page = event.first;
-            this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "number";
+            this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "id";
             this.searchParametersService.parameters.order = event.sortOrder > 0 ? "asc" : "desc";
             this.onSearch();
         }
@@ -68,23 +73,20 @@ export class InstallationListComponent {
 
     onSearch() {
         this.totalResults = 0;
-        /*search*/
-        console.log('search');
 
-        this.installationSites = [];
-        let installationSite = new InstallationSite(1, 'London', 'domain.com/London');
-        this.installationSites.push(new InstallationSite(1, 'London', 'domain.com/London'));
-
-        let instalationSite2 = new InstallationSite(2, 'oxford', 'domain.com/oxford');
-        this.installationSites.push(new InstallationSite(2, 'oxford', 'domain.com/oxford'));
-
-        this.totalResults = this.installationSites.length;
+        this.installationSiteApi.getInstallationSiteListByBeneficiary(this.searchParametersService.parameters).subscribe((response: ResponseDTOBase) => {
+            if (response.success) {
+                this.installationSites = response.data.data;
+                this.totalResults = response.data.count;
+            }
+        })
     }
 
     onChangesAutocomplete(event) {
         if (this.beneficiaryService.beneficiarySelected != this.beneficiarySelected) {
             this.isBeneficiarySelected = false;
             this.installationSites = [];
+            this.totalResults = 0;
         }
     }
 

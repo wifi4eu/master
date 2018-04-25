@@ -10,6 +10,7 @@ import { SearchParametersService } from '../../core/services/search-parameters.s
 import {AutoCompleteModule, DataTableModule, CheckboxModule, TooltipModule} from "primeng/primeng";
 import { EqualValidator } from '../../core/directives/validate-equals.directive'; 
 import { BeneficiaryService } from '../../core/services/beneficiary-service';
+import { InstallationsiteApi } from '../../shared/swagger/api/InstallationsiteApi';
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { BeneficiaryService } from '../../core/services/beneficiary-service';
     ],
     providers: [
         SearchParametersService,
-        BeneficiaryService
+        BeneficiaryService,
+        InstallationsiteApi
     ],
     bootstrap: [
         InstallationListComponent
