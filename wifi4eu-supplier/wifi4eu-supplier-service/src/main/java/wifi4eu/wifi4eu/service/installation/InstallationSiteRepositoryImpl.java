@@ -65,4 +65,5 @@ public class InstallationSiteRepositoryImpl implements InstallationSiteRepositor
 
         return query;
     }
+
 }

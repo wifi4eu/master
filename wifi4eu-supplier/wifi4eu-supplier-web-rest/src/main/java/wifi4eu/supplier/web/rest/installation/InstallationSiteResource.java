@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -43,6 +44,33 @@ public class InstallationSiteResource {
         return response;
     }
 
+    @ApiOperation(value = "Add a new installation site")
+    @RequestMapping(value= "/add-installation-site", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO addInstallationSite(@RequestBody final Map<String, Object> installationText){
+        return installationSiteService.addAndUpdateInstallationSite(installationText);
+    }
+
+    @ApiOperation(value = "Update an installation site")
+    @RequestMapping(value= "/update-installation-site", method = RequestMethod.PUT, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO updateInstallationSite(@RequestBody final Map<String, Object> installationText){
+        return installationSiteService.addAndUpdateInstallationSite(installationText);
+    }
+
+    @ApiOperation(value = "Get installation site details")
+    @RequestMapping(value = "/get-installation-site/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseDTO getInstallationSite(@PathVariable("id") int id){
+        return installationSiteService.getInstallationReport(id);
+    }
+
+    @ApiOperation(value = "Remove an installation site")
+    @RequestMapping(value = "/remove-installation-site/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseDTO removeInstallSite(@PathVariable("id") int id){
+        return installationSiteService.removeInstallationReport(id);
+    }
 
 
 

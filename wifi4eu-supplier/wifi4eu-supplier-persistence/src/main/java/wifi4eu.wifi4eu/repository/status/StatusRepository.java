@@ -6,4 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface StatusRepository extends PagingAndSortingRepository<Status,Long> {
+
+    Status findStatudById(Integer id);
 }
