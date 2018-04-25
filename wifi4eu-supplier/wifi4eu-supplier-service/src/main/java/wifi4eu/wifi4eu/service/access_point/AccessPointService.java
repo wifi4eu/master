@@ -137,8 +137,7 @@ public class AccessPointService {
     }
 
     private Long getNextAccessPointPerInstallationSite(int id_installation_site){
-        long nextNumber = accessPointRepository.countAccessPointByIdInstallationSite(id_installation_site);
-        nextNumber++;
+        long nextNumber = accessPointRepository.selectMaxNumberAccessPointByIdInstallationSite(id_installation_site) + 1;
         return nextNumber;
     }
 
