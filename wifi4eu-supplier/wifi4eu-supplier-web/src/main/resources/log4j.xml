@@ -40,17 +40,17 @@
     </category>-->
 
     <logger name="wifi4eu" additivity="true">
-        <level value="error"/>
+        <level value="info"/>
         <appender-ref ref="CONSOLE_APPENDER"/>
         <appender-ref ref="FILE_APPENDER"/>
     </logger>
     <logger name="org.springframework" additivity="true">
-        <level value="error"/>
+        <level value="info"/>
         <appender-ref ref="CONSOLE_APPENDER"/>
         <appender-ref ref="FILE_APPENDER"/>
     </logger>
     <root>
-        <level value="error"/>
+        <level value="info"/>
         <appender-ref ref="CONSOLE_APPENDER"/>
         <appender-ref ref="FILE_APPENDER"/>
     </root>

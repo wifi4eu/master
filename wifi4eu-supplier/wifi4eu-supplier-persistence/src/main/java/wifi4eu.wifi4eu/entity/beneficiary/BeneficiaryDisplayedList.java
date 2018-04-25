@@ -2,7 +2,6 @@ package wifi4eu.wifi4eu.entity.beneficiary;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
 public class BeneficiaryDisplayedList {
