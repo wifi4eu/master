@@ -6,7 +6,7 @@ body {
   }
 
 .header {
-    margin: 20px 0 40px 0;
+    margin: 20px 0 20px 0;
     h1 {
         color: #004494;
         font-weight: bold;
@@ -92,7 +92,7 @@ p-autocomplete {
     display: inline-block;
   }
 
-  /*table with the installation sites*/
+  /*table*/
 .ui-datatable-emptymessage{
         font-family: Verdana;
         text-align: center;
@@ -110,6 +110,15 @@ p-autocomplete {
 
 .ui-widget-content{
     border : 0px;
+}
+
+.accessPoints .ui-column-title {
+    width:70%;
+    display:inline-block;
+}
+
+.accessPoints .ui-widget-content{
+    word-wrap: break-word;
 }
 
 /*modal confirm installation*/
@@ -153,7 +162,7 @@ p-checkbox{
 .modal-body{
     padding-left: 38px;
     padding-right: 38px;
-    padding-top: 0px;
+    padding-top: 10px;
     padding-bottom:0px;
 }
 
@@ -183,10 +192,9 @@ p-checkbox{
     font-family: Verdana;
 }
 
-.fa-question-circle{
+.fa-question-circle, .fa-eye, .fa-list-ul{
     color: #004494;
 }
-
 
 .ui-tooltip{
     z-index: 1151 !important;
@@ -217,7 +225,7 @@ p-checkbox{
     top: -27px;
 }
 /*installation details buttons*/
-.detailsButtons .ux-button__icon{
+.ux-button__icon{
     margin-right:10px;
     font-size: 14px;
 }
@@ -244,4 +252,27 @@ p-checkbox{
         font-size: 20px;
         margin-top: 10px;
     }
+}
+
+.geoLocal{
+    width: 33%;
+    display: inline-block;
+}
+
+#latitude{
+    margin-right: 6px;
+}
+
+p-dropdown {
+    padding-right: 0px !important;
+}
+
+.geoLocalDiv label{
+    width: 100%;
+}
+
+.geoLocalDiv button{
+    font-family: Verdana;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
 }

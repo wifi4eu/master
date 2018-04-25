@@ -9,8 +9,8 @@ import { UpdateInstallationSite } from "./components/update-installation-site/up
 import { SearchParametersService } from '../../core/services/search-parameters.service';
 import {AutoCompleteModule, DataTableModule, CheckboxModule, TooltipModule} from "primeng/primeng";
 import { EqualValidator } from '../../core/directives/validate-equals.directive'; 
-import { BeneficiaryService } from '../../core/services/beneficiary-service';
 import { InstallationsiteApi } from '../../shared/swagger/api/InstallationsiteApi';
+import { BeneficiaryApi } from '../../shared/swagger';
 
 @NgModule({
     imports: [
@@ -30,7 +30,6 @@ import { InstallationsiteApi } from '../../shared/swagger/api/InstallationsiteAp
     ],
     providers: [
         SearchParametersService,
-        BeneficiaryService,
         InstallationsiteApi
     ],
     bootstrap: [

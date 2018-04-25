@@ -2,7 +2,7 @@
     <div class="text-center" id="success">
         <i class="fas fa-check-circle"></i>
         <h1>{{ 'installationReport.successH1' | translate }}
-            <br> {{beneficiarySelected}} {{ 'installationReport.successH2' | translate}}</h1>
+            <br> {{beneficiarySelected.name}} {{ 'installationReport.successH2' | translate}}</h1>
 
     </div>
 
@@ -12,7 +12,7 @@
     </div>
 
     <div class="form-group instalReportBeneficiary col-md-3">
-        <label for="selectBeneficiary">{{ 'installationReport.beneficiary' | translate }}</label>
+        <label for="selectBeneficiary">{{ 'shared.beneficiary.label' | translate }}</label>
         <p-autoComplete id="selectBeneficiary" name="selectBeneficiary" placeholder="{{'app.search.button' | translate}}" [(ngModel)]="beneficiarySelected"
             [suggestions]="beneficiarySuggestions" field="name" (completeMethod)="getBenegiciarySuggestions($event)" (onSelect)="onBeneficiarySelected(this)"
             (onKeyUp)="onChangesAutocomplete($event)"></p-autoComplete>
@@ -41,11 +41,17 @@
                 <ng-template let-installationSite="rowData" pTemplate="body">
                     <div class="my-center-text">
                         <ux-button [isFlat]="true" iconClass="fas fa-eye" [routerLink]="['./details']" routerLinkActive="active">{{ 'shared.view' | translate }}</ux-button>
-                        <!-- [routerLink]="['../details/', beneficiary.id]" -->
                     </div>
                 </ng-template>
             </p-column>
-            <p-column field="goToDetails" header="{{'installationReport.accessPoint' | translate }}"></p-column>
+            <p-column field="goToDetails" header="{{'installationReport.accessPoint' | translate }}">
+                <ng-template let-installationSite="rowData" pTemplate="body">
+                    <div class="my-center-text">
+                        <ux-button [isFlat]="true" iconClass="fas fa-list-ul" [routerLink]="['./../access-point/', installationSite.id, installationSite.name]"
+                            routerLinkActive="active">{{ 'installationReport.goToAccessPoint' | translate }}</ux-button>
+                    </div>
+                </ng-template>
+            </p-column>
 
             <ng-template pTemplate="emptymessage">
                 {{'installationReport.noBeneficiarySelected' | translate}}

@@ -3,16 +3,16 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { CoreModule } from '../../core/core.module';
-import { Module2Component } from './module2.component';
+import { AccessPointComponent } from './access-point.component';
 
-describe('Module2Component', () => {
-    let component: Module2Component;
-    let fixture: ComponentFixture<Module2Component>;
+describe('AccessPointComponent', () => {
+    let component: AccessPointComponent;
+    let fixture: ComponentFixture<AccessPointComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
-                Module2Component
+                AccessPointComponent
             ],
             imports: [
                 CoreModule,
@@ -21,7 +21,7 @@ describe('Module2Component', () => {
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(Module2Component);
+        fixture = TestBed.createComponent(AccessPointComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

@@ -9,7 +9,7 @@ import { HomeComponent } from './core/components/home/home.component';
             { path: 'index.jsp', redirectTo: 'screen/home' },
             { path: 'screen/home', component: HomeComponent },
             { path: 'screen/installation-report', loadChildren: 'app/features/installation-report/installation-report.module#InstallationReportModule' },
-            { path: 'screen/module2', loadChildren: 'app/features/+module2/module2.module#Module2Module' }
+            { path: 'screen/access-point/:id/:name', loadChildren: 'app/features/access-point/access-point.module#AccessPointModule' }
         ])
     ],
     exports: [
