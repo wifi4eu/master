@@ -553,11 +553,11 @@
   "dgconn.dashboard.card.messageImport": "Your file have been imported correctly!",
   "shared.supportingDocuments": "Supporting documents",
   "(supporting documents pop-up)": "You have not confirmed.  This will discard any document you uploaded. If you wish to save the documents you uploaded, please return to the page and press Confirm. Are you sure you want to discard your documents?",
-  "shared.submit": "Submit",
+  "dgConn.submit": "Submit",
   "dgConn.euRanking": "EU Ranking",
   "dgConn.countryRanking": "Country Ranking",
-  "shared.call.number": "Call {{number}}",
-  "shared.comment.mandatory": "Comment (mandatory)",
+  "dgConn.call.number": "Call {{number}}",
+  "dgConn.comment.mandatory": "Comment (mandatory)",
   "dgConn.manageApplications.title": "Manage municipality applications",
   "dgConn.manageApplications.desc": "The municipalities listed below have applied to WiFi4EU. You can check their data and the status of their application by using the table below.",
   "dgConn.invalidateRegistration.modal.title": "Do you really want to invalidate this registration?",
@@ -570,5 +570,7 @@
   "(privacy statement)": "Privacy statement",
   "(required)": "(required)",
   "dgConn.applicantDetails.validateApplication.title": "Validate application",
-  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated."
+  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
+  "dgConn.totalRecords": "Total records",
+  "shared.incorrectFormat": "Please, select a document with correct format"
 }

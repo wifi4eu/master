@@ -518,8 +518,11 @@
   "dgconn.dashboard.card.messageImport": "Your file have been imported correctly!",
   "shared.supportingDocuments": "Dokumentation",
   "(supporting documents pop-up)": "Du har ikke bekræftet.  Eventuelle uploadede dokumenter vil blive slettet. Hvis du ønsker at gemme de dokumenter, du har uploadet, skal du gå tilbage og klikke på \"Bekræft\". Er du sikker på, at du vil slette dokumenterne?",
+  "dgConn.submit": "Submit",
   "dgConn.euRanking": "EU Ranking",
   "dgConn.countryRanking": "Country Ranking",
+  "dgConn.call.number": "Call {{number}}",
+  "dgConn.comment.mandatory": "Comment (mandatory)",
   "dgConn.manageApplications.title": "Manage municipality applications",
   "dgConn.manageApplications.desc": "The municipalities listed below have applied to WiFi4EU. You can check their data and the status of their application by using the table below.",
   "dgConn.invalidateRegistration.modal.title": "Do you really want to invalidate this registration?",
@@ -530,5 +533,6 @@
   "(optional)": "(frivilligt)",
   "(privacy statement)": "Databeskyttelseserklæring",
   "dgConn.applicantDetails.validateApplication.title": "Validate application",
-  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated."
+  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
+  "dgConn.totalRecords": "Total records"
 }

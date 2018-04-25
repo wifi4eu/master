@@ -518,8 +518,11 @@
   "dgconn.dashboard.card.messageImport": "Your file have been imported correctly!",
   "shared.supportingDocuments": "Apliecinošie dokumenti",
   "(supporting documents pop-up)": "Jūs neesat apstiprinājis.  Tādēļ tiks atmesti visi dokumenti, kurus esat augšupielādējis. Ja vēlaties saglabāt dokumentus, ko esat augšupielādējis, atgriezieties lapā un noklikšķiniet uz “Apstiprināt”. Vai tiešām vēlaties atmest savus dokumentus?",
+  "dgConn.submit": "Submit",
   "dgConn.euRanking": "EU Ranking",
   "dgConn.countryRanking": "Country Ranking",
+  "dgConn.call.number": "Call {{number}}",
+  "dgConn.comment.mandatory": "Comment (mandatory)",
   "dgConn.manageApplications.title": "Manage municipality applications",
   "dgConn.manageApplications.desc": "The municipalities listed below have applied to WiFi4EU. You can check their data and the status of their application by using the table below.",
   "dgConn.invalidateRegistration.modal.title": "Do you really want to invalidate this registration?",
@@ -530,5 +533,6 @@
   "(optional)": "(nav obligāti)",
   "(privacy statement)": "Privātuma paziņojums",
   "dgConn.applicantDetails.validateApplication.title": "Validate application",
-  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated."
+  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
+  "dgConn.totalRecords": "Total records"
 }
