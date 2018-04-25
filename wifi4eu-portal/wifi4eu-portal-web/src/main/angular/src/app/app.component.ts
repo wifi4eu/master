@@ -11,6 +11,8 @@ import {RegistrationApi} from "./shared/swagger/api/RegistrationApi";
 import {ResponseDTOBase} from "./shared/swagger/model/ResponseDTO";
 import {environment} from '../environments/environment';
 import {Subject} from "rxjs/Subject";
+import {WebsockApi} from "./shared/swagger";
+import {Observable} from "rxjs/Observable";
 
 enableProdMode();
 
@@ -18,7 +20,7 @@ enableProdMode();
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    providers: [UserApi, RegistrationApi]
+    providers: [UserApi, RegistrationApi, WebsockApi]
 })
 
 export class AppComponent {
@@ -31,9 +33,20 @@ export class AppComponent {
     private menuTranslations: Map<String, String>;
     private stringsTranslated = new Subject<any>();
     private childrenInitialized = new Subject<any>();
+
+    sessionExpired: Boolean = false;
+
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode['en'];
 
-    constructor(private translate: TranslateService, private router: Router, private translateService: TranslateService, private localStorageService: LocalStorageService, private uxService: UxService, private sharedService: SharedService, private userApi: UserApi, private registrationApi: RegistrationApi) {
+    constructor(private translate: TranslateService,
+                private router: Router,
+                private translateService: TranslateService,
+                private localStorageService: LocalStorageService,
+                private uxService: UxService,
+                private sharedService: SharedService,
+                private userApi: UserApi,
+                private registrationApi: RegistrationApi,
+                private websockApi: WebsockApi) {
         translateService.setDefaultLang('en');
         let language = this.localStorageService.get('lang');
         if (language) {
@@ -62,7 +75,17 @@ export class AppComponent {
         this.sharedService.logoutEmitter.subscribe(() => this.logout());
 
         this.updateFooterDate();
+
+        // setTimeout(this.isSessionExpired(), 2250);
+        Observable.interval(10000)
+            .takeWhile(() => !this.sessionExpired)
+            .subscribe(execution => {
+                // This will be called every 10 seconds until `stopCondition` flag is set to true
+                console.log(execution);
+                this.isSessionExpired();
+            })
     }
+
 
     private updateMenuTranslations() {
         let translatedItems = 0;
@@ -130,14 +153,14 @@ export class AppComponent {
             }
         );
         this.translateService.get('itemMenu.listSuppliers').subscribe(
-          (translatedString: string) => {
-              this.menuTranslations.set('itemMenu.listSuppliers', translatedString);
-              translatedItems++;
-              if (translatedItems == 8) {
-                  this.stringsTranslated.next();
-              }
-          }
-      );
+            (translatedString: string) => {
+                this.menuTranslations.set('itemMenu.listSuppliers', translatedString);
+                translatedItems++;
+                if (translatedItems == 8) {
+                    this.stringsTranslated.next();
+                }
+            }
+        );
     }
 
     private initChildren() {
@@ -297,4 +320,34 @@ export class AppComponent {
         if (!lang) lang = 'en';
         this.actualDate = new Date(Date.now()).toLocaleDateString(lang.toString());
     }
+
+
+    isSessionExpired() {
+        this.websockApi.greeting().subscribe(
+            (sessionStatus: Boolean) => {
+                console.log("Status is ", sessionStatus);
+
+                //Validar cuando devuelva un null es falso ¿Por qué devuelve un null?
+                this.sessionExpired = sessionStatus && (sessionStatus != null);
+            }
+        );
+    }
+
+    // isSessionExpired() {
+    //     //     this.socketService.sessionExpiration().subscribe(data => {
+    //     //         if (data['code'] !== 1001) {
+    //     //             this.sessionExpired = true;
+    //     //             this.socketService.closeSessionSocket();
+    //     //         } else {
+    //     //             this.sessionExpired = true;
+    //     //         }
+    //     //     });
+    //     var pollData = this._http.get(this._url)
+    //         .map(this.extractData)
+    //         .catch(this.handleError);
+    //     pollData.expand(
+    //         () => Observable.timer(4000).concatMap(() => pollData)
+    //     ).subscribe();
+    // }
+
 }

@@ -3,6 +3,12 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
+//TODO: Update URL
+const BASE_URL: string = 'http://localhost:7001/noah';
+
 export const environment = {
-  production: false
+  production: false,
+
+    //TODO: Update URL
+    url: BASE_URL + '/services/ui/'
 };
