@@ -8,10 +8,15 @@ import javax.persistence.*;
 @Table(name = "access_points")
 public class AccessPoint {
 
+    /*
     @Id
     @SequenceGenerator(name = "access_points_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "access_points_seq")
     @Column(name = "id")
+    */
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /*
@@ -19,6 +24,9 @@ public class AccessPoint {
     @JoinColumn(name = "id_installation_site")
     private InstallationSite installationSite;
     */
+
+    @Column(name="id_installation_site")
+    private Integer idInstallationSite;
 
     @Column(name = "model_number")
     private String modelNumber;
@@ -47,6 +55,9 @@ public class AccessPoint {
     @Column(name = "mac_address", length = 17)
     private String macAddress;
 
+    @Column(name = "number")
+    private Integer number;
+
     public AccessPoint() {
     }
 
@@ -72,6 +83,22 @@ public class AccessPoint {
         this.installationSite = installationSite;
     }
     */
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public Integer getInstallationSite(){
+        return idInstallationSite;
+    }
+
+    public void setInstallationSite(Integer idInstallationSite){
+        this.idInstallationSite = idInstallationSite;
+    }
 
     public String getModelNumber() {
         return modelNumber;
