@@ -38,7 +38,6 @@ export class AccessPointListComponent {
             this.installationSiteName = params['name'];
         });
 
-        // this.onSearch();
     }
 
     onPage(event: any) {

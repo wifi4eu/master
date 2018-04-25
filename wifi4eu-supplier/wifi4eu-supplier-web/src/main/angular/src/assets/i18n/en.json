@@ -64,5 +64,10 @@
 
 
     "accessPoint.indoor": "Indoor",
-    "accessPoint.outdoor": "Outdoor"
+    "accessPoint.outdoor": "Outdoor",
+    "accessPointDetails.title": "Access point detail",
+    "accessPointDetails.subtitle": "This page is used to see the detail of the access points of one installation site of one municipality that you have selected.",
+    "accessPointDetails.removeTitle": "Remove access point",
+    "accessPointDetails.removeModalAreYouSure": "Are you sure you want to remove this access point?",
+    "accessPointDetails.removeModalThisAction": "This actions is irreversible."
 }

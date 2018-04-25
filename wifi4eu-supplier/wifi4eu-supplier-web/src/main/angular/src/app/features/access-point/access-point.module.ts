@@ -8,6 +8,7 @@ import { DataTableModule, DropdownModule} from "primeng/primeng";
 import { SearchParametersService } from '../../core/services/search-parameters.service';
 import { UpdateAccessPoint } from './components/update-access-point/update-access-point.component';
 import { AccesspointsApi } from '../../shared/swagger/api/AccesspointsApi';
+import { AccessPointDetailsComponent } from './components/access-point-details/access-point-details.component';
 
 @NgModule({
     imports: [
@@ -19,6 +20,7 @@ import { AccesspointsApi } from '../../shared/swagger/api/AccesspointsApi';
     declarations: [
         AccessPointComponent,
         AccessPointListComponent,
+        AccessPointDetailsComponent,
         UpdateAccessPoint
     ],
     providers: [
