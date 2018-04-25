@@ -52,7 +52,7 @@ export class AccessPointListComponent {
 
     onSearch() {
         this.totalResults = 0;
-        this.accessPointApi.getBeneficiariesList(this.searchParametersService.parameters).subscribe((response: ResponseDTOBase) => {
+        this.accessPointApi.getAccessPointPerInstallationSite(this.searchParametersService.parameters).subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.accessPoints = response.data.data;
                 this.totalResults = response.data.count;
