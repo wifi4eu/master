@@ -519,8 +519,11 @@
   "dgconn.dashboard.card.messageImport": "Your file have been imported correctly!",
   "shared.supportingDocuments": "Igazoló dokumentumok",
   "(supporting documents pop-up)": "Ön nem erősítette meg a műveletet.  Minden feltöltött dokumentum el fog veszni. Ha szeretné, hogy a rendszer elmentse a feltöltött dokumentumokat, kérjük, térjen vissza az oldalra és nyomja meg a „Megerősítés” gombot. Biztos, hogy nem tart igényt a feltöltött dokumentumok mentésére?",
+  "dgConn.submit": "Submit",
   "dgConn.euRanking": "EU Ranking",
   "dgConn.countryRanking": "Country Ranking",
+  "dgConn.call.number": "Call {{number}}",
+  "dgConn.comment.mandatory": "Comment (mandatory)",
   "dgConn.manageApplications.title": "Manage municipality applications",
   "dgConn.manageApplications.desc": "The municipalities listed below have applied to WiFi4EU. You can check their data and the status of their application by using the table below.",
   "dgConn.invalidateRegistration.modal.title": "Do you really want to invalidate this registration?",
@@ -531,5 +534,6 @@
   "(optional)": "(nem kötelező megadni)",
   "(privacy statement)": "Adatvédelmi nyilatkozat",
   "dgConn.applicantDetails.validateApplication.title": "Validate application",
-  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated."
+  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
+  "dgConn.totalRecords": "Total records"
 }

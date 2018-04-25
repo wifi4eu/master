@@ -129,7 +129,7 @@ public class ScheduledTasks {
     }
 
 
-    @Scheduled(cron = "0 0 6 ? * MON")
+    @Scheduled(cron = "0 30 18 ? * TUE")
     public void sendDocRequest() {
         List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
         for (RegistrationDTO registrationDTO : registrationDTOS) {
@@ -144,7 +144,7 @@ public class ScheduledTasks {
                         ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                         String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
                         String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
-                        String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/additional-info";
+                        String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
                         msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
 
                         mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);

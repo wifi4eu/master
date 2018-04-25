@@ -518,8 +518,11 @@
   "dgconn.dashboard.card.messageImport": "Your file have been imported correctly!",
   "shared.supportingDocuments": "Bewijsstukken",
   "(supporting documents pop-up)": "U heeft nog niet op \"Bevestigen\" geklikt.  Hierdoor worden alle door u geüploade documenten weer verwijderd. Wilt u de door u geüploade documenten bewaren, keer dan terug naar de pagina en klik op \"Bevestigen\". Weet u zeker dat u al uw documenten wilt verwijderen?",
+  "dgConn.submit": "Submit",
   "dgConn.euRanking": "EU Ranking",
   "dgConn.countryRanking": "Country Ranking",
+  "dgConn.call.number": "Call {{number}}",
+  "dgConn.comment.mandatory": "Comment (mandatory)",
   "dgConn.manageApplications.title": "Manage municipality applications",
   "dgConn.manageApplications.desc": "The municipalities listed below have applied to WiFi4EU. You can check their data and the status of their application by using the table below.",
   "dgConn.invalidateRegistration.modal.title": "Do you really want to invalidate this registration?",
@@ -530,5 +533,6 @@
   "(optional)": "(facultatief)",
   "(privacy statement)": "Privacyverklaring",
   "dgConn.applicantDetails.validateApplication.title": "Validate application",
-  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated."
+  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
+  "dgConn.totalRecords": "Total records"
 }

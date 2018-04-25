@@ -14,6 +14,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -102,10 +103,9 @@ public class ApplicationResource {
         }
 
         ApplicationDTO response = applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
-        if(response == null){
+        if (response == null) {
             response = new ApplicationDTO();
         }
-
         return response;
     }
 
