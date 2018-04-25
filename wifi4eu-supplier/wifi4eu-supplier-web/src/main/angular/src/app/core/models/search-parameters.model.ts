@@ -1,8 +1,9 @@
 export class SearchParameters {
     page: number;
     delta: number;
-    fieldOrder: string;
     order: string;
+    id_beneficiary: number;
+    fieldOrder: string;
 
     constructor() {
         this.page = 0;
