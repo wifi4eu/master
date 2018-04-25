@@ -2,10 +2,11 @@ import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
 import {TranslateService} from "ng2-translate";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/shared/ux.service";
-import { Resolve } from '@angular/router/src/interfaces';
-import { LocalStorageService } from 'angular-2-local-storage';
-import { Observable } from 'rxjs/Observable';
+import {Resolve} from '@angular/router/src/interfaces';
+import {LocalStorageService} from 'angular-2-local-storage';
+import {Observable} from 'rxjs/Observable';
 import {UserDTOBase} from "./swagger/model/UserDTO";
+import {BaseRequestOptions, Headers} from '@angular/http';
 
 @Injectable()
 export class SharedService {
@@ -118,9 +119,19 @@ export class SharedService {
 
 @Injectable()
 export class EcasLoginResolver implements Resolve<any> {
-  constructor(private localStorage: LocalStorageService) {}
+    constructor(private localStorage: LocalStorageService) {
+    }
 
-  resolve() {
-    return Observable.of(this.localStorage.get('user'));
-  }
+    resolve() {
+        return Observable.of(this.localStorage.get('user'));
+    }
+}
+
+@Injectable()
+export class CustomRequestOptions extends BaseRequestOptions {
+    headers = new Headers({
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Expires': 'Sat, 01 Jan 2000 00:00:00 GMT'
+    });
 }
