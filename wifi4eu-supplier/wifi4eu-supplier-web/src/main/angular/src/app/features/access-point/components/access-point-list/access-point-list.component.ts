@@ -44,7 +44,7 @@ export class AccessPointListComponent {
         if (this.searchParametersService.parameters.id_installationSite!= undefined) {
             this.searchParametersService.parameters.delta = event.rows;
             this.searchParametersService.parameters.page = event.first;
-            this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "id";
+            this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "number";
             this.searchParametersService.parameters.order = event.sortOrder > 0 ? "asc" : "desc";
             this.onSearch();
         }
