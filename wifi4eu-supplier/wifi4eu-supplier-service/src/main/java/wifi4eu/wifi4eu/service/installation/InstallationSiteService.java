@@ -118,7 +118,7 @@ public class InstallationSiteService {
                     Date now = calendar.getTime();
                     Timestamp currentTimestamp = new Timestamp(now.getTime());
                     installationSite.setDateRegistered(currentTimestamp);
-                    installationSite.setNumber((int) (installationSiteRepository.countInstallationSiteByMunicipality((int) map.get("id_beneficiary")) + 1));
+                    installationSite.setNumber((int) (installationSiteRepository.selectMaxNumberInstallationSiteByMunicipalityId((int) map.get("id_beneficiary")) + 1));
                 } else {
                     installationSite = installationSiteRepository.findInstallationSiteById((int) map.get("id_installation"));
                 }
