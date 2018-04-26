@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.entity.installation;
+package wifi4eu.wifi4eu.entity.access_point;
 
 import wifi4eu.wifi4eu.entity.installation.InstallationSite;
 
@@ -8,15 +8,25 @@ import javax.persistence.*;
 @Table(name = "access_points")
 public class AccessPoint {
 
+    /*
     @Id
     @SequenceGenerator(name = "access_points_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "access_points_seq")
     @Column(name = "id")
+    */
+    @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /*
     @ManyToOne
     @JoinColumn(name = "id_installation_site")
     private InstallationSite installationSite;
+    */
+
+    @Column(name="id_installation_site")
+    private Integer idInstallationSite;
 
     @Column(name = "model_number")
     private String modelNumber;
@@ -45,11 +55,14 @@ public class AccessPoint {
     @Column(name = "mac_address", length = 17)
     private String macAddress;
 
+    @Column(name = "number")
+    private Integer number;
+
     public AccessPoint() {
     }
 
-    public AccessPoint(InstallationSite installationSite, String modelNumber, String serialNumber, boolean isIndoor, String deviceBrand, String location, String locationType, double latitude, double longitude, String macAddress) {
-        this.installationSite = installationSite;
+    public AccessPoint(String modelNumber, String serialNumber, boolean isIndoor, String deviceBrand, String location, String locationType, double latitude, double longitude, String macAddress) {
+        // this.installationSite = installationSite;
         this.modelNumber = modelNumber;
         this.serialNumber = serialNumber;
         this.isIndoor = isIndoor;
@@ -61,12 +74,30 @@ public class AccessPoint {
         this.macAddress = macAddress;
     }
 
+    /*
     public InstallationSite getInstallationSite() {
         return installationSite;
     }
 
     public void setInstallationSite(InstallationSite installationSite) {
         this.installationSite = installationSite;
+    }
+    */
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public Integer getInstallationSite(){
+        return idInstallationSite;
+    }
+
+    public void setInstallationSite(Integer idInstallationSite){
+        this.idInstallationSite = idInstallationSite;
     }
 
     public String getModelNumber() {

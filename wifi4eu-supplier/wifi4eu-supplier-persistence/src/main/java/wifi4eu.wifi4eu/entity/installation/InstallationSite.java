@@ -10,12 +10,23 @@ import java.sql.Timestamp;
 @Table(name = "installation_site")
 public class InstallationSite {
 
-    @Id
+    /*@Id
     @SequenceGenerator(name = "installation_site_seq", allocationSize = 1, initialValue = 100)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "installation_site_seq")
-    @Column(name = "id")
+    @Column(name = "id"
+     */
+    @Column (name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "id_municipality")
+    private Integer municipality;
+
+    @Column(name = "id_status")
+    private Integer status;
+
+    /*
     @ManyToOne
     @JoinColumn(name = "id_municipality")
     private Municipality municipality;
@@ -23,6 +34,7 @@ public class InstallationSite {
     @ManyToOne
     @JoinColumn(name = "id_status")
     private Status status;
+    */
 
     @Column(name = "id_network_snippet", length = 75)
     private String idNetworkSnippet;
@@ -39,17 +51,22 @@ public class InstallationSite {
     @Column(name = "url")
     private String url;
 
+    @Column(name = "number")
+    private Integer number;
+
     public InstallationSite() {
     }
 
-    public InstallationSite(Municipality municipality, Status status, String idNetworkSnippet, String name, Timestamp dateRegistered, String domainName, String url) {
-        this.municipality = municipality;
-        this.status = status;
+    public InstallationSite(Integer id, Municipality municipality, Status status, String idNetworkSnippet, String name, Timestamp dateRegistered, String domainName, String url, Integer number) {
+        this.id = id;
+        // this.municipality = municipality;
+        // this.status = status;
         this.idNetworkSnippet = idNetworkSnippet;
         this.name = name;
         this.dateRegistered = dateRegistered;
         this.domainName = domainName;
         this.url = url;
+        this.number = number;
     }
 
     public Integer getId() {
@@ -60,6 +77,7 @@ public class InstallationSite {
         this.id = id;
     }
 
+    /*
     public Municipality getMunicipality() {
         return municipality;
     }
@@ -74,6 +92,23 @@ public class InstallationSite {
 
     public void setId_status(Status id_status) {
         this.status = id_status;
+    }
+    */
+
+    public Integer getMunicipality() {
+        return municipality;
+    }
+
+    public void setMunicipality(Integer municipality) {
+        this.municipality = municipality;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getIdNetworkSnippet() {
@@ -115,4 +150,8 @@ public class InstallationSite {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public Integer getNumber() { return number; }
+
+    public void setNumber(Integer number) { this.number = number; }
 }

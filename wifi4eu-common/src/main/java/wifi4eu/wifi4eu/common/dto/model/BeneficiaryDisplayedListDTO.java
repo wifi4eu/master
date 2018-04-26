@@ -23,7 +23,7 @@ public class BeneficiaryDisplayedListDTO implements Serializable {
         this.name = name;
     }
 
-    public Integer getId(){
+    public int getId(){
         return id;
     }
 

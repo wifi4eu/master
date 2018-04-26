@@ -1,4 +1,4 @@
-package wifi4eu.supplier.web.rest;
+package wifi4eu.supplier.web.rest.beneficiary;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDisplayedListDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryDisplayedListService;
-
-import java.util.List;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -29,7 +27,7 @@ public class BeneficiaryDisplayedListResource {
     @ApiOperation(value = "Get all beneficiaries")
     @RequestMapping(value = "/beneficiaries-list", method= RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<BeneficiaryDisplayedListDTO> getBeneficiariesList(){
+    public ResponseDTO getBeneficiariesList(){
         return beneficiaryDisplayedListService.findBeneficiariesList();
     }
 
