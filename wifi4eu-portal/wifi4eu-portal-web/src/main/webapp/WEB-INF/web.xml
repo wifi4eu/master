@@ -23,6 +23,7 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <!-- ********************* CHANGE TO 30 ************************************************************************ -->
     <session-config>
         <session-timeout>
             1

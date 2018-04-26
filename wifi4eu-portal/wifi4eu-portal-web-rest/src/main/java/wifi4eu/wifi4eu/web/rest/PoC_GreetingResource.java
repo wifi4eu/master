@@ -26,7 +26,6 @@ public class PoC_GreetingResource {
         long timestampSeconds = TimeUnit.MILLISECONDS.toSeconds(activeSession);
 
         return timestampSeconds > session.getMaxInactiveInterval();
-//        return true;
     }
 
 }

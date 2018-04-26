@@ -325,29 +325,10 @@ export class AppComponent {
     isSessionExpired() {
         this.websockApi.greeting().subscribe(
             (sessionStatus: Boolean) => {
-                console.log("Status is ", sessionStatus);
-
-                //Validar cuando devuelva un null es falso ¿Por qué devuelve un null?
-                this.sessionExpired = sessionStatus && (sessionStatus != null);
+                this.sessionExpired = (sessionStatus == null) || sessionStatus;
+                console.log("Status is " + this.sessionExpired + " = " + (sessionStatus == null) + " || " + sessionStatus);
             }
         );
     }
-
-    // isSessionExpired() {
-    //     //     this.socketService.sessionExpiration().subscribe(data => {
-    //     //         if (data['code'] !== 1001) {
-    //     //             this.sessionExpired = true;
-    //     //             this.socketService.closeSessionSocket();
-    //     //         } else {
-    //     //             this.sessionExpired = true;
-    //     //         }
-    //     //     });
-    //     var pollData = this._http.get(this._url)
-    //         .map(this.extractData)
-    //         .catch(this.handleError);
-    //     pollData.expand(
-    //         () => Observable.timer(4000).concatMap(() => pollData)
-    //     ).subscribe();
-    // }
 
 }
