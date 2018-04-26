@@ -9,6 +9,7 @@ import { SearchParametersService } from '../../core/services/search-parameters.s
 import { UpdateAccessPoint } from './components/update-access-point/update-access-point.component';
 import { AccesspointsApi } from '../../shared/swagger/api/AccesspointsApi';
 import { AccessPointDetailsComponent } from './components/access-point-details/access-point-details.component';
+import { AccessPointDetailsResolver } from '../../core/services/access-point-service';
 
 @NgModule({
     imports: [
@@ -24,6 +25,7 @@ import { AccessPointDetailsComponent } from './components/access-point-details/a
         UpdateAccessPoint
     ],
     providers: [
+        AccessPointDetailsResolver,
         SearchParametersService,
         AccesspointsApi
     ],

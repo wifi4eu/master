@@ -30,16 +30,17 @@
                 <p>{{'accessPoint.deviceSerial' | translate }}</p>
                 <p>{{'accessPoint.macAddress' | translate }}</p>
             </div>
-            <div class="col-md-7 font-weight-bold">
-                <p>{{'shared.number.label' | translate}}</p>
-                <p>{{'accessPoint.locationType' | translate }}</p>
-                <p>{{'accessPoint.locationName' | translate }}</p>
-                <p>{{'accessPoint.geoLocation' | translate }}</p>
-                <p>{{'accessPoint.deviceType' | translate }}</p>
-                <p>{{'accessPoint.deviceBrand' | translate }}</p>
-                <p>{{'accessPoint.deviceModel' | translate }}</p>
-                <p>{{'accessPoint.deviceSerial' | translate }}</p>
-                <p>{{'accessPoint.macAddress' | translate }}</p>
+            <div class="col-md-7 font-weight-bold" *ngIf="accessPoint">
+                <p>{{accessPoint.number}}</p>
+                <p>{{accessPoint.locationType}}</p>
+                <p>{{accessPoint.location}}</p>
+                <p>{{accessPoint.latitude}}, {{accessPoint.longitude}}</p>
+                <p *ngIf="accessPoint.indoor; else outdoor"> {{ 'accessPoint.indoor' | translate }}</p>
+                <ng-template #outdoor>{{ 'accessPoint.outdoor' |translate }}</ng-template>
+                <p>{{accessPoint.deviceBrand}}</p>
+                <p>{{accessPoint.modelNumber}}</p>
+                <p>{{accessPoint.serialNumber}}</p>
+                <p>{{accessPoint.macAddress}}</p>
             </div>
             <div class="col-md-3 text-right detailsButtons">
                 <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-pencil-alt" (click)="openUpdateAccessPoint()">
@@ -49,7 +50,7 @@
             </div>
         </div>
     </div>
-    <update-access-point [isEdit]="true"></update-access-point>
+    <update-access-point [isEdit]="true" [accessPoint]="accessPoint"></update-access-point>
 
     <ux-modal id="removeAccessPoint" titleLabel="{{ 'accessPointDetails.removeTitle' | translate }}" isOverflowVisible="true"
         [isHandleCloseOnAccept]="false" [isSizeSmall]="false" (onDismiss)="closeRemoveAccessPoint()">

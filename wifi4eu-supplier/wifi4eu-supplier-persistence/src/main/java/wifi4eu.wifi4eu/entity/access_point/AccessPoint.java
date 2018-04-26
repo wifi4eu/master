@@ -84,6 +84,22 @@ public class AccessPoint {
     }
     */
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getIdInstallationSite() {
+        return idInstallationSite;
+    }
+
+    public void setIdInstallationSite(Integer idInstallationSite) {
+        this.idInstallationSite = idInstallationSite;
+    }
+
     public Integer getNumber() {
         return number;
     }
