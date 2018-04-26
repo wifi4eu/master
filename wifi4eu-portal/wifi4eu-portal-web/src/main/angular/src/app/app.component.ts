@@ -13,6 +13,8 @@ import {environment} from '../environments/environment';
 import {Subject} from "rxjs/Subject";
 import {WebsockApi} from "./shared/swagger";
 import {Observable} from "rxjs/Observable";
+import {CookieService} from 'ngx-cookie-service';
+
 
 enableProdMode();
 
@@ -46,7 +48,8 @@ export class AppComponent {
                 private sharedService: SharedService,
                 private userApi: UserApi,
                 private registrationApi: RegistrationApi,
-                private websockApi: WebsockApi) {
+                private websockApi: WebsockApi,
+                private cookieService: CookieService) {
         translateService.setDefaultLang('en');
         let language = this.localStorageService.get('lang');
         if (language) {
@@ -298,6 +301,8 @@ export class AppComponent {
         this.user = null;
         this.localStorageService.remove('user');
         this.localStorageService.remove('public-redirection');
+        this.cookieService.deleteAll();
+
         this.menuLinks = this.children[0];
         this.profileUrl = null;
 
@@ -323,12 +328,24 @@ export class AppComponent {
 
 
     isSessionExpired() {
-        this.websockApi.greeting().subscribe(
+        this.websockApi.isInvalidatedSession().subscribe(
             (sessionStatus: Boolean) => {
                 this.sessionExpired = (sessionStatus == null) || sessionStatus;
                 console.log("Status is " + this.sessionExpired + " = " + (sessionStatus == null) + " || " + sessionStatus);
             }
         );
+    }
+
+    onReload() {
+        // this.user = null;
+        // this.localStorageService.remove('user');
+        // this.localStorageService.remove('public-redirection');
+        // this.menuLinks = this.children[0];
+        // this.profileUrl = null;
+        //
+        // window.location.href = environment['logoutUrl'];
+
+        // window.location.reload();
     }
 
 }

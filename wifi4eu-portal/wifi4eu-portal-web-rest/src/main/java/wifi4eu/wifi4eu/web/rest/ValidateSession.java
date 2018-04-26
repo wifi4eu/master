@@ -15,12 +15,12 @@ import java.util.concurrent.TimeUnit;
 @Controller
 @Api(value = "/websock", description = "Websocket")
 @RequestMapping("websock")
-public class PoC_GreetingResource {
+public class ValidateSession {
 
     @ApiOperation(value = "Get session status")
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public Boolean greeting() {
+    public Boolean isInvalidatedSession() {
         HttpSession session = RecoverHttpSession.session();
         long activeSession = session.getLastAccessedTime() - session.getCreationTime();
         long timestampSeconds = TimeUnit.MILLISECONDS.toSeconds(activeSession);
