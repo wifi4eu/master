@@ -36,7 +36,7 @@ public class InstallationSiteRepositoryImpl implements InstallationSiteRepositor
     }
 
     private Query generateSqlInstallationSites(int page, int delta, int id_beneficiary, String fieldName, String orderField, boolean count){
-        String queryString = "SELECT i.id, i.name, i.domain_name FROM installation_site i INNER JOIN municipalities m ON m.id = i.id_municipality WHERE m.id = ?1";
+        String queryString = "SELECT i.number, i.id, i.name, i.domain_name FROM installation_site i INNER JOIN municipalities m ON m.id = i.id_municipality WHERE m.id = ?1";
         Query query = null;
         if (count){
             queryString = "SELECT COUNT(i.name) FROM installation_site i INNER JOIN municipalities m ON m.id = i.id_municipality WHERE m.id = ?1";

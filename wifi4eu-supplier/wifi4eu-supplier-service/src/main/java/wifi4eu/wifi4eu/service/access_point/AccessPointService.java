@@ -30,6 +30,7 @@ public class AccessPointService {
 
 
 
+
     @Transactional
     public ResponseDTO deleteAccessPointById(int id){
         ResponseDTO response = new ResponseDTO();
