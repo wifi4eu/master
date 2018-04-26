@@ -76,7 +76,7 @@ export class UpdateAccessPoint implements OnChanges {
 
   onSubmit(form) {
     if (form.form.valid) {
-      this.accessPointApi.editBeneficiaryDisplayedListDTO(this.accessPoint).subscribe((response: ResponseDTOBase) => {
+      this.accessPointApi.addOrUpdateAccessPoint(this.accessPoint).subscribe((response: ResponseDTOBase) => {
         if (response.success) {
           this.onSubmitted.emit(true);
         }
