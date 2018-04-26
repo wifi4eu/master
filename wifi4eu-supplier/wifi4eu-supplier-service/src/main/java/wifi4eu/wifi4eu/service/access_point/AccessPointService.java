@@ -137,16 +137,21 @@ public class AccessPointService {
                 accessPoint.setMacAddress((String) map.get("macAddress"));
             }
             if (sumar) {
-                accessPoint.setNumber(Integer.parseInt(getNextAccessPointPerInstallationSite((int) map.get("idInstallationSite")).toString()));
+                accessPoint.setNumber(getNextAccessPointPerInstallationSite((int) map.get("idInstallationSite")));
             }
         }
 
         return control;
     }
 
-    private Long getNextAccessPointPerInstallationSite(int id_installation_site){
-        long nextNumber = accessPointRepository.selectMaxNumberAccessPointByIdInstallationSite(id_installation_site) + 1;
-        return nextNumber;
+    private int getNextAccessPointPerInstallationSite(int id_installation_site){
+        Long currentLong = accessPointRepository.selectMaxNumberAccessPointByIdInstallationSite(id_installation_site);
+        if (currentLong != null){
+            currentLong++;
+            return Integer.parseInt(currentLong.toString());
+        } else {
+            return 1;
+        }
     }
 
     @Transactional

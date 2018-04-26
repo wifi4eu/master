@@ -110,19 +110,19 @@ public class InstallationSiteService {
     public ResponseDTO addAndUpdateInstallationSite(Map<String, Object> map) {
         ResponseDTO response = new ResponseDTO();
         if (!map.isEmpty()) {
-            if (map.get("url").equals(map.get("url_confirmation"))) {
+            // if (map.get("url").equals(map.get("url_confirmation"))) {
                 InstallationSite installationSite;
-                if (!map.containsKey("id_installation")) {
+                if (!map.containsKey("id")) {
                     installationSite = new InstallationSite();
                     Calendar calendar = Calendar.getInstance();
                     Date now = calendar.getTime();
                     Timestamp currentTimestamp = new Timestamp(now.getTime());
                     installationSite.setDateRegistered(currentTimestamp);
-                    installationSite.setNumber((int) (installationSiteRepository.selectMaxNumberInstallationSiteByMunicipalityId((int) map.get("id_beneficiary")) + 1));
+                    installationSite.setNumber(getNextNumberPerInstallationSiteByBeneficiaryId((int) map.get("municipality")));
                 } else {
-                    installationSite = installationSiteRepository.findInstallationSiteById((int) map.get("id_installation"));
+                    installationSite = installationSiteRepository.findInstallationSiteById((int) map.get("id"));
                 }
-                installationSite.setMunicipality((int) map.get("id_beneficiary"));
+                installationSite.setMunicipality((int) map.get("municipality"));
                 // installationSite.setMunicipality(municipalityRepository.findMuncipalityById((int) map.get("id_beneficiary")));
                 installationSite.setName((String) map.get("name"));
                 installationSite.setUrl((String) map.get("url"));
@@ -133,13 +133,23 @@ public class InstallationSiteService {
                 installationSiteRepository.save(installationSite);
                 response.setSuccess(true);
                 response.setData(installationSite);
-            }
+            // }
 
         } else {
             response.setSuccess(false);
             response.setError(new ErrorDTO(404, "Error json query"));
         }
         return response;
+    }
+
+    private int getNextNumberPerInstallationSiteByBeneficiaryId(int id_beneficiary){
+        Long currentLong = installationSiteRepository.selectMaxNumberInstallationSiteByMunicipalityId(id_beneficiary);
+        if (currentLong != null){
+            currentLong++;
+            return Integer.parseInt(currentLong.toString());
+        } else {
+            return 1;
+        }
     }
 
     public ResponseDTO getInstallationReport(int id) {
