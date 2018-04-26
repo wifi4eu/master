@@ -65,7 +65,4 @@ export class AccessPointListComponent {
         this.uxService.openModal('updateAccessPoint');
     }
 
-    onAddedNewAccessPoint(event){
-        alert('new add');
-    }
 }
