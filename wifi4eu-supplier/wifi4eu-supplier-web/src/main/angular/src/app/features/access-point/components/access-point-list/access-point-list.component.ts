@@ -19,6 +19,7 @@ export class AccessPointListComponent {
     private totalResults: number = 0;
     private accessPoints: AccessPointBase[];
     private installationSiteName: string = '';
+    private accessPoint: AccessPointBase = new AccessPointBase();
 
     //observable that gets the id from route params
     private idSub: any;
@@ -37,11 +38,11 @@ export class AccessPointListComponent {
             this.searchParametersService.parameters.id_installationSite = +params['id'];
             this.installationSiteName = params['name'];
         });
-
+        this.accessPoint.idInstallationSite = this.searchParametersService.parameters.id_installationSite;
     }
 
     onPage(event: any) {
-        if (this.searchParametersService.parameters.id_installationSite!= undefined) {
+        if (this.searchParametersService.parameters.id_installationSite != undefined) {
             this.searchParametersService.parameters.delta = event.rows;
             this.searchParametersService.parameters.page = event.first;
             this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "number";
@@ -64,4 +65,7 @@ export class AccessPointListComponent {
         this.uxService.openModal('updateAccessPoint');
     }
 
+    onAddedNewAccessPoint(event){
+        alert('new add');
+    }
 }

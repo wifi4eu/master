@@ -68,6 +68,6 @@
         </p-dataTable>
     </div>
 
-    <update-access-point [isEdit]="false"></update-access-point>
+    <update-access-point [accessPoint]="accessPoint" [isEdit]="false" (onSubmitted)="onAddedNewAccessPoint($event)"></update-access-point>
 
 </div>

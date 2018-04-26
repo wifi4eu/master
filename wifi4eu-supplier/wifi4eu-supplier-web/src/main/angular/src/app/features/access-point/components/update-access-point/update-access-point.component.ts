@@ -1,8 +1,10 @@
-import { Component, Input, ViewChild, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, Input, ViewChild, OnChanges, SimpleChange, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { UxService } from '@eui/ux-commons';
 import { PatternValidator, NgForm } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { AccessPointBase } from '../../../../shared/swagger/model/AccessPoint';
+import { AccesspointsApi } from '../../../../shared/swagger/api/AccesspointsApi';
+import { ResponseDTOBase } from '../../../../shared/swagger';
 
 @Component({
   selector: 'update-access-point',
@@ -13,9 +15,12 @@ export class UpdateAccessPoint implements OnChanges {
   @Input('isEdit') isEdit: boolean = false;
   @ViewChild('accessPointForm') form: NgForm;
 
+  @Output() onSubmitted: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   private unmodifiedAccessPoint: AccessPointBase = new AccessPointBase();
   private modalTitle: string;
 
+  //TODO
   private locationTypes = [{ label: 'Town Hall / Administrative building', value: 'Town Hall / Administrative building' },
   { label: 'Health Centre / Hospital', value: 'Health Centre / Hospital' },
   { label: 'Square', value: 'Square' },
@@ -33,13 +38,14 @@ export class UpdateAccessPoint implements OnChanges {
   { label: 'Shopping Mall', value: 'Shopping Mall' },
   { label: 'Other', value: 'Other' }]
 
-  private deviceTypes = [{ label: 'indoor', value: '1' }, { label: 'outdoor', value: '0' }]
+  private deviceTypes = [{ label: 'indoor', value: true }, { label: 'outdoor', value: false }]
 
   private regexLocation: string = '^([-+]?)([0-9]{1,2})(((.)([0-9]{6})))$';
   private regexMacAddress: string = '^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$';
   private isSubmitted: boolean = false;
 
-  constructor(private uxService: UxService, private translateService: TranslateService) {
+  constructor(private uxService: UxService, private translateService: TranslateService,
+    private accessPointApi: AccesspointsApi) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -47,7 +53,6 @@ export class UpdateAccessPoint implements OnChanges {
 
     if (!this.isEdit) {
       modalJsonString = 'accessPoint.add';
-      this.accessPoint = new AccessPointBase();
     } else {
       modalJsonString = 'updateAccessPoint.editTitle';
       Object.assign(this.unmodifiedAccessPoint, this.accessPoint);
@@ -71,13 +76,11 @@ export class UpdateAccessPoint implements OnChanges {
 
   onSubmit(form) {
     if (form.form.valid) {
-      //prove that all input is okay and send request to the server.
-
-      if (!this.isEdit) {
-        alert('submit adding modal (new updateAccessPoint)');
-      } else {
-        alert('submit edit modal (update updateAccessPoint)');
-      }
+      this.accessPointApi.editBeneficiaryDisplayedListDTO(this.accessPoint).subscribe((response: ResponseDTOBase) => {
+        if (response.success) {
+          this.onSubmitted.emit(true);
+        }
+      });
     }
 
     this.isSubmitted = true;
