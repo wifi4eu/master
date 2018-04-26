@@ -1,36 +1,37 @@
-import { Component, Input, ViewChild, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, Input, ViewChild, OnChanges, SimpleChange, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { UxService } from '@eui/ux-commons';
 import { PatternValidator, NgForm } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { InstallationsiteApi } from '../../../../shared/swagger/api/InstallationsiteApi';
+import { InstallationSiteBase } from '../../../../shared/swagger/model/InstallationSite';
+import { ResponseDTOBase } from '../../../../shared/swagger';
 
 @Component({
   selector: 'update-installation-site',
   templateUrl: './update-installation-site.component.html'
 })
 export class UpdateInstallationSite implements OnChanges {
-  @Input('installationSite') installationSite: string = null;
+  @Input('installationSite') installationSite: InstallationSiteBase = null;
+  @Input('isEdit') isEdit: boolean = false;
+  @Output() onSubmitted: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('installationSiteForm') form: NgForm;
   regexUrlPortal: string = '[a-z0-9-:/.]*';
   private modalTitle: string;
-  private isEdit: boolean = false;
+  private isSubmitted: boolean = false;
+  private unmodifiedInstallationSite: InstallationSiteBase = new InstallationSiteBase();
 
-
-  private numberInput= 1;
-  private nameSiteInput: String;
-  private captivePortalInput: String;
   private repeatCaptivePortalInput: String;
 
-  constructor(private uxService: UxService, private translateService: TranslateService) {
+  constructor(private uxService: UxService, private translateService: TranslateService,
+    private installationSiteApi: InstallationsiteApi) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
     let modalJsonString: string;
 
-    if (this.installationSite === null) {
-      this.isEdit = false;
+    if (!this.isEdit) {
       modalJsonString = 'installationReport.addSite';
     } else {
-      this.isEdit = true;
       modalJsonString = 'updateInstallationReport.editTitle';
     }
 
@@ -43,19 +44,22 @@ export class UpdateInstallationSite implements OnChanges {
 
   closeUpdateInstallationSite() {
     this.uxService.closeModal('updateInstallationSite');
-    this.form.resetForm();
+    if (!this.isSubmitted && this.isEdit) {
+      Object.assign(this.installationSite, this.unmodifiedInstallationSite);
+    } else if (!this.isEdit) {
+      this.form.form.reset();
+    }
   }
 
   onSubmit(form) {
     if (form.form.valid) {
-      //prove that all input is okay and send request to the server.
-
-      if(!this.isEdit){
-        console.log('submit adding modal (new InstallationSite)');
-      } else{
-        console.log('submit edit modal (update InstallationSite)');
-      }
+      this.installationSiteApi.updateInstallationSite(this.installationSite).subscribe((response: ResponseDTOBase) => {
+        if (response.success) {
+          this.onSubmitted.emit(true);
+        }
+      });
     }
+    this.isSubmitted = true;
     this.closeUpdateInstallationSite();
   }
 

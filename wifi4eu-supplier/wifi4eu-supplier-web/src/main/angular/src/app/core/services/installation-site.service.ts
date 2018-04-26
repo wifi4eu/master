@@ -1,34 +1,29 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { Resolve, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { InstallationsiteApi } from '../../shared/swagger/api/InstallationsiteApi';
+import { InstallationSiteBase } from '../../shared/swagger/model/InstallationSite';
+import { ResponseDTOBase } from '../../shared/swagger';
 
 @Injectable()
-export class InstallationSiteService {
+export class InstallationSiteDetailResolver implements Resolve<InstallationSiteBase[]> {
 
-    installationSiteSelected: string
-
-    constructor() { }
-
-}
-
-
-@Injectable()
-export class InstallationSiteDetailResolver implements Resolve<string> {
-
-    constructor() { }
+    constructor(private installationSiteApi: InstallationsiteApi, private router: Router) { }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-        let id: string = route.paramMap.get('id');
+        let id: number = +route.paramMap.get('id');
         if (id != null) {
-            return id;
-            // return this.swaggerApi.getBeneficiaryById(parseInt(id, 10)).map((res: Response) => {
-            //     if (res['succeeded']) {
-            //         return res['body'];
-            //     }
-            // }).catch(error => {
-            // error handling
-            // });
+            return this.installationSiteApi.getInstallationSite(id).map((response: ResponseDTOBase) => {
+                if (response.success) {
+                    // console.log(response.data);
+                    return response.data;
+                } else {
+                    this.router.navigate(['/']);
+                    return;
+                }
+            });
+            
         }
     }
 }

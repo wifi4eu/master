@@ -11,6 +11,7 @@ import {AutoCompleteModule, DataTableModule, CheckboxModule, TooltipModule, Drop
 import { EqualValidator } from '../../core/directives/validate-equals.directive'; 
 import { InstallationsiteApi } from '../../shared/swagger/api/InstallationsiteApi';
 import { BeneficiaryApi } from '../../shared/swagger';
+import { InstallationSiteDetailResolver } from '../../core/services/installation-site.service';
 
 @NgModule({
     imports: [
@@ -31,6 +32,7 @@ import { BeneficiaryApi } from '../../shared/swagger';
     ],
     providers: [
         SearchParametersService,
+        InstallationSiteDetailResolver,
         InstallationsiteApi
     ],
     bootstrap: [
