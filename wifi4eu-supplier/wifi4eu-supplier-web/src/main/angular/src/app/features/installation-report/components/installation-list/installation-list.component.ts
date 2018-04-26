@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { SearchParametersService } from '../../../../core/services/search-parameters.service';
 import { SearchParameters } from '../../../../core/models/search-parameters.model';
 import { BeneficiaryApi } from '../../../../shared/swagger/api/BeneficiaryApi';
@@ -8,17 +8,19 @@ import { UxService } from '@eui/ux-commons';
 import { BeneficiaryDisplayedListDTOBase, ResponseDTOBase, ResponseDTO } from '../../../../shared/swagger';
 import { BeneficiaryService } from '../../../../core/services/beneficiary-service';
 import { InstallationsiteApi } from '../../../../shared/swagger/api/InstallationsiteApi';
-import { InstallationSite } from '../../../../shared/swagger/model/InstallationSite';
+import { InstallationSite, InstallationSiteBase } from '../../../../shared/swagger/model/InstallationSite';
 
 @Component({
     templateUrl: './installation-list.component.html',
     providers: [BeneficiaryApi]
 })
 
-export class InstallationListComponent {
+export class InstallationListComponent implements OnInit {
     //-- Component properties
     _timeout: any = null;
     totalResults: number = 0;
+
+    private installationSite: InstallationSiteBase = new InstallationSiteBase();
 
     private beneficiarySelected: BeneficiaryDisplayedListDTOBase = new BeneficiaryDisplayedListDTOBase;
     private beneficiarySuggestions: BeneficiaryDisplayedListDTOBase[] = [];
@@ -33,18 +35,16 @@ export class InstallationListComponent {
         private localStorageService: LocalStorageService,
         public searchParametersService: SearchParametersService, private uxService: UxService,
         private beneficiaryService: BeneficiaryService) {
-        // this.supplier = this.localStorageService.get('supplierId');
         if (this.beneficiaryService.beneficiarySelected != undefined) {
             this.beneficiarySelected = this.beneficiaryService.beneficiarySelected;
             this.isBeneficiarySelected = true;
+            this.installationSite.municipality = this.beneficiarySelected.id;
             this.onSearch();
         }
+        console.log(this.beneficiarySelected);
     }
 
-
-    getBenegiciarySuggestions(event) {
-        let query = encodeURIComponent(event.query);
-
+    ngOnInit() {
         this.beneficiaryApi.getBeneficiariesList().subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.beneficiarySuggestions = response.data;
@@ -57,6 +57,7 @@ export class InstallationListComponent {
         this.isBeneficiarySelected = true;
         this.beneficiaryService.beneficiarySelected = this.beneficiarySelected;
         this.searchParametersService.parameters.id_beneficiary = this.beneficiarySelected.id;
+        this.installationSite.municipality = this.beneficiarySelected.id;
         this.onSearch();
     }
 
@@ -65,7 +66,7 @@ export class InstallationListComponent {
         if (this.isBeneficiarySelected) {
             this.searchParametersService.parameters.delta = event.rows;
             this.searchParametersService.parameters.page = event.first;
-            this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "id";
+            this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "number";
             this.searchParametersService.parameters.order = event.sortOrder > 0 ? "asc" : "desc";
             this.onSearch();
         }
@@ -80,14 +81,6 @@ export class InstallationListComponent {
                 this.totalResults = response.data.count;
             }
         })
-    }
-
-    onChangesAutocomplete(event) {
-        if (this.beneficiaryService.beneficiarySelected != this.beneficiarySelected) {
-            this.isBeneficiarySelected = false;
-            this.installationSites = [];
-            this.totalResults = 0;
-        }
     }
 
     openConfirmInstallation() {

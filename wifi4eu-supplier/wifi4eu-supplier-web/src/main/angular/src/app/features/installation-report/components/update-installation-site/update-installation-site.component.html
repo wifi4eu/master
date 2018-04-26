@@ -4,11 +4,11 @@
                 <p class="modal-subtitle">{{'updateInstallationReport.subtitle' | translate}}</p>
                 <form (ngSubmit)="onSubmit(installationSiteForm)" #installationSiteForm="ngForm">
                         <div class="form-group font-weight-bold" [hidden]='!isEdit'>
-                                <p>{{ 'shared.number.label' | translate }}: {{numberInput}}</p>
+                                <p>{{ 'shared.number.label' | translate }}: {{installationSite.number}}</p>
                         </div>
                         <div class="form-group">
                                 <label for="siteName">{{ 'installationReport.siteName' | translate }}</label>
-                                <input type="text" class="form-control" id="siteName" name="siteName" placeholder="" [(ngModel)]="nameSiteInput" #siteName="ngModel"
+                                <input type="text" class="form-control" id="siteName" name="siteName" placeholder="" [(ngModel)]="installationSite.name" #siteName="ngModel"
                                         required>
                         </div>
                         <div class="form-group">
@@ -17,7 +17,7 @@
                                         <i class="fa fa-question-circle"></i>
                                 </p>
                                 <input type="text" class="form-control" id="captivePortal" name="captivePortal" placeholder="" oncopy="return false" onpaste="return false"
-                                        pattern="{{regexUrlPortal}}" [(ngModel)]="captivePortalInput" #captivePortal="ngModel" validateEquals="captivePortalRepeat"
+                                        pattern="{{regexUrlPortal}}" [(ngModel)]="installationSite.url" #captivePortal="ngModel" validateEquals="captivePortalRepeat"
                                         required>
                         </div>
                         <div class="form-group">

@@ -11,7 +11,7 @@ import { AccesspointsApi } from '../../../../shared/swagger/api/AccesspointsApi'
     templateUrl: './access-point-details.component.html'
 })
 export class AccessPointDetailsComponent implements OnInit {
-    // @Input('beneficiary') beneficiary : BeneficiaryDisplayedListDTOBase;
+
     private beneficiary: BeneficiaryDisplayedListDTOBase = new BeneficiaryDisplayedListDTOBase;
     private installationSiteName: string;
 

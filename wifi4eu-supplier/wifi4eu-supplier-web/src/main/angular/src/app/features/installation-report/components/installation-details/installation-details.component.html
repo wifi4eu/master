@@ -20,9 +20,9 @@
                 <p>{{'installationDetails.captivePortal' | translate }}</p>
             </div>
             <div class="col-md-7 font-weight-bold">
-                <p>{{'shared.number.label' | translate}}</p>
-                <p>{{'installationReport.siteName' | translate }}</p>
-                <p>{{'installationDetails.captivePortal' | translate }}</p>
+                <p>{{installationSite.number}}</p>
+                <p>{{installationSite.name}}</p>
+                <p>{{installationSite.url}}</p>
             </div>
             <div class="col-md-3 text-right detailsButtons">
                 <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-pencil-alt" (click)="openUpdateInstallationSite()">
@@ -32,7 +32,7 @@
             </div>
         </div>
     </div>
-    <update-installation-site [installationSite]='installationSite'></update-installation-site>
+    <update-installation-site [isEdit]="true" [installationSite]='installationSite'></update-installation-site>
 
     <ux-modal id="removeInstallationSite" titleLabel="{{ 'installationDetails.removeModalTitle' | translate }}" isOverflowVisible="true"
         [isHandleCloseOnAccept]="false" [isSizeSmall]="false" (onDismiss)="closeRemoveInstallationSite()">
