@@ -6,6 +6,7 @@
     <button typeClass="warning" class="pull-right btn btn-primary changePassword confirm-button topButtonSession" (click)="logout()">Reload</button>
 </ux-alert>
 <div class="{{sessionExpired ? 'sessionOff' : 'sessionOn'}}">
+    <div *ngIf="sessionExpired" class="disabledUserWork"> <br> </div>
     <ux-layout-app>
         <uxLayoutAppMainContainer>
             <ux-layout-app-main>
