@@ -1,9 +1,9 @@
 <ux-alert *ngIf="sessionExpired" typeClass="warning" style="position: fixed; z-index: 9999; right:0; width: 100%">
-  <span>
-    Your session has been expired. You have been disconnected from Wifi4EU.
-    <br>Please reload the page.
+  <span class="topBarSession">
+      {{'session-out-1' | translate}}<br>
+      {{'session-out-2' | translate}}
   </span>
-    <button typeClass="warning" class="pull-right btn btn-primary changePassword confirm-button" (click)="logout()">Reload</button>
+    <button typeClass="warning" class="pull-right btn btn-primary changePassword confirm-button topButtonSession" (click)="logout()">Reload</button>
 </ux-alert>
 <div class="{{sessionExpired ? 'sessionOff' : 'sessionOn'}}">
     <ux-layout-app>

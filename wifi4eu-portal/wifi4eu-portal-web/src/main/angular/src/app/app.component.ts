@@ -79,12 +79,10 @@ export class AppComponent {
 
         this.updateFooterDate();
 
-        // setTimeout(this.isSessionExpired(), 2250);
         Observable.interval(10000)
             .takeWhile(() => !this.sessionExpired)
             .subscribe(execution => {
                 // This will be called every 10 seconds until `stopCondition` flag is set to true
-                console.log(execution);
                 this.isSessionExpired();
             })
     }
@@ -331,7 +329,6 @@ export class AppComponent {
         this.websockApi.isInvalidatedSession().subscribe(
             (sessionStatus: Boolean) => {
                 this.sessionExpired = (sessionStatus == null) || sessionStatus;
-                console.log("Status is " + this.sessionExpired + " = " + (sessionStatus == null) + " || " + sessionStatus);
             }
         );
     }

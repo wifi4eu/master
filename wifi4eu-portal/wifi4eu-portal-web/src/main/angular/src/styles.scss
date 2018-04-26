@@ -1671,3 +1671,17 @@ input.email_profile::-ms-clear{
 .sessionOn{
   height: 100%;
 }
+
+.topButtonSession {
+  width: 10%;
+  min-width: 100px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.topBarSession {
+  line-height:35px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: 5px;
+}
