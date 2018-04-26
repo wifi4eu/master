@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { SearchParametersService } from '../../../../core/services/search-parameters.service';
 import { SearchParameters } from '../../../../core/models/search-parameters.model';
 import { BeneficiaryApi } from '../../../../shared/swagger/api/BeneficiaryApi';
@@ -15,7 +15,7 @@ import { InstallationSite } from '../../../../shared/swagger/model/InstallationS
     providers: [BeneficiaryApi]
 })
 
-export class InstallationListComponent {
+export class InstallationListComponent implements OnInit {
     //-- Component properties
     _timeout: any = null;
     totalResults: number = 0;
@@ -33,7 +33,6 @@ export class InstallationListComponent {
         private localStorageService: LocalStorageService,
         public searchParametersService: SearchParametersService, private uxService: UxService,
         private beneficiaryService: BeneficiaryService) {
-        // this.supplier = this.localStorageService.get('supplierId');
         if (this.beneficiaryService.beneficiarySelected != undefined) {
             this.beneficiarySelected = this.beneficiaryService.beneficiarySelected;
             this.isBeneficiarySelected = true;
@@ -41,13 +40,11 @@ export class InstallationListComponent {
         }
     }
 
-
-    getBenegiciarySuggestions(event) {
-        let query = encodeURIComponent(event.query);
-
+    ngOnInit(){
         this.beneficiaryApi.getBeneficiariesList().subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.beneficiarySuggestions = response.data;
+                console.log(this.beneficiarySuggestions);
             }
         });
     }
@@ -80,14 +77,6 @@ export class InstallationListComponent {
                 this.totalResults = response.data.count;
             }
         })
-    }
-
-    onChangesAutocomplete(event) {
-        if (this.beneficiaryService.beneficiarySelected != this.beneficiarySelected) {
-            this.isBeneficiarySelected = false;
-            this.installationSites = [];
-            this.totalResults = 0;
-        }
     }
 
     openConfirmInstallation() {

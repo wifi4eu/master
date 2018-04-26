@@ -13,10 +13,11 @@
 
     <div class="form-group instalReportBeneficiary col-md-3">
         <label for="selectBeneficiary">{{ 'shared.beneficiary.label' | translate }}</label>
-        <p-autoComplete id="selectBeneficiary" name="selectBeneficiary" placeholder="{{'app.search.button' | translate}}" [(ngModel)]="beneficiarySelected"
-            [suggestions]="beneficiarySuggestions" field="name" (completeMethod)="getBenegiciarySuggestions($event)" (onSelect)="onBeneficiarySelected(this)"
-            (onKeyUp)="onChangesAutocomplete($event)"></p-autoComplete>
-
+                <select class="form-control" id="selectBeneficiary" [(ngModel)]="beneficiarySelected" (ngModelChange)="onBeneficiarySelected(this)">
+                <option *ngFor="let bf of beneficiarySuggestions" [ngValue]=" bf ">
+                {{ bf.name }}
+                </option> 
+                </select>
     </div>
 
     <div class="results">
@@ -33,7 +34,7 @@
         <p-dataTable [value]="installationSites" [rows]="searchParametersService.parameters.delta" [paginator]="true" [rowsPerPageOptions]="[5,10,20]"
             [totalRecords]="totalResults" [first]="searchParametersService.parameters.page" [lazy]="true" (onLazyLoad)="onPage($event)"
             [immutable]="false">
-            <p-column field="id" header="{{'shared.number.label' | translate }}" sortable="true">
+            <p-column field="number" header="{{'shared.number.label' | translate }}" sortable="true">
             </p-column>
             <p-column field="name" header="{{'installationReport.siteName' | translate }}" sortable="true"></p-column>
             <p-column field="domainName" header="{{'installationReport.domainName' | translate }}" sortable="true"></p-column>

@@ -7,7 +7,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { InstallationListComponent } from './components/installation-list/installation-list.component';
 import { UpdateInstallationSite } from "./components/update-installation-site/update-installation-site.component"
 import { SearchParametersService } from '../../core/services/search-parameters.service';
-import {AutoCompleteModule, DataTableModule, CheckboxModule, TooltipModule} from "primeng/primeng";
+import {AutoCompleteModule, DataTableModule, CheckboxModule, TooltipModule, DropdownModule} from "primeng/primeng";
 import { EqualValidator } from '../../core/directives/validate-equals.directive'; 
 import { InstallationsiteApi } from '../../shared/swagger/api/InstallationsiteApi';
 import { BeneficiaryApi } from '../../shared/swagger';
@@ -17,6 +17,7 @@ import { BeneficiaryApi } from '../../shared/swagger';
         SharedModule,
         InstallationReportRoutingModule,
         AutoCompleteModule,
+        DropdownModule,
         DataTableModule,
         CheckboxModule,
         TooltipModule        
