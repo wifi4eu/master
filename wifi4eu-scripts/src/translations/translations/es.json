@@ -172,7 +172,7 @@
   "suppRegistration.requirements.head": "Confirmo que he leído y aceptado las condiciones siguientes de la iniciativa: ",
   "discussionForum.add.reply": "Nuevo mensaje",
   "home.footer.update": "Última actualización {{versionDate}} v{{version}} | ",
-  "home.footer.top": "Arriba",
+  "home.footer.top": " | Arriba",
   "benefPortal.profile.title": "Mi inscripción",
   "shared.registrationCompleted": "Ha completado su inscripción.",
   "shared.warning": "Atención:",
@@ -560,5 +560,6 @@
   "(privacy statement)": "Declaración de privacidad",
   "dgConn.applicantDetails.validateApplication.title": "Validate application",
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
-  "dgConn.totalRecords": "Total records"
+  "dgConn.totalRecords": "Total records",
+  "shared.incorrectFormat": "Seleccione un documento con un formato adecuado (.pdf, .png o .jpg)"
 }

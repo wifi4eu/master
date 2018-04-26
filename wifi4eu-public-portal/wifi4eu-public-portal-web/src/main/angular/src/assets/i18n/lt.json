@@ -534,5 +534,6 @@
   "(privacy statement)": "Pareiškimas apie privatumo apsaugą",
   "dgConn.applicantDetails.validateApplication.title": "Validate application",
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
-  "dgConn.totalRecords": "Total records"
+  "dgConn.totalRecords": "Total records",
+  "shared.incorrectFormat": "Pasirinkite tinkamo formato dokumentą (.pdf, .png, .jpg)"
 }
