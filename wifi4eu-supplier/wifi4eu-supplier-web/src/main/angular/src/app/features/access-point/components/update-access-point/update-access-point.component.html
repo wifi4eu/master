@@ -4,7 +4,7 @@
                 <p class="modal-subtitle">{{'updateAccessPoint.subtitle' | translate}}</p>
                 <form (ngSubmit)="onSubmit(accessPointForm)" #accessPointForm="ngForm">
                         <div class="form-group font-weight-bold" [hidden]='!isEdit'>
-                                <p>{{ 'shared.number.label' | translate }}: {{numberInput}}</p>
+                                <p>{{ 'shared.number.label' | translate }}: {{accessPoint.number}}</p>
                         </div>
                         <div class="form-group">
                                 <label for="locationType">{{ 'accessPoint.locationType' | translate }}</label>
