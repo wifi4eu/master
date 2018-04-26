@@ -31,6 +31,13 @@ public class BeneficiaryDisplayedListResource {
         return beneficiaryDisplayedListService.findBeneficiariesList();
     }
 
+    @ApiOperation(value = "Confirm wifi indicator municipality (registration table)")
+    @RequestMapping(value = "/confirm-wifindicator/{id}", method= RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO confirmWifiIndicatorByMunicipalityId(@PathVariable("id") int id){
+        return beneficiaryDisplayedListService.confirmWifiIndicatorByMunicipalityId(id);
+    }
+
     @ApiOperation(value = "Edit Beneficiary")
     @RequestMapping(value="/edit", method= RequestMethod.PUT, produces = "application/json")
     @ResponseBody
