@@ -53,11 +53,10 @@ export class AccessPointDetailsComponent implements OnInit {
     submitRemoveAccessPoint() {
         this.accessPointService.deleteAccessPointById(this.accessPoint.id).subscribe((response : ResponseDTOBase)=> {
             if(response.success){
-                alert("success");
+                this.location.back();
             }
         });
         this.closeRemoveAccessPoint();
-        this.location.back();
     }
 
     closeRemoveAccessPoint() {
