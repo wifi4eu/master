@@ -126,8 +126,8 @@ public class AccessPointService {
             accessPoint.setDeviceBrand((String) map.get("deviceBrand"));
             accessPoint.setLocation((String) map.get("location"));
             accessPoint.setLocationType((String) map.get("locationType"));
-            accessPoint.setLatitude((double) map.get("latitude"));
-            accessPoint.setLongitude((double) map.get("longitude"));
+            accessPoint.setLatitude(Double.parseDouble(map.get("latitude").toString()));
+            accessPoint.setLongitude(Double.parseDouble(map.get("longitude").toString()));
             String regExMac = "([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$";
             String macAddress = (String) map.get("macAddress");
             if (macAddress.matches(regExMac)){
