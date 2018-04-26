@@ -52,15 +52,17 @@ export class UpdateInstallationSite implements OnChanges {
   }
 
   onSubmit(form) {
+    console.log(this.installationSite);
     if (form.form.valid) {
       this.installationSiteApi.updateInstallationSite(this.installationSite).subscribe((response: ResponseDTOBase) => {
         if (response.success) {
           this.onSubmitted.emit(true);
         }
       });
+      this.isSubmitted = true;
+      this.closeUpdateInstallationSite();
     }
-    this.isSubmitted = true;
-    this.closeUpdateInstallationSite();
+
   }
 
 }

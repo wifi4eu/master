@@ -14,10 +14,11 @@
     <div class="form-group instalReportBeneficiary col-md-3">
         <label for="selectBeneficiary">{{ 'shared.beneficiary.label' | translate }}</label>
         <select class="form-control"  id="selectBeneficiary"  [(ngModel)]="beneficiarySelected" (ngModelChange)="onBeneficiarySelected(this)">
-            <option *ngFor="let bf of beneficiarySuggestions"  [ngValue]=" bf ">
+           <option *ngFor="let bf of beneficiarySuggestions"  [ngValue]="bf" [selected]="beneficiarySelected.id == bf.id">
+            <!-- <option *ngFor="let bf of beneficiarySuggestions"  [ngValue]="bf"> -->
                 {{ bf.name }}
-                </option>
-                </select>
+            </option>
+        </select>
     </div>
 
     <div class="results">

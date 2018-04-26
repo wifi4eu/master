@@ -16,7 +16,6 @@ export class InstallationSiteDetailResolver implements Resolve<InstallationSiteB
         if (id != null) {
             return this.installationSiteApi.getInstallationSite(id).map((response: ResponseDTOBase) => {
                 if (response.success) {
-                    // console.log(response.data);
                     return response.data;
                 } else {
                     this.router.navigate(['/']);

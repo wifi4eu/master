@@ -38,8 +38,9 @@ export class InstallationListComponent implements OnInit {
         if (this.beneficiaryService.beneficiarySelected != undefined) {
             this.beneficiarySelected = this.beneficiaryService.beneficiarySelected;
             this.isBeneficiarySelected = true;
+            this.installationSite.municipality = this.beneficiarySelected.id;
             this.onSearch();
-        } 
+        }
         console.log(this.beneficiarySelected);
     }
 
