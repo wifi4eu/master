@@ -104,4 +104,9 @@ export class InstallationListComponent implements OnInit {
         this.uxService.openModal('updateInstallationSite');
     }
 
+    byId(bf1: BeneficiaryDisplayedListDTOBase, bf2: BeneficiaryDisplayedListDTOBase){
+        return bf1.id === bf2.id;
+    }
+
+
 }
