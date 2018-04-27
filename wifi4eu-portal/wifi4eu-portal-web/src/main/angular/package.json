@@ -32,6 +32,7 @@
     "@types/crypto-js": "^3.1.33",
     "@types/file-saver": "0.0.1",
     "angular-2-local-storage": "^1.0.1",
+    "azure-storage": "^2.8.1",
     "chart.js": "^2.5.0",
     "class-transformer": "^0.1.2",
     "core-js": "^2.4.1",

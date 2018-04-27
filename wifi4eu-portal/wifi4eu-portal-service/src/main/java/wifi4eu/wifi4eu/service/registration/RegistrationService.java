@@ -1,8 +1,12 @@
 package wifi4eu.wifi4eu.service.registration;
 
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -17,6 +21,7 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.text.MessageFormat;
 import java.util.List;
@@ -25,6 +30,9 @@ import java.util.ResourceBundle;
 
 @Service("portalRegistrationService")
 public class RegistrationService {
+    private final Logger _log = LoggerFactory.getLogger(RegistrationService.class);
+
+
     @Autowired
     RegistrationMapper registrationMapper;
 
@@ -59,6 +67,9 @@ public class RegistrationService {
 
     @Transactional
     public RegistrationDTO createRegistration(RegistrationDTO registrationDTO) {
+        if (registrationDTO.getId() == 0) {
+            registrationDTO.setMailCounter(3);
+        }
         return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
     }
 
@@ -90,8 +101,8 @@ public class RegistrationService {
 
     public boolean checkIfRegistrationIsKO(int userId) {
         List<RegistrationDTO> registrations = registrationMapper.toDTOList(
-                                                Lists.newArrayList(
-                                                        registrationRepository.findByUserId(userId)));
+                Lists.newArrayList(
+                        registrationRepository.findByUserId(userId)));
         for (RegistrationDTO registration : registrations) {
             if (registration.getStatus() == 1) {
                 return true;
@@ -113,8 +124,9 @@ public class RegistrationService {
                 ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
                 String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
-                String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/additional-info";
+                String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
                 msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
+                _log.error("additionalInfoUrl: " + additionalInfoUrl + " msgBody: " + msgBody + " language: " + locale.getLanguage());
                 if (!userService.isLocalHost()) {
                     mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                 }
@@ -123,6 +135,7 @@ public class RegistrationService {
         }
         return false;
     }
+
 
     @Transactional
     public boolean assignLegalEntity(int registrationId) {
@@ -154,7 +167,8 @@ public class RegistrationService {
             MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
             if (threadDTO.getReason().equals(String.valueOf(municipality.getLauId()))) {
                 return registration;
-            };
+            }
+            ;
         }
         return null;
     }
