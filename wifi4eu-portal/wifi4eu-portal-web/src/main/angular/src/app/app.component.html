@@ -1,9 +1,9 @@
 <ux-alert *ngIf="sessionExpired" typeClass="warning" style="position: fixed; z-index: 9999; right:0; width: 100%">
   <span class="topBarSession">
-      {{'session-out-1' | translate}}<br>
-      {{'session-out-2' | translate}}
+      {{'shared.session.expired' | translate}}<br>
+      {{'shared.session.expired.reload' | translate}}
   </span>
-    <button typeClass="warning" class="pull-right btn btn-primary changePassword confirm-button topButtonSession" (click)="logout()">Reload</button>
+    <button typeClass="warning" class="pull-right btn btn-primary changePassword confirm-button topButtonSession" (click)="reload()">Reload</button>
 </ux-alert>
 <div class="{{sessionExpired ? 'sessionOff' : 'sessionOn'}}">
     <div *ngIf="sessionExpired" class="disabledUserWork"> <br> </div>

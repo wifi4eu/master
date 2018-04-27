@@ -79,7 +79,8 @@ export class AppComponent {
 
         this.updateFooterDate();
 
-        Observable.interval(10000)
+        const sessionPolling = 60000;
+        Observable.interval(sessionPolling)
             .takeWhile(() => !this.sessionExpired)
             .subscribe(execution => {
                 // This will be called every 10 seconds until `stopCondition` flag is set to true
@@ -296,14 +297,7 @@ export class AppComponent {
     }
 
     private logout() {
-        this.user = null;
-        this.localStorageService.remove('user');
-        this.localStorageService.remove('public-redirection');
-        this.cookieService.deleteAll();
-
-        this.menuLinks = this.children[0];
-        this.profileUrl = null;
-
+        this.removeDataSession()
         this.userApi.doCompleteSignOut().subscribe(
             (response: string) => {
                 window.location.href = environment['logoutUrl'];
@@ -312,6 +306,21 @@ export class AppComponent {
                 console.log(error);
             }
         );
+    }
+
+    private reload() {
+        this.removeDataSession()
+        window.location.reload();
+    }
+
+    private removeDataSession() {
+        this.user = null;
+        this.localStorageService.remove('user');
+        this.localStorageService.remove('public-redirection');
+        this.cookieService.deleteAll();
+
+        this.menuLinks = this.children[0];
+        this.profileUrl = null;
     }
 
     private goToTop() {
