@@ -33,6 +33,7 @@ export class UpdateInstallationSite implements OnChanges {
       modalJsonString = 'installationReport.addSite';
     } else {
       modalJsonString = 'updateInstallationReport.editTitle';
+      Object.assign(this.unmodifiedInstallationSite, this.installationSite);
     }
 
     this.translateService.get(modalJsonString).subscribe(
@@ -46,6 +47,7 @@ export class UpdateInstallationSite implements OnChanges {
     this.uxService.closeModal('updateInstallationSite');
     if (!this.isSubmitted && this.isEdit) {
       Object.assign(this.installationSite, this.unmodifiedInstallationSite);
+      this.repeatCaptivePortalInput = '';
     } else if (!this.isEdit) {
       this.form.form.reset();
     }
