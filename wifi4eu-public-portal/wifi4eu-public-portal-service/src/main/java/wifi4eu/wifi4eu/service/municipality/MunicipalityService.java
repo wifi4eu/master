@@ -12,6 +12,7 @@ import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.location.NutsService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class MunicipalityService {
         for(NutsDTO nutsDTO: regions){
             municipalities.addAll(municipalityRepository.getMunicipalitiesRegisteredByRegion(nutsDTO.getCode()));
         }
+        Collections.sort(municipalities);
         municipalityCacheDTO.setMunicipalities(municipalities);
         return municipalityCacheDTO;
     }
