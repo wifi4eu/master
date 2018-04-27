@@ -94,6 +94,11 @@ export class InstallationListComponent implements OnInit {
 
     sendConfirmInstallation() {
         this.isReportSent = true;
+        this.beneficiaryApi.confirmWifiIndicatorByMunicipalityId(this.beneficiarySelected.id).subscribe((response: ResponseDTOBase) => {
+            if (response.success) {
+                alert('success');
+            }
+        })
         let successBanner = document.getElementById("success");
         successBanner.style.display = "block";
         successBanner.scrollIntoView({ behavior: "smooth" });
@@ -104,7 +109,7 @@ export class InstallationListComponent implements OnInit {
         this.uxService.openModal('updateInstallationSite');
     }
 
-    byId(bf1: BeneficiaryDisplayedListDTOBase, bf2: BeneficiaryDisplayedListDTOBase){
+    byId(bf1: BeneficiaryDisplayedListDTOBase, bf2: BeneficiaryDisplayedListDTOBase) {
         return bf1.id === bf2.id;
     }
 
