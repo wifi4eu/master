@@ -46,11 +46,19 @@ public class AccessPoint {
     @Column(name = "location_type")
     private String locationType;
 
+    @Column(name = "latitude")
+    private String latitude;
+
+    @Column(name = "longitude")
+    private String longitude;
+
+    /*
     @Column(name = "latitude", precision=8, scale=6)
     private double latitude;
 
     @Column(name = "longitude", precision=8, scale=6)
     private double longitude;
+    */
 
     @Column(name = "mac_address", length = 17)
     private String macAddress;
@@ -61,7 +69,7 @@ public class AccessPoint {
     public AccessPoint() {
     }
 
-    public AccessPoint(String modelNumber, String serialNumber, boolean isIndoor, String deviceBrand, String location, String locationType, double latitude, double longitude, String macAddress) {
+    public AccessPoint(String modelNumber, String serialNumber, boolean isIndoor, String deviceBrand, String location, String locationType, String latitude, String longitude, String macAddress) {
         // this.installationSite = installationSite;
         this.modelNumber = modelNumber;
         this.serialNumber = serialNumber;
@@ -164,19 +172,19 @@ public class AccessPoint {
         this.locationType = locationType;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
