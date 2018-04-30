@@ -70,7 +70,6 @@ export class AppComponent {
             .takeWhile(() => !this.sessionExpired)
             .subscribe(execution => {
                 // This will be called every 10 seconds until `stopCondition` flag is set to true
-                console.log(execution);
                 this.isSessionExpired();
             })
     }
@@ -204,7 +203,6 @@ export class AppComponent {
         this.websockApi.isInvalidatedSession().subscribe(
             (sessionStatus: Boolean) => {
                 this.sessionExpired = (sessionStatus == null) || sessionStatus;
-                console.log(sessionStatus);
             }
         );
     }
