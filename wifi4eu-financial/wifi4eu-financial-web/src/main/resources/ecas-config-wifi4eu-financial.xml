@@ -15,25 +15,34 @@
 
     <requestingUserDetails>true</requestingUserDetails>
 
+    <!--
     <extraGroupHandler>wifi4eu.wifi4eu.web.util.ecas.RbacEcasExtraGroupHandler</extraGroupHandler>
+    -->
 
     <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
     <assuranceLevel>${ecas.config.assuranceLevel}</assuranceLevel>
-    <!--
-    <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
-    <applicationServer>weblogic</applicationServer>
+    <serverProtocol>${schemes}</serverProtocol>
+    <cas:serverName>${ecas.server.address}</cas:serverName>
+    <serverPort>${ecas.server.port}</serverPort>
+    <serverSSLPort>${ecas.server.port}</serverSSLPort>
+
+    <applicationServer>tomcat</applicationServer>
 
     <acceptStrengths>
         <strength>${ecas.config.strength}</strength>
     </acceptStrengths>
 
-    <cas:renew>${ecas.config.renew}</cas:renew>
-    <assuranceLevel>${ecas.config.assuranceLevel}</assuranceLevel>
+    <!-- maxConnections equal to the Tomcat threads per instance -->
+    <maxConnections>200</maxConnections>
+    <connectionTimeout>180000</connectionTimeout>
+
+    <!--
+            <cas:renew>${ecas.config.renew}</cas:renew>
 
 
-    ${ecas.config.validate.load_test_specific}
+            ${ecas.config.validate.load_test_specific}
 
-    ${ecas.config.test.certificate.element}
-    -->
+            ${ecas.config.test.certificate.element}
+            -->
 
 </client-config>

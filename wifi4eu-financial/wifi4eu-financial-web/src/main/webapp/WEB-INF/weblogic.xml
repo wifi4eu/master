@@ -9,7 +9,7 @@
   <session-descriptor>
         <debug-enabled>true</debug-enabled>
         <encode-session-id-in-query-params>false</encode-session-id-in-query-params>
-        <cookie-path>/wifi4eu</cookie-path>
+        <cookie-path>/wifi4eu-financial</cookie-path>
   </session-descriptor>
 
   <jsp-descriptor>
