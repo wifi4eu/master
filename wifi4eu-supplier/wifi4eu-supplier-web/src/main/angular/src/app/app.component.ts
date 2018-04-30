@@ -132,5 +132,8 @@ export class AppComponent implements OnInit {
             });
     }
 
-    
+    private goToTop() {
+        window.scrollTo(0, 0);
+    }
+   
 }

@@ -72,5 +72,7 @@
     "accessPointDetails.removeModalThisAction": "This actions is irreversible.",
 
     "menu.about": "About Wifi4EU",
-    "menu.submenu": "About"
+    "menu.submenu": "About",
+    "shared.loggedInAs": "Logged in as ",
+    "shared.logout": "Logout"
 }

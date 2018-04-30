@@ -2,7 +2,6 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { SearchParametersService } from '../../../../core/services/search-parameters.service';
 import { SearchParameters } from '../../../../core/models/search-parameters.model';
 import { BeneficiaryApi } from '../../../../shared/swagger/api/BeneficiaryApi';
-import { LocalStorageService } from "angular-2-local-storage";
 import { UxService } from '@eui/ux-commons';
 
 import { BeneficiaryDisplayedListDTOBase, ResponseDTOBase, ResponseDTO } from '../../../../shared/swagger';
@@ -32,7 +31,6 @@ export class InstallationListComponent implements OnInit {
 
 
     constructor(private beneficiaryApi: BeneficiaryApi, private installationSiteApi: InstallationsiteApi,
-        private localStorageService: LocalStorageService,
         public searchParametersService: SearchParametersService, private uxService: UxService,
         private beneficiaryService: BeneficiaryService) {
         if (this.beneficiaryService.beneficiarySelected != undefined) {
@@ -41,7 +39,6 @@ export class InstallationListComponent implements OnInit {
             this.installationSite.municipality = this.beneficiarySelected.id;
             this.onSearch();
         }
-        console.log(this.beneficiarySelected);
     }
 
     ngOnInit() {
