@@ -45,9 +45,9 @@ export class UpdateInstallationSite implements OnChanges {
 
   closeUpdateInstallationSite() {
     this.uxService.closeModal('updateInstallationSite');
+    this.repeatCaptivePortalInput = '';
     if (!this.isSubmitted && this.isEdit) {
       Object.assign(this.installationSite, this.unmodifiedInstallationSite);
-      this.repeatCaptivePortalInput = '';
     } else if (!this.isEdit) {
       this.form.form.reset();
     }
