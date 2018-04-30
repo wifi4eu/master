@@ -25,11 +25,11 @@ export class EqualValidator implements Validator {
         }
         
         if (confirmValue && selfValue === confirmValue.value && this.isReverse) {
-            if (!Object.keys(confirmValue.errors).length) confirmValue.setErrors(null);
+            if (Object.keys(confirmValue.errors).length) confirmValue.setErrors(null);
         }
 
         if (confirmValue && selfValue !== confirmValue.value && this.isReverse) {
-            confirmValue.setErrors({ validateEqual: false })
+            confirmValue.setErrors({ validateEqual: false });
         }
 
         return null;
