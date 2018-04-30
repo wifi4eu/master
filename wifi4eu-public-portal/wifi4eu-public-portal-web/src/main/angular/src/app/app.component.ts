@@ -9,6 +9,8 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {UserApi} from "./shared/swagger/api/UserApi";
 import {UserDTOBase} from "./shared/swagger/model/UserDTO";
 import {environment} from '../environments/environment';
+import {WebsockApi} from "app/shared/swagger";
+import {Observable} from "rxjs/Observable";
 
 enableProdMode();
 
@@ -16,7 +18,7 @@ enableProdMode();
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    providers: [UserApi]
+    providers: [UserApi, WebsockApi]
 })
 
 export class AppComponent {
@@ -29,7 +31,9 @@ export class AppComponent {
     @Output() private selectedLanguage: UxLanguage = UxEuLanguages.languagesByCode ['en'];
     private newLanguageArray: string = "bg,cs,da,de,et,el,en,es,fr,it,lv,lt,hu,mt,nl,pl,pt,ro,sk,sl,fi,sv,hr,ga";
 
-    constructor(private translateService: TranslateService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private userApi: UserApi) {
+    sessionExpired: Boolean = false;
+
+    constructor(private translateService: TranslateService, private uxService: UxService, private localStorage: LocalStorageService, private sharedService: SharedService, private websockApi: WebsockApi, private localStorageService: LocalStorageService, private userApi: UserApi) {
         translateService.setDefaultLang('en');
         let language = this.localStorage.get('lang');
         if (language) {
@@ -59,6 +63,16 @@ export class AppComponent {
         this.sharedService.updateEmitter.subscribe(() => this.updateHeader());
         this.updateFooterDate();
         this.updateMenuTranslations();
+
+        const sessionPolling = 5000;
+        // const sessionPolling = 60005;
+        Observable.interval(sessionPolling)
+            .takeWhile(() => !this.sessionExpired)
+            .subscribe(execution => {
+                // This will be called every 10 seconds until `stopCondition` flag is set to true
+                console.log(execution);
+                this.isSessionExpired();
+            })
     }
 
     updateHeader() {
@@ -183,5 +197,23 @@ export class AppComponent {
         let lang = this.localStorage.get('lang');
         if (!lang) lang = 'en';
         this.actualDate = new Date(Date.now()).toLocaleDateString(lang.toString());
+    }
+
+
+    isSessionExpired() {
+        this.websockApi.isInvalidatedSession().subscribe(
+            (sessionStatus: Boolean) => {
+                this.sessionExpired = (sessionStatus == null) || sessionStatus;
+                console.log(sessionStatus);
+            }
+        );
+    }
+
+    private reload() {
+        this.user = null;
+        this.localStorageService.remove('user');
+        this.localStorageService.remove('public-redirection');
+
+        window.location.reload();
     }
 }
