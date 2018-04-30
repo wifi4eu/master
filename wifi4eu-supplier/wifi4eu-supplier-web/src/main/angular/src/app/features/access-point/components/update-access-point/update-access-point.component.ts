@@ -17,7 +17,7 @@ export class UpdateAccessPoint implements OnChanges {
 
   @Output() onSubmitted: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  private unmodifiedAccessPoint: AccessPointBase = new AccessPointBase();
+  private modifiedAccessPoint: AccessPointBase = new AccessPointBase();
   private modalTitle: string;
 
   //TODO
@@ -51,11 +51,12 @@ export class UpdateAccessPoint implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     let modalJsonString: string;
 
+    Object.assign(this.modifiedAccessPoint, this.accessPoint);
+
     if (!this.isEdit) {
       modalJsonString = 'accessPoint.add';
     } else {
       modalJsonString = 'updateAccessPoint.editTitle';
-      Object.assign(this.unmodifiedAccessPoint, this.accessPoint);
     }
 
     this.translateService.get(modalJsonString).subscribe(
@@ -68,7 +69,7 @@ export class UpdateAccessPoint implements OnChanges {
   closeUpdateAccessPoint() {
     this.uxService.closeModal('updateAccessPoint');
     if (!this.isSubmitted && this.isEdit) {
-      Object.assign(this.accessPoint, this.unmodifiedAccessPoint);
+      Object.assign(this.modifiedAccessPoint, this.accessPoint);
     } else if (!this.isEdit) {
       this.form.form.reset();
     }
@@ -76,9 +77,10 @@ export class UpdateAccessPoint implements OnChanges {
 
   onSubmit(form) {
     if (form.form.valid) {
-      this.accessPointApi.addOrUpdateAccessPoint(this.accessPoint).subscribe((response: ResponseDTOBase) => {
+      this.accessPointApi.addOrUpdateAccessPoint(this.modifiedAccessPoint).subscribe((response: ResponseDTOBase) => {
         if (response.success) {
           this.onSubmitted.emit(true);
+          Object.assign(this.accessPoint, this.modifiedAccessPoint);
         }
       });
     }

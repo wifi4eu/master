@@ -18,7 +18,7 @@ export class UpdateInstallationSite implements OnChanges {
   regexUrlPortal: string = '[a-z0-9-:/.]*';
   private modalTitle: string;
   private isSubmitted: boolean = false;
-  private unmodifiedInstallationSite: InstallationSiteBase = new InstallationSiteBase();
+  private modifiedInstallationSite: InstallationSiteBase = new InstallationSiteBase();
 
   private repeatCaptivePortalInput: String;
 
@@ -28,12 +28,14 @@ export class UpdateInstallationSite implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     let modalJsonString: string;
+    this.isSubmitted  = false;
+
+    Object.assign(this.modifiedInstallationSite, this.installationSite);
 
     if (!this.isEdit) {
       modalJsonString = 'installationReport.addSite';
     } else {
       modalJsonString = 'updateInstallationReport.editTitle';
-      Object.assign(this.unmodifiedInstallationSite, this.installationSite);
     }
 
     this.translateService.get(modalJsonString).subscribe(
@@ -47,18 +49,19 @@ export class UpdateInstallationSite implements OnChanges {
     this.uxService.closeModal('updateInstallationSite');
     this.repeatCaptivePortalInput = '';
     if (!this.isSubmitted && this.isEdit) {
-      Object.assign(this.installationSite, this.unmodifiedInstallationSite);
+      Object.assign(this.modifiedInstallationSite, this.installationSite);
     } else if (!this.isEdit) {
       this.form.form.reset();
     }
   }
 
   onSubmit(form) {
-    console.log(this.installationSite);
+
     if (form.form.valid) {
-      this.installationSiteApi.updateInstallationSite(this.installationSite).subscribe((response: ResponseDTOBase) => {
+      this.installationSiteApi.updateInstallationSite(this.modifiedInstallationSite).subscribe((response: ResponseDTOBase) => {
         if (response.success) {
           this.onSubmitted.emit(true);
+          Object.assign(this.installationSite, this.modifiedInstallationSite);
         }
       });
       this.isSubmitted = true;

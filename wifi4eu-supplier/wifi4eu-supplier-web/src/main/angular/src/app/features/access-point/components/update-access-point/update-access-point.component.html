@@ -8,22 +8,22 @@
                         </div>
                         <div class="form-group">
                                 <label for="locationType">{{ 'accessPoint.locationType' | translate }}</label>
-                                <p-dropdown [options]="locationTypes" class="form-control" id="locationType" name="locationType" [(ngModel)]="accessPoint.locationType"
+                                <p-dropdown [options]="locationTypes" class="form-control" id="locationType" name="locationType" [(ngModel)]="modifiedAccessPoint.locationType"
                                         #locationType="ngModel" placeholder="{{ 'app.search.button' | translate}}" required></p-dropdown>
                         </div>
 
                         <div class="form-group">
                                 <label for="locationName">{{ 'accessPoint.locationName' | translate }}</label>
-                                <input type="text" class="form-control" id="locationName" name="locationName" placeholder="" [(ngModel)]="accessPoint.location"
+                                <input type="text" class="form-control" id="locationName" name="locationName" placeholder="" [(ngModel)]="modifiedAccessPoint.location"
                                         #locationName="ngModel" required>
                         </div>
 
                         <div class="form-group geoLocalDiv">
                                 <label for="latitude">{{ 'accessPoint.geoLocation' | translate }}</label>
                                 <input type="text" class="form-control geoLocal" id="latitude" name="latitude" placeholder="{{ 'updateAccessPoint.latitudePlaceholder' | translate}}"
-                                        [(ngModel)]="accessPoint.latitude" pattern="{{regexLocation}}" #latitude="ngModel" required>
+                                        [(ngModel)]="modifiedAccessPoint.latitude" pattern="{{regexLocation}}" #latitude="ngModel" required>
                                 <input type="text" class="form-control geoLocal" id="longitude" name="longitude" placeholder="{{'updateAccessPoint.longitudePlaceholder' | translate }}"
-                                        [(ngModel)]="accessPoint.longitude" pattern="{{regexLocation}}" #longitude="ngModel" required>
+                                        [(ngModel)]="modifiedAccessPoint.longitude" pattern="{{regexLocation}}" #longitude="ngModel" required>
                                 <!-- geolocation button deactivated, to add it edit geolocal css to  -->
                                 <!-- <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fas fa-map-marker">
                                                 {{ 'updateAccessPoint.getGeoLocation' | translate }}</ux-button> -->
@@ -31,28 +31,28 @@
 
                         <div class="form-group">
                                 <label for="deviceType">{{ 'accessPoint.deviceType' | translate }}</label>
-                                <p-dropdown [options]="deviceTypes" class="form-control" id="deviceType" name="deviceType" [(ngModel)]="accessPoint.indoor"
+                                <p-dropdown [options]="deviceTypes" class="form-control" id="deviceType" name="deviceType" [(ngModel)]="modifiedAccessPoint.indoor"
                                         #deviceType="ngModel" placeholder="{{ 'app.search.button' | translate}}" required></p-dropdown>
                         </div>
 
                         <div class="form-group">
                                 <label for="deviceBrand">{{ 'accessPoint.deviceBrand' | translate }}</label>
-                                <input type="text" class="form-control" id="deviceBrand" name="deviceBrand" placeholder="" [(ngModel)]="accessPoint.deviceBrand"
+                                <input type="text" class="form-control" id="deviceBrand" name="deviceBrand" placeholder="" [(ngModel)]="modifiedAccessPoint.deviceBrand"
                                         #deviceBrand="ngModel" required>
                         </div>
                         <div class="form-group">
                                 <label for="deviceModel">{{ 'accessPoint.deviceModel' | translate }}</label>
-                                <input type="text" class="form-control" id="deviceModel" name="deviceModel" placeholder="" [(ngModel)]="accessPoint.modelNumber"
+                                <input type="text" class="form-control" id="deviceModel" name="deviceModel" placeholder="" [(ngModel)]="modifiedAccessPoint.modelNumber"
                                         #deviceModel="ngModel" required>
                         </div>
                         <div class="form-group">
                                 <label for="deviceSerialNumber">{{ 'accessPoint.deviceSerial' | translate }}</label>
-                                <input type="text" class="form-control" id="deviceSerialNumber" name="deviceSerialNumber" placeholder="" [(ngModel)]="accessPoint.serialNumber"
+                                <input type="text" class="form-control" id="deviceSerialNumber" name="deviceSerialNumber" placeholder="" [(ngModel)]="modifiedAccessPoint.serialNumber"
                                         #deviceSerialNumber="ngModel" required>
                         </div>
                         <div class="form-group">
                                 <label for="macAddress">{{ 'accessPoint.macAddress' | translate }}</label>
-                                <input type="text" class="form-control" id="macAddress" name="macAddress" placeholder="" [(ngModel)]="accessPoint.macAddress"
+                                <input type="text" class="form-control" id="macAddress" name="macAddress" placeholder="" [(ngModel)]="modifiedAccessPoint.macAddress"
                                         pattern='{{regexMacAddress}}' #macAddress="ngModel" required>
                         </div>
 

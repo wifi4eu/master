@@ -8,7 +8,7 @@
                         </div>
                         <div class="form-group">
                                 <label for="siteName">{{ 'installationReport.siteName' | translate }}</label>
-                                <input type="text" class="form-control" id="siteName" name="siteName" placeholder="" [(ngModel)]="installationSite.name" #siteName="ngModel"
+                                <input type="text" class="form-control" id="siteName" name="siteName" placeholder="" [(ngModel)]="modifiedInstallationSite.name" #siteName="ngModel"
                                         required>
                         </div>
                         <div class="form-group">
@@ -17,7 +17,7 @@
                                         <i class="fa fa-question-circle"></i>
                                 </p>
                                 <input type="text" class="form-control" id="captivePortal" name="captivePortal" placeholder="" oncopy="return false" onpaste="return false"
-                                        pattern="{{regexUrlPortal}}" [(ngModel)]="installationSite.url" #captivePortal="ngModel" validateEquals="captivePortalRepeat" reverse="true"
+                                        pattern="{{regexUrlPortal}}" [(ngModel)]="modifiedInstallationSite.url" #captivePortal="ngModel" validateEquals="captivePortalRepeat" reverse="true"
                                         required>
                         </div>
                         <div class="form-group">
