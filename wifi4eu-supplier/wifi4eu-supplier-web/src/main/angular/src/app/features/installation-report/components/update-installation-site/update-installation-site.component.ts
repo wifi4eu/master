@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { InstallationsiteApi } from '../../../../shared/swagger/api/InstallationsiteApi';
 import { InstallationSiteBase } from '../../../../shared/swagger/model/InstallationSite';
 import { ResponseDTOBase } from '../../../../shared/swagger';
+import { ErrorHandlingService } from '../../../../core/services/error.service';
 
 @Component({
   selector: 'update-installation-site',
@@ -23,12 +24,12 @@ export class UpdateInstallationSite implements OnChanges {
   private repeatCaptivePortalInput: String;
 
   constructor(private uxService: UxService, private translateService: TranslateService,
-    private installationSiteApi: InstallationsiteApi) {
+    private installationSiteApi: InstallationsiteApi,  private errorHandlingService: ErrorHandlingService) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
     let modalJsonString: string;
-    this.isSubmitted  = false;
+    this.isSubmitted = false;
 
     Object.assign(this.modifiedInstallationSite, this.installationSite);
 
@@ -63,6 +64,9 @@ export class UpdateInstallationSite implements OnChanges {
           this.onSubmitted.emit(true);
           Object.assign(this.installationSite, this.modifiedInstallationSite);
         }
+      }, error => {
+        console.log(error);
+        return this.errorHandlingService.handleError(error);
       });
       this.isSubmitted = true;
       this.closeUpdateInstallationSite();

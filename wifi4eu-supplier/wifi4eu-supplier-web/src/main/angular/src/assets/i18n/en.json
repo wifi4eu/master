@@ -74,5 +74,6 @@
     "menu.about": "About Wifi4EU",
     "menu.submenu": "About",
     "shared.loggedInAs": "Logged in as ",
-    "shared.logout": "Logout"
+    "shared.logout": "Logout",
+    "shared.error.beneficiaryNotSelected": "No beneficiary selected."
 }

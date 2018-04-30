@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AccessPointBase } from '../../../../shared/swagger/model/AccessPoint';
 import { AccesspointsApi } from '../../../../shared/swagger/api/AccesspointsApi';
 import { ResponseDTOBase } from '../../../../shared/swagger';
+import { ErrorHandlingService } from '../../../../core/services/error.service';
 
 @Component({
   selector: 'update-access-point',
@@ -45,7 +46,7 @@ export class UpdateAccessPoint implements OnChanges {
   private isSubmitted: boolean = false;
 
   constructor(private uxService: UxService, private translateService: TranslateService,
-    private accessPointApi: AccesspointsApi) {
+    private accessPointApi: AccesspointsApi,  private errorHandlingService: ErrorHandlingService) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -82,6 +83,9 @@ export class UpdateAccessPoint implements OnChanges {
           this.onSubmitted.emit(true);
           Object.assign(this.accessPoint, this.modifiedAccessPoint);
         }
+      }, error => {
+        console.log(error);
+        return this.errorHandlingService.handleError(error);
       });
     }
 

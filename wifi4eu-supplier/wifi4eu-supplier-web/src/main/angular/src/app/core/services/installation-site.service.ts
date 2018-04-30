@@ -5,11 +5,13 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { InstallationsiteApi } from '../../shared/swagger/api/InstallationsiteApi';
 import { InstallationSiteBase } from '../../shared/swagger/model/InstallationSite';
 import { ResponseDTOBase } from '../../shared/swagger';
+import { ErrorHandlingService } from './error.service';
 
 @Injectable()
 export class InstallationSiteDetailResolver implements Resolve<InstallationSiteBase[]> {
 
-    constructor(private installationSiteApi: InstallationsiteApi, private router: Router) { }
+    constructor(private installationSiteApi: InstallationsiteApi, private router: Router,
+        private errorHandlingService: ErrorHandlingService) { }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
         let id: number = +route.paramMap.get('id');
@@ -17,10 +19,10 @@ export class InstallationSiteDetailResolver implements Resolve<InstallationSiteB
             return this.installationSiteApi.getInstallationSite(id).map((response: ResponseDTOBase) => {
                 if (response.success) {
                     return response.data;
-                } else {
-                    this.router.navigate(['/']);
-                    return;
                 }
+            }).catch(error => {
+                console.log(error);
+                return this.errorHandlingService.handleError(error);
             });
             
         }

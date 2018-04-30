@@ -8,6 +8,7 @@ import { SearchParametersService } from '../../../../core/services/search-parame
 import { Observable } from 'rxjs/Observable';
 import { AccesspointsApi } from '../../../../shared/swagger/api/AccesspointsApi';
 import { AccessPointBase } from '../../../../shared/swagger/model/AccessPoint';
+import { ErrorHandlingService } from '../../../../core/services/error.service';
 
 
 @Component({
@@ -26,12 +27,12 @@ export class AccessPointListComponent {
 
     constructor(private uxService: UxService, private router: Router, private route: ActivatedRoute,
         private beneficiaryService: BeneficiaryService, public searchParametersService: SearchParametersService,
-        private accessPointApi: AccesspointsApi) {
+        private accessPointApi: AccesspointsApi, private errorHandlingService: ErrorHandlingService) {
 
         if (this.beneficiaryService.beneficiarySelected != undefined) {
             this.beneficiary = this.beneficiaryService.beneficiarySelected;
         } else {
-            router.navigate(['screen/installation-report']);
+            this.beneficiaryService.growlNotSelected();
         }
 
         this.idSub = this.route.params.subscribe(params => {
@@ -58,7 +59,10 @@ export class AccessPointListComponent {
                 this.accessPoints = response.data.data;
                 this.totalResults = response.data.count;
             }
-        })
+        }, error => {
+            console.log(error);
+            return this.errorHandlingService.handleError(error);
+        });
     }
 
     openUpdateAccessPoint() {
