@@ -28,7 +28,7 @@
                         </div>
                         <div class="modal-footer ux-modal__footer">
                                 <ux-button typeClass="primary" [isSecondary]="true" (click)="closeUpdateInstallationSite();" [isLarge]="true">{{ 'shared.close' | translate }}</ux-button>
-                                <ux-button type="submit" typeClass="primary" [isDisabled]="!installationSiteForm.form.valid" [isLarge]="true">{{ 'shared.add' | translate }}</ux-button>
+                                <ux-button type="submit" typeClass="primary" [isDisabled]="!installationSiteForm.form.valid" [isLarge]="true">{{updateButtonTitle}}</ux-button>
                         </div>
                 </form>
         </uxModalBody>

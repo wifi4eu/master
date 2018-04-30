@@ -20,6 +20,7 @@ export class UpdateAccessPoint implements OnChanges {
 
   private modifiedAccessPoint: AccessPointBase = new AccessPointBase();
   private modalTitle: string;
+  private updateButtonTitle : string;
 
   //TODO
   private locationTypes = [{ label: 'Town Hall / Administrative building', value: 'Town Hall / Administrative building' },
@@ -51,18 +52,27 @@ export class UpdateAccessPoint implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     let modalJsonString: string;
+    let buttonJsonString: string;
 
     Object.assign(this.modifiedAccessPoint, this.accessPoint);
 
     if (!this.isEdit) {
       modalJsonString = 'accessPoint.add';
+      buttonJsonString= 'shared.add';
     } else {
       modalJsonString = 'updateAccessPoint.editTitle';
+      buttonJsonString= 'shared.edit';
     }
 
     this.translateService.get(modalJsonString).subscribe(
       (translation: string) => {
         this.modalTitle = translation;
+      }
+    );
+
+    this.translateService.get(buttonJsonString).subscribe(
+      (translation: string) => {
+        this.updateButtonTitle = translation;
       }
     );
   }

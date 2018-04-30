@@ -18,6 +18,7 @@ export class UpdateInstallationSite implements OnChanges {
   @ViewChild('installationSiteForm') form: NgForm;
   regexUrlPortal: string = '[a-z0-9-:/.]*';
   private modalTitle: string;
+  private updateButtonTitle: string;
   private isSubmitted: boolean = false;
   private modifiedInstallationSite: InstallationSiteBase = new InstallationSiteBase();
 
@@ -29,19 +30,28 @@ export class UpdateInstallationSite implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     let modalJsonString: string;
+    let buttonJsonString: string;
     this.isSubmitted = false;
 
     Object.assign(this.modifiedInstallationSite, this.installationSite);
 
     if (!this.isEdit) {
       modalJsonString = 'installationReport.addSite';
+      buttonJsonString= 'shared.add';
     } else {
       modalJsonString = 'updateInstallationReport.editTitle';
+      buttonJsonString= 'shared.edit';
     }
 
     this.translateService.get(modalJsonString).subscribe(
       (translation: string) => {
         this.modalTitle = translation;
+      }
+    );
+
+    this.translateService.get(buttonJsonString).subscribe(
+      (translation: string) => {
+        this.updateButtonTitle = translation;
       }
     );
   }
