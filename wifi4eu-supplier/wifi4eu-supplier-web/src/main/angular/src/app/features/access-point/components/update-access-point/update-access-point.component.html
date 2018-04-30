@@ -15,7 +15,7 @@
                         <div class="form-group">
                                 <label for="locationName">{{ 'accessPoint.locationName' | translate }}</label>
                                 <input type="text" class="form-control" id="locationName" name="locationName" placeholder="" [(ngModel)]="modifiedAccessPoint.location"
-                                        #locationName="ngModel" required>
+                                        #locationName="ngModel" required noEmptyStrings>
                         </div>
 
                         <div class="form-group geoLocalDiv">
@@ -38,17 +38,17 @@
                         <div class="form-group">
                                 <label for="deviceBrand">{{ 'accessPoint.deviceBrand' | translate }}</label>
                                 <input type="text" class="form-control" id="deviceBrand" name="deviceBrand" placeholder="" [(ngModel)]="modifiedAccessPoint.deviceBrand"
-                                        #deviceBrand="ngModel" required>
+                                        #deviceBrand="ngModel" required noEmptyStrings>
                         </div>
                         <div class="form-group">
                                 <label for="deviceModel">{{ 'accessPoint.deviceModel' | translate }}</label>
                                 <input type="text" class="form-control" id="deviceModel" name="deviceModel" placeholder="" [(ngModel)]="modifiedAccessPoint.modelNumber"
-                                        #deviceModel="ngModel" required>
+                                        #deviceModel="ngModel" required noEmptyStrings>
                         </div>
                         <div class="form-group">
                                 <label for="deviceSerialNumber">{{ 'accessPoint.deviceSerial' | translate }}</label>
                                 <input type="text" class="form-control" id="deviceSerialNumber" name="deviceSerialNumber" placeholder="" [(ngModel)]="modifiedAccessPoint.serialNumber"
-                                        #deviceSerialNumber="ngModel" required>
+                                        #deviceSerialNumber="ngModel" required noEmptyStrings>
                         </div>
                         <div class="form-group">
                                 <label for="macAddress">{{ 'accessPoint.macAddress' | translate }}</label>

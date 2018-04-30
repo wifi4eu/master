@@ -9,7 +9,7 @@
                         <div class="form-group">
                                 <label for="siteName">{{ 'installationReport.siteName' | translate }}</label>
                                 <input type="text" class="form-control" id="siteName" name="siteName" placeholder="" [(ngModel)]="modifiedInstallationSite.name" #siteName="ngModel"
-                                        required>
+                                        required noEmptyStrings>
                         </div>
                         <div class="form-group">
                                 <label for="captivePortal">{{ 'updateInstallationReport.captivePortal' | translate }}</label>
