@@ -25,7 +25,11 @@ public class ValidateSessionResource {
         long activeSession = session.getLastAccessedTime() - session.getCreationTime();
         long timestampSeconds = TimeUnit.MILLISECONDS.toSeconds(activeSession);
 
-        return timestampSeconds > session.getMaxInactiveInterval();
+        boolean isInvalidatedSession = timestampSeconds > session.getMaxInactiveInterval();
+        if (isInvalidatedSession) {
+            session.invalidate();
+        }
+        return isInvalidatedSession;
     }
 
 }
