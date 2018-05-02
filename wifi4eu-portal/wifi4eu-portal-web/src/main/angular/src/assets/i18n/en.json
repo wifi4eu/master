@@ -572,5 +572,7 @@
   "dgConn.applicantDetails.validateApplication.title": "Validate application",
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.totalRecords": "Total records",
-  "shared.incorrectFormat": "Please select a document with a suitable format (.pdf, .png, or .jpg)"
+  "shared.incorrectFormat": "Please select a document with a suitable format (.pdf, .png, or .jpg)",
+  "shared.session.expired":" Your session has been expired. You have been disconnected from WiFi4EU.",
+  "shared.session.expired.reload":"Please reload the page."
 }
