@@ -46,6 +46,8 @@ export class InstallationListComponent implements OnInit {
         this.beneficiaryApi.getBeneficiariesList().subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.beneficiarySuggestions = response.data;
+            } else {
+                return this.errorHandlingService.handleError(response.error);
             }
         }, error => {
             console.log(error);
@@ -80,6 +82,8 @@ export class InstallationListComponent implements OnInit {
             if (response.success) {
                 this.installationSites = response.data.data;
                 this.totalResults = response.data.count;
+            } else {
+                return this.errorHandlingService.handleError(response.error);
             }
         }, error => {
             console.log(error);

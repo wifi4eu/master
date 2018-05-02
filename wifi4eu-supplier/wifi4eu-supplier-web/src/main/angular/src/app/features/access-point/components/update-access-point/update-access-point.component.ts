@@ -92,6 +92,8 @@ export class UpdateAccessPoint implements OnChanges {
         if (response.success) {
           this.onSubmitted.emit(true);
           Object.assign(this.accessPoint, this.modifiedAccessPoint);
+        } else{
+          return this.errorHandlingService.handleError(response.error);
         }
       }, error => {
         console.log(error);

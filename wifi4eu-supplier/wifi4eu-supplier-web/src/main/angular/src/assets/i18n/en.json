@@ -75,5 +75,16 @@
     "menu.submenu": "About",
     "shared.loggedInAs": "Logged in as ",
     "shared.logout": "Logout",
-    "shared.error.beneficiaryNotSelected": "No beneficiary selected."
+    "shared.error.beneficiaryNotSelected": "No beneficiary selected.",
+
+    "error.0": "Server is not available",
+    "error.404": "Page not Found",
+    "error.401": "Not Authorized",
+    "error.500": "Internal Server Error",
+    "error.400.invalidFields": "Invalid fields values",
+    "error.404.beneficiaryNotFound": "Beneficiary not found",
+    "error.400.noData": "No data sent",
+    "error.404.AccessPointNotFound": "Access Point not found",
+    "error.404.InstallationSitesNotFound": "Installation Site not found"
+
 }

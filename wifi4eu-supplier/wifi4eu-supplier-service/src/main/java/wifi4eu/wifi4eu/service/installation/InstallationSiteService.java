@@ -43,7 +43,8 @@ public class InstallationSiteService {
             int page = 0;
             int delta = 10;
 
-            if (map.containsKey("id_beneficiary") && municipalityRepository.countMunicipalitiesById((int) map.get("id_beneficiary")) == 1) {
+            if (map.containsKey("id_beneficiary") && municipalityRepository.countMunicipalitiesById((int) map.get
+                    ("id_beneficiary")) == 1) {
 
                 id_beneficiary = (int) map.get("id_beneficiary");
 
@@ -71,8 +72,10 @@ public class InstallationSiteService {
                     Map<String, Object> mapResult = new HashMap<String, Object>();
 
 
-                    ArrayList<InstallationSite> installationSites = Lists.newArrayList(installationSiteRepository.searchInstallationSitesByBeneficiary(page, delta, id_beneficiary, field, order));
-                    int countResults = installationSiteRepository.countInstallationSitesByBeneficiary(page, delta, id_beneficiary, field, order);
+                    ArrayList<InstallationSite> installationSites = Lists.newArrayList(installationSiteRepository
+                            .searchInstallationSitesByBeneficiary(page, delta, id_beneficiary, field, order));
+                    int countResults = installationSiteRepository.countInstallationSitesByBeneficiary(page, delta,
+                            id_beneficiary, field, order);
                     mapResult.put("data", installationSites);
                     mapResult.put("count", countResults);
                     response.setSuccess(true);
@@ -110,7 +113,25 @@ public class InstallationSiteService {
     public ResponseDTO addAndUpdateInstallationSite(Map<String, Object> map) {
         ResponseDTO response = new ResponseDTO();
         if (!map.isEmpty()) {
-            // if (map.get("url").equals(map.get("url_confirmation"))) {
+
+            boolean control = true;
+            //checking all required camps
+            String[] fieldsAccessPoint = {"municipality", "name", "url"};
+            for (int i = 0; i < fieldsAccessPoint.length; i++) {
+                if (!map.containsKey(fieldsAccessPoint[i])) {
+                    control = false;
+                    break;
+                }
+            }
+
+            String regExURL = "[a-z0-9-:/.]*";
+            String url = (String) map.get("url");
+            if (url != null && !url.matches(regExURL)) {
+                control = false;
+            }
+
+            if (control) {
+                // if (map.get("url").equals(map.get("url_confirmation"))) {
                 InstallationSite installationSite;
                 if (!map.containsKey("id")) {
                     installationSite = new InstallationSite();
@@ -118,23 +139,29 @@ public class InstallationSiteService {
                     Date now = calendar.getTime();
                     Timestamp currentTimestamp = new Timestamp(now.getTime());
                     installationSite.setDateRegistered(currentTimestamp);
-                    installationSite.setNumber(getNextNumberPerInstallationSiteByBeneficiaryId((int) map.get("municipality")));
+                    installationSite.setNumber(getNextNumberPerInstallationSiteByBeneficiaryId((int) map.get
+                            ("municipality")));
                 } else {
                     installationSite = installationSiteRepository.findInstallationSiteById((int) map.get("id"));
                 }
                 installationSite.setMunicipality((int) map.get("municipality"));
-                // installationSite.setMunicipality(municipalityRepository.findMuncipalityById((int) map.get("id_beneficiary")));
+                // installationSite.setMunicipality(municipalityRepository.findMuncipalityById((int) map.get
+                // ("id_beneficiary")));
                 installationSite.setName((String) map.get("name"));
-                installationSite.setUrl((String) map.get("url"));
-                installationSite.setDomainName((String) map.get("url"));
+                installationSite.setUrl(url);
+                installationSite.setDomainName(url);
                 installationSite.setIdNetworkSnippet((String) map.get("name") + 123);
                 installationSite.setStatus(1);
                 // installationSite.setId_status(statusRepository.findStatudById(1));
                 installationSiteRepository.save(installationSite);
                 response.setSuccess(true);
                 response.setData(installationSite);
-            // }
+                // }
 
+            } else {
+                response.setSuccess(false);
+                response.setError(new ErrorDTO(400, "error.400.invalidFields"));
+            }
         } else {
             response.setSuccess(false);
             response.setError(new ErrorDTO(400, "error.400.noData"));
@@ -142,9 +169,9 @@ public class InstallationSiteService {
         return response;
     }
 
-    private int getNextNumberPerInstallationSiteByBeneficiaryId(int id_beneficiary){
+    private int getNextNumberPerInstallationSiteByBeneficiaryId(int id_beneficiary) {
         Long currentLong = installationSiteRepository.selectMaxNumberInstallationSiteByMunicipalityId(id_beneficiary);
-        if (currentLong != null){
+        if (currentLong != null) {
             currentLong++;
             return Integer.parseInt(currentLong.toString());
         } else {

@@ -5,27 +5,53 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class ErrorHandlingService {
-    constructor(private uxService: UxService) {
+    httpErrors = {
+        0: { 'msg': 'error.0' },
+        404: { 'msg': 'error.404' },
+        401: { 'msg': 'error.401' },
+        500: { 'msg': 'error.500' }
     }
 
-    httpErrors = {
-        0: { 'msg': 'Server is not available' },
-        404: { 'msg': 'Page not Found' },
-        401: { 'msg': 'Not Authorized' }
+    constructor(private uxService: UxService, private translateService: TranslateService) {
+        this.getHttpErrorsTranslated();
+    }
+
+    private getHttpErrorsTranslated(){
+        this.translateService.get(this.httpErrors["0"].msg).subscribe(
+            (translatedString: string) => {
+                this.httpErrors["0"].msg = translatedString;
+            }
+        );
+        this.translateService.get(this.httpErrors["404"].msg).subscribe(
+            (translatedString: string) => {
+                this.httpErrors["404"].msg = translatedString;
+            }
+        );
+        this.translateService.get(this.httpErrors["401"].msg).subscribe(
+            (translatedString: string) => {
+                this.httpErrors["401"].msg = translatedString;
+            }
+        );
     }
 
     handleError(err: any) {
         let errorMessage = '';
-        if (err.hasOwnProperty('status')) {
-            if (this.httpErrors.hasOwnProperty(err.status)) {
-                errorMessage = this.httpErrors[err.status].msg;
+        if (err.hasOwnProperty('errorCode')) {
+            if (this.httpErrors.hasOwnProperty(err.errorCode)) {
+                errorMessage = this.httpErrors[err.errorCode].msg;
             } else {
-                errorMessage = `Error status: ${err.status}`;
-                if (err.hasOwnProperty('message')) {
-                    errorMessage += err.message;
+                errorMessage = `Error status: ${err.errorCode}`;
+                if (err.hasOwnProperty('errorMessage')) {
+                    this.translateService.get(err.errorMessage).subscribe(
+                        (translation: string) => {
+                            errorMessage += ' ' + translation;
+                        }, error => {
+                            errorMessage += ' ' + err.errorMessage;
+                        });
                 }
             }
         }

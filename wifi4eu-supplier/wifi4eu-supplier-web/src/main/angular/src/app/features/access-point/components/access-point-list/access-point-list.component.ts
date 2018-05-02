@@ -58,6 +58,8 @@ export class AccessPointListComponent {
             if (response.success) {
                 this.accessPoints = response.data.data;
                 this.totalResults = response.data.count;
+            } else {
+                return this.errorHandlingService.handleError(response.error);
             }
         }, error => {
             console.log(error);
