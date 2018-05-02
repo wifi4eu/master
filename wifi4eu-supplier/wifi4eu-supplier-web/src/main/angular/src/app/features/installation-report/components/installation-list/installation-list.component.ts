@@ -97,15 +97,17 @@ export class InstallationListComponent implements OnInit {
     }
 
     sendConfirmInstallation() {
-        this.isReportSent = true;
         this.beneficiaryApi.confirmWifiIndicatorByMunicipalityId(this.beneficiarySelected.id).subscribe((response: ResponseDTOBase) => {
             if (response.success) {
-                alert('success');
+                this.isReportSent = true;
+                let successBanner = document.getElementById("success");
+                successBanner.style.display = "block";
+                successBanner.scrollIntoView({ behavior: "smooth" });
             }
-        })
-        let successBanner = document.getElementById("success");
-        successBanner.style.display = "block";
-        successBanner.scrollIntoView({ behavior: "smooth" });
+        }, error => {
+            console.log(error);
+            return this.errorHandlingService.handleError(error);
+        });
         this.closeConfirmInstallation();
     }
 
