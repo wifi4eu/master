@@ -28,8 +28,9 @@ import {EcasComponent} from "./+ecas/ecas.component";
             component: ForgotComponent
         }, {
             path: 'dgconn-portal',
-            loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
-            canActivate: [AppGuard]
+            //loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
+            loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule'
+            //canActivate: [AppGuard]
         }, {
             path: 'abac',
             component: AbacComponent
