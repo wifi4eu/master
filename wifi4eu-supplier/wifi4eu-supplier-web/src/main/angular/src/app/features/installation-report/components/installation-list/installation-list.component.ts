@@ -98,6 +98,11 @@ export class InstallationListComponent implements OnInit {
 
     sendConfirmInstallation() {
         this.isReportSent = true;
+        this.beneficiaryApi.confirmWifiIndicatorByMunicipalityId(this.beneficiarySelected.id).subscribe((response: ResponseDTOBase) => {
+            if (response.success) {
+                alert('success');
+            }
+        })
         let successBanner = document.getElementById("success");
         successBanner.style.display = "block";
         successBanner.scrollIntoView({ behavior: "smooth" });
