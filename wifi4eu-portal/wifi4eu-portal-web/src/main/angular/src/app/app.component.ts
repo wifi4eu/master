@@ -79,7 +79,7 @@ export class AppComponent {
 
         this.updateFooterDate();
 
-        const sessionPolling = 60005;
+        const sessionPolling = 60030;
         Observable.interval(sessionPolling)
             .takeWhile(() => !this.sessionExpired)
             .subscribe(execution => {
