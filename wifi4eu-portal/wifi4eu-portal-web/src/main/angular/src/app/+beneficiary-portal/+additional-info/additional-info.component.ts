@@ -62,7 +62,7 @@ export class AdditionalInfoComponent {
                     }, error => {
                     }
                 );
-                this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                     (registrations: RegistrationDTOBase[]) => {
                         if (registrations.length == 1) {
                             this.mayorApi.getMayorByMunicipalityId(municipalityId).subscribe(
@@ -108,32 +108,38 @@ export class AdditionalInfoComponent {
                     this.removeFile(index);
                     return;
                 }
-                this.documentFiles[index] = event.target.files[0];
-                this.reader.readAsDataURL(this.documentFiles[index]);
-                let subscription = Observable.interval(200).subscribe(
-                    x => {
-                        if (this.reader.result != "") {
-                            this.documentUrls[index] = this.reader.result;
-                            this.filesUploaded = true;
-                            switch (index) {
-                                case 0:
-                                    this.doc1 = true;
-                                    break;
-                                case 1:
-                                    this.doc2 = true;
-                                    break;
-                                case 2:
-                                    this.doc3 = true;
-                                    ;
-                                    break;
-                                case 3:
-                                    this.doc4 = true;
-                                    break;
+                if (event.target.files[0].type == "application/pdf" || event.target.files[0].type == "image/png" || event.target.files[0].type == "image/jpg" || event.target.files[0].type == "image/jpeg") {
+
+                    this.documentFiles[index] = event.target.files[0];
+                    this.reader.readAsDataURL(this.documentFiles[index]);
+                    let subscription = Observable.interval(200).subscribe(
+                        x => {
+                            if (this.reader.result != "") {
+                                this.documentUrls[index] = this.reader.result;
+                                this.filesUploaded = true;
+                                switch (index) {
+                                    case 0:
+                                        this.doc1 = true;
+                                        break;
+                                    case 1:
+                                        this.doc2 = true;
+                                        break;
+                                    case 2:
+                                        this.doc3 = true;
+                                        ;
+                                        break;
+                                    case 3:
+                                        this.doc4 = true;
+                                        break;
+                                }
+                                subscription.unsubscribe();
                             }
-                            subscription.unsubscribe();
                         }
-                    }
-                );
+                    );
+                } else {
+                    this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
+                    this.filesUploaded = false;
+                }
             } else {
                 this.removeFile(index);
             }

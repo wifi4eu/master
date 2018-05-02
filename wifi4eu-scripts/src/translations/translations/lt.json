@@ -518,8 +518,11 @@
   "dgconn.dashboard.card.messageImport": "Your file have been imported correctly!",
   "shared.supportingDocuments": "Patvirtinamieji dokumentai",
   "(supporting documents pop-up)": "Nepatvirtinote.  Atlikus šį veiksmą bus pašalinti visi jūsų įkelti dokumentai. Jei norite išsaugoti įkeltus dokumentus, grįžkite į puslapį ir spustelėkite „Patvirtinti“. Ar tikrai norite pašalinti savo dokumentus?",
+  "dgConn.submit": "Submit",
   "dgConn.euRanking": "EU Ranking",
   "dgConn.countryRanking": "Country Ranking",
+  "dgConn.call.number": "Call {{number}}",
+  "dgConn.comment.mandatory": "Comment (mandatory)",
   "dgConn.manageApplications.title": "Manage municipality applications",
   "dgConn.manageApplications.desc": "The municipalities listed below have applied to WiFi4EU. You can check their data and the status of their application by using the table below.",
   "dgConn.invalidateRegistration.modal.title": "Do you really want to invalidate this registration?",
@@ -530,5 +533,7 @@
   "(optional)": "(neprivaloma)",
   "(privacy statement)": "Pareiškimas apie privatumo apsaugą",
   "dgConn.applicantDetails.validateApplication.title": "Validate application",
-  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated."
+  "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
+  "dgConn.totalRecords": "Total records",
+  "shared.incorrectFormat": "Pasirinkite tinkamo formato dokumentą (.pdf, .png, .jpg)"
 }
