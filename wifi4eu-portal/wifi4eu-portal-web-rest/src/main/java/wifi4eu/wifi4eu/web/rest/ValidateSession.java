@@ -21,11 +21,20 @@ public class ValidateSession {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Boolean isInvalidatedSession() {
+        boolean isInvalidatedSession = true;
         HttpSession session = RecoverHttpSession.session();
-        long activeSession = session.getLastAccessedTime() - session.getCreationTime();
-        long timestampSeconds = TimeUnit.MILLISECONDS.toSeconds(activeSession);
 
-        return timestampSeconds > session.getMaxInactiveInterval();
+        if (session != null) {
+            long activeSession = session.getLastAccessedTime() - session.getCreationTime();
+            long timestampSeconds = TimeUnit.MILLISECONDS.toSeconds(activeSession);
+
+            isInvalidatedSession = timestampSeconds > session.getMaxInactiveInterval();
+            if (isInvalidatedSession) {
+                session.invalidate();
+            }
+        }
+
+        return isInvalidatedSession;
     }
 
 }
