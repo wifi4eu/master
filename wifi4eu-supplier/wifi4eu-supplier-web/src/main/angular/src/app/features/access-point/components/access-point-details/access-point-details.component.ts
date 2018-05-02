@@ -6,6 +6,7 @@ import { BeneficiaryService } from '../../../../core/services/beneficiary-servic
 import { Location } from '@angular/common';
 import { AccessPointBase } from '../../../../shared/swagger/model/AccessPoint';
 import { AccesspointsApi } from '../../../../shared/swagger/api/AccesspointsApi';
+import { ErrorHandlingService } from '../../../../core/services/error.service';
 
 @Component({
     templateUrl: './access-point-details.component.html'
@@ -15,30 +16,33 @@ export class AccessPointDetailsComponent implements OnInit {
     private beneficiary: BeneficiaryDisplayedListDTOBase = new BeneficiaryDisplayedListDTOBase;
     private installationSiteName: string;
 
-    private accessPoint: AccessPointBase;
+    private accessPoint: AccessPointBase = new AccessPointBase();
 
     //observable that gets the id from route params
     private idSub: any;
 
     constructor(private uxService: UxService, private router: Router, private location: Location, private route: ActivatedRoute,
-        private beneficiaryService: BeneficiaryService, private accessPointService: AccesspointsApi) {
+        private beneficiaryService: BeneficiaryService, private accessPointService: AccesspointsApi,
+        private errorHandlingService: ErrorHandlingService) {
         if (this.beneficiaryService.beneficiarySelected != undefined) {
             this.beneficiary = this.beneficiaryService.beneficiarySelected;
         } else {
-            router.navigate(['screen/installation-report']);
+            this.beneficiaryService.growlNotSelected();
         }
 
         this.idSub = this.route.params.subscribe(params => {
             this.installationSiteName = params['name'];
             let apId = params['ap'];
-
         });
-
     }
 
     ngOnInit() {
         this.route.data.subscribe((data: { accessPoint: AccessPointBase }) => {
-             this.accessPoint = data.accessPoint;
+            if (data.accessPoint)
+                this.accessPoint = data.accessPoint;
+        }, error => {
+            console.log(error);
+            return this.errorHandlingService.handleError(error);
         });
     }
 
@@ -51,10 +55,13 @@ export class AccessPointDetailsComponent implements OnInit {
     }
 
     submitRemoveAccessPoint() {
-        this.accessPointService.deleteAccessPointById(this.accessPoint.id).subscribe((response : ResponseDTOBase)=> {
-            if(response.success){
+        this.accessPointService.deleteAccessPointById(this.accessPoint.id).subscribe((response: ResponseDTOBase) => {
+            if (response.success) {
                 this.location.back();
             }
+        }, error => {
+            console.log(error);
+            return this.errorHandlingService.handleError(error);
         });
         this.closeRemoveAccessPoint();
     }

@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AccessPointBase } from '../../../../shared/swagger/model/AccessPoint';
 import { AccesspointsApi } from '../../../../shared/swagger/api/AccesspointsApi';
 import { ResponseDTOBase } from '../../../../shared/swagger';
+import { ErrorHandlingService } from '../../../../core/services/error.service';
 
 @Component({
   selector: 'update-access-point',
@@ -17,8 +18,9 @@ export class UpdateAccessPoint implements OnChanges {
 
   @Output() onSubmitted: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  private unmodifiedAccessPoint: AccessPointBase = new AccessPointBase();
+  private modifiedAccessPoint: AccessPointBase = new AccessPointBase();
   private modalTitle: string;
+  private updateButtonTitle : string;
 
   //TODO
   private locationTypes = [{ label: 'Town Hall / Administrative building', value: 'Town Hall / Administrative building' },
@@ -45,17 +47,21 @@ export class UpdateAccessPoint implements OnChanges {
   private isSubmitted: boolean = false;
 
   constructor(private uxService: UxService, private translateService: TranslateService,
-    private accessPointApi: AccesspointsApi) {
+    private accessPointApi: AccesspointsApi,  private errorHandlingService: ErrorHandlingService) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
     let modalJsonString: string;
+    let buttonJsonString: string;
+
+    Object.assign(this.modifiedAccessPoint, this.accessPoint);
 
     if (!this.isEdit) {
       modalJsonString = 'accessPoint.add';
+      buttonJsonString= 'shared.add';
     } else {
       modalJsonString = 'updateAccessPoint.editTitle';
-      Object.assign(this.unmodifiedAccessPoint, this.accessPoint);
+      buttonJsonString= 'shared.edit';
     }
 
     this.translateService.get(modalJsonString).subscribe(
@@ -63,12 +69,18 @@ export class UpdateAccessPoint implements OnChanges {
         this.modalTitle = translation;
       }
     );
+
+    this.translateService.get(buttonJsonString).subscribe(
+      (translation: string) => {
+        this.updateButtonTitle = translation;
+      }
+    );
   }
 
   closeUpdateAccessPoint() {
     this.uxService.closeModal('updateAccessPoint');
     if (!this.isSubmitted && this.isEdit) {
-      Object.assign(this.accessPoint, this.unmodifiedAccessPoint);
+      Object.assign(this.modifiedAccessPoint, this.accessPoint);
     } else if (!this.isEdit) {
       this.form.form.reset();
     }
@@ -76,10 +88,14 @@ export class UpdateAccessPoint implements OnChanges {
 
   onSubmit(form) {
     if (form.form.valid) {
-      this.accessPointApi.addOrUpdateAccessPoint(this.accessPoint).subscribe((response: ResponseDTOBase) => {
+      this.accessPointApi.addOrUpdateAccessPoint(this.modifiedAccessPoint).subscribe((response: ResponseDTOBase) => {
         if (response.success) {
           this.onSubmitted.emit(true);
+          Object.assign(this.accessPoint, this.modifiedAccessPoint);
         }
+      }, error => {
+        console.log(error);
+        return this.errorHandlingService.handleError(error);
       });
     }
 

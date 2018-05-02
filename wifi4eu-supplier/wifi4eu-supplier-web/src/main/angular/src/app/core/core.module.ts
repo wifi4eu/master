@@ -19,6 +19,7 @@ import { SearchInputComponent } from './components/shell/search-input/search-inp
 
 import { SharedModule } from '../shared/shared.module';
 import { BeneficiaryService } from './services/beneficiary-service';
+import { ErrorHandlingService } from './services/error.service';
 
 @NgModule({
     imports: [
@@ -39,7 +40,8 @@ import { BeneficiaryService } from './services/beneficiary-service';
     ],
     providers: [
         UserDetailsService,
-        BeneficiaryService
+        BeneficiaryService,
+        ErrorHandlingService
     ]
 })
 export class CoreModule {

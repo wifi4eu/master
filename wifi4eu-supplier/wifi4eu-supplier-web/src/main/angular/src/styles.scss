@@ -16,6 +16,44 @@ body {
         font-size: 14px;
     }
 }
+/*fix menu*/
+#top-menu ul li.icon-menu-item a svg{
+    font-size: 25px;
+}
+
+#top-menu>ul>li.selected>a{
+    line-height: 25px;
+}
+
+#app-header {
+    div.right-content, div.profile-wrapper {
+        height: 100%;
+        margin-top: 0;
+    }
+    .user-infos {
+        font-family: verdana;
+        font-size: 14px;
+        margin-top: 0;
+        margin-bottom: .3125rem;
+        .user-name {
+            color: #004494;
+            font-weight: bold;
+        }
+        .logout-button {
+            margin-left: 1rem;
+        }
+        .header-icons {
+            margin-left: 1rem;
+            font-size: 19px;
+        }
+        a:not([href]):not([tabindex]) {
+            color: black;
+        }
+    }
+    .ux-language-selector {
+        margin-top: .3125rem;
+    }
+}
 
 .back-button{
     margin-bottom: 30px;
