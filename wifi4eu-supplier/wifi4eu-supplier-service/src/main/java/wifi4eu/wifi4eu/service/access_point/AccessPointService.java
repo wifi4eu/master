@@ -41,7 +41,7 @@ public class AccessPointService {
         } else {
             response.setSuccess(false);
             response.setData("Error");
-            response.setError(new ErrorDTO(404, "error.404.AccessPointNotFound"));
+            response.setError(new ErrorDTO(404, "error.404.accessPointNotFound"));
         }
         return response;
     }
@@ -55,7 +55,7 @@ public class AccessPointService {
         } else {
             response.setSuccess(false);
             response.setData("Error");
-            response.setError(new ErrorDTO(404, "error.404.AccessPointNotFound"));
+            response.setError(new ErrorDTO(404, "error.404.accessPointNotFound"));
         }
         return response;
     }
@@ -79,7 +79,7 @@ public class AccessPointService {
                         }
                     } else {
                         response.setSuccess(false);
-                        response.setError(new ErrorDTO(404,"error.404.AccessPointNotFound"));
+                        response.setError(new ErrorDTO(404,"error.404.accessPointNotFound"));
                     }
                 } else {
                     // add new access point
@@ -95,7 +95,7 @@ public class AccessPointService {
                 }
             } else {
                 response.setSuccess(false);
-                response.setError(new ErrorDTO(404,"error.404.InstallationSitesNotFound"));
+                response.setError(new ErrorDTO(404,"error.404.installationSitesNotFound"));
             }
         } else {
             response.setSuccess(false);
@@ -204,7 +204,7 @@ public class AccessPointService {
                 }
             } else {
                 response.setSuccess(false);
-                response.setError(new ErrorDTO(404, "error.404.InstallationSitesNotFound"));
+                response.setError(new ErrorDTO(404, "error.404.installationSitesNotFound"));
             }
         } else {
             response.setSuccess(false);

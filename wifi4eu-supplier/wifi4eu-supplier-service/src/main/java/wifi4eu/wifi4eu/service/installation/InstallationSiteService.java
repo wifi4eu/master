@@ -160,7 +160,7 @@ public class InstallationSiteService {
             response.setData(installationSite);
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "error.404.InstallationSitesNotFound"));
+            response.setError(new ErrorDTO(404, "error.404.installationSitesNotFound"));
         }
         return response;
     }
@@ -173,7 +173,7 @@ public class InstallationSiteService {
             response.setData("Deleted successfully");
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "error.404.InstallationSitesNotFound"));
+            response.setError(new ErrorDTO(404, "error.404.installationSitesNotFound"));
         }
         return response;
     }
