@@ -41,7 +41,7 @@ public class AccessPointService {
         } else {
             response.setSuccess(false);
             response.setData("Error");
-            response.setError(new ErrorDTO(404, "Access Point not found. ID : "+id));
+            response.setError(new ErrorDTO(404, "error.404.AccessPointNotFound"));
         }
         return response;
     }
@@ -55,7 +55,7 @@ public class AccessPointService {
         } else {
             response.setSuccess(false);
             response.setData("Error");
-            response.setError(new ErrorDTO(404, "Access Point not found. ID : "+id));
+            response.setError(new ErrorDTO(404, "error.404.AccessPointNotFound"));
         }
         return response;
     }
@@ -75,11 +75,11 @@ public class AccessPointService {
                             response.setData(accessPoint);
                         } else {
                             response.setSuccess(false);
-                            response.setError(new ErrorDTO(404,"Error setting values to Access Point"));
+                            response.setError(new ErrorDTO(400,"error.400.invalidFields"));
                         }
                     } else {
                         response.setSuccess(false);
-                        response.setError(new ErrorDTO(404,"Access Point not found by id : "+map.get("id")));
+                        response.setError(new ErrorDTO(404,"error.404.AccessPointNotFound"));
                     }
                 } else {
                     // add new access point
@@ -90,16 +90,16 @@ public class AccessPointService {
                         response.setData(accessPoint);
                     } else {
                         response.setSuccess(false);
-                        response.setError(new ErrorDTO(404,"Error setting values to Access Point"));
+                        response.setError(new ErrorDTO(400,"error.400.invalidFields"));
                     }
                 }
             } else {
                 response.setSuccess(false);
-                response.setError(new ErrorDTO(404,"Installation Site ID no exists"));
+                response.setError(new ErrorDTO(404,"error.404.InstallationSitesNotFound"));
             }
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404,"Empty body"));
+            response.setError(new ErrorDTO(400,"error.400.noData"));
         }
 
         return response;
@@ -200,15 +200,15 @@ public class AccessPointService {
 
                 } catch (Exception ex) {
                     response.setSuccess(false);
-                    response.setError(new ErrorDTO(404, "Error - Invalid integers / fields"));
+                    response.setError(new ErrorDTO(400, "error.400.invalidFields"));
                 }
             } else {
                 response.setSuccess(false);
-                response.setError(new ErrorDTO(404, "Installation Site not found"));
+                response.setError(new ErrorDTO(404, "error.404.InstallationSitesNotFound"));
             }
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404,"Empty body"));
+            response.setError(new ErrorDTO(400,"error.400.noData"));
         }
 
         return response;

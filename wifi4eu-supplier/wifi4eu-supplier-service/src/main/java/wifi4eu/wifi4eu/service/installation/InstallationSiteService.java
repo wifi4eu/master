@@ -80,16 +80,16 @@ public class InstallationSiteService {
 
                 } catch (Exception ex) {
                     response.setSuccess(false);
-                    response.setError(new ErrorDTO(404, "Error - Invalid integers / fields"));
+                    response.setError(new ErrorDTO(400, "error.400.invalidFields"));
                 }
             } else {
                 response.setSuccess(false);
-                response.setError(new ErrorDTO(404, "Municipality not found"));
+                response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
             }
 
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "Error json query"));
+            response.setError(new ErrorDTO(400, "error.400.noData"));
         }
 
         return response;
@@ -137,7 +137,7 @@ public class InstallationSiteService {
 
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "Error json query"));
+            response.setError(new ErrorDTO(400, "error.400.noData"));
         }
         return response;
     }
@@ -160,7 +160,7 @@ public class InstallationSiteService {
             response.setData(installationSite);
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "Installation site not found"));
+            response.setError(new ErrorDTO(404, "error.404.InstallationSitesNotFound"));
         }
         return response;
     }
@@ -173,7 +173,7 @@ public class InstallationSiteService {
             response.setData("Deleted successfully");
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "Installation site not found"));
+            response.setError(new ErrorDTO(404, "error.404.InstallationSitesNotFound"));
         }
         return response;
     }

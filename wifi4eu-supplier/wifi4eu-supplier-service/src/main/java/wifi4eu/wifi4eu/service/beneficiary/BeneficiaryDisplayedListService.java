@@ -37,7 +37,7 @@ public class BeneficiaryDisplayedListService {
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryDisplayedListService.class);
 
     @Transactional
-    public ResponseDTO findBeneficiariesList(){
+    public ResponseDTO findBeneficiariesList() {
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(true);
         response.setData(beneficiaryDisplayedListMapper.toDTOList(Lists.newArrayList(beneficiaryDisplayedListRepository.findBeneficiariesList())));
@@ -45,10 +45,10 @@ public class BeneficiaryDisplayedListService {
     }
 
     @Transactional
-    public ResponseDTO confirmWifiIndicatorByMunicipalityId(int id){
+    public ResponseDTO confirmWifiIndicatorByMunicipalityId(int id) {
         ResponseDTO response = new ResponseDTO();
-        Registration registration = registrationRepository.findByMunicipalityIdAndStatus(id,2);
-        if (registration != null){
+        Registration registration = registrationRepository.findByMunicipalityIdAndStatus(id, 2);
+        if (registration != null) {
             registration.setWifiIndicator(true);
             registrationRepository.save(registration);
             response.setSuccess(true);
@@ -58,7 +58,7 @@ public class BeneficiaryDisplayedListService {
         } else {
             response.setSuccess(false);
             response.setData("Error querying municipality - registration");
-            response.setError(new ErrorDTO(404,"Error querying municipality - registration"));
+            response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
         }
         return response;
     }
