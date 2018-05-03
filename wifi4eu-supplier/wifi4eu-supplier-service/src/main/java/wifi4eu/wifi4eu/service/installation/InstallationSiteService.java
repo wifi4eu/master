@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.installation.InstallationSite;
+import wifi4eu.wifi4eu.entity.installation.InstallationSiteWhitelist;
 import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepository;
+import wifi4eu.wifi4eu.repository.installation.InstallationSiteWhitelistRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.status.StatusRepository;
 
@@ -28,6 +30,9 @@ public class InstallationSiteService {
 
     @Autowired
     MunicipalityRepository municipalityRepository;
+
+    @Autowired
+    InstallationSiteWhitelistRepository whitelistRepository;
 
     @Autowired
     StatusRepository statusRepository;
@@ -149,6 +154,12 @@ public class InstallationSiteService {
             } catch (MalformedURLException ex) {
                 domain = url;
             }
+
+            // the domain will be added to whitelist
+            InstallationSiteWhitelist whitelist = new InstallationSiteWhitelist();
+            whitelist.setOrigin(domain);
+            whitelist.setActive(1);
+            whitelistRepository.save(whitelist);
 
             if (control) {
                 // if (map.get("url").equals(map.get("url_confirmation"))) {
