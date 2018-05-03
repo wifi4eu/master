@@ -39,6 +39,10 @@
             <p *ngIf="showTimeline" class="europeans-text"
                [innerHTML]="'home.part2.text1' | translate:{date:dateNumber,hour:hourNumber}">
             </p>
+            <p *ngIf="!showTimeline" class="europeans-text"
+               [innerHTML]="'benefPortal.voucher.call.label1' | translate">
+            </p>
+            <!-- <p *ngIf="!showTimeline" class="europeans-text">I am a scatman</p> -->
             <p class="europeans-text">{{ 'home.part2.subtitle4' | translate}}</p>
             <ul class="europeans-text benefLandingList">
                 <li>{{ 'home.part2.list1' | translate}}</li>
@@ -144,6 +148,11 @@
                 <a target="_blank"
                    href="https://ec.europa.eu/digital-single-market/en/policies/wifi4eu-free-wi-fi-europeans">
                     {{'home.part4.link2' | translate }}</a>
+            </p>
+            <p class="white-links">
+                <a target="_blank"
+                   href="https://ec.europa.eu/digital-single-market/news-redirect/624124">
+                   {{'(privacy statement)' | translate }}</a>
             </p>
         </div>
         <div class="col-xl-6">
