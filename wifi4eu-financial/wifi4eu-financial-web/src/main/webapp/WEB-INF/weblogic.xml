@@ -29,10 +29,14 @@
         <allow-all-roles>true</allow-all-roles>
     </container-descriptor>
 
-    <context-root>/wifi4eu</context-root>
+    <context-root>/wifi4eu-financial</context-root>
 
     <weblogic-version>12.1.3</weblogic-version>
 
+    <security-role-assignment>
+        <role-name>*</role-name>
+        <principal-name>Administrators</principal-name>
+    </security-role-assignment>
 
 
 
