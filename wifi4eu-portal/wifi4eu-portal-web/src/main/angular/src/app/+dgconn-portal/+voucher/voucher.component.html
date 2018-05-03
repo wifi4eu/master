@@ -147,7 +147,7 @@
                         <i class="fa fa-pie-chart" style="font-size: 20px;    padding-right: 3px;"></i>
                         <span>
                           The % of total budget as a maximum budgeted for each Country:
-                          <b class="value-voucher-call">10%</b>
+                          <b class="value-voucher-call"> {{call.maxPercentCountry }} % </b>
                         </span>
                       </p>
                     </div>
@@ -155,7 +155,7 @@
                       <p>
                         <i class="fa fa-ticket" style="font-size: 20px;    padding-right: 4px;"></i>
                         <span>Value of each voucher:
-                          <b class="value-voucher-call"> {{call.budgetVoucher | number}}</b>
+                          <b class="value-voucher-call"> {{ call.budget / call.numberVouchers | number}}</b>  <!-- | currency:'EUR':true  -->
                         </span>
                       </p>
                     </div>
@@ -169,14 +169,14 @@
                         <i class="fa fa-ticket ticket-3"></i>
                       </div>
                       <span>Total of vouchers foreseen for the call:
-                        <b class="value-voucher-call">{{numVoucher[i] | number}}</b>
+                        <b class="value-voucher-call">{{call.numberVouchers | number}}</b>
                       </span>
                     </div>
                     <div>
                       <p>
                         <i class="fa fa-lock" style="font-size: 20px; padding-left: 4px;padding-right: 8px;"></i>
                         <span>Maximum number of reserve vouchers per country:
-                          <b class="value-voucher-call">{{calls[i]?.voucherManagements[0]?.reserve ? calls[i]?.voucherManagements[0]?.reserve : '0'}}</b>
+                          <b class="value-voucher-call">{{call.reserve ? call.reserve : '0'}}</b>
                         </span>
                       </p>
                     </div>
@@ -223,24 +223,32 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="panel-dg panel-dg-voucher">
-                    <p-dataTable #tableVoucher [totalRecords]="2" [value]="callVoucherAssignment?.voucherSimulations" [lazy]="true" [responsive]="true" [paginator]="true"
-                      [rowsPerPageOptions]="[20,22]" [totalRecords]="22" [rows]="12">
+                    <p-dataTable #tableVoucher [totalRecords]="2" [value]="listAssignment" [responsive]="true" [paginator]="true"
+                      [totalRecords]="listAssignment.length" [rows]="listAssignment.length">
                       <p-column field="euRank" [sortable]="true" header="EU Rank" styleClass="text-center"></p-column>
-                      <p-column field="countryRank" [sortable]="true" header="Country Ranking" styleClass="text-center" [style]="{'width':'18%'}"></p-column>
+                      <p-column field="countryRank" [sortable]="true" header="Country Ranking" styleClass="text-center" [style]="{'width':'10%'}"></p-column>
+                      <p-column field="selectionStatus" [sortable]="true" header="Selection status" styleClass="text-center">
+                        <ng-template let-row="rowData" pTemplate="body">
+                          <span *ngIf="row.selectionStatus == 0">(Pre)-selected</span>
+                          <span *ngIf="row.selectionStatus == 1">Reserve</span>
+                        </ng-template>
+                      </p-column>
                       <p-column field="country" [sortable]="true" header="Country" styleClass="text-center"></p-column>
                       <p-column field="municipality.name" [sortable]="true" header="Municipality" styleClass="text-center"></p-column>
                       <p-column field="issues" [sortable]="true" header="Issues" styleClass="text-center"></p-column>
-                      <p-column field="numApplications" [sortable]="true" header="Number of registrations" [style]="{'width':'20%'}" styleClass="text-center"></p-column>
+                      <p-column field="numApplications" [sortable]="true" header="Duplicate" styleClass="text-center">
+                        <ng-template let-row="rowData" pTemplate="body">
+                          <span [class.duplicate-warn]="row.numApplications > 1">{{row.numApplications == 1 ? 'NO' : 'YES'}}</span>
+                        </ng-template>
+                      </p-column>
+                      <p-column field="numApplications" [sortable]="true" header="Application status" styleClass="text-center">
+                        <ng-template let-row="rowData" pTemplate="body">
+                          <span>{{row.application.status}}</span>
+                        </ng-template>
+                        </p-column>
                       <p-column header="Action" styleClass="text-center">
                         <ng-template let-rowData="rowData" pTemplate="body">
-                          <a href="">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-                            <span>View</span>
-                          </a>
-                          <a href="">
-                            <i class="fa fa-ban" aria-hidden="true"></i>
-                            <span>Reject</span>
-                          </a>
+                          <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                         </ng-template>
                       </p-column>
                       <ng-template pTemplate="emptymessage">
@@ -263,3 +271,14 @@
     <i class="fa fa-circle-o-notch fa-spin" aria-hidden="true" style="position:absolute; top: 50%; left: calc(50% - 30px); font-size: 30px; "></i>
   </div>
 </ng-template>
+
+
+<style>
+  .duplicate-warn{
+    background: #ff4545;
+    padding: 5px 10px;
+    border-radius: 100px;
+    color: #fff;
+    font-weight: bold;
+  }
+</style>

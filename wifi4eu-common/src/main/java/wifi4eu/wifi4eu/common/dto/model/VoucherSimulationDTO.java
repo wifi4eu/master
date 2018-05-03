@@ -11,11 +11,13 @@ public class VoucherSimulationDTO {
     private int numApplications;
     private int rejected;
     private int voucherAssignment;
+    private int selectionStatus;
+    private ApplicationDTO application;
 
     public VoucherSimulationDTO() {
     }
 
-    public VoucherSimulationDTO(int id, int euRank, int countryRank, String country, MunicipalityDTO municipality, int issues, int numApplications, int rejected, int voucherAssignment) {
+    public VoucherSimulationDTO(int id, int euRank, int countryRank, String country, MunicipalityDTO municipality, int issues, int numApplications, int rejected, int voucherAssignment, int selectionStatus, ApplicationDTO application) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;
@@ -25,17 +27,8 @@ public class VoucherSimulationDTO {
         this.numApplications = numApplications;
         this.rejected = rejected;
         this.voucherAssignment = voucherAssignment;
-    }
-
-    public VoucherSimulationDTO(int euRank, int countryRank, String country, MunicipalityDTO municipality, int issues, int numApplications, int rejected, int voucherAssignment) {
-        this.euRank = euRank;
-        this.countryRank = countryRank;
-        this.country = country;
-        this.municipality = municipality;
-        this.issues = issues;
-        this.numApplications = numApplications;
-        this.rejected = rejected;
-        this.voucherAssignment = voucherAssignment;
+        this.selectionStatus = selectionStatus;
+        this.application = application;
     }
 
     public int getId() {
@@ -108,5 +101,21 @@ public class VoucherSimulationDTO {
 
     public void setVoucherAssignment(int voucherAssignment) {
         this.voucherAssignment = voucherAssignment;
+    }
+
+    public int getSelectionStatus() {
+        return selectionStatus;
+    }
+
+    public void setSelectionStatus(int selectionStatus) {
+        this.selectionStatus = selectionStatus;
+    }
+
+    public ApplicationDTO getApplication() {
+        return application;
+    }
+
+    public void setApplication(ApplicationDTO application) {
+        this.application = application;
     }
 }

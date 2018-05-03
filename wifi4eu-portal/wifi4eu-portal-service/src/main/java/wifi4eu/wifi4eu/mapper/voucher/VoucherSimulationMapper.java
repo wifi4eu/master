@@ -5,6 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
@@ -30,6 +31,9 @@ public interface VoucherSimulationMapper {
 
     MunicipalityDTO municipalityToMunicipalityDTO(Municipality entity);
     Municipality municipalityDTOtoMunicipality(MunicipalityDTO dto);
+
+    ApplicationDTO applicationToApplicationDTO(Application entity);
+    Application applicationDTOtoApplication(ApplicationDTO dto);
 
     @Mappings({
             @Mapping(source = "entity.user.id", target = "userId", ignore = true),

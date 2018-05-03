@@ -145,11 +145,17 @@ public class ApplicationService {
         return  applicationMapper.toDTOList(applicationRepository.findApplicationsByRegistrationNotInvalidated(callId));
     }
 
-    public List<ApplicationDTO> getApplicationsByCall(int callId) {
-        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdOrderByIdAsc(callId)));
+    public List<ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
+        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdOrderByDateAsc(callId)));
     }
 
-    public List<ApplicationDTO> getApplicationByCountry(int callId, String country) {
+    public List<ApplicationDTO> getApplicationByCallAndCountry(int callId, String country) {
         return applicationMapper.toDTOList(applicationRepository.findApplicationsByCountry(callId, country));
     }
+
+    public List<ApplicationDTO> getApplicationsCountryNameCall(int callId, String country) {
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsCountry(country, callId));
+    }
+
+
 }

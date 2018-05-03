@@ -119,6 +119,7 @@ CREATE TABLE dbo.calls
   [end_date] BIGINT NULL,
   [budget] INT DEFAULT 0 NOT NULL,
   [budget_voucher] INT DEFAULT 1000 NOT NULL,
+  [max_percent_country] INT DEFAULT 10 NOT NULL,
   PRIMARY KEY ([id])
 );
 -- -----------------------------------------------------

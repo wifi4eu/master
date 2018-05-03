@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
-import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 public class VoucherAssignmentDTO {
 
@@ -10,12 +9,12 @@ public class VoucherAssignmentDTO {
     private Long executionDate;
     private int status;
     private CallDTO call;
-    private List<VoucherSimulationDTO> voucherSimulations;
+    private Set<VoucherSimulationDTO> voucherSimulations;
 
     public VoucherAssignmentDTO() {
     }
 
-    public VoucherAssignmentDTO(Integer id, UserDTO user, Long executionDate, int status, CallDTO call, List<VoucherSimulationDTO> voucherSimulations) {
+    public VoucherAssignmentDTO(Integer id, UserDTO user, Long executionDate, int status, CallDTO call, Set<VoucherSimulationDTO> voucherSimulations) {
         this.id = id;
         this.user = user;
         this.executionDate = executionDate;
@@ -24,7 +23,7 @@ public class VoucherAssignmentDTO {
         this.voucherSimulations = voucherSimulations;
     }
 
-    public VoucherAssignmentDTO(UserDTO user, Long executionDate, int status, CallDTO call, List<VoucherSimulationDTO> voucherSimulations) {
+    public VoucherAssignmentDTO(UserDTO user, Long executionDate, int status, CallDTO call, Set<VoucherSimulationDTO> voucherSimulations) {
         this.user = user;
         this.executionDate = executionDate;
         this.status = status;
@@ -72,11 +71,11 @@ public class VoucherAssignmentDTO {
         this.call = call;
     }
 
-    public List<VoucherSimulationDTO> getVoucherSimulations() {
+    public Set<VoucherSimulationDTO> getVoucherSimulations() {
         return voucherSimulations;
     }
 
-    public void setVoucherSimulations(List<VoucherSimulationDTO> voucherSimulations) {
+    public void setVoucherSimulations(Set<VoucherSimulationDTO> voucherSimulations) {
         this.voucherSimulations = voucherSimulations;
     }
 }

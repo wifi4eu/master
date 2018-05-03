@@ -8,7 +8,7 @@ import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { Observable } from 'rxJs/Observable';
 import { SharedService } from "../../shared/shared.service";
-import { VoucherAssignmentDTO } from "../../shared/swagger";
+import { VoucherAssignmentDTO, VoucherSimulationDTO } from "../../shared/swagger";
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
 
 @Component({
@@ -47,6 +47,7 @@ export class DgConnVoucherComponent {
   private callVoucherAssignment: VoucherAssignmentDTO = null;
   private callsLoaded = false;
   private callSelected: CallDTOBase = null;
+  private listAssignment: VoucherSimulationDTO[] = [];
 
   constructor(private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
     private voucherApi: VoucherApi) {
@@ -62,12 +63,16 @@ export class DgConnVoucherComponent {
           this.voucherApi.getVoucherAssignmentByCall(this.calls[0].id).subscribe((data: VoucherAssignmentDTO) => {
             console.log(data);
             this.callVoucherAssignment = data;
+
+            this.voucherApi.getVoucherSimulationByVoucherAssignment(data.id).subscribe((simulations) => {
+              this.listAssignment = simulations;
+            });
           })
         }
         let i = 0;
         for (let call of this.calls) {
           this.applicationsInfo[call.id] = [];
-          this.numVoucher[i] = call.budget / call.budgetVoucher;
+          //this.numVoucher[i] = call.budget / call.budgetVoucher;
           this.percentageBudgetCall[i] = 0;
           this.applicationApi.getApplicationsVoucherInfoByCall(call.id).subscribe(
             (info: ApplicationVoucherInfoDTOBase[]) => {
@@ -102,8 +107,8 @@ export class DgConnVoucherComponent {
     })
 
     this.voucherApi.getVoucherAssignmentByCall(this.calls[event.index].id).subscribe((data: VoucherAssignmentDTO) => {
-      console.log(data);
       this.callVoucherAssignment = data;
+      this.listAssignment = data.voucherSimulations;
     })
   }
 
@@ -113,9 +118,11 @@ export class DgConnVoucherComponent {
 
   private simulateVoucherAssignment(){
     if(this.callVoucherAssignment == null || this.callVoucherAssignment.status == 1){
-      this.voucherApi.simulateVoucherAssignment(this.callSelected).subscribe((data) => {
+      this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((data: VoucherAssignmentDTO) => {
         console.log("SIMULATE");
         console.log(data);
+        //this.callVoucherAssignment = data;
+        console.log(data.voucherSimulations.length);
       })
     }
   }

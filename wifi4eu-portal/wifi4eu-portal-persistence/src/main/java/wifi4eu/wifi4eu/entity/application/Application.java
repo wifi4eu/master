@@ -33,6 +33,9 @@ public class Application {
     @Column(name = "date")
     private Long date;
 
+    @Column(name = "status")
+    private Integer status;
+
     @Column(name = "lef_export")
     private Long lefExport;
 
@@ -63,7 +66,7 @@ public class Application {
     public Application() {
     }
 
-    public Application(Integer id, Call call, Registration registration, Supplier supplier, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus) {
+    public Application(Integer id, Call call, Registration registration, Supplier supplier, boolean voucherAwarded, Long date, Integer status, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus) {
         this.id = id;
         this.call = call;
         this.registration = registration;
@@ -79,6 +82,7 @@ public class Application {
         this.lcExport = lcExport;
         this.lcImport = lcImport;
         this.lcStatus = lcStatus;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -199,5 +203,13 @@ public class Application {
 
     public void setLcStatus(Integer lcStatus) {
         this.lcStatus = lcStatus;
+    }
+
+    public Integer isStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

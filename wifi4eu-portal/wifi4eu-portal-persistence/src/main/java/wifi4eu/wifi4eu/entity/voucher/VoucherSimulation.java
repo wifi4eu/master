@@ -1,5 +1,6 @@
 package wifi4eu.wifi4eu.entity.voucher;
 
+import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
 import javax.persistence.*;
@@ -14,7 +15,6 @@ public class VoucherSimulation {
     private Integer id;
 
     @Column(name = "eu_rank")
-    @OrderColumn
     private Integer euRank;
 
     @Column(name = "country_rank")
@@ -36,6 +36,13 @@ public class VoucherSimulation {
     @Column(name = "rejected")
     private Integer rejected;
 
+    @Column(name = "selection_status")
+    private Integer selectionStatus;
+
+    @OneToOne
+    @JoinColumn(name = "application")
+    private Application application;
+
     @ManyToOne
     @JoinColumn(name = "voucher_assignment")
     private VoucherAssignment voucherAssignment;
@@ -43,7 +50,7 @@ public class VoucherSimulation {
     public VoucherSimulation() {
     }
 
-    public VoucherSimulation(Integer id, Integer euRank, Integer countryRank, String country, Municipality municipality, Integer issues, Integer numApplications, Integer rejected, VoucherAssignment voucherAssignment) {
+    public VoucherSimulation(Integer id, Integer euRank, Integer countryRank, String country, Municipality municipality, Integer issues, Integer numApplications, Integer rejected, Integer selectionStatus, Application application, VoucherAssignment voucherAssignment) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;
@@ -52,6 +59,8 @@ public class VoucherSimulation {
         this.issues = issues;
         this.numApplications = numApplications;
         this.rejected = rejected;
+        this.selectionStatus = selectionStatus;
+        this.application = application;
         this.voucherAssignment = voucherAssignment;
     }
 
@@ -125,5 +134,21 @@ public class VoucherSimulation {
 
     public void setVoucherAssignment(VoucherAssignment voucherAssignment) {
         this.voucherAssignment = voucherAssignment;
+    }
+
+    public Integer getSelectionStatus() {
+        return selectionStatus;
+    }
+
+    public void setSelectionStatus(Integer selectionStatus) {
+        this.selectionStatus = selectionStatus;
+    }
+
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
     }
 }

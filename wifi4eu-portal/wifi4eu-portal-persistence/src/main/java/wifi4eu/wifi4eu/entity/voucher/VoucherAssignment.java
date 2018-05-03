@@ -4,7 +4,7 @@ import wifi4eu.wifi4eu.entity.call.Call;
 import wifi4eu.wifi4eu.entity.user.User;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "voucher_assignments")
@@ -30,12 +30,12 @@ public class VoucherAssignment {
     private Call call;
 
     @OneToMany(mappedBy = "voucherAssignment")
-    private List<VoucherSimulation> voucherSimulations;
+    private Set<VoucherSimulation> voucherSimulations;
 
     public VoucherAssignment() {
     }
 
-    public VoucherAssignment(Integer id, User user, Long executionDate, Integer status, Call call, List<VoucherSimulation> voucherSimulations) {
+    public VoucherAssignment(Integer id, User user, Long executionDate, Integer status, Call call, Set<VoucherSimulation> voucherSimulations) {
         this.id = id;
         this.user = user;
         this.executionDate = executionDate;
@@ -44,7 +44,7 @@ public class VoucherAssignment {
         this.voucherSimulations = voucherSimulations;
     }
 
-    public VoucherAssignment(User user, Long executionDate, Integer status, Call call, List<VoucherSimulation> voucherSimulations) {
+    public VoucherAssignment(User user, Long executionDate, Integer status, Call call, Set<VoucherSimulation> voucherSimulations) {
         this.user = user;
         this.executionDate = executionDate;
         this.status = status;
@@ -92,11 +92,11 @@ public class VoucherAssignment {
         this.call = call;
     }
 
-    public List<VoucherSimulation> getVoucherSimulations() {
+    public Set<VoucherSimulation> getVoucherSimulations() {
         return voucherSimulations;
     }
 
-    public void setVoucherSimulations(List<VoucherSimulation> voucherSimulations) {
+    public void setVoucherSimulations(Set<VoucherSimulation> voucherSimulations) {
         this.voucherSimulations = voucherSimulations;
     }
 }

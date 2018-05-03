@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface VoucherManagementRepository extends CrudRepository<VoucherManagement, Integer> {
     List<VoucherManagement> findAllByVoucherCallId(Integer callId);
-
 }

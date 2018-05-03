@@ -72,9 +72,9 @@ public class VoucherResource {
     @RequestMapping(value = "/assignment/simulate", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO simulateVoucherAssignment(@RequestBody final CallDTO callDTO) {
+    public ResponseDTO simulateVoucherAssignment(@RequestBody final Integer callId) {
         try {
-            return voucherService.simulateVoucherAssignment(callDTO);
+            return voucherService.simulateVoucherAssignment(callId);
         } catch (Exception e) {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
