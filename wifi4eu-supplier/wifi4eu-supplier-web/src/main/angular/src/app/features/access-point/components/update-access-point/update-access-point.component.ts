@@ -20,34 +20,35 @@ export class UpdateAccessPoint implements OnChanges {
 
   private modifiedAccessPoint: AccessPointBase = new AccessPointBase();
   private modalTitle: string;
-  private updateButtonTitle : string;
+  private updateButtonTitle: string;
 
   //TODO
-  private locationTypes = [{ label: 'Town Hall / Administrative building', value: 'Town Hall / Administrative building' },
-  { label: 'Health Centre / Hospital', value: 'Health Centre / Hospital' },
-  { label: 'Square', value: 'Square' },
-  { label: 'Park', value: 'Park' },
-  { label: 'Street / Pedestrian street', value: 'Street / Pedestrian street' },
-  { label: 'Tramway or Bus Station / Stop', value: 'Tramway or Bus Station / Stop' },
-  { label: 'Metro Station', value: 'Metro Station' },
-  { label: 'Railway Station', value: 'Railway Station' },
-  { label: 'Airport', value: 'Airport' },
-  { label: 'Sport Hall / Stadium', value: 'Sport Hall / Stadium' },
-  { label: 'School / Education or Research Centre / University', value: 'School / Education or Research Centre / University' },
-  { label: 'Library', value: 'Library' },
-  { label: 'Museum / Cultural Centre', value: 'Museum / Cultural Centre' },
-  { label: 'Site of touristic interest / Archeological Site', value: 'Site of touristic interest / Archeological Site' },
-  { label: 'Shopping Mall', value: 'Shopping Mall' },
-  { label: 'Other', value: 'Other' }]
+  private locationTypes = [{ label: 'updateAccessPoint.locationTypes.town', value: 'Town Hall / Administrative building' },
+  { label: 'updateAccessPoint.locationTypes.health', value: 'Health Centre / Hospital' },
+  { label: 'updateAccessPoint.locationTypes.square', value: 'Square' },
+  { label: 'updateAccessPoint.locationTypes.park', value: 'Park' },
+  { label: 'updateAccessPoint.locationTypes.street', value: 'Street / Pedestrian street' },
+  { label: 'updateAccessPoint.locationTypes.tramBusStation', value: 'Tramway or Bus Station / Stop' },
+  { label: 'updateAccessPoint.locationTypes.metroStation', value: 'Metro Station' },
+  { label: 'updateAccessPoint.locationTypes.railwayStation', value: 'Railway Station' },
+  { label: 'updateAccessPoint.locationTypes.airport', value: 'Airport' },
+  { label: 'updateAccessPoint.locationTypes.stadium', value: 'Sport Hall / Stadium' },
+  { label: 'updateAccessPoint.locationTypes.school', value: 'School / Education or Research Centre / University' },
+  { label: 'updateAccessPoint.locationTypes.library', value: 'Library' },
+  { label: 'updateAccessPoint.locationTypes.museum', value: 'Museum / Cultural Centre' },
+  { label: 'updateAccessPoint.locationTypes.tourism', value: 'Site of touristic interest / Archeological Site' },
+  { label: 'updateAccessPoint.locationTypes.shopping', value: 'Shopping Mall' },
+  { label: 'updateAccessPoint.locationTypes.other', value: 'Other' }]
 
-  private deviceTypes = [{ label: 'indoor', value: true }, { label: 'outdoor', value: false }]
+  private deviceTypes = [{ label: 'accessPoint.indoor', value: true }, { label: 'accessPoint.outdoor', value: false }]
 
   private regexLocation: string = '^([-+]?)([0-9]{1,2})(((.)([0-9]{6})))$';
   private regexMacAddress: string = '^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$';
   private isSubmitted: boolean = false;
 
   constructor(private uxService: UxService, private translateService: TranslateService,
-    private accessPointApi: AccesspointsApi,  private errorHandlingService: ErrorHandlingService) {
+    private accessPointApi: AccesspointsApi, private errorHandlingService: ErrorHandlingService) {
+      this.translateLabelsFromSelects();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -58,10 +59,10 @@ export class UpdateAccessPoint implements OnChanges {
 
     if (!this.isEdit) {
       modalJsonString = 'accessPoint.add';
-      buttonJsonString= 'shared.add';
+      buttonJsonString = 'shared.add';
     } else {
       modalJsonString = 'updateAccessPoint.editTitle';
-      buttonJsonString= 'shared.edit';
+      buttonJsonString = 'shared.edit';
     }
 
     this.translateService.get(modalJsonString).subscribe(
@@ -92,7 +93,7 @@ export class UpdateAccessPoint implements OnChanges {
         if (response.success) {
           this.onSubmitted.emit(true);
           Object.assign(this.accessPoint, this.modifiedAccessPoint);
-        } else{
+        } else {
           return this.errorHandlingService.handleError(response.error);
         }
       }, error => {
@@ -103,6 +104,28 @@ export class UpdateAccessPoint implements OnChanges {
 
     this.isSubmitted = true;
     this.closeUpdateAccessPoint();
+  }
+
+  translateLabelsFromSelects(){
+    for (let i = 0; i < this.locationTypes.length; i++) {
+      let label = this.locationTypes[i].label;
+      this.translateService.get(label).subscribe(
+        (translation: string) => {
+            this.locationTypes[i].label= translation;
+            console.log(label, ' , translation');
+        });
+    }
+    
+    for (let i = 0; i < this.deviceTypes.length; i++) {
+      let label = this.deviceTypes[i].label;
+      this.translateService.get(label).subscribe(
+        (translation: string) => {
+            this.deviceTypes[i].label= translation;
+            console.log(label, ' , translation');
+        });
+    }
+
+
   }
 
 }
