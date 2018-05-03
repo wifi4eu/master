@@ -88,7 +88,6 @@ export class ListSuppliersComponent implements OnInit {
     if(this.country && this.region){
       if(this.region.id != 0){
         this.supplierApi.getSuppliersRegisteredByRegion(this.region.id, this.page, this.itemsPerPage).subscribe((response: ResponseDTO) => {
-          console.log("Region id is: " + this.region.id);
           this.suppliers = response.data['suppliers'];
           this.dateCached = this.transformDate(response.data['dateCached']);
           this.regionNameSearched = this.region.label;
@@ -96,12 +95,6 @@ export class ListSuppliersComponent implements OnInit {
         }); 
       }else{
         this.supplierApi.getSuppliersRegisteredByCountry(this.country.countryCode, this.page, this.itemsPerPage).subscribe((response: ResponseDTO) => {
-
-          console.log("Country code is: " + this.country.countryCode);
-          console.log("Region id is: " + this.region.id);
-          console.log("This page is " + this.page);
-          console.log("This itemsPerPage is " + this.itemsPerPage);
-          console.log(response.data);
           this.suppliers = response.data['suppliers'];
           this.dateCached = this.transformDate(response.data['dateCached']);
           this.regionNameSearched = this.country.label;        
