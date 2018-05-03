@@ -17,7 +17,6 @@ export class HomeComponent {
     private municipalitiesCounter: number;
     private user: UserDTOBase;
     private currentCall: CallDTOBase;
-    /* CallDTOBase */
     private dateNumber: string;
     private hourNumber: string;
     private showTimeline: boolean = false;
@@ -37,7 +36,6 @@ export class HomeComponent {
                 console.log(error);
             }
         );
-        console.log("showTimeline is now " + this.showTimeline);
         this.checkForCalls();
     }
 
@@ -45,9 +43,6 @@ export class HomeComponent {
         this.callApi.allCalls().subscribe(
             calls => {
                 this.currentCall = calls[0];
-                console.log(this.currentCall.startDate > Date.now());
-                console.log(this.currentCall.startDate );
-                console.log( new Date().getTime());
                 if (this.currentCall.startDate > Date.now()) {
                     this.showTimeline = true;
                     this.showTimer = true;
@@ -63,8 +58,6 @@ export class HomeComponent {
                 this.currentCall = null;
             }
         );
-
-        console.log("showTimeline is now " + this.showTimeline);
     }
 
     private hideTimer() {
