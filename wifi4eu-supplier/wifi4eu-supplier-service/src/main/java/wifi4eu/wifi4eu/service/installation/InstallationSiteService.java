@@ -156,10 +156,12 @@ public class InstallationSiteService {
             }
 
             // the domain will be added to whitelist
-            InstallationSiteWhitelist whitelist = new InstallationSiteWhitelist();
-            whitelist.setOrigin(domain);
-            whitelist.setActive(1);
-            whitelistRepository.save(whitelist);
+            if(whitelistRepository.countInstallationSiteWhitelistByOrigin(domain) == 0) {
+                InstallationSiteWhitelist whitelist = new InstallationSiteWhitelist();
+                whitelist.setOrigin(domain);
+                whitelist.setActive(1);
+                whitelistRepository.save(whitelist);
+            }
 
             if (control) {
                 // if (map.get("url").equals(map.get("url_confirmation"))) {
