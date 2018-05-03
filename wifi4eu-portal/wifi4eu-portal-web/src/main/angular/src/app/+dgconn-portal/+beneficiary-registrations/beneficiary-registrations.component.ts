@@ -3,6 +3,7 @@ import { animate, style, transition, trigger } from "@angular/animations";
 import { BeneficiaryApi } from "../../shared/swagger/api/BeneficiaryApi";
 import { BeneficiaryListItemDTOBase } from "../../shared/swagger/model/BeneficiaryListItemDTO";
 import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import * as FileSaver from "file-saver";
 
 @Component({
     templateUrl: 'beneficiary-registrations.component.html',
@@ -95,34 +96,38 @@ export class DgConnBeneficiaryRegistrationsComponent {
         if (!this.loadingData && !this.downloadingCSV) {
             this.downloadingCSV = true;
             if (this.searchingByName) {
-                this.beneficiaryApi.exportCSVDGConnBeneficiariesListSearchingName(this.nameSearched).subscribe(
-                    (response: ResponseDTOBase) => {
-                        if (response.success) {
-                            let csvData = encodeURI('data:text/csv;charset=utf-8,' + response.data);
-                            let link = document.createElement("a");
-                            link.download = 'beneficiaries.csv';
-                            link.href = csvData;
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                            link.remove();
-                        }
+                this.beneficiaryApi.exportExcelDGConnBeneficiariesListSearchingName(this.nameSearched).subscribe(
+                    (response) => {
+                        let blob = new Blob([response], {type: "application/vnd.ms-excel"});
+                        FileSaver.saveAs(blob, "beneficiaries.xls");
+                        // if (response.success) {
+                        //     let csvData = encodeURI('data:text/csv;charset=utf-8,' + response.data);
+                        //     let link = document.createElement("a");
+                        //     // link.download = 'beneficiaries.csv';
+                        //     link.download = 'beneficiaries.xls';
+                        //     link.href = csvData;
+                        //     document.body.appendChild(link);
+                        //     link.click();
+                        //     document.body.removeChild(link);
+                        //     link.remove();
+                        // }
                         this.downloadingCSV = false;
                     }
                 );
             } else {
-                this.beneficiaryApi.exportCSVDGConnBeneficiariesList().subscribe(
-                    (response: ResponseDTOBase) => {
-                        if (response.success) {
-                            let csvData = encodeURI('data:text/csv;charset=utf-8,' + response.data);
-                            let link = document.createElement("a");
-                            link.download = 'beneficiaries.csv';
-                            link.href = csvData;
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                            link.remove();
-                        }
+                this.beneficiaryApi.exportExcelDGConnBeneficiariesList().subscribe(
+                    (response) => {
+                        let blob = new Blob([response], {type: "application/vnd.ms-excel"});
+                        FileSaver.saveAs(blob, "beneficiaries.xls");
+                        // let csvData = encodeURI('data:text/csv;charset=utf-8,' + response.data);
+                        // let link = document.createElement("a");
+                        // link.download = 'beneficiaries.csv';
+                        // link.download = 'beneficiaries.xls';
+                        // link.href = blob;
+                        // document.body.appendChild(link);
+                        // link.click();
+                        // document.body.removeChild(link);
+                        // link.remove();
                         this.downloadingCSV = false;
                     }
                 );

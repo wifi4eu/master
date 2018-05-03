@@ -26,6 +26,7 @@ import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 
 import java.lang.reflect.Field;
@@ -892,6 +893,22 @@ public class BeneficiaryService {
         int pageSize = totalCount;
         List<BeneficiaryListItem> beneficiaries = beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByLauIdAsc(name, 0, pageSize);
         return generateCSVBeneficiaries(beneficiaries, true);
+    }
+
+    public byte[] exportExcelDGConnBeneficiariesList() {
+        int totalCount = getCountDistinctMunicipalities();
+        int pageSize = totalCount;
+        List<BeneficiaryListItem> beneficiaries = beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByLauIdAsc(0, pageSize);
+        ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(beneficiaries, BeneficiaryListItem.class);
+        return excelExportGenerator.exportExcelFile("beneficiaries").toByteArray();
+    }
+
+    public byte[] exportExcelDGConnBeneficiariesListContainingName(String name) {
+        int totalCount = getCountDistinctMunicipalitiesContainingName(name);
+        int pageSize = totalCount;
+        List<BeneficiaryListItem> beneficiaries = beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByLauIdAsc(name, 0, pageSize);
+        ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(beneficiaries, BeneficiaryListItem.class);
+        return excelExportGenerator.exportExcelFile("beneficiaries").toByteArray();
     }
 
     private String generateCSVBeneficiaries(List<BeneficiaryListItem> beneficiaryListItems, boolean columnHeaders) {
