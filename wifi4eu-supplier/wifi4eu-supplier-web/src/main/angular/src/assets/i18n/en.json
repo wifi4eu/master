@@ -85,6 +85,7 @@
     "error.404.beneficiaryNotFound": "Beneficiary not found",
     "error.400.noData": "No data sent",
     "error.404.AccessPointNotFound": "Access Point not found",
-    "error.404.InstallationSitesNotFound": "Installation Site not found"
+    "error.404.InstallationSitesNotFound": "Installation Site not found",
+    "error.409.duplicatedUrl": "URL of the captive portal already exists in the system, Please provide a new URL"
 
 }

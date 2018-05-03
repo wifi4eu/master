@@ -130,6 +130,13 @@ public class InstallationSiteService {
                 control = false;
             }
 
+            //system should check the URL of the captive portal is unique.
+            if (url!= null && installationSiteRepository.countInstallationSiteByUrl(url) != 1) {
+                response.setSuccess(false);
+                response.setError(new ErrorDTO(409, "error.409.duplicatedUrl"));
+                return response;
+            }
+
             if (control) {
                 // if (map.get("url").equals(map.get("url_confirmation"))) {
                 InstallationSite installationSite;
