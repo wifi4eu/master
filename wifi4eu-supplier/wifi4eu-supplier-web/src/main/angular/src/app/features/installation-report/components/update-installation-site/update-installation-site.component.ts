@@ -16,7 +16,7 @@ export class UpdateInstallationSite implements OnChanges, DoCheck {
   @Input('isEdit') isEdit: boolean = false;
   @Output() onSubmitted: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('installationSiteForm') form: NgForm;
-  regexUrlPortal: string = '[a-z0-9-:/.]*';
+  regexUrlPortal: string = '^[^- ]([a-z0-9-:/.]+\.)[a-z0-9-:/]*[^-]$';
   private modalTitle: string;
   private updateButtonTitle: string;
   private isSubmitted: boolean = false;

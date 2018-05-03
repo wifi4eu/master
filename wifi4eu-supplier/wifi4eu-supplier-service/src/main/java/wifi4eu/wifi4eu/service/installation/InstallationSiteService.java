@@ -124,7 +124,7 @@ public class InstallationSiteService {
                 }
             }
 
-            String regExURL = "[a-z0-9-:/.]*";
+            String regExURL = "^[^- ]([a-z0-9-:/.]+\\.)[a-z0-9-:/]*[^-]$";
             String url = (String) map.get("url");
             if (url != null && !url.matches(regExURL)) {
                 control = false;
