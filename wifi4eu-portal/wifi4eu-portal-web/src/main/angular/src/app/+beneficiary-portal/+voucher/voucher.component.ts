@@ -53,8 +53,9 @@ export class VoucherComponent {
     private disableQueuing = [];
     private displayError = false;
     private errorMessage = null;
+    private rabbitmqURI: string = "https://wifi4eu-dev.everincloud.com/queue";
 
-    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private azurequeueApi: AzurequeueApi, private sharedService: SharedService) {
+    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private azurequeueApi: AzurequeueApi, private sharedService: SharedService, private http: Http) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         let storedRegistrations = this.localStorage.get('registrationQueue') ? JSON.parse(this.localStorage.get('registrationQueue').toString()) : null;
@@ -194,48 +195,56 @@ export class VoucherComponent {
     }
 
     private applyForVoucher(registrationNumber: number, event) {
-        let startCallDate = this.currentCall.startDate;
-        let actualDateTime = new Date().getTime();
+    let startCallDate = this.currentCall.startDate;
+    let actualDateTime = new Date().getTime();
 
-        if (startCallDate <= actualDateTime) {
+    if (startCallDate <= actualDateTime) {
+      if (!this.loadingButtons[registrationNumber]) {
+        let m =
+          "Apply voucher (" +
+          this.registrations[registrationNumber].id +
+          ") @" +
+          this.currentCall.id +
+          "@";
 
-            if (!this.loadingButtons[registrationNumber]) {
+        event.target.style.pointerEvents = "none";
+        event.target.style.opacity = "0.5";
+        event.target.disabled = true;
 
-                var queueComponent = new QueueComponent();
+        this.http.post(this.rabbitmqURI, { message: m }).subscribe(
+          response => {
+            this.loadingButtons[registrationNumber] = true;
+            this.voucherApplied = "greyImage";
+            this.voucherCompetitionState = 3;
 
-                let aNewMessageApplication = new AzureQueueDTOBase();
-                aNewMessageApplication.message = "Apply voucher (" + this.registrations[registrationNumber].id + ") @" + this.currentCall.id + "@";
+            var oneHourLater = new Date();
+            oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
+            var timestamp = Math.floor(oneHourLater.getTime() / 1000);
 
-                event.target.style.pointerEvents = "none";
-                event.target.style.opacity = "0.5";
-                event.target.disabled = true;
-
-                queueComponent.setAzureQueue(Math.floor(Math.random() * 10));
-
-                queueComponent.addMessageAzureQueue(aNewMessageApplication.message).then((response) => {
-                    this.loadingButtons[registrationNumber] = true;
-                    this.voucherApplied = "greyImage";
-                    this.voucherCompetitionState = 3;
-
-                    var oneHourLater = new Date();
-                    oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
-                    var timestamp = Math.floor(oneHourLater.getTime() / 1000);
-
-                    var queueStored = {
-                        expires_in: timestamp,
-                        idRegistration: this.registrations[registrationNumber].id,
-                        call: this.currentCall.id
-                    };
-                    this.storedRegistrationQueues.push(queueStored);
-                    this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
-                    this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
-                }).catch((err) => {
-                    this.errorMessage = err;
-                    this.displayError = true;
-                });
-            }
-        }
+            var queueStored = {
+              expires_in: timestamp,
+              idRegistration: this.registrations[registrationNumber].id,
+              call: this.currentCall.id
+            };
+            this.storedRegistrationQueues.push(queueStored);
+            this.localStorage.set(
+              "registrationQueue",
+              JSON.stringify(this.storedRegistrationQueues)
+            );
+            this.sharedService.growlTranslation(
+              "Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.",
+              "benefPortal.voucher.statusmessage5",
+              "success"
+            );
+          },
+          error => {
+            this.errorMessage = error;
+            this.displayError = true;
+          }
+        );
+      }
     }
+  }
 
     private closeModal() {
         this.errorMessage = null;
