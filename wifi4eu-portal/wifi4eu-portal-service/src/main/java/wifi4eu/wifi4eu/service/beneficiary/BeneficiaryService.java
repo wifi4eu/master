@@ -279,7 +279,7 @@ public class BeneficiaryService {
         }
     }
 
-    private Integer setIssueToDgconnBeneficiary(Integer lauId) {
+    public Integer setIssueToDgconnBeneficiary(Integer lauId) {
         Integer issueType = 0;
 //        boolean duplicated = false;
         LauDTO lau = lauService.getLauById(lauId);

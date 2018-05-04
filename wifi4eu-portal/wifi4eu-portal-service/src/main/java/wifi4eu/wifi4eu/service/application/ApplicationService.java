@@ -11,6 +11,7 @@ import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -53,6 +54,9 @@ public class ApplicationService {
 
     @Autowired
     CallService callService;
+
+    @Autowired
+    BeneficiaryService beneficiaryService;
 
     public List<ApplicationDTO> getAllApplications() {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findAll()));
@@ -246,6 +250,13 @@ public class ApplicationService {
                     applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByLauIdAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
                 }
                 break;
+        }
+        for (ApplicantListItemDTO item : applicantsList) {
+            if (item.getCounter() > 1) {
+                item.setIssueStatus(0);
+            } else {
+                item.setIssueStatus(beneficiaryService.setIssueToDgconnBeneficiary(item.getLauId()));
+            }
         }
         return applicantsList;
     }
