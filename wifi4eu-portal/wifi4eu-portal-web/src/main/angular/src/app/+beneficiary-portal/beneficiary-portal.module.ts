@@ -5,7 +5,7 @@ import { VoucherComponent } from "../+beneficiary-portal/+voucher/voucher.compon
 import { DiscussionComponent } from "./+discussion/discussion.component";
 import { BeneficiaryProfileComponent } from "./+profile/profile.component";
 import { AdditionalInfoComponent } from "./+additional-info/additional-info.component";
-// import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplier.component";
+import { selectSupplierComponent } from './+select-supplier/select-supplier.component';
 
 @NgModule({
     imports: [
@@ -15,8 +15,8 @@ import { AdditionalInfoComponent } from "./+additional-info/additional-info.comp
         VoucherComponent,
         DiscussionComponent,
         BeneficiaryProfileComponent,
-        AdditionalInfoComponent
-        // SelectSupplierComponent
+        AdditionalInfoComponent,
+        selectSupplierComponent
     ]
     // ,
     // bootstrap: [BeneficiaryPortalComponent]
