@@ -1431,6 +1431,14 @@ discussion-component .expanded .content, discussion-component .expanded .header,
   cursor: not-allowed;
 }
 
+.entity-title {
+  font-weight: bold;
+}
+
+.entity-subtitle {
+  color: #8a8a8a;
+}
+
 .blueButton {
   background-color: #004494;
   height: 50px;

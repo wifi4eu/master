@@ -9,7 +9,7 @@
     <div class="ui-g-12 center">
         <p-tabView *ngIf="calls.length > 0" (onChange)="changeCall($event)">
             <p-tabPanel *ngFor="let call of calls; let i = index"
-                        header="{{ 'shared.call.number' | translate:{number:i+1} }}"
+                        header="{{ 'dgConn.call.number' | translate:{number:i+1} }}"
                         [selected]="i == currentIndex">
             </p-tabPanel>
         </p-tabView>
@@ -51,8 +51,17 @@
                          [paginator]="true" [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="totalItems" [rows]="itemsPerPage">
                 <p-column field="countryCode" [sortable]="true" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
                 <p-column field="name" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
+                <p-column field="status" [sortable]="true" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
+                    <ng-template let-row="rowData" pTemplate="body">
+                        <span *ngIf="row.status == -1">-</span>
+                        <span *ngIf="row.status == 0">{{ 'dgConn.beneficiaries.applied' | translate}}</span>
+                        <span *ngIf="row.status == 1">{{ 'dgConn.status.invalidated' | translate}}</span>
+                        <span *ngIf="row.status == 2">{{ 'dgConn.status.validated' | translate}}</span>
+                    </ng-template>
+                </p-column>
                 <p-column field="issueStatus" [sortable]="false" header="{{ 'dgConn.issues' | translate }}" styleClass="text-center">
                     <ng-template let-row="rowData" pTemplate="body">
+                        <span *ngIf="row.issueStatus == 0">-</span>
                         <span *ngIf="row.issueStatus == 1 || row.issueStatus == 2" class="badge badge-warning">{{ 'dgConn.badge.warning' | translate }}</span>
                         <span *ngIf="row.issueStatus == 3" class="badge badge-warning-yellow">{{ 'dgConn.badge.warning' | translate }}</span>
                     </ng-template>
@@ -74,7 +83,7 @@
                 <footer>
                     <div style="position: absolute; bottom: 25px; left: 20px;">
                     <span *ngIf="!loadingData">
-                        {{ 'shared.totalRecords' | translate }} {{tableBeneficiary.totalRecords}}
+                        {{ 'dgConn.totalRecords' | translate }} {{tableBeneficiary.totalRecords}}
                     </span>
                         <span *ngIf="loadingData">
                         {{ 'shared.loading.modal.title' | translate }} <i [@enterSpinner] class="fa fa-spinner loading-icon"></i>

@@ -8,12 +8,13 @@ public class ApplicantListItemDTO {
     private String name;
     private Integer counter;
     private Boolean mediation;
+    private Integer status;
     private Integer issueStatus;
 
     public ApplicantListItemDTO() {
     }
 
-    public ApplicantListItemDTO(Integer lauId, Integer euRanking, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation) {
+    public ApplicantListItemDTO(Integer lauId, Integer euRanking, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation, Integer status, Integer issueStatus) {
         this.lauId = lauId;
         this.euRanking = euRanking;
         this.countryRanking = countryRanking;
@@ -21,16 +22,7 @@ public class ApplicantListItemDTO {
         this.name = name;
         this.counter = counter;
         this.mediation = mediation;
-    }
-
-    public ApplicantListItemDTO(Integer lauId, Integer euRanking, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation, Integer issueStatus) {
-        this.lauId = lauId;
-        this.euRanking = euRanking;
-        this.countryRanking = countryRanking;
-        this.countryCode = countryCode;
-        this.name = name;
-        this.counter = counter;
-        this.mediation = mediation;
+        this.status = status;
         this.issueStatus = issueStatus;
     }
 
@@ -88,6 +80,14 @@ public class ApplicantListItemDTO {
 
     public void setMediation(Boolean mediation) {
         this.mediation = mediation;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Integer getIssueStatus() {

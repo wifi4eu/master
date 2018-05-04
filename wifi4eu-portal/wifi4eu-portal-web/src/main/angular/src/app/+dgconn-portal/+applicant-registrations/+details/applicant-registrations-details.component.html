@@ -33,10 +33,16 @@
             <hr class="beneficiaryHr">
             <div *ngFor="let municipality of municipalities; let i = index">
                 <div class="row applicantDetailsPanel">
-                    <label class="customCheckboxLabel" [for]="'check-'+i">
-                        {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}}
-                        ({{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{users[i].id}})
-                    </label>
+                    <span class="left">
+                        <span class="entity-title">
+                            {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}}
+                            ({{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{users[i].id}})
+                        </span>
+                        <br><br>
+                        <span class="entity-subtitle">
+                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date | date: 'dd/MM/yyyy HH:mm' }}
+                        </span>
+                    </span>
                     <span class="right">
                         <button type="button" class="btn greenButton" (click)="displayValidateModal(i)" [disabled]="applications[i].status == 2">
                             {{ 'dgConn.applicantDetails.validateApplication.title' | translate }}
@@ -105,7 +111,7 @@
                                 <span class="ui-g-9 ui-sm-6 profileData">{{ mayors[i].email }}</span>
                             </p>
                         </div>
-                        <div class="ui-g-4 ui-lg-4 ui-md-12 ui-sm-12">
+                        <div class="ui-g-6 ui-lg-6 ui-md-12 ui-sm-12">
                             <p class="applicantDetailsNoMargin municipality-name profileData">
                                 <span class="ui-g-12">{{ 'registration.nameOrganisation' | translate }}</span>
                             </p>
@@ -118,7 +124,9 @@
                                 </span>
                             </p>
                         </div>
-                        <div class="ui-g-2 ui-lg-2 ui-md-12 ui-sm-12">
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
                             <p class="applicantDetailsNoMargin municipality-name profileData">
                                 <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.documentation' | translate }}</span>
                             </p>
@@ -127,32 +135,32 @@
                             </p>
                             <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile1">
                                 <span class="ui-g-12">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1<br>
-                                    <a class="link-label" [href]="getLegalFileUrl(i, 1)" download>
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
+                                    <a class="link-label" style="margin-left: 2em;" [href]="getLegalFileUrl(i, 1)" download>
                                         <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                     </a>
                                 </span>
                             </p>
                             <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile2">
                                 <span class="ui-g-12">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2<br>
-                                    <a class="link-label" [href]="getLegalFileUrl(i, 2)" download>
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2
+                                    <a class="link-label" style="margin-left: 2em;" [href]="getLegalFileUrl(i, 2)" download>
                                         <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                     </a>
                                 </span>
                             </p>
                             <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile3">
                                 <span class="ui-g-12">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3<br>
-                                    <a class="link-label" [href]="getLegalFileUrl(i, 3)" download>
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3
+                                    <a class="link-label" style="margin-left: 2em;" [href]="getLegalFileUrl(i, 3)" download>
                                         <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                     </a>
                                 </span>
                             </p>
                             <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile4">
                                 <span class="ui-g-12">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4<br>
-                                    <a class="link-label" [href]="getLegalFileUrl(i, 4)" download>
+                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4
+                                    <a class="link-label" style="margin-left: 2em;" [href]="getLegalFileUrl(i, 4)" download>
                                         <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                     </a>
                                 </span>
