@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.service.application;
 
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,9 @@ public class ApplicationService {
     @Autowired
     CallService callService;
 
+    private static final Logger _log = LoggerFactory.getLogger(ApplicationService.class);
+
+    @Deprecated
     public List<ApplicationDTO> getAllApplications() {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findAll()));
     }
@@ -53,7 +58,63 @@ public class ApplicationService {
         return applicationMapper.toDTO(applicationRepository.findOne(applicationId));
     }
 
+    /**
+     * Service to register the applications coming from the Queue
+     */
+    public ApplicationDTO registerApplication(int callId, int userId, int registrationId,
+                                              long uploadDocTimestamp, long queueTimestamp) {
+
+        CallDTO callDTO = callService.getCallById(callId);
+        UserDTO userDTO = userService.getUserById(userId);
+        RegistrationDTO registrationDTO = registrationService.getRegistrationById(registrationId);
+
+        // check all the information provided exists on DB
+        if (callDTO != null && userDTO != null && registrationDTO != null) {
+            // check the queue date is between start/end of the call
+            if (queueTimestamp > callDTO.getStartDate() && queueTimestamp < callDTO.getEndDate()) {
+                //check information on the queue is right
+                if (registrationDTO.getUploadTime() == uploadDocTimestamp && registrationDTO.getUserId() == userId) {
+                    //check if this application was received previously
+                    ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
+                    if (applicationDTO == null) {
+                        //create the application
+                        applicationDTO = new ApplicationDTO();
+                        applicationDTO.setCallId(callDTO.getId());
+                        applicationDTO.setDate(queueTimestamp);
+                        applicationDTO.setRegistrationId(registrationDTO.getId());
+
+                        applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+
+                        return applicationDTO;
+                    } else {
+                        _log.error("trying to register an application existent on the DB, callId: "
+                                + callId + " userId: " + userId + " registrationId: " + registrationId +
+                                " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+                    }
+
+                } else {
+                    _log.error("trying to register an application with incorrect uploadDocTimestamp or userId not match, callId: "
+                            + callId + " userId: " + userId + " registrationId: " + registrationId +
+                            " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+                }
+
+            } else {
+                _log.error("trying to register an application out of the call period, callId: "
+                        + callId + " userId: " + userId + " registrationId: " + registrationId +
+                        " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+            }
+
+        } else {
+            _log.error("the information provided is wrong, callId: "
+                    + callId + " userId: " + userId + " registrationId: " + registrationId +
+                    " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+        }
+
+        return null;
+    }
+
     @Transactional
+    @Deprecated
     public ApplicationDTO createApplication(ApplicationDTO applicationDTO) {
         CallDTO actualCall = callService.getCallById(applicationDTO.getCallId());
         long startCallDate = actualCall.getStartDate();
@@ -78,9 +139,9 @@ public class ApplicationService {
                 String subject = bundle.getString("mail.voucherApply.subject");
                 String msgBody = bundle.getString("mail.voucherApply.body");
                 msgBody = MessageFormat.format(msgBody, municipality.getName());
-                if(!userService.isLocalHost()){
-                  mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-                }               
+                if (!userService.isLocalHost()) {
+                    mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                }
             }
             return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
         }
@@ -88,6 +149,7 @@ public class ApplicationService {
     }
 
     @Transactional
+    @Deprecated
     public ApplicationDTO deleteApplication(int applicationId) {
         ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
         if (applicationDTO != null) {
