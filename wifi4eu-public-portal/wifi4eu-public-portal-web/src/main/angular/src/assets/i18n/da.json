@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Vælg et dokument i et brugbart format (.pdf, .png, eller .jpg) ",
   "(CET)": "Centraleuropæisk tid",
   "(CEST)": "Centraleuropæisk sommertid",
-  "(CEST abbreviation)": "CEST"
+  "(CEST abbreviation)": "CEST",
+  "dgConn.status.validated": "Validated"
 }

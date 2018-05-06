@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Palun valige sobiva vorminguga dokument (.pdf, .png või .jpg)",
   "(CET)": "Kesk-Euroopa aja järgi",
   "(CEST)": "Kesk-Euroopa suveaeg",
-  "(CEST abbreviation)": "Kesk-Euroopa suveaeg"
+  "(CEST abbreviation)": "Kesk-Euroopa suveaeg",
+  "dgConn.status.validated": "Validated"
 }

@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Níl formáid an doiciméid oiriúnach. Úsáid formáid eile (.pdf, .png, or .jpg) le do thoil.",
   "(CET)": "Am Lár na hEorpa",
   "(CEST)": "Am samhraidh Lár na hEorpa",
-  "(CEST abbreviation)": "Am samhraidh Lár na hEorpa"
+  "(CEST abbreviation)": "Am samhraidh Lár na hEorpa",
+  "dgConn.status.validated": "Validated"
 }

@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Bitte wählen Sie ein Dokument im richtigen Format (.pdf, .png, oder .jpg)",
   "(CET)": "MEZ",
   "(CEST)": "Mitteleuropäische Sommerzeit",
-  "(CEST abbreviation)": "MESZ"
+  "(CEST abbreviation)": "MESZ",
+  "dgConn.status.validated": "Validated"
 }

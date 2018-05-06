@@ -540,5 +540,6 @@
   "shared.incorrectFormat": "Veuillez télécharger un document dans un format approprié: .pdf, .png ou .jpg.",
   "(CET)": "heure de l'Europe centrale",
   "(CEST)": "Heure d'été d'Europe centrale",
-  "(CEST abbreviation)": "CEST/HAEC"
+  "(CEST abbreviation)": "CEST/HAEC",
+  "dgConn.status.validated": "Validated"
 }

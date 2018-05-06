@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Selecione um documento com um formato adequado (.pdf, .png, ou .jpg)",
   "(CET)": "hora da Europa Central",
   "(CEST)": "Hora de verão da Europa Central",
-  "(CEST abbreviation)": "CEST"
+  "(CEST abbreviation)": "CEST",
+  "dgConn.status.validated": "Validated"
 }

@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Odaberite dokument u odgovarajućem formatu (.pdf, .png ili .jpg).",
   "(CET)": "prema srednjoeuropskom vremenu",
   "(CEST)": "srednjoeuropsko ljetno vrijeme",
-  "(CEST abbreviation)": "CEST"
+  "(CEST abbreviation)": "CEST",
+  "dgConn.status.validated": "Validated"
 }

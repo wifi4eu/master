@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Kies een bestand in een geschikt formaat (.pdf, .png, of .jpg)",
   "(CET)": "Midden-Europese tijd",
   "(CEST)": "Midden-Europese Zomertijd",
-  "(CEST abbreviation)": "MEZT"
+  "(CEST abbreviation)": "MEZT",
+  "dgConn.status.validated": "Validated"
 }

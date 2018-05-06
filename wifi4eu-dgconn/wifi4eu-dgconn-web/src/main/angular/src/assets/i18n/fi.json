@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Valitse hyväksyttävä tiedostomuoto (.pdf, .png tai .jpg)",
   "(CET)": "Keski-Euroopan aikaa",
   "(CEST)": "Keski-Euroopan kesäaikaa",
-  "(CEST abbreviation)": "CEST"
+  "(CEST abbreviation)": "CEST",
+  "dgConn.status.validated": "Validated"
 }

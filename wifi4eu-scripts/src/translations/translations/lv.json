@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Izvēlieties dokumentu vajadzīgajā formātā (.pdf, .png vai .jpg)",
   "(CET)": "pēc Centrāleiropas laika",
   "(CEST)": "Centrāleiropas vasaras laiks",
-  "(CEST abbreviation)": "CEST"
+  "(CEST abbreviation)": "CEST",
+  "dgConn.status.validated": "Validated"
 }

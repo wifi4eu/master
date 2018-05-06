@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Jekk jogħġbok agħżel dokument b'format xieraq (.pdf, .png, jew .jpg)",
   "(CET)": "Ħin tal-Ewropa Ċentrali",
   "(CEST)": "Ħin tas-Sajf tal-Ewropa Ċentrali",
-  "(CEST abbreviation)": "CEST"
+  "(CEST abbreviation)": "CEST",
+  "dgConn.status.validated": "Validated"
 }
