@@ -58,22 +58,25 @@ public class ApplicationService {
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
         UserDTO user = null;
         MunicipalityDTO municipality = null;
-        if (registration != null) {
-            user = userService.getUserById(registration.getUserId());
-            municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-        }
-        if (user != null && municipality != null) {
-            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-            if (user.getLang() != null) {
-                locale = new Locale(user.getLang());
+        if (registration.getAllFilesFlag() == 1) {
+            if (registration != null) {
+                user = userService.getUserById(registration.getUserId());
+                municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
             }
-            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-            String subject = bundle.getString("mail.voucherApply.subject");
-            String msgBody = bundle.getString("mail.voucherApply.body");
-            msgBody = MessageFormat.format(msgBody, municipality.getName());
-            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            if (user != null && municipality != null) {
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (user.getLang() != null) {
+                    locale = new Locale(user.getLang());
+                }
+                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                String subject = bundle.getString("mail.voucherApply.subject");
+                String msgBody = bundle.getString("mail.voucherApply.body");
+                msgBody = MessageFormat.format(msgBody, municipality.getName());
+                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            }
+            return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
         }
-        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        return null;
     }
 
     @Transactional
@@ -116,12 +119,12 @@ public class ApplicationService {
         return applicationsVoucherInfo;
     }
 
-    public List<ApplicationVoucherInfoDTO> setRankingApplicationsInCountry(List<ApplicationVoucherInfoDTO> applicationsVoucherInfo){
+    public List<ApplicationVoucherInfoDTO> setRankingApplicationsInCountry(List<ApplicationVoucherInfoDTO> applicationsVoucherInfo) {
         List<ApplicationVoucherInfoDTO> listApplicationsRanked = new ArrayList<>();
         Map<String, List<ApplicationVoucherInfoDTO>> map = new HashMap<>();
-        for(ApplicationVoucherInfoDTO applicationVoucherInfoDTO: applicationsVoucherInfo){
+        for (ApplicationVoucherInfoDTO applicationVoucherInfoDTO : applicationsVoucherInfo) {
             List<ApplicationVoucherInfoDTO> emptyList = new ArrayList<>();
-            if(map.containsKey(applicationVoucherInfoDTO.getCountryName())){
+            if (map.containsKey(applicationVoucherInfoDTO.getCountryName())) {
                 emptyList = new ArrayList<>(map.get(applicationVoucherInfoDTO.getCountryName()));
             }
             emptyList.add(applicationVoucherInfoDTO);
@@ -131,7 +134,6 @@ public class ApplicationService {
         }
         return listApplicationsRanked;
     }
-
 
 
     public ApplicationVoucherInfoDTO getApplicationsVoucherInfoByApplication(int applicationId) {
