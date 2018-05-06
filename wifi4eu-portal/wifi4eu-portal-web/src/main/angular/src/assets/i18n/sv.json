@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Du måste välja ett annat format (pdf, png eller jpg)",
   "(CET)": "centraleuropeisk tid",
   "(CEST)": "Svensk tid",
-  "(CEST abbreviation)": "Svensk tid"
+  "(CEST abbreviation)": "Svensk tid",
+  "dgConn.status.validated": "Validated"
 }

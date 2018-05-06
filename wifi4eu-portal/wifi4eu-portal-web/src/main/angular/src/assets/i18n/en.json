@@ -576,5 +576,6 @@
   "shared.session.expired.reload": "Please reload the page",
   "(CET)": "Central European Time",
   "(CEST)": "Central European Summer Time",
-  "(CEST abbreviation)": "CEST"
+  "(CEST abbreviation)": "CEST",
+  "dgConn.status.validated": "Validated"
 }

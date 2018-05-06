@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Επιλέξτε ένα έγγραφο με τον κατάλληλο μορφότυπο (.pdf, .png, ή .jpg)",
   "(CET)": "ώρα Κεντρικής Ευρώπης",
   "(CEST)": "Θερινή ώρα Κεντρικής Ευρώπης.",
-  "(CEST abbreviation)": "CEST"
+  "(CEST abbreviation)": "CEST",
+  "dgConn.status.validated": "Validated"
 }

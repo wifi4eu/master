@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Pasirinkite tinkamo formato dokumentą (.pdf, .png, .jpg)",
   "(CET)": "Vidurio Europos laiku",
   "(CEST)": "Vidurio Europos vasaros laiku",
-  "(CEST abbreviation)": "CEST"
+  "(CEST abbreviation)": "CEST",
+  "dgConn.status.validated": "Validated"
 }

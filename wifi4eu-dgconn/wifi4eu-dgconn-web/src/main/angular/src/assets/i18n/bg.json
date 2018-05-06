@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Моля, изберете файл с подходящ формат (.pdf, .png или .jpg).",
   "(CET)": "централноевропейско време",
   "(CEST)": "Централноевропейско лятно време",
-  "(CEST abbreviation)": "CEST"
+  "(CEST abbreviation)": "CEST",
+  "dgConn.status.validated": "Validated"
 }

@@ -8,8 +8,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
+import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -25,6 +29,12 @@ import java.util.*;
 public class ApplicationService {
     @Value("${mail.server.location}")
     private String baseUrl;
+    
+    @Autowired
+    ApplicantListItemMapper applicantListItemMapper;
+
+    @Autowired
+    ApplicantListItemRepository applicantListItemRepository;
 
     @Autowired
     ApplicationMapper applicationMapper;
@@ -46,8 +56,11 @@ public class ApplicationService {
 
     @Autowired
     CallService callService;
-
+    
     private static final Logger _log = LoggerFactory.getLogger(ApplicationService.class);
+
+    @Autowired
+    BeneficiaryService beneficiaryService;
 
     @Deprecated
     public List<ApplicationDTO> getAllApplications() {
@@ -201,5 +214,190 @@ public class ApplicationService {
             }
         }
         return appVoucherInfoDTO;
+    }
+
+    public List<ApplicantListItemDTO> findDgconnApplicantsList(Integer callId, String country, String name, PagingSortingDTO pagingSortingData) {
+        List<ApplicantListItemDTO> applicantsList;
+        if (country == null) {
+            country = "%";
+        }
+        switch (pagingSortingData.getOrderField()) {
+            case "name":
+                if (pagingSortingData.getOrderType() == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByNameDesc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByNameDesc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByNameAsc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByNameAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                }
+                break;
+            case "countryCode":
+                if (pagingSortingData.getOrderType() == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByCountryCodeDesc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByCountryCodeDesc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByCountryCodeAsc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByCountryCodeAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                }
+                break;
+            case "counter":
+                if (pagingSortingData.getOrderType() == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByCounterDesc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByCounterDesc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByCounterAsc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByCounterAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                }
+                break;
+            case "mediation":
+                if (pagingSortingData.getOrderType() == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByMediationDesc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByMediationDesc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByMediationAsc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByMediationAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                }
+                break;
+            default:
+                if (pagingSortingData.getOrderType() == -1) {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByLauIdDesc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByLauIdDesc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                } else {
+                    if (name != null) {
+                        if (name.trim().length() > 0) {
+                            applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListContainingNameOrderByLauIdAsc(callId, country, name, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                            break;
+                        }
+                    }
+                    applicantsList = applicantListItemMapper.toDTOList(applicantListItemRepository.findDgconnApplicantsListOrderByLauIdAsc(callId, country, pagingSortingData.getOffset(), pagingSortingData.getCount()));
+                }
+                break;
+        }
+        for (ApplicantListItemDTO item : applicantsList) {
+            if (item.getCounter() > 1) {
+                item.setIssueStatus(0);
+            } else {
+                item.setIssueStatus(beneficiaryService.setIssueToDgconnBeneficiary(item.getLauId()));
+            }
+        }
+        return applicantsList;
+    }
+
+    public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
+        ApplicationDTO validatedApplication = applicationDTO;
+        RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
+        if (registration != null) {
+            UserDTO user = userService.getUserById(registration.getUserId());
+            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+            if (user != null && municipality != null) {
+                List<ApplicationDTO> repeatedApplications = getApplicationsByCallIdAndLauId(applicationDTO.getCallId(), municipality.getLauId());
+                for (ApplicationDTO repeatedApplication : repeatedApplications) {
+                    if (repeatedApplication.getId() == applicationDTO.getId()) {
+                        repeatedApplication.setStatus(ApplicationStatus.OK.getValue());
+                        repeatedApplication.setInvalidateReason(null);
+                        validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+                        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                        if (user.getLang() != null) {
+                            locale = new Locale(user.getLang());
+                        }
+                        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                        String subject = bundle.getString("mail.validateApplication.subject");
+                        String msgBody = bundle.getString("mail.validateApplication.body");
+                        msgBody = MessageFormat.format(msgBody, municipality.getName());
+                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    } else {
+                        invalidateApplication(repeatedApplication);
+                    }
+                }
+            }
+        }
+        return validatedApplication;
+    }
+
+    public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO) {
+        applicationDTO.setStatus(ApplicationStatus.KO.getValue());
+        ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());
+        if (registration != null) {
+            UserDTO user = userService.getUserById(registration.getUserId());
+            MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+            if (user != null && municipality != null) {
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (user.getLang() != null) {
+                    locale = new Locale(user.getLang());
+                }
+                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                String subject = bundle.getString("mail.invalidateApplication.subject");
+                String msgBody = bundle.getString("mail.invalidateApplication.body");
+                msgBody = MessageFormat.format(msgBody, municipality.getName());
+                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            }
+        }
+        return invalidatedApplication;
+    }
+
+    public List<ApplicationDTO> getApplicationsByCallId(int callId) {
+        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallId(callId)));
+    }
+
+    public List<ApplicationDTO> getApplicationsByCallIdAndLauId(int callId, int lauId) {
+        List<ApplicationDTO> applications = new ArrayList<>();
+        for (ApplicationDTO application : getApplicationsByCallId(callId)) {
+            RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
+            if (registration != null) {
+                MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+                if (municipality != null) {
+                    if (municipality.getLauId() == lauId) {
+                        applications.add(application);
+                    }
+                }
+            }
+        }
+        return applications;
     }
 }

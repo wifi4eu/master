@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Izberite dokument v ustrezni obliki (.pdf, png ali .jpg)",
   "(CET)": "po srednjeevropskem času",
   "(CEST)": "srednjeevropski poletni čas",
-  "(CEST abbreviation)": "srednjeevropski poletni čas"
+  "(CEST abbreviation)": "srednjeevropski poletni čas",
+  "dgConn.status.validated": "Validated"
 }

@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Dokument musí být ve vhodném formátu (.pdf, .png nebo .jpg)",
   "(CET)": "SEČ",
   "(CEST)": "středoevropský letní čas",
-  "(CEST abbreviation)": "SELČ"
+  "(CEST abbreviation)": "SELČ",
+  "dgConn.status.validated": "Validated"
 }

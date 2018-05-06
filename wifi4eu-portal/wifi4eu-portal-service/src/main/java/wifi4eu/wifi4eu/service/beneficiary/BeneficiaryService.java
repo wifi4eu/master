@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
@@ -25,8 +26,10 @@ import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 
+import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -300,7 +303,7 @@ public class BeneficiaryService {
         }
     }
 
-    private Integer setIssueToDgconnBeneficiary(Integer lauId) {
+    public Integer setIssueToDgconnBeneficiary(Integer lauId) {
         Integer issueType = 0;
 //        boolean duplicated = false;
         LauDTO lau = lauService.getLauById(lauId);
@@ -845,5 +848,122 @@ public class BeneficiaryService {
             mapIps.put(registrationDTO.getIpRegistration(), 1);
         }
         return false;
+    }
+
+    public MunicipalityDetailsDTO getMunicipalityDetailsByMunicipalityId(int municipalityId) {
+        MunicipalityDetailsDTO munDetails = new MunicipalityDetailsDTO();
+        MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
+        if (municipality != null) {
+            munDetails.setMunicipality(municipality);
+            LauDTO lau = lauService.getLauById(municipality.getLauId());
+            MayorDTO mayor = mayorService.getMayorByMunicipalityId(municipality.getId());
+            if (lau != null) {
+                munDetails.setLau(lau);
+            }
+            if (mayor != null) {
+                munDetails.setMayor(mayor);
+            }
+            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipality.getId());
+            if (registration != null) {
+                munDetails.setRegistration(registration);
+                List<ApplicationDTO> applications = applicationService.getApplicationsByRegistrationId(registration.getId());
+                if (applications != null) {
+                    munDetails.setApplications(applications);
+                }
+            }
+        }
+        return munDetails;
+    }
+
+    public List<MunicipalityDetailsDTO> getMunicipalitiesDetailsByLauId(int lauId) {
+        List<MunicipalityDetailsDTO> munsDetails = new ArrayList<>();
+        LauDTO lau = lauService.getLauById(lauId);
+        if (lau != null) {
+            List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(lauId);
+            for (MunicipalityDTO municipality : municipalities) {
+                if  (municipality != null) {
+                    MunicipalityDetailsDTO munDetails = getMunicipalityDetailsByMunicipalityId(municipality.getId());
+                    munsDetails.add(munDetails);
+                }
+            }
+        }
+        return munsDetails;
+    }
+
+    public List<MunicipalityDetailsDTO> getAppliedMunicipalitiesDetailsByLauIdAndCallId(int lauId, int callId) {
+        List<MunicipalityDetailsDTO> finalMunsDetails = new ArrayList<>();
+        List<MunicipalityDetailsDTO> munsDetails = getMunicipalitiesDetailsByLauId(lauId);
+        for (MunicipalityDetailsDTO munDetails : munsDetails) {
+            if (munDetails.getApplications() != null) {
+                for (ApplicationDTO application : munDetails.getApplications()) {
+                    if (application.getCallId() == callId) {
+                        finalMunsDetails.add(munDetails);
+                    }
+                }
+            }
+        }
+        return finalMunsDetails;
+    }
+
+    public String exportCSVDGConnBeneficiariesList() {
+        int totalCount = getCountDistinctMunicipalities();
+        int pageSize = totalCount;
+        List<BeneficiaryListItem> beneficiaries = beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByLauIdAsc(0, pageSize);
+        return generateCSVBeneficiaries(beneficiaries, true);
+    }
+
+    public String exportCSVDGConnBeneficiariesListSearchingName(String name) {
+        int totalCount = getCountDistinctMunicipalitiesContainingName(name);
+        int pageSize = totalCount;
+        List<BeneficiaryListItem> beneficiaries = beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByLauIdAsc(name, 0, pageSize);
+        return generateCSVBeneficiaries(beneficiaries, true);
+    }
+
+    public byte[] exportExcelDGConnBeneficiariesList() {
+        int totalCount = getCountDistinctMunicipalities();
+        int pageSize = totalCount;
+        List<BeneficiaryListItem> beneficiaries = beneficiaryListItemRepository.findDgconnBeneficiaresListOrderByLauIdAsc(0, pageSize);
+        ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(beneficiaries, BeneficiaryListItem.class);
+        return excelExportGenerator.exportExcelFile("beneficiaries").toByteArray();
+    }
+
+    public byte[] exportExcelDGConnBeneficiariesListContainingName(String name) {
+        int totalCount = getCountDistinctMunicipalitiesContainingName(name);
+        int pageSize = totalCount;
+        List<BeneficiaryListItem> beneficiaries = beneficiaryListItemRepository.findDgconnBeneficiaresListContainingNameOrderByLauIdAsc(name, 0, pageSize);
+        ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(beneficiaries, BeneficiaryListItem.class);
+        return excelExportGenerator.exportExcelFile("beneficiaries").toByteArray();
+    }
+
+    private String generateCSVBeneficiaries(List<BeneficiaryListItem> beneficiaryListItems, boolean columnHeaders) {
+        StringBuilder sb = new StringBuilder();
+        if (columnHeaders) {
+            sb.append("Name,LauID,CountryCode,NumberRegistrations,Status,Mediation,IssueStatus,");
+            sb.append("\n");
+        }
+        for (BeneficiaryListItem beneficiaryListItem : beneficiaryListItems) {
+            sb.append(beneficiaryListItem.getName());
+            sb.append(",");
+            sb.append(beneficiaryListItem.getLauId());
+            sb.append(",");
+            sb.append(beneficiaryListItem.getCountryCode());
+            sb.append(",");
+            if (beneficiaryListItem.getStatus()) {
+                sb.append("Applied");
+            } else {
+                sb.append("Registered");
+            }
+            sb.append(",");
+            if (beneficiaryListItem.getMediation()) {
+                sb.append("YES");
+            } else {
+                sb.append("NO");
+            }
+            sb.append(",");
+            sb.append(beneficiaryListItem.getIssueStatus());
+            sb.append(",");
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 }

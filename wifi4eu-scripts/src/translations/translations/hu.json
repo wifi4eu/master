@@ -540,5 +540,6 @@
   "shared.incorrectFormat": "Kérjük, hogy .pdf, .png vagy .jpg kiterjesztésű fájlt válasszon ki.",
   "(CET)": "közép-európai idő szerint",
   "(CEST)": "Közép-európai nyári időszámítás",
-  "(CEST abbreviation)": "CEST"
+  "(CEST abbreviation)": "CEST",
+  "dgConn.status.validated": "Validated"
 }

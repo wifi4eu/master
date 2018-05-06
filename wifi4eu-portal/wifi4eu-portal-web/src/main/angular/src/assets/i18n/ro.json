@@ -539,5 +539,6 @@
   "shared.incorrectFormat": "Selectați un document cu un format corespunzător (.pdf, .png sau .jpg)",
   "(CET)": "ora Europei Centrale",
   "(CEST)": "Ora de vară a Europei Centrale",
-  "(CEST abbreviation)": "CEST"
+  "(CEST abbreviation)": "CEST",
+  "dgConn.status.validated": "Validated"
 }
