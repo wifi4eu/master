@@ -112,7 +112,6 @@ export class UpdateAccessPoint implements OnChanges {
       this.translateService.get(label).subscribe(
         (translation: string) => {
             this.locationTypes[i].label= translation;
-            console.log(label, ' , translation');
         });
     }
     
@@ -121,7 +120,6 @@ export class UpdateAccessPoint implements OnChanges {
       this.translateService.get(label).subscribe(
         (translation: string) => {
             this.deviceTypes[i].label= translation;
-            console.log(label, ' , translation');
         });
     }
 
