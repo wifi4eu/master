@@ -9,10 +9,20 @@ import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
 import {ErrorHandlingService} from "../../core/services/error.service";
 import {AccessPointBase} from "../../shared/swagger/model/AccessPoint";
 import {AccesspointsApi} from "../../shared/swagger/api/AccesspointsApi";
+import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
+import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
+import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
+import {LocalStorageService} from "angular-2-local-storage";
+import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
+import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
+import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
+import {InstallationsiteApi} from "../../shared/swagger/api/InstallationsiteApi";
+import {MayorApi} from "../../shared/swagger/api/MayorApi";
 
 
 @Component({
-    templateUrl: './access-point-list.component.html'
+    templateUrl: './access-point-list.component.html',
+    providers: [MunicipalityApi, MayorApi, BeneficiaryApi, InstallationsiteApi, SearchParametersService, BeneficiaryService, AccesspointsApi, ErrorHandlingService]
 })
 export class AccessPointListComponent {
 
@@ -21,20 +31,34 @@ export class AccessPointListComponent {
     private accessPoints: AccessPointBase[];
     private installationSiteName: string = '';
     private accessPoint: AccessPointBase = new AccessPointBase();
-
+    private user: UserDTOBase;
+    private municipality: MunicipalityDTOBase;
+    private registration: RegistrationDTOBase;
+    private municipalityId: number;
     //observable that gets the id from route params
     private idSub: any;
 
-    constructor(private uxService: UxService, private router: Router, private route: ActivatedRoute,
+    constructor(private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private uxService: UxService, private router: Router, private route: ActivatedRoute,
                 private beneficiaryService: BeneficiaryService, public searchParametersService: SearchParametersService,
-                private accessPointApi: AccesspointsApi, private errorHandlingService: ErrorHandlingService) {
+                private accessPointApi: AccesspointsApi, private errorHandlingService: ErrorHandlingService, private localStorage: LocalStorageService) {
+        let storedUser = this.localStorage.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+        if (this.user != null) {
+            if (this.municipalityId != null) {
+                this.municipalityApi.getMunicipalityById(this.municipalityId).subscribe(
+                    (municipality: MunicipalityDTOBase) => {
+                        this.municipality = municipality;
+                    }, error => {
+                    }
+                );
+            }
 
-        if (this.beneficiaryService.beneficiarySelected != undefined) {
-            this.beneficiary = this.beneficiaryService.beneficiarySelected;
-        } else {
-            // this.beneficiaryService.growlNotSelected();
         }
 
+        else {
+            // this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
+            this.router.navigateByUrl('/home');
+        }
         this.idSub = this.route.params.subscribe(params => {
             this.searchParametersService.parameters.id_installationSite = +params['id'];
             this.installationSiteName = params['name'];
@@ -65,8 +89,5 @@ export class AccessPointListComponent {
         });
     }
 
-    openUpdateAccessPoint() {
-        // this.uxService.openModal('updateAccessPoint');
-    }
 
 }

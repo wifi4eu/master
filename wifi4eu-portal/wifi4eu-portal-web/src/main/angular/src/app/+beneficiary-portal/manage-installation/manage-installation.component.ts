@@ -112,8 +112,23 @@ export class ManageInstallationComponent {
         this.router.navigate(['../../details/' + this.installationSites[installationNumber].id], {relativeTo: this.route});
     }
 
-    private goToList(installationNumber: number) {
-        // this.router.navigate(['../details/' + this.installationSites[installationNumber].id], {relativeTo: this.route});
+    private goToList(accessPointNumber: number) {
+        // String order = "asc";
+        // String field = "device_brand";
+        // int id_installationSite = 0;
+        // int page = 0;
+        // int delta = 10;
+        let inputParameters = new Object;
+        inputParameters["id_installationSite"] = this.installationSites[accessPointNumber].id;
+        this.accessPoinstApi.getAccessPointPerInstallationSite(inputParameters).subscribe(
+            accessPointResult => {
+                console.log("accessPointResult: ", accessPointResult);
+
+            }, error => {
+                console.log(error);
+            }
+        );
+        this.router.navigate(['../../access-point/' + this.installationSites[accessPointNumber].id], {relativeTo: this.route});
     }
 
 
