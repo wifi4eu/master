@@ -16,6 +16,7 @@ public class RegistrationDTO implements Serializable {
     private String associationName;
     private int organisationId;
 
+
     public RegistrationDTO() {
     }
 

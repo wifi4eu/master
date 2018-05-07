@@ -18,11 +18,12 @@ public class UserDTO {
     private long accessDate;
     private int type;
     private boolean verified;
+    private int idRole;
 
     public UserDTO() {
     }
 
-    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified) {
+    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified, int idRole) {
         this.id = id;
         this.ecasUsername = ecasUsername;
         this.ecasEmail = ecasEmail;
@@ -39,6 +40,7 @@ public class UserDTO {
         this.accessDate = accessDate;
         this.type = type;
         this.verified = verified;
+        this.idRole = idRole;
     }
 
     public int getId() {
@@ -167,5 +169,13 @@ public class UserDTO {
 
     public void setEcasEmail(String ecasEmail) {
         this.ecasEmail = ecasEmail;
+    }
+
+    public int getIdRole() {
+        return idRole;
+    }
+
+    public void setIdRole(int idRole) {
+        this.idRole = idRole;
     }
 }

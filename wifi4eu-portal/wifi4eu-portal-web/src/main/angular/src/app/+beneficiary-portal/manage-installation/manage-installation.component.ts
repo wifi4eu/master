@@ -8,7 +8,7 @@ import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {BeneficiaryDisplayedListDTOBase} from "../../shared/swagger/model/BeneficiaryDisplayedListDTO";
 import {InstallationSite} from '../../shared/swagger/model/InstallationSite';
 import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
-import {UxService} from '@eui/ux-commons';
+import {UxService} from '@ec-digit-uxatec/eui-angular2-ux-commons';
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {InstallationsiteApi} from "../../shared/swagger/api/InstallationsiteApi";
 import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
@@ -16,11 +16,13 @@ import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
 import {SearchParametersService} from "../../core/services/search-parameters.service";
 import {BeneficiaryService} from "../../core/services/beneficiary-service";
+import {AccesspointsApi} from "../../shared/swagger/api/AccesspointsApi";
+import {AccessPointBase} from "../../shared/swagger/model/AccessPoint";
 
 
 @Component({
     templateUrl: 'manage-installation.component.html',
-    providers: [MunicipalityApi, MayorApi, BeneficiaryApi, InstallationsiteApi]
+    providers: [MunicipalityApi, MayorApi, BeneficiaryApi, InstallationsiteApi, SearchParametersService, BeneficiaryService, AccesspointsApi]
 })
 
 
@@ -32,23 +34,18 @@ export class ManageInstallationComponent {
     //-- Component properties
     _timeout: any = null;
     totalResults: number = 0;
-
+    private openModal: boolean = false;
+    private accessPoints: AccessPointBase[];
     private beneficiarySelected: BeneficiaryDisplayedListDTOBase = new BeneficiaryDisplayedListDTOBase;
-    private beneficiarySuggestions: BeneficiaryDisplayedListDTOBase[] = [];
-    private isBeneficiarySelected: boolean = false;
     private installationSites: InstallationSite[] = [];
     private isReportSent: boolean = false;
     private supplier: {};
     private legalChecks: boolean[] = [false, false, false];
+    private accessPoint;
 
-    constructor(private installationsiteApi: InstallationsiteApi, private  beneficiaryApi: BeneficiaryApi, private localStorageService: LocalStorageService, public searchParametersService: SearchParametersService, private beneficiaryService: BeneficiaryService, private uxService: UxService, private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private sharedService: SharedService) {
+    constructor(private accessPoinstApi: AccesspointsApi, private installationsiteApi: InstallationsiteApi, private  beneficiaryApi: BeneficiaryApi, private localStorageService: LocalStorageService, public searchParametersService: SearchParametersService, private beneficiaryService: BeneficiaryService, private uxService: UxService, private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private sharedService: SharedService) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
-        if (this.beneficiaryService.beneficiarySelected != undefined) {
-            this.beneficiarySelected = this.beneficiaryService.beneficiarySelected;
-            this.isBeneficiarySelected = true;
-            this.onSearch();
-        }
         if (this.user != null) {
             let municipalityId;
             this.route.params.subscribe(params => municipalityId = params['municipalityId']);
@@ -56,6 +53,9 @@ export class ManageInstallationComponent {
                 this.municipalityApi.getMunicipalityById(municipalityId).subscribe(
                     (municipality: MunicipalityDTOBase) => {
                         this.municipality = municipality;
+                        this.searchParametersService.parameters.id_beneficiary = this.municipality.id;
+                        this.beneficiaryService.beneficiarySelected = this.beneficiarySelected;
+                        this.onSearch();
                         this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 this.registration = registration;
@@ -73,39 +73,17 @@ export class ManageInstallationComponent {
 
     }
 
-    getBenegiciarySuggestions(event) {
-        let query = encodeURIComponent(event.query);
-
-        this.beneficiaryApi.getBeneficiariesList().subscribe((response: ResponseDTOBase) => {
-            if (response.success) {
-                this.beneficiarySuggestions = response.data;
-            }
-        });
-    }
-
-    onBeneficiarySelected() {
-        //get installation sites from this beneficiary
-        this.isBeneficiarySelected = true;
-        this.beneficiaryService.beneficiarySelected = this.beneficiarySelected;
-        this.searchParametersService.parameters.id_beneficiary = this.beneficiarySelected.id;
-        this.onSearch();
-    }
-
-
     onPage(event: any) {
-        if (this.isBeneficiarySelected) {
-            this.searchParametersService.parameters.delta = event.rows;
-            this.searchParametersService.parameters.page = event.first;
-            this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "id";
-            this.searchParametersService.parameters.order = event.sortOrder > 0 ? "asc" : "desc";
-            this.onSearch();
-        }
+        this.searchParametersService.parameters.delta = event.rows;
+        this.searchParametersService.parameters.page = event.first;
+        this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "id";
+        this.searchParametersService.parameters.order = event.sortOrder > 0 ? "asc" : "desc";
     }
 
     onSearch() {
         this.totalResults = 0;
 
-        this.installationSiteApi.getInstallationSiteListByBeneficiary(this.searchParametersService.parameters).subscribe((response: ResponseDTOBase) => {
+        this.installationsiteApi.getInstallationSiteListByBeneficiary(this.searchParametersService.parameters).subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.installationSites = response.data.data;
                 this.totalResults = response.data.count;
@@ -113,20 +91,12 @@ export class ManageInstallationComponent {
         })
     }
 
-    onChangesAutocomplete(event) {
-        if (this.beneficiaryService.beneficiarySelected != this.beneficiarySelected) {
-            this.isBeneficiarySelected = false;
-            this.installationSites = [];
-            this.totalResults = 0;
-        }
-    }
-
     openConfirmInstallation() {
-        this.uxService.openModal('confirmInstallation');
+        this.openModal = true;
     }
 
     closeConfirmInstallation() {
-        this.uxService.closeModal('confirmInstallation');
+        this.openModal = false;
         this.legalChecks = [false, false, false];
     }
 
@@ -138,8 +108,13 @@ export class ManageInstallationComponent {
         this.closeConfirmInstallation();
     }
 
-    openUpdateInstallationSite() {
-        this.uxService.openModal('updateInstallationSite');
+    private goToDetails(installationNumber: number) {
+        this.router.navigate(['../../details/' + this.installationSites[installationNumber].id], {relativeTo: this.route});
     }
+
+    private goToList(installationNumber: number) {
+        // this.router.navigate(['../details/' + this.installationSites[installationNumber].id], {relativeTo: this.route});
+    }
+
 
 }

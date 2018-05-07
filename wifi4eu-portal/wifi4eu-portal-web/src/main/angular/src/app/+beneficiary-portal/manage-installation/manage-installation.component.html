@@ -1,92 +1,134 @@
 <div *ngIf="municipality">
     <div class="container">
-        <div class="text-center" id="success">
-            <i class="fas fa-check-circle"></i>
-            <h1>{{ 'installationReport.successH1' | translate }}
-                <br> {{beneficiarySelected.name}} {{ 'installationReport.successH2' | translate}}</h1>
+        <div id="step2-title" class="row">
+            <div class="col-sm-6">
+                <div id="component-title">
+                    <p class="beneficiaryTitle labelModal">
+                        {{ 'accessPoint.title' | translate }}</p>
+                    <p>{{ 'benef.installationDesc' | translate}}</p>
+                </div>
+            </div>
+            <div class="col-sm-6"></div>
+        </div>
 
+        <div class="text-center" id="success">
+            <p class="beneficiaryTitle marginTop">
         </div>
 
         <div class="header">
-            <h1>{{ 'installationReport.title' | translate }}</h1>
-            <p>{{ 'installationReport.thisPageIsUsedTo' | translate }}</p>
-        </div>
-
-        <div class="form-group instalReportBeneficiary col-md-3">
-            <label for="selectBeneficiary">{{ 'shared.beneficiary.label' | translate }}</label>
-            <p-autoComplete id="selectBeneficiary" name="selectBeneficiary" placeholder="{{'app.search.button' | translate}}" [(ngModel)]="beneficiarySelected"
-                            [suggestions]="beneficiarySuggestions" field="name" (completeMethod)="getBenegiciarySuggestions($event)" (onSelect)="onBeneficiarySelected(this)"
-                            (onKeyUp)="onChangesAutocomplete($event)"></p-autoComplete>
-
+            <p>{{ 'shared.beneficiary.label' | translate}} : <b>{{municipality.name}}</b></p>
         </div>
 
         <div class="results">
-            <div class="row table-filters-header align-items-end">
-                <div class="col-md-8">
-                    <p>{{ 'installationReport.listOfSites' | translate}}
-                        <span *ngIf="isBeneficiarySelected">{{beneficiarySelected.name}}</span>
-                    </p>
-                </div>
-                <div class="col-md-4 text-right btn-flat-link">
-                    <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" [isDisabled]="!isBeneficiarySelected || isReportSent" (click)="openUpdateInstallationSite()">+ {{ 'installationReport.addSite' | translate }}</ux-button>
-                </div>
-            </div>
-            <p-dataTable [value]="installationSites" [rows]="searchParametersService.parameters.delta" [paginator]="true" [rowsPerPageOptions]="[5,10,20]"
-                         [totalRecords]="totalResults" [first]="searchParametersService.parameters.page" [lazy]="true" (onLazyLoad)="onPage($event)"
-                         [immutable]="false">
+            <p-dataTable [value]="installationSites" [rows]="searchParametersService.parameters.delta"
+                         [paginator]="true" [rowsPerPageOptions]="[5,10,20]"
+                         [totalRecords]="totalResults" [first]="searchParametersService.parameters.page"
+                         [lazy]="true"
+                         (onLazyLoad)="onPage($event)">
                 <p-column field="id" header="{{'shared.number.label' | translate }}" sortable="true">
                 </p-column>
-                <p-column field="name" header="{{'installationReport.siteName' | translate }}" sortable="true"></p-column>
-                <p-column field="domainName" header="{{'installationReport.domainName' | translate }}" sortable="true"></p-column>
+                <p-column field="name" header="{{'installationReport.siteName' | translate }}"
+                          sortable="true"></p-column>
+                <p-column field="domainName" header="{{'installationReport.domainName' | translate }}"
+                          sortable="true"></p-column>
                 <p-column header="{{'shared.details' | translate }}">
-                    <ng-template let-installationSite="rowData" pTemplate="body">
+                    <template pTemplate="body" let-i="rowIndex" let-installationSite="rowData">
                         <div class="my-center-text">
-                            <ux-button [isFlat]="true" iconClass="fas fa-eye" [routerLink]="['./details']" routerLinkActive="active">{{ 'shared.view' | translate }}</ux-button>
+                            <button iconClass="fas fa-eye" (click)="goToDetails(i)"
+                                    routerLinkActive="active">{{ 'shared.view' | translate }}
+                            </button>
                         </div>
-                    </ng-template>
+                    </template>
                 </p-column>
-                <p-column field="goToDetails" header="{{'installationReport.accessPoint' | translate }}">
-                    <ng-template let-installationSite="rowData" pTemplate="body">
-                        <div class="my-center-text">
-                            <ux-button [isFlat]="true" iconClass="fas fa-list-ul" [routerLink]="['./../access-point/', installationSite.id, installationSite.name]"
-                                       routerLinkActive="active">{{ 'installationReport.goToAccessPoint' | translate }}</ux-button>
+                <p-column header="{{'installationReport.accessPoint' | translate }}">
+                    <template pTemplate="body" let-i="rowIndex" let-installationSite="rowData">
+                        <div class=" my-center-text ">
+                            <button iconClass="fas fa-list-ul" (click)="goToList(i)"
+                                    routerLinkActive="active">{{ 'installationReport.goToAccessPoint' | translate }}
+                            </button>
                         </div>
-                    </ng-template>
+                    </template>
                 </p-column>
 
-                <ng-template pTemplate="emptymessage">
+                <template pTemplate="emptymessage">
                     {{'installationReport.noBeneficiarySelected' | translate}}
-                </ng-template>
+                </template>
             </p-dataTable>
         </div>
-
         <div class="row">
-            <div class="col-md-3 offset-md-9 confirm-installation">
-                <ux-button typeClass="primary" (click)="openConfirmInstallation()" [isLarge]="true" [isDisabled]="!isBeneficiarySelected|| isReportSent">{{ 'installationReport.confirmInstallation' | translate }}</ux-button>
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+                <button class="btn btn-primary cancel-button">{{
+                    'benef.requestRevision' | translate }}
+                </button>
+                <button class="btn btn-primary publish-button"
+                        (click)="openConfirmInstallation()"
+                        [disabled]="isReportSent">{{
+                    'installationReport.confirmInstallation' | translate }}
+                </button>
                 <p>{{ 'installationReport.confirmationText' | translate}}</p>
             </div>
+
+
         </div>
 
+        <p-dialog [(visible)]="openModal" id="confirmInstallation">
+            <!--<uxModalBody>-->
+            <div class="text-center">
+                <p class="beneficiaryTitle">{{'installationReport.confirmText' | translate:{beneficiarySel:
+                    this.municipality.name}
+                    }}</p>
+                <p>{{'installationReport.confirmTextInform' | translate}}</p>
+                <div class="checkBoxContainer">
+                    <div class="ui-g" style="text-align: left;">
+                        <span class="ui-lg-1"></span>
+                        <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
+                            <p-checkbox name="confirmChecks" binary="true"
+                                        label=" {{ 'installationReport.firstCheckBox' | translate}}"
+                                        [(ngModel)]="legalChecks[0]"></p-checkbox>
 
-
-        <ux-modal id="confirmInstallation" titleLabel="{{ 'installationReport.confirmInstallation' | translate }}" isOverflowVisible="true"
-                  [isHandleCloseOnAccept]="false" [isSizeSmall]="false" (onDismiss)="closeConfirmInstallation()">
-            <uxModalBody>
-                <div class="text-center">
-                    <p>{{'installationReport.confirmText' | translate:{beneficiarySel: this.beneficiarySelected.name} }}</p>
-                    <p>{{'installationReport.confirmTextInform' | translate}}</p>
-                    <div class="checkBoxContainer">
-                        <p-checkbox name="confirmChecks" binary="true" label=" {{ 'installationReport.firstCheckBox' | translate}}" [(ngModel)]="legalChecks[0]"></p-checkbox>
-                        <p-checkbox name="confirmChecks" binary="true" label=" {{ 'installationReport.secondCheckBox' | translate }}" [(ngModel)]="legalChecks[1]"></p-checkbox>
-                        <p-checkbox name="confirmChecks" binary="true" label=" {{ 'installationReport.thirdCheckBox' | translate }}" [(ngModel)]="legalChecks[2]"></p-checkbox>
+                        </div>
+                        <span class="ui-lg-1"></span>
+                    </div>
+                    <div class="ui-g" style="text-align: left;">
+                        <span class="ui-lg-1"></span>
+                        <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
+                            <p-checkbox name="confirmChecks" binary="true"
+                                        label=" {{ 'installationReport.secondCheckBox' | translate }}"
+                                        [(ngModel)]="legalChecks[1]"></p-checkbox>
+                        </div>
+                        <span class="ui-lg-1"></span></div>
+                    <div class="ui-g" style="text-align: left;">
+                        <span class="ui-lg-1"></span>
+                        <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
+                            <p-checkbox name="confirmChecks" binary="true"
+                                        label=" {{ 'installationReport.thirdCheckBox' | translate }}"
+                                        [(ngModel)]="legalChecks[2]"></p-checkbox>
+                        </div>
+                        <span class="ui-lg-1"></span>
                     </div>
                 </div>
-            </uxModalBody>
-            <uxModalFooter>
-                <ux-button typeClass="primary" [isSecondary]="true" (click)="closeConfirmInstallation()" [isLarge]="true">{{ 'shared.close' | translate }}</ux-button>
-                <ux-button typeClass="primary" (click)="sendConfirmInstallation()" [isLarge]="true" [isDisabled]="!legalChecks[0] || !legalChecks[1] || !legalChecks[2]">{{ 'shared.confirm' | translate }}</ux-button>
-            </uxModalFooter>
-        </ux-modal>
-        <update-installation-site [installationSite]='null'></update-installation-site>
+            </div>
+            <div class="row center">
+                <div class="col-sm-6">
+                    <button class="btn btn-primary changePassword cancel-button"
+                            (click)="closeConfirmInstallation()">
+                        {{'shared.close' | translate }}
+                    </button>
+                </div>
+
+                <div class="col-sm-6">
+
+                    <button class="btn btn-primary changePassword confirm-button"
+                            [disabled]=" !legalChecks[0] || !legalChecks[1] || !legalChecks[2]">{{
+                        'shared.confirm'
+                        |
+                        translate
+                        }}
+                    </button>
+                </div>
+            </div>
+        </p-dialog>
+        <!--<update-installation-site [installationSite]='null'></update-installation-site>-->
     </div>
 </div>

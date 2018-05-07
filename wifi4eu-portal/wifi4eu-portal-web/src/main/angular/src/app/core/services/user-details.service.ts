@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Response, Http } from '@angular/http';
-import { UxService } from '@eui/ux-commons';
-import { Observable } from 'rxjs/Observable';
-import { UserDetails } from '../models/user-details.model';
+import {Injectable} from '@angular/core';
+import {Response, Http} from '@angular/http';
+// import { UxService } from '@eui/ux-commons';
+import {Observable} from 'rxjs/Observable';
+import {UserDetails} from '../models/user-details.model';
+import {UxService} from '@ec-digit-uxatec/eui-angular2-ux-commons';
 
 @Injectable()
 export class UserDetailsService {
@@ -11,7 +12,7 @@ export class UserDetailsService {
 
     getUserDetails(): Observable<UserDetails> {
         return this.http.get('api/user-details')
-                                .map((response: Response) => response.json())
-                                .catch(this.uxService.handleError);
+            .map((response: Response) => response.json())
+            .catch(this.uxService.handleError);
     }
 }

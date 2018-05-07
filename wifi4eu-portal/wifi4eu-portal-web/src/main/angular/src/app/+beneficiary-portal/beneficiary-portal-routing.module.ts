@@ -5,6 +5,8 @@ import {DiscussionComponent} from "./+discussion/discussion.component";
 import {BeneficiaryProfileComponent} from "./+profile/profile.component";
 import {AdditionalInfoComponent} from "./+additional-info/additional-info.component";
 import {ManageInstallationComponent} from "./manage-installation/manage-installation.component";
+import {InstallationDetailsComponent} from "./details-installation/installation-details.component";
+
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -25,6 +27,12 @@ import {ManageInstallationComponent} from "./manage-installation/manage-installa
             component: AdditionalInfoComponent
         }, {
             path: 'installations/:municipalityId',
+            component: ManageInstallationComponent
+        }, {
+            path: 'details/:id',
+            component: InstallationDetailsComponent
+        }, {
+            path: 'installations/access-point',
             component: ManageInstallationComponent
         }
     ])],

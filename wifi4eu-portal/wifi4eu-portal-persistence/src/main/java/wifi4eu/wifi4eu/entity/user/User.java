@@ -211,7 +211,11 @@ public class User {
         this.ecasUsername = ecasUsername;
     }
 
-    public Role getIdRole() { return idRole; }
+    public Role getIdRole() {
+        return idRole;
+    }
 
-    public void setIdRole(Role idRole) { this.idRole = idRole; }
+    public void setIdRole(Role idRole) {
+        this.idRole = idRole;
+    }
 }
