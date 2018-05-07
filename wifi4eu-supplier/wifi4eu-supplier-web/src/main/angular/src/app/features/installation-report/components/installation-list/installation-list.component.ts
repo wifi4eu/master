@@ -39,6 +39,7 @@ export class InstallationListComponent implements OnInit {
             this.isBeneficiarySelected = true;
             this.installationSite.municipality = this.beneficiarySelected.id;
             this.onSearch();
+            this.checkIfWifiIndicator();
         }
     }
 
@@ -62,8 +63,16 @@ export class InstallationListComponent implements OnInit {
         this.searchParametersService.parameters.id_beneficiary = this.beneficiarySelected.id;
         this.installationSite.municipality = this.beneficiarySelected.id;
         this.onSearch();
+        this.checkIfWifiIndicator();
     }
 
+    checkIfWifiIndicator(){
+        if(this.beneficiarySelected.wifiIndicator){
+            this.isReportSent = true;
+        } else{
+            this.isReportSent = false;
+        }
+    }
 
     onPage(event: any) {
         if (this.isBeneficiarySelected) {
