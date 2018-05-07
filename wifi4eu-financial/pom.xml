@@ -19,7 +19,7 @@
 
     <properties>
         <app.context.root>/wifi4eu-financial</app.context.root>
-        <!--<jndi.datasource.name>jdbc/wififoreu-financial</jndi.datasource.name>-->
+        <!--jndi.datasource.name>jdbc/wififoreu-financial</jndi.datasource.name-->
         <jndi.datasource.name>jdbc/Wifi4euAbacDataSource</jndi.datasource.name>
         <persistence.unit.name>wifi4eu-financialPersistence</persistence.unit.name>
     </properties>
