@@ -13,8 +13,13 @@ public interface InstallationSiteRepository extends PagingAndSortingRepository<I
 
     Long countInstallationSiteById(Integer id);
 
+    /*
     @Query(value = "SELECT COUNT(id) FROM installation_site WHERE id_municipality = ?1" , nativeQuery = true)
     Long countInstallationSiteByMunicipality(Integer id);
+    */
+
+    @Query(value = "SELECT MAX(number) FROM installation_site WHERE id_municipality = ?1" , nativeQuery = true)
+    Long selectMaxNumberInstallationSiteByMunicipalityId(Integer id);
 
     InstallationSite findInstallationSiteById(Integer id);
 

@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
     userState: Observable<UserState>;
 
     menuLinks: UxLink[] = [];
+    menuTranslations: Map<String, String>;
     notificationLinks: UxLink[] = [];
     userInfos: string = 'NAME Firstname';
 
@@ -42,7 +43,8 @@ export class AppComponent implements OnInit {
         translateService.setDefaultLang('en');
         translateService.use('en');
 
-        this.localStorageService.set('supplierId',1);
+        this.menuTranslations = new Map();
+        this.updateMenuTranslations();
     }
 
     ngOnInit() {
@@ -54,6 +56,20 @@ export class AppComponent implements OnInit {
 
         // custom call for userDetails API -- can also be achived directly to the UX-CORE (config/modules)
         this._getUserDetails();
+    }
+
+    updateMenuTranslations(){
+        this.translateService.get('menu.about').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('menu.about', translatedString);
+            }
+        );
+
+        this.translateService.get('menu.submenu').subscribe(
+            (translatedString: string) => {
+                this.menuTranslations.set('menu.submenu', translatedString);
+            }
+        );
     }
 
     onLanguageChanged(language: UxLanguage) {
@@ -70,18 +86,12 @@ export class AppComponent implements OnInit {
             ),
             new UxLink(
                 {
-                    label: 'Module1', url: '/screen/module1', children: [
-                        new UxLink({ label: 'disabled item', disabled: true }),
-                        new UxLink({ label: 'Page 1', url: '/screen/module1/page1' }),
-                        new UxLink({ label: 'Page 2', url: '/screen/module1/page2' })
+                    label: this.menuTranslations.get('menu.about'), children: [
+                        new UxLink({ label: this.menuTranslations.get('menu.submenu'), urlExternal: 'https://ec.europa.eu/digital-single-market/en/policies/wifi4eu-free-wi-fi-europeans' }),
                     ]
                 }
             ),
-            new UxLink(
-                {
-                    label: 'Module2', url: '/screen/module2'
-                }
-            )
+
         ];
     }
 
@@ -122,5 +132,8 @@ export class AppComponent implements OnInit {
             });
     }
 
-    
+    private goToTop() {
+        window.scrollTo(0, 0);
+    }
+   
 }

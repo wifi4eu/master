@@ -30,6 +30,7 @@ public class AccessPointService {
 
 
 
+
     @Transactional
     public ResponseDTO deleteAccessPointById(int id){
         ResponseDTO response = new ResponseDTO();
@@ -63,10 +64,10 @@ public class AccessPointService {
     public ResponseDTO addOrUpdateAccessPoint(Map<String, Object> map){
         ResponseDTO response = new ResponseDTO();
         if (!map.isEmpty()){
-            if (map.containsKey("id_installation_site") && installationSiteRepository.countInstallationSiteById((int) map.get("id_installation_site")) == 1){
-                if (map.containsKey("id_accesspoint") && (int) map.get("id_accesspoint") > 0){
+            if (map.containsKey("idInstallationSite") && installationSiteRepository.countInstallationSiteById((int) map.get("idInstallationSite")) == 1){
+                if (map.containsKey("id") && (int) map.get("id") > 0){
                     // update access point
-                    AccessPoint accessPoint = accessPointRepository.findOne((int) map.get("id_accesspoint"));
+                    AccessPoint accessPoint = accessPointRepository.findOne((int) map.get("id"));
                     if (accessPoint != null){
                         if (setAccessPointFields(map,accessPoint,false)){
                             accessPointRepository.save(accessPoint);
@@ -78,7 +79,7 @@ public class AccessPointService {
                         }
                     } else {
                         response.setSuccess(false);
-                        response.setError(new ErrorDTO(404,"Access Point not found by id : "+map.get("id_accesspoint")));
+                        response.setError(new ErrorDTO(404,"Access Point not found by id : "+map.get("id")));
                     }
                 } else {
                     // add new access point
@@ -118,28 +119,38 @@ public class AccessPointService {
 
         if (control){
             // passed validation of fields, now we edit the object accesspoint
-            accessPoint.setModelNumber((String) map.get("model_number"));
-            accessPoint.setSerialNumber((String) map.get("serial_number"));
-            accessPoint.setInstallationSite((int) map.get("id_installation_site"));
-            accessPoint.setIndoor((boolean) map.get("isIndoor"));
-            accessPoint.setDeviceBrand((String) map.get("device_brand"));
+            accessPoint.setModelNumber((String) map.get("modelNumber"));
+            accessPoint.setSerialNumber((String) map.get("serialNumber"));
+            accessPoint.setInstallationSite((int) map.get("idInstallationSite"));
+            accessPoint.setIndoor((boolean) map.get("indoor"));
+            accessPoint.setDeviceBrand((String) map.get("deviceBrand"));
             accessPoint.setLocation((String) map.get("location"));
-            accessPoint.setLocationType((String) map.get("location_type"));
-            accessPoint.setLatitude((double) map.get("latitude"));
-            accessPoint.setLongitude((double) map.get("longitude"));
-            accessPoint.setMacAddress((String) map.get("mac_address"));
+            accessPoint.setLocationType((String) map.get("locationType"));
+            accessPoint.setLatitude(map.get("latitude").toString());
+            accessPoint.setLongitude(map.get("longitude").toString());
+            String regExMac = "([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$";
+            String macAddress = (String) map.get("macAddress");
+            if (macAddress.matches(regExMac)){
+                accessPoint.setMacAddress((String) map.get("macAddress"));
+            } else {
+                // what we should do ? Add and empty field?
+                accessPoint.setMacAddress((String) map.get("macAddress"));
+            }
             if (sumar) {
-                accessPoint.setNumber(Integer.parseInt(getNextAccessPointPerInstallationSite((int) map.get("id_installation_site")).toString()));
+                accessPoint.setNumber(getNextAccessPointPerInstallationSite((int) map.get("idInstallationSite")));
             }
         }
-
         return control;
     }
 
-    private Long getNextAccessPointPerInstallationSite(int id_installation_site){
-        long nextNumber = accessPointRepository.countAccessPointByIdInstallationSite(id_installation_site);
-        nextNumber++;
-        return nextNumber;
+    private int getNextAccessPointPerInstallationSite(int id_installation_site){
+        Long currentLong = accessPointRepository.selectMaxNumberAccessPointByIdInstallationSite(id_installation_site);
+        if (currentLong != null){
+            currentLong++;
+            return Integer.parseInt(currentLong.toString());
+        } else {
+            return 1;
+        }
     }
 
     @Transactional

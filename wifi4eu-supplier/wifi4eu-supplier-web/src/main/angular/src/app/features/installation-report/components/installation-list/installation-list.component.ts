@@ -1,24 +1,26 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { SearchParametersService } from '../../../../core/services/search-parameters.service';
 import { SearchParameters } from '../../../../core/models/search-parameters.model';
 import { BeneficiaryApi } from '../../../../shared/swagger/api/BeneficiaryApi';
-import { LocalStorageService } from "angular-2-local-storage";
 import { UxService } from '@eui/ux-commons';
 
 import { BeneficiaryDisplayedListDTOBase, ResponseDTOBase, ResponseDTO } from '../../../../shared/swagger';
 import { BeneficiaryService } from '../../../../core/services/beneficiary-service';
 import { InstallationsiteApi } from '../../../../shared/swagger/api/InstallationsiteApi';
-import { InstallationSite } from '../../../../shared/swagger/model/InstallationSite';
+import { InstallationSite, InstallationSiteBase } from '../../../../shared/swagger/model/InstallationSite';
+import { ErrorHandlingService } from '../../../../core/services/error.service';
 
 @Component({
     templateUrl: './installation-list.component.html',
     providers: [BeneficiaryApi]
 })
 
-export class InstallationListComponent {
+export class InstallationListComponent implements OnInit {
     //-- Component properties
     _timeout: any = null;
     totalResults: number = 0;
+
+    private installationSite: InstallationSiteBase = new InstallationSiteBase();
 
     private beneficiarySelected: BeneficiaryDisplayedListDTOBase = new BeneficiaryDisplayedListDTOBase;
     private beneficiarySuggestions: BeneficiaryDisplayedListDTOBase[] = [];
@@ -30,25 +32,24 @@ export class InstallationListComponent {
 
 
     constructor(private beneficiaryApi: BeneficiaryApi, private installationSiteApi: InstallationsiteApi,
-        private localStorageService: LocalStorageService,
         public searchParametersService: SearchParametersService, private uxService: UxService,
-        private beneficiaryService: BeneficiaryService) {
-        // this.supplier = this.localStorageService.get('supplierId');
+        private beneficiaryService: BeneficiaryService, private errorHandlingService: ErrorHandlingService) {
         if (this.beneficiaryService.beneficiarySelected != undefined) {
             this.beneficiarySelected = this.beneficiaryService.beneficiarySelected;
             this.isBeneficiarySelected = true;
+            this.installationSite.municipality = this.beneficiarySelected.id;
             this.onSearch();
         }
     }
 
-
-    getBenegiciarySuggestions(event) {
-        let query = encodeURIComponent(event.query);
-
+    ngOnInit() {
         this.beneficiaryApi.getBeneficiariesList().subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.beneficiarySuggestions = response.data;
             }
+        }, error => {
+            console.log(error);
+            return this.errorHandlingService.handleError(error);
         });
     }
 
@@ -57,6 +58,7 @@ export class InstallationListComponent {
         this.isBeneficiarySelected = true;
         this.beneficiaryService.beneficiarySelected = this.beneficiarySelected;
         this.searchParametersService.parameters.id_beneficiary = this.beneficiarySelected.id;
+        this.installationSite.municipality = this.beneficiarySelected.id;
         this.onSearch();
     }
 
@@ -65,7 +67,7 @@ export class InstallationListComponent {
         if (this.isBeneficiarySelected) {
             this.searchParametersService.parameters.delta = event.rows;
             this.searchParametersService.parameters.page = event.first;
-            this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "id";
+            this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "number";
             this.searchParametersService.parameters.order = event.sortOrder > 0 ? "asc" : "desc";
             this.onSearch();
         }
@@ -79,15 +81,10 @@ export class InstallationListComponent {
                 this.installationSites = response.data.data;
                 this.totalResults = response.data.count;
             }
-        })
-    }
-
-    onChangesAutocomplete(event) {
-        if (this.beneficiaryService.beneficiarySelected != this.beneficiarySelected) {
-            this.isBeneficiarySelected = false;
-            this.installationSites = [];
-            this.totalResults = 0;
-        }
+        }, error => {
+            console.log(error);
+            return this.errorHandlingService.handleError(error);
+        });
     }
 
     openConfirmInstallation() {
@@ -100,15 +97,27 @@ export class InstallationListComponent {
     }
 
     sendConfirmInstallation() {
-        this.isReportSent = true;
-        let successBanner = document.getElementById("success");
-        successBanner.style.display = "block";
-        successBanner.scrollIntoView({ behavior: "smooth" });
+        this.beneficiaryApi.confirmWifiIndicatorByMunicipalityId(this.beneficiarySelected.id).subscribe((response: ResponseDTOBase) => {
+            if (response.success) {
+                this.isReportSent = true;
+                let successBanner = document.getElementById("success");
+                successBanner.style.display = "block";
+                successBanner.scrollIntoView({ behavior: "smooth" });
+            }
+        }, error => {
+            console.log(error);
+            return this.errorHandlingService.handleError(error);
+        });
         this.closeConfirmInstallation();
     }
 
     openUpdateInstallationSite() {
         this.uxService.openModal('updateInstallationSite');
     }
+
+    byId(bf1: BeneficiaryDisplayedListDTOBase, bf2: BeneficiaryDisplayedListDTOBase) {
+        return bf1.id === bf2.id;
+    }
+
 
 }
