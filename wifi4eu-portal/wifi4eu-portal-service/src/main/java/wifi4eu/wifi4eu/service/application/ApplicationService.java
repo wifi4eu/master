@@ -318,12 +318,19 @@ public class ApplicationService {
                 }
                 break;
         }
-        for (ApplicantListItemDTO item : applicantsList) {
-            if (item.getCounter() > 1) {
-                item.setIssueStatus(0);
+        for (int i = 0; i < applicantsList.size(); i++) {
+            ApplicantListItemDTO applicant = applicantsList.get(i);
+            if (applicant.getCounter() == 1) {
+                List<RegistrationDTO> registrations = registrationService.getRegistrationsByLauId(applicant.getLauId());
+                for (RegistrationDTO registration : registrations) {
+                    if (registration != null) {
+                        applicant.setIssueStatus(registrationService.getRegistrationIssue(registration));
+                    }
+                }
             } else {
-                item.setIssueStatus(beneficiaryService.setIssueToDgconnBeneficiary(item.getLauId()));
+                applicant.setIssueStatus(0);
             }
+            applicantsList.set(i, applicant);
         }
         return applicantsList;
     }

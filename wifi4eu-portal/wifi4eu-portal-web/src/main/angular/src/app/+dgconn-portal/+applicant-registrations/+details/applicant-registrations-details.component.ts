@@ -49,9 +49,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private users: UserDTOBase[] = [];
     private discussionThread: ThreadDTOBase = null;
     private displayedMessages: ThreadMessageDTOBase[] = [];
-    private entityCheckboxIndex: number = null;
     private searchMessagesQuery: string = '';
-    private issueRegistration: number;
+    private registrationIssues: number[] = [];
     private selectedIndex = null;
     private invalidateReason: string = '';
     private displayValidate = false;
@@ -99,7 +98,10 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                     this.registrations.push(municipalityDetails.registration);
                                                     this.users.push(user);
                                                     if (this.registrations.length == this.municipalities.length) {
-                                                        this.getIssue();
+                                                        this.registrationIssues.push(0);
+                                                        this.setRegistrationIssue(municipalityDetails.registration, (this.registrationIssues.length - 1));
+                                                        // this.registrationIssues.push(this.getRegistrationIssue(municipalityDetails.registration))
+                                                        // this.getRegistrationIssues();
                                                     }
                                                     break;
                                                 }
@@ -181,14 +183,14 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.processingRequest = false;
     }
 
-    private getIssue(){
-        this.beneficiaryApi.getIssueTypeBeneficiaryRegistrations(JSON.stringify(this.registrations)).subscribe(
+    private setRegistrationIssue(registration: RegistrationDTOBase, index: number) {
+        this.registrationApi.getRegistrationIssue(registration).subscribe(
             (response: ResponseDTOBase) => {
-                if(response.success){
-                    this.issueRegistration = response.data;
+                if (response.success) {
+                    this.registrationIssues[index] = response.data;
                 }
             }
-        )
+        );
     }
 
     private validateApplication() {
@@ -265,5 +267,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.registrations = [];
         this.applications = [];
         this.users = [];
+        this.registrationIssues = []
     }
 }

@@ -63,24 +63,6 @@ public class BeneficiaryResource {
         }
     }
 
-    @ApiOperation(value = "Get issue type of beneficiary registrations")
-    @RequestMapping(value = "/beneficiary/issue", method = RequestMethod.POST, consumes = {"application/json"})
-    @ResponseBody
-    public ResponseDTO getIssueTypeBeneficiaryRegistrations(@RequestBody final String jsonString) {
-        try {
-            Gson g = new Gson();
-            RegistrationDTO[] registrationsArray = g.fromJson(jsonString, RegistrationDTO[].class);
-            List<RegistrationDTO> registrationList = new ArrayList<>(Arrays.asList(registrationsArray));
-            _log.info("getIssueTypeBeneficiaryRegistrations");
-            return new ResponseDTO(true, beneficiaryService.getIssueType(registrationList), null);
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getIssueTypeBeneficiaryRegistrations' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
-
     @ApiOperation(value = "getBeneficiaryListItem")
     @RequestMapping(value = "/getBeneficiaryListItem", method = RequestMethod.GET)
     @ResponseBody

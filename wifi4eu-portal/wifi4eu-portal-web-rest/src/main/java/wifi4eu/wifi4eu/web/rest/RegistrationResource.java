@@ -214,4 +214,19 @@ public class RegistrationResource {
         _log.info("getRegistrationByUserThreadId: " + userThreadId);
         return registrationService.getRegistrationByUserThreadId(userThreadId);
     }
+
+    @ApiOperation(value = "Get issue of registration")
+    @RequestMapping(value = "/getIssue", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO getRegistrationIssue(@RequestBody final RegistrationDTO registrationDTO) {
+        try {
+            _log.info("getRegistrationIssue");
+            return new ResponseDTO(true, registrationService.getRegistrationIssue(registrationDTO), null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getRegistrationIssue' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
 }
