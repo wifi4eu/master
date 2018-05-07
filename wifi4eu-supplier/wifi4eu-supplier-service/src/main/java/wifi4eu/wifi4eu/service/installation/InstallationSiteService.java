@@ -8,10 +8,16 @@ import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.installation.InstallationSite;
+import wifi4eu.wifi4eu.entity.installation.InstallationSiteWhitelist;
 import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepository;
+import wifi4eu.wifi4eu.repository.installation.InstallationSiteWhitelistRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.status.StatusRepository;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -24,6 +30,9 @@ public class InstallationSiteService {
 
     @Autowired
     MunicipalityRepository municipalityRepository;
+
+    @Autowired
+    InstallationSiteWhitelistRepository whitelistRepository;
 
     @Autowired
     StatusRepository statusRepository;
@@ -130,6 +139,30 @@ public class InstallationSiteService {
                 control = false;
             }
 
+            //system should check the URL of the captive portal is unique.
+            if (url != null && installationSiteRepository.countInstallationSiteByUrl(url) > 1) {
+                response.setSuccess(false);
+                response.setError(new ErrorDTO(409, "error.409.duplicatedUrl"));
+                return response;
+            }
+
+            String domain;
+            try {
+                String tempUrl = !url.startsWith("http") ? "http://" + url : url;
+                URL uri = new URL(tempUrl);
+                domain = uri.getHost().startsWith("www.") ? uri.getHost().substring(4) : uri.getHost();
+            } catch (MalformedURLException ex) {
+                domain = url;
+            }
+
+            // the domain will be added to whitelist
+            if(whitelistRepository.countInstallationSiteWhitelistByOrigin(domain) == 0) {
+                InstallationSiteWhitelist whitelist = new InstallationSiteWhitelist();
+                whitelist.setOrigin(domain);
+                whitelist.setActive(1);
+                whitelistRepository.save(whitelist);
+            }
+
             if (control) {
                 // if (map.get("url").equals(map.get("url_confirmation"))) {
                 InstallationSite installationSite;
@@ -149,7 +182,7 @@ public class InstallationSiteService {
                 // ("id_beneficiary")));
                 installationSite.setName((String) map.get("name"));
                 installationSite.setUrl(url);
-                installationSite.setDomainName(url);
+                installationSite.setDomainName(domain);
                 installationSite.setIdNetworkSnippet((String) map.get("name") + 123);
                 installationSite.setStatus(1);
                 // installationSite.setId_status(statusRepository.findStatudById(1));
