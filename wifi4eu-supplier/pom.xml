@@ -13,6 +13,7 @@
 
     <properties>
         <app.context.root>/supplier</app.context.root>
+        <main.basedir>${project.basedir}</main.basedir>
     </properties>
 
 
@@ -29,6 +30,29 @@
         <module>wifi4eu-supplier-web-rest</module>
         <module>wifi4eu-supplier-web</module>
     </modules>
+
+    <!--<build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>${main.basedir}/assembly-dist.xml</descriptor>
+                    </descriptors>
+                    <finalName>${project.artifactId}-${project.version}</finalName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>-->
 
 
 </project>
