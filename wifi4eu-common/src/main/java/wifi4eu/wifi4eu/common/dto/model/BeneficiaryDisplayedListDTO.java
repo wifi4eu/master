@@ -5,14 +5,16 @@ import java.io.Serializable;
 public class BeneficiaryDisplayedListDTO implements Serializable {
     private String name;
     private Integer id;
+    private Boolean wifiIndicator;
 
     public BeneficiaryDisplayedListDTO(){
 
     }
 
-    public BeneficiaryDisplayedListDTO(String name, Integer id){
+    public BeneficiaryDisplayedListDTO(String name, Integer id, boolean wifiIndicator){
         this.name = name;
         this.id = id;
+        this.wifiIndicator = wifiIndicator;
     }
 
     public String getName(){
@@ -31,12 +33,20 @@ public class BeneficiaryDisplayedListDTO implements Serializable {
         this.id = id;
     }
 
+    public Boolean isWifiIndicator() {
+        return wifiIndicator;
+    }
+
+    public void setWifiIndicator(Boolean wifiIndicator) {
+        this.wifiIndicator = wifiIndicator;
+    }
+
     @Override
-    public String toString(){
+    public String toString() {
         return "BeneficiaryDisplayedListDTO{" +
                 "name='" + name + '\'' +
                 ", id=" + id +
+                ", wifiIndicator=" + wifiIndicator +
                 '}';
     }
-
 }

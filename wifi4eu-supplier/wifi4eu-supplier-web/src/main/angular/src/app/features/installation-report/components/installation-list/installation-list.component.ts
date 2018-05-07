@@ -26,7 +26,6 @@ export class InstallationListComponent implements OnInit {
     private beneficiarySuggestions: BeneficiaryDisplayedListDTOBase[] = [];
     private isBeneficiarySelected: boolean = false;
     private installationSites: InstallationSite[] = [];
-    private isReportSent: boolean = false;
     private supplier: {};
     private legalChecks: boolean[] = [false, false, false];
 
@@ -46,6 +45,8 @@ export class InstallationListComponent implements OnInit {
         this.beneficiaryApi.getBeneficiariesList().subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.beneficiarySuggestions = response.data;
+            } else {
+                return this.errorHandlingService.handleError(response.error);
             }
         }, error => {
             console.log(error);
@@ -61,7 +62,6 @@ export class InstallationListComponent implements OnInit {
         this.installationSite.municipality = this.beneficiarySelected.id;
         this.onSearch();
     }
-
 
     onPage(event: any) {
         if (this.isBeneficiarySelected) {
@@ -80,6 +80,8 @@ export class InstallationListComponent implements OnInit {
             if (response.success) {
                 this.installationSites = response.data.data;
                 this.totalResults = response.data.count;
+            } else {
+                return this.errorHandlingService.handleError(response.error);
             }
         }, error => {
             console.log(error);
@@ -99,7 +101,6 @@ export class InstallationListComponent implements OnInit {
     sendConfirmInstallation() {
         this.beneficiaryApi.confirmWifiIndicatorByMunicipalityId(this.beneficiarySelected.id).subscribe((response: ResponseDTOBase) => {
             if (response.success) {
-                this.isReportSent = true;
                 let successBanner = document.getElementById("success");
                 successBanner.style.display = "block";
                 successBanner.scrollIntoView({ behavior: "smooth" });

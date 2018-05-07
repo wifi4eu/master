@@ -16,7 +16,7 @@ export class UpdateInstallationSite implements OnChanges, DoCheck {
   @Input('isEdit') isEdit: boolean = false;
   @Output() onSubmitted: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('installationSiteForm') form: NgForm;
-  regexUrlPortal: string = '[a-z0-9-:/.]*';
+  regexUrlPortal: string = '^[^- ]([a-z0-9-:/.]+\.)[a-z0-9-:/]*[^-]$';
   private modalTitle: string;
   private updateButtonTitle: string;
   private isSubmitted: boolean = false;
@@ -25,11 +25,11 @@ export class UpdateInstallationSite implements OnChanges, DoCheck {
   private repeatCaptivePortalInput: String;
 
   constructor(private uxService: UxService, private translateService: TranslateService,
-    private installationSiteApi: InstallationsiteApi,  private errorHandlingService: ErrorHandlingService) {
+    private installationSiteApi: InstallationsiteApi, private errorHandlingService: ErrorHandlingService) {
   }
 
   ngDoCheck() {
-    if(this.installationSite.municipality != this.modifiedInstallationSite.municipality){
+    if (this.installationSite.municipality != this.modifiedInstallationSite.municipality) {
       Object.assign(this.modifiedInstallationSite, this.installationSite);
     }
   }
@@ -40,10 +40,10 @@ export class UpdateInstallationSite implements OnChanges, DoCheck {
     this.isSubmitted = false;
     if (!this.isEdit) {
       modalJsonString = 'installationReport.addSite';
-      buttonJsonString= 'shared.add';
+      buttonJsonString = 'shared.add';
     } else {
       modalJsonString = 'updateInstallationReport.editTitle';
-      buttonJsonString= 'shared.edit';
+      buttonJsonString = 'shared.edit';
     }
 
     this.translateService.get(modalJsonString).subscribe(
@@ -75,6 +75,8 @@ export class UpdateInstallationSite implements OnChanges, DoCheck {
         if (response.success) {
           this.onSubmitted.emit(true);
           Object.assign(this.installationSite, this.modifiedInstallationSite);
+        } else {
+          return this.errorHandlingService.handleError(response.error);
         }
       }, error => {
         console.log(error);

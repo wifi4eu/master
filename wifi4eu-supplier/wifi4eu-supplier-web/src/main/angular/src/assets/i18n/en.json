@@ -63,6 +63,23 @@
     "updateAccessPoint.deviceSerialNumber": "Device serial number",
 
 
+    "updateAccessPoint.locationTypes.town": "Town Hall / Administrative building",
+    "updateAccessPoint.locationTypes.health": "Health Centre / Hospital",
+    "updateAccessPoint.locationTypes.square": "Square",
+    "updateAccessPoint.locationTypes.park": "Park",
+    "updateAccessPoint.locationTypes.street": "Street / Pedestrian street",
+    "updateAccessPoint.locationTypes.tramBusStation": "Tramway or Bus Station / Stop",
+    "updateAccessPoint.locationTypes.metroStation": "Metro Station",
+    "updateAccessPoint.locationTypes.railwayStation": "Railway Station",
+    "updateAccessPoint.locationTypes.airport": "Airport",
+    "updateAccessPoint.locationTypes.stadium": "Sport Hall / Stadium",
+    "updateAccessPoint.locationTypes.school": "School / Education or Research Centre / University",
+    "updateAccessPoint.locationTypes.library": "Library",
+    "updateAccessPoint.locationTypes.museum": "Museum / Cultural Centre",
+    "updateAccessPoint.locationTypes.tourism": "Site of touristic interest / Archeological Site",
+    "updateAccessPoint.locationTypes.shopping": "Shopping Mall",
+    "updateAccessPoint.locationTypes.other": "Other",
+
     "accessPoint.indoor": "Indoor",
     "accessPoint.outdoor": "Outdoor",
     "accessPointDetails.title": "Access point detail",
@@ -75,5 +92,17 @@
     "menu.submenu": "About",
     "shared.loggedInAs": "Logged in as ",
     "shared.logout": "Logout",
-    "shared.error.beneficiaryNotSelected": "No beneficiary selected."
+    "shared.error.beneficiaryNotSelected": "No beneficiary selected.",
+
+    "error.0": "Server is not available",
+    "error.404": "Page not Found",
+    "error.401": "Not Authorized",
+    "error.500": "Internal Server Error",
+    "error.400.invalidFields": "Invalid fields values",
+    "error.404.beneficiaryNotFound": "Beneficiary not found",
+    "error.400.noData": "No data sent",
+    "error.404.AccessPointNotFound": "Access Point not found",
+    "error.404.InstallationSitesNotFound": "Installation Site not found",
+    "error.409.duplicatedUrl": "URL of the captive portal already exists in the system, Please provide a new URL"
+
 }

@@ -46,6 +46,8 @@ export class InstallationDetailsComponent implements OnInit {
         this.installationSiteApi.removeInstallSite(this.installationSite.id).subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.location.back();
+            } else {
+                return this.errorHandlingService.handleError(response.error);
             }
         }, error => {
             console.log(error);
