@@ -87,6 +87,7 @@ export class ListSuppliersComponent implements OnInit {
   loadPage() {
     if(this.country && this.region){
       if(this.region.id != 0){
+        console.log("Region code is " + this.region.id);
         this.supplierApi.getSuppliersRegisteredByRegion(this.region.id, this.page, this.itemsPerPage).subscribe((response: ResponseDTO) => {
           this.suppliers = response.data['suppliers'];
           this.dateCached = this.transformDate(response.data['dateCached']);
