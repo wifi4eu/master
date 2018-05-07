@@ -16,8 +16,7 @@ import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryDisplayedListRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 
-import javax.xml.ws.Response;
-import java.util.List;
+import java.util.*;
 
 @Service("beneficiary")
 public class BeneficiaryDisplayedListService {
@@ -40,7 +39,11 @@ public class BeneficiaryDisplayedListService {
     public ResponseDTO findBeneficiariesList() {
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(true);
-        response.setData(beneficiaryDisplayedListMapper.toDTOList(Lists.newArrayList(beneficiaryDisplayedListRepository.findBeneficiariesList())));
+
+        List<BeneficiaryDisplayedListDTO> beneficiaryList = beneficiaryDisplayedListMapper.toDTOList(Lists
+                .newArrayList(beneficiaryDisplayedListRepository.findBeneficiariesList()));
+
+        response.setData(beneficiaryList);
         return response;
     }
 

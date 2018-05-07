@@ -9,13 +9,16 @@ public class BeneficiaryDisplayedList {
     @Id
     private Integer id;
 
+    private boolean wifiIndicator;
+
     public BeneficiaryDisplayedList(){
 
     }
 
-    public BeneficiaryDisplayedList(String name, Integer id){
+    public BeneficiaryDisplayedList(String name, Integer id, boolean wifiIndicator){
         this.name = name;
         this.id = id;
+        this.wifiIndicator = wifiIndicator;
     }
 
     public String getName(){
@@ -34,4 +37,11 @@ public class BeneficiaryDisplayedList {
         this.id = id;
     }
 
+    public boolean isWifiIndicator() {
+        return wifiIndicator;
+    }
+
+    public void setWifiIndicator(boolean wifiIndicator) {
+        this.wifiIndicator = wifiIndicator;
+    }
 }
