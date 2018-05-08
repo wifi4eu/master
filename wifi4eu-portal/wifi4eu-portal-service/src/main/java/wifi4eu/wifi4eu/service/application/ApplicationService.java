@@ -345,11 +345,12 @@ public class ApplicationService {
                         if (user.getLang() != null) {
                             locale = new Locale(user.getLang());
                         }
-                        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                        //Mails deactivated until 1.4.2 phase 2
+                        /*ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                         String subject = bundle.getString("mail.validateApplication.subject");
                         String msgBody = bundle.getString("mail.validateApplication.body");
                         msgBody = MessageFormat.format(msgBody, municipality.getName());
-                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);*/
                     } else {
                         invalidateApplication(repeatedApplication);
                     }
@@ -371,11 +372,12 @@ public class ApplicationService {
                 if (user.getLang() != null) {
                     locale = new Locale(user.getLang());
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                //Mails deactivated until 1.4.2 phase 2
+                /*ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.invalidateApplication.subject");
                 String msgBody = bundle.getString("mail.invalidateApplication.body");
                 msgBody = MessageFormat.format(msgBody, municipality.getName());
-                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);*/
             }
         }
         return invalidatedApplication;
