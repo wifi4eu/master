@@ -91,4 +91,18 @@ public class MunicipalityService {
     public Integer getCountDistinctMunicipalitiesContainingName(String name) {
         return municipalityRepository.countDistinctMunicipalitiesContainingName(name);
     }
+
+    public Integer getCountDistinctMunicipalitiesThatAppliedCall(Integer callId, String country) {
+        if (country == null) {
+            country = "%";
+        }
+        return municipalityRepository.countDistinctMunicipalitiesThatAppliedCall(callId, country);
+    }
+
+    public Integer getCountDistinctMunicipalitiesThatAppliedCallContainingName(Integer callId, String country, String name) {
+        if (country == null) {
+            country = "%";
+        }
+        return municipalityRepository.countDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name);
+    }
 }

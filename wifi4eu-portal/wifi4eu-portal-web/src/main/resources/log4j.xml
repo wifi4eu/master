@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
-                     debug="false">
+                     debug="true">
 
 
     <appender name="CONSOLE_APPENDER" class="org.apache.log4j.ConsoleAppender">
@@ -13,6 +13,30 @@
     <appender name="FILE_APPENDER" class="org.apache.log4j.RollingFileAppender">
         <param name="append" value="false"/>
         <param name="file" value="${catalina.home}/logs/wifi4eu_app.log"/>
+        <!--Taille max pour le fichier de log -->
+        <param name="MaxFileSize" value="10MB"/>
+        <!-- Nombre de fichiers de logs (sauvegardes). -->
+        <param name="MaxBackupIndex" value="10"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%t] %-5p %c{1} - %x - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="CRON_FILE_APPENDER" class="org.apache.log4j.RollingFileAppender">
+        <param name="append" value="false"/>
+        <param name="file" value="${catalina.home}/logs/wifi4eu_cron_app.log"/>
+        <!--Taille max pour le fichier de log -->
+        <param name="MaxFileSize" value="10MB"/>
+        <!-- Nombre de fichiers de logs (sauvegardes). -->
+        <param name="MaxBackupIndex" value="10"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%t] %-5p %c{1} - %x - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="APPLY_FILE_APPENDER" class="org.apache.log4j.RollingFileAppender">
+        <param name="append" value="false"/>
+        <param name="file" value="${catalina.home}/logs/wifi4eu_apply_app.log"/>
         <!--Taille max pour le fichier de log -->
         <param name="MaxFileSize" value="10MB"/>
         <!-- Nombre de fichiers de logs (sauvegardes). -->
@@ -78,8 +102,24 @@
         <appender-ref ref="ECAS_CLIENT_FILE"/>
     </logger>
 
+    <!-- wifi4eu cron job-->
+    <logger name="wifi4eu.wifi4eu.util.ScheduledTasks" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="CRON_FILE_APPENDER"/>
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+
+    <logger name="wifi4eu.wifi4eu.service.application.ApplicationService" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="CONSOLE_APPENDER"/>
+        <appender-ref ref="APPLY_FILE_APPENDER"/>
+        <appender-ref ref="FILE_APPENDER"/>
+    </logger>
+
+
     <logger name="wifi4eu" additivity="true">
-        <level value="error"/>
+        <level value="info"/>
         <appender-ref ref="CONSOLE_APPENDER"/>
         <appender-ref ref="FILE_APPENDER"/>
     </logger>
@@ -89,7 +129,7 @@
         <appender-ref ref="FILE_APPENDER"/>
     </logger>
     <root>
-        <level value="error"/>
+        <level value="info"/>
         <appender-ref ref="CONSOLE_APPENDER"/>
         <appender-ref ref="FILE_APPENDER"/>
     </root>
