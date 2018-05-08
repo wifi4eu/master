@@ -15,14 +15,11 @@ import {DgConnManageLauComponent} from "./+manage-lau/manage-lau.component";
 import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 import { PaginatorModule } from "primeng/primeng";
 import { SharedModule as SharedNgModule } from 'primeng/primeng';
-import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-registrations/+details/beneficiary-registrations-details.component";
-import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrations/details/supplier-registrations-details.component";
 import {DgConnExportImportComponent} from "./+exportImport/exportImport.component";
-import {SharedModule as SharedNgModule} from 'primeng/primeng';
 
 @NgModule({
     imports: [
-        SharedModule, DgConnectPortalRoutingModule, SharedNgModule
+        SharedModule, DgConnectPortalRoutingModule
     ],
     declarations: [
         DgConnPortalComponent,
@@ -36,7 +33,8 @@ import {SharedModule as SharedNgModule} from 'primeng/primeng';
         DgConnSupplierRegistrationsDetailsComponent,
         DgConnApplicantRegistrationsDetailsComponent,
         DgConnManageLauComponent,
-        DgConnDiscussionComponent
+        DgConnDiscussionComponent,
+        DgConnExportImportComponent
     ],
     bootstrap: [DgConnPortalComponent]
 })
