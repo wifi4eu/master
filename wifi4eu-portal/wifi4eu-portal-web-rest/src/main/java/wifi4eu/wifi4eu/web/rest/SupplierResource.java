@@ -28,6 +28,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -294,4 +295,22 @@ public class SupplierResource {
                 pageObj.getTotalElements(),
                 null);
     }
+
+    // New creation
+    @ApiOperation(value = "Get suppliers by regionID")
+    @RequestMapping(value = "/region/{regionId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<SupplierDTO> getSuppliersListByRegionId(@PathVariable("regionId") final Integer regionId, HttpServletResponse response) throws IOException {
+        _log.info("getSuppliersListByRegionId");
+        List<SupplierDTO> suppliersList = new ArrayList<>();
+        try {
+            suppliersList = supplierService.getSuppliersListByRegionId(regionId);
+        }
+        catch (Exception e){
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return suppliersList;
+    }
+
+
 }

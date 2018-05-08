@@ -278,4 +278,16 @@ public class SupplierService {
         }
         return supplierRepository.findSuppliersByRegion(regionId, pageable);
     }
+
+    // New creation
+    public List<SupplierDTO> getSuppliersListByRegionId(int regionId) {
+        List<SuppliedRegionDTO> suppliedRegions = suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findByRegion(regionId)));
+        List<SupplierDTO> suppliers = new ArrayList<>();
+        for (SuppliedRegionDTO suppliedRegion : suppliedRegions) {
+            SupplierDTO supplier = getSupplierById(suppliedRegion.getSupplierId());
+            suppliers.add(supplier);
+        }
+        return suppliers;
+    }
+
 }
