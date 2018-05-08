@@ -19,7 +19,7 @@
             <p>{{ 'shared.beneficiary.label' | translate}} : <b>{{municipality.name}}</b></p>
         </div>
 
-        <div class="results">
+        <div class="results marginTop registrationPanel">
             <p-dataTable [value]="installationSites" [rows]="searchParametersService.parameters.delta"
                          [paginator]="true" [rowsPerPageOptions]="[5,10,20]"
                          [totalRecords]="totalResults" [first]="searchParametersService.parameters.page"
@@ -33,19 +33,20 @@
                           sortable="true"></p-column>
                 <p-column header="{{'shared.details' | translate }}">
                     <template pTemplate="body" let-i="rowIndex" let-installationSite="rowData">
-                        <div class="my-center-text">
-                            <button iconClass="fas fa-eye" (click)="goToDetails(i)"
-                                    routerLinkActive="active">{{ 'shared.view' | translate }}
-                            </button>
+                        <div>
+                            <a class="linkNoStyle" (click)="goToDetails(i)"
+                               routerLinkActive="active"><i class="fa fa-eye"></i> {{ 'shared.view' | translate }}
+                            </a>
                         </div>
                     </template>
                 </p-column>
                 <p-column header="{{'installationReport.accessPoint' | translate }}">
                     <template pTemplate="body" let-i="rowIndex" let-installationSite="rowData">
-                        <div class=" my-center-text ">
-                            <button iconClass="fas fa-list-ul" (click)="goToList(i)"
-                                    routerLinkActive="active">{{ 'installationReport.goToAccessPoint' | translate }}
-                            </button>
+                        <div>
+                            <a class="linkNoStyle" (click)="goToList(i)"
+                               routerLinkActive="active"> <i class="fa fa-list-ul"></i> {{
+                                'installationReport.goToAccessPoint' | translate }}
+                            </a>
                         </div>
                     </template>
                 </p-column>
@@ -55,63 +56,64 @@
                 </template>
             </p-dataTable>
         </div>
-        <div class="row">
-            <div class="col-sm-6"></div>
-            <div class="col-sm-6">
-                <button class="btn btn-primary cancel-button">{{
-                    'benef.requestRevision' | translate }}
+
+
+        <div id="navigation-buttons" class="form-group ui-g center">
+            <div class="ui-lg-6"></div>
+            <div class="ui-g-6 ui-md-6 ui-lg-3">
+                <button (click)="openReportInstallation()"
+                        class="btn btn-primary cancel-button cancel-link installation">{{ 'benef.requestRevision' |
+                    translate }}
                 </button>
-                <button class="btn btn-primary publish-button"
-                        (click)="openConfirmInstallation()"
-                        [disabled]="isReportSent">{{
-                    'installationReport.confirmInstallation' | translate }}
-                </button>
-                <p>{{ 'installationReport.confirmationText' | translate}}</p>
             </div>
-
-
+            <div class="ui-g-6 ui-md-6 ui-lg-3">
+                <button (click)="openConfirmInstallation()" id="navigate-step2"
+                        class="btn btn-primary publish-button installation">
+                    {{ 'installationReport.confirmInstallation' | translate }}
+                </button>
+            </div>
         </div>
 
         <p-dialog [(visible)]="openModal" id="confirmInstallation">
-            <!--<uxModalBody>-->
-            <div class="text-center">
-                <p class="beneficiaryTitle">{{'installationReport.confirmText' | translate:{beneficiarySel:
+            <div class="center">
+                <p class="beneficiaryTitle">{{'benef.installationApprovalTitle' | translate:{beneficiarySel:
                     this.municipality.name}
                     }}</p>
-                <p>{{'installationReport.confirmTextInform' | translate}}</p>
-                <div class="checkBoxContainer">
-                    <div class="ui-g" style="text-align: left;">
-                        <span class="ui-lg-1"></span>
-                        <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
-                            <p-checkbox name="confirmChecks" binary="true"
-                                        label=" {{ 'installationReport.firstCheckBox' | translate}}"
-                                        [(ngModel)]="legalChecks[0]"></p-checkbox>
+                <p>{{'benef.installationApprovalText' | translate}}</p>
+            </div>
+            <div class="checkBoxContainer">
+                <div class="ui-g" style="text-align: left;">
+                    <span class="ui-lg-1"></span>
+                    <div class="ui-g-12 ui-md-12 ui-lg-10">
+                        <p-checkbox name="confirmChecks" binary="true" class="installation"
+                                    [(ngModel)]="legalChecks[0]"></p-checkbox>
+                        <span> {{ 'benef.firstCheck' | translate}}</span>
 
-                        </div>
-                        <span class="ui-lg-1"></span>
                     </div>
-                    <div class="ui-g" style="text-align: left;">
-                        <span class="ui-lg-1"></span>
-                        <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
-                            <p-checkbox name="confirmChecks" binary="true"
-                                        label=" {{ 'installationReport.secondCheckBox' | translate }}"
-                                        [(ngModel)]="legalChecks[1]"></p-checkbox>
-                        </div>
-                        <span class="ui-lg-1"></span></div>
-                    <div class="ui-g" style="text-align: left;">
-                        <span class="ui-lg-1"></span>
-                        <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
-                            <p-checkbox name="confirmChecks" binary="true"
-                                        label=" {{ 'installationReport.thirdCheckBox' | translate }}"
-                                        [(ngModel)]="legalChecks[2]"></p-checkbox>
-                        </div>
-                        <span class="ui-lg-1"></span>
+                    <span class="ui-lg-1"></span>
+                </div>
+                <div class="ui-g" style="text-align: left;">
+                    <span class="ui-lg-1"></span>
+                    <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
+                        <p-checkbox name="confirmChecks" binary="true" class="installation"
+                                    [(ngModel)]="legalChecks[1]"></p-checkbox>
+                        <span> {{ 'benef.secondCheck' | translate }}</span>
                     </div>
+                    <span class="ui-lg-1"></span></div>
+                <div class="ui-g" style="text-align: left;">
+                    <span class="ui-lg-1"></span>
+                    <div class="ui-g-12 ui-md-12 ui-lg-10" style="text-align: left;">
+                        <p-checkbox name="confirmChecks" binary="true" class="installation"
+                                    [(ngModel)]="legalChecks[2]"></p-checkbox>
+                        <span> {{ 'benef.thirdCheck' | translate }}</span>
+                    </div>
+                    <span class="ui-lg-1"></span>
                 </div>
             </div>
+
             <div class="row center">
                 <div class="col-sm-6">
-                    <button class="btn btn-primary changePassword cancel-button"
+                    <button class="btn btn-primary changePassword cancel-button installation"
                             (click)="closeConfirmInstallation()">
                         {{'shared.close' | translate }}
                     </button>
@@ -119,7 +121,7 @@
 
                 <div class="col-sm-6">
 
-                    <button class="btn btn-primary changePassword confirm-button"
+                    <button class="btn btn-primary changePassword confirm-button installation"
                             [disabled]=" !legalChecks[0] || !legalChecks[1] || !legalChecks[2]">{{
                         'shared.confirm'
                         |
@@ -129,6 +131,28 @@
                 </div>
             </div>
         </p-dialog>
-        <!--<update-installation-site [installationSite]='null'></update-installation-site>-->
+
+        <p-dialog [(visible)]="revisionModal" id="requestRevision">
+            <div class="center">
+                <p class="beneficiaryTitle">{{'benef.installationReportTitle' | translate }}
+                </p>
+                <p>{{'benef.installationReportText' | translate}}</p>
+            </div>
+            <div class="row center">
+                <div class="col-sm-6">
+                    <button class="btn btn-primary changePassword cancel-button installation"
+                            (click)="closeReportInstallation()">
+                        {{'shared.close' | translate }}
+                    </button>
+                </div>
+
+                <div class="col-sm-6">
+
+                    <button class="btn btn-primary changePassword confirm-button installation">{{ 'shared.confirm' |
+                        translate }}
+                    </button>
+                </div>
+            </div>
+        </p-dialog>
     </div>
 </div>

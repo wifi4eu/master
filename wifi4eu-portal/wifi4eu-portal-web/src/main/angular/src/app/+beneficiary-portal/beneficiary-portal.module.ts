@@ -8,6 +8,7 @@ import {AdditionalInfoComponent} from "./+additional-info/additional-info.compon
 import {ManageInstallationComponent} from "./manage-installation/manage-installation.component";
 import {InstallationDetailsComponent} from "./details-installation/installation-details.component";
 import {AccessPointListComponent} from "./access-point-list/access-point-list.component";
+import {AccessPointDetailsComponent} from "./access-point-details/access-point-details.component";
 
 // import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplier.component";
 
@@ -22,7 +23,8 @@ import {AccessPointListComponent} from "./access-point-list/access-point-list.co
         AdditionalInfoComponent,
         ManageInstallationComponent,
         InstallationDetailsComponent,
-        AccessPointListComponent
+        AccessPointListComponent,
+        AccessPointDetailsComponent
         // SelectSupplierComponent
     ]
     // ,

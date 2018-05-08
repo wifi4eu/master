@@ -9,12 +9,9 @@
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <p>{{ 'shared.beneficiary.label' | translate }}: </p>
-            <p>{{ 'accessPoint.installationSite' | translate }}: </p>
-        </div>
-        <div class="col-sm-8">
-            <p class="profileData">{{municipalityName}}</p>
-            <p class="profileData">{{installationSiteName}}</p>
+            <p>{{ 'shared.beneficiary.label' | translate }}: <span class="profileData">{{municipalityName}}</span></p>
+            <p>{{ 'accessPoint.installationSite' | translate }} <span class="profileData">{{installationSiteName}}</span>
+            </p>
         </div>
     </div>
 
@@ -49,13 +46,13 @@
                       sortable="true"></p-column>
             <p-column field="macAddress" header="{{'accessPoint.macAddress' | translate }}"></p-column>
             <p-column header="{{'shared.details' | translate }}">
-                <ng-template let-accessPoint="rowData" pTemplate="body">
+                <template let-accessPoint="rowData" let-i="rowIndex" pTemplate="body">
                     <div class="my-center-text">
-                        <button iconClass="fas fa-eye" [routerLink]="['./details', accessPoint.id]"
+                        <button class="btn btn-primary" id="voucherButton"  (click)="goToDetails(i)"
                                 routerLinkActive="active">{{ 'shared.view' | translate }}
                         </button>
                     </div>
-                </ng-template>
+                </template>
             </p-column>
 
             <ng-template pTemplate="emptymessage">

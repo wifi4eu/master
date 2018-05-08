@@ -47,7 +47,6 @@ export class AccessPointListComponent {
 
             this.idSub = this.route.params.subscribe(params => {
                 this.searchParametersService.parameters.id_installationSite = +params['id'];
-                console.log(this.searchParametersService.parameters.id_installationSite);
                 this.installationsiteApi.getInstallationSite(this.searchParametersService.parameters.id_installationSite).subscribe(
                     installation => {
                         this.installationSiteName = installation['data'].name;
@@ -92,6 +91,10 @@ export class AccessPointListComponent {
             console.log(error);
             return this.errorHandlingService.handleError(error);
         });
+    }
+
+    private goToDetails(APNumber: number) {
+        this.router.navigate(['../details/' + this.accessPoints[APNumber].id], {relativeTo: this.route});
     }
 
 

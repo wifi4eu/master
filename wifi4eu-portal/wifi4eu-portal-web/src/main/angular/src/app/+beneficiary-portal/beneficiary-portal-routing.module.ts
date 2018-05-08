@@ -7,6 +7,7 @@ import {AdditionalInfoComponent} from "./+additional-info/additional-info.compon
 import {ManageInstallationComponent} from "./manage-installation/manage-installation.component";
 import {InstallationDetailsComponent} from "./details-installation/installation-details.component";
 import {AccessPointListComponent} from "./access-point-list/access-point-list.component";
+import {AccessPointDetailsComponent} from "./access-point-details/access-point-details.component";
 
 
 @NgModule({
@@ -35,6 +36,9 @@ import {AccessPointListComponent} from "./access-point-list/access-point-list.co
         }, {
             path: 'access-point/:id',
             component: AccessPointListComponent
+        }, {
+            path: 'access-point/details/:id',
+            component: AccessPointDetailsComponent
         }
     ])],
     exports: [RouterModule]

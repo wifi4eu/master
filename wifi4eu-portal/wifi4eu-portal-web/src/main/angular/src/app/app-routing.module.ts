@@ -54,14 +54,13 @@ import {HomeComponent} from "./home/home.component";
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
             canActivate: [AppGuard]
+        }, {
+            path: 'notfound',
+            component: NotFoundComponent
+        }, {
+            path: '**',
+            redirectTo: 'notfound'
         }
-        // }, {
-        //     path: 'notfound',
-        //     component: NotFoundComponent
-        // }, {
-        //     path: '**',
-        //     redirectTo: 'notfound'
-        // }
     ], {useHash: true})],
     providers: [AppGuard],
     exports: [RouterModule]

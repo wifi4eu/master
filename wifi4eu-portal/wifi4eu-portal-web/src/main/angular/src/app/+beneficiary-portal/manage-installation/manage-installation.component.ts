@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, ViewEncapsulation} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LocalStorageService} from "angular-2-local-storage";
 import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
@@ -35,6 +35,7 @@ export class ManageInstallationComponent {
     _timeout: any = null;
     totalResults: number = 0;
     private openModal: boolean = false;
+    private revisionModal: boolean = false;
     private accessPoints: AccessPointBase[];
     private beneficiarySelected: BeneficiaryDisplayedListDTOBase = new BeneficiaryDisplayedListDTOBase;
     private installationSites: InstallationSite[] = [];
@@ -100,6 +101,14 @@ export class ManageInstallationComponent {
         this.legalChecks = [false, false, false];
     }
 
+    openReportInstallation() {
+        this.revisionModal = true;
+    }
+
+    closeReportInstallation() {
+        this.revisionModal = false;
+    }
+
     sendConfirmInstallation() {
         this.isReportSent = true;
         let successBanner = document.getElementById("success");
@@ -113,11 +122,6 @@ export class ManageInstallationComponent {
     }
 
     private goToList(accessPointNumber: number) {
-        // String order = "asc";
-        // String field = "device_brand";
-        // int id_installationSite = 0;
-        // int page = 0;
-        // int delta = 10;
         let inputParameters = new Object;
         inputParameters["id_installationSite"] = this.installationSites[accessPointNumber].id;
         this.accessPoinstApi.getAccessPointPerInstallationSite(inputParameters).subscribe(
