@@ -106,7 +106,7 @@ public class UserService {
         return userMapper.toDTO(userRepository.findByEmail(email));
     }
 
-    public UserDTO getUserByEcasEmail(String email){
+    public UserDTO getUserByEcasEmail(String email) {
         return userMapper.toDTO(userRepository.findByEcasEmail(email));
     }
 
@@ -143,7 +143,7 @@ public class UserService {
             throw new AppException("User context not defined", HttpStatus.SC_FORBIDDEN, "");
         }
 
-        if(_log.isDebugEnabled()){
+        if (_log.isDebugEnabled()) {
             _log.debug("user Email: " + userContext.getEmail() + " user PerId: " + userContext.getPerId());
         }
 
@@ -156,6 +156,7 @@ public class UserService {
             userDTO.setName(userContext.getFirstName());
             userDTO.setSurname(userContext.getLastName());
             userDTO.setEmail(userContext.getEmail());
+            userDTO.setIdRole(6);
 
             userDTO = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
 

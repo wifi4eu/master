@@ -1,12 +1,13 @@
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
-import { ActivationComponent } from "./activation/activation.component";
-import { ForgotComponent } from "./+forgot/forgot.component";
-import { HelpdeskComponent } from "./+helpdesk/helpdesk.component";
-import { NotFoundComponent } from "./not-found/not-found.component"
-import { AppGuard } from "./app.guard";
+import {NgModule} from "@angular/core";
+import {RouterModule} from "@angular/router";
+import {ActivationComponent} from "./activation/activation.component";
+import {ForgotComponent} from "./+forgot/forgot.component";
+import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
+import {NotFoundComponent} from "./not-found/not-found.component"
+import {AppGuard} from "./app.guard";
 // import {AppGuard} from "./app.guard";
-import { HomeComponent } from "./home/home.component";
+import {HomeComponent} from "./home/home.component";
+
 // import {EcasComponent} from "./+ecas/ecas.component";
 
 @NgModule({
@@ -53,7 +54,6 @@ import { HomeComponent } from "./home/home.component";
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
             canActivate: [AppGuard]
-
         }, {
             path: 'notfound',
             component: NotFoundComponent
@@ -61,7 +61,7 @@ import { HomeComponent } from "./home/home.component";
             path: '**',
             redirectTo: 'notfound'
         }
-    ], { useHash: true })],
+    ], {useHash: true})],
     providers: [AppGuard],
     exports: [RouterModule]
 })

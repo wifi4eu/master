@@ -1,0 +1,139 @@
+import {Component, ViewEncapsulation} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {LocalStorageService} from "angular-2-local-storage";
+import {UserDTOBase} from "../../shared/swagger/model/UserDTO";
+import {SharedService} from "app/shared/shared.service";
+import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
+import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
+import {BeneficiaryDisplayedListDTOBase} from "../../shared/swagger/model/BeneficiaryDisplayedListDTO";
+import {InstallationSite} from '../../shared/swagger/model/InstallationSite';
+import {ResponseDTOBase} from "../../shared/swagger/model/ResponseDTO";
+import {UxService} from '@ec-digit-uxatec/eui-angular2-ux-commons';
+import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
+import {InstallationsiteApi} from "../../shared/swagger/api/InstallationsiteApi";
+import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
+import {MayorApi} from "../../shared/swagger/api/MayorApi";
+import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
+import {SearchParametersService} from "../../core/services/search-parameters.service";
+import {BeneficiaryService} from "../../core/services/beneficiary-service";
+import {AccesspointsApi} from "../../shared/swagger/api/AccesspointsApi";
+import {AccessPointBase} from "../../shared/swagger/model/AccessPoint";
+
+
+@Component({
+    templateUrl: 'manage-installation.component.html',
+    providers: [MunicipalityApi, MayorApi, BeneficiaryApi, InstallationsiteApi, SearchParametersService, BeneficiaryService, AccesspointsApi]
+})
+
+
+export class ManageInstallationComponent {
+
+    private user: UserDTOBase;
+    private municipality: MunicipalityDTOBase;
+    private registration: RegistrationDTOBase;
+    //-- Component properties
+    _timeout: any = null;
+    totalResults: number = 0;
+    private openModal: boolean = false;
+    private revisionModal: boolean = false;
+    private accessPoints: AccessPointBase[];
+    private beneficiarySelected: BeneficiaryDisplayedListDTOBase = new BeneficiaryDisplayedListDTOBase;
+    private installationSites: InstallationSite[] = [];
+    private isReportSent: boolean = false;
+    private supplier: {};
+    private legalChecks: boolean[] = [false, false, false];
+    private accessPoint;
+
+    constructor(private accessPoinstApi: AccesspointsApi, private installationsiteApi: InstallationsiteApi, private  beneficiaryApi: BeneficiaryApi, private localStorageService: LocalStorageService, public searchParametersService: SearchParametersService, private beneficiaryService: BeneficiaryService, private uxService: UxService, private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private sharedService: SharedService) {
+        let storedUser = this.localStorage.get('user');
+        this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
+        if (this.user != null) {
+            let municipalityId;
+            this.route.params.subscribe(params => municipalityId = params['municipalityId']);
+            if (municipalityId != null) {
+                this.municipalityApi.getMunicipalityById(municipalityId).subscribe(
+                    (municipality: MunicipalityDTOBase) => {
+                        this.municipality = municipality;
+                        this.searchParametersService.parameters.id_beneficiary = this.municipality.id;
+                        this.beneficiaryService.beneficiarySelected = this.beneficiarySelected;
+                        this.onSearch();
+                        this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
+                            (registration: RegistrationDTOBase) => {
+                                this.registration = registration;
+                            }, error => {
+                            });
+                    }, error => {
+                    }
+                );
+            }
+        } else {
+            this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
+            this.router.navigateByUrl('/home');
+        }
+
+
+    }
+
+    onPage(event: any) {
+        this.searchParametersService.parameters.delta = event.rows;
+        this.searchParametersService.parameters.page = event.first;
+        this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "id";
+        this.searchParametersService.parameters.order = event.sortOrder > 0 ? "asc" : "desc";
+    }
+
+    onSearch() {
+        this.totalResults = 0;
+
+        this.installationsiteApi.getInstallationSiteListByBeneficiary(this.searchParametersService.parameters).subscribe((response: ResponseDTOBase) => {
+            if (response.success) {
+                this.installationSites = response.data.data;
+                this.totalResults = response.data.count;
+            }
+        })
+    }
+
+    openConfirmInstallation() {
+        this.openModal = true;
+    }
+
+    closeConfirmInstallation() {
+        this.openModal = false;
+        this.legalChecks = [false, false, false];
+    }
+
+    openReportInstallation() {
+        this.revisionModal = true;
+    }
+
+    closeReportInstallation() {
+        this.revisionModal = false;
+    }
+
+    sendConfirmInstallation() {
+        this.isReportSent = true;
+        let successBanner = document.getElementById("success");
+        successBanner.style.display = "block";
+        successBanner.scrollIntoView({behavior: "smooth"});
+        this.closeConfirmInstallation();
+    }
+
+    private goToDetails(installationNumber: number) {
+        this.router.navigate(['../../details/' + this.installationSites[installationNumber].id], {relativeTo: this.route});
+    }
+
+    private goToList(accessPointNumber: number) {
+        let inputParameters = new Object;
+        inputParameters["id_installationSite"] = this.installationSites[accessPointNumber].id;
+        this.accessPoinstApi.getAccessPointPerInstallationSite(inputParameters).subscribe(
+            accessPointResult => {
+                console.log("accessPointResult: ", accessPointResult);
+
+            }, error => {
+                console.log(error);
+            }
+        );
+        this.router.navigate(['../../access-point/' + this.installationSites[accessPointNumber].id], {relativeTo: this.route});
+    }
+
+
+}
