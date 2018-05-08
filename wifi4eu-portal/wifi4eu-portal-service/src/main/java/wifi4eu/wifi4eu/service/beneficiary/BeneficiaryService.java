@@ -446,61 +446,6 @@ public class BeneficiaryService {
         return municipalityService.getCountDistinctMunicipalitiesContainingName(name);
     }
 
-    public MunicipalityDetailsDTO getMunicipalityDetailsByMunicipalityId(int municipalityId) {
-        MunicipalityDetailsDTO munDetails = new MunicipalityDetailsDTO();
-        MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
-        if (municipality != null) {
-            munDetails.setMunicipality(municipality);
-            LauDTO lau = lauService.getLauById(municipality.getLauId());
-            MayorDTO mayor = mayorService.getMayorByMunicipalityId(municipality.getId());
-            if (lau != null) {
-                munDetails.setLau(lau);
-            }
-            if (mayor != null) {
-                munDetails.setMayor(mayor);
-            }
-            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(municipality.getId());
-            if (registration != null) {
-                munDetails.setRegistration(registration);
-                List<ApplicationDTO> applications = applicationService.getApplicationsByRegistrationId(registration.getId());
-                if (applications != null) {
-                    munDetails.setApplications(applications);
-                }
-            }
-        }
-        return munDetails;
-    }
-
-    public List<MunicipalityDetailsDTO> getMunicipalitiesDetailsByLauId(int lauId) {
-        List<MunicipalityDetailsDTO> munsDetails = new ArrayList<>();
-        LauDTO lau = lauService.getLauById(lauId);
-        if (lau != null) {
-            List<MunicipalityDTO> municipalities = municipalityService.getMunicipalitiesByLauId(lauId);
-            for (MunicipalityDTO municipality : municipalities) {
-                if  (municipality != null) {
-                    MunicipalityDetailsDTO munDetails = getMunicipalityDetailsByMunicipalityId(municipality.getId());
-                    munsDetails.add(munDetails);
-                }
-            }
-        }
-        return munsDetails;
-    }
-
-    public List<MunicipalityDetailsDTO> getAppliedMunicipalitiesDetailsByLauIdAndCallId(int lauId, int callId) {
-        List<MunicipalityDetailsDTO> finalMunsDetails = new ArrayList<>();
-        List<MunicipalityDetailsDTO> munsDetails = getMunicipalitiesDetailsByLauId(lauId);
-        for (MunicipalityDetailsDTO munDetails : munsDetails) {
-            if (munDetails.getApplications() != null) {
-                for (ApplicationDTO application : munDetails.getApplications()) {
-                    if (application.getCallId() == callId) {
-                        finalMunsDetails.add(munDetails);
-                    }
-                }
-            }
-        }
-        return finalMunsDetails;
-    }
-
     public String exportCSVDGConnBeneficiariesList() {
         int totalCount = getCountDistinctMunicipalities();
         int pageSize = totalCount;
