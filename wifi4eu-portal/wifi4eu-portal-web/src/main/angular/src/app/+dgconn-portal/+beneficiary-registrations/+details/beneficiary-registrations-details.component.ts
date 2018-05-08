@@ -30,7 +30,6 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     private entityCheckboxIndex: number = null;
     private searchMessagesQuery: string = '';
     private registrationIssues: number[] = [];
-    private issueRegistration: number;
     private selectedIndex = null;
     private displayInvalidate = false;
     private processingRequest = false;
@@ -62,7 +61,6 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                                             if (this.registrations.length == this.municipalities.length) {
                                                 this.registrationIssues.push(0);
                                                 this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
-                                                this.getIssue();
                                             }
                                         }
                                     }
@@ -147,16 +145,6 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                 }
             }
         );
-    }
-
-    private getIssue(){
-        // this.beneficiaryApi.getIssueTypeBeneficiaryRegistrations(JSON.stringify(this.registrations)).subscribe(
-        //     (response: ResponseDTOBase) => {
-        //         if(response.success){
-        //             this.issueRegistration = response.data;
-        //         }
-        //     }
-        // )
     }
 
     private invalidateMunicipality() {
