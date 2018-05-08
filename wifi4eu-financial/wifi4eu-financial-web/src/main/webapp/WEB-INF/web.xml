@@ -78,22 +78,22 @@
         <!--<param-value>nameOfTheApplication.EcasConfigurationKey</param-value>-->
     <!--</context-param>-->
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>ecas</web-resource-name>
-            <!--web-resource-name>ecas-demo</web-resource-name-->
-            <description>Requires users to be authenticated but does not require them to be authorized</description>
-            <url-pattern>/index.jsp</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <description>allow users with any role</description>
-            <role-name>*</role-name>
-        </auth-constraint>
-        <user-data-constraint>
-            <description>Encryption is not required for the application in general.</description>
-            <transport-guarantee>NONE</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
+    <!--<security-constraint>-->
+        <!--<web-resource-collection>-->
+            <!--<web-resource-name>ecas</web-resource-name>-->
+            <!--&lt;!&ndash;web-resource-name>ecas-demo</web-resource-name&ndash;&gt;-->
+            <!--<description>Requires users to be authenticated but does not require them to be authorized</description>-->
+            <!--<url-pattern>/index.jsp</url-pattern>-->
+        <!--</web-resource-collection>-->
+        <!--<auth-constraint>-->
+            <!--<description>allow users with any role</description>-->
+            <!--<role-name>*</role-name>-->
+        <!--</auth-constraint>-->
+        <!--<user-data-constraint>-->
+            <!--<description>Encryption is not required for the application in general.</description>-->
+            <!--<transport-guarantee>NONE</transport-guarantee>-->
+        <!--</user-data-constraint>-->
+    <!--</security-constraint>-->
 
     <resource-ref>
         <description>DB Connection</description>
@@ -103,12 +103,12 @@
         <res-auth>Container</res-auth>
     </resource-ref>
 
-    <login-config>
-        <!--auth-method>BASIC</auth-method-->
-        <auth-method>ECAS</auth-method>
-        <realm-name>myrealm</realm-name>
-        <!--realm-name>ecas-demo Realm</realm-name-->
-    </login-config>
+    <!--<login-config>-->
+        <!--&lt;!&ndash;auth-method>BASIC</auth-method&ndash;&gt;-->
+        <!--<auth-method>ECAS</auth-method>-->
+        <!--<realm-name>myrealm</realm-name>-->
+        <!--&lt;!&ndash;realm-name>ecas-demo Realm</realm-name&ndash;&gt;-->
+    <!--</login-config>-->
 
     <!--security-role>
         <description>Description of the role</description>
