@@ -3,6 +3,7 @@ import { animate, style, transition, trigger } from "@angular/animations";
 import { BeneficiaryApi } from "../../shared/swagger/api/BeneficiaryApi";
 import { BeneficiaryListItemDTOBase } from "../../shared/swagger/model/BeneficiaryListItemDTO";
 import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import * as FileSaver from "file-saver";
 
 @Component({
     templateUrl: 'beneficiary-registrations.component.html',
@@ -25,6 +26,8 @@ import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
 
 export class DgConnBeneficiaryRegistrationsComponent {
     private inputSearch: string = '';
+    private searchingByName: boolean = false;
+    private nameSearched: string = '';
     private beneficiaryListItems: BeneficiaryListItemDTOBase[] = [];
     private totalItems: number = 0;
     private page: number = 0;
@@ -34,6 +37,7 @@ export class DgConnBeneficiaryRegistrationsComponent {
     private sortField: string = 'name';
     private sortOrder: number = 1;
     private loadingData: boolean = false;
+    private downloadingCSV: boolean = false;
 
     constructor(private beneficiaryApi: BeneficiaryApi) {
     }
@@ -46,6 +50,8 @@ export class DgConnBeneficiaryRegistrationsComponent {
     private searchMunicipalities() {
         this.loadingData = true;
         if (this.inputSearch.trim().length > 0) {
+            this.searchingByName = true;
+            this.nameSearched = this.inputSearch.trim();
             this.beneficiaryApi.findDgconnBeneficiaresListSearchingName(this.inputSearch.trim(), this.itemsPerPage * this.page, this.itemsPerPage, this.sortField, this.sortOrder).subscribe(
                 (response: ResponseDTOBase) => {
                     this.loadingData = false;
@@ -57,6 +63,8 @@ export class DgConnBeneficiaryRegistrationsComponent {
                 }
             );
         } else {
+            this.searchingByName = false;
+            this.nameSearched = '';
             this.beneficiaryApi.findDgconnBeneficiaresList(this.itemsPerPage * this.page, this.itemsPerPage, this.sortField, this.sortOrder).subscribe(
                 (response: ResponseDTOBase) => {
                     this.loadingData = false;
@@ -82,5 +90,48 @@ export class DgConnBeneficiaryRegistrationsComponent {
         if (event['sortOrder'] != null)
             this.sortOrder = event['sortOrder'];
         this.searchMunicipalities();
+    }
+
+    private exportListCSV() {
+        if (!this.loadingData && !this.downloadingCSV) {
+            this.downloadingCSV = true;
+            if (this.searchingByName) {
+                this.beneficiaryApi.exportExcelDGConnBeneficiariesListSearchingName(this.nameSearched).subscribe(
+                    (response) => {
+                        let blob = new Blob([response], {type: "application/vnd.ms-excel"});
+                        FileSaver.saveAs(blob, "beneficiaries.xls");
+                        // if (response.success) {
+                        //     let csvData = encodeURI('data:text/csv;charset=utf-8,' + response.data);
+                        //     let link = document.createElement("a");
+                        //     // link.download = 'beneficiaries.csv';
+                        //     link.download = 'beneficiaries.xls';
+                        //     link.href = csvData;
+                        //     document.body.appendChild(link);
+                        //     link.click();
+                        //     document.body.removeChild(link);
+                        //     link.remove();
+                        // }
+                        this.downloadingCSV = false;
+                    }
+                );
+            } else {
+                this.beneficiaryApi.exportExcelDGConnBeneficiariesList().subscribe(
+                    (response) => {
+                        let blob = new Blob([response], {type: "application/vnd.ms-excel"});
+                        FileSaver.saveAs(blob, "beneficiaries.xls");
+                        // let csvData = encodeURI('data:text/csv;charset=utf-8,' + response.data);
+                        // let link = document.createElement("a");
+                        // link.download = 'beneficiaries.csv';
+                        // link.download = 'beneficiaries.xls';
+                        // link.href = blob;
+                        // document.body.appendChild(link);
+                        // link.click();
+                        // document.body.removeChild(link);
+                        // link.remove();
+                        this.downloadingCSV = false;
+                    }
+                );
+            }
+        }
     }
 }
