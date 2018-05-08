@@ -58,6 +58,8 @@ export class AccessPointDetailsComponent implements OnInit {
         this.accessPointService.deleteAccessPointById(this.accessPoint.id).subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.location.back();
+            } else {
+                return this.errorHandlingService.handleError(response.error);
             }
         }, error => {
             console.log(error);

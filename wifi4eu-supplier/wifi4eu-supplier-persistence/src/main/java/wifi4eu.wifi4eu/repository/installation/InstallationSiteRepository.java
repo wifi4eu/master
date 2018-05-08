@@ -23,4 +23,6 @@ public interface InstallationSiteRepository extends PagingAndSortingRepository<I
 
     InstallationSite findInstallationSiteById(Integer id);
 
+    Long countInstallationSiteByUrl(String url);
+
 }

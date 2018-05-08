@@ -25,9 +25,9 @@
                 <p>{{installationSite.url}}</p>
             </div>
             <div class="col-md-3 text-right detailsButtons">
-                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-pencil-alt" (click)="openUpdateInstallationSite()">
+                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-pencil-alt" (click)="openUpdateInstallationSite()" [isDisabled]="beneficiary.wifiIndicator">
                     {{ 'shared.edit' | translate }}</ux-button>
-                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-trash-alt" (click)="openRemoveInstallationSite()">
+                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-trash-alt" (click)="openRemoveInstallationSite()" [isDisabled]="beneficiary.wifiIndicator">
                     {{ 'shared.remove' | translate }}</ux-button>
             </div>
         </div>

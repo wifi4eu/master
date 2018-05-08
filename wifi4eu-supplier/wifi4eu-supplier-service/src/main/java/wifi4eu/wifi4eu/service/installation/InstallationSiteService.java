@@ -8,10 +8,16 @@ import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.installation.InstallationSite;
+import wifi4eu.wifi4eu.entity.installation.InstallationSiteWhitelist;
 import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepository;
+import wifi4eu.wifi4eu.repository.installation.InstallationSiteWhitelistRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.repository.status.StatusRepository;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -24,6 +30,9 @@ public class InstallationSiteService {
 
     @Autowired
     MunicipalityRepository municipalityRepository;
+
+    @Autowired
+    InstallationSiteWhitelistRepository whitelistRepository;
 
     @Autowired
     StatusRepository statusRepository;
@@ -43,7 +52,8 @@ public class InstallationSiteService {
             int page = 0;
             int delta = 10;
 
-            if (map.containsKey("id_beneficiary") && municipalityRepository.countMunicipalitiesById((int) map.get("id_beneficiary")) == 1) {
+            if (map.containsKey("id_beneficiary") && municipalityRepository.countMunicipalitiesById((int) map.get
+                    ("id_beneficiary")) == 1) {
 
                 id_beneficiary = (int) map.get("id_beneficiary");
 
@@ -71,8 +81,10 @@ public class InstallationSiteService {
                     Map<String, Object> mapResult = new HashMap<String, Object>();
 
 
-                    ArrayList<InstallationSite> installationSites = Lists.newArrayList(installationSiteRepository.searchInstallationSitesByBeneficiary(page, delta, id_beneficiary, field, order));
-                    int countResults = installationSiteRepository.countInstallationSitesByBeneficiary(page, delta, id_beneficiary, field, order);
+                    ArrayList<InstallationSite> installationSites = Lists.newArrayList(installationSiteRepository
+                            .searchInstallationSitesByBeneficiary(page, delta, id_beneficiary, field, order));
+                    int countResults = installationSiteRepository.countInstallationSitesByBeneficiary(page, delta,
+                            id_beneficiary, field, order);
                     mapResult.put("data", installationSites);
                     mapResult.put("count", countResults);
                     response.setSuccess(true);
@@ -80,16 +92,16 @@ public class InstallationSiteService {
 
                 } catch (Exception ex) {
                     response.setSuccess(false);
-                    response.setError(new ErrorDTO(404, "Error - Invalid integers / fields"));
+                    response.setError(new ErrorDTO(400, "error.400.invalidFields"));
                 }
             } else {
                 response.setSuccess(false);
-                response.setError(new ErrorDTO(404, "Municipality not found"));
+                response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
             }
 
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "Error json query"));
+            response.setError(new ErrorDTO(400, "error.400.noData"));
         }
 
         return response;
@@ -110,7 +122,49 @@ public class InstallationSiteService {
     public ResponseDTO addAndUpdateInstallationSite(Map<String, Object> map) {
         ResponseDTO response = new ResponseDTO();
         if (!map.isEmpty()) {
-            // if (map.get("url").equals(map.get("url_confirmation"))) {
+
+            boolean control = true;
+            //checking all required camps
+            String[] fieldsAccessPoint = {"municipality", "name", "url"};
+            for (int i = 0; i < fieldsAccessPoint.length; i++) {
+                if (!map.containsKey(fieldsAccessPoint[i])) {
+                    control = false;
+                    break;
+                }
+            }
+
+            String regExURL = "^[^- ]([a-z0-9-:/.]+\\.)[a-z0-9-:/]*[^-]$";
+            String url = (String) map.get("url");
+            if (url != null && !url.matches(regExURL)) {
+                control = false;
+            }
+
+            //system should check the URL of the captive portal is unique.
+            if (url != null && installationSiteRepository.countInstallationSiteByUrl(url) > 1) {
+                response.setSuccess(false);
+                response.setError(new ErrorDTO(409, "error.409.duplicatedUrl"));
+                return response;
+            }
+
+            String domain;
+            try {
+                String tempUrl = !url.startsWith("http") ? "http://" + url : url;
+                URL uri = new URL(tempUrl);
+                domain = uri.getHost().startsWith("www.") ? uri.getHost().substring(4) : uri.getHost();
+            } catch (MalformedURLException ex) {
+                domain = url;
+            }
+
+            // the domain will be added to whitelist
+            if(whitelistRepository.countInstallationSiteWhitelistByOrigin(domain) == 0) {
+                InstallationSiteWhitelist whitelist = new InstallationSiteWhitelist();
+                whitelist.setOrigin(domain);
+                whitelist.setActive(1);
+                whitelistRepository.save(whitelist);
+            }
+
+            if (control) {
+                // if (map.get("url").equals(map.get("url_confirmation"))) {
                 InstallationSite installationSite;
                 if (!map.containsKey("id")) {
                     installationSite = new InstallationSite();
@@ -118,33 +172,39 @@ public class InstallationSiteService {
                     Date now = calendar.getTime();
                     Timestamp currentTimestamp = new Timestamp(now.getTime());
                     installationSite.setDateRegistered(currentTimestamp);
-                    installationSite.setNumber(getNextNumberPerInstallationSiteByBeneficiaryId((int) map.get("municipality")));
+                    installationSite.setNumber(getNextNumberPerInstallationSiteByBeneficiaryId((int) map.get
+                            ("municipality")));
                 } else {
                     installationSite = installationSiteRepository.findInstallationSiteById((int) map.get("id"));
                 }
                 installationSite.setMunicipality((int) map.get("municipality"));
-                // installationSite.setMunicipality(municipalityRepository.findMuncipalityById((int) map.get("id_beneficiary")));
+                // installationSite.setMunicipality(municipalityRepository.findMuncipalityById((int) map.get
+                // ("id_beneficiary")));
                 installationSite.setName((String) map.get("name"));
-                installationSite.setUrl((String) map.get("url"));
-                installationSite.setDomainName((String) map.get("url"));
+                installationSite.setUrl(url);
+                installationSite.setDomainName(domain);
                 installationSite.setIdNetworkSnippet((String) map.get("name") + 123);
                 installationSite.setStatus(1);
                 // installationSite.setId_status(statusRepository.findStatudById(1));
                 installationSiteRepository.save(installationSite);
                 response.setSuccess(true);
                 response.setData(installationSite);
-            // }
+                // }
 
+            } else {
+                response.setSuccess(false);
+                response.setError(new ErrorDTO(400, "error.400.invalidFields"));
+            }
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "Error json query"));
+            response.setError(new ErrorDTO(400, "error.400.noData"));
         }
         return response;
     }
 
-    private int getNextNumberPerInstallationSiteByBeneficiaryId(int id_beneficiary){
+    private int getNextNumberPerInstallationSiteByBeneficiaryId(int id_beneficiary) {
         Long currentLong = installationSiteRepository.selectMaxNumberInstallationSiteByMunicipalityId(id_beneficiary);
-        if (currentLong != null){
+        if (currentLong != null) {
             currentLong++;
             return Integer.parseInt(currentLong.toString());
         } else {
@@ -160,7 +220,7 @@ public class InstallationSiteService {
             response.setData(installationSite);
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "Installation site not found"));
+            response.setError(new ErrorDTO(404, "error.404.installationSitesNotFound"));
         }
         return response;
     }
@@ -173,7 +233,7 @@ public class InstallationSiteService {
             response.setData("Deleted successfully");
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404, "Installation site not found"));
+            response.setError(new ErrorDTO(404, "error.404.installationSitesNotFound"));
         }
         return response;
     }

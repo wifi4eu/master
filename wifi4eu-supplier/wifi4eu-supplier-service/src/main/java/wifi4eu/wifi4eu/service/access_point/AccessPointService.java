@@ -26,126 +26,140 @@ public class AccessPointService {
 
     // TODO missing field number (not appears on DB)
     // TODO missing device_type field
-    private String[] FIELDS_ACCESS_POINTS_ORDER = {"number", "location", "location_type", "device_brand", "device_type", "model_number", "serial_number", "mac_address","isIndoor"};
-
-
+    private String[] FIELDS_ACCESS_POINTS_ORDER = {"number", "location", "location_type", "device_brand",
+            "device_type", "model_number", "serial_number", "mac_address", "isIndoor"};
 
 
     @Transactional
-    public ResponseDTO deleteAccessPointById(int id){
+    public ResponseDTO deleteAccessPointById(int id) {
         ResponseDTO response = new ResponseDTO();
-        if (accessPointRepository.findOne(id) != null){
+        if (accessPointRepository.findOne(id) != null) {
             accessPointRepository.delete(id);
             response.setSuccess(true);
             response.setData("Deleted successfully");
         } else {
             response.setSuccess(false);
             response.setData("Error");
-            response.setError(new ErrorDTO(404, "Access Point not found. ID : "+id));
+            response.setError(new ErrorDTO(404, "error.404.accessPointNotFound"));
         }
         return response;
     }
 
     @Transactional
-    public ResponseDTO getAccessPointById(int id){
+    public ResponseDTO getAccessPointById(int id) {
         ResponseDTO response = new ResponseDTO();
-        if (accessPointRepository.findOne(id) != null){
+        if (accessPointRepository.findOne(id) != null) {
             response.setSuccess(true);
             response.setData(accessPointRepository.findOne(id));
         } else {
             response.setSuccess(false);
             response.setData("Error");
-            response.setError(new ErrorDTO(404, "Access Point not found. ID : "+id));
+            response.setError(new ErrorDTO(404, "error.404.accessPointNotFound"));
         }
         return response;
     }
 
     @Transactional
-    public ResponseDTO addOrUpdateAccessPoint(Map<String, Object> map){
+    public ResponseDTO addOrUpdateAccessPoint(Map<String, Object> map) {
         ResponseDTO response = new ResponseDTO();
-        if (!map.isEmpty()){
-            if (map.containsKey("idInstallationSite") && installationSiteRepository.countInstallationSiteById((int) map.get("idInstallationSite")) == 1){
-                if (map.containsKey("id") && (int) map.get("id") > 0){
+        if (!map.isEmpty()) {
+            if (map.containsKey("idInstallationSite") && installationSiteRepository.countInstallationSiteById((int)
+                    map.get("idInstallationSite")) == 1) {
+                if (map.containsKey("id") && (int) map.get("id") > 0) {
                     // update access point
                     AccessPoint accessPoint = accessPointRepository.findOne((int) map.get("id"));
-                    if (accessPoint != null){
-                        if (setAccessPointFields(map,accessPoint,false)){
+                    if (accessPoint != null) {
+                        if (setAccessPointFields(map, accessPoint, false)) {
                             accessPointRepository.save(accessPoint);
                             response.setSuccess(true);
                             response.setData(accessPoint);
                         } else {
                             response.setSuccess(false);
-                            response.setError(new ErrorDTO(404,"Error setting values to Access Point"));
+                            response.setError(new ErrorDTO(400, "error.400.invalidFields"));
                         }
                     } else {
                         response.setSuccess(false);
-                        response.setError(new ErrorDTO(404,"Access Point not found by id : "+map.get("id")));
+                        response.setError(new ErrorDTO(404, "error.404.accessPointNotFound"));
                     }
                 } else {
                     // add new access point
                     AccessPoint accessPoint = new AccessPoint();
-                    if (setAccessPointFields(map,accessPoint,true)){
+                    if (setAccessPointFields(map, accessPoint, true)) {
                         accessPointRepository.save(accessPoint);
                         response.setSuccess(true);
                         response.setData(accessPoint);
                     } else {
                         response.setSuccess(false);
-                        response.setError(new ErrorDTO(404,"Error setting values to Access Point"));
+                        response.setError(new ErrorDTO(400, "error.400.invalidFields"));
                     }
                 }
             } else {
                 response.setSuccess(false);
-                response.setError(new ErrorDTO(404,"Installation Site ID no exists"));
+                response.setError(new ErrorDTO(404, "error.404.installationSitesNotFound"));
             }
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404,"Empty body"));
+            response.setError(new ErrorDTO(400, "error.400.noData"));
         }
 
         return response;
     }
 
-    private boolean setAccessPointFields(Map<String,Object> map, AccessPoint accessPoint, boolean sumar){
+    private boolean setAccessPointFields(Map<String, Object> map, AccessPoint accessPoint, boolean sumar) {
         boolean control = true;
-        /*
-        String[] fieldsAccessPoint = {"","","","",""};
-        for (int i = 0; i < fieldsAccessPoint.length; i++){
-            if (!map.containsKey(fieldsAccessPoint[i])){
+        //checking all required camps
+        String[] fieldsAccessPoint = {"modelNumber", "serialNumber", "indoor", "deviceBrand",
+                "location", "locationType", "latitude", "longitude", "macAddress"};
+        for (int i = 0; i < fieldsAccessPoint.length; i++) {
+            if (!map.containsKey(fieldsAccessPoint[i])) {
                 control = false;
                 break;
             }
         }
-        */
 
-        if (control){
-            // passed validation of fields, now we edit the object accesspoint
-            accessPoint.setModelNumber((String) map.get("modelNumber"));
-            accessPoint.setSerialNumber((String) map.get("serialNumber"));
-            accessPoint.setInstallationSite((int) map.get("idInstallationSite"));
-            accessPoint.setIndoor((boolean) map.get("indoor"));
-            accessPoint.setDeviceBrand((String) map.get("deviceBrand"));
-            accessPoint.setLocation((String) map.get("location"));
-            accessPoint.setLocationType((String) map.get("locationType"));
-            accessPoint.setLatitude(map.get("latitude").toString());
-            accessPoint.setLongitude(map.get("longitude").toString());
-            String regExMac = "([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$";
-            String macAddress = (String) map.get("macAddress");
-            if (macAddress.matches(regExMac)){
-                accessPoint.setMacAddress((String) map.get("macAddress"));
-            } else {
-                // what we should do ? Add and empty field?
-                accessPoint.setMacAddress((String) map.get("macAddress"));
-            }
-            if (sumar) {
-                accessPoint.setNumber(getNextAccessPointPerInstallationSite((int) map.get("idInstallationSite")));
+        //checking if macAddress complies with the regex
+        String regExMac = "([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$";
+        String macAddress = (String) map.get("macAddress");
+        if (macAddress!= null && macAddress.matches(regExMac)) {
+            accessPoint.setMacAddress(macAddress);
+        } else {
+            control = false;
+        }
+
+        //checking if latitude and longitud complies with the regex
+        String regExLocation = "^([-+]?)([0-9]{1,2})(((.)([0-9]{6})))$";
+        String latitude = (String) map.get("latitude");
+        String longitude = (String) map.get("longitude");
+        if (control && latitude.matches(regExLocation) && longitude.matches(regExLocation)) {
+            accessPoint.setLatitude(latitude);
+            accessPoint.setLongitude(longitude);
+        } else {
+            control = false;
+        }
+
+        if (control) {
+            try {
+                // passed validation of fields, now we edit the object accesspoint
+                accessPoint.setModelNumber((String) map.get("modelNumber"));
+                accessPoint.setSerialNumber((String) map.get("serialNumber"));
+                accessPoint.setInstallationSite((int) map.get("idInstallationSite"));
+                accessPoint.setIndoor((boolean) map.get("indoor"));
+                accessPoint.setDeviceBrand((String) map.get("deviceBrand"));
+                accessPoint.setLocation((String) map.get("location"));
+                accessPoint.setLocationType((String) map.get("locationType"));
+                if (sumar) {
+                    accessPoint.setNumber(getNextAccessPointPerInstallationSite((int) map.get("idInstallationSite")));
+                }
+            } catch (Exception ex) {
+                return false;
             }
         }
         return control;
     }
 
-    private int getNextAccessPointPerInstallationSite(int id_installation_site){
+    private int getNextAccessPointPerInstallationSite(int id_installation_site) {
         Long currentLong = accessPointRepository.selectMaxNumberAccessPointByIdInstallationSite(id_installation_site);
-        if (currentLong != null){
+        if (currentLong != null) {
             currentLong++;
             return Integer.parseInt(currentLong.toString());
         } else {
@@ -154,61 +168,64 @@ public class AccessPointService {
     }
 
     @Transactional
-    public ResponseDTO findAccessPointsPerInstallationSite(Map<String, Object> map){
+    public ResponseDTO findAccessPointsPerInstallationSite(Map<String, Object> map) {
         ResponseDTO response = new ResponseDTO();
         // we should check if it's null. We don't have the class Validation
-        if (!map.isEmpty()){
+        if (!map.isEmpty()) {
             String order = "asc";
             String field = "device_brand";
             int id_installationSite = 0;
             int page = 0;
             int delta = 10;
 
-            if (map.containsKey("id_installationSite") && installationSiteRepository.countInstallationSiteById((int) map.get("id_installationSite")) == 1) {
+            if (map.containsKey("id_installationSite") && installationSiteRepository.countInstallationSiteById((int)
+                    map.get("id_installationSite")) == 1) {
 
                 id_installationSite = (int) map.get("id_installationSite");
 
                 try {
 
-                if (map.containsKey("page") && (int) map.get("page") > 0) {
-                    page = (int) map.get("page");
-                }
-
-                if (map.containsKey("delta") && (int) map.get("delta") > 0) {
-                    delta = (int) map.get("delta");
-                }
-
-                if (map.containsKey("order")) {
-                    if (String.valueOf(map.get("order")).equalsIgnoreCase("desc")) {
-                        order = "desc";
+                    if (map.containsKey("page") && (int) map.get("page") > 0) {
+                        page = (int) map.get("page");
                     }
-                }
 
-                if (map.containsKey("fieldOrder")) {
-                    field = acceptFieldNameQueryInstallationSites(String.valueOf(map.get("fieldOrder")));
-                }
+                    if (map.containsKey("delta") && (int) map.get("delta") > 0) {
+                        delta = (int) map.get("delta");
+                    }
+
+                    if (map.containsKey("order")) {
+                        if (String.valueOf(map.get("order")).equalsIgnoreCase("desc")) {
+                            order = "desc";
+                        }
+                    }
+
+                    if (map.containsKey("fieldOrder")) {
+                        field = acceptFieldNameQueryInstallationSites(String.valueOf(map.get("fieldOrder")));
+                    }
 
 
-                Map<String, Object> mapResult = new HashMap<String, Object>();
+                    Map<String, Object> mapResult = new HashMap<String, Object>();
 
-                ArrayList<AccessPoint> installationSites = Lists.newArrayList(accessPointRepository.searchAccessPointByInstallationSite(page, delta, id_installationSite, field, order));
-                int countResults = accessPointRepository.countAccessPointByInstallationSite(page, delta, id_installationSite, field, order);
-                mapResult.put("data", installationSites);
-                mapResult.put("count", countResults);
-                response.setSuccess(true);
-                response.setData(mapResult);
+                    ArrayList<AccessPoint> installationSites = Lists.newArrayList(accessPointRepository
+                            .searchAccessPointByInstallationSite(page, delta, id_installationSite, field, order));
+                    int countResults = accessPointRepository.countAccessPointByInstallationSite(page, delta,
+                            id_installationSite, field, order);
+                    mapResult.put("data", installationSites);
+                    mapResult.put("count", countResults);
+                    response.setSuccess(true);
+                    response.setData(mapResult);
 
                 } catch (Exception ex) {
                     response.setSuccess(false);
-                    response.setError(new ErrorDTO(404, "Error - Invalid integers / fields"));
+                    response.setError(new ErrorDTO(400, "error.400.invalidFields"));
                 }
             } else {
                 response.setSuccess(false);
-                response.setError(new ErrorDTO(404, "Installation Site not found"));
+                response.setError(new ErrorDTO(404, "error.404.installationSitesNotFound"));
             }
         } else {
             response.setSuccess(false);
-            response.setError(new ErrorDTO(404,"Empty body"));
+            response.setError(new ErrorDTO(400, "error.400.noData"));
         }
 
         return response;
