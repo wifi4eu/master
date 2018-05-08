@@ -70,6 +70,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
     private getApplicationDetailsInfo() {
         if (this.lauId && this.callId) {
+            this.clearPageInfo();
             this.applicationApi.getApplicationsByCallIdAndLauId(this.callId, this.lauId).subscribe(
                 (applications: ApplicationDTOBase[]) => {
                     let failCount = 0;
@@ -146,6 +147,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     }
                 }
             );
+        } else {
+            this.loadingData = false;
         }
     }
 
