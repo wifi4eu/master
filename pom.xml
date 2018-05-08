@@ -174,7 +174,10 @@
                 <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
                 <ecas.server.address>${server.test.address}</ecas.server.address>
                 <ecas.server.port>8080</ecas.server.port>
+                <!--ecas.server.port>7001</ecas.server.port-->
                 <mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
+                <!--mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu-financial/#/</mail.serv.location-->
+                <!--mail.serv.location>https://wifi4eu.everisdigitalchannels.com:7001/wifi4eu-financial/#/</mail.serv.location-->
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
@@ -596,13 +599,19 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
             </dependency>
-            <!--
-                        <dependency>
-                            <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
-                            <artifactId>ecas-weblogic-10.3-authprovider</artifactId>
-                            <version>${ecas.client.version}</version>
-                        </dependency>
-            -->
+
+            <!--<dependency>-->
+                <!--<groupId>eu.europa.ec.digit</groupId>-->
+                <!--<artifactId>refapp-support-security-ecas-file</artifactId>-->
+                <!--<version>1.1.1</version>-->
+            <!--</dependency>-->
+
+            <!--<dependency>-->
+                <!--<groupId>eu.europa.ec.digit.iam.ecas.client</groupId>-->
+                <!--<artifactId>ecas-weblogic-10.3-authprovider</artifactId>-->
+                <!--<version>${ecas.client.version}</version>-->
+            <!--</dependency>-->
+
             <dependency>
                 <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
                 <artifactId>ecas-tomcat-8.0</artifactId>
@@ -667,19 +676,24 @@
             <artifactId>log4j</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--
-                <dependency>
-                    <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
-                    <artifactId>ecas-weblogic-10.3-authprovider</artifactId>
-                    <scope>provided</scope>
-                </dependency>
-        -->
+
+        <!--<dependency>-->
+            <!--<groupId>eu.europa.ec.digit</groupId>-->
+            <!--<artifactId>refapp-support-security-ecas-file</artifactId>-->
+            <!--<version>1.1.1</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>eu.europa.ec.digit.iam.ecas.client</groupId>-->
+            <!--<artifactId>ecas-weblogic-10.3-authprovider</artifactId>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
             <artifactId>ecas-tomcat-8.0</artifactId>
