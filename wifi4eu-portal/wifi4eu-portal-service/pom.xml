@@ -91,17 +91,15 @@
             <artifactId>wifi4eu-portal-persistence</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
-        <dependency>
+         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>3.16</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>3.16</version>
+            <version>3.17</version>
         </dependency>
     </dependencies>
 

@@ -43,7 +43,7 @@ export class HomeComponent {
         this.callApi.allCalls().subscribe(
             calls => {
                 this.currentCall = calls[0];
-                if (this.currentCall) {
+                if (this.currentCall.startDate > Date.now()) {
                     this.showTimeline = true;
                     this.showTimer = true;
                     let date = new Date(this.currentCall.startDate);

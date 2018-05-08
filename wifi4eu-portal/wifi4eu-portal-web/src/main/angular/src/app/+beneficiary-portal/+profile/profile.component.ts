@@ -55,19 +55,16 @@ export class BeneficiaryProfileComponent {
                         this.user = user;
                         if (this.user.type == 2 || this.user.type == 3) {
                             Object.assign(this.editedUser, this.user);
-                            this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe(
+                            this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                                 (registrations: RegistrationDTOBase[]) => {
                                     if (registrations.length == 1) {
                                         this.oneRegsitration = true;
-                                        console.log("dentro de == 1");
                                         this.oneRegistrationNumber = registrations[0].municipalityId;
                                         if (registrations[0].allFilesFlag == 1) {
                                             this.documentUploaded = true;
-                                            console.log("dentro de documentUploaded");
                                         }
                                     } else {
                                         this.oneRegsitration = false;
-                                        console.log("parece que es menor que dos!");
                                     }
                                     for (let registration of registrations) {
                                         this.allDocumentsUploaded.push(registration.allFilesFlag == 1);
