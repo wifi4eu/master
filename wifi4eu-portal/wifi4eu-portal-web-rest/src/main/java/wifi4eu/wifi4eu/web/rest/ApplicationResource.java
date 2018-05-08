@@ -5,7 +5,10 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.ApplicantListItemDTO;
@@ -165,24 +168,7 @@ public class ApplicationResource {
     @ApiOperation(value = "findDgconnApplicantsListByCallId")
     @RequestMapping(value = "/findDgconnApplicantsListByCallId/{callId}", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO findDgconnApplicantsListByCallId(@PathVariable("callId") final Integer callId, @RequestBody final PagingSortingDTO pagingSortingData) {
-        try {
-            ResponseDTO res = new ResponseDTO(true, null, null);
-            res.setData(applicationService.findDgconnApplicantsList(callId, null,null, pagingSortingData));
-            res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, null));
-            return res;
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("can't retrieve beneficiaries", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
-
-    @ApiOperation(value = "findDgconnApplicantsListByCallIdSearchingCountry")
-    @RequestMapping(value = "/findDgconnApplicantsListByCallIdSearchingCountry/{callId}", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO findDgconnApplicantsListByCallIdSearchingCountry(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData) {
+    public ResponseDTO findDgconnApplicantsListByCallId(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData) {
         try {
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(applicationService.findDgconnApplicantsList(callId, country,null, pagingSortingData));
@@ -190,7 +176,7 @@ public class ApplicationResource {
             return res;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("can't retrieve beneficiaries", e);
+                _log.error("can't retrieve applicants", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
@@ -199,24 +185,7 @@ public class ApplicationResource {
     @ApiOperation(value = "findDgconnApplicantsListByCallIdSearchingName")
     @RequestMapping(value = "/findDgconnApplicantsListByCallIdSearchingName/{callId}", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO findDgconnApplicantsListByCallIdSearchingName(@PathVariable("callId") final Integer callId, @RequestParam("name") final String name, @RequestBody final PagingSortingDTO pagingSortingData) {
-        try {
-            ResponseDTO res = new ResponseDTO(true, null, null);
-            res.setData(applicationService.findDgconnApplicantsList(callId, null, name, pagingSortingData));
-            res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, null, name));
-            return res;
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("can't retrieve beneficiaries", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
-
-    @ApiOperation(value = "findDgconnApplicantsListByCallIdSearchingNameAndCountry")
-    @RequestMapping(value = "/findDgconnApplicantsListByCallIdSearchingNameAndCountry/{callId}", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO findDgconnApplicantsListByCallIdSearchingNameAndCountry(@PathVariable("callId") final Integer callId, @RequestParam("name") final String name, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData) {
+    public ResponseDTO findDgconnApplicantsListByCallIdSearchingName(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name, @RequestBody final PagingSortingDTO pagingSortingData) {
         try {
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(applicationService.findDgconnApplicantsList(callId, country, name, pagingSortingData));
@@ -274,5 +243,33 @@ public class ApplicationResource {
             _log.info("getApplicationsByCallIdAndLauId");
         }
         return applicationService.getApplicationsByCallIdAndLauId(callId, lauId);
+    }
+
+    @ApiOperation(value = "exportExcelDGConnApplicantsList")
+    @RequestMapping(value = "/exportExcelDGConnApplicantsList", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
+    @ResponseBody
+    public ResponseEntity<byte[]> exportExcelDGConnApplicantsList(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country) {
+        ResponseEntity<byte[]> responseReturn = null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
+        String filename = "dgconn-applicants.xls";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        responseReturn = new ResponseEntity<>(applicationService.exportExcelDGConnApplicantsList(callId, country), headers, HttpStatus.OK);
+        return responseReturn;
+    }
+
+    @ApiOperation(value = "exportExcelDGConnApplicantsListSearchingName")
+    @RequestMapping(value = "/exportExcelDGConnApplicantsListSearchingName", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
+    @ResponseBody
+    public ResponseEntity<byte[]> exportExcelDGConnApplicantsListSearchingName(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name) {
+        ResponseEntity<byte[]> responseReturn = null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
+        String filename = "dgconn-applicants.xls";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        responseReturn = new ResponseEntity<>(applicationService.exportExcelDGConnApplicantsListContainingName(callId, country, name), headers, HttpStatus.OK);
+        return responseReturn;
     }
 }

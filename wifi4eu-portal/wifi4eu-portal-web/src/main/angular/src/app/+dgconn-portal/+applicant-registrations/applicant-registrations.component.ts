@@ -8,6 +8,7 @@ import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { PagingSortingDTOBase } from "../../shared/swagger/model/PagingSortingDTO";
 import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
+import * as FileSaver from "file-saver";
 
 @Component({
     templateUrl: 'applicant-registrations.component.html',
@@ -35,6 +36,8 @@ export class DgConnApplicantRegistrationsComponent {
     private country: NutsDTOBase = null;
     private countries: NutsDTOBase[] = [];
     private inputSearch: string = '';
+    private searchingByName: boolean = false;
+    private nameSearched: string = '';
     private applicantListItems: ApplicantListItemDTOBase[] = [];
     private totalItems: number = 0;
     private page: number = 0;
@@ -44,6 +47,7 @@ export class DgConnApplicantRegistrationsComponent {
     private sortField: string = 'name';
     private sortOrder: number = 1;
     private loadingData: boolean = false;
+    private downloadingList: boolean = false;
 
     constructor(private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi) {
         this.callApi.allCalls().subscribe(
@@ -74,62 +78,38 @@ export class DgConnApplicantRegistrationsComponent {
             pagingAndSortingData.count = this.itemsPerPage;
             pagingAndSortingData.orderField = this.sortField;
             pagingAndSortingData.orderType = this.sortOrder;
+            let countryCode = '%';
+            if (this.country != null) {
+                countryCode = this.country.countryCode;
+            }
             if (this.inputSearch.trim().length > 0) {
-                if (this.country != null) {
-                    this.applicationApi.findDgconnApplicantsListByCallIdSearchingNameAndCountry(this.currentCall.id, this.inputSearch.trim(), this.country.countryCode, pagingAndSortingData).subscribe(
-                        (response: ResponseDTOBase) => {
-                            this.loadingData = false;
-                            if (response.success) {
-                                this.totalItems = response.xtotalCount;
-                                this.totalPages = this.totalItems / this.itemsPerPage;
-                                this.applicantListItems = response.data;
-                            }
-                        }, error => {
-                            this.loadingData = false;
+                this.searchingByName = true;
+                this.nameSearched = this.inputSearch.trim();
+                this.applicationApi.findDgconnApplicantsListByCallIdSearchingName(this.currentCall.id, countryCode, this.nameSearched, pagingAndSortingData).subscribe(
+                    (response: ResponseDTOBase) => {
+                        this.loadingData = false;
+                        if (response.success) {
+                            this.totalItems = response.xtotalCount;
+                            this.totalPages = this.totalItems / this.itemsPerPage;
+                            this.applicantListItems = response.data;
                         }
-                    );
-                } else {
-                    this.applicationApi.findDgconnApplicantsListByCallIdSearchingName(this.currentCall.id, this.inputSearch.trim(), pagingAndSortingData).subscribe(
-                        (response: ResponseDTOBase) => {
-                            this.loadingData = false;
-                            if (response.success) {
-                                this.totalItems = response.xtotalCount;
-                                this.totalPages = this.totalItems / this.itemsPerPage;
-                                this.applicantListItems = response.data;
-                            }
-                        }, error => {
-                            this.loadingData = false;
-                        }
-                    );
-                }
+                    }, error => {
+                        this.loadingData = false;
+                    }
+                );
             } else {
-                if (this.country != null) {
-                    this.applicationApi.findDgconnApplicantsListByCallIdSearchingCountry(this.currentCall.id, this.country.countryCode, pagingAndSortingData).subscribe(
-                        (response: ResponseDTOBase) => {
-                            this.loadingData = false;
-                            if (response.success) {
-                                this.totalItems = response.xtotalCount;
-                                this.totalPages = this.totalItems / this.itemsPerPage;
-                                this.applicantListItems = response.data;
-                            }
-                        }, error => {
-                            this.loadingData = false;
+                this.applicationApi.findDgconnApplicantsListByCallId(this.currentCall.id, countryCode, pagingAndSortingData).subscribe(
+                    (response: ResponseDTOBase) => {
+                        this.loadingData = false;
+                        if (response.success) {
+                            this.totalItems = response.xtotalCount;
+                            this.totalPages = this.totalItems / this.itemsPerPage;
+                            this.applicantListItems = response.data;
                         }
-                    );
-                } else {
-                    this.applicationApi.findDgconnApplicantsListByCallId(this.currentCall.id, pagingAndSortingData).subscribe(
-                        (response: ResponseDTOBase) => {
-                            this.loadingData = false;
-                            if (response.success) {
-                                this.totalItems = response.xtotalCount;
-                                this.totalPages = this.totalItems / this.itemsPerPage;
-                                this.applicantListItems = response.data;
-                            }
-                        }, error => {
-                            this.loadingData = false;
-                        }
-                    );
-                }
+                    }, error => {
+                        this.loadingData = false;
+                    }
+                );
             }
         }
     }
@@ -161,5 +141,32 @@ export class DgConnApplicantRegistrationsComponent {
 
     private changeCountry(event) {
         this.searchApplicants();
+    }
+
+    private exportListExcel() {
+        if (!this.loadingData && !this.downloadingList) {
+            this.downloadingList = true;
+            let countryCode = '%';
+            if (this.country != null) {
+                countryCode = this.country.countryCode;
+            }
+            if (this.searchingByName) {
+                this.applicationApi.exportExcelDGConnApplicantsListSearchingName(this.currentCall.id, countryCode, this.nameSearched).subscribe(
+                    (response) => {
+                        let blob = new Blob([response], {type: "application/vnd.ms-excel"});
+                        FileSaver.saveAs(blob, "applicants.xls");
+                        this.downloadingList = false;
+                    }
+                );
+            } else {
+                this.applicationApi.exportExcelDGConnApplicantsList(this.currentCall.id, countryCode).subscribe(
+                    (response) => {
+                        let blob = new Blob([response], {type: "application/vnd.ms-excel"});
+                        FileSaver.saveAs(blob, "applicants.xls");
+                        this.downloadingList = false;
+                    }
+                );
+            }
+        }
     }
 }

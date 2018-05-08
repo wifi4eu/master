@@ -19,6 +19,7 @@ import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 
 import java.text.MessageFormat;
@@ -406,5 +407,23 @@ public class ApplicationService {
             }
         }
         return applications;
+    }
+
+    public byte[] exportExcelDGConnApplicantsList(Integer callId, String country) {
+        int totalCount = municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country);
+        int pageSize = totalCount;
+        PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
+        List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, null, pagingSortingData);
+        ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
+        return excelExportGenerator.exportExcelFile("applicants").toByteArray();
+    }
+
+    public byte[] exportExcelDGConnApplicantsListContainingName(Integer callId, String country, String name) {
+        int totalCount = municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name);
+        int pageSize = totalCount;
+        PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
+        List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, name, pagingSortingData);
+        ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
+        return excelExportGenerator.exportExcelFile("applicants").toByteArray();
     }
 }
