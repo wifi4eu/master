@@ -45,7 +45,7 @@
     <timer-component *ngIf="voucherCompetitionState == 1" class="offset-lg-3 ui-lg-6 ui-g-12" (timerEvent)="openApplyForVoucher()"
         [expirationTimestamp]="currentCall.startDate">
     </timer-component>
-    <div class="offset-lg-3 ui-lg-6 ui-g-12">
+    <div class="ui-g-12 ui-md-8 offset-md-2">
         <div class="marginTop registrationPanel">
             <p-dataTable [value]="municipalities">
                 <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
@@ -106,7 +106,7 @@
             <p>
                 <span class="dotSteps">2. </span>{{ 'benefPortal.voucher.step3' | translate}}</p>
         </div>
-        <div class="ui-g-4 ui-sm-6">
+        <div class="ui-g-4 ui-sm-12">
             <img class="{{stepCompleted}}" src="assets/images/voucher.png" alt="">
             <p>
                 <span class="dotSteps">3. </span>{{ 'benefPortal.voucher.step4' | translate}}</p>
@@ -114,3 +114,22 @@
     </div>
 </div>
 <helpdesk-form-component portal="beneficiary-voucher"></helpdesk-form-component>
+
+<div class="container font">
+  <div class="ui-g-1"></div>
+  <p-dialog [(visible)]="displayError" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false" 
+    [closeOnEscape]="false" (onAfterHide)="closeModal()">
+    <div class="row">
+      <div class="col-xs-12">
+        <span>{{errorMessage}}</span>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 30px;">
+      <div class="col-xs-12 col-lg-6 offset-lg-3" style="text-align: center;">
+        <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
+          {{ 'shared.confirm.button' | translate }}
+        </button>
+      </div>
+    </div>
+  </p-dialog>
+</div>

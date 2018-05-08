@@ -151,10 +151,10 @@ export class AppComponent {
                     label: this.menuTranslations.get('itemMenu.suppReg'),
                     url: '/supplier-registration'
                 }),
-                // new UxLayoutLink({
-                //   label: this.menuTranslations.get('itemMenu.listSuppliers'),
-                //   url: 'list-suppliers'
-                // })
+                new UxLayoutLink({
+                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                  url: 'list-suppliers'
+                })
             ];
             this.children[1] = [
                 /* new UxLayoutLink({
@@ -165,10 +165,10 @@ export class AppComponent {
                     label: this.menuTranslations.get('itemMenu.myAccount'),
                     url: '/supplier-portal/profile'
                 }),
-                // new UxLayoutLink({
-                //   label: this.menuTranslations.get('itemMenu.listSuppliers'),
-                //   url: 'list-suppliers'
-                // })
+                new UxLayoutLink({
+                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                  url: 'list-suppliers'
+                })
             ];
             this.children[2] = [
                 new UxLayoutLink({
@@ -179,10 +179,10 @@ export class AppComponent {
                     label: this.menuTranslations.get('itemMenu.appPortal'),
                     url: '/beneficiary-portal/voucher'
                 }),
-                // new UxLayoutLink({
-                //   label: this.menuTranslations.get('itemMenu.listSuppliers'),
-                //   url: 'list-suppliers'
-                // })
+                new UxLayoutLink({
+                  label: this.menuTranslations.get('itemMenu.listSuppliers'),
+                  url: 'list-suppliers'
+                })
             ];
             this.children[3] = [
                 new UxLayoutLink({
@@ -193,10 +193,10 @@ export class AppComponent {
                     label: this.menuTranslations.get('itemMenu.appPortal'),
                     url: '/beneficiary-portal/voucher'
                 }),
-                // new UxLayoutLink({
-                //   label: 'Registered suppliers',
-                //   url: 'list-suppliers'
-                // })
+                new UxLayoutLink({
+                 label: 'Registered suppliers',
+                  url: 'list-suppliers'
+                })
             ];
             this.children[4] = [
                 new UxLayoutLink({

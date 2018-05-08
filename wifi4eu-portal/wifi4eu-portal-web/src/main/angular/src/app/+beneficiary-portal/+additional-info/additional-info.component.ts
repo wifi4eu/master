@@ -36,6 +36,11 @@ export class AdditionalInfoComponent {
     @ViewChild('document4') private document4: any;
     private displayConfirmingData: boolean = false;
     private date: number;
+    private deleteBlocker: boolean = false;
+    private doc1: boolean = false;
+    private doc2: boolean = false;
+    private doc3: boolean = false;
+    private doc4: boolean = false;
 
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private localStorageService: LocalStorageService, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private registrationApi: RegistrationApi, private sharedService: SharedService, private router: Router) {
         let storedUser = this.localStorageService.get('user');
@@ -50,24 +55,47 @@ export class AdditionalInfoComponent {
                         this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 this.registration = registration;
+                                this.checkFirstDocuments();
+
                             }, error => {
                             });
                     }, error => {
                     }
                 );
-                this.mayorApi.getMayorByMunicipalityId(municipalityId).subscribe(
-                    (mayor: MayorDTOBase) => {
-                        this.mayor = mayor;
-                        if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname)
-                            this.isMayor = true;
-                    }, error => {
+                this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
+                    (registrations: RegistrationDTOBase[]) => {
+                        if (registrations.length == 1) {
+                            this.mayorApi.getMayorByMunicipalityId(municipalityId).subscribe(
+                                (mayor: MayorDTOBase) => {
+                                    this.mayor = mayor;
+                                    if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname) {
+                                        this.isMayor = true;
+                                    } else {
+                                        this.isMayor = false
+                                    }
+                                }, error => {
+                                    this.isMayor = false;
+                                }
+                            );
+                        } else {
+                            this.isMayor = false;
+                        }
                     }
                 );
+
             }
 
         } else {
             this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
+        }
+    }
+
+    private checkFirstDocuments() {
+        if (this.registration.legalFile1 == null || this.registration.legalFile3 == null) {
+            this.deleteBlocker = true;
+        } else {
+            this.deleteBlocker = false;
         }
     }
 
@@ -80,18 +108,38 @@ export class AdditionalInfoComponent {
                     this.removeFile(index);
                     return;
                 }
-                this.documentFiles[index] = event.target.files[0];
-                this.reader.readAsDataURL(this.documentFiles[index]);
-                let subscription = Observable.interval(200).subscribe(
-                    x => {
-                        if (this.reader.result != "") {
-                            this.documentUrls[index] = this.reader.result;
-                            if (this.documentUrls[0] && this.documentUrls[1] && this.documentUrls[2] && this.documentUrls[3])
+                if (event.target.files[0].type == "application/pdf" || event.target.files[0].type == "image/png" || event.target.files[0].type == "image/jpg" || event.target.files[0].type == "image/jpeg") {
+
+                    this.documentFiles[index] = event.target.files[0];
+                    this.reader.readAsDataURL(this.documentFiles[index]);
+                    let subscription = Observable.interval(200).subscribe(
+                        x => {
+                            if (this.reader.result != "") {
+                                this.documentUrls[index] = this.reader.result;
                                 this.filesUploaded = true;
-                            subscription.unsubscribe();
+                                switch (index) {
+                                    case 0:
+                                        this.doc1 = true;
+                                        break;
+                                    case 1:
+                                        this.doc2 = true;
+                                        break;
+                                    case 2:
+                                        this.doc3 = true;
+                                        ;
+                                        break;
+                                    case 3:
+                                        this.doc4 = true;
+                                        break;
+                                }
+                                subscription.unsubscribe();
+                            }
                         }
-                    }
-                );
+                    );
+                } else {
+                    this.sharedService.growlTranslation('Please, select a valid file.', 'shared.incorrectFormat', 'warn');
+                    this.filesUploaded = false;
+                }
             } else {
                 this.removeFile(index);
             }
@@ -104,21 +152,34 @@ export class AdditionalInfoComponent {
 
     private removeFile(index: number) {
         this.documentFiles[index] = null;
+        this.filesUploaded = false;
         this.documentUrls[index] = '';
         switch (index) {
             case 0:
                 this.document1.nativeElement.value = '';
+                this.doc1 = false;
                 break;
             case 1:
                 this.document2.nativeElement.value = '';
+                this.doc2 = false;
                 break;
             case 2:
                 this.document3.nativeElement.value = '';
+                this.doc3 = false;
                 break;
             case 3:
                 this.document4.nativeElement.value = '';
+                this.doc4 = false;
                 break;
         }
+        console.log("0: ", this.doc1);
+        console.log("1: ", this.doc2);
+        console.log("2: ", this.doc3);
+        console.log("3: ", this.doc4);
+        if (this.doc1 || this.doc2 || this.doc3 || this.doc4) {
+            this.filesUploaded = true;
+        }
+        this.checkFirstDocuments();
     }
 
 
@@ -175,16 +236,15 @@ export class AdditionalInfoComponent {
             this.filesUploaded = false;
 
         }
+        this.checkFirstDocuments();
     }
 
     private updateMailings() {
         if (!this.isMayor) {
-            let date = new Date();
-            this.date = date.getTime();
+
 
             if (this.registration.legalFile1 && this.registration.legalFile2 && this.registration.legalFile3 && this.registration.legalFile4) {
                 this.registration.allFilesFlag = 1;
-                this.registration.uploadTime = this.date;
                 this.registration.mailCounter = 0;
             } else {
                 this.registration.allFilesFlag = 0;
@@ -194,14 +254,17 @@ export class AdditionalInfoComponent {
         } else {
             if (this.registration.legalFile1 && this.registration.legalFile3) {
                 this.registration.allFilesFlag = 1;
-                this.registration.uploadTime = this.date;
                 this.registration.mailCounter = 0;
             } else {
                 this.registration.allFilesFlag = 0;
                 this.registration.uploadTime = 0;
                 this.registration.mailCounter = 3;
             }
+
         }
+        let date = new Date();
+        this.date = date.getTime();
+        this.registration.uploadTime = this.date;
     }
 
     private deleteFromServer(index: number) {
