@@ -46,7 +46,10 @@ import {DgConnExportImportComponent} from "./+exportImport/exportImport.componen
         }, {
             path: 'discussion',
             component: DgConnDiscussionComponent,
-        }
+       }, {
+           path: 'dgconn-portal/exportImport',
+           component: DgConnExportImportComponent,
+       }
 
 
     ])],
