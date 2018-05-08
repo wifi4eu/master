@@ -19,7 +19,7 @@ import {DgConnExportImportComponent} from "./+exportImport/exportImport.componen
 
 @NgModule({
     imports: [
-        SharedModule, DgConnectPortalRoutingModule, SharedNgModule
+        SharedModule, DgConnectPortalRoutingModule
     ],
     declarations: [
         DgConnPortalComponent,

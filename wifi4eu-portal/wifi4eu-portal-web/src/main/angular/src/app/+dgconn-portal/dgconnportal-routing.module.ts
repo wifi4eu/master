@@ -11,6 +11,8 @@ import {DgConnManageLauComponent} from "./+manage-lau/manage-lau.component";
 import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-registrations/+details/beneficiary-registrations-details.component";
 import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrations/details/supplier-registrations-details.component";
+import {DgConnExportImportComponent} from "./+exportImport/exportImport.component";
+import {DgConnApplicantRegistrationsComponent} from "./+applicant-registrations/applicant-registrations.component";
 import {DgConnApplicantRegistrationsDetailsComponent} from "./+applicant-registrations/+details/applicant-registrations-details.component";
 import {DgConnExportImportComponent} from "./+exportImport/exportImport.component";
 
@@ -46,10 +48,11 @@ import {DgConnExportImportComponent} from "./+exportImport/exportImport.componen
         }, {
             path: 'discussion',
             component: DgConnDiscussionComponent,
-       }, {
-           path: 'dgconn-portal/exportImport',
-           component: DgConnExportImportComponent,
-       }
+        }, {
+            path: 'exportImport',
+            component: DgConnExportImportComponent,
+        }
+
 
 
     ])],
