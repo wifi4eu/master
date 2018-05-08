@@ -10,12 +10,13 @@
     <div class="row">
         <div class="col-sm-4">
             <p>{{ 'shared.beneficiary.label' | translate }}: <span class="profileData">{{municipalityName}}</span></p>
-            <p>{{ 'accessPoint.installationSite' | translate }} <span class="profileData">{{installationSiteName}}</span>
+            <p>{{ 'accessPoint.installationSite' | translate }} <span
+                    class="profileData">{{installationSiteName}}</span>
             </p>
         </div>
     </div>
-
-    <div class="results accessPoints">
+    <div class="clearfix"></div>
+    <div class="results accessPoints button-content">
 
         <p-dataTable [value]="accessPoints" [rows]="searchParametersService.parameters.delta" [paginator]="true"
                      [rowsPerPageOptions]="[5,10,20]"
@@ -48,9 +49,9 @@
             <p-column header="{{'shared.details' | translate }}">
                 <template let-accessPoint="rowData" let-i="rowIndex" pTemplate="body">
                     <div class="my-center-text">
-                        <button class="btn btn-primary" id="voucherButton"  (click)="goToDetails(i)"
-                                routerLinkActive="active">{{ 'shared.view' | translate }}
-                        </button>
+                        <a class="linkNoStyle" id="voucherButton" (click)="goToDetails(i)"
+                           routerLinkActive="active"><i class="fa fa-eye"></i> {{ 'shared.view' | translate }}
+                        </a>
                     </div>
                 </template>
             </p-column>

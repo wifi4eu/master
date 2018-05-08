@@ -18,8 +18,8 @@
         <div class="header">
             <p>{{ 'shared.beneficiary.label' | translate}} : <b>{{municipality.name}}</b></p>
         </div>
-
-        <div class="results marginTop registrationPanel">
+        <div class="clearfix"></div>
+        <div class="results marginTop registrationPanel button-content">
             <p-dataTable [value]="installationSites" [rows]="searchParametersService.parameters.delta"
                          [paginator]="true" [rowsPerPageOptions]="[5,10,20]"
                          [totalRecords]="totalResults" [first]="searchParametersService.parameters.page"
