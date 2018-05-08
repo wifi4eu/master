@@ -51,7 +51,16 @@ public class Registration {
     @Column(name = "organisation_id")
     private int organisationId;
 
-    @ManyToOne
+    @Column(name = "upload_time")
+    private Long uploadTime;
+
+    @Column(name = "allFiles_flag")
+    private int allFilesFlag;
+
+    @Column(name = "mail_counter")
+    private int mailCounter;
+
+@ManyToOne
     @JoinColumn(name = "id_status_beneficiary")
     private BeneficiaryStatus idStatusBeneficiary;
 
@@ -87,11 +96,10 @@ public class Registration {
 
     @Column(name = "date_registered")
     private Timestamp dateRegistered;
-
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId , BeneficiaryStatus idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter, BeneficiaryStatus idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -103,6 +111,9 @@ public class Registration {
         this.ipRegistration = ipRegistration;
         this.associationName = associationName;
         this.organisationId = organisationId;
+        this.uploadTime = uploadTime;
+        this.allFilesFlag = allFilesFlag;
+        this.mailCounter = mailCounter;
         this.idStatusBeneficiary = idStatusBeneficiary;
         this.compliance = compliance;
         this.shortMemberState = shortMemberState;
@@ -213,6 +224,29 @@ public class Registration {
         this.organisationId = organisationId;
     }
 
+    public Long getUploadTime() {
+        return uploadTime;
+    }
+
+    public void setUploadTime(Long uploadTime) {
+        this.uploadTime = uploadTime;
+    }
+
+    public int getAllFilesFlag() {
+        return allFilesFlag;
+    }
+
+    public void setAllFilesFlag(int allFilesFlag) {
+        this.allFilesFlag = allFilesFlag;
+    }
+
+    public int getMailCounter() {
+        return mailCounter;
+    }
+
+    public void setMailCounter(int mailCounter) {
+        this.mailCounter = mailCounter;
+    }
     public BeneficiaryStatus getIdStatusBeneficiary() {
         return idStatusBeneficiary;
     }
