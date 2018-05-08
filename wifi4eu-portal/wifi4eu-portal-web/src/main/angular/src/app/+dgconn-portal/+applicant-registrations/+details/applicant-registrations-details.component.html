@@ -7,12 +7,12 @@
     <div class="ui-g-12">
         <p>
             <span class="beneficiaryTitle">
-                {{ 'shared.municipalityDetails.title' | translate }}<span *ngIf="municipalities[0]"> - {{municipalities[0].name}}</span>
+                {{ 'shared.municipalityDetails.title' | translate }}
             </span>
-            <span class="badge badge-warning" *ngIf="issueRegistration == 1">{{ 'dgConn.badge.warning' | translate }}</span>
-            <span class="badge badge-duplicated" *ngIf="issueRegistration == 2">{{ 'dgConn.badge.duplicated' | translate }}</span>
-            <span class="badge badge-success" *ngIf="issueRegistration == 3">{{ 'dgConn.badge.resolved' | translate }}</span>
-            <span class="badge badge-fail" *ngIf="issueRegistration == 4">{{ 'dgConn.badge.invalid' | translate }}</span>
+            <!--<span class="badge badge-warning" *ngIf="issueRegistration == 1">{{ 'dgConn.badge.warning' | translate }}</span>-->
+            <!--<span class="badge badge-duplicated" *ngIf="issueRegistration == 2">{{ 'dgConn.badge.duplicated' | translate }}</span>-->
+            <!--<span class="badge badge-success" *ngIf="issueRegistration == 3">{{ 'dgConn.badge.resolved' | translate }}</span>-->
+            <!--<span class="badge badge-fail" *ngIf="issueRegistration == 4">{{ 'dgConn.badge.invalid' | translate }}</span>-->
         </p>
         <i *ngIf="loadingData" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
         <p *ngIf="municipalities.length == 0 && !loadingData">
@@ -38,6 +38,12 @@
                             {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}}
                             ({{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{users[i].id}})
                         </span>
+                        <span *ngIf="registrationIssues[i] == 1 || registrationIssues[i] == 2" class="badge badge-warning">
+                            {{ 'dgConn.badge.warning' | translate }} {{ registrationIssues[i] }}
+                        </span>
+                        <span *ngIf="registrationIssues[i] == 3" class="badge badge-warning-yellow">
+                            {{ 'dgConn.badge.warning' | translate }} {{ registrationIssues[i] }}
+                        </span>
                         <br><br>
                         <span class="entity-subtitle">
                             {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date | date: 'dd/MM/yyyy HH:mm' }}
@@ -61,6 +67,10 @@
                             <p class="applicantDetailsNoMargin">
                                 <span class="ui-g-3 ui-sm-6">{{ 'shared.country.label' | translate }}</span>
                                 <span class="ui-g-9 ui-sm-6 profileData">{{ municipality.country }}</span>
+                            </p>
+                            <p class="applicantDetailsNoMargin">
+                                <span class="ui-g-3 ui-sm-6">{{ 'dgConn.beneficiaries.name' | translate }}</span>
+                                <span class="ui-g-9 ui-sm-6 profileData">{{ municipality.name }}</span>
                             </p>
                             <p class="applicantDetailsNoMargin">
                                 <span class="ui-g-3 ui-sm-6">{{ 'benefRegistration.address.label' | translate }}</span>
@@ -130,7 +140,7 @@
                             <p class="applicantDetailsNoMargin municipality-name profileData">
                                 <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.documentation' | translate }}</span>
                             </p>
-                            <p class="applicantDetailsNoMargin" *ngIf="!registrations[i].legalFile1 || !registrations[i].legalFile2 || !registrations[i].legalFile3 || !registrations[i].legalFile4">
+                            <p class="applicantDetailsNoMargin" *ngIf="!registrations[i].legalFile1 && !registrations[i].legalFile2 && !registrations[i].legalFile3 && !registrations[i].legalFile4">
                                 <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.noDocuments' | translate }}</span>
                             </p>
                             <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile1">
@@ -246,7 +256,7 @@
                     <p [innerHTML]="'dgConn.applicantDetails.invalidateApplication.desc' | translate"></p>
                 </div>
                 <div style="padding: 2em; padding-top: 0em;">
-                    <p>{{ 'shared.comment.mandatory' | translate }}</p>
+                    <p>{{ 'dgConn.comment.mandatory' | translate }}</p>
                     <textarea rows="5" class="form-control widthMax"
                               name="newMessage" [(ngModel)]="invalidateReason"
                               [disabled]="processingRequest"></textarea>
