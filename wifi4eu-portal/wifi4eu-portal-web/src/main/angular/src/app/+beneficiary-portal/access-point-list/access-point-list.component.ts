@@ -34,36 +34,41 @@ export class AccessPointListComponent {
     private user: UserDTOBase;
     private municipality: MunicipalityDTOBase;
     private registration: RegistrationDTOBase;
-    private municipalityId: number;
+    private municipalityName: String;
     //observable that gets the id from route params
     private idSub: any;
 
-    constructor(private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private uxService: UxService, private router: Router, private route: ActivatedRoute,
+    constructor(private installationsiteApi: InstallationsiteApi, private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private uxService: UxService, private router: Router, private route: ActivatedRoute,
                 private beneficiaryService: BeneficiaryService, public searchParametersService: SearchParametersService,
                 private accessPointApi: AccesspointsApi, private errorHandlingService: ErrorHandlingService, private localStorage: LocalStorageService) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
-            if (this.municipalityId != null) {
-                this.municipalityApi.getMunicipalityById(this.municipalityId).subscribe(
-                    (municipality: MunicipalityDTOBase) => {
-                        this.municipality = municipality;
+
+            this.idSub = this.route.params.subscribe(params => {
+                this.searchParametersService.parameters.id_installationSite = +params['id'];
+                console.log(this.searchParametersService.parameters.id_installationSite);
+                this.installationsiteApi.getInstallationSite(this.searchParametersService.parameters.id_installationSite).subscribe(
+                    installation => {
+                        this.installationSiteName = installation['data'].name;
+                        this.municipalityApi.getMunicipalityById(installation['data'].municipality).subscribe(
+                            municipality => {
+                                this.municipalityName = municipality['name'];
+                            }, error => {
+                                console.log(error);
+                            }
+                        );
                     }, error => {
+                        console.log(error);
                     }
                 );
-            }
 
-        }
+            });
+            this.accessPoint.idInstallationSite = this.searchParametersService.parameters.id_installationSite;
 
-        else {
-            // this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
+        } else {
             this.router.navigateByUrl('/home');
         }
-        this.idSub = this.route.params.subscribe(params => {
-            this.searchParametersService.parameters.id_installationSite = +params['id'];
-            this.installationSiteName = params['name'];
-        });
-        this.accessPoint.idInstallationSite = this.searchParametersService.parameters.id_installationSite;
     }
 
     onPage(event: any) {

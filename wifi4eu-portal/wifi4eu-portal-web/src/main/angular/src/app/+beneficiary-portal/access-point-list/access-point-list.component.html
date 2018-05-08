@@ -10,30 +10,15 @@
     <div class="row">
         <div class="col-sm-4">
             <p>{{ 'shared.beneficiary.label' | translate }}: </p>
-        </div>
-        <div class="col-sm-8">
-            <p class="profileData">{{beneficiary.name}}</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
             <p>{{ 'accessPoint.installationSite' | translate }}: </p>
         </div>
         <div class="col-sm-8">
+            <p class="profileData">{{municipalityName}}</p>
             <p class="profileData">{{installationSiteName}}</p>
         </div>
     </div>
 
     <div class="results accessPoints">
-        <div class="row table-filters-header align-items-end">
-            <div class="col-md-8">
-                <p>{{ 'accessPoint.listTitle' | translate}}
-                    <span class="font-weight-bold">{{installationSiteName}}</span>
-                    {{ 'accessPoint.listTitleOf' | translate}}
-                    <span class="font-weight-bold">{{beneficiary.name}}</span>
-                </p>
-            </div>
-        </div>
 
         <p-dataTable [value]="accessPoints" [rows]="searchParametersService.parameters.delta" [paginator]="true"
                      [rowsPerPageOptions]="[5,10,20]"
