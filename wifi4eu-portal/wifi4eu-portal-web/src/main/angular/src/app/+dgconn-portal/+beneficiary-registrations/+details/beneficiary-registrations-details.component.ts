@@ -157,7 +157,6 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                         if (response.success) {
                             if (response.data != null) {
                                 this.registrations[this.selectedIndex] = response.data;
-                                this.getIssue();
                                 this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
                             } else {
                                 this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
