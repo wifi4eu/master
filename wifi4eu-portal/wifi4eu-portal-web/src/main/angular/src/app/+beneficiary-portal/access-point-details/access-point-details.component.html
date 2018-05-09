@@ -60,8 +60,10 @@
                 <p>{{'accessPoint.deviceType' | translate }}</p>
             </div>
             <div class="col-sm-10">
-                <p *ngIf="indoor; else outdoor" class="profileData"> {{ 'accessPoint.indoor' | translate }}</p>
-                <template #outdoor class="profileData">{{ 'accessPoint.outdoor' |translate }}</template>
+                <p><span *ngIf="indoor; else outdoor" class="profileData">{{ 'accessPoint.indoor' | translate }}</span>
+                    <template #outdoor><span class="profileData">{{ 'accessPoint.outdoor' |translate }}</span>
+                    </template>
+                </p>
 
             </div>
         </div>
