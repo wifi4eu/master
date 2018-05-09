@@ -10,7 +10,7 @@ import { HomeComponent } from './core/components/home/home.component';
             { path: 'screen/home', component: HomeComponent },
             { path: 'screen/installation-report', loadChildren: 'app/features/installation-report/installation-report.module#InstallationReportModule' },
             { path: 'screen/access-point/:id/:name', loadChildren: 'app/features/access-point/access-point.module#AccessPointModule' }
-        ])
+        ], {useHash: true})
     ],
     exports: [
         RouterModule

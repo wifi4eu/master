@@ -104,6 +104,7 @@ export class InstallationListComponent implements OnInit {
                 let successBanner = document.getElementById("success");
                 successBanner.style.display = "block";
                 successBanner.scrollIntoView({ behavior: "smooth" });
+                this.beneficiarySelected.wifiIndicator=true;
             }
         }, error => {
             console.log(error);
