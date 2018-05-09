@@ -18,6 +18,7 @@ import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
 import {InstallationsiteApi} from "../../shared/swagger/api/InstallationsiteApi";
 import {MayorApi} from "../../shared/swagger/api/MayorApi";
+import {Location} from '@angular/common';
 
 
 @Component({
@@ -38,7 +39,7 @@ export class AccessPointListComponent {
     //observable that gets the id from route params
     private idSub: any;
 
-    constructor(private installationsiteApi: InstallationsiteApi, private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private uxService: UxService, private router: Router, private route: ActivatedRoute,
+    constructor(private _location: Location, private installationsiteApi: InstallationsiteApi, private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private uxService: UxService, private router: Router, private route: ActivatedRoute,
                 private beneficiaryService: BeneficiaryService, public searchParametersService: SearchParametersService,
                 private accessPointApi: AccesspointsApi, private errorHandlingService: ErrorHandlingService, private localStorage: LocalStorageService) {
         let storedUser = this.localStorage.get('user');
@@ -97,5 +98,7 @@ export class AccessPointListComponent {
         this.router.navigate(['../details/' + this.accessPoints[APNumber].id], {relativeTo: this.route});
     }
 
-
+    goBack(){
+        this._location.back()
+    }
 }

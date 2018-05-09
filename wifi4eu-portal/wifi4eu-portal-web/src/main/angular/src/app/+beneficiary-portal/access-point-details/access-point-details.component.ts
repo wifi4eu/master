@@ -10,6 +10,7 @@ import {AccesspointsApi} from "../../shared/swagger/api/AccesspointsApi";
 import {InstallationsiteApi} from "../../shared/swagger/api/InstallationsiteApi";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 
+
 @Component({
     templateUrl: './access-point-details.component.html',
     providers: [BeneficiaryService, ErrorHandlingService, AccesspointsApi, InstallationsiteApi, MunicipalityApi]
@@ -45,7 +46,6 @@ export class AccessPointDetailsComponent implements OnInit {
         this.accessPointService.getAccessPointById(id).subscribe(
             accessPoint => {
                 this.accessPoints = accessPoint['data'];
-                console.log(this.accessPoints);
                 this.number = this.accessPoints['number'];
                 this.locationType = this.accessPoints['locationType'];
                 this.locationAP = this.accessPoints['location'];
@@ -96,5 +96,8 @@ export class AccessPointDetailsComponent implements OnInit {
         });
     }
 
+    goBack() {
+        this.location.back()
+    }
 
 }

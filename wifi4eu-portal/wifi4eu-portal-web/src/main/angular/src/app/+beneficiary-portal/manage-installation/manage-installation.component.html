@@ -1,11 +1,11 @@
 <div *ngIf="municipality">
     <div class="container">
         <div id="step2-title" class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div id="component-title">
                     <p class="beneficiaryTitle labelModal">
-                        {{ 'accessPoint.title' | translate }}</p>
-                    <p>{{ 'benef.installationDesc' | translate}}</p>
+                        {{ 'installationReport.title' | translate }}</p>
+                    <p>{{ 'installationReport.thisPageIsUsedTo' | translate}}</p>
                 </div>
             </div>
             <div class="col-sm-6"></div>
@@ -19,7 +19,7 @@
             <p>{{ 'shared.beneficiary.label' | translate}} : <b>{{municipality.name}}</b></p>
         </div>
         <div class="clearfix"></div>
-        <div class="results marginTop registrationPanel button-content">
+        <div class="results marginTop registrationPanel button-content paddingTable">
             <p-dataTable [value]="installationSites" [rows]="searchParametersService.parameters.delta"
                          [paginator]="true" [rowsPerPageOptions]="[5,10,20]"
                          [totalRecords]="totalResults" [first]="searchParametersService.parameters.page"

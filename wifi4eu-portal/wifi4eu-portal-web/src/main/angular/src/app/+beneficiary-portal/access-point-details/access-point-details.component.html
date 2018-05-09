@@ -1,6 +1,11 @@
 <div class="container" *ngIf="municipalityName">
+    <div class="supplier"></div>
+    <div class="back-button">
+        <a (click)="goBack()">
+            <i class="fa fa-arrow-left"></i> Back</a>
+    </div>
     <div id="step2-title" class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <div id="component-title">
                 <p class="beneficiaryTitle labelModal">{{ 'accessPointDetails.title' | translate }}
                 <p>{{ 'accessPointDetails.subtitle' | translate }}</p>
