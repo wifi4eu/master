@@ -304,6 +304,7 @@ p-checkbox{
 
 p-dropdown {
     padding-right: 0px !important;
+    padding-bottom: 0px !important;
 }
 
 .geoLocalDiv label{
@@ -314,4 +315,12 @@ p-dropdown {
     font-family: Verdana;
     padding-left: 10px !important;
     padding-right: 10px !important;
+}
+
+.ng-valid[required], .ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
+}
+  
+.ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
 }
