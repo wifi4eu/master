@@ -5,6 +5,13 @@ DELETE FROM mayors
 DELETE FROM applications
 DELETE FROM rights
 DELETE FROM temp_tokens
+DBCC CHECKIDENT ('municipalities', RESEED, 0);
+DBCC CHECKIDENT ('users', RESEED, 0);
+DBCC CHECKIDENT ('registrations', RESEED, 0);
+DBCC CHECKIDENT ('mayors', RESEED, 0);
+DBCC CHECKIDENT ('applications', RESEED, 0);
+DBCC CHECKIDENT ('rights', RESEED, 0);
+DBCC CHECKIDENT ('temp_tokens', RESEED, 0);
 DECLARE @i INT = 0
 DECLARE @u VARCHAR(255) = ''
 DECLARE @m_id VARCHAR(255) = ''

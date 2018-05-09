@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -66,6 +67,15 @@ public class ScheduledTasks {
 
     private final static String QUEUE_NAME = "wifi4eu_apply";
 
+    @Value("${rabbitmq.host}")
+    private String rabbitMQHost;
+
+    @Value("${rabbitmq.username}")
+    private String rabbitUsername;
+
+    @Value("${rabbitmq.password}")
+    private String rabbitPassword;
+
     /**
      * This cron method consumes the messages from the RabbitMQ
      */
@@ -74,7 +84,9 @@ public class ScheduledTasks {
         _log.info("[i] queueConsumer");
         try {
             ConnectionFactory factory = new ConnectionFactory();
-            factory.setHost("localhost");
+            factory.setHost(rabbitMQHost);
+            factory.setUsername(rabbitUsername);
+            factory.setPassword(rabbitPassword);
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
 
