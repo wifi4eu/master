@@ -18,11 +18,13 @@
                 <p>{{'shared.number.label' | translate}}</p>
                 <p>{{'installationReport.siteName' | translate }}</p>
                 <p>{{'installationDetails.captivePortal' | translate }}</p>
+                <p>{{'installationDetails.networkId' | translate }}</p>
             </div>
             <div class="col-md-7 font-weight-bold">
                 <p>{{installationSite.number}}</p>
                 <p>{{installationSite.name}}</p>
                 <p>{{installationSite.url}}</p>
+                <p>{{installationSite.idNetworkSnippet}}</p>
             </div>
             <div class="col-md-3 text-right detailsButtons">
                 <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" iconClass="fa-pencil-alt" (click)="openUpdateInstallationSite()" [isDisabled]="beneficiary.wifiIndicator">

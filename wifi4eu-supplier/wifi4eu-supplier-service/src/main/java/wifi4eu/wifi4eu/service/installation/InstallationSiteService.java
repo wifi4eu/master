@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.token.TokenGenerator;
 import wifi4eu.wifi4eu.entity.installation.InstallationSite;
 import wifi4eu.wifi4eu.entity.installation.InstallationSiteWhitelist;
 import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepository;
@@ -140,7 +141,7 @@ public class InstallationSiteService {
             }
 
             //system should check the URL of the captive portal is unique.
-            if (url != null && installationSiteRepository.countInstallationSiteByUrl(url) > 1) {
+            if (url != null && installationSiteRepository.countInstallationSiteByUrl(url) >= 1) {
                 response.setSuccess(false);
                 response.setError(new ErrorDTO(409, "error.409.duplicatedUrl"));
                 return response;
@@ -166,6 +167,7 @@ public class InstallationSiteService {
             if (control) {
                 // if (map.get("url").equals(map.get("url_confirmation"))) {
                 InstallationSite installationSite;
+                //if there's no id, we have to create a new installation site
                 if (!map.containsKey("id")) {
                     installationSite = new InstallationSite();
                     Calendar calendar = Calendar.getInstance();
@@ -174,6 +176,14 @@ public class InstallationSiteService {
                     installationSite.setDateRegistered(currentTimestamp);
                     installationSite.setNumber(getNextNumberPerInstallationSiteByBeneficiaryId((int) map.get
                             ("municipality")));
+
+                    //We create a crypted token for the network snippet id and verify that is unique
+                    String token = new TokenGenerator().generate();
+                    while(installationSiteRepository.countInstallationSiteByIdNetworkSnippet(token) > 0){
+                        token = new TokenGenerator().generate();
+                    }
+                    installationSite.setIdNetworkSnippet(token);
+
                 } else {
                     installationSite = installationSiteRepository.findInstallationSiteById((int) map.get("id"));
                 }
@@ -183,7 +193,6 @@ public class InstallationSiteService {
                 installationSite.setName((String) map.get("name"));
                 installationSite.setUrl(url);
                 installationSite.setDomainName(domain);
-                installationSite.setIdNetworkSnippet((String) map.get("name") + 123);
                 installationSite.setStatus(1);
                 // installationSite.setId_status(statusRepository.findStatudById(1));
                 installationSiteRepository.save(installationSite);
