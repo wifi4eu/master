@@ -116,11 +116,12 @@ export class ManageInstallationComponent {
         this.registration.beneficiaryIndicator = true;
         this.registrationApi.createRegistration(this.registration).subscribe(
             registration => {
+                this.displayConfirmingData = false;
             }, error => {
                 console.log(error);
+                this.displayConfirmingData = false;
             }
         );
-        this.displayConfirmingData = false;
         this.openModal = false;
     }
 
@@ -130,11 +131,12 @@ export class ManageInstallationComponent {
         this.registration.beneficiaryIndicator = false;
         this.registrationApi.createRegistration(this.registration).subscribe(
             registration => {
+                this.displayConfirmingData = false;
             }, error => {
                 console.log(error);
+                this.displayConfirmingData = false;
             }
         );
-        this.displayConfirmingData = false;
         this.revisionModal = false;
     }
 
