@@ -29,7 +29,7 @@ import java.util.*;
 public class ApplicationService {
     @Value("${mail.server.location}")
     private String baseUrl;
-    
+
     @Autowired
     ApplicantListItemMapper applicantListItemMapper;
 
@@ -56,7 +56,7 @@ public class ApplicationService {
 
     @Autowired
     CallService callService;
-    
+
     private static final Logger _log = LoggerFactory.getLogger(ApplicationService.class);
 
     @Autowired
@@ -84,7 +84,7 @@ public class ApplicationService {
         // check all the information provided exists on DB
         if (callDTO != null && userDTO != null && registrationDTO != null) {
             // check the queue date is between start/end of the call
-            if (queueTimestamp > callDTO.getStartDate() && queueTimestamp < callDTO.getEndDate()) {
+            if (queueTimestamp / 1000000 > callDTO.getStartDate() && queueTimestamp / 1000000 < callDTO.getEndDate()) {
                 //check information on the queue is right
                 if (registrationDTO.getUploadTime() == uploadDocTimestamp && registrationDTO.getUserId() == userId) {
                     //check if this application was received previously
