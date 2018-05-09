@@ -43,6 +43,8 @@ export class ManageInstallationComponent {
     private supplier: {};
     private legalChecks: boolean[] = [false, false, false];
     private accessPoint;
+    private displayConfirmingData: boolean = false;
+
 
     constructor(private accessPoinstApi: AccesspointsApi, private installationsiteApi: InstallationsiteApi, private  beneficiaryApi: BeneficiaryApi, private localStorageService: LocalStorageService, public searchParametersService: SearchParametersService, private beneficiaryService: BeneficiaryService, private uxService: UxService, private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private sharedService: SharedService) {
         let storedUser = this.localStorage.get('user');
@@ -110,11 +112,30 @@ export class ManageInstallationComponent {
     }
 
     sendConfirmInstallation() {
-        this.isReportSent = true;
-        let successBanner = document.getElementById("success");
-        successBanner.style.display = "block";
-        successBanner.scrollIntoView({behavior: "smooth"});
-        this.closeConfirmInstallation();
+        this.displayConfirmingData = true;
+        this.registration.beneficiaryIndicator = true;
+        this.registrationApi.createRegistration(this.registration).subscribe(
+            registration => {
+            }, error => {
+                console.log(error);
+            }
+        );
+        this.displayConfirmingData = false;
+        this.openModal = false;
+    }
+
+    sendReportInstallation() {
+        this.displayConfirmingData = true;
+        this.registration.wifiIndicator = false;
+        this.registration.beneficiaryIndicator = false;
+        this.registrationApi.createRegistration(this.registration).subscribe(
+            registration => {
+            }, error => {
+                console.log(error);
+            }
+        );
+        this.displayConfirmingData = false;
+        this.revisionModal = false;
     }
 
     private goToDetails(installationNumber: number) {
