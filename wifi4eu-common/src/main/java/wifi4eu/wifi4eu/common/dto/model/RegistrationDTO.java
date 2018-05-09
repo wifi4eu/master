@@ -15,12 +15,14 @@ public class RegistrationDTO implements Serializable {
     private String ipRegistration;
     private String associationName;
     private int organisationId;
+    private boolean wifiIndicator;
+    private boolean beneficiaryIndicator;
 
 
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId) {
+    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, boolean wifiIndicator, boolean beneficiaryIndicator) {
         this.id = id;
         this.userId = userId;
         this.municipalityId = municipalityId;
@@ -33,6 +35,8 @@ public class RegistrationDTO implements Serializable {
         this.ipRegistration = ipRegistration;
         this.associationName = associationName;
         this.organisationId = organisationId;
+        this.wifiIndicator = wifiIndicator;
+        this.beneficiaryIndicator = beneficiaryIndicator;
     }
 
     public int getId() {
@@ -127,6 +131,11 @@ public class RegistrationDTO implements Serializable {
                 ", legalFile2='" + legalFile2 + '\'' +
                 ", legalFile3='" + legalFile3 + '\'' +
                 ", legalFile4='" + legalFile4 + '\'' +
+                ", ipRegistration='" + ipRegistration + '\'' +
+                ", associationName='" + associationName + '\'' +
+                ", organisationId=" + organisationId +
+                ", wifiIndicator=" + wifiIndicator +
+                ", beneficiaryIndicator=" + beneficiaryIndicator +
                 '}';
     }
 
@@ -144,5 +153,21 @@ public class RegistrationDTO implements Serializable {
 
     public void setOrganisationId(int organisationId) {
         this.organisationId = organisationId;
+    }
+
+    public boolean isWifiIndicator() {
+        return wifiIndicator;
+    }
+
+    public void setWifiIndicator(boolean wifiIndicator) {
+        this.wifiIndicator = wifiIndicator;
+    }
+
+    public boolean isBeneficiaryIndicator() {
+        return beneficiaryIndicator;
+    }
+
+    public void setBeneficiaryIndicator(boolean beneficiaryIndicator) {
+        this.beneficiaryIndicator = beneficiaryIndicator;
     }
 }

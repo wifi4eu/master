@@ -1,4 +1,4 @@
-<div *ngIf="municipality">
+<div *ngIf="municipality && registration">
     <div class="container">
         <div id="step2-title" class="row">
             <div class="col-sm-12">
@@ -56,18 +56,17 @@
                 </template>
             </p-dataTable>
         </div>
-
-
         <div id="navigation-buttons" class="form-group ui-g center">
             <div class="ui-lg-6"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button (click)="openReportInstallation()"
+                <button [disabled]="!registration.wifiIndicator" (click)="openReportInstallation()"
                         class="btn btn-primary cancel-button cancel-link installation">{{ 'benef.requestRevision' |
                     translate }}
                 </button>
             </div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button (click)="openConfirmInstallation()" id="navigate-step2"
+                <button [disabled]="!registration.wifiIndicator || registration.beneficiaryIndicator"
+                        (click)="openConfirmInstallation()" id="navigate-step2"
                         class="btn btn-primary publish-button installation">
                     {{ 'installationReport.confirmInstallation' | translate }}
                 </button>
@@ -121,7 +120,8 @@
 
                 <div class="col-sm-6">
 
-                    <button class="btn btn-primary changePassword confirm-button installation"
+                    <button (click)="sendConfirmInstallation()"
+                            class="btn btn-primary changePassword confirm-button installation"
                             [disabled]=" !legalChecks[0] || !legalChecks[1] || !legalChecks[2]">{{
                         'shared.confirm'
                         |
@@ -148,7 +148,8 @@
 
                 <div class="col-sm-6">
 
-                    <button class="btn btn-primary changePassword confirm-button installation">{{ 'shared.confirm' |
+                    <button (click)="sendReportInstallation()"
+                            class="btn btn-primary changePassword confirm-button installation">{{ 'shared.confirm' |
                         translate }}
                     </button>
                 </div>
@@ -156,3 +157,11 @@
         </p-dialog>
     </div>
 </div>
+
+<p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false"
+          [closable]="false" [closeOnEscape]="false">
+    <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+    <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.registration.text' | translate}}</p>
+    <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+</p-dialog>
