@@ -187,7 +187,7 @@ public class ApplicationService {
 
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(int callId) {
         List<ApplicationVoucherInfoDTO> applicationsVoucherInfo = new ArrayList<>();
-        List<ApplicationDTO> applications = applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallId(callId)));
+        List<ApplicationDTO> applications = applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdOrderByDateAsc(callId)));
         for (final ApplicationDTO appDTO : applications) {
             RegistrationDTO regDTO = registrationService.getRegistrationById(appDTO.getRegistrationId());
             if (regDTO != null) {
@@ -318,12 +318,19 @@ public class ApplicationService {
                 }
                 break;
         }
-        for (ApplicantListItemDTO item : applicantsList) {
-            if (item.getCounter() > 1) {
-                item.setIssueStatus(0);
+        for (int i = 0; i < applicantsList.size(); i++) {
+            ApplicantListItemDTO applicant = applicantsList.get(i);
+            if (applicant.getCounter() == 1) {
+                List<RegistrationDTO> registrations = registrationService.getRegistrationsByLauId(applicant.getLauId());
+                for (RegistrationDTO registration : registrations) {
+                    if (registration != null) {
+                        applicant.setIssueStatus(registrationService.getRegistrationIssue(registration));
+                    }
+                }
             } else {
-                item.setIssueStatus(beneficiaryService.setIssueToDgconnBeneficiary(item.getLauId()));
+                applicant.setIssueStatus(0);
             }
+            applicantsList.set(i, applicant);
         }
         return applicantsList;
     }
@@ -345,11 +352,12 @@ public class ApplicationService {
                         if (user.getLang() != null) {
                             locale = new Locale(user.getLang());
                         }
-                        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                        //Mails deactivated until 1.4.2 phase 2
+                        /*ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                         String subject = bundle.getString("mail.validateApplication.subject");
                         String msgBody = bundle.getString("mail.validateApplication.body");
                         msgBody = MessageFormat.format(msgBody, municipality.getName());
-                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);*/
                     } else {
                         invalidateApplication(repeatedApplication);
                     }
@@ -371,18 +379,19 @@ public class ApplicationService {
                 if (user.getLang() != null) {
                     locale = new Locale(user.getLang());
                 }
-                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                //Mails deactivated until 1.4.2 phase 2
+                /*ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.invalidateApplication.subject");
                 String msgBody = bundle.getString("mail.invalidateApplication.body");
                 msgBody = MessageFormat.format(msgBody, municipality.getName());
-                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);*/
             }
         }
         return invalidatedApplication;
     }
 
     public List<ApplicationDTO> getApplicationsByCallId(int callId) {
-        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallId(callId)));
+        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdOrderByDateAsc(callId)));
     }
 
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(int callId, int lauId) {

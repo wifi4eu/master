@@ -13,7 +13,6 @@ import { UserApi } from "../../../shared/swagger/api/UserApi";
 import { ApplicationDTOBase } from "../../../shared/swagger/model/ApplicationDTO";
 import { MayorDTOBase } from "../../../shared/swagger/model/MayorDTO";
 import { MunicipalityDTOBase } from "../../../shared/swagger/model/MunicipalityDTO";
-import { MunicipalityDetailsDTOBase } from "../../../shared/swagger/model/MunicipalityDetailsDTO";
 import { RegistrationDTOBase } from "../../../shared/swagger/model/RegistrationDTO";
 import { ThreadDTOBase } from "../../../shared/swagger/model/ThreadDTO";
 import { ThreadMessageDTOBase } from "../../../shared/swagger/model/ThreadMessageDTO";
@@ -49,9 +48,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private users: UserDTOBase[] = [];
     private discussionThread: ThreadDTOBase = null;
     private displayedMessages: ThreadMessageDTOBase[] = [];
-    private entityCheckboxIndex: number = null;
     private searchMessagesQuery: string = '';
-    private issueRegistration: number;
+    private registrationIssues: number[] = [];
     private selectedIndex = null;
     private invalidateReason: string = '';
     private displayValidate = false;
@@ -59,7 +57,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private loadingData = false;
     private processingRequest = false;
 
-    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi) {
+    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi) {
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
@@ -72,48 +70,71 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
     private getApplicationDetailsInfo() {
         if (this.lauId && this.callId) {
-            this.beneficiaryApi.getAppliedMunicipalitiesDetailsByLauIdAndCallId(this.lauId, this.callId).subscribe(
-                (municipalitiesDetails: MunicipalityDetailsDTOBase[]) => {
-                    this.clearPageInfo();
-                    for (let municipalityDetails of municipalitiesDetails) {
-                        if (municipalityDetails.municipality && municipalityDetails.registration) {
-                            this.userApi.getUserById(municipalityDetails.registration.userId).subscribe(
-                                (user: UserDTOBase) => {
-                                    if (user) {
-                                        if (municipalityDetails.applications != null) {
-                                            for (let application of municipalityDetails.applications) {
-                                                if (application.callId == this.callId) {
-                                                    if (municipalityDetails.mayor) {
-                                                        this.mayors.push(municipalityDetails.mayor);
-                                                    } else {
-                                                        let mayor = new MayorDTOBase();
-                                                        mayor.id = -1;
-                                                        mayor.municipalityId = municipalityDetails.municipality.id;
-                                                        mayor.name = '-';
-                                                        mayor.surname = '-';
-                                                        mayor.email = '-';
-                                                        this.mayors.push(mayor);
+            this.applicationApi.getApplicationsByCallIdAndLauId(this.callId, this.lauId).subscribe(
+                (applications: ApplicationDTOBase[]) => {
+                    let failCount = 0;
+                    for (let i = 0; i < applications.length; i++) {
+                        let application = applications[i];
+                        this.registrationApi.getRegistrationById(application.registrationId).subscribe(
+                            (registration: RegistrationDTOBase) => {
+                                if (registration) {
+                                    this.userApi.getUserById(registration.userId).subscribe(
+                                        (user: UserDTOBase) => {
+                                            if (user) {
+                                                this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
+                                                    (municipality: MunicipalityDTOBase) => {
+                                                        if (municipality) {
+                                                            this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
+                                                                (mayor: MayorDTOBase) => {
+                                                                    if (mayor) {
+                                                                        this.mayors.push(mayor);
+                                                                    } else {
+                                                                        let mayor = new MayorDTOBase();
+                                                                        mayor.id = -1;
+                                                                        mayor.municipalityId = municipality.id;
+                                                                        mayor.name = '-';
+                                                                        mayor.surname = '-';
+                                                                        mayor.email = '-';
+                                                                        this.mayors.push(mayor);
+                                                                    }
+                                                                    this.applications.push(application);
+                                                                    this.municipalities.push(municipality);
+                                                                    this.registrations.push(registration);
+                                                                    this.users.push(user);
+                                                                    if (this.registrations.length == this.municipalities.length) {
+                                                                        this.registrationIssues.push(0);
+                                                                        this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
+                                                                    }
+                                                                    if (this.applications.length == (applications.length - failCount)) {
+                                                                        this.loadingData = false;
+                                                                    }
+                                                                }, (error) => {
+                                                                    this.loadingData = false;
+                                                                }
+                                                            );
+                                                        } else {
+                                                            failCount++;
+                                                        }
+                                                    }, (error) => {
+                                                        this.loadingData = false;
                                                     }
-                                                    this.applications.push(application);
-                                                    this.municipalities.push(municipalityDetails.municipality);
-                                                    this.registrations.push(municipalityDetails.registration);
-                                                    this.users.push(user);
-                                                    if (this.registrations.length == this.municipalities.length) {
-                                                        this.getIssue();
-                                                    }
-                                                    break;
-                                                }
+                                                );
+                                            } else {
+                                                failCount++;
                                             }
+                                        }, (error) => {
                                             this.loadingData = false;
                                         }
-                                    }
-                                }, error => {
-                                    this.loadingData = false;
+                                    );
+                                } else {
+                                    failCount++;
                                 }
-                            );
-                        }
+                            }, (error) => {
+                                this.loadingData = false;
+                            }
+                        );
                     }
-                }, error => {
+                }, (error) => {
                     this.loadingData = false;
                 }
             );
@@ -181,14 +202,14 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.processingRequest = false;
     }
 
-    private getIssue(){
-        this.beneficiaryApi.getIssueTypeBeneficiaryRegistrations(JSON.stringify(this.registrations)).subscribe(
+    private setRegistrationIssue(registration: RegistrationDTOBase, index: number) {
+        this.registrationApi.getRegistrationIssue(registration).subscribe(
             (response: ResponseDTOBase) => {
-                if(response.success){
-                    this.issueRegistration = response.data;
+                if (response.success) {
+                    this.registrationIssues[index] = response.data;
                 }
             }
-        )
+        );
     }
 
     private validateApplication() {
@@ -265,5 +286,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.registrations = [];
         this.applications = [];
         this.users = [];
+        this.registrationIssues = []
     }
 }
