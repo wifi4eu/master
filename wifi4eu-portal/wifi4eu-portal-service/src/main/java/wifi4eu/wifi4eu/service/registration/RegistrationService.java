@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.mapper.registration.LegalFileMapper;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
+import wifi4eu.wifi4eu.repository.registration.LegalFileRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
@@ -63,6 +65,12 @@ public class RegistrationService {
 
     @Autowired
     MayorService mayorService;
+
+    @Autowired
+    LegalFileMapper legalFileMapper;
+
+    @Autowired
+    LegalFileRepository legalFileRepository;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -629,5 +637,36 @@ public class RegistrationService {
             issueType = 3;
         }
         return issueType;
+    }
+
+    public List<LegalFileDTO> getLegalFilesByRegistrationId(Integer registrationId) {
+        return legalFileMapper.toDTOList(legalFileRepository.findByRegistrationIdOrderByTypeAsc(registrationId));
+    }
+
+    @Transactional
+    public LegalFileDTO saveLegalFile(LegalFileDTO legalFileDTO) {
+        return legalFileMapper.toDTO(legalFileRepository.save(legalFileMapper.toEntity(legalFileDTO)));
+    }
+
+    public void moveRegistrationLegalFilesToNewTable() {
+        List<RegistrationDTO> registrations = getAllRegistrations();
+        for (RegistrationDTO registration : registrations) {
+            if (registration.getLegalFile1() != null) {
+                LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 1, registration.getLegalFile1(), registration.getUploadTime(), false, null);
+                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
+            }
+            if (registration.getLegalFile2() != null) {
+                LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 2, registration.getLegalFile1(), registration.getUploadTime(), false, null);
+                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
+            }
+            if (registration.getLegalFile3() != null) {
+                LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 3, registration.getLegalFile1(), registration.getUploadTime(), false, null);
+                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
+            }
+            if (registration.getLegalFile4() != null) {
+                LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 4, registration.getLegalFile1(), registration.getUploadTime(), false, null);
+                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
+            }
+        }
     }
 }

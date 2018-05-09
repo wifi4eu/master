@@ -492,3 +492,25 @@ CREATE TABLE dbo.user_threads
   PRIMARY KEY ([id])
 );
 
+-- -----------------------------------------------------
+-- Table `dbo`.`legal_files`
+-- -----------------------------------------------------
+CREATE TABLE dbo.legal_files
+(
+  [id]                  INT NOT NULL IDENTITY,
+  [registration]        INT NOT NULL,
+  [type]                INT NOT NULL,
+  [data]                NVARCHAR(MAX) NULL,
+  [upload_time]         BIGINT DEFAULT NULL,
+  [request_correction]  SMALLINT NULL DEFAULT 0,
+  [correction_reason]   INT NULL DEFAULT NULL,
+  PRIMARY KEY ([id])
+  ,
+  CONSTRAINT [fk_legal_files_registrations]
+  FOREIGN KEY ([registration])
+  REFERENCES dbo.registrations ([id])
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+CREATE INDEX [fk_registration_idx]
+  ON dbo.legal_files ([registration] ASC);

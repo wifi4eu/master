@@ -52,7 +52,7 @@
                     <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }} <i *ngIf="downloadingList" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
                 </a>
             </div>
-            <p-dataTable #tableBeneficiary [totalRecords]="totalItems" [value]="applicantListItems" [lazy]="true" (onLazyLoad)="loadData($event)"
+            <p-dataTable #tableBeneficiary [value]="applicantListItems" [lazy]="true" (onLazyLoad)="loadData($event)"
                          [paginator]="true" [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="totalItems" [rows]="itemsPerPage">
                 <p-column field="countryCode" [sortable]="true" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
                 <p-column field="name" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>

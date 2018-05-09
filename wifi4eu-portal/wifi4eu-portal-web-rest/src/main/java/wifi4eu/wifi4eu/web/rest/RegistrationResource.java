@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.LegalFileDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
@@ -229,4 +230,43 @@ public class RegistrationResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
+
+    @ApiOperation(value = "getLegalFile")
+    @RequestMapping(value = "/getLegalFile", method = RequestMethod.GET)
+    @ResponseBody
+    public LegalFileDTO getLegalFile() {
+        return new LegalFileDTO();
+    }
+
+    @ApiOperation(value = "Get legal files by registration id")
+    @RequestMapping(value = "/getLegalFiles/{registrationId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<LegalFileDTO> getLegalFilesByRegistrationId(@PathVariable("registrationId") final Integer registrationId) {
+        return registrationService.getLegalFilesByRegistrationId(registrationId);
+    }
+
+    @ApiOperation(value = "Create/update a legal file")
+    @RequestMapping(value = "/saveLegalFile", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO saveLegalFile(@RequestBody final LegalFileDTO legalFileDTO) {
+        try {
+            _log.info("saveLegalFile");
+            LegalFileDTO resLegalFile = registrationService.saveLegalFile(legalFileDTO);
+            return new ResponseDTO(true, resLegalFile, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'saveLegalFileRegistration' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+//    @ApiOperation(value = "moveRegistrationLegalFilesToNewTable")
+//    @RequestMapping(value = "/moveRegistrationLegalFilesToNewTable", method = RequestMethod.GET)
+//    @ResponseBody
+//    public boolean moveRegistrationLegalFilesToNewTable() {
+//        registrationService.moveRegistrationLegalFilesToNewTable();
+//        return true;
+//    }
 }
