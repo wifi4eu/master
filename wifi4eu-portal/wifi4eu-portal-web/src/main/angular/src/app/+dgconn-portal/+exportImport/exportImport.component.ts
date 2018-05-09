@@ -14,7 +14,7 @@ export class DgConnExportImportComponent {
 
      constructor(private exportImportApi: ExportImportApi, private sharedService: SharedService, private translateService: TranslateService) {}
 
-     export(){
+     exportRegistrationData(){
             this.exportImportApi.exportRegistrationData().subscribe(
                 (response: ResponseDTO)  => {
                     if(response.success){
@@ -33,7 +33,7 @@ export class DgConnExportImportComponent {
             );
      }
 
-     import(){
+     importRegistrationData(){
             this.exportImportApi.importRegistrationData().subscribe(
                 (response: ResponseDTO)  => {
                     if(response.success){
@@ -50,5 +50,14 @@ export class DgConnExportImportComponent {
                 error => {
                 }
             );
+     }
+
+     exportBeneficiaryInformation(){
+     }
+
+     exportBC(){
+     }
+
+     importLefBcValidates(){
      }
 }

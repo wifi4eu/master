@@ -12,9 +12,7 @@ import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-registrations/+details/beneficiary-registrations-details.component";
 import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrations/details/supplier-registrations-details.component";
 import {DgConnExportImportComponent} from "./+exportImport/exportImport.component";
-import {DgConnApplicantRegistrationsComponent} from "./+applicant-registrations/applicant-registrations.component";
 import {DgConnApplicantRegistrationsDetailsComponent} from "./+applicant-registrations/+details/applicant-registrations-details.component";
-import {DgConnExportImportComponent} from "./+exportImport/exportImport.component";
 
 @NgModule({
     imports: [RouterModule.forChild([

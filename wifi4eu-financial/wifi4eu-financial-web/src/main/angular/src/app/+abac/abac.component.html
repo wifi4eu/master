@@ -1,7 +1,36 @@
-<div class="clearfix"></div>
-<div class="container font" style="margin-top: 5em;">
-    <h1 class="beneficiaryTitle">WiFi4EU Abac Test</h1>
-    <p>Click on one of the buttons below to import/export your JSON file and communicate with ABAC.</p>
-    <input type="file" (change)="onFileSelection($event)" accept=".json,application/json">
-    <button (click)="exportJson()" [disabled]="!exportEnabled">Export</button>
+<div class="exportImport"></div>
+<!--<div class="container" align="center">-->
+<div class="container">
+    <br/><br/><br/><br/><br/>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <span class="input-group-btn">
+                <!--<button class="btn btn-primary" (click)="export()" type="button">{{ 'dgConn.export.dashboard' | translate}}</button>-->
+                <button class="btn btn-primary" (click)="importLEF()" type="button">Import Beneficiaris Info.</button>
+            </span>
+        </div>
+        <br/><br/><br/><br/><br/>
+        <div class="ui-g-12">
+            <span class="input-group-btn">
+                <!--<button class="btn btn-primary" (click)="export()" type="button">{{ 'dgConn.export.dashboard' | translate}}</button>-->
+                <button class="btn btn-primary" (click)="importBC()" type="button">Import BC Info.</button>
+            </span>
+        </div>
+        <br/><br/><br/><br/><br/>
+        <div class="ui-g-12">
+            <span class="input-group-btn">
+                <!--<button class="btn btn-primary" (click)="import()" type="button">{{ 'dgConn.import.dashboard' | translate}}</button>-->
+                <button class="btn btn-primary" (click)="exportLEFBCValidate()" type="button">Export Lef and Bc Validation</button>
+            </span>
+        </div>
+    </div>
+    <!--<div class="clearfix"></div>-->
+    <!--<div class="container font" style="margin-top: 5em;">-->
+        <!--<h1 class="beneficiaryTitle">WiFi4EU Abac Test</h1>-->
+        <!--<p>Caca lick on one of the buttons below to import/export your JSON file and communicate with ABAC.</p>-->
+        <!--<input type="file" (change)="onFileSelection($event)" accept=".json,application/json">-->
+        <!--<button (click)="exportJson()" [disabled]="!exportEnabled">Export</button>-->
+    <!--</div>-->
 </div>
+
+

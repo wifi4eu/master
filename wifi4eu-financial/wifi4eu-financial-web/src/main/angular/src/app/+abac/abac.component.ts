@@ -19,6 +19,18 @@ export class AbacComponent {
         this.exportEnabled = false;
     }
 
+    importLEF() {
+    }
+
+    importBC() {
+    }
+
+    exportLEFBCValidate() {
+    }
+
+
+
+
     exportJson() {
         this.financialApi.exportAbacInformation().subscribe(
             (response: ResponseDTO) => {
