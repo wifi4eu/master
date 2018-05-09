@@ -126,7 +126,6 @@ export class ManageInstallationComponent {
         inputParameters["id_installationSite"] = this.installationSites[accessPointNumber].id;
         this.accessPoinstApi.getAccessPointPerInstallationSite(inputParameters).subscribe(
             accessPointResult => {
-                console.log("accessPointResult: ", accessPointResult);
 
             }, error => {
                 console.log(error);

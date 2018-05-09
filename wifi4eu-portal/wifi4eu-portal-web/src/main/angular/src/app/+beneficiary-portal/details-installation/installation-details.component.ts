@@ -11,6 +11,7 @@ import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {MunicipalityDTOBase} from "../../shared/swagger/model/MunicipalityDTO";
 import {RegistrationDTOBase} from "../../shared/swagger/model/RegistrationDTO";
 import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
+import {Location} from '@angular/common';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class InstallationDetailsComponent {
     private number: string;
     private portal: string;
 
-    constructor(private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private sharedService: SharedService, private localStorage: LocalStorageService, private router: Router, private route: ActivatedRoute, private installationsiteApi: InstallationsiteApi, private localStorageService: LocalStorageService) {
+    constructor(private _location: Location, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private sharedService: SharedService, private localStorage: LocalStorageService, private router: Router, private route: ActivatedRoute, private installationsiteApi: InstallationsiteApi, private localStorageService: LocalStorageService) {
         let storedUser = this.localStorage.get('user');
         let id;
         this.route.params.subscribe(params => id = params['id']);
@@ -61,12 +62,8 @@ export class InstallationDetailsComponent {
 
 
     }
-
-    ngOnInit() {
-        // this.route.data.subscribe((data: { installationSite: InstallationSiteBase }) => {
-        //     if (data.installationSite)
-        //         this.installationSite = data.installationSite;
-        // });
+    goBack(){
+        this._location.back()
     }
 
 }

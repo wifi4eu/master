@@ -1,6 +1,11 @@
 <div class="container">
+    <div class="supplier"></div>
+    <div class="back-button">
+        <a (click)="goBack()">
+            <i class="fa fa-arrow-left"></i> Back</a>
+    </div>
     <div id="step2-title" class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <div id="component-title">
                 <p class="beneficiaryTitle labelModal">{{ 'accessPoint.title' | translate }}
                 <p>{{ 'accessPoint.thisPageIsUsedTo' | translate }}</p>
@@ -16,7 +21,7 @@
         </div>
     </div>
     <div class="clearfix"></div>
-    <div class="results accessPoints button-content">
+    <div class="results accessPoints button-content paddingTable">
 
         <p-dataTable [value]="accessPoints" [rows]="searchParametersService.parameters.delta" [paginator]="true"
                      [rowsPerPageOptions]="[5,10,20]"
@@ -61,4 +66,5 @@
             </ng-template>
         </p-dataTable>
     </div>
+    <div class="supplier"></div>
 </div>
