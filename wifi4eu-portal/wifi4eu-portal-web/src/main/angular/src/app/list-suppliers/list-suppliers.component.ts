@@ -67,6 +67,7 @@ export class ListSuppliersComponent implements OnInit {
   }
 
   selectCountry(country){
+      this.region = null;
     this.searched = false;
     this.nutsApi.getNutsByCountryCodeAndLevelOrderByLabelAsc(country.code, 3).subscribe(
       (regions: NutsDTOBase[]) => {
