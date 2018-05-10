@@ -43,19 +43,6 @@ public class InstallationSiteResource {
         return response;
     }
 
-    @ApiOperation(value = "Add a new installation site")
-    @RequestMapping(value= "/add", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public ResponseDTO addInstallationSite(@RequestBody final Map<String, Object> installationText){
-        return installationSiteService.addAndUpdateInstallationSite(installationText);
-    }
-
-    @ApiOperation(value = "Update an installation site")
-    @RequestMapping(value= "/update", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public ResponseDTO updateInstallationSite(@RequestBody final Map<String, Object> installationText){
-        return installationSiteService.addAndUpdateInstallationSite(installationText);
-    }
 
     @ApiOperation(value = "Get installation site details")
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
@@ -63,15 +50,6 @@ public class InstallationSiteResource {
     public ResponseDTO getInstallationSite(@PathVariable("id") int id){
         return installationSiteService.getInstallationReport(id);
     }
-
-    @ApiOperation(value = "Remove an installation site")
-    @RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseDTO removeInstallSite(@PathVariable("id") int id){
-        return installationSiteService.removeInstallationReport(id);
-    }
-
-
 
  /*   @ApiOperation(value="Get all installation sites by beneficiary")
     @RequestMapping(value="/installation-site-list/{id}", method = RequestMethod.GET, produces = "application/json")
