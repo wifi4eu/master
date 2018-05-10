@@ -62,6 +62,7 @@ export class VoucherComponent {
         // Check if there are Calls
         if (this.user != null) {
             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
+                /* this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe( */
                 (registrations: RegistrationDTOBase[]) => {
                     this.registrationsDocs = registrations;
                     this.checkForCalls(registrations);
@@ -104,7 +105,7 @@ export class VoucherComponent {
                                             this.applicationApi.getApplicationByCallIdAndRegistrationId(this.currentCall.id, registration.id).subscribe(
                                                 (application: ApplicationDTOBase) => {
                                                     this.registrations.push(registration);
-                                                    this.municipalities.push(municipality);
+                                                    this.municipalities.push(municipality); 
                                                     this.mayors.push(mayor);
                                                     if (application.id != 0) {
                                                         this.applications.push(application);
