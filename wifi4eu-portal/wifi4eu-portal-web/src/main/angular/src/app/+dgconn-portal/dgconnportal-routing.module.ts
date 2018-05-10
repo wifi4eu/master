@@ -6,10 +6,12 @@ import {DgConnVoucherComponent} from "app/+dgconn-portal/+voucher/voucher.compon
 import {DgConnStatisticsComponent} from "./+statistics/statistics.component";
 import {DgConnSupplierRegistrationsComponent} from "./+supplier-registrations/supplier-registrations.component";
 import {DgConnBeneficiaryRegistrationsComponent} from "./+beneficiary-registrations/beneficiary-registrations.component";
+import {DgConnApplicantRegistrationsComponent} from "./+applicant-registrations/applicant-registrations.component";
 import {DgConnManageLauComponent} from "./+manage-lau/manage-lau.component";
 import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-registrations/+details/beneficiary-registrations-details.component";
 import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrations/details/supplier-registrations-details.component";
+import {DgConnApplicantRegistrationsDetailsComponent} from "./+applicant-registrations/+details/applicant-registrations-details.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -37,6 +39,12 @@ import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrat
         }, {
             path: 'beneficiary-registrations/:id',
             component: DgConnBeneficiaryRegistrationsDetailsComponent,
+        }, {
+            path: 'applicant-registrations',
+            component: DgConnApplicantRegistrationsComponent,
+        }, {
+            path: 'applicant-registrations/:lauId/call/:callId',
+            component: DgConnApplicantRegistrationsDetailsComponent,
         }, {
             path: 'manage-lau',
             component: DgConnManageLauComponent,

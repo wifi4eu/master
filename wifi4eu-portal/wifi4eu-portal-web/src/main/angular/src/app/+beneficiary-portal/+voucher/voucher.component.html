@@ -45,7 +45,7 @@
     <timer-component *ngIf="voucherCompetitionState == 1" class="offset-lg-3 ui-lg-6 ui-g-12" (timerEvent)="openApplyForVoucher()"
         [expirationTimestamp]="currentCall.startDate">
     </timer-component>
-    <div class="offset-lg-3 ui-lg-6 ui-g-12">
+    <div class="ui-g-12 ui-md-8 offset-md-2">
         <div class="marginTop registrationPanel">
             <p-dataTable [value]="municipalities">
                 <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
@@ -106,7 +106,7 @@
             <p>
                 <span class="dotSteps">2. </span>{{ 'benefPortal.voucher.step3' | translate}}</p>
         </div>
-        <div class="ui-g-4 ui-sm-6">
+        <div class="ui-g-4 ui-sm-12">
             <img class="{{stepCompleted}}" src="assets/images/voucher.png" alt="">
             <p>
                 <span class="dotSteps">3. </span>{{ 'benefPortal.voucher.step4' | translate}}</p>
