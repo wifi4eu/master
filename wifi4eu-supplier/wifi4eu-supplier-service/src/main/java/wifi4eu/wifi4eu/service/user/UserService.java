@@ -152,7 +152,7 @@ public class UserService {
             userDTO.setName(userContext.getFirstName());
             userDTO.setSurname(userContext.getLastName());
             userDTO.setEmail(userContext.getEmail());
-            userDTO.setIdRole(6);
+            userDTO.setIdRole(1);
 
             userDTO = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
 

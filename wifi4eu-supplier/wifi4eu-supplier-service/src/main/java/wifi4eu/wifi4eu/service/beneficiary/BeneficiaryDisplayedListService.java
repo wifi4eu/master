@@ -39,7 +39,8 @@ public class BeneficiaryDisplayedListService {
     public ResponseDTO findBeneficiariesList() {
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(true);
-        response.setData(beneficiaryDisplayedListMapper.toDTOList(Lists.newArrayList(beneficiaryDisplayedListRepository.findBeneficiariesList())));
+        int id = 6;
+        response.setData(beneficiaryDisplayedListMapper.toDTOList(Lists.newArrayList(beneficiaryDisplayedListRepository.findBeneficiariesList(id))));
         return response;
     }
 

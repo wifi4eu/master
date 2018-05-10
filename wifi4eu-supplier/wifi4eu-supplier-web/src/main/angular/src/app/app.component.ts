@@ -107,6 +107,7 @@ export class AppComponent implements OnInit {
             if (response.success) {
                 this.user = response.data;
                 this.userInfos = this.user.ecasUsername;
+                alert(this.user.id);
             }
         }, error => {
             this.uxService.growl({
