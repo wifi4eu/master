@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.service.user;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
@@ -95,6 +97,10 @@ public class UserService {
         return userMapper.toDTO(userRepository.findByEmail(email));
     }
 
+    /*public UserDTO getUserByEcasEmail(String email){
+        return userMapper.toDTO(userRepository.findByEcasEmail(email));
+    }*/
+
     @Transactional
     public UserDTO createUser(UserDTO userDTO) throws Exception {
         UserDTO searchUser = getUserByEmail(userDTO.getEcasEmail());
@@ -124,6 +130,14 @@ public class UserService {
     @Transactional
     public UserDTO getUserByUserContext(UserContext userContext) {
 
+        if (userContext == null) {
+            throw new AppException("User context not defined", HttpStatus.SC_FORBIDDEN, "");
+        }
+
+        if (_log.isDebugEnabled()) {
+            _log.debug("user Email: " + userContext.getEmail() + " user PerId: " + userContext.getPerId());
+        }
+
         _log.debug("[i] getUserByEcasPerId");
 
         UserDTO userDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
@@ -131,7 +145,6 @@ public class UserService {
         _log.debug("after search userDTO: " + userDTO);
 
         if (userDTO == null) {
-
             userDTO = new UserDTO();
             userDTO.setAccessDate(new Date().getTime());
             userDTO.setEcasEmail(userContext.getEmail());
@@ -139,6 +152,7 @@ public class UserService {
             userDTO.setName(userContext.getFirstName());
             userDTO.setSurname(userContext.getLastName());
             userDTO.setEmail(userContext.getEmail());
+            userDTO.setIdRole(6);
 
             userDTO = userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
 
@@ -194,7 +208,7 @@ public class UserService {
             throw new UsernameNotFoundException("User not found");
         }
     }
-/*
+
     public void activateAccount(ActivateAccountDTO activateAccountDTO) throws Exception {
         TempTokenDTO tempToken = tempTokenMapper.toDTO(tempTokenRepository.findByToken(activateAccountDTO.getToken()));
         Date now = new Date();
@@ -221,9 +235,8 @@ public class UserService {
         } else {
             throw new Exception("Token doesn't exist.");
         }
-    }*/
-/*
-    @Transactional
+    }
+   /* @Transactional
     public void sendActivateAccountMail(UserDTO userDTO) {
         Date now = new Date();
         TempTokenDTO tempTokenDTO = new TempTokenDTO();
@@ -246,9 +259,9 @@ public class UserService {
         String subject = bundle.getString("mail.subject");
         String msgBody = bundle.getString("mail.body");
 
-       *//* if (!isLocalHost()) {
+        if (!isLocalHost()) {
             mailService.sendEmail(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-        }*//*
+        }
     }
 
     public boolean resendEmail(String email) {
@@ -261,19 +274,18 @@ public class UserService {
         }
     }*/
 
-/*
-    public void forgotPassword(String email) throws Exception {
+    /*public void forgotPassword(String email) throws Exception {
 
         UserContext userContext = UserHolder.getUser();
         UserDTO user = getUserByUserContext(userContext);
 
         if (user == null) {
-      *//* validate email variable is not null or empty *//*
+       validate email variable is not null or empty
             if (email != null && !StringUtils.isEmpty(email)) {
                 UserDTO userDTO = userMapper.toDTO(userRepository.findByEmail(email));
-        *//* validate if user exist in wifi4eu portal *//*
+         validate if user exist in wifi4eu portal
                 if (userDTO != null) {
-          *//* Create a temporal key for activation and reset password functionalities *//*
+           Create a temporal key for activation and reset password functionalities
                     TempTokenDTO tempTokenDTO = tempTokenMapper.toDTO(tempTokenRepository.findByEmail(email));
                     if (tempTokenDTO == null) {
                         tempTokenDTO = new TempTokenDTO();
@@ -289,12 +301,12 @@ public class UserService {
 
                     tempTokenRepository.save(tempTokenMapper.toEntity(tempTokenDTO));
 
-          *//* Send email with *//*
-                   *//* String fromAddress = MailService.FROM_ADDRESS;
+           Send email with
+                    String fromAddress = MailService.FROM_ADDRESS;
                     //TODO: translate subject and msgBody
                     String subject = "wifi4eu portal Forgot Password";
                     String msgBody = "you can access to the next link and reset your password " + baseUrl + UserConstants.RESET_PASS_URL + tempTokenDTO.getToken();
-                    mailService.sendEmail(email, fromAddress, subject, msgBody);*//*
+                    mailService.sendEmail(email, fromAddress, subject, msgBody);
                 } else {
                     throw new Exception("trying to forgetPassword with an unregistered user");
                 }
