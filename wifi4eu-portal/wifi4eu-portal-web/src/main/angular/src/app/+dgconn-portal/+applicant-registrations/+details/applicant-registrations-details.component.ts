@@ -243,26 +243,31 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         if (!this.processingRequest) {
             this.processingRequest = true;
             if (this.selectedIndex != null && this.invalidateReason.trim().length > 0) {
-                this.applications[this.selectedIndex].invalidateReason = this.invalidateReason;
-                this.applications[this.selectedIndex].status = 1;
-                this.applicationApi.invalidateApplication(this.applications[this.selectedIndex]).subscribe(
-                    (response: ResponseDTOBase) => {
-                        if (response.success) {
-                            if (response.data != null) {
-                                this.getApplicationDetailsInfo();
-                                this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
+                if (this.invalidateReason.length <= 255) {
+                    this.applications[this.selectedIndex].invalidateReason = this.invalidateReason;
+                    this.applications[this.selectedIndex].status = 1;
+                    this.applicationApi.invalidateApplication(this.applications[this.selectedIndex]).subscribe(
+                        (response: ResponseDTOBase) => {
+                            if (response.success) {
+                                if (response.data != null) {
+                                    this.getApplicationDetailsInfo();
+                                    this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
+                                } else {
+                                    this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
+                                }
                             } else {
                                 this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
                             }
-                        } else {
+                            this.closeModal();
+                        }, error => {
                             this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
+                            this.closeModal();
                         }
-                        this.closeModal();
-                    }, error => {
-                        this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
-                        this.closeModal();
-                    }
-                );
+                    );
+                } else {
+                    this.processingRequest = false;
+                    this.sharedService.growlTranslation('The invalidate the municipality message is bigger than 255. Please, reduce the message.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.maxLength', 'error');
+                }
             }
         }
     }
