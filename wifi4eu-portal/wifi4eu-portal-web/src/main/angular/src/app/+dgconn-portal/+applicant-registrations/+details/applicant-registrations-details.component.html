@@ -253,7 +253,7 @@
                 </div>
                 <div style="padding: 2em; padding-top: 0em;">
                     <p>{{ 'dgConn.comment.mandatory' | translate }}</p>
-                    <textarea rows="5" class="form-control widthMax"
+                    <textarea rows="5" class="form-control widthMax {{cssClassInvalidReason}}"
                               name="newMessage" [(ngModel)]="invalidateReason"
                               [disabled]="processingRequest"
                               (ngModelChange)="maxLength($event)"></textarea>

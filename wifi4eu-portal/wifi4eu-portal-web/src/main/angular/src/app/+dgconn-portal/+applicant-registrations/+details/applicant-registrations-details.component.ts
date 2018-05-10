@@ -49,6 +49,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private discussionThread: ThreadDTOBase = null;
     private displayedMessages: ThreadMessageDTOBase[] = [];
     private searchMessagesQuery: string = '';
+    private cssClassInvalidReason: string = '';
     private registrationIssues: number[] = [];
     private selectedIndex = null;
     private invalidateReason: string = '';
@@ -195,6 +196,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     }
 
     private closeModal() {
+        this.cssClassInvalidReason = '';
         this.selectedIndex = null;
         this.invalidateReason = '';
         this.displayValidate = false;
@@ -297,6 +299,9 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private maxLength(event) {
         if (this.invalidateReason.length > 255) {
             this.sharedService.growlTranslation('The invalidate the municipality message is bigger than 255. Please, reduce the message.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.maxLength', 'error');
+            this.cssClassInvalidReason = 'notValid';
+        } else {
+            this.cssClassInvalidReason = 'isValid';
         }
     }
 }
