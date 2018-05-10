@@ -348,7 +348,8 @@ public class ApplicationService {
                     if (repeatedApplication.getId() == applicationDTO.getId()) {
                         repeatedApplication.setStatus(ApplicationStatus.OK.getValue());
                         repeatedApplication.setInvalidateReason(null);
-                        validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+                        validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(repeatedApplication)));
+                        /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
                         Locale locale = new Locale(UserConstants.DEFAULT_LANG);
                         if (user.getLang() != null) {
                             locale = new Locale(user.getLang());
@@ -358,6 +359,7 @@ public class ApplicationService {
                         String msgBody = bundle.getString("mail.validateApplication.body");
                         msgBody = MessageFormat.format(msgBody, municipality.getName());
                         mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                        */
                     } else {
                         invalidateApplication(repeatedApplication);
                     }
@@ -370,6 +372,7 @@ public class ApplicationService {
     public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO) {
         applicationDTO.setStatus(ApplicationStatus.KO.getValue());
         ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());
         if (registration != null) {
             UserDTO user = userService.getUserById(registration.getUserId());
@@ -386,6 +389,7 @@ public class ApplicationService {
                 mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
             }
         }
+        */
         return invalidatedApplication;
     }
 

@@ -113,6 +113,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                             }
                                                                             this.selectedFilesTypes[i] = [];
                                                                             this.selectedReasonTypes[i] = [];
+                                                                            // this.getBlobDataFromRegistrationToLegalFiles(i, legalFiles, registration);
                                                                             this.legalFiles[i] = legalFiles;
                                                                             this.applications.push(application);
                                                                             this.registrations.push(registration);
@@ -180,27 +181,28 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         );
     }
 
-    private getLegalFileUrl(index: number, fileType: number) {
-        if (index != null) {
-            for (let legalFile of this.legalFiles[index]) {
-                if (legalFile.type == fileType) {
-                    return this.sanitizer.bypassSecurityTrustUrl(legalFile.data);
-                }
-            }
+    // TODO: Temporaly, the BLOB data will be read from the registration itself.
+    private getLegalFileUrl(index: number, fileNumber: number) {
+        switch (fileNumber) {
+            case 1:
+                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile1);
+            case 2:
+                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile2);
+            case 3:
+                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile3);
+            case 4:
+                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile4);
         }
     }
 
-    // private requestLegalDocuments(index: number) {
+    // TODO: The BLOB data will be read from the 'LegalFileDTO' model in the near future (or point out to an external file location).
+    // private getLegalFileUrl(index: number, fileType: number) {
     //     if (index != null) {
-    //         this.registrationApi.requestLegalDocuments(this.registrations[index].id).subscribe(
-    //             (response: ResponseDTOBase) => {
-    //                 if (response.success) {
-    //                     this.sharedService.growlTranslation('An email has been sent to the representants of the legal entities to supply the legal documents for the registration.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success', 'success');
-    //                 } else {
-    //                     this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the registration. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.error', 'error');
-    //                 }
+    //         for (let legalFile of this.legalFiles[index]) {
+    //             if (legalFile.type == fileType) {
+    //                 return this.sanitizer.bypassSecurityTrustUrl(legalFile.data);
     //             }
-    //         );
+    //         }
     //     }
     // }
 
