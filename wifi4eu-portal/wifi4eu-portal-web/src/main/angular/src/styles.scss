@@ -1669,3 +1669,47 @@ p-tabview.white .ui-widget-content.ui-tabview {
 input.email_profile::-ms-clear{
   display:none;
 }
+
+
+
+
+
+.tooltipBar {
+  display: inline-block;
+  z-index: 111;
+  margin-top: -0.4%;
+  font-size:calc(3px + 0.57vmax);
+}
+
+.tooltipBar .tooltiptextBar {
+  visibility: hidden;
+  opacity: 0;
+  width: 220px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1;
+  bottom: 110px;
+  left: 50%;
+  margin-left: -115px;
+  transition: opacity 0.3s;
+}
+
+.tooltipBar .tooltiptextBar::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltipBar:hover .tooltiptextBar {
+  visibility: visible;
+  opacity: 1;
+}
