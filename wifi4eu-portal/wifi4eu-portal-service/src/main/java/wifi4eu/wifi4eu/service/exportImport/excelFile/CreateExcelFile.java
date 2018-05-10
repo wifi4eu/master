@@ -29,6 +29,7 @@ public class CreateExcelFile{
         String path = this.getClass().getClassLoader().getResource("").getPath();
         String fullPath = URLDecoder.decode(path, "UTF-8");
         String pathArr[] = fullPath.split("/WEB-INF/classes/");
+//        String pathArr[] = fullPath.split("/WEB-INF/");
         fullPath = pathArr[0];
         fullPath=fullPath.substring(1,fullPath.length());
         String protocol=httpServletRequest.getScheme();
@@ -37,6 +38,7 @@ public class CreateExcelFile{
         String hostName = InetAddress.getLocalHost().getCanonicalHostName();
         String app=httpServletRequest.getContextPath();
         String fileName="ExportRegistrationData.csv";
+//        String filePath= fullPath+"/abacFiles/"+fileName;
         String filePath= fullPath+"/"+fileName;
         String sheet="Sheet1";
         XSSFWorkbook book= new XSSFWorkbook();
@@ -60,6 +62,7 @@ public class CreateExcelFile{
             }
         }
 
+        //File fil = new File(fullPath+"/abacFiles/");
         File file = new File(filePath);
         try (FileOutputStream fileOuS = new FileOutputStream(file)){
             if (file.exists()) {
@@ -76,6 +79,7 @@ public class CreateExcelFile{
         }
 
         try {
+//            String fullUrlPath = protocol+"://"+hostName+":"+port+app+"/abacFiles/"+fileName;
             String fullUrlPath = protocol+"://"+hostName+":"+port+app+"/"+fileName;
             URL url = new URL(fullUrlPath);
             try {

@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
+import wifi4eu.wifi4eu.common.dto.model.ExportImportBeneficiaryInformationDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
-import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataReporsitory;
+import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
+import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBeneficiaryInformationMapper;
+import wifi4eu.wifi4eu.repository.exportImport.ExportImportBeneficiaryInformationRepository;
 import wifi4eu.wifi4eu.service.exportImport.excelFile.CreateExcelFile;
 import wifi4eu.wifi4eu.service.exportImport.excelFile.ReadExcelFile;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -28,12 +31,18 @@ import java.util.List;
 
 
 @Service
-public class ExportImportRegistrationDataService {
+public class ExportImportRegistrationAbacService {
     @Autowired
     ExportImportRegistrationDataMapper exportImportRegistrationDataMapper;
 
     @Autowired
-    ExportImportRegistrationDataReporsitory exportImportRegistrationDataReporsitory;
+    ExportImportRegistrationDataRepository exportImportRegistrationDataRepository;
+
+    @Autowired
+    ExportImportBeneficiaryInformationMapper exportImportBeneficiaryInformationMapper;
+
+    @Autowired
+    ExportImportBeneficiaryInformationRepository exportImportBeneficiaryInformationRepository;
 
     @Autowired
     UserService userService;
@@ -56,11 +65,11 @@ public class ExportImportRegistrationDataService {
     @Autowired
     HttpServletRequest httpServletRequest;
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportRegistrationDataService.class);
+    private final Logger _log = LoggerFactory.getLogger(ExportImportRegistrationAbacService.class);
 
     public void exportRegistrationData() throws Exception {
           _log.info("exportRegistrationData");
-           List<ExportImportRegistrationDataDTO> exportImportRegistrationDataList = exportImportRegistrationDataMapper.toDTOList(Lists.newArrayList(exportImportRegistrationDataReporsitory.findExportImport()));
+           List<ExportImportRegistrationDataDTO> exportImportRegistrationDataList = exportImportRegistrationDataMapper.toDTOList(Lists.newArrayList(exportImportRegistrationDataRepository.findExportImportRD()));
            String [] header={"EU Rank", "Country Rank", "Country Name", "Municipality name", "Issue", "Number of registrations"};
            String [][] document=new String[exportImportRegistrationDataList.size()][7];
            Integer [][] countryCount=new Integer[exportImportRegistrationDataList.size()][2];
@@ -98,10 +107,50 @@ public class ExportImportRegistrationDataService {
            cF.createExcelFile(header, document);
     }
 
+    public void exportBeneficiaryInformation() throws Exception {
+        _log.info("exportBeneficiaryInformation");
+        List<ExportImportBeneficiaryInformationDTO> exportImportBeneficiaryInformationList = exportImportBeneficiaryInformationMapper.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findExportImportBI()));
+        String [] header={"EU Rank", "Country Rank", "Country Name", "Municipality name", "Issue", "Number of registrations"};
+        String [][] document=new String[exportImportBeneficiaryInformationList.size()][7];
+        Integer [][] countryCount=new Integer[exportImportBeneficiaryInformationList.size()][2];
+        for(int i=0; i<exportImportBeneficiaryInformationList.size(); i++){
+            String country=exportImportBeneficiaryInformationList.get(i).getCountryName();
+            String municipailty=exportImportBeneficiaryInformationList.get(i).getMunicipalityName();
+            int countCountry=0;
+            int countMunicipality=0;
+            for(int u=0; u<exportImportBeneficiaryInformationList.size(); u++){
+                if(country.equals(exportImportBeneficiaryInformationList.get(u).getCountryName())){
+                    countCountry++;
+                    countryCount[u][0]=countCountry;
+                    countryCount[u][1]=exportImportBeneficiaryInformationList.get(u).getEuRank();
+
+                }
+                if(municipailty.equals(exportImportBeneficiaryInformationList.get(u).getMunicipalityName())){
+                    countMunicipality++;
+                }
+            }
+            document[i][0]=String.valueOf(exportImportBeneficiaryInformationList.get(i).getEuRank());
+            for(int w=0; w<countryCount.length; w++){
+                if(null!=countryCount[w][0]){
+                    if(exportImportBeneficiaryInformationList.get(i).getEuRank()==countryCount[w][1]){
+                        document[i][1] = String.valueOf(countryCount[w][0]);
+                    }
+                }
+            }
+            document[i][2]=exportImportBeneficiaryInformationList.get(i).getCountryName();
+            document[i][3]=exportImportBeneficiaryInformationList.get(i).getMunicipalityName();
+            Municipality municipality=municipalityRepository.findOne(exportImportBeneficiaryInformationList.get(i).getMunicipality());
+            document[i][4]=String.valueOf(setIssueToDgconnBeneficiary(municipality.getLau().getId()));
+            document[i][5]=String.valueOf(countMunicipality);
+        }
+        CreateExcelFile cF=new CreateExcelFile(httpServletRequest);
+        cF.createExcelFile(header, document);
+    }
+
     @Transactional
     public void importRegistrationData() throws Exception{
           _log.info("importRegistrationData");
-          ReadExcelFile rF=new ReadExcelFile(exportImportRegistrationDataReporsitory, exportImportRegistrationDataMapper);
+          ReadExcelFile rF=new ReadExcelFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
           rF.readExcelFile();
     }
 

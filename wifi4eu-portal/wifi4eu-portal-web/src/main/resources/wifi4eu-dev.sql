@@ -568,3 +568,21 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`user_threads` (
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;
+
+
+-- -----------------------------------------------------
+-- Table `municipalities_abac`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `municipalities_abac`(
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`euRank` INT NOT NULL,
+	`countryRank` INT NULL,
+	`countryName` VARCHAR(255) NULL,
+	`municipalityName` varchar(255) NULL,
+	`issue` VARCHAR(255) NULL,
+	`numberOfRegistrations` int NULL,
+	`abacReference` VARCHAR(255) NULL,
+	`abacStandarName` VARCHAR(255) NULL,
+	`municipality` INT NOT NULL,
+ PRIMARY KEY (`id`)
+);

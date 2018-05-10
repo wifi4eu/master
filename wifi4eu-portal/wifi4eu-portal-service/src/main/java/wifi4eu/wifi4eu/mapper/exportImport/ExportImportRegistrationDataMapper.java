@@ -1,9 +1,10 @@
 package wifi4eu.wifi4eu.mapper.exportImport;
 
 import org.mapstruct.Mapper;
-import java.util.List;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
 import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
+
+import java.util.List;
 
 
 @Mapper(componentModel = "spring")

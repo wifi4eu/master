@@ -3,7 +3,7 @@ package wifi4eu.wifi4eu.service.exportImport.excelFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Iterator;
-import org.apache.poi.ss.usermodel.Cell;
+
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -11,28 +11,20 @@ import javax.swing.JFileChooser;
 
 
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
-import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataReporsitory;
+import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
-//import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
-//import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-
-
-import java.util.List;
-import java.util.ArrayList;
 
 
 public class ReadExcelFile {
 
     public ExportImportRegistrationDataMapper exportImportRegistrationDataMapper;
-    public ExportImportRegistrationDataReporsitory exportImportRegistrationDataReporsitory;
+    public ExportImportRegistrationDataRepository exportImportRegistrationDataRepository;
 
     public ReadExcelFile(){}
 
-    public ReadExcelFile(ExportImportRegistrationDataReporsitory exportImportRegistrationDataReporsitory, ExportImportRegistrationDataMapper exportImportRegistrationDataMapper) {
+    public ReadExcelFile(ExportImportRegistrationDataRepository exportImportRegistrationDataRepository, ExportImportRegistrationDataMapper exportImportRegistrationDataMapper) {
         this.exportImportRegistrationDataMapper = exportImportRegistrationDataMapper;
-        this.exportImportRegistrationDataReporsitory = exportImportRegistrationDataReporsitory;
+        this.exportImportRegistrationDataRepository = exportImportRegistrationDataRepository;
     }
 
     public void readExcelFile(){
@@ -63,7 +55,7 @@ public class ReadExcelFile {
                       eI.setAbacReference(row.getCell(6).getStringCellValue());
                       eI.setAbacStandarName(row.getCell(7).getStringCellValue());
                       eI.setMunicipality(Integer.parseInt(row.getCell(0).getStringCellValue()));
-                      exportImportRegistrationDataReporsitory.save(exportImportRegistrationDataMapper.toEntity(eI));
+                      exportImportRegistrationDataRepository.save(exportImportRegistrationDataMapper.toEntity(eI));
                 }
                 count++;
             }

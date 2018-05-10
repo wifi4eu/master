@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import wifi4eu.wifi4eu.entity.exportImport.ExportImportRegistrationData;
 
-public interface ExportImportRegistrationDataReporsitory extends CrudRepository<ExportImportRegistrationData,Integer> {
+public interface ExportImportRegistrationDataRepository extends CrudRepository<ExportImportRegistrationData,Integer> {
     @Query(value = "select \n" +
         "r.municipality as id, \n" +
         "r.municipality as euRank, \n" +
@@ -24,5 +24,6 @@ public interface ExportImportRegistrationDataReporsitory extends CrudRepository<
         "users as u \n" +
         "on r._user = u.id \n" +
         "where u.type is not null and m.name is not null", nativeQuery = true)
-    Iterable<ExportImportRegistrationData> findExportImport();
+    Iterable<ExportImportRegistrationData> findExportImportRD();
+
 }
