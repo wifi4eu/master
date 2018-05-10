@@ -563,8 +563,13 @@
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.totalRecords": "Total records",
   "shared.incorrectFormat": "Seleccione un documento con un formato adecuado (.pdf, .png o .jpg)",
+  "shared.session.expired": "La sesión ha expirado. Está desconectado de WiFi4EU.",
+  "shared.session.expired.reload": "Vuelva a cargar la página",
   "(CET)": "hora central europea",
   "(CEST)": "Hora central europea de verano",
   "(CEST abbreviation)": "CEST",
-  "dgConn.status.validated": "Validated"
+  "dgConn.status.validated": "Validated",
+  "(tech bug screen)": "El portal WiFi4EU está experimentando dificultades técnicas.\n\nSe facilitará más información cuando el incidente esté resuelto.\n\nLe rogamos disculpe las molestias.",
+  "dgConn.status.valid": "Valid",
+  "dgConn.status.invalid": "Invalid"
 }

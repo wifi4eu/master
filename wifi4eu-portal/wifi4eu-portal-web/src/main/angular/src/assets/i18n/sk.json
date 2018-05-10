@@ -537,8 +537,13 @@
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.totalRecords": "Total records",
   "shared.incorrectFormat": "Zvoľte dokument v povolenom formáte (.pdf, .png alebo .jpg)",
+  "shared.session.expired": "Vaša relácia vypršala a spojenie s portálom WiFi4EU sa ukončilo.",
+  "shared.session.expired.reload": "Načítajte stránku znovu.",
   "(CET)": "stredoeurópskeho času",
   "(CEST)": "stredoeurópskeho letného času",
   "(CEST abbreviation)": "SELČ",
-  "dgConn.status.validated": "Validated"
+  "dgConn.status.validated": "Validated",
+  "(tech bug screen)": "Na portáli WiFi4EU sa vyskytli technické problémy.\n\nPodrobnejšie informácie vám poskytneme po vyriešení incidentu.\n\nĎakujeme za porozumenie.",
+  "dgConn.status.valid": "Valid",
+  "dgConn.status.invalid": "Invalid"
 }

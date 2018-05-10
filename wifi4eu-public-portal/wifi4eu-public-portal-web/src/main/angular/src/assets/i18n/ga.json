@@ -537,8 +537,13 @@
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.totalRecords": "Total records",
   "shared.incorrectFormat": "Níl formáid an doiciméid oiriúnach. Úsáid formáid eile (.pdf, .png, or .jpg) le do thoil.",
+  "shared.session.expired": "Tá an seisiún dulta in éag. Tá do ghléas dínasctha de WiFi4EU.",
+  "shared.session.expired.reload": "Athlódáil an leathanach",
   "(CET)": "Am Lár na hEorpa",
   "(CEST)": "Am samhraidh Lár na hEorpa",
   "(CEST abbreviation)": "Am samhraidh Lár na hEorpa",
-  "dgConn.status.validated": "Validated"
+  "dgConn.status.validated": "Validated",
+  "(tech bug screen)": "Tá fadhbanna teicniúla ag tairseach WiFi4EU faoi láthair.\n\nCuirfimid tuilleadh eolais ar fáil nuair a bheidh na fadhbanna réitithe.\n\nGo raibh maith agat.",
+  "dgConn.status.valid": "Valid",
+  "dgConn.status.invalid": "Invalid"
 }

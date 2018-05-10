@@ -537,8 +537,13 @@
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.totalRecords": "Total records",
   "shared.incorrectFormat": "Izvēlieties dokumentu vajadzīgajā formātā (.pdf, .png vai .jpg)",
+  "shared.session.expired": "Sesija ir beigusies. Jūs tikāt atvienots no WiFi4EU lapas.",
+  "shared.session.expired.reload": "Lūdzu, pārlādējiet lapu!",
   "(CET)": "pēc Centrāleiropas laika",
   "(CEST)": "Centrāleiropas vasaras laiks",
   "(CEST abbreviation)": "CEST",
-  "dgConn.status.validated": "Validated"
+  "dgConn.status.validated": "Validated",
+  "(tech bug screen)": "Portālam WiFi4EU šobrīd ir tehniskas problēmas.\n\nMēs sniegsim sīkāku informāciju, kad viss atkal būs kārtībā.\n\nPateicamies par izpratni.",
+  "dgConn.status.valid": "Valid",
+  "dgConn.status.invalid": "Invalid"
 }
