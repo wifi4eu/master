@@ -281,7 +281,7 @@ public class SupplierService {
 
     // New creation
     public List<SupplierDTO> getSuppliersListByRegionId(int regionId) {
-        List<SuppliedRegionDTO> suppliedRegions = suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findByRegion(regionId)));
+        List<SuppliedRegionDTO> suppliedRegions = suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findByRegionId(regionId)));
         List<SupplierDTO> suppliers = new ArrayList<>();
         for (SuppliedRegionDTO suppliedRegion : suppliedRegions) {
             SupplierDTO supplier = getSupplierById(suppliedRegion.getSupplierId());
