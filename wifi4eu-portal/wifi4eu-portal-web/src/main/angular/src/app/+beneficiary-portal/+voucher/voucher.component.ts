@@ -125,7 +125,7 @@ export class VoucherComponent {
                                                     this.loadingButtons.push(false);
                                                     let date = new Date(this.currentCall.startDate);
                                                     this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-                                                    this.hourNumber = ('0' + date.getUTCHours()).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+                                                    this.hourNumber = ('0' + date.getUTCHours() + 2).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
                                                     if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
                                                         this.voucherCompetitionState = 2;
                                                         this.openedCalls = "greyImage";
@@ -250,10 +250,10 @@ export class VoucherComponent {
                     error => {
                         //error sending the information to the MQ
                         this.errorMessage = error;
-                        this.displayError = true;
+                        this.displayError = false;
                         this.sharedService.growlTranslation(
                             "An error occurred and your application could not be received.",
-                            "benefPortal.voucher.apply.error",
+                            "shared.registration.update.error",
                             "error"
                         )
                     }
@@ -267,7 +267,7 @@ export class VoucherComponent {
                 //trying to apply before sending the support documents
                 this.sharedService.growlTranslation(
                     "An error occurred and your application could not be received.",
-                    "benefPortal.voucher.apply.error",
+                    "shared.registration.update.error",
                     "error"
                 )
             }
@@ -275,7 +275,7 @@ export class VoucherComponent {
             //trying to apply before the opening of the call
             this.sharedService.growlTranslation(
                 "An error occurred and your application could not be received.",
-                "benefPortal.voucher.apply.error",
+                "shared.registration.update.error",
                 "error"
             )
         }

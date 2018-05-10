@@ -48,7 +48,7 @@ export class HomeComponent {
                     this.showTimer = true;
                     let date = new Date(this.currentCall.startDate);
                     this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-                    this.hourNumber = ('0' + date.getUTCHours()).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
+                    this.hourNumber = ('0' + date.getUTCHours() + 2).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
                 } else {
                     this.showTimeline = false;
                     this.showTimer = false;
