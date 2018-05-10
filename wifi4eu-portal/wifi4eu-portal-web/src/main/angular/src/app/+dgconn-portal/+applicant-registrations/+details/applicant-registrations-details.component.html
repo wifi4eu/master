@@ -40,6 +40,9 @@
                         <span *ngIf="applications[i].status == 2" class="entity-subtitle" style="margin-left: 0.5em;">
                             <i class="fa fa-check" style="color: green;"></i> <i>{{ 'dgConn.status.valid' | translate }}</i>
                         </span>
+                        <span *ngIf="applications[i].status == 3" class="entity-subtitle" style="margin-left: 0.5em;">
+                            <i class="fa fa-info"></i> <i>{{ 'dgConn.status.pendingFollowup' | translate }}</i>
+                        </span>
                         <span *ngIf="registrationIssues[i] == 1 || registrationIssues[i] == 2" class="badge badge-warning"  style="margin-left: 0.5em;">
                             {{ 'dgConn.badge.warning' | translate }} {{ registrationIssues[i] }}
                         </span>
@@ -159,8 +162,8 @@
                                             </p-column>
                                             <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <a class="action-label" [href]="getLegalFileUrl(i, row.type)" download>
-                                                        <span class="fa fa-download"></span> <span>{{ 'shared.download' | translate }}</span>
+                                                    <a class="link-label" [href]="getLegalFileUrl(i, row.type)" download>
+                                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                                     </a>
                                                 </ng-template>
                                             </p-column>
@@ -176,48 +179,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="ui-g-12">-->
-                        <!--<div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">-->
-                            <!--<p class="applicantDetailsNoMargin municipality-name profileData">-->
-                                <!--<span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.documentation' | translate }}</span>-->
-                            <!--</p>-->
-                            <!--<p class="applicantDetailsNoMargin" *ngIf="!registrations[i].legalFile1 && !registrations[i].legalFile2 && !registrations[i].legalFile3 && !registrations[i].legalFile4">-->
-                                <!--<span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.noDocuments' | translate }}</span>-->
-                            <!--</p>-->
-                            <!--<p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile1">-->
-                                <!--<span class="ui-g-12">-->
-                                    <!--<i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1-->
-                                    <!--<a class="link-label" style="margin-left: 2em;" [href]="getLegalFileUrl(i, 1)" download>-->
-                                        <!--<i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}-->
-                                    <!--</a>-->
-                                <!--</span>-->
-                            <!--</p>-->
-                            <!--<p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile2">-->
-                                <!--<span class="ui-g-12">-->
-                                    <!--<i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2-->
-                                    <!--<a class="link-label" style="margin-left: 2em;" [href]="getLegalFileUrl(i, 2)" download>-->
-                                        <!--<i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}-->
-                                    <!--</a>-->
-                                <!--</span>-->
-                            <!--</p>-->
-                            <!--<p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile3">-->
-                                <!--<span class="ui-g-12">-->
-                                    <!--<i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3-->
-                                    <!--<a class="link-label" style="margin-left: 2em;" [href]="getLegalFileUrl(i, 3)" download>-->
-                                        <!--<i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}-->
-                                    <!--</a>-->
-                                <!--</span>-->
-                            <!--</p>-->
-                            <!--<p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile4">-->
-                                <!--<span class="ui-g-12">-->
-                                    <!--<i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4-->
-                                    <!--<a class="link-label" style="margin-left: 2em;" [href]="getLegalFileUrl(i, 4)" download>-->
-                                        <!--<i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}-->
-                                    <!--</a>-->
-                                <!--</span>-->
-                            <!--</p>-->
-                        <!--</div>-->
-                    <!--</div>-->
                 </div>
                 <br>
             </div>

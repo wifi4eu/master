@@ -245,6 +245,24 @@ public class ApplicationResource {
         return applicationService.getApplicationsByCallIdAndLauId(callId, lauId);
     }
 
+    @ApiOperation(value = "Send legal documents correction request")
+    @RequestMapping(value = "/sendLegalDocumentsCorrection", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO sendLegalDocumentsCorrection(@RequestBody final ApplicationDTO applicationDTO) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("sendLegalDocumentsCorrection");
+            }
+            ApplicationDTO resApplication = applicationService.sendLegalDocumentsCorrection(applicationDTO);
+            return new ResponseDTO(true, resApplication, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'sendLegalDocumentsCorrection' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
     @ApiOperation(value = "exportExcelDGConnApplicantsList")
     @RequestMapping(value = "/exportExcelDGConnApplicantsList", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
     @ResponseBody

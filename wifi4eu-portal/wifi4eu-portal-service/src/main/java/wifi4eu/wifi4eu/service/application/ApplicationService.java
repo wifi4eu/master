@@ -393,6 +393,11 @@ public class ApplicationService {
         return invalidatedApplication;
     }
 
+    public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application) {
+        application.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
+    }
+
     public List<ApplicationDTO> getApplicationsByCallId(int callId) {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdOrderByDateAsc(callId)));
     }

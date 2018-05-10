@@ -62,6 +62,7 @@
                         <span *ngIf="row.status == 0">{{ 'dgConn.beneficiaries.applied' | translate }}</span>
                         <span *ngIf="row.status == 1">{{ 'dgConn.status.invalidated' | translate }}</span>
                         <span *ngIf="row.status == 2">{{ 'dgConn.status.validated' | translate }}</span>
+                        <span *ngIf="row.status == 3">{{ 'dgConn.status.pendingFollowup' | translate }}</span>
                     </ng-template>
                 </p-column>
                 <p-column field="issueStatus" [sortable]="false" header="{{ 'dgConn.issues' | translate }}" styleClass="text-center">

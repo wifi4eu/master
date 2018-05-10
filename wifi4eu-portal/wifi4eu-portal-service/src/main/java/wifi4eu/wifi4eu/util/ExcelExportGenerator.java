@@ -164,6 +164,9 @@ public class ExcelExportGenerator<T> {
                             case 2:
                                 value = "Valid";
                                 break;
+                            case 3:
+                                value = "Pending followup";
+                                break;
                             default:
                                 value = "";
                                 break;

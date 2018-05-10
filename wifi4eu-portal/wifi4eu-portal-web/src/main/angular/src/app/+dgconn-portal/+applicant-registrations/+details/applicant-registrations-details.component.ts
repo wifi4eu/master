@@ -318,38 +318,44 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         if (!this.processingRequest) {
             if (this.selectedIndex != null) {
                 this.processingRequest = true;
-                let savedFilesCount = 0;
-                for (let i = 0; i < this.selectedFilesTypes[this.selectedIndex].length; i++) {
-                    let updatedLegalFile = new LegalFileDTOBase();
-                    let fileType = this.selectedFilesTypes[this.selectedIndex][i];
-                    for (let legalFile of this.legalFiles[this.selectedIndex]) {
-                        if (legalFile.type == fileType) {
-                            updatedLegalFile = legalFile;
-                            updatedLegalFile.data = null;
-                            updatedLegalFile.requestCorrection = true;
-                            updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
-                        }
-                    }
-                    this.registrationApi.saveLegalFile(updatedLegalFile).subscribe(
-                        (resLegalFile: LegalFileDTOBase) => {
-                            savedFilesCount++;
-                            if (resLegalFile) {
-                                if (savedFilesCount == this.selectedFilesTypes[this.selectedIndex].length) {
-                                    this.selectedFilesTypes[this.selectedIndex] = [];
-                                    this.getApplicationDetailsInfo();
-                                    this.closeModal();
+                this.applicationApi.sendLegalDocumentsCorrection(this.applications[this.selectedIndex]).subscribe(
+                    (response: ResponseDTOBase) => {
+                        let savedFilesCount = 0;
+                        for (let i = 0; i < this.selectedFilesTypes[this.selectedIndex].length; i++) {
+                            let updatedLegalFile = new LegalFileDTOBase();
+                            let fileType = this.selectedFilesTypes[this.selectedIndex][i];
+                            for (let legalFile of this.legalFiles[this.selectedIndex]) {
+                                if (legalFile.type == fileType) {
+                                    updatedLegalFile = legalFile;
+                                    updatedLegalFile.data = null;
+                                    updatedLegalFile.requestCorrection = true;
+                                    updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
                                 }
                             }
-                        }, error => {
-                            savedFilesCount++;
-                            if (savedFilesCount == this.selectedFilesTypes[this.selectedIndex].length) {
-                                this.selectedFilesTypes[this.selectedIndex] = [];
-                                this.getApplicationDetailsInfo();
-                                this.closeModal();
-                            }
+                            this.registrationApi.saveLegalFile(updatedLegalFile).subscribe(
+                                (resLegalFile: LegalFileDTOBase) => {
+                                    savedFilesCount++;
+                                    if (resLegalFile) {
+                                        if (savedFilesCount == this.selectedFilesTypes[this.selectedIndex].length) {
+                                            this.selectedFilesTypes[this.selectedIndex] = [];
+                                            this.getApplicationDetailsInfo();
+                                            this.closeModal();
+                                        }
+                                    }
+                                }, error => {
+                                    savedFilesCount++;
+                                    if (savedFilesCount == this.selectedFilesTypes[this.selectedIndex].length) {
+                                        this.selectedFilesTypes[this.selectedIndex] = [];
+                                        this.getApplicationDetailsInfo();
+                                        this.closeModal();
+                                    }
+                                }
+                            );
                         }
-                    );
-                }
+                    }, error => {
+                        this.closeModal();
+                    }
+                );
             }
         }
     }
