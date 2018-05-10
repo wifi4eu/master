@@ -293,4 +293,10 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.users = [];
         this.registrationIssues = []
     }
+
+    private maxLength(event) {
+        if (this.invalidateReason.length > 255) {
+            this.sharedService.growlTranslation('The invalidate the municipality message is bigger than 255. Please, reduce the message.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.maxLength', 'error');
+        }
+    }
 }
