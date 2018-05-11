@@ -7,7 +7,8 @@ import { ResponseDTO } from '../../shared/swagger/model/ResponseDTO';
 import {TranslateService} from "ng2-translate";
 
 @Component({
-    templateUrl: 'exportImport.component.html', providers: [CallApi, ApplicationApi, ExportImportApi]
+    templateUrl: 'exportImport.component.html',
+    providers: [CallApi, ApplicationApi, ExportImportApi]
 })
 
 export class DgConnExportImportComponent {
@@ -53,22 +54,22 @@ export class DgConnExportImportComponent {
      }
 
      exportBeneficiaryInformation(){
-      this.exportImportApi.exportBeneficiaryInformation().subscribe(
-                     (response: ResponseDTO)  => {
-                         if(response.success){
-                             this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
-                             this.translateService.get("dgconn.dashboard.card.messageExport").subscribe(
-                                 (translation: string) => {
-                                     if (translation) {
-                                         window.alert(translation);
-                                     }
+             this.exportImportApi.exportBeneficiaryInformation().subscribe(
+                 (response: ResponseDTO)  => {
+                     if(response.success){
+                         this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
+                         this.translateService.get("dgconn.dashboard.card.messageExport").subscribe(
+                             (translation: string) => {
+                                 if (translation) {
+                                     window.alert(translation);
                                  }
-                             );
-                         }
-                     },
-                     error => {
+                             }
+                         );
                      }
-                 );
+                 },
+                 error => {
+                 }
+              );
      }
 
      exportBC(){

@@ -58,12 +58,12 @@ public class ExportImportRegistrationAbacResource {
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'createMayor' operation.", ade);
+                _log.error("Error with permission on operation.", ade);
             }
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("Error on 'createMayor' operation.", e);
+                _log.error("Error on operation.", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }

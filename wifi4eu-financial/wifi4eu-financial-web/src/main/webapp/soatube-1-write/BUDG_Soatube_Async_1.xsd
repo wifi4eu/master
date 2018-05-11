@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 2 sp1 (http://www.altova.com) by - - (European Commission DG BUDGET) -->
+<!-- 
+=================================================================================================
+Repository path:	$HeadURL: https://webgate.ec.europa.eu/CITnet/svn/budg-abac-dev/trunk/OSB/ANA_RESOURCES/xsd/soatube/BUDG_Soatube_1.xsd $
+Last committed:		$Revision: 31904 $
+Last changed by:	$Author: demaije $
+Last changed date:	$Date: 2015-09-14 15:56:48 +0200 (Mon, 14 Sep 2015) $
+ID:					$Id: BUDG_Soatube_1.xsd 31904 2015-09-14 13:56:48Z demaije $
+=================================================================================================
+-->
+<xs:schema 
+xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns="http://www.ec.europa.eu/budg/abac/soatube/v1"
+targetNamespace="http://www.ec.europa.eu/budg/abac/soatube/v1" 
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+	<xs:include schemaLocation="../soatube-1/BUDG_Soatube_1.xsd"/>
+</xs:schema>

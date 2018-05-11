@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- edited with XMLSpy v2011 rel. 2 sp1 (http://www.altova.com) by - - (European Commission DG BUDGET) -->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/soatube/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tub="http://www.ec.europa.eu/budg/abac/soatube/v1" xmlns:ns="http://www.ec.europa.eu/budg/abac/br/v1" xmlns:ns1="http://www.ec.europa.eu/budg/abac/message/v1" xmlns:ns2="http://www.ec.europa.eu/budg/abac/simple_type/v1" name="Soatube" targetNamespace="http://www.ec.europa.eu/budg/abac/soatube/service/es/sync/v1">
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/soatube/v1" schemaLocation="../soatube-1/BUDG_Soatube_1.xsd">
+    	</xsd:import>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="SoatubeRequest">
+		<wsdl:part name="parameters" element="tub:SoatubeRequest"/>
+	</wsdl:message>
+	<wsdl:message name="SoatubeResponse">
+		<wsdl:part name="parameters" element="tub:SoatubeResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="Soatube">
+		<wsdl:operation name="invoke">
+			<wsdl:input message="tns:SoatubeRequest"/>
+			<wsdl:output message="tns:SoatubeResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="SoatubeSOAP" type="tns:Soatube">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="invoke">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/soatube/service/es/sync/find/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="Soatube">
+		<wsdl:port name="SoatubeSOAP" binding="tns:SoatubeSOAP">
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/Soatube/v1"/>
+			<!--soap:address location="http://localhost:7001/wifi4eu-financial/Soatube"/-->
+			<!--soap:address location="http://localhost:7001/wifi4eu-financial/eu/europa/ec/budg/abac/soatube/v1"/-->
+			<!--soap:address location="https://webgate.ec.testa.eu/webpaxanwtst_nt_pub/abac/service/Soatube/v1"/-->
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

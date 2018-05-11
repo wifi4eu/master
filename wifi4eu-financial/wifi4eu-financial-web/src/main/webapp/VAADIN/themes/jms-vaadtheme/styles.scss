@@ -1,0 +1,26 @@
+@import "addons.scss";
+@import "jms-vaadtheme.scss";
+
+/* This file prefixes all rules with the theme name to avoid causing conflicts with other themes. */
+/* The actual styles should be defined in jms-vaadtheme.scss */
+.jms-vaadtheme {
+  @include addons;
+  @include jms-vaadtheme;
+}
+
+
+.v-table-cell-content-failure {
+    color: red;
+    background-image: url("../../failure_icon.png");
+    background-repeat: no-repeat;
+    background-position: 5px;
+    text-indent: 20px;
+}
+
+.v-table-cell-content-success {
+    color: green;
+    background-image: url("../../success_icon.png");
+    background-repeat: no-repeat;
+    background-position: 5px;
+    text-indent: 20px;
+}

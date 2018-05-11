@@ -22,6 +22,13 @@
         <!--jndi.datasource.name>jdbc/wififoreu-financial</jndi.datasource.name-->
         <jndi.datasource.name>jdbc/Wifi4euAbacDataSource</jndi.datasource.name>
         <persistence.unit.name>wifi4eu-financialPersistence</persistence.unit.name>
+
+        <budg.req.out.queue>jms.LSY_WIFI4EU_REQ_OUT</budg.req.out.queue>
+        <budg.user>LSY_WIFI4EU</budg.user>
+        <budg.password>FYyR[+5m213-]GuBV</budg.password>
+        <budg.endpoint>https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub</budg.endpoint>
+        <!--budg.endpoint>https://webgate.ec.testa.eu/webpaxanwtst_nt_pub</budg.endpoint-->
+        <!--budg.endpoint>http://localhost:7001/wifi4eu-financial</budg.endpoint-->
     </properties>
 
     <modules>

@@ -104,7 +104,14 @@ public class ExportImportRegistrationAbacService {
                 document[i][5]=String.valueOf(countMunicipality);
            }
            CreateExcelFile cF=new CreateExcelFile(httpServletRequest);
-           cF.createExcelFile(header, document);
+           cF.createExcelFile(header, document, "ExportRegistrationData.csv");
+    }
+
+    @Transactional
+    public void importRegistrationData() throws Exception{
+        _log.info("importRegistrationData");
+        ReadExcelFile rF=new ReadExcelFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
+        rF.readExcelFile();
     }
 
     public void exportBeneficiaryInformation() throws Exception {
@@ -144,14 +151,7 @@ public class ExportImportRegistrationAbacService {
             document[i][5]=String.valueOf(countMunicipality);
         }
         CreateExcelFile cF=new CreateExcelFile(httpServletRequest);
-        cF.createExcelFile(header, document);
-    }
-
-    @Transactional
-    public void importRegistrationData() throws Exception{
-          _log.info("importRegistrationData");
-          ReadExcelFile rF=new ReadExcelFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
-          rF.readExcelFile();
+        cF.createExcelFile(header, document, "ExportBeneficiariInformation.csv");
     }
 
     private Integer setIssueToDgconnBeneficiary(Integer lauId) {

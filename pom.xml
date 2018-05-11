@@ -13,10 +13,10 @@
 
     <modules>
         <module>wifi4eu-common</module>
-        <module>wifi4eu-portal</module>
-        <module>wifi4eu-public-portal</module>
-        <module>wifi4eu-dgconn</module>
-        <!--<module>wifi4eu-financial</module>-->
+        <!--<module>wifi4eu-portal</module>-->
+        <!--<module>wifi4eu-public-portal</module>-->
+        <!--<module>wifi4eu-dgconn</module>-->
+        <module>wifi4eu-financial</module>
     </modules>
 
 
@@ -441,6 +441,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${apache.poi.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
@@ -711,12 +717,12 @@
             <artifactId>commons-lang</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>applicationinsights-web</artifactId>
-            <!-- or applicationinsights-core for bare API -->
-            <version>[1.0,)</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.microsoft.azure</groupId>-->
+            <!--<artifactId>applicationinsights-web</artifactId>-->
+            <!--&lt;!&ndash; or applicationinsights-core for bare API &ndash;&gt;-->
+            <!--<version>[1.0,)</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>com.rabbitmq</groupId>

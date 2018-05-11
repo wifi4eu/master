@@ -3,29 +3,81 @@ import {Http, Response, Headers, RequestOptions} from "@angular/http";
 import {Observable} from "rxjs";
 import * as FileSaver from 'file-saver';
 import {FinancialApi} from "../shared/swagger/api/FinancialApi";
+import {ExportImportApi} from "../shared/swagger/api/ExportImportApi";
+import {SharedService} from "../shared/shared.service";
+import {CallApi} from "../shared/swagger/api/CallApi";
 import {ResponseDTO} from "../shared/swagger/model/ResponseDTO";
+import {TranslateService} from "ng2-translate";
 
 
 @Component({
     templateUrl: './abac.component.html',
-    providers: [FinancialApi]
+    providers: [CallApi, FinancialApi, ExportImportApi]
 })
 export class AbacComponent {
     private exportEnabled: boolean;
     private jsonFile: File;
 
-
-    constructor(private http: Http, private financialApi: FinancialApi) {
+    constructor(private http: Http, private financialApi: FinancialApi, private exportImportApi: ExportImportApi, private sharedService: SharedService, private translateService: TranslateService) {
         this.exportEnabled = false;
     }
 
-    importLEF() {
+    importLegalEntityF() {
+    debugger;
+         this.exportImportApi.importLegalEntityF().subscribe(
+            (response: ResponseDTO)  => {
+                if(response.success){
+                    this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                    this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                        (translation: string) => {
+                            if (translation) {
+                                window.alert(translation);
+                            }
+                        }
+                    );
+                }
+            },
+            error => {
+            }
+        );
     }
 
-    importBC() {
+    importBudgetaryCommitment() {
+        //this.exportImportApi.importBudgetaryCommitment().subscribe(
+          //  (response: ResponseDTO)  => {
+            //    if(response.success){
+              //      this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                //    this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                  //      (translation: string) => {
+                    //        if (translation) {
+                      //          window.alert(translation);
+                        //    }
+                        //}
+                    //);
+                //}
+            //},
+            //error => {
+            //}
+        //);
     }
 
-    exportLEFBCValidate() {
+    exportLegalEntityFBCValidate() {
+        //this.exportImportApi.exportLegalEntityFBCValidate().subscribe(
+          //     (response: ResponseDTO)  => {
+            //       if(response.success){
+              //         this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
+                //       this.translateService.get("dgconn.dashboard.card.messageExport").subscribe(
+                  //         (translation: string) => {
+                    //           if (translation) {
+                      //             window.alert(translation);
+                        //       }
+                         //  }
+                       //);
+                  // }
+               //},
+               //error => {
+               //}
+         //);
     }
 
 

@@ -25,7 +25,7 @@ public class CreateExcelFile{
         this.httpServletRequest=httpServletRequest;
     }
 
-    public void createExcelFile(String [] header, String [][] document)throws UnsupportedEncodingException, IOException{
+    public void createExcelFile(String [] header, String [][] document, String fileName)throws UnsupportedEncodingException, IOException{
         String path = this.getClass().getClassLoader().getResource("").getPath();
         String fullPath = URLDecoder.decode(path, "UTF-8");
         String pathArr[] = fullPath.split("/WEB-INF/classes/");
@@ -37,7 +37,7 @@ public class CreateExcelFile{
         //String hostName=httpServletRequest.getServerName();
         String hostName = InetAddress.getLocalHost().getCanonicalHostName();
         String app=httpServletRequest.getContextPath();
-        String fileName="ExportRegistrationData.csv";
+        //String fileName="ExportRegistrationData.csv";
 //        String filePath= fullPath+"/abacFiles/"+fileName;
         String filePath= fullPath+"/"+fileName;
         String sheet="Sheet1";
