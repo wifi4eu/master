@@ -558,7 +558,7 @@
   "dgConn.countryRanking": "Country Ranking",
   "dgConn.call.number": "Call {{number}}",
   "dgConn.comment.mandatory": "Comment (mandatory)",
-  "dgConn.manageApplications.title": "Manage municipality applications",
+  "dgConn.manageApplications.title": "View municipality applications",
   "dgConn.manageApplications.desc": "The municipalities listed below have applied to WiFi4EU. You can check their data and the status of their application by using the table below.",
   "dgConn.invalidateRegistration.modal.title": "Do you really want to invalidate this registration?",
   "dgConn.discussionForum.writeMessage.desc": "This button will be enabled when there is mediation",
@@ -597,5 +597,9 @@
   "dgConn.actions": "Actions",
   "dgConn.requestCorrection": "Request correction",
   "dgConn.select": "Select",
-  "dgConn.status.pendingFollowup": "Pending followup"
+  "dgConn.status.pendingFollowup": "Pending followup",
+  "dgConn.filterByCountry": "Filter by country",
+  "dgConn.searchByMunicipality": "Search by municipality",
+  "dgConn.searchByMunicipality.placeholder": "Write the name of a municipality...",
+  "dgConn.numberOfApplications": "Number of applications"
 }
