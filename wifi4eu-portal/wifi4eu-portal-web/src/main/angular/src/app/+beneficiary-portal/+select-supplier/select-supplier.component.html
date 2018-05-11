@@ -72,7 +72,15 @@
   </div>
 
   <div class="marginTop registrationPanel">
-      <p-dataTable [value]="suppliers" sortField="name" [sortOrder]="1" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
+      <p-dataTable [value]="suppliers" sortField="name" [sortOrder]="1" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [(selection)]="selectedSupplier" dataKey="name">
+
+<!--           <div style="text-align: left">Selected Supplier: {{selectedSupplier ? selectedSupplier.name + ' - ' + selectedSupplier.address + ' - ' + selectedSupplier.website + ' - ' + selectedSupplier.vat : 'none'}}</div> -->
+
+          <p-column  selectionMode="single" styleClass="label">
+            <template pTemplate="body">
+
+            </template>
+          </p-column>
 
           <p-column field="i" header="Index" styleClass="label">
             <template pTemplate="body" let-i="rowIndex">

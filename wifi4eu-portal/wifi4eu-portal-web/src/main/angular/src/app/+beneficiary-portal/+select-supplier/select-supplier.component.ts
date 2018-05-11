@@ -17,6 +17,7 @@ import { SupplierDTOBase } from "../../shared/swagger/model/SupplierDTO";
 
 import { Paginator, DataGrid } from 'primeng/primeng';
 
+
 @Component({
   selector: 'app-+select-supplier',
   templateUrl: './select-supplier.component.html',
@@ -33,6 +34,8 @@ export class selectSupplierComponent {
   private searchSuppliersInput: string = '';
   private displayedSuppliers: SupplierDTOBase[] = [];
   private suppliersCopy: SupplierDTOBase[] = [];
+
+  selectedSupplier: SupplierDTOBase;
 
   // region: NutsDTOBase = null;
   region: any = {};
@@ -111,8 +114,6 @@ export class selectSupplierComponent {
             }
           );
     }
-
-
 
   }
 
