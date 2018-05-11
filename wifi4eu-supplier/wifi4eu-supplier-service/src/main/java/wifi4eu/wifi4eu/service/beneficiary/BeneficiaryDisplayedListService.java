@@ -7,13 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.cns.CNSManager;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryDisplayedListMapper;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryDisplayedListRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
+
+import javax.xml.ws.Response;
+import java.util.Date;
 
 @Service("beneficiary")
 public class BeneficiaryDisplayedListService {
@@ -33,13 +41,27 @@ public class BeneficiaryDisplayedListService {
     @Autowired
     CNSManager cnsManager;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserMapper userMapper;
+
+
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryDisplayedListService.class);
 
     @Transactional
     public ResponseDTO findBeneficiariesList() {
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(true);
-        response.setData(beneficiaryDisplayedListMapper.toDTOList(Lists.newArrayList(beneficiaryDisplayedListRepository.findBeneficiariesList())));
+        UserDTO user = new UserDTO();
+        UserContext userContext = UserHolder.getUser();
+        if (userContext != null) {
+            user = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
+        } else {
+            response.setError(new ErrorDTO(404, "error.404.userNotFound"));
+        }
+        response.setData(beneficiaryDisplayedListMapper.toDTOList(Lists.newArrayList(beneficiaryDisplayedListRepository.findBeneficiariesList(user.getId()))));
         return response;
     }
 
@@ -56,7 +78,7 @@ public class BeneficiaryDisplayedListService {
             // response.setData(registrationMapper.toDTO(registration));
             // response.setData(registration);
             response.setData("WiFi Indicator updated successfully");
-            cnsManager.sendInstallationConfirmationNotification(email,name);
+            cnsManager.sendInstallationConfirmationNotification(email, name);
         } else {
             response.setSuccess(false);
             response.setData("Error querying municipality - registration");

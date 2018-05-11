@@ -3,43 +3,29 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 // import { autoSaveHandler as autoSaveHandlerModule1 } from '@app/module1';
-
 import { UxService, UxLink, UxLanguage } from '@eui/ux-commons';
-import {LocalStorageService} from 'angular-2-local-storage'
-
-import {
-    CONFIG_TOKEN,
-    AppState,
-    UserState,
-    RouteUpdateAction,
-    getAppState,
-    getUserState,
-    StoreService,
-} from '@eui/ux-core';
-
+import { LocalStorageService } from 'angular-2-local-storage'
+import { CONFIG_TOKEN, AppState, UserState, RouteUpdateAction, getAppState, getUserState, StoreService } from '@eui/ux-core';
 import { UserDetailsService } from './core/services/user-details.service';
+import { UserDTOBase, UserApi, ResponseDTOBase } from './shared/swagger';
+import { environment } from '../environments/environment.prod';
 
 @Component({
     selector: 'app-root',
-    templateUrl: './app.component.html'
+    templateUrl: './app.component.html',
+    providers: [UserApi]
 })
+
 export class AppComponent implements OnInit {
     appState: Observable<AppState>;
     userState: Observable<UserState>;
-
     menuLinks: UxLink[] = [];
     menuTranslations: Map<String, String>;
     notificationLinks: UxLink[] = [];
     userInfos: string = 'NAME Firstname';
+    user: UserDTOBase;
 
-    constructor(
-        @Inject(CONFIG_TOKEN) private config: any,
-        private translateService: TranslateService,
-        private uxService: UxService,
-        private store: Store<any>,
-        private userDetailsService: UserDetailsService,
-        private localStorageService: LocalStorageService
-    ) {
+    constructor(@Inject(CONFIG_TOKEN) private config: any, private translateService: TranslateService, private uxService: UxService, private store: Store<any>, private userDetailsService: UserDetailsService, private localStorageService: LocalStorageService, private userApi: UserApi) {
         translateService.setDefaultLang('en');
         translateService.use('en');
 
@@ -55,10 +41,11 @@ export class AppComponent implements OnInit {
         this._createNotifications();
 
         // custom call for userDetails API -- can also be achived directly to the UX-CORE (config/modules)
-        this._getUserDetails();
+        /* this._getUserDetails(); */
+        this.getUserData();
     }
 
-    updateMenuTranslations(){
+    updateMenuTranslations() {
         this.translateService.get('menu.about').subscribe(
             (translatedString: string) => {
                 this.menuTranslations.set('menu.about', translatedString);
@@ -104,36 +91,66 @@ export class AppComponent implements OnInit {
                 { label: 'Notification title', subLabel: 'This is the description of the noficiation' }
             ),
             new UxLink(
-                 { label: 'Notification title', subLabel: 'This is the description of the noficiation' }
+                { label: 'Notification title', subLabel: 'This is the description of the noficiation' }
             ),
             new UxLink(
-                 { label: 'Notification title', subLabel: 'This is the description of the noficiation' }
+                { label: 'Notification title', subLabel: 'This is the description of the noficiation' }
             ),
             new UxLink(
-                 { label: 'Notification title', subLabel: 'This is the description of the noficiation' }
+                { label: 'Notification title', subLabel: 'This is the description of the noficiation' }
             )
         ];
     }
 
-    private _getUserDetails() {
-        this.userDetailsService.getUserDetails().subscribe(
-            (userDetails: any) => {
-                let buffer: string [] = [userDetails.firstName, userDetails.lastName];
-                this.userInfos = buffer.join(' ');
-            },
-            error => {
-                this.uxService.growl({
-                    severity: 'warning',
-                    summary: 'WARNING',
-                    detail: 'Could not get user details, ignore this when NG is working in offline mode'
-                });
-                console.log('WARNING : Could not get user details, ignore this when NG is working in offline mode');
-                this.userInfos = 'Name Firstname';
+    private getUserData() {
+        this.userApi.ecasLogin().subscribe((response: ResponseDTOBase) => {
+            if (response.success) {
+                this.user = response.data;
+                this.userInfos = this.user.ecasUsername;
+                alert(this.user.id);
+            }
+        }, error => {
+            this.uxService.growl({
+                severity: 'warning',
+                summary: 'WARNING',
+                detail: 'Could not get user details, ignore this when NG is working in offline mode'
             });
+            console.log('WARNING : Could not get user details, ignore this when NG is working in offline mode');
+            this.userInfos = 'Name Firstname';
+        });
     }
+
+    private logout() {
+        this.user = null;
+
+        this.userApi.doCompleteSignOut().subscribe((response: string) => {
+            window.location.href = environment['logoutUrl'];
+        }, (error) => {
+            window.location.href = environment['logoutUrl'];
+            console.log(error)
+        }
+        );
+    }
+
+    /*  private _getUserDetails() {
+         this.userDetailsService.getUserDetails().subscribe(
+             (userDetails: any) => {
+                 let buffer: string[] = [userDetails.firstName, userDetails.lastName];
+                 this.userInfos = buffer.join(' ');
+             },
+             error => {
+                 this.uxService.growl({
+                     severity: 'warning',
+                     summary: 'WARNING',
+                     detail: 'Could not get user details, ignore this when NG is working in offline mode'
+                 });
+                 console.log('WARNING : Could not get user details, ignore this when NG is working in offline mode');
+                 this.userInfos = 'Name Firstname';
+             });
+     } */
 
     private goToTop() {
         window.scrollTo(0, 0);
     }
-   
+
 }
