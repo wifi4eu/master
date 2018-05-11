@@ -1,0 +1,120 @@
+<p>
+  select-supplier works!
+</p>
+
+<!-- <div class="container center"></div> -->
+
+<div>
+<!--   <div class="row" *ngIf="searched && country && region && suppliers.length > 0" [@opacityTransition]> -->
+<!--   </div> -->
+<!--   <div class="row" [class.hide]="suppliers.length <= 0 || !searched">
+    <div class="col-sx-12" style="position: relative;">
+      <p-paginator class="paginator-panel" #paginator (onPageChange)="paginate($event)" [rowsPerPageOptions]="itemsPerPageSelector"></p-paginator>
+        <div class="totalRecords">
+          <span style="color: #929292;">{{ 'shared.totalRecords' | translate }}: {{totalItems}} </span>
+        </div>
+    </div>
+  </div> -->
+<!--   <div class="row" *ngIf="searched && suppliers.length == 0">
+    <div class="col-md-12">
+      <span class="updated-on">{{ 'listMunicipalities.noresults.text' | translate }} {{regionNameSearched}}</span>
+    </div>
+  </div> -->
+</div>
+
+
+
+
+<div class="ui-g-12 ui-md-8 offset-md-2">
+
+  <a class="link-label" routerLink="/beneficiary-portal/voucher" routerLinkActive="active">
+      <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
+  </a>
+
+<!--   <h4 class="beneficiaryTitle">{{ municipalities[0].name }}</h4> -->
+  <h5 class="beneficiaryMayor counterText" >{{ 'benefPortal.selectSupplier.title' | translate }}</h5>
+  <p class="subtitle-discover">{{ 'benefPortal.selectSupplier.title.text' | translate }}</p>
+
+<!--   <div class="panel-dg panel-padding panel-input">
+      <div class="row">
+          <div class="col-md-8">
+              <form #searchSuppliersForm="ngForm" (submit)="searchSuppliers()" class="input-group">
+                  <span class="input-group-addon">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                  </span>
+                  <input type="search" name="searchInput" class="form-control" [(ngModel)]="searchSuppliersInput">
+                  <span class="input-group-btn">
+                      <button class="btn btn-primary" (click)="filterData(inputSearch)" type="submit">
+                          <b>{{ 'shared.search.button' | translate }}</b>
+                      </button>
+                  </span>
+              </form>
+          </div>
+      </div>
+  </div> -->
+
+  <div class="panel-dg panel-padding panel-input">
+      <div class="row">
+          <div class="col-md-8">
+              <form #searchSuppliersForm="ngForm" (submit)="searchSuppliers()" class="input-group">
+                  <span class="input-group-addon">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                  </span>
+                  <input type="search" name="searchInput" class="form-control" [(ngModel)]="searchSuppliersInput">
+                  <span class="input-group-btn">
+                      <button class="btn btn-primary" type="submit">
+                          <b>{{ 'shared.search.button' | translate }}</b>
+                      </button>
+                  </span>
+              </form>
+          </div>
+      </div>
+  </div>
+
+  <div class="marginTop registrationPanel">
+      <p-dataTable [value]="suppliers" sortField="name" [sortOrder]="1" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]">
+
+          <p-column field="i" header="Index" styleClass="label">
+            <template pTemplate="body" let-i="rowIndex">
+              <span class="row-index">{{i + 1}}</span>
+            </template>
+          </p-column>
+
+          <p-column field="logo" header="{{ 'benefPortal.selectSupplier.table.logo' | translate }}" styleClass="label">
+            <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
+              <span class="supplier-logo">
+                <img class="profileLogoImage" style="height:30px;" src="{{ supplier.logo }}">
+              </span>
+            </template>
+          </p-column>
+
+          <p-column field="name" header="{{ 'suppRegistration.company.name' | translate }}" [sortable]="true" styleClass="label">
+            <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
+              <span class="supplier-name">{{supplier.name}}</span>
+            </template>
+          </p-column>
+
+          <p-column field="address" header="{{ 'benefRegistration.address.label' | translate }}" styleClass="label">
+            <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
+              <span class="supplier-address">{{supplier.address}}</span>
+            </template>
+          </p-column>
+
+          <p-column field="website" header="{{ 'benefPortal.selectSupplier.table.web' | translate }}" styleClass="label">
+            <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
+              <span class="supplier-website">{{supplier.website}}</span>
+            </template>
+          </p-column>
+
+          <p-column field="vat" header="{{ 'suppRegistration.vat.label' | translate }}" [sortable]="true" styleClass="label">
+            <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
+              <span class="supplier-vat">{{supplier.vat}}</span>
+            </template>
+          </p-column>
+
+      </p-dataTable>
+  </div>
+</div>
+
+
+
