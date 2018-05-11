@@ -92,6 +92,7 @@
     "menu.submenu": "About",
     "shared.loggedInAs": "Logged in as ",
     "shared.logout": "Logout",
+    "shared.login": "Login",
     "shared.error.beneficiaryNotSelected": "No beneficiary selected.",
 
     "error.0": "Server is not available",

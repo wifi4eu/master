@@ -7,34 +7,25 @@
         <div class="profile-wrapper" isCompact="false">
             <div class="left-panel">
                 <div *ngIf="user" class="user-infos">
-                    <span class="wellcomeHeader">
+                    <span>
                         {{ 'shared.loggedInAs' | translate }}
-                        <a [routerLink]="profileUrl">
-                            <strong class="color-primary">{{user.ecasUsername}}</strong>
-                        </a>
-                        <!-- 
-                        <strong class="user-name">{{userInfos}}
+                        <strong class="user-name">{{user.ecasUsername}}
                             <i class="header-icons fa fa-user"></i>
-                        </strong> -->
+                        </strong>
                     </span>
-                    <button (click)="logout()" class="headerButton">
-                        {{'shared.logout'|translate}}
-                    </button>
-
-                    <!-- <span class="logout-button">
+                    <span class="logout-button">
                         <a (click)="logout()">{{ 'shared.logout' | translate }}
                             <i class="header-icons fas fa-sign-out-alt"></i>
                         </a>
-                    </span> -->
+                    </span>
                 </div>
-            <div *ngIf="!user" class="user-infos">
-                <strong class="color-primary"></strong>
-                <a href="">
-                    <button class="headerButton">
-                        {{'shared.login'|translate}}
-                    </button>
-                </a>
-            </div>
+                <div *ngIf="!user" class="user-infos">
+                    <a href="#">
+                        <strong class="color-primary">{{'shared.login'|translate}}
+                            <i class="header-icons fas fa-sign-in-alt"></i>
+                        </strong>
+                    </a>
+                </div>
 
             </div>
         </div>
