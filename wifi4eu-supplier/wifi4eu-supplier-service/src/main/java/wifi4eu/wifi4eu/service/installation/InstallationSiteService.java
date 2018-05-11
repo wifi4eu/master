@@ -140,35 +140,17 @@ public class InstallationSiteService {
                 control = false;
             }
 
-            //system should check the URL of the captive portal is unique.
-            if (url != null && installationSiteRepository.countInstallationSiteByUrl(url) >= 1) {
-                response.setSuccess(false);
-                response.setError(new ErrorDTO(409, "error.409.duplicatedUrl"));
-                return response;
-            }
-
-            String domain;
-            try {
-                String tempUrl = !url.startsWith("http") ? "http://" + url : url;
-                URL uri = new URL(tempUrl);
-                domain = uri.getHost().startsWith("www.") ? uri.getHost().substring(4) : uri.getHost();
-            } catch (MalformedURLException ex) {
-                domain = url;
-            }
-
-            // the domain will be added to whitelist
-            if(whitelistRepository.countInstallationSiteWhitelistByOrigin(domain) == 0) {
-                InstallationSiteWhitelist whitelist = new InstallationSiteWhitelist();
-                whitelist.setOrigin(domain);
-                whitelist.setActive(1);
-                whitelistRepository.save(whitelist);
-            }
-
             if (control) {
-                // if (map.get("url").equals(map.get("url_confirmation"))) {
                 InstallationSite installationSite;
                 //if there's no id, we have to create a new installation site
                 if (!map.containsKey("id")) {
+                    //system should check the URL of the captive portal is unique.
+                    if (url != null && installationSiteRepository.countInstallationSiteByUrl(url) >= 1) {
+                        response.setSuccess(false);
+                        response.setError(new ErrorDTO(409, "error.409.duplicatedUrl"));
+                        return response;
+                    }
+
                     installationSite = new InstallationSite();
                     Calendar calendar = Calendar.getInstance();
                     Date now = calendar.getTime();
@@ -185,21 +167,41 @@ public class InstallationSiteService {
                     installationSite.setIdNetworkSnippet(token);
 
                 } else {
+                    //system should check the URL of the captive portal is unique.
+                    if (url != null && installationSiteRepository.countInstallationSiteByUrlAndIdNotIn(url,(int) map.get("id")) >= 1) {
+                        response.setSuccess(false);
+                        response.setError(new ErrorDTO(409, "error.409.duplicatedUrl"));
+                        return response;
+                    }
                     installationSite = installationSiteRepository.findInstallationSiteById((int) map.get("id"));
+
                 }
+
+                String domain;
+                try {
+                    String tempUrl = !url.startsWith("http") ? "http://" + url : url;
+                    URL uri = new URL(tempUrl);
+                    domain = uri.getHost().startsWith("www.") ? uri.getHost().substring(4) : uri.getHost();
+                } catch (MalformedURLException ex) {
+                    domain = url;
+                }
+
+                // the domain will be added to whitelist
+                if(whitelistRepository.countInstallationSiteWhitelistByOrigin(domain) == 0) {
+                    InstallationSiteWhitelist whitelist = new InstallationSiteWhitelist();
+                    whitelist.setOrigin(domain);
+                    whitelist.setActive(1);
+                    whitelistRepository.save(whitelist);
+                }
+
                 installationSite.setMunicipality((int) map.get("municipality"));
-                // installationSite.setMunicipality(municipalityRepository.findMuncipalityById((int) map.get
-                // ("id_beneficiary")));
                 installationSite.setName((String) map.get("name"));
                 installationSite.setUrl(url);
                 installationSite.setDomainName(domain);
                 installationSite.setStatus(1);
-                // installationSite.setId_status(statusRepository.findStatudById(1));
                 installationSiteRepository.save(installationSite);
                 response.setSuccess(true);
                 response.setData(installationSite);
-                // }
-
             } else {
                 response.setSuccess(false);
                 response.setError(new ErrorDTO(400, "error.400.invalidFields"));

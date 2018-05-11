@@ -26,7 +26,6 @@ export class InstallationListComponent implements OnInit {
     private beneficiarySuggestions: BeneficiaryDisplayedListDTOBase[] = [];
     private isBeneficiarySelected: boolean = false;
     private installationSites: InstallationSite[] = [];
-    private supplier: {};
     private legalChecks: boolean[] = [false, false, false];
 
 
