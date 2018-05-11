@@ -36,6 +36,9 @@ export class selectSupplierComponent {
   private suppliersCopy: SupplierDTOBase[] = [];
 
   selectedSupplier: SupplierDTOBase;
+  displayMessage: boolean = false;
+  
+  name = '';
 
   // region: NutsDTOBase = null;
   region: any = {};
@@ -144,6 +147,12 @@ export class selectSupplierComponent {
             this.suppliers = this.displayedSuppliers;
           }
         }
+  }
+
+  private selectSupplier() {
+    console.log(this.selectedSupplier);
+    (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true; 
+    // this.displayMessage = true;
   }
 
 }

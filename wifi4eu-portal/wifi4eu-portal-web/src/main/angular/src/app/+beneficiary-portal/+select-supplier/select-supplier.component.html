@@ -2,6 +2,11 @@
   select-supplier works!
 </p>
 
+<div>
+  <input type="text" [(ngModel)]="name">
+  <p>{{ name }}</p>
+</div>
+
 <!-- <div class="container center"></div> -->
 
 <div>
@@ -121,8 +126,50 @@
           </p-column>
 
       </p-dataTable>
+
+    <div>      
+      <button class="btn btn-primary right marginSelect" (click)="selectSupplier()" [disabled]="selectedSupplier == null">
+          <b>{{ 'benefPortal.selectSupplier.buton.select' | translate }}</b>
+      </button>
+    </div>
+
+    <div class="container font">
+        <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false"
+                  [resizable]="false" [draggable]="false" [closeOnEscape]="true">
+            <div class="beneficiaryTitle center hiddenScroll">
+                {{ 'shared.select.text' | translate }} {{ 'benefPortal.selectSupplier.title' | translate }}
+            </div>
+
+            <p class="voucherModal">
+              <span>{{ 'benefPortal.selectSupplier.title' | translate }} : <em>{{ "selectedSupplier.name" }}</em> </span>
+              <span>{{ 'suppRegistration.vat.label' | translate }} : </span>
+            </p>
+
+            <!-- <em>{{ selectedSupplier.name }}</em>
+            <em>{{ selectedSupplier.vat }}</em> -->
+
+            <p class="voucherModal">{{ 'benefPortal.selectSupplier.details.text' | translate }}</p>
+
+            <div class="voucherModal md4Dashboard">
+                <button class="btn btn-primary voucherButtonsCancel" (click)="selectSupplier()">
+                    {{ 'shared.cancel.button' | translate }}
+                </button>
+
+                <button class="btn btn-primary voucherButtonsSimulate" (click)="selectSupplier()">
+                    {{ 'suppRegistration.confirm.button' | translate }}
+                </button>
+            </div>
+        </p-dialog>
+    </div>
+
   </div>
 </div>
 
 
+<!-- "shared.select.text": "Select", -->
 
+<!-- // "benefPortal.selectSupplier.title": "Wifi installation company",
+//   "suppRegistration.vat.label": "VAT number",
+"benefPortal.selectSupplier.details.text": "You have selected this Wi-Fi installation company. Please confirm that selected Wi-Fi Installation Company will perform the installation of your local WiFi4EU network. In addition, please confirm that the VAT number is correct for this Wi-Fi installation company.", 
+//   "shared.cancel.button": "Cancel",
+// "suppRegistration.confirm.button": "Confirm", -->
