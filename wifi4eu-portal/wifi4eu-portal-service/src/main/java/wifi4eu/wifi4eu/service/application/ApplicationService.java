@@ -337,35 +337,27 @@ public class ApplicationService {
     }
 
     public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
-        ApplicationDTO validatedApplication = applicationDTO;
+        applicationDTO.setStatus(ApplicationStatus.OK.getValue());
+        applicationDTO.setInvalidateReason(null);
+        ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
         if (registration != null) {
             UserDTO user = userService.getUserById(registration.getUserId());
             MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
             if (user != null && municipality != null) {
-                List<ApplicationDTO> repeatedApplications = getApplicationsByCallIdAndLauId(applicationDTO.getCallId(), municipality.getLauId());
-                for (ApplicationDTO repeatedApplication : repeatedApplications) {
-                    if (repeatedApplication.getId() == applicationDTO.getId()) {
-                        repeatedApplication.setStatus(ApplicationStatus.OK.getValue());
-                        repeatedApplication.setInvalidateReason(null);
-                        validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(repeatedApplication)));
-                        /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
-                        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                        if (user.getLang() != null) {
-                            locale = new Locale(user.getLang());
-                        }
-                        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                        String subject = bundle.getString("mail.validateApplication.subject");
-                        String msgBody = bundle.getString("mail.validateApplication.body");
-                        msgBody = MessageFormat.format(msgBody, municipality.getName());
-                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-                        */
-                    } else {
-                        invalidateApplication(repeatedApplication);
-                    }
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (user.getLang() != null) {
+                    locale = new Locale(user.getLang());
                 }
+                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                String subject = bundle.getString("mail.validateApplication.subject");
+                String msgBody = bundle.getString("mail.validateApplication.body");
+                msgBody = MessageFormat.format(msgBody, municipality.getName());
+                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
             }
         }
+        */
         return validatedApplication;
     }
 
