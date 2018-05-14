@@ -67,6 +67,7 @@ export class ListSuppliersComponent implements OnInit {
   }
 
   selectCountry(country){
+      this.region = null;
     this.searched = false;
     this.nutsApi.getNutsByCountryCodeAndLevelOrderByLabelAsc(country.code, 3).subscribe(
       (regions: NutsDTOBase[]) => {
@@ -90,24 +91,19 @@ export class ListSuppliersComponent implements OnInit {
         console.log("Region code is " + this.region.id);
         this.supplierApi.getSuppliersRegisteredByRegion(this.region.id, this.page, this.itemsPerPage).subscribe((response: ResponseDTO) => {
           this.suppliers = response.data['suppliers'];
-          this.dateCached = this.transformDate(response.data['dateCached']);
+          this.dateCached = response.data['dateCached'];
           this.regionNameSearched = this.region.label;
           this.fillPaginator(response);
         }); 
       }else{
         this.supplierApi.getSuppliersRegisteredByCountry(this.country.countryCode, this.page, this.itemsPerPage).subscribe((response: ResponseDTO) => {
           this.suppliers = response.data['suppliers'];
-          this.dateCached = this.transformDate(response.data['dateCached']);
+          this.dateCached = response.data['dateCached'];
           this.regionNameSearched = this.country.label;        
           this.fillPaginator(response);
         }); 
       }
     }
-  }
-
-  private transformDate(dateArg: Date): string{
-    let datePipe = new DatePipe('default').transform(dateArg, 'dd/MM/yyyy');
-    return datePipe;
   }
 
   fillPaginator(response) {

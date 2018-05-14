@@ -14,13 +14,11 @@ import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {SharedService} from "../../shared/shared.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AzurequeueApi, AzureQueueDTOBase} from "../../shared/swagger";
-import {AzureQueue} from "../../azure/AzureQueue";
-import {QueueComponent} from "../../azure/Queue";
+import {Http, RequestOptions, Headers} from "@angular/http";
 
 @Component({
     templateUrl: 'voucher.component.html',
-    providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi, AzurequeueApi]
+    providers: [ApplicationApi, CallApi, RegistrationApi, MunicipalityApi, MayorApi]
 })
 
 export class VoucherComponent {
@@ -55,8 +53,16 @@ export class VoucherComponent {
     private disableQueuing = [];
     private displayError = false;
     private errorMessage = null;
+    private rabbitmqURI: string = "/queue";
+    private firebaseURI: string = "https://wifi4eu-dev.firebaseio.com/calls/@1/user/@2/registration/@3.json";
 
-    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private azurequeueApi: AzurequeueApi, private sharedService: SharedService) {
+    private httpOptions = {
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        })
+    };
+
+    constructor(private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private applicationApi: ApplicationApi, private callApi: CallApi, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private sharedService: SharedService, private http: Http) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         let storedRegistrations = this.localStorage.get('registrationQueue') ? JSON.parse(this.localStorage.get('registrationQueue').toString()) : null;
@@ -121,8 +127,8 @@ export class VoucherComponent {
 
                                                     this.loadingButtons.push(false);
                                                     let date = new Date(this.currentCall.startDate);
-                                                    this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
-                                                    this.hourNumber = ('0' + date.getHours()).slice(-2) + ":" + ('0' + date.getMinutes()).slice(-2);
+                                                    this.dateNumber = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+                                                    this.hourNumber = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2);
                                                     if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
                                                         this.voucherCompetitionState = 2;
                                                         this.openedCalls = "greyImage";
@@ -204,42 +210,80 @@ export class VoucherComponent {
         let actualDateTime = new Date().getTime();
 
         if (startCallDate <= actualDateTime) {
-
             if (!this.loadingButtons[registrationNumber]) {
 
-                var queueComponent = new QueueComponent();
+                let body =
+                    '{"callId":' +
+                    this.currentCall.id +
+                    ', "registrationId":' +
+                    this.registrations[registrationNumber].id +
+                    ', "userId":' +
+                    this.user.id +
+                    ', "fileUploadTimestamp":' +
+                    this.registrations[registrationNumber].uploadTime +
+                    "}";
 
-                let aNewMessageApplication = new AzureQueueDTOBase();
-                aNewMessageApplication.message = "Apply voucher (" + this.registrations[registrationNumber].id + ") @" + this.currentCall.id + "@";
+                this.sendToFirebase(this.currentCall.id, this.registrations[registrationNumber].id,
+                    this.user.id, this.registrations[registrationNumber].uploadTime);
+
+
+                this.http.post(this.rabbitmqURI, body, this.httpOptions).subscribe(
+                    response => {
+                        this.loadingButtons[registrationNumber] = true;
+                        this.voucherApplied = "greyImage";
+                        this.voucherCompetitionState = 3;
+
+                        var oneHourLater = new Date();
+                        oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
+                        var timestamp = Math.floor(oneHourLater.getTime() / 1000);
+
+                        var queueStored = {
+                            expires_in: timestamp,
+                            idRegistration: this.registrations[registrationNumber].id,
+                            call: this.currentCall.id
+                        };
+                        this.storedRegistrationQueues.push(queueStored);
+                        this.localStorage.set(
+                            "registrationQueue",
+                            JSON.stringify(this.storedRegistrationQueues)
+                        );
+                        this.sharedService.growlTranslation(
+                            "Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.",
+                            "benefPortal.voucher.statusmessage5",
+                            "success"
+                        );
+                    },
+                    error => {
+                        //error sending the information to the MQ
+                        this.errorMessage = error;
+                        this.displayError = true;
+                        this.sharedService.growlTranslation(
+                            "An error occurred and your application could not be received.",
+                            "shared.registration.update.error",
+                            "error"
+                        )
+                    }
+                );
 
                 event.target.style.pointerEvents = "none";
                 event.target.style.opacity = "0.5";
                 event.target.disabled = true;
 
-                queueComponent.setAzureQueue(Math.floor(Math.random() * 10));
-
-                queueComponent.addMessageAzureQueue(aNewMessageApplication.message).then((response) => {
-                    this.loadingButtons[registrationNumber] = true;
-                    this.voucherApplied = "greyImage";
-                    this.voucherCompetitionState = 3;
-
-                    var oneHourLater = new Date();
-                    oneHourLater.setMinutes(oneHourLater.getMinutes() + 5);
-                    var timestamp = Math.floor(oneHourLater.getTime() / 1000);
-
-                    var queueStored = {
-                        expires_in: timestamp,
-                        idRegistration: this.registrations[registrationNumber].id,
-                        call: this.currentCall.id
-                    };
-                    this.storedRegistrationQueues.push(queueStored);
-                    this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
-                    this.sharedService.growlTranslation('Your request for voucher has been submitted successfully. Wifi4Eu will soon let you know if you got a voucher for free wi-fi.', 'benefPortal.voucher.statusmessage5', 'success');
-                }).catch((err) => {
-                    this.errorMessage = err;
-                    this.displayError = true;
-                });
+            } else {
+                //trying to apply before sending the support documents
+                this.sharedService.growlTranslation(
+                    "An error occurred and your application could not be received.",
+                    "shared.registration.update.error",
+                    "error"
+                )
             }
+        } else {
+            //trying to apply before the opening of the call
+            this.sharedService.growlTranslation(
+                "An error occurred and your application could not be received.",
+                "shared.registration.update.error",
+                "error"
+            )
         }
     }
 
@@ -280,7 +324,33 @@ export class VoucherComponent {
         }
     }
 
+    private sendToFirebase(callId: number, registrationId: number, userId: number, uploadTime: number) {
+        
+        let body =
+        '{"callId":' +
+        callId +
+        ', "registrationId":' +
+        registrationId +
+        ', "userId":' +
+        userId +
+        ', "fileUploadTimestamp":' +
+        uploadTime +
+        ', "queueTime":{".sv": "timestamp"}' +
+            "}";
+            
+        let url = this.firebaseURI.replace("@1", callId.toString()).replace("@2", userId.toString()).replace("@3", registrationId.toString());
+        
+        this.http.put(url, body, this.httpOptions).subscribe(
+            response => {
+                console.log("firebase success");
+            },
+            error => {
+                console.log("firebase error" + error);
+            }
+        );
+    }
+
     private selectWifiInstallation() {
         this.router.navigate(['/beneficiary-portal/select-supplier/', this.registration.municipalityId], {relativeTo: this.route});
-    }
+    }    
 }

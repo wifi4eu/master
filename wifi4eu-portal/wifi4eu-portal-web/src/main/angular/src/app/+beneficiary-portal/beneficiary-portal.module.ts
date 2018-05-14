@@ -1,4 +1,5 @@
 import { NgModule } from "@angular/core";
+import { HttpModule } from "@angular/http";
 import { SharedModule } from "../shared/shared.module";
 import { BeneficiaryPortalRoutingModule } from "./beneficiary-portal-routing.module";
 import { VoucherComponent } from "../+beneficiary-portal/+voucher/voucher.component";
@@ -10,7 +11,7 @@ import { DataGridModule } from "primeng/primeng";
 
 @NgModule({
     imports: [
-        SharedModule, BeneficiaryPortalRoutingModule, DataGridModule
+        SharedModule, BeneficiaryPortalRoutingModule, DataGridModule, HttpModule
     ],
     declarations: [
         VoucherComponent,
@@ -22,5 +23,4 @@ import { DataGridModule } from "primeng/primeng";
     // ,
     // bootstrap: [BeneficiaryPortalComponent]
 })
-export class BeneficiaryPortalModule {
-}
+export class BeneficiaryPortalModule {}

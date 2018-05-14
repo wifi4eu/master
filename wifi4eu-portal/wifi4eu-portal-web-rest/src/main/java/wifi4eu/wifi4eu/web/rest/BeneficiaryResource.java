@@ -8,7 +8,10 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -60,24 +63,6 @@ public class BeneficiaryResource {
         }
     }
 
-    @ApiOperation(value = "Get issue type of beneficiary registrations")
-    @RequestMapping(value = "/beneficiary/issue", method = RequestMethod.POST, consumes = {"application/json"})
-    @ResponseBody
-    public ResponseDTO getIssueTypeBeneficiaryRegistrations(@RequestBody final String jsonString) {
-        try {
-            Gson g = new Gson();
-            RegistrationDTO[] registrationsArray = g.fromJson(jsonString, RegistrationDTO[].class);
-            List<RegistrationDTO> registrationList = new ArrayList<>(Arrays.asList(registrationsArray));
-            _log.info("getIssueTypeBeneficiaryRegistrations");
-            return new ResponseDTO(true, beneficiaryService.getIssueType(registrationList), null);
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getIssueTypeBeneficiaryRegistrations' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
-
     @ApiOperation(value = "getBeneficiaryListItem")
     @RequestMapping(value = "/getBeneficiaryListItem", method = RequestMethod.GET)
     @ResponseBody
@@ -117,5 +102,53 @@ public class BeneficiaryResource {
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
+    }
+
+    @ApiOperation(value = "exportCSVDGConnBeneficiariesList")
+    @RequestMapping(value = "/exportCSVDGConnBeneficiariesList", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO exportCSVDGConnBeneficiariesList() {
+        ResponseDTO res = new ResponseDTO(true, null, null);
+        res.setData(beneficiaryService.exportCSVDGConnBeneficiariesList());
+        res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalities());
+        return res;
+    }
+
+    @ApiOperation(value = "exportCSVDGConnBeneficiariesListSearchingName")
+    @RequestMapping(value = "/exportCSVDGConnBeneficiariesListSearchingName", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO exportCSVDGConnBeneficiariesListSearchingName(@RequestParam("name") final String name) {
+        ResponseDTO res = new ResponseDTO(true, null, null);
+        res.setData(beneficiaryService.exportCSVDGConnBeneficiariesListSearchingName(name));
+        res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalitiesContainingName(name));
+        return res;
+    }
+
+    @ApiOperation(value = "exportExcelDGConnBeneficiariesList")
+    @RequestMapping(value = "/exportExcelDGConnBeneficiariesList", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
+    @ResponseBody
+    public ResponseEntity<byte[]> exportExcelDGConnBeneficiariesList() {
+        ResponseEntity<byte[]> responseReturn = null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
+        String filename = "dgconn-beneficiaries.xls";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        responseReturn = new ResponseEntity<>(beneficiaryService.exportExcelDGConnBeneficiariesList(), headers, HttpStatus.OK);
+        return responseReturn;
+    }
+
+    @ApiOperation(value = "exportExcelDGConnBeneficiariesListSearchingName")
+    @RequestMapping(value = "/exportExcelDGConnBeneficiariesListSearchingName", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
+    @ResponseBody
+    public ResponseEntity<byte[]> exportExcelDGConnBeneficiariesListSearchingName(@RequestParam("name") final String name) {
+        ResponseEntity<byte[]> responseReturn = null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
+        String filename = "dgconn-beneficiaries.xls";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        responseReturn = new ResponseEntity<>(beneficiaryService.exportExcelDGConnBeneficiariesListContainingName(name), headers, HttpStatus.OK);
+        return responseReturn;
     }
 }
