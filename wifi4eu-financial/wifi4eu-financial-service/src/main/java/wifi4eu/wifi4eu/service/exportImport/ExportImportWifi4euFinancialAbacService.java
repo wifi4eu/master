@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @Service
-public class ExportImportAbacService {
+public class ExportImportWifi4euFinancialAbacService {
     @Autowired
     ExportImportLEFMapper exportImportLEFMapper;
 
@@ -48,7 +48,7 @@ public class ExportImportAbacService {
     @Autowired
     HttpServletRequest httpServletRequest;
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportAbacService.class);
+    private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euFinancialAbacService.class);
 
     @Transactional
     public void importLegalEntityF() throws Exception{
@@ -59,9 +59,9 @@ public class ExportImportAbacService {
 
     @Transactional
     public void importBudgetaryCommitment() throws Exception{
-//        _log.info("importBudgetaryCommitment");
-//        ReadExcelFile rF=new ReadExcelFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
-//        rF.readExcelFile();
+          _log.info("importBudgetaryCommitment");
+          ReadExcelFile rF=new ReadExcelFile(exportImportLEFRepository, exportImportLEFMapper);
+          rF.readExcelFile();
     }
 
     public void exportLegalEntityFBCValidate() throws Exception {
@@ -101,7 +101,7 @@ public class ExportImportAbacService {
 //            document[i][5]=String.valueOf(countMunicipality);
 //        }
 //        CreateExcelFile cF=new CreateExcelFile(httpServletRequest);
-//        cF.createExcelFile(header, document, "ExportRegistrationData.csv");
+//        cF.createExcelFile(header, document, "ExportLegalEntityFBCValidate.csv");
     }
 
 //    private Integer setIssueToDgconnBeneficiary(Integer lauId) {

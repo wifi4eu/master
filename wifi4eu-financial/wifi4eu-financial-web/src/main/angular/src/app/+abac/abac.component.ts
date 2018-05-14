@@ -44,22 +44,23 @@ export class AbacComponent {
     }
 
     importBudgetaryCommitment() {
-        //this.exportImportApi.importBudgetaryCommitment().subscribe(
-          //  (response: ResponseDTO)  => {
-            //    if(response.success){
-              //      this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
-                //    this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
-                  //      (translation: string) => {
-                    //        if (translation) {
-                      //          window.alert(translation);
-                        //    }
-                        //}
-                    //);
-                //}
-            //},
-            //error => {
-            //}
-        //);
+        this.exportImportApi.importBudgetaryCommitment().subscribe(
+            (response: ResponseDTO)  => {
+                if(response.success){
+                    this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                    this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                        (translation: string) => {
+                            if (translation) {
+                                //window.alert(translation);
+                                window.alert("Your file have been imported correctly!");
+                            }
+                        }
+                    );
+                }
+            },
+            error => {
+            }
+        );
     }
 
     exportLegalEntityFBCValidate() {
@@ -82,9 +83,7 @@ export class AbacComponent {
     }
 
 
-
-
-    exportJson() {
+    /*exportJson() {
         this.financialApi.exportAbacInformation().subscribe(
             (response: ResponseDTO) => {
                 if (response.success) {
@@ -212,7 +211,7 @@ export class AbacComponent {
             }
         )
 
-    }
+    }*/
 
 }
 

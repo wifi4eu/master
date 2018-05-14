@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.service.exportImport.ExportImportAbacService;
+import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euFinancialAbacService;
 import wifi4eu.wifi4eu.service.security.UserService;
 
 
@@ -19,13 +19,13 @@ import wifi4eu.wifi4eu.service.security.UserService;
 @Controller
 @Api(value = "/exportImport", description = "Export and import registration data")
 @RequestMapping("exportImport")
-public class ExportImportAbacResource {
+public class ExportImportWifi4euFinancialAbacResource {
     @Autowired
     private UserService userService;
     @Autowired
-    private ExportImportAbacService exportImportAbacService;
+    private ExportImportWifi4euFinancialAbacService exportImportWifi4euFinancialAbacService;
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportAbacResource.class);
+    private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euFinancialAbacResource.class);
 
 
     @ApiOperation(value = "Import Legal Entity File")
@@ -35,7 +35,7 @@ public class ExportImportAbacResource {
     public ResponseDTO importLegalEntityF() {
         try {
             _log.info("importLegalEntityF");
-            exportImportAbacService.importLegalEntityF();
+            exportImportWifi4euFinancialAbacService.importLegalEntityF();
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
@@ -57,7 +57,7 @@ public class ExportImportAbacResource {
     public ResponseDTO importBudgetaryCommitment() {
         try {
             _log.info("importBudgetaryCommitment");
-            exportImportAbacService.importBudgetaryCommitment();
+            exportImportWifi4euFinancialAbacService.importBudgetaryCommitment();
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
@@ -82,7 +82,7 @@ public class ExportImportAbacResource {
 //            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
 //                throw new AccessDeniedException("");
 //            }
-            exportImportAbacService.exportLegalEntityFBCValidate();
+            exportImportWifi4euFinancialAbacService.exportLegalEntityFBCValidate();
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             return new ResponseDTO(false, null, new ErrorDTO(0, null));

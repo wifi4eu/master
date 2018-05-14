@@ -28,7 +28,7 @@ public class ExportImportWifi4euAbacResource {
     private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacResource.class);
 
     @ApiOperation(value = "Export registration data")
-    @RequestMapping(value = "/exportRD", method = RequestMethod.GET)
+    @RequestMapping(value = "/exportRegistrationData", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO exportRegistrationData() {
@@ -47,7 +47,7 @@ public class ExportImportWifi4euAbacResource {
     }
 
     @ApiOperation(value = "Import registration data")
-    @RequestMapping(value = "/importRD", method = RequestMethod.POST)
+    @RequestMapping(value = "/importRegistrationData", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO importRegistrationData() {
@@ -69,7 +69,7 @@ public class ExportImportWifi4euAbacResource {
     }
 
     @ApiOperation(value = "Export beneficiary information")
-    @RequestMapping(value = "/exportBI", method = RequestMethod.GET)
+    @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO exportBeneficiaryInformation() {
@@ -88,7 +88,7 @@ public class ExportImportWifi4euAbacResource {
     }
 
     @ApiOperation(value = "Export budgetary commitment")
-    @RequestMapping(value = "/exportBC", method = RequestMethod.GET)
+    @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO exportBudgetaryCommitment() {

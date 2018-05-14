@@ -82,6 +82,66 @@ public class ReadExcelFile {
                 "<v2:WorkflowOrganisationName xmlns:v2=\"http://www.ec.europa.eu/budg/abac/associated_object/v2\">PMO</v2:WorkflowOrganisationName>\n" +
                 "</v3:Visa>\n" +
                 "</v3:LegalEntityCreateRequest>\n";
+        String message2="<v11:AgentId>DUMONFA</v11:AgentId>\n" +
+                "</v11:MessageHeader>\n" +
+                "<v1:BudgetaryCommitmentLevel2>\n" +
+                "<v1:BeneficiaryCountryIso2Code>FI</v1:BeneficiaryCountryIso2Code>\n" +
+                "<v1:BudgetManagementTypeCode>SM</v1:BudgetManagementTypeCode>\n" +
+                "<v1:ClassCode>FP</v1:ClassCode>\n" +
+                "<v1:CurrencyIso3Code>EUR</v1:CurrencyIso3Code>\n" +
+                "<v1:CurrentBudgetYear>B2018</v1:CurrentBudgetYear>\n" +
+                "<v1:ExpenditureCategoryCode>FGA</v1:ExpenditureCategoryCode>\n" +
+                "<v1:FdiDelimiterCode>EA</v1:FdiDelimiterCode>\n" +
+                "<v1:FinancialRegulationGroupCode>FR2012</v1:FinancialRegulationGroupCode>\n" +
+                "<v1:ImplementedByCode>MS</v1:ImplementedByCode>\n" +
+                "<v1:LegalJustificationCode>BF</v1:LegalJustificationCode>\n" +
+                "<v1:LocalKey>AGV12018FIPAU</v1:LocalKey>\n" +
+                "<v1:PaymentClassCode>MUL</v1:PaymentClassCode>\n" +
+                "<v1:ProposedFdiDate>2019-01-31+01:00</v1:ProposedFdiDate>\n" +
+                "<v1:ResponsibleOrganisation>\n" +
+                "<v11:Name xmlns:v11=\"http://www.ec.europa.eu/budg/abac/organisation/v1\">AGRI.R.4</v11:Name>\n" +
+                "<v11:TypeCode xmlns:v11=\"http://www.ec.europa.eu/budg/abac/organisation/v1\">UNT</v11:TypeCode>\n" +
+                "</v1:ResponsibleOrganisation>\n" +
+                "<v1:UserReference>PAIEMENT FEAGA 2018 FINLAND</v1:UserReference>\n" +
+                "<v1:AresDocuments>\n" +
+                "<v11:AresDocument xmlns:v11=\"http://www.ec.europa.eu/budg/abac/ares_document/v1\">\n" +
+                "<v11:Description>T103 Declaration FI 2017/11</v11:Description>\n" +
+                "<v11:OfficialDocument>true</v11:OfficialDocument>\n" +
+                "<v11:Reference>Ares(2012)12345</v11:Reference>\n" +
+                "</v11:AresDocument>\n" +
+                "</v1:AresDocuments>\n" +
+                "<v1:BudgetCompanyCode>BG32</v1:BudgetCompanyCode>\n" +
+                "<v1:ContractorReferences>\n" +
+                "<v11:PrimaryContractorReference xmlns:v11=\"http://www.ec.europa.eu/budg/abac/contractor_reference/v1\">\n" +
+                "<v11:LocalSystemCode>AGV</v11:LocalSystemCode>\n" +
+                "<v11:StatusCode>ACTIVE</v11:StatusCode>\n" +
+                "<v11:BankAccountLocalKey>0002113983</v11:BankAccountLocalKey>\n" +
+                "<v11:LegalEntityLocalKey>6000005308</v11:LegalEntityLocalKey>\n" +
+                "</v11:PrimaryContractorReference>\n" +
+                "</v1:ContractorReferences>\n" +
+                "<v1:LocalSystemCode>AGV</v1:LocalSystemCode>\n" +
+                "<v1:CommitmentPositions>\n" +
+                "<v1:BudgetaryCommitmentLevel2Position>\n" +
+                "<v1:AccountReference>PAIEMENT FEAGA</v1:AccountReference>\n" +
+                "<v1:AppropriationLocalKey>BGUE-B2018-05.999999-C1-AGRI</v1:AppropriationLocalKey>\n" +
+                "<v1:CarryForwardFlag>true</v1:CarryForwardFlag>\n" +
+                "<v1:DgName>AGRI</v1:DgName>\n" +
+                "<v1:DocumentDetailNumber>1</v1:DocumentDetailNumber>\n" +
+                "<v1:EntryInCurrencyAmount>0.00</v1:EntryInCurrencyAmount>\n" +
+                "<v1:ExpenseTypeCode>AUT</v1:ExpenseTypeCode>\n" +
+                "<v1:PolicyAreaCode>AGRI</v1:PolicyAreaCode>\n" +
+                "<v1:ProgramCode>AGR_GLOB</v1:ProgramCode>\n" +
+                "<v1:AssociatedCountries>\n" +
+                "<v11:AssociatedCountry xmlns:v11=\"http://www.ec.europa.eu/budg/abac/associated_country/v1\">\n" +
+                "<v11:CountryCode>FI</v11:CountryCode>\n" +
+                "<v11:Percentage>100</v11:Percentage>\n" +
+                "</v11:AssociatedCountry>\n" +
+                "</v1:AssociatedCountries>\n" +
+                "</v1:BudgetaryCommitmentLevel2Position>\n" +
+                "</v1:CommitmentPositions>\n" +
+                "</v1:BudgetaryCommitmentLevel2>\n" +
+                "</v1:BudgetaryCommitmentLevel2CreateRequest>\n";
+
         //HashMap<String,String> retHashMap = ((Budg_soa_webUI)UI.getCurrent()).getJmsProducer().sendMessage(msgCall.getMessageCorrelation());
         //HashMap<String,String> retHashMap = ((Budg_soa_webUI)UI.getCurrent()).getJmsProducer().sendMessage(msgCall.getMessageCorrelation());
 

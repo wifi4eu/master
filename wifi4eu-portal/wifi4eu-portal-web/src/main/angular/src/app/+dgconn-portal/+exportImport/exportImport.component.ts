@@ -91,6 +91,6 @@ export class DgConnExportImportComponent {
                );
      }
 
-     importLefBcValidates(){
+     importLegalEntityFBCValidate(){
      }
 }
