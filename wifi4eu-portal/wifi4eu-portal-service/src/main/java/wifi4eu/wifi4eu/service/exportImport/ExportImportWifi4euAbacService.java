@@ -27,11 +27,11 @@ import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.util.List; 
 
 
 @Service
-public class ExportImportRegistrationAbacService {
+public class ExportImportWifi4euAbacService {
     @Autowired
     ExportImportRegistrationDataMapper exportImportRegistrationDataMapper;
 
@@ -65,7 +65,7 @@ public class ExportImportRegistrationAbacService {
     @Autowired
     HttpServletRequest httpServletRequest;
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportRegistrationAbacService.class);
+    private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacService.class);
 
     public void exportRegistrationData() throws Exception {
           _log.info("exportRegistrationData");
@@ -152,6 +152,46 @@ public class ExportImportRegistrationAbacService {
         }
         CreateExcelFile cF=new CreateExcelFile(httpServletRequest);
         cF.createExcelFile(header, document, "ExportBeneficiariInformation.csv");
+    }
+
+    public void exportBudgetaryCommitment() throws Exception {
+        _log.info("exportBudgetaryCommitment");
+        List<ExportImportBeneficiaryInformationDTO> exportImportBeneficiaryInformationList = exportImportBeneficiaryInformationMapper.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findExportImportBI()));
+        String [] header={"EU Rank", "Country Rank", "Country Name", "Municipality name", "Issue", "Number of registrations"};
+        String [][] document=new String[exportImportBeneficiaryInformationList.size()][7];
+        Integer [][] countryCount=new Integer[exportImportBeneficiaryInformationList.size()][2];
+        for(int i=0; i<exportImportBeneficiaryInformationList.size(); i++){
+            String country=exportImportBeneficiaryInformationList.get(i).getCountryName();
+            String municipailty=exportImportBeneficiaryInformationList.get(i).getMunicipalityName();
+            int countCountry=0;
+            int countMunicipality=0;
+            for(int u=0; u<exportImportBeneficiaryInformationList.size(); u++){
+                if(country.equals(exportImportBeneficiaryInformationList.get(u).getCountryName())){
+                    countCountry++;
+                    countryCount[u][0]=countCountry;
+                    countryCount[u][1]=exportImportBeneficiaryInformationList.get(u).getEuRank();
+
+                }
+                if(municipailty.equals(exportImportBeneficiaryInformationList.get(u).getMunicipalityName())){
+                    countMunicipality++;
+                }
+            }
+            document[i][0]=String.valueOf(exportImportBeneficiaryInformationList.get(i).getEuRank());
+            for(int w=0; w<countryCount.length; w++){
+                if(null!=countryCount[w][0]){
+                    if(exportImportBeneficiaryInformationList.get(i).getEuRank()==countryCount[w][1]){
+                        document[i][1] = String.valueOf(countryCount[w][0]);
+                    }
+                }
+            }
+            document[i][2]=exportImportBeneficiaryInformationList.get(i).getCountryName();
+            document[i][3]=exportImportBeneficiaryInformationList.get(i).getMunicipalityName();
+            Municipality municipality=municipalityRepository.findOne(exportImportBeneficiaryInformationList.get(i).getMunicipality());
+            document[i][4]=String.valueOf(setIssueToDgconnBeneficiary(municipality.getLau().getId()));
+            document[i][5]=String.valueOf(countMunicipality);
+        }
+        CreateExcelFile cF=new CreateExcelFile(httpServletRequest);
+        cF.createExcelFile(header, document, "ExportBudgetaryCommitment.csv");
     }
 
     private Integer setIssueToDgconnBeneficiary(Integer lauId) {

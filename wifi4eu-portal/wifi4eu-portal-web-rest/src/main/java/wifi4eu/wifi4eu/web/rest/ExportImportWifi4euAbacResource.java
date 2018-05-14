@@ -12,21 +12,20 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.service.exportImport.ExportImportRegistrationAbacService;
+import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euAbacService;
 import wifi4eu.wifi4eu.service.user.UserService;
-
 
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/exportImport", description = "Export and import registration data")
 @RequestMapping("exportImport")
-public class ExportImportRegistrationAbacResource {
+public class ExportImportWifi4euAbacResource {
     @Autowired
     private UserService userService;
     @Autowired
-    private ExportImportRegistrationAbacService exportImportRegistrationAbacService;
+    private ExportImportWifi4euAbacService exportImportWifi4euAbacService;
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportRegistrationAbacResource.class);
+    private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euAbacResource.class);
 
     @ApiOperation(value = "Export registration data")
     @RequestMapping(value = "/exportRD", method = RequestMethod.GET)
@@ -38,7 +37,7 @@ public class ExportImportRegistrationAbacResource {
             if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
                 throw new AccessDeniedException("");
             }
-            exportImportRegistrationAbacService.exportRegistrationData();
+            exportImportWifi4euAbacService.exportRegistrationData();
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             return new ResponseDTO(false, null, new ErrorDTO(0, null));
@@ -54,7 +53,7 @@ public class ExportImportRegistrationAbacResource {
     public ResponseDTO importRegistrationData() {
         try {
             _log.info("importRegistrationData");
-            exportImportRegistrationAbacService.importRegistrationData();
+            exportImportWifi4euAbacService.importRegistrationData();
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
@@ -79,7 +78,26 @@ public class ExportImportRegistrationAbacResource {
             if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
                 throw new AccessDeniedException("");
             }
-            exportImportRegistrationAbacService.exportBeneficiaryInformation();
+            exportImportWifi4euAbacService.exportBeneficiaryInformation();
+            return new ResponseDTO(true, null, null);
+        } catch (AccessDeniedException ade) {
+            return new ResponseDTO(false, null, new ErrorDTO(0, null));
+        } catch (Exception e) {
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Export budgetary commitment")
+    @RequestMapping(value = "/exportBC", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO exportBudgetaryCommitment() {
+        try {
+            _log.info("exportBudgetaryCommitment");
+            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
+                throw new AccessDeniedException("");
+            }
+            exportImportWifi4euAbacService.exportBudgetaryCommitment();
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             return new ResponseDTO(false, null, new ErrorDTO(0, null));

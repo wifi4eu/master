@@ -72,7 +72,23 @@ export class DgConnExportImportComponent {
               );
      }
 
-     exportBC(){
+     exportBudgetaryCommitment(){
+             this.exportImportApi.exportBudgetaryCommitment().subscribe(
+                  (response: ResponseDTO)  => {
+                      if(response.success){
+                          this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
+                          this.translateService.get("dgconn.dashboard.card.messageExport").subscribe(
+                              (translation: string) => {
+                                  if (translation) {
+                                      window.alert(translation);
+                                  }
+                              }
+                          );
+                      }
+                  },
+                  error => {
+                  }
+               );
      }
 
      importLefBcValidates(){
