@@ -31,7 +31,8 @@ export class AbacComponent {
                     this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
                         (translation: string) => {
                             if (translation) {
-                                window.alert(translation);
+                                //window.alert(translation);
+                                window.alert("Your file have been imported correctly!");
                             }
                         }
                     );
@@ -105,8 +106,8 @@ export class AbacComponent {
         if (event && event.target && event.target.files && event.target.files.length == 1) {
             this.jsonFile = event.target.files['0'];
             let reader = new FileReader();
-
-            reader.onload = (e) => {
+            debugger;
+            //reader.onload = (e) => {
                 this.financialApi.importAbacInformation(reader.result).subscribe(
                     (response: ResponseDTO) => {
                         if (response.success) {
@@ -120,7 +121,7 @@ export class AbacComponent {
                         window.alert("Import failed! Make sure that the file you are uploading has the correct format.");
                     }
                 );
-            };
+            //};
             reader.readAsText(this.jsonFile);
         }
     }

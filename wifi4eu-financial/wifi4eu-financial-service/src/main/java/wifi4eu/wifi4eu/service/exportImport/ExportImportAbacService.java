@@ -1,15 +1,12 @@
 package wifi4eu.wifi4eu.service.exportImport;
 
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportLEFMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportLEFRepository;
-import wifi4eu.wifi4eu.service.exportImport.excelFile.CreateExcelFile;
 import wifi4eu.wifi4eu.service.exportImport.excelFile.ReadExcelFile;
 //import wifi4eu.wifi4eu.entity.municipality.Municipality;
 //import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
@@ -20,11 +17,10 @@ import wifi4eu.wifi4eu.service.exportImport.excelFile.ReadExcelFile;
 //import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 
 @Service
-public class ExportImportRegistrationAbacService {
+public class ExportImportAbacService {
     @Autowired
     ExportImportLEFMapper exportImportLEFMapper;
 
@@ -52,7 +48,7 @@ public class ExportImportRegistrationAbacService {
     @Autowired
     HttpServletRequest httpServletRequest;
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportRegistrationAbacService.class);
+    private final Logger _log = LoggerFactory.getLogger(ExportImportAbacService.class);
 
     @Transactional
     public void importLegalEntityF() throws Exception{

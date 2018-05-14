@@ -21,6 +21,7 @@ import {AbacComponent} from "./+abac/abac.component";
 import {EcasComponent} from "./+ecas/ecas.component";
 import {ChartsModule} from "ng2-charts";
 
+
 export function translateFactory(http: Http) {
     return new TranslateStaticLoader(http, './assets/i18n', '.json');
 }

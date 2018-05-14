@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.service.exportImport.ExportImportRegistrationAbacService;
+import wifi4eu.wifi4eu.service.exportImport.ExportImportAbacService;
 import wifi4eu.wifi4eu.service.security.UserService;
 
 
@@ -19,23 +19,23 @@ import wifi4eu.wifi4eu.service.security.UserService;
 @Controller
 @Api(value = "/exportImport", description = "Export and import registration data")
 @RequestMapping("exportImport")
-public class ExportImportRegistrationAbacResource {
+public class ExportImportAbacResource {
     @Autowired
     private UserService userService;
     @Autowired
-    private ExportImportRegistrationAbacService exportImportRegistrationAbacService;
+    private ExportImportAbacService exportImportAbacService;
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportRegistrationAbacResource.class);
+    private final Logger _log = LoggerFactory.getLogger(ExportImportAbacResource.class);
 
 
     @ApiOperation(value = "Import Legal Entity File")
-    @RequestMapping(value = "/importLEF", method = RequestMethod.POST)
+    @RequestMapping(value = "/importLegalEntityF", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO importLegalEntityF() {
         try {
             _log.info("importLegalEntityF");
-            exportImportRegistrationAbacService.importLegalEntityF();
+            exportImportAbacService.importLegalEntityF();
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
@@ -51,13 +51,13 @@ public class ExportImportRegistrationAbacResource {
     }
 
     @ApiOperation(value = "Import Budgetary Commitment")
-    @RequestMapping(value = "/importBC", method = RequestMethod.POST)
+    @RequestMapping(value = "/importBudgetaryCommitment", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO importBudgetaryCommitment() {
         try {
             _log.info("importBudgetaryCommitment");
-            exportImportRegistrationAbacService.importBudgetaryCommitment();
+            exportImportAbacService.importBudgetaryCommitment();
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
@@ -73,7 +73,7 @@ public class ExportImportRegistrationAbacResource {
     }
 
     @ApiOperation(value = "Export LEF and BC Validates")
-    @RequestMapping(value = "/exportLEFBCValidate", method = RequestMethod.GET)
+    @RequestMapping(value = "/exportLegalEntityFBCValidate", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO exportLegalEntityFBCValidate() {
@@ -82,7 +82,7 @@ public class ExportImportRegistrationAbacResource {
 //            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
 //                throw new AccessDeniedException("");
 //            }
-            exportImportRegistrationAbacService.exportLegalEntityFBCValidate();
+            exportImportAbacService.exportLegalEntityFBCValidate();
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             return new ResponseDTO(false, null, new ErrorDTO(0, null));
