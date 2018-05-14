@@ -577,5 +577,8 @@
   "(CET)": "Central European Time",
   "(CEST)": "Central European Summer Time",
   "(CEST abbreviation)": "CEST",
-  "dgConn.status.validated": "Validated"
+  "dgConn.status.validated": "Validated",
+  "(tech bug screen)": "We are currently experiencing technical difficulties with the WiFi4EU portal.\n\nWe will provide further information when the incident is resolved.\n\nThank you for your understanding.",
+  "dgConn.status.valid": "Valid",
+  "dgConn.status.invalid": "Invalid"
 }

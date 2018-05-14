@@ -538,8 +538,13 @@
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.totalRecords": "Total records",
   "shared.incorrectFormat": "Kérjük, hogy .pdf, .png vagy .jpg kiterjesztésű fájlt válasszon ki.",
+  "shared.session.expired": "Az Ön munkamenete lejárt. A folytatáshoz jelentkezzen be újra a WiFi4EU portáljára.",
+  "shared.session.expired.reload": "Kérjük, töltse be újra az oldalt.",
   "(CET)": "közép-európai idő szerint",
   "(CEST)": "Közép-európai nyári időszámítás",
   "(CEST abbreviation)": "CEST",
-  "dgConn.status.validated": "Validated"
+  "dgConn.status.validated": "Validated",
+  "(tech bug screen)": "Technikai nehézségek adódtak a WiFi4EU portálján.\n\nJelezni fogjuk, amint sikerül elhárítani a problémát.\n\nAddig is köszönjük szíves türelmét!",
+  "dgConn.status.valid": "Valid",
+  "dgConn.status.invalid": "Invalid"
 }

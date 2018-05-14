@@ -537,8 +537,13 @@
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.totalRecords": "Total records",
   "shared.incorrectFormat": "Palun valige sobiva vorminguga dokument (.pdf, .png või .jpg)",
+  "shared.session.expired": "Teie seanss on aegunud. Teid on veebisaidilt WiFi4EU välja logitud.",
+  "shared.session.expired.reload": "Palun laadige lehekülg uuesti",
   "(CET)": "Kesk-Euroopa aja järgi",
   "(CEST)": "Kesk-Euroopa suveaeg",
   "(CEST abbreviation)": "Kesk-Euroopa suveaeg",
-  "dgConn.status.validated": "Validated"
+  "dgConn.status.validated": "Validated",
+  "(tech bug screen)": "WiFi4EU portaalil on praegu tehnilisi probleeme.\n\nEdastame lisateavet, kui probleemid on lahendatud.\n\nTäname mõistva suhtumise eest.",
+  "dgConn.status.valid": "Valid",
+  "dgConn.status.invalid": "Invalid"
 }

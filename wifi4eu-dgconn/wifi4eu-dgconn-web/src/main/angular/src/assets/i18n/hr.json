@@ -537,8 +537,13 @@
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.totalRecords": "Total records",
   "shared.incorrectFormat": "Odaberite dokument u odgovarajućem formatu (.pdf, .png ili .jpg).",
+  "shared.session.expired": "Sesija je istekla. Vaša je veza s portalom WiFi4EU prekinuta.",
+  "shared.session.expired.reload": "Ponovno učitajte stranicu.",
   "(CET)": "prema srednjoeuropskom vremenu",
   "(CEST)": "srednjoeuropsko ljetno vrijeme",
   "(CEST abbreviation)": "CEST",
-  "dgConn.status.validated": "Validated"
+  "dgConn.status.validated": "Validated",
+  "(tech bug screen)": "Trenutačno imamo tehničkih poteškoća s portalom WiFi4EU.\n\nViše informacija objavit ćemo kad riješimo problem.\n\nHvala na razumijevanju.",
+  "dgConn.status.valid": "Valid",
+  "dgConn.status.invalid": "Invalid"
 }

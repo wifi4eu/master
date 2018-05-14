@@ -30,7 +30,6 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     private entityCheckboxIndex: number = null;
     private searchMessagesQuery: string = '';
     private registrationIssues: number[] = [];
-    private issueRegistration: number;
     private selectedIndex = null;
     private displayInvalidate = false;
     private processingRequest = false;
@@ -62,7 +61,6 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                                             if (this.registrations.length == this.municipalities.length) {
                                                 this.registrationIssues.push(0);
                                                 this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
-                                                this.getIssue();
                                             }
                                         }
                                     }
@@ -149,16 +147,6 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
         );
     }
 
-    private getIssue(){
-        // this.beneficiaryApi.getIssueTypeBeneficiaryRegistrations(JSON.stringify(this.registrations)).subscribe(
-        //     (response: ResponseDTOBase) => {
-        //         if(response.success){
-        //             this.issueRegistration = response.data;
-        //         }
-        //     }
-        // )
-    }
-
     private invalidateMunicipality() {
         if (!this.processingRequest) {
             this.processingRequest = true;
@@ -169,7 +157,6 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                         if (response.success) {
                             if (response.data != null) {
                                 this.registrations[this.selectedIndex] = response.data;
-                                this.getIssue();
                                 this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
                             } else {
                                 this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');

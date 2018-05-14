@@ -537,8 +537,13 @@
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.totalRecords": "Total records",
   "shared.incorrectFormat": "Επιλέξτε ένα έγγραφο με τον κατάλληλο μορφότυπο (.pdf, .png, ή .jpg)",
+  "shared.session.expired": "Η περίοδος σύνδεσής σας έληξε. Έχετε αποσυνδεθεί από το WiFi4EU.",
+  "shared.session.expired.reload": "Ξαναφορτώστε τη σελίδα.",
   "(CET)": "ώρα Κεντρικής Ευρώπης",
   "(CEST)": "Θερινή ώρα Κεντρικής Ευρώπης.",
   "(CEST abbreviation)": "CEST",
-  "dgConn.status.validated": "Validated"
+  "dgConn.status.validated": "Validated",
+  "(tech bug screen)": "Αντιμετωπίζουμε τεχνικά προβλήματα με την πύλη WiFi4EU.\n\nΘα σας ενημερώσουμε όταν λυθεί το πρόβλημα.\n\nΕυχαριστούμε για την κατανόησή σας.",
+  "dgConn.status.valid": "Valid",
+  "dgConn.status.invalid": "Invalid"
 }

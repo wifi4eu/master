@@ -265,4 +265,14 @@ public class ApplicationResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
+
+    @ApiOperation(value = "Get applications by specific call and lau id")
+    @RequestMapping(value = "/call/{callId}/lau/{lauId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<ApplicationDTO> getApplicationsByCallIdAndLauId(@PathVariable("callId") final Integer callId, @PathVariable("lauId") final Integer lauId) {
+        if (_log.isInfoEnabled()) {
+            _log.info("getApplicationsByCallIdAndLauId");
+        }
+        return applicationService.getApplicationsByCallIdAndLauId(callId, lauId);
+    }
 }

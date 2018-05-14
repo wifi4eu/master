@@ -537,8 +537,13 @@
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.totalRecords": "Total records",
   "shared.incorrectFormat": "Jekk jogħġbok agħżel dokument b'format xieraq (.pdf, .png, jew .jpg)",
+  "shared.session.expired": "Is-sessjoni tiegħek skadiet. M'għadekx ikkonnettjat ma' WiFi4EU.",
+  "shared.session.expired.reload": "Jekk jogħġbok erġa' llowdja l-paġna",
   "(CET)": "Ħin tal-Ewropa Ċentrali",
   "(CEST)": "Ħin tas-Sajf tal-Ewropa Ċentrali",
   "(CEST abbreviation)": "CEST",
-  "dgConn.status.validated": "Validated"
+  "dgConn.status.validated": "Validated",
+  "(tech bug screen)": "Bħalissa għaddejjin minn diffikultatjiet tekniċi bil-portal tal-WiFi4EU.\n\nSe nipprovdu aktar informazzjoni meta l-inċident ikun riżolt.\n\nNirringrazzjawk tal-komprensjoni tiegħek.",
+  "dgConn.status.valid": "Valid",
+  "dgConn.status.invalid": "Invalid"
 }

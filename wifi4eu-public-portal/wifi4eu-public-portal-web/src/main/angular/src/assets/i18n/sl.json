@@ -305,7 +305,7 @@
   "benefPortal.voucher.backhome": "Domov",
   "benefPortal.voucher.apply.title": "Požiadať o poukaz",
   "benefPortal.voucher.apply.subtitle": "in omogočite krajanom internetni dostop vedno in povsod.",
-  "benefPortal.voucher.applyforvoucher": "Požiadať o poukaz",
+  "benefPortal.voucher.applyforvoucher": "Prijavite se za bon",
   "benefPortal.voucher.alreadyapplied": "O poukaz ste už požiadali",
   "benefPortal.voucher.timeleft.title": "Natečaj za bone se odpre čez",
   "benefPortal.voucher.timeleft.subtitle": "Naslednji razpis za zbiranje prijav bo objavljen dne {{date}} ob {{hour}} (srednjeevropski poletni čas). ",
@@ -537,8 +537,13 @@
   "dgConn.applicantDetails.validateApplication.desc": "Are you sure you want to validate this application? This will send an email to the <b>validated municipality</b> indicating its application has been validated.",
   "dgConn.totalRecords": "Total records",
   "shared.incorrectFormat": "Izberite dokument v ustrezni obliki (.pdf, png ali .jpg)",
+  "shared.session.expired": "Vaša seja je potekla. Povezava s spletiščem WiFi4EU je prekinjena.",
+  "shared.session.expired.reload": "Osvežite stran.",
   "(CET)": "po srednjeevropskem času",
   "(CEST)": "srednjeevropski poletni čas",
   "(CEST abbreviation)": "srednjeevropski poletni čas",
-  "dgConn.status.validated": "Validated"
+  "dgConn.status.validated": "Validated",
+  "(tech bug screen)": "Portal WiFi4EU ima trenutno tehnične težave.\n\nKo bomo težavo odpravili, bomo posredovali dodatne informacije.\n\nZahvaljujemo se vam za razumevanje.",
+  "dgConn.status.valid": "Valid",
+  "dgConn.status.invalid": "Invalid"
 }

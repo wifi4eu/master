@@ -5,7 +5,7 @@
         <h4 class="title"> {{ 'listSuppliers.title' | translate }}</h4>
         <p class="subtitle-discover">{{ 'listSuppliers.subtitle' | translate }}</p>
         <div style="clear: both;" *ngIf="(searching || searched) && country && region" [@opacityTransition]>
-          <p class="updated-on"><span *ngIf="dateCached" [@opacityTransition]>{{ 'listMunicipalities.subtitle.updateDate' | translate}} {{dateCached}}</span>
+          <p class="updated-on"><span *ngIf="dateCached" [@opacityTransition]>{{ 'listMunicipalities.subtitle.updateDate' | translate}} {{dateCached | date: 'dd/MM/yyyy'}}</span>
           <span class="dateCached" *ngIf="!searched || !dateCached" [@opacityTransition]></span></p>
         </div>
       </div>

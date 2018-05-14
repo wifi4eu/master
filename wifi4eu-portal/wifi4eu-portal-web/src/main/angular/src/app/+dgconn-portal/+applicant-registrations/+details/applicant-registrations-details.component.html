@@ -9,10 +9,6 @@
             <span class="beneficiaryTitle">
                 {{ 'shared.municipalityDetails.title' | translate }}
             </span>
-            <!--<span class="badge badge-warning" *ngIf="issueRegistration == 1">{{ 'dgConn.badge.warning' | translate }}</span>-->
-            <!--<span class="badge badge-duplicated" *ngIf="issueRegistration == 2">{{ 'dgConn.badge.duplicated' | translate }}</span>-->
-            <!--<span class="badge badge-success" *ngIf="issueRegistration == 3">{{ 'dgConn.badge.resolved' | translate }}</span>-->
-            <!--<span class="badge badge-fail" *ngIf="issueRegistration == 4">{{ 'dgConn.badge.invalid' | translate }}</span>-->
         </p>
         <i *ngIf="loadingData" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
         <p *ngIf="municipalities.length == 0 && !loadingData">
