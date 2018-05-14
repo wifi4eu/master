@@ -145,7 +145,7 @@ public class ScheduledTasks {
         _log.info("[f] queueConsumer");
     }
 
-    @Scheduled(cron = "0 0/30 * * * ?")
+    @Scheduled(cron = "0 0 9,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
 
         _log.info("[i] scheduleHelpdeskIssues");
@@ -172,9 +172,12 @@ public class ScheduledTasks {
                     helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
 
                     String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+
                     if (result != null && result.contains("Thankyou.js")) {
                         helpdeskIssue.setTicket(true);
                         helpdeskService.createHelpdeskIssue(helpdeskIssue);
+                    } else {
+                        _log.error("result that not containt proper text, result: " + result);
                     }
                 } else {
                     _log.error("scheduleHelpdeskIssues can't retrieve the user for heldesk issue with Id " + helpdeskIssue.getId());
@@ -182,7 +185,7 @@ public class ScheduledTasks {
 
 
             } catch (Exception e) {
-                _log.error("scheduleHelpdeskIssues the helpdesk issue with Id " + helpdeskIssue.getId() + " can't be processed");
+                _log.error("scheduleHelpdeskIssues the helpdesk issue with Id " + helpdeskIssue.getId() + " can't be processed", e);
             }
         }
         _log.info("[f] scheduleHelpdeskIssues");
