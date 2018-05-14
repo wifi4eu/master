@@ -321,13 +321,32 @@ public class ApplicationService {
         }
         for (int i = 0; i < applicantsList.size(); i++) {
             ApplicantListItemDTO applicant = applicantsList.get(i);
-            if (applicant.getCounter() == 1) {
-                List<RegistrationDTO> registrations = registrationService.getRegistrationsByLauId(applicant.getLauId());
-                for (RegistrationDTO registration : registrations) {
-                    if (registration != null) {
-                        applicant.setIssueStatus(registrationService.getRegistrationIssue(registration));
+            List<ApplicationDTO> applications = applicationMapper.toDTOList(applicationRepository.findByCallIdAndLauId(callId, applicant.getLauId()));
+            int numApplications = applications.size();
+            ApplicationDTO validApplication = null;
+            RegistrationDTO registration = null;
+            if (numApplications == 1) {
+                registration = registrationService.getRegistrationById(applications.get(0).getRegistrationId());
+            } else {
+                int numValidApplications = 0;
+                int numInvalidApplications = 0;
+                for (ApplicationDTO application : applications) {
+                    if (application.getStatus() == ApplicationStatus.KO.getValue()) {
+                        numInvalidApplications++;
+                    } else if (application.getStatus() == ApplicationStatus.OK.getValue()) {
+                        numValidApplications++;
+                        validApplication = application;
                     }
                 }
+                if (numValidApplications == 1 && validApplication != null && (numValidApplications + numInvalidApplications == numApplications)) {
+                    applicant.setApplicationDate(validApplication.getDate());
+                    applicant.setStatus(ApplicationStatus.OK.getValue());
+                    applicant.setCounter(1);
+                    registration = registrationService.getRegistrationById(validApplication.getRegistrationId());
+                }
+            }
+            if (registration != null && applicant.getCounter() == 1) {
+                applicant.setIssueStatus(registrationService.getRegistrationIssue(registration));
             } else {
                 applicant.setIssueStatus(0);
             }
