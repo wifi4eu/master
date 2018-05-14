@@ -18,7 +18,7 @@
             {{ 'dgConn.duplicatedBeneficiaryDetails.desc' | translate }}
         </p>
     </div>
-    <div *ngIf="municipalities.length >= 1">
+    <div *ngIf="municipalities.length >= 1 && !loadingData">
         <div class="ui-g-12">
             <p *ngIf="municipalities.length == 1" class="beneficiaryMayor">
                 {{ 'dgConn.duplicatedBeneficiaryDetails.entity' | translate }}

@@ -85,6 +85,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             this.applicationApi.getApplicationsByCallIdAndLauId(this.callId, this.lauId).subscribe(
                 (applications: ApplicationDTOBase[]) => {
                     let failCount = 0;
+                    let correctCount = 0;
                     for (let i = 0; i < applications.length; i++) {
                         let application = applications[i];
                         this.registrationApi.getRegistrationById(application.registrationId).subscribe(
@@ -101,7 +102,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                     this.registrationApi.getLegalFilesByRegistrationId(registration.id).subscribe(
                                                                         (legalFiles: LegalFileDTOBase[]) => {
                                                                             if (mayor) {
-                                                                                this.mayors.push(mayor);
+                                                                                this.mayors[i] = mayor;
                                                                             } else {
                                                                                 let mayor = new MayorDTOBase();
                                                                                 mayor.id = -1;
@@ -109,22 +110,21 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                                                 mayor.name = '-';
                                                                                 mayor.surname = '-';
                                                                                 mayor.email = '-';
-                                                                                this.mayors.push(mayor);
+                                                                                this.mayors[i] = mayor;
                                                                             }
                                                                             this.selectedFilesTypes[i] = [];
                                                                             this.selectedReasonTypes[i] = [];
-                                                                            this.legalFiles[i] = [];
-                                                                            this.createFrontEndLegalFiles(i, registration, legalFiles);
-                                                                            // this.legalFiles[i] = legalFiles;
-                                                                            this.applications.push(application);
-                                                                            this.registrations.push(registration);
-                                                                            this.users.push(user);
-                                                                            this.municipalities.push(municipality);
+                                                                            this.legalFiles[i] = this.createFrontEndLegalFiles(registration, legalFiles);
+                                                                            this.applications[i] = application;
+                                                                            this.registrations[i] = registration;
+                                                                            this.users[i] = user;
+                                                                            this.municipalities[i] = municipality;
                                                                             if (this.registrations.length == this.municipalities.length) {
-                                                                                this.registrationIssues.push(0);
+                                                                                this.registrationIssues[i] = 0;
                                                                                 this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
                                                                             }
-                                                                            if (this.applications.length == (applications.length - failCount)) {
+                                                                            correctCount++;
+                                                                            if (correctCount == (applications.length - failCount)) {
                                                                                 this.loadingData = false;
                                                                             }
                                                                         }
@@ -430,7 +430,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         );
     }
 
-    private createFrontEndLegalFiles(index: number, registration: RegistrationDTOBase, legalFiles?: LegalFileDTOBase[]) {
+    private createFrontEndLegalFiles(registration: RegistrationDTOBase, legalFiles?: LegalFileDTOBase[]) {
+        let finalLegalFiles = [];
         let lf1 = new LegalFileDTOBase();
         let lf1AlreadyExists = false;
         let lf2 = new LegalFileDTOBase();
@@ -468,7 +469,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 lf1.type = 1;
                 lf1.uploadTime = registration.uploadTime;
             }
-            this.legalFiles[index].push(lf1);
+            finalLegalFiles.push(lf1);
         }
         if (registration.legalFile2 != null) {
             lf2.data = registration.legalFile2;
@@ -477,7 +478,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 lf2.type = 2;
                 lf2.uploadTime = registration.uploadTime;
             }
-            this.legalFiles[index].push(lf2);
+            finalLegalFiles.push(lf2);
         }
         if (registration.legalFile3 != null) {
             lf3.data = registration.legalFile3;
@@ -486,7 +487,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 lf3.type = 3;
                 lf3.uploadTime = registration.uploadTime;
             }
-            this.legalFiles[index].push(lf3);
+            finalLegalFiles.push(lf3);
         }
         if (registration.legalFile4 != null) {
             lf4.data = registration.legalFile4;
@@ -495,7 +496,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 lf4.type = 4;
                 lf4.uploadTime = registration.uploadTime;
             }
-            this.legalFiles[index].push(lf4);
+            finalLegalFiles.push(lf4);
         }
+        return legalFiles;
     }
 }
