@@ -29,6 +29,8 @@ export class VoucherComponent {
     1 = There is a call created, but not started. DISPLAY TIMER
     2 = There is a call created, already started. You can 'Apply For Voucher'
     3 = Call created & started. You clicked 'Apply For Voucher' and are waiting for the approvement.
+    4 = Voucher awarded. You can now click on 'Sign grant agreement'. 
+    5 = Voucher awarded. You can now click on 'Select Wifi installation company'. 
      */
     private voucherCompetitionState: number;
     private user: UserDTOBase;
@@ -124,6 +126,8 @@ export class VoucherComponent {
                                                     if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
                                                         this.voucherCompetitionState = 2;
                                                         this.openedCalls = "greyImage";
+                                                        // Hardcode (to erase)
+                                                        this.voucherCompetitionState = 5;
                                                     } else {
                                                         this.voucherCompetitionState = 1;
                                                     }
@@ -195,6 +199,7 @@ export class VoucherComponent {
     }
 
     private applyForVoucher(registrationNumber: number, event) {
+        console.log("Competition state is ",this.voucherCompetitionState);
         let startCallDate = this.currentCall.startDate;
         let actualDateTime = new Date().getTime();
 
@@ -273,5 +278,9 @@ export class VoucherComponent {
 
 
         }
+    }
+
+    private selectWifiInstallation() {
+        this.router.navigate(['/beneficiary-portal/select-supplier/', this.registration.municipalityId], {relativeTo: this.route});
     }
 }
