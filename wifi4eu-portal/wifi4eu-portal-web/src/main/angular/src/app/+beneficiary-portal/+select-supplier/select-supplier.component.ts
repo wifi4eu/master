@@ -38,42 +38,11 @@ export class selectSupplierComponent {
   selectedSupplier: SupplierDTOBase;
   displayMessage: boolean = false;
   
-  name = '';
-
   // region: NutsDTOBase = null;
   region: any = {};
   page: any = 0;
   itemsPerPageSelector = [10, 20, 50, 100];
   itemsPerPage: any = this.itemsPerPageSelector[1];
-
-  
-  suppliersData: Array<Object> = [
-    {
-      logo: null,
-      companyName: "VODAFONE",
-      address: "Rue Royale 15, 123456, Paris, France",
-      companyWebsite: "vodafone.com",
-      vatNumber: "AB123456789"
-    }, {
-      logo: null,
-      companyName: "VODAFONE",
-      address: "Rue Royale 15, 123456, Paris, France",
-      companyWebsite: "vodafone.com",
-      vatNumber: "AB123456789"
-    },     {
-      logo: null,
-      companyName: "VODAFONE",
-      address: "Rue Royale 15, 123456, Paris, France",
-      companyWebsite: "vodafone.com",
-      vatNumber: "AB123456789"
-    },    {
-      logo: null,
-      companyName: "VODAFONE",
-      address: "Rue Royale 15, 123456, Paris, France",
-      companyWebsite: "vodafone.com",
-      vatNumber: "AB123456789"
-    },
-  ]
   municipality: object;
 
   @ViewChild("gridSuppliers") gridSuppliers: DataGrid;
@@ -150,9 +119,10 @@ export class selectSupplierComponent {
   }
 
   private selectSupplier() {
-    console.log(this.selectedSupplier);
     (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true; 
-    // this.displayMessage = true;
   }
 
+  private saveSupplier() {
+    this.selectSupplier();
+  }
 }
