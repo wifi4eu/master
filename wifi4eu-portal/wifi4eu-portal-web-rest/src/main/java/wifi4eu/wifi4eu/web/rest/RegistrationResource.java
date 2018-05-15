@@ -46,7 +46,7 @@ public class RegistrationResource {
 
     Logger _log = LoggerFactory.getLogger(RegistrationResource.class);
 
-    @ApiOperation(value = "Get all the registrations")
+/*    @ApiOperation(value = "Get all the registrations")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<RegistrationDTO> allRegistrations(HttpServletResponse response) throws IOException {
@@ -61,7 +61,7 @@ public class RegistrationResource {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return registrationService.getAllRegistrations();
-    }
+    }*/
 
     @ApiOperation(value = "Get registration by specific id")
     @RequestMapping(value = "/{registrationId}", method = RequestMethod.GET, produces = "application/json")
