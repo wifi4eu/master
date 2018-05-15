@@ -12,11 +12,14 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -33,14 +36,24 @@ public class MunicipalityResource {
     @Autowired
     private PermissionChecker permissionChecker;
 
+    @Autowired
+    private UserService userService;
+
     Logger _log = LoggerFactory.getLogger(MunicipalityResource.class);
 
     @ApiOperation(value = "Get municipality by specific id")
     @RequestMapping(value = "/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public MunicipalityDTO getMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId) {
+    public MunicipalityDTO getMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
         _log.info("getMunicipalityById: " + municipalityId);
-        permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+        try{
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(userDTO.getType() != 5){
+                permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            }
+        }catch (Exception e){
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        }
         return municipalityService.getMunicipalityById(municipalityId);
     }
 
