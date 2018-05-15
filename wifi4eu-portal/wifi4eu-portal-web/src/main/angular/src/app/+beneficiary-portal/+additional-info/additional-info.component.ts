@@ -172,10 +172,7 @@ export class AdditionalInfoComponent {
                 this.doc4 = false;
                 break;
         }
-        console.log("0: ", this.doc1);
-        console.log("1: ", this.doc2);
-        console.log("2: ", this.doc3);
-        console.log("3: ", this.doc4);
+
         if (this.doc1 || this.doc2 || this.doc3 || this.doc4) {
             this.filesUploaded = true;
         }
