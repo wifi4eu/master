@@ -11,13 +11,16 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -38,9 +41,12 @@ public class RegistrationResource {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserThreadsService userThreadsService;
+
     Logger _log = LoggerFactory.getLogger(RegistrationResource.class);
 
-    @ApiOperation(value = "Get all the registrations")
+/*    @ApiOperation(value = "Get all the registrations")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<RegistrationDTO> allRegistrations(HttpServletResponse response) throws IOException {
@@ -55,7 +61,7 @@ public class RegistrationResource {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return registrationService.getAllRegistrations();
-    }
+    }*/
 
     @ApiOperation(value = "Get registration by specific id")
     @RequestMapping(value = "/{registrationId}", method = RequestMethod.GET, produces = "application/json")
@@ -87,6 +93,7 @@ public class RegistrationResource {
     public ResponseDTO createRegistration(@RequestBody final RegistrationDTO registrationDTO) {
         try {
             _log.info("createRegistration");
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
             RegistrationDTO resRegistration = registrationService.createRegistration(registrationDTO);
             return new ResponseDTO(true, resRegistration, null);
         } catch (Exception e) {
@@ -137,16 +144,26 @@ public class RegistrationResource {
         httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         httpServletResponse.setDateHeader("Expires", 0); // Proxies.
+        permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
         return registrationService.getRegistrationByMunicipalityId(municipalityId);
     }
 
     @ApiOperation(value = "Check if a certain user id registration is KO (deleted or suspended).")
     @RequestMapping(value = "/registrationKO/{userId}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseDTO checkIfRegistrationIsKO(@PathVariable("userId") final Integer userId) {
+    public ResponseDTO checkIfRegistrationIsKO(@PathVariable("userId") final Integer userId, HttpServletResponse response) throws IOException {
         try {
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException("");
+            }
             _log.info("checkIfRegistrationIsKO: " + userId);
             return new ResponseDTO(true, registrationService.checkIfRegistrationIsKO(userId), null);
+
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'checkIfRegistrationIsKO' operation.", e);
@@ -167,61 +184,115 @@ public class RegistrationResource {
         } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getRegistrationByUserAndMunicipality' operation.", e);
+            }
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
 
         return registrationService.getRegistrationByUserAndMunicipality(userId, municipalityId);
     }
 
-    @ApiOperation(value = "Request legal documents")
+    /*@ApiOperation(value = "Request legal documents")
     @RequestMapping(value = "/requestLegalDocuments/{registrationId}", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO requestLegalDocuments(@PathVariable("registrationId") final Integer registrationId) {
+    public ResponseDTO requestLegalDocuments(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
         try {
             if (_log.isInfoEnabled()) {
                 _log.info("requestLegalDocuments for registration: " + registrationId);
             }
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException("");
+            }
             return new ResponseDTO(registrationService.requestLegalDocuments(registrationId), null, null);
+
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'requestLegalDocuments' operation.", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-    }
+    }*/
 
-    @ApiOperation(value = "Assign legal entity")
+    /*@ApiOperation(value = "Assign legal entity")
     @RequestMapping(value = "/assignLegalEntity/{registrationId}", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO assignLegalEntity(@PathVariable("registrationId") final Integer registrationId) {
+    public ResponseDTO assignLegalEntity(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
         try {
             if (_log.isInfoEnabled()) {
                 _log.info("assignLegalEntity for registration: " + registrationId);
             }
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException("");
+            }
             return new ResponseDTO(registrationService.assignLegalEntity(registrationId), null, null);
+
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'assignLegalEntity' operation.", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-    }
+    }*/
 
     @ApiOperation(value = "Get registration by specific userThread id")
     @RequestMapping(value = "/userThread/{userThreadId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public RegistrationDTO getRegistrationByUserThreadId(@PathVariable("userThreadId") final Integer userThreadId) {
         _log.info("getRegistrationByUserThreadId: " + userThreadId);
-        return registrationService.getRegistrationByUserThreadId(userThreadId);
+
+
+        UserThreadsDTO userThreadDTO = userThreadsService.getUserThreadsById(userThreadId);
+        RegistrationDTO registration = registrationService.getRegistrationByUserThreadId(userThreadDTO.getThreadId(), userThreadDTO.getUserId());
+
+        //TODO Temporary solution to prevent information leaks
+        // we check that the user has access to registrations table
+        permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registration.getId());
+        registration.setLegalFile1(null);
+        registration.setLegalFile2(null);
+        registration.setLegalFile3(null);
+        registration.setLegalFile4(null);
+        registration.setIpRegistration(null);
+        registration.setMailCounter(0);
+        registration.setRole(null);
+        registration.setStatus(0);
+        registration.setAssociationName(null);
+        registration.setOrganisationId(0);
+        registration.setUploadTime(0);
+        registration.setAllFilesFlag(0);
+
+
+        return registration;
     }
 
     @ApiOperation(value = "Get issue of registration")
     @RequestMapping(value = "/getIssue", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO getRegistrationIssue(@RequestBody final RegistrationDTO registrationDTO) {
+    public ResponseDTO getRegistrationIssue(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
         try {
             _log.info("getRegistrationIssue");
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException("");
+            }
             return new ResponseDTO(true, registrationService.getRegistrationIssue(registrationDTO), null);
+
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'getRegistrationIssue' operation.", e);

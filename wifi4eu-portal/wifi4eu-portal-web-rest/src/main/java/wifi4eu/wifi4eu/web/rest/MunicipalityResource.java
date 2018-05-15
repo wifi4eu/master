@@ -69,22 +69,20 @@ public class MunicipalityResource {
             //check permission
             int municipalityId = municipalityDTO.getId();
             permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
-
             MunicipalityDTO resMunicipality = municipalityService.createMunicipality(municipalityDTO);
             return new ResponseDTO(true, resMunicipality, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'createMunicipality' operation.", ade);
             }
-            response.sendError(HttpStatus.FORBIDDEN.value());
-            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
+            response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createMunicipality' operation.", e);
             }
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
+        return new ResponseDTO(true, null, null);
     }
 
     @ApiOperation(value = "Delete municipality by specific id")
@@ -99,14 +97,14 @@ public class MunicipalityResource {
             MunicipalityDTO resMunicipality = municipalityService.deleteMunicipality(municipalityId);
             return new ResponseDTO(true, resMunicipality, null);
         } catch (AccessDeniedException ade) {
-            response.sendError(HttpStatus.FORBIDDEN.value());
-            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
+            response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteMunicipality' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
+        return new ResponseDTO(true, null, null);
     }
 
     @ApiOperation(value = "Get municipalities by specific lau id")
@@ -115,24 +113,24 @@ public class MunicipalityResource {
     })
     @RequestMapping(value = "/lauId/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<MunicipalityDTO> getMunicipalitiesByLauId(@PathVariable("lauId") final Integer lauId) {
-        if (_log.isInfoEnabled()) {
-            _log.info("getMunicipalitiesByLauId:" + lauId);
+    public List<MunicipalityDTO> getMunicipalitiesByLauId(@PathVariable("lauId") final Integer lauId, HttpServletResponse response) throws IOException {
+        try{
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(userDTO.getType() != 5){
+                throw new AccessDeniedException("");
+            }
+        }
+        catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return municipalityService.getMunicipalitiesByLauId(lauId);
     }
 
     @ApiOperation(value = "Get municipalities by specific user id")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
-    })
     @RequestMapping(value = "/userId/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByUserId(@PathVariable("userId") final Integer userId,
                                                            HttpServletResponse response) throws IOException {
-        if (_log.isInfoEnabled()) {
-            _log.info("getMunicipalitiesByUserId:" + userId);
-        }
 
         try {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
@@ -141,27 +139,16 @@ public class MunicipalityResource {
                 _log.error("Error with permission on 'getMunicipalitiesByUserId' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
-
+            throw new AccessDeniedException("");
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'getMunicipalitiesByUserId' operation.", e);
             }
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            throw new AccessDeniedException("");
         }
 
         return municipalityService.getMunicipalitiesByUserId(userId);
     }
 
-    @ApiOperation(value = "Get municipalities grouped by lau id")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
-    })
-    @RequestMapping(value = "/groupedByLauId", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public ResponseDTO getMunicipalitiesCountGroupedByLauId() {
-        if (_log.isInfoEnabled()) {
-            _log.info("getMunicipalitiesGroupedByLauId");
-        }
-        return new ResponseDTO(true, municipalityService.getMunicipalitiesCountGroupedByLauId(), null);
-    }
 }

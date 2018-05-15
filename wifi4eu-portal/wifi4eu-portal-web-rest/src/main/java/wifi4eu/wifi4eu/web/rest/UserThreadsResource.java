@@ -1,19 +1,30 @@
 package wifi4eu.wifi4eu.web.rest;
 
+import com.microsoft.applicationinsights.web.dependencies.http.client.UserTokenHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.entity.security.Right;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.entity.thread.UserThreads;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -21,25 +32,42 @@ import java.util.List;
 @Api(value = "/userThreads", description = "UserThreads object REST API services")
 @RequestMapping("userThreads")
 public class UserThreadsResource {
+
     @Autowired
     private UserThreadsService userThreadsService;
 
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PermissionChecker permissionChecker;
+
     Logger _log = LoggerFactory.getLogger(CallResource.class);
 
+    /*
     @ApiOperation(value = "Get all the userThreads entries")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<UserThreadsDTO> allUserThreads() {
         return userThreadsService.getAllUserThreads();
     }
+    */
 
     @ApiOperation(value = "Get userThreads by specific id")
     @RequestMapping(value = "/{userThreadsId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public UserThreadsDTO getUserThreadsById(@PathVariable("userThreadsId") final Integer userThreadsId) {
         _log.info("getUserThreadsById: " + userThreadsId);
-        return userThreadsService.getUserThreadsById(userThreadsId);
+
+        UserThreadsDTO userThreadsDTO = userThreadsService.getUserThreadsById(userThreadsId);
+
+        permissionChecker.check(RightConstants.USER_TABLE + userThreadsDTO.getUserId());
+
+        return userThreadsDTO;
     }
+
+    /*
 
     @ApiOperation(value = "Create userThreads")
     @RequestMapping(method = RequestMethod.POST)
@@ -58,6 +86,9 @@ public class UserThreadsResource {
         }
     }
 
+    */
+
+    /*
 
     @ApiOperation(value = "Delete userThreads by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
@@ -75,20 +106,51 @@ public class UserThreadsResource {
         }
     }
 
+    */
+
     @ApiOperation(value = "Get Threads by specific user id")
     @RequestMapping(value = "/userId/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<UserThreadsDTO> getUserThreadsByUserId(@PathVariable("userId") final Integer userId) {
         _log.info("getUserThreadsByUserId: " + userId);
+
+        permissionChecker.check(RightConstants.USER_TABLE + userId);
+
         return userThreadsService.getUserThreadsByUserId(userId);
     }
 
     @ApiOperation(value = "Get User by specific thread id")
     @RequestMapping(value = "/threadId/{threadId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<UserThreadsDTO> getUserThreadsByThreadId(@PathVariable("threadId") final Integer threadId) {
+    public List<UserThreadsDTO> getUserThreadsByThreadId(@PathVariable("threadId") final Integer threadId, HttpServletResponse response) throws IOException {
         _log.info("getUserThreadsByThreadId: " + threadId);
-        return userThreadsService.getUserThreadsByThreadId(threadId);
+
+        List<UserThreadsDTO> listUserThreadsDTO = userThreadsService.getUserThreadsByThreadId(threadId);
+
+        boolean isUserThread = false;
+
+        UserDTO currentUserDTO = userService.getUserByUserContext(UserHolder.getUser());
+
+        for (UserThreadsDTO utDTO : listUserThreadsDTO) {
+            if (utDTO.getUserId() == currentUserDTO.getId()) {
+                isUserThread = true;
+                break;
+            }
+        }
+
+        if (!isUserThread) {
+            try {
+                if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
+                    throw new AccessDeniedException("");
+                }
+            } catch (AccessDeniedException ade) {
+                response.sendError(HttpStatus.NOT_FOUND.value());
+            } catch (Exception e) {
+                response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            }
+        }
+
+        return listUserThreadsDTO;
     }
 
 }

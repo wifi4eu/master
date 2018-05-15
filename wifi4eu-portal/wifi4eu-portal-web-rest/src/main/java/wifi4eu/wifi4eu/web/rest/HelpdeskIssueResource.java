@@ -27,6 +27,7 @@ import java.util.List;
 @Api(value = "/helpdesk/issues", description = "Helpdesk issues REST API services")
 @RequestMapping("helpdesk/issues")
 public class HelpdeskIssueResource {
+
     @Autowired
     private HelpdeskService helpdeskService;
 
@@ -106,13 +107,13 @@ public class HelpdeskIssueResource {
         }
         catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), ade.getMessage()));
         }
         catch (Exception e) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteHelpdeskIssue' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
+        return new ResponseDTO(false, null, null);
     }
 }

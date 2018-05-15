@@ -70,14 +70,14 @@ public class CallResource {
         }
         catch (AccessDeniedException ade){
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), ade.getMessage()));
         }
         catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createCall' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
+        return new ResponseDTO(false, null, null);
     }
 
     @ApiOperation(value = "Delete call by specific id")
@@ -97,13 +97,12 @@ public class CallResource {
         }
         catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), ade.getMessage()));
         }
         catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteCall' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
+        return new ResponseDTO(false, null, null);
     }
 }

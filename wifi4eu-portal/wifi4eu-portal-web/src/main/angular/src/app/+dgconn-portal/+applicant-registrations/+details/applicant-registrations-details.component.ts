@@ -162,7 +162,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         }
     }
 
-    private requestLegalDocuments(index: number) {
+    /*private requestLegalDocuments(index: number) {
         if (index != null) {
             this.registrationApi.requestLegalDocuments(this.registrations[index].id).subscribe(
                 (response: ResponseDTOBase) => {
@@ -174,7 +174,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 }
             );
         }
-    }
+    }*/
 
     private displayValidateModal(index: number) {
         if (index != null) {

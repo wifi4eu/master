@@ -107,7 +107,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
         }
     }
 
-    private requestLegalDocuments(index: number) {
+    /*private requestLegalDocuments(index: number) {
         if (index != null) {
             this.registrationApi.requestLegalDocuments(this.registrations[index].id).subscribe(
                 (response: ResponseDTOBase) => {
@@ -119,7 +119,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                 }
             );
         }
-    }
+    }*/
 
     private displayInvalidateModal(index: number) {
         if (index != null) {
