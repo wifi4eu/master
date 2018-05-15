@@ -2,25 +2,25 @@ import {Component, Input, OnInit} from "@angular/core";
 import {UxService} from "@ec-digit-uxatec/eui-angular2-ux-commons";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserApi} from "../shared/swagger/api/UserApi";
-import {ActivateAccountDTOBase} from "../shared/swagger/model/ActivateAccountDTO";
+//import {ActivateAccountDTOBase} from "../shared/swagger/model/ActivateAccountDTO";
 import {ResponseDTOBase} from "../shared/swagger/model/ResponseDTO";
 import {TranslateService} from "ng2-translate";
 
 @Component({templateUrl: 'activation.component.html', providers: [UserApi]})
 export class ActivationComponent implements OnInit {
 
-    private activation: ActivateAccountDTOBase;
+    //private activation: ActivateAccountDTOBase;
 
     constructor(private userApi: UserApi, private uxService: UxService, private route: ActivatedRoute, private router: Router, private translateService: TranslateService) {
-        this.activation = new ActivateAccountDTOBase();
+        //this.activation = new ActivateAccountDTOBase();
     }
 
     ngOnInit() {
         this.route.params.subscribe(
             params => {
-                this.activation.token = params['token'];
+                //this.activation.token = params['token'];
 
-                this.userApi.activateAccount(this.activation).subscribe(
+                /*this.userApi.activateAccount(this.activation).subscribe(
                     (data: ResponseDTOBase) => {
                         if (data.success) {
                             let translatedString = 'User activation success.';
@@ -63,7 +63,7 @@ export class ActivationComponent implements OnInit {
                         });
                         this.router.navigateByUrl('/home');
                     }
-                );
+                );*/
             }
         );
     }
