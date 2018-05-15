@@ -103,7 +103,6 @@ export class SupplierRegistrationComponent {
                 } else {
                     this.failureRegistration = true;
                 }
-                console.log(data);
             }, error => {
                 this.failureRegistration = true;
                 console.log(error);
