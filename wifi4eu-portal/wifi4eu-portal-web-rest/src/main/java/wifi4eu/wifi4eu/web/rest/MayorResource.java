@@ -42,9 +42,6 @@ public class MayorResource {
     Logger _log = LoggerFactory.getLogger(MayorResource.class);
 
     @ApiOperation(value = "Get all the mayors")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
-    })
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MayorDTO> allMayors(HttpServletResponse response) throws IOException {
@@ -53,28 +50,24 @@ public class MayorResource {
             if(userService.getUserByUserContext(UserHolder.getUser()).getType() != 5){
                 throw new AccessDeniedException("");
             }
-        }catch (AccessDeniedException ade) {
-            response.sendError(HttpStatus.NOT_FOUND.value());
+            else{
+                return mayorService.getAllMayors();
+            }
         } catch (Exception e){
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
-        return mayorService.getAllMayors();
+        return null;
     }
 
     @ApiOperation(value = "Get mayor by specific id")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
-    })
     @RequestMapping(value = "/{mayorId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public MayorDTO getMayorById(@PathVariable("mayorId") final Integer mayorId, HttpServletResponse response) throws IOException {
         _log.info("getMayorById: " + mayorId);
         try {
             permissionChecker.check(RightConstants.MAYORS_TABLE+mayorId);
-        }catch (AccessDeniedException ade){
-            response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e){
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return mayorService.getMayorById(mayorId);
     }
@@ -87,11 +80,12 @@ public class MayorResource {
                                    HttpServletResponse response) throws IOException {
         try {
             _log.info("createMayor");
-            MayorDTO resMayor = mayorService.createMayor(mayorDTO);
 
             //check permission
             int mayorId = mayorDTO.getId();
             permissionChecker.check(RightConstants.MAYORS_TABLE+mayorId);
+
+            MayorDTO resMayor = mayorService.createMayor(mayorDTO);
 
             MayorDTO mayorDTO1 = mayorService.getMayorByMunicipalityId(mayorDTO.getMunicipalityId());
             if(mayorDTO1 != null) {
@@ -102,15 +96,14 @@ public class MayorResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'createMayor' operation.", ade);
             }
-            response.sendError(HttpStatus.FORBIDDEN.value());
-            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
+            response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createMayor' operation.", e);
             }
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
+        return new ResponseDTO(false, null, null);
     }
 
     @ApiOperation(value = "Delete mayor by specific id")
@@ -125,26 +118,30 @@ public class MayorResource {
         }
         catch (AccessDeniedException ade){
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
         catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteMayor' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
+        return new ResponseDTO(false, null, null);
     }
 
     @ApiOperation(value = "Get mayor by specific municipality id")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
-    })
     @RequestMapping(value = "/municipalityId/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public MayorDTO getMayorByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId) {
+    public MayorDTO getMayorByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
         if (_log.isInfoEnabled()) {
             _log.info("getMayorByMunicipalityId: " + municipalityId);
         }
+
+        try{
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE+municipalityId);
+        } catch (Exception e){
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        }
+
         return mayorService.getMayorByMunicipalityId(municipalityId);
     }
 }
