@@ -83,7 +83,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         if (this.lauId && this.callId) {
             this.clearPageInfo();
             this.loadingData = true;
-            this.applicationApi.getApplicationsByCallIdAndLauId(this.callId, this.lauId).subscribe(
+            this.applicationApi.getApplicationsByCallIdAndLauId(this.callId, this.lauId, new Date().getTime()).subscribe(
                 (applications: ApplicationDTOBase[]) => {
                     let failCount = 0;
                     let correctCount = 0;

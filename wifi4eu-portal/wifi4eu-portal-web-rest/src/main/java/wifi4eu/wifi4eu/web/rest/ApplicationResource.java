@@ -238,7 +238,7 @@ public class ApplicationResource {
     @ApiOperation(value = "Get applications by specific call and lau id")
     @RequestMapping(value = "/call/{callId}/lau/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<ApplicationDTO> getApplicationsByCallIdAndLauId(@PathVariable("callId") final Integer callId, @PathVariable("lauId") final Integer lauId) {
+    public List<ApplicationDTO> getApplicationsByCallIdAndLauId(@PathVariable("callId") final Integer callId, @PathVariable("lauId") final Integer lauId, @RequestParam("currentDate") final Long currentDate) {
         if (_log.isInfoEnabled()) {
             _log.info("getApplicationsByCallIdAndLauId");
         }
