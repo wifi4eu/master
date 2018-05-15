@@ -162,7 +162,7 @@
                                             </p-column>
                                             <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <a class="link-label" [href]="getLegalFileUrl(i, row.type)" download>
+                                                    <a class="link-label" (click)="downloadLegalFile(i, row.type)">
                                                         <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                                     </a>
                                                 </ng-template>

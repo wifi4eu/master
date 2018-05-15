@@ -20,6 +20,7 @@ import { ResponseDTOBase } from "../../../shared/swagger/model/ResponseDTO";
 import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
 import { LegalFileDTOBase } from "../../../shared/swagger/model/LegalFileDTO";
 import { TranslateService } from "ng2-translate";
+import * as FileSaver from "file-saver";
 
 @Component({
     templateUrl: 'applicant-registrations-details.component.html',
@@ -183,25 +184,22 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     }
 
     // TODO: Temporaly, the BLOB data will be read from the registration itself.
-    // private getLegalFileUrl(index: number, fileNumber: number) {
-    //     switch (fileNumber) {
-    //         case 1:
-    //             return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile1);
-    //         case 2:
-    //             return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile2);
-    //         case 3:
-    //             return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile3);
-    //         case 4:
-    //             return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile4);
-    //     }
-    // }
-
-    // TODO: The BLOB data will be read from the 'LegalFileDTO' model in the near future (or point out to an external file location).
-    private getLegalFileUrl(index: number, fileType: number) {
+    private downloadLegalFile(index: number, typeNumber: number) {
         if (index != null) {
             for (let legalFile of this.legalFiles[index]) {
-                if (legalFile.type == fileType) {
-                    return this.sanitizer.bypassSecurityTrustUrl(legalFile.data);
+                if (legalFile.type == typeNumber) {
+                    let lfBlobString = legalFile.data;
+                    let lfMimeType = this.sharedService.getMimeType(lfBlobString);
+                    let lfExtension = this.sharedService.getFileExtension(lfBlobString);
+                    let lfData = this.sharedService.getBase64Data(lfBlobString);
+                    let byteCharacters = atob(lfData);
+                    let byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length; i++) {
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }
+                    let byteArray = new Uint8Array(byteNumbers);
+                    let blob = new Blob([byteArray], {type: lfMimeType});
+                    FileSaver.saveAs(blob, 'legalfile' + typeNumber + lfExtension);
                 }
             }
         }
