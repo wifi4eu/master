@@ -34,6 +34,7 @@ public class TimelineResource {
 
     Logger _log = LoggerFactory.getLogger(CallResource.class);
 
+    /*
     @ApiOperation(value = "Get all the timeline entries")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -97,4 +98,6 @@ public class TimelineResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
+
+    */
 }

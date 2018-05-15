@@ -30,6 +30,7 @@ public class AzureQueueResource {
     @Autowired
     AzureQueueService azureQueueService;
 
+    /*
 
     @ApiOperation(value = "Create mayor")
     @RequestMapping(method = RequestMethod.POST)
@@ -40,8 +41,7 @@ public class AzureQueueResource {
         try {
             _log.info("addMessageAzureQueue");
 
-            azureQueueService.createAzureQueue("stressqueue-1");/*
-            azureQueueService.addMessageAzureQueue(anAzureQueueMessageDTO);*/
+            azureQueueService.createAzureQueue("stressqueue-1");
             azureQueueService.removeMessagesQueue();
 
             return new ResponseDTO(true, anAzureQueueMessageDTO, null);
@@ -59,4 +59,5 @@ public class AzureQueueResource {
             return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
         }
     }
+    */
 }
