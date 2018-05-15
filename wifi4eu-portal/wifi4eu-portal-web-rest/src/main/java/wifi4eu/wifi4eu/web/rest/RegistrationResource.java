@@ -10,16 +10,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -43,6 +44,12 @@ public class RegistrationResource {
 
     @Autowired
     private UserThreadsService userThreadsService;
+
+    @Autowired
+    private ThreadService threadService;
+
+    @Autowired
+    private MunicipalityService municipalityService;
 
     Logger _log = LoggerFactory.getLogger(RegistrationResource.class);
 
@@ -256,24 +263,31 @@ public class RegistrationResource {
         UserThreadsDTO userThreadDTO = userThreadsService.getUserThreadsById(userThreadId);
         RegistrationDTO registration = registrationService.getRegistrationByUserThreadId(userThreadDTO.getThreadId(), userThreadDTO.getUserId());
 
-        //TODO Temporary solution to prevent information leaks
-        // we check that the user has access to registrations table
-        permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registration.getId());
-        registration.setLegalFile1(null);
-        registration.setLegalFile2(null);
-        registration.setLegalFile3(null);
-        registration.setLegalFile4(null);
-        registration.setIpRegistration(null);
-        registration.setMailCounter(0);
-        registration.setRole(null);
-        registration.setStatus(0);
-        registration.setAssociationName(null);
-        registration.setOrganisationId(0);
-        registration.setUploadTime(0);
-        registration.setAllFilesFlag(0);
+        UserContext userContext = UserHolder.getUser();
+        UserDTO user = userService.getUserByEmail(userContext.getEmail());
 
+        if(userThreadsService.getByUserIdAndThreadId(user.getId(), userThreadDTO.getThreadId()) != null) {
 
-        return registration;
+            //TODO Temporary solution to prevent information leaks
+            // we check that the user has access to registrations table
+
+            registration.setLegalFile1(null);
+            registration.setLegalFile2(null);
+            registration.setLegalFile3(null);
+            registration.setLegalFile4(null);
+            registration.setIpRegistration(null);
+            registration.setMailCounter(0);
+            registration.setRole(null);
+            registration.setStatus(0);
+            registration.setAssociationName(null);
+            registration.setOrganisationId(0);
+            registration.setUploadTime(0);
+            registration.setAllFilesFlag(0);
+
+            return registration;
+        } else {
+            throw new AppException("The user in session does not contain any thread registered with the id provided.");
+        }
     }
 
     @ApiOperation(value = "Get issue of registration")
