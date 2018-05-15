@@ -278,14 +278,16 @@ export class AppComponent {
         this.menuLinks = this.children[0];
         this.profileUrl = null;
 
-        this.userApi.doCompleteSignOut().subscribe(
+        window.location.href = environment['logoutUrl'];
+
+        /*this.userApi.doCompleteSignOut().subscribe(
             (response: string) => {
                 window.location.href = environment['logoutUrl'];
             }, (error) => {
                 window.location.href = environment['logoutUrl'];
                 console.log(error);
             }
-        );
+        );*/
     }
 
     private goToTop() {
