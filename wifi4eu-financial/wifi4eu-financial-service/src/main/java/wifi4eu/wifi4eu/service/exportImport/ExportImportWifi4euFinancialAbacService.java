@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportLEFMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportLEFRepository;
-import wifi4eu.wifi4eu.service.exportImport.excelFile.ReadExcelFile;
+import wifi4eu.wifi4eu.service.exportImport.excelFile.ReadExcelFileAbac;
 //import wifi4eu.wifi4eu.entity.municipality.Municipality;
 //import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 //import wifi4eu.wifi4eu.service.location.LauService;
@@ -53,14 +53,14 @@ public class ExportImportWifi4euFinancialAbacService {
     @Transactional
     public void importLegalEntityF() throws Exception{
           _log.info("importLegalEntityF");
-          ReadExcelFile rF=new ReadExcelFile(exportImportLEFRepository, exportImportLEFMapper);
+          ReadExcelFileAbac rF=new ReadExcelFileAbac(exportImportLEFRepository, exportImportLEFMapper);
           rF.readExcelFile();
     }
 
     @Transactional
     public void importBudgetaryCommitment() throws Exception{
           _log.info("importBudgetaryCommitment");
-          ReadExcelFile rF=new ReadExcelFile(exportImportLEFRepository, exportImportLEFMapper);
+          ReadExcelFileAbac rF=new ReadExcelFileAbac(exportImportLEFRepository, exportImportLEFMapper);
           rF.readExcelFile();
     }
 
@@ -100,7 +100,7 @@ public class ExportImportWifi4euFinancialAbacService {
 ////                document[i][4]=String.valueOf(setIssueToDgconnBeneficiary(municipality.getLau().getId()));
 //            document[i][5]=String.valueOf(countMunicipality);
 //        }
-//        CreateExcelFile cF=new CreateExcelFile(httpServletRequest);
+//        CreateExcelFileAbac cF=new CreateExcelFileAbac(httpServletRequest);
 //        cF.createExcelFile(header, document, "ExportLegalEntityFBCValidate.csv");
     }
 

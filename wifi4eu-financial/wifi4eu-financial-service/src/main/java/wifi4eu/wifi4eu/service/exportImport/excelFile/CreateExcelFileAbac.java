@@ -12,12 +12,12 @@ import java.awt.*;
 import java.io.*;
 import java.net.*;
 
-public class CreateExcelFile{
+public class CreateExcelFileAbac {
     public HttpServletRequest httpServletRequest;
 
-    public CreateExcelFile(){}
+    public CreateExcelFileAbac(){}
 
-    public CreateExcelFile(HttpServletRequest httpServletRequest){
+    public CreateExcelFileAbac(HttpServletRequest httpServletRequest){
         this.httpServletRequest=httpServletRequest;
     }
 
