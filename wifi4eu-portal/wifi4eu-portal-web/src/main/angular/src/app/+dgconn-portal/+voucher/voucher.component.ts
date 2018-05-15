@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from "@angular/core";
+import { Component, ViewEncapsulation, ViewChild } from "@angular/core";
 import { CallApi } from "../../shared/swagger/api/CallApi";
 import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
 import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
@@ -8,8 +8,10 @@ import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { Observable } from 'rxJs/Observable';
 import { SharedService } from "../../shared/shared.service";
-import { VoucherAssignmentDTO, VoucherSimulationDTO } from "../../shared/swagger";
+import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO } from "../../shared/swagger";
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
+import { count } from "rxjs/operator/count";
+import { Paginator, MenuItem } from "primeng/primeng";
 
 @Component({
   templateUrl: 'voucher.component.html', providers: [CallApi, ApplicationApi, NutsApi, VoucherApi],
@@ -39,8 +41,12 @@ export class DgConnVoucherComponent {
   private chosenCountry: string = null;
   private totalRequests: number = 0;
   private displayMessage: boolean = false;
+  displayConfirmingData: boolean = false;
 
-  private validApplications = [];
+  private countrySelected: NutsDTOBase = {id: 0, code: '0', label: 'All', level: 0, countryCode: "ALL", order: 1, sorting: 1};
+  private simulationAssignment = null;
+
+  private validApplications: number = 0;
   private getApplicationsCall = null;
   private numVoucher = [];
   private percentageBudgetCall = [];
@@ -48,6 +54,35 @@ export class DgConnVoucherComponent {
   private callsLoaded = false;
   private callSelected: CallDTOBase = null;
   private listAssignment: VoucherSimulationDTO[] = [];
+  private municipalityMunicipality = null;
+  private simulationRequest = null;
+  
+  private totalRecords: number = null;
+  private page = 0;
+  private sizePage = 20;
+  private sortDirection = 'ASC';
+  private sortField = 'euRank';
+  private pageLinks: number = null;
+  private loadingSimulation = false;
+
+  private rowDisplayOptions = [20, 50, 100]
+
+  private selectedCountry = 'All';
+
+  private msgs = [];
+
+  private items: MenuItem[] = [
+    {
+        label: 'Next',
+        icon: 'fa-chevron-right'
+    },
+    {
+        label: 'Prev',
+        icon: 'fa-chevron-left'
+    }
+  ];
+
+  @ViewChild("paginator") paginator: Paginator;
 
   constructor(private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
     private voucherApi: VoucherApi) {
@@ -57,24 +92,24 @@ export class DgConnVoucherComponent {
         this.calls = calls;
         if (this.calls.length > 0) {
           this.callSelected = this.calls[0];
-          this.applicationApi.getApplicationsByRegistrationNotInvalidated(this.calls[0].id).subscribe((data) => {
+          this.loadingSimulation = true;
+
+          this.voucherApi.getVoucherAssignmentByCall(this.calls[0].id).subscribe((data: VoucherAssignmentDTO) => {
+            this.callVoucherAssignment = data;
+            this.loadPage();
+          })
+
+          this.applicationApi.getApplicationsNotInvalidated(this.calls[0].id).subscribe((data) => {
             this.validApplications = data;
           })
-          this.voucherApi.getVoucherAssignmentByCall(this.calls[0].id).subscribe((data: VoucherAssignmentDTO) => {
-            console.log(data);
-            this.callVoucherAssignment = data;
-
-            this.voucherApi.getVoucherSimulationByVoucherAssignment(data.id).subscribe((simulations) => {
-              this.listAssignment = simulations;
-            });
-          })
+         
         }
         let i = 0;
         for (let call of this.calls) {
           this.applicationsInfo[call.id] = [];
           //this.numVoucher[i] = call.budget / call.budgetVoucher;
           this.percentageBudgetCall[i] = 0;
-          this.applicationApi.getApplicationsVoucherInfoByCall(call.id).subscribe(
+          /* this.applicationApi.getApplicationsVoucherInfoByCall(call.id).subscribe(
             (info: ApplicationVoucherInfoDTOBase[]) => {
               if (info != null) {
                 this.applicationsInfo[call.id] = info;
@@ -84,32 +119,100 @@ export class DgConnVoucherComponent {
                 }
               }
             }
-          );
+          ); */
           i++;
         }
       }
     );
-    this.nutsApi.getNutsByLevel(0).subscribe(
-      (countries: NutsDTOBase[]) => {
-        this.countries = countries;
-      }
-    );
+    this.nutsApi.getNutsByLevel(0).subscribe((countries) => {
+      this.countries = <NutsDTOBase[]>countries;
+      this.countries.splice(0, 0, {id: 0, code: '0', label: 'All', level: 0, countryCode: "ALL", order: 1, sorting: 1});
+    });
   }
 
-  handleChange(event) {
+  selectCountry(country: NutsDTOBase) {
+    this.selectedCountry = country.label;
+    this.loadPage();
+  }
+
+  fillPaginator(response) {
+    this.totalRecords = response.xtotalCount;
+    this.pageLinks = Math.ceil(this.totalRecords / this.sizePage);
+  }
+
+  compareFn(n1: NutsDTOBase, n2: NutsDTOBase): boolean {
+    return n1 && n2 ? n1.id === n2.id : n1 === n2;
+  }
+
+  paginate(event){
+    this.simulationAssignment.unsubscribe();
+    this.page = event.page;
+    this.loadPage();
+  }
+
+  
+
+  changeRowSelection(pageSize: number){
+    this.sizePage = pageSize;
+    this.loadPage();
+  }
+
+  loadPage(){
+    this.loadingSimulation = true;
     if (this.getApplicationsCall != null) {
       this.getApplicationsCall.unsubscribe();
     }
-    
-    this.getApplicationsCall = this.applicationApi.getApplicationsByRegistrationNotInvalidated(this.calls[event.index].id).subscribe((data) => {
+    if(this.simulationAssignment != null)  {
+      this.simulationAssignment.unsubscribe();
+    }
+    this.simulationAssignment = this.voucherApi.getVoucherSimulationByVoucherAssignment(this.callVoucherAssignment.id, this.selectedCountry, this.page, this.sizePage, this.sortField, this.sortDirection).subscribe((response: ResponseDTO) => {
+      this.listAssignment = response.data;
+      this.loadingSimulation = false;
+      this.fillPaginator(response);
+    })
+  }
+
+  sortTable(event){
+    this.sortField = event.field;
+    this.sortDirection = event.order === 1 ? 'ASC' : 'DESC';
+    this.loadPage();
+  }
+
+  handleChange(event) {
+    this.loadingSimulation = true;
+    this.sortField = 'euRank';
+    this.sortDirection = 'ASC';
+    this.listAssignment = [];
+    if (this.getApplicationsCall != null) {
+      this.getApplicationsCall.unsubscribe();
+    }
+    if(this.simulationAssignment != null)  {
+      this.simulationAssignment.unsubscribe();
+    }
+    this.callSelected = this.calls[event.index];
+    this.getApplicationsCall = this.applicationApi.getApplicationsNotInvalidated(this.calls[event.index].id).subscribe((data) => {
       this.validApplications = data;
-      this.callSelected = this.calls[event.index];
+    });
+
+    this.voucherApi.getVoucherAssignmentByCall(this.callSelected.id).subscribe((data: VoucherAssignmentDTO) => {  
+      this.callVoucherAssignment = data;
+      if(data == null){
+        this.simulateVoucherAssignment();
+      }
+      else{
+        this.loadPage();
+      }
     })
 
-    this.voucherApi.getVoucherAssignmentByCall(this.calls[event.index].id).subscribe((data: VoucherAssignmentDTO) => {
-      this.callVoucherAssignment = data;
-      this.listAssignment = data.voucherSimulations;
-    })
+    
+  }
+
+  show() {
+    if(this.msgs.length > 0){
+      this.msgs = [];
+    }
+    this.msgs.push({severity:'info', detail:'Simulation complete'});
+    setTimeout(() => this.msgs = [], 6000);
   }
 
   private displayInfo() {
@@ -117,12 +220,15 @@ export class DgConnVoucherComponent {
   }
 
   private simulateVoucherAssignment(){
+    this.displayConfirmingData = true;
+    this.loadingSimulation = true;
     if(this.callVoucherAssignment == null || this.callVoucherAssignment.status == 1){
-      this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((data: VoucherAssignmentDTO) => {
-        console.log("SIMULATE");
-        console.log(data);
-        //this.callVoucherAssignment = data;
-        console.log(data.voucherSimulations.length);
+      this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((data: VoucherAssignmentDTO) => {
+        this.displayConfirmingData = false;
+        this.callVoucherAssignment = data;
+        this.show();
+        //this.loadPage();
+        this.loadingSimulation = false;
       })
     }
   }
@@ -142,5 +248,10 @@ export class DgConnVoucherComponent {
         }
       }
     }
+  }
+
+  cancelSimulation() {
+    this.displayMessage = false;
+    this.simulationRequest.unsubscribe();
   }
 }

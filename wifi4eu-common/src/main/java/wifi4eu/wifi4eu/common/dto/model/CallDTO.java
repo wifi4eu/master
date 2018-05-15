@@ -7,7 +7,7 @@ public class CallDTO {
     private String event;
     private long startDate;
     private long endDate;
-    private int budget;
+    private int voucherValue;
     private int numberVouchers;
     private int reserve;
     private int maxPercentCountry;
@@ -26,12 +26,12 @@ public class CallDTO {
         this.voucherManagements = voucherManagements;
     }
 
-    public CallDTO(int id, String event, long startDate, long endDate, int budget, int numberVouchers, int reserve, int maxPercentCountry, List<TimelineDTO> timelines, List<VoucherManagementDTO> voucherManagements) {
+    public CallDTO(int id, String event, long startDate, long endDate, int voucherValue, int numberVouchers, int reserve, int maxPercentCountry, List<TimelineDTO> timelines, List<VoucherManagementDTO> voucherManagements) {
         this.id = id;
         this.event = event;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.budget = budget;
+        this.voucherValue = voucherValue;
         this.numberVouchers = numberVouchers;
         this.reserve = reserve;
         this.maxPercentCountry = maxPercentCountry;
@@ -87,12 +87,12 @@ public class CallDTO {
         this.voucherManagements = voucherManagements;
     }
 
-    public int getBudget() {
-        return budget;
+    public int getVoucherValue() {
+        return voucherValue;
     }
 
-    public void setBudget(int budget) {
-        this.budget = budget;
+    public void setVoucherValue(int voucherValue) {
+        this.voucherValue = voucherValue;
     }
 
     public int getNumberVouchers() {

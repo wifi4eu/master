@@ -42,4 +42,12 @@ public class LauService {
     public LauDTO updatePhysicalAddress(LauDTO lauDTO) {
         return lauMapper.toDTO(lauRepository.save(lauMapper.toEntity(lauDTO)));
     }
+
+    public List<LauDTO> getLauByName1Country(String country, String name) {
+        return lauMapper.toDTOList(lauRepository.findLauByName1Country(country, name));
+    }
+
+    public List<LauDTO> getLauByName1(String name) {
+        return lauMapper.toDTOList(lauRepository.findLauByName1(name));
+    }
 }

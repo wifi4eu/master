@@ -205,7 +205,7 @@ public class Application {
         this.lcStatus = lcStatus;
     }
 
-    public Integer isStatus() {
+    public Integer getStatus() {
         return status;
     }
 

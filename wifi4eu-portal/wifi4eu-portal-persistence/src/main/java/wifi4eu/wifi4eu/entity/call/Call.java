@@ -23,9 +23,9 @@ public class Call {
 
     @Column(name = "end_date")
     private Long endDate;
-    
-    @Column(name = "budget")
-    private Integer budget;
+
+    @Column(name = "voucher_value")
+    private Integer voucherValue;
 
     @Column(name = "reserve")
     private Integer reserve;
@@ -52,17 +52,16 @@ public class Call {
         this.startDate = startDate;
         this.endDate = endDate;
         this.timelines = timelines;
-        this.voucherManagements = voucherManagements;
     }
 
-    public Call(Integer id, String event, Long startDate, Long endDate, Integer budget, Integer numberVouchers, Integer reserve, Integer maxPercentCountry, List<Timeline> timelines, List<VoucherManagement> voucherManagements) {
+    public Call(Integer id, String event, Long startDate, Long endDate, Integer voucherValue, Integer reserve, Integer numberVouchers, Integer maxPercentCountry, List<Timeline> timelines, List<VoucherManagement> voucherManagements) {
         this.id = id;
         this.event = event;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.budget = budget;
-        this.numberVouchers = numberVouchers;
+        this.voucherValue = voucherValue;
         this.reserve = reserve;
+        this.numberVouchers = numberVouchers;
         this.maxPercentCountry = maxPercentCountry;
         this.timelines = timelines;
         this.voucherManagements = voucherManagements;
@@ -116,12 +115,12 @@ public class Call {
         this.voucherManagements = voucherManagements;
     }
 
-    public Integer getBudget() {
-        return budget;
+    public Integer getVoucherValue() {
+        return voucherValue;
     }
 
-    public void setBudget(Integer budget) {
-        this.budget = budget;
+    public void setVoucherValue(Integer voucherValue) {
+        this.voucherValue = voucherValue;
     }
 
     public Integer getNumberVouchers() {

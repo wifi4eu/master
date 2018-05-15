@@ -128,14 +128,14 @@ public class ApplicationResource {
     }
 
     @ApiOperation(value = "Get applications voucher2 info by call id")
-    @RequestMapping(value = "/voucherInfo2/call/{callId}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/valid/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<ApplicationDTO> getApplicationsByRegistrationNotInvalidated(@PathVariable("callId") final Integer callId) {
+    public Integer getApplicationsNotInvalidated(@PathVariable("callId") final Integer callId) {
         try {
             if (_log.isInfoEnabled()) {
                 _log.info("getApplicationsVoucherInfoByCall: " + callId);
             }
-            return applicationService.getApplicationsByRegistrationNotInvalidated(callId);
+            return applicationService.countApplicationsNotInvalidated(callId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.info("getApplicationsVoucherInfoByCall: " + callId);

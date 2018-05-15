@@ -3,9 +3,12 @@ package wifi4eu.wifi4eu.service.application;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.service.call.CallService;
@@ -110,6 +113,10 @@ public class ApplicationService {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
     }
 
+    public ApplicationDTO getApplicationByRegistrationId(int callId, int registrationsId){
+        return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationsId));
+    }
+
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(int callId) {
         List<ApplicationVoucherInfoDTO> applicationsVoucherInfo = new ArrayList<>();
         List<ApplicationDTO> applications = applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallId(callId)));
@@ -145,6 +152,10 @@ public class ApplicationService {
         return  applicationMapper.toDTOList(applicationRepository.findApplicationsByRegistrationNotInvalidated(callId));
     }
 
+    public Integer countApplicationsNotInvalidated(int callId) {
+      return applicationRepository.findApplicationsNotInvalidated(callId);
+    }
+
     public List<ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdOrderByDateAsc(callId)));
     }
@@ -157,5 +168,8 @@ public class ApplicationService {
         return applicationMapper.toDTOList(applicationRepository.findApplicationsCountry(country, callId));
     }
 
+    public Integer countApplicationWithSameMunicipalityName(int lauId){
+        return applicationRepository.countApplicationsBySameMunicipality(lauId);
+    }
 
 }
