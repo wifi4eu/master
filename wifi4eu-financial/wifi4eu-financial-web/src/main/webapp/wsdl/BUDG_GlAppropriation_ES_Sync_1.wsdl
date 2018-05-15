@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/gl_appropriation/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:src="http://www.ec.europa.eu/budg/abac/appropriation/v1" xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" name="GlAppropriation" targetNamespace="http://www.ec.europa.eu/budg/abac/gl_appropriation/service/es/sync/v1">
+	<wsdl:import location="FaultMessage.wsdl" namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/appropriation/v1" schemaLocation="xsd/appropriation/BUDG_Appropriation_Search_1.xsd">
+    	</xsd:import>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="GlAppropriationSearchRequest">
+		<wsdl:part name="parameters" element="src:GlAppropriationSearchRequest"/>
+	</wsdl:message>
+	<wsdl:message name="GlAppropriationSearchResponse">
+		<wsdl:part name="parameters" element="src:GlAppropriationSearchResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="GlAppropriationPort">
+		<wsdl:operation name="search">
+			<wsdl:input message="tns:GlAppropriationSearchRequest"/>
+			<wsdl:output message="tns:GlAppropriationSearchResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="GlAppropriationSOAP" type="tns:GlAppropriationPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="search">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/gl_appropriation/service/es/sync/search/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="GlAppropriation">
+		<wsdl:port name="GlAppropriationSOAP" binding="tns:GlAppropriationSOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/GlAppropriation/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/GlAppropriation/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

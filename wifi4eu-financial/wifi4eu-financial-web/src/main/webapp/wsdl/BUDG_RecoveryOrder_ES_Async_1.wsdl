@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/v1" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:ro="http://www.ec.europa.eu/budg/abac/recovery_order/v1" 
+xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1" 
+xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" 
+name="RecoveryOrder" 
+targetNamespace="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/recovery_order/v1" schemaLocation="xsd/recoveryorder/BUDG_RecoveryOrder_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/recovery_order/v1" schemaLocation="xsd/recoveryorder/BUDG_RecoveryOrder_Modify_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/recovery_order/v1" schemaLocation="xsd/recoveryorder/BUDG_RecoveryOrder_Delete_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/recovery_order/v1" schemaLocation="xsd/recoveryorder/BUDG_RecoveryOrder_GiveVisa_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/message/v1" schemaLocation="xsd/message/BUDG_Message_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="RecoveryOrderCreateRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateAssociatedCountryRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateAssociatedCountryRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateAssociatedCountryResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateAssociatedCountryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateCorrectionRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateCorrectionRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateCorrectionResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateCorrectionResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateDetailRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateDetailRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateDetailResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateDetailResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateMailingAddressLinkRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateMailingAddressLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateMailingAddressLinkResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateMailingAddressLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreatePostingCriteriaLinkRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreatePostingCriteriaLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreatePostingCriteriaLinkResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreatePostingCriteriaLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateRecoveryContextRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateRecoveryContextRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateRecoveryContextResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateRecoveryContextResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateRecoveryContextErrorRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateRecoveryContextErrorRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateRecoveryContextErrorResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateRecoveryContextErrorResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateRecoveryOrderLinkRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateRecoveryOrderLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateRecoveryOrderLinkResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateRecoveryOrderLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateScannedDocumentRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateScannedDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateScannedDocumentResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateScannedDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateSupportingDocumentFolderRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateSupportingDocumentFolderRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateSupportingDocumentFolderResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateSupportingDocumentFolderResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateSupportingDocumentRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateSupportingDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderCreateSupportingDocumentResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderCreateSupportingDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderDeleteMailingAddressLinkRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderDeleteMailingAddressLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderDeleteMailingAddressLinkResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderDeleteMailingAddressLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderDeleteRecoveryContextRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderDeleteRecoveryContextRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderDeleteRecoveryContextResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderDeleteRecoveryContextResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderDeleteRecoveryContextErrorRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderDeleteRecoveryContextErrorRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderDeleteRecoveryContextErrorResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderDeleteRecoveryContextErrorResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderGiveVisaRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderGiveVisaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderGiveVisaResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderGiveVisaResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifyRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifyRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifyResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifyResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifyAssociatedCountryRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifyAssociatedCountryRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifyAssociatedCountryResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifyAssociatedCountryResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifyDetailRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifyDetailRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifyDetailResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifyDetailResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifyMailingAddressLinkRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifyMailingAddressLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifyMailingAddressLinkResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifyMailingAddressLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifyPostingCriteriaLinkRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifyPostingCriteriaLinkRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifyPostingCriteriaLinkResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifyPostingCriteriaLinkResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifyRecoveryContextRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifyRecoveryContextRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifyRecoveryContextResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifyRecoveryContextResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifySupportingDocumentFolderRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifySupportingDocumentFolderRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifySupportingDocumentFolderResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifySupportingDocumentFolderResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifySupportingDocumentRequest">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifySupportingDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RecoveryOrderModifySupportingDocumentResponse">
+		<wsdl:part name="parameters" element="ro:RecoveryOrderModifySupportingDocumentResponse"/>
+	</wsdl:message>
+
+	<wsdl:portType name="RecoveryOrderPort">
+		<wsdl:operation name="create">
+			<wsdl:input message="RecoveryOrderCreateRequest"/>
+			<wsdl:output message="RecoveryOrderCreateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_associated_country">
+			<wsdl:input message="RecoveryOrderCreateAssociatedCountryRequest"/>
+			<wsdl:output message="RecoveryOrderCreateAssociatedCountryResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_correction">
+			<wsdl:input message="RecoveryOrderCreateCorrectionRequest"/>
+			<wsdl:output message="RecoveryOrderCreateCorrectionResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_detail">
+			<wsdl:input message="RecoveryOrderCreateDetailRequest"/>
+			<wsdl:output message="RecoveryOrderCreateDetailResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_mailing_address_link">
+			<wsdl:input message="RecoveryOrderCreateMailingAddressLinkRequest"/>
+			<wsdl:output message="RecoveryOrderCreateMailingAddressLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_posting_criteria_link">
+			<wsdl:input message="RecoveryOrderCreatePostingCriteriaLinkRequest"/>
+			<wsdl:output message="RecoveryOrderCreatePostingCriteriaLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context">
+			<wsdl:input message="RecoveryOrderCreateRecoveryContextRequest"/>
+			<wsdl:output message="RecoveryOrderCreateRecoveryContextResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+				<wsdl:operation name="create_recovery_context_error">
+			<wsdl:input message="RecoveryOrderCreateRecoveryContextErrorRequest"/>
+			<wsdl:output message="RecoveryOrderCreateRecoveryContextErrorResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_order_link">
+			<wsdl:input message="RecoveryOrderCreateRecoveryOrderLinkRequest"/>
+			<wsdl:output message="RecoveryOrderCreateRecoveryOrderLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_scanned_document">
+			<wsdl:input message="RecoveryOrderCreateScannedDocumentRequest"/>
+			<wsdl:output message="RecoveryOrderCreateScannedDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document_folder">
+			<wsdl:input message="RecoveryOrderCreateSupportingDocumentFolderRequest"/>
+			<wsdl:output message="RecoveryOrderCreateSupportingDocumentFolderResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document">
+			<wsdl:input message="RecoveryOrderCreateSupportingDocumentRequest"/>
+			<wsdl:output message="RecoveryOrderCreateSupportingDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="delete_mailing_address_link">
+			<wsdl:input message="RecoveryOrderDeleteMailingAddressLinkRequest"/>
+			<wsdl:output message="RecoveryOrderDeleteMailingAddressLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="delete_recovery_context">
+			<wsdl:input message="RecoveryOrderDeleteRecoveryContextRequest"/>
+			<wsdl:output message="RecoveryOrderDeleteRecoveryContextResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="delete_recovery_context_error">
+			<wsdl:input message="RecoveryOrderDeleteRecoveryContextErrorRequest"/>
+			<wsdl:output message="RecoveryOrderDeleteRecoveryContextErrorResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<wsdl:input message="RecoveryOrderGiveVisaRequest"/>
+			<wsdl:output message="RecoveryOrderGiveVisaResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify">
+			<wsdl:input message="RecoveryOrderModifyRequest"/>
+			<wsdl:output message="RecoveryOrderModifyResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_associated_country">
+			<wsdl:input message="RecoveryOrderModifyAssociatedCountryRequest"/>
+			<wsdl:output message="RecoveryOrderModifyAssociatedCountryResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_detail">
+			<wsdl:input message="RecoveryOrderModifyDetailRequest"/>
+			<wsdl:output message="RecoveryOrderModifyDetailResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_mailing_address_link">
+			<wsdl:input message="RecoveryOrderModifyMailingAddressLinkRequest"/>
+			<wsdl:output message="RecoveryOrderModifyMailingAddressLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_psoting_criteria_link">
+			<wsdl:input message="RecoveryOrderModifyPostingCriteriaLinkRequest"/>
+			<wsdl:output message="RecoveryOrderModifyPostingCriteriaLinkResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_recovery_context">
+			<wsdl:input message="RecoveryOrderModifyRecoveryContextRequest"/>
+			<wsdl:output message="RecoveryOrderModifyRecoveryContextResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document">
+			<wsdl:input message="RecoveryOrderModifySupportingDocumentRequest"/>
+			<wsdl:output message="RecoveryOrderModifySupportingDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document_folder">
+			<wsdl:input message="RecoveryOrderModifySupportingDocumentFolderRequest"/>
+			<wsdl:output message="RecoveryOrderModifySupportingDocumentFolderResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="RecoveryOrderSOAP" type="RecoveryOrderPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_associated_country">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/create_associated_country/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_correction">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/create_correction/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_detail">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/create_detail/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_mailing_address_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/create_mailing_address_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_posting_criteria_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/create_posting_criteria_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/create_recovery_context/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context_error">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/create_recovery_context_error/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_order_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/create_recovery_order_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_scanned_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/create_scanned_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document_folder">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/create_supporting_document_folder/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/create_supporting_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete_mailing_address_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/delete_mailing_address_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete_recovery_context">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/delete_recovery_context/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete_recovery_context_error">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/delete_recovery_context_error/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/give_visa/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/modify/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_associated_country">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/modify_associated_country/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_detail">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/modify_detail/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_mailing_address_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/modify_mailing_address_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_psoting_criteria_link">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/modify_psoting_criteria_link/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_recovery_context">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/modify_recovery_context/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/modify_supporting_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document_folder">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/recovery_order/service/es/async/modify_supporting_document_folder/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

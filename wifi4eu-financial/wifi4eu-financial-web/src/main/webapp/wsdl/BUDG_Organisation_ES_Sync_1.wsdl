@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.ec.europa.eu/budg/abac/organisation/service/es/sync/v1"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:src="http://www.ec.europa.eu/budg/abac/organisation/v1"
+	xmlns:get="http://www.ec.europa.eu/budg/abac/organisation/v1"
+	xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" name="Organisation"
+	targetNamespace="http://www.ec.europa.eu/budg/abac/organisation/service/es/sync/v1">
+	<wsdl:import location="FaultMessage.wsdl"
+		namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" />
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import
+				namespace="http://www.ec.europa.eu/budg/abac/organisation/v1"
+				schemaLocation="xsd/organisation/BUDG_Organisation_Search_1.xsd">
+			</xsd:import>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/organisation/v1"
+				schemaLocation="xsd/organisation/BUDG_Organisation_Get_1.xsd">
+			</xsd:import>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="OrganisationSearchRequest">
+		<wsdl:part name="parameters" element="src:OrganisationSearchRequest" />
+	</wsdl:message>
+	<wsdl:message name="OrganisationSearchResponse">
+		<wsdl:part name="parameters" element="src:OrganisationSearchResponse" />
+	</wsdl:message>
+	<wsdl:message name="OrganisationGetRequest">
+		<wsdl:part name="parameters" element="get:OrganisationGetRequest" />
+	</wsdl:message>
+	<wsdl:message name="OrganisationGetResponse">
+		<wsdl:part name="parameters" element="get:OrganisationGetResponse" />
+	</wsdl:message>
+	<wsdl:message name="OrganisationGetFirstAncestorForWorkflowRequest">
+		<wsdl:part element="get:OrganisationGetFirstAncestorForWorkflowRequest"
+			name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="OrganisationGetFirstAncestorForWorkflowResponse">
+		<wsdl:part element="get:OrganisationGetFirstAncestorForWorkflowResponse"
+			name="parameters" />
+	</wsdl:message>
+	<wsdl:portType name="OrganisationPort">
+		<wsdl:operation name="search">
+			<wsdl:input message="tns:OrganisationSearchRequest" />
+			<wsdl:output message="tns:OrganisationSearchResponse" />
+			<wsdl:fault name="Fault" message="fault:FaultMessage" />
+		</wsdl:operation>
+		<wsdl:operation name="get">
+			<wsdl:input message="tns:OrganisationGetRequest" />
+			<wsdl:output message="tns:OrganisationGetResponse" />
+			<wsdl:fault name="Fault" message="fault:FaultMessage" />
+		</wsdl:operation>
+		<wsdl:operation name="get_first_ancestor_for_workflow">
+			<wsdl:input message="tns:OrganisationGetFirstAncestorForWorkflowRequest" />
+			<wsdl:output message="tns:OrganisationGetFirstAncestorForWorkflowResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="OrganisationSOAP" type="tns:OrganisationPort">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="search">
+			<soap:operation
+				soapAction="http://www.ec.europa.eu/budg/abac/organisation/service/es/sync/search/v1" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="get">
+			<soap:operation
+				soapAction="http://www.ec.europa.eu/budg/abac/organisation/service/es/sync/get/v1" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="get_first_ancestor_for_workflow">
+			<soap:operation
+				soapAction="http://www.ec.europa.eu/budg/abac/organisation/service/sync/get_first_ancestor_for_workflow" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="Organisation">
+		<wsdl:port name="OrganisationSOAP" binding="tns:OrganisationSOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/Organisation/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/Organisation/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

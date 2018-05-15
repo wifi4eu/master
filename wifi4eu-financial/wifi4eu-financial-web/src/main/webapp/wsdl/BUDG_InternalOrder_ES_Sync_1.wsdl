@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:get="http://www.ec.europa.eu/budg/abac/internal_order/v1" xmlns:src="http://www.ec.europa.eu/budg/abac/internal_order/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/internal_order/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" name="InternalOrder" targetNamespace="http://www.ec.europa.eu/budg/abac/internal_order/service/es/sync/v1">
+	<wsdl:import location="FaultMessage.wsdl" namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/internal_order/v1" schemaLocation="xsd/internalorder/BUDG_InternalOrder_Get_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/internal_order/v1" schemaLocation="xsd/internalorder/BUDG_InternalOrder_Search_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="ActivityBasedCostsGetRequest">
+		<wsdl:part name="parameters" element="get:ActivityBasedCostsGetRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ActivityBasedCostsGetResponse">
+		<wsdl:part name="parameters" element="get:ActivityBasedCostsGetResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ActivityBasedCostsSearchRequest">
+		<wsdl:part name="parameters" element="src:ActivityBasedCostsSearchRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ActivityBasedCostsSearchResponse">
+		<wsdl:part name="parameters" element="src:ActivityBasedCostsSearchResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ItProjectBasedCostsGetRequest">
+		<wsdl:part name="parameters" element="get:ItProjectBasedCostsGetRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ItProjectBasedCostsGetResponse">
+		<wsdl:part name="parameters" element="get:ItProjectBasedCostsGetResponse"/>
+	</wsdl:message>
+	<wsdl:message name="ItProjectBasedCostsSearchRequest">
+		<wsdl:part name="parameters" element="src:ItProjectBasedCostsSearchRequest"/>
+	</wsdl:message>
+	<wsdl:message name="ItProjectBasedCostsSearchResponse">
+		<wsdl:part name="parameters" element="src:ItProjectBasedCostsSearchResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="InternalOrderPort">
+		<wsdl:operation name="getActivityBasedCosts">
+			<wsdl:input message="tns:ActivityBasedCostsGetRequest"/>
+			<wsdl:output message="tns:ActivityBasedCostsGetResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="getItProjectBasedCosts">
+			<wsdl:input message="tns:ItProjectBasedCostsGetRequest"/>
+			<wsdl:output message="tns:ItProjectBasedCostsGetResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="searchActivityBasedCosts">
+			<wsdl:input message="tns:ActivityBasedCostsSearchRequest"/>
+			<wsdl:output message="tns:ActivityBasedCostsSearchResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="searchItProjectBasedCosts">
+			<wsdl:input message="tns:ItProjectBasedCostsSearchRequest"/>
+			<wsdl:output message="tns:ItProjectBasedCostsSearchResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="InternalOrderSOAP" type="tns:InternalOrderPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="getActivityBasedCosts">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/internal_order/service/es/sync/getactivitybasedcosts/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="getItProjectBasedCosts">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/internal_order/service/es/sync/getitprojectbasedcosts/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="searchActivityBasedCosts">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/internal_order/service/es/sync/searchactivitybasedcosts/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="searchItProjectBasedCosts">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/internal_order/service/es/sync/searchitprojectbasedcosts/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="InternalOrder">
+		<wsdl:port name="InternalOrder" binding="tns:InternalOrderSOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/InternalOrder/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/InternalOrder/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

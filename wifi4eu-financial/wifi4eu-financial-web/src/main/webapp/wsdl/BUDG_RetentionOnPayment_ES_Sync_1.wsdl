@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- edited with XMLSpy v2011 rel. 2 sp1 (http://www.altova.com) by - - (European Commission DG BUDGET) -->
+<!-- BUDG version 0.05 -->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:src="http://www.ec.europa.eu/budg/abac/retention_on_payment/v1" xmlns:get="http://www.ec.europa.eu/budg/abac/retention_on_payment/v1" xmlns:tns="http://www.ec.europa.eu/budg/abac/retention_on_payment/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" name="RetentionOnPayment" targetNamespace="http://www.ec.europa.eu/budg/abac/retention_on_payment/service/es/sync/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.ec.europa.eu/budg/abac/retention_on_payment/v1">
+			<xsd:include schemaLocation="xsd/retentiononpayment/BUDG_RetentionOnPayment_Search_1.xsd"/>
+		</xsd:schema>
+		<xsd:schema targetNamespace="http://www.ec.europa.eu/budg/abac/retention_on_payment/v1">
+			<xsd:include schemaLocation="xsd/retentiononpayment/BUDG_RetentionOnPayment_Get_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="RetentionOnPaymentGetRequest">
+		<wsdl:part name="request" element="get:RetentionOnPaymentGetRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RetentionOnPaymentGetResponse">
+		<wsdl:part name="response" element="get:RetentionOnPaymentGetResponse"/>
+	</wsdl:message>
+	<wsdl:message name="RetentionOnPaymentSearchRequest">
+		<wsdl:part name="request" element="src:RetentionOnPaymentSearchRequest"/>
+	</wsdl:message>
+	<wsdl:message name="RetentionOnPaymentSearchResponse">
+		<wsdl:part name="response" element="src:RetentionOnPaymentSearchResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="RetentionOnPaymentPort">
+		<wsdl:operation name="search">
+			<wsdl:input message="tns:RetentionOnPaymentSearchRequest"/>
+			<wsdl:output message="tns:RetentionOnPaymentSearchResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="get">
+			<wsdl:input message="tns:RetentionOnPaymentGetRequest"/>
+			<wsdl:output message="tns:RetentionOnPaymentGetResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="RetentionOnPaymentSOAP" type="tns:RetentionOnPaymentPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="search">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/retention_on_payment/service/es/sync/search/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="get">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/retention_on_payment/service/es/sync/get/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="RetentionOnPayment">
+		<wsdl:port name="RetentionOnPaymentSOAP" binding="tns:RetentionOnPaymentSOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/RetentionOnPayment/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/RetentionOnPayment/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

@@ -34,7 +34,7 @@ public class ReadExcelFile {
             fil = fc.getSelectedFile();
         }
 
-        String message="<v3:LegalEntityCreateRequest xmlns:v3=\"http://www.ec.europa.eu/budg/abac/legal_entity/v3\" xmlns:rep=\"http://www.ec.europa.eu/budg/report\">\n" +
+        String messageLef="<v3:LegalEntityCreateRequest xmlns:v3=\"http://www.ec.europa.eu/budg/abac/legal_entity/v3\" xmlns:rep=\"http://www.ec.europa.eu/budg/report\">\n" +
                 "<v2:MessageHeader xmlns:v2=\"http://www.ec.europa.eu/budg/abac/kernel/v2\"/>\n" +
                 "<v3:PrivateLawBody>\n" +
                 "<v3:AccountGroupCode>LE05</v3:AccountGroupCode>\n" +
@@ -82,7 +82,12 @@ public class ReadExcelFile {
                 "<v2:WorkflowOrganisationName xmlns:v2=\"http://www.ec.europa.eu/budg/abac/associated_object/v2\">PMO</v2:WorkflowOrganisationName>\n" +
                 "</v3:Visa>\n" +
                 "</v3:LegalEntityCreateRequest>\n";
-        String message2="<v11:AgentId>DUMONFA</v11:AgentId>\n" +
+
+        //HashMap<String,String> retHashMap = ((Budg_soa_webUI)UI.getCurrent()).getJmsProducer().sendMessage(msgCall.getMessageCorrelation());
+        //HashMap<String,String> retHashMap = ((Budg_soa_webUI)UI.getCurrent()).getJmsProducer().sendMessage(msgCall.getMessageCorrelation());
+
+
+        String messageBudgetaryCommitment="<v11:AgentId>DUMONFA</v11:AgentId>\n" +
                 "</v11:MessageHeader>\n" +
                 "<v1:BudgetaryCommitmentLevel2>\n" +
                 "<v1:BeneficiaryCountryIso2Code>FI</v1:BeneficiaryCountryIso2Code>\n" +

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns="http://www.ec.europa.eu/budg/abac/legal_entity_audit/service/es/async/v1" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:le="http://www.ec.europa.eu/budg/abac/legal_entity_audit/v1" 
+xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1" 
+xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" 
+name="LegalEntityAudit" 
+targetNamespace="http://www.ec.europa.eu/budg/abac/legal_entity_audit/service/es/async/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_entity_audit/v1" schemaLocation="xsd/legalentityaudit/BUDG_LegalEntityAudit_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_entity_audit/v1" schemaLocation="xsd/legalentityaudit/BUDG_LegalEntityAudit_Modify_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/message/v1" schemaLocation="xsd/message/BUDG_Message_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="LegalEntityAuditCreateRequest">
+		<wsdl:part name="parameters" element="le:LegalEntityAuditCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityAuditCreateResponse">
+		<wsdl:part name="parameters" element="le:LegalEntityAuditCreateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityAuditModifyRequest">
+		<wsdl:part name="parameters" element="le:LegalEntityAuditModifyRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityAuditModifyResponse">
+		<wsdl:part name="parameters" element="le:LegalEntityAuditModifyResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityAuditCreateLegalEntityRequest">
+		<wsdl:part name="parameters" element="le:LegalEntityAuditCreateLegalEntityRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityAuditCreateLegalEntityResponse">
+		<wsdl:part name="parameters" element="le:LegalEntityAuditCreateLegalEntityResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityAuditCreateResponsibleUserRequest">
+		<wsdl:part name="parameters" element="le:LegalEntityAuditCreateResponsibleUserRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityAuditCreateResponsibleUserResponse">
+		<wsdl:part name="parameters" element="le:LegalEntityAuditCreateResponsibleUserResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="LegalEntityAuditPort">
+		<wsdl:operation name="create">
+			<wsdl:input message="LegalEntityAuditCreateRequest"/>
+			<wsdl:output message="LegalEntityAuditCreateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modfiy">
+			<wsdl:input message="LegalEntityAuditModifyRequest"/>
+			<wsdl:output message="LegalEntityAuditModifyResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_legal_entity">
+			<wsdl:input message="LegalEntityAuditCreateLegalEntityRequest"/>
+			<wsdl:output message="LegalEntityAuditCreateLegalEntityResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<wsdl:input message="LegalEntityAuditCreateResponsibleUserRequest"/>
+			<wsdl:output message="LegalEntityAuditCreateResponsibleUserResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="LegalEntityAuditSOAP" type="LegalEntityAuditPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_entity_audit/service/es/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modfiy">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_entity_audit/service/es/async/modfiy/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_legal_entity">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_entity_audit/service/es/async/create_legal_entity/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_entity_audit/service/es/async/create_responsible_user/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

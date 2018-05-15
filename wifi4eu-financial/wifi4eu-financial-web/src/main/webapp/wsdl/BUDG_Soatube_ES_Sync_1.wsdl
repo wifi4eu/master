@@ -3,7 +3,7 @@
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/soatube/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tub="http://www.ec.europa.eu/budg/abac/soatube/v1" xmlns:ns="http://www.ec.europa.eu/budg/abac/br/v1" xmlns:ns1="http://www.ec.europa.eu/budg/abac/message/v1" xmlns:ns2="http://www.ec.europa.eu/budg/abac/simple_type/v1" name="Soatube" targetNamespace="http://www.ec.europa.eu/budg/abac/soatube/service/es/sync/v1">
 	<wsdl:types>
 		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/soatube/v1" schemaLocation="../soatube-1/BUDG_Soatube_1.xsd">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/soatube/v1" schemaLocation="xsd/soatube/BUDG_Soatube_1.xsd">
     	</xsd:import>
 		</xsd:schema>
 	</wsdl:types>
@@ -35,7 +35,6 @@
 		<wsdl:port name="SoatubeSOAP" binding="tns:SoatubeSOAP">
 			<!--<soap:address location="http://localhost:7001/abac/service/Soatube/v1"/>-->
 			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/Soatube/v1"/>
-			<!--soap:address location="https://webgate.ec.testa.eu/webpaxanwtst_nt_pub/abac/service/Soatube/v1"/-->
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>

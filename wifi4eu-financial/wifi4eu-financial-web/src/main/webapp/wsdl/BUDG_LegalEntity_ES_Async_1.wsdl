@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tns="http://www.ec.europa.eu/budg/abac/legal_entity/service/es/async/v1" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:mod="http://www.ec.europa.eu/budg/abac/legal_entity/v1" 
+xmlns:create="http://www.ec.europa.eu/budg/abac/legal_entity/v1" 
+xmlns:give_visa="http://www.ec.europa.eu/budg/abac/legal_entity/v1" 
+xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" 
+name="LegalEntity" targetNamespace="http://www.ec.europa.eu/budg/abac/legal_entity/service/es/async/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_entity/v1" schemaLocation="xsd/legalentity/BUDG_LegalEntity_Modify_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_entity/v1" schemaLocation="xsd/legalentity/BUDG_LegalEntity_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/legal_entity/v1" schemaLocation="xsd/legalentity/BUDG_LegalEntity_GiveVisa_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="LegalEntityCreateAresDocumentRequest">
+		<wsdl:part name="parameters" element="create:LegalEntityCreateAresDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityCreateAresDocumentResponse">
+		<wsdl:part name="parameters" element="create:LegalEntityCreateAresDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityCreateBankAccountRequest">
+		<wsdl:part name="parameters" element="create:LegalEntityCreateBankAccountRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityCreateBankAccountResponse">
+		<wsdl:part name="parameters" element="create:LegalEntityCreateBankAccountResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityCreateMailingAddressRequest">
+		<wsdl:part name="parameters" element="create:LegalEntityCreateMailingAddressRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityCreateMailingAddressResponse">
+		<wsdl:part name="parameters" element="create:LegalEntityCreateMailingAddressResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityCreateScannedDocumentRequest">
+		<wsdl:part name="parameters" element="create:LegalEntityCreateScannedDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityCreateScannedDocumentResponse">
+		<wsdl:part name="parameters" element="create:LegalEntityCreateScannedDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityGiveVisaRequest">
+		<wsdl:part name="parameters" element="give_visa:LegalEntityGiveVisaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityGiveVisaResponse">
+		<wsdl:part name="parameters" element="give_visa:LegalEntityGiveVisaResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityModifyMailingAddressRequest">
+		<wsdl:part name="parameters" element="mod:LegalEntityModifyMailingAddressRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityModifyMailingAddressResponse">
+		<wsdl:part name="parameters" element="mod:LegalEntityModifyMailingAddressResponse"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityCreateRequest">
+		<wsdl:part name="parameters" element="create:LegalEntityCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityCreateResponse">
+		<wsdl:part name="parameters" element="create:LegalEntityCreateResponse"/>
+	</wsdl:message>
+
+	<wsdl:portType name="LegalEntityPort">
+		<wsdl:operation name="create_ares_document">
+			<wsdl:input message="tns:LegalEntityCreateAresDocumentRequest"/>
+			<wsdl:output message="tns:LegalEntityCreateAresDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_bank_account">
+			<wsdl:input message="tns:LegalEntityCreateBankAccountRequest"/>
+			<wsdl:output message="tns:LegalEntityCreateBankAccountResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_mailing_address">
+			<wsdl:input message="tns:LegalEntityCreateMailingAddressRequest"/>
+			<wsdl:output message="tns:LegalEntityCreateMailingAddressResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_scanned_document">
+			<wsdl:input message="tns:LegalEntityCreateScannedDocumentRequest"/>
+			<wsdl:output message="tns:LegalEntityCreateScannedDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<wsdl:input message="tns:LegalEntityGiveVisaRequest"/>
+			<wsdl:output message="tns:LegalEntityGiveVisaResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_mailing_address">
+			<wsdl:input message="tns:LegalEntityModifyMailingAddressRequest"/>
+			<wsdl:output message="tns:LegalEntityModifyMailingAddressResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create">
+			<wsdl:input message="tns:LegalEntityCreateRequest"/>
+			<wsdl:output message="tns:LegalEntityCreateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="LegalEntitySOAP" type="tns:LegalEntityPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create_ares_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_entity/service/es/async/create_ares_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_bank_account">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_entity/service/es/async/create_bank_account/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_mailing_address">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_entity/service/es/async/create_mailing_address/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_scanned_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_entity/service/es/async/create_scanned_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_entity/service/es/async/give_visa/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_mailing_address">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_entity/service/es/async/modify_mailing_address/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_entity/service/es/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

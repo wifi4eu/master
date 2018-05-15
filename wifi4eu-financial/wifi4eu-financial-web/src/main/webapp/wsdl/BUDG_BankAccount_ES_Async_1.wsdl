@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tns="http://www.ec.europa.eu/budg/abac/bank_account/service/es/async/v1" 
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+xmlns:create="http://www.ec.europa.eu/budg/abac/bank_account/v1" 
+xmlns:give_visa="http://www.ec.europa.eu/budg/abac/bank_account/v1" 
+xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1" name="BankAccount" targetNamespace="http://www.ec.europa.eu/budg/abac/bank_account/service/es/async/v1">
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/bank_account/v1" schemaLocation="xsd/bankaccount/BUDG_BankAccount_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/bank_account/v1" schemaLocation="xsd/bankaccount/BUDG_BankAccount_GiveVisa_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/message/v1" schemaLocation="xsd/message/BUDG_Message_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="BankAccountCreateLegalEntityRequest">
+		<wsdl:part name="parameters" element="create:BankAccountCreateLegalEntityRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountCreateLegalEntityResponse">
+		<wsdl:part name="parameters" element="create:BankAccountCreateLegalEntityResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountCreateResponsibleUserRequest">
+		<wsdl:part name="parameters" element="create:BankAccountCreateResponsibleUserRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountCreateResponsibleUserResponse">
+		<wsdl:part name="parameters" element="create:BankAccountCreateResponsibleUserResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountCreateScannedDocumentRequest">
+		<wsdl:part name="parameters" element="create:BankAccountCreateScannedDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountCreateScannedDocumentResponse">
+		<wsdl:part name="parameters" element="create:BankAccountCreateScannedDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountCreateRequest">
+		<wsdl:part name="parameters" element="create:BankAccountCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountCreateResponse">
+		<wsdl:documentation>
+			For each of the following <a href="https://webgate.ec.europa.eu/CITnet/confluence/display/ABACIT/Bank+Account+Service">business rules</a> that are rejected the BusinessRuleRejectionList element will contain a BusinessRuleResult element with the corresponding informations
+			<table class="wsdlComponent">
+				<tr>
+					<th class="firstColumn">BusinessRuleCode</th>
+					<th class="firstColumn">BusinessRuleMessage</th>
+				</tr>
+				<tr>
+					<td class="">ABAC-00804</td>
+					<td class="">The Description of the Ares Document cannot exceed #MaxNumberOfChar chars</td>
+				</tr>
+				<tr>
+					<td class="">ABAC-00805</td>
+					<td class="">The Reference of the Ares Document cannot exceed #MaxNumberOfChar chars</td>
+				</tr>
+			</table>
+		</wsdl:documentation>
+		<wsdl:part name="parameters" element="create:BankAccountCreateResponse">
+			<wsdl:documentation>
+				Additional 
+				parameter 
+				documentation
+			</wsdl:documentation>
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="BankAccountGiveVisaRequest">
+		<wsdl:part name="parameters" element="give_visa:BankAccountGiveVisaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="BankAccountGiveVisaResponse">
+		<wsdl:part name="parameters" element="give_visa:BankAccountGiveVisaResponse"/>
+	</wsdl:message>
+	<wsdl:message name="FaultMessage">
+		<wsdl:part name="parameters" element="msg:MessageFault"/>
+	</wsdl:message>
+	<wsdl:portType name="BankAccountPort">
+		<wsdl:operation name="create_legal_entity">
+			<wsdl:documentation>
+				This operation checks the business rules corresponding the creation of a Legal Entity Bank Account Link.
+				If no business rules are rejected it creates the Legal Entity Bank Account Link.
+			</wsdl:documentation>
+			<wsdl:input message="tns:BankAccountCreateLegalEntityRequest"/>
+			<wsdl:output message="tns:BankAccountCreateLegalEntityResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<wsdl:documentation>
+				This operation checks the business rules corresponding the creation of a Responsible User and its association to a Bank Account.
+				If no business rules are rejected it creates the Responsible User and associates it to the Bank Account.
+			</wsdl:documentation>
+			<wsdl:input message="tns:BankAccountCreateResponsibleUserRequest"/>
+			<wsdl:output message="tns:BankAccountCreateResponsibleUserResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_scanned_document">
+			<wsdl:documentation>
+				This operation checks the business rules corresponding the creation of a Scanned Document and its association to a Bank Account.
+				If no business rules are rejected it creates the Scanned Document and associates it to the Bank Account.
+			</wsdl:documentation>
+			<wsdl:input message="tns:BankAccountCreateScannedDocumentRequest"/>
+			<wsdl:output message="tns:BankAccountCreateScannedDocumentResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create">
+			<wsdl:documentation>
+				This operation checks the business rules corresponding the creation of a Bank Account Request and optional Ares Document(s), Scanned Document(s), Supporting Document Folder, Supporting Document(s), Legal Entity Bank Account Link(s) and Visa.
+				If no business rules are rejected it creates the Bank Account Request, Ares Document(s), Responsible User(s), Scanned Document(s), Supporting Document Folder, Supporting Document(s), Legal Entity Bank Account Link(s) and Visa.
+			</wsdl:documentation>
+			<wsdl:input message="tns:BankAccountCreateRequest"/>
+			<wsdl:output message="tns:BankAccountCreateResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<wsdl:documentation>
+				This operation checks the business rules corresponding the Visa on a Bank Account.
+				If no business rules are rejected it gives a visa on the Bank Account.
+			</wsdl:documentation>
+			<wsdl:input message="tns:BankAccountGiveVisaRequest"/>
+			<wsdl:output message="tns:BankAccountGiveVisaResponse"/>
+			<wsdl:fault name="Fault" message="tns:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="BankAccountSOAP" type="tns:BankAccountPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create_legal_entity">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/bank_account/service/es/async/add_legal_entity/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/bank_account/service/es/async/create_responsible_user/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_scanned_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/bank_account/service/es/async/add_scanned_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/bank_account/service/es/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/bank_account/service/es/async/give_visa/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

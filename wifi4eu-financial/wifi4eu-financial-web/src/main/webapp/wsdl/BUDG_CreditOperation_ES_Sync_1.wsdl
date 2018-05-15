@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:src="http://www.ec.europa.eu/budg/abac/credit_operation/v1" xmlns:get="http://www.ec.europa.eu/budg/abac/credit_operation/v1" xmlns:tns="http://www.ec.europa.eu/budg/abac/credit_operation/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" name="CreditOperation" targetNamespace="http://www.ec.europa.eu/budg/abac/credit_operation/service/es/sync/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.ec.europa.eu/budg/abac/credit_operation/v1">
+			<xsd:include schemaLocation="xsd/creditoperation/BUDG_CreditOperation_Get_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="CreditOperationGetRequest">
+		<wsdl:part name="request" element="get:CreditOperationGetRequest"/>
+	</wsdl:message>
+	<wsdl:message name="CreditOperationGetResponse">
+		<wsdl:part name="response" element="get:CreditOperationGetResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="CreditOperationPort">
+		<wsdl:operation name="get">
+			<wsdl:input message="tns:CreditOperationGetRequest"/>
+			<wsdl:output message="tns:CreditOperationGetResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CreditOperationSOAP" type="tns:CreditOperationPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="get">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/credit_operation/service/es/sync/get/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="CreditOperation">
+		<wsdl:port name="CreditOperationSOAP" binding="tns:CreditOperationSOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/CreditOperation/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/CreditOperation/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

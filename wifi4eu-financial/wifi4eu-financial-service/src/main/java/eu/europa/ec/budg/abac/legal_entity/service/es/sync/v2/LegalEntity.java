@@ -14,7 +14,9 @@ import javax.xml.ws.Service;
  * Generated source version: 3.0.4
  */
 @WebServiceClient(name = "LegalEntity",
-        wsdlLocation = "file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_LegalEntity_ES_Sync_2.wsdl",
+        //wsdlLocation = "file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_LegalEntity_ES_Sync_2.wsdl",
+        //wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Sync_2.wsdl",
+        wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Sync_2.wsdl",
         targetNamespace = "http://localhost:7001")
 public class LegalEntity extends Service {
 
@@ -26,11 +28,13 @@ public class LegalEntity extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_LegalEntity_ES_Sync_2.wsdl");
+            //url = new URL("file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_LegalEntity_ES_Sync_2.wsdl");
+            //url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Sync_2.wsdl");
+            url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Sync_2.wsdl");
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(LegalEntity.class.getName())
                     .log(java.util.logging.Level.INFO,
-                            "Can not initialize the default wsdl from {0}", "file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_LegalEntity_ES_Sync_2.wsdl");
+                            "Can not initialize the default wsdl from {0}", "BUDG_LegalEntity_ES_Sync_2.wsdl");
         }
         WSDL_LOCATION = url;
     }

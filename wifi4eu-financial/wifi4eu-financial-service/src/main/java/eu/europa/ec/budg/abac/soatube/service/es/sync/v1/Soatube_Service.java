@@ -19,7 +19,9 @@ import javax.xml.ws.WebServiceFeature;
  */
 //@WebServiceClient(name = "Soatube", targetNamespace = "http://www.ec.europa.eu/budg/abac/soatube/service/es/sync/v1", wsdlLocation = "http://localhost/soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl")
 //@WebServiceClient(name = "Soatube", targetNamespace = "http://www.ec.europa.eu/budg/abac/soatube/service/es/sync/v1", wsdlLocation = "http://localhost:7001/wifi4eu-financial/soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl")
-@WebServiceClient(name = "Soatube", targetNamespace = "http://www.ec.europa.eu/budg/abac/soatube/service/es/sync/v1", wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl")
+@WebServiceClient(name = "Soatube", targetNamespace = "http://www.ec.europa.eu/budg/abac/soatube/service/es/sync/v1", wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl")
+//@WebServiceClient(name = "Soatube", targetNamespace = "http://www.ec.europa.eu/budg/abac/soatube/service/es/sync/v1", wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl")
+//@WebServiceClient(name = "Soatube", targetNamespace = "http://www.ec.europa.eu/budg/abac/soatube/service/es/sync/v1", wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl")
 public class Soatube_Service
     extends Service
 {
@@ -34,7 +36,9 @@ public class Soatube_Service
         try {
             //url = new URL("http://localhost/soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl");
             //url = new URL("http://localhost:7001/wifi4eu-financial/soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl");
-            url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl");
+            url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl");
+            //url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl");
+            //url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/soatube-1-read/BUDG_Soatube_ES_Sync_1.wsdl");
         } catch (MalformedURLException ex) {
             e = new WebServiceException(ex);
         }

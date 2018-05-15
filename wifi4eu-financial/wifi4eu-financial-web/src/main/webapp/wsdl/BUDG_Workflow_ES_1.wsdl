@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ec.europa.eu/budg/abac/workflow/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wrk="http://www.ec.europa.eu/budg/abac/workflow/info/v1" name="Workflow" targetNamespace="http://www.ec.europa.eu/budg/abac/workflow/service/es/sync/v1">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.ec.europa.eu/budg/abac/workflow/info/v1">
+			<xsd:include schemaLocation="xsd/workflow/BUDG_Workflow_GetInfo_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="GetNextStepResponse">
+		<wsdl:part name="response" element="wrk:WorkflowGetNextStepResponse"/>
+	</wsdl:message>
+	<wsdl:message name="GetNextStepRequest">
+		<wsdl:part name="request" element="wrk:WorkflowGetNextStepRequest"/>
+	</wsdl:message>
+	<wsdl:message name="GetCurentInfoRequest">
+		<wsdl:part name="request" element="wrk:WorkflowGetCurrentInfoRequest"/>
+	</wsdl:message>
+	<wsdl:message name="GetCurentInfoResponse">
+		<wsdl:part name="response" element="wrk:WorkflowGetCurrentInfoResponse"/>
+	</wsdl:message>
+	<wsdl:message name="MustCheckOnVisaRequest">
+		<wsdl:part name="request" element="wrk:WorkflowMustCheckOnVisaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="MustCheckOnVisaResponse">
+		<wsdl:part name="response" element="wrk:WorkflowMustCheckOnVisaResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="WorkflowPort">
+		<wsdl:operation name="GetNextStep">
+			<wsdl:input message="tns:GetNextStepRequest"/>
+			<wsdl:output message="tns:GetNextStepResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetCurrentInfo">
+			<wsdl:input message="tns:GetCurentInfoRequest"/>
+			<wsdl:output message="tns:GetCurentInfoResponse"/>
+		</wsdl:operation>
+		<wsdl:operation name="MustCheckOnVisa">
+			<wsdl:input message="tns:MustCheckOnVisaRequest"/>
+			<wsdl:output message="tns:MustCheckOnVisaResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="Workflow_SOAP" type="tns:WorkflowPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="GetNextStep">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/workflow/service/sync/getnextstep/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetCurrentInfo">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/workflow/service/sync/getcurrentinfo/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="MustCheckOnVisa">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/workflow/service/sync/mustcheckonvisa/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="Workflow">
+		<wsdl:port name="Workflow_SOAP" binding="tns:Workflow_SOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/Workflow/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/Workflow/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

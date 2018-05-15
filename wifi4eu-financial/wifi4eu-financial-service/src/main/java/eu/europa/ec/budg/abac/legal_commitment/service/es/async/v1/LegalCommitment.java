@@ -15,7 +15,9 @@ import javax.xml.ws.Service;
  * 
  */
 @WebServiceClient(name = "LegalCommitment", 
-                  wsdlLocation = "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalCommitment_ES_Async_1.wsdl",
+                  //wsdlLocation = "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalCommitment_ES_Async_1.wsdl",
+                  //wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_LegalCommitment_ES_Async_1.wsdl",
+                  wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalCommitment_ES_Async_1.wsdl",
                   targetNamespace = "http://www.ec.europa.eu/budg/abac/legal_commitment/service/es/async/v1") 
 public class LegalCommitment extends Service {
 
@@ -26,11 +28,13 @@ public class LegalCommitment extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalCommitment_ES_Async_1.wsdl");
+            //url = new URL("file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalCommitment_ES_Async_1.wsdl");
+            //url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_LegalCommitment_ES_Async_1.wsdl");
+            url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalCommitment_ES_Async_1.wsdl");
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(LegalCommitment.class.getName())
                 .log(java.util.logging.Level.INFO, 
-                     "Can not initialize the default wsdl from {0}", "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalCommitment_ES_Async_1.wsdl");
+                     "Can not initialize the default wsdl from {0}", "BUDG_LegalCommitment_ES_Async_1.wsdl");
         }
         WSDL_LOCATION = url;
     }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:src="http://www.ec.europa.eu/budg/abac/legal_entity_audit/v1" xmlns:get="http://www.ec.europa.eu/budg/abac/legal_entity_audit/v1" xmlns:tns="http://www.ec.europa.eu/budg/abac/legal_entity_audit/service/es/sync/v1" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" name="LegalEntityAudit" targetNamespace="http://www.ec.europa.eu/budg/abac/legal_entity_audit/service/es/sync/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.ec.europa.eu/budg/abac/legal_entity_audit/v1">
+			<xsd:include schemaLocation="xsd/legalentityaudit/BUDG_LegalEntityAudit_Get_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="LegalEntityAuditGetRequest">
+		<wsdl:part name="request" element="get:LegalEntityAuditGetRequest"/>
+	</wsdl:message>
+	<wsdl:message name="LegalEntityAuditGetResponse">
+		<wsdl:part name="response" element="get:LegalEntityAuditGetResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="LegalEntityAuditPort">
+		<wsdl:operation name="get">
+			<wsdl:input message="tns:LegalEntityAuditGetRequest"/>
+			<wsdl:output message="tns:LegalEntityAuditGetResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="LegalEntityAuditSOAP" type="tns:LegalEntityAuditPort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="get">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/legal_entity_audit/service/es/sync/get/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault"><soap:fault name="Fault" use="literal"/></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="LegalEntityAudit">
+		<wsdl:port name="LegalEntityAuditSOAP" binding="tns:LegalEntityAuditSOAP">
+			<!--<soap:address location="http://localhost:7001/abac/service/LegalEntityAudit/v1"/>-->
+			<soap:address location="https://intragate.test.ec.europa.eu/webpaxanwtst_nt_pub/abac/service/LegalEntityAudit/v1"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

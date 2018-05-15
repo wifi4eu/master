@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:tns="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/v1" 
+ xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+ xmlns:create="http://www.ec.europa.eu/budg/abac/invoice/v1" 
+ xmlns:modify="http://www.ec.europa.eu/budg/abac/invoice/v1" 
+ xmlns:delete="http://www.ec.europa.eu/budg/abac/invoice/v1" 
+ xmlns:give_visa="http://www.ec.europa.eu/budg/abac/invoice/v1" 
+ xmlns:msg="http://www.ec.europa.eu/budg/abac/message/v1" 
+ xmlns:fault="http://www.ec.europa.eu/budg/abac/messagefault/v1" 
+ name="Invoice" 
+ targetNamespace="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/v1">
+	<wsdl:import namespace="http://www.ec.europa.eu/budg/abac/messagefault/v1" location="FaultMessage.wsdl"/>
+	<wsdl:types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/invoice/v1" schemaLocation="xsd/invoice/BUDG_Invoice_Create_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/invoice/v1" schemaLocation="xsd/invoice/BUDG_Invoice_Modify_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/invoice/v1" schemaLocation="xsd/invoice/BUDG_Invoice_Delete_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/invoice/v1" schemaLocation="xsd/invoice/BUDG_Invoice_GiveVisa_1.xsd"/>
+			<xsd:import namespace="http://www.ec.europa.eu/budg/abac/message/v1" schemaLocation="xsd/message/BUDG_Message_1.xsd"/>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="InvoiceCreateRequest">
+		<wsdl:part name="parameters" element="create:InvoiceCreateRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateResponse">
+		<wsdl:part name="parameters" element="create:InvoiceCreateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateDetailRequest">
+		<wsdl:part name="parameters" element="create:InvoiceCreateDetailRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateDetailResponse">
+		<wsdl:part name="parameters" element="create:InvoiceCreateDetailResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateResponsibleUserRequest">
+		<wsdl:part name="parameters" element="create:InvoiceCreateResponsibleUserRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateResponsibleUserResponse">
+		<wsdl:part name="parameters" element="create:InvoiceCreateResponsibleUserResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateSupportingDocumentFolderRequest">
+		<wsdl:part name="parameters" element="create:InvoiceCreateSupportingDocumentFolderRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateSupportingDocumentFolderResponse">
+		<wsdl:part name="parameters" element="create:InvoiceCreateSupportingDocumentFolderResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateSupportingDocumentRequest">
+		<wsdl:part name="parameters" element="create:InvoiceCreateSupportingDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateSupportingDocumentResponse">
+		<wsdl:part name="parameters" element="create:InvoiceCreateSupportingDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateRecoveryContextRequest">
+		<wsdl:part name="parameters" element="create:InvoiceCreateRecoveryContextRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateRecoveryContextResponse">
+		<wsdl:part name="parameters" element="create:InvoiceCreateRecoveryContextResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateRecoveryContextErrorRequest">
+		<wsdl:part name="parameters" element="create:InvoiceCreateRecoveryContextErrorRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateRecoveryContextErrorResponse">
+		<wsdl:part name="parameters" element="create:InvoiceCreateRecoveryContextErrorResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateAresDocumentRequest">
+		<wsdl:part name="parameters" element="create:InvoiceCreateAresDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateAresDocumentResponse">
+		<wsdl:part name="parameters" element="create:InvoiceCreateAresDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateReportSuspensionPeriodRequest">
+		<wsdl:part name="parameters" element="create:InvoiceCreatePaymentSuspensionPeriodRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreateReportSuspensionPeriodResponse">
+		<wsdl:part name="parameters" element="create:InvoiceCreatePaymentSuspensionPeriodResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreatePrefinancingClearingRequest">
+		<wsdl:part name="parameters" element="create:InvoiceCreatePrefinancingClearingRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreatePrefinancingClearingResponse">
+		<wsdl:part name="parameters" element="create:InvoiceCreatePrefinancingClearingResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreatePaymentSuspensionPeriodRequest">
+		<wsdl:part name="parameters" element="create:InvoiceCreatePaymentSuspensionPeriodRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceCreatePaymentSuspensionPeriodResponse">
+		<wsdl:part name="parameters" element="create:InvoiceCreatePaymentSuspensionPeriodResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifyRequest">
+		<wsdl:part name="parameters" element="modify:InvoiceModifyRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifyResponse">
+		<wsdl:part name="parameters" element="modify:InvoiceModifyResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifyDetailRequest">
+		<wsdl:part name="parameters" element="modify:InvoiceModifyDetailRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifyDetailResponse">
+		<wsdl:part name="parameters" element="modify:InvoiceModifyDetailResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifySupportingDocumentFolderRequest">
+		<wsdl:part name="parameters" element="modify:InvoiceModifySupportingDocumentFolderRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifySupportingDocumentFolderResponse">
+		<wsdl:part name="parameters" element="modify:InvoiceModifySupportingDocumentFolderResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifySupportingDocumentRequest">
+		<wsdl:part name="parameters" element="modify:InvoiceModifySupportingDocumentRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifySupportingDocumentResponse">
+		<wsdl:part name="parameters" element="modify:InvoiceModifySupportingDocumentResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifyPaymentSuspensionPeriodRequest">
+		<wsdl:part name="parameters" element="modify:InvoiceModifyPaymentSuspensionPeriodRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifyPaymentSuspensionPeriodResponse">
+		<wsdl:part name="parameters" element="modify:InvoiceModifyPaymentSuspensionPeriodResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifyReportSuspensionPeriodRequest">
+		<wsdl:part name="parameters" element="modify:InvoiceModifyReportSuspensionPeriodRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifyReportSuspensionPeriodResponse">
+		<wsdl:part name="parameters" element="modify:InvoiceModifyReportSuspensionPeriodResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="InvoiceModifyPrefinancingClearingRequest">
+		<wsdl:part name="parameters" element="modify:InvoiceModifyPrefinancingClearingRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceModifyPrefinancingClearingResponse">
+		<wsdl:part name="parameters" element="modify:InvoiceModifyPrefinancingClearingResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="InvoiceDeleteRequest">
+		<wsdl:part name="parameters" element="delete:InvoiceDeleteRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceDeleteResponse">
+		<wsdl:part name="parameters" element="delete:InvoiceDeleteResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceDeleteDetailRequest">
+		<wsdl:part name="parameters" element="delete:InvoiceDeleteDetailRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceDeleteDetailResponse">
+		<wsdl:part name="parameters" element="delete:InvoiceDeleteDetailResponse"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceDeleteResponsibleUserRequest">
+		<wsdl:part name="parameters" element="delete:InvoiceDeleteResponsibleUserRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceDeleteResponsibleUserResponse">
+		<wsdl:part name="parameters" element="delete:InvoiceDeleteResponsibleUserResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="InvoiceDeletePrefinancingClearingRequest">
+		<wsdl:part name="parameters" element="delete:InvoiceDeletePrefinancingClearingRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceDeletePrefinancingClearingResponse">
+		<wsdl:part name="parameters" element="delete:InvoiceDeletePrefinancingClearingResponse"/>
+	</wsdl:message>
+	
+	<wsdl:message name="InvoiceGiveVisaRequest">
+		<wsdl:part name="parameters" element="give_visa:InvoiceGiveVisaRequest"/>
+	</wsdl:message>
+	<wsdl:message name="InvoiceGiveVisaResponse">
+		<wsdl:part name="parameters" element="give_visa:InvoiceGiveVisaResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="InvoicePort">
+		<wsdl:operation name="create">
+			<wsdl:input message="tns:InvoiceCreateRequest"/>
+			<wsdl:output message="tns:InvoiceCreateResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_detail">
+			<wsdl:input message="tns:InvoiceCreateDetailRequest"/>
+			<wsdl:output message="tns:InvoiceCreateDetailResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<wsdl:input message="tns:InvoiceCreateResponsibleUserRequest"/>
+			<wsdl:output message="tns:InvoiceCreateResponsibleUserResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document_folder">
+			<wsdl:input message="tns:InvoiceCreateSupportingDocumentFolderRequest"/>
+			<wsdl:output message="tns:InvoiceCreateSupportingDocumentFolderResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document">
+			<wsdl:input message="tns:InvoiceCreateSupportingDocumentRequest"/>
+			<wsdl:output message="tns:InvoiceCreateSupportingDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context">
+			<wsdl:input message="tns:InvoiceCreateRecoveryContextRequest"/>
+			<wsdl:output message="tns:InvoiceCreateRecoveryContextResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context_error">
+			<wsdl:input message="tns:InvoiceCreateRecoveryContextErrorRequest"/>
+			<wsdl:output message="tns:InvoiceCreateRecoveryContextErrorResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_ares_document">
+			<wsdl:input message="tns:InvoiceCreateAresDocumentRequest"/>
+			<wsdl:output message="tns:InvoiceCreateAresDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_payment_suspension_period">
+			<wsdl:input message="tns:InvoiceCreatePaymentSuspensionPeriodRequest"/>
+			<wsdl:output message="tns:InvoiceCreatePaymentSuspensionPeriodResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_report_suspension_period">
+			<wsdl:input message="tns:InvoiceCreatePaymentSuspensionPeriodRequest"/>
+			<wsdl:output message="tns:InvoiceCreatePaymentSuspensionPeriodResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="create_prefinancing_clearing">
+			<wsdl:input message="tns:InvoiceCreatePrefinancingClearingRequest"/>
+			<wsdl:output message="tns:InvoiceCreatePrefinancingClearingResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify">
+			<wsdl:input message="tns:InvoiceModifyRequest"/>
+			<wsdl:output message="tns:InvoiceModifyResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_detail">
+			<wsdl:input message="tns:InvoiceModifyDetailRequest"/>
+			<wsdl:output message="tns:InvoiceModifyDetailResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document_folder">
+			<wsdl:input message="tns:InvoiceModifySupportingDocumentFolderRequest"/>
+			<wsdl:output message="tns:InvoiceModifySupportingDocumentFolderResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document">
+			<wsdl:input message="tns:InvoiceModifySupportingDocumentRequest"/>
+			<wsdl:output message="tns:InvoiceModifySupportingDocumentResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_payment_suspension_period">
+			<wsdl:input message="tns:InvoiceModifyPaymentSuspensionPeriodRequest"/>
+			<wsdl:output message="tns:InvoiceModifyPaymentSuspensionPeriodResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_report_suspension_period">
+			<wsdl:input message="tns:InvoiceModifyReportSuspensionPeriodRequest"/>
+			<wsdl:output message="tns:InvoiceModifyReportSuspensionPeriodResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="modify_prefinancing_clearing">
+			<wsdl:input message="tns:InvoiceModifyPrefinancingClearingRequest"/>
+			<wsdl:output message="tns:InvoiceModifyPrefinancingClearingResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		
+
+		<wsdl:operation name="delete">
+			<wsdl:input message="tns:InvoiceDeleteRequest"/>
+			<wsdl:output message="tns:InvoiceDeleteResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="delete_detail">
+			<wsdl:input message="tns:InvoiceDeleteDetailRequest"/>
+			<wsdl:output message="tns:InvoiceDeleteDetailResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="delete_responsible_user">
+			<wsdl:input message="tns:InvoiceDeleteResponsibleUserRequest"/>
+			<wsdl:output message="tns:InvoiceDeleteResponsibleUserResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="delete_prefinancing_clearing">
+			<wsdl:input message="tns:InvoiceDeletePrefinancingClearingRequest"/>
+			<wsdl:output message="tns:InvoiceDeletePrefinancingClearingResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="give_visa">
+			<wsdl:input message="tns:InvoiceGiveVisaRequest"/>
+			<wsdl:output message="tns:InvoiceGiveVisaResponse"/>
+			<wsdl:fault name="Fault" message="fault:FaultMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="InvoiceSOAP" type="tns:InvoicePort">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="create">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/create/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_detail">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/create_detail/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_responsible_user">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/create_responsible_user/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document_folder">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/create_supporting_document_folder/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_supporting_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/create_supporting_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/create_recovery_context/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_recovery_context_error">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/create_recovery_context_error/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_ares_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/create_ares_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_payment_suspension_period">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/create_payment_suspension_period/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_report_suspension_period">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/create_report_suspension_period/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="create_prefinancing_clearing">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/create_prefinancing_clearing/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/modify/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_detail">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/modify_detail/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document_folder">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/modify_supporting_document_folder/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_supporting_document">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/modify_supporting_document/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_payment_suspension_period">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/modify_payment_suspension_period/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="modify_report_suspension_period">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/modify_report_suspension_period/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="modify_prefinancing_clearing">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/modify_prefinancing_clearing/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/delete/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete_detail">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/delete_detail/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<wsdl:operation name="delete_responsible_user">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/delete_responsible_user/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+			<wsdl:operation name="delete_prefinancing_clearing">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/delete_prefinancing_clearing/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		
+		<wsdl:operation name="give_visa">
+			<soap:operation soapAction="http://www.ec.europa.eu/budg/abac/invoice/service/es/async/give_visa/v1"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="Fault">
+				<soap:fault name="Fault" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>
