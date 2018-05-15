@@ -93,6 +93,7 @@ public class RegistrationResource {
     public ResponseDTO createRegistration(@RequestBody final RegistrationDTO registrationDTO) {
         try {
             _log.info("createRegistration");
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
             RegistrationDTO resRegistration = registrationService.createRegistration(registrationDTO);
             return new ResponseDTO(true, resRegistration, null);
         } catch (Exception e) {
@@ -248,7 +249,7 @@ public class RegistrationResource {
     @ApiOperation(value = "Get registration by specific userThread id")
     @RequestMapping(value = "/userThread/{userThreadId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public RegistrationDTO getRegistrationIdsByUserThreadId(@PathVariable("userThreadId") final Integer userThreadId) {
+    public RegistrationDTO getRegistrationByUserThreadId(@PathVariable("userThreadId") final Integer userThreadId) {
         _log.info("getRegistrationByUserThreadId: " + userThreadId);
 
 
