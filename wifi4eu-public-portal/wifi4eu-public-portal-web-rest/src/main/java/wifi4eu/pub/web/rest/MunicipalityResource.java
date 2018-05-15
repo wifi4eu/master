@@ -24,14 +24,6 @@ public class MunicipalityResource {
 
     Logger _log = LoggerFactory.getLogger(MunicipalityResource.class);
 
-    @ApiOperation(value = "Get municipality by specific id")
-    @RequestMapping(value = "/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public MunicipalityDTO getMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId) {
-        _log.info("getMunicipalityById: " + municipalityId);
-        return municipalityService.getMunicipalityById(municipalityId);
-    }
-
     @ApiOperation(value = "Get municipalities grouped by lau id")
     @RequestMapping(value = "/groupedByLauId", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

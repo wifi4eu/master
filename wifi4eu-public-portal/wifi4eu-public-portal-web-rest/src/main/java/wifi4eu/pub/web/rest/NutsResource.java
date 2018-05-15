@@ -22,12 +22,11 @@ public class NutsResource {
 
     Logger _log = LoggerFactory.getLogger(NutsResource.class);
 
-    @ApiOperation(value = "Get nuts by specific id")
-    @RequestMapping(value = "/{nutsId}", method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value = "getNuts")
+    @RequestMapping(value = "/getNuts", method = RequestMethod.GET)
     @ResponseBody
-    public NutsDTO getNutsById(@PathVariable("nutsId") final Integer nutsId) {
-        _log.info("getNutsById: " + nutsId);
-        return nutsService.getNutsById(nutsId);
+    public NutsDTO getNuts() {
+        return new NutsDTO();
     }
 
     @ApiOperation(value = "Get all nuts from a specific level")
