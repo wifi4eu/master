@@ -83,7 +83,7 @@ public class ScheduledTasks {
     /**
      * This cron method consumes the messages from the RabbitMQ
      */
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0/10 * * * ?")
     public void queueConsumer() {
         _log.info("[i] queueConsumer");
         try {
@@ -100,7 +100,7 @@ public class ScheduledTasks {
 
             int iterationCounter = 0;
             //try to process 100 messages from the queue
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 1000; i++) {
                 iterationCounter++;
                 GetResponse response = channel.basicGet(QUEUE_NAME, autoAck);
                 if (response == null) {
@@ -118,9 +118,10 @@ public class ScheduledTasks {
                     long messageCount = response.getMessageCount();
 
                     if (deliveryTag != 0) {
+                        _log.info("send deliveryTag:" + deliveryTag);
                         channel.basicAck(deliveryTag, false); // acknowledge receipt of the message
                     } else {
-                        _log.error("error processing a message");
+                        _log.error("error processing a message, deliveryTag: " + deliveryTag, " response: " + response);
                     }
 
                     _log.info("wdProcessTime: " + wdProcessTime + " messageCount: " + messageCount + " iterationCounter: " + iterationCounter);
@@ -250,6 +251,7 @@ public class ScheduledTasks {
 
             if (applicatioDTO != null) {
                 deliveryTag = response.getEnvelope().getDeliveryTag();
+                _log.info("deliveryTag: " + deliveryTag);
             }
 
             _log.info("[f] processQueueMessage");

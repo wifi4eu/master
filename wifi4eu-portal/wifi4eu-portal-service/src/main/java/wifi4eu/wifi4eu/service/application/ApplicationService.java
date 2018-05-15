@@ -89,13 +89,16 @@ public class ApplicationService {
                 if (registrationDTO.getUploadTime() == uploadDocTimestamp && registrationDTO.getUserId() == userId) {
                     //check if this application was received previously
                     ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
-                    if (applicationDTO == null) {
+                    if (applicationDTO == null || applicationDTO.getDate() > queueTimestamp) {
                         //create the application
-                        applicationDTO = new ApplicationDTO();
-                        applicationDTO.setCallId(callDTO.getId());
-                        applicationDTO.setDate(queueTimestamp);
-                        applicationDTO.setRegistrationId(registrationDTO.getId());
+                        if (applicationDTO == null) {
+                            applicationDTO = new ApplicationDTO();
+                            applicationDTO.setRegistrationId(registrationDTO.getId());
+                            applicationDTO.setCallId(callDTO.getId());
+                        }
 
+                        applicationDTO.setDate(queueTimestamp);
+                        
                         applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
 
                         return applicationDTO;
@@ -103,6 +106,7 @@ public class ApplicationService {
                         _log.error("trying to register an application existent on the DB, callId: "
                                 + callId + " userId: " + userId + " registrationId: " + registrationId +
                                 " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+                        return applicationDTO;
                     }
 
                 } else {
