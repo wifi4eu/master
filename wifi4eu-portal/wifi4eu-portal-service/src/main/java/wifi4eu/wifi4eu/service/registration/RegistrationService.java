@@ -133,7 +133,7 @@ public class RegistrationService {
                 String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
                 String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
                 msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
-                _log.error("additionalInfoUrl: " + additionalInfoUrl + " msgBody: " + msgBody + " language: " + locale.getLanguage());
+                _log.info("additionalInfoUrl: " + additionalInfoUrl + " msgBody: " + msgBody + " language: " + locale.getLanguage());
                 if (!userService.isLocalHost()) {
                     mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                 }
@@ -165,11 +165,10 @@ public class RegistrationService {
         return false;
     }
 
-    public RegistrationDTO getRegistrationByUserThreadId(int userThreadId) {
-        UserThreadsDTO userThreadDTO = userThreadsService.getUserThreadsById(userThreadId);
-        ThreadDTO threadDTO = threadService.getThreadById(userThreadDTO.getThreadId());
-        UserDTO userDTO = userService.getUserById(userThreadDTO.getUserId());
-        List<RegistrationDTO> registrations = getRegistrationsByUserId(userDTO.getId());
+    public RegistrationDTO getRegistrationByUserThreadId(int threadId, int userId) {
+        ThreadDTO threadDTO = threadService.getThreadById(threadId);
+
+        List<RegistrationDTO> registrations = getRegistrationsByUserId(userId);
         for (RegistrationDTO registration : registrations) {
             MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
             if (threadDTO.getReason().equals(String.valueOf(municipality.getLauId()))) {
