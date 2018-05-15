@@ -297,7 +297,7 @@ export class VoucherComponent {
     private checkForDocuments() {
 
         if (this.isMayor) {
-            this.docsOpen[0] = (this.registrations[0].legalFile1 != null && this.registrations[0].legalFile4 == null && this.registrations[0].legalFile2 == null && this.registrations[0].legalFile3 != null);
+            this.docsOpen[0] = (this.registrations[0].legalFile1 != null && this.registrations[0].legalFile3 != null);
 
             if (this.docsOpen[0]) {
                 let uploaddate = new Date(this.registrations[0].uploadTime);
