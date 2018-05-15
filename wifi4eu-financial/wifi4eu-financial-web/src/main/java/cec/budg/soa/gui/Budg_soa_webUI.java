@@ -51,8 +51,11 @@ public class Budg_soa_webUI extends UI {
 	protected void init(VaadinRequest request) {
 		try {
 			InitialContext ic = new InitialContext();
-			soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:comp/env/ejb/SoatubeWSClient");
-			jmsProducer = (JmsProducerLocal)ic.lookup("java:comp/env/ejb/JmsProducer");
+//			soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:comp/env/ejb/SoatubeWSClient");
+//			jmsProducer = (JmsProducerLocal)ic.lookup("java:comp/env/ejb/JmsProducer");
+			jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JmsProducer");
+			soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/SoatubeWSClient");
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

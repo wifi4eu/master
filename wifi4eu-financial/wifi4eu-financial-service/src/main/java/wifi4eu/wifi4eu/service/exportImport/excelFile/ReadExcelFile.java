@@ -1,5 +1,11 @@
 package wifi4eu.wifi4eu.service.exportImport.excelFile;
 
+import cec.budg.soatube.client.async.JmsProducerLocal;
+import cec.budg.soatube.client.sync.SoatubeWSClientLocal;
+import cec.budg.soatube.client.util.BudgSOAException;
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.util.BeanItemContainer;
+import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -7,6 +13,18 @@ import wifi4eu.wifi4eu.common.dto.model.ExportImportLEFDTO;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportLEFMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportLEFRepository;
 
+import javax.naming.InitialContext;
+import java.util.UUID;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.Table;
+import com.vaadin.server.Page;
+import com.vaadin.data.fieldgroup.BeanFieldGroup;
+import com.vaadin.ui.Notification;
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
+
+
+import javax.naming.NamingException;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,10 +32,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 
+
 public class ReadExcelFile {
 
+    private static Logger LOGGER = Logger.getLogger("budg.soa.logging");
     public ExportImportLEFMapper exportImportLEFMapper;
     public ExportImportLEFRepository exportImportLEFRepository;
+
+    private SoatubeWSClientLocal soaTubeWSClient;
+    private JmsProducerLocal jmsProducer;
+    private BeanFieldGroup<SoaMessageCall> fieldGroup;
+    private BeanItemContainer<SoaMessageCall> messageContainer;
 
     public ReadExcelFile(){}
 
@@ -26,7 +51,7 @@ public class ReadExcelFile {
         this.exportImportLEFRepository = exportImportLEFRepository;
     }
 
-    public void readExcelFile(){
+    public void readExcelFile() throws NamingException, BudgSOAException, FieldGroup.CommitException {
         JFileChooser fc = new JFileChooser();
         int response = fc.showOpenDialog(null);
         File fil=null;
@@ -82,10 +107,6 @@ public class ReadExcelFile {
                 "<v2:WorkflowOrganisationName xmlns:v2=\"http://www.ec.europa.eu/budg/abac/associated_object/v2\">PMO</v2:WorkflowOrganisationName>\n" +
                 "</v3:Visa>\n" +
                 "</v3:LegalEntityCreateRequest>\n";
-
-        //HashMap<String,String> retHashMap = ((Budg_soa_webUI)UI.getCurrent()).getJmsProducer().sendMessage(msgCall.getMessageCorrelation());
-        //HashMap<String,String> retHashMap = ((Budg_soa_webUI)UI.getCurrent()).getJmsProducer().sendMessage(msgCall.getMessageCorrelation());
-
 
         String messageBudgetaryCommitment="<v11:AgentId>DUMONFA</v11:AgentId>\n" +
                 "</v11:MessageHeader>\n" +
@@ -147,8 +168,75 @@ public class ReadExcelFile {
                 "</v1:BudgetaryCommitmentLevel2>\n" +
                 "</v1:BudgetaryCommitmentLevel2CreateRequest>\n";
 
-        //HashMap<String,String> retHashMap = ((Budg_soa_webUI)UI.getCurrent()).getJmsProducer().sendMessage(msgCall.getMessageCorrelation());
-        //HashMap<String,String> retHashMap = ((Budg_soa_webUI)UI.getCurrent()).getJmsProducer().sendMessage(msgCall.getMessageCorrelation());
+
+        InitialContext ic = new InitialContext();
+        jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JmsProducer");
+        soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/SoatubeWSClient");
+
+        buildMessagesContainer();
+        buildMessageInfoTable();
+
+        SoaMessageCall msgCall = fieldGroup.getItemDataSource().getBean();
+        msgCall.setInvMethod("ASYNC");
+
+        try{
+            msgCall.setMessageCorrelation(messageLef);
+            fieldGroup.commit();
+            LOGGER.info("Message Correlation="+msgCall.getMessageCorrelation());
+            if(msgCall.getMessageCorrelation()!=null && msgCall.getMessageCorrelation().isEmpty() ){
+                msgCall.setMessageCorrelation(UUID.randomUUID().toString());
+            }
+
+            HashMap<String,String> retHashMap = jmsProducer.sendMessage(messageBudgetaryCommitment);
+
+            msgCall.setDatabaseName(retHashMap.get("DB_NAME"));
+            msgCall.setAppVersion(retHashMap.get("APP_VERSION"));
+            msgCall.setSuccessfullInvocation(true);
+            messageContainer.addBean(msgCall);
+            fieldGroup.setItemDataSource(new SoaMessageCall());
+        }catch (Exception e) {
+            LOGGER.error("Error",e);
+            msgCall.setErrorMessage(e.getMessage());
+            msgCall.setSuccessfullInvocation(false);
+            messageContainer.addBean(msgCall);
+            fieldGroup.setItemDataSource(new SoaMessageCall());
+        }
+
+            //-------------------------------------------
+
+
+        InitialContext ic2 = new InitialContext();
+        jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JmsProducer");
+        soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/SoatubeWSClient");
+
+        buildMessagesContainer();
+        buildMessageInfoTable();
+
+        SoaMessageCall msgCall2 = fieldGroup.getItemDataSource().getBean();
+        msgCall.setInvMethod("ASYNC");
+
+        try{
+            msgCall.setMessageCorrelation(messageLef);
+            fieldGroup.commit();
+            LOGGER.info("Message Correlation="+msgCall.getMessageCorrelation());
+            if(msgCall.getMessageCorrelation()!=null && msgCall.getMessageCorrelation().isEmpty() ){
+                msgCall.setMessageCorrelation(UUID.randomUUID().toString());
+            }
+
+            HashMap<String,String> retHashMap2 = jmsProducer.sendMessage(msgCall.getMessageCorrelation());
+
+            msgCall.setDatabaseName(retHashMap2.get("DB_NAME"));
+            msgCall.setAppVersion(retHashMap2.get("APP_VERSION"));
+            msgCall.setSuccessfullInvocation(true);
+            messageContainer.addBean(msgCall);
+            fieldGroup.setItemDataSource(new SoaMessageCall());
+        }catch (Exception e) {
+            LOGGER.error("Error",e);
+            msgCall.setErrorMessage(e.getMessage());
+            msgCall.setSuccessfullInvocation(false);
+            messageContainer.addBean(msgCall);
+            fieldGroup.setItemDataSource(new SoaMessageCall());
+        }
 
         /*try (FileInputStream file = new FileInputStream(fil)) {
             XSSFWorkbook worbook = new XSSFWorkbook(file);
@@ -178,5 +266,57 @@ public class ReadExcelFile {
         } catch (Exception e) {
             e.getMessage();
         }*/
+    }
+
+    private Table buildMessageInfoTable() {
+        Table messageInfoTable = new Table();
+        messageInfoTable.setWidth("100%");
+        messageInfoTable.setContainerDataSource(messageContainer);
+        messageInfoTable.setVisibleColumns("messageCorrelation", "status" , "invMethod" , "databaseName");
+        messageInfoTable.setColumnHeaders( new String[] {" Correlation ID","Status", "Invocation method", " Database Name"} );
+        messageInfoTable.setSelectable(true);
+
+
+
+        messageInfoTable.setCellStyleGenerator(new Table.CellStyleGenerator() {
+            @Override
+            public String getStyle( Table table , Object itemId, Object propertyId) {
+
+                String styleName=null;
+
+                if(propertyId!=null){
+                    if(propertyId.equals("status")){
+                        Item item = table.getItem(itemId);
+
+                        boolean success= (Boolean) item.getItemProperty("successfullInvocation").getValue();
+                        if(success){
+                            return "success";
+                        }
+                        else{
+                            return "failure";
+                        }
+                    }
+                }
+                return styleName;
+            }
+        });
+
+
+        messageInfoTable.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                SoaMessageCall  soaMessageCall = ((SoaMessageCall)event.getProperty().getValue());
+                if(soaMessageCall!=null && soaMessageCall.isSuccessfullInvocation()==false){
+                    String errMsg=soaMessageCall.getErrorMessage()==null? "" : soaMessageCall.getErrorMessage();
+                    Notification notif = new Notification("Response Error", errMsg, Notification.Type.ERROR_MESSAGE);
+                    notif.show(Page.getCurrent());
+                }
+            }
+        });
+        return messageInfoTable;
+    }
+
+    private void buildMessagesContainer() {
+        messageContainer = new BeanItemContainer<SoaMessageCall>(SoaMessageCall.class);
     }
 }
