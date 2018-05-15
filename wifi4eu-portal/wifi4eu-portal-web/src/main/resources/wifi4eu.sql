@@ -32,6 +32,8 @@ CREATE TABLE dbo.rights
   [type]      INT           NULL     DEFAULT NULL,
   PRIMARY KEY ([id])
 );
+CREATE INDEX [IDX_rights_userId]
+  ON dbo.rights ([userId] ASC);
 -- -----------------------------------------------------
 -- Table `dbo`.`laus`
 -- -----------------------------------------------------
@@ -211,23 +213,23 @@ CREATE INDEX [fk_suppliers_users_idx]
 -- -----------------------------------------------------
 CREATE TABLE dbo.applications
 (
-  [id]              INT      NOT NULL IDENTITY,
-  [call_id]         INT      NOT NULL,
-  [registration]    INT      NOT NULL,
-  [supplier]        INT      NULL,
-  [voucher_awarded] SMALLINT NULL     DEFAULT 0,
-  [date]            BIGINT   NULL,
-  [lef_export]      BIGINT   NULL,
-  [lef_import]      BIGINT   NULL,
-  [lef_status]      INT      NULL     DEFAULT 0,
-  [bc_export]       BIGINT   NULL,
-  [bc_import]       BIGINT   NULL,
-  [bc_status]       INT      NULL     DEFAULT 0,
-  [lc_export]       BIGINT   NULL,
-  [lc_import]       BIGINT   NULL,
-  [lc_status]       INT      NULL     DEFAULT 0,
-  [_status]         INT      NOT NULL DEFAULT 0,
-  [invalidate_reason] VARCHAR(max) NULL,
+  [id]                INT          NOT NULL IDENTITY,
+  [call_id]           INT          NOT NULL,
+  [registration]      INT          NOT NULL,
+  [supplier]          INT          NULL,
+  [voucher_awarded]   SMALLINT     NULL     DEFAULT 0,
+  [date]              BIGINT       NULL,
+  [lef_export]        BIGINT       NULL,
+  [lef_import]        BIGINT       NULL,
+  [lef_status]        INT          NULL     DEFAULT 0,
+  [bc_export]         BIGINT       NULL,
+  [bc_import]         BIGINT       NULL,
+  [bc_status]         INT          NULL     DEFAULT 0,
+  [lc_export]         BIGINT       NULL,
+  [lc_import]         BIGINT       NULL,
+  [lc_status]         INT          NULL     DEFAULT 0,
+  [_status]           INT          NOT NULL DEFAULT 0,
+  [invalidate_reason] VARCHAR(MAX) NULL,
   PRIMARY KEY ([id])
   ,
   CONSTRAINT [fk_applications_calls]
@@ -491,6 +493,8 @@ CREATE TABLE dbo.user_threads
   [thread] INT NOT NULL,
   PRIMARY KEY ([id])
 );
+CREATE INDEX [IDX_user_threads_user]
+  ON dbo.user_threads ([_user] ASC);
 
 -- -----------------------------------------------------
 -- Table `dbo`.`legal_files`

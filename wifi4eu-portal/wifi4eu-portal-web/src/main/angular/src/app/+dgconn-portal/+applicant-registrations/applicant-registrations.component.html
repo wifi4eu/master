@@ -10,7 +10,8 @@
         <p-tabView *ngIf="calls.length > 0" (onChange)="changeCall($event)">
             <p-tabPanel *ngFor="let call of calls; let i = index"
                         header="{{ 'dgConn.call.number' | translate:{number:i+1} }}"
-                        [selected]="i == currentIndex">
+                        [selected]="i == currentIndex"
+                        [headerStyle]="{'margin-left': '-3px', 'padding-left': '7px', 'padding-right': '13px'}">
             </p-tabPanel>
         </p-tabView>
     </div>

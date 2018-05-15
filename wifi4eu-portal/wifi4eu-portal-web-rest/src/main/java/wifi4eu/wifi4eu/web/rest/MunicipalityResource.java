@@ -35,25 +35,12 @@ public class MunicipalityResource {
 
     Logger _log = LoggerFactory.getLogger(MunicipalityResource.class);
 
-    @ApiOperation(value = "Get all the municipalities")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
-    })
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<MunicipalityDTO> allMunicipalities() {
-        _log.info("allMunicipalities");
-        return municipalityService.getAllMunicipalities();
-    }
-
     @ApiOperation(value = "Get municipality by specific id")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
-    })
     @RequestMapping(value = "/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public MunicipalityDTO getMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId) {
         _log.info("getMunicipalityById: " + municipalityId);
+        permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
         return municipalityService.getMunicipalityById(municipalityId);
     }
 
@@ -68,7 +55,7 @@ public class MunicipalityResource {
 
             //check permission
             int municipalityId = municipalityDTO.getId();
-            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE+municipalityId);
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
 
             MunicipalityDTO resMunicipality = municipalityService.createMunicipality(municipalityDTO);
             return new ResponseDTO(true, resMunicipality, null);
@@ -95,15 +82,13 @@ public class MunicipalityResource {
             _log.info("deleteMunicipality: " + municipalityId);
 
             //check permisssion
-            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE+municipalityId);
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             MunicipalityDTO resMunicipality = municipalityService.deleteMunicipality(municipalityId);
             return new ResponseDTO(true, resMunicipality, null);
-        }
-        catch (AccessDeniedException ade){
+        } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.FORBIDDEN.value());
             return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteMunicipality' operation.", e);
             }
@@ -115,7 +100,7 @@ public class MunicipalityResource {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
     })
-    @RequestMapping(value = "/lauId/{lauId}",method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/lauId/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByLauId(@PathVariable("lauId") final Integer lauId) {
         if (_log.isInfoEnabled()) {
@@ -128,7 +113,7 @@ public class MunicipalityResource {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType = "string", paramType = "header")
     })
-    @RequestMapping(value = "/userId/{userId}",method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/userId/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByUserId(@PathVariable("userId") final Integer userId,
                                                            HttpServletResponse response) throws IOException {
@@ -137,7 +122,7 @@ public class MunicipalityResource {
         }
 
         try {
-            permissionChecker.check(RightConstants.USER_TABLE+userId);
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'getMunicipalitiesByUserId' operation.", ade);

@@ -30,7 +30,7 @@ import java.util.*;
 public class ApplicationService {
     @Value("${mail.server.location}")
     private String baseUrl;
-    
+
     @Autowired
     ApplicantListItemMapper applicantListItemMapper;
 
@@ -57,7 +57,7 @@ public class ApplicationService {
 
     @Autowired
     CallService callService;
-    
+
     private static final Logger _log = LoggerFactory.getLogger(ApplicationService.class);
 
     @Autowired
@@ -85,18 +85,21 @@ public class ApplicationService {
         // check all the information provided exists on DB
         if (callDTO != null && userDTO != null && registrationDTO != null) {
             // check the queue date is between start/end of the call
-            if (queueTimestamp > callDTO.getStartDate() && queueTimestamp < callDTO.getEndDate()) {
+            if (queueTimestamp / 1000000000 > callDTO.getStartDate() && queueTimestamp / 1000000000 < callDTO.getEndDate()) {
                 //check information on the queue is right
                 if (registrationDTO.getUploadTime() == uploadDocTimestamp && registrationDTO.getUserId() == userId) {
                     //check if this application was received previously
                     ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
-                    if (applicationDTO == null) {
+                    if (applicationDTO == null || applicationDTO.getDate() > queueTimestamp) {
                         //create the application
-                        applicationDTO = new ApplicationDTO();
-                        applicationDTO.setCallId(callDTO.getId());
-                        applicationDTO.setDate(queueTimestamp);
-                        applicationDTO.setRegistrationId(registrationDTO.getId());
+                        if (applicationDTO == null) {
+                            applicationDTO = new ApplicationDTO();
+                            applicationDTO.setRegistrationId(registrationDTO.getId());
+                            applicationDTO.setCallId(callDTO.getId());
+                        }
 
+                        applicationDTO.setDate(queueTimestamp);
+                        
                         applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
 
                         return applicationDTO;
@@ -104,6 +107,7 @@ public class ApplicationService {
                         _log.error("trying to register an application existent on the DB, callId: "
                                 + callId + " userId: " + userId + " registrationId: " + registrationId +
                                 " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
+                        return applicationDTO;
                     }
 
                 } else {
