@@ -45,18 +45,22 @@ public class ApplicationResource {
     @ApiOperation(value = "Get application by call and registration id")
     @RequestMapping(value = "/call/{callId}/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId) {
+    public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
         if (_log.isInfoEnabled()) {
             _log.info("getApplicationByCall: " + callId + " & Registration: " + registrationId);
         }
 
-        permissionChecker.check(RightConstants.REGISTRATIONS_TABLE+registrationId);
-
-        ApplicationDTO response = applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
-        if (response == null) {
-            response = new ApplicationDTO();
+        try{
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE+registrationId);
+        }catch (Exception e){
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
-        return response;
+
+        ApplicationDTO responseApp = applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
+        if (response == null) {
+            responseApp = new ApplicationDTO();
+        }
+        return responseApp;
     }
 
     @ApiOperation(value = "Get applications voucher info by call id")
