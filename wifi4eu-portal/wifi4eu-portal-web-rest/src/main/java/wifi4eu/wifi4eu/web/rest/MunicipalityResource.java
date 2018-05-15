@@ -16,7 +16,6 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -48,7 +47,10 @@ public class MunicipalityResource {
     public MunicipalityDTO getMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
         _log.info("getMunicipalityById: " + municipalityId);
         try{
-            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(userDTO.getType() != 5){
+                permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            }
         }catch (Exception e){
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
