@@ -27,6 +27,7 @@ export class InstallationDetailsComponent {
     private name: string;
     private number: string;
     private portal: string;
+    private networkId: string;
 
     constructor(private _location: Location, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private sharedService: SharedService, private localStorage: LocalStorageService, private router: Router, private route: ActivatedRoute, private installationsiteApi: InstallationsiteApi, private localStorageService: LocalStorageService) {
         let storedUser = this.localStorage.get('user');
@@ -51,7 +52,7 @@ export class InstallationDetailsComponent {
                     this.name = this.installationSite['data'].name;
                     this.number = this.installationSite['data'].number;
                     this.portal = this.installationSite['data'].url;
-
+                    this.networkId = this.installationSite['data'].idNetworkSnippet;
                 }, error => {
                 }
             );
