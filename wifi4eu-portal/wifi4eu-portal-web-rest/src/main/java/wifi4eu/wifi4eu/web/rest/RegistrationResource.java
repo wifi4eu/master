@@ -97,13 +97,16 @@ public class RegistrationResource {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO createRegistration(@RequestBody final RegistrationDTO registrationDTO) {
+    public ResponseDTO createRegistration(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
         try {
             _log.info("createRegistration");
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+            permissionChecker.check(RightConstants.USER_TABLE + registrationDTO.getUserId());
+
             RegistrationDTO resRegistration = registrationService.createRegistration(registrationDTO);
             return new ResponseDTO(true, resRegistration, null);
         } catch (Exception e) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createRegistration' operation.", e);
             }
@@ -266,7 +269,7 @@ public class RegistrationResource {
         UserContext userContext = UserHolder.getUser();
         UserDTO user = userService.getUserByEmail(userContext.getEmail());
 
-        if(userThreadsService.getByUserIdAndThreadId(user.getId(), userThreadDTO.getThreadId()) != null) {
+        if (userThreadsService.getByUserIdAndThreadId(user.getId(), userThreadDTO.getThreadId()) != null) {
 
             //TODO Temporary solution to prevent information leaks
             // we check that the user has access to registrations table
