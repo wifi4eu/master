@@ -19,17 +19,19 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-          "../node_modules/@eui/styles/dist/assets/fonts/webfont/Roboto/Roboto.css",
-          "../node_modules/@eui/styles/dist/assets/fonts/font-awesome/font-awesome.min.css",
-          "../node_modules/@eui/styles/dist/styles/eui.css",
-          "styles.scss"
+        "../node_modules/@eui/styles/dist/assets/fonts/webfont/Roboto/Roboto.css",
+        "../node_modules/@eui/styles/dist/assets/fonts/font-awesome/font-awesome.min.css",
+        "../node_modules/@eui/styles/dist/styles/eui.css",
+        "styles.scss"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "local": "environments/environment.local.ts",
         "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
+        "prod": "environments/environment.prod.ts",
+        "int": "environments/environment.int.ts",
+        "test": "environments/environment.test.ts"
       }
     }
   ],

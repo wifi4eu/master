@@ -106,6 +106,7 @@
                                     <arguments>
                                         <argument>/c</argument>
                                         <argument>"ng build --base-href /supplier/"</argument>
+                                        <!--<argument>&#45;&#45;env=dev</argument>-->
                                         <argument>--env=${ng.env}</argument>
                                         <argument>--prod</argument>
                                         <argument>--aot</argument>

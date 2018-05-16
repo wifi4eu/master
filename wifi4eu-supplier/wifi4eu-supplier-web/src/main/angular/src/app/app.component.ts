@@ -8,7 +8,7 @@ import { LocalStorageService } from 'angular-2-local-storage'
 import { CONFIG_TOKEN, AppState, UserState, RouteUpdateAction, getAppState, getUserState, StoreService } from '@eui/ux-core';
 import { UserDetailsService } from './core/services/user-details.service';
 import { UserDTOBase, UserApi, ResponseDTOBase } from './shared/swagger';
-import { environment } from '../environments/environment.prod';
+import { environment } from '../environments/environment';
 
 @Component({
     selector: 'app-root',
