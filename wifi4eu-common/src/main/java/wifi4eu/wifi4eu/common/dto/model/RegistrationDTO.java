@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import javax.persistence.Column;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 public class RegistrationDTO implements Serializable {
     private int id;
@@ -18,11 +20,26 @@ public class RegistrationDTO implements Serializable {
     private boolean wifiIndicator;
     private boolean beneficiaryIndicator;
 
+    private int idStatusBeneficiary;
+    private boolean compliance;
+    private String shortMemberState;
+    private String memberState;
+    private String call;
+    private int actionToBeTaken;
+    private int actionTaken;
+    private boolean conformity;
+    private Timestamp firstFalseCheck;
+    private Timestamp dateRegistered;
+
 
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, boolean wifiIndicator, boolean beneficiaryIndicator) {
+    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String
+            legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int
+            organisationId, boolean wifiIndicator, boolean beneficiaryIndicator, int idStatusBeneficiary, boolean
+            compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int
+            actionTaken, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
         this.id = id;
         this.userId = userId;
         this.municipalityId = municipalityId;
@@ -37,6 +54,16 @@ public class RegistrationDTO implements Serializable {
         this.organisationId = organisationId;
         this.wifiIndicator = wifiIndicator;
         this.beneficiaryIndicator = beneficiaryIndicator;
+        this.idStatusBeneficiary = idStatusBeneficiary;
+        this.compliance = compliance;
+        this.shortMemberState = shortMemberState;
+        this.memberState = memberState;
+        this.call = call;
+        this.actionToBeTaken = actionToBeTaken;
+        this.actionTaken = actionTaken;
+        this.conformity = conformity;
+        this.firstFalseCheck = firstFalseCheck;
+        this.dateRegistered = dateRegistered;
     }
 
     public int getId() {
@@ -169,5 +196,85 @@ public class RegistrationDTO implements Serializable {
 
     public void setBeneficiaryIndicator(boolean beneficiaryIndicator) {
         this.beneficiaryIndicator = beneficiaryIndicator;
+    }
+
+    public int getIdStatusBeneficiary() {
+        return idStatusBeneficiary;
+    }
+
+    public void setIdStatusBeneficiary(int idStatusBeneficiary) {
+        this.idStatusBeneficiary = idStatusBeneficiary;
+    }
+
+    public boolean isCompliance() {
+        return compliance;
+    }
+
+    public void setCompliance(boolean compliance) {
+        this.compliance = compliance;
+    }
+
+    public String getShortMemberState() {
+        return shortMemberState;
+    }
+
+    public void setShortMemberState(String shortMemberState) {
+        this.shortMemberState = shortMemberState;
+    }
+
+    public String getMemberState() {
+        return memberState;
+    }
+
+    public void setMemberState(String memberState) {
+        this.memberState = memberState;
+    }
+
+    public String getCall() {
+        return call;
+    }
+
+    public void setCall(String call) {
+        this.call = call;
+    }
+
+    public int getActionToBeTaken() {
+        return actionToBeTaken;
+    }
+
+    public void setActionToBeTaken(int actionToBeTaken) {
+        this.actionToBeTaken = actionToBeTaken;
+    }
+
+    public int getActionTaken() {
+        return actionTaken;
+    }
+
+    public void setActionTaken(int actionTaken) {
+        this.actionTaken = actionTaken;
+    }
+
+    public boolean isConformity() {
+        return conformity;
+    }
+
+    public void setConformity(boolean conformity) {
+        this.conformity = conformity;
+    }
+
+    public Timestamp getFirstFalseCheck() {
+        return firstFalseCheck;
+    }
+
+    public void setFirstFalseCheck(Timestamp firstFalseCheck) {
+        this.firstFalseCheck = firstFalseCheck;
+    }
+
+    public Timestamp getDateRegistered() {
+        return dateRegistered;
+    }
+
+    public void setDateRegistered(Timestamp dateRegistered) {
+        this.dateRegistered = dateRegistered;
     }
 }

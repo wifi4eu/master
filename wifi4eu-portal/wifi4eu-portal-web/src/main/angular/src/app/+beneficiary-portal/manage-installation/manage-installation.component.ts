@@ -81,6 +81,7 @@ export class ManageInstallationComponent {
         this.searchParametersService.parameters.page = event.first;
         this.searchParametersService.parameters.fieldOrder = event.sortField ? event.sortField : "id";
         this.searchParametersService.parameters.order = event.sortOrder > 0 ? "asc" : "desc";
+        this.onSearch();
     }
 
     onSearch() {
