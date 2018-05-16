@@ -25,7 +25,7 @@
                          [totalRecords]="totalResults" [first]="searchParametersService.parameters.page"
                          [lazy]="true"
                          (onLazyLoad)="onPage($event)">
-                <p-column field="id" header="{{'shared.number.label' | translate }}" sortable="true">
+                <p-column field="number" header="{{'shared.number.label' | translate }}" sortable="true">
                 </p-column>
                 <p-column field="name" header="{{'installationReport.siteName' | translate }}"
                           sortable="true"></p-column>
