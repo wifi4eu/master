@@ -300,7 +300,7 @@ public class UserResource {
         }
     }*/
 
-/*    @ApiOperation(value = "Logout session")
+    @ApiOperation(value = "Logout session")
     @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String doCompleteSignOut()  {
@@ -318,7 +318,7 @@ public class UserResource {
         }
 
         return outMessage;
-    }*/
+    }
 
     private void doLogout(HttpSession session) {
         session.invalidate();

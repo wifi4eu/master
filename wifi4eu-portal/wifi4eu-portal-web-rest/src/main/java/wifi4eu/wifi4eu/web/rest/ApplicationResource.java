@@ -50,14 +50,14 @@ public class ApplicationResource {
             _log.info("getApplicationByCall: " + callId + " & Registration: " + registrationId);
         }
 
-        try{
-            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE+registrationId);
-        }catch (Exception e){
+        try {
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
+        } catch (Exception e) {
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
 
         ApplicationDTO responseApp = applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
-        if (response == null) {
+        if (responseApp == null) {
             responseApp = new ApplicationDTO();
         }
         return responseApp;
@@ -70,7 +70,7 @@ public class ApplicationResource {
         try {
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
@@ -114,12 +114,12 @@ public class ApplicationResource {
         try {
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
             ResponseDTO res = new ResponseDTO(true, null, null);
-            res.setData(applicationService.findDgconnApplicantsList(callId, null,null, pagingSortingData));
+            res.setData(applicationService.findDgconnApplicantsList(callId, null, null, pagingSortingData));
             res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, null));
             return res;
         } catch (Exception e) {
@@ -141,12 +141,12 @@ public class ApplicationResource {
         try {
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
             ResponseDTO res = new ResponseDTO(true, null, null);
-            res.setData(applicationService.findDgconnApplicantsList(callId, country,null, pagingSortingData));
+            res.setData(applicationService.findDgconnApplicantsList(callId, country, null, pagingSortingData));
             res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country));
             return res;
         } catch (Exception e) {
@@ -166,7 +166,7 @@ public class ApplicationResource {
         try {
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
@@ -190,7 +190,7 @@ public class ApplicationResource {
         try {
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
@@ -217,7 +217,7 @@ public class ApplicationResource {
             }
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
@@ -242,7 +242,7 @@ public class ApplicationResource {
             }
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
@@ -267,11 +267,11 @@ public class ApplicationResource {
 
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             return applicationService.getApplicationsByCallIdAndLauId(callId, lauId);
-        }catch (Exception e){
+        } catch (Exception e) {
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return null;
