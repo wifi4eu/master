@@ -11,10 +11,10 @@ import java.util.Date;
 @Entity
 @Table(name = "registrations")
 public class Registration {
-    @Id
-    @SequenceGenerator(name = "registratrion_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "registration_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
@@ -52,9 +52,8 @@ public class Registration {
     @Column(name = "association_name")
     private String association_name;
 
-    @ManyToOne
-    @JoinColumn(name = "id_status_beneficiary")
-    private BeneficiaryStatus idStatusBeneficiary;
+    @Column(name = "id_status_beneficiary")
+    private int idStatusBeneficiary;
 
     @Column(name = "compliance")
     private boolean compliance;
@@ -92,7 +91,7 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, int organisation_id, String association_name, BeneficiaryStatus idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, int organisation_id, String association_name, int idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -214,11 +213,11 @@ public class Registration {
         this.association_name = association_name;
     }
 
-    public BeneficiaryStatus getIdStatusBeneficiary() {
+    public int getIdStatusBeneficiary() {
         return idStatusBeneficiary;
     }
 
-    public void setIdStatusBeneficiary(BeneficiaryStatus idStatusBeneficiary) {
+    public void setIdStatusBeneficiary(int idStatusBeneficiary) {
         this.idStatusBeneficiary = idStatusBeneficiary;
     }
 
