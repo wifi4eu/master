@@ -13,7 +13,7 @@
     "home.footer.top": "Top",
     "installationReport.title": "WiFi installation report",
     "installationReport.thisPageIsUsedTo": "This page is used to list all the installation sites of the beneficiaries you work for. In order to create one or more installation sites for a beneficiary, you should select one beneficiary from the dropdown list.",
-    "installationReport.listOfSites" : "List of all installations sites of the Beneficiary",
+    "installationReport.listOfSites" : "List of all installation sites of the Beneficiary",
     "installationReport.addSite": "Add installation site",
     "installationReport.siteName": "Installation site name",
     "installationReport.domainName": "Domain name",
