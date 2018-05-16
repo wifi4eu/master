@@ -6,7 +6,6 @@
     "ng": "ng",
     "build": "ng build",
     "clean": "rimraf out-tsc dist",
-    "build-prod": "npm run prebuild && ng build --prod --build-optimizer",
     "start": "ng serve --open=true",
     "start-proxy": "ng serve --proxy-config proxy.conf.json --open=true",
     "start-mock-server": "json-server --watch ./src/mock/db.js --routes ./src/mock/routes.json",

@@ -1,4 +1,5 @@
 export const environment = {
     production: true,
-    logoutUrl: "http://ecas.ec.europa.ei/cas/logout"
-};
+    logoutUrl: "https://ecas.ec.europa.eu/cas/logout"
+  };
+  
