@@ -77,8 +77,8 @@ public class UserResource {
 
         _log.info("getUserById: " + userId);
         UserDTO userConnected = userService.getUserByUserContext(UserHolder.getUser());
-        if(userConnected.getType() != 5){
-            permissionChecker.check(RightConstants.USER_TABLE+userId);
+        if (userConnected.getType() != 5) {
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
         }
         //check permission
         if (resUser != null) {
@@ -118,11 +118,14 @@ public class UserResource {
             //TODO: https://webgate.ec.europa.eu/CITnet/jira/browse/WIFIFOREU-1548
             //check permission
             int userId = userDTO.getId();
-            permissionChecker.check(RightConstants.USER_TABLE+userId);
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
 
             UserDTO user = userService.getUserById(userDTO.getId());
 
-            UserDTO resUser = userService.saveUserChanges(userDTO);
+            user.setName(userDTO.getName());
+            user.setSurname(userDTO.getSurname());
+
+            UserDTO resUser = userService.saveUserChanges(user);
             resUser.setEmail(user.getEmail());
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
@@ -150,7 +153,7 @@ public class UserResource {
             _log.info("deleteUser: " + userId);
 
             //check permission
-            permissionChecker.check(RightConstants.USER_TABLE+userId);
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
             UserDTO resUser = userService.deleteUser(userId);
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
@@ -300,7 +303,7 @@ public class UserResource {
         }
     }*/
 
-    @ApiOperation(value = "Logout session")
+/*    @ApiOperation(value = "Logout session")
     @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String doCompleteSignOut()  {
@@ -318,7 +321,7 @@ public class UserResource {
         }
 
         return outMessage;
-    }
+    }*/
 
     private void doLogout(HttpSession session) {
         session.invalidate();
