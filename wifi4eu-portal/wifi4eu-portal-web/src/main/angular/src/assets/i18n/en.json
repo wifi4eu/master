@@ -630,5 +630,6 @@
   "benef.installationApprovalTitle": "Installation report approval",
   "benef.installationApprovalText": "I hereby confirm the installation report submited by our Wifi installation company.",
   "benef.installationReportText": "I hereby confirm sending back the installation report for revision to the WiFi installation company because of detected error or discrepancies.",
-  "benef.installationReportTitle": "Installation report request for revision"
+  "benef.installationReportTitle": "Installation report request for revision",
+  "installationDetails.networkId":  "Network ID"
 }
