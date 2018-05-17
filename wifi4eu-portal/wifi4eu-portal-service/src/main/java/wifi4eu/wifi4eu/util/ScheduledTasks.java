@@ -268,6 +268,8 @@ public class ScheduledTasks {
     public static String executePost(String targetURL, String urlParameters) {
         HttpURLConnection connection = null;
         try {
+
+            //TODO ALEX
             URL url = new URL(targetURL);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
