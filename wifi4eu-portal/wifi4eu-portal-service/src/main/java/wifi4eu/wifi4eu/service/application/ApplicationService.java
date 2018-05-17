@@ -409,4 +409,9 @@ public class ApplicationService {
         }
         return applications;
     }
+
+    @Transactional
+    public ApplicationDTO saveApplication(ApplicationDTO ApplicationDTO) {
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(ApplicationDTO)));
+    }
 }

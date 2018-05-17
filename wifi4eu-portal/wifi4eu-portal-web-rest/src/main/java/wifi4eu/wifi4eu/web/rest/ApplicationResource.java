@@ -266,6 +266,25 @@ public class ApplicationResource {
         }
     }
 
+    // Save supplier Id into the application
+    @ApiOperation(value = "Assign supplier")
+    @RequestMapping(value = "/assignSupplier", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO assignSupplier(@RequestBody final ApplicationDTO applicationDTO) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("assignSupplier");
+            }
+            ApplicationDTO resApplication = applicationService.saveApplication(applicationDTO);
+            return new ResponseDTO(true, resApplication, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'assignSupplier' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
     @ApiOperation(value = "Get applications by specific call and lau id")
     @RequestMapping(value = "/call/{callId}/lau/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

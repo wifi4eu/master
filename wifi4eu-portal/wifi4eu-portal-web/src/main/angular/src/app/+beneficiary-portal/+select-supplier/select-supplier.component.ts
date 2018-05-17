@@ -12,7 +12,9 @@ import { LauDTOBase } from "../../shared/swagger/model/LauDTO";
 import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 
-import { SupplierApi, ResponseDTO } from '../../shared/swagger';
+import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
+
+import { SupplierApi, ResponseDTO, ApplicationDTOBase } from '../../shared/swagger';
 import { SupplierDTOBase } from "../../shared/swagger/model/SupplierDTO";
 
 import { Paginator, DataGrid } from 'primeng/primeng';
@@ -21,22 +23,26 @@ import { Paginator, DataGrid } from 'primeng/primeng';
 @Component({
   selector: 'app-+select-supplier',
   templateUrl: './select-supplier.component.html',
-  providers: [CallApi, SupplierApi, MunicipalityApi, LauApi, NutsApi]
+  providers: [ApplicationApi, CallApi, SupplierApi, MunicipalityApi, LauApi, NutsApi]
 })
 export class selectSupplierComponent {
+
   private supplier: SupplierDTOBase;
   private currentCall: CallDTOBase = new CallDTOBase();
   private user: UserDTOBase;
   private storedRegistrationQueues = [];
   private municipalities: MunicipalityDTOBase[] = [];
+  private registration: RegistrationDTOBase;
 
   private suppliers: SupplierDTOBase[] = [];
   private searchSuppliersInput: string = '';
   private displayedSuppliers: SupplierDTOBase[] = [];
   private suppliersCopy: SupplierDTOBase[] = [];
 
+  application: ApplicationDTOBase;
   selectedSupplier: SupplierDTOBase;
   displayMessage: boolean = false;
+  disableButton: boolean = true;
   
   // region: NutsDTOBase = null;
   region: any = {};
@@ -48,7 +54,7 @@ export class selectSupplierComponent {
   @ViewChild("gridSuppliers") gridSuppliers: DataGrid;
   @ViewChild("paginator") paginator: Paginator;
 
-  constructor(private supplierApi: SupplierApi, private callApi: CallApi, private localStorage: LocalStorageService, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private lauApi: LauApi, private nutsApi: NutsApi) { 
+  constructor(private applicationApi: ApplicationApi, private supplierApi: SupplierApi, private callApi: CallApi, private localStorage: LocalStorageService, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private lauApi: LauApi, private nutsApi: NutsApi) { 
     let storedUser = this.localStorage.get('user');
     this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
     let storedRegistrations = this.localStorage.get('registrationQueue') ? JSON.parse(this.localStorage.get('registrationQueue').toString()) : null;
@@ -57,6 +63,7 @@ export class selectSupplierComponent {
     if (this.user != null) {
         this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
             (registrations: RegistrationDTOBase[]) => {
+              this.registration = registrations[0];
               console.log("Registrations has municipalityID " + registrations[0].municipalityId);
 
                 this.municipalityApi.getMunicipalityById(registrations[0].municipalityId).subscribe(
@@ -120,9 +127,37 @@ export class selectSupplierComponent {
 
   private selectSupplier() {
     (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true; 
+    console.log("Selected supplier is ", this.selectedSupplier);
+    this.getApplication();
   }
 
-  private saveSupplier() {
-    this.selectSupplier();
+  private getApplication() {
+    this.callApi.allCalls().subscribe(
+      (calls: CallDTOBase[]) => {
+        console.log("Call ID is ", calls[0].id);
+        console.log("Registration FK is ", this.registration);
+          this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[0].id, this.registration.id).subscribe(
+            (application: ApplicationDTOBase) => {
+              this.application = application;
+              if(application != null) {
+                this.disableButton = false;
+              }
+            }
+          );
+      }
+    );
   }
+
+  private assignSupplier() {
+    (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true;
+    this.application.supplierId = this.selectedSupplier.id; 
+    console.log("Application sent is ", this.application);
+
+    this.applicationApi.assignSupplier(this.application).subscribe(
+      (resAplication: ApplicationDTOBase) => {
+        console.log("Result of application saving is ", resAplication);
+      }
+    );
+  }
+
 }
