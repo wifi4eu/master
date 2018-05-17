@@ -2,56 +2,24 @@
   select-supplier works!
 </p>
 
-<!-- <div class="container center"></div> -->
-
-<div>
-<!--   <div class="row" *ngIf="searched && country && region && suppliers.length > 0" [@opacityTransition]> -->
-<!--   </div> -->
-<!--   <div class="row" [class.hide]="suppliers.length <= 0 || !searched">
-    <div class="col-sx-12" style="position: relative;">
-      <p-paginator class="paginator-panel" #paginator (onPageChange)="paginate($event)" [rowsPerPageOptions]="itemsPerPageSelector"></p-paginator>
-        <div class="totalRecords">
-          <span style="color: #929292;">{{ 'shared.totalRecords' | translate }}: {{totalItems}} </span>
-        </div>
-    </div>
-  </div> -->
-<!--   <div class="row" *ngIf="searched && suppliers.length == 0">
-    <div class="col-md-12">
-      <span class="updated-on">{{ 'listMunicipalities.noresults.text' | translate }} {{regionNameSearched}}</span>
-    </div>
-  </div> -->
-</div>
-
-
-
-
 <div class="ui-g-12 ui-md-10 offset-md-1">
 
-  <a class="link-label" routerLink="/beneficiary-portal/voucher" routerLinkActive="active">
+<div class="ui-g">
+  <div class="ui-md-2">
+    <a class="link-label" routerLink="/beneficiary-portal/voucher" routerLinkActive="active">
       <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
-  </a>
+    </a>
+  </div>
+  
+  <div class="ui-md-9 offset-md-1">
+    <div class="alert alert-info text-uppercase">
+      <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.selectSupplier.alert.gotvoucher' | translate }}
+    </div>
+  </div>
+</div>
 
-<!--   <h4 class="beneficiaryTitle">{{ municipalities[0].name }}</h4> -->
   <h5 class="beneficiaryMayor counterText" >{{ 'benefPortal.selectSupplier.title' | translate }}</h5>
   <p class="subtitle-discover">{{ 'benefPortal.selectSupplier.title.text' | translate }}</p>
-
-<!--   <div class="panel-dg panel-padding panel-input">
-      <div class="row">
-          <div class="col-md-8">
-              <form #searchSuppliersForm="ngForm" (submit)="searchSuppliers()" class="input-group">
-                  <span class="input-group-addon">
-                      <i class="fa fa-search" aria-hidden="true"></i>
-                  </span>
-                  <input type="search" name="searchInput" class="form-control" [(ngModel)]="searchSuppliersInput">
-                  <span class="input-group-btn">
-                      <button class="btn btn-primary" (click)="filterData(inputSearch)" type="submit">
-                          <b>{{ 'shared.search.button' | translate }}</b>
-                      </button>
-                  </span>
-              </form>
-          </div>
-      </div>
-  </div> -->
 
   <div class="panel panel-dg panel-padding panel-input">
       <div class="row">
@@ -149,7 +117,7 @@
                 {{ 'shared.cancel.button' | translate }}
             </button>
 
-            <button class="btn btn-primary voucherButtonsSimulate" (click)="saveSupplier()">
+            <button class="btn btn-primary voucherButtonsSimulate" (click)="assignSupplier()" [disabled]="disableButton" >
                 {{ 'suppRegistration.confirm.button' | translate }}
             </button>
         </div>
