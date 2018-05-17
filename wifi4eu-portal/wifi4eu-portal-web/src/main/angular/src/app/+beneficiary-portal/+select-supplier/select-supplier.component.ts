@@ -54,6 +54,8 @@ export class selectSupplierComponent {
   @ViewChild("gridSuppliers") gridSuppliers: DataGrid;
   @ViewChild("paginator") paginator: Paginator;
 
+  /* Search for the registered suppliers in the specific supplied region of the beneficiary */ 
+  /* Part 1: Get region FK specific to the beneficiary */
   constructor(private applicationApi: ApplicationApi, private supplierApi: SupplierApi, private callApi: CallApi, private localStorage: LocalStorageService, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private lauApi: LauApi, private nutsApi: NutsApi) { 
     let storedUser = this.localStorage.get('user');
     this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
@@ -96,7 +98,7 @@ export class selectSupplierComponent {
 
   }
 
-
+  /* Part 2: Get all suppliers that supply the specific region of the beneficiary */
   getSuppliers() {
     if(this.region.id != 0){
       console.log(this.region.id);
@@ -109,6 +111,7 @@ export class selectSupplierComponent {
     }        
   }
 
+  /* Search bar */
   private searchSuppliers() {
         this.suppliers = this.suppliersCopy;
         this.displayedSuppliers = [];
@@ -125,12 +128,14 @@ export class selectSupplierComponent {
         }
   }
 
+  /* Modal for supplier selection confirmation */
   private selectSupplier() {
     (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true; 
     console.log("Selected supplier is ", this.selectedSupplier);
     this.getApplication();
   }
 
+  /* Get current application of the beneficiary */
   private getApplication() {
     this.callApi.allCalls().subscribe(
       (calls: CallDTOBase[]) => {
@@ -148,6 +153,7 @@ export class selectSupplierComponent {
     );
   }
 
+  /* Assign supplier Id to the benficiary application */
   private assignSupplier() {
     (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true;
     this.application.supplierId = this.selectedSupplier.id; 

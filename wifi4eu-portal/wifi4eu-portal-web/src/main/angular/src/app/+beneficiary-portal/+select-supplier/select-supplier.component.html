@@ -4,6 +4,7 @@
 
 <div class="ui-g-12 ui-md-10 offset-md-1">
 
+<!-- Go back and info Status message -->
 <div class="ui-g">
   <div class="ui-md-2">
     <a class="link-label" routerLink="/beneficiary-portal/voucher" routerLinkActive="active">
@@ -18,9 +19,11 @@
   </div>
 </div>
 
+<!-- Title and explanation text -->
   <h5 class="beneficiaryMayor counterText" >{{ 'benefPortal.selectSupplier.title' | translate }}</h5>
   <p class="subtitle-discover">{{ 'benefPortal.selectSupplier.title.text' | translate }}</p>
 
+<!-- Search bar -->
   <div class="panel panel-dg panel-padding panel-input">
       <div class="row">
           <div class="col-md-10 offset-md-1">
@@ -39,6 +42,7 @@
       </div>
   </div>
 
+<!-- Datatable -->
   <div class="panel-dg marginTop">
       <p-dataTable [value]="suppliers" sortField="name" [sortOrder]="1" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [(selection)]="selectedSupplier" dataKey="name" resizableColumns="true" [responsive]="true">
 
@@ -88,6 +92,7 @@
 
       </p-dataTable>
 
+    <!-- Select installation company button -->
     <div>      
       <button class="btn btn-primary right marginSelect" (click)="selectSupplier()" [disabled]="selectedSupplier == null">
           <b>{{ 'benefPortal.selectSupplier.buton.select' | translate }}</b>
@@ -98,6 +103,7 @@
   </div>
 </div>
 
+<!-- Modal: confirm wifi company selection -->
 <div class="container font" *ngIf="selectedSupplier">
     <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false"
               [resizable]="false" [draggable]="false" [closeOnEscape]="true">
