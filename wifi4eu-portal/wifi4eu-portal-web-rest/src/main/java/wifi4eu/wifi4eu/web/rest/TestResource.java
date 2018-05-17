@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/*
 @CrossOrigin(origins = "*")
 @Controller
 @Api(description = "TestResource")
@@ -27,7 +28,7 @@ public class TestResource {
     }
 
 }
-
+*/
 
 /*
     @RequestMapping(value="/user/{userId}", method = RequestMethod.GET, produces = "application/json")

@@ -81,4 +81,13 @@ public class PermissionChecker {
         }
     }
 
+    public boolean checkIfDashboardUser() {
+        UserContext userContext = UserHolder.getUser();
+        UserDTO currentUserDTO = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
+        if (currentUserDTO.getType() == 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

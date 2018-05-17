@@ -47,7 +47,7 @@ public class UserResource {
 
     Logger _log = LoggerFactory.getLogger(UserResource.class);
 
-    @ApiOperation(value = "Get all the users")
+/*    @ApiOperation(value = "Get all the users")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<UserDTO> allUsers(HttpServletResponse response) throws IOException {
@@ -67,7 +67,7 @@ public class UserResource {
             resUser.setPassword(null);
         }
         return resUsers;
-    }
+    }*/
 
     @ApiOperation(value = "Get user by specific id")
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = "application/json")
@@ -77,8 +77,8 @@ public class UserResource {
 
         _log.info("getUserById: " + userId);
         UserDTO userConnected = userService.getUserByUserContext(UserHolder.getUser());
-        if(userConnected.getType() != 5){
-            permissionChecker.check(RightConstants.USER_TABLE+userId);
+        if (userConnected.getType() != 5) {
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
         }
         //check permission
         if (resUser != null) {
@@ -87,7 +87,7 @@ public class UserResource {
         return resUser;
     }
 
-    @ApiOperation(value = "Create user")
+/*    @ApiOperation(value = "Create user")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -103,7 +103,7 @@ public class UserResource {
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-    }
+    }*/
 
     @ApiOperation(value = "Save user changes")
     @RequestMapping(value = "/saveChanges", method = RequestMethod.POST)
@@ -118,11 +118,14 @@ public class UserResource {
             //TODO: https://webgate.ec.europa.eu/CITnet/jira/browse/WIFIFOREU-1548
             //check permission
             int userId = userDTO.getId();
-            permissionChecker.check(RightConstants.USER_TABLE+userId);
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
 
             UserDTO user = userService.getUserById(userDTO.getId());
 
-            UserDTO resUser = userService.saveUserChanges(userDTO);
+            user.setName(userDTO.getName());
+            user.setSurname(userDTO.getSurname());
+
+            UserDTO resUser = userService.saveUserChanges(user);
             resUser.setEmail(user.getEmail());
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
@@ -131,13 +134,13 @@ public class UserResource {
                 _log.error("Error with permission on 'saveUserChanges' operation.", ade);
             }
             response.sendError(HttpStatus.FORBIDDEN.value());
-            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.FORBIDDEN.value(), ade.getMessage()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'saveUserChanges' operation.", e);
             }
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
         }
     }
 
@@ -150,7 +153,7 @@ public class UserResource {
             _log.info("deleteUser: " + userId);
 
             //check permission
-            permissionChecker.check(RightConstants.USER_TABLE+userId);
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
             UserDTO resUser = userService.deleteUser(userId);
             resUser.setPassword(null);
             return new ResponseDTO(true, resUser, null);
@@ -169,7 +172,7 @@ public class UserResource {
         }
     }
 
-    @ApiOperation(value = "Get users by specific type number")
+/*    @ApiOperation(value = "Get users by specific type number")
     @RequestMapping(value = "/type/{type}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<UserDTO> getUsersByType(@PathVariable("type") final Integer type) {
@@ -179,7 +182,7 @@ public class UserResource {
             resUser.setPassword(null);
         }
         return resUsers;
-    }
+    }*/
 
     @ApiOperation(value = "Service to do Login with a ECAS User")
     @RequestMapping(value = "/ecaslogin", method = RequestMethod.POST, produces = "application/json")
@@ -229,7 +232,7 @@ public class UserResource {
         }
     }
 
-    @ApiOperation(value = "Service to do Login with a user email and SHA512 password")
+/*    @ApiOperation(value = "Service to do Login with a user email and SHA512 password")
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO login(@RequestBody final UserDTO userDTO) {
@@ -247,9 +250,9 @@ public class UserResource {
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-    }
+    }*/
 
-    @ApiOperation(value = "Service to activate an account")
+    /*@ApiOperation(value = "Service to activate an account")
     @RequestMapping(value = "/activateAccount", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO activateAccount(@RequestBody final ActivateAccountDTO activateAccountDTO) {
@@ -263,7 +266,7 @@ public class UserResource {
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-    }
+    }*/
 
     @ApiOperation(value = "Service to resend email with a link to activate account")
     @RequestMapping(value = "/resendEmail", method = RequestMethod.POST, produces = "application/json")
@@ -284,7 +287,7 @@ public class UserResource {
     }
 
 
-    @ApiOperation(value = "Send forgot password mail with a link to reset password")
+/*    @ApiOperation(value = "Send forgot password mail with a link to reset password")
     @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO forgotPassword(@RequestBody final String email) {
@@ -298,7 +301,7 @@ public class UserResource {
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-    }
+    }*/
 
     @ApiOperation(value = "Logout session")
     @RequestMapping(value = "/logout", method = RequestMethod.GET, produces = "application/json")

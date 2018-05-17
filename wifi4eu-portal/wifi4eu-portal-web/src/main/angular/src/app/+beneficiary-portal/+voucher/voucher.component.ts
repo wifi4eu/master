@@ -52,7 +52,6 @@ export class VoucherComponent {
     private displayError = false;
     private errorMessage = null;
     private rabbitmqURI: string = "/queue";
-    private firebaseURI: string = "https://wifi4eu-dev.firebaseio.com/calls/@1/user/@2/registration/@3.json";
 
     private httpOptions = {
         headers: new Headers({
@@ -217,9 +216,6 @@ export class VoucherComponent {
                     this.registrations[registrationNumber].uploadTime +
                     "}";
 
-                this.sendToFirebase(this.currentCall.id, this.registrations[registrationNumber].id,
-                    this.user.id, this.registrations[registrationNumber].uploadTime);
-
 
                 this.http.post(this.rabbitmqURI, body, this.httpOptions).subscribe(
                     response => {
@@ -318,29 +314,4 @@ export class VoucherComponent {
         }
     }
 
-    private sendToFirebase(callId: number, registrationId: number, userId: number, uploadTime: number) {
-
-        let body =
-            '{"callId":' +
-            callId +
-            ', "registrationId":' +
-            registrationId +
-            ', "userId":' +
-            userId +
-            ', "fileUploadTimestamp":' +
-            uploadTime +
-            ', "queueTime":{".sv": "timestamp"}' +
-            "}";
-
-        let url = this.firebaseURI.replace("@1", callId.toString()).replace("@2", userId.toString()).replace("@3", registrationId.toString());
-
-        this.http.put(url, body, this.httpOptions).subscribe(
-            response => {
-                console.log("firebase success");
-            },
-            error => {
-                console.log("firebase error" + error);
-            }
-        );
-    }
 }

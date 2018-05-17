@@ -184,20 +184,35 @@ public class SupplierResource {
     @ApiOperation(value = "Get suppliers that have the same VAT and/or Account Number as the specific supplier")
     @RequestMapping(value = "/similarSuppliers/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<SupplierDTO> findSimilarSuppliers(@PathVariable("supplierId") final Integer supplierId) {
-        _log.info("allSuppliers");
+    public List<SupplierDTO> findSimilarSuppliers(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
+        _log.info("findSimilarSuppliers");
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
+        }
+        catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
         return supplierService.findSimilarSuppliers(supplierId);
     }
 
     @ApiOperation(value = "Request legal documents")
     @RequestMapping(value = "/requestLegalDocuments/{supplierId}", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO requestLegalDocuments(@PathVariable("supplierId") final Integer supplierId) {
+    public ResponseDTO requestLegalDocuments(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
         try {
             if (_log.isInfoEnabled()) {
                 _log.info("requestLegalDocuments for supplier: " + supplierId);
             }
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
             return new ResponseDTO(supplierService.requestLegalDocuments(supplierId), null, null);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'requestLegalDocuments' operation.", e);
@@ -210,11 +225,19 @@ public class SupplierResource {
     @RequestMapping(value = "/invalidate", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO invalidateSupplier(@RequestBody final SupplierDTO supplierDTO) {
+    public ResponseDTO invalidateSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
         try {
-            _log.info("invalidateSupplier");
+            if (_log.isInfoEnabled()) {
+                _log.info("invalidateSupplier");
+            }
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
             SupplierDTO resSupplier = supplierService.invalidateSupplier(supplierDTO);
             return new ResponseDTO(true, resSupplier, null);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'invalidateSupplier' operation.", e);
@@ -233,9 +256,15 @@ public class SupplierResource {
     @ApiOperation(value = "findDgconnSuppliersList")
     @RequestMapping(value = "/findDgconnSuppliersList", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO findDgconnSuppliersList(@RequestParam("page") final Integer page, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType) {
+    public ResponseDTO findDgconnSuppliersList(@RequestParam("page") final Integer page, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType, HttpServletResponse response) throws IOException {
         try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
             return new ResponseDTO(true, supplierService.findDgconnSuppliersList(null, page, count, orderField, orderType), supplierService.getCountAllSuppliers(), null);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'findDgconnSuppliersList': ", e);
@@ -247,9 +276,15 @@ public class SupplierResource {
     @ApiOperation(value = "findDgconnSuppliersListSearchingName")
     @RequestMapping(value = "/findDgconnSuppliersListSearchingName", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO findDgconnSuppliersListSearchingName(@RequestParam("name") final String name, @RequestParam("page") final Integer page, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType) {
+    public ResponseDTO findDgconnSuppliersListSearchingName(@RequestParam("name") final String name, @RequestParam("page") final Integer page, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType, HttpServletResponse response) throws IOException {
         try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
             return new ResponseDTO(true, supplierService.findDgconnSuppliersList(name, page, count, orderField, orderType), supplierService.getCountAllSuppliersContainingName(name), null);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'findDgconnSuppliersListSearchingName' (" + name + "): ", e);

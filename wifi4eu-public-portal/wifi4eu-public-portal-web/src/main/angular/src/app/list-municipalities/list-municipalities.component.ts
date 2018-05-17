@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NutsApi, NutsDTOBase, MunicipalityDTOBase, MunicipalityApi, ResponseDTO } from 'app/shared/swagger';
+import { NutsApi, NutsDTOBase, MunicipalityApi } from 'app/shared/swagger';
 import { ViewEncapsulation } from '@angular/core';
-import { MunicipalityCacheDTO, MunicipalityCacheDTOBase } from 'app/shared/swagger/model/MunicipalityCacheDTO';
+import { MunicipalityCacheDTOBase } from 'app/shared/swagger/model/MunicipalityCacheDTO';
 
 @Component({
   selector: 'app-list-municipalities',

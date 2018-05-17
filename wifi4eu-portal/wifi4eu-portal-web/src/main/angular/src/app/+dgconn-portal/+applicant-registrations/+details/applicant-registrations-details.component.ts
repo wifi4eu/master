@@ -69,6 +69,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private processingRequest = false;
 
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService) {
+        this.loadingData = true;
         this.route.params.subscribe(
             params => {
                 this.lauId = params['lauId'];

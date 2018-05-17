@@ -25,6 +25,7 @@ public class RepresentationResource {
 
     Logger _log = LoggerFactory.getLogger(RepresentationResource.class);
 
+    /*
     @ApiOperation(value = "Get all the representations")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -89,4 +90,5 @@ public class RepresentationResource {
         _log.info("getRepresentationByMunicipalityId: " + municipalityId);
         return representationService.getRepresentationByMunicipalityId(municipalityId);
     }
+    */
 }

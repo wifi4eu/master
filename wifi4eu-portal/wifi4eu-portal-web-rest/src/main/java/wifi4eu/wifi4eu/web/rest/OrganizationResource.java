@@ -41,39 +41,40 @@ public class OrganizationResource {
         return organizationService.getOrganizationById(organizationId);
     }
 
-    @ApiOperation(value = "Create organization")
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public ResponseDTO createOrganization(@RequestBody final OrganizationDTO organizationDTO) {
-        try {
-            _log.info("createOrganization");
-            OrganizationDTO resOrganization = organizationService.createOrganization(organizationDTO);
-            return new ResponseDTO(true, resOrganization, null);
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'createOrganization' operation.", e);
+    /*
+        @ApiOperation(value = "Create organization")
+        @RequestMapping(method = RequestMethod.POST)
+        @ResponseStatus(HttpStatus.CREATED)
+        @ResponseBody
+        public ResponseDTO createOrganization(@RequestBody final OrganizationDTO organizationDTO) {
+            try {
+                _log.info("createOrganization");
+                OrganizationDTO resOrganization = organizationService.createOrganization(organizationDTO);
+                return new ResponseDTO(true, resOrganization, null);
+            } catch (Exception e) {
+                if (_log.isErrorEnabled()) {
+                    _log.error("Error on 'createOrganization' operation.", e);
+                }
+                return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-    }
 
-    @ApiOperation(value = "Delete organization by specific id")
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseDTO deleteOrganization(@RequestBody final Integer organizationId) {
-        try {
-            _log.info("deleteOrganization: " + organizationId);
-            OrganizationDTO resOrganization = organizationService.deleteOrganization(organizationId);
-            return new ResponseDTO(true, resOrganization, null);
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteOrganization' operation.", e);
+        @ApiOperation(value = "Delete organization by specific id")
+        @RequestMapping(method = RequestMethod.DELETE)
+        @ResponseBody
+        public ResponseDTO deleteOrganization(@RequestBody final Integer organizationId) {
+            try {
+                _log.info("deleteOrganization: " + organizationId);
+                OrganizationDTO resOrganization = organizationService.deleteOrganization(organizationId);
+                return new ResponseDTO(true, resOrganization, null);
+            } catch (Exception e) {
+                if (_log.isErrorEnabled()) {
+                    _log.error("Error on 'deleteOrganization' operation.", e);
+                }
+                return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-    }
-
+    */
     @ApiOperation(value = "Get organizations by specific country")
     @RequestMapping(value = "/country/{country}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
