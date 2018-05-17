@@ -25,9 +25,11 @@ import wifi4eu.wifi4eu.service.user.UserService;
 
 import com.rabbitmq.client.*;
 
+import javax.net.ssl.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.KeyStore;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -146,7 +148,8 @@ public class ScheduledTasks {
         _log.info("[f] queueConsumer");
     }
 
-    @Scheduled(cron = "0 0 9,17 * * MON-FRI")
+    @Scheduled(cron = "0/5 * * * * *")
+//    @Scheduled(cron = "0 0 9,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
 
         _log.info("[i] scheduleHelpdeskIssues");
@@ -266,10 +269,38 @@ public class ScheduledTasks {
     }
 
     public static String executePost(String targetURL, String urlParameters) {
-        HttpURLConnection connection = null;
+        HttpsURLConnection connection = null;
         try {
+
+            InputStream trustStream = new FileInputStream("C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\security\\cacerts");
+            char[] trustPassword = "changeit".toCharArray();
+
+            KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            trustStore.load(trustStream, trustPassword);
+
+            TrustManagerFactory trustFactory =
+                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustFactory.init(trustStore);
+            TrustManager[] trustManagers = trustFactory.getTrustManagers();
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustManagers, null);
+            SSLContext.setDefault(sslContext);
+
             URL url = new URL(targetURL);
-            connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpsURLConnection) url.openConnection();
+
+            HttpsURLConnection httpsConnection = (HttpsURLConnection) connection;
+            httpsConnection.setSSLSocketFactory(sslContext.getSocketFactory());
+
+            HostnameVerifier allHostsValid = new HostnameVerifier() {
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            };
+
+            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");
@@ -282,7 +313,6 @@ public class ScheduledTasks {
             connection.setRequestProperty("Referer", "https://forms.communi-k.eu/livewebtools/WebForms/Standard/Standard.php?en");
             connection.setRequestProperty("Origin", "https://forms.communi-k.eu");
             connection.setRequestProperty("Host", "webtools.ec.europa.eu");
-
             connection.setUseCaches(false);
             connection.setDoOutput(true);
 
@@ -291,7 +321,7 @@ public class ScheduledTasks {
             wr.writeBytes(urlParameters);
             wr.close();
 
-            InputStream is = connection.getInputStream();
+            InputStream is = new ByteArrayInputStream(connection.getInputStream().toString().getBytes());
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));
             StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
             String line;
