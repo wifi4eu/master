@@ -132,8 +132,6 @@ export class VoucherComponent {
                                                     if ((this.currentCall.startDate - new Date().getTime()) <= 0) {
                                                         this.voucherCompetitionState = 2;
                                                         this.openedCalls = "greyImage";
-                                                        // Hardcode (to erase)
-                                                        this.voucherCompetitionState = 5;
                                                     } else {
                                                         this.voucherCompetitionState = 1;
                                                     }
@@ -174,6 +172,9 @@ export class VoucherComponent {
                                                             this.voucherCompetitionState = 3;
                                                             this.voucherApplied = "greyImage";
                                                         }
+                                                        if (application.voucherAwarded) {
+                                                            this.voucherCompetitionState = 5;
+                                                        }
                                                     }
                                                 }
                                             );
@@ -198,6 +199,7 @@ export class VoucherComponent {
                 this.voucherCompetitionState = 0;
             }
         );
+        console.log("Competition state is now ", this.voucherCompetitionState)
     }
 
     private goToDocuments(registrationNumber: number) {
