@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -92,6 +93,22 @@ public class RegistrationResource {
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createRegistration' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Confirm or request revision of installation report")
+    @RequestMapping(value = "/confirmOrRejectReport", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO confirmOrRejectInstallationReport(@RequestBody final Map<String, Object> map) {
+        try {
+             _log.info("saveRegistrationAndSendCNS");
+            return registrationService.confirmOrRejectInstallationAndSendCNS(map);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'saveRegistrationAndSendCNS' operation.", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }

@@ -5,23 +5,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.cns.CNSManager;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.registration.Registration;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
+import wifi4eu.wifi4eu.entity.user.User;
+import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.text.MessageFormat;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Service("portalRegistrationService")
 public class RegistrationService {
@@ -49,6 +56,12 @@ public class RegistrationService {
     @Autowired
     ThreadService threadService;
 
+    @Autowired
+    CNSManager cnsManager;
+
+    @Autowired
+    ApplicationRepository applicationRepository;
+
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
     }
@@ -60,6 +73,75 @@ public class RegistrationService {
     @Transactional
     public RegistrationDTO createRegistration(RegistrationDTO registrationDTO) {
         return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
+    }
+
+    @Transactional
+    public ResponseDTO confirmOrRejectInstallationAndSendCNS(Map<String, Object> map) {
+        ResponseDTO response = new ResponseDTO();
+        if (!map.isEmpty()) {
+            if (map.containsKey("id") && map.containsKey("beneficiaryIndicator")) {
+                Registration registration = registrationRepository.findOne((int) map.get("id"));
+                if (registration != null && registration.isWifiIndicator()) {
+                    boolean beneficiaryIndicator = (boolean) map.get("beneficiaryIndicator");
+
+                    //we save the new indicators
+                    registration.setWifiIndicator(beneficiaryIndicator ? true : false);
+                    registration.setBeneficiaryIndicator(beneficiaryIndicator);
+                    if (sendEmailOnConfirmOrReject(registration)) {
+                        registrationRepository.save(registration);
+                        //if everything goes ok it's a success
+                        response.setSuccess(true);
+                        response.setData("Beneficiary Indicator updated successfully");
+                        return response;
+                    }
+
+                } else {
+                    response.setSuccess(false);
+                    response.setData("Error querying municipality - registration");
+                    response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
+                }
+            }
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(400, "error.400.invalidFields"));
+
+        } else {
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(400, "error.400.noData"));
+
+        }
+        return response;
+    }
+
+    /**
+     * Method called when the user confirms/rejects the installation report. This method sends the CNS email to the
+     * supplier.
+     *
+     * @param registration
+     * @return
+     */
+    private boolean sendEmailOnConfirmOrReject(Registration registration) {
+        //sending CNS
+        String beneficiaryName = registration.getMunicipality().getName();
+        Iterable<Application> applicationList = applicationRepository.findByRegistrationId(registration
+                .getId());
+        Supplier supplier = applicationList.iterator().next().getSupplier();
+        String name = supplier.getName();
+        String email = supplier.getContactEmail();
+
+        //if beneficiary indicator and wifi indicator are true we send a confirmation email
+        if (registration.isBeneficiaryIndicator() && registration.isWifiIndicator()) {
+            cnsManager.sendInstallationConfirmationFromBeneficiary(email, name, beneficiaryName);
+            return true;
+        } else if (!registration.isBeneficiaryIndicator() && !registration.isWifiIndicator()) {
+            //if beneficiary indicator and wifi indicator are false we send a rejection email
+            User user = registration.getUser();
+            String ccName = user.getName();
+            String ccEmail = user.getEmail();
+            cnsManager.sendInstallationRejectionFromBeneficiary(email, name, beneficiaryName, ccEmail,
+                    ccName);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
@@ -90,8 +172,8 @@ public class RegistrationService {
 
     public boolean checkIfRegistrationIsKO(int userId) {
         List<RegistrationDTO> registrations = registrationMapper.toDTOList(
-                                                Lists.newArrayList(
-                                                        registrationRepository.findByUserId(userId)));
+                Lists.newArrayList(
+                        registrationRepository.findByUserId(userId)));
         for (RegistrationDTO registration : registrations) {
             if (registration.getStatus() == 1) {
                 return true;

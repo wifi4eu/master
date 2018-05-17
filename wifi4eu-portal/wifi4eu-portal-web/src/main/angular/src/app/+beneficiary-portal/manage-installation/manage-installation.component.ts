@@ -44,7 +44,10 @@ export class ManageInstallationComponent {
     private legalChecks: boolean[] = [false, false, false];
     private accessPoint;
     private displayConfirmingData: boolean = false;
-
+    private indicators = {
+        'id' : 0,
+        'beneficiaryIndicator' : false
+    }
 
     constructor(private accessPoinstApi: AccesspointsApi, private installationsiteApi: InstallationsiteApi, private  beneficiaryApi: BeneficiaryApi, private localStorageService: LocalStorageService, public searchParametersService: SearchParametersService, private beneficiaryService: BeneficiaryService, private uxService: UxService, private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private sharedService: SharedService) {
         let storedUser = this.localStorage.get('user');
@@ -62,6 +65,7 @@ export class ManageInstallationComponent {
                         this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 this.registration = registration;
+                                this.indicators["id"] = registration.id;
                             }, error => {
                             });
                     }, error => {
@@ -72,7 +76,7 @@ export class ManageInstallationComponent {
             this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
-
+        
 
     }
 
@@ -115,7 +119,8 @@ export class ManageInstallationComponent {
     sendConfirmInstallation() {
         this.displayConfirmingData = true;
         this.registration.beneficiaryIndicator = true;
-        this.registrationApi.createRegistration(this.registration).subscribe(
+        this.indicators['beneficiaryIndicator'] = true;
+        this.registrationApi.confirmOrRejectInstallationReport(this.indicators).subscribe(
             registration => {
                 this.displayConfirmingData = false;
             }, error => {
@@ -130,7 +135,8 @@ export class ManageInstallationComponent {
         this.displayConfirmingData = true;
         this.registration.wifiIndicator = false;
         this.registration.beneficiaryIndicator = false;
-        this.registrationApi.createRegistration(this.registration).subscribe(
+        this.indicators['beneficiaryIndicator'] = false;
+        this.registrationApi.confirmOrRejectInstallationReport(this.indicators).subscribe(
             registration => {
                 this.displayConfirmingData = false;
             }, error => {
