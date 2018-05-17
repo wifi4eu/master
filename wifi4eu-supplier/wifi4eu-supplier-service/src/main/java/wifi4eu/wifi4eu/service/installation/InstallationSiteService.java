@@ -38,6 +38,9 @@ public class InstallationSiteService {
     @Autowired
     StatusRepository statusRepository;
 
+    @Autowired
+    InstallationSiteWhitelistRepository installationSiteWhitelistRepository;
+
 
     private final Logger _log = LoggerFactory.getLogger(InstallationSiteService.class);
 
@@ -161,14 +164,14 @@ public class InstallationSiteService {
 
                     //We create a crypted token for the network snippet id and verify that is unique
                     String token = new TokenGenerator().generate();
-                    while(installationSiteRepository.countInstallationSiteByIdNetworkSnippet(token) > 0){
+                    while (installationSiteRepository.countInstallationSiteByIdNetworkSnippet(token) > 0) {
                         token = new TokenGenerator().generate();
                     }
                     installationSite.setIdNetworkSnippet(token);
 
                 } else {
                     //system should check the URL of the captive portal is unique.
-                    if (url != null && installationSiteRepository.countInstallationSiteByUrlAndIdNotIn(url,(int) map.get("id")) >= 1) {
+                    if (url != null && installationSiteRepository.countInstallationSiteByUrlAndIdNotIn(url, (int) map.get("id")) >= 1) {
                         response.setSuccess(false);
                         response.setError(new ErrorDTO(409, "error.409.duplicatedUrl"));
                         return response;
@@ -187,7 +190,7 @@ public class InstallationSiteService {
                 }
 
                 // the domain will be added to whitelist
-                if(whitelistRepository.countInstallationSiteWhitelistByOrigin(domain) == 0) {
+                if (whitelistRepository.countInstallationSiteWhitelistByOrigin(domain) == 0) {
                     InstallationSiteWhitelist whitelist = new InstallationSiteWhitelist();
                     whitelist.setOrigin(domain);
                     whitelist.setActive(1);
@@ -239,6 +242,11 @@ public class InstallationSiteService {
     public ResponseDTO removeInstallationReport(int id) {
         ResponseDTO response = new ResponseDTO();
         if (installationSiteRepository.findInstallationSiteById(id) != null) {
+            // the domain will be removed from the whitelist
+            if (installationSiteRepository.countInstallationSiteByDomainName(installationSiteRepository.findInstallationSiteById(id).getDomainName()) == 1L) {
+                InstallationSiteWhitelist whitelist = installationSiteWhitelistRepository.findInstallationSiteWhitelistByOrigin(installationSiteRepository.findInstallationSiteById(id).getDomainName());
+                whitelistRepository.delete(whitelist);
+            }
             installationSiteRepository.delete(id);
             response.setSuccess(true);
             response.setData("Deleted successfully");

@@ -59,6 +59,8 @@ export class InstallationListComponent implements OnInit {
         this.beneficiaryService.beneficiarySelected = this.beneficiarySelected;
         this.searchParametersService.parameters.id_beneficiary = this.beneficiarySelected.id;
         this.installationSite.municipality = this.beneficiarySelected.id;
+        let successBanner = document.getElementById("success");
+        successBanner.style.display = "none"
         this.onSearch();
     }
 
@@ -103,7 +105,7 @@ export class InstallationListComponent implements OnInit {
                 let successBanner = document.getElementById("success");
                 successBanner.style.display = "block";
                 successBanner.scrollIntoView({ behavior: "smooth" });
-                this.beneficiarySelected.wifiIndicator=true;
+                this.beneficiarySelected.wifiIndicator = true;
             }
         }, error => {
             console.log(error);
