@@ -44,7 +44,10 @@ export class ManageInstallationComponent {
     private legalChecks: boolean[] = [false, false, false];
     private accessPoint;
     private displayConfirmingData: boolean = false;
-
+    private indicators = {
+        'id' : 0,
+        'beneficiaryIndicator' : false
+    }
 
     constructor(private accessPoinstApi: AccesspointsApi, private installationsiteApi: InstallationsiteApi, private  beneficiaryApi: BeneficiaryApi, private localStorageService: LocalStorageService, public searchParametersService: SearchParametersService, private beneficiaryService: BeneficiaryService, private uxService: UxService, private router: Router, private route: ActivatedRoute, private localStorage: LocalStorageService, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private sharedService: SharedService) {
         let storedUser = this.localStorage.get('user');
@@ -62,6 +65,7 @@ export class ManageInstallationComponent {
                         this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
                             (registration: RegistrationDTOBase) => {
                                 this.registration = registration;
+                                this.indicators["id"] = registration.id;
                             }, error => {
                             });
                     }, error => {
@@ -115,12 +119,8 @@ export class ManageInstallationComponent {
     sendConfirmInstallation() {
         this.displayConfirmingData = true;
         this.registration.beneficiaryIndicator = true;
-        let indicators = {
-            'id' : this.registration.id,
-            'wifiIndicator':  this.registration.wifiIndicator,
-            'beneficiaryIndicator' : this.registration.beneficiaryIndicator
-        }
-        this.registrationApi.confirmOrRejectInstallationReport(indicators).subscribe(
+        this.indicators['beneficiaryIndicator'] = true;
+        this.registrationApi.confirmOrRejectInstallationReport(this.indicators).subscribe(
             registration => {
                 this.displayConfirmingData = false;
             }, error => {
@@ -135,12 +135,8 @@ export class ManageInstallationComponent {
         this.displayConfirmingData = true;
         this.registration.wifiIndicator = false;
         this.registration.beneficiaryIndicator = false;
-        let indicators = {
-            'id' : this.registration.id,
-            'wifiIndicator':  this.registration.wifiIndicator,
-            'beneficiaryIndicator' : this.registration.beneficiaryIndicator
-        }
-        this.registrationApi.confirmOrRejectInstallationReport(indicators).subscribe(
+        this.indicators['beneficiaryIndicator'] = false;
+        this.registrationApi.confirmOrRejectInstallationReport(this.indicators).subscribe(
             registration => {
                 this.displayConfirmingData = false;
             }, error => {

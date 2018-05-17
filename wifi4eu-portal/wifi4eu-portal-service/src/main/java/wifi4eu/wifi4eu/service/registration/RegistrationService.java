@@ -79,55 +79,69 @@ public class RegistrationService {
     public ResponseDTO confirmOrRejectInstallationAndSendCNS(Map<String, Object> map) {
         ResponseDTO response = new ResponseDTO();
         if (!map.isEmpty()) {
-           if (map.containsKey("id") && map.containsKey("wifiIndicator") && map.containsKey("beneficiaryIndicator")) {
-               Registration registration = registrationRepository.findOne((int) map.get("id"));
-               if (registration != null && registration.isWifiIndicator()) {
-                    boolean wifiIndicator= (boolean) map.get("wifiIndicator");
-                    boolean beneficiaryIndicator= (boolean) map.get("beneficiaryIndicator");
+            if (map.containsKey("id") && map.containsKey("beneficiaryIndicator")) {
+                Registration registration = registrationRepository.findOne((int) map.get("id"));
+                if (registration != null && registration.isWifiIndicator()) {
+                    boolean beneficiaryIndicator = (boolean) map.get("beneficiaryIndicator");
 
-                   //we save the new indicators
-                   registration.setWifiIndicator(wifiIndicator);
-                   registration.setBeneficiaryIndicator(beneficiaryIndicator);
-                   registrationRepository.save(registration);
+                    //we save the new indicators
+                    registration.setWifiIndicator(beneficiaryIndicator ? true : false);
+                    registration.setBeneficiaryIndicator(beneficiaryIndicator);
+                    if (sendEmailOnConfirmOrReject(registration)) {
+                        registrationRepository.save(registration);
+                        //if everything goes ok it's a success
+                        response.setSuccess(true);
+                        response.setData("Beneficiary Indicator updated successfully");
+                        return response;
+                    }
 
-                   //sending CNS
-                   String beneficiaryName = registration.getMunicipality().getName();
-                   Iterable<Application> applicationList = applicationRepository.findByRegistrationId(registration
-                           .getId());
-                   Supplier supplier = applicationList.iterator().next().getSupplier();
-                   String name = supplier.getName();
-                   String email = supplier.getContactEmail();
+                } else {
+                    response.setSuccess(false);
+                    response.setData("Error querying municipality - registration");
+                    response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
+                }
+            }
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(400, "error.400.invalidFields"));
 
-                   //if beneficiary indicator and wifi indicator are true we send a confirmation email
-                   if (beneficiaryIndicator && wifiIndicator) {
-                       cnsManager.sendInstallationConfirmationFromBeneficiary(email, name, beneficiaryName);
-                   } else if (!beneficiaryIndicator && !wifiIndicator) {
-                       //if beneficiary indicator and wifi indicator are false we send a rejection email
-                       User user = registration.getUser();
-                       String ccName = user.getName();
-                       String ccEmail = user.getEmail();
-                       cnsManager.sendInstallationRejectionFromBeneficiary(email, name, beneficiaryName, ccEmail,
-                               ccName);
-                   }
-
-                   //if everything goes ok it's a success
-                   response.setSuccess(true);
-                   response.setData("Beneficiary Indicator updated successfully");
-               } else {
-                   response.setSuccess(false);
-                   response.setData("Error querying municipality - registration");
-                   response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
-               }
-           }else {
-               response.setSuccess(false);
-               response.setError(new ErrorDTO(400, "error.400.invalidFields"));
-           }
         } else {
             response.setSuccess(false);
             response.setError(new ErrorDTO(400, "error.400.noData"));
 
         }
         return response;
+    }
+
+    /**
+     * Method called when the user confirms/rejects the installation report. This method sends the CNS email to the
+     * supplier.
+     *
+     * @param registration
+     * @return
+     */
+    private boolean sendEmailOnConfirmOrReject(Registration registration) {
+        //sending CNS
+        String beneficiaryName = registration.getMunicipality().getName();
+        Iterable<Application> applicationList = applicationRepository.findByRegistrationId(registration
+                .getId());
+        Supplier supplier = applicationList.iterator().next().getSupplier();
+        String name = supplier.getName();
+        String email = supplier.getContactEmail();
+
+        //if beneficiary indicator and wifi indicator are true we send a confirmation email
+        if (registration.isBeneficiaryIndicator() && registration.isWifiIndicator()) {
+            cnsManager.sendInstallationConfirmationFromBeneficiary(email, name, beneficiaryName);
+            return true;
+        } else if (!registration.isBeneficiaryIndicator() && !registration.isWifiIndicator()) {
+            //if beneficiary indicator and wifi indicator are false we send a rejection email
+            User user = registration.getUser();
+            String ccName = user.getName();
+            String ccEmail = user.getEmail();
+            cnsManager.sendInstallationRejectionFromBeneficiary(email, name, beneficiaryName, ccEmail,
+                    ccName);
+            return true;
+        }
+        return false;
     }
 
     @Transactional
