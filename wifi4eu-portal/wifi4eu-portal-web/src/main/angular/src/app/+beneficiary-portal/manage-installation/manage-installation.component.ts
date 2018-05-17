@@ -72,7 +72,7 @@ export class ManageInstallationComponent {
             this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
-
+        
 
     }
 
@@ -115,7 +115,12 @@ export class ManageInstallationComponent {
     sendConfirmInstallation() {
         this.displayConfirmingData = true;
         this.registration.beneficiaryIndicator = true;
-        this.registrationApi.createRegistration(this.registration).subscribe(
+        let indicators = {
+            'id' : this.registration.id,
+            'wifiIndicator':  this.registration.wifiIndicator,
+            'beneficiaryIndicator' : this.registration.beneficiaryIndicator
+        }
+        this.registrationApi.confirmOrRejectInstallationReport(indicators).subscribe(
             registration => {
                 this.displayConfirmingData = false;
             }, error => {
@@ -130,7 +135,12 @@ export class ManageInstallationComponent {
         this.displayConfirmingData = true;
         this.registration.wifiIndicator = false;
         this.registration.beneficiaryIndicator = false;
-        this.registrationApi.createRegistration(this.registration).subscribe(
+        let indicators = {
+            'id' : this.registration.id,
+            'wifiIndicator':  this.registration.wifiIndicator,
+            'beneficiaryIndicator' : this.registration.beneficiaryIndicator
+        }
+        this.registrationApi.confirmOrRejectInstallationReport(indicators).subscribe(
             registration => {
                 this.displayConfirmingData = false;
             }, error => {

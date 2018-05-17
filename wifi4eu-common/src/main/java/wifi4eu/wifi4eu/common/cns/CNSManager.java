@@ -14,12 +14,14 @@ import javax.annotation.PostConstruct;
 import static eu.europa.ec.digit.cns.client.service.notification.ContentTranslation.Language.EN;
 import static eu.europa.ec.digit.cns.client.service.notification.ContentTranslation.Language.FR;
 import static eu.europa.ec.digit.cns.client.service.notification.ContentTranslation.Language.DE;
+import static eu.europa.ec.digit.cns.client.service.notification.Recipient.Type.CC;
 import static eu.europa.ec.digit.cns.client.service.notification.Recipient.Type.TO;
 import static java.util.concurrent.TimeUnit.MICROSECONDS;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -65,7 +67,22 @@ public class CNSManager {
     @Value("${cns.message.installation.confirmation.summary}")
     private String cnsMessageInstallationConfirmationSummary;
 
+    @Value("${cns.message.installation.confirmationBeneficiary.subject}")
+    private String cnsMessageInstallationConfirmationBeneficiarySubject;
+    @Value("${cns.message.installation.confirmationBeneficiary.body}")
+    private String cnsMessageInstallationConfirmationBeneficiaryBody;
+    @Value("${cns.message.installation.confirmationBeneficiary.summary}")
+    private String cnsMessageInstallationConfirmationBeneficiarySummary;
+
+    @Value("${cns.message.installation.rejectionBeneficiary.subject}")
+    private String cnsMessageInstallationRejectionBeneficiarySubject;
+    @Value("${cns.message.installation.rejectionBeneficiary.body}")
+    private String cnsMessageInstallationRejectionBeneficiaryBody;
+    @Value("${cns.message.installation.rejectionBeneficiary.summary}")
+    private String cnsMessageInstallationRejectionBeneficiarySummary;
+
     private CnsServiceGateway serviceGateway;
+    Notification notification;
 
     public CNSManager() {
     }
@@ -136,7 +153,39 @@ public class CNSManager {
     }
 
 
-    Notification notification;
+    public void sendInstallationConfirmationFromBeneficiary(String email, String name, String beneficiaryName) {
+        logger.info("[I] sendInstallationConfirmationFromBeneficiary");
+
+        sendMessage(
+                email,
+                name,
+                this.cnsMessageInstallationConfirmationBeneficiarySubject + beneficiaryName,
+                this.cnsMessageInstallationConfirmationBeneficiaryBody,
+                this.cnsMessageInstallationConfirmationBeneficiarySummary);
+
+        logger.info("[F] sendInstallationConfirmationFromBeneficiary");
+    }
+
+
+    public void sendInstallationRejectionFromBeneficiary(String email, String name, String beneficiaryName, String ccEmail, String ccName) {
+        logger.info("[I] sendInstallationRejectionFromBeneficiary");
+
+        sendMessage(
+                email,
+                name,
+                this.cnsMessageInstallationRejectionBeneficiarySubject + beneficiaryName,
+                this.cnsMessageInstallationRejectionBeneficiaryBody,
+                this.cnsMessageInstallationRejectionBeneficiarySummary);
+
+        sendMessage(
+                ccEmail,
+                ccName,
+                this.cnsMessageInstallationRejectionBeneficiarySubject + beneficiaryName,
+                this.cnsMessageInstallationRejectionBeneficiaryBody,
+                this.cnsMessageInstallationRejectionBeneficiarySummary);
+
+        logger.info("[F] sendInstallationRejectionFromBeneficiary");
+    }
 
     private void sendMessage(String email, String name, String subject, String body, String summary) {
         logger.info("[I] sendMessage");
