@@ -1,8 +1,14 @@
 package wifi4eu.wifi4eu.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.TrustStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +28,17 @@ import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 
 import com.rabbitmq.client.*;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -146,7 +157,8 @@ public class ScheduledTasks {
         _log.info("[f] queueConsumer");
     }
 
-    @Scheduled(cron = "0 0 9,17 * * MON-FRI")
+    //    @Scheduled(cron = "0 0 9,17 * * MON-FRI")
+    @Scheduled(cron = "*/5 * * * * *")
     public void scheduleHelpdeskIssues() {
 
         _log.info("[i] scheduleHelpdeskIssues");
@@ -172,9 +184,9 @@ public class ScheduledTasks {
                     helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
                     helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
 
-                    String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+                    Boolean result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
 
-                    if (result != null && result.contains("Thankyou.js")) {
+                    if (result) {
                         helpdeskIssue.setTicket(true);
                         helpdeskService.createHelpdeskIssue(helpdeskIssue);
                     } else {
@@ -265,53 +277,71 @@ public class ScheduledTasks {
 
     }
 
-    public static String executePost(String targetURL, String urlParameters) {
+    private static HttpClient getHttpClient() throws Exception {
+
+        HttpClient httpClient = null;
+        HttpClientBuilder httpClientBuilder = HttpClients.custom();
+
+        SSLContextBuilder builder = new SSLContextBuilder();
+        builder.loadTrustMaterial(null, new TrustStrategy() {
+            public boolean isTrusted(X509Certificate[] x509Certificate, String hostname) throws CertificateException {
+                return true;
+            }
+        });
+
+        SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(builder.build());
+        if (sslSocketFactory != null) {
+            httpClientBuilder = httpClientBuilder.setSSLSocketFactory(sslSocketFactory);
+        }
+
+        if (httpClientBuilder != null) {
+//            httpClientBuilder.setRedirectStrategy(new LaxRedirectStrategy());
+            httpClient = httpClientBuilder.build();
+        }
+
+        return httpClient;
+    }
+
+
+    public static boolean executePost(String targetURL, String urlParameters) {
         HttpURLConnection connection = null;
         try {
+            if (targetURL != null) {
+                HttpClient httpClient = getHttpClient();
+                if (httpClient != null) {
 
-            //TODO ALEX
-            URL url = new URL(targetURL);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
 
-            connection.setRequestProperty("Connection", "keep-alive");
-            connection.setRequestProperty("Content-Length",
-                    Integer.toString(urlParameters.getBytes().length));
-            connection.setRequestProperty("Content-Language", "en-US,en;q=0.9,es-ES;q=0.8,es;q=0.7");
-            connection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
-            connection.setRequestProperty("Referer", "https://forms.communi-k.eu/livewebtools/WebForms/Standard/Standard.php?en");
-            connection.setRequestProperty("Origin", "https://forms.communi-k.eu");
-            connection.setRequestProperty("Host", "webtools.ec.europa.eu");
+                    URL url = new URL(targetURL);
+                    HttpPost postRequest = new HttpPost(targetURL);
+                    postRequest.addHeader("Content-Type",
+                            "application/x-www-form-urlencoded");
+                    postRequest.addHeader("Connection", "keep-alive");
+                    postRequest.addHeader("Content-Language", "en-US,en;q=0.9,es-ES;q=0.8,es;q=0.7");
+                    postRequest.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+                    postRequest.addHeader("Referer", "https://forms.communi-k.eu/livewebtools/WebForms/Standard/Standard.php?en");
+                    postRequest.addHeader("Origin", "https://forms.communi-k.eu");
+                    postRequest.addHeader("Host", "webtools.ec.europa.eu");
 
-            connection.setUseCaches(false);
-            connection.setDoOutput(true);
+                    postRequest.setEntity(new StringEntity(urlParameters, "UTF-8"));
+                    HttpResponse httpResponse = httpClient.execute(postRequest, new BasicHttpContext());
+                    if (httpResponse != null) {
+                        System.out.print("Ticket sent!");
+                        if (httpResponse.getHeaders("Location").length > 0) {
+                            return true;
+                        } else
+                            return false;
+                    }
 
-            DataOutputStream wr = new DataOutputStream(
-                    connection.getOutputStream());
-            wr.writeBytes(urlParameters);
-            wr.close();
-
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
-            String line;
-            while ((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
+                }
             }
-            rd.close();
-            return response.toString();
         } catch (Exception e) {
             _log.error(e.getMessage());
-            return null;
+            return false;
         } finally {
             if (connection != null) {
                 connection.disconnect();
             }
         }
+        return false;
     }
-
-
 }
