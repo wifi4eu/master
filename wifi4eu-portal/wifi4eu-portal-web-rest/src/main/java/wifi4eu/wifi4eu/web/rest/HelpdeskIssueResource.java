@@ -10,17 +10,39 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
+import wifi4eu.wifi4eu.common.dto.model.HelpdeskTicketDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.web.rest.constants.HelpdeskConstants;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.LaxRedirectStrategy;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.TrustStrategy;
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.Map;
+
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -34,7 +56,7 @@ public class HelpdeskIssueResource {
     @Autowired
     private UserService userService;
 
-    Logger _log = LoggerFactory.getLogger(CallResource.class);
+    private static final Logger _log = LoggerFactory.getLogger(CallResource.class);
 
     @ApiOperation(value = "Get all the helpdesk issues")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
@@ -115,5 +137,113 @@ public class HelpdeskIssueResource {
             }
         }
         return new ResponseDTO(false, null, null);
+    }
+
+    @ApiOperation(value = "Send issue to helpdesk")
+    @RequestMapping(value = "/create")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ResponseDTO createHelpdeskIssues() {
+
+        _log.info("scheduleHelpdeskIssues");
+
+        boolean isSuccesOperation = true;
+        Map<String, Boolean> allResults = new HashMap<>();
+        List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
+
+        for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
+
+            try {
+                HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
+
+                helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
+                helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
+                helpdeskTicketDTO.setUuid(HelpdeskConstants.UUID_WIFI + helpdeskIssue.getId());
+
+                UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
+
+
+                if (userDTO != null) {
+                    helpdeskTicketDTO.setFirstname(userDTO.getName());
+                    helpdeskTicketDTO.setLastname(userDTO.getSurname());
+
+                    helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
+                    helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
+
+                    boolean result = executePost(helpdeskTicketDTO.toString());
+                    allResults.put(helpdeskTicketDTO.getUuid(), result);
+                    isSuccesOperation = isSuccesOperation && result;
+
+                    if (result) {
+                        helpdeskIssue.setTicket(true);
+                        helpdeskService.createHelpdeskIssue(helpdeskIssue);
+                    } else {
+                        _log.error("result that not containt proper text, the " + helpdeskTicketDTO.getUuid() + " helpdesk issue fails");
+                    }
+                } else {
+                    _log.error("scheduleHelpdeskIssues can't retrieve the user for heldesk issue with Id " + helpdeskIssue.getId());
+                }
+
+
+            } catch (Exception e) {
+                _log.error("scheduleHelpdeskIssues the helpdesk issue with Id " + helpdeskIssue.getId() + " can't be processed", e);
+            }
+        }
+
+        return new ResponseDTO(isSuccesOperation, allResults, null);
+    }
+
+    private boolean executePost(String urlParameters) {
+        try {
+            HttpClient httpClient = getHttpClient();
+            if (httpClient != null) {
+                HttpPost postRequest = new HttpPost(HelpdeskConstants.HELPDESK_URL);
+                postRequest.addHeader(HelpdeskConstants.CONTENT_TYPE, HelpdeskConstants.CONTENT_TYPE_VALUE);
+                postRequest.addHeader(HelpdeskConstants.CONNECTION, HelpdeskConstants.CONNECTION_VALUE);
+                postRequest.addHeader(HelpdeskConstants.CONTENT_LANGUAGE, HelpdeskConstants.CONTENT_LANGUAGE_VALUE);
+                postRequest.addHeader(HelpdeskConstants.ACCEPT, HelpdeskConstants.ACCEPT_VALUE);
+                postRequest.addHeader(HelpdeskConstants.REFERER, HelpdeskConstants.REFERER_VALUE);
+                postRequest.addHeader(HelpdeskConstants.ORIGIN, HelpdeskConstants.ORIGIN_VALUE);
+                postRequest.addHeader(HelpdeskConstants.HOST, HelpdeskConstants.HOST_VALUE);
+
+                postRequest.setEntity(new StringEntity(urlParameters, HelpdeskConstants.CHARSET_UTF8));
+                HttpResponse httpResponse = httpClient.execute(postRequest, new BasicHttpContext());
+                if (httpResponse != null) {
+                    if (httpResponse.getHeaders(HelpdeskConstants.LOCATION).length > 0) {
+                        return true;
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            _log.error(e.getMessage());
+        }
+
+        return false;
+    }
+
+    private HttpClient getHttpClient() throws Exception {
+
+        HttpClient httpClient = null;
+        HttpClientBuilder httpClientBuilder = HttpClients.custom();
+
+        SSLContextBuilder builder = new SSLContextBuilder();
+        builder.loadTrustMaterial(null, new TrustStrategy() {
+            public boolean isTrusted(X509Certificate[] x509Certificate, String hostname) throws CertificateException {
+                return true;
+            }
+        });
+
+        SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(builder.build());
+        if (sslSocketFactory != null) {
+            httpClientBuilder = httpClientBuilder.setSSLSocketFactory(sslSocketFactory);
+        }
+
+        if (httpClientBuilder != null) {
+//            httpClientBuilder.setRedirectStrategy(new LaxRedirectStrategy());
+            httpClient = httpClientBuilder.build();
+        }
+
+        return httpClient;
     }
 }
