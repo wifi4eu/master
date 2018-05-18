@@ -77,6 +77,7 @@ public class MunicipalityResource {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
 
             if (userDTO.getType() != 5) {
+                permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + userDTO.getId());
                 permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + userDTO.getId());
             }
 
