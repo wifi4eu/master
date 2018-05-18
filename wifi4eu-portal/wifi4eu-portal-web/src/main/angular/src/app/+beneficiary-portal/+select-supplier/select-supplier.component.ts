@@ -70,19 +70,13 @@ export class selectSupplierComponent {
       this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
         (registrations: RegistrationDTOBase[]) => {
           this.registration = registrations[0];
-          console.log("Registrations has municipalityID " + registrations[0].municipalityId);
           
           /* Get current application of the beneficiary */
             this.callApi.allCalls().subscribe(
               (calls: CallDTOBase[]) => {
-                console.log("Call ID is ", calls[0].id);
-                console.log("Registration FK is ", this.registration);
                   this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[0].id, this.registration.id).subscribe(
                     (application: ApplicationDTOBase) => {
                       this.application = application;
-
-                      console.log("11111 Application supplierId is ", application.supplierId);
-
                       if (application.supplierId != (null || undefined || 0)) {
                         this.hasSupplierAssigned = true;
                       }
@@ -90,40 +84,23 @@ export class selectSupplierComponent {
                       this.municipalityApi.getMunicipalityById(registrations[0].municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
                           this.municipalities.push(municipality);
-                          console.log("Municipalities has lauId " + municipality.lauId);
-          
                             this.lauApi.getLauById(municipality.lauId).subscribe(
                               (laus: LauDTOBase) => {
-                                console.log("Laus has nuts3 code equal to " + laus.nuts3);
-                              
                                 this.nutsApi.getNutsByCode(laus.nuts3).subscribe(
                                   (nuts: NutsDTOBase) => {
-                                    console.log("Nuts has id " + nuts.id);
                                     this.region.id = nuts.id;
-                                    console.log("The type of this.region.id is " + typeof(this.region));
-                                    console.log(this.region.id);
                                     this.getSuppliers();
                                   }
-                                );
-                        
+                                );    
                               }
                             );
-          
                         }
                       );  
                   
-
-
-
                     }
                   );
               }
             );
-
-
-
-
-
 
         }
       );
@@ -135,17 +112,14 @@ export class selectSupplierComponent {
   getSuppliers() {
     // Get all suppliers of beneficiary region
     if(this.region.id != 0){
-      console.log(this.region.id);
       this.supplierApi.getSuppliersListByRegionId(this.region.id).subscribe(
         (suppliers: SupplierDTOBase[]) => {
-          console.log("Supplier list is ", suppliers);
           this.suppliers = suppliers;
           this.suppliersCopy = this.suppliers;
         });
     }
     // Get previously selected supplier (if already applied)
     if(this.hasSupplierAssigned) {
-      console.log("Application supplierId is ", this.application.supplierId);
 /*       this.supplierApi.getSupplierById(this.application.supplierId).subscribe(
         (supplier: SupplierDTOBase) => {
           this.supplierAssigned = supplier;
@@ -160,8 +134,6 @@ export class selectSupplierComponent {
   private searchSuppliers() {
     this.suppliers = this.suppliersCopy;
     this.displayedSuppliers = [];
-    console.log("suppliers is ", this.suppliers);
-    console.log("suppliers copy is ", this.suppliersCopy);
     for (let supplier of this.suppliers) {
       if (supplier.name && supplier.vat) {
         if (supplier.name.toLowerCase().indexOf(this.searchSuppliersInput.toLowerCase()) != -1 ||
@@ -174,26 +146,21 @@ export class selectSupplierComponent {
   }
 
   private changeSupplier() {
-    console.log("Change supplier works!!");
     (this.hasSupplierAssigned) ? this.hasSupplierAssigned = false : this.hasSupplierAssigned = true;
   }
 
   /* Modal for supplier selection confirmation */
   private selectSupplier() {
     (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true; 
-    console.log("Selected supplier is ", this.selectedSupplier);
-    // this.getApplication();
   }
 
   /* Assign supplier Id to the benficiary application */
   private assignSupplier() {
     (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true;
     this.application.supplierId = this.selectedSupplier.id; 
-    console.log("Application sent is ", this.application);
 
     this.applicationApi.assignSupplier(this.application).subscribe(
       (resAplication: ApplicationDTOBase) => {
-        console.log("Result of application saving is ", resAplication);
       }
     );
     this.hasSupplierAssigned = true;
