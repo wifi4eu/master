@@ -12,11 +12,14 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,6 +35,9 @@ public class MunicipalityResource {
 
     @Autowired
     private PermissionChecker permissionChecker;
+
+    @Autowired
+    private UserService userService;
 
     Logger _log = LoggerFactory.getLogger(MunicipalityResource.class);
 
@@ -57,6 +63,33 @@ public class MunicipalityResource {
         return municipalityService.getMunicipalityById(municipalityId);
     }
 
+    @ApiOperation(value = "Get municipality by specific id")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-API", value = "public", required = false, allowMultiple = false, dataType =
+                    "string", paramType = "header")
+    })
+    @RequestMapping(value = "/usersMunicipality/{municipalityId}", method = RequestMethod.GET, produces =
+            "application/json")
+    @ResponseBody
+    public ResponseDTO getUsersMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId) {
+        _log.info("getMunicipalityById: " + municipalityId);
+        try {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+
+            if (userDTO.getType() != 5) {
+                permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + userDTO.getId());
+            }
+
+            return municipalityService.getUsersMunicipalityById(municipalityId, userDTO.getId());
+
+        } catch (Exception e) {
+            ResponseDTO response = new ResponseDTO();
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(403, "shared.error.notallowed"));
+            return response;
+        }
+    }
+
     @ApiOperation(value = "Create municipality")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -68,7 +101,7 @@ public class MunicipalityResource {
 
             //check permission
             int municipalityId = municipalityDTO.getId();
-            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE+municipalityId);
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
 
             MunicipalityDTO resMunicipality = municipalityService.createMunicipality(municipalityDTO);
             return new ResponseDTO(true, resMunicipality, null);
@@ -137,7 +170,7 @@ public class MunicipalityResource {
         }
 
         try {
-            permissionChecker.check(RightConstants.USER_TABLE+userId);
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'getMunicipalitiesByUserId' operation.", ade);

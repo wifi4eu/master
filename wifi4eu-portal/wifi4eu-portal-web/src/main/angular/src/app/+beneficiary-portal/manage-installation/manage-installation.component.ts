@@ -56,18 +56,19 @@ export class ManageInstallationComponent {
             let municipalityId;
             this.route.params.subscribe(params => municipalityId = params['municipalityId']);
             if (municipalityId != null) {
-                this.municipalityApi.getMunicipalityById(municipalityId).subscribe(
-                    (municipality: MunicipalityDTOBase) => {
-                        this.municipality = municipality;
-                        this.searchParametersService.parameters.id_beneficiary = this.municipality.id;
-                        this.beneficiaryService.beneficiarySelected = this.beneficiarySelected;
-                        this.onSearch();
-                        this.registrationApi.getRegistrationByMunicipalityId(this.municipality.id).subscribe(
-                            (registration: RegistrationDTOBase) => {
-                                this.registration = registration;
-                                this.indicators["id"] = registration.id;
-                            }, error => {
-                            });
+                this.municipalityApi.getUsersMunicipalityById(municipalityId).subscribe(
+                    (response: ResponseDTOBase) => {
+                        if (response.success) {
+                            this.municipality = response.data;
+                            this.searchParametersService.parameters.id_beneficiary = this.municipality.id;
+                            this.beneficiaryService.beneficiarySelected = this.beneficiarySelected;
+                            this.onSearch();
+                            this.registration = response.data.registrations[0];
+                            this.indicators["id"] = this.registration.id;
+                        } else{
+                            this.sharedService.growlTranslation('You are not logged in!', response.error.errorMessage, 'warn');
+                            this.router.navigateByUrl('/home');
+                        }
                     }, error => {
                     }
                 );
@@ -76,9 +77,7 @@ export class ManageInstallationComponent {
             this.sharedService.growlTranslation('You are not logged in!', 'shared.error.notloggedin', 'warn');
             this.router.navigateByUrl('/home');
         }
-        
-
-    }
+     }
 
     onPage(event: any) {
         this.searchParametersService.parameters.delta = event.rows;
