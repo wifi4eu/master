@@ -43,7 +43,7 @@ public class InstallationSiteService {
             int page = 0;
             int delta = 10;
 
-            if (map.containsKey("id_beneficiary") && municipalityRepository.countMunicipalitiesById((int) map.get("id_beneficiary")) == 1) {
+            if (map.containsKey("id_beneficiary") && municipalityRepository.countMunicipalitiesById((Integer) map.get("id_beneficiary")) == 1) {
 
                 id_beneficiary = (int) map.get("id_beneficiary");
 

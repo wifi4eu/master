@@ -6,12 +6,19 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.user.UserService;
 
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +39,39 @@ public class MunicipalityService {
     @Autowired
     MayorService mayorService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    PermissionChecker permissionChecker;
+
     public List<MunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
     }
 
     public MunicipalityDTO getMunicipalityById(int municipalityId) {
         return municipalityMapper.toDTO(municipalityRepository.findOne(municipalityId));
+    }
+
+    /**
+     * This service is used only on the beneficiary-portal/installations page.
+     * We need to allow only to return the municipalities that the user is associated with.
+     * @param municipalityId
+     * @return
+     */
+    public ResponseDTO getUsersMunicipalityById(Integer municipalityId, int userId) {
+        ResponseDTO response = new ResponseDTO();
+        MunicipalityDTO municipality = getMunicipalityById(municipalityId);
+        List<RegistrationDTO> registrations = municipality.getRegistrations();
+        if (registrations.size() == 1 && registrations.get(0).getUserId() == userId) {
+            response.setSuccess(true);
+            response.setData(municipality);
+        } else {
+            response.setSuccess(false);
+            response.setError(new ErrorDTO(403, "shared.error.notallowed"));
+        }
+
+        return response;
     }
 
     @Transactional
