@@ -105,6 +105,24 @@ public class UserResource {
         }
     }*/
 
+
+
+    @ApiOperation(value = "Update user details")
+    @RequestMapping(method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseDTO updateUserDetails(@RequestBody final UserDTO userDTO,
+                                       HttpServletResponse response) throws IOException {
+        try{
+            int userId = userDTO.getId();
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
+            return new ResponseDTO(true, userService.updateUserDetails(userDTO), null);
+        }catch (Exception e){
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, null);
+        }
+    }
+
+
     @ApiOperation(value = "Save user changes")
     @RequestMapping(value = "/saveChanges", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

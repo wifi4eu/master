@@ -114,6 +114,22 @@ public class RegistrationResource {
         }
     }
 
+    @ApiOperation(value = "Update legal documents")
+    @RequestMapping(value = "/updateDocuments", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseDTO updateRegistrationDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
+        try {
+            _log.info("createRegistration");
+            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+
+            RegistrationDTO resRegistration = registrationService.updateRegistrationDocuments(registrationDTO);
+            return new ResponseDTO(true, resRegistration, null);
+        }catch (Exception e){
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+        }
+    }
+
     @ApiOperation(value = "Delete registration by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody

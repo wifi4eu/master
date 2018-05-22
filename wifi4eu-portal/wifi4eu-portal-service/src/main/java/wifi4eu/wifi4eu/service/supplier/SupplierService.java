@@ -98,6 +98,11 @@ public class SupplierService {
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
         if (userDTO.getId() == supplierDTO.getUserId()) {
             Supplier sendSupplierDTO = supplierRepository.findByUserId(supplierDTO.getUserId());
+
+            if(supplierDTO.getId() != sendSupplierDTO.getId()){
+                throw new AccessDeniedException("");
+            }
+
             sendSupplierDTO.setContactName(supplierDTO.getContactName());
             sendSupplierDTO.setContactSurname(supplierDTO.getContactSurname());
             sendSupplierDTO.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
@@ -113,6 +118,11 @@ public class SupplierService {
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
         if (userDTO.getId() == supplierDTO.getUserId()) {
             Supplier sendSupplierDTO = supplierRepository.findByUserId(supplierDTO.getUserId());
+
+            if(supplierDTO.getId() != sendSupplierDTO.getId()){
+                throw new AccessDeniedException("");
+            }
+
             sendSupplierDTO.setName(supplierDTO.getName());
             sendSupplierDTO.setAddress(supplierDTO.getAddress());
             sendSupplierDTO.setVat(supplierDTO.getVat());

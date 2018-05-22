@@ -85,6 +85,31 @@ public class MunicipalityResource {
         return new ResponseDTO(true, null, null);
     }
 
+    @ApiOperation(value = "Update municipality details")
+    @RequestMapping(method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseDTO updateMunicipalityDetails(@RequestBody final MunicipalityDTO municipalityDTO,
+                                          HttpServletResponse response) throws IOException {
+        try {
+            //check permission
+            int municipalityId = municipalityDTO.getId();
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            MunicipalityDTO resMunicipality = municipalityService.updateMunicipalityDetails(municipalityDTO);
+            return new ResponseDTO(true, resMunicipality, null);
+        }
+        catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'updating municipality' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, null);
+        }
+        catch (Exception e){
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, null);
+        }
+    }
+
     @ApiOperation(value = "Delete municipality by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody

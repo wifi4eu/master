@@ -74,7 +74,6 @@ public class MayorResource {
 
     @ApiOperation(value = "Create mayor")
     @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO createMayor(@RequestBody final MayorDTO mayorDTO,
                                    HttpServletResponse response) throws IOException {
@@ -92,6 +91,28 @@ public class MayorResource {
                 resMayor.setEmail(mayorDTO1.getEmail());
             }
             return new ResponseDTO(true, resMayor, null);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'createMayor' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'createMayor' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        }
+        return new ResponseDTO(false, null, null);
+    }
+
+
+    @ApiOperation(value = "Update mayor details")
+    @RequestMapping(method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseDTO updateMayorDetails(@RequestBody final MayorDTO mayorDTO,
+                                   HttpServletResponse response) throws IOException {
+        try {
+            return new ResponseDTO(true, mayorService.updateMayor(mayorDTO), null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'createMayor' operation.", ade);
