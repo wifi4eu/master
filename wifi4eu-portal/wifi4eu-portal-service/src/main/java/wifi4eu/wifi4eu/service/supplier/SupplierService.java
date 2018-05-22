@@ -86,6 +86,11 @@ public class SupplierService {
                 sendSupplierDTO.setContactSurname(supplierDTO.getContactName());
                 sendSupplierDTO.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
                 sendSupplierDTO.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
+                sendSupplierDTO.setName(supplierDTO.getName());
+                sendSupplierDTO.setAddress(supplierDTO.getAddress());
+                sendSupplierDTO.setVat(supplierDTO.getVat());
+                sendSupplierDTO.setBic(supplierDTO.getBic());
+                sendSupplierDTO.setLogo(supplierDTO.getLogo());
                 return supplierMapper.toDTO(supplierRepository.save(sendSupplierDTO));
             } else {
                 return null;
