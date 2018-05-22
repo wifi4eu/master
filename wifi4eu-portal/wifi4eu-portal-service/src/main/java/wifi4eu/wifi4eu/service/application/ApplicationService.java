@@ -168,8 +168,8 @@ public class ApplicationService {
         return applicationMapper.toDTOList(applicationRepository.findApplicationsCountry(country, callId));
     }
 
-    public Integer countApplicationWithSameMunicipalityName(int lauId){
-        return applicationRepository.countApplicationsBySameMunicipality(lauId);
+    public Integer countApplicationWithSameMunicipalityName(int lauId, int callId){
+        return applicationRepository.countApplicationsBySameMunicipality(lauId, callId);
     }
 
 }

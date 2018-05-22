@@ -285,21 +285,20 @@
                         </ng-template>
                       </p-column>
                       <footer>
-                        <div>
-                          <span>Rows per page</span>
-                          <select name="" id="" [(ngModel)]="sizePage" (ngModelChange)="changeRowSelection(sizePage)">
-                            <option *ngFor="let option of rowDisplayOptions" [ngValue]="option">
-                              {{ option }}
-                            </option>
-                          </select>
-                        </div>
-                        <div>
-                          {{page}} <div><i class="fa fa-chevron"></i><i class="fa fa-chevron"></i></div>
-                        </div>
-                        <!-- <p-paginator class="paginator-panel" [rows]="sizePage" totalRecords="{{totalRecords}}" #paginator (onPageChange)="paginate($event)" [rowsPerPageOptions]="itemsPerPageSelector"></p-paginator>
-                        <div class="totalRecords">
-                          <span style="color: #929292;">{{ 'shared.totalRecords' | translate }}: {{totalRecords}} </span>
-                        </div> -->
+                        <div style="text-align: left;">
+                          <div style="display: inline-block;">
+                            <span>Rows per page</span>
+                            <select name="" id="" [(ngModel)]="sizePage" (ngModelChange)="changeRowSelection(sizePage)">
+                              <option *ngFor="let option of rowDisplayOptions" [ngValue]="option">
+                                {{ option }}
+                              </option>
+                            </select>
+                          </div>
+                          <p-paginator class="paginator-panel" [rows]="sizePage" totalRecords="{{totalRecords}}" #paginator (onPageChange)="paginate($event)" [rowsPerPageOptions]="itemsPerPageSelector"></p-paginator>
+                          <div class="totalRecords">
+                            <span style="color: #929292;">{{ 'shared.totalRecords' | translate }}: {{totalRecords}} </span>
+                          </div>
+                        </div>                        
                       </footer>
                     </p-dataTable>
                   </div>

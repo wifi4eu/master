@@ -24,7 +24,7 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     @Query("SELECT count(ap) FROM Application ap WHERE ap.status != 1 AND ap.call.id = :callId ")
     Integer findApplicationsNotInvalidated(@Param("callId") int callId);
 
-    @Query("SELECT ap FROM Application ap JOIN ap.registration r JOIN r.municipality m JOIN m.lau l WHERE l.countryCode =:countryCode AND ap.call.id = :callId order by ap.date ASC")
+    @Query("SELECT ap FROM Application ap JOIN ap.registration r JOIN r.municipality m JOIN m.lau l WHERE l.countryCode =:countryCode AND ap.status != 1 AND ap.call.id = :callId order by ap.date ASC")
     List<Application> findApplicationsByCountry(@Param("callId") int callId, @Param("countryCode") String countryCode);
 
     @Query("SELECT count(m) FROM Application a JOIN a.registration r JOIN r.municipality m WHERE m.lau.id =:lauId AND m.id =:municipalityId")
@@ -33,7 +33,7 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     @Query("SELECT a FROM Application a JOIN a.registration r JOIN r.municipality m WHERE m.country =:country AND a.call.id = :callId ORDER BY a.date ASC")
     List<Application> findApplicationsCountry(@Param("country") String country, @Param("callId") int callId);
 
-    @Query("SELECT count(m) FROM Application a JOIN a.registration r JOIN r.municipality m WHERE m.lau.id =:lauId AND a.status != 1")
-    Integer countApplicationsBySameMunicipality(@Param("lauId") int lauId);
+    @Query("SELECT count(m) FROM Application a JOIN a.registration r JOIN r.municipality m WHERE m.lau.id =:lauId AND a.status != 1 AND a.call.id = :callId")
+    Integer countApplicationsBySameMunicipality(@Param("lauId") int lauId, @Param("callId") int callId);
 
 }

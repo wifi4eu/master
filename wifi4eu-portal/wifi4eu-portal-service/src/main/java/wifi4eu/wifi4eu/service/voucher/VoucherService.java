@@ -397,7 +397,7 @@ public class VoucherService {
                 RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationAssigned.getRegistrationId());
                 MunicipalityDTO municipalityDTO = municipalityService.getMunicipalityById(registrationDTO.getMunicipalityId());
 
-                int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLauId());
+                int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLauId(), call.getId());
 
                 List<ApplicationDTO> applicationDTOS2 = applicationService.getApplicationsCountryNameCall(call.getId(), municipalityDTO.getCountry());
 
@@ -419,7 +419,7 @@ public class VoucherService {
                 RegistrationDTO registrationDTO = registrationService.getRegistrationById(reservedApplication.getRegistrationId());
                 MunicipalityDTO municipalityDTO = municipalityService.getMunicipalityById(registrationDTO.getMunicipalityId());
 
-                int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLauId());
+                int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLauId(), call.getId());
 
                 List<ApplicationDTO> applicationDTOS2 = applicationService.getApplicationsCountryNameCall(call.getId(), municipalityDTO.getCountry());
 

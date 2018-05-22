@@ -150,8 +150,6 @@ export class DgConnVoucherComponent {
     this.loadPage();
   }
 
-  
-
   changeRowSelection(pageSize: number){
     this.sizePage = pageSize;
     this.loadPage();
