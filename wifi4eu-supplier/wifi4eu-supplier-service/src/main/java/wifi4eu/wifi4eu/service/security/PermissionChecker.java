@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -94,7 +95,7 @@ public class PermissionChecker {
      */
     public void checkSupplierPermission() throws AccessDeniedException{
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-        if (userDTO.getType() != 1 || supplierService.getSupplierByUserId(userDTO.getId()) == null) {
+        if (userDTO.getType() != Constant.ROLE_SUPPLIER || supplierService.getSupplierByUserId(userDTO.getId()) == null) {
             throw new AccessDeniedException("403 FORBIDDEN");
         }
     }

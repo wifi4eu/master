@@ -4,12 +4,18 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.installation.InstallationSite;
+import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 //import wifi4eu.wifi4eu.repository.status.StatusRepository;
 
 import java.sql.Timestamp;
@@ -28,6 +34,11 @@ public class InstallationSiteService {
 //    @Autowired
 //    StatusRepository statusRepository;
 
+    @Autowired
+    private PermissionChecker permissionChecker;
+
+    @Autowired
+    private RegistrationService registrationService;
 
     private final Logger _log = LoggerFactory.getLogger(InstallationSiteService.class);
 
@@ -47,6 +58,8 @@ public class InstallationSiteService {
 
                 id_beneficiary = (int) map.get("id_beneficiary");
 
+                if (!checkPermissions(id_beneficiary, null))
+                    return permissionChecker.getAccessDeniedResponse();
                 try {
 
                     if (map.containsKey("page") && (int) map.get("page") > 0) {
@@ -111,6 +124,8 @@ public class InstallationSiteService {
         ResponseDTO response = new ResponseDTO();
         InstallationSite installationSite = installationSiteRepository.findInstallationSiteById(id);
         if (installationSite != null) {
+            if (!checkPermissions(installationSite.getMunicipality(), id))
+                return permissionChecker.getAccessDeniedResponse();
             response.setSuccess(true);
             response.setData(installationSite);
         } else {
@@ -118,6 +133,25 @@ public class InstallationSiteService {
             response.setError(new ErrorDTO(404, "Installation site not found"));
         }
         return response;
+    }
+
+    private boolean checkPermissions(int idMunicipality, Integer idInstSite) throws AccessDeniedException {
+        UserDTO user;
+        try {
+            //first we check if user logged in is a beneficiary
+            user = permissionChecker.checkBeneficiaryPermission();
+            //and then we check that his municipality is related to it
+            if (registrationService.getRegistrationByUserAndMunicipality(user.getId(), idMunicipality) == null) {
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+
+            if(idInstSite != null && installationSiteRepository.findInstallationSiteByIdAndMunicipality(idInstSite, idMunicipality)==null){
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
 }
