@@ -157,8 +157,8 @@ public class ScheduledTasks {
         _log.info("[f] queueConsumer");
     }
 
-    //    @Scheduled(cron = "0 0 9,17 * * MON-FRI")
-    @Scheduled(cron = "*/5 * * * * *")
+       @Scheduled(cron = "0 0 9,17 * * MON-FRI")
+    // @Scheduled(cron = "*/5 * * * * *")
     public void scheduleHelpdeskIssues() {
 
         _log.info("[i] scheduleHelpdeskIssues");
