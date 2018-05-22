@@ -7,13 +7,12 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euFinancialAbacService;
+import wifi4eu.wifi4eu.service.exportImport.ExportImportFinancialAbacService;
 import wifi4eu.wifi4eu.service.security.UserService;
 
 import javax.naming.InitialContext;
@@ -29,7 +28,7 @@ public class ExportImportFinancialAbacResource {
     @Autowired
     private UserService userService;
     @Autowired
-    private ExportImportWifi4euFinancialAbacService exportImportWifi4euFinancialAbacService;
+    private ExportImportFinancialAbacService exportImportWifi4euFinancialAbacService;
     private final Logger _log = LoggerFactory.getLogger(ExportImportFinancialAbacResource.class);
     private SoatubeWSClientLocal soaTubeWSClient;
     private JmsProducerLocal jmsProducer;

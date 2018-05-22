@@ -18,7 +18,7 @@ import wifi4eu.wifi4eu.service.exportImport.callAbac.JsonToXml;
 
 
 @Service
-public class ExportImportWifi4euFinancialAbacService {
+public class ExportImportFinancialAbacService {
     @Autowired
     ValidatedLEFMapper validatedLEFMapper;
 
@@ -32,7 +32,7 @@ public class ExportImportWifi4euFinancialAbacService {
     ValidatedBCRepository validatedBCRepository;
 
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euFinancialAbacService.class);
+    private final Logger _log = LoggerFactory.getLogger(ExportImportFinancialAbacService.class);
 
     @Transactional
     public void importLegalEntityF(JmsProducerLocal jmsProducer, final String jsonStringFile) throws Exception{
