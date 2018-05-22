@@ -56,13 +56,15 @@ public class ExportImportWifi4euFinancialAbacService {
             rF.readImportFileBC(jmsProducer, xml);
     }
 
-    public ResponseDTO exportLegalEntityFBCValidate() throws Exception {
+    public ResponseDTO exportLegalEntityFBCValidate() {
         _log.info("exportLegalEntityFBCValidate");
 
         ResponseDTO result = new ResponseDTO();
         Gson gson = new GsonBuilder().create();
         JsonParser parser = new JsonParser();
         JsonObject resultJson = new JsonObject();
+        //Leer y poner el resultado en un ResultDTO.
+
 //        List<BenPubSupDTO> applications = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findAll()));
 //        JsonArray applicationsJsonArray = new JsonArray();
 //        if (applications != null && !applications.isEmpty()) {
