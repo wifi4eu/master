@@ -16,21 +16,21 @@ import java.io.IOException;
 public class LegalEntitySync {
 
     public static String leSearch() throws IOException {
-        try {
-
-            LegalEntity le = new LegalEntity();
-
-            LegalEntitySearchRequestType lesrt = new LegalEntitySearchRequestType();
-
-            LegalEntitySearchResponseType leSearchResponse = le.getLegalEntitySOAP().search(lesrt);
-
-            System.out.println("LEGAL ENTITY SYNC :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
-            System.out.println("ROW COUNT ---------------------------------------> " + leSearchResponse.getRowCount());
-
-            return "true";
-        } catch (FaultMessage faultMessage) {
-            faultMessage.printStackTrace();
-        }
+//        try {
+//
+//            LegalEntity le = new LegalEntity();
+//
+//            LegalEntitySearchRequestType lesrt = new LegalEntitySearchRequestType();
+//
+//            LegalEntitySearchResponseType leSearchResponse = le.getLegalEntitySOAP().search(lesrt);
+//
+//            System.out.println("LEGAL ENTITY SYNC :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
+//            System.out.println("ROW COUNT ---------------------------------------> " + leSearchResponse.getRowCount());
+//
+//            return "true";
+//        } catch (FaultMessage faultMessage) {
+//            faultMessage.printStackTrace();
+//        }
         return "false";
     }
 }

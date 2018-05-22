@@ -106,4 +106,23 @@ public class ExportImportWifi4euAbacResource {
         }
     }
 
+    @ApiOperation(value = "Import LEF and BC validates")
+    @RequestMapping(value = "/importLegalEntityFBCValidate", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO importLegalEntityFBCValidate() {
+        try {
+            _log.info("exportBudgetaryCommitment");
+            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
+                throw new AccessDeniedException("");
+            }
+            exportImportWifi4euAbacService.importLegalEntityFBCValidate();
+            return new ResponseDTO(true, null, null);
+        } catch (AccessDeniedException ade) {
+            return new ResponseDTO(false, null, new ErrorDTO(0, null));
+        } catch (Exception e) {
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
 }

@@ -15,8 +15,8 @@ import javax.xml.ws.Service;
  */
 @WebServiceClient(name = "LegalEntity",
         //wsdlLocation = "file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalEntity_ES_Async_2.wsdl",
-        //wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BBUDG_LegalEntity_ES_Async_2.wsdl",
-        wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Async_2.wsdl",
+        wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BBUDG_LegalEntity_ES_Async_2.wsdl",
+        //wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Async_2.wsdl",
         targetNamespace = "http://www.ec.europa.eu/budg/abac/legal_entity/service/es/async/v1")
 public class LegalEntity extends Service {
 
@@ -29,8 +29,8 @@ public class LegalEntity extends Service {
         URL url = null;
         try {
             //url = new URL("file:/C:/Users/lviverof/Documents/test2/src/main/java/BUDG_LegalEntity_ES_Async_2.wsdl");
-            //url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Async_2.wsdl");
-            url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Async_2.wsdl");
+            url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Async_2.wsdl");
+            //url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/BUDG_LegalEntity_ES_Async_2.wsdl");
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(LegalEntity.class.getName())
                     .log(java.util.logging.Level.INFO,

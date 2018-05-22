@@ -99,7 +99,8 @@
         <ecas.config.renew>false</ecas.config.renew>
         <ecas.config.server.element/>
         <ecas.config.validate.load_test_specific/>
-        <ecas.config.base.url>https://ecas.ec.europa.eu</ecas.config.base.url>
+        <!--<ecas.config.base.url>https://ecas.ec.europa.eu</ecas.config.base.url>-->
+        <ecas.config.base.url>https://ecas.acceptance.ec.europa.eu</ecas.config.base.url>
         <ecas.config.strength>PASSWORD</ecas.config.strength>
         <ecas.config.test.certificate.element/>
         <ecas.server.address/>
@@ -122,9 +123,15 @@
 
         <!-- App settings -->
         <schemes>http</schemes>
-        <server.address>localhost:8080</server.address>
+        <!--<server.address>wlts0275.cc.cec.eu.int:1043</server.address>-->
+        <ecas.server.address>wlts0275.cc.cec.eu.int</ecas.server.address>
+        <ecas.server.port>1043</ecas.server.port>
+        <!--<server.address>localhost:8080</server.address>-->
+        <server.address>localhost:7001</server.address>
         <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
-        <server.test.port>8080</server.test.port>
+        <server.test.port>7001</server.test.port>
+        <!--server.test.port>8080</server.test.port-->
+
         <!--
         <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
         -->
@@ -136,8 +143,9 @@
         <server.pro.address>www.wifi4eu.eu</server.pro.address>
         <server.pro.port>443</server.pro.port>
         <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilterMocked</user.filter.path>
-        <server.ecas.stress>https://webgate.stress.ec.europa.eu</server.ecas.stress>
         <server.ecas.acc>https://ecas.acceptance.ec.europa.eu</server.ecas.acc>
+        <server.ecas.stress>https://webgate.stress.ec.europa.eu</server.ecas.stress>
+
         <enable.security.start></enable.security.start>
         <enable.security.end></enable.security.end>
         <enable.login.start></enable.login.start>
@@ -173,8 +181,8 @@
                 <war.output.directory/>
                 <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
                 <ecas.server.address>${server.test.address}</ecas.server.address>
-                <ecas.server.port>8080</ecas.server.port>
-                <!--ecas.server.port>7001</ecas.server.port-->
+                <!--<ecas.server.port>8080</ecas.server.port>-->
+                <ecas.server.port>7001</ecas.server.port>
                 <mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu/#/</mail.serv.location>
                 <!--mail.serv.location>https://wifi4eu.everisdigitalchannels.com:8080/wifi4eu-financial/#/</mail.serv.location-->
                 <!--mail.serv.location>https://wifi4eu.everisdigitalchannels.com:7001/wifi4eu-financial/#/</mail.serv.location-->
@@ -606,23 +614,29 @@
                 <version>${mysql.version}</version>
             </dependency>
 
-            <!--<dependency>-->
-                <!--<groupId>eu.europa.ec.digit</groupId>-->
-                <!--<artifactId>refapp-support-security-ecas-file</artifactId>-->
-                <!--<version>1.1.1</version>-->
-            <!--</dependency>-->
+            <dependency>
+                <groupId>com.oracle</groupId>
+                <artifactId>ojdbc6</artifactId>
+                <version>11.2.0</version>
+            </dependency>
 
-            <!--<dependency>-->
-                <!--<groupId>eu.europa.ec.digit.iam.ecas.client</groupId>-->
-                <!--<artifactId>ecas-weblogic-10.3-authprovider</artifactId>-->
-                <!--<version>${ecas.client.version}</version>-->
-            <!--</dependency>-->
+            <dependency>
+                <groupId>eu.europa.ec.digit</groupId>
+                <artifactId>refapp-support-security-ecas-file</artifactId>
+                <version>1.1.1</version>
+            </dependency>
 
             <dependency>
                 <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
-                <artifactId>ecas-tomcat-8.0</artifactId>
+                <artifactId>ecas-weblogic-10.3-authprovider</artifactId>
                 <version>${ecas.client.version}</version>
             </dependency>
+
+            <!--dependency>
+                <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
+                <artifactId>ecas-tomcat-8.0</artifactId>
+                <version>${ecas.client.version}</version>
+            </dependency-->
 
             <!-- JWT -->
             <dependency>
@@ -688,23 +702,23 @@
             <scope>test</scope>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>eu.europa.ec.digit</groupId>-->
-            <!--<artifactId>refapp-support-security-ecas-file</artifactId>-->
-            <!--<version>1.1.1</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>eu.europa.ec.digit.iam.ecas.client</groupId>-->
-            <!--<artifactId>ecas-weblogic-10.3-authprovider</artifactId>-->
-            <!--<scope>provided</scope>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>eu.europa.ec.digit</groupId>
+            <artifactId>refapp-support-security-ecas-file</artifactId>
+            <version>1.1.1</version>
+        </dependency>
 
         <dependency>
             <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
-            <artifactId>ecas-tomcat-8.0</artifactId>
+            <artifactId>ecas-weblogic-10.3-authprovider</artifactId>
             <scope>provided</scope>
         </dependency>
+
+        <!--dependency>
+            <groupId>eu.europa.ec.digit.iam.ecas.client</groupId>
+            <artifactId>ecas-tomcat-8.0</artifactId>
+            <scope>provided</scope>
+        </dependency-->
 
         <dependency>
             <groupId>javax</groupId>

@@ -351,9 +351,9 @@ public class UserService {
     }
 
     private void removeTempToken(UserDTO userDTO) {
-        for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
-            tempTokenRepository.delete(tempToken);
-        }
+//        for (TempToken tempToken : tempTokenRepository.findByUserId(userDTO.getId())) {
+//            tempTokenRepository.delete(tempToken);
+//        }
     }
 
     private void removeSuppliedRegion(UserDTO userDTO) {

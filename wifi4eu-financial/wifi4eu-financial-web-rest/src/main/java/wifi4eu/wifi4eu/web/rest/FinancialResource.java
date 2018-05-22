@@ -46,108 +46,108 @@ public class FinancialResource {
         return financialService.exportAbacInformation();
     }
 
-    @ApiOperation(value = "LE Search.")
-    @RequestMapping(value = "/leSearch", method = RequestMethod.GET, produces = "application/JSON")
-    @ResponseBody
-    public ResponseDTO leSearch(final HttpServletResponse response) {
-        _log.info("leSearch");
-        try {
-            String result = LegalEntitySync.leSearch();
-
-            if (!result.isEmpty()) {
-                return new ResponseDTO(true, result, null);
-            } else {
-                return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Can not connect to mock"));
-            }
-
-        } catch (IOException e) {
-            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, e.getStackTrace().toString()));
-        }
-
-    }
-
-    @ApiOperation(value = "BC Search.")
-    @RequestMapping(value = "/bcSearch", method = RequestMethod.GET, produces = "application/JSON")
-    @ResponseBody
-    public ResponseDTO bcSearch(final HttpServletResponse response) {
-        _log.info("bcSearch");
-        try {
-            String result = BudgetaryCommitmentSync.bcSearch();
-
-            if (!result.isEmpty()) {
-                return new ResponseDTO(true, result, null);
-            } else {
-                return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Can not connect to mock"));
-            }
-
-        } catch (IOException e) {
-            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, e.getStackTrace().toString()));
-        }
-
-    }
-
-    @ApiOperation(value = "LE Create.")
-    @RequestMapping(value = "/leCreate", method = RequestMethod.GET, produces = "application/JSON")
-    @ResponseBody
-    public ResponseDTO leCreate(final HttpServletResponse response) {
-        _log.info("leCreate");
-        try {
-            String result = LegalEntityAsync.leCreate();
-
-            if (!result.isEmpty()) {
-                return new ResponseDTO(true, result, null);
-            } else {
-                return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Can not connect to mock"));
-            }
-
-        } catch (IOException e) {
-            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, e.getStackTrace().toString()));
-        }
-
-    }
-
-
-
-
-    @ApiOperation(value = "BC Create.")
-    @RequestMapping(value = "/bcCreate", method = RequestMethod.GET, produces = "application/JSON")
-    @ResponseBody
-    public ResponseDTO bcCreate(final HttpServletResponse response) {
-        _log.info("bcCreate");
-        try {
-            String result = BudgetaryCommitmentAsync.bcCreate();
-
-            if (!result.isEmpty()) {
-                return new ResponseDTO(true, result, null);
-            } else {
-                return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Can not connect to mock"));
-            }
-
-        } catch (IOException e) {
-            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, e.getStackTrace().toString()));
-        }
-
-    }
-
-    @ApiOperation(value = "LC Create.")
-    @RequestMapping(value = "/lcCreate", method = RequestMethod.GET, produces = "application/JSON")
-    @ResponseBody
-    public ResponseDTO lcCreate(final HttpServletResponse response) {
-        _log.info("lcCreate");
-        try {
-            String result = LegalCommitmentAsync.lcCreate();
-
-            if (!result.isEmpty()) {
-                return new ResponseDTO(true, result, null);
-            } else {
-                return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Can not connect to mock"));
-            }
-
-        } catch (IOException e) {
-            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, e.getStackTrace().toString()));
-        }
-
-    }
+//    @ApiOperation(value = "LE Search.")
+//    @RequestMapping(value = "/leSearch", method = RequestMethod.GET, produces = "application/JSON")
+//    @ResponseBody
+//    public ResponseDTO leSearch(final HttpServletResponse response) {
+//        _log.info("leSearch");
+//        try {
+//            String result = LegalEntitySync.leSearch();
+//
+//            if (!result.isEmpty()) {
+//                return new ResponseDTO(true, result, null);
+//            } else {
+//                return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Can not connect to mock"));
+//            }
+//
+//        } catch (IOException e) {
+//            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, e.getStackTrace().toString()));
+//        }
+//
+//    }
+//
+//    @ApiOperation(value = "BC Search.")
+//    @RequestMapping(value = "/bcSearch", method = RequestMethod.GET, produces = "application/JSON")
+//    @ResponseBody
+//    public ResponseDTO bcSearch(final HttpServletResponse response) {
+//        _log.info("bcSearch");
+//        try {
+//            String result = BudgetaryCommitmentSync.bcSearch();
+//
+//            if (!result.isEmpty()) {
+//                return new ResponseDTO(true, result, null);
+//            } else {
+//                return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Can not connect to mock"));
+//            }
+//
+//        } catch (IOException e) {
+//            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, e.getStackTrace().toString()));
+//        }
+//
+//    }
+//
+//    @ApiOperation(value = "LE Create.")
+//    @RequestMapping(value = "/leCreate", method = RequestMethod.GET, produces = "application/JSON")
+//    @ResponseBody
+//    public ResponseDTO leCreate(final HttpServletResponse response) {
+//        _log.info("leCreate");
+//        try {
+//            String result = LegalEntityAsync.leCreate();
+//
+//            if (!result.isEmpty()) {
+//                return new ResponseDTO(true, result, null);
+//            } else {
+//                return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Can not connect to mock"));
+//            }
+//
+//        } catch (IOException e) {
+//            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, e.getStackTrace().toString()));
+//        }
+//
+//    }
+//
+//
+//
+//
+//    @ApiOperation(value = "BC Create.")
+//    @RequestMapping(value = "/bcCreate", method = RequestMethod.GET, produces = "application/JSON")
+//    @ResponseBody
+//    public ResponseDTO bcCreate(final HttpServletResponse response) {
+//        _log.info("bcCreate");
+//        try {
+//            String result = BudgetaryCommitmentAsync.bcCreate();
+//
+//            if (!result.isEmpty()) {
+//                return new ResponseDTO(true, result, null);
+//            } else {
+//                return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Can not connect to mock"));
+//            }
+//
+//        } catch (IOException e) {
+//            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, e.getStackTrace().toString()));
+//        }
+//
+//    }
+//
+//    @ApiOperation(value = "LC Create.")
+//    @RequestMapping(value = "/lcCreate", method = RequestMethod.GET, produces = "application/JSON")
+//    @ResponseBody
+//    public ResponseDTO lcCreate(final HttpServletResponse response) {
+//        _log.info("lcCreate");
+//        try {
+//            String result = LegalCommitmentAsync.lcCreate();
+//
+//            if (!result.isEmpty()) {
+//                return new ResponseDTO(true, result, null);
+//            } else {
+//                return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, "Can not connect to mock"));
+//            }
+//
+//        } catch (IOException e) {
+//            return new ResponseDTO(false, "Something went wrong", new ErrorDTO(0, e.getStackTrace().toString()));
+//        }
+//
+//    }
 }
 
 

@@ -1,11 +1,8 @@
-package wifi4eu.wifi4eu.entity.exportImport;
+package wifi4eu.wifi4eu.common.dto.model;
 
-import javax.persistence.*;
 
-@Entity
-public class ExportImportLEFData {
+public class ValidatedBCDTO {
 
-    @Id
     private Integer id;
 
     private Integer euRank;
@@ -26,9 +23,9 @@ public class ExportImportLEFData {
 
     private Integer municipality;
 
-    public ExportImportLEFData() {}
+    public ValidatedBCDTO() {}
 
-    public ExportImportLEFData(Integer id, Integer euRank, Integer countryRank, String countryName, String municipalityName, String issue, Integer numberOfRegistrations, String abacReference, String abacStandarName, Integer municipality) {
+    public ValidatedBCDTO(Integer id, Integer euRank, Integer countryRank, String countryName, String municipalityName, String issue, Integer numberOfRegistrations, String abacReference, String abacStandarName, Integer municipality) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;

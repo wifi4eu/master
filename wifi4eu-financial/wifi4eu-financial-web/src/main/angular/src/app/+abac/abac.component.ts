@@ -17,100 +17,67 @@ import {TranslateService} from "ng2-translate";
 export class AbacComponent {
     private exportEnabled: boolean;
     private jsonFile: File;
-
     constructor(private http: Http, private financialApi: FinancialApi, private exportImportApi: ExportImportApi, private sharedService: SharedService, private translateService: TranslateService) {
         this.exportEnabled = false;
     }
 
-    importLegalEntityF() {
-    debugger;
-         this.exportImportApi.importLegalEntityF().subscribe(
-            (response: ResponseDTO)  => {
-                if(response.success){
-                    this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
-                    this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
-                        (translation: string) => {
-                            if (translation) {
-                                //window.alert(translation);
-                                window.alert("Your file have been imported correctly!");
+    importLegalEntityF(event) {
+            this.exportEnabled = false;
+            if (event && event.target && event.target.files && event.target.files.length == 1) {
+                this.jsonFile = event.target.files['0'];
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    this.exportImportApi.importLegalEntityF(reader.result).subscribe(
+                        (response: ResponseDTO) => {
+                            if (response.success) {
+                                this.exportEnabled = true;
+                                 //this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                                 //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                                window.alert("Import succesful!");
+                            } else {
+                                window.alert("Import failed!");
                             }
+                        }, error => {
+                            console.log(error);
+                            window.alert("Import failed! Make sure that the file you are uploading has the correct format.");
                         }
                     );
                 }
-            },
-            error => {
+                reader.readAsText(this.jsonFile);
+                //reader.readAsBinaryString(this.excelFile);
             }
-        );
-    }
 
-    importBudgetaryCommitment() {
-        this.exportImportApi.importBudgetaryCommitment().subscribe(
-            (response: ResponseDTO)  => {
-                if(response.success){
-                    this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
-                    this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
-                        (translation: string) => {
-                            if (translation) {
+         //this.exportImportApi.importLegalEntityF().subscribe(
+           // (response: ResponseDTO)  => {
+             //   if(response.success){
+               //     this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                 //   this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                   //     (translation: string) => {
+                     //       if (translation) {
                                 //window.alert(translation);
-                                window.alert("Your file have been imported correctly!");
-                            }
-                        }
-                    );
-                }
-            },
-            error => {
-            }
-        );
+                       //         window.alert("Your file have been imported correctly!");
+                         //   }
+                        //}
+                    //);
+                //}
+            //},
+            //error => {
+            //}
+        //);
     }
 
-    exportLegalEntityFBCValidate() {
-        //this.exportImportApi.exportLegalEntityFBCValidate().subscribe(
-          //     (response: ResponseDTO)  => {
-            //       if(response.success){
-              //         this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
-                //       this.translateService.get("dgconn.dashboard.card.messageExport").subscribe(
-                  //         (translation: string) => {
-                    //           if (translation) {
-                      //             window.alert(translation);
-                        //       }
-                         //  }
-                       //);
-                  // }
-               //},
-               //error => {
-               //}
-         //);
-    }
-
-
-    /*exportJson() {
-        this.financialApi.exportAbacInformation().subscribe(
-            (response: ResponseDTO) => {
-                if (response.success) {
-                    let blob = new Blob([response.data], {type: 'application/json'});
-                    FileSaver.saveAs(blob, "financial_abac_export.json");
-                    window.alert("Export succesful!");
-                } else {
-                    window.alert("Export failed!");
-                }
-            }, error => {
-                console.log(error);
-                window.alert("Something went wrong.");
-            }
-        );
-    }
-
-    onFileSelection(event) {
+    importBudgetaryCommitment(event) {
         this.exportEnabled = false;
         if (event && event.target && event.target.files && event.target.files.length == 1) {
             this.jsonFile = event.target.files['0'];
             let reader = new FileReader();
-            debugger;
-            //reader.onload = (e) => {
-                this.financialApi.importAbacInformation(reader.result).subscribe(
+            reader.onload = (e) => {
+                this.exportImportApi.importBudgetaryCommitment(reader.result).subscribe(
                     (response: ResponseDTO) => {
                         if (response.success) {
                             this.exportEnabled = true;
+                             //this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                             //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
                             window.alert("Import succesful!");
                         } else {
                             window.alert("Import failed!");
@@ -120,12 +87,108 @@ export class AbacComponent {
                         window.alert("Import failed! Make sure that the file you are uploading has the correct format.");
                     }
                 );
-            //};
+            }
             reader.readAsText(this.jsonFile);
+            //reader.readAsBinaryString(this.excelFile);
         }
+
+        //this.exportImportApi.importBudgetaryCommitment().subscribe(
+            //(response: ResponseDTO)  => {
+                //if(response.success){
+                    //this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                    //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                        //(translation: string) => {
+                            //if (translation) {
+                                ////window.alert(translation);
+                                //window.alert("Your file have been imported correctly!");
+                            //}
+                        //}
+                    //);
+                //}
+            //},
+            //error => {
+            //}
+        //);
     }
 
-    leSearch() {
+    exportLegalEntityFBCValidate() {
+            this.exportImportApi.exportLegalEntityFBCValidate().subscribe(
+                (response: ResponseDTO) => {
+                    if (response.success) {
+                        let blob = new Blob([response.data], {type: 'application/json'});
+                        FileSaver.saveAs(blob, "ExportLefBcValidate.json");
+                        window.alert("Export succesful!");
+                    } else {
+                        window.alert("Export failed!");
+                    }
+                }, error => {
+                    console.log(error);
+                    window.alert("Something went wrong.");
+                }
+            );
+
+        //this.exportImportApi.exportLegalEntityFBCValidate().subscribe(
+               //(response: ResponseDTO)  => {
+                   //if(response.success){
+                       //this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
+                       //this.translateService.get("dgconn.dashboard.card.messageExport").subscribe(
+                           //(translation: string) => {
+                               //if (translation) {
+                                   //window.alert(translation);
+                               //}
+                           //}
+                       //);
+                   //}
+               //},
+               //error => {
+               //}
+         //);
+    }
+
+
+    //exportJson() {
+        //this.financialApi.exportAbacInformation().subscribe(
+            //(response: ResponseDTO) => {
+                //if (response.success) {
+                    //let blob = new Blob([response.data], {type: 'application/json'});
+                    //FileSaver.saveAs(blob, "financial_abac_export.json");
+                    //window.alert("Export succesful!");
+                //} else {
+                    //window.alert("Export failed!");
+                //}
+            //}, error => {
+                //console.log(error);
+                //window.alert("Something went wrong.");
+            //}
+        //);
+    //}
+
+    //onFileSelection(event) {
+        //this.exportEnabled = false;
+        //if (event && event.target && event.target.files && event.target.files.length == 1) {
+            //this.jsonFile = event.target.files['0'];
+            //let reader = new FileReader();
+            //debugger;
+            //reader.onload = (e) => {
+                //this.financialApi.importAbacInformation(reader.result).subscribe(
+                    //(response: ResponseDTO) => {
+                        //if (response.success) {
+                            //this.exportEnabled = true;
+                            //window.alert("Import succesful!");
+                        //} else {
+                            //window.alert("Import failed!");
+                        //}
+                    //}, error => {
+                        //console.log(error);
+                        //window.alert("Import failed! Make sure that the file you are uploading has the correct format.");
+                    //}
+                //);
+            //};
+            //reader.readAsText(this.jsonFile);
+        //}
+    //}
+
+    /*leSearch() {
         this.financialApi.leSearch().subscribe(
             (response: ResponseDTO) => {
                 if (response.success) {

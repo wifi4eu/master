@@ -1,27 +1,33 @@
 <div class="exportImport"></div>
 <!--<div class="container" align="center">-->
 <div class="container">
-    <br/><br/><br/><br/><br/>
     <div class="ui-g">
+        <div class="clearfix"></div>
+        <div class="container font" style="margin-top: 5em;">
+        <h1 class="beneficiaryTitle">Import Beneficiaris Info.</h1>
         <div class="ui-g-12">
             <span class="input-group-btn">
-                <button class="btn btn-primary" (click)="importLegalEntityF()" type="button">Import Beneficiaris Info.</button>
+                <input type="file" (change)="importLegalEntityF($event)" accept=".json,application/json">
+                <!--button class="btn btn-primary" (click)="importLegalEntityF()" type="button">Import Beneficiaris Info.</button-->
             </span>
         </div>
-        <br/><br/><br/><br/><br/>
+        <div class="clearfix"></div>
+        <div class="container font" style="margin-top: 5em;">
+        <h1 class="beneficiaryTitle">Import Budgetary Commitment Info.</h1>
         <div class="ui-g-12">
             <span class="input-group-btn">
-                <button class="btn btn-primary" (click)="importBudgetaryCommitment()" type="button">Import BC Info.</button>
+                <input type="file" (change)="importBudgetaryCommitment($event)" accept=".json,application/json">
+                <!--<button class="btn btn-primary" (click)="importBudgetaryCommitment()" type="button">Import BC Info.</button>-->
             </span>
         </div>
-        <br/><br/><br/><br/><br/>
+        <br/><br/><br/><br/>
         <div class="ui-g-12">
             <span class="input-group-btn">
                 <button class="btn btn-primary" (click)="exportLegalEntityFBCValidate()" type="button">Export Lef and Bc Validation</button>
             </span>
         </div>
     </div>
-    <!--div class="clearfix"></div>>
+    <!--div class="clearfix"></div>
     <div class="container font" style="margin-top: 5em;">
         <h1 class="beneficiaryTitle">WiFi4EU Abac Test</h1>
         <p>Click lick on one of the buttons below to import/export your JSON file and communicate with ABAC.</p>

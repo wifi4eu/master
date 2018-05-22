@@ -11,22 +11,22 @@ import java.io.IOException;
 public class LegalCommitmentAsync {
 
     public static String lcCreate() throws IOException {
-        try {
-
-            LegalCommitment leAsync = new LegalCommitment();
-
-
-            LegalCommitmentCreateBaseRequestType lccbrt = new LegalCommitmentCreateBaseRequestType();
-
-            BusinessRuleMessageResponseType bRMRT = leAsync.getLegalCommitment().createBase(lccbrt);
-            System.out.println("LEGAL COMMITMENT ASYNC:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
-            System.out.println("PRINTING BUSINES RULE REJECTION RETURN CODE ------------------------------------------" + bRMRT.getBusinessRuleRejectionReturnCode());
-
-
-            return "true";
-        } catch (FaultMessage faultMessage) {
-            faultMessage.printStackTrace();
-        }
+//        try {
+//
+//            LegalCommitment leAsync = new LegalCommitment();
+//
+//
+//            LegalCommitmentCreateBaseRequestType lccbrt = new LegalCommitmentCreateBaseRequestType();
+//
+//            BusinessRuleMessageResponseType bRMRT = leAsync.getLegalCommitment().createBase(lccbrt);
+//            System.out.println("LEGAL COMMITMENT ASYNC:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::>");
+//            System.out.println("PRINTING BUSINES RULE REJECTION RETURN CODE ------------------------------------------" + bRMRT.getBusinessRuleRejectionReturnCode());
+//
+//
+//            return "true";
+//        } catch (FaultMessage faultMessage) {
+//            faultMessage.printStackTrace();
+//        }
         return "false";
     }
 }

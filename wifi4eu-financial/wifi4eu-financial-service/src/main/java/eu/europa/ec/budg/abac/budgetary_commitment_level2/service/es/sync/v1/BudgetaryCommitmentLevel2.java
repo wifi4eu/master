@@ -16,8 +16,8 @@ import javax.xml.ws.Service;
  */
 @WebServiceClient(name = "BudgetaryCommitmentLevel2", 
                   //wsdlLocation = "file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl",
-                  //wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl",
-                  wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl",
+                  wsdlLocation = "http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl",
+                  //wsdlLocation = "http://localhost:7001/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl",
                   targetNamespace = "http://www.ec.europa.eu/budg/abac/budgetary_commitment_level2/service/es/sync/v1") 
 public class BudgetaryCommitmentLevel2 extends Service {
 
@@ -29,8 +29,8 @@ public class BudgetaryCommitmentLevel2 extends Service {
         URL url = null;
         try {
             //url = new URL("file:/C:/Users/lviverof/Desktop/backup/WSDL_XSD_73_Rev_32423/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl");
-            //url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl");
-            url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl");
+            url = new URL("http://wlts0275.cc.cec.eu.int:1043/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl");
+            //url = new URL("http://localhost:7001/wifi4eu-financial/wsdl/BUDG_BudgetaryCommitmentLevel2_ES_Sync_1.wsdl");
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(BudgetaryCommitmentLevel2.class.getName())
                 .log(java.util.logging.Level.INFO, 

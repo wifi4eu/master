@@ -14,8 +14,8 @@ import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBeneficiaryInformationMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportBeneficiaryInformationRepository;
-import wifi4eu.wifi4eu.service.exportImport.excelFile.CreateExcelFile;
-import wifi4eu.wifi4eu.service.exportImport.excelFile.ReadExcelFile;
+import wifi4eu.wifi4eu.service.exportImport.file.CreateFile;
+import wifi4eu.wifi4eu.service.exportImport.file.ReadFile;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
@@ -103,15 +103,15 @@ public class ExportImportWifi4euAbacService {
                 document[i][4]=String.valueOf(setIssueToDgconnBeneficiary(municipality.getLau().getId()));
                 document[i][5]=String.valueOf(countMunicipality);
            }
-           CreateExcelFile cF=new CreateExcelFile(httpServletRequest);
-           cF.createExcelFile(header, document, "ExportRegistrationData.csv");
+           CreateFile cF=new CreateFile(httpServletRequest);
+           cF.createExcelFileRegistrationData(header, document, "ExportRegistrationData.xlsx");
     }
 
     @Transactional
     public void importRegistrationData() throws Exception{
         _log.info("importRegistrationData");
-        ReadExcelFile rF=new ReadExcelFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
-        rF.readExcelFile();
+        ReadFile rF=new ReadFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
+        rF.readExcelFileRegistrationData();
     }
 
     public void exportBeneficiaryInformation() throws Exception {
@@ -150,8 +150,8 @@ public class ExportImportWifi4euAbacService {
             document[i][4]=String.valueOf(setIssueToDgconnBeneficiary(municipality.getLau().getId()));
             document[i][5]=String.valueOf(countMunicipality);
         }
-        CreateExcelFile cF=new CreateExcelFile(httpServletRequest);
-        cF.createExcelFile(header, document, "ExportBeneficiariInformation.csv");
+        CreateFile cF=new CreateFile(httpServletRequest);
+        cF.createExcelFileBeneficiaryInformation(header, document, "ExportBeneficiariInformation.csv");
     }
 
     public void exportBudgetaryCommitment() throws Exception {
@@ -190,8 +190,15 @@ public class ExportImportWifi4euAbacService {
             document[i][4]=String.valueOf(setIssueToDgconnBeneficiary(municipality.getLau().getId()));
             document[i][5]=String.valueOf(countMunicipality);
         }
-        CreateExcelFile cF=new CreateExcelFile(httpServletRequest);
-        cF.createExcelFile(header, document, "ExportBudgetaryCommitment.csv");
+        CreateFile cF=new CreateFile(httpServletRequest);
+        cF.createExcelFileBudgetaryCommitment(header, document, "ExportBudgetaryCommitment.xlsx");
+    }
+
+    @Transactional
+    public void importLegalEntityFBCValidate() throws Exception{
+        _log.info("importRegistrationData");
+        ReadFile rF=new ReadFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
+        rF.readExcelFileEntityFBCValidate();
     }
 
     private Integer setIssueToDgconnBeneficiary(Integer lauId) {

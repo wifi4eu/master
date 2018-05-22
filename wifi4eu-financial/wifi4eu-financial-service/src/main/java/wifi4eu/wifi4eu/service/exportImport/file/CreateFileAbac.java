@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.service.exportImport.excelFile;
+package wifi4eu.wifi4eu.service.exportImport.file;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -12,12 +12,12 @@ import java.awt.*;
 import java.io.*;
 import java.net.*;
 
-public class CreateExcelFileAbac {
+public class CreateFileAbac {
     public HttpServletRequest httpServletRequest;
 
-    public CreateExcelFileAbac(){}
+    public CreateFileAbac(){}
 
-    public CreateExcelFileAbac(HttpServletRequest httpServletRequest){
+    public CreateFileAbac(HttpServletRequest httpServletRequest){
         this.httpServletRequest=httpServletRequest;
     }
 

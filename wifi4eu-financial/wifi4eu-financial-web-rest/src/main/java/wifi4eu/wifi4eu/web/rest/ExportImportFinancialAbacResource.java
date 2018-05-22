@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.web.rest;
 
+import cec.budg.soatube.client.async.JmsProducerLocal;
+import cec.budg.soatube.client.sync.SoatubeWSClientLocal;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -14,28 +16,41 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euFinancialAbacService;
 import wifi4eu.wifi4eu.service.security.UserService;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletResponse;
+
 
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/exportImport", description = "Export and import registration data")
 @RequestMapping("exportImport")
-public class ExportImportWifi4euFinancialAbacResource {
+public class ExportImportFinancialAbacResource {
     @Autowired
     private UserService userService;
     @Autowired
     private ExportImportWifi4euFinancialAbacService exportImportWifi4euFinancialAbacService;
+    private final Logger _log = LoggerFactory.getLogger(ExportImportFinancialAbacResource.class);
+    private SoatubeWSClientLocal soaTubeWSClient;
+    private JmsProducerLocal jmsProducer;
 
-    private final Logger _log = LoggerFactory.getLogger(ExportImportWifi4euFinancialAbacResource.class);
 
+    public ExportImportFinancialAbacResource() throws NamingException {
+        InitialContext ic = new InitialContext();
+        jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JmsProducer");
+        soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/SoatubeWSClient");
+    }
 
     @ApiOperation(value = "Import Legal Entity File")
-    @RequestMapping(value = "/importLegalEntityF", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/importLegalEntityF", method = RequestMethod.POST, produces = "application/JSON")
+    //@ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO importLegalEntityF() {
+        public ResponseDTO importLegalEntityF(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
         try {
             _log.info("importLegalEntityF");
-            exportImportWifi4euFinancialAbacService.importLegalEntityF();
+            //For each register in the
+            exportImportWifi4euFinancialAbacService.importLegalEntityF(jmsProducer, jsonStringFile);
+            //
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
@@ -51,13 +66,15 @@ public class ExportImportWifi4euFinancialAbacResource {
     }
 
     @ApiOperation(value = "Import Budgetary Commitment")
-    @RequestMapping(value = "/importBudgetaryCommitment", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/importBudgetaryCommitment", method = RequestMethod.POST, produces = "application/JSON")
+    //@ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO importBudgetaryCommitment() {
+    public ResponseDTO importBudgetaryCommitment(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
         try {
             _log.info("importBudgetaryCommitment");
-            exportImportWifi4euFinancialAbacService.importBudgetaryCommitment();
+            //For each register in the
+            exportImportWifi4euFinancialAbacService.importBudgetaryCommitment(jmsProducer, jsonStringFile);
+            //
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
@@ -73,15 +90,12 @@ public class ExportImportWifi4euFinancialAbacResource {
     }
 
     @ApiOperation(value = "Export LEF and BC Validates")
-    @RequestMapping(value = "/exportLegalEntityFBCValidate", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/exportLegalEntityFBCValidate", method = RequestMethod.GET, produces = "application/JSON")
+    //@ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO exportLegalEntityFBCValidate() {
+    public ResponseDTO exportLegalEntityFBCValidate(final HttpServletResponse response) {
         try {
             _log.info("exportLegalEntityFBCValidate");
-//            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
-//                throw new AccessDeniedException("");
-//            }
             exportImportWifi4euFinancialAbacService.exportLegalEntityFBCValidate();
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {

@@ -1,10 +1,11 @@
-package wifi4eu.wifi4eu.common.dto.model;
+package wifi4eu.wifi4eu.entity.exportImport;
 
 import javax.persistence.*;
 
+@Entity
+public class ValidatedLEF {
 
-public class ExportImportLEFDTO {
-
+    @Id
     private Integer id;
 
     private Integer euRank;
@@ -25,9 +26,9 @@ public class ExportImportLEFDTO {
 
     private Integer municipality;
 
-    public ExportImportLEFDTO() {}
+    public ValidatedLEF() {}
 
-    public ExportImportLEFDTO(Integer id, Integer euRank, Integer countryRank, String countryName, String municipalityName, String issue, Integer numberOfRegistrations, String abacReference, String abacStandarName, Integer municipality) {
+    public ValidatedLEF(Integer id, Integer euRank, Integer countryRank, String countryName, String municipalityName, String issue, Integer numberOfRegistrations, String abacReference, String abacStandarName, Integer municipality) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;

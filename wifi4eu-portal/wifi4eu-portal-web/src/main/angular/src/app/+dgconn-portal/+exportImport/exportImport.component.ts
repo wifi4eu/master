@@ -92,5 +92,21 @@ export class DgConnExportImportComponent {
      }
 
      importLegalEntityFBCValidate(){
+      this.exportImportApi.importLegalEntityFBCValidate().subscribe(
+                     (response: ResponseDTO)  => {
+                         if(response.success){
+                             this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                             this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                                 (translation: string) => {
+                                     if (translation) {
+                                         window.alert(translation);
+                                     }
+                                 }
+                             );
+                         }
+                     },
+                     error => {
+                     }
+                 );
      }
 }
