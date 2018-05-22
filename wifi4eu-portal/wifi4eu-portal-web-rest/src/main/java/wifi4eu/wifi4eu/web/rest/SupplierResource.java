@@ -121,6 +121,56 @@ public class SupplierResource {
         }
     }
 
+    @ApiOperation(value = "update Contact Details")
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO updateContactDetails(@RequestBody final SupplierDTO supplier, HttpServletResponse response) throws IOException {
+        try {
+            _log.info("updateContactDetails");
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(supplier.getUserId() != userDTO.getId()){
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            SupplierDTO resSupplier = supplierService.updateContactDetails(supplier);
+            return new ResponseDTO(true, resSupplier, null);
+        }
+        catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+        catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'updateContactDetails' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "update Supplier Details")
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO updateSupplierDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
+        try {
+            _log.info("updateSupplierDetails");
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(supplierDTO.getUserId() != userDTO.getId()){
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            SupplierDTO resSupplier = supplierService.updateSupplierDetails(supplierDTO);
+            return new ResponseDTO(true, resSupplier, null);
+        }
+        catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+        catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'updateSupplierDetails' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
     //TODO: limit access to this service
     @ApiOperation(value = "Delete supplier by specific id")
     @RequestMapping(method = RequestMethod.DELETE)

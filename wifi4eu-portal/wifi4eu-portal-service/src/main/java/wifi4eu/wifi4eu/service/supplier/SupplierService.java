@@ -67,36 +67,58 @@ public class SupplierService {
     
     @Transactional
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
-        if (supplierDTO.getSuppliedRegions().isEmpty()) {
-            Integer supplierId = supplierDTO.getId();
-            List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
-            List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
-            for (SuppliedRegionDTO region : originalRegions) {
-                region.setSupplierId(supplierId);
-                correctRegions.add(region);
-            }
-            supplierDTO.setSuppliedRegions(correctRegions);
-            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+        if(userDTO != null ){
+            if (supplierDTO.getId() == 0) {
+                Integer supplierId = supplierDTO.getId();
+                List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
+                List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
+                for (SuppliedRegionDTO region : originalRegions) {
+                    region.setSupplierId(supplierId);
+                    correctRegions.add(region);
+                }
+                supplierDTO.setSuppliedRegions(correctRegions);
+                return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
 
-        } else {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getId() == supplierDTO.getUserId()) {
-                Supplier sendSupplierDTO = supplierRepository.findByUserId(supplierDTO.getUserId());
-                sendSupplierDTO.setContactName(supplierDTO.getContactName());
-                sendSupplierDTO.setContactSurname(supplierDTO.getContactName());
-                sendSupplierDTO.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
-                sendSupplierDTO.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
-                sendSupplierDTO.setName(supplierDTO.getName());
-                sendSupplierDTO.setAddress(supplierDTO.getAddress());
-                sendSupplierDTO.setVat(supplierDTO.getVat());
-                sendSupplierDTO.setBic(supplierDTO.getBic());
-                sendSupplierDTO.setLogo(supplierDTO.getLogo());
-                return supplierMapper.toDTO(supplierRepository.save(sendSupplierDTO));
             } else {
                 return null;
             }
         }
+        return null;
     }
+
+
+    @Transactional
+    public SupplierDTO updateContactDetails(SupplierDTO supplierDTO) {
+        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+        if (userDTO.getId() == supplierDTO.getUserId()) {
+            Supplier sendSupplierDTO = supplierRepository.findByUserId(supplierDTO.getUserId());
+            sendSupplierDTO.setContactName(supplierDTO.getContactName());
+            sendSupplierDTO.setContactSurname(supplierDTO.getContactName());
+            sendSupplierDTO.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
+            sendSupplierDTO.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
+            return supplierMapper.toDTO(supplierRepository.save(sendSupplierDTO));
+        } else {
+            return null;
+        }
+    }
+
+    @Transactional
+    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO) {
+        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+        if (userDTO.getId() == supplierDTO.getUserId()) {
+            Supplier sendSupplierDTO = supplierRepository.findByUserId(supplierDTO.getUserId());
+            sendSupplierDTO.setName(supplierDTO.getName());
+            sendSupplierDTO.setAddress(supplierDTO.getAddress());
+            sendSupplierDTO.setVat(supplierDTO.getVat());
+            sendSupplierDTO.setBic(supplierDTO.getBic());
+            sendSupplierDTO.setLogo(supplierDTO.getLogo());
+            return supplierMapper.toDTO(supplierRepository.save(sendSupplierDTO));
+        } else {
+            return null;
+        }
+    }
+
 
 /* OLD ONE
     @Transactional
