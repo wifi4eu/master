@@ -41,6 +41,7 @@ public class MayorResource {
 
     Logger _log = LoggerFactory.getLogger(MayorResource.class);
 
+    /*
     @ApiOperation(value = "Get all the mayors")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -58,7 +59,9 @@ public class MayorResource {
         }
         return null;
     }
+    */
 
+    /*
     @ApiOperation(value = "Get mayor by specific id")
     @RequestMapping(value = "/{mayorId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -71,6 +74,7 @@ public class MayorResource {
         }
         return mayorService.getMayorById(mayorId);
     }
+    */
 
     @ApiOperation(value = "Create mayor")
     @RequestMapping(method = RequestMethod.POST)
@@ -106,6 +110,7 @@ public class MayorResource {
         return new ResponseDTO(false, null, null);
     }
 
+    /*
     @ApiOperation(value = "Delete mayor by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
@@ -127,6 +132,7 @@ public class MayorResource {
         }
         return new ResponseDTO(false, null, null);
     }
+    */
 
     @ApiOperation(value = "Get mayor by specific municipality id")
     @RequestMapping(value = "/municipalityId/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
@@ -135,9 +141,10 @@ public class MayorResource {
         if (_log.isInfoEnabled()) {
             _log.info("getMayorByMunicipalityId: " + municipalityId);
         }
-
-        try{
-            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE+municipalityId);
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE+municipalityId);
+            }
         } catch (Exception e){
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
