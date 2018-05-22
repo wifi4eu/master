@@ -127,7 +127,7 @@ public class AccessPointService {
         }
 
         //checking if latitude and longitud complies with the regex
-        String regExLocation = "^([-+]?)([0-9]{1,2})(((.)([0-9]{6})))$";
+        String regExLocation = "^([-+]?)([0-9]{1,2})\\.([0-9]{6})$";
         String latitude = (String) map.get("latitude");
         String longitude = (String) map.get("longitude");
         if (control && latitude.matches(regExLocation) && longitude.matches(regExLocation)) {
