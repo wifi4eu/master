@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.service.exportImport.file;
+package wifi4eu.wifi4eu.service.exportImport.callAbac;
 
 import cec.budg.soatube.client.async.JmsProducerLocal;
 import cec.budg.soatube.client.util.BudgSOAException;
