@@ -48,7 +48,7 @@ public class ExportImportFinancialAbacResource {
         public ResponseDTO importLegalEntityF(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
         try {
             _log.info("importLegalEntityF");
-            //For each register in the
+            //For each register in the jsonFile.
             exportImportWifi4euFinancialAbacService.importLegalEntityF(jmsProducer, jsonStringFile);
             //
             return new ResponseDTO(true, null, null);
@@ -72,7 +72,7 @@ public class ExportImportFinancialAbacResource {
     public ResponseDTO importBudgetaryCommitment(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
         try {
             _log.info("importBudgetaryCommitment");
-            //For each register in the
+            //For each register in the jsonFile.
             exportImportWifi4euFinancialAbacService.importBudgetaryCommitment(jmsProducer, jsonStringFile);
             //
             return new ResponseDTO(true, null, null);
@@ -94,15 +94,8 @@ public class ExportImportFinancialAbacResource {
     //@ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO exportLegalEntityFBCValidate(final HttpServletResponse response) {
-        try {
-            _log.info("exportLegalEntityFBCValidate");
-            exportImportWifi4euFinancialAbacService.exportLegalEntityFBCValidate();
-            return new ResponseDTO(true, null, null);
-        } catch (AccessDeniedException ade) {
-            return new ResponseDTO(false, null, new ErrorDTO(0, null));
-        } catch (Exception e) {
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
+        _log.info("exportLegalEntityFBCValidate");
+        return exportImportWifi4euFinancialAbacService.exportLegalEntityFBCValidate();
     }
 
 }
