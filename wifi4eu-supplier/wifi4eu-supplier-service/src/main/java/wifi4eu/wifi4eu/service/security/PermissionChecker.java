@@ -9,6 +9,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.security.RightDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
@@ -19,6 +21,8 @@ import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.supplier.SupplierService;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -40,6 +44,12 @@ public class PermissionChecker {
 
     @Autowired
     RightRepository rightRepository;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    SupplierService supplierService;
 
     public boolean check(String rightDesc){
 
@@ -76,4 +86,23 @@ public class PermissionChecker {
         }
     }
 
+    /**
+     * Forbids petitions that are not from a logged user. It verifies that this user is a supplier.
+     * This means that in localhost making petitions using postman or any other rest client is not going to work if mr
+     * tester is not type 3. Please change it on your local database.
+     * @throws AccessDeniedException
+     */
+    public void checkSupplierPermission() throws AccessDeniedException{
+        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+        if (userDTO.getType() != 1 || supplierService.getSupplierByUserId(userDTO.getId()) == null) {
+            throw new AccessDeniedException("403 FORBIDDEN");
+        }
+    }
+
+    public ResponseDTO getAccessDeniedResponse(){
+        ResponseDTO response = new ResponseDTO();
+        response.setSuccess(false);
+        response.setError(new ErrorDTO(403, "shared.error.notallowed"));
+        return response;
+    }
 }

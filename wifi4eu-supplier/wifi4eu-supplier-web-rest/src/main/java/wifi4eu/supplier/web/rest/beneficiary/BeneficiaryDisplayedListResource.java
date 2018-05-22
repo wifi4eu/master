@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDisplayedListDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryDisplayedListService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -20,6 +21,9 @@ public class BeneficiaryDisplayedListResource {
     @Autowired
     private BeneficiaryDisplayedListService beneficiaryDisplayedListService;
 
+    @Autowired
+    private PermissionChecker permissionChecker;
+
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryDisplayedListResource.class);
 
 
@@ -28,6 +32,11 @@ public class BeneficiaryDisplayedListResource {
     @RequestMapping(value = "/beneficiaries-list", method= RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO getBeneficiariesList(){
+        try {
+            permissionChecker.checkSupplierPermission();
+        } catch (Exception e) {
+            return permissionChecker.getAccessDeniedResponse();
+        }
         return beneficiaryDisplayedListService.findBeneficiariesList();
     }
 
@@ -35,6 +44,11 @@ public class BeneficiaryDisplayedListResource {
     @RequestMapping(value = "/confirm-wifindicator/{id}", method= RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO confirmWifiIndicatorByMunicipalityId(@PathVariable("id") int id){
+        try {
+            permissionChecker.checkSupplierPermission();
+        } catch (Exception e) {
+            return permissionChecker.getAccessDeniedResponse();
+        }
         return beneficiaryDisplayedListService.confirmWifiIndicatorByMunicipalityId(id);
     }
 

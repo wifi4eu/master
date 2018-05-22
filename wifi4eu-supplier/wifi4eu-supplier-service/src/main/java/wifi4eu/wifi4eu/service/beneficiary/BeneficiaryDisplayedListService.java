@@ -75,8 +75,6 @@ public class BeneficiaryDisplayedListService {
             String email = registration.getUser().getEmail();
             String name = registration.getUser().getName();
             response.setSuccess(true);
-            // response.setData(registrationMapper.toDTO(registration));
-            // response.setData(registration);
             response.setData("WiFi Indicator updated successfully");
             cnsManager.sendInstallationConfirmationNotification(email, name);
         } else {

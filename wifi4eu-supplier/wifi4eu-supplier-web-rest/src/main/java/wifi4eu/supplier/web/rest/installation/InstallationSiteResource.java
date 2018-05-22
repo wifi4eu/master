@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.installation.InstallationSite;
 import wifi4eu.wifi4eu.service.installation.InstallationSiteService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
 import java.util.Map;
 
@@ -24,6 +25,9 @@ public class InstallationSiteResource {
     @Autowired
     private InstallationSiteService installationSiteService;
 
+    @Autowired
+    PermissionChecker permissionChecker;
+
     private final Logger _log = LoggerFactory.getLogger(InstallationSiteResource.class);
 
 
@@ -31,6 +35,11 @@ public class InstallationSiteResource {
     @RequestMapping(value="/list", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO getInstallationSiteListByBeneficiary(@RequestBody final Map<String, Object> installationText){
+        try {
+            permissionChecker.checkSupplierPermission();
+        } catch (Exception e) {
+            return permissionChecker.getAccessDeniedResponse();
+        }
         return installationSiteService.findInstallationSitesByBeneficiariesOrdered(installationText);
     }
 
@@ -48,6 +57,11 @@ public class InstallationSiteResource {
     @RequestMapping(value= "/add", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO addInstallationSite(@RequestBody final Map<String, Object> installationText){
+        try {
+            permissionChecker.checkSupplierPermission();
+        } catch (Exception e) {
+            return permissionChecker.getAccessDeniedResponse();
+        }
         return installationSiteService.addAndUpdateInstallationSite(installationText);
     }
 
@@ -55,6 +69,11 @@ public class InstallationSiteResource {
     @RequestMapping(value= "/update", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO updateInstallationSite(@RequestBody final Map<String, Object> installationText){
+        try {
+            permissionChecker.checkSupplierPermission();
+        } catch (Exception e) {
+            return permissionChecker.getAccessDeniedResponse();
+        }
         return installationSiteService.addAndUpdateInstallationSite(installationText);
     }
 
@@ -62,6 +81,11 @@ public class InstallationSiteResource {
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseDTO getInstallationSite(@PathVariable("id") int id){
+        try {
+            permissionChecker.checkSupplierPermission();
+        } catch (Exception e) {
+            return permissionChecker.getAccessDeniedResponse();
+        }
         return installationSiteService.getInstallationReport(id);
     }
 
@@ -69,17 +93,12 @@ public class InstallationSiteResource {
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseDTO removeInstallSite(@PathVariable("id") int id){
+        try {
+            permissionChecker.checkSupplierPermission();
+        } catch (Exception e) {
+            return permissionChecker.getAccessDeniedResponse();
+        }
         return installationSiteService.removeInstallationReport(id);
     }
 
-
-
- /*   @ApiOperation(value="Get all installation sites by beneficiary")
-    @RequestMapping(value="/installation-site-list/{id}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<InstallationSiteDTO> getInstallationSiteListByBeneficiary(@PathVariable("id") Integer id ){
-
-        return installationSiteService.findInstallationSiteListByBeneficiary(id);
-    }
-*/
 }
