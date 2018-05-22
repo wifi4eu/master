@@ -85,6 +85,17 @@ public class MunicipalityResource {
         return new ResponseDTO(true, null, null);
     }
 
+    @ApiOperation(value = "Get municipality by specific id for thread")
+    @RequestMapping(value = "/thread/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public MunicipalityDTO getMunicipalityThreadById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
+        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+
+        MunicipalityDTO municipality =  municipalityService.getMunicipalityById(municipalityId);
+        municipality.setRegistrations(null);
+        return municipality;
+    }
+
     @ApiOperation(value = "Update municipality details")
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody

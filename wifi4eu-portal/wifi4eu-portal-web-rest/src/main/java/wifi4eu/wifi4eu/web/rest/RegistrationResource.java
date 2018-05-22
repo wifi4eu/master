@@ -283,7 +283,7 @@ public class RegistrationResource {
         RegistrationDTO registration = registrationService.getRegistrationByUserThreadId(userThreadDTO.getThreadId(), userThreadDTO.getUserId());
 
         UserContext userContext = UserHolder.getUser();
-        UserDTO user = userService.getUserByEmail(userContext.getEmail());
+        UserDTO user = userService.getUserByUserContext(userContext);
 
         if (userThreadsService.getByUserIdAndThreadId(user.getId(), userThreadDTO.getThreadId()) != null) {
 
