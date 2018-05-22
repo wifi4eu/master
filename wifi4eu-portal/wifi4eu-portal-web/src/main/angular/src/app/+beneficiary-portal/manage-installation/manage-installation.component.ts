@@ -22,7 +22,7 @@ import {AccessPointBase} from "../../shared/swagger/model/AccessPoint";
 
 @Component({
     templateUrl: 'manage-installation.component.html',
-    providers: [MunicipalityApi, MayorApi, BeneficiaryApi, InstallationsiteApi, SearchParametersService, BeneficiaryService, AccesspointsApi]
+    providers: [MunicipalityApi, MayorApi, BeneficiaryApi, InstallationsiteApi, SearchParametersService, AccesspointsApi]
 })
 
 
@@ -61,7 +61,7 @@ export class ManageInstallationComponent {
                         if (response.success) {
                             this.municipality = response.data;
                             this.searchParametersService.parameters.id_beneficiary = this.municipality.id;
-                            this.beneficiaryService.beneficiarySelected = this.beneficiarySelected;
+                            this.beneficiaryService.beneficiarySelected = this.municipality;
                             this.onSearch();
                             this.registration = response.data.registrations[0];
                             this.indicators["id"] = this.registration.id;

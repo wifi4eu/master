@@ -51,12 +51,4 @@ public class InstallationSiteResource {
         return installationSiteService.getInstallationReport(id);
     }
 
- /*   @ApiOperation(value="Get all installation sites by beneficiary")
-    @RequestMapping(value="/installation-site-list/{id}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<InstallationSiteDTO> getInstallationSiteListByBeneficiary(@PathVariable("id") Integer id ){
-
-        return installationSiteService.findInstallationSiteListByBeneficiary(id);
-    }
-*/
 }

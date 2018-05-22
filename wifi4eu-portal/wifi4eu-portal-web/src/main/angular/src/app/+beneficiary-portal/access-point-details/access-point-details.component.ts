@@ -9,11 +9,12 @@ import {BeneficiaryService} from "../../core/services/beneficiary-service";
 import {AccesspointsApi} from "../../shared/swagger/api/AccesspointsApi";
 import {InstallationsiteApi} from "../../shared/swagger/api/InstallationsiteApi";
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
+import { SharedService } from '../../shared/shared.service';
 
 
 @Component({
     templateUrl: './access-point-details.component.html',
-    providers: [BeneficiaryService, ErrorHandlingService, AccesspointsApi, InstallationsiteApi, MunicipalityApi]
+    providers: [ ErrorHandlingService, AccesspointsApi, InstallationsiteApi, MunicipalityApi]
 })
 export class AccessPointDetailsComponent implements OnInit {
 
@@ -39,9 +40,15 @@ export class AccessPointDetailsComponent implements OnInit {
     private installationSite: number;
 
     constructor(private uxService: UxService, private router: Router, private location: Location, private route: ActivatedRoute,
-                private beneficiaryService: BeneficiaryService, private accessPointService: AccesspointsApi,
+                private beneficiaryService: BeneficiaryService, private accessPointService: AccesspointsApi, private sharedService: SharedService,
                 private errorHandlingService: ErrorHandlingService, private installationsiteApi: InstallationsiteApi, private municipalityApi: MunicipalityApi) {
         let id;
+        if (this.beneficiaryService.beneficiarySelected != undefined) {
+            this.municipalityName = this.beneficiaryService.beneficiarySelected.name;
+        } else {
+            this.router.navigateByUrl('/home');
+            this.sharedService.growlTranslation('You are not logged in!', 'error.404.AccessPointNotFound', 'warn');
+        }
         this.route.params.subscribe(params => id = params['id']);
         this.accessPointService.getAccessPointById(id).subscribe(
             accessPoint => {
@@ -60,13 +67,6 @@ export class AccessPointDetailsComponent implements OnInit {
                 this.installationsiteApi.getInstallationSite(this.installationSite).subscribe(
                     installation => {
                         this.installationSiteName = installation['data'].name;
-                        this.municipalityApi.getMunicipalityById(installation['data'].municipality).subscribe(
-                            municipality => {
-                                this.municipalityName = municipality['name'];
-                            }, error => {
-                                console.log(error);
-                            }
-                        );
                     }, error => {
                         console.log(error);
                     }
@@ -75,15 +75,7 @@ export class AccessPointDetailsComponent implements OnInit {
             }, error => {
             }
         );
-        if (this.beneficiaryService.beneficiarySelected != undefined) {
-            this.beneficiary = this.beneficiaryService.beneficiarySelected;
-        } else {
-        }
 
-        this.idSub = this.route.params.subscribe(params => {
-            this.installationSiteName = params['name'];
-            let apId = params['ap'];
-        });
     }
 
     ngOnInit() {

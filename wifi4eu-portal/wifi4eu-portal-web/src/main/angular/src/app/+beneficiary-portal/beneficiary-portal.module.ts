@@ -9,6 +9,7 @@ import {ManageInstallationComponent} from "./manage-installation/manage-installa
 import {InstallationDetailsComponent} from "./details-installation/installation-details.component";
 import {AccessPointListComponent} from "./access-point-list/access-point-list.component";
 import {AccessPointDetailsComponent} from "./access-point-details/access-point-details.component";
+import { BeneficiaryService } from "../core/services/beneficiary-service";
 
 // import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplier.component";
 
@@ -26,6 +27,8 @@ import {AccessPointDetailsComponent} from "./access-point-details/access-point-d
         AccessPointListComponent,
         AccessPointDetailsComponent
         // SelectSupplierComponent
+    ], providers: [
+        BeneficiaryService
     ]
     // ,
     // bootstrap: [BeneficiaryPortalComponent]

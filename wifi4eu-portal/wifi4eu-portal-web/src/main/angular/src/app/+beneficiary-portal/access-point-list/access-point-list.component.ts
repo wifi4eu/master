@@ -19,11 +19,12 @@ import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
 import {InstallationsiteApi} from "../../shared/swagger/api/InstallationsiteApi";
 import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {Location} from '@angular/common';
+import { SharedService } from '../../shared/shared.service';
 
 
 @Component({
     templateUrl: './access-point-list.component.html',
-    providers: [MunicipalityApi, MayorApi, BeneficiaryApi, InstallationsiteApi, SearchParametersService, BeneficiaryService, AccesspointsApi, ErrorHandlingService]
+    providers: [MunicipalityApi, MayorApi, BeneficiaryApi, InstallationsiteApi, SearchParametersService, AccesspointsApi, ErrorHandlingService]
 })
 export class AccessPointListComponent {
 
@@ -33,31 +34,29 @@ export class AccessPointListComponent {
     private installationSiteName: string = '';
     private accessPoint: AccessPointBase = new AccessPointBase();
     private user: UserDTOBase;
-    private municipality: MunicipalityDTOBase;
     private registration: RegistrationDTOBase;
     private municipalityName: String;
     //observable that gets the id from route params
     private idSub: any;
 
     constructor(private _location: Location, private installationsiteApi: InstallationsiteApi, private municipalityApi: MunicipalityApi, private registrationApi: RegistrationApi, private uxService: UxService, private router: Router, private route: ActivatedRoute,
-                private beneficiaryService: BeneficiaryService, public searchParametersService: SearchParametersService,
+                private beneficiaryService: BeneficiaryService, public searchParametersService: SearchParametersService, private sharedService: SharedService,
                 private accessPointApi: AccesspointsApi, private errorHandlingService: ErrorHandlingService, private localStorage: LocalStorageService) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
         if (this.user != null) {
+            if (this.beneficiaryService.beneficiarySelected != undefined) {
+                this.municipalityName = this.beneficiaryService.beneficiarySelected.name;
+            } else {
+                this.router.navigateByUrl('/home');
+                this.sharedService.growlTranslation('You are not logged in!', 'error.404.AccessPointNotFound', 'warn');
+            }
 
             this.idSub = this.route.params.subscribe(params => {
                 this.searchParametersService.parameters.id_installationSite = +params['id'];
                 this.installationsiteApi.getInstallationSite(this.searchParametersService.parameters.id_installationSite).subscribe(
                     installation => {
                         this.installationSiteName = installation['data'].name;
-                        this.municipalityApi.getMunicipalityById(installation['data'].municipality).subscribe(
-                            municipality => {
-                                this.municipalityName = municipality['name'];
-                            }, error => {
-                                console.log(error);
-                            }
-                        );
                     }, error => {
                         console.log(error);
                     }
