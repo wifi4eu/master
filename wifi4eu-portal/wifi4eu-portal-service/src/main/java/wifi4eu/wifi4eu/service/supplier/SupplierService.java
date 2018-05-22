@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
@@ -63,6 +64,36 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.findOne(supplierId));
     }
 
+    
+    @Transactional
+    public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
+        if (supplierDTO.getSuppliedRegions().isEmpty()) {
+            Integer supplierId = supplierDTO.getId();
+            List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
+            List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
+            for (SuppliedRegionDTO region : originalRegions) {
+                region.setSupplierId(supplierId);
+                correctRegions.add(region);
+            }
+            supplierDTO.setSuppliedRegions(correctRegions);
+            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+
+        } else {
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getId() == supplierDTO.getUserId()) {
+                Supplier sendSupplierDTO = supplierRepository.findByUserId(supplierDTO.getUserId());
+                sendSupplierDTO.setContactName(supplierDTO.getContactName());
+                sendSupplierDTO.setContactSurname(supplierDTO.getContactName());
+                sendSupplierDTO.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
+                sendSupplierDTO.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
+                return supplierMapper.toDTO(supplierRepository.save(sendSupplierDTO));
+            } else {
+                return null;
+            }
+        }
+    }
+
+/* OLD ONE
     @Transactional
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
         if (supplierDTO.getSuppliedRegions().isEmpty()) {
@@ -84,7 +115,7 @@ public class SupplierService {
             return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
         }
     }
-
+*/
     @Transactional
     public SupplierDTO deleteSupplier(int supplierId) {
         //TODO: change to a soft delete
