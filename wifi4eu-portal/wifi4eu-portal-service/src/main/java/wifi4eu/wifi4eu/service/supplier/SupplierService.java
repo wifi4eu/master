@@ -99,7 +99,7 @@ public class SupplierService {
         if (userDTO.getId() == supplierDTO.getUserId()) {
             Supplier sendSupplierDTO = supplierRepository.findByUserId(supplierDTO.getUserId());
             sendSupplierDTO.setContactName(supplierDTO.getContactName());
-            sendSupplierDTO.setContactSurname(supplierDTO.getContactName());
+            sendSupplierDTO.setContactSurname(supplierDTO.getContactSurname());
             sendSupplierDTO.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
             sendSupplierDTO.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
             return supplierMapper.toDTO(supplierRepository.save(sendSupplierDTO));
