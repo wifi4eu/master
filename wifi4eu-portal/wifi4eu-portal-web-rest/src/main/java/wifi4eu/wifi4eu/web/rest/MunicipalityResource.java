@@ -48,8 +48,8 @@ public class MunicipalityResource {
         _log.info("getMunicipalityById: " + municipalityId);
         try{
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
-                permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            if (userDTO.getType() != 5) {
+                permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             }
         }catch (Exception e){
             response.sendError(HttpStatus.NOT_FOUND.value());
