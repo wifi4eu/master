@@ -410,6 +410,7 @@ public class ApplicationService {
 
     public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application) {
         application.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
+        application.setInvalidateReason(null);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
     }
 
