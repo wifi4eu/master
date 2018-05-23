@@ -4,9 +4,12 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.cns.CNSManager;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -19,8 +22,11 @@ import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryDisplayedListRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
 import javax.xml.ws.Response;
+import java.security.Permission;
 import java.util.Date;
 
 @Service("beneficiary")
@@ -47,6 +53,11 @@ public class BeneficiaryDisplayedListService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    PermissionChecker permissionChecker;
+
+    @Autowired
+    ApplicationService applicationService;
 
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryDisplayedListService.class);
 
@@ -54,14 +65,15 @@ public class BeneficiaryDisplayedListService {
     public ResponseDTO findBeneficiariesList() {
         ResponseDTO response = new ResponseDTO();
         response.setSuccess(true);
-        UserDTO user = new UserDTO();
-        UserContext userContext = UserHolder.getUser();
-        if (userContext != null) {
-            user = userMapper.toDTO(userRepository.findByEcasUsername(userContext.getUsername()));
-        } else {
-            response.setError(new ErrorDTO(404, "error.404.userNotFound"));
+        SupplierDTO supplier;
+
+        try{
+            supplier = permissionChecker.checkSupplierPermission();
+        }catch (Exception e){
+            return permissionChecker.getAccessDeniedResponse();
         }
-        response.setData(beneficiaryDisplayedListMapper.toDTOList(Lists.newArrayList(beneficiaryDisplayedListRepository.findBeneficiariesList(user.getId()))));
+
+        response.setData(beneficiaryDisplayedListMapper.toDTOList(Lists.newArrayList(beneficiaryDisplayedListRepository.findBeneficiariesList(supplier.getUserId()))));
         return response;
     }
 
@@ -70,13 +82,15 @@ public class BeneficiaryDisplayedListService {
         ResponseDTO response = new ResponseDTO();
         Registration registration = registrationRepository.findByMunicipalityIdAndStatus(id, 2);
         if (registration != null) {
+
+            if (!checkPermissions(registration))
+                return permissionChecker.getAccessDeniedResponse();
+
             registration.setWifiIndicator(true);
             registrationRepository.save(registration);
             String email = registration.getUser().getEmail();
             String name = registration.getUser().getName();
             response.setSuccess(true);
-            // response.setData(registrationMapper.toDTO(registration));
-            // response.setData(registration);
             response.setData("WiFi Indicator updated successfully");
             cnsManager.sendInstallationConfirmationNotification(email, name);
         } else {
@@ -85,6 +99,22 @@ public class BeneficiaryDisplayedListService {
             response.setError(new ErrorDTO(404, "error.404.beneficiaryNotFound"));
         }
         return response;
+    }
+
+    public boolean checkPermissions(Registration registration) throws AccessDeniedException {
+        try {
+            //first we check if user logged in is a supplier
+            SupplierDTO supplier = permissionChecker.checkSupplierPermission();
+            //and then we check that it has a relation to this installation site's municipality
+            if (registration == null || applicationService.getApplicationBySupplierIdAndRegistrationId(supplier.getId
+                    (), registration.getId()) == null) {
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
 }

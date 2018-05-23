@@ -18,4 +18,5 @@ public interface InstallationSiteRepository extends PagingAndSortingRepository<I
 
     InstallationSite findInstallationSiteById(Integer id);
 
+    InstallationSite findInstallationSiteByIdAndMunicipality(Integer id, Integer municipality);
 }

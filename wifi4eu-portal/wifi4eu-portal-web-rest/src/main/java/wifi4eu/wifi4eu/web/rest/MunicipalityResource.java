@@ -72,23 +72,7 @@ public class MunicipalityResource {
             "application/json")
     @ResponseBody
     public ResponseDTO getUsersMunicipalityById(@PathVariable("municipalityId") final Integer municipalityId) {
-        _log.info("getMunicipalityById: " + municipalityId);
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-
-            if (userDTO.getType() != 5) {
-                permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + userDTO.getId());
-                permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + userDTO.getId());
-            }
-
-            return municipalityService.getUsersMunicipalityById(municipalityId, userDTO.getId());
-
-        } catch (Exception e) {
-            ResponseDTO response = new ResponseDTO();
-            response.setSuccess(false);
-            response.setError(new ErrorDTO(403, "shared.error.notallowed"));
-            return response;
-        }
+        return municipalityService.getUsersMunicipalityById(municipalityId);
     }
 
     @ApiOperation(value = "Create municipality")

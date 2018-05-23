@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.service.municipality;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -59,19 +60,32 @@ public class MunicipalityService {
      * @param municipalityId
      * @return
      */
-    public ResponseDTO getUsersMunicipalityById(Integer municipalityId, int userId) {
+    public ResponseDTO getUsersMunicipalityById(Integer municipalityId) {
         ResponseDTO response = new ResponseDTO();
         MunicipalityDTO municipality = getMunicipalityById(municipalityId);
-        List<RegistrationDTO> registrations = municipality.getRegistrations();
-        if (registrations.size() == 1 && registrations.get(0).getUserId() == userId) {
+        if (checkPermissions(municipalityId)) {
             response.setSuccess(true);
             response.setData(municipality);
         } else {
-            response.setSuccess(false);
-            response.setError(new ErrorDTO(403, "shared.error.notallowed"));
+            return permissionChecker.getAccessDeniedResponse();
         }
 
         return response;
+    }
+
+    public boolean checkPermissions(int idMunicipality) throws AccessDeniedException {
+        try {
+            //first we check if user logged in is a supplier
+            UserDTO user = permissionChecker.checkBeneficiaryPermission();
+            //and then we check that it has a relation to this installation site's municipality
+            if (registrationService.getRegistrationByUserAndMunicipality(user.getId(), idMunicipality) == null){
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     @Transactional

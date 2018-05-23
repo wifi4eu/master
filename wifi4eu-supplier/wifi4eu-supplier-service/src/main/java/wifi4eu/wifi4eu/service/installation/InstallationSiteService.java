@@ -4,7 +4,11 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
+import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.token.TokenGenerator;
@@ -13,7 +17,11 @@ import wifi4eu.wifi4eu.entity.installation.InstallationSiteWhitelist;
 import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepository;
 import wifi4eu.wifi4eu.repository.installation.InstallationSiteWhitelistRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.status.StatusRepository;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -41,6 +49,14 @@ public class InstallationSiteService {
     @Autowired
     InstallationSiteWhitelistRepository installationSiteWhitelistRepository;
 
+    @Autowired
+    PermissionChecker permissionChecker;
+
+    @Autowired
+    RegistrationService registrationService;
+
+    @Autowired
+    ApplicationService applicationService;
 
     private final Logger _log = LoggerFactory.getLogger(InstallationSiteService.class);
 
@@ -60,6 +76,10 @@ public class InstallationSiteService {
                     ("id_beneficiary")) == 1) {
 
                 id_beneficiary = (int) map.get("id_beneficiary");
+
+                // check permissions
+                if (!checkPermissions((int) map.get("id_beneficiary"), null))
+                    return permissionChecker.getAccessDeniedResponse();
 
                 try {
 
@@ -147,6 +167,10 @@ public class InstallationSiteService {
                 InstallationSite installationSite;
                 //if there's no id, we have to create a new installation site
                 if (!map.containsKey("id")) {
+                    //check permissions
+                    if (!checkPermissions((int) map.get("municipality"), null))
+                        return permissionChecker.getAccessDeniedResponse();
+
                     //system should check the URL of the captive portal is unique.
                     if (url != null && installationSiteRepository.countInstallationSiteByUrl(url) >= 1) {
                         response.setSuccess(false);
@@ -170,6 +194,10 @@ public class InstallationSiteService {
                     installationSite.setIdNetworkSnippet(token);
 
                 } else {
+                    // check permissions
+                    if (!checkPermissions((int) map.get("municipality"), (int) map.get("id")))
+                        return permissionChecker.getAccessDeniedResponse();
+
                     //system should check the URL of the captive portal is unique.
                     if (url != null && installationSiteRepository.countInstallationSiteByUrlAndIdNotIn(url, (int) map.get("id")) >= 1) {
                         response.setSuccess(false);
@@ -230,6 +258,10 @@ public class InstallationSiteService {
         ResponseDTO response = new ResponseDTO();
         InstallationSite installationSite = installationSiteRepository.findInstallationSiteById(id);
         if (installationSite != null) {
+            // check permissions
+            if (!checkPermissions(installationSite.getMunicipality(), id))
+                return permissionChecker.getAccessDeniedResponse();
+
             response.setSuccess(true);
             response.setData(installationSite);
         } else {
@@ -241,10 +273,15 @@ public class InstallationSiteService {
 
     public ResponseDTO removeInstallationReport(int id) {
         ResponseDTO response = new ResponseDTO();
-        if (installationSiteRepository.findInstallationSiteById(id) != null) {
+        InstallationSite installationSite = installationSiteRepository.findInstallationSiteById(id);
+        if (installationSite != null) {
+            // check permissions
+            if (!checkPermissions(installationSite.getMunicipality(), id))
+                return permissionChecker.getAccessDeniedResponse();
+
             // the domain will be removed from the whitelist
-            if (installationSiteRepository.countInstallationSiteByDomainName(installationSiteRepository.findInstallationSiteById(id).getDomainName()) == 1L) {
-                InstallationSiteWhitelist whitelist = installationSiteWhitelistRepository.findInstallationSiteWhitelistByOrigin(installationSiteRepository.findInstallationSiteById(id).getDomainName());
+            if (installationSiteRepository.countInstallationSiteByDomainName(installationSite.getDomainName()) == 1L) {
+                InstallationSiteWhitelist whitelist = installationSiteWhitelistRepository.findInstallationSiteWhitelistByOrigin(installationSite.getDomainName());
                 whitelistRepository.delete(whitelist);
             }
             installationSiteRepository.delete(id);
@@ -257,4 +294,21 @@ public class InstallationSiteService {
         return response;
     }
 
+    public boolean checkPermissions(int idMunicipality, Integer idInstSite) throws AccessDeniedException {
+        try {
+            //first we check if user logged in is a supplier
+            SupplierDTO supplier = permissionChecker.checkSupplierPermission();
+            //and then we check that it has a relation to this installation site's municipality
+            RegistrationDTO registration = registrationService.getRegistrationByMunicipalityId(idMunicipality);
+            if (registration == null || applicationService.getApplicationBySupplierIdAndRegistrationId(supplier.getId
+                    (), registration.getId()) == null || (idInstSite != null && installationSiteRepository
+                    .findInstallationSiteByIdAndMunicipality(idInstSite, idMunicipality) == null)) {
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 }

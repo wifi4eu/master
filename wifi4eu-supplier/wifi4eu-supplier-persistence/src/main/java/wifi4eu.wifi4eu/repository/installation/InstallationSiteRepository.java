@@ -33,7 +33,7 @@ public interface InstallationSiteRepository extends PagingAndSortingRepository<I
     Long selectMaxNumberInstallationSiteByMunicipalityId(Integer id);
 
     InstallationSite findInstallationSiteById(Integer id);
-
+    InstallationSite findInstallationSiteByIdAndMunicipality(Integer id, Integer municipality);
 
     Long countInstallationSiteByUrlAndIdNotIn(String url, Integer id);
     Long countInstallationSiteByUrl(String url);

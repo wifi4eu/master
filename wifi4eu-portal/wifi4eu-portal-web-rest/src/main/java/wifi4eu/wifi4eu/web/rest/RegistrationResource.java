@@ -103,15 +103,7 @@ public class RegistrationResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO confirmOrRejectInstallationReport(@RequestBody final Map<String, Object> map) {
-        try {
-             _log.info("saveRegistrationAndSendCNS");
             return registrationService.confirmOrRejectInstallationAndSendCNS(map);
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'saveRegistrationAndSendCNS' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
     }
 
     @ApiOperation(value = "Delete registration by specific id")
