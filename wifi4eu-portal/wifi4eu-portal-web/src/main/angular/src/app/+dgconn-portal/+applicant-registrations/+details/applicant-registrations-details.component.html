@@ -160,6 +160,12 @@
                                                     <span *ngIf="!row.uploadTime">-</span>
                                                 </ng-template>
                                             </p-column>
+                                            <p-column field="correctionReason" [sortable]="false" header="{{ 'dgConn.correctionReason' | translate }}" styleClass="text-center">
+                                                <ng-template let-row="rowData" pTemplate="body">
+                                                    <span *ngIf="row.correctionReason != null">{{invalidateReasonsList[row.correctionReason]}}</span>
+                                                    <span *ngIf="row.correctionReason == null">-</span>
+                                                </ng-template>
+                                            </p-column>
                                             <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
                                                     <a class="link-label" (click)="downloadLegalFile(i, row.type)">
@@ -298,7 +304,7 @@
                         <span>- <span>{{typeFilesList[typeNumber - 1]}}</span></span>
                     </p>
                     <p class="applicantDetailsNoMargin">
-                        <span class="ui-g-12">Reason:</span>
+                        <span class="ui-g-12">{{ 'dgConn.correctionReason' | translate }}:</span>
                         <span class="ui-g-12" style="margin-bottom: 1em;">
                             <select [(ngModel)]="selectedReasonTypes[selectedIndex][typeIndex]" (ngModelChange)="selectCorrectionReason($event)"
                                     id="invalidateReason" name="invalidateReason" class="form-control">
