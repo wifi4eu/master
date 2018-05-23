@@ -350,4 +350,6 @@ CREATE TABLE "WIFI4EU_ABAC"."VALIDATED_LEF" (
 CREATE TABLE "WIFI4EU_ABAC"."VALIDATED_BC" (
   "idBc" NUMBER(11,0) NOT NULL PRIMARY KEY
 );
-   
+
+insert INTO validated_lef("idLef") VALUES (1);
+insert INTO validated_bc("idBc") VALUES (1);

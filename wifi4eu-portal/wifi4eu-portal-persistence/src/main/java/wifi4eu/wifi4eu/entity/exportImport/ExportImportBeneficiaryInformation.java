@@ -3,27 +3,39 @@ package wifi4eu.wifi4eu.entity.exportImport;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "beneficiary_information")
 public class ExportImportBeneficiaryInformation {
 
+    @Column(name = "id")
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "euRank")
     private Integer euRank;
 
+    @Column(name = "countryRank")
     private Integer countryRank;
 
+    @Column(name = "countryName")
     private String countryName;
 
+    @Column(name = "municipalityName")
     private String municipalityName;
 
+    @Column(name = "issue")
     private String issue;
 
+    @Column(name = "numberOfRegistrations")
     private Integer numberOfRegistrations;
 
+    @Column(name = "abacReference")
     private String abacReference;
 
+    @Column(name = "abacStandarName")
     private String abacStandarName;
 
+    @Column(name = "municipality")
     private Integer municipality;
 
     public ExportImportBeneficiaryInformation() {}

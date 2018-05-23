@@ -100,68 +100,68 @@ public class JsonToXml
 //                "    }\n" +
 //                "}}";
 
-         json="{\"v1:BudgetaryCommitmentLevel2CreateRequest\": {\n" +
-                "    \"v1:BudgetaryCommitmentLevel2\": {\n" +
-                "        \"v1:BeneficiaryCountryIso2Code\": \"FI\",\n" +
-                "        \"v1:ClassCode\": \"FP\",\n" +
-                "        \"v1:ContractorReferences\": {\"v11:PrimaryContractorReference\": {\n" +
-                "            \"v11:StatusCode\": \"ACTIVE\",\n" +
-                "            \"xmlns:v11\": \"http://www.ec.europa.eu/budg/abac/contractor_reference/v1\",\n" +
-                "            \"v11:LegalEntityLocalKey\": 6000005308,\n" +
-                "            \"v11:LocalSystemCode\": \"AGV\",\n" +
-                "            \"v11:BankAccountLocalKey\": \"0002113983\"\n" +
-                "        }},\n" +
-                "        \"v1:LocalSystemCode\": \"AGV\",\n" +
-                "        \"v1:UserReference\": \"PAIEMENT FEAGA 2018 FINLAND\",\n" +
-                "        \"v1:FinancialRegulationGroupCode\": \"FR2012\",\n" +
-                "        \"v1:BudgetCompanyCode\": \"BG32\",\n" +
-                "        \"v1:CurrentBudgetYear\": \"B2018\",\n" +
-                "        \"v1:ImplementedByCode\": \"MS\",\n" +
-                "        \"v1:CommitmentPositions\": {\"v1:BudgetaryCommitmentLevel2Position\": {\n" +
-                "            \"v1:EntryInCurrencyAmount\": 0,\n" +
-                "            \"v1:AppropriationLocalKey\": \"BGUE-B2018-05.999999-C1-AGRI\",\n" +
-                "            \"v1:DgName\": \"AGRI\",\n" +
-                "            \"v1:PolicyAreaCode\": \"AGRI\",\n" +
-                "            \"v1:CarryForwardFlag\": true,\n" +
-                "            \"v1:ExpenseTypeCode\": \"AUT\",\n" +
-                "            \"v1:DocumentDetailNumber\": 1,\n" +
-                "            \"v1:AccountReference\": \"PAIEMENT FEAGA\",\n" +
-                "            \"v1:ProgramCode\": \"AGR_GLOB\",\n" +
-                "            \"v1:AssociatedCountries\": {\"v11:AssociatedCountry\": {\n" +
-                "                \"xmlns:v11\": \"http://www.ec.europa.eu/budg/abac/associated_country/v1\",\n" +
-                "                \"v11:CountryCode\": \"FI\",\n" +
-                "                \"v11:Percentage\": 100\n" +
-                "            }}\n" +
-                "        }},\n" +
-                "        \"v1:ResponsibleOrganisation\": {\n" +
-                "            \"v11:Name\": {\n" +
-                "                \"xmlns:v11\": \"http://www.ec.europa.eu/budg/abac/organisation/v1\",\n" +
-                "                \"content\": \"AGRI.R.4\"\n" +
-                "            },\n" +
-                "            \"v11:TypeCode\": {\n" +
-                "                \"xmlns:v11\": \"http://www.ec.europa.eu/budg/abac/organisation/v1\",\n" +
-                "                \"content\": \"UNT\"\n" +
-                "            }\n" +
-                "        },\n" +
-                "        \"v1:BudgetManagementTypeCode\": \"SM\",\n" +
-                "        \"v1:CurrencyIso3Code\": \"EUR\",\n" +
-                "        \"v1:LocalKey\": \"AGV12018FIPAU\",\n" +
-                "        \"v1:FdiDelimiterCode\": \"EA\",\n" +
-                "        \"v1:AresDocuments\": {\"v11:AresDocument\": {\n" +
-                "            \"v11:Description\": \"T103 Declaration FI 2017/11\",\n" +
-                "            \"xmlns:v11\": \"http://www.ec.europa.eu/budg/abac/ares_document/v1\",\n" +
-                "            \"v11:Reference\": \"Ares(2012)12345\",\n" +
-                "            \"v11:OfficialDocument\": true\n" +
-                "        }},\n" +
-                "        \"v1:ExpenditureCategoryCode\": \"FGA\",\n" +
-                "        \"v1:ProposedFdiDate\": \"2019-01-31+01:00\",\n" +
-                "        \"v1:LegalJustificationCode\": \"BF\",\n" +
-                "        \"v1:PaymentClassCode\": \"MUL\"\n" +
-                "    },\n" +
-                "    \"xmlns:rep\": \"http://www.ec.europa.eu/budg/report\",\n" +
-                "    \"v11:MessageHeader\": {\"v11:AgentId\": \"DUMONFA\"},\n" +
-                "    \"xmlns:v1\": \"http://www.ec.europa.eu/budg/abac/budgetary_commitment_level2/v1\"\n" +
-                "}}";
+//         json="{\"v1:BudgetaryCommitmentLevel2CreateRequest\": {\n" +
+//                "    \"v1:BudgetaryCommitmentLevel2\": {\n" +
+//                "        \"v1:BeneficiaryCountryIso2Code\": \"FI\",\n" +
+//                "        \"v1:ClassCode\": \"FP\",\n" +
+//                "        \"v1:ContractorReferences\": {\"v11:PrimaryContractorReference\": {\n" +
+//                "            \"v11:StatusCode\": \"ACTIVE\",\n" +
+//                "            \"xmlns:v11\": \"http://www.ec.europa.eu/budg/abac/contractor_reference/v1\",\n" +
+//                "            \"v11:LegalEntityLocalKey\": 6000005308,\n" +
+//                "            \"v11:LocalSystemCode\": \"AGV\",\n" +
+//                "            \"v11:BankAccountLocalKey\": \"0002113983\"\n" +
+//                "        }},\n" +
+//                "        \"v1:LocalSystemCode\": \"AGV\",\n" +
+//                "        \"v1:UserReference\": \"PAIEMENT FEAGA 2018 FINLAND\",\n" +
+//                "        \"v1:FinancialRegulationGroupCode\": \"FR2012\",\n" +
+//                "        \"v1:BudgetCompanyCode\": \"BG32\",\n" +
+//                "        \"v1:CurrentBudgetYear\": \"B2018\",\n" +
+//                "        \"v1:ImplementedByCode\": \"MS\",\n" +
+//                "        \"v1:CommitmentPositions\": {\"v1:BudgetaryCommitmentLevel2Position\": {\n" +
+//                "            \"v1:EntryInCurrencyAmount\": 0,\n" +
+//                "            \"v1:AppropriationLocalKey\": \"BGUE-B2018-05.999999-C1-AGRI\",\n" +
+//                "            \"v1:DgName\": \"AGRI\",\n" +
+//                "            \"v1:PolicyAreaCode\": \"AGRI\",\n" +
+//                "            \"v1:CarryForwardFlag\": true,\n" +
+//                "            \"v1:ExpenseTypeCode\": \"AUT\",\n" +
+//                "            \"v1:DocumentDetailNumber\": 1,\n" +
+//                "            \"v1:AccountReference\": \"PAIEMENT FEAGA\",\n" +
+//                "            \"v1:ProgramCode\": \"AGR_GLOB\",\n" +
+//                "            \"v1:AssociatedCountries\": {\"v11:AssociatedCountry\": {\n" +
+//                "                \"xmlns:v11\": \"http://www.ec.europa.eu/budg/abac/associated_country/v1\",\n" +
+//                "                \"v11:CountryCode\": \"FI\",\n" +
+//                "                \"v11:Percentage\": 100\n" +
+//                "            }}\n" +
+//                "        }},\n" +
+//                "        \"v1:ResponsibleOrganisation\": {\n" +
+//                "            \"v11:Name\": {\n" +
+//                "                \"xmlns:v11\": \"http://www.ec.europa.eu/budg/abac/organisation/v1\",\n" +
+//                "                \"content\": \"AGRI.R.4\"\n" +
+//                "            },\n" +
+//                "            \"v11:TypeCode\": {\n" +
+//                "                \"xmlns:v11\": \"http://www.ec.europa.eu/budg/abac/organisation/v1\",\n" +
+//                "                \"content\": \"UNT\"\n" +
+//                "            }\n" +
+//                "        },\n" +
+//                "        \"v1:BudgetManagementTypeCode\": \"SM\",\n" +
+//                "        \"v1:CurrencyIso3Code\": \"EUR\",\n" +
+//                "        \"v1:LocalKey\": \"AGV12018FIPAU\",\n" +
+//                "        \"v1:FdiDelimiterCode\": \"EA\",\n" +
+//                "        \"v1:AresDocuments\": {\"v11:AresDocument\": {\n" +
+//                "            \"v11:Description\": \"T103 Declaration FI 2017/11\",\n" +
+//                "            \"xmlns:v11\": \"http://www.ec.europa.eu/budg/abac/ares_document/v1\",\n" +
+//                "            \"v11:Reference\": \"Ares(2012)12345\",\n" +
+//                "            \"v11:OfficialDocument\": true\n" +
+//                "        }},\n" +
+//                "        \"v1:ExpenditureCategoryCode\": \"FGA\",\n" +
+//                "        \"v1:ProposedFdiDate\": \"2019-01-31+01:00\",\n" +
+//                "        \"v1:LegalJustificationCode\": \"BF\",\n" +
+//                "        \"v1:PaymentClassCode\": \"MUL\"\n" +
+//                "    },\n" +
+//                "    \"xmlns:rep\": \"http://www.ec.europa.eu/budg/report\",\n" +
+//                "    \"v11:MessageHeader\": {\"v11:AgentId\": \"DUMONFA\"},\n" +
+//                "    \"xmlns:v1\": \"http://www.ec.europa.eu/budg/abac/budgetary_commitment_level2/v1\"\n" +
+//                "}}";
 
 
 

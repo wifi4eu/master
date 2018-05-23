@@ -14,6 +14,10 @@ import wifi4eu.wifi4eu.mapper.exportImport.ValidatedBCMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ValidatedBCRepository;
 import wifi4eu.wifi4eu.service.exportImport.callAbac.CallAbac;
 import wifi4eu.wifi4eu.service.exportImport.callAbac.JsonToXml;
+import wifi4eu.wifi4eu.common.dto.model.ValidatedLEFDTO;
+import wifi4eu.wifi4eu.common.dto.model.ValidatedBCDTO;
+import java.util.Date;
+import java.util.List;import com.google.common.collect.Lists;
 
 
 
@@ -36,24 +40,22 @@ public class ExportImportFinancialAbacService {
 
     @Transactional
     public void importLegalEntityF(JmsProducerLocal jmsProducer, final String jsonStringFile) throws Exception{
-            _log.info("importLegalEntityF");
-            //Call and save the result.
-            JsonToXml jX=new JsonToXml();
-            String xml=jX.jsonToXml(jsonStringFile);
-            //CallAbac rF=new CallAbac(exportImportLEFRepository, exportImportLEFMapper);
-            CallAbac rF=new CallAbac();
-            rF.readImportFileLEF(jmsProducer, xml);
+        _log.info("importLegalEntityF");
+        JsonToXml jX=new JsonToXml();
+        String xml=jX.jsonToXml(jsonStringFile);
+        CallAbac rF=new CallAbac();
+        //Call and save the result.
+        rF.readImportFileLEF(jmsProducer, xml);
     }
 
     @Transactional
     public void importBudgetaryCommitment(JmsProducerLocal jmsProducer, final String jsonStringFile) throws Exception{
-            _log.info("importBudgetaryCommitment");
-            //Call and save the result.
-            JsonToXml jX=new JsonToXml();
-            String xml=jX.jsonToXml(jsonStringFile);
-            //CallAbac rF=new CallAbac(exportImportLEFRepository, exportImportLEFMapper);
-            CallAbac rF=new CallAbac();
-            rF.readImportFileBC(jmsProducer, xml);
+        _log.info("importBudgetaryCommitment");
+        JsonToXml jX=new JsonToXml();
+        String xml=jX.jsonToXml(jsonStringFile);
+        CallAbac rF=new CallAbac();
+        //Call and save the result.
+        rF.readImportFileBC(jmsProducer, xml);
     }
 
     public ResponseDTO exportLegalEntityFBCValidate() {
@@ -63,7 +65,39 @@ public class ExportImportFinancialAbacService {
         Gson gson = new GsonBuilder().create();
         JsonParser parser = new JsonParser();
         JsonObject resultJson = new JsonObject();
-        //Leer y poner el resultado en un ResultDTO.
+        //Leer Tables ValidatedLef y ValidatedBC y poner el resultado en un ResultDTO.
+        List<ValidatedLEFDTO> applicationsLEF = validatedLEFMapper.toDTOList(Lists.newArrayList(validatedLEFRepository.findLEF()));
+        JsonArray applicationsLEFJsonArray = new JsonArray();
+        if (applicationsLEF != null && !applicationsLEF.isEmpty()) {
+            for (ValidatedLEFDTO application : applicationsLEF) {
+//                long exportDate = new Date().getTime();
+//                application.setLefExport(exportDate);
+//                application.setBcExport(exportDate);
+//                application.setLcExport(exportDate);
+//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
+                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
+                applicationsLEFJsonArray.add(applicationJson);
+            }
+        }
+//        resultJson.addProperty("version", _version);
+        resultJson.addProperty("createTime", new Date().getTime());
+        resultJson.add("validatedLEF", applicationsLEFJsonArray);
+
+        List<ValidatedBCDTO> applicationsBC = validatedBCMapper.toDTOList(Lists.newArrayList(validatedBCRepository.findBC()));
+        JsonArray applicationsBCJsonArray = new JsonArray();
+        if (applicationsBC != null && !applicationsBC.isEmpty()) {
+            for (ValidatedBCDTO application : applicationsBC) {
+//                long exportDate = new Date().getTime();
+//                application.setLefExport(exportDate);
+//                application.setBcExport(exportDate);
+//                application.setLcExport(exportDate);
+//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
+                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
+                applicationsBCJsonArray.add(applicationJson);
+            }
+        }
+//        resultJson.addProperty("version", _version);
+        resultJson.add("validatedBC", applicationsBCJsonArray);
 
 //        List<BenPubSupDTO> applications = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findAll()));
 //        JsonArray applicationsJsonArray = new JsonArray();

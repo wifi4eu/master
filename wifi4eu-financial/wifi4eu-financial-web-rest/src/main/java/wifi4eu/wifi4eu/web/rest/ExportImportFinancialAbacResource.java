@@ -14,10 +14,11 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.exportImport.ExportImportFinancialAbacService;
 import wifi4eu.wifi4eu.service.security.UserService;
-
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 
 @CrossOrigin(origins = "*")
@@ -42,14 +43,15 @@ public class ExportImportFinancialAbacResource {
 
     @ApiOperation(value = "Import Legal Entity File")
     @RequestMapping(value = "/importLegalEntityF", method = RequestMethod.POST, produces = "application/JSON")
-    //@ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
         public ResponseDTO importLegalEntityF(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
         try {
             _log.info("importLegalEntityF");
-            //For each register in the jsonFile.
-            exportImportWifi4euFinancialAbacService.importLegalEntityF(jmsProducer, jsonStringFile);
-            //
+            JSONArray jsonArray = new JSONArray(jsonStringFile);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject object = jsonArray.getJSONObject(i);
+                exportImportWifi4euFinancialAbacService.importLegalEntityF(jmsProducer, object.toString());
+            }
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
@@ -66,14 +68,15 @@ public class ExportImportFinancialAbacResource {
 
     @ApiOperation(value = "Import Budgetary Commitment")
     @RequestMapping(value = "/importBudgetaryCommitment", method = RequestMethod.POST, produces = "application/JSON")
-    //@ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO importBudgetaryCommitment(@RequestBody final String jsonStringFile, final HttpServletResponse response) {
         try {
             _log.info("importBudgetaryCommitment");
-            //For each register in the jsonFile.
-            exportImportWifi4euFinancialAbacService.importBudgetaryCommitment(jmsProducer, jsonStringFile);
-            //
+            JSONArray jsonArray = new JSONArray(jsonStringFile);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject object = jsonArray.getJSONObject(i);
+                exportImportWifi4euFinancialAbacService.importBudgetaryCommitment(jmsProducer, object.toString());
+            }
             return new ResponseDTO(true, null, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
@@ -90,7 +93,6 @@ public class ExportImportFinancialAbacResource {
 
     @ApiOperation(value = "Export LEF and BC Validates")
     @RequestMapping(value = "/exportLegalEntityFBCValidate", method = RequestMethod.GET, produces = "application/JSON")
-    //@ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO exportLegalEntityFBCValidate(final HttpServletResponse response) {
         _log.info("exportLegalEntityFBCValidate");

@@ -53,7 +53,7 @@ export class DgConnExportImportComponent {
             );
      }
 
-     exportBeneficiaryInformation(){
+     /*exportBeneficiaryInformation(){
              this.exportImportApi.exportBeneficiaryInformation().subscribe(
                  (response: ResponseDTO)  => {
                      if(response.success){
@@ -70,9 +70,30 @@ export class DgConnExportImportComponent {
                  error => {
                  }
               );
-     }
+     }*/
 
-     exportBudgetaryCommitment(){
+      exportBeneficiaryInformation() {
+             var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertExport.jsp","mywindow","status=1,width=350,height=150");
+             this.exportImportApi.exportBeneficiaryInformation().subscribe(
+                 (response: ResponseDTO) => {
+                     if (response.success) {
+                         let blob = new Blob([response.data], {type: 'application/json'});
+                         FileSaver.saveAs(blob, "ExportBeneficiaryInformation.json");
+                         myWindow.close();
+                         window.alert("Export succesful!");
+                     } else {
+                         myWindow.close();
+                         window.alert("Export failed!");
+                     }
+                 }, error => {
+                     console.log(error);
+                     myWindow.close();
+                     window.alert("Something went wrong.");
+                 }
+             );
+      }
+
+     /*exportBudgetaryCommitment(){
              this.exportImportApi.exportBudgetaryCommitment().subscribe(
                   (response: ResponseDTO)  => {
                       if(response.success){
@@ -89,6 +110,27 @@ export class DgConnExportImportComponent {
                   error => {
                   }
                );
+     }*/
+
+     exportBudgetaryCommitment() {
+              var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertExport.jsp","mywindow","status=1,width=350,height=150");
+              this.exportImportApi.exportBudgetaryCommitment().subscribe(
+                  (response: ResponseDTO) => {
+                      if (response.success) {
+                          let blob = new Blob([response.data], {type: 'application/json'});
+                          FileSaver.saveAs(blob, "ExportBudgetaryCommitment.json");
+                          myWindow.close();
+                          window.alert("Export succesful!");
+                      } else {
+                          myWindow.close();
+                          window.alert("Export failed!");
+                      }
+                  }, error => {
+                      console.log(error);
+                      myWindow.close();
+                      window.alert("Something went wrong.");
+                  }
+              );
      }
 
      importLegalEntityFBCValidate(){

@@ -15,6 +15,8 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.service.exportImport.ExportImportWifi4euAbacService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.servlet.http.HttpServletResponse;
+
 @CrossOrigin(origins = "*")
 @Controller
 @Api(value = "/exportImport", description = "Export and import registration data")
@@ -68,42 +70,58 @@ public class ExportImportWifi4euAbacResource {
         }
     }
 
-    @ApiOperation(value = "Export beneficiary information")
-    @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.CREATED)
+//    @ApiOperation(value = "Export beneficiary information")
+//    @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET)
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseBody
+//    public ResponseDTO exportBeneficiaryInformation() {
+//        try {
+//            _log.info("exportBeneficiaryInformation");
+//            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
+//                throw new AccessDeniedException("");
+//            }
+//            exportImportWifi4euAbacService.exportBeneficiaryInformation();
+//            return new ResponseDTO(true, null, null);
+//        } catch (AccessDeniedException ade) {
+//            return new ResponseDTO(false, null, new ErrorDTO(0, null));
+//        } catch (Exception e) {
+//            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+//        }
+//    }
+
+    @ApiOperation(value = "Export Beneficiary Information")
+    @RequestMapping(value = "/exportBeneficiaryInformation", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
-    public ResponseDTO exportBeneficiaryInformation() {
-        try {
-            _log.info("exportBeneficiaryInformation");
-            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
-                throw new AccessDeniedException("");
-            }
-            exportImportWifi4euAbacService.exportBeneficiaryInformation();
-            return new ResponseDTO(true, null, null);
-        } catch (AccessDeniedException ade) {
-            return new ResponseDTO(false, null, new ErrorDTO(0, null));
-        } catch (Exception e) {
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
+    public ResponseDTO exportBeneficiaryInformation(final HttpServletResponse response) throws Exception {
+        _log.info("exportBeneficiaryInformation");
+        return exportImportWifi4euAbacService.exportBeneficiaryInformation();
     }
 
-    @ApiOperation(value = "Export budgetary commitment")
-    @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.CREATED)
+//    @ApiOperation(value = "Export budgetary commitment")
+//    @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET)
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseBody
+//    public ResponseDTO exportBudgetaryCommitment() {
+//        try {
+//            _log.info("exportBudgetaryCommitment");
+//            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
+//                throw new AccessDeniedException("");
+//            }
+//            exportImportWifi4euAbacService.exportBudgetaryCommitment();
+//            return new ResponseDTO(true, null, null);
+//        } catch (AccessDeniedException ade) {
+//            return new ResponseDTO(false, null, new ErrorDTO(0, null));
+//        } catch (Exception e) {
+//            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+//        }
+//    }
+
+    @ApiOperation(value = "Export Budgetary Commitment")
+    @RequestMapping(value = "/exportBudgetaryCommitment", method = RequestMethod.GET, produces = "application/JSON")
     @ResponseBody
-    public ResponseDTO exportBudgetaryCommitment() {
-        try {
-            _log.info("exportBudgetaryCommitment");
-            if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
-                throw new AccessDeniedException("");
-            }
-            exportImportWifi4euAbacService.exportBudgetaryCommitment();
-            return new ResponseDTO(true, null, null);
-        } catch (AccessDeniedException ade) {
-            return new ResponseDTO(false, null, new ErrorDTO(0, null));
-        } catch (Exception e) {
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
+    public ResponseDTO exportBudgetaryCommitment(final HttpServletResponse response) throws Exception {
+        _log.info("exportBudgetaryCommitment");
+        return exportImportWifi4euAbacService.exportBudgetaryCommitment();
     }
 
     @ApiOperation(value = "Import LEF and BC validates")

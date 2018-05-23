@@ -49,21 +49,7 @@ public class CallAbac {
 
     public CallAbac(){}
 
-//    public CallAbac(ExportImportLEFRepository exportImportLEFRepository, ExportImportLEFMapper exportImportLEFMapper) {
-//        this.exportImportLEFMapper = exportImportLEFMapper;
-//        this.exportImportLEFRepository = exportImportLEFRepository;
-//    }
-
     public void readImportFileLEF(JmsProducerLocal jmsProducer, String xml) throws NamingException, BudgSOAException, FieldGroup.CommitException {
-//        JFileChooser fc = new JFileChooser();
-//        int response = fc.showOpenDialog(null);
-//        File fil=null;
-//        if (response == JFileChooser.APPROVE_OPTION) {
-//            fil = fc.getSelectedFile();
-//        }
-//        String message="";
-//        if(fil.getName().equals("ExportBeneficiariInformation.csv")) {
-
         String message=xml;
 //        String message = "<v3:LegalEntityCreateRequest xmlns:v3=\"http://www.ec.europa.eu/budg/abac/legal_entity/v3\" xmlns:rep=\"http://www.ec.europa.eu/budg/report\">\n" +
 //                    "<v2:MessageHeader xmlns:v2=\"http://www.ec.europa.eu/budg/abac/kernel/v2\"/>\n" +
@@ -188,15 +174,6 @@ public class CallAbac {
     }
 
     public void readImportFileBC(JmsProducerLocal jmsProducer, String xml) throws NamingException, BudgSOAException, FieldGroup.CommitException {
-//        JFileChooser fc = new JFileChooser();
-//        int response = fc.showOpenDialog(null);
-//        File fil=null;
-//        if (response == JFileChooser.APPROVE_OPTION) {
-//            fil = fc.getSelectedFile();
-//        }
-//        String message="";
-//        if(fil.getName().equals("ExportBudgetaryCommitment.csv")) {
-
         String message=xml;
 //        String message = "<v11:AgentId>DUMONFA</v11:AgentId>\n" +
 //                    "</v11:MessageHeader>\n" +

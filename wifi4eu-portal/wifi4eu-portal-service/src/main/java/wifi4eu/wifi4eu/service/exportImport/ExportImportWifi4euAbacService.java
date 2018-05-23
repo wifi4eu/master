@@ -1,15 +1,15 @@
 package wifi4eu.wifi4eu.service.exportImport;
 
 import com.google.common.collect.Lists;
+import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.dto.model.ExportImportRegistrationDataDTO;
+import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportBeneficiaryInformationDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBeneficiaryInformationMapper;
@@ -18,16 +18,14 @@ import wifi4eu.wifi4eu.service.exportImport.file.CreateFile;
 import wifi4eu.wifi4eu.service.exportImport.file.ReadFile;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.common.dto.model.LauDTO;
 import wifi4eu.wifi4eu.service.location.LauService;
-import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
-import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List; 
+import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -114,84 +112,93 @@ public class ExportImportWifi4euAbacService {
         rF.readExcelFileRegistrationData();
     }
 
-    public void exportBeneficiaryInformation() throws Exception {
+    public ResponseDTO exportBeneficiaryInformation() throws Exception {
         _log.info("exportBeneficiaryInformation");
-        List<ExportImportBeneficiaryInformationDTO> exportImportBeneficiaryInformationList = exportImportBeneficiaryInformationMapper.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findExportImportBI()));
-        String [] header={"EU Rank", "Country Rank", "Country Name", "Municipality name", "Issue", "Number of registrations"};
-        String [][] document=new String[exportImportBeneficiaryInformationList.size()][7];
-        Integer [][] countryCount=new Integer[exportImportBeneficiaryInformationList.size()][2];
-        for(int i=0; i<exportImportBeneficiaryInformationList.size(); i++){
-            String country=exportImportBeneficiaryInformationList.get(i).getCountryName();
-            String municipailty=exportImportBeneficiaryInformationList.get(i).getMunicipalityName();
-            int countCountry=0;
-            int countMunicipality=0;
-            for(int u=0; u<exportImportBeneficiaryInformationList.size(); u++){
-                if(country.equals(exportImportBeneficiaryInformationList.get(u).getCountryName())){
-                    countCountry++;
-                    countryCount[u][0]=countCountry;
-                    countryCount[u][1]=exportImportBeneficiaryInformationList.get(u).getEuRank();
-
-                }
-                if(municipailty.equals(exportImportBeneficiaryInformationList.get(u).getMunicipalityName())){
-                    countMunicipality++;
-                }
+        ResponseDTO result = new ResponseDTO();
+        Gson gson = new GsonBuilder().create();
+        JsonParser parser = new JsonParser();
+        JsonObject resultJson = new JsonObject();
+        List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation = exportImportBeneficiaryInformationMapper.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findAll()));
+        JsonArray applicationsBeneficiaryInformationJsonArray = new JsonArray();
+        if (applicationsBeneficiaryInformation!= null && !applicationsBeneficiaryInformation.isEmpty()) {
+            for (ExportImportBeneficiaryInformationDTO application : applicationsBeneficiaryInformation) {
+//                long exportDate = new Date().getTime();
+//                application.setLefExport(exportDate);
+//                application.setBcExport(exportDate);
+//                application.setLcExport(exportDate);
+//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
+                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
+                applicationsBeneficiaryInformationJsonArray.add(applicationJson);
             }
-            document[i][0]=String.valueOf(exportImportBeneficiaryInformationList.get(i).getEuRank());
-            for(int w=0; w<countryCount.length; w++){
-                if(null!=countryCount[w][0]){
-                    if(exportImportBeneficiaryInformationList.get(i).getEuRank()==countryCount[w][1]){
-                        document[i][1] = String.valueOf(countryCount[w][0]);
-                    }
-                }
-            }
-            document[i][2]=exportImportBeneficiaryInformationList.get(i).getCountryName();
-            document[i][3]=exportImportBeneficiaryInformationList.get(i).getMunicipalityName();
-            Municipality municipality=municipalityRepository.findOne(exportImportBeneficiaryInformationList.get(i).getMunicipality());
-            document[i][4]=String.valueOf(setIssueToDgconnBeneficiary(municipality.getLau().getId()));
-            document[i][5]=String.valueOf(countMunicipality);
         }
-        CreateFile cF=new CreateFile(httpServletRequest);
-        cF.createExcelFileBeneficiaryInformation(header, document, "ExportBeneficiariInformation.csv");
+//        resultJson.addProperty("version", _version);
+        resultJson.addProperty("createTime", new Date().getTime());
+        resultJson.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
+
+//        List<BenPubSupDTO> applications = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findAll()));
+//        JsonArray applicationsJsonArray = new JsonArray();
+//        if (applications != null && !applications.isEmpty()) {
+//            for (BenPubSupDTO application : applications) {
+//                long exportDate = new Date().getTime();
+//                application.setLefExport(exportDate);
+//                application.setBcExport(exportDate);
+//                application.setLcExport(exportDate);
+//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
+//                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
+//                applicationsJsonArray.add(applicationJson);
+//            }
+//        }
+//        resultJson.addProperty("version", _version);
+//        resultJson.addProperty("createTime", new Date().getTime());
+//        resultJson.add("applications", applicationsJsonArray);
+        result.setSuccess(true);
+        result.setData(resultJson.toString());
+        result.setError(null);
+        return result;
     }
 
-    public void exportBudgetaryCommitment() throws Exception {
-        _log.info("exportBudgetaryCommitment");
-        List<ExportImportBeneficiaryInformationDTO> exportImportBeneficiaryInformationList = exportImportBeneficiaryInformationMapper.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findExportImportBI()));
-        String [] header={"EU Rank", "Country Rank", "Country Name", "Municipality name", "Issue", "Number of registrations"};
-        String [][] document=new String[exportImportBeneficiaryInformationList.size()][7];
-        Integer [][] countryCount=new Integer[exportImportBeneficiaryInformationList.size()][2];
-        for(int i=0; i<exportImportBeneficiaryInformationList.size(); i++){
-            String country=exportImportBeneficiaryInformationList.get(i).getCountryName();
-            String municipailty=exportImportBeneficiaryInformationList.get(i).getMunicipalityName();
-            int countCountry=0;
-            int countMunicipality=0;
-            for(int u=0; u<exportImportBeneficiaryInformationList.size(); u++){
-                if(country.equals(exportImportBeneficiaryInformationList.get(u).getCountryName())){
-                    countCountry++;
-                    countryCount[u][0]=countCountry;
-                    countryCount[u][1]=exportImportBeneficiaryInformationList.get(u).getEuRank();
-
-                }
-                if(municipailty.equals(exportImportBeneficiaryInformationList.get(u).getMunicipalityName())){
-                    countMunicipality++;
-                }
+    public ResponseDTO exportBudgetaryCommitment() throws Exception {
+        ResponseDTO result = new ResponseDTO();
+        Gson gson = new GsonBuilder().create();
+        JsonParser parser = new JsonParser();
+        JsonObject resultJson = new JsonObject();
+        List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation = exportImportBeneficiaryInformationMapper.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findAll()));
+        JsonArray applicationsBeneficiaryInformationJsonArray = new JsonArray();
+        if (applicationsBeneficiaryInformation!= null && !applicationsBeneficiaryInformation.isEmpty()) {
+            for (ExportImportBeneficiaryInformationDTO application : applicationsBeneficiaryInformation) {
+//                long exportDate = new Date().getTime();
+//                application.setLefExport(exportDate);
+//                application.setBcExport(exportDate);
+//                application.setLcExport(exportDate);
+//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
+                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
+                applicationsBeneficiaryInformationJsonArray.add(applicationJson);
             }
-            document[i][0]=String.valueOf(exportImportBeneficiaryInformationList.get(i).getEuRank());
-            for(int w=0; w<countryCount.length; w++){
-                if(null!=countryCount[w][0]){
-                    if(exportImportBeneficiaryInformationList.get(i).getEuRank()==countryCount[w][1]){
-                        document[i][1] = String.valueOf(countryCount[w][0]);
-                    }
-                }
-            }
-            document[i][2]=exportImportBeneficiaryInformationList.get(i).getCountryName();
-            document[i][3]=exportImportBeneficiaryInformationList.get(i).getMunicipalityName();
-            Municipality municipality=municipalityRepository.findOne(exportImportBeneficiaryInformationList.get(i).getMunicipality());
-            document[i][4]=String.valueOf(setIssueToDgconnBeneficiary(municipality.getLau().getId()));
-            document[i][5]=String.valueOf(countMunicipality);
         }
-        CreateFile cF=new CreateFile(httpServletRequest);
-        cF.createExcelFileBudgetaryCommitment(header, document, "ExportBudgetaryCommitment.xlsx");
+//        resultJson.addProperty("version", _version);
+        resultJson.addProperty("createTime", new Date().getTime());
+        resultJson.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
+
+//        List<BenPubSupDTO> applications = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findAll()));
+//        JsonArray applicationsJsonArray = new JsonArray();
+//        if (applications != null && !applications.isEmpty()) {
+//            for (BenPubSupDTO application : applications) {
+//                long exportDate = new Date().getTime();
+//                application.setLefExport(exportDate);
+//                application.setBcExport(exportDate);
+//                application.setLcExport(exportDate);
+//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
+//                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
+//                applicationsJsonArray.add(applicationJson);
+//            }
+//        }
+//        resultJson.addProperty("version", _version);
+//        resultJson.addProperty("createTime", new Date().getTime());
+//        resultJson.add("applications", applicationsJsonArray);
+        result.setSuccess(true);
+        result.setData(resultJson.toString());
+        result.setError(null);
+        return result;
     }
 
     @Transactional

@@ -27,18 +27,22 @@ export class AbacComponent {
                 this.jsonFile = event.target.files['0'];
                 let reader = new FileReader();
                 reader.onload = (e) => {
+                    var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertImport.jsp","mywindow","status=1,width=350,height=150");
                     this.exportImportApi.importLegalEntityF(reader.result).subscribe(
                         (response: ResponseDTO) => {
                             if (response.success) {
                                 this.exportEnabled = true;
-                                 //this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
-                                 //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                                //this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                                //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                                myWindow.close();
                                 window.alert("Import succesful!");
                             } else {
+                                myWindow.close();
                                 window.alert("Import failed!");
                             }
                         }, error => {
                             console.log(error);
+                            myWindow.close();
                             window.alert("Import failed! Make sure that the file you are uploading has the correct format.");
                         }
                     );
@@ -72,18 +76,22 @@ export class AbacComponent {
             this.jsonFile = event.target.files['0'];
             let reader = new FileReader();
             reader.onload = (e) => {
+                var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertImport.jsp","mywindow","status=1,width=350,height=150");
                 this.exportImportApi.importBudgetaryCommitment(reader.result).subscribe(
                     (response: ResponseDTO) => {
                         if (response.success) {
                             this.exportEnabled = true;
-                             //this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
-                             //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                            //this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                            //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                            myWindow.close();
                             window.alert("Import succesful!");
                         } else {
+                            myWindow.close();
                             window.alert("Import failed!");
                         }
                     }, error => {
                         console.log(error);
+                        myWindow.close();
                         window.alert("Import failed! Make sure that the file you are uploading has the correct format.");
                     }
                 );
@@ -112,17 +120,21 @@ export class AbacComponent {
     }
 
     exportLegalEntityFBCValidate() {
+            var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertExport.jsp","mywindow","status=1,width=350,height=150");
             this.exportImportApi.exportLegalEntityFBCValidate().subscribe(
                 (response: ResponseDTO) => {
                     if (response.success) {
                         let blob = new Blob([response.data], {type: 'application/json'});
                         FileSaver.saveAs(blob, "ExportLefBcValidate.json");
+                        myWindow.close();
                         window.alert("Export succesful!");
                     } else {
+                        myWindow.close();
                         window.alert("Export failed!");
                     }
                 }, error => {
                     console.log(error);
+                    myWindow.close();
                     window.alert("Something went wrong.");
                 }
             );
@@ -146,47 +158,47 @@ export class AbacComponent {
     }
 
 
-    //exportJson() {
-        //this.financialApi.exportAbacInformation().subscribe(
-            //(response: ResponseDTO) => {
-                //if (response.success) {
-                    //let blob = new Blob([response.data], {type: 'application/json'});
-                    //FileSaver.saveAs(blob, "financial_abac_export.json");
-                    //window.alert("Export succesful!");
-                //} else {
+    /*exportJson() {
+        this.financialApi.exportAbacInformation().subscribe(
+            (response: ResponseDTO) => {
+                if (response.success) {
+                    let blob = new Blob([response.data], {type: 'application/json'});
+                    FileSaver.saveAs(blob, "financial_abac_export.json");
+                    window.alert("Export succesful!");
+                } else {
                     //window.alert("Export failed!");
-                //}
-            //}, error => {
-                //console.log(error);
-                //window.alert("Something went wrong.");
-            //}
-        //);
-    //}
+                }
+            }, error => {
+                console.log(error);
+                window.alert("Something went wrong.");
+            }
+        );
+    }
 
-    //onFileSelection(event) {
-        //this.exportEnabled = false;
-        //if (event && event.target && event.target.files && event.target.files.length == 1) {
-            //this.jsonFile = event.target.files['0'];
-            //let reader = new FileReader();
-            //debugger;
-            //reader.onload = (e) => {
-                //this.financialApi.importAbacInformation(reader.result).subscribe(
-                    //(response: ResponseDTO) => {
-                        //if (response.success) {
-                            //this.exportEnabled = true;
-                            //window.alert("Import succesful!");
-                        //} else {
-                            //window.alert("Import failed!");
-                        //}
-                    //}, error => {
-                        //console.log(error);
-                        //window.alert("Import failed! Make sure that the file you are uploading has the correct format.");
-                    //}
-                //);
-            //};
-            //reader.readAsText(this.jsonFile);
-        //}
-    //}
+    onFileSelection(event) {
+        this.exportEnabled = false;
+        if (event && event.target && event.target.files && event.target.files.length == 1) {
+            this.jsonFile = event.target.files['0'];
+            let reader = new FileReader();
+            debugger;
+            reader.onload = (e) => {
+                this.financialApi.importAbacInformation(reader.result).subscribe(
+                    (response: ResponseDTO) => {
+                        if (response.success) {
+                            this.exportEnabled = true;
+                            window.alert("Import succesful!");
+                        } else {
+                            window.alert("Import failed!");
+                        }
+                    }, error => {
+                        console.log(error);
+                        window.alert("Import failed! Make sure that the file you are uploading has the correct format.");
+                    }
+                );
+            };
+            reader.readAsText(this.jsonFile);
+        }
+    }*/
 
     /*leSearch() {
         this.financialApi.leSearch().subscribe(
