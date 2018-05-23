@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.service.access_point;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
@@ -9,7 +10,10 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.access_point.AccessPoint;
 import wifi4eu.wifi4eu.repository.access_point.AccessPointRepository;
 import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepository;
+import wifi4eu.wifi4eu.service.installation.InstallationSiteService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
+import javax.persistence.Access;
 import javax.xml.ws.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +28,12 @@ public class AccessPointService {
     @Autowired
     InstallationSiteRepository installationSiteRepository;
 
+    @Autowired
+    InstallationSiteService installationSiteService;
+
+    @Autowired
+    PermissionChecker permissionChecker;
+
     // TODO missing field number (not appears on DB)
     // TODO missing device_type field
     private String[] FIELDS_ACCESS_POINTS_ORDER = {"number", "location", "location_type", "device_brand",
@@ -33,7 +43,10 @@ public class AccessPointService {
     @Transactional
     public ResponseDTO deleteAccessPointById(int id) {
         ResponseDTO response = new ResponseDTO();
-        if (accessPointRepository.findOne(id) != null) {
+        AccessPoint accessPoint = accessPointRepository.findOne(id);
+        if (accessPoint != null) {
+            if (!checkPermissions(accessPoint.getIdInstallationSite(), id))
+                return permissionChecker.getAccessDeniedResponse();
             accessPointRepository.delete(id);
             response.setSuccess(true);
             response.setData("Deleted successfully");
@@ -48,7 +61,12 @@ public class AccessPointService {
     @Transactional
     public ResponseDTO getAccessPointById(int id) {
         ResponseDTO response = new ResponseDTO();
-        if (accessPointRepository.findOne(id) != null) {
+        AccessPoint accessPoint = accessPointRepository.findOne(id);
+        if (accessPoint!= null) {
+
+            if (!checkPermissions(accessPoint.getIdInstallationSite(), id))
+                return permissionChecker.getAccessDeniedResponse();
+
             response.setSuccess(true);
             response.setData(accessPointRepository.findOne(id));
         } else {
@@ -69,6 +87,9 @@ public class AccessPointService {
                     // update access point
                     AccessPoint accessPoint = accessPointRepository.findOne((int) map.get("id"));
                     if (accessPoint != null) {
+                        if (!checkPermissions(accessPoint.getIdInstallationSite(), accessPoint.getId()))
+                            return permissionChecker.getAccessDeniedResponse();
+
                         if (setAccessPointFields(map, accessPoint, false)) {
                             accessPointRepository.save(accessPoint);
                             response.setSuccess(true);
@@ -82,6 +103,9 @@ public class AccessPointService {
                         response.setError(new ErrorDTO(404, "error.404.accessPointNotFound"));
                     }
                 } else {
+                    if (!checkPermissions((int) map.get("idInstallationSite"), null))
+                        return permissionChecker.getAccessDeniedResponse();
+
                     // add new access point
                     AccessPoint accessPoint = new AccessPoint();
                     if (setAccessPointFields(map, accessPoint, true)) {
@@ -183,6 +207,9 @@ public class AccessPointService {
 
                 id_installationSite = (int) map.get("id_installationSite");
 
+                if (!checkPermissions((int) map.get("id_installationSite"), null))
+                    return permissionChecker.getAccessDeniedResponse();
+
                 try {
 
                     if (map.containsKey("page") && (int) map.get("page") > 0) {
@@ -243,5 +270,20 @@ public class AccessPointService {
         return field;
     }
 
+    public boolean checkPermissions(Integer idInstSite, Integer idAccessPoint) throws AccessDeniedException {
+        //we already verify that this id exists before this point
+        try {
+            Integer idMunicipality = installationSiteRepository.findOne(idInstSite).getMunicipality();
+
+            if (!installationSiteService.checkPermissions(idMunicipality, idInstSite) || (idAccessPoint != null &&
+                    accessPointRepository.findAccessPointByIdAndIdInstallationSite(idAccessPoint, idInstSite) ==
+                            null)) {
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 
 }
