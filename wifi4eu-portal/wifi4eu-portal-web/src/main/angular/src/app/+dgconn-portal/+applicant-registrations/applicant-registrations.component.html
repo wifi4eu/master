@@ -54,7 +54,7 @@
         <div class="panel-dg" *ngIf="calls.length > 0">
             <div class="ui-g-12" style="padding: 1em 2em;border-bottom: 1px solid #bdbdbd;">
                 <a class="link-label right" [class.link-disabled]="loadingData || downloadingList" (click)="exportListExcel()">
-                    <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }} <i *ngIf="downloadingList" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
+                    <i class="fa fa-download" aria-hidden="true"></i>  {{ 'dgConn.exportExcel' | translate }} <i *ngIf="downloadingList" [@enterSpinner] class="fa fa-spinner loading-icon"></i>
                 </a>
             </div>
             <p-dataTable #tableBeneficiary [value]="applicantListItems" [lazy]="true" (onLazyLoad)="loadData($event)"
