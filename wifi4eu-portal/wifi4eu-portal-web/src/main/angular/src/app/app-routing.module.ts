@@ -39,10 +39,6 @@ import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.componen
             component: HelpdeskComponent,
             canActivate: [AppGuard]
         }, {
-            path: 'dgconn-portal',
-            loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
-            canActivate: [AppGuard]
-        }, {
             path: 'beneficiary-registration',
             loadChildren: 'app/beneficiary-registration/beneficiary-registration.module#BeneficiaryRegistrationModule',
             canActivate: [AppGuard]

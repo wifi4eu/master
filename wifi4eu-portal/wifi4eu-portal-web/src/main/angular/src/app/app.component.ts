@@ -204,12 +204,6 @@ export class AppComponent {
                     url: '#'
                 })
             ];
-            this.children[5] = [
-                new UxLayoutLink({
-                    label: this.menuTranslations.get('itemMenu.dgPortal'),
-                    url: 'dgconn-portal'
-                })
-            ];
             this.childrenInitialized.next();
         });
     }
@@ -246,10 +240,6 @@ export class AppComponent {
                 case 3:
                     this.profileUrl = '/beneficiary-portal/profile';
                     this.menuLinks = this.children[2];
-                    break;
-                case 5:
-                    this.profileUrl = '/dgconn-portal';
-                    this.menuLinks = this.children[5];
                     break;
                 default:
                     this.profileUrl = '/home';

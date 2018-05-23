@@ -50,9 +50,6 @@ export class AppGuard implements CanActivate {
             case 'supplier-portal':
                 allow = this.allowAccessToSupplier();
                 break;
-            case 'dgconn-portal':
-                allow = this.allowAccessToDgConn();
-                break;
         }
         return allow;
     }
