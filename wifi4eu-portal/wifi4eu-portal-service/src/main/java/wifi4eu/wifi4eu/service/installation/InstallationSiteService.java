@@ -14,6 +14,7 @@ import wifi4eu.wifi4eu.entity.installation.InstallationSite;
 import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.repository.installation.InstallationSiteRepository;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
+import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 //import wifi4eu.wifi4eu.repository.status.StatusRepository;
@@ -40,6 +41,9 @@ public class InstallationSiteService {
     @Autowired
     private RegistrationService registrationService;
 
+    @Autowired
+    MunicipalityService municipalityService;
+
     private final Logger _log = LoggerFactory.getLogger(InstallationSiteService.class);
 
     // TODO missing field number (not appears on DB)
@@ -54,7 +58,8 @@ public class InstallationSiteService {
             int page = 0;
             int delta = 10;
 
-            if (map.containsKey("id_beneficiary") && municipalityRepository.countMunicipalitiesById((Integer) map.get("id_beneficiary")) == 1) {
+            if (map.containsKey("id_beneficiary") && municipalityRepository.countMunicipalitiesById((Integer) map.get
+                    ("id_beneficiary")) == 1) {
 
                 id_beneficiary = (int) map.get("id_beneficiary");
 
@@ -138,12 +143,10 @@ public class InstallationSiteService {
     }
 
     public boolean checkPermissions(int idMunicipality, Integer idInstSite) throws AccessDeniedException {
-        UserDTO user;
         try {
-            //first we check if user logged in is a beneficiary
-            user = permissionChecker.checkBeneficiaryPermission();
-            //and then we check that his municipality is related to it
-            if (registrationService.getRegistrationByUserAndMunicipality(user.getId(), idMunicipality) == null ||
+            //first we check if the municipality corresponds to this user and then we check if the municipality has
+            // any relation to this installation site
+            if (municipalityService.checkPermissions(idMunicipality) ||
                     (idInstSite != null && installationSiteRepository.findInstallationSiteByIdAndMunicipality
                             (idInstSite, idMunicipality) == null)) {
                 throw new AccessDeniedException("403 FORBIDDEN");
