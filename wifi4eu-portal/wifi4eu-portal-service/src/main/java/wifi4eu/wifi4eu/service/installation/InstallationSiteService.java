@@ -146,7 +146,7 @@ public class InstallationSiteService {
         try {
             //first we check if the municipality corresponds to this user and then we check if the municipality has
             // any relation to this installation site
-            if (municipalityService.checkPermissions(idMunicipality) ||
+            if (!municipalityService.checkPermissions(idMunicipality) ||
                     (idInstSite != null && installationSiteRepository.findInstallationSiteByIdAndMunicipality
                             (idInstSite, idMunicipality) == null)) {
                 throw new AccessDeniedException("403 FORBIDDEN");
