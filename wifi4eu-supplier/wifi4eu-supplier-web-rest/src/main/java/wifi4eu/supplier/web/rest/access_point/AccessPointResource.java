@@ -29,18 +29,10 @@ public class AccessPointResource {
     @Autowired
     AccessPointService accessPointService;
 
-    @Autowired
-    PermissionChecker permissionChecker;
-
     @ApiOperation(value = "Get all Access Points per installation site ID")
     @RequestMapping(value = "/list", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO getAccessPointPerInstallationSite(@RequestBody final Map<String, Object> map) {
-        try {
-            permissionChecker.checkSupplierPermission();
-        } catch (Exception e) {
-            return permissionChecker.getAccessDeniedResponse();
-        }
         return accessPointService.findAccessPointsPerInstallationSite(map);
     }
 
@@ -48,11 +40,6 @@ public class AccessPointResource {
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO addOrUpdateAccessPoint(@RequestBody final Map<String, Object> map) {
-        try {
-            permissionChecker.checkSupplierPermission();
-        } catch (Exception e) {
-            return permissionChecker.getAccessDeniedResponse();
-        }
         return accessPointService.addOrUpdateAccessPoint(map);
     }
 
@@ -60,11 +47,6 @@ public class AccessPointResource {
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO getAccessPointById(@PathVariable("id") final int id) {
-        try {
-            permissionChecker.checkSupplierPermission();
-        } catch (Exception e) {
-            return permissionChecker.getAccessDeniedResponse();
-        }
         return accessPointService.getAccessPointById(id);
     }
 
@@ -72,11 +54,6 @@ public class AccessPointResource {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO deleteAccessPointById(@PathVariable("id") final int id) {
-        try {
-            permissionChecker.checkSupplierPermission();
-        } catch (Exception e) {
-            return permissionChecker.getAccessDeniedResponse();
-        }
         return accessPointService.deleteAccessPointById(id);
     }
 

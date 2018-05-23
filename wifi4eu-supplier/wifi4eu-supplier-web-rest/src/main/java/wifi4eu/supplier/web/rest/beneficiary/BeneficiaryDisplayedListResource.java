@@ -32,11 +32,6 @@ public class BeneficiaryDisplayedListResource {
     @RequestMapping(value = "/beneficiaries-list", method= RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO getBeneficiariesList(){
-        try {
-            permissionChecker.checkSupplierPermission();
-        } catch (Exception e) {
-            return permissionChecker.getAccessDeniedResponse();
-        }
         return beneficiaryDisplayedListService.findBeneficiariesList();
     }
 
@@ -44,11 +39,6 @@ public class BeneficiaryDisplayedListResource {
     @RequestMapping(value = "/confirm-wifindicator/{id}", method= RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO confirmWifiIndicatorByMunicipalityId(@PathVariable("id") int id){
-        try {
-            permissionChecker.checkSupplierPermission();
-        } catch (Exception e) {
-            return permissionChecker.getAccessDeniedResponse();
-        }
         return beneficiaryDisplayedListService.confirmWifiIndicatorByMunicipalityId(id);
     }
 

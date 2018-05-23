@@ -35,11 +35,6 @@ public class InstallationSiteResource {
     @RequestMapping(value="/list", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO getInstallationSiteListByBeneficiary(@RequestBody final Map<String, Object> installationText){
-        try {
-            permissionChecker.checkSupplierPermission();
-        } catch (Exception e) {
-            return permissionChecker.getAccessDeniedResponse();
-        }
         return installationSiteService.findInstallationSitesByBeneficiariesOrdered(installationText);
     }
 
@@ -57,11 +52,6 @@ public class InstallationSiteResource {
     @RequestMapping(value= "/add", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO addInstallationSite(@RequestBody final Map<String, Object> installationText){
-        try {
-            permissionChecker.checkSupplierPermission();
-        } catch (Exception e) {
-            return permissionChecker.getAccessDeniedResponse();
-        }
         return installationSiteService.addAndUpdateInstallationSite(installationText);
     }
 
@@ -69,11 +59,6 @@ public class InstallationSiteResource {
     @RequestMapping(value= "/update", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO updateInstallationSite(@RequestBody final Map<String, Object> installationText){
-        try {
-            permissionChecker.checkSupplierPermission();
-        } catch (Exception e) {
-            return permissionChecker.getAccessDeniedResponse();
-        }
         return installationSiteService.addAndUpdateInstallationSite(installationText);
     }
 
@@ -81,11 +66,6 @@ public class InstallationSiteResource {
     @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseDTO getInstallationSite(@PathVariable("id") int id){
-        try {
-            permissionChecker.checkSupplierPermission();
-        } catch (Exception e) {
-            return permissionChecker.getAccessDeniedResponse();
-        }
         return installationSiteService.getInstallationReport(id);
     }
 
@@ -93,11 +73,6 @@ public class InstallationSiteResource {
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseDTO removeInstallSite(@PathVariable("id") int id){
-        try {
-            permissionChecker.checkSupplierPermission();
-        } catch (Exception e) {
-            return permissionChecker.getAccessDeniedResponse();
-        }
         return installationSiteService.removeInstallationReport(id);
     }
 
