@@ -83,10 +83,4 @@ export class AppGuard implements CanActivate {
         return (this.sharedService.user.type == 3) ? true : false;
     }
 
-    private allowAccessToDgConn() {
-        if (this.sharedService.user === null) {
-            return false;
-        }
-        return (this.sharedService.user.type == 5) ? true : false;
-    }
 }
