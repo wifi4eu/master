@@ -1644,10 +1644,6 @@ p-tabview.white .ui-widget-content.ui-tabview {
   background-color: #ffeb3b;
 }
 
-.voucherModal {
-  text-align: center;
-}
-
 .dgConnDetailsHr {
   background:  none;
   border-top:  2px solid rgba(0, 0, 0, 0.1);
@@ -1668,4 +1664,13 @@ p-tabview.white .ui-widget-content.ui-tabview {
 
 input.email_profile::-ms-clear{
   display:none;
+}
+
+.voucherModal {
+  text-align: center;
+}
+
+.text-adjust {
+  overflow: hidden;
+  white-space: normal;
 }

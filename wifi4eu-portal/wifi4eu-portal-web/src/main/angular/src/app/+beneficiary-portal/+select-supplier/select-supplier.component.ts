@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { RegistrationDTOBase } from "../../shared/swagger/model/RegistrationDTO";
 import { CallApi } from "../../shared/swagger/api/CallApi";
 import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
@@ -44,6 +44,7 @@ export class selectSupplierComponent {
   supplierAssigned: SupplierDTOBase;
   displayMessage: boolean = false;
   hasSupplierAssigned: boolean = false;
+  stacked: boolean;
   
   // region: NutsDTOBase = null;
   region: any = {};
@@ -105,7 +106,11 @@ export class selectSupplierComponent {
         }
       );
     }
-
+  
+    if(window.innerWidth < 950) {
+       this.stacked = !this.stacked;
+       
+    }
 }
 
   /* Part 2: Get all suppliers that supply the specific region of the beneficiary */
@@ -165,5 +170,6 @@ export class selectSupplierComponent {
     );
     this.hasSupplierAssigned = true;
   }
+
 
 }
