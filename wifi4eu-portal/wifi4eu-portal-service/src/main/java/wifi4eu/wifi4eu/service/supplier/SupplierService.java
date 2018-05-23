@@ -7,13 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
@@ -94,44 +92,23 @@ public class SupplierService {
 
 
     @Transactional
-    public SupplierDTO updateContactDetails(SupplierDTO supplierDTO) {
-        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-        if (userDTO.getId() == supplierDTO.getUserId()) {
-            Supplier sendSupplierDTO = supplierRepository.findByUserId(supplierDTO.getUserId());
+    public SupplierDTO updateContactDetails(SupplierDTO supplierDTO, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber) {
+        supplierDTO.setContactName(contactName);
+        supplierDTO.setContactSurname(contactSurname);
+        supplierDTO.setContactPhonePrefix(contactPhonePrefix);
+        supplierDTO.setContactPhoneNumber(contactPhoneNumber);
 
-            if(supplierDTO.getId() != sendSupplierDTO.getId()){
-                throw new AccessDeniedException("");
-            }
-
-            sendSupplierDTO.setContactName(supplierDTO.getContactName());
-            sendSupplierDTO.setContactSurname(supplierDTO.getContactSurname());
-            sendSupplierDTO.setContactPhonePrefix(supplierDTO.getContactPhonePrefix());
-            sendSupplierDTO.setContactPhoneNumber(supplierDTO.getContactPhoneNumber());
-            return supplierMapper.toDTO(supplierRepository.save(sendSupplierDTO));
-        } else {
-            throw new AccessDeniedException("");
-        }
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
     }
 
     @Transactional
-    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO) {
-        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-        if (userDTO.getId() == supplierDTO.getUserId()) {
-            Supplier sendSupplierDTO = supplierRepository.findByUserId(supplierDTO.getUserId());
-
-            if(supplierDTO.getId() != sendSupplierDTO.getId()){
-                throw new AccessDeniedException("");
-            }
-
-            sendSupplierDTO.setName(supplierDTO.getName());
-            sendSupplierDTO.setAddress(supplierDTO.getAddress());
-            sendSupplierDTO.setVat(supplierDTO.getVat());
-            sendSupplierDTO.setBic(supplierDTO.getBic());
-            sendSupplierDTO.setLogo(supplierDTO.getLogo());
-            return supplierMapper.toDTO(supplierRepository.save(sendSupplierDTO));
-        } else {
-            throw new AccessDeniedException("");
-        }
+    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String logo) {
+      supplierDTO.setName(name);
+      supplierDTO.setAddress(address);
+      supplierDTO.setVat(vat);
+      supplierDTO.setBic(bic);
+      supplierDTO.setLogo(logo);
+      return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
     }
 
 

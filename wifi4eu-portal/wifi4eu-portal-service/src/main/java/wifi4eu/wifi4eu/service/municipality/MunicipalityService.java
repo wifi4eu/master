@@ -3,12 +3,9 @@ package wifi4eu.wifi4eu.service.municipality;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -57,16 +54,6 @@ public class MunicipalityService {
 
     @Transactional
     public MunicipalityDTO updateMunicipalityDetails(MunicipalityDTO municipalityDTO){
-
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userDTO = userService.getUserByUserContext(userContext);
-
-        RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
-
-        if(registrationDTO.getUserId() != userDTO.getId()){
-            throw new AccessDeniedException("");
-        }
-
         MunicipalityDTO municipalitySave = municipalityService.getMunicipalityById(municipalityDTO.getId());
 
         municipalitySave.setAddress(municipalityDTO.getAddress());

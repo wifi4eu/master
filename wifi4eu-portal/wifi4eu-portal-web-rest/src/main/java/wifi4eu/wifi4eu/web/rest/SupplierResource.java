@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -71,14 +72,14 @@ public class SupplierResource {
     @RequestMapping(value = "/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public SupplierDTO getSupplierById(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
-        SupplierDTO supplierDTO = new SupplierDTO();
+        SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
         try {
             _log.info("getSupplierById: " + supplierId);
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (supplierDTO.getUserId() != userDTO.getId() && userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            supplierDTO = supplierService.getSupplierById(supplierId);
+            return supplierService.getSupplierById(supplierId);
         } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
@@ -87,7 +88,7 @@ public class SupplierResource {
             }
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
-        return supplierDTO;
+        return null;
     }
 
     //TODO: is it necessary to be exposed? All the registration have to use submitSupplierRegistration endpoint?
@@ -125,7 +126,14 @@ public class SupplierResource {
             if (supplierDTO.getUserId() != userDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierDTO resSupplier = supplierService.updateContactDetails(supplierDTO);
+
+            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierDTO.getUserId());
+
+            if(supplierDTO.getId() != sendSupplierDTO.getId()){
+                throw new AccessDeniedException("");
+            }
+
+            SupplierDTO resSupplier = supplierService.updateContactDetails(sendSupplierDTO, supplierDTO.getContactName(), supplierDTO.getContactSurname(), supplierDTO.getContactPhonePrefix(), supplierDTO.getContactPhoneNumber());
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
@@ -148,7 +156,15 @@ public class SupplierResource {
             if (supplierDTO.getUserId() != userDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            SupplierDTO resSupplier = supplierService.updateSupplierDetails(supplierDTO);
+
+            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierDTO.getUserId());
+
+            if(supplierDTO.getId() != sendSupplierDTO.getId()){
+                throw new AccessDeniedException("");
+            }
+
+            SupplierDTO resSupplier = supplierService.updateSupplierDetails(sendSupplierDTO, supplierDTO.getName(), supplierDTO.getAddress(), supplierDTO.getVat(), supplierDTO.getBic(), supplierDTO.getLogo());
+            
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
@@ -157,35 +173,37 @@ public class SupplierResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'updateSupplierDetails' operation.", e);
             }
+            response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 
     //TODO: limit access to this service
-    @ApiOperation(value = "Delete supplier by specific id")
-    @RequestMapping(method = RequestMethod.DELETE)
-    @ResponseBody
-    public ResponseDTO deleteSupplier(@RequestBody final Integer supplierId, HttpServletResponse response) throws IOException {
-        try {
-            SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-
-            if (userDTO.getId() != supplierDTO.getUserId()) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-            _log.info("deleteSupplier: " + supplierId);
-            SupplierDTO resSupplier = supplierService.deleteSupplier(supplierId);
-            return new ResponseDTO(true, resSupplier, null);
-        } catch (AccessDeniedException ade) {
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), ade.getMessage()));
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteSupplier' operation.", e);
-            }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
-    }
+//    @ApiOperation(value = "Delete supplier by specific id")
+//    @RequestMapping(method = RequestMethod.DELETE)
+//    @ResponseBody
+//    public ResponseDTO deleteSupplier(@RequestBody final Integer supplierId, HttpServletResponse response) throws IOException {
+//        try {
+//            SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
+//            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+//
+//            if (userDTO.getId() != supplierDTO.getUserId()) {
+//                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+//            }
+//            _log.info("deleteSupplier: " + supplierId);
+//            SupplierDTO resSupplier = supplierService.deleteSupplier(supplierId);
+//            return new ResponseDTO(true, resSupplier, null);
+//        } catch (AccessDeniedException ade) {
+//            response.sendError(HttpStatus.NOT_FOUND.value());
+//            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), ade.getMessage()));
+//        } catch (Exception e) {
+//            if (_log.isErrorEnabled()) {
+//                _log.error("Error on 'deleteSupplier' operation.", e);
+//            }
+//            response.sendError(HttpStatus.NOT_FOUND.value());
+//            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+//        }
+//    }
 
     @ApiOperation(value = "Submit supplier registration")
     @RequestMapping(value = "/submitRegistration", method = RequestMethod.POST)

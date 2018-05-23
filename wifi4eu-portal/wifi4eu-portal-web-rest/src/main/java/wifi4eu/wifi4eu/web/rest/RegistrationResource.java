@@ -122,6 +122,13 @@ public class RegistrationResource {
             _log.info("createRegistration");
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
 
+            UserContext userContext = UserHolder.getUser();
+            UserDTO userDTO = userService.getUserByUserContext(userContext);
+
+            if(userDTO.getId() != registrationDTO.getUserId()){
+                throw new AccessDeniedException("");
+            }
+
             RegistrationDTO resRegistration = registrationService.updateRegistrationDocuments(registrationDTO);
             return new ResponseDTO(true, resRegistration, null);
         }catch (Exception e){

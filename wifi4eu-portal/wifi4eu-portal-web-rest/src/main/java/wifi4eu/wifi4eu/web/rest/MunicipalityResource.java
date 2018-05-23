@@ -12,12 +12,14 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -38,6 +40,9 @@ public class MunicipalityResource {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RegistrationService registrationService;
 
     Logger _log = LoggerFactory.getLogger(MunicipalityResource.class);
 
@@ -89,8 +94,6 @@ public class MunicipalityResource {
     @RequestMapping(value = "/thread/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public MunicipalityDTO getMunicipalityThreadById(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
-        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-
         MunicipalityDTO municipality =  municipalityService.getMunicipalityById(municipalityId);
         municipality.setRegistrations(null);
         return municipality;
@@ -102,11 +105,16 @@ public class MunicipalityResource {
     public ResponseDTO updateMunicipalityDetails(@RequestBody final MunicipalityDTO municipalityDTO,
                                           HttpServletResponse response) throws IOException {
         try {
-            //check permission
-            int municipalityId = municipalityDTO.getId();
-            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
-            MunicipalityDTO resMunicipality = municipalityService.updateMunicipalityDetails(municipalityDTO);
-            return new ResponseDTO(true, resMunicipality, null);
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+    
+            RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipalityDTO.getId());
+    
+            if(registrationDTO.getUserId() != userDTO.getId()){
+                throw new AccessDeniedException("");
+            }
+
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityDTO.getId());
+            return new ResponseDTO(true, municipalityService.updateMunicipalityDetails(municipalityDTO), null);
         }
         catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
@@ -121,7 +129,7 @@ public class MunicipalityResource {
         }
     }
 
-    @ApiOperation(value = "Delete municipality by specific id")
+    /* @ApiOperation(value = "Delete municipality by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseDTO deleteMunicipality(@RequestBody final Integer municipalityId, HttpServletResponse response) throws IOException {
@@ -141,7 +149,7 @@ public class MunicipalityResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return new ResponseDTO(true, null, null);
-    }
+    } */
 
     @ApiOperation(value = "Get municipalities by specific lau id")
     @ApiImplicitParams({

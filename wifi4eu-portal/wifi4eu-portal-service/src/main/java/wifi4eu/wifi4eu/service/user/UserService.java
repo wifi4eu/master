@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -200,19 +199,12 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO updateUserDetails(UserDTO userDTO) {
+    public UserDTO updateUserDetails(UserDTO userDTO, String name, String surname) {
 
-        UserContext userContext = UserHolder.getUser();
-        UserDTO userConnected = getUserByUserContext(userContext);
+        userDTO.setName(name);
+        userDTO.setSurname(surname);
 
-        if(userDTO.getId() != userConnected.getId()){
-            throw new AccessDeniedException("");
-        }
-
-        userConnected.setName(userDTO.getName());
-        userConnected.setSurname(userDTO.getSurname());
-
-        return userMapper.toDTO(userRepository.save(userMapper.toEntity(userConnected)));
+        return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
     }
 
     public List<UserDTO> getUsersByType(int type) {

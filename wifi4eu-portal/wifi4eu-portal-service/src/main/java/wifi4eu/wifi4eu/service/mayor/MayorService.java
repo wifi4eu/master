@@ -2,15 +2,9 @@ package wifi4eu.wifi4eu.service.mayor;
 
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
-import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
-import wifi4eu.wifi4eu.common.dto.model.UserDTO;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.mayor.MayorMapper;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -46,33 +40,24 @@ public class MayorService {
 
     @Transactional
     public MayorDTO createMayor(MayorDTO mayorDTO) {
-        return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
+
+      MayorDTO resMayor = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
+
+      MayorDTO mayorDTO1 = getMayorByMunicipalityId(mayorDTO.getMunicipalityId());
+      if(mayorDTO1 != null) {
+        resMayor.setEmail(mayorDTO1.getEmail());
+      }
+
+      return resMayor;
     }
 
     @Transactional
-    public MayorDTO updateMayor(MayorDTO mayorDTO) {
+    public MayorDTO updateMayor(MayorDTO mayorDetails, String name, String surname) {
       
-      int mayorId = mayorDTO.getId();
-
-      MayorDTO mayorDetails = getMayorById(mayorId);
-      
-      UserContext userContext = UserHolder.getUser();
-      UserDTO userDTO = userService.getUserByUserContext(userContext);
-      
-      RegistrationDTO registrationDTO =  registrationService.getRegistrationByMunicipalityId(mayorDetails.getMunicipalityId());
-      
-      if(userDTO.getId() != registrationDTO.getUserId()){
-        throw new AccessDeniedException("");
-      }
-     
-      //check permission
-      permissionChecker.check(RightConstants.MAYORS_TABLE+mayorId);
-      
-      mayorDetails.setName(mayorDTO.getName());
-      mayorDetails.setSurname(mayorDTO.getSurname());
+      mayorDetails.setName(name);
+      mayorDetails.setSurname(surname);
       
       return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDetails)));
-
     }
 
     @Transactional
@@ -87,6 +72,6 @@ public class MayorService {
     }
 
     public MayorDTO getMayorByMunicipalityId(int municipalityId) {
-        return mayorMapper.toDTO(mayorRepository.findByMunicipalityId(municipalityId));
+      return mayorMapper.toDTO(mayorRepository.findByMunicipalityId(municipalityId));
     }
 }
