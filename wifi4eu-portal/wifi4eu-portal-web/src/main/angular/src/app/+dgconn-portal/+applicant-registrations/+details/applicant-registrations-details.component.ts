@@ -387,12 +387,12 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 this.typeFilesList[0] = translatedString;
             }
         );
-        this.translateService.get('dgConn.applicantDetails.legalFile.name.type2').subscribe(
+        this.translateService.get('dgConn.applicantDetails.legalFile.name.type3').subscribe(
             (translatedString: string) => {
                 this.typeFilesList[1] = translatedString;
             }
         );
-        this.translateService.get('dgConn.applicantDetails.legalFile.name.type3').subscribe(
+        this.translateService.get('dgConn.applicantDetails.legalFile.name.type2').subscribe(
             (translatedString: string) => {
                 this.typeFilesList[2] = translatedString;
             }
