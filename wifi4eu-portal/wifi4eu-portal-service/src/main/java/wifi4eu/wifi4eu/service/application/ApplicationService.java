@@ -326,11 +326,23 @@ public class ApplicationService {
         for (int i = 0; i < applicantsList.size(); i++) {
             ApplicantListItemDTO applicant = applicantsList.get(i);
             List<ApplicationDTO> applications = applicationMapper.toDTOList(applicationRepository.findByCallIdAndLauId(callId, applicant.getLauId()));
-            if (applicant.getCounter() == 1) {
-                RegistrationDTO registration = registrationService.getRegistrationById(applications.get(0).getRegistrationId());
-                applicant.setIssueStatus(registrationService.getRegistrationIssue(registration));
-            } else {
-                applicant.setIssueStatus(0);
+            if (applicant.getCounter() == 1 || applicant.getCounter() == 0) {
+                ApplicationDTO validApplication = null;
+                for (ApplicationDTO application : applications) {
+                    if (application.getStatus() != ApplicationStatus.KO.getValue()) {
+                        validApplication = application;
+                    }
+                }
+                if (validApplication != null) {
+                    if (applicant.getStatus() == -1 || applicant.getApplicationDate() == -1) {
+                        applicant.setStatus(validApplication.getStatus());
+                        applicant.setApplicationDate(validApplication.getDate());
+                    }
+                    RegistrationDTO registration = registrationService.getRegistrationById(validApplication.getRegistrationId());
+                    applicant.setIssueStatus(registrationService.getRegistrationIssue(registration));
+                } else {
+                    applicant.setStatus(ApplicationStatus.KO.getValue());
+                }
             }
             applicantsList.set(i, applicant);
         }
