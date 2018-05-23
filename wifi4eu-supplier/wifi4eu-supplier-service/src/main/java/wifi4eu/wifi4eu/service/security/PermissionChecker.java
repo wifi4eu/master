@@ -92,7 +92,7 @@ public class PermissionChecker {
     /**
      * Forbids petitions that are not from a logged user. It verifies that this user is a supplier.
      * This means that in localhost making petitions using postman or any other rest client is not going to work if mr
-     * tester is not type 3. Please change it on your local database.
+     * tester is not type 1. Please change it on your local database.
      * @throws AccessDeniedException
      */
     public SupplierDTO checkSupplierPermission() throws AccessDeniedException{

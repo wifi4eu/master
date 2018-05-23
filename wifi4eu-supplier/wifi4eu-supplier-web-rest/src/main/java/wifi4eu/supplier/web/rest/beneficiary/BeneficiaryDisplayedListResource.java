@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.BeneficiaryDisplayedListDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryDisplayedListService;
-import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -20,7 +19,6 @@ public class BeneficiaryDisplayedListResource {
 
     @Autowired
     private BeneficiaryDisplayedListService beneficiaryDisplayedListService;
-
 
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryDisplayedListResource.class);
 
