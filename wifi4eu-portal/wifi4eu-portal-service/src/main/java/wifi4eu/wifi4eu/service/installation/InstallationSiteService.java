@@ -60,6 +60,7 @@ public class InstallationSiteService {
 
                 if (!checkPermissions(id_beneficiary, null))
                     return permissionChecker.getAccessDeniedResponse();
+
                 try {
 
                     if (map.containsKey("page") && (int) map.get("page") > 0) {
@@ -126,6 +127,7 @@ public class InstallationSiteService {
         if (installationSite != null) {
             if (!checkPermissions(installationSite.getMunicipality(), id))
                 return permissionChecker.getAccessDeniedResponse();
+
             response.setSuccess(true);
             response.setData(installationSite);
         } else {
@@ -135,19 +137,18 @@ public class InstallationSiteService {
         return response;
     }
 
-    private boolean checkPermissions(int idMunicipality, Integer idInstSite) throws AccessDeniedException {
+    public boolean checkPermissions(int idMunicipality, Integer idInstSite) throws AccessDeniedException {
         UserDTO user;
         try {
             //first we check if user logged in is a beneficiary
             user = permissionChecker.checkBeneficiaryPermission();
             //and then we check that his municipality is related to it
-            if (registrationService.getRegistrationByUserAndMunicipality(user.getId(), idMunicipality) == null) {
+            if (registrationService.getRegistrationByUserAndMunicipality(user.getId(), idMunicipality) == null ||
+                    (idInstSite != null && installationSiteRepository.findInstallationSiteByIdAndMunicipality
+                            (idInstSite, idMunicipality) == null)) {
                 throw new AccessDeniedException("403 FORBIDDEN");
             }
 
-            if(idInstSite != null && installationSiteRepository.findInstallationSiteByIdAndMunicipality(idInstSite, idMunicipality)==null){
-                throw new AccessDeniedException("403 FORBIDDEN");
-            }
         } catch (Exception e) {
             return false;
         }

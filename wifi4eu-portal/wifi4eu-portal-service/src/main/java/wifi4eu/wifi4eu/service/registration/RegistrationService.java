@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.service.registration;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.cns.CNSManager;
@@ -20,6 +21,7 @@ import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
@@ -62,6 +64,9 @@ public class RegistrationService {
     @Autowired
     ApplicationRepository applicationRepository;
 
+    @Autowired
+    PermissionChecker permissionChecker;
+
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
     }
@@ -81,6 +86,10 @@ public class RegistrationService {
         if (!map.isEmpty()) {
             if (map.containsKey("id") && map.containsKey("beneficiaryIndicator")) {
                 Registration registration = registrationRepository.findOne((int) map.get("id"));
+
+                if (!checkPermissionsRegistrations(registration))
+                    return permissionChecker.getAccessDeniedResponse();
+
                 if (registration != null && registration.isWifiIndicator()) {
                     boolean beneficiaryIndicator = (boolean) map.get("beneficiaryIndicator");
 
@@ -112,8 +121,20 @@ public class RegistrationService {
         return response;
     }
 
-    /**
-     * Method called when the user confirms/rejects the installation report. This method sends the CNS email to the
+
+    private boolean checkPermissionsRegistrations(Registration registration) {
+        try {
+            UserDTO user = permissionChecker.checkBeneficiaryPermission();
+            if(registration.getUser().getId() != user.getId()){
+                throw new AccessDeniedException("403 FORBIDDEN");
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+     /* Method called when the user confirms/rejects the installation report. This method sends the CNS email to the
      * supplier.
      *
      * @param registration
