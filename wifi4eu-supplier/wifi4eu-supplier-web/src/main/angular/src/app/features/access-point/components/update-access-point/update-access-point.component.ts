@@ -42,7 +42,7 @@ export class UpdateAccessPoint implements OnChanges {
 
   private deviceTypes = [{ label: 'accessPoint.indoor', value: true }, { label: 'accessPoint.outdoor', value: false }]
 
-  private regexLocation: string = '^([-+]?)([0-9]{1,2})(((.)([0-9]{6})))$';
+  private regexLocation: string = '^([-+]?)([0-9]{1,2})\\.([0-9]{6})$';
   private regexMacAddress: string = '^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$';
   private isSubmitted: boolean = false;
 
