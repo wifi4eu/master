@@ -48,54 +48,50 @@
 </div>
 
 <!--   If supplier assigned, show name of selected company to the user -->
-<div *ngIf="hasSupplierAssigned" class="subtitle-discover text-justify">
+<!-- <div *ngIf="hasSupplierAssigned" class="subtitle-discover text-justify">
   <span>{{ "benefPortal.selectSupplier.title" | translate }} <span class="text-lowercase">{{ "shared.name.label" | translate }}:</span> <strong *ngIf="supplierAssigned">{{ supplierAssigned.name }}</strong></span>
-</div>
+</div> -->
 
 <!-- Datatable -->
+<div class="">
+  <p-dataTable *ngIf="!hasSupplierAssigned" class="panel-select-supplier" [value]="suppliers" sortField="name" [sortOrder]="1" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [(selection)]="selectedSupplier" dataKey="name" [responsive]="true" [stacked]="stacked" (onRowSelect)="onRowSelect($event)">
 
-<div class="panel-dg">
-  <p-dataTable [value]="suppliers" sortField="name" [sortOrder]="1" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [(selection)]="selectedSupplier" dataKey="name" [responsive]="true" [stacked]="stacked">
+    <p-column selectionMode="single"></p-column>
 
-    <p-column *ngIf="!hasSupplierAssigned" selectionMode="single" styleClass="select-supplier-column" [style]="{'width':'30px'}">
-      <template pTemplate="body">
-
-      </template>
-    </p-column>
-
-    <p-column *ngIf="!hasSupplierAssigned" field="i" header="Index" styleClass="select-supplier-column" [style]="{'width':'70px'}">
+    <!-- Datatable index -->
+    <!-- <p-column *ngIf="!hasSupplierAssigned" field="i" header="Index" [style]="{'width':'70px'}">
       <template pTemplate="body" let-i="rowIndex">
         <span class="row-index">{{i + 1}}</span>
       </template>
-    </p-column>
+    </p-column> -->
 
-    <p-column *ngIf="!hasSupplierAssigned" field="logo" header="{{ 'benefPortal.selectSupplier.table.logo' | translate }}" styleClass="select-supplier-column">
+    <p-column field="logo" header="{{ 'benefPortal.selectSupplier.table.logo' | translate }}" styleClass="supplier-logo">
       <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
-        <span class="supplier-logo">
-          <img class="profileLogoImage" style="height:30px;" src="{{ supplier.logo }}">
+        <span>
+          <img src="{{ supplier.logo }}">
         </span>
       </template>
     </p-column>
 
-    <p-column *ngIf="!hasSupplierAssigned" field="name" header="{{ 'suppRegistration.company.name' | translate }}" [sortable]="true" styleClass="select-supplier-column text-adjust select-supplier-column">
+    <p-column field="name" header="{{ 'suppRegistration.company.name' | translate }}" [sortable]="true">
       <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
         <span class="supplier-name">{{supplier.name}}</span>
       </template>
     </p-column>
 
-    <p-column *ngIf="!hasSupplierAssigned" field="address" header="{{ 'benefRegistration.address.label' | translate }}" styleClass="label">
+    <p-column field="address" header="{{ 'benefRegistration.address.label' | translate }}">
       <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
         <span class="supplier-address">{{supplier.address}}</span>
       </template>
     </p-column>
 
-    <p-column *ngIf="!hasSupplierAssigned" field="website" header="{{ 'benefPortal.selectSupplier.table.web' | translate }}" styleClass="label">
+    <p-column *ngIf="3" field="website" header="{{ 'benefPortal.selectSupplier.table.web' | translate }}" styleClass="supplier-website">
       <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
         <span class="supplier-website">{{supplier.website}}</span>
       </template>
     </p-column>
 
-    <p-column *ngIf="!hasSupplierAssigned" field="vat" header="{{ 'suppRegistration.vat.label' | translate }}" [sortable]="true" styleClass="label">
+    <p-column field="vat" header="{{ 'suppRegistration.vat.label' | translate }}" [sortable]="true">
       <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
         <span class="supplier-vat">{{supplier.vat}}</span>
       </template>
@@ -135,7 +131,7 @@
   </div>
   
   <div class="row">
-    <div class="col-md-6 offset-md-6" *ngIf="!hasSupplierAssigned">      
+    <div class="col-md-6 offset-md-6 marginTop" *ngIf="!hasSupplierAssigned">      
       <button class="btn btn-primary text-adjust pull-right" (click)="selectSupplier()" [disabled]="selectedSupplier == null">
         <b>{{ 'benefPortal.selectSupplier.buton.select' | translate }}</b>
       </button>

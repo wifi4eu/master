@@ -1663,7 +1663,7 @@ p-tabview.white .ui-widget-content.ui-tabview {
 }
 
 input.email_profile::-ms-clear{
-  display:none;
+  display: none;
 }
 
 .voucherModal {
@@ -1673,4 +1673,63 @@ input.email_profile::-ms-clear{
 .text-adjust {
   overflow: hidden;
   white-space: normal;
+}
+
+.panel-select-supplier {
+  td {
+    text-transform: lowercase;
+    color: #5c5c5c;
+    text-align: left;
+    margin-top: 1.4em;
+    margin-bottom: 0.5em;
+    font-size: 1rem;
+    font-family: verdana;
+      
+    .supplier-name::first-letter {
+      text-transform: uppercase;
+    }
+    
+    .supplier-address, .supplier-website {
+      text-transform: capitalize;
+    }
+    
+    .supplier-vat {
+      text-transform: uppercase;
+    }
+  }
+
+  .ui-selection-column {
+    width: 40px;
+  }
+
+  .ui-radiobutton-box {
+    border-color: #9F9F92;
+  }
+
+  .supplier-logo {
+    text-align: center;
+  
+    img {
+      height: 40px;
+    }
+  }
+  
+  .ui-column-title {
+    text-transform: capitalize;
+    font-size: 1rem;
+  }
+  
+  .ui-state-highlight {
+    background-color: #B2C1F2;
+  }
+  
+  .ui-datatable-data td {
+    vertical-align: middle;
+  }
+
+  @media screen and (max-width : 900px) {
+    .supplier-website {
+      display: none !important;
+    }  
+  }
 }

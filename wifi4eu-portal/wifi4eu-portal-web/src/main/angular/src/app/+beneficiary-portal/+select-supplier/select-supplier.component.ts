@@ -14,7 +14,7 @@ import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 
 import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
 
-import { SupplierApi, ResponseDTO, ApplicationDTOBase } from '../../shared/swagger';
+import { SupplierApi, ResponseDTO, ApplicationDTOBase, SuppliedRegionDTOBase } from '../../shared/swagger';
 import { SupplierDTOBase } from "../../shared/swagger/model/SupplierDTO";
 
 import { Paginator, DataGrid } from 'primeng/primeng';
@@ -27,31 +27,33 @@ import { Paginator, DataGrid } from 'primeng/primeng';
 })
 export class selectSupplierComponent {
 
-  private supplier: SupplierDTOBase;
+  /* To get municipality region */
   private currentCall: CallDTOBase = new CallDTOBase();
   private user: UserDTOBase;
   private storedRegistrationQueues = [];
+  private municipality: MunicipalityDTOBase;
   private municipalities: MunicipalityDTOBase[] = [];
   private registration: RegistrationDTOBase;
-
+  private region: NutsDTOBase = {};
+  
+  /* To get region suppliers */
+  private supplier: SupplierDTOBase;
   private suppliers: SupplierDTOBase[] = [];
   private searchSuppliersInput: string = '';
   private displayedSuppliers: SupplierDTOBase[] = [];
   private suppliersCopy: SupplierDTOBase[] = [];
 
-  application: ApplicationDTOBase;
-  selectedSupplier: SupplierDTOBase;
-  supplierAssigned: SupplierDTOBase;
-  displayMessage: boolean = false;
-  hasSupplierAssigned: boolean = false;
-  stacked: boolean;
+  /* Assigning supplier and feedback settings */
+  private application: ApplicationDTOBase;
+  private selectedSupplier: SupplierDTOBase;
+  private supplierAssigned: SupplierDTOBase;
+  private displayMessage: boolean = false;
+  private hasSupplierAssigned: boolean = false;
   
-  // region: NutsDTOBase = null;
-  region: any = {};
-  page: any = 0;
-  itemsPerPageSelector = [10, 20, 50, 100];
-  itemsPerPage: any = this.itemsPerPageSelector[1];
-  municipality: object;
+  /* Datatable */
+  private page: any = 0;
+  private itemsPerPageSelector = [10, 20, 50, 100];
+  private itemsPerPage: any = this.itemsPerPageSelector[1];
 
   @ViewChild("gridSuppliers") gridSuppliers: DataGrid;
   @ViewChild("paginator") paginator: Paginator;
@@ -107,10 +109,6 @@ export class selectSupplierComponent {
       );
     }
   
-    if(window.innerWidth < 950) {
-       this.stacked = !this.stacked;
-       
-    }
 }
 
   /* Part 2: Get all suppliers that supply the specific region of the beneficiary */
@@ -150,6 +148,7 @@ export class selectSupplierComponent {
     }
   }
 
+  /* Toggles boolean to allow you select a new supplier */
   private changeSupplier() {
     (this.hasSupplierAssigned) ? this.hasSupplierAssigned = false : this.hasSupplierAssigned = true;
   }
@@ -170,6 +169,5 @@ export class selectSupplierComponent {
     );
     this.hasSupplierAssigned = true;
   }
-
 
 }
