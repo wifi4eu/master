@@ -21,8 +21,6 @@ public class BeneficiaryDisplayedListResource {
     @Autowired
     private BeneficiaryDisplayedListService beneficiaryDisplayedListService;
 
-    @Autowired
-    private PermissionChecker permissionChecker;
 
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryDisplayedListResource.class);
 

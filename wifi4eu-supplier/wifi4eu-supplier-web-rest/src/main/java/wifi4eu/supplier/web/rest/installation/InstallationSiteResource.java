@@ -25,8 +25,6 @@ public class InstallationSiteResource {
     @Autowired
     private InstallationSiteService installationSiteService;
 
-    @Autowired
-    PermissionChecker permissionChecker;
 
     private final Logger _log = LoggerFactory.getLogger(InstallationSiteResource.class);
 

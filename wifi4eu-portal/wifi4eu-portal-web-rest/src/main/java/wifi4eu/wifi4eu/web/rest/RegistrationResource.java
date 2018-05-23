@@ -103,21 +103,7 @@ public class RegistrationResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO confirmOrRejectInstallationReport(@RequestBody final Map<String, Object> map) {
-        try {
-             _log.info("saveRegistrationAndSendCNS");
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-
-            if (userDTO.getType() != 5) {
-                permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + userDTO.getId());
-            }
-
             return registrationService.confirmOrRejectInstallationAndSendCNS(map);
-        } catch (Exception e) {
-            ResponseDTO response = new ResponseDTO();
-            response.setSuccess(false);
-            response.setError(new ErrorDTO(403, "shared.error.notallowed"));
-            return response;
-        }
     }
 
     @ApiOperation(value = "Delete registration by specific id")
