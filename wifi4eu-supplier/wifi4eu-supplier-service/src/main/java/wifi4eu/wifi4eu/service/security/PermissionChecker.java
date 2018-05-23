@@ -9,6 +9,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.Constant;
+import wifi4eu.wifi4eu.common.dto.model.SupplierDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
@@ -16,6 +17,7 @@ import wifi4eu.wifi4eu.common.dto.security.RightDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.Right;
+import wifi4eu.wifi4eu.entity.supplier.Supplier;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.mapper.security.RightMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
@@ -93,11 +95,13 @@ public class PermissionChecker {
      * tester is not type 3. Please change it on your local database.
      * @throws AccessDeniedException
      */
-    public void checkSupplierPermission() throws AccessDeniedException{
+    public SupplierDTO checkSupplierPermission() throws AccessDeniedException{
         UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-        if (userDTO.getType() != Constant.ROLE_SUPPLIER || supplierService.getSupplierByUserId(userDTO.getId()) == null) {
+        SupplierDTO supplier = supplierService.getSupplierByUserId(userDTO.getId());
+        if (userDTO.getType() != Constant.ROLE_SUPPLIER ||  supplier== null) {
             throw new AccessDeniedException("403 FORBIDDEN");
         }
+        return supplier;
     }
 
     public ResponseDTO getAccessDeniedResponse(){

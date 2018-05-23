@@ -8,4 +8,5 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     Application findByCallIdAndRegistrationId(Integer callId, Integer registrationId);
     Iterable<Application> findByRegistrationId(Integer registrationId);
     Iterable<Application> findByCallId(Integer callId);
+    Application findBySupplierIdAndRegistrationId(Integer suppliedId, Integer registrationId);
 }
