@@ -117,17 +117,17 @@ export class selectSupplierComponent {
       this.supplierApi.getSuppliersListByRegionId(this.region.id).subscribe(
         (suppliers: SupplierDTOBase[]) => {
           this.suppliers = suppliers;
-          console.log("Previous suppliers are ", this.suppliers);
           this.suppliersCopy = this.suppliers;
 
           // Get previously selected supplier (if already applied)
           if(this.hasSupplierAssigned) {
-/*             this.supplierApi.getSupplierById(this.application.supplierId).subscribe(
+            this.supplierApi.getSupplierById(this.application.supplierId).subscribe(
               (supplier: SupplierDTOBase) => {
-                this.selectedSupplier = supplier;      
-                console.log("supplier assigned is ", this.selectedSupplier);
+                // THIS CODE SHOULD BE UNCOMENTED!!
+                // this.selectedSupplier = supplier;      
               }
-            ); */
+            );
+            // THIS IS A PROVISIONAL CODE!!
             this.selectedSupplier = this.suppliers[1];
           }
 
