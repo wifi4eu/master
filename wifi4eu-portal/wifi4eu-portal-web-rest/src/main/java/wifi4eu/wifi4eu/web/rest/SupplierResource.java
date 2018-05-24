@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.user.UserService;
@@ -58,11 +59,9 @@ public class SupplierResource {
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-        }
-        catch (AccessDeniedException ade) {
-          response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        catch (Exception e){
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception e) {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return supplierService.getAllSuppliers();
@@ -73,25 +72,23 @@ public class SupplierResource {
     @RequestMapping(value = "/{supplierId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public SupplierDTO getSupplierById(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
-        SupplierDTO supplierDTO = new SupplierDTO();
+        SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
         try {
             _log.info("getSupplierById: " + supplierId);
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(supplierDTO.getUserId() != userDTO.getId() && userDTO.getType() != 5){
+            if (supplierDTO.getUserId() != userDTO.getId() && userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            supplierDTO = supplierService.getSupplierById(supplierId);
-        } 
-        catch (AccessDeniedException ade) {
-          response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        catch (Exception e) {
+            return supplierService.getSupplierById(supplierId);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'getSupplierById' operation.", e);
             }
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
-        return supplierDTO;
+        return null;
     }
 
     //TODO: is it necessary to be exposed? All the registration have to use submitSupplierRegistration endpoint?
@@ -103,17 +100,15 @@ public class SupplierResource {
         try {
             _log.info("createSupplier");
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(supplierDTO.getUserId() != userDTO.getId()){
+            if (supplierDTO.getUserId() != userDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             SupplierDTO resSupplier = supplierService.createSupplier(supplierDTO);
             return new ResponseDTO(true, resSupplier, null);
-        }
-        catch (AccessDeniedException ade) {
+        } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createSupplier' operation.", e);
             }
@@ -121,32 +116,94 @@ public class SupplierResource {
         }
     }
 
-    //TODO: limit access to this service
-    @ApiOperation(value = "Delete supplier by specific id")
-    @RequestMapping(method = RequestMethod.DELETE)
+    @ApiOperation(value = "update Contact Details")
+    @RequestMapping(value = "update/contactDetails", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO deleteSupplier(@RequestBody final Integer supplierId, HttpServletResponse response) throws IOException{
+    public ResponseDTO updateContactDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
         try {
-            SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
+            _log.info("updateContactDetails");
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-
-            if(userDTO.getId() != supplierDTO.getUserId()){
+            if (supplierDTO.getUserId() != userDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            _log.info("deleteSupplier: " + supplierId);
-            SupplierDTO resSupplier = supplierService.deleteSupplier(supplierId);
+
+            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierDTO.getUserId());
+
+            if(supplierDTO.getId() != sendSupplierDTO.getId()){
+                throw new AccessDeniedException("");
+            }
+
+            SupplierDTO resSupplier = supplierService.updateContactDetails(sendSupplierDTO, supplierDTO.getContactName(), supplierDTO.getContactSurname(), supplierDTO.getContactPhonePrefix(), supplierDTO.getContactPhoneNumber());
             return new ResponseDTO(true, resSupplier, null);
-        } catch (AccessDeniedException ade){
+        } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), ade.getMessage()));
-        }
-        catch (Exception e) {
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteSupplier' operation.", e);
+                _log.error("Error on 'updateContactDetails' operation.", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
+
+    @ApiOperation(value = "update Supplier Details")
+    @RequestMapping(value = "update/supplierDetails", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO updateSupplierDetails(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
+        try {
+            _log.info("updateSupplierDetails");
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (supplierDTO.getUserId() != userDTO.getId()) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+
+            SupplierDTO sendSupplierDTO = supplierService.getSupplierByUserId(supplierDTO.getUserId());
+
+            if(supplierDTO.getId() != sendSupplierDTO.getId()){
+                throw new AccessDeniedException("");
+            }
+
+            SupplierDTO resSupplier = supplierService.updateSupplierDetails(sendSupplierDTO, supplierDTO.getName(), supplierDTO.getAddress(), supplierDTO.getVat(), supplierDTO.getBic(), supplierDTO.getLogo());
+            
+            return new ResponseDTO(true, resSupplier, null);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'updateSupplierDetails' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    //TODO: limit access to this service
+//    @ApiOperation(value = "Delete supplier by specific id")
+//    @RequestMapping(method = RequestMethod.DELETE)
+//    @ResponseBody
+//    public ResponseDTO deleteSupplier(@RequestBody final Integer supplierId, HttpServletResponse response) throws IOException {
+//        try {
+//            SupplierDTO supplierDTO = supplierService.getSupplierById(supplierId);
+//            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+//
+//            if (userDTO.getId() != supplierDTO.getUserId()) {
+//                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+//            }
+//            _log.info("deleteSupplier: " + supplierId);
+//            SupplierDTO resSupplier = supplierService.deleteSupplier(supplierId);
+//            return new ResponseDTO(true, resSupplier, null);
+//        } catch (AccessDeniedException ade) {
+//            response.sendError(HttpStatus.NOT_FOUND.value());
+//            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), ade.getMessage()));
+//        } catch (Exception e) {
+//            if (_log.isErrorEnabled()) {
+//                _log.error("Error on 'deleteSupplier' operation.", e);
+//            }
+//            response.sendError(HttpStatus.NOT_FOUND.value());
+//            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+//        }
+//    }
 
     @ApiOperation(value = "Submit supplier registration")
     @RequestMapping(value = "/submitRegistration", method = RequestMethod.POST)
@@ -171,9 +228,9 @@ public class SupplierResource {
     @ResponseBody
     public SupplierDTO getSupplierByUserId(@PathVariable("userId") final Integer userId, HttpServletResponse response) throws IOException {
         _log.info("getSupplierByUserId: " + userId);
-        try{
-            permissionChecker.check(RightConstants.USER_TABLE+userId);
-        } catch (AccessDeniedException ade){
+        try {
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
+        } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -186,12 +243,11 @@ public class SupplierResource {
     @ResponseBody
     public List<SupplierDTO> findSimilarSuppliers(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
         _log.info("findSimilarSuppliers");
-        try{
+        try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
-        }
-        catch (AccessDeniedException ade) {
+        } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -300,9 +356,13 @@ public class SupplierResource {
     @RequestMapping(value = "/all/region/{regionId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseDTO getSuppliersRegisteredByRegion(@PathVariable("regionId") int regionId,
-                                                      @RequestParam("page") int page, @RequestParam("size") int size){
-        if(page < 0) { page = 0; }
-        if(size < 0) { size = 0; }
+                                                      @RequestParam("page") int page, @RequestParam("size") int size) {
+        if (page < 0) {
+            page = 0;
+        }
+        if (size < 0) {
+            size = 0;
+        }
 
         Page<String> pageObj = supplierService.getSuppliersByRegionOrCountry("", regionId, new PageRequest(page, size));
         return new ResponseDTO(
@@ -319,9 +379,13 @@ public class SupplierResource {
     @RequestMapping(value = "/all/country/{countryCode}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO getSuppliersRegisteredByCountry(@PathVariable("countryCode") String countryCode,
-                                                       @RequestParam("page") int page, @RequestParam("size") int size){
-        if(page < 0) { page = 0; }
-        if(size < 0) { size = 0; }
+                                                       @RequestParam("page") int page, @RequestParam("size") int size) {
+        if (page < 0) {
+            page = 0;
+        }
+        if (size < 0) {
+            size = 0;
+        }
         Page<String> pageObj = supplierService.getSuppliersByRegionOrCountry(countryCode, 0, new PageRequest(page, size));
         return new ResponseDTO(
                 true,

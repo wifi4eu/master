@@ -88,7 +88,7 @@ export class DgConnPublicationComponent {
         this.newElementForm = false;
         this.display = false;
     }
-
+/*
     createPublication() {
         let call = (this.call) ? this.call : new CallDTOBase();
         let finalStartDate = this.startDate;
@@ -123,7 +123,7 @@ export class DgConnPublicationComponent {
         );
         this.call = null;
     }
-
+*/
     checkStartDate() {
         this.today = new Date();
         if (this.startDate < this.today)

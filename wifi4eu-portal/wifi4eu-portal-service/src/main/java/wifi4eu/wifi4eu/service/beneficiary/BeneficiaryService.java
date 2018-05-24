@@ -29,7 +29,6 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 
-import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.*;
 

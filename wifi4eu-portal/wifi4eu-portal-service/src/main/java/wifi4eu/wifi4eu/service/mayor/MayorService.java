@@ -7,6 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
 import wifi4eu.wifi4eu.mapper.mayor.MayorMapper;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.List;
 
@@ -18,6 +21,15 @@ public class MayorService {
     @Autowired
     MayorRepository mayorRepository;
 
+    @Autowired
+    RegistrationService registrationService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    PermissionChecker permissionChecker;
+
     public List<MayorDTO> getAllMayors() {
         return mayorMapper.toDTOList(Lists.newArrayList(mayorRepository.findAll()));
     }
@@ -28,7 +40,24 @@ public class MayorService {
 
     @Transactional
     public MayorDTO createMayor(MayorDTO mayorDTO) {
-        return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
+
+      MayorDTO resMayor = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
+
+      MayorDTO mayorDTO1 = getMayorByMunicipalityId(mayorDTO.getMunicipalityId());
+      if(mayorDTO1 != null) {
+        resMayor.setEmail(mayorDTO1.getEmail());
+      }
+
+      return resMayor;
+    }
+
+    @Transactional
+    public MayorDTO updateMayor(MayorDTO mayorDetails, String name, String surname) {
+      
+      mayorDetails.setName(name);
+      mayorDetails.setSurname(surname);
+      
+      return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDetails)));
     }
 
     @Transactional
@@ -43,6 +72,6 @@ public class MayorService {
     }
 
     public MayorDTO getMayorByMunicipalityId(int municipalityId) {
-        return mayorMapper.toDTO(mayorRepository.findByMunicipalityId(municipalityId));
+      return mayorMapper.toDTO(mayorRepository.findByMunicipalityId(municipalityId));
     }
 }
