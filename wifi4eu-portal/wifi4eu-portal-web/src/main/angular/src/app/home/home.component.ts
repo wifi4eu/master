@@ -16,7 +16,14 @@ export class HomeComponent {
     }
 
     private redirectUser() {
-        this.router.navigateByUrl('/dgconn-portal');
+        switch (this.sharedService.user.type) {
+            case 5:
+                this.router.navigateByUrl('/dgconn-portal');
+                break;
+            default:
+                this.router.navigateByUrl('/home');
+                break;
+        }
     }
     
     /*private redirectUser__public_portal() {

@@ -64,7 +64,7 @@ import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.componen
             component: NotFoundComponent
         }, {
             path: '**',
-            redirectTo: 'notfound'
+            redirectTo: 'dgconn-portal'
         }
     ], { useHash: true })],
     providers: [AppGuard],
