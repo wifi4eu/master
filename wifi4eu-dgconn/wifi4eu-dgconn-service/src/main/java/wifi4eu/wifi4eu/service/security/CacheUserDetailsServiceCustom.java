@@ -28,7 +28,7 @@ public class CacheUserDetailsServiceCustom {
         try {
             if (hash.contains("Bearer")) {
                 String cleanToken = hash.substring(7);
-
+/*
                 try{
 
                     hashEmail = (String) AuthJWTokenizer.decode(cleanToken).get("email");
@@ -42,7 +42,7 @@ public class CacheUserDetailsServiceCustom {
                 } catch (SignatureException ex) {
                     logger.info(ex.getMessage(), ex);
                     throw ex;
-                }
+                }*/
 
                 UserDTO userCache = sessionCache.userSessionCache.get(cleanToken);
 

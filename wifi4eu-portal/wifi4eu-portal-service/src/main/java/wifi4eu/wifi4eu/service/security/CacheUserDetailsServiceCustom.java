@@ -29,21 +29,6 @@ public class CacheUserDetailsServiceCustom {
             if (hash.contains("Bearer")) {
                 String cleanToken = hash.substring(7);
 
-                try{
-
-                    hashEmail = (String) AuthJWTokenizer.decode(cleanToken).get("email");
-
-                } catch (ExpiredJwtException ex) {
-
-                    logger.info("JWT expired: " + ex.getMessage());
-                    hashEmail = (String) ex.getClaims().get("email");
-                    return new User(hashEmail, "", true, true, false, true, Collections.EMPTY_SET);
-
-                } catch (SignatureException ex) {
-                    logger.info(ex.getMessage(), ex);
-                    throw ex;
-                }
-
                 UserDTO userCache = sessionCache.userSessionCache.get(cleanToken);
 
                 if (userCache != null) { //If token exists -> user has been logged and we update the value to prevent expiration
