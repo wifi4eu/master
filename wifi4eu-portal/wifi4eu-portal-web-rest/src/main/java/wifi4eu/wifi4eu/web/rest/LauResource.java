@@ -113,6 +113,12 @@ public class LauResource {
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
+        catch(Exception e){
+          if (_log.isErrorEnabled()) {
+            _log.error("Error on 'updatePhysicalAddress' operation.", e);
+          }
+          response.sendError(HttpStatus.NOT_FOUND.value());
+        }
 
         try {
             LauDTO resLau = lauService.updatePhysicalAddress(lauDTO);
