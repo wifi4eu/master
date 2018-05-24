@@ -81,7 +81,7 @@ public class RegistrationService {
         if (registrationDTO.getId() == 0) {
             registrationDTO.setMailCounter(3);
         }
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
+        return saveRegistration(registrationDTO);
     }
 
     @Transactional
@@ -108,7 +108,7 @@ public class RegistrationService {
         registrationDBO.setAllFilesFlag(registrationDTO.getAllFilesFlag());
         registrationDBO.setMailCounter(registrationDTO.getMailCounter());
 
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
+        return saveRegistration(registrationDBO);
     }
 
     @Transactional
@@ -674,27 +674,33 @@ public class RegistrationService {
         List<RegistrationDTO> registrations = getAllRegistrations();
         for (RegistrationDTO registration : registrations) {
             if (registration.getLegalFile1() != null) {
-                LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 1, registration.getLegalFile1(), registration.getUploadTime(), false, null);
-                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
+                if (legalFileRepository.findByRegistrationIdAndType(registration.getId(), 1) == null) {
+                    LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 1, registration.getLegalFile1(), registration.getUploadTime(), false, null);
+                    legalFileRepository.save(legalFileMapper.toEntity(legalFile));
+                }
             }
             if (registration.getLegalFile2() != null) {
-                LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 2, registration.getLegalFile1(), registration.getUploadTime(), false, null);
-                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
+                if (legalFileRepository.findByRegistrationIdAndType(registration.getId(), 2) == null) {
+                    LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 2, registration.getLegalFile1(), registration.getUploadTime(), false, null);
+                    legalFileRepository.save(legalFileMapper.toEntity(legalFile));
+                }
             }
             if (registration.getLegalFile3() != null) {
-                LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 3, registration.getLegalFile1(), registration.getUploadTime(), false, null);
-                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
+                if (legalFileRepository.findByRegistrationIdAndType(registration.getId(), 3) == null) {
+                    LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 3, registration.getLegalFile1(), registration.getUploadTime(), false, null);
+                    legalFileRepository.save(legalFileMapper.toEntity(legalFile));
+                }
             }
             if (registration.getLegalFile4() != null) {
-                LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 4, registration.getLegalFile1(), registration.getUploadTime(), false, null);
-                legalFileRepository.save(legalFileMapper.toEntity(legalFile));
+                if (legalFileRepository.findByRegistrationIdAndType(registration.getId(), 4) == null) {
+                    LegalFileDTO legalFile = new LegalFileDTO(null, registration.getId(), 4, registration.getLegalFile1(), registration.getUploadTime(), false, null);
+                    legalFileRepository.save(legalFileMapper.toEntity(legalFile));
+                }
             }
         }
     }
 
-    public RegistrationDTO requestDocuments (RegistrationDTO registrationDTO){
-        RegistrationDTO registration = getRegistrationById(registrationDTO.getId());
-        registration.setAllFilesFlag(registrationDTO.getAllFilesFlag());
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registration)));
+    public RegistrationDTO saveRegistration(RegistrationDTO registrationDTO) {
+        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
     }
 }

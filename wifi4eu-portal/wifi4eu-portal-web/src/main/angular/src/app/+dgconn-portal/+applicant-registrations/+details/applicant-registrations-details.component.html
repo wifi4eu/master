@@ -308,8 +308,8 @@
                         <span class="ui-g-12" style="margin-bottom: 1em;">
                             <select [(ngModel)]="selectedReasonTypes[selectedIndex][typeIndex]" (ngModelChange)="selectCorrectionReason($event)"
                                     [id]="'invalidateReason'+typeIndex" [name]="'invalidateReason'+typeIndex" class="form-control">
-                                <option disabled selected [ngValue]="null">
-                                    {{ 'dgConn.select' | translate }}
+                                <option selected [ngValue]="null">
+                                    -
                                 </option>
                                 <option *ngFor="let invalidateReason of invalidateReasonsList; let reasonIndex = index"
                                         [ngValue]="reasonIndex">

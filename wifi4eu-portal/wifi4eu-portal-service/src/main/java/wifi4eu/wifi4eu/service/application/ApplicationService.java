@@ -405,8 +405,24 @@ public class ApplicationService {
     }
 
     public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application) {
-        application.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
+        List<LegalFileDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
+        boolean pendingFollowup = false;
+        for (LegalFileDTO legalFile : legalFiles) {
+            if (legalFile.getRequestCorrection() && legalFile.getCorrectionReason() != null) {
+                pendingFollowup = true;
+                break;
+            }
+        }
+        RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
+        if (pendingFollowup) {
+            registration.setAllFilesFlag(0);
+            application.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
+        } else {
+            registration.setAllFilesFlag(1);
+            application.setStatus(ApplicationStatus.HOLD.getValue());
+        }
         application.setInvalidateReason(null);
+        registrationService.saveRegistration(registration);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
     }
 
