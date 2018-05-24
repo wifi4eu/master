@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.entity.registration;
 
-import wifi4eu.wifi4eu.entity.status.BeneficiaryStatus;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
@@ -46,9 +45,8 @@ public class Registration {
     @Column(name = "organisation_id")
     private int organisationId;
 
-    @ManyToOne
-    @JoinColumn(name = "id_status_beneficiary")
-    private BeneficiaryStatus idStatusBeneficiary;
+    @Column(name = "id_status_beneficiary")
+    private int idStatusBeneficiary;
 
     @Column(name = "compliance")
     private boolean compliance;
@@ -86,7 +84,7 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String associationName, int organisationId, BeneficiaryStatus idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String associationName, int organisationId, int idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -199,11 +197,11 @@ public class Registration {
         this.organisationId = organisationId;
     }
 
-    public BeneficiaryStatus getIdStatusBeneficiary() {
+    public int getIdStatusBeneficiary() {
         return idStatusBeneficiary;
     }
 
-    public void setIdStatusBeneficiary(BeneficiaryStatus idStatusBeneficiary) {
+    public void setIdStatusBeneficiary(int idStatusBeneficiary) {
         this.idStatusBeneficiary = idStatusBeneficiary;
     }
 
