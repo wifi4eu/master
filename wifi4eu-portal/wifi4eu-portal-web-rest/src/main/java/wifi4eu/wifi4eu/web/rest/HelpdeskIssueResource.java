@@ -46,9 +46,15 @@ public class HelpdeskIssueResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (AccessDeniedException ade){
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'allHelpdeskIssues' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e){
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'allHelpdeskIssues' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return helpdeskService.getAllHelpdeskIssues();
     }
@@ -56,28 +62,30 @@ public class HelpdeskIssueResource {
     @ApiOperation(value = "Get helpdesk issue by specific id")
     @RequestMapping(value = "/{issueId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public HelpdeskIssueDTO getHelpdeskIssueById(@PathVariable("issueId") final Integer issueId, HttpServletResponse response) {
+    public HelpdeskIssueDTO getHelpdeskIssueById(@PathVariable("issueId") final Integer issueId, HttpServletResponse response) throws IOException {
         _log.info("getHelpdeskIssueById: " + issueId);
 
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
 
             if(userDTO.getType() != 5){
-                response.sendError(HttpStatus.NOT_FOUND.value());
-                return null;
+                throw new AccessDeniedException("");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getHelpdeskIssueById' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
         }
-
         return helpdeskService.getHelpdeskIssueById(issueId);
+        
     }
 
     @ApiOperation(value = "Create helpdesk issue")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO createHelpdeskIssue(@RequestBody final HelpdeskIssueDTO helpdeskIssueDTO) {
+    public ResponseDTO createHelpdeskIssue(@RequestBody final HelpdeskIssueDTO helpdeskIssueDTO, HttpServletResponse response) throws IOException {
         try {
             _log.info("createHelpdeskIssue");
             HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.createHelpdeskIssue(helpdeskIssueDTO);
@@ -86,7 +94,8 @@ public class HelpdeskIssueResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createHelpdeskIssue' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
 
@@ -106,6 +115,9 @@ public class HelpdeskIssueResource {
             return new ResponseDTO(true, resHelpdeskIssue, null);
         }
         catch (AccessDeniedException ade) {
+          if (_log.isErrorEnabled()) {
+            _log.error("Access denied on 'deleteHelpdeskIssue' operation.", ade);
+        }
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         catch (Exception e) {

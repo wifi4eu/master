@@ -57,6 +57,9 @@ public class MunicipalityResource {
                 permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             }
         }catch (Exception e){
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'getMunicipalityById' operation.", e);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return municipalityService.getMunicipalityById(municipalityId);
@@ -121,11 +124,14 @@ public class MunicipalityResource {
                 _log.error("Error with permission on 'updating municipality' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, null);
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
         catch (Exception e){
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, null);
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'updateMunicipalityDetails' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -165,6 +171,9 @@ public class MunicipalityResource {
             }
         }
         catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'updating municipality' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return municipalityService.getMunicipalitiesByLauId(lauId);

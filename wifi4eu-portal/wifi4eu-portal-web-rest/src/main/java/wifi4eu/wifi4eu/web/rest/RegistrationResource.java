@@ -110,7 +110,42 @@ public class RegistrationResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createRegistration' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
+    @ApiOperation(value = "Delete legal documents")
+    @RequestMapping(value = "/deleteDocuments", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseDTO deleteRegistrationDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
+        try {
+            _log.info("createRegistration");
+
+            UserContext userContext = UserHolder.getUser();
+            UserDTO userDTO = userService.getUserByUserContext(userContext);
+
+            if(userDTO.getId() != registrationDTO.getUserId()){
+                throw new AccessDeniedException("");
+            }
+
+            permissionChecker.check(userDTO,RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+
+            RegistrationDTO resRegistration = registrationService.deleteRegistrationDocuments(registrationDTO);
+            return new ResponseDTO(true, resRegistration, null);
+        }
+        catch (AccessDeniedException ade){
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'deleteRegistrationDocuments' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+        catch (Exception e){
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'deleteRegistrationDocuments' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -132,9 +167,20 @@ public class RegistrationResource {
 
             RegistrationDTO resRegistration = registrationService.updateRegistrationDocuments(registrationDTO);
             return new ResponseDTO(true, resRegistration, null);
-        }catch (Exception e){
+        }
+        catch (AccessDeniedException ade){
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'updateRegistrationDocuments' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+        catch (Exception e){
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'updateRegistrationDocuments' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -153,12 +199,12 @@ public class RegistrationResource {
             return new ResponseDTO(true, resRegistration, null);
         } catch (AccessDeniedException ade) {
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), ade.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteRegistration' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
 
@@ -202,7 +248,7 @@ public class RegistrationResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'checkIfRegistrationIsKO' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
         }
     }
 
@@ -338,7 +384,7 @@ public class RegistrationResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'getRegistrationIssue' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
 }
