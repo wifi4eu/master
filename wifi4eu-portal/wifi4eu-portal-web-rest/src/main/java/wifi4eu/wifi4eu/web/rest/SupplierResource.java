@@ -21,6 +21,7 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -209,8 +210,14 @@ public class SupplierResource {
     @RequestMapping(value = "/submitRegistration", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO) {
+    public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
         try {
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(userDTO.getType() != 0){
+                throw new AppException("");
+            }
+
             _log.info("submitSupplierRegistration");
             SupplierDTO resSupplier = supplierService.submitSupplierRegistration(supplierDTO);
             return new ResponseDTO(true, resSupplier, null);
@@ -218,6 +225,7 @@ public class SupplierResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'submitSupplierRegistration' operation.", e);
             }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
