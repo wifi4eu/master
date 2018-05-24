@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.entity.registration;
 
-import wifi4eu.wifi4eu.entity.status.BeneficiaryStatus;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
@@ -75,6 +74,12 @@ public class Registration {
     @Column(name = "beneficiary_indicator")
     private boolean beneficiaryIndicator;
 
+    @Column(name = "id_pm")
+    private int idUserPM;
+
+    @Column(name = "id_bpm")
+    private int idUserBPM;
+
     @Column(name = "wifi_indicator")
     private boolean wifiIndicator;
 
@@ -90,7 +95,7 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, int idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, int idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, int idPM, int idBPM) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -110,6 +115,8 @@ public class Registration {
         this.actionToBeTaken = actionToBeTaken;
         this.actionTaken = actionTaken;
         this.beneficiaryIndicator = beneficiaryIndicator;
+        this.idUserPM = idPM;
+        this.idUserBPM = idBPM;
         this.wifiIndicator = wifiIndicator;
         this.conformity = conformity;
         this.firstFalseCheck = firstFalseCheck;
@@ -306,5 +313,21 @@ public class Registration {
 
     public void setDateRegistered(Timestamp dateRegistered) {
         this.dateRegistered = dateRegistered;
+    }
+
+    public int getIdUserPM() {
+        return idUserPM;
+    }
+
+    public void setIdUserPM(int idUserPM) {
+        this.idUserPM = idUserPM;
+    }
+
+    public int getIdUserBPM() {
+        return idUserBPM;
+    }
+
+    public void setIdUserBPM(int idUserBPM) {
+        this.idUserBPM = idUserBPM;
     }
 }
