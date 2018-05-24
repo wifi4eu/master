@@ -17,6 +17,7 @@ import {TranslateService} from "ng2-translate";
 export class AbacComponent {
     private exportEnabled: boolean;
     private jsonFile: File;
+
     constructor(private http: Http, private financialApi: FinancialApi, private exportImportApi: ExportImportApi, private sharedService: SharedService, private translateService: TranslateService) {
         this.exportEnabled = false;
     }

@@ -1,10 +1,14 @@
 import {Component} from "@angular/core";
-import {CallApi} from "../../shared/swagger/api/CallApi";
-import {ApplicationApi} from "../../shared/swagger/api/ApplicationApi";
+import {Http, Response, Headers, RequestOptions} from "@angular/http";
+import {Observable} from "rxjs";
+import * as FileSaver from 'file-saver';
 import {ExportImportApi} from "../../shared/swagger/api/ExportImportApi";
 import {SharedService} from "../../shared/shared.service";
+import {CallApi} from "../../shared/swagger/api/CallApi";
+import {ApplicationApi} from "../../shared/swagger/api/ApplicationApi";
 import { ResponseDTO } from '../../shared/swagger/model/ResponseDTO';
 import {TranslateService} from "ng2-translate";
+
 
 @Component({
     templateUrl: 'exportImport.component.html',
@@ -12,8 +16,12 @@ import {TranslateService} from "ng2-translate";
 })
 
 export class DgConnExportImportComponent {
+     private exportEnabled: boolean;
+     private jsonFile: File;
 
-     constructor(private exportImportApi: ExportImportApi, private sharedService: SharedService, private translateService: TranslateService) {}
+     constructor(private http: Http, private exportImportApi: ExportImportApi, private sharedService: SharedService, private translateService: TranslateService) {
+        this.exportEnabled = false;
+     }
 
      exportRegistrationData(){
             this.exportImportApi.exportRegistrationData().subscribe(
@@ -73,7 +81,7 @@ export class DgConnExportImportComponent {
      }*/
 
       exportBeneficiaryInformation() {
-             var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertExport.jsp","mywindow","status=1,width=350,height=150");
+             var myWindow =window.open("http://localhost:7001/wifi4eu/alertExport.jsp","mywindow","status=1,width=350,height=150");
              this.exportImportApi.exportBeneficiaryInformation().subscribe(
                  (response: ResponseDTO) => {
                      if (response.success) {
@@ -113,7 +121,7 @@ export class DgConnExportImportComponent {
      }*/
 
      exportBudgetaryCommitment() {
-              var myWindow =window.open("http://localhost:7001/wifi4eu-financial/alertExport.jsp","mywindow","status=1,width=350,height=150");
+              var myWindow =window.open("http://localhost:7001/wifi4eu/alertExport.jsp","mywindow","status=1,width=350,height=150");
               this.exportImportApi.exportBudgetaryCommitment().subscribe(
                   (response: ResponseDTO) => {
                       if (response.success) {
