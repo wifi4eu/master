@@ -198,6 +198,15 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public UserDTO updateUserDetails(UserDTO userDTO, String name, String surname) {
+
+        userDTO.setName(name);
+        userDTO.setSurname(surname);
+
+        return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
+    }
+
     public List<UserDTO> getUsersByType(int type) {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findByType(type)));
     }

@@ -211,7 +211,7 @@ export class AdditionalInfoComponent {
 
             this.displayConfirmingData = true;
             this.updateMailings();
-            this.registrationApi.createRegistration(this.registration).subscribe(
+            this.registrationApi.updateRegistrationDocuments(this.registration).subscribe(
                 (response: ResponseDTOBase) => {
                     this.displayConfirmingData = false;
                     if (response.success) {

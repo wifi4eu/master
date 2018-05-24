@@ -4,9 +4,6 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -23,7 +20,6 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.text.MessageFormat;
 import java.util.List;
@@ -78,6 +74,33 @@ public class RegistrationService {
             registrationDTO.setMailCounter(3);
         }
         return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
+    }
+
+    @Transactional
+    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO){
+
+        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
+
+        if(registrationDTO.getLegalFile1() != null && !registrationDTO.getLegalFile1().isEmpty()){
+            registrationDBO.setLegalFile1(registrationDTO.getLegalFile1());
+        }
+
+        if(registrationDTO.getLegalFile2() != null && !registrationDTO.getLegalFile2().isEmpty()){
+            registrationDBO.setLegalFile2(registrationDTO.getLegalFile2());
+        }
+
+        if(registrationDTO.getLegalFile3() != null && !registrationDTO.getLegalFile3().isEmpty()){
+            registrationDBO.setLegalFile3(registrationDTO.getLegalFile3());
+        }
+
+        if(registrationDTO.getLegalFile4() != null && !registrationDTO.getLegalFile4().isEmpty()){
+            registrationDBO.setLegalFile4(registrationDTO.getLegalFile4());
+        }
+
+        registrationDBO.setAllFilesFlag(registrationDTO.getAllFilesFlag());
+        registrationDBO.setMailCounter(registrationDTO.getMailCounter());
+
+        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
     }
 
     @Transactional
