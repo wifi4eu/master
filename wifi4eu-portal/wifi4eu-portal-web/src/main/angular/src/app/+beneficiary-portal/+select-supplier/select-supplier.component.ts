@@ -46,7 +46,6 @@ export class selectSupplierComponent {
   /* Assigning supplier and feedback settings */
   private application: ApplicationDTOBase;
   private selectedSupplier: SupplierDTOBase;
-  private supplierAssigned: SupplierDTOBase;
   private displayMessage: boolean = false;
   private hasSupplierAssigned: boolean = false;
   
@@ -118,19 +117,23 @@ export class selectSupplierComponent {
       this.supplierApi.getSuppliersListByRegionId(this.region.id).subscribe(
         (suppliers: SupplierDTOBase[]) => {
           this.suppliers = suppliers;
+          console.log("Previous suppliers are ", this.suppliers);
           this.suppliersCopy = this.suppliers;
-        });
-    }
-    // Get previously selected supplier (if already applied)
-    if(this.hasSupplierAssigned) {
-/*       this.supplierApi.getSupplierById(this.application.supplierId).subscribe(
-        (supplier: SupplierDTOBase) => {
-          this.supplierAssigned = supplier;
-          console.log("supplier assigned is ", this.supplierAssigned);
-        }
-      ); */
-    }
 
+          // Get previously selected supplier (if already applied)
+          if(this.hasSupplierAssigned) {
+/*             this.supplierApi.getSupplierById(this.application.supplierId).subscribe(
+              (supplier: SupplierDTOBase) => {
+                this.selectedSupplier = supplier;      
+                console.log("supplier assigned is ", this.selectedSupplier);
+              }
+            ); */
+            this.selectedSupplier = this.suppliers[1];
+          }
+
+        }
+      );
+    }
   }
 
   /* Search bar */

@@ -53,9 +53,9 @@
 </div> -->
 
 <!-- Datatable -->
-<p-dataTable *ngIf="!hasSupplierAssigned" class="panel-select-supplier" [value]="suppliers" sortField="name" [sortOrder]="1" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [(selection)]="selectedSupplier" dataKey="name" [responsive]="true">
+<p-dataTable class="panel-select-supplier" [value]="suppliers" sortField="name" [sortOrder]="1" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [(selection)]="selectedSupplier" dataKey="name" [responsive]="true">
 
-  <p-column selectionMode="single"></p-column>
+  <p-column *ngIf="!hasSupplierAssigned" selectionMode="single"></p-column>
 
   <!-- Datatable index -->
   <!-- <p-column *ngIf="!hasSupplierAssigned" field="i" header="Index" [style]="{'width':'70px'}">
@@ -115,14 +115,14 @@
         </div>
   
         <div class="col-sm-6 col-md-4 col-lg-3">      
-          <button class="btn btn-primary text-adjust pull-right" (click)="selectSupplier()" [disabled]="selectedSupplier == null">
+          <button class="btn btn-primary text-adjust pull-right" (click)="selectSupplier()" [disabled]="true">
             <b>{{ 'benefPortal.selectSupplier.buton.select' | translate }}</b>
           </button>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-sm-5 col-md-4 col-lg-3 offset-xs-6 offset-sm-7 offset-md-8 offset-lg-9">
-          <p class="link-label subtitle-discover text-justify pull-right">{{ 'benefPortal.selectSupplier.feedback.selected' | translate }} xx/xx/xx</p>
+          <p class="subtitle-discover text-justify pull-right">{{ 'benefPortal.selectSupplier.feedback.selected' | translate }} xx/xx/xx</p>
         </div>
       </div>
     </div>
