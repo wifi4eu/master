@@ -42,7 +42,7 @@ public class BeneficiaryResource {
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO submitBeneficiaryRegistration(@RequestBody final BeneficiaryDTO beneficiaryDTO,  HttpServletRequest request) {
+    public ResponseDTO submitBeneficiaryRegistration(@RequestBody final BeneficiaryDTO beneficiaryDTO,  HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             String forwardedHeaderIp = request.getHeader("X-Forwarded-For");
             String ip = "";
@@ -62,7 +62,8 @@ public class BeneficiaryResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'submitBeneficiaryRegistration' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -86,13 +87,16 @@ public class BeneficiaryResource {
             res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalities());
             return res;
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Access denied on 'findDgconnBeneficiaresList' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("can't retrieve beneficiaries", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
         }
     }
 
@@ -109,13 +113,16 @@ public class BeneficiaryResource {
             res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalitiesContainingName(name));
             return res;
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Access denied on 'findDgconnBeneficiaresListSearchingName' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("can't retrieve beneficiaries", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
         }
     }
 
@@ -132,6 +139,9 @@ public class BeneficiaryResource {
             res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalities());
             return res;
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'exportCSVDGConnBeneficiariesList' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -150,6 +160,9 @@ public class BeneficiaryResource {
             res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalitiesContainingName(name));
             return res;
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'exportCSVDGConnBeneficiariesListSearchingName' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -172,6 +185,9 @@ public class BeneficiaryResource {
             responseReturn = new ResponseEntity<>(beneficiaryService.exportExcelDGConnBeneficiariesList(), headers, HttpStatus.OK);
             return responseReturn;
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'exportExcelDGConnBeneficiariesList' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -194,6 +210,9 @@ public class BeneficiaryResource {
             responseReturn = new ResponseEntity<>(beneficiaryService.exportExcelDGConnBeneficiariesListContainingName(name), headers, HttpStatus.OK);
             return responseReturn;
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'exportExcelDGConnBeneficiariesListSearchingName' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
