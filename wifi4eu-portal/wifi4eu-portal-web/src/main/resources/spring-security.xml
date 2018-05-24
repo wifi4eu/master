@@ -27,9 +27,9 @@
           class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
         <property name="preAuthenticatedUserDetailsService">
             <bean class="wifi4eu.wifi4eu.service.security.UsersDetailsByTokenCustom">
-                <!--<property name="userDetailsService">
+                <property name="userDetailsService">
                     <bean id="cacheUserDetailsServiceCustom" class="wifi4eu.wifi4eu.service.security.CacheUserDetailsServiceCustom" />
-                </property>-->
+                </property>
             </bean>
         </property>
     </bean>

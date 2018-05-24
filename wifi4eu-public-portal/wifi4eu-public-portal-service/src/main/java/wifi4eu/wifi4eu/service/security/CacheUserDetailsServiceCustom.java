@@ -28,21 +28,6 @@ public class CacheUserDetailsServiceCustom {
         try {
             if (hash.contains("Bearer")) {
                 String cleanToken = hash.substring(7);
-/*
-                try{
-
-                    hashEmail = (String) AuthJWTokenizer.decode(cleanToken).get("email");
-
-                } catch (ExpiredJwtException ex) {
-
-                    logger.info("JWT expired: " + ex.getMessage());
-                    hashEmail = (String) ex.getClaims().get("email");
-                    return new User(hashEmail, "", true, true, false, true, Collections.EMPTY_SET);
-
-                } catch (SignatureException ex) {
-                    logger.info(ex.getMessage(), ex);
-                    throw ex;
-                }*/
 
                 UserDTO userCache = sessionCache.userSessionCache.get(cleanToken);
 
