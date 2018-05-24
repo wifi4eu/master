@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +38,9 @@ public class BeneficiaryResource {
     @Autowired
     private PermissionChecker permissionChecker;
 
+    @Autowired
+    private UserService userService;
+
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryResource.class);
 
 
@@ -44,6 +50,12 @@ public class BeneficiaryResource {
     @ResponseBody
     public ResponseDTO submitBeneficiaryRegistration(@RequestBody final BeneficiaryDTO beneficiaryDTO,  HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(userDTO.getType() != 0){
+                throw new AppException("");
+            }
+
             String forwardedHeaderIp = request.getHeader("X-Forwarded-For");
             String ip = "";
             if (forwardedHeaderIp != null) {
@@ -58,7 +70,8 @@ public class BeneficiaryResource {
             _log.info("submitBeneficiaryRegistration");
             List<RegistrationDTO> resRegistrations = beneficiaryService.submitBeneficiaryRegistration(beneficiaryDTO, ip);
             return new ResponseDTO(true, resRegistrations, null);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'submitBeneficiaryRegistration' operation.", e);
             }
