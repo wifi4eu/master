@@ -25,7 +25,7 @@ import { Paginator, DataGrid } from 'primeng/primeng';
   templateUrl: './select-supplier.component.html',
   providers: [ApplicationApi, CallApi, SupplierApi, MunicipalityApi, LauApi, NutsApi]
 })
-export class selectSupplierComponent {
+export class SelectSupplierComponent {
 
   /* To get municipality region */
   private currentCall: CallDTOBase = new CallDTOBase();

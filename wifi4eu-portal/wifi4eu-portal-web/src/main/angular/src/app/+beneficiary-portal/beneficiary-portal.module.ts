@@ -6,7 +6,7 @@ import { VoucherComponent } from "../+beneficiary-portal/+voucher/voucher.compon
 import { DiscussionComponent } from "./+discussion/discussion.component";
 import { BeneficiaryProfileComponent } from "./+profile/profile.component";
 import { AdditionalInfoComponent } from "./+additional-info/additional-info.component";
-import { selectSupplierComponent } from './+select-supplier/select-supplier.component';
+import { SelectSupplierComponent } from './+select-supplier/select-supplier.component';
 import { DataGridModule } from "primeng/primeng";
 
 @NgModule({
@@ -18,7 +18,7 @@ import { DataGridModule } from "primeng/primeng";
         DiscussionComponent,
         BeneficiaryProfileComponent,
         AdditionalInfoComponent,
-        selectSupplierComponent
+        SelectSupplierComponent
     ]
     // ,
     // bootstrap: [BeneficiaryPortalComponent]
