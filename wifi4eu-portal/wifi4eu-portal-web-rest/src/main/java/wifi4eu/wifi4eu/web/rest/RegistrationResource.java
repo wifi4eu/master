@@ -114,6 +114,30 @@ public class RegistrationResource {
         }
     }
 
+    @ApiOperation(value = "Update legal documents")
+    @RequestMapping(value = "/updateDocuments", method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseDTO updateRegistrationDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
+        try {
+            _log.info("createRegistration");
+
+            UserContext userContext = UserHolder.getUser();
+            UserDTO userDTO = userService.getUserByUserContext(userContext);
+
+            if(userDTO.getId() != registrationDTO.getUserId()){
+                throw new AccessDeniedException("");
+            }
+
+            permissionChecker.check(userDTO,RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+
+            RegistrationDTO resRegistration = registrationService.updateRegistrationDocuments(registrationDTO);
+            return new ResponseDTO(true, resRegistration, null);
+        }catch (Exception e){
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), e.getMessage()));
+        }
+    }
+
     @ApiOperation(value = "Delete registration by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
@@ -267,7 +291,7 @@ public class RegistrationResource {
         RegistrationDTO registration = registrationService.getRegistrationByUserThreadId(userThreadDTO.getThreadId(), userThreadDTO.getUserId());
 
         UserContext userContext = UserHolder.getUser();
-        UserDTO user = userService.getUserByEmail(userContext.getEmail());
+        UserDTO user = userService.getUserByUserContext(userContext);
 
         if (userThreadsService.getByUserIdAndThreadId(user.getId(), userThreadDTO.getThreadId()) != null) {
 

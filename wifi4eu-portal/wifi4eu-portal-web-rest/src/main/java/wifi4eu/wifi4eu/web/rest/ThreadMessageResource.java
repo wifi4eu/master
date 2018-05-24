@@ -53,6 +53,9 @@ public class ThreadMessageResource {
             if (userThreadsService.getByUserIdAndThreadId(user.getId(), threadMessageDTO.getThreadId()) == null && !permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            if(threadMessageDTO.getAuthorId() != user.getId()){
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
             ThreadMessageDTO resThreadMessage = threadMessageService.createThreadMessage(threadMessageDTO);
             return new ResponseDTO(true, resThreadMessage, null);
         } catch (AccessDeniedException ade) {

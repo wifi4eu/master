@@ -101,9 +101,22 @@ export class SupplierProfileComponent {
         Object.assign(this.editedSupplier, this.supplier);
     }
 
-    private saveSupplierChanges() {
+    private saveContactChanges() {
         this.submittingData = true;
-        this.supplierApi.createSupplier(this.editedSupplier).subscribe(
+        this.supplierApi.updateContactDetails(this.editedSupplier).subscribe(
+            (response: ResponseDTOBase) => {
+                if (response.success) {
+                    this.supplier = response.data;
+                    this.closeModal();
+                    this.submittingData = false;
+                }
+            }
+        );
+    }
+
+    private saveDetailsChanges() {
+        this.submittingData = true;
+        this.supplierApi.updateSupplierDetails(this.editedSupplier).subscribe(
             (response: ResponseDTOBase) => {
                 if (response.success) {
                     this.supplier = response.data;
