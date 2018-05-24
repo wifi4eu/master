@@ -15,6 +15,7 @@ import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
 
 import { SupplierApi, ResponseDTO, ApplicationDTOBase, SuppliedRegionDTOBase } from '../../shared/swagger';
+import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
 import { SupplierDTOBase } from "../../shared/swagger/model/SupplierDTO";
 
 import { Paginator, DataGrid } from 'primeng/primeng';
@@ -46,6 +47,9 @@ export class SelectSupplierComponent {
   /* Assigning supplier and feedback settings */
   private application: ApplicationDTOBase;
   private selectedSupplier: SupplierDTOBase;
+  private selectionDate: Date;
+  private localeDate: Array<String>;
+  private displayedDate: String;
   private displayMessage: boolean = false;
   private hasSupplierAssigned: boolean = false;
   
@@ -124,13 +128,15 @@ export class SelectSupplierComponent {
             this.supplierApi.getSupplierById(this.application.supplierId).subscribe(
               (supplier: SupplierDTOBase) => {
                 // THIS CODE SHOULD BE UNCOMENTED!!
-                // this.selectedSupplier = supplier;      
+                this.selectedSupplier = supplier;      
               }
             );
             // THIS IS A PROVISIONAL CODE!!
-            this.selectedSupplier = this.suppliers[1];
+            // this.selectedSupplier = this.suppliers[1];
+            
+            this.getStringDate(this.application.date);
           }
-
+          
         }
       );
     }
@@ -167,10 +173,22 @@ export class SelectSupplierComponent {
     this.application.supplierId = this.selectedSupplier.id; 
 
     this.applicationApi.assignSupplier(this.application).subscribe(
-      (resAplication: ApplicationDTOBase) => {
+      (resAplication: ResponseDTOBase) => {
+        console.log("Saved application is ", resAplication);
+        console.log("Application DATE is ", resAplication.data.date);
+        this.getStringDate(resAplication.data.date);
       }
     );
     this.hasSupplierAssigned = true;
+  }
+  
+  /* Get displayed string date from epoch number */
+  private getStringDate(epoch) {
+    this.selectionDate = new Date(epoch);
+    this.localeDate = this.selectionDate.toLocaleDateString().split(' ');
+    this.displayedDate = this.localeDate[0];
+    console.log("The actual date is ", this.selectionDate);
+    console.log("Displayed date is ", this.displayedDate);
   }
 
 }

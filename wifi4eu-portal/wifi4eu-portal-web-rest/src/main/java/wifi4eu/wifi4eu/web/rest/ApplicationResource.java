@@ -19,6 +19,7 @@ import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Date;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -275,6 +276,7 @@ public class ApplicationResource {
             if (_log.isInfoEnabled()) {
                 _log.info("assignSupplier");
             }
+            applicationDTO.setDate(new Date().getTime());
             ApplicationDTO resApplication = applicationService.saveApplication(applicationDTO);
             return new ResponseDTO(true, resApplication, null);
         } catch (Exception e) {
