@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
+import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
@@ -363,7 +364,7 @@ public class ApplicationService {
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
 
         if(registration.getAllFilesFlag() != 1){
-            return null;
+            throw new AppException();
         }
         applicationDTO.setStatus(ApplicationStatus.OK.getValue());
         applicationDTO.setInvalidateReason(null);
