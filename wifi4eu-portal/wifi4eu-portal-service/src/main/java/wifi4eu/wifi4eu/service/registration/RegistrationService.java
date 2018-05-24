@@ -668,4 +668,10 @@ public class RegistrationService {
             }
         }
     }
+
+    public RegistrationDTO requestDocuments (RegistrationDTO registrationDTO){
+        RegistrationDTO registration = getRegistrationById(registrationDTO.getId());
+        registration.setAllFilesFlag(registrationDTO.getAllFilesFlag());
+        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registration)));
+    }
 }

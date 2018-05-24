@@ -67,6 +67,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private displayRequestCorrection = false;
     private loadingData = false;
     private processingRequest = false;
+    private registration: RegistrationDTOBase;
 
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService) {
         this.loadingData = true;
@@ -92,6 +93,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                         let application = applications[i];
                         this.registrationApi.getRegistrationById(application.registrationId).subscribe(
                             (registration: RegistrationDTOBase) => {
+                                this.registration = registration;
                                 if (registration) {
                                     this.userApi.getUserById(registration.userId).subscribe(
                                         (user: UserDTOBase) => {
@@ -260,13 +262,13 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
     private validateApplication() {
         if (!this.processingRequest) {
-            if (this.selectedIndex != null) {
+            if (this.selectedIndex != null && this.registration.allFilesFlag == 1) {
                 this.processingRequest = true;
-                this.applications[this.selectedIndex].status = 2;
                 this.applicationApi.validateApplication(this.applications[this.selectedIndex]).subscribe(
                     (response: ResponseDTOBase) => {
                         if (response.success) {
                             if (response.data != null) {
+                                this.applications[this.selectedIndex].status = 2;
                                 this.getApplicationDetailsInfo();
                                 this.sharedService.growlTranslation('You successfully validated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
                             } else {
@@ -290,11 +292,11 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             if (this.selectedIndex != null && this.invalidateReason.trim().length > 0) {
                 this.processingRequest = true;
                 this.applications[this.selectedIndex].invalidateReason = this.invalidateReason;
-                this.applications[this.selectedIndex].status = 1;
                 this.applicationApi.invalidateApplication(this.applications[this.selectedIndex]).subscribe(
                     (response: ResponseDTOBase) => {
                         if (response.success) {
                             if (response.data != null) {
+                                this.applications[this.selectedIndex].status = 1;
                                 this.getApplicationDetailsInfo();
                                 this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
                             } else {
@@ -351,6 +353,13 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                 }
                             );
                         }
+                        this.registration.allFilesFlag = 0;
+                        this.registrationApi.requestDocuments(this.registration).subscribe(
+                            registration =>{
+
+                            },error=>{}
+                        );
+                    
                     }, error => {
                         this.closeModal();
                     }

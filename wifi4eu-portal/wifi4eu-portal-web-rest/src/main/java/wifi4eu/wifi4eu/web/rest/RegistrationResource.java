@@ -356,4 +356,27 @@ public class RegistrationResource {
 //        registrationService.moveRegistrationLegalFilesToNewTable();
 //        return true;
 //    }
+
+
+
+
+@ApiOperation(value = "Update AllFilesFlag registration")
+@RequestMapping(method = RequestMethod.PUT)
+@ResponseBody
+public ResponseDTO requestDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
+    try {
+        _log.info("UPDATE dOCUMENTS");
+        if (!permissionChecker.checkIfDashboardUser()) {
+            throw new AccessDeniedException("");
+        }
+        RegistrationDTO resRegistration = registrationService.requestDocuments(registrationDTO);
+        return new ResponseDTO(true, resRegistration, null);
+    } catch (Exception e) {
+        response.sendError(HttpStatus.NOT_FOUND.value());
+        if (_log.isErrorEnabled()) {
+            _log.error("Error on 'requestDocuments' operation.", e);
+        }
+        return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+    }
+}
 }

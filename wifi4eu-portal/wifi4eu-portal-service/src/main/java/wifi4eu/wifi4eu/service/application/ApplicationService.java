@@ -360,6 +360,11 @@ public class ApplicationService {
     }
 
     public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
+        RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
+
+        if(registration.getAllFilesFlag() != 1){
+            return null;
+        }
         applicationDTO.setStatus(ApplicationStatus.OK.getValue());
         applicationDTO.setInvalidateReason(null);
         ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
