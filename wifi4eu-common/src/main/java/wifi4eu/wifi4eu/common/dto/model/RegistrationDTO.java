@@ -19,7 +19,8 @@ public class RegistrationDTO implements Serializable {
     private int organisationId;
     private boolean wifiIndicator;
     private boolean beneficiaryIndicator;
-
+    private int idUserPM;
+    private int idUserBPM;
     private int idStatusBeneficiary;
     private boolean compliance;
     private String shortMemberState;
@@ -39,7 +40,7 @@ public class RegistrationDTO implements Serializable {
             legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int
             organisationId, boolean wifiIndicator, boolean beneficiaryIndicator, int idStatusBeneficiary, boolean
             compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int
-            actionTaken, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
+            actionTaken, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, int idUserPM, int idUserBPM) {
         this.id = id;
         this.userId = userId;
         this.municipalityId = municipalityId;
@@ -54,6 +55,8 @@ public class RegistrationDTO implements Serializable {
         this.organisationId = organisationId;
         this.wifiIndicator = wifiIndicator;
         this.beneficiaryIndicator = beneficiaryIndicator;
+        this.idUserPM  = idUserPM;
+        this.idUserBPM = idUserBPM;
         this.idStatusBeneficiary = idStatusBeneficiary;
         this.compliance = compliance;
         this.shortMemberState = shortMemberState;
@@ -276,5 +279,21 @@ public class RegistrationDTO implements Serializable {
 
     public void setDateRegistered(Timestamp dateRegistered) {
         this.dateRegistered = dateRegistered;
+    }
+
+    public int getIdUserPM() {
+        return idUserPM;
+    }
+
+    public void setIdUserPM(int idUserPM) {
+        this.idUserPM = idUserPM;
+    }
+
+    public int getIdUserBPM() {
+        return idUserBPM;
+    }
+
+    public void setIdUserBPM(int idUserBPM) {
+        this.idUserBPM = idUserBPM;
     }
 }
