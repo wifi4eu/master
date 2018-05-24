@@ -120,7 +120,6 @@ public class RegistrationResource {
     public ResponseDTO updateRegistrationDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
         try {
             _log.info("createRegistration");
-            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
 
             UserContext userContext = UserHolder.getUser();
             UserDTO userDTO = userService.getUserByUserContext(userContext);
@@ -128,6 +127,8 @@ public class RegistrationResource {
             if(userDTO.getId() != registrationDTO.getUserId()){
                 throw new AccessDeniedException("");
             }
+
+            permissionChecker.check(userDTO,RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
 
             RegistrationDTO resRegistration = registrationService.updateRegistrationDocuments(registrationDTO);
             return new ResponseDTO(true, resRegistration, null);

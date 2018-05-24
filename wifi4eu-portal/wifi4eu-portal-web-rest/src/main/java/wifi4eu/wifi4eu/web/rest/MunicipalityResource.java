@@ -113,7 +113,7 @@ public class MunicipalityResource {
                 throw new AccessDeniedException("");
             }
 
-            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityDTO.getId());
+            permissionChecker.check(userDTO, RightConstants.MUNICIPALITIES_TABLE + municipalityDTO.getId());
             return new ResponseDTO(true, municipalityService.updateMunicipalityDetails(municipalityDTO), null);
         }
         catch (AccessDeniedException ade) {
