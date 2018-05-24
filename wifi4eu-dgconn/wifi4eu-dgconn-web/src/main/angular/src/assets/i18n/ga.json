@@ -574,5 +574,6 @@
   "nefPortal.selectSupplier.table.web": "Lógó na cuideachta",
   "dgConn.supportingDocuments": "Supporting documents",
   "dgConn.status.pendingFollowup": "Pending follow up",
-  "dgConn.exportExcel": "Export to Excel"
+  "dgConn.exportExcel": "Export to Excel",
+  "dgConn.correctionReason": "Correction Reason"
 }

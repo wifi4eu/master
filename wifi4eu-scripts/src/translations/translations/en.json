@@ -619,5 +619,6 @@
   "benefPortal.selectSupplier.alert.gotvoucher": "You got a voucher. Please select a Wi-Fi installation company.",
   "benefPortal.selectSupplier.alert.companyselected": "Wi-Fi installation company has been selected.",
   "benefPortal.selectSupplier.feedback.selected": "Installation company selected on {{date}}",
-  "dgConn.exportExcel": "Export to Excel"
+  "dgConn.exportExcel": "Export to Excel",
+  "dgConn.correctionReason": "Correction Reason"
 }
