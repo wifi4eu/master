@@ -21,7 +21,7 @@ export class HomeComponent {
                 this.router.navigateByUrl('/dgconn-portal');
                 break;
             default:
-                this.router.navigateByUrl('/home');
+                this.router.navigateByUrl('/notfound');
                 break;
         }
     }
