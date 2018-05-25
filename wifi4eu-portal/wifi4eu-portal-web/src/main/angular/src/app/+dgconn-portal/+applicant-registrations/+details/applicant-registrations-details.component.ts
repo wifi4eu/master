@@ -542,6 +542,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             }
             finalLegalFiles.push(lf4);
         }
-        return legalFiles;
+        return finalLegalFiles;
     }
 }
