@@ -13,10 +13,10 @@
 
     <modules>
         <module>wifi4eu-common</module>
-        <module>wifi4eu-portal</module>
+        <!--module>wifi4eu-portal</module-->
         <!--<module>wifi4eu-public-portal</module>-->
         <!--<module>wifi4eu-dgconn</module>-->
-        <!--<module>wifi4eu-financial</module>-->
+        <module>wifi4eu-financial</module>
     </modules>
 
 
@@ -112,30 +112,32 @@
 
         <!-- PERSISTENCE PROPERTIES -->
 
-        <app.context.root>/wifi4eu</app.context.root>
-        <!--<app.context.root>/wifi4eu-financial</app.context.root>-->
+        <!--app.context.root>/wifi4eu</app.context.root-->
+        <app.context.root>/wifi4eu-financial</app.context.root>
         <!--<app.datasource.name>wifi4euDS</app.datasource.name>-->
-        <!--<app.datasource.name>Wifi4euAbacDataSource</app.datasource.name>-->
-        <jndi.datasource.name>wififoreu</jndi.datasource.name>
-        <persistence.unit.name>wifi4euPersistence</persistence.unit.name>
-        <!--<jndi.datasource.name>jdbc/Wifi4euAbacDataSource</jndi.datasource.name>-->
+        <app.datasource.name>Wifi4euAbacDataSource</app.datasource.name>
+        <!--jndi.datasource.name>wififoreu</jndi.datasource.name-->
+        <jndi.datasource.name>jdbc/Wifi4euAbacDataSource</jndi.datasource.name>
+        <!--persistence.unit.name>wifi4euPersistence</persistence.unit.name-->
+        <persistence.unit.name>wifi4eu-finanacialPersistence</persistence.unit.name>
+
         <!--<persistence.unit.name>wifi4eu-financialPersistence</persistence.unit.name>-->
         <eclipselink.logging.level>WARNING</eclipselink.logging.level>
         <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
         <eclipselink.logging.parameters>true</eclipselink.logging.parameters>
-        <eclipselink.target.database>SQLServer</eclipselink.target.database>
-        <!--<eclipselink.target.database>Oracle</eclipselink.target.database>-->
+        <!--eclipselink.target.database>SQLServer</eclipselink.target.database-->
+        <eclipselink.target.database>Oracle</eclipselink.target.database>
 
         <!-- App settings -->
         <schemes>http</schemes>
         <!--<server.address>wlts0275.cc.cec.eu.int:1043</server.address>-->
         <ecas.server.address>wlts0275.cc.cec.eu.int</ecas.server.address>
         <ecas.server.port>1043</ecas.server.port>
-        <server.address>localhost:8080</server.address>
-        <!--<server.address>localhost:7001</server.address>-->
+        <!--server.address>localhost:8080</server.address-->
+        <server.address>localhost:7001</server.address>
         <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
-        <!--<server.test.port>7001</server.test.port>-->
-        <server.test.port>8080</server.test.port>
+        <server.test.port>7001</server.test.port>
+        <!--server.test.port>8080</server.test.port-->
 
         <!--
         <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
