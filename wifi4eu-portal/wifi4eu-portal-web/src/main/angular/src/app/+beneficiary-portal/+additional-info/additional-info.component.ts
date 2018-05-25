@@ -283,7 +283,7 @@ export class AdditionalInfoComponent {
             }
             this.updateMailings();
             this.displayConfirmingData = true;
-            this.registrationApi.createRegistration(this.registration).subscribe(
+            this.registrationApi.deleteRegistrationDocuments(this.registration).subscribe(
                 (response: ResponseDTOBase) => {
                     this.displayConfirmingData = false;
                     if (response.success) {

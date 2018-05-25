@@ -53,6 +53,9 @@ public class ThreadResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'getThreadById' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -73,6 +76,9 @@ public class ThreadResource {
                 }
             }
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'getThreadByTypeAndReason' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -92,13 +98,16 @@ public class ThreadResource {
             ThreadDTO resThread = threadService.setMediationToThread(threadId);
             return new ResponseDTO(true, resThread, null);
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'askMediationThread' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'setMediationThread' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
 }

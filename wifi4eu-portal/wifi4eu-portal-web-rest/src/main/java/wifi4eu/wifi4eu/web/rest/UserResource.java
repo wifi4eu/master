@@ -124,9 +124,20 @@ public class UserResource {
             }
 
             return new ResponseDTO(true, userService.updateUserDetails(userConnected, userDTO.getName(), userDTO.getSurname()), null);
-        }catch (Exception e){
+        }
+        catch (AccessDeniedException ade){
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'updateUserDetails' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, null);
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+        catch (Exception e){
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'updateUserDetails' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -188,13 +199,13 @@ public class UserResource {
                 _log.error("Error with permission on 'deleteUser' operation.", ade);
             }
             response.sendError(HttpStatus.FORBIDDEN.value());
-            return new ResponseDTO(false, null, new ErrorDTO(403, ade.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteUser' operation.", e);
             }
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return new ResponseDTO(false, null, new ErrorDTO(500, e.getMessage()));
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -224,7 +235,7 @@ public class UserResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'login' with ECAS operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -239,7 +250,7 @@ public class UserResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'login' with ECAS operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -254,7 +265,7 @@ public class UserResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'login' with ECAS operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -308,7 +319,7 @@ public class UserResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'resendEmail' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 

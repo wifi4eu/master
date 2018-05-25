@@ -85,6 +85,31 @@ public class RegistrationService {
     }
 
     @Transactional
+    public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO){
+
+        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
+
+        if(registrationDBO.getAllFilesFlag() != 1){
+            if(registrationDTO.getLegalFile1() == null){
+                registrationDBO.setLegalFile1(registrationDTO.getLegalFile1());
+            }
+
+            if(registrationDTO.getLegalFile2() == null){
+                registrationDBO.setLegalFile2(registrationDTO.getLegalFile2());
+            }
+
+            if(registrationDTO.getLegalFile3() == null){
+                registrationDBO.setLegalFile3(registrationDTO.getLegalFile3());
+            }
+
+            if(registrationDTO.getLegalFile4() == null){
+                registrationDBO.setLegalFile4(registrationDTO.getLegalFile4());
+            }
+        }
+        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
+    }
+
+    @Transactional
     public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO){
 
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
