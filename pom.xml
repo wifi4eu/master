@@ -18,7 +18,7 @@
         <module>wifi4eu-dgconn</module>
         <module>wifi4eu-edcc</module>
 
-        <module>wifi4eu-financial</module>
+        <!--<module>wifi4eu-financial</module>-->
     </modules>
 
 
