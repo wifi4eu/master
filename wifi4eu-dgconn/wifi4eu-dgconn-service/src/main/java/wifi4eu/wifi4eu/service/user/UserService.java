@@ -155,20 +155,6 @@ public class UserService {
     }
 
     @Transactional
-    public Cookie getCSRFCookie(String value) {
-        _log.debug("[i] getUserByEcasPerId");
-        Cookie cookie = null;
-
-        if (value != null && value.length() > 0) {
-            String hash = DigestUtils.md5DigestAsHex(value.getBytes());
-            cookie = new Cookie("XSRF-TOKEN", hash);
-        }
-
-        _log.debug("[f] getUserByEcasPerId");
-        return cookie;
-    }
-
-    @Transactional
     public UserDTO deleteUser(int userId) {
         UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
         if (userDTO != null) {

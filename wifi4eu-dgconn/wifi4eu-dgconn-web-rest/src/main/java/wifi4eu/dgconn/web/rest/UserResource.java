@@ -161,18 +161,13 @@ public class UserResource {
     @ApiOperation(value = "Service to do Login with a ECAS User")
     @RequestMapping(value = "/ecaslogin", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public ResponseDTO ecasLogin(HttpServletResponse response) {
+    public ResponseDTO ecasLogin() {
         try {
             _log.info("[i] ecasLogin");
             UserContext userContext = UserHolder.getUser();
             _log.debug("user Email: " + userContext.getEmail());
             _log.debug("user PerId: " + userContext.getPerId());
             UserDTO userDTO = userService.getUserByUserContext(userContext);
-
-            Cookie cookie = userService.getCSRFCookie(userContext.getUsername() + userContext.getDomain());
-            if (cookie != null) {
-                response.addCookie(cookie);
-            }
 
             _log.info("[f] ecasLogin");
             return new ResponseDTO(true, userDTO, null);

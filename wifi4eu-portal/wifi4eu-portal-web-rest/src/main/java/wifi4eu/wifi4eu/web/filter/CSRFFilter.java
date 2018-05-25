@@ -31,9 +31,11 @@ public class CSRFFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         _log.error("[i] doFilterInternal");
         _log.error("Servlet path: " + request.getServletPath());
+        _log.error("Servlet path: " + request.getRequestURL().toString());
+        _log.error("METHOD: " + request.getMethod());
 
-        if(!request.getMethod().equalsIgnoreCase("GET") && !request.getServletPath().contains("ecaslogin")){
-            _log.error("METHOD: " + request.getMethod());
+        if(!request.getMethod().equalsIgnoreCase("GET") || !request.getRequestURL().toString().contains("ecaslogin")){
+
             String XSRFTOKEN = request.getHeader("X-XSRF-TOKEN");
             _log.error("[i] X-XSRF-TOKEN: " + XSRFTOKEN);
 
