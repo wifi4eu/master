@@ -260,6 +260,9 @@ public class UserService {
         if (value != null && value.length() > 0) {
             String hash = DigestUtils.md5DigestAsHex(value.getBytes());
             cookie = new Cookie("XSRF-TOKEN", hash);
+            cookie.setSecure(true);
+            cookie.setMaxAge(365 * 24 * 60 * 60);
+            cookie.setPath("/");
         }
 
         _log.debug("[f] getUserByEcasPerId");
