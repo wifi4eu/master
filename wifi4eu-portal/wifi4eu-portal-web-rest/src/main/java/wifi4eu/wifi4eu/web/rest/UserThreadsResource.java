@@ -144,8 +144,14 @@ public class UserThreadsResource {
                     throw new AccessDeniedException("");
                 }
             } catch (AccessDeniedException ade) {
+                if (_log.isErrorEnabled()) {
+                    _log.error("Error on 'getUserThreadsByThreadId' operation.", ade);
+                }
                 response.sendError(HttpStatus.NOT_FOUND.value());
             } catch (Exception e) {
+                if (_log.isErrorEnabled()) {
+                    _log.error("Error on 'getUserThreadsByThreadId' operation.", e);
+                }
                 response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
             }
         }

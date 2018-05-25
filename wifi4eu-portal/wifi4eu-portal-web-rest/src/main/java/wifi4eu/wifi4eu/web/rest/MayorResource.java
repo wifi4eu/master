@@ -118,14 +118,14 @@ public class MayorResource {
         return new ResponseDTO(true, mayorService.updateMayor(mayorDetails, mayorDTO.getName(), mayorDTO.getSurname()), null);
       } catch (AccessDeniedException ade) {
           if (_log.isErrorEnabled()) {
-              _log.error("Error with permission on 'createMayor' operation.", ade);
+              _log.error("Error with permission on 'updateMayorDetails' operation.", ade);
           }
           response.sendError(HttpStatus.NOT_FOUND.value());
       } catch (Exception e) {
           if (_log.isErrorEnabled()) {
-              _log.error("Error on 'createMayor' operation.", e);
+              _log.error("Error on 'updateMayorDetails' operation.", e);
           }
-          response.sendError(HttpStatus.NOT_FOUND.value());
+          response.sendError(HttpStatus.BAD_REQUEST.value());
       }
       return new ResponseDTO(false, null, null);
     }
@@ -164,6 +164,9 @@ public class MayorResource {
                 permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE+municipalityId);
             }
         } catch (Exception e){
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'getMayorByMunicipalityId' operation.", e);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
 

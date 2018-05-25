@@ -108,16 +108,27 @@ public class LauResource {
                 throw new AccessDeniedException("");
             }
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'updatePhysicalAddress' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
-        } catch (Exception e) {
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        catch(Exception e){
+          if (_log.isErrorEnabled()) {
+            _log.error("Error on 'updatePhysicalAddress' operation.", e);
+          }
+          response.sendError(HttpStatus.NOT_FOUND.value());
         }
 
         try {
             LauDTO resLau = lauService.updatePhysicalAddress(lauDTO);
             return new ResponseDTO(true, resLau, null);
         } catch (Exception e) {
-            ErrorDTO errorDTO = new ErrorDTO(0, e.getMessage());
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'updatePhysicalAddress' operation.", e);
+            }
+            ErrorDTO errorDTO = new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase());
+            response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, errorDTO);
         }
     }

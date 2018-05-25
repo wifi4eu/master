@@ -272,6 +272,9 @@ public class ApplicationResource {
             }
             return applicationService.getApplicationsByCallIdAndLauId(callId, lauId);
         } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getApplicationsByCallIdAndLauId' operation.", e);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return null;

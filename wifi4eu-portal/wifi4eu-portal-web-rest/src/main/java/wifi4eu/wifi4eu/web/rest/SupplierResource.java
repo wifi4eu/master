@@ -21,6 +21,7 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -60,8 +61,14 @@ public class SupplierResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'allSuppliers' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'allSuppliers' operation.", e);
+            }
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return supplierService.getAllSuppliers();
@@ -81,6 +88,9 @@ public class SupplierResource {
             }
             return supplierService.getSupplierById(supplierId);
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'getSupplierById' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
@@ -106,13 +116,16 @@ public class SupplierResource {
             SupplierDTO resSupplier = supplierService.createSupplier(supplierDTO);
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'createSupplier' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createSupplier' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
 
@@ -136,13 +149,16 @@ public class SupplierResource {
             SupplierDTO resSupplier = supplierService.updateContactDetails(sendSupplierDTO, supplierDTO.getContactName(), supplierDTO.getContactSurname(), supplierDTO.getContactPhonePrefix(), supplierDTO.getContactPhoneNumber());
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'updateContactDetails' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'updateContactDetails' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -167,6 +183,9 @@ public class SupplierResource {
             
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'updateSupplierDetails' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
@@ -174,7 +193,7 @@ public class SupplierResource {
                 _log.error("Error on 'updateSupplierDetails' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -209,8 +228,14 @@ public class SupplierResource {
     @RequestMapping(value = "/submitRegistration", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO) {
+    public ResponseDTO submitSupplierRegistration(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
         try {
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(userDTO.getType() != 0){
+                throw new AppException("");
+            }
+
             _log.info("submitSupplierRegistration");
             SupplierDTO resSupplier = supplierService.submitSupplierRegistration(supplierDTO);
             return new ResponseDTO(true, resSupplier, null);
@@ -218,7 +243,8 @@ public class SupplierResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'submitSupplierRegistration' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -231,8 +257,14 @@ public class SupplierResource {
         try {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Access Denied 'getSupplierByUserId' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getSupplierByUserId' operation.", e);
+            }
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         return supplierService.getSupplierByUserId(userId);
@@ -248,6 +280,9 @@ public class SupplierResource {
                 throw new AccessDeniedException("");
             }
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'findSimilarSuppliers' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -267,13 +302,17 @@ public class SupplierResource {
             }
             return new ResponseDTO(supplierService.requestLegalDocuments(supplierId), null, null);
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'requestLegalDocuments' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'requestLegalDocuments' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -292,13 +331,17 @@ public class SupplierResource {
             SupplierDTO resSupplier = supplierService.invalidateSupplier(supplierDTO);
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'invalidateSupplier' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'invalidateSupplier' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -319,13 +362,17 @@ public class SupplierResource {
             }
             return new ResponseDTO(true, supplierService.findDgconnSuppliersList(null, page, count, orderField, orderType), supplierService.getCountAllSuppliers(), null);
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'findDgconnSuppliersList' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'findDgconnSuppliersList': ", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
@@ -339,13 +386,17 @@ public class SupplierResource {
             }
             return new ResponseDTO(true, supplierService.findDgconnSuppliersList(name, page, count, orderField, orderType), supplierService.getCountAllSuppliersContainingName(name), null);
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'findDgconnSuppliersListSearchingName' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return null;
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'findDgconnSuppliersListSearchingName' (" + name + "): ", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
