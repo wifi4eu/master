@@ -26,7 +26,7 @@
                             -
                         </option>
                         <option *ngFor="let currentCountry of countries" [ngValue]="currentCountry">
-                            {{currentCountry.label}}
+                            {{currentCountry.label | slice:0:1 | uppercase }}{{currentCountry.label | slice:1:currentCountry.label.length | lowercase }}
                         </option>
                     </select>
                 </div>
@@ -61,7 +61,7 @@
                          [paginator]="true" [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="totalItems" [rows]="itemsPerPage">
                 <p-column field="countryCode" [sortable]="true" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
                 <p-column field="name" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
-                <p-column field="status" [sortable]="true" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
+                <p-column field="status" [sortable]="false" header="{{ 'dgConn.status' | translate }}" styleClass="text-center">
                     <ng-template let-row="rowData" pTemplate="body">
                         <span *ngIf="row.status == -1">-</span>
                         <span *ngIf="row.status == 0">{{ 'dgConn.beneficiaries.applied' | translate }}</span>
