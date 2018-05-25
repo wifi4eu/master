@@ -26,10 +26,19 @@
                 <button class="btn btn-primary" (click)="exportBudgetaryCommitment()" type="button">Export Budgetary Commitment</button>
             </span>
         <br/>
-        <div class="ui-g-12">
-            <span class="input-group-btn">
-                <button class="btn btn-primary" (click)="importLegalEntityFBCValidate()" type="button">Import Lef and Budgetary Commitment Validates</button>
-            </span>
+        <!--<div class="ui-g-12">-->
+            <!--<span class="input-group-btn">-->
+                <!--<button class="btn btn-primary" (click)="importLegalEntityFBCValidate()" type="button">Import Lef and Budgetary Commitment Validates</button>-->
+            <!--</span>-->
+        <!--</div>-->
+        <div class="clearfix"></div>
+        <div class="container font" style="margin-top: 5em;">
+            <h1 class="beneficiaryTitle">Import LEF and BC validates.</h1>
+            <div class="ui-g-12">
+        <span class="input-group-btn">
+            <input type="file" (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json">
+            <!--button class="btn btn-primary" (click)="importLegalEntityF()" type="button">Import Beneficiaris Info.</button-->
+        </span>
         </div>
     </div>
 </div>

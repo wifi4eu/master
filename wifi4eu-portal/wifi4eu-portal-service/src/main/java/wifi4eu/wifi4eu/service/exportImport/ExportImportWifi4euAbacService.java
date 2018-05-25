@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 
+
 @Service
 public class ExportImportWifi4euAbacService {
     @Autowired
@@ -134,23 +135,6 @@ public class ExportImportWifi4euAbacService {
 //        resultJson.addProperty("version", _version);
         resultJson.addProperty("createTime", new Date().getTime());
         resultJson.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
-
-//        List<BenPubSupDTO> applications = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findAll()));
-//        JsonArray applicationsJsonArray = new JsonArray();
-//        if (applications != null && !applications.isEmpty()) {
-//            for (BenPubSupDTO application : applications) {
-//                long exportDate = new Date().getTime();
-//                application.setLefExport(exportDate);
-//                application.setBcExport(exportDate);
-//                application.setLcExport(exportDate);
-//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
-//                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
-//                applicationsJsonArray.add(applicationJson);
-//            }
-//        }
-//        resultJson.addProperty("version", _version);
-//        resultJson.addProperty("createTime", new Date().getTime());
-//        resultJson.add("applications", applicationsJsonArray);
         result.setSuccess(true);
         result.setData(resultJson.toString());
         result.setError(null);
@@ -177,24 +161,7 @@ public class ExportImportWifi4euAbacService {
         }
 //        resultJson.addProperty("version", _version);
         resultJson.addProperty("createTime", new Date().getTime());
-        resultJson.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
-
-//        List<BenPubSupDTO> applications = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findAll()));
-//        JsonArray applicationsJsonArray = new JsonArray();
-//        if (applications != null && !applications.isEmpty()) {
-//            for (BenPubSupDTO application : applications) {
-//                long exportDate = new Date().getTime();
-//                application.setLefExport(exportDate);
-//                application.setBcExport(exportDate);
-//                application.setLcExport(exportDate);
-//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
-//                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
-//                applicationsJsonArray.add(applicationJson);
-//            }
-//        }
-//        resultJson.addProperty("version", _version);
-//        resultJson.addProperty("createTime", new Date().getTime());
-//        resultJson.add("applications", applicationsJsonArray);
+        resultJson.add("budgetaryCommitment", applicationsBeneficiaryInformationJsonArray);
         result.setSuccess(true);
         result.setData(resultJson.toString());
         result.setError(null);
@@ -202,10 +169,9 @@ public class ExportImportWifi4euAbacService {
     }
 
     @Transactional
-    public void importLegalEntityFBCValidate() throws Exception{
-        _log.info("importRegistrationData");
-        ReadFile rF=new ReadFile(exportImportRegistrationDataRepository, exportImportRegistrationDataMapper);
-        rF.readExcelFileEntityFBCValidate();
+    public void importLegalEntityFBCValidate(final String jsonStringFile) throws Exception{
+        _log.info("importLegalEntityF");
+        //save the file in the table.
     }
 
     private Integer setIssueToDgconnBeneficiary(Integer lauId) {

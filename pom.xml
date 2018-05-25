@@ -13,10 +13,10 @@
 
     <modules>
         <module>wifi4eu-common</module>
-        <!--<module>wifi4eu-portal</module>-->
+        <module>wifi4eu-portal</module>
         <!--<module>wifi4eu-public-portal</module>-->
         <!--<module>wifi4eu-dgconn</module>-->
-        <module>wifi4eu-financial</module>
+        <!--<module>wifi4eu-financial</module>-->
     </modules>
 
 
@@ -131,11 +131,11 @@
         <!--<server.address>wlts0275.cc.cec.eu.int:1043</server.address>-->
         <ecas.server.address>wlts0275.cc.cec.eu.int</ecas.server.address>
         <ecas.server.port>1043</ecas.server.port>
-        <!--<server.address>localhost:8080</server.address>-->
-        <server.address>localhost:7001</server.address>
+        <server.address>localhost:8080</server.address>
+        <!--<server.address>localhost:7001</server.address>-->
         <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
-        <server.test.port>7001</server.test.port>
-        <!--server.test.port>8080</server.test.port-->
+        <!--<server.test.port>7001</server.test.port>-->
+        <server.test.port>8080</server.test.port>
 
         <!--
         <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>

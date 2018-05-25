@@ -61,26 +61,27 @@ export class DgConnExportImportComponent {
             );
      }
 
-     /*exportBeneficiaryInformation(){
-             this.exportImportApi.exportBeneficiaryInformation().subscribe(
-                 (response: ResponseDTO)  => {
-                     if(response.success){
-                         this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
-                         this.translateService.get("dgconn.dashboard.card.messageExport").subscribe(
-                             (translation: string) => {
-                                 if (translation) {
-                                     window.alert(translation);
-                                 }
-                             }
-                         );
-                     }
-                 },
-                 error => {
-                 }
-              );
-     }*/
+     //exportBeneficiaryInformation(){
+             //this.exportImportApi.exportBeneficiaryInformation().subscribe(
+                 //(response: ResponseDTO)  => {
+                     //if(response.success){
+                         //this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
+                         //this.translateService.get("dgconn.dashboard.card.messageExport").subscribe(
+                             //(translation: string) => {
+                                 //if (translation) {
+                                     //window.alert(translation);
+                                 //}
+                             //}
+                         //);
+                     //}
+                 //},
+                 //error => {
+                 //}
+              //);
+     //}
 
       exportBeneficiaryInformation() {
+      debugger;
              var myWindow =window.open("http://localhost:7001/wifi4eu/alertExport.jsp","mywindow","status=1,width=350,height=150");
              this.exportImportApi.exportBeneficiaryInformation().subscribe(
                  (response: ResponseDTO) => {
@@ -101,24 +102,24 @@ export class DgConnExportImportComponent {
              );
       }
 
-     /*exportBudgetaryCommitment(){
-             this.exportImportApi.exportBudgetaryCommitment().subscribe(
-                  (response: ResponseDTO)  => {
-                      if(response.success){
-                          this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
-                          this.translateService.get("dgconn.dashboard.card.messageExport").subscribe(
-                              (translation: string) => {
-                                  if (translation) {
-                                      window.alert(translation);
-                                  }
-                              }
-                          );
-                      }
-                  },
-                  error => {
-                  }
-               );
-     }*/
+     //exportBudgetaryCommitment(){
+             //this.exportImportApi.exportBudgetaryCommitment().subscribe(
+                  //(response: ResponseDTO)  => {
+                      //if(response.success){
+                          //this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
+                          //this.translateService.get("dgconn.dashboard.card.messageExport").subscribe(
+                              //(translation: string) => {
+                                  //if (translation) {
+                                      //window.alert(translation);
+                                  //}
+                              //}
+                          //);
+                      //}
+                  //},
+                  //error => {
+                  //}
+               //);
+     //}
 
      exportBudgetaryCommitment() {
               var myWindow =window.open("http://localhost:7001/wifi4eu/alertExport.jsp","mywindow","status=1,width=350,height=150");
@@ -141,22 +142,51 @@ export class DgConnExportImportComponent {
               );
      }
 
-     importLegalEntityFBCValidate(){
-      this.exportImportApi.importLegalEntityFBCValidate().subscribe(
-                     (response: ResponseDTO)  => {
-                         if(response.success){
-                             this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
-                             this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
-                                 (translation: string) => {
-                                     if (translation) {
-                                         window.alert(translation);
-                                     }
-                                 }
-                             );
+     importLegalEntityFBCValidate(event){
+             this.exportEnabled = false;
+             if (event && event.target && event.target.files && event.target.files.length == 1) {
+                 this.jsonFile = event.target.files['0'];
+                 let reader = new FileReader();
+                 reader.onload = (e) => {
+                     var myWindow =window.open("http://localhost:7001/wifi4eu/alertImport.jsp","mywindow","status=1,width=350,height=150");
+                     this.exportImportApi.importLegalEntityFBCValidate(reader.result).subscribe(
+                         (response: ResponseDTO) => {
+                             if (response.success) {
+                                 this.exportEnabled = true;
+                                 //this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                                 //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                                 myWindow.close();
+                                 window.alert("Import succesful!");
+                             } else {
+                                 myWindow.close();
+                                 window.alert("Import failed!");
+                             }
+                         }, error => {
+                             console.log(error);
+                             myWindow.close();
+                             window.alert("Import failed! Make sure that the file you are uploading has the correct format.");
                          }
-                     },
-                     error => {
-                     }
-                 );
+                     );
+                 }
+                 reader.readAsText(this.jsonFile);
+                 //reader.readAsBinaryString(this.excelFile);
+             }
+
+          //this.exportImportApi.importLegalEntityFBCValidate().subscribe(
+               //(response: ResponseDTO)  => {
+                   //if(response.success){
+                       //this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
+                       //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
+                           //(translation: string) => {
+                               //if (translation) {
+                                   //window.alert(translation);
+                               //}
+                           //}
+                       //);
+                   //}
+               //},
+               //error => {
+               //}
+          //);
      }
 }
