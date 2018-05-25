@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.web.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -49,16 +50,16 @@ public class CSRFFilter extends OncePerRequestFilter {
                     _log.error("Comparision: " + XSRFTOKEN.equalsIgnoreCase(hash));
 
                     if (!XSRFTOKEN.equalsIgnoreCase(hash)) {
-                        response.sendRedirect(request.getContextPath() + "/index.jsp");
+                        response.sendError(HttpStatus.BAD_REQUEST.value());
                         return;
                     }
                 } else {
                     _log.error("userContext is NULL");
-                    response.sendRedirect(request.getContextPath() + "/index.jsp");
+                    response.sendError(HttpStatus.BAD_REQUEST.value());
                     return;
                 }
             } else {
-                response.sendRedirect(request.getContextPath() + "/index.jsp");
+                response.sendError(HttpStatus.BAD_REQUEST.value());
                 return;
             }
         }
