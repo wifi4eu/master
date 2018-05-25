@@ -60,7 +60,6 @@ public class ExportImportFinancialAbacService {
 
     public ResponseDTO exportLegalEntityFBCValidate() {
         _log.info("exportLegalEntityFBCValidate");
-
         ResponseDTO result = new ResponseDTO();
         Gson gson = new GsonBuilder().create();
         JsonParser parser = new JsonParser();
@@ -98,25 +97,9 @@ public class ExportImportFinancialAbacService {
         }
 //        resultJson.addProperty("version", _version);
         resultJson.add("validatedBC", applicationsBCJsonArray);
-
-//        List<BenPubSupDTO> applications = benPubSupMapper.toDTOList(Lists.newArrayList(benPubSupRepository.findAll()));
-//        JsonArray applicationsJsonArray = new JsonArray();
-//        if (applications != null && !applications.isEmpty()) {
-//            for (BenPubSupDTO application : applications) {
-//                long exportDate = new Date().getTime();
-//                application.setLefExport(exportDate);
-//                application.setBcExport(exportDate);
-//                application.setLcExport(exportDate);
-//                benPubSupRepository.save(benPubSupMapper.toEntity(application));
-//                JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
-//                applicationsJsonArray.add(applicationJson);
-//            }
-//        }
-//        resultJson.addProperty("version", _version);
-//        resultJson.addProperty("createTime", new Date().getTime());
-//        resultJson.add("applications", applicationsJsonArray);
         result.setSuccess(true);
-        result.setData(resultJson.toString());
+//        result.setData(resultJson.toString());
+        result.setData("[" + resultJson.toString() + "]");
         result.setError(null);
         return result;
     }

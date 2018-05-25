@@ -51,24 +51,6 @@ export class AbacComponent {
                 reader.readAsText(this.jsonFile);
                 //reader.readAsBinaryString(this.excelFile);
             }
-
-         //this.exportImportApi.importLegalEntityF().subscribe(
-           // (response: ResponseDTO)  => {
-             //   if(response.success){
-               //     this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
-                 //   this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
-                   //     (translation: string) => {
-                     //       if (translation) {
-                                //window.alert(translation);
-                       //         window.alert("Your file have been imported correctly!");
-                         //   }
-                        //}
-                    //);
-                //}
-            //},
-            //error => {
-            //}
-        //);
     }
 
     importBudgetaryCommitment(event) {
@@ -100,24 +82,6 @@ export class AbacComponent {
             reader.readAsText(this.jsonFile);
             //reader.readAsBinaryString(this.excelFile);
         }
-
-        //this.exportImportApi.importBudgetaryCommitment().subscribe(
-            //(response: ResponseDTO)  => {
-                //if(response.success){
-                    //this.sharedService.growlTranslation("Your file have been imported correctly!", "dgconn.dashboard.card.messageImport", "success");
-                    //this.translateService.get("dgconn.dashboard.card.messageImport").subscribe(
-                        //(translation: string) => {
-                            //if (translation) {
-                                ////window.alert(translation);
-                                //window.alert("Your file have been imported correctly!");
-                            //}
-                        //}
-                    //);
-                //}
-            //},
-            //error => {
-            //}
-        //);
     }
 
     exportLegalEntityFBCValidate() {
@@ -139,23 +103,6 @@ export class AbacComponent {
                     window.alert("Something went wrong.");
                 }
             );
-
-        //this.exportImportApi.exportLegalEntityFBCValidate().subscribe(
-               //(response: ResponseDTO)  => {
-                   //if(response.success){
-                       //this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
-                       //this.translateService.get("dgconn.dashboard.card.messageExport").subscribe(
-                           //(translation: string) => {
-                               //if (translation) {
-                                   //window.alert(translation);
-                               //}
-                           //}
-                       //);
-                   //}
-               //},
-               //error => {
-               //}
-         //);
     }
 
 

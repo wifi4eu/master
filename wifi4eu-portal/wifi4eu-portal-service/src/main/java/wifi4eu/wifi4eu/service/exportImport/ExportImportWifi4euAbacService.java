@@ -136,12 +136,14 @@ public class ExportImportWifi4euAbacService {
         resultJson.addProperty("createTime", new Date().getTime());
         resultJson.add("beneficiaryInformation", applicationsBeneficiaryInformationJsonArray);
         result.setSuccess(true);
-        result.setData(resultJson.toString());
+//        result.setData(resultJson.toString());
+        result.setData("[" + resultJson.toString() + "]");
         result.setError(null);
         return result;
     }
 
     public ResponseDTO exportBudgetaryCommitment() throws Exception {
+        _log.info("exportBudgetaryCommitment");
         ResponseDTO result = new ResponseDTO();
         Gson gson = new GsonBuilder().create();
         JsonParser parser = new JsonParser();
@@ -163,7 +165,8 @@ public class ExportImportWifi4euAbacService {
         resultJson.addProperty("createTime", new Date().getTime());
         resultJson.add("budgetaryCommitment", applicationsBeneficiaryInformationJsonArray);
         result.setSuccess(true);
-        result.setData(resultJson.toString());
+//        result.setData(resultJson.toString());
+        result.setData("[" + resultJson.toString() + "]");
         result.setError(null);
         return result;
     }
