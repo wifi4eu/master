@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
@@ -17,10 +16,8 @@ import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
-import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
-import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -44,12 +41,6 @@ public class RegistrationResource {
 
     @Autowired
     private UserThreadsService userThreadsService;
-
-    @Autowired
-    private ThreadService threadService;
-
-    @Autowired
-    private MunicipalityService municipalityService;
 
     Logger _log = LoggerFactory.getLogger(RegistrationResource.class);
 
@@ -418,35 +409,4 @@ public class RegistrationResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
-
-//    @ApiOperation(value = "moveRegistrationLegalFilesToNewTable")
-//    @RequestMapping(value = "/moveRegistrationLegalFilesToNewTable", method = RequestMethod.GET)
-//    @ResponseBody
-//    public boolean moveRegistrationLegalFilesToNewTable() {
-//        registrationService.moveRegistrationLegalFilesToNewTable();
-//        return true;
-//    }
-
-
-
-
-@ApiOperation(value = "Update AllFilesFlag registration")
-@RequestMapping(method = RequestMethod.PUT)
-@ResponseBody
-public ResponseDTO requestDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
-    try {
-        _log.info("UPDATE dOCUMENTS");
-        if (!permissionChecker.checkIfDashboardUser()) {
-            throw new AccessDeniedException("");
-        }
-        RegistrationDTO resRegistration = registrationService.requestDocuments(registrationDTO);
-        return new ResponseDTO(true, resRegistration, null);
-    } catch (Exception e) {
-        response.sendError(HttpStatus.NOT_FOUND.value());
-        if (_log.isErrorEnabled()) {
-            _log.error("Error on 'requestDocuments' operation.", e);
-        }
-        return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-    }
-}
 }

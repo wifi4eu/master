@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface LegalFileRepository extends CrudRepository<LegalFile, Integer> {
     List<LegalFile> findByRegistrationIdOrderByTypeAsc(Integer registrationId);
+//    LegalFile findByRegistrationIdAndType(Integer registrationId, Integer type);
 }
