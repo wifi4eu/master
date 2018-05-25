@@ -105,44 +105,70 @@ public class UserResource {
         }
     }*/
 
-    @ApiOperation(value = "Save user changes")
-    @RequestMapping(value = "/saveChanges", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO,
-                                       HttpServletResponse response) throws IOException {
-        try {
-            _log.info("saveUserChanges");
 
-            //TODO: create saveMayorsChanges
-            //TODO: https://webgate.ec.europa.eu/CITnet/jira/browse/WIFIFOREU-1548
-            //check permission
+
+    @ApiOperation(value = "Update user details")
+    @RequestMapping(method = RequestMethod.PUT)
+    @ResponseBody
+    public ResponseDTO updateUserDetails(@RequestBody final UserDTO userDTO,
+                                       HttpServletResponse response) throws IOException {
+        try{
             int userId = userDTO.getId();
             permissionChecker.check(RightConstants.USER_TABLE + userId);
 
-            UserDTO user = userService.getUserById(userDTO.getId());
+            UserContext userContext = UserHolder.getUser();
+            UserDTO userConnected = userService.getUserByUserContext(userContext);
 
-            user.setName(userDTO.getName());
-            user.setSurname(userDTO.getSurname());
+            if(userDTO.getId() != userConnected.getId()){
+                throw new AccessDeniedException("");
+            }
 
-            UserDTO resUser = userService.saveUserChanges(user);
-            resUser.setEmail(user.getEmail());
-            resUser.setPassword(null);
-            return new ResponseDTO(true, resUser, null);
-        } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'saveUserChanges' operation.", ade);
-            }
-            response.sendError(HttpStatus.FORBIDDEN.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.FORBIDDEN.value(), ade.getMessage()));
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'saveUserChanges' operation.", e);
-            }
-            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
+            return new ResponseDTO(true, userService.updateUserDetails(userConnected, userDTO.getName(), userDTO.getSurname()), null);
+        }catch (Exception e){
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, null);
         }
     }
+
+
+//    @ApiOperation(value = "Save user changes")
+//    @RequestMapping(value = "/saveChanges", method = RequestMethod.POST)
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseBody
+//    public ResponseDTO saveUserChanges(@RequestBody final UserDTO userDTO,
+//                                       HttpServletResponse response) throws IOException {
+//        try {
+//            _log.info("saveUserChanges");
+//
+//            //TODO: create saveMayorsChanges
+//            //TODO: https://webgate.ec.europa.eu/CITnet/jira/browse/WIFIFOREU-1548
+//            //check permission
+//            int userId = userDTO.getId();
+//            permissionChecker.check(RightConstants.USER_TABLE + userId);
+//
+//            UserDTO user = userService.getUserById(userDTO.getId());
+//
+//            user.setName(userDTO.getName());
+//            user.setSurname(userDTO.getSurname());
+//
+//            UserDTO resUser = userService.saveUserChanges(user);
+//            resUser.setEmail(user.getEmail());
+//            resUser.setPassword(null);
+//            return new ResponseDTO(true, resUser, null);
+//        } catch (AccessDeniedException ade) {
+//            if (_log.isErrorEnabled()) {
+//                _log.error("Error with permission on 'saveUserChanges' operation.", ade);
+//            }
+//            response.sendError(HttpStatus.FORBIDDEN.value());
+//            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.FORBIDDEN.value(), ade.getMessage()));
+//        } catch (Exception e) {
+//            if (_log.isErrorEnabled()) {
+//                _log.error("Error on 'saveUserChanges' operation.", e);
+//            }
+//            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+//            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
+//        }
+//    }
 
     @ApiOperation(value = "Delete user by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
