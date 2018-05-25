@@ -22,6 +22,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.utils.SupplierValidator;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -113,6 +114,7 @@ public class SupplierResource {
             if (supplierDTO.getUserId() != userDTO.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            SupplierValidator.validateSupplier(supplierDTO);
             SupplierDTO resSupplier = supplierService.createSupplier(supplierDTO);
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
