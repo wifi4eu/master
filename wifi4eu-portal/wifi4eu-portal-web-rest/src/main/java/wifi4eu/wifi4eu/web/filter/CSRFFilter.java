@@ -34,7 +34,7 @@ public class CSRFFilter extends OncePerRequestFilter {
         _log.error("Servlet path: " + request.getRequestURL().toString());
         _log.error("METHOD: " + request.getMethod());
 
-        if(!request.getMethod().equalsIgnoreCase("GET") || !request.getRequestURL().toString().contains("ecaslogin")){
+        if(!request.getMethod().equalsIgnoreCase("GET") && !request.getRequestURL().toString().contains("ecaslogin")){
 
             String XSRFTOKEN = request.getHeader("X-XSRF-TOKEN");
             _log.error("[i] X-XSRF-TOKEN: " + XSRFTOKEN);
