@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.SupplierValidator;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
@@ -155,6 +156,8 @@ public class SupplierService {
     public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
 
         UserDTO userDTO;
+
+        SupplierValidator.validateSupplier(supplierDTO);
 
         UserContext userContext = UserHolder.getUser();
 

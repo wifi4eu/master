@@ -10,6 +10,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
@@ -18,6 +19,7 @@ import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
+import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -62,6 +64,9 @@ public class BeneficiaryService {
     LauService lauService;
 
     @Autowired
+    NutsService nutsService;
+
+    @Autowired
     ApplicationService applicationService;
 
     @Autowired
@@ -84,6 +89,13 @@ public class BeneficiaryService {
 
     @Transactional
     public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO, String ip) throws Exception {
+
+        /* Validate municipalities */
+        for(MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
+            MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
+                    nutsService.getNutsByLevel(0));
+        }
+
 
         /* Get user from ECAS */
         UserDTO user = new UserDTO();
@@ -273,7 +285,7 @@ public class BeneficiaryService {
         }
     }
 
-    private List<MunicipalityDTO> getMunicipalityList(final BeneficiaryDTO beneficiaryDTO) {
+    private List<MunicipalityDTO> getMunicipalityList(final BeneficiaryDTO beneficiaryDTO) throws Exception {
         List<MunicipalityDTO> resMunicipalities = new ArrayList<>();
         for (MunicipalityDTO municipality : beneficiaryDTO.getMunicipalities()) {
             /* search for other users registered on the same municipality */

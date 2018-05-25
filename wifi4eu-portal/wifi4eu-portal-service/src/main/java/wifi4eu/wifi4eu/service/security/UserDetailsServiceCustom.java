@@ -16,7 +16,7 @@ public class UserDetailsServiceCustom implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 
-        try{
+        try {
 
             return UserHolder.getUser();
 
@@ -27,45 +27,6 @@ public class UserDetailsServiceCustom implements UserDetailsService {
                 throw new UsernameNotFoundException("Cannot retrieve the userDetails", ex);
         }
 
-
-/*        try {
-
-            DetailedUser detailedUser = UserHolder.getDetailedUser();
-            Long perId = UserHolder.extractEcasEmployeeNumber(detailedUser);
-
-            UserContext userContext = new UserContext(username);
-            userContext.setEmail(detailedUser.getEmail());
-            userContext.setDomain(detailedUser.getDomain());
-            userContext.setPerId(perId);
-            userContext.setDetailedUser(detailedUser);
-            userContext.setFirstName(detailedUser.getFirstName());
-            userContext.setLastName(detailedUser.getLastName());
-
-            userContext.setRoleList(new LinkedList<RoleDTO>());
-
-            if (existsClass("weblogic.security.Security")) {
-                Subject subject = (Subject) Class.forName("weblogic.security.Security").getMethod("getCurrentSubject", null).invoke(null, null);
-                Set<Principal> principals = subject.getPrincipals();
-                for (Principal principal : principals) {
-                    if (Class.forName("weblogic.security.spi.WLSGroup").isInstance(principal)) {
-                        RoleDTO role = new RoleDTO();
-                        role.setName(principal.getName());
-                        userContext.getRoleList().add(role);
-                        logger.info("---------------------------------------REGISTERED ROLE : " + principal.getName());
-                    }
-                }
-            }
-
-            UserHolder.setUser(userContext);
-
-            return userContext;
-
-        } catch (Exception ex) {
-            if (ex instanceof UsernameNotFoundException) {
-                throw (UsernameNotFoundException) ex;
-            } else
-                throw new UsernameNotFoundException("Cannot retrieve the userDetails", ex);
-        }*/
     }
 
     public boolean existsClass(String claszzName) {
