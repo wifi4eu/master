@@ -119,7 +119,7 @@ public class ExportImportWifi4euAbacService {
         Gson gson = new GsonBuilder().create();
         JsonParser parser = new JsonParser();
         JsonObject resultJson = new JsonObject();
-        List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation = exportImportBeneficiaryInformationMapper.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findAll()));
+        List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation = exportImportBeneficiaryInformationMapper.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findExportImportBI()));
         JsonArray applicationsBeneficiaryInformationJsonArray = new JsonArray();
         if (applicationsBeneficiaryInformation!= null && !applicationsBeneficiaryInformation.isEmpty()) {
             for (ExportImportBeneficiaryInformationDTO application : applicationsBeneficiaryInformation) {
