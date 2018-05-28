@@ -29,6 +29,7 @@ export class VoucherComponent {
     3 = Call created & started. You clicked 'Apply For Voucher' and are waiting for the approvement.
     4 = Voucher awarded. You can now click on 'Sign grant agreement'. 
     5 = Voucher awarded. You can now click on 'Select Wifi installation company'. 
+    6 = Voucher awarded. You already selected a Wi-Fi installation company. 
      */
     private voucherCompetitionState: number;
     private user: UserDTOBase;
@@ -43,6 +44,9 @@ export class VoucherComponent {
     private uploadDate: string[] = [];
     private uploadHour: string[] = [];
     private voucherApplied: string = "";
+    private selectionDate: Date;
+    private localeDate: Array<String>;
+    private displayedDate: String;
     private openedCalls: string = "";
     private isMayor: boolean = false;
     private registration: RegistrationDTOBase;
@@ -161,11 +165,15 @@ export class VoucherComponent {
 
                                                         this.storedRegistrationQueues = newStoredRegistrationQueues;
                                                         this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
-
+                                                        
                                                         let allApplied = true;
                                                         for (let app of this.applications) {
                                                             if (!app) {
                                                                 allApplied = false;
+                                                            }
+                                                            if(app.date) {
+                                                                // Get the date when supplier was selected
+                                                                this.getStringDate(app.date);
                                                             }
                                                         }
                                                         if (allApplied) {
@@ -175,6 +183,10 @@ export class VoucherComponent {
                                                         if (application.voucherAwarded) {
                                                             this.voucherCompetitionState = 5;
                                                         }
+                                                        if (application.supplierId) {
+                                                            this.voucherCompetitionState = 6;
+                                                        }
+                                                        
                                                     }
                                                 }
                                             );
@@ -199,7 +211,6 @@ export class VoucherComponent {
                 this.voucherCompetitionState = 0;
             }
         );
-        console.log("Competition state is now ", this.voucherCompetitionState)
     }
 
     private goToDocuments(registrationNumber: number) {
@@ -207,7 +218,6 @@ export class VoucherComponent {
     }
 
     private applyForVoucher(registrationNumber: number, event) {
-        console.log("Competition state is ",this.voucherCompetitionState);
         let startCallDate = this.currentCall.startDate;
         let actualDateTime = new Date().getTime();
 
@@ -354,5 +364,12 @@ export class VoucherComponent {
 
     private selectWifiInstallation() {
         this.router.navigate(['/beneficiary-portal/select-supplier/', this.registration.municipalityId], {relativeTo: this.route});
-    }    
+    }
+
+    /* Get displayed string date from epoch number */
+    private getStringDate(epoch) {
+        this.selectionDate = new Date(epoch);
+        this.localeDate = this.selectionDate.toLocaleDateString().split(' ');
+        this.displayedDate = this.localeDate[0];
+    }
 }

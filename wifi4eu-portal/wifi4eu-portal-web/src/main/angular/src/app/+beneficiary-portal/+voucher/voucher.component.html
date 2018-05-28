@@ -25,6 +25,8 @@
     </div>
 </div>
 
+voucher competition state is {{ voucherCompetitionState }}
+
 <!-- Timer & "Apply For Voucher" -->
 <div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
     <h2 *ngIf="voucherCompetitionState != 1" class="beneficiaryTitle marginTop">
@@ -84,6 +86,12 @@
                             <button class="btn btn-primary text-adjust" id="voucherButton" (click)="selectWifiInstallation()">
                                 {{ 'benefPortal.selectSupplier.details.title' | translate }}
                             </button>
+                        </div>
+                        <div *ngIf="voucherCompetitionState == 6">
+                            <span class="subtitle-discover text-adjust pull-right">
+                                <i class="fas fa-wifi" aria-hidden="true" style="color: #298B59"></i>
+                                {{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ displayedDate }}
+                            </span>
                         </div>
 
                     </template>
