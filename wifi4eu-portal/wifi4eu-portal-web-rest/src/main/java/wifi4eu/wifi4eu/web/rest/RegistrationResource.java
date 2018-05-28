@@ -16,6 +16,7 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.RegistrationValidator;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -100,16 +101,31 @@ public class RegistrationResource {
     public ResponseDTO createRegistration(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
         try {
             _log.info("createRegistration");
-            permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
-            permissionChecker.check(RightConstants.USER_TABLE + registrationDTO.getUserId());
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(userDTO.getId() != registrationDTO.getUserId()){
+                throw new AccessDeniedException("Incorrect user id");
+            }
+            permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+            permissionChecker.check(userDTO, RightConstants.USER_TABLE + registrationDTO.getUserId());
+
+            RegistrationValidator.validate(registrationDTO);
 
             RegistrationDTO resRegistration = registrationService.createRegistration(registrationDTO);
             return new ResponseDTO(true, resRegistration, null);
-        } catch (Exception e) {
+
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'getRegistrationById' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        } catch (Exception e) {
+            response.sendError(HttpStatus.BAD_REQUEST.value());
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createRegistration' operation.", e);
             }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
