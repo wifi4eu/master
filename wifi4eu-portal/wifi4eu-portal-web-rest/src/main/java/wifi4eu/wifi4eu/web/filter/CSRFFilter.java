@@ -30,15 +30,15 @@ public class CSRFFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        _log.error("[i] doFilterInternal");
-        _log.error("Servlet path: " + request.getServletPath());
-        _log.error("Servlet path: " + request.getRequestURL().toString());
-        _log.error("METHOD: " + request.getMethod());
+        _log.debug("[i] doFilterInternal");
+        _log.debug("Servlet path: " + request.getServletPath());
+        _log.debug("Servlet path: " + request.getRequestURL().toString());
+        _log.debug("METHOD: " + request.getMethod());
 
         if(!request.getMethod().equalsIgnoreCase("GET") && !request.getRequestURL().toString().contains("ecaslogin")){
 
             String XSRFTOKEN = request.getHeader("X-XSRF-TOKEN");
-            _log.error("[i] X-XSRF-TOKEN: " + XSRFTOKEN);
+            _log.debug("[i] X-XSRF-TOKEN: " + XSRFTOKEN);
 
             if(XSRFTOKEN != null && XSRFTOKEN.length() > 0) {
                 UserContext userContext = UserHolder.getUser();
@@ -46,15 +46,15 @@ public class CSRFFilter extends OncePerRequestFilter {
                 if (userContext != null) {
                     String value = userContext.getUsername() + userContext.getDomain();
                     String hash = DigestUtils.md5DigestAsHex(value.getBytes());
-                    _log.error("HASH: " + hash);
-                    _log.error("Comparision: " + XSRFTOKEN.equalsIgnoreCase(hash));
+                    _log.debug("HASH: " + hash);
+                    _log.debug("Comparision: " + XSRFTOKEN.equalsIgnoreCase(hash));
 
                     if (!XSRFTOKEN.equalsIgnoreCase(hash)) {
                         response.sendError(HttpStatus.BAD_REQUEST.value());
                         return;
                     }
                 } else {
-                    _log.error("userContext is NULL");
+                    _log.debug("userContext is NULL");
                     response.sendError(HttpStatus.BAD_REQUEST.value());
                     return;
                 }
