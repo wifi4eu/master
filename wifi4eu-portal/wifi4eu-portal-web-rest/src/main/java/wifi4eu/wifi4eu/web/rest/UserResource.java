@@ -227,7 +227,7 @@ public class UserResource {
     @ResponseBody
     public ResponseDTO ecasLogin(HttpServletResponse response) {
         try {
-            _log.info("[i] ecasLogin");
+            _log.debug("[i] ecasLogin");
             UserContext userContext = UserHolder.getUser();
             UserDTO userDTO = userService.getUserByUserContext(userContext);
 
@@ -235,7 +235,7 @@ public class UserResource {
             if (cookie != null) {
                 response.addCookie(cookie);
             }
-            _log.info("[f] ecasLogin");
+            _log.debug("[f] ecasLogin");
             return new ResponseDTO(true, userDTO, null);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {

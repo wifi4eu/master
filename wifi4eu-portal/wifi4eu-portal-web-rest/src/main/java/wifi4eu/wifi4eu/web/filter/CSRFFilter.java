@@ -32,10 +32,11 @@ public class CSRFFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         _log.debug("[i] doFilterInternal");
         _log.debug("Servlet path: " + request.getServletPath());
-        _log.debug("Servlet path: " + request.getRequestURL().toString());
+        _log.debug("doFilterInternal : XSRF : getRequestURL: " + request.getRequestURL().toString());
         _log.debug("METHOD: " + request.getMethod());
 
-        if(!request.getMethod().equalsIgnoreCase("GET") && !request.getRequestURL().toString().contains("ecaslogin")){
+        if(!request.getMethod().equalsIgnoreCase("GET")
+                && !request.getRequestURL().toString().equalsIgnoreCase("http://cnect.wifi4eu.eu/wifi4eu/api/user/ecaslogin")){
 
             String XSRFTOKEN = request.getHeader("X-XSRF-TOKEN");
             _log.debug("[i] X-XSRF-TOKEN: " + XSRFTOKEN);
