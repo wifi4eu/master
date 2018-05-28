@@ -150,8 +150,7 @@ export class SelectSupplierComponent {
     this.displayedSuppliers = [];
     for (let supplier of this.suppliers) {
       if (supplier.name && supplier.vat) {
-        if (supplier.name.toLowerCase().indexOf(this.searchSuppliersInput.toLowerCase()) != -1 ||
-            supplier.vat.toLowerCase().indexOf(this.searchSuppliersInput.toLowerCase()) != -1) {
+        if (supplier.name.toLowerCase().indexOf(this.searchSuppliersInput.toLowerCase()) != -1) {
               this.displayedSuppliers.push(supplier);
             }
         this.suppliers = this.displayedSuppliers;

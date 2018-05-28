@@ -36,7 +36,7 @@
                 <span class="input-group-addon">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </span>
-                <input type="search" name="searchInput" class="form-control" [(ngModel)]="searchSuppliersInput">
+                <input type="search" name="searchInput" class="form-control" [(ngModel)]="searchSuppliersInput" placeholder="Please enter a company name">
                 <span class="input-group-btn">
                     <button class="btn btn-primary" type="submit">
                         <b>{{ 'shared.search.button' | translate }}</b>
@@ -64,7 +64,7 @@
     </template>
   </p-column> -->
 
-  <p-column field="logo" header="{{ 'benefPortal.selectSupplier.table.logo' | translate }}" styleClass="supplier-logo">
+  <p-column field="logo" header="{{ 'benefPortal.selectSupplier.table.logo' | translate }}" styleClass="supplier-logo" [sortable]="true">
     <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
       <span>
         <img src="{{ supplier.logo }}">
@@ -78,13 +78,13 @@
     </template>
   </p-column>
 
-  <p-column field="address" header="{{ 'benefRegistration.address.label' | translate }}">
+  <p-column field="address" header="{{ 'benefRegistration.address.label' | translate }}" [sortable]="true">
     <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
       <span class="supplier-address">{{supplier.address}}</span>
     </template>
   </p-column>
 
-  <p-column field="website" header="{{ 'benefPortal.selectSupplier.table.web' | translate }}" styleClass="supplier-website">
+  <p-column field="website" header="{{ 'benefPortal.selectSupplier.table.web' | translate }}" styleClass="supplier-website" [sortable]="true">
     <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
       <span class="supplier-website">{{supplier.website}}</span>
     </template>
