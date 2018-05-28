@@ -57,7 +57,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private correctRequestLegalFilesModal: boolean = false;
     private selectedReasonsCount: number = 0;
     private typeFilesList: string[] = ['', '', '', ''];
-    private invalidateReasonsList: string[] = ['', '', '', '', ''];
+    private invalidateReasonsList: string[] = ['', '', '', '', '', ''];
     private searchMessagesQuery: string = '';
     private registrationIssues: number[] = [];
     private selectedIndex = null;
@@ -470,6 +470,11 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         this.translateService.get('dgConn.applicantDetails.legalFile.reason.cause5').subscribe(
             (translatedString: string) => {
                 this.invalidateReasonsList[4] = translatedString;
+            }
+        );
+        this.translateService.get('dgConn.applicantDetails.legalFile.reason.cause6').subscribe(
+            (translatedString: string) => {
+                this.invalidateReasonsList[5] = translatedString;
             }
         );
     }
