@@ -14,19 +14,22 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.*;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RegistrationValidator;
+import wifi4eu.wifi4eu.entity.registration.*;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.registration.legal_files.*;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -36,6 +39,9 @@ import java.util.List;
 public class RegistrationResource {
     @Autowired
     private RegistrationService registrationService;
+
+    @Autowired
+    private LegalFilesService legalFilesService;
 
     @Autowired
     private PermissionChecker permissionChecker;
@@ -360,10 +366,10 @@ public class RegistrationResource {
             //TODO Temporary solution to prevent information leaks
             // we check that the user has access to registrations table
 
-            registration.setLegalFile1(null);
-            registration.setLegalFile2(null);
-            registration.setLegalFile3(null);
-            registration.setLegalFile4(null);
+            //registration.setLegalFile1(null);
+            //registration.setLegalFile2(null);
+            //registration.setLegalFile3(null);
+            //registration.setLegalFile4(null);
             registration.setIpRegistration(null);
             registration.setMailCounter(0);
             registration.setRole(null);
@@ -376,6 +382,56 @@ public class RegistrationResource {
             return registration;
         } else {
             throw new AppException("The user in session does not contain any thread registered with the id provided.");
+        }
+    }
+
+    @ApiOperation(value = "Get registration by specific userThread id")
+    @RequestMapping(value = "/registrations/{registrationId}/{fileType}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public void getRegistrationFilesByFileType(@PathVariable("registrationId") final Integer registrationId, @PathVariable("fileType") final Integer fileType, HttpServletResponse response) {
+        _log.info("getRegistrationFilesByFileType: " + registrationId + " " + fileType);
+
+        UserContext userContext = UserHolder.getUser();
+        UserDTO user = userService.getUserByUserContext(userContext);
+
+        RegistrationDTO registration = registrationService.getRegistrationById(registrationId);
+        if (registration != null) {
+            RegistrationFilesDTO registrationFile = legalFilesService.getRegistrationFileByRegistrationIdFileType(registration.getId(), fileType);
+            if (registrationFile != null) {
+                String fileName = "";
+                String fileMime = "";
+                switch (fileType) {
+                    case 1:
+                        fileName = "LegalFile1";
+                        fileMime = registration.getLegalFile1Mime();
+                        break;
+                    case 2:
+                        fileName = "LegalFile2";
+                        fileMime = registration.getLegalFile2Mime();
+                        break;
+                    case 3:
+                        fileName = "LegalFile3";
+                        fileMime = registration.getLegalFile3Mime();
+                        break;
+                    case 4:
+                        fileName = "LegalFile4";
+                        fileMime = registration.getLegalFile4Mime();
+                        break;
+                }
+
+                if (fileMime != null && fileMime.length() != 0 && fileName != null && fileName.length() != 0) {
+                    try {
+                        response.setContentType(fileMime);
+                        response.setHeader("Content-disposition", "inline; filename=\"" + fileName + "\"");
+                        PrintWriter printWriter = new PrintWriter(response.getOutputStream());
+                        printWriter.append(registrationFile.getFile_data());
+                        printWriter.flush();
+                        printWriter.close();
+                    } catch (Exception ex) {
+                        _log.error(ex.getMessage(), ex);
+                    }
+                }
+            }
         }
     }
 

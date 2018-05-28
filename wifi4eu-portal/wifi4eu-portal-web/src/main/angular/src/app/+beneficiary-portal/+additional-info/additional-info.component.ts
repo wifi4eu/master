@@ -92,11 +92,12 @@ export class AdditionalInfoComponent {
     }
 
     private checkFirstDocuments() {
-        if (this.registration.legalFile1 == null || this.registration.legalFile3 == null) {
+        /*if (this.registration.legalFile1 == null || this.registration.legalFile3 == null) {
             this.deleteBlocker = true;
         } else {
             this.deleteBlocker = false;
-        }
+        }*/
+		return true;
     }
 
     private uploadFile(event: any, index: number = 0) {
@@ -183,13 +184,17 @@ export class AdditionalInfoComponent {
     private getLegalFileUrl(fileNumber: number) {
         switch (fileNumber) {
             case 1:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile1);
+                //return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile1);
+				return "";
             case 2:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile2);
+                //return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile2);
+				return "";
             case 3:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile3);
+                //return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile3);
+				return "";
             case 4:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile4);
+                //return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile4);
+				return "";
         }
     }
 
@@ -197,16 +202,16 @@ export class AdditionalInfoComponent {
         if (this.registration.allFilesFlag != 1) {
 
             if (this.documentUrls[0]) {
-                this.registration.legalFile1 = this.documentUrls[0];
+                //this.registration.legalFile1 = this.documentUrls[0];
             }
             if (this.documentUrls[1]) {
-                this.registration.legalFile2 = this.documentUrls[1];
+                //this.registration.legalFile2 = this.documentUrls[1];
             }
             if (this.documentUrls[2]) {
-                this.registration.legalFile3 = this.documentUrls[2];
+                //this.registration.legalFile3 = this.documentUrls[2];
             }
             if (this.documentUrls[3]) {
-                this.registration.legalFile4 = this.documentUrls[3];
+                //this.registration.legalFile4 = this.documentUrls[3];
             }
 
             this.displayConfirmingData = true;
@@ -240,23 +245,23 @@ export class AdditionalInfoComponent {
         if (!this.isMayor) {
 
 
-            if (this.registration.legalFile1 && this.registration.legalFile2 && this.registration.legalFile3 && this.registration.legalFile4) {
+            //if (this.registration.legalFile1 && this.registration.legalFile2 && this.registration.legalFile3 && this.registration.legalFile4) {
                 this.registration.allFilesFlag = 1;
                 this.registration.mailCounter = 0;
-            } else {
+            /*} else {
                 this.registration.allFilesFlag = 0;
                 this.registration.uploadTime = 0;
                 this.registration.mailCounter = 3;
-            }
+            }*/
         } else {
-            if (this.registration.legalFile1 && this.registration.legalFile3) {
+            //if (this.registration.legalFile1 && this.registration.legalFile3) {
                 this.registration.allFilesFlag = 1;
                 this.registration.mailCounter = 0;
-            } else {
+            /*} else {
                 this.registration.allFilesFlag = 0;
                 this.registration.uploadTime = 0;
                 this.registration.mailCounter = 3;
-            }
+            }*/
 
         }
         let date = new Date();
@@ -269,16 +274,16 @@ export class AdditionalInfoComponent {
             this.filesUploaded = true;
             switch (index) {
                 case 0:
-                    this.registration.legalFile1 = null;
+                    //this.registration.legalFile1 = null;
                     break;
                 case 1:
-                    this.registration.legalFile2 = null;
+                    //this.registration.legalFile2 = null;
                     break;
                 case 2:
-                    this.registration.legalFile3 = null;
+                    //this.registration.legalFile3 = null;
                     break;
                 case 3:
-                    this.registration.legalFile4 = null;
+                    //this.registration.legalFile4 = null;
                     break;
             }
             this.updateMailings();

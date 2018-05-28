@@ -81,22 +81,12 @@ public class RegistrationService {
 
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
 
+        //TODO
         if(registrationDBO.getAllFilesFlag() != 1){
-            if(registrationDTO.getLegalFile1() == null){
-                registrationDBO.setLegalFile1(registrationDTO.getLegalFile1());
-            }
-
-            if(registrationDTO.getLegalFile2() == null){
-                registrationDBO.setLegalFile2(registrationDTO.getLegalFile2());
-            }
-
-            if(registrationDTO.getLegalFile3() == null){
-                registrationDBO.setLegalFile3(registrationDTO.getLegalFile3());
-            }
-
-            if(registrationDTO.getLegalFile4() == null){
-                registrationDBO.setLegalFile4(registrationDTO.getLegalFile4());
-            }
+            //registrationDBO.setLegalFile1(null);
+            //registrationDBO.setLegalFile2(null);
+            //registrationDBO.setLegalFile3(null);
+            //registrationDBO.setLegalFile4(null);
         }
         return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
     }
@@ -106,7 +96,8 @@ public class RegistrationService {
 
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
 
-        if(registrationDTO.getLegalFile1() != null && !registrationDTO.getLegalFile1().isEmpty()){
+        //TODO
+        /*if(registrationDTO.getLegalFile1() != null && !registrationDTO.getLegalFile1().isEmpty()){
             registrationDBO.setLegalFile1(registrationDTO.getLegalFile1());
         }
 
@@ -120,7 +111,7 @@ public class RegistrationService {
 
         if(registrationDTO.getLegalFile4() != null && !registrationDTO.getLegalFile4().isEmpty()){
             registrationDBO.setLegalFile4(registrationDTO.getLegalFile4());
-        }
+        }*/
 
         registrationDBO.setAllFilesFlag(registrationDTO.getAllFilesFlag());
         registrationDBO.setMailCounter(registrationDTO.getMailCounter());
