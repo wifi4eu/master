@@ -104,14 +104,8 @@ public class SupplierResource {
         try {
             _log.info("getSupplierDetailsById: " + supplierId);
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-/*             if(supplierDTO.getUserId() != userDTO.getId() && userDTO.getType() != 5){
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            } */
             supplierDTO = supplierService.getSupplierDetailsById(supplierId);
         } 
-/*         catch (AccessDeniedException ade) {
-          response.sendError(HttpStatus.NOT_FOUND.value());
-        } */
         catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'getSupplierDetailsById' operation.", e);
