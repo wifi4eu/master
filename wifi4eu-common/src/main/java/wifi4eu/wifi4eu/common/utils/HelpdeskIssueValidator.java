@@ -12,7 +12,7 @@ public class HelpdeskIssueValidator {
         if(!helpdeskIssue.getAssignedTo().equals(MEMBER_STATE)){
             throw new Exception("Invalid assigned to Issue");
         }
-        if(!helpdeskIssue.getSummary().contains(MEMBER_STATE)){
+        if(!helpdeskIssue.getSummary().contains(WIFI4EU)){
             throw new Exception("Invalid summary Issue");
         }
 
