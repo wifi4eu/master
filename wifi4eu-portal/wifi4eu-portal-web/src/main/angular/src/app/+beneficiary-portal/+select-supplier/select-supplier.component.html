@@ -15,8 +15,8 @@
         <div *ngIf="!hasSupplierAssigned">
           <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.selectSupplier.alert.gotvoucher' | translate }}
         </div>
-        <div *ngIf="hasSupplierAssigned">
-            <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.selectSupplier.alert.companyselected' | translate }}
+        <div *ngIf="hasSupplierAssigned && selectedSupplier">
+            <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.selectSupplier.alert.companyselected' | translate }}: {{ selectedSupplier.name }}
         </div>
       </div>
     </div>
