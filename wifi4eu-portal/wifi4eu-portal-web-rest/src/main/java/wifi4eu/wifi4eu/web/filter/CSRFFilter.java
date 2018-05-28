@@ -36,7 +36,7 @@ public class CSRFFilter extends OncePerRequestFilter {
         _log.debug("METHOD: " + request.getMethod());
 
         if(!request.getMethod().equalsIgnoreCase("GET")
-                && !request.getRequestURL().toString().equalsIgnoreCase("http://cnect.wifi4eu.eu/wifi4eu/api/user/ecaslogin")){
+                && !request.getRequestURL().toString().contains("/api/user/ecaslogin")){
 
             String XSRFTOKEN = request.getHeader("X-XSRF-TOKEN");
             _log.debug("[i] X-XSRF-TOKEN: " + XSRFTOKEN);
