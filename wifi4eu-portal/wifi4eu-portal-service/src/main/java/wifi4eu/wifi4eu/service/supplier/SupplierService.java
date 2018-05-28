@@ -65,6 +65,21 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.findOne(supplierId));
     }
 
+    public SupplierDTO getSupplierDetailsById(int supplierId) {
+        SupplierDTO supplierDetails = supplierMapper.toDTO(supplierRepository.findOne(supplierId)); 
+        supplierDetails.setAccountNumber(null);
+        supplierDetails.setBic(null);
+        supplierDetails.setContactEmail(null);
+        supplierDetails.setContactName(null);
+        supplierDetails.setContactPhoneNumber(null);
+        supplierDetails.setContactPhonePrefix(null);
+        supplierDetails.setContactSurname(null);
+        supplierDetails.setLang(null);
+        supplierDetails.setLegalFile1(null);
+        supplierDetails.setLegalFile2(null);
+        return supplierDetails;  
+    }
+
     @Transactional
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
         if (supplierDTO.getSuppliedRegions().isEmpty()) {

@@ -125,15 +125,17 @@ export class SelectSupplierComponent {
 
           // Get previously selected supplier (if already applied)
           if(this.hasSupplierAssigned) {
-            this.supplierApi.getSupplierById(this.application.supplierId).subscribe(
+            this.supplierApi.getSupplierDetailsById(this.application.supplierId).subscribe(
               (supplier: SupplierDTOBase) => {
-                // THIS CODE SHOULD BE UNCOMENTED!!
-                this.selectedSupplier = supplier;      
+                for(var i = 0; i < this.suppliers.length; i++) {
+                  if(this.suppliers[i].id == supplier.id) {
+                    this.selectedSupplier = this.suppliers[i];
+                    break;
+                  } 
+                }
               }
             );
-            // THIS IS A PROVISIONAL CODE!!
-            // this.selectedSupplier = this.suppliers[1];
-            
+            // Get the date when supplier was selected
             this.getStringDate(this.application.date);
           }
           
@@ -174,8 +176,6 @@ export class SelectSupplierComponent {
 
     this.applicationApi.assignSupplier(this.application).subscribe(
       (resAplication: ResponseDTOBase) => {
-        console.log("Saved application is ", resAplication);
-        console.log("Application DATE is ", resAplication.data.date);
         this.getStringDate(resAplication.data.date);
       }
     );
@@ -187,8 +187,6 @@ export class SelectSupplierComponent {
     this.selectionDate = new Date(epoch);
     this.localeDate = this.selectionDate.toLocaleDateString().split(' ');
     this.displayedDate = this.localeDate[0];
-    console.log("The actual date is ", this.selectionDate);
-    console.log("Displayed date is ", this.displayedDate);
   }
 
 }

@@ -26,6 +26,8 @@ public interface SupplierMapper {
             @Mapping(source = "entity.region", target = "regionId")
     })
     SuppliedRegionDTO toDTO(SuppliedRegion entity);
+
+    
     @Mappings({
             @Mapping(source = "vo.supplierId", target = "supplier.id"),
             @Mapping(source = "vo.regionId.id", target = "region.id")
@@ -33,4 +35,18 @@ public interface SupplierMapper {
     SuppliedRegion toEntity(SuppliedRegionDTO vo);
     List<SupplierDTO> toDTOList(List<Supplier> list);
     List<Supplier> toEntityList(List<SupplierDTO> list);
+
+    // Borradooooooooooooooooooooooooooooooooooooooooooor
+/*     @Mappings({
+        @Mapping(target = "bic", ignore=true),
+        @Mapping(target = "accountNumber", ignore=true),
+        @Mapping(target = "contactName", ignore=true),
+        @Mapping(target = "contactPhonePrefix", ignore=true),
+        @Mapping(target = "contactPhoneNumber", ignore=true),
+        @Mapping(target = "contactEmail", ignore=true),
+        @Mapping(target = "legalFile1", ignore=true),
+        @Mapping(target = "legalFile2", ignore=true)
+    })
+    SupplierDTO toDTOLimited(Supplier entity); */
+
 }

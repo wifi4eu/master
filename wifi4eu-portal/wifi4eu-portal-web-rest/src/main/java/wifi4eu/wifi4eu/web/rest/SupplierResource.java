@@ -95,6 +95,32 @@ public class SupplierResource {
         return supplierDTO;
     }
 
+    //TODO: limit access to this service
+    @ApiOperation(value = "Get supplier deatils by specific id")
+    @RequestMapping(value = "/details/{supplierId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public SupplierDTO getSupplierDetailsById(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
+        SupplierDTO supplierDTO = new SupplierDTO();
+        try {
+            _log.info("getSupplierDetailsById: " + supplierId);
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+/*             if(supplierDTO.getUserId() != userDTO.getId() && userDTO.getType() != 5){
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            } */
+            supplierDTO = supplierService.getSupplierDetailsById(supplierId);
+        } 
+/*         catch (AccessDeniedException ade) {
+          response.sendError(HttpStatus.NOT_FOUND.value());
+        } */
+        catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getSupplierDetailsById' operation.", e);
+            }
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return supplierDTO;
+    }
+
     //TODO: is it necessary to be exposed? All the registration have to use submitSupplierRegistration endpoint?
     @ApiOperation(value = "Create supplier")
     @RequestMapping(method = RequestMethod.POST)
