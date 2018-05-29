@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.ThreadDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
@@ -67,10 +68,11 @@ public class ThreadResource {
     @ResponseBody
     public ThreadDTO getThreadByTypeAndReason(@PathVariable("type") final Integer type, @PathVariable("reason") final String reason, HttpServletResponse response) throws IOException {
         _log.info("getThreadByTypeAndReason: " + type);
-        ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
+        ThreadDTO threadDTO = new ThreadDTO();
+        threadDTO = threadService.getThreadByTypeAndReason(type, reason);
         try {
             UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
-            if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null && !permissionChecker.checkIfDashboardUser()) {
+            if (userThreadsService.getByUserIdAndThreadId(user.getId(), threadDTO.getId()) == null && user.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (AccessDeniedException ade) {
@@ -80,7 +82,7 @@ public class ThreadResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
-        return thread;
+        return threadDTO;
     }
 
     @ApiOperation(value = "Set mediation to thread")
