@@ -148,7 +148,14 @@ public class ScenariosService {
                         }
 
                     }
-                    country = country.replaceAll("\\s+$", "");
+                    /*country = country.replaceAll("\\s+$", "");*/
+                    if(country.trim().equalsIgnoreCase("ITALIA")){
+                        country = country.trim().concat("%");
+                    }
+
+                    if(country.trim().equalsIgnoreCase("IRELAND") && mun.trim().contains("Bouzov")){
+                        mun = "South Dublin";
+                    }
 
                     List<LauDTO> lauDTOList = lauService.getLauByName1Country(country, mun);
 

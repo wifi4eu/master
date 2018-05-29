@@ -3,6 +3,8 @@ package wifi4eu.wifi4eu.service.voucher;
 import com.google.common.base.Functions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +39,9 @@ import java.util.*;
 
 @Service("portalVoucherService")
 public class VoucherService {
+
+    private Logger _log = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     VoucherAssignmentMapper voucherAssignmentMapper;
 
@@ -166,7 +171,7 @@ public class VoucherService {
             /* List<ApplicationDTO> assignedVouchers = new ArrayList<>(); */
 
             // String => name municipality, Application of the municipality
-            HashMap<String, ApplicationDTO> assignedVouchers = new HashMap<>();
+            HashMap<Integer, ApplicationDTO> assignedVouchers = new HashMap<>();
 
             // String => Country_code == 'ES' OR 'DE', List of applications in reserved list of each country
             HashMap<String, List<ApplicationDTO>> countryReserveList = new HashMap<>();
@@ -174,6 +179,8 @@ public class VoucherService {
             // String => Country_code == 'ES' OR 'DE', Integer => counter each country
             HashMap<String, Integer> countryCounter = new HashMap<>();
             HashMap<String, Integer> countryReserveListCounter = new HashMap<>();
+
+            HashMap<String, List<MunicipalityDTO>> countryTest = new HashMap<>();
 
             int totalAssignedVouchers = 0;
 
@@ -184,13 +191,14 @@ public class VoucherService {
                 if (voucherManagement.getMaximum() == 0 || voucherManagement.getMinimum() == 0) {
                     return new ResponseDTO(false, "Simulation stopped", null);
                 }
+                countryTest.put(voucherManagement.getCountryCode().toUpperCase(), new ArrayList<>());
                 countryReserveListCounter.put(voucherManagement.getCountryCode().toUpperCase(), 0);
                 countryMax.put(voucherManagement.getCountryCode().toUpperCase(), voucherManagement.getMaximum());
                 countryMin.put(voucherManagement.getCountryCode().toUpperCase(), voucherManagement.getMinimum());
             }
 
             for (String country : participatingCountries) {
-                country = country.toUpperCase();
+                country = country.toUpperCase().trim();
                 countryCounter.put(country, 0);
             }
 
@@ -224,26 +232,27 @@ public class VoucherService {
                         MunicipalityDTO municipalityDTO = municipalityService.getMunicipalityById(registrationDTO.getMunicipalityId());
 
                         //Check if municipality with the same name have been assigned, if assigned then delete else continue
-                        if (assignedVouchers.containsKey(municipalityDTO.getName())) {
+                        if (assignedVouchers.containsKey(municipalityDTO.getLauId())) {
                             removeFromLOA(supportLOAlist, applicationDTO);
                             continue;
                         }
-                        assignedVouchers.put(municipalityDTO.getName(), applicationDTO);
+                        List<MunicipalityDTO> lis = countryTest.get(country);
+                        lis.add(municipalityDTO);
+                        assignedVouchers.put(municipalityDTO.getLauId(), applicationDTO);
+                        countryTest.put(country, lis);
                         countryCounter.put(country, countryCounter.get(country) + 1);
                         totalAssignedVouchers += 1;
                         removeFromLOA(supportLOAlist, applicationDTO);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    if(_log.isErrorEnabled()){
+                        _log.error("Error assigning minimum of vouchers to country", e);
+                    }
                 }
             }
 
-            int y = 0;
-            for (ApplicationDTO applicationDTO : listOfApplications) {
-
+            for (ApplicationDTO applicationDTO : new ArrayList<>(supportLOAlist)) {
                 try {
-
-
                     if (totalAssignedVouchers >= vouchersToBeAssigned || supportLOAlist.size() == 0) {
                         break;
                     }
@@ -258,11 +267,12 @@ public class VoucherService {
                     LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
 
                     String country = lauDTO.getCountryCode();
+                    country = country.trim();
                     if (country.equalsIgnoreCase("no")) {
                         country = country.toUpperCase();
                     }
 
-                    if (assignedVouchers.containsKey(municipalityDTO.getName())) {
+                    if (assignedVouchers.containsKey(municipalityDTO.getLauId())) {
                         removeFromLOA(supportLOAlist, applicationDTO);
                         continue;
                     }
@@ -282,67 +292,74 @@ public class VoucherService {
                         removeFromLOA(supportLOAlist, applicationDTO);
                         continue;
                     }
-
-                    assignedVouchers.put(municipalityDTO.getName(), applicationDTO);
+                    assignedVouchers.put(municipalityDTO.getLauId(), applicationDTO);
+                    List<MunicipalityDTO> lis = countryTest.get(country);
+                    lis.add(municipalityDTO);
+                    countryTest.put(country, lis);
                     countryCounter.put(lauDTO.getCountryCode(), countryCounter.get(lauDTO.getCountryCode()) + 1);
                     totalAssignedVouchers += 1;
                     removeFromLOA(supportLOAlist, applicationDTO);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    if(_log.isErrorEnabled()){
+                        _log.error("Error assigning maximum of vouchers to country", e);
+                    }
                 }
             }
 
             if (!supportLOAlist.isEmpty()) {
-
                 for (String country : participatingCountries) {
+                    country = country.trim();
                     if (country.equalsIgnoreCase("no")) {
                         country = country.toUpperCase();
                     }
 
-                    if (countryReserveListCounter.get(country) < numReserveList) {
-                        break;
+                    if (countryReserveListCounter.get(country) >= numReserveList) {
+                        continue;
                     }
 
-                    List<ApplicationDTO> applicationsCountry = getFirtsApplicationCountry(supportLOAlist, country);
+                    try{
+                        List<ApplicationDTO> applicationsCountry = getFirtsApplicationCountry(supportLOAlist, country);
 
-                    for (ApplicationDTO application : applicationsCountry) {
+                        for (ApplicationDTO application : applicationsCountry) {
 
-                        if (!checkApplicationIsValid(application)) {
+                            if (application.getStatus() == 1) {
+                                removeFromLOA(supportLOAlist, application);
+                                continue;
+                            }
+
+                            RegistrationDTO registrationDTO = registrationService.getRegistrationById(application.getRegistrationId());
+                            MunicipalityDTO municipalityDTO = municipalityService.getMunicipalityById(registrationDTO.getMunicipalityId());
+
+                            List<ApplicationDTO> countryApps = countryReserveList.get(country);
+
+                            if(countryApps == null){
+                                countryApps = new ArrayList<>();
+                            }
+
+                            if (assignedVouchers.containsKey(municipalityDTO.getLauId()) || checkIfApplicationExists(countryApps, application)) {
+                                removeFromLOA(supportLOAlist, application);
+                                continue;
+                            }
+
+                            if (countryReserveListCounter.get(country) >= numReserveList) {
+                                break;
+                            }
+
+                            countryApps.add(application);
+                            countryReserveList.put(country, countryApps);
+                            countryReserveListCounter.put(country, countryReserveListCounter.get(country) + 1);
+
+//                            if (countryReserveListCounter.get(country) == countryCounter.get(country)) {
+//                                continue;
+//                            }
+
                             removeFromLOA(supportLOAlist, application);
-                            continue;
                         }
-
-                        RegistrationDTO registrationDTO = registrationService.getRegistrationById(application.getRegistrationId());
-                        MunicipalityDTO municipalityDTO = municipalityService.getMunicipalityById(registrationDTO.getMunicipalityId());
-
-                        /**
-                         * Check if the municipality of this applicant
-                         * is already in the list AssignedVouchers or in the Country_ReserveList
-                         */
-
-                        List<ApplicationDTO> countryApps = countryReserveList.get(country);
-
-                        if (assignedVouchers.containsKey(municipalityDTO.getName()) || checkIfApplicationExists(countryApps, application)) {
-                            removeFromLOA(supportLOAlist, application);
-                            continue;
+                    }
+                    catch (Exception e){
+                        if(_log.isErrorEnabled()){
+                            _log.error("Error assigning reserve of vouchers to country", e);
                         }
-
-                        countryApps.add(application);
-                        countryReserveList.put(country, countryApps);
-
-                        /* countryReserveList.add(application); */
-                        countryReserveListCounter.put(country, countryReserveListCounter.get(country) + 1);
-
-                        /**
-                         * Check if the number of assigned vouchers to this country
-                         * reserve list is equal to the Country_ReserveList_Counter
-                         */
-
-                        if (countryReserveListCounter.get(country) == countryCounter.get(country)) {
-                            continue;
-                        }
-
-                        removeFromLOA(supportLOAlist, application);
                     }
                 }
             }
@@ -354,9 +371,7 @@ public class VoucherService {
             List<ApplicationDTO> reserveListCompleted = new ArrayList<>();
 
             for (List<ApplicationDTO> applications : countryReserveList.values()) {
-                for (ApplicationDTO applicationDTO : applications) {
-                    reserveListCompleted.add(applicationDTO);
-                }
+                reserveListCompleted.addAll(applications);
             }
 
             Collections.sort(mainListOutput, (o1, o2) -> {
@@ -392,10 +407,15 @@ public class VoucherService {
             }
 
             int i = 1;
+            int countryIt = 0;
             for (ApplicationDTO applicationAssigned : mainListOutput) {
 
                 RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationAssigned.getRegistrationId());
                 MunicipalityDTO municipalityDTO = municipalityService.getMunicipalityById(registrationDTO.getMunicipalityId());
+
+                if(municipalityDTO.getCountry().equalsIgnoreCase("ITALIA") || municipalityDTO.getCountry().equalsIgnoreCase("ITALIA ")){
+                    System.out.println("Italy municipality name" + municipalityDTO.getName());
+                }
 
                 int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLauId(), call.getId());
 
@@ -408,7 +428,7 @@ public class VoucherService {
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO);
                 simulation.setIssues(1);
-                simulation.setEuRank(i);
+                simulation.setEuRank(positionInApplicationList(listOfApplications, applicationAssigned) + 1);
                 simulation.setSelectionStatus(0);
                 simulation.setCountryRank(getPositionInCountry(applicationDTOS2, applicationAssigned) + 1);
                 simulations.add(simulation);
@@ -430,7 +450,7 @@ public class VoucherService {
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO);
                 simulation.setIssues(1);
-                simulation.setEuRank(i);
+                simulation.setEuRank(positionInApplicationList(listOfApplications, reservedApplication) + 1);
                 simulation.setSelectionStatus(1);
                 simulation.setCountryRank(getPositionInCountry(applicationDTOS2, reservedApplication) + 1);
                 simulations.add(simulation);
@@ -443,6 +463,18 @@ public class VoucherService {
             return new ResponseDTO(true, res.getVoucherSimulations(), null);
         }
         return new ResponseDTO(false, "User not defined", null);
+    }
+
+
+    public Integer positionInApplicationList(List<ApplicationDTO> applicationsInput, ApplicationDTO applicationInput){
+      int index = 0;
+      for (ApplicationDTO application : applicationsInput) {
+          if (application.getId() == applicationInput.getId()) {
+              return index;
+          }
+          index++;
+      }
+      return -1;
     }
 
     public List<ApplicationDTO> getFirtsApplicationCountry(List<ApplicationDTO> apps, String country) {
