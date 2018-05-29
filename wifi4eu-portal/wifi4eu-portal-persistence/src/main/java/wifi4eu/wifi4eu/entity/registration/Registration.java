@@ -52,22 +52,6 @@ public class Registration {
     @Column(name = "legal_file4_mime")
     private String legalFile4Mime;
 
-    /*@Basic(fetch=FetchType.LAZY)
-    @Column(name = "legal_file1")
-    private String legalFile1;*/
-
-    /*@Basic(fetch=FetchType.LAZY)
-    @Column(name = "legal_file2")
-    private String legalFile2;*/
-
-    /*@Basic(fetch=FetchType.LAZY)
-    @Column(name = "legal_file3")
-    private String legalFile3;*/
-
-    /*@Basic(fetch=FetchType.LAZY)
-    @Column(name = "legal_file4")
-    private String legalFile4;*/
-
     @Column(name = "ip_registration")
     private String ipRegistration;
 
@@ -90,15 +74,19 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter) {
+    public Registration(User user, Municipality municipality, String role, int status, long legalFile1Size, String legalFile1Mime, long legalFile2Size, String legalFile2Mime, long legalFile3Size, String legalFile3Mime, long legalFile4Size, String legalFile4Mime, String ipRegistration, String associationName, int organisationId, Long uploadTime, int allFilesFlag, int mailCounter) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
         this.status = status;
-        /*this.legalFile1 = legalFile1;
-        this.legalFile2 = legalFile2;
-        this.legalFile3 = legalFile3;
-        this.legalFile4 = legalFile4;*/
+        this.legalFile1Size = legalFile1Size;
+        this.legalFile1Mime = legalFile1Mime;
+        this.legalFile2Size = legalFile2Size;
+        this.legalFile2Mime = legalFile2Mime;
+        this.legalFile3Size = legalFile3Size;
+        this.legalFile3Mime = legalFile3Mime;
+        this.legalFile4Size = legalFile4Size;
+        this.legalFile4Mime = legalFile4Mime;
         this.ipRegistration = ipRegistration;
         this.associationName = associationName;
         this.organisationId = organisationId;
@@ -210,38 +198,6 @@ public class Registration {
     public void setLegalFile4Mime(String legalFile4Mime) {
         this.legalFile4Mime = legalFile4Mime;
     }
-
-    /*public String getLegalFile1() {
-        return legalFile1;
-    }
-
-    public void setLegalFile1(String legalFile1) {
-        this.legalFile1 = legalFile1;
-    }
-
-    public String getLegalFile2() {
-        return legalFile2;
-    }
-
-    public void setLegalFile2(String legalFile2) {
-        this.legalFile2 = legalFile2;
-    }
-
-    public String getLegalFile3() {
-        return legalFile3;
-    }
-
-    public void setLegalFile3(String legalFile3) {
-        this.legalFile3 = legalFile3;
-    }
-
-    public String getLegalFile4() {
-        return legalFile4;
-    }
-
-    public void setLegalFile4(String legalFile4) {
-        this.legalFile4 = legalFile4;
-    }*/
 
     public String getIpRegistration() {
         return ipRegistration;

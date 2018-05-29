@@ -16,10 +16,10 @@ public class RegistrationDTO implements Serializable {
     private String legalFile3Mime;
     private long legalFile4Size;
     private String legalFile4Mime;
-    /*private String legalFile1;
+    private String legalFile1;
     private String legalFile2;
     private String legalFile3;
-    private String legalFile4;*/
+    private String legalFile4;
     private String ipRegistration;
     private String associationName;
     private int organisationId;
@@ -36,10 +36,10 @@ public class RegistrationDTO implements Serializable {
         this.municipalityId = municipalityId;
         this.role = role;
         this.status = status;
-        /*this.legalFile1 = legalFile1;
+        this.legalFile1 = legalFile1;
         this.legalFile2 = legalFile2;
         this.legalFile3 = legalFile3;
-        this.legalFile4 = legalFile4;*/
+        this.legalFile4 = legalFile4;
         this.ipRegistration = ipRegistration;
         this.associationName = associationName;
         this.organisationId = organisationId;
@@ -152,7 +152,7 @@ public class RegistrationDTO implements Serializable {
         this.legalFile4Mime = legalFile4Mime;
     }
 
-    /*public String getLegalFile1() {
+    public String getLegalFile1() {
         return legalFile1;
     }
 
@@ -182,7 +182,7 @@ public class RegistrationDTO implements Serializable {
 
     public void setLegalFile4(String legalFile4) {
         this.legalFile4 = legalFile4;
-    }*/
+    }
 
     public String getIpRegistration() {
         return ipRegistration;
@@ -200,10 +200,6 @@ public class RegistrationDTO implements Serializable {
                 ", municipalityId=" + municipalityId +
                 ", role='" + role + '\'' +
                 ", status=" + status +
-                /*", legalFile1='" + legalFile1 + '\'' +
-                ", legalFile2='" + legalFile2 + '\'' +
-                ", legalFile3='" + legalFile3 + '\'' +
-                ", legalFile4='" + legalFile4 + '\'' +*/
                 ", upload_time='" + uploadTime + '\'' +
                 ", allFiles_flag='" + allFilesFlag + '\'' +
                 ", mail_counter='" + mailCounter + '\'' +
