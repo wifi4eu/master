@@ -118,18 +118,6 @@ public class UserThreadsResource {
 
         return userThreadsService.getUserThreadsByUserId(userId);
     }
-    @ApiOperation(value = "Get Thread by specific user id and thread id")
-    @RequestMapping(value = "/userId/{userId}/threadId/{threadId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public UserThreadsDTO getByUserIdAndThreadId(@PathVariable("userId") final Integer userId, @PathVariable("threadId") final Integer threadId) {
-        _log.info("getUserThreadsByUserId: " + userId);
-
-        UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
-        if (permissionChecker.check(RightConstants.USER_TABLE + userId) && user.getType() != 5) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-        }
-        return userThreadsService.getByUserIdAndThreadId(userId, threadId);
-    }
 
     @ApiOperation(value = "Get User by specific thread id")
     @RequestMapping(value = "/threadId/{threadId}", method = RequestMethod.GET, produces = "application/json")

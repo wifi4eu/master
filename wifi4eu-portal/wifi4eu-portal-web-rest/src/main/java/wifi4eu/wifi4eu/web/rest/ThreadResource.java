@@ -15,6 +15,7 @@ import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
@@ -63,18 +64,36 @@ public class ThreadResource {
         return threadService.getThreadById(threadId);
     }
 
+    @ApiOperation(value = "Get Thread by specific user id and thread id")
+    @RequestMapping(value = "/userId/{userId}/threadId/{threadId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public UserThreadsDTO getByUserIdAndThreadId(@PathVariable("userId") final Integer userId, @PathVariable("threadId") final Integer threadId) {
+        _log.info("getUserThreadsByUserId: " + userId);
+
+        UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
+        if (permissionChecker.check(RightConstants.USER_TABLE + userId) && user.getType() != 5) {
+            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }
+        return userThreadsService.getByUserIdAndThreadId(userId, threadId);
+    }
+
+
     @ApiOperation(value = "Get thread by specific type")
     @RequestMapping(value = "/type/{type}/reason/{reason}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ThreadDTO getThreadByTypeAndReason(@PathVariable("type") final Integer type, @PathVariable("reason") final String reason, HttpServletResponse response) throws IOException {
         _log.info("getThreadByTypeAndReason: " + type);
-        ThreadDTO threadDTO = new ThreadDTO();
-        threadDTO = threadService.getThreadByTypeAndReason(type, reason);
+
         try {
+            ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
+            if (thread == null) {
+                response.sendError(HttpStatus.NOT_FOUND.value());
+            }
             UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
-            if (userThreadsService.getByUserIdAndThreadId(user.getId(), threadDTO.getId()) == null && user.getType() != 5) {
+            if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null && user.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            return thread;
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("AccessDenied on 'getThreadByTypeAndReason' operation.", ade);
@@ -82,7 +101,6 @@ public class ThreadResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
-        return threadDTO;
     }
 
     @ApiOperation(value = "Set mediation to thread")
