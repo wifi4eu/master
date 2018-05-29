@@ -5,8 +5,11 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -110,34 +113,7 @@ public class ApplicationResource {
     @ApiOperation(value = "findDgconnApplicantsListByCallId")
     @RequestMapping(value = "/findDgconnApplicantsListByCallId/{callId}", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO findDgconnApplicantsListByCallId(@PathVariable("callId") final Integer callId, @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
-        try {
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-
-            ResponseDTO res = new ResponseDTO(true, null, null);
-            res.setData(applicationService.findDgconnApplicantsList(callId, null, null, pagingSortingData));
-            res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, null));
-            return res;
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("can't retrieve beneficiaries", e);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return new ResponseDTO(false, null, null);
-    }
-
-    @ApiOperation(value = "findDgconnApplicantsListByCallIdSearchingCountry")
-    @RequestMapping(value = "/findDgconnApplicantsListByCallIdSearchingCountry/{callId}", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO findDgconnApplicantsListByCallIdSearchingCountry(@PathVariable("callId") final Integer callId,
-                                                                        @RequestParam("country") final String country,
-                                                                        @RequestBody final PagingSortingDTO pagingSortingData,
-                                                                        HttpServletResponse response) throws IOException {
+    public ResponseDTO findDgconnApplicantsListByCallId(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
         try {
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -151,17 +127,17 @@ public class ApplicationResource {
             return res;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("can't retrieve beneficiaries", e);
+                _log.error("can't retrieve applicants", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-        return new ResponseDTO(false, null, null);
     }
 
     @ApiOperation(value = "findDgconnApplicantsListByCallIdSearchingName")
     @RequestMapping(value = "/findDgconnApplicantsListByCallIdSearchingName/{callId}", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseDTO findDgconnApplicantsListByCallIdSearchingName(@PathVariable("callId") final Integer callId, @RequestParam("name") final String name,
+    public ResponseDTO findDgconnApplicantsListByCallIdSearchingName(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name,
                                                                      @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
         try {
 
@@ -188,7 +164,6 @@ public class ApplicationResource {
     @ResponseBody
     public ResponseDTO findDgconnApplicantsListByCallIdSearchingNameAndCountry(@PathVariable("callId") final Integer callId, @RequestParam("name") final String name, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
         try {
-
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -200,7 +175,7 @@ public class ApplicationResource {
             return res;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("can't retrieve beneficiaries", e);
+                _log.error("can't retrieve applicants", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
@@ -228,8 +203,8 @@ public class ApplicationResource {
                 _log.error("Error on 'validateApplication' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-        return new ResponseDTO(false, null, null);
     }
 
     @ApiOperation(value = "Invalidate application")
@@ -253,14 +228,14 @@ public class ApplicationResource {
                 _log.error("Error on 'invalidateApplication' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
-        return new ResponseDTO(false, null, null);
     }
 
     @ApiOperation(value = "Get applications by specific call and lau id")
     @RequestMapping(value = "/call/{callId}/lau/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<ApplicationDTO> getApplicationsByCallIdAndLauId(@PathVariable("callId") final Integer callId, @PathVariable("lauId") final Integer lauId, HttpServletResponse response) throws IOException {
+    public List<ApplicationDTO> getApplicationsByCallIdAndLauId(@PathVariable("callId") final Integer callId, @PathVariable("lauId") final Integer lauId, @RequestParam("currentDate") final Long currentDate, HttpServletResponse response) throws IOException {
         if (_log.isInfoEnabled()) {
             _log.info("getApplicationsByCallIdAndLauId");
         }
@@ -278,5 +253,73 @@ public class ApplicationResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return null;
+    }
+
+    @ApiOperation(value = "Send legal documents correction request")
+    @RequestMapping(value = "/sendLegalDocumentsCorrection", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO sendLegalDocumentsCorrection(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("sendLegalDocumentsCorrection");
+            }
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
+            ApplicationDTO resApplication = applicationService.sendLegalDocumentsCorrection(applicationDTO);
+            return new ResponseDTO(true, resApplication, null);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'sendLegalDocumentsCorrection' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "exportExcelDGConnApplicantsList")
+    @RequestMapping(value = "/exportExcelDGConnApplicantsList", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
+    @ResponseBody
+    public ResponseEntity<byte[]> exportExcelDGConnApplicantsList(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, HttpServletResponse response) throws IOException {
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
+            ResponseEntity<byte[]> responseReturn = null;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
+            String filename = "dgconn-applicants.xls";
+            headers.setContentDispositionFormData(filename, filename);
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            responseReturn = new ResponseEntity<>(applicationService.exportExcelDGConnApplicantsList(callId, country), headers, HttpStatus.OK);
+            return responseReturn;
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+    }
+
+    @ApiOperation(value = "exportExcelDGConnApplicantsListSearchingName")
+    @RequestMapping(value = "/exportExcelDGConnApplicantsListSearchingName", method = RequestMethod.POST, headers = "Accept=application/vnd.ms-excel", produces = "application/vnd.ms-excel")
+    @ResponseBody
+    public ResponseEntity<byte[]> exportExcelDGConnApplicantsListSearchingName(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name, HttpServletResponse response) throws IOException {
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
+            ResponseEntity<byte[]> responseReturn = null;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
+            String filename = "dgconn-applicants.xls";
+            headers.setContentDispositionFormData(filename, filename);
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            responseReturn = new ResponseEntity<>(applicationService.exportExcelDGConnApplicantsListContainingName(callId, country, name), headers, HttpStatus.OK);
+            return responseReturn;
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
     }
 }
