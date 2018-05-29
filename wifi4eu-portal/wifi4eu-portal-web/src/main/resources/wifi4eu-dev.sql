@@ -288,6 +288,8 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`applications` (
   `lc_export`       BIGINT  NULL,
   `lc_import`       BIGINT  NULL,
   `lc_status`       INT     NULL     DEFAULT 0,
+  `_status`         INT     NOT NULL DEFAULT 0,
+  `invalidate_reason` MEDIUMTEXT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_call_idx` (`call_id` ASC),
   INDEX `fk_registration_idx` (`registration` ASC),

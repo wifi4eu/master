@@ -9,10 +9,6 @@
             <span class="beneficiaryTitle">
                 {{ 'shared.municipalityDetails.title' | translate }}<span *ngIf="municipalities[0]"> - {{municipalities[0].name}}</span>
             </span>
-            <span class="badge badge-warning" *ngIf="issueRegistration == 1">{{ 'dgConn.badge.warning' | translate }}</span>
-            <span class="badge badge-duplicated" *ngIf="issueRegistration == 2">{{ 'dgConn.badge.duplicated' | translate }}</span>
-            <span class="badge badge-success" *ngIf="issueRegistration == 3">{{ 'dgConn.badge.resolved' | translate }}</span>
-            <span class="badge badge-fail" *ngIf="issueRegistration == 4">{{ 'dgConn.badge.invalid' | translate }}</span>
         </p>
         <p *ngIf="municipalities.length == 0">
             {{ 'dgConn.duplicatedBeneficiaryDetails.noMunicipalitiesFound' | translate }}
@@ -32,9 +28,17 @@
             <hr class="beneficiaryHr">
             <div *ngFor="let municipality of municipalities; let i = index">
                 <div class="row applicantDetailsPanel">
-                    <label class="customCheckboxLabel" [for]="'check-'+i">
-                        {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}}
-                    </label>
+                    <span class="left">
+                        <span class="entity-title">
+                            {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}}
+                        </span>
+                        <span *ngIf="registrationIssues[i] == 1 || registrationIssues[i] == 2" class="badge badge-warning">
+                            {{ 'dgConn.badge.warning' | translate }} {{ registrationIssues[i] }}
+                        </span>
+                        <span *ngIf="registrationIssues[i] == 3" class="badge badge-warning-yellow">
+                            {{ 'dgConn.badge.warning' | translate }} {{ registrationIssues[i] }}
+                        </span>
+                    </span>
                     <span class="right">
                         <!--<button type="button" class="btn btn-primary whiteButton-thin" (click)="requestLegalDocuments(i)">-->
                         <!--{{ 'dgConn.duplicatedBeneficiaryDetails.requestDocuments' | translate }}-->
@@ -69,6 +73,10 @@
                         <p class="applicantDetailsNoMargin">
                             <span class="ui-g-6">{{ 'shared.country.label' | translate }}</span>
                             <span class="ui-g-6 profileData">{{ municipality.country }}</span>
+                        </p>
+                        <p class="applicantDetailsNoMargin">
+                            <span class="ui-g-6">{{ 'dgConn.beneficiaries.name' | translate }}</span>
+                            <span class="ui-g-6 profileData">{{ municipality.name }}</span>
                         </p>
                         <p class="applicantDetailsNoMargin">
                             <span class="ui-g-6">{{ 'benefRegistration.address.label' | translate }}</span>

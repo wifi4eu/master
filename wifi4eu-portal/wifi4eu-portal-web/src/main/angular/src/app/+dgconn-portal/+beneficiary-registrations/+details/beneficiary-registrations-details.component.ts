@@ -29,7 +29,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     private entitiesChecked: boolean[] = [];
     private entityCheckboxIndex: number = null;
     private searchMessagesQuery: string = '';
-    private issueRegistration: number;
+    private registrationIssues: number[] = [];
     private selectedIndex = null;
     private displayInvalidate = false;
     private processingRequest = false;
@@ -58,8 +58,9 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                                             this.registrations.push(registration);
                                             this.mayors.push(mayor);
                                             this.municipalities.push(municipality);
-                                            if (this.registrations.length == municipalities.length) {
-                                                this.getIssue();
+                                            if (this.registrations.length == this.municipalities.length) {
+                                                this.registrationIssues.push(0);
+                                                this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
                                             }
                                         }
                                     }
@@ -106,7 +107,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
         }
     }
 
-    private requestLegalDocuments(index: number) {
+    /*private requestLegalDocuments(index: number) {
         if (index != null) {
             this.registrationApi.requestLegalDocuments(this.registrations[index].id).subscribe(
                 (response: ResponseDTOBase) => {
@@ -118,7 +119,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                 }
             );
         }
-    }
+    }*/
 
     private displayInvalidateModal(index: number) {
         if (index != null) {
@@ -135,14 +136,15 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
         this.processingRequest = false;
     }
 
-    private getIssue(){
-        this.beneficiaryApi.getIssueTypeBeneficiaryRegistrations(JSON.stringify(this.registrations)).subscribe(
+    private setRegistrationIssue(registration: RegistrationDTOBase, index: number) {
+        console.log(index);
+        this.registrationApi.getRegistrationIssue(registration).subscribe(
             (response: ResponseDTOBase) => {
-                if(response.success){
-                    this.issueRegistration = response.data;
+                if (response.success) {
+                    this.registrationIssues[index] = response.data;
                 }
             }
-        )
+        );
     }
 
     private invalidateMunicipality() {
@@ -155,7 +157,6 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
                         if (response.success) {
                             if (response.data != null) {
                                 this.registrations[this.selectedIndex] = response.data;
-                                this.getIssue();
                                 this.sharedService.growlTranslation('You successfully invalidated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.success', 'success');
                             } else {
                                 this.sharedService.growlTranslation('An error occurred while trying to invalidate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.invalidateMunicipality.error', 'error');
@@ -184,5 +185,12 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
         } else {
             this.displayedMessages = this.discussionThread.messages;
         }
+    }
+
+    private clearPageInfo() {
+        this.municipalities = [];
+        this.mayors = [];
+        this.registrations = [];
+        this.registrationIssues = [];
     }
 }

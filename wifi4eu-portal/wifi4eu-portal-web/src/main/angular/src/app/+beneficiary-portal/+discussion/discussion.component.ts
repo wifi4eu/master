@@ -83,7 +83,7 @@ export class DiscussionComponent {
                                                 this.registrationApi.getRegistrationByUserThreadId(userThread.id).subscribe(
                                                     (registration: RegistrationDTOBase) => {
                                                         if (registration != null) {
-                                                            this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
+                                                            this.municipalityApi.getMunicipalityThreadById(registration.municipalityId).subscribe(
                                                                 (municipality: MunicipalityDTOBase) => {
                                                                     if (municipality != null) {
                                                                         if (userThread.userId == this.user.id) {

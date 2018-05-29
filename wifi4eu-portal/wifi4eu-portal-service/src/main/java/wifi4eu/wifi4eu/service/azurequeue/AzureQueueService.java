@@ -6,7 +6,6 @@ import com.microsoft.azure.storage.queue.CloudQueueMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.azure.queue.AzureQueue;
-import wifi4eu.wifi4eu.azure.queue.Queue;
 import wifi4eu.wifi4eu.common.dto.model.AzureQueueDTO;
 
 import java.net.URISyntaxException;
@@ -24,12 +23,12 @@ public class AzureQueueService {
 
     public void addMessageAzureQueue(AzureQueueDTO azureQueueDTO) throws StorageException, InvalidKeyException, URISyntaxException {
         if (azureQueueDTO != null && azureQueueDTO.getMessage() != null && !azureQueueDTO.getMessage().isEmpty()) {
-            azureQueue.addMessageAzureQueue( azureQueueDTO.getMessage() );
+            azureQueue.addMessageAzureQueue(azureQueueDTO.getMessage());
         }
     }
 
-    public void setQueue(String queueName) throws StorageException, InvalidKeyException, URISyntaxException{
-        azureQueue.setQueueName(queueName);
+    public void setAzureQueue(String name) {
+        azureQueue.setQueueName(name);
     }
 
     public void createAzureQueue(String queueName) throws StorageException, InvalidKeyException, URISyntaxException {
@@ -42,7 +41,7 @@ public class AzureQueueService {
     }
 
     public List<CloudQueueMessage> peekMessagesAzureQueue(int peek, int visibility) throws StorageException, InvalidKeyException, URISyntaxException {
-        return azureQueue.peekMessagesAzureQueue(peek,visibility);
+        return azureQueue.peekMessagesAzureQueue(peek, visibility);
     }
 
     public List<CloudQueueMessage> getMessagesAzureQueue() throws StorageException, InvalidKeyException, URISyntaxException {

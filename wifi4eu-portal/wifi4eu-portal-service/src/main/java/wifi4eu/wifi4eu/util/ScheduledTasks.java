@@ -1,15 +1,18 @@
 package wifi4eu.wifi4eu.util;
 
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.queue.CloudQueueMessage;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.entity.registration.Registration;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -20,20 +23,19 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import com.rabbitmq.client.*;
+
+import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.security.InvalidKeyException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+@Configuration
+@PropertySource("classpath:env.properties")
 @EnableScheduling
 @Controller
 public class ScheduledTasks {
@@ -67,92 +69,200 @@ public class ScheduledTasks {
 
     private static final Logger _log = LoggerFactory.getLogger(ScheduledTasks.class);
 
-    @Scheduled(cron = "0 0/5 * * * ?")
-    public void scheduleAzureQueue() throws InvalidKeyException, StorageException, URISyntaxException {
-        /*azureQueueService.setQueue("stressqueue-1");
-        List<CloudQueueMessage> list = azureQueueService.peekMessagesAzureQueue(32, 600);
+    private final static String QUEUE_NAME = "wifi4eu_apply";
 
-        for (CloudQueueMessage cloudQueueMessage: list) {
-            String queueMessage = cloudQueueMessage.getMessageContentAsString();
-            String idRegistration = queueMessage.substring(queueMessage.indexOf("(") + 1);
-            idRegistration = idRegistration.substring(0, idRegistration.indexOf(")"));
+    @Value("${rabbitmq.host}")
+    private String rabbitMQHost;
 
-            String idCall = queueMessage.substring(queueMessage.indexOf("@")+1);
-            idCall = idCall.substring(0, idCall.indexOf("@"));
+    @Value("${rabbitmq.username}")
+    private String rabbitUsername;
 
-            ApplicationDTO applicationDTO = new ApplicationDTO();
+    @Value("${rabbitmq.password}")
+    private String rabbitPassword;
 
-            applicationDTO.setRegistrationId(Integer.parseInt(idRegistration));
-            applicationDTO.setDate(new Date().getTime());
-            applicationDTO.setCallId(Integer.parseInt(idCall));
+    /**
+     * This cron method consumes the messages from the RabbitMQ
+     */
+    //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0/10 * * * ?")
+    public void queueConsumer() {
+        _log.info("[i] queueConsumer");
+        try {
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.setHost(rabbitMQHost);
+            factory.setUsername(rabbitUsername);
+            factory.setPassword(rabbitPassword);
+            Connection connection = factory.newConnection();
+            Channel channel = connection.createChannel();
 
-            if (applicationService.getApplicationsByRegistrationId(applicationDTO.getRegistrationId()).size() == 0) {
-              applicationService.createApplication(applicationDTO);
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+
+            boolean autoAck = false;
+
+            int iterationCounter = 0;
+            //try to process 100 messages from the queue
+            for (int i = 0; i < 1000; i++) {
+                iterationCounter++;
+                GetResponse response = channel.basicGet(QUEUE_NAME, autoAck);
+                if (response == null) {
+                    // No message retrieved.
+                    _log.info("queue is empty");
+                    break;
+                } else {
+
+                    Date wdStartDate = new Date();
+                    long deliveryTag = processQueueMessage(response);
+                    Date wdEndDate = new Date();
+
+                    //time the process has taken in millisecons
+                    long wdProcessTime = wdEndDate.getTime() - wdStartDate.getTime();
+                    long messageCount = response.getMessageCount();
+
+                    if (deliveryTag != 0) {
+                        _log.info("send deliveryTag:" + deliveryTag);
+                        channel.basicAck(deliveryTag, false); // acknowledge receipt of the message
+                    } else {
+                        _log.error("error processing a message, deliveryTag: " + deliveryTag, " response: " + response);
+                    }
+
+                    _log.info("wdProcessTime: " + wdProcessTime + " messageCount: " + messageCount + " iterationCounter: " + iterationCounter);
+
+                    if (wdProcessTime < 100 && messageCount > 200 && messageCount % 9 != 1) {
+                        i--;
+                    } else if (wdProcessTime > 500) {
+                        break;
+                    }
+
+                }
             }
 
-            azureQueueService.removeMessageAzureQueue(cloudQueueMessage);
-        }*/
+            channel.close();
+            _log.info("queue channel has been closed");
+            connection.close();
+            _log.info("queue connection has been closed");
+
+        } catch (Exception e) {
+            _log.error("can't process the queue", e);
+        }
+        _log.info("[f] queueConsumer");
     }
 
-    @Scheduled(cron = "0 0/30 * * * ?")
+    //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
+
+        _log.info("[i] scheduleHelpdeskIssues");
 
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
 
         for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
-            HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
 
-            helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
-            helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
-            helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
+            try {
+                HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
 
-            UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
+                helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
+                helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
+                helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
+
+                UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
 
 
-            if (userDTO != null) {
-                helpdeskTicketDTO.setFirstname(userDTO.getName());
-                helpdeskTicketDTO.setLastname(userDTO.getSurname());
+                if (userDTO != null) {
+                    helpdeskTicketDTO.setFirstname(userDTO.getName());
+                    helpdeskTicketDTO.setLastname(userDTO.getSurname());
 
-                helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
-                helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
+                    helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
+                    helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
 
-                String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
-                if (result != null && result.contains("Thankyou.js")) {
-                    helpdeskIssue.setTicket(true);
-                    helpdeskService.createHelpdeskIssue(helpdeskIssue);
+                    String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+
+                    if (result != null && result.contains("Thankyou.js")) {
+                        helpdeskIssue.setTicket(true);
+                        helpdeskService.createHelpdeskIssue(helpdeskIssue);
+                    } else {
+                        _log.error("result that not containt proper text, result: " + result);
+                    }
+                } else {
+                    _log.error("scheduleHelpdeskIssues can't retrieve the user for heldesk issue with Id " + helpdeskIssue.getId());
                 }
+
+
+            } catch (Exception e) {
+                _log.error("scheduleHelpdeskIssues the helpdesk issue with Id " + helpdeskIssue.getId() + " can't be processed", e);
             }
         }
+        _log.info("[f] scheduleHelpdeskIssues");
     }
 
 
-    @Scheduled(cron = "0 12 * * 1 ?")
+    //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 8 ? * MON-FRI")
     public void sendDocRequest() {
+
+        _log.info("[i] sendDocRequest");
+
         List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
         for (RegistrationDTO registrationDTO : registrationDTOS) {
-            if (registrationDTO != null && registrationDTO.getMailCounter() > 0) {
-                UserDTO user = userService.getUserById(registrationDTO.getUserId());
-                if (user != null && user.getEcasEmail() != null) {
-                    if (!userService.isLocalHost()) {
-                        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                        if (user.getLang() != null) {
-                            locale = new Locale(user.getLang());
-                        }
-                        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                        String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
-                        String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
-                        String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/additional-info";
-                        msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
+            try {
+                if (registrationDTO != null && registrationDTO.getMailCounter() > 0) {
+                    UserDTO user = userService.getUserById(registrationDTO.getUserId());
+                    if (user != null && user.getEcasEmail() != null) {
+                        if (!userService.isLocalHost()) {
+                            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                            if (user.getLang() != null) {
+                                locale = new Locale(user.getLang());
+                            }
+                            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                            String subject = bundle.getString("mail.dgConn.requestDocuments.subject");
+                            String msgBody = bundle.getString("mail.dgConn.requestDocuments.body");
+                            String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/voucher";
+                            msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
 
-                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                        }
+                        int mailCounter = registrationDTO.getMailCounter() - 1;
+                        registrationDTO.setMailCounter(mailCounter);
+                        registrationService.createRegistration(registrationDTO);
                     }
-                    int mailCounter = registrationDTO.getMailCounter() - 1;
-                    registrationDTO.setMailCounter(mailCounter);
-                    registrationService.createRegistration(registrationDTO);
                 }
+            } catch (Exception e) {
+                _log.error("sendDocRequest can't be done for registration with Id " + registrationDTO.getId());
             }
 
         }
+
+        _log.info("[f] sendDocRequest");
+    }
+
+    private long processQueueMessage(GetResponse response) {
+
+        try {
+            _log.info("[i] processQueueMessage");
+
+            AMQP.BasicProperties props = response.getProps();
+            byte[] body = response.getBody();
+            Envelope envelope = response.getEnvelope();
+
+            // deserialize JSON object from the body
+            ObjectMapper mapper = new ObjectMapper();
+            QueueApplicationElement qae = mapper.readValue(body, QueueApplicationElement.class);
+
+            ApplicationDTO applicatioDTO = applicationService.registerApplication(qae.getCallId(), qae.getUserId(), qae.getRegistrationId(),
+                    qae.getFileUploadTimestamp(), qae.getQueueTimestamp());
+
+            long deliveryTag = 0;
+
+            if (applicatioDTO != null) {
+                deliveryTag = response.getEnvelope().getDeliveryTag();
+                _log.info("deliveryTag: " + deliveryTag);
+            }
+
+            _log.info("[f] processQueueMessage");
+            return deliveryTag;
+
+        } catch (Exception e) {
+            _log.error("error reading a message from the queue", e);
+            return 0;
+        }
+
+
     }
 
     public static String executePost(String targetURL, String urlParameters) {

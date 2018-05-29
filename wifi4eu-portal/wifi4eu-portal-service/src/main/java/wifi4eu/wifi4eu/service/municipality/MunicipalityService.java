@@ -1,16 +1,21 @@
 package wifi4eu.wifi4eu.service.municipality;
 
 import com.google.common.collect.Lists;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.entity.location.Nuts;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.location.LauService;
+import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +35,13 @@ public class MunicipalityService {
     ApplicationService applicationService;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     MayorService mayorService;
+
+    @Autowired
+    MunicipalityService municipalityService;
 
     public List<MunicipalityDTO> getAllMunicipalities() {
         return municipalityMapper.toDTOList(Lists.newArrayList(municipalityRepository.findAll()));
@@ -43,6 +54,17 @@ public class MunicipalityService {
     @Transactional
     public MunicipalityDTO createMunicipality(MunicipalityDTO municipalityDTO) {
         return municipalityMapper.toDTO(municipalityRepository.save(municipalityMapper.toEntity(municipalityDTO)));
+    }
+
+    @Transactional
+    public MunicipalityDTO updateMunicipalityDetails(MunicipalityDTO municipalityDTO){
+        MunicipalityDTO municipalitySave = municipalityService.getMunicipalityById(municipalityDTO.getId());
+
+        municipalitySave.setAddress(municipalityDTO.getAddress());
+        municipalitySave.setAddressNum(municipalityDTO.getAddressNum());
+        municipalitySave.setPostalCode(municipalityDTO.getPostalCode());
+
+        return municipalityMapper.toDTO(municipalityRepository.save(municipalityMapper.toEntity(municipalitySave)));
     }
 
     @Transactional
@@ -90,5 +112,19 @@ public class MunicipalityService {
 
     public Integer getCountDistinctMunicipalitiesContainingName(String name) {
         return municipalityRepository.countDistinctMunicipalitiesContainingName(name);
+    }
+
+    public Integer getCountDistinctMunicipalitiesThatAppliedCall(Integer callId, String country) {
+        if (country == null) {
+            country = "%";
+        }
+        return municipalityRepository.countDistinctMunicipalitiesThatAppliedCall(callId, country);
+    }
+
+    public Integer getCountDistinctMunicipalitiesThatAppliedCallContainingName(Integer callId, String country, String name) {
+        if (country == null) {
+            country = "%";
+        }
+        return municipalityRepository.countDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name);
     }
 }

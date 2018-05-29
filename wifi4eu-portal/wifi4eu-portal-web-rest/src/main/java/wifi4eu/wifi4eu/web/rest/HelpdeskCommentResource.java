@@ -25,6 +25,8 @@ public class HelpdeskCommentResource {
 
     Logger _log = LoggerFactory.getLogger(CallResource.class);
 
+    /*
+
     @ApiOperation(value = "Get all the helpdesk comments")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -74,4 +76,5 @@ public class HelpdeskCommentResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
+    */
 }

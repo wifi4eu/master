@@ -33,9 +33,6 @@ public class Application {
     @Column(name = "date")
     private Long date;
 
-    @Column(name = "status")
-    private Integer status;
-
     @Column(name = "lef_export")
     private Long lefExport;
 
@@ -63,10 +60,16 @@ public class Application {
     @Column(name = "lc_status")
     private Integer lcStatus;
 
+    @Column(name = "_status")
+    private int status;
+
+    @Column(name = "invalidate_reason")
+    private String invalidateReason;
+
     public Application() {
     }
 
-    public Application(Integer id, Call call, Registration registration, Supplier supplier, boolean voucherAwarded, Long date, Integer status, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus) {
+    public Application(Integer id, Call call, Registration registration, Supplier supplier, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, Integer status, String invalidateReason) {
         this.id = id;
         this.call = call;
         this.registration = registration;
@@ -83,6 +86,7 @@ public class Application {
         this.lcImport = lcImport;
         this.lcStatus = lcStatus;
         this.status = status;
+        this.invalidateReason = invalidateReason;
     }
 
     public Integer getId() {
@@ -205,11 +209,19 @@ public class Application {
         this.lcStatus = lcStatus;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getInvalidateReason() {
+        return invalidateReason;
+    }
+
+    public void setInvalidateReason(String invalidateReason) {
+        this.invalidateReason = invalidateReason;
     }
 }
