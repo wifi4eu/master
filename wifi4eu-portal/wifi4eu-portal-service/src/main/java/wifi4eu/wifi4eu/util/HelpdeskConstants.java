@@ -1,4 +1,4 @@
-package wifi4eu.wifi4eu.web.rest.constants;
+package wifi4eu.wifi4eu.util;
 
 public class HelpdeskConstants {
 

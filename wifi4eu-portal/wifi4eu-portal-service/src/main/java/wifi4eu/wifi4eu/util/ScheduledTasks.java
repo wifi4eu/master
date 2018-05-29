@@ -1,8 +1,17 @@
 package wifi4eu.wifi4eu.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import org.apache.commons.lang.StringUtils;
+import com.rabbitmq.client.*;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.TrustStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +32,14 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 
-import com.rabbitmq.client.*;
-
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 
 @Configuration
 @PropertySource("classpath:env.properties")
@@ -147,10 +154,12 @@ public class ScheduledTasks {
     }
 
     @Scheduled(cron = "0 0 9,17 * * MON-FRI")
+//    @Scheduled(cron = "*/1 * * * * *")
     public void scheduleHelpdeskIssues() {
 
         _log.info("[i] scheduleHelpdeskIssues");
 
+        boolean isSuccesOperation = true;
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
 
         for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
@@ -160,7 +169,7 @@ public class ScheduledTasks {
 
                 helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
                 helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
-                helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
+                helpdeskTicketDTO.setUuid(HelpdeskConstants.UUID_WIFI + helpdeskIssue.getId());
 
                 UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
 
@@ -172,13 +181,14 @@ public class ScheduledTasks {
                     helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
                     helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
 
-                    String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
+                    boolean result = executePost(helpdeskTicketDTO.toString());
+                    isSuccesOperation = isSuccesOperation && result;
 
-                    if (result != null && result.contains("Thankyou.js")) {
+                    if (result) {
                         helpdeskIssue.setTicket(true);
                         helpdeskService.createHelpdeskIssue(helpdeskIssue);
                     } else {
-                        _log.error("result that not containt proper text, result: " + result);
+                        _log.error("result that not containt proper text, the " + helpdeskTicketDTO.getUuid() + " helpdesk issue fails");
                     }
                 } else {
                     _log.error("scheduleHelpdeskIssues can't retrieve the user for heldesk issue with Id " + helpdeskIssue.getId());
@@ -189,6 +199,7 @@ public class ScheduledTasks {
                 _log.error("scheduleHelpdeskIssues the helpdesk issue with Id " + helpdeskIssue.getId() + " can't be processed", e);
             }
         }
+
         _log.info("[f] scheduleHelpdeskIssues");
     }
 
@@ -265,50 +276,53 @@ public class ScheduledTasks {
 
     }
 
-    public static String executePost(String targetURL, String urlParameters) {
-        HttpURLConnection connection = null;
+    @SuppressWarnings("Duplicates")
+    private boolean executePost(String urlParameters) {
         try {
-            URL url = new URL(targetURL);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
+            HttpClient httpClient = getHttpClient();
+            if (httpClient != null) {
+                HttpPost postRequest = new HttpPost(HelpdeskConstants.HELPDESK_URL);
+                postRequest.addHeader(HelpdeskConstants.CONTENT_TYPE, HelpdeskConstants.CONTENT_TYPE_VALUE);
+                postRequest.addHeader(HelpdeskConstants.CONNECTION, HelpdeskConstants.CONNECTION_VALUE);
+                postRequest.addHeader(HelpdeskConstants.CONTENT_LANGUAGE, HelpdeskConstants.CONTENT_LANGUAGE_VALUE);
+                postRequest.addHeader(HelpdeskConstants.ACCEPT, HelpdeskConstants.ACCEPT_VALUE);
+                postRequest.addHeader(HelpdeskConstants.REFERER, HelpdeskConstants.REFERER_VALUE);
+                postRequest.addHeader(HelpdeskConstants.ORIGIN, HelpdeskConstants.ORIGIN_VALUE);
+                postRequest.addHeader(HelpdeskConstants.HOST, HelpdeskConstants.HOST_VALUE);
 
-            connection.setRequestProperty("Connection", "keep-alive");
-            connection.setRequestProperty("Content-Length",
-                    Integer.toString(urlParameters.getBytes().length));
-            connection.setRequestProperty("Content-Language", "en-US,en;q=0.9,es-ES;q=0.8,es;q=0.7");
-            connection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
-            connection.setRequestProperty("Referer", "https://forms.communi-k.eu/livewebtools/WebForms/Standard/Standard.php?en");
-            connection.setRequestProperty("Origin", "https://forms.communi-k.eu");
-            connection.setRequestProperty("Host", "webtools.ec.europa.eu");
+                postRequest.setEntity(new StringEntity(urlParameters, HelpdeskConstants.CHARSET_UTF8));
+                HttpResponse httpResponse = httpClient.execute(postRequest, new BasicHttpContext());
+                if (httpResponse != null) {
+                    if (httpResponse.getHeaders(HelpdeskConstants.LOCATION).length > 0) {
+                        return true;
+                    }
+                }
 
-            connection.setUseCaches(false);
-            connection.setDoOutput(true);
-
-            DataOutputStream wr = new DataOutputStream(
-                    connection.getOutputStream());
-            wr.writeBytes(urlParameters);
-            wr.close();
-
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            StringBuilder response = new StringBuilder(); // or StringBuffer if Java version 5+
-            String line;
-            while ((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
             }
-            rd.close();
-            return response.toString();
         } catch (Exception e) {
             _log.error(e.getMessage());
-            return null;
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
         }
+
+        return false;
+    }
+
+    @SuppressWarnings("Duplicates")
+    private HttpClient getHttpClient() throws Exception {
+        HttpClient httpClient = null;
+        HttpClientBuilder httpClientBuilder = HttpClients.custom();
+
+        SSLContextBuilder builder = new SSLContextBuilder();
+        builder.loadTrustMaterial(null, new TrustStrategy() {
+            public boolean isTrusted(X509Certificate[] x509Certificate, String hostname) throws CertificateException {
+                return true;
+            }
+        });
+
+        SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(builder.build());
+        httpClientBuilder = httpClientBuilder.setSSLSocketFactory(sslSocketFactory);
+        httpClient = httpClientBuilder.build();
+
+        return httpClient;
     }
 
 

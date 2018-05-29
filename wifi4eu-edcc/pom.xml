@@ -21,6 +21,9 @@
 		<springsecurityoauth2.version>2.0.10.RELEASE</springsecurityoauth2.version>
 		<jackson.library>2.7.5</jackson.library>
 		<war.output.directory/>
+
+		<server.address>http://localhost:8080</server.address>
+		<server.upper.address>http://localhost</server.upper.address>
 	</properties>
 
 	<dependencies>
@@ -123,7 +126,30 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 	</build>
+
 
 	<profiles>
 		<profile>
@@ -138,6 +164,42 @@
 			<id>ng-build-jenkins</id>
 			<build/>
 		</profile>
+
+		<!-- ******************************************************************************************************* -->
+		<!-- This must be tested *********************************************************************************** -->
+			<profile>
+				<id>AZUREDEV</id>
+				<properties>
+					<server.address>${server.upper.address}</server.address>
+				</properties>
+			</profile>
+			<profile>
+				<id>AZURETEST</id>
+				<properties>
+					<server.address>${server.upper.address}</server.address>
+				</properties>
+			</profile>
+			<profile>
+				<id>AZURETEST2</id>
+				<properties>
+					<server.address>${server.upper.address}</server.address>
+				</properties>
+			</profile>
+			<profile>
+				<id>AZUREPROD</id>
+				<properties>
+					<server.address>${server.upper.address}</server.address>
+				</properties>
+			</profile>
+			<profile>
+				<id>PROD</id>
+				<properties>
+					<server.address>${server.upper.address}</server.address>
+				</properties>
+			</profile>
+		<!-- This must be tested *********************************************************************************** -->
+		<!-- ******************************************************************************************************* -->
+
 	</profiles>
 
 </project>

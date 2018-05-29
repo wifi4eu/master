@@ -1,6 +1,8 @@
 package wifi4eu.edcc.rest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import java.util.List;
 import com.google.gson.Gson;
  
 @RestController
+@PropertySource("classpath:server.properties")
 public class EdccHelpdeskRestController {
  
     @Autowired
@@ -61,9 +64,15 @@ public class EdccHelpdeskRestController {
         return sendGet();
     }
 
+    @Value("${server.local.address}")
+    private String url;
+
     private ResponseDTO sendGet() throws Exception {
         //TODO: It must be localhost to avoid ECAS Login. Test all the ports from upper environments
-        final String url = "http://localhost:8080/wifi4eu/api/helpdesk/issues/create";
+//        final String url = "http://localhost:8080/wifi4eu/api/helpdesk/issues/create";
+
+        url=url+"/wifi4eu/api/helpdesk/issues/create";
+        System.out.println(url+"/wifi4eu/api/helpdesk/issues/create");
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();

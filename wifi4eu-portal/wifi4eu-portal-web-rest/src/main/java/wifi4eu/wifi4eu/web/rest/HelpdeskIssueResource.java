@@ -2,6 +2,16 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.TrustStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,27 +30,11 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.web.rest.constants.HelpdeskConstants;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.http.ssl.TrustStrategy;
-
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-
+import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -193,6 +187,7 @@ public class HelpdeskIssueResource {
         return new ResponseDTO(isSuccesOperation, allResults, null);
     }
 
+    @SuppressWarnings("Duplicates")
     private boolean executePost(String urlParameters) {
         try {
             HttpClient httpClient = getHttpClient();
@@ -222,6 +217,7 @@ public class HelpdeskIssueResource {
         return false;
     }
 
+    @SuppressWarnings("Duplicates")
     private HttpClient getHttpClient() throws Exception {
 
         HttpClient httpClient = null;
@@ -235,14 +231,8 @@ public class HelpdeskIssueResource {
         });
 
         SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(builder.build());
-        if (sslSocketFactory != null) {
-            httpClientBuilder = httpClientBuilder.setSSLSocketFactory(sslSocketFactory);
-        }
-
-        if (httpClientBuilder != null) {
-//            httpClientBuilder.setRedirectStrategy(new LaxRedirectStrategy());
-            httpClient = httpClientBuilder.build();
-        }
+        httpClientBuilder = httpClientBuilder.setSSLSocketFactory(sslSocketFactory);
+        httpClient = httpClientBuilder.build();
 
         return httpClient;
     }
