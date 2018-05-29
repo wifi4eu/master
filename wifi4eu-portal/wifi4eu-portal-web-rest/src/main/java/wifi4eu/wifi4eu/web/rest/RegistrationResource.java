@@ -109,7 +109,7 @@ public class RegistrationResource {
             permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
             permissionChecker.check(userDTO, RightConstants.USER_TABLE + registrationDTO.getUserId());
 
-            RegistrationValidator.validate(registrationDTO);
+            //RegistrationValidator.validate(registrationDTO);
 
             RegistrationDTO resRegistration = registrationService.createRegistration(registrationDTO);
             return new ResponseDTO(true, resRegistration, null);
