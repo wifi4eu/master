@@ -5,6 +5,7 @@ import { DiscussionComponent } from "./+discussion/discussion.component";
 import { BeneficiaryProfileComponent } from "./+profile/profile.component";
 import { AdditionalInfoComponent } from "./+additional-info/additional-info.component";
 import { SelectSupplierComponent } from "./+select-supplier/select-supplier.component";
+import { SelectedSupplierDetailsComponent } from "./+selected-supplier-details/selected-supplier-details.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -23,6 +24,9 @@ import { SelectSupplierComponent } from "./+select-supplier/select-supplier.comp
         }, {
             path: 'additional-info/:municipalityId',
             component: AdditionalInfoComponent
+        }, {
+            path: 'selected-supplier-details',
+            component: SelectedSupplierDetailsComponent
         }, {
             path: 'select-supplier/:municipalityId',
             component: SelectSupplierComponent

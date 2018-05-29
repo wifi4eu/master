@@ -8,6 +8,7 @@ import { BeneficiaryProfileComponent } from "./+profile/profile.component";
 import { AdditionalInfoComponent } from "./+additional-info/additional-info.component";
 import { SelectSupplierComponent } from './+select-supplier/select-supplier.component';
 import { DataGridModule } from "primeng/primeng";
+import { SelectedSupplierDetailsComponent } from "./+selected-supplier-details/selected-supplier-details.component";
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { DataGridModule } from "primeng/primeng";
         DiscussionComponent,
         BeneficiaryProfileComponent,
         AdditionalInfoComponent,
-        SelectSupplierComponent
+        SelectSupplierComponent,
+        SelectedSupplierDetailsComponent
     ]
     // ,
     // bootstrap: [BeneficiaryPortalComponent]
