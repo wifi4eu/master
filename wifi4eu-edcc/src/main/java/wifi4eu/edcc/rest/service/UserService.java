@@ -1,8 +1,8 @@
 package wifi4eu.edcc.rest.service;
 
-import java.util.List;
-
 import wifi4eu.edcc.rest.model.User;
+
+import java.util.List;
 
 
 public interface UserService {

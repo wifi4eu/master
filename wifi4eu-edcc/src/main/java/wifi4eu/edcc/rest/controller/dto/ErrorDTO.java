@@ -1,8 +1,5 @@
 package wifi4eu.edcc.rest.controller.dto;
 
-/**
- * Created by rgarcita on 21/02/2017.
- */
 public class ErrorDTO{
 
     private long errorCode;

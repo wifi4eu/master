@@ -1,6 +1,7 @@
 package wifi4eu.edcc.rest.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,12 +23,18 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private ClientDetailsService clientDetailsService;
+
+	@Value("${server.oauth.user}")
+	private String user;
+
+	@Value("${server.oauth.pass}")
+	private String pass;
 	
 	@Autowired
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-        .withUser("bill").password("abc123").roles("ADMIN").and()
-        .withUser("bob").password("abc123").roles("USER");
+        .withUser(user).password(pass).roles("ADMIN");
+//				.and().withUser("bob").password("abc123").roles("USER");
     }
 
     @Override
