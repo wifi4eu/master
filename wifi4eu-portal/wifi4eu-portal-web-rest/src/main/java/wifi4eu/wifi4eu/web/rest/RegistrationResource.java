@@ -99,13 +99,13 @@ public class RegistrationResource {
             _log.info("createRegistration");
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getId() != registrationDTO.getUserId()){
+            if (userDTO.getId() != registrationDTO.getUserId()) {
                 throw new AccessDeniedException("Incorrect user id");
             }
             permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
             permissionChecker.check(userDTO, RightConstants.USER_TABLE + registrationDTO.getUserId());
 
-            RegistrationValidator.validate(registrationDTO);
+            //RegistrationValidator.validate(registrationDTO);
 
             RegistrationDTO resRegistration = registrationService.createRegistration(registrationDTO);
             return new ResponseDTO(true, resRegistration, null);
@@ -136,23 +136,21 @@ public class RegistrationResource {
             UserContext userContext = UserHolder.getUser();
             UserDTO userDTO = userService.getUserByUserContext(userContext);
 
-            if(userDTO.getId() != registrationDTO.getUserId()){
+            if (userDTO.getId() != registrationDTO.getUserId()) {
                 throw new AccessDeniedException("");
             }
 
-            permissionChecker.check(userDTO,RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+            permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
 
             RegistrationDTO resRegistration = registrationService.deleteRegistrationDocuments(registrationDTO);
             return new ResponseDTO(true, resRegistration, null);
-        }
-        catch (AccessDeniedException ade){
+        } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("AccessDenied on 'deleteRegistrationDocuments' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'deleteRegistrationDocuments' operation.", e);
             }
@@ -171,23 +169,21 @@ public class RegistrationResource {
             UserContext userContext = UserHolder.getUser();
             UserDTO userDTO = userService.getUserByUserContext(userContext);
 
-            if(userDTO.getId() != registrationDTO.getUserId()){
+            if (userDTO.getId() != registrationDTO.getUserId()) {
                 throw new AccessDeniedException("");
             }
 
-            permissionChecker.check(userDTO,RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+            permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
 
             RegistrationDTO resRegistration = registrationService.updateRegistrationDocuments(registrationDTO);
             return new ResponseDTO(true, resRegistration, null);
-        }
-        catch (AccessDeniedException ade){
+        } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("AccessDenied on 'updateRegistrationDocuments' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'updateRegistrationDocuments' operation.", e);
             }
@@ -236,7 +232,11 @@ public class RegistrationResource {
         httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         httpServletResponse.setDateHeader("Expires", 0); // Proxies.
-        permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+
+        UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
+        if (user.getType() != 5) {
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+        }
         return registrationService.getRegistrationByMunicipalityId(municipalityId);
     }
 
