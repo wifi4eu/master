@@ -161,8 +161,10 @@ public class MayorResource {
         }
         try {
             UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
-            if (!permissionChecker.checkIfDashboardUser() && user.getType() != 5) {
-                permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            if (user.getType() != 5) {
+                if (!permissionChecker.checkIfDashboardUser()) {
+                    permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+                }
             }
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {

@@ -238,8 +238,8 @@ public class RegistrationResource {
         httpServletResponse.setDateHeader("Expires", 0); // Proxies.
 
         UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
-        if (user.getType() != 5 && permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId)) {
-            throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+        if (user.getType() != 5) {
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
         }
         return registrationService.getRegistrationByMunicipalityId(municipalityId);
     }
