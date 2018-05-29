@@ -10,6 +10,9 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.enums.*;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.*;
+import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
+import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.*;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -67,6 +70,12 @@ public class RegistrationService {
 
     @Autowired
     MayorService mayorService;
+
+    @Autowired
+    LegalFileCorrectionReasonMapper legalFileCorrectionReasonMapper;
+
+    @Autowired
+    LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -718,5 +727,18 @@ public class RegistrationService {
             issueType = 3;
         }
         return issueType;
+    }
+
+    public List<LegalFileCorrectionReasonDTO> getLegalFilesByRegistrationId(Integer registrationId) {
+        return legalFileCorrectionReasonMapper.toDTOList(legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(registrationId));
+    }
+
+    @Transactional
+    public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) {
+        return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
+    }
+
+    public RegistrationDTO saveRegistration(RegistrationDTO registrationDTO) {
+        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
     }
 }

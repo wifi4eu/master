@@ -18,11 +18,9 @@ import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RegistrationValidator;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
-import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.registration.legal_files.*;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
-import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
@@ -49,12 +47,6 @@ public class RegistrationResource {
 
     @Autowired
     private UserThreadsService userThreadsService;
-
-    @Autowired
-    private ThreadService threadService;
-
-    @Autowired
-    private MunicipalityService municipalityService;
 
     Logger _log = LoggerFactory.getLogger(RegistrationResource.class);
 
@@ -470,6 +462,37 @@ public class RegistrationResource {
                 _log.error("Error on 'getRegistrationIssue' operation.", e);
             }
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+    }
+
+    @ApiOperation(value = "getLegalFile")
+    @RequestMapping(value = "/getLegalFile", method = RequestMethod.GET)
+    @ResponseBody
+    public LegalFileCorrectionReasonDTO getLegalFile() {
+        return new LegalFileCorrectionReasonDTO();
+    }
+
+    @ApiOperation(value = "Get legal files by registration id")
+    @RequestMapping(value = "/getLegalFiles/{registrationId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<LegalFileCorrectionReasonDTO> getLegalFilesByRegistrationId(@PathVariable("registrationId") final Integer registrationId) {
+        return registrationService.getLegalFilesByRegistrationId(registrationId);
+    }
+
+    @ApiOperation(value = "Create/update a legal file")
+    @RequestMapping(value = "/saveLegalFile", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO saveLegalFile(@RequestBody final LegalFileCorrectionReasonDTO legalFileDTO) {
+        try {
+            _log.info("saveLegalFile");
+            LegalFileCorrectionReasonDTO resLegalFile = registrationService.saveLegalFile(legalFileDTO);
+            return new ResponseDTO(true, resLegalFile, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'saveLegalFileRegistration' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
 }
