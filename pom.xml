@@ -152,7 +152,7 @@
         <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
         <mail.smtp.port>587</mail.smtp.port>
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
-        <mail.smtp.password>bcf74eb9b6</mail.smtp.password>
+        <mail.smtp.password></mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
         <mail.serv.enable>true</mail.serv.enable>
 
@@ -185,7 +185,7 @@
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
-                <mail.smtp.password>bcf74eb9b6</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -213,7 +213,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
@@ -270,7 +270,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -295,7 +295,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -318,7 +318,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -341,7 +341,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>.</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -366,7 +366,7 @@
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
             </properties>
         </profile>
     </profiles>
