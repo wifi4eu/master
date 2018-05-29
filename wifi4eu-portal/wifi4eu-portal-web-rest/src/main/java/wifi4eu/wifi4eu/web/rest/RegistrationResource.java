@@ -5,20 +5,18 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.*;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.common.enums.*;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.RegistrationValidator;
-import wifi4eu.wifi4eu.entity.registration.*;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -388,18 +386,19 @@ public class RegistrationResource {
     @ApiOperation(value = "Get registration by specific userThread id")
     @RequestMapping(value = "/registrations/{registrationId}/{fileType}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public void getRegistrationFilesByFileType(@PathVariable("registrationId") final Integer registrationId, @PathVariable("fileType") final Integer fileType, HttpServletResponse response) {
-        _log.info("getRegistrationFilesByFileType: " + registrationId + " " + fileType);
+    public ResponseDTO getLegalFilesByFileType(@PathVariable("registrationId") final Integer registrationId, @PathVariable("fileType") final Integer fileType, HttpServletResponse response) {
+        _log.info("getLegalFilesByFileType: " + registrationId + " " + fileType);
 
-        UserContext userContext = UserHolder.getUser();
-        UserDTO user = userService.getUserByUserContext(userContext);
+		UserContext userContext = UserHolder.getUser();
+		UserDTO user = userService.getUserByUserContext(userContext);
 
         RegistrationDTO registration = registrationService.getRegistrationById(registrationId);
-        if (registration != null) {
-            RegistrationFilesDTO registrationFile = legalFilesService.getRegistrationFileByRegistrationIdFileType(registration.getId(), fileType);
+        if (registration != null && user != null && (registration.getUserId() == user.getId() || user.getType() == 5)) {
+            LegalFilesDTO registrationFile = legalFilesService.getLegalFileByRegistrationIdFileType(registration.getId(), fileType);
             if (registrationFile != null) {
                 String fileName = "";
                 String fileMime = "";
+                String fileExtension = "";
                 switch (fileType) {
                     case 1:
                         fileName = "LegalFile1";
@@ -419,20 +418,34 @@ public class RegistrationResource {
                         break;
                 }
 
-                if (fileMime != null && fileMime.length() != 0 && fileName != null && fileName.length() != 0) {
+                if (fileMime != null && fileMime.length() != 0) {
+                    if (fileMime.contains("pdf")) {
+                        fileExtension = "pdf";
+                    } else if (fileMime.contains("png")) {
+                        fileExtension = "png";
+                    } else if (fileMime.contains("jpg") || fileMime.contains("jpeg")) {
+                        fileExtension = "jpg";
+                    }
+                }
+
+                if (fileMime != null && fileMime.length() != 0 && fileName != null && fileName.length() != 0 && !registrationFile.getFileData().isEmpty()) {
                     try {
                         response.setContentType(fileMime);
-                        response.setHeader("Content-disposition", "inline; filename=\"" + fileName + "\"");
-                        PrintWriter printWriter = new PrintWriter(response.getOutputStream());
-                        printWriter.append(registrationFile.getFile_data());
-                        printWriter.flush();
-                        printWriter.close();
+                        response.setHeader("Content-disposition", "inline; filename=\"" + fileName + "." + fileExtension + "\"");
+
+                        byte[] fileBytes = Base64Utils.decodeFromString(registrationFile.getFileData());
+                        response.getOutputStream().write(fileBytes);
+                        response.getOutputStream().flush();
+                        response.getOutputStream().close();
                     } catch (Exception ex) {
                         _log.error(ex.getMessage(), ex);
                     }
                 }
             }
+        } else {
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
+        return new ResponseDTO(true, null, null);
     }
 
     @ApiOperation(value = "Get issue of registration")

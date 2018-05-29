@@ -188,7 +188,6 @@ public class ApplicationResource {
     @ResponseBody
     public ResponseDTO findDgconnApplicantsListByCallIdSearchingNameAndCountry(@PathVariable("callId") final Integer callId, @RequestParam("name") final String name, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
         try {
-
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
