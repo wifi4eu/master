@@ -69,6 +69,8 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private processingRequest = false;
     private registration: RegistrationDTOBase;
 
+    private fileURL: string = '/wifi4eu/api/registration/registrations/';
+
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService) {
         this.loadingData = true;
         this.route.params.subscribe(
@@ -187,37 +189,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 }
             }
         );
-    }
-
-    // TODO: Temporaly, the BLOB data will be read from the registration itself.
-    private downloadLegalFile(index: number, typeNumber: number) {
-        let registrationId = this.registrations[index].id;
-        this.registrationApi.getLegalFilesByFileType(registrationId, typeNumber).subscribe(
-            (response) => {
-                
-                let blob = new Blob([response], {type: 'application/pdf'});
-                FileSaver.saveAs(blob, 'legalfile' + typeNumber + '.pdf');
-            }
-        );
-        //TODO HERE GOES THE NEW METHOD TO DOWNLOAD THE FILE
-        /*if (index != null) {
-            for (let legalFile of this.legalFiles[index]) {
-                if (legalFile.type == typeNumber) {
-                    let lfBlobString = legalFile.data;
-                    let lfMimeType = this.sharedService.getMimeType(lfBlobString);
-                    let lfExtension = this.sharedService.getFileExtension(lfBlobString);
-                    let lfData = this.sharedService.getBase64Data(lfBlobString);
-                    let byteCharacters = atob(lfData);
-                    let byteNumbers = new Array(byteCharacters.length);
-                    for (let i = 0; i < byteCharacters.length; i++) {
-                        byteNumbers[i] = byteCharacters.charCodeAt(i);
-                    }
-                    let byteArray = new Uint8Array(byteNumbers);
-                    let blob = new Blob([byteArray], {type: lfMimeType});
-                    FileSaver.saveAs(blob, 'legalfile' + typeNumber + lfExtension);
-                }
-            }
-        }*/
     }
 
     private displayValidateModal(index: number) {
