@@ -84,8 +84,10 @@ export class DgConnApplicantRegistrationsComponent {
                                             this.itemsPerPage = 20;
                                         }
                                     }
+                                    if (queryParams['page']) {
+                                        this.page = queryParams['page'];
+                                    }
                                     this.firstDataDownload = false;
-                                    this.page = 0;
                                     this.searchApplicants();
                                 }
                             );
@@ -138,6 +140,9 @@ export class DgConnApplicantRegistrationsComponent {
                             this.tableApplicants.totalRecords = this.totalItems;
                             this.totalPages = this.totalItems / this.itemsPerPage;
                             this.tableApplicants.pageLinks = this.totalPages;
+                            if (this.page > (this.totalPages - 1)) {
+                                this.page = 0;
+                            }
                         }
                     }, error => {
                         this.loadingData = false;
@@ -185,7 +190,11 @@ export class DgConnApplicantRegistrationsComponent {
         } else if (this.itemsPerPage > 10) {
             numItems = 20;
         }
-        this.router.navigate([this.componentURL], {queryParams: {name: nameSearched, country: countryCode, items: numItems}});
+        let page = null;
+        if (page != 0) {
+            page = this.page;
+        }
+        this.router.navigate([this.componentURL], {queryParams: {name: nameSearched, country: countryCode, items: numItems, page: page}});
     }
 
     private paginateData(event) {
@@ -198,7 +207,7 @@ export class DgConnApplicantRegistrationsComponent {
         if (event['first'] != null) {
             if (this.page != event['first'] / this.itemsPerPage) {
                 this.page = event['first'] / this.itemsPerPage;
-                this.searchApplicants();
+                this.filterApplicantsSearch();
             }
         }
     }
