@@ -142,7 +142,7 @@ export class AppComponent {
 
     private initChildren() {
         this.stringsTranslated.subscribe(() => {
-            this.children[0] = [
+            /*this.children[0] = [
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.appReg'),
                     url: '/beneficiary-registration'
@@ -160,7 +160,7 @@ export class AppComponent {
                 /* new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.suppPortal'),
                     url: '/supplier-portal/voucher'
-                }), */
+                }), *//*
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.myAccount'),
                     url: '/supplier-portal/profile'
@@ -203,7 +203,7 @@ export class AppComponent {
                     label: 'Member State Portal',
                     url: '#'
                 })
-            ];
+            ];*/
             this.children[5] = [
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.dgPortal'),
@@ -238,7 +238,7 @@ export class AppComponent {
     private updateHeader() {
         if (this.user) {
             switch (this.user.type) {
-                case 1:
+                /*case 1:
                     this.profileUrl = '/supplier-portal/profile';
                     this.menuLinks = this.children[1];
                     break;
@@ -246,7 +246,7 @@ export class AppComponent {
                 case 3:
                     this.profileUrl = '/beneficiary-portal/profile';
                     this.menuLinks = this.children[2];
-                    break;
+                    break;*/
                 case 5:
                     this.profileUrl = '/dgconn-portal';
                     this.menuLinks = this.children[5];
