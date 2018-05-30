@@ -2,11 +2,14 @@ package wifi4eu.wifi4eu.web.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -17,6 +20,9 @@ import java.io.IOException;
 public class CSRFFilter extends OncePerRequestFilter {
 
     Logger _log = LoggerFactory.getLogger(CSRFFilter.class);
+
+    @Autowired
+    private UserService userService;
 
     @Override
     protected String getAlreadyFilteredAttributeName() {
@@ -30,42 +36,48 @@ public class CSRFFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        _log.debug("[i] doFilterInternal");
-        _log.debug("Servlet path: " + request.getServletPath());
-        _log.debug("doFilterInternal : XSRF : getRequestURL: " + request.getRequestURL().toString());
-        _log.debug("METHOD: " + request.getMethod());
+        _log.error("[i] doFilterInternal");
+        _log.error("Servlet path: " + request.getServletPath());
+        _log.error("doFilterInternal : XSRF : getRequestURL: " + request.getRequestURL().toString());
+        _log.error("METHOD: " + request.getMethod());
 
         if(!request.getMethod().equalsIgnoreCase("GET")
                 && !request.getRequestURL().toString().contains("/api/user/ecaslogin")){
 
             String XSRFTOKEN = request.getHeader("X-XSRF-TOKEN");
-            _log.debug("[i] X-XSRF-TOKEN: " + XSRFTOKEN);
+            _log.error("[i] X-XSRF-TOKEN: " + XSRFTOKEN);
 
             if(XSRFTOKEN != null && XSRFTOKEN.length() > 0) {
                 UserContext userContext = UserHolder.getUser();
 
                 if (userContext != null) {
-                    String value = userContext.getUsername() + userContext.getDomain();
-                    String hash = DigestUtils.md5DigestAsHex(value.getBytes());
-                    _log.debug("HASH: " + hash);
-                    _log.debug("Comparision: " + XSRFTOKEN.equalsIgnoreCase(hash));
+                    UserDTO user = userService.getUserByUserContext(userContext);
 
-                    if (!XSRFTOKEN.equalsIgnoreCase(hash)) {
-                        response.sendError(HttpStatus.BAD_REQUEST.value());
+                    if (user != null) {
+                        _log.error("User stored Token: " + user.getCsrfToken());
+                        _log.error("Comparision: " + XSRFTOKEN.equalsIgnoreCase(user.getCsrfToken()));
+
+                        if (!XSRFTOKEN.equalsIgnoreCase(user.getCsrfToken())) {
+                            response.sendError(HttpStatus.UNAUTHORIZED.value());
+                            return;
+                        }
+                    } else {
+                        _log.debug("user is NULL");
+                        response.sendError(HttpStatus.UNAUTHORIZED.value());
                         return;
                     }
                 } else {
                     _log.debug("userContext is NULL");
-                    response.sendError(HttpStatus.BAD_REQUEST.value());
+                    response.sendError(HttpStatus.UNAUTHORIZED.value());
                     return;
                 }
             } else {
-                response.sendError(HttpStatus.BAD_REQUEST.value());
+                response.sendError(HttpStatus.UNAUTHORIZED.value());
                 return;
             }
         }
 
-        _log.debug("[f] doFilterInternal");
+        _log.error("[f] doFilterInternal");
         filterChain.doFilter(request, response);
     }
 }

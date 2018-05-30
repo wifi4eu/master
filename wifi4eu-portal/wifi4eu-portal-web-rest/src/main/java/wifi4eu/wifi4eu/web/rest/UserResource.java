@@ -231,7 +231,7 @@ public class UserResource {
             UserContext userContext = UserHolder.getUser();
             UserDTO userDTO = userService.getUserByUserContext(userContext);
 
-            Cookie cookie = userService.getCSRFCookie(userContext.getUsername() + userContext.getDomain());
+            Cookie cookie = userService.getCSRFCookie();
             if (cookie != null) {
                 response.addCookie(cookie);
             }
