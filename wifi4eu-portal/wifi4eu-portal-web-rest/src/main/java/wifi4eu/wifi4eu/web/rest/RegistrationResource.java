@@ -107,7 +107,7 @@ public class RegistrationResource {
 
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'getRegistrationById' operation.", ade);
+                _log.error("Error with permission on 'createRegistration' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
@@ -410,7 +410,7 @@ public class RegistrationResource {
     @ApiOperation(value = "Get legal files by registration id")
     @RequestMapping(value = "/getLegalFiles/{registrationId}", method = RequestMethod.GET)
     @ResponseBody
-    public List<LegalFileDTO> getLegalFilesByRegistrationId(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
+    public List<LegalFileDTO> getLegalFilesByRegistrationId(@PathVariable("registrationId") final Integer registrationId, @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
         try {
             if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId)) {
                 throw new AccessDeniedException("");
