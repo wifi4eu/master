@@ -104,7 +104,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                         if (municipality) {
                                                             this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                                 (mayor: MayorDTOBase) => {
-                                                                    this.registrationApi.getLegalFilesByRegistrationId(registration.id).subscribe(
+                                                                    this.registrationApi.getLegalFilesByRegistrationId(registration.id, new Date().getTime()).subscribe(
                                                                         (legalFiles: LegalFileDTOBase[]) => {
                                                                             if (mayor) {
                                                                                 this.mayors[i] = mayor;

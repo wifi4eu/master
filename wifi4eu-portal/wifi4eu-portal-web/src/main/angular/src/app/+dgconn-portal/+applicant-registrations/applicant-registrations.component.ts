@@ -140,9 +140,6 @@ export class DgConnApplicantRegistrationsComponent {
                             this.tableApplicants.totalRecords = this.totalItems;
                             this.totalPages = this.totalItems / this.itemsPerPage;
                             this.tableApplicants.pageLinks = this.totalPages;
-                            if (this.page > (this.totalPages - 1)) {
-                                this.page = 0;
-                            }
                         }
                     }, error => {
                         this.loadingData = false;

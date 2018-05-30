@@ -389,7 +389,7 @@ public class RegistrationResource {
     @ApiOperation(value = "Get legal files by registration id")
     @RequestMapping(value = "/getLegalFiles/{registrationId}", method = RequestMethod.GET)
     @ResponseBody
-    public List<LegalFileDTO> getLegalFilesByRegistrationId(@PathVariable("registrationId") final Integer registrationId) {
+    public List<LegalFileDTO> getLegalFilesByRegistrationId(@PathVariable("registrationId") final Integer registrationId, @RequestParam("date") final Long timestamp) {
         return registrationService.getLegalFilesByRegistrationId(registrationId);
     }
 
