@@ -191,6 +191,7 @@ public class RegistrationResource {
         }
     }
 
+    /*
     @ApiOperation(value = "Delete registration by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
@@ -214,6 +215,7 @@ public class RegistrationResource {
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
+    */
 
     @ApiOperation(value = "Get registrations by specific user id")
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
@@ -232,21 +234,19 @@ public class RegistrationResource {
         httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         httpServletResponse.setDateHeader("Expires", 0); // Proxies.
 
-        UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
-        if (user.getType() != 5) {
+        if (!permissionChecker.checkIfDashboardUser()) {
             permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
         }
         return registrationService.getRegistrationByMunicipalityId(municipalityId);
     }
 
+    /*
     @ApiOperation(value = "Check if a certain user id registration is KO (deleted or suspended).")
     @RequestMapping(value = "/registrationKO/{userId}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseDTO checkIfRegistrationIsKO(@PathVariable("userId") final Integer userId, HttpServletResponse response) throws IOException {
         try {
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
+            if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
             _log.info("checkIfRegistrationIsKO: " + userId);
@@ -262,7 +262,9 @@ public class RegistrationResource {
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
         }
     }
+    */
 
+    /*
     @ApiOperation(value = "Get registration by specific user and municipality id's")
     @RequestMapping(value = "/user/{userId}/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -283,6 +285,7 @@ public class RegistrationResource {
 
         return registrationService.getRegistrationByUserAndMunicipality(userId, municipalityId);
     }
+    */
 
     /*@ApiOperation(value = "Request legal documents")
     @RequestMapping(value = "/requestLegalDocuments/{registrationId}", method = RequestMethod.POST)
@@ -380,9 +383,7 @@ public class RegistrationResource {
     public ResponseDTO getRegistrationIssue(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
         try {
             _log.info("getRegistrationIssue");
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
+            if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
             return new ResponseDTO(true, registrationService.getRegistrationIssue(registrationDTO), null);
@@ -409,19 +410,38 @@ public class RegistrationResource {
     @ApiOperation(value = "Get legal files by registration id")
     @RequestMapping(value = "/getLegalFiles/{registrationId}", method = RequestMethod.GET)
     @ResponseBody
-    public List<LegalFileDTO> getLegalFilesByRegistrationId(@PathVariable("registrationId") final Integer registrationId) {
-        return registrationService.getLegalFilesByRegistrationId(registrationId);
+    public List<LegalFileDTO> getLegalFilesByRegistrationId(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
+        try {
+            if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId)) {
+                throw new AccessDeniedException("");
+            }
+            return registrationService.getLegalFilesByRegistrationId(registrationId);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getLegalFilesByRegistrationId' operation.", e);
+            }
+            return null;
+        }
     }
 
     @ApiOperation(value = "Create/update a legal file")
     @RequestMapping(value = "/saveLegalFile", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ResponseDTO saveLegalFile(@RequestBody final LegalFileDTO legalFileDTO) {
+    public ResponseDTO saveLegalFile(@RequestBody final LegalFileDTO legalFileDTO, HttpServletResponse response) throws IOException {
         try {
             _log.info("saveLegalFile");
+            if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + legalFileDTO.getRegistrationId())) {
+                throw new AccessDeniedException("");
+            }
             LegalFileDTO resLegalFile = registrationService.saveLegalFile(legalFileDTO);
             return new ResponseDTO(true, resLegalFile, null);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'saveLegalFileRegistration' operation.", e);

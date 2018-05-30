@@ -117,7 +117,7 @@ public class HelpdeskIssueResource {
         }
     }
 
-
+    /*
     @ApiOperation(value = "Delete helpdesk by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
@@ -146,4 +146,5 @@ public class HelpdeskIssueResource {
         }
         return new ResponseDTO(false, null, null);
     }
+    */
 }
