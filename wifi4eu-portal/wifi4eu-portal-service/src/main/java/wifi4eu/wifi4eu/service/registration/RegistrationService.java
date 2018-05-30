@@ -137,58 +137,6 @@ public class RegistrationService {
     }
 
     @Transactional
-    public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO){
-
-        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
-
-        if(registrationDBO.getAllFilesFlag() != 1){
-            if(registrationDTO.getLegalFile1() == null){
-                registrationDBO.setLegalFile1(registrationDTO.getLegalFile1());
-            }
-
-            if(registrationDTO.getLegalFile2() == null){
-                registrationDBO.setLegalFile2(registrationDTO.getLegalFile2());
-            }
-
-            if(registrationDTO.getLegalFile3() == null){
-                registrationDBO.setLegalFile3(registrationDTO.getLegalFile3());
-            }
-
-            if(registrationDTO.getLegalFile4() == null){
-                registrationDBO.setLegalFile4(registrationDTO.getLegalFile4());
-            }
-        }
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
-    }
-
-    @Transactional
-    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO){
-
-        RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
-
-        if(registrationDTO.getLegalFile1() != null && !registrationDTO.getLegalFile1().isEmpty()){
-            registrationDBO.setLegalFile1(registrationDTO.getLegalFile1());
-        }
-
-        if(registrationDTO.getLegalFile2() != null && !registrationDTO.getLegalFile2().isEmpty()){
-            registrationDBO.setLegalFile2(registrationDTO.getLegalFile2());
-        }
-
-        if(registrationDTO.getLegalFile3() != null && !registrationDTO.getLegalFile3().isEmpty()){
-            registrationDBO.setLegalFile3(registrationDTO.getLegalFile3());
-        }
-
-        if(registrationDTO.getLegalFile4() != null && !registrationDTO.getLegalFile4().isEmpty()){
-            registrationDBO.setLegalFile4(registrationDTO.getLegalFile4());
-        }
-
-        registrationDBO.setAllFilesFlag(registrationDTO.getAllFilesFlag());
-        registrationDBO.setMailCounter(registrationDTO.getMailCounter());
-
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
-    }
-
-    @Transactional
     public RegistrationDTO deleteRegistration(int registrationId) {
         RegistrationDTO registrationDTO = registrationMapper.toDTO(registrationRepository.findOne(registrationId));
         if (registrationDTO != null) {
