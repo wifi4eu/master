@@ -1,8 +1,6 @@
 package wifi4eu.wifi4eu.service.voucher;
 
-import com.google.common.base.Functions;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Ordering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.application.Application;
-import wifi4eu.wifi4eu.entity.location.Lau;
-import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
-import wifi4eu.wifi4eu.entity.voucherManagement.VoucherManagement;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherSimulationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
@@ -33,7 +26,6 @@ import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.service.voucher.util.VoucherAssignmentUtil;
 
 import java.util.*;
 
@@ -68,6 +60,12 @@ public class VoucherService {
 
     @Autowired
     RegistrationService registrationService;
+
+    @Autowired
+    SimpleMunicipalityService simpleMunicipalityService;
+
+    @Autowired
+    SimpleLauService simpleLauService;
 
     @Autowired
     MunicipalityService municipalityService;
@@ -118,8 +116,8 @@ public class VoucherService {
     public ResponseDTO simulateVoucherFast(int callId) {
 
         HashMap<Integer, RegistrationDTO> registrationsHashMap = new HashMap<>();
-        HashMap<Integer, MunicipalityDTO> municipalityHashMap = new HashMap<>();
-        HashMap<Integer, LauDTO> lauHashMap = new HashMap<>();
+        HashMap<Integer, SimpleMunicipalityDTO> municipalityHashMap = new HashMap<>();
+        HashMap<Integer, SimpleLauDTO> lauHashMap = new HashMap<>();
 
         UserContext userContext = UserHolder.getUser();
 
@@ -152,11 +150,11 @@ public class VoucherService {
 
             List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
 
-            List<MunicipalityDTO>  municipalities = municipalityService.getAllMunicipalities();
+            List<SimpleMunicipalityDTO>  municipalities = simpleMunicipalityService.getAllMunicipalities();
             List<RegistrationDTO>  registrations = registrationService.getAllRegistrations();
-            List<LauDTO> laus = lauService.getAllLaus();
+            List<SimpleLauDTO> laus = simpleLauService.getAllLausFromApplications();
 
-            for(MunicipalityDTO mun : municipalities){
+            for(SimpleMunicipalityDTO mun : municipalities){
                 municipalityHashMap.put(mun.getId(), mun);
             }
 
@@ -164,7 +162,7 @@ public class VoucherService {
                 registrationsHashMap.put(reg.getId(), reg);
             }
 
-            for(LauDTO lau: laus){
+            for(SimpleLauDTO lau: laus){
                 lauHashMap.put(lau.getId(), lau);
                 participatingCountries.add(lau.getCountryCode());
             }
@@ -259,7 +257,7 @@ public class VoucherService {
                         }
 
                         RegistrationDTO registrationDTO = registrationsHashMap.get(applicationDTO.getRegistrationId());
-                        MunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
+                        SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
 
                         //Check if municipality with the same name have been assigned, if assigned then delete else continue
                         if (assignedVouchers.containsKey(municipalityDTO.getLauId())) {
@@ -290,8 +288,8 @@ public class VoucherService {
                     }
 
                     RegistrationDTO registrationDTO = registrationsHashMap.get(applicationDTO.getRegistrationId());
-                    MunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
-                    LauDTO lauDTO = lauHashMap.get(municipalityDTO.getLauId());
+                    SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
+                    SimpleLauDTO lauDTO = lauHashMap.get(municipalityDTO.getLauId());
 
                     String country = lauDTO.getCountryCode();
                     country = country.trim();
@@ -352,7 +350,7 @@ public class VoucherService {
                             }
 
                             RegistrationDTO registrationDTO = registrationsHashMap.get(application.getRegistrationId());
-                            MunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
+                            SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
 
                             List<ApplicationDTO> countryApps = countryReserveList.get(country);
 
@@ -433,7 +431,7 @@ public class VoucherService {
             for (ApplicationDTO applicationAssigned : mainListOutput) {
 
                 RegistrationDTO registrationDTO = registrationsHashMap.get(applicationAssigned.getRegistrationId());
-                MunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
+                SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
 
                 int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLauId(), call.getId());
 
@@ -454,7 +452,7 @@ public class VoucherService {
 
             for (ApplicationDTO reservedApplication : reserveListCompleted) {
                 RegistrationDTO registrationDTO = registrationsHashMap.get(reservedApplication.getRegistrationId());
-                MunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
+                SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
 
                 int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLauId(), call.getId());
 
