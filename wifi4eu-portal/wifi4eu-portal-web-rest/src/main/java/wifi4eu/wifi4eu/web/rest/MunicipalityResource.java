@@ -12,12 +12,16 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.MunicipalityDTO;
+import wifi4eu.wifi4eu.common.dto.model.NutsDTO;
 import wifi4eu.wifi4eu.common.dto.model.RegistrationDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
+import wifi4eu.wifi4eu.service.location.LauService;
+import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
@@ -44,6 +48,13 @@ public class MunicipalityResource {
     @Autowired
     private RegistrationService registrationService;
 
+    @Autowired
+    private LauService lauService;
+
+    @Autowired
+    private NutsService nutsService;
+
+
     Logger _log = LoggerFactory.getLogger(MunicipalityResource.class);
 
     @ApiOperation(value = "Get municipality by specific id")
@@ -65,6 +76,7 @@ public class MunicipalityResource {
         return municipalityService.getMunicipalityById(municipalityId);
     }
 
+    /*
     @ApiOperation(value = "Create municipality")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -77,6 +89,10 @@ public class MunicipalityResource {
             //check permission
             int municipalityId = municipalityDTO.getId();
             permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+
+            MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
+                    nutsService.getNutsByLevel(0));
+
             MunicipalityDTO resMunicipality = municipalityService.createMunicipality(municipalityDTO);
             return new ResponseDTO(true, resMunicipality, null);
         } catch (AccessDeniedException ade) {
@@ -88,10 +104,11 @@ public class MunicipalityResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createMunicipality' operation.", e);
             }
-            response.sendError(HttpStatus.NOT_FOUND.value());
+            response.sendError(HttpStatus.BAD_REQUEST.value());
         }
         return new ResponseDTO(true, null, null);
     }
+    */
 
     @ApiOperation(value = "Get municipality by specific id for thread")
     @RequestMapping(value = "/thread/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
@@ -165,8 +182,7 @@ public class MunicipalityResource {
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByLauId(@PathVariable("lauId") final Integer lauId, HttpServletResponse response) throws IOException {
         try{
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
         }
@@ -179,12 +195,12 @@ public class MunicipalityResource {
         return municipalityService.getMunicipalitiesByLauId(lauId);
     }
 
+    /*
     @ApiOperation(value = "Get municipalities by specific user id")
     @RequestMapping(value = "/userId/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByUserId(@PathVariable("userId") final Integer userId,
                                                            HttpServletResponse response) throws IOException {
-
         try {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
         } catch (AccessDeniedException ade) {
@@ -203,5 +219,5 @@ public class MunicipalityResource {
 
         return municipalityService.getMunicipalitiesByUserId(userId);
     }
-
+    */
 }

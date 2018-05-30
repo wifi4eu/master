@@ -21,6 +21,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -56,6 +57,7 @@ public class ThreadMessageResource {
             if(threadMessageDTO.getAuthorId() != user.getId()){
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            threadMessageDTO.setCreateDate(new Date().getTime());
             ThreadMessageDTO resThreadMessage = threadMessageService.createThreadMessage(threadMessageDTO);
             return new ResponseDTO(true, resThreadMessage, null);
         } catch (AccessDeniedException ade) {

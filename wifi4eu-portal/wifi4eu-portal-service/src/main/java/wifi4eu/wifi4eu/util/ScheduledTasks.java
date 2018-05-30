@@ -83,7 +83,7 @@ public class ScheduledTasks {
     /**
      * This cron method consumes the messages from the RabbitMQ
      */
-    @Scheduled(cron = "0 0/10 * * * ?")
+    //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0/10 * * * ?")
     public void queueConsumer() {
         _log.info("[i] queueConsumer");
         try {
@@ -146,7 +146,7 @@ public class ScheduledTasks {
         _log.info("[f] queueConsumer");
     }
 
-    @Scheduled(cron = "0 0 9,17 * * MON-FRI")
+    //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
 
         _log.info("[i] scheduleHelpdeskIssues");
@@ -193,7 +193,7 @@ public class ScheduledTasks {
     }
 
 
-    @Scheduled(cron = "0 0 8 ? * MON-FRI")
+    //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 8 ? * MON-FRI")
     public void sendDocRequest() {
 
         _log.info("[i] sendDocRequest");

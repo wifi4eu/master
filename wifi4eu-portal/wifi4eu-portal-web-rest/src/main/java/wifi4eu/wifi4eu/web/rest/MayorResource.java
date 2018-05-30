@@ -161,11 +161,11 @@ public class MayorResource {
         }
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
-                permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE+municipalityId);
+                permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
             }
-        } catch (Exception e){
+        } catch (Exception ex) {
             if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'getMayorByMunicipalityId' operation.", e);
+                _log.error("Error with permission on 'getMayorByMunicipalityId' operation.", ex);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
         }

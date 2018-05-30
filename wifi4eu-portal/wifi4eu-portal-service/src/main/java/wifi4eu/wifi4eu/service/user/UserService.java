@@ -12,6 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -37,6 +38,7 @@ import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.util.MailService;
 
+import javax.servlet.http.Cookie;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
@@ -248,6 +250,23 @@ public class UserService {
         } else {
             throw new Exception("Token doesn't exist.");
         }
+    }
+
+    @Transactional
+    public Cookie getCSRFCookie(String value) {
+        _log.debug("[i] getUserByEcasPerId");
+        Cookie cookie = null;
+
+        if (value != null && value.length() > 0) {
+            String hash = DigestUtils.md5DigestAsHex(value.getBytes());
+            cookie = new Cookie("XSRF-TOKEN", hash);
+            cookie.setSecure(true);
+            cookie.setMaxAge(365 * 24 * 60 * 60);
+            cookie.setPath("/");
+        }
+
+        _log.debug("[f] getUserByEcasPerId");
+        return cookie;
     }
 
     @Transactional

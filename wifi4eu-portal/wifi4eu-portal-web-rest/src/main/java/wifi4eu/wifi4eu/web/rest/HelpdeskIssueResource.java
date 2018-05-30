@@ -15,11 +15,13 @@ import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.common.utils.HelpdeskIssueValidator;
 import wifi4eu.wifi4eu.service.helpdesk.HelpdeskService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -78,7 +80,6 @@ public class HelpdeskIssueResource {
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return helpdeskService.getHelpdeskIssueById(issueId);
-        
     }
 
     @ApiOperation(value = "Create helpdesk issue")
@@ -88,18 +89,35 @@ public class HelpdeskIssueResource {
     public ResponseDTO createHelpdeskIssue(@RequestBody final HelpdeskIssueDTO helpdeskIssueDTO, HttpServletResponse response) throws IOException {
         try {
             _log.info("createHelpdeskIssue");
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if(userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())){
+                throw new AccessDeniedException("Invalid access");
+            }
+
+            HelpdeskIssueValidator.validateHelpdeskIssue(helpdeskIssueDTO);
+
+            helpdeskIssueDTO.setCreateDate(new Date().getTime());
+            helpdeskIssueDTO.setStatus(0);
+
             HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.createHelpdeskIssue(helpdeskIssueDTO);
             return new ResponseDTO(true, resHelpdeskIssue, null);
+        }catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                    _log.error("Access denied on 'deleteHelpdeskIssue' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'createHelpdeskIssue' operation.", e);
             }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
 
-
+    /*
     @ApiOperation(value = "Delete helpdesk by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
@@ -128,4 +146,5 @@ public class HelpdeskIssueResource {
         }
         return new ResponseDTO(false, null, null);
     }
+    */
 }
