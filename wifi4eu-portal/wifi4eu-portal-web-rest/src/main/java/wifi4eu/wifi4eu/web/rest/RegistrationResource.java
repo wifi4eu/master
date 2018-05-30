@@ -220,9 +220,19 @@ public class RegistrationResource {
     @ApiOperation(value = "Get registrations by specific user id")
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<RegistrationDTO> getRegistrationsByUserId(@PathVariable("userId") final Integer userId, @RequestParam("date") final Long timestamp) {
-        permissionChecker.check(RightConstants.USER_TABLE + userId);
-        return registrationService.getRegistrationsByUserId(userId);
+    public List<RegistrationDTO> getRegistrationsByUserId(@PathVariable("userId") final Integer userId, @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
+        try {
+            permissionChecker.check(RightConstants.USER_TABLE + userId);
+            return registrationService.getRegistrationsByUserId(userId);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getRegistrationsByUserId' operation.", e);
+            }
+            return null;
+        }
     }
 
     @ApiOperation(value = "Get registrations by specific municipality id")
