@@ -11,6 +11,10 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     Application findByCallIdAndRegistrationId(Integer callId, Integer registrationId);
     Iterable<Application> findByRegistrationId(Integer registrationId);
     Iterable<Application> findByCallIdOrderByDateAsc(Integer callId);
-    @Query(value = "SELECT * FROM applications app LEFT JOIN registrations reg ON reg.id = app.registration LEFT JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]}", nativeQuery = true)
+    @Query(value = "SELECT * FROM applications app INNER JOIN registrations reg ON reg.id = app.registration INNER JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]}", nativeQuery = true)
     List<Application> findByCallIdAndLauId(Integer callId, Integer lauId);
+
+    @Query(value = "SELECT * FROM applications app INNER JOIN registrations reg ON reg.id = app.registration INNER JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]} ORDER BY app.date ASC", nativeQuery = true)
+    List<Application> findByCallIdAndLauIdOrderByDateAsc(Integer callId, Integer lauId);
+
 }

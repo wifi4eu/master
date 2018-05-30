@@ -85,16 +85,7 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     }
 
     private getLegalFileUrl(index: number, fileNumber: number) {
-        switch (fileNumber) {
-            case 1:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile1);
-            case 2:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile2);
-            case 3:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile3);
-            case 4:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile4);
-        }
+		return this.registrationApi.getLegalFilesByFileType(this.registrations[index].id, fileNumber);
     }
 
     private checkEntity(index: number) {

@@ -19,7 +19,7 @@ import { ThreadDTOBase } from "../../../shared/swagger/model/ThreadDTO";
 import { ThreadMessageDTOBase } from "../../../shared/swagger/model/ThreadMessageDTO";
 import { ResponseDTOBase } from "../../../shared/swagger/model/ResponseDTO";
 import { UserDTOBase } from "../../../shared/swagger/model/UserDTO";
-import { LegalFileDTOBase } from "../../../shared/swagger/model/LegalFileDTO";
+import { LegalFileCorrectionReasonDTOBase } from "../../../shared/swagger/model/LegalFileCorrectionReasonDTO";
 import { TranslateService } from "ng2-translate";
 import * as FileSaver from "file-saver";
 
@@ -52,7 +52,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private users: UserDTOBase[] = [];
     private discussionThread: ThreadDTOBase = null;
     private displayedMessages: ThreadMessageDTOBase[] = [];
-    private legalFiles: LegalFileDTOBase[][] = [];
+    private legalFiles: LegalFileCorrectionReasonDTOBase[][] = [];
     private selectedFilesTypes: number[][] = [];
     private selectedReasonTypes: number[][] = [];
     private correctRequestLegalFilesModal: boolean = false;
@@ -70,7 +70,9 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private processingRequest = false;
     private registration: RegistrationDTOBase;
 
-    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
+    private fileURL: string = '/wifi4eu/api/registration/registrations/';
+
+    constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService) {
         this.loadingData = true;
         this.route.params.subscribe(
             params => {
@@ -105,7 +107,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                                                             this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
                                                                 (mayor: MayorDTOBase) => {
                                                                     this.registrationApi.getLegalFilesByRegistrationId(registration.id, new Date().getTime()).subscribe(
-                                                                        (legalFiles: LegalFileDTOBase[]) => {
+                                                                        (legalFiles: LegalFileCorrectionReasonDTOBase[]) => {
                                                                             if (mayor) {
                                                                                 this.mayors[i] = mayor;
                                                                             } else {
@@ -177,6 +179,10 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         }
     }
 
+// TODO: Temporaly, the BLOB data will be read from the registration itself.
+    private getLegalFileUrl(index: number, fileNumber: number) {
+        return this.registrationApi.getLegalFilesByFileType(this.registrations[index].id, fileNumber);
+    }
     private setRegistrationIssue(registration: RegistrationDTOBase, index: number) {
         this.registrationApi.getRegistrationIssue(registration).subscribe(
             (response: ResponseDTOBase) => {
@@ -185,28 +191,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 }
             }
         );
-    }
-
-    // TODO: Temporaly, the BLOB data will be read from the registration itself.
-    private downloadLegalFile(index: number, typeNumber: number) {
-        if (index != null) {
-            for (let legalFile of this.legalFiles[index]) {
-                if (legalFile.type == typeNumber) {
-                    let lfBlobString = legalFile.data;
-                    let lfMimeType = this.sharedService.getMimeType(lfBlobString);
-                    let lfExtension = this.sharedService.getFileExtension(lfBlobString);
-                    let lfData = this.sharedService.getBase64Data(lfBlobString);
-                    let byteCharacters = atob(lfData);
-                    let byteNumbers = new Array(byteCharacters.length);
-                    for (let i = 0; i < byteCharacters.length; i++) {
-                        byteNumbers[i] = byteCharacters.charCodeAt(i);
-                    }
-                    let byteArray = new Uint8Array(byteNumbers);
-                    let blob = new Blob([byteArray], {type: lfMimeType});
-                    FileSaver.saveAs(blob, 'legalfile' + typeNumber + lfExtension);
-                }
-            }
-        }
     }
 
     private displayValidateModal(index: number) {
@@ -355,18 +339,17 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
                 let savedFilesCount = 0;
                 for (let i = 0; i < this.selectedFilesTypes[this.selectedIndex].length; i++) {
-                    let updatedLegalFile = new LegalFileDTOBase();
+                    let updatedLegalFile = new LegalFileCorrectionReasonDTOBase();
                     let fileType = this.selectedFilesTypes[this.selectedIndex][i];
                     for (let legalFile of this.legalFiles[this.selectedIndex]) {
                         if (legalFile.type == fileType) {
                             updatedLegalFile = legalFile;
-                            updatedLegalFile.data = null;
                             updatedLegalFile.requestCorrection = true;
                             updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
                         }
                     }
                     this.registrationApi.saveLegalFile(updatedLegalFile).subscribe(
-                        (resLegalFile: LegalFileDTOBase) => {
+                        (resLegalFile: LegalFileCorrectionReasonDTOBase) => {
                             savedFilesCount++;
                             if (resLegalFile) {
                                 if (savedFilesCount == this.selectedFilesTypes[this.selectedIndex].length) {
@@ -480,15 +463,15 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         );
     }
 
-    private createFrontEndLegalFiles(registration: RegistrationDTOBase, legalFiles?: LegalFileDTOBase[]) {
+    private createFrontEndLegalFiles(registration: RegistrationDTOBase, legalFiles?: LegalFileCorrectionReasonDTOBase[]) {
         let finalLegalFiles = [];
-        let lf1 = new LegalFileDTOBase();
+        let lf1 = new LegalFileCorrectionReasonDTOBase();
         let lf1AlreadyExists = false;
-        let lf2 = new LegalFileDTOBase();
+        let lf2 = new LegalFileCorrectionReasonDTOBase();
         let lf2AlreadyExists = false;
-        let lf3 = new LegalFileDTOBase();
+        let lf3 = new LegalFileCorrectionReasonDTOBase();
         let lf3AlreadyExists = false;
-        let lf4 = new LegalFileDTOBase();
+        let lf4 = new LegalFileCorrectionReasonDTOBase();
         let lf4AlreadyExists = false;
         if (legalFiles != null) {
             for (let legalFile of legalFiles) {
@@ -512,40 +495,36 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 }
             }
         }
-        if (registration.legalFile1 != null) {
-            lf1.data = registration.legalFile1;
+        if (registration.legalFile1Size != null && registration.legalFile1Size > 0 ) {
             if (!lf1AlreadyExists) {
                 lf1.registrationId = registration.id;
                 lf1.type = 1;
-                lf1.uploadTime = registration.uploadTime;
             }
+            lf1.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf1);
         }
-        if (registration.legalFile2 != null) {
-            lf2.data = registration.legalFile2;
+        if (registration.legalFile2Size != null && registration.legalFile2Size > 0 ) {
             if (!lf2AlreadyExists) {
                 lf2.registrationId = registration.id;
                 lf2.type = 2;
-                lf2.uploadTime = registration.uploadTime;
             }
+            lf2.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf2);
         }
-        if (registration.legalFile3 != null) {
-            lf3.data = registration.legalFile3;
+        if (registration.legalFile3Size != null && registration.legalFile3Size > 0 ) {
             if (!lf3AlreadyExists) {
                 lf3.registrationId = registration.id;
                 lf3.type = 3;
-                lf3.uploadTime = registration.uploadTime;
             }
+            lf3.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf3);
         }
-        if (registration.legalFile4 != null) {
-            lf4.data = registration.legalFile4;
+        if (registration.legalFile4Size != null && registration.legalFile4Size > 0 ) {
             if (!lf4AlreadyExists) {
                 lf4.registrationId = registration.id;
                 lf4.type = 4;
-                lf4.uploadTime = registration.uploadTime;
             }
+            lf4.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf4);
         }
         return finalLegalFiles;

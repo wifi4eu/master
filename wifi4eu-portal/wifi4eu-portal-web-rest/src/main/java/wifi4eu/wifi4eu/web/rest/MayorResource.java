@@ -102,32 +102,32 @@ public class MayorResource {
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
     public ResponseDTO updateMayorDetails(@RequestBody final MayorDTO mayorDTO,
-                                   HttpServletResponse response) throws IOException {
-      try {
-        MayorDTO mayorDetails = mayorService.getMayorById(mayorDTO.getId());
-        
-        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-        
-        RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(mayorDetails.getMunicipalityId());
-        
-        if(userDTO.getId() != registrationDTO.getUserId()){
-          throw new AccessDeniedException("");
+                                          HttpServletResponse response) throws IOException {
+        try {
+            MayorDTO mayorDetails = mayorService.getMayorById(mayorDTO.getId());
+
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+
+            RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(mayorDetails.getMunicipalityId());
+
+            if (userDTO.getId() != registrationDTO.getUserId()) {
+                throw new AccessDeniedException("");
+            }
+
+            permissionChecker.check(userDTO, RightConstants.MAYORS_TABLE + mayorDTO.getId());
+            return new ResponseDTO(true, mayorService.updateMayor(mayorDetails, mayorDTO.getName(), mayorDTO.getSurname()), null);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with permission on 'updateMayorDetails' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'updateMayorDetails' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
         }
-      
-        permissionChecker.check(userDTO, RightConstants.MAYORS_TABLE+mayorDTO.getId());
-        return new ResponseDTO(true, mayorService.updateMayor(mayorDetails, mayorDTO.getName(), mayorDTO.getSurname()), null);
-      } catch (AccessDeniedException ade) {
-          if (_log.isErrorEnabled()) {
-              _log.error("Error with permission on 'updateMayorDetails' operation.", ade);
-          }
-          response.sendError(HttpStatus.NOT_FOUND.value());
-      } catch (Exception e) {
-          if (_log.isErrorEnabled()) {
-              _log.error("Error on 'updateMayorDetails' operation.", e);
-          }
-          response.sendError(HttpStatus.BAD_REQUEST.value());
-      }
-      return new ResponseDTO(false, null, null);
+        return new ResponseDTO(false, null, null);
     }
 
     /* @ApiOperation(value = "Delete mayor by specific id")
@@ -160,14 +160,22 @@ public class MayorResource {
             _log.info("getMayorByMunicipalityId: " + municipalityId);
         }
         try {
-            if (!permissionChecker.checkIfDashboardUser()) {
-                permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+            UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
+            if (user.getType() != 5) {
+                if (!permissionChecker.checkIfDashboardUser()) {
+                    permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+                }
             }
-        } catch (Exception ex) {
+        } catch (AccessDeniedException ex) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error with permission on 'getMayorByMunicipalityId' operation.", ex);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
+        } catch (Exception ex) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error with request 'getMayorByMunicipalityId' operation.", ex);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
         }
 
         return mayorService.getMayorByMunicipalityId(municipalityId);

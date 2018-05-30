@@ -324,30 +324,23 @@ public class ApplicationService {
                 }
                 break;
         }
+
+        setIssues(applicantsList);
+
+        return applicantsList;
+    }
+
+    private void setIssues(List<ApplicantListItemDTO> applicantsList) {
+
         for (int i = 0; i < applicantsList.size(); i++) {
             ApplicantListItemDTO applicant = applicantsList.get(i);
-            List<ApplicationDTO> applications = applicationMapper.toDTOList(applicationRepository.findByCallIdAndLauId(callId, applicant.getLauId()));
-            if (applicant.getCounter() == 1 || applicant.getCounter() == 0) {
-                ApplicationDTO validApplication = null;
-                for (ApplicationDTO application : applications) {
-                    if (application.getStatus() != ApplicationStatus.KO.getValue()) {
-                        validApplication = application;
-                    }
-                }
-                if (validApplication != null) {
-                    if (applicant.getStatus() == -1 || applicant.getApplicationDate() == -1) {
-                        applicant.setStatus(validApplication.getStatus());
-                        applicant.setApplicationDate(validApplication.getDate());
-                    }
-                    RegistrationDTO registration = registrationService.getRegistrationById(validApplication.getRegistrationId());
-                    applicant.setIssueStatus(registrationService.getRegistrationIssue(registration));
-                } else {
-                    applicant.setStatus(ApplicationStatus.KO.getValue());
-                }
+            if (applicant.getCounter() == 1) {
+                applicant.setIssueStatus(registrationService.getRegistrationIssue(applicant.getLauId()));
+            } else {
+                applicant.setIssueStatus(0);
             }
             applicantsList.set(i, applicant);
         }
-        return applicantsList;
     }
 
     public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
@@ -415,9 +408,9 @@ public class ApplicationService {
     }
 
     public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application) {
-        List<LegalFileDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
+        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
         boolean pendingFollowup = false;
-        for (LegalFileDTO legalFile : legalFiles) {
+        for (LegalFileCorrectionReasonDTO legalFile : legalFiles) {
             if (legalFile.getRequestCorrection() && legalFile.getCorrectionReason() != null) {
                 pendingFollowup = true;
                 break;
@@ -441,19 +434,7 @@ public class ApplicationService {
     }
 
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(int callId, int lauId) {
-        List<ApplicationDTO> applications = new ArrayList<>();
-        for (ApplicationDTO application : getApplicationsByCallId(callId)) {
-            RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
-            if (registration != null) {
-                MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
-                if (municipality != null) {
-                    if (municipality.getLauId() == lauId) {
-                        applications.add(application);
-                    }
-                }
-            }
-        }
-        return applications;
+        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdAndLauIdOrderByDateAsc(callId, lauId)));
     }
 
     public byte[] exportExcelDGConnApplicantsList(Integer callId, String country) {
