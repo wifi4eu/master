@@ -59,6 +59,9 @@ public class VoucherService {
     VoucherAssignmentRepository voucherAssignmentRepository;
 
     @Autowired
+    private SimpleRegistrationService simpleRegistrationService;
+
+    @Autowired
     RegistrationService registrationService;
 
     @Autowired
@@ -151,8 +154,8 @@ public class VoucherService {
             List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
 
             List<SimpleMunicipalityDTO>  municipalities = simpleMunicipalityService.getAllMunicipalities();
-            List<RegistrationDTO>  registrations = registrationService.getAllRegistrations();
             List<SimpleLauDTO> laus = simpleLauService.getAllLausFromApplications();
+            List<SimpleRegistrationDTO>  registrations = simpleRegistrationService.findAll();
 
             for(SimpleMunicipalityDTO mun : municipalities){
                 municipalityHashMap.put(mun.getId(), mun);
