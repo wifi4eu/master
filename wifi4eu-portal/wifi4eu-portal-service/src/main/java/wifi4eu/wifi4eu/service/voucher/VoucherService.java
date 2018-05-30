@@ -155,10 +155,15 @@ public class VoucherService {
             // Countries extracted from list of applications in FIFO order
             List<String> participatingCountries = new ArrayList<>();
 
-            Map<Integer, ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
+            List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
 
-            Map<Integer, ApplicationDTO> test = new HashMap<Integer, ApplicationDTO>();
+            Map<Integer, Integer> applicationsIndexes = new HashMap<>(listOfApplications.size());
 
+            int index = 0;
+            for(ApplicationDTO application : listOfApplications){
+                applicationsIndexes.put(application.getId(), index);
+                index ++;
+            }
 
 
             List<SimpleMunicipalityDTO>  municipalities = simpleMunicipalityService.getAllMunicipalities();
@@ -246,7 +251,7 @@ public class VoucherService {
             }
 
             // List of applications cloned to use in the algorithm
-            List<ApplicationDTO> supportLOAlist = new ArrayList<>(listOfApplications.values());
+            List<ApplicationDTO> supportLOAlist = new ArrayList<>(listOfApplications);
 
             for (String country : participatingCountries) {
 
@@ -470,7 +475,7 @@ public class VoucherService {
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO.getId());
                 simulation.setIssues(1);
-                simulation.setEuRank(positionInApplicationList(listOfApplications, applicationAssigned) + 1);
+                simulation.setEuRank(applicationsIndexes.get(applicationAssigned.getId()) + 1);
                 simulation.setSelectionStatus(0);
                 simulation.setCountryRank(getPositionInCountry(applicationDTOS2, applicationAssigned) + 1);
                 simulations.add(simulation);
@@ -491,7 +496,7 @@ public class VoucherService {
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO.getId());
                 simulation.setIssues(1);
-                simulation.setEuRank(positionInApplicationList(listOfApplications, reservedApplication) + 1);
+                simulation.setEuRank(applicationsIndexes.get(reservedApplication.getId()) + 1);
                 simulation.setSelectionStatus(1);
                 simulation.setCountryRank(getPositionInCountry(applicationDTOS2, reservedApplication) + 1);
                 simulations.add(simulation);
@@ -507,7 +512,7 @@ public class VoucherService {
 
 
     /*@Transactional*/
-    public ResponseDTO simulateVoucherAssignment(int callId) {
+    /*public ResponseDTO simulateVoucherAssignment(int callId) {
         UserContext userContext = UserHolder.getUser();
 
         if (userContext != null) {
@@ -522,10 +527,10 @@ public class VoucherService {
 
             UserDTO userDTO = userService.getUserByUserContext(userContext);
 
-            /**
+            *//**
              * Counters of algorithm
              *
-             */
+             *//*
 
             int callNr = call.getId();
             int vouchersToBeAssigned = call.getNumberVouchers();
@@ -537,7 +542,7 @@ public class VoucherService {
             // Countries extracted from list of applications in FIFO order
             List<String> participatingCountries = new ArrayList<>();
 
-            List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
+            Map<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
 
             for (ApplicationDTO applicationDTO : listOfApplications) {
                 RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
@@ -555,11 +560,11 @@ public class VoucherService {
 
             int numReserveList = call.getReserve();
 
-            /* if(numReserveList == null){
+            *//* if(numReserveList == null){
               numReserveList = 0;
-            } */
+            } *//*
 
-            /* List<ApplicationDTO> assignedVouchers = new ArrayList<>(); */
+            *//* List<ApplicationDTO> assignedVouchers = new ArrayList<>(); *//*
 
             // String => name municipality, Application of the municipality
             HashMap<Integer, ApplicationDTO> assignedVouchers = new HashMap<>();
@@ -854,10 +859,10 @@ public class VoucherService {
             return new ResponseDTO(true, res.getVoucherSimulations(), null);
         }
         return new ResponseDTO(false, "User not defined", null);
-    }
+    }*/
 
 
-    public Integer positionInApplicationList(List<ApplicationDTO> applicationsInput, ApplicationDTO applicationInput){
+    public Integer positionInApplicationList(List< ApplicationDTO> applicationsInput, ApplicationDTO applicationInput){
       int index = 0;
       for (ApplicationDTO application : applicationsInput) {
           if (application.getId() == applicationInput.getId()) {
@@ -865,7 +870,11 @@ public class VoucherService {
           }
           index++;
       }
+
       return -1;
+
+
+
     }
 
     public List<ApplicationDTO> getFirtsApplicationCountry(HashMap<Integer, SimpleRegistrationDTO> registrationsMap,

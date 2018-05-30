@@ -43,9 +43,6 @@ public class ApplicationService {
     ApplicationMapper applicationMapper;
 
     @Autowired
-    ApplicationHashMapperImpl applicationHashMapper;
-
-    @Autowired
     ApplicationRepository applicationRepository;
 
     @Autowired
@@ -238,8 +235,8 @@ public class ApplicationService {
       return applicationRepository.findApplicationsNotInvalidated(callId);
     }
 
-    public Map<Integer, ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
-        return applicationHashMapper.toDTOMap(applicationRepository.findByCallIdOrderByDateAsc(callId));
+    public List<ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
+        return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateAsc(callId));
     }
 
     public List<ApplicationDTO> getApplicationByCallAndCountry(int callId, String country) {
