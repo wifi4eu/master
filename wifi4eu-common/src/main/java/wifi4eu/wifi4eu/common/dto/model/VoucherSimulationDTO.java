@@ -6,7 +6,7 @@ public class VoucherSimulationDTO {
     private int euRank;
     private int countryRank;
     private String country;
-    private MunicipalityDTO municipality;
+    private int municipality;
     private int issues;
     private int numApplications;
     private int rejected;
@@ -17,7 +17,7 @@ public class VoucherSimulationDTO {
     public VoucherSimulationDTO() {
     }
 
-    public VoucherSimulationDTO(int id, int euRank, int countryRank, String country, MunicipalityDTO municipality, int issues, int numApplications, int rejected, int voucherAssignment, int selectionStatus, ApplicationDTO application) {
+    public VoucherSimulationDTO(int id, int euRank, int countryRank, String country, int municipality, int issues, int numApplications, int rejected, int voucherAssignment, int selectionStatus, ApplicationDTO application) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;
@@ -63,11 +63,11 @@ public class VoucherSimulationDTO {
         this.country = country;
     }
 
-    public MunicipalityDTO getMunicipality() {
+    public int getMunicipality() {
         return municipality;
     }
 
-    public void setMunicipality(MunicipalityDTO municipality) {
+    public void setMunicipality(int municipality) {
         this.municipality = municipality;
     }
 

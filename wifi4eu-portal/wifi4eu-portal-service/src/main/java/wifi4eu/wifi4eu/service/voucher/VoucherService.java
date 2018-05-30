@@ -12,6 +12,10 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.entity.application.Application;
+import wifi4eu.wifi4eu.entity.location.Lau;
+import wifi4eu.wifi4eu.entity.municipality.Municipality;
+import wifi4eu.wifi4eu.entity.voucher.SimpleRegistration;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
@@ -118,9 +122,9 @@ public class VoucherService {
 
     public ResponseDTO simulateVoucherFast(int callId) {
 
-        HashMap<Integer, RegistrationDTO> registrationsHashMap = new HashMap<>();
         HashMap<Integer, SimpleMunicipalityDTO> municipalityHashMap = new HashMap<>();
         HashMap<Integer, SimpleLauDTO> lauHashMap = new HashMap<>();
+        HashMap<Integer, SimpleRegistrationDTO> registrationsHashMap = new HashMap<>();
 
         UserContext userContext = UserHolder.getUser();
 
@@ -161,7 +165,7 @@ public class VoucherService {
                 municipalityHashMap.put(mun.getId(), mun);
             }
 
-            for(RegistrationDTO reg : registrations){
+            for(SimpleRegistrationDTO reg : registrations){
                 registrationsHashMap.put(reg.getId(), reg);
             }
 
@@ -259,7 +263,7 @@ public class VoucherService {
                             break;
                         }
 
-                        RegistrationDTO registrationDTO = registrationsHashMap.get(applicationDTO.getRegistrationId());
+                        SimpleRegistrationDTO registrationDTO = registrationsHashMap.get(applicationDTO.getRegistrationId());
                         SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
 
                         //Check if municipality with the same name have been assigned, if assigned then delete else continue
@@ -290,7 +294,7 @@ public class VoucherService {
                         continue;
                     }
 
-                    RegistrationDTO registrationDTO = registrationsHashMap.get(applicationDTO.getRegistrationId());
+                    SimpleRegistrationDTO registrationDTO = registrationsHashMap.get(applicationDTO.getRegistrationId());
                     SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
                     SimpleLauDTO lauDTO = lauHashMap.get(municipalityDTO.getLauId());
 
@@ -352,7 +356,7 @@ public class VoucherService {
                                 continue;
                             }
 
-                            RegistrationDTO registrationDTO = registrationsHashMap.get(application.getRegistrationId());
+                            SimpleRegistrationDTO registrationDTO = registrationsHashMap.get(application.getRegistrationId());
                             SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
 
                             List<ApplicationDTO> countryApps = countryReserveList.get(country);
@@ -433,7 +437,8 @@ public class VoucherService {
 
             for (ApplicationDTO applicationAssigned : mainListOutput) {
 
-                RegistrationDTO registrationDTO = registrationsHashMap.get(applicationAssigned.getRegistrationId());
+
+                SimpleRegistrationDTO registrationDTO = registrationsHashMap.get(applicationAssigned.getRegistrationId());
                 SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
 
                 int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLauId(), call.getId());
@@ -445,7 +450,7 @@ public class VoucherService {
                 simulation.setApplication(applicationAssigned);
                 simulation.setVoucherAssignment(voucherAssignment.getId());
                 simulation.setNumApplications(num);
-                simulation.setMunicipality(municipalityDTO);
+                simulation.setMunicipality(municipalityDTO.getId());
                 simulation.setIssues(1);
                 simulation.setEuRank(positionInApplicationList(listOfApplications, applicationAssigned) + 1);
                 simulation.setSelectionStatus(0);
@@ -454,7 +459,7 @@ public class VoucherService {
             }
 
             for (ApplicationDTO reservedApplication : reserveListCompleted) {
-                RegistrationDTO registrationDTO = registrationsHashMap.get(reservedApplication.getRegistrationId());
+                SimpleRegistrationDTO registrationDTO = registrationsHashMap.get(reservedApplication.getRegistrationId());
                 SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
 
                 int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLauId(), call.getId());
@@ -466,7 +471,7 @@ public class VoucherService {
                 simulation.setCountry(municipalityDTO.getCountry());
                 simulation.setVoucherAssignment(voucherAssignment.getId());
                 simulation.setNumApplications(num);
-                simulation.setMunicipality(municipalityDTO);
+                simulation.setMunicipality(municipalityDTO.getId());
                 simulation.setIssues(1);
                 simulation.setEuRank(positionInApplicationList(listOfApplications, reservedApplication) + 1);
                 simulation.setSelectionStatus(1);
@@ -794,7 +799,7 @@ public class VoucherService {
                 simulation.setApplication(applicationAssigned);
                 simulation.setVoucherAssignment(voucherAssignment.getId());
                 simulation.setNumApplications(num);
-                simulation.setMunicipality(municipalityDTO);
+                simulation.setMunicipality(municipalityDTO.getId());
                 simulation.setIssues(1);
                 simulation.setEuRank(positionInApplicationList(listOfApplications, applicationAssigned) + 1);
                 simulation.setSelectionStatus(0);
@@ -816,7 +821,7 @@ public class VoucherService {
                 simulation.setCountry(municipalityDTO.getCountry());
                 simulation.setVoucherAssignment(voucherAssignment.getId());
                 simulation.setNumApplications(num);
-                simulation.setMunicipality(municipalityDTO);
+                simulation.setMunicipality(municipalityDTO.getId());
                 simulation.setIssues(1);
                 simulation.setEuRank(positionInApplicationList(listOfApplications, reservedApplication) + 1);
                 simulation.setSelectionStatus(1);
