@@ -251,10 +251,10 @@
                           <span pTooltip="{{row.country}}" tooltipPosition="bottom">{{row.country}}</span>
                         </ng-template>
                       </p-column>
-                      <p-column field="municipality.name" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.municipality' | translate}}"
+                      <p-column field="municipality" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.municipality' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
-                            <span pTooltip="{{row.municipality.name}}" tooltipPosition="bottom">{{row.municipality.name}}</span>
+                            <span pTooltip="{{row.municipalityName}}" tooltipPosition="bottom">{{row.municipalityName}}</span>
                           </ng-template>
                       </p-column>
                       <p-column field="issues" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.issues' | translate}}" styleClass="text-center"></p-column>

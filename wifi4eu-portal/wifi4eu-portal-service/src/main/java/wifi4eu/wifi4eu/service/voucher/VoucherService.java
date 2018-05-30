@@ -137,6 +137,7 @@ public class VoucherService {
         return new ResponseDTO(true, listSimulation, simulationPaged.getTotalElements(), null);
     }
 
+    @Transactional
     public ResponseDTO simulateVoucherFast(int callId) {
 
         HashMap<Integer, SimpleMunicipalityDTO> municipalityHashMap = new HashMap<>();
@@ -172,7 +173,9 @@ public class VoucherService {
             // Countries extracted from list of applications in FIFO order
             List<String> participatingCountries = new ArrayList<>();
 
-            List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
+           // List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
+            long dateNanoSeconds =  call.getStartDate() * 1000000;
+            List<ApplicationDTO> listOfApplications = applicationService.findByCallIdOrderByDateBeforeCallDateAsc(call.getId(), dateNanoSeconds);
 
             Map<Integer, Integer> applicationsIndexes = new HashMap<>(listOfApplications.size());
 
@@ -181,7 +184,6 @@ public class VoucherService {
                 applicationsIndexes.put(application.getId(), index);
                 index++;
             }
-
 
             List<SimpleMunicipalityDTO> municipalities = simpleMunicipalityService.getAllMunicipalities();
             List<SimpleLauDTO> laus = simpleLauService.getAllLausFromApplications();
@@ -279,7 +281,7 @@ public class VoucherService {
                     }
 
                     //GET Applications for each country
-                    List<ApplicationDTO> applicationsCountry = applicationService.getApplicationByCallAndCountry(callId, country);
+                    List<ApplicationDTO> applicationsCountry = applicationService.getApplicationByCallAndCountry(callId, country, dateNanoSeconds);
 
                     for (ApplicationDTO applicationDTO : applicationsCountry) {
 
@@ -473,6 +475,12 @@ public class VoucherService {
             if (voucherAssignment == null) {
                 voucherAssignment = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(assignmentDTO)));
             }
+            else{
+                voucherSimulationRepository.deleteVoucherSimulationByVoucherAssignment(voucherAssignment.getId());
+
+                voucherAssignment.setVoucherSimulations(null);
+                voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment));
+            }
 
             for (ApplicationDTO applicationAssigned : mainListOutput) {
 
@@ -482,7 +490,9 @@ public class VoucherService {
 
                 int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLau(), call.getId());
 
-                List<ApplicationDTO> applicationDTOS2 = applicationService.getApplicationsCountryNameCall(call.getId(), municipalityDTO.getCountry());
+                List<Integer> listOfIds = applicationService.getApplicationsIdByCountryAndNameAndCall(call.getId(), municipalityDTO.getCountry(), dateNanoSeconds);
+
+                //List<ApplicationDTO> applicationDTOS2 = applicationService.getApplicationsCountryNameCall(call.getId(), municipalityDTO.getCountry());
 
                 VoucherSimulationDTO simulation = new VoucherSimulationDTO();
                 simulation.setCountry(municipalityDTO.getCountry());
@@ -493,7 +503,7 @@ public class VoucherService {
                 simulation.setIssues(1);
                 simulation.setEuRank(applicationsIndexes.get(applicationAssigned.getId()) + 1);
                 simulation.setSelectionStatus(0);
-                simulation.setCountryRank(getPositionInCountry(applicationDTOS2, applicationAssigned) + 1);
+                simulation.setCountryRank(getPositionInCountry(listOfIds, applicationAssigned.getId()) + 1);
                 simulations.add(simulation);
             }
 
@@ -503,7 +513,9 @@ public class VoucherService {
 
                 int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLau(), call.getId());
 
-                List<ApplicationDTO> applicationDTOS2 = applicationService.getApplicationsCountryNameCall(call.getId(), municipalityDTO.getCountry());
+                List<Integer> listOfIds = applicationService.getApplicationsIdByCountryAndNameAndCall(call.getId(), municipalityDTO.getCountry(), dateNanoSeconds);
+
+                //List<ApplicationDTO> applicationDTOS2 = applicationService.getApplicationsCountryNameCall(call.getId(), municipalityDTO.getCountry());
 
                 VoucherSimulationDTO simulation = new VoucherSimulationDTO();
                 simulation.setApplication(reservedApplication);
@@ -514,7 +526,7 @@ public class VoucherService {
                 simulation.setIssues(1);
                 simulation.setEuRank(applicationsIndexes.get(reservedApplication.getId()) + 1);
                 simulation.setSelectionStatus(1);
-                simulation.setCountryRank(getPositionInCountry(applicationDTOS2, reservedApplication) + 1);
+                simulation.setCountryRank(getPositionInCountry(listOfIds, reservedApplication.getId()) + 1);
                 simulations.add(simulation);
             }
 
@@ -910,15 +922,15 @@ public class VoucherService {
         return appCountry;
     }
 
-    public int getPositionInCountry(List<ApplicationDTO> applicationsCountry, ApplicationDTO application) {
-        int index = 0;
-        for (ApplicationDTO applicationCountry : applicationsCountry) {
-            if (applicationCountry.getId() == application.getId()) {
+    public int getPositionInCountry(List<Integer> applicationsCountry, Integer application) {
+        int index = applicationsCountry.indexOf(application);
+        /*for (Integer applicationCountry : applicationsCountry) {
+            if (applicationCountry == application) {
                 return index;
             }
             index++;
-        }
-        return -1;
+        }*/
+        return index;
     }
 
     public boolean checkApplicationIsValid(ApplicationDTO applicationDTO) {

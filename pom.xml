@@ -122,7 +122,7 @@
 
         <!-- App settings -->
         <schemes>http</schemes>
-        <server.address>localhost:8090</server.address>
+        <server.address>localhost:8080</server.address>
         <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
         <server.test.port>8090</server.test.port>
         <mail.serv.enable>false</mail.serv.enable>

@@ -238,12 +238,21 @@ public class ApplicationService {
         return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateAsc(callId));
     }
 
-    public List<ApplicationDTO> getApplicationByCallAndCountry(int callId, String country) {
-        return applicationMapper.toDTOList(applicationRepository.findApplicationsByCountry(callId, country));
+    public List<ApplicationDTO> findByCallIdOrderByDateBeforeCallDateAsc(int callId, long startDate){
+        return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateBAsc(callId, startDate));
+
+    }
+
+    public List<ApplicationDTO> getApplicationByCallAndCountry(int callId, String country, long date) {
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsByCountry(callId, country, date));
     }
 
     public List<ApplicationDTO> getApplicationsCountryNameCall(int callId, String country) {
         return applicationMapper.toDTOList(applicationRepository.findApplicationsCountry(country, callId));
+    }
+
+    public List<Integer> getApplicationsIdByCountryAndNameAndCall(int callId, String country, long date){
+        return applicationRepository.findIdApplications(country, callId, date);
     }
 
     public Integer countApplicationWithSameMunicipalityName(int lauId, int callId){
