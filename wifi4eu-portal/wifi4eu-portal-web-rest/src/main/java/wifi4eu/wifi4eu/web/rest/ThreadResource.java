@@ -67,7 +67,6 @@ public class ThreadResource {
     @ResponseBody
     public ThreadDTO getThreadByTypeAndReason(@PathVariable("type") final Integer type, @PathVariable("reason") final String reason, HttpServletResponse response) throws IOException {
         _log.info("getThreadByTypeAndReason: " + type);
-
         try {
             UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
             ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
