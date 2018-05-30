@@ -62,12 +62,12 @@ public class CSRFFilter extends OncePerRequestFilter {
                             return;
                         }
                     } else {
-                        _log.debug("user is NULL");
+                        _log.error("user is NULL");
                         response.sendError(HttpStatus.UNAUTHORIZED.value());
                         return;
                     }
                 } else {
-                    _log.debug("userContext is NULL");
+                    _log.error("userContext is NULL");
                     response.sendError(HttpStatus.UNAUTHORIZED.value());
                     return;
                 }
