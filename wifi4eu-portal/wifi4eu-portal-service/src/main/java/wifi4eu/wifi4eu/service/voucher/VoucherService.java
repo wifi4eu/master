@@ -18,9 +18,11 @@ import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.voucher.SimpleRegistration;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
+import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherSimulationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentAuxiliarRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -42,6 +44,9 @@ public class VoucherService {
     VoucherAssignmentMapper voucherAssignmentMapper;
 
     @Autowired
+    VoucherAssignmentAuxiliarMapper voucherAssignmentAuxiliarMapper;
+
+    @Autowired
     VoucherSimulationMapper voucherSimulationMapper;
 
     @Autowired
@@ -61,6 +66,9 @@ public class VoucherService {
 
     @Autowired
     VoucherAssignmentRepository voucherAssignmentRepository;
+
+    @Autowired
+    VoucherAssignmentAuxiliarRepository voucherAssignmentAuxiliarRepository;
 
     @Autowired
     private SimpleRegistrationService simpleRegistrationService;
@@ -98,6 +106,10 @@ public class VoucherService {
         return voucherAssignmentMapper.toDTO(voucherAssignmentRepository.findByCallId(callId));
     }
 
+    public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(int callId) {
+        return voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAux(callId));
+    }
+
     @Transactional
     public VoucherAssignmentDTO createVoucherAssignment(VoucherAssignmentDTO voucherAssignmentDTO) {
         VoucherAssignment voucherAssignment = voucherAssignmentRepository
@@ -117,6 +129,11 @@ public class VoucherService {
             simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentInCountryOrdered(voucherAssignmentId, country, pageable);
         }
         List<VoucherSimulationDTO> listSimulation = voucherSimulationMapper.toDTOList(Lists.newArrayList(simulationPaged.getContent()));
+        for (VoucherSimulationDTO voucherSimulation : listSimulation) {
+            MunicipalityDTO municipalityDTO = municipalityService.getMunicipalityById(voucherSimulation.getMunicipality());
+            voucherSimulation.setMunicipalityName(municipalityDTO.getName());
+            voucherSimulation.setLau(municipalityDTO.getLauId());
+        }
         return new ResponseDTO(true, listSimulation, simulationPaged.getTotalElements(), null);
     }
 
@@ -160,27 +177,27 @@ public class VoucherService {
             Map<Integer, Integer> applicationsIndexes = new HashMap<>(listOfApplications.size());
 
             int index = 0;
-            for(ApplicationDTO application : listOfApplications){
+            for (ApplicationDTO application : listOfApplications) {
                 applicationsIndexes.put(application.getId(), index);
-                index ++;
+                index++;
             }
 
 
-            List<SimpleMunicipalityDTO>  municipalities = simpleMunicipalityService.getAllMunicipalities();
+            List<SimpleMunicipalityDTO> municipalities = simpleMunicipalityService.getAllMunicipalities();
             List<SimpleLauDTO> laus = simpleLauService.getAllLausFromApplications();
-            List<SimpleRegistrationDTO>  registrations = simpleRegistrationService.findAll();
+            List<SimpleRegistrationDTO> registrations = simpleRegistrationService.findAll();
 
-            for(SimpleMunicipalityDTO mun : municipalities){
+            for (SimpleMunicipalityDTO mun : municipalities) {
                 municipalityHashMap.put(mun.getId(), mun);
             }
 
-            for(SimpleRegistrationDTO reg : registrations){
+            for (SimpleRegistrationDTO reg : registrations) {
                 registrationsHashMap.put(reg.getId(), reg);
             }
 
-            for(SimpleLauDTO lau: laus){
+            for (SimpleLauDTO lau : laus) {
                 lauHashMap.put(lau.getId(), lau);
-                if(! participatingCountries.contains(lau.getCountry_code()) && lau.getCountry_code() != null) {
+                if (!participatingCountries.contains(lau.getCountry_code()) && lau.getCountry_code() != null) {
                     participatingCountries.add(lau.getCountry_code());
                 }
             }
@@ -189,15 +206,15 @@ public class VoucherService {
 
             //    RegistrationDTO registrationDTO = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
             //    if(registrationDTO != null){
-                    //registrationsHashMap.put(registrationDTO.getId(), registrationDTO);
-                    //MunicipalityDTO municipalityDTO = municipalityService.getMunicipalityById(registrationDTO.getMunicipalityId());
-                    //municipalityHashMap.put(municipalityDTO.getId(), municipalityDTO);
-                    //LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
-                    //lauHashMap.put(lauDTO.getId(), lauDTO);
+            //registrationsHashMap.put(registrationDTO.getId(), registrationDTO);
+            //MunicipalityDTO municipalityDTO = municipalityService.getMunicipalityById(registrationDTO.getMunicipalityId());
+            //municipalityHashMap.put(municipalityDTO.getId(), municipalityDTO);
+            //LauDTO lauDTO = lauService.getLauById(municipalityDTO.getLauId());
+            //lauHashMap.put(lauDTO.getId(), lauDTO);
 
-                    //if (!participatingCountries.contains(lauDTO.getCountryCode())) {
-                    //    participatingCountries.add(lauDTO.getCountryCode());
-                    //}
+            //if (!participatingCountries.contains(lauDTO.getCountryCode())) {
+            //    participatingCountries.add(lauDTO.getCountryCode());
+            //}
             //    } else {
             //        _log.info("Incorrect application " + applicationDTO.getId());
             //   }
@@ -244,7 +261,7 @@ public class VoucherService {
             }
 
             for (String country : participatingCountries) {
-                if(country != null){
+                if (country != null) {
                     country = country.toUpperCase().trim();
                     countryCounter.put(country, 0);
                 }
@@ -278,7 +295,7 @@ public class VoucherService {
 
                         SimpleRegistrationDTO registrationDTO = registrationsHashMap.get(applicationDTO.getRegistrationId());
 
-                        if(registrationDTO != null) {
+                        if (registrationDTO != null) {
                             SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
 
                             //Check if municipality with the same name have been assigned, if assigned then delete else continue
@@ -293,7 +310,7 @@ public class VoucherService {
                         }
                     }
                 } catch (Exception e) {
-                    if(_log.isErrorEnabled()){
+                    if (_log.isErrorEnabled()) {
                         _log.error("Error assigning minimum of vouchers to country", e);
                     }
                 }
@@ -312,7 +329,7 @@ public class VoucherService {
 
                     SimpleRegistrationDTO registrationDTO = registrationsHashMap.get(applicationDTO.getRegistrationId());
 
-                    if(registrationDTO != null){
+                    if (registrationDTO != null) {
                         SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
                         SimpleLauDTO lauDTO = lauHashMap.get(municipalityDTO.getLau());
 
@@ -348,7 +365,7 @@ public class VoucherService {
                         removeFromLOA(supportLOAlist, applicationDTO);
                     }
                 } catch (Exception e) {
-                    if(_log.isErrorEnabled()){
+                    if (_log.isErrorEnabled()) {
                         _log.error("Error assigning maximum of vouchers to country", e);
                     }
                 }
@@ -365,7 +382,7 @@ public class VoucherService {
                         continue;
                     }
 
-                    try{
+                    try {
                         List<ApplicationDTO> applicationsCountry = getFirtsApplicationCountry(registrationsHashMap, lauHashMap, municipalityHashMap,
                                 supportLOAlist, country);
 
@@ -378,12 +395,12 @@ public class VoucherService {
 
                             SimpleRegistrationDTO registrationDTO = registrationsHashMap.get(application.getRegistrationId());
 
-                            if(registrationDTO != null){
+                            if (registrationDTO != null) {
                                 SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
 
                                 List<ApplicationDTO> countryApps = countryReserveList.get(country);
 
-                                if(countryApps == null){
+                                if (countryApps == null) {
                                     countryApps = new ArrayList<>();
                                 }
 
@@ -400,16 +417,15 @@ public class VoucherService {
                                 countryReserveList.put(country, countryApps);
                                 countryReserveListCounter.put(country, countryReserveListCounter.get(country) + 1);
 
-    //                            if (countryReserveListCounter.get(country) == countryCounter.get(country)) {
-    //                                continue;
-    //                            }
+                                //                            if (countryReserveListCounter.get(country) == countryCounter.get(country)) {
+                                //                                continue;
+                                //                            }
 
                                 removeFromLOA(supportLOAlist, application);
                             }
                         }
-                    }
-                    catch (Exception e){
-                        if(_log.isErrorEnabled()){
+                    } catch (Exception e) {
+                        if (_log.isErrorEnabled()) {
                             _log.error("Error assigning reserve of vouchers to country", e);
                         }
                     }
@@ -527,10 +543,11 @@ public class VoucherService {
 
             UserDTO userDTO = userService.getUserByUserContext(userContext);
 
-            *//**
-             * Counters of algorithm
-             *
-             *//*
+            */
+
+    /**
+     * Counters of algorithm
+     *//*
 
             int callNr = call.getId();
             int vouchersToBeAssigned = call.getNumberVouchers();
@@ -564,7 +581,7 @@ public class VoucherService {
               numReserveList = 0;
             } *//*
 
-            *//* List<ApplicationDTO> assignedVouchers = new ArrayList<>(); *//*
+     *//* List<ApplicationDTO> assignedVouchers = new ArrayList<>(); *//*
 
             // String => name municipality, Application of the municipality
             HashMap<Integer, ApplicationDTO> assignedVouchers = new HashMap<>();
@@ -860,19 +877,16 @@ public class VoucherService {
         }
         return new ResponseDTO(false, "User not defined", null);
     }*/
+    public Integer positionInApplicationList(List<ApplicationDTO> applicationsInput, ApplicationDTO applicationInput) {
+        int index = 0;
+        for (ApplicationDTO application : applicationsInput) {
+            if (application.getId() == applicationInput.getId()) {
+                return index;
+            }
+            index++;
+        }
 
-
-    public Integer positionInApplicationList(List< ApplicationDTO> applicationsInput, ApplicationDTO applicationInput){
-      int index = 0;
-      for (ApplicationDTO application : applicationsInput) {
-          if (application.getId() == applicationInput.getId()) {
-              return index;
-          }
-          index++;
-      }
-
-      return -1;
-
+        return -1;
 
 
     }
@@ -884,7 +898,7 @@ public class VoucherService {
         List<ApplicationDTO> appCountry = new ArrayList<>();
         for (ApplicationDTO application : apps) {
             SimpleRegistrationDTO registrationDTO = registrationsMap.get(application.getRegistrationId());
-            if(registrationDTO != null){
+            if (registrationDTO != null) {
                 SimpleMunicipalityDTO municipalityDTO = municipalitiesMap.get(registrationDTO.getMunicipalityId());
                 SimpleLauDTO lauDTO = lausMap.get(municipalityDTO.getLau());
 
