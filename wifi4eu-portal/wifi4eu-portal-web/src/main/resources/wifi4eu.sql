@@ -524,3 +524,20 @@ CREATE TABLE [dbo].[beneficiary_information](
 	[abacStandarName] [varchar](255) NULL,
 	[municipality] [int] NOT NULL
 ) ON [PRIMARY]
+
+
+-- -----------------------------------------------------
+-- Table `dbo`.`budgetary_commitment`
+-- -----------------------------------------------------
+CREATE TABLE [dbo].[budgetary_commitment](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[euRank] [int] NOT NULL,
+	[countryRank] [int] NULL,
+	[countryName] [varchar](255) NULL,
+	[municipalityName] [varchar](255) NULL,
+	[issue] [varchar](255) NULL,
+	[numberOfRegistrations] [int] NULL,
+	[abacReference] [varchar](255) NULL,
+	[abacStandarName] [varchar](255) NULL,
+	[municipality] [int] NOT NULL
+) ON [PRIMARY]

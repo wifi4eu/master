@@ -14,6 +14,8 @@ import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBeneficiaryInformationMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportBeneficiaryInformationRepository;
+import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBudgetaryCommitmentMapper;
+import wifi4eu.wifi4eu.repository.exportImport.ExportImportBudgetaryCommitmentRepository;
 import wifi4eu.wifi4eu.service.exportImport.file.CreateFile;
 import wifi4eu.wifi4eu.service.exportImport.file.ReadFile;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -42,6 +44,12 @@ public class ExportImportWifi4euAbacService {
 
     @Autowired
     ExportImportBeneficiaryInformationRepository exportImportBeneficiaryInformationRepository;
+
+    @Autowired
+    ExportImportBudgetaryCommitmentMapper exportImportBudgetaryCommitmentMapper;
+
+    @Autowired
+    ExportImportBudgetaryCommitmentRepository exportImportBudgetaryCommitmentRepository;
 
     @Autowired
     UserService userService;
@@ -148,22 +156,22 @@ public class ExportImportWifi4euAbacService {
         Gson gson = new GsonBuilder().create();
         JsonParser parser = new JsonParser();
         JsonObject resultJson = new JsonObject();
-        List<ExportImportBeneficiaryInformationDTO> applicationsBeneficiaryInformation = exportImportBeneficiaryInformationMapper.toDTOList(Lists.newArrayList(exportImportBeneficiaryInformationRepository.findAll()));
-        JsonArray applicationsBeneficiaryInformationJsonArray = new JsonArray();
-        if (applicationsBeneficiaryInformation!= null && !applicationsBeneficiaryInformation.isEmpty()) {
-            for (ExportImportBeneficiaryInformationDTO application : applicationsBeneficiaryInformation) {
+        List<ExportImportBudgetaryCommitmentDTO> applicationsBudgetaryCommitment = exportImportBudgetaryCommitmentMapper.toDTOList(Lists.newArrayList(exportImportBudgetaryCommitmentRepository.findExportImportBC()));
+        JsonArray applicationsBudgetaryCommitmentJsonArray = new JsonArray();
+        if (applicationsBudgetaryCommitment!= null && !applicationsBudgetaryCommitment.isEmpty()) {
+            for (ExportImportBudgetaryCommitmentDTO application : applicationsBudgetaryCommitment) {
 //                long exportDate = new Date().getTime();
 //                application.setLefExport(exportDate);
 //                application.setBcExport(exportDate);
 //                application.setLcExport(exportDate);
 //                benPubSupRepository.save(benPubSupMapper.toEntity(application));
                 JsonObject applicationJson = parser.parse(gson.toJson(application)).getAsJsonObject();
-                applicationsBeneficiaryInformationJsonArray.add(applicationJson);
+                applicationsBudgetaryCommitmentJsonArray.add(applicationJson);
             }
         }
 //        resultJson.addProperty("version", _version);
         resultJson.addProperty("createTime", new Date().getTime());
-        resultJson.add("budgetaryCommitment", applicationsBeneficiaryInformationJsonArray);
+        resultJson.add("budgetaryCommitment", applicationsBudgetaryCommitmentJsonArray);
         result.setSuccess(true);
 //        result.setData(resultJson.toString());
         result.setData("[" + resultJson.toString() + "]");

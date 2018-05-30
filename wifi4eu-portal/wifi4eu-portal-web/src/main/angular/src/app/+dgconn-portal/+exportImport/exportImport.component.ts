@@ -24,7 +24,7 @@ export class DgConnExportImportComponent {
      }
 
      exportRegistrationData(){
-            this.exportImportApi.exportRegistrationData().subscribe(
+            this.exportImportApi.exportRegistrationData().subscribe(e
                 (response: ResponseDTO)  => {
                     if(response.success){
                         this.sharedService.growlTranslation("Your file have been exported correctly!", "dgconn.dashboard.card.messageExport", "success");
@@ -35,7 +35,7 @@ export class DgConnExportImportComponent {
                                 }
                             }
                         );
-                    }
+                    }ee
                 },
                 error => {
                 }
