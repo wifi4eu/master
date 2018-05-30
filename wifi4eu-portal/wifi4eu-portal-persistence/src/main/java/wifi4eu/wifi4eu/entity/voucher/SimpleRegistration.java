@@ -10,6 +10,9 @@ public class SimpleRegistration {
 
     private Integer municipalityId;
 
+    public SimpleRegistration() {}
+
+
     public SimpleRegistration(Integer id, Integer municipalityId) {
         this.id = id;
         this.municipalityId = municipalityId;

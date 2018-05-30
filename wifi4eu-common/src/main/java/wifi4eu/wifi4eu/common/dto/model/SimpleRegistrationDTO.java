@@ -5,6 +5,9 @@ public class SimpleRegistrationDTO {
     private int id;
     private int municipalityId;
 
+    public SimpleRegistrationDTO() {
+    }
+
     public SimpleRegistrationDTO(int id, int municipalityId) {
         this.id = id;
         this.municipalityId = municipalityId;
