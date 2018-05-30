@@ -356,9 +356,14 @@ public class ApplicationService {
         if(registration.getAllFilesFlag() != 1){
             throw new AppException();
         }
-        applicationDTO.setStatus(ApplicationStatus.OK.getValue());
-        applicationDTO.setInvalidateReason(null);
-        ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
+        if(applicationDBO == null){
+            throw new AppException("Incorrect application id");
+        }
+
+        applicationDBO.setStatus(ApplicationStatus.OK.getValue());
+        applicationDBO.setInvalidateReason(null);
+        ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
         if (registration != null) {
@@ -381,8 +386,13 @@ public class ApplicationService {
     }
 
     public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO) {
-        applicationDTO.setStatus(ApplicationStatus.KO.getValue());
-        ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
+        if(applicationDBO == null){
+            throw new AppException("Incorrect application id");
+        }
+        applicationDBO.setStatus(ApplicationStatus.KO.getValue());
+        applicationDBO.setInvalidateReason(applicationDBO.getInvalidateReason());
+        ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());
         if (registration != null) {

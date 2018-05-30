@@ -175,12 +175,18 @@ public class ApplicationResource {
 
             ApplicationDTO resApplication = applicationService.validateApplication(applicationDTO);
             return new ResponseDTO(true, resApplication, null);
-        } catch (Exception e) {
+        } catch (AccessDeniedException e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'validateApplication' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'invalidateApplication' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, null);
         }
     }
 
@@ -200,12 +206,18 @@ public class ApplicationResource {
 
             ApplicationDTO resApplication = applicationService.invalidateApplication(applicationDTO);
             return new ResponseDTO(true, resApplication, null);
-        } catch (Exception e) {
+        } catch (AccessDeniedException e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'invalidateApplication' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'invalidateApplication' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, null);
         }
     }
 
