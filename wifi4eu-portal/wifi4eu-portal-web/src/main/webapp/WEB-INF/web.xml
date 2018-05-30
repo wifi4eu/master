@@ -77,6 +77,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!-- ${enable.security.start}
     <filter>
         <filter-name>CSRFFilter</filter-name>
         <filter-class>
@@ -88,6 +89,7 @@
         <filter-name>CSRFFilter</filter-name>
         <url-pattern>/api/*</url-pattern>
     </filter-mapping>
+    ${enable.security.end} -->
 
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>

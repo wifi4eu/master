@@ -240,7 +240,11 @@ public class RegistrationResource {
         httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         httpServletResponse.setDateHeader("Expires", 0); // Proxies.
-        permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+
+        UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
+        if (user.getType() != 5) {
+            permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
+        }
         return registrationService.getRegistrationByMunicipalityId(municipalityId);
     }
 
