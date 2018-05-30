@@ -15,26 +15,30 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     Iterable<Application> findByRegistrationId(Integer registrationId);
     Iterable<Application> findByCallId(Integer callId);
     Iterable<Application> findByCallIdOrderByIdAsc(Integer callId);
-    Iterable<Application> findByCallIdOrderByDateAsc(Integer callId);
+    List<Application> findByCallIdOrderByDateAsc(Integer callId);
 
-    @Query("SELECT ap FROM Application ap JOIN ap.registration r WHERE r.status != 1 AND ap.call.id = :callId ")
+    @Query(value = "SELECT ap FROM applications ap INNER JOIN registrations r ON ap.registration = r.id WHERE r._status != 1 AND ap.call_id = ?1", nativeQuery = true)
 //    AND r.allFilesFlag = 1
-    List<Application> findApplicationsByRegistrationNotInvalidated(@Param("callId") int callId);
+    List<Application> findApplicationsByRegistrationNotInvalidated(int callId);
 
-    @Query("SELECT count(ap) FROM Application ap WHERE ap.status != 1 AND ap.call.id = :callId ")
-    Integer findApplicationsNotInvalidated(@Param("callId") int callId);
+    @Query(value = "SELECT count(ap) FROM applications ap WHERE ap._status != 1 AND ap.call_id = ?1", nativeQuery = true)
+    Integer findApplicationsNotInvalidated(int callId);
 
-    @Query("SELECT ap FROM Application ap JOIN ap.registration r JOIN r.municipality m JOIN m.lau l WHERE l.countryCode =:countryCode AND ap.status != 1 AND ap.call.id = :callId order by ap.date ASC")
-    List<Application> findApplicationsByCountry(@Param("callId") int callId, @Param("countryCode") String countryCode);
+    @Query(value = "SELECT ap FROM applications ap INNER JOIN registrations r ON ap.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id " +
+            "INNER JOIN laus l ON m.lau = l.id WHERE ap._status != 1 AND ap.call_id = ?1 AND l.country_code = ?2 order by ap.date ASC", nativeQuery = true)
+    List<Application> findApplicationsByCountry(int callId, String countryCode);
 
-    @Query("SELECT count(m) FROM Application a JOIN a.registration r JOIN r.municipality m WHERE m.lau.id =:lauId AND m.id =:municipalityId")
-    Integer findApplicationsWithSameLau(@Param("lauId") int lauId, @Param("municipalityId") int municipalityId);
+    @Query(value = "SELECT count(m) FROM applications ap INNER JOIN registrations r ON ap.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id " +
+            "WHERE m.lau = ?1 AND m.id = ?2", nativeQuery = true)
+    Integer findApplicationsWithSameLau(int lauId, int municipalityId);
 
-    @Query("SELECT a FROM Application a JOIN a.registration r JOIN r.municipality m WHERE m.country =:country AND a.call.id = :callId ORDER BY a.date ASC")
-    List<Application> findApplicationsCountry(@Param("country") String country, @Param("callId") int callId);
+    @Query(value = "SELECT a.* FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id " +
+            "WHERE m.country = ?1 AND a.call_id = ?2 ORDER BY a.date ASC", nativeQuery = true)
+    List<Application> findApplicationsCountry(String country, int callId);
 
-    @Query("SELECT count(m) FROM Application a JOIN a.registration r JOIN r.municipality m WHERE m.lau.id =:lauId AND a.status != 1 AND a.call.id = :callId")
-    Integer countApplicationsBySameMunicipality(@Param("lauId") int lauId, @Param("callId") int callId);
+    @Query(value = "SELECT count(m) FROM Application a applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id " +
+            "WHERE m.lau = ?1 AND a._status != 1 AND a.call_id = ?2", nativeQuery = true)
+    Integer countApplicationsBySameMunicipality(int lauId, int callId);
 
     @Query(value = "SELECT * FROM applications app LEFT JOIN registrations reg ON reg.id = app.registration LEFT JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]}", nativeQuery = true)
     List<Application> findByCallIdAndLauId(Integer callId, Integer lauId);

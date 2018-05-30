@@ -96,7 +96,7 @@ public class VoucherResource {
     @ResponseBody
     public ResponseDTO simulateVoucherAssignment(@RequestBody final Integer callId) {
         try {
-            return voucherService.simulateVoucherAssignment(callId);
+            return voucherService.simulateVoucherFast(callId);
         } catch (Exception e) {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }

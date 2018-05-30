@@ -17,6 +17,10 @@ public class LauService {
     @Autowired
     LauRepository lauRepository;
 
+    public List<LauDTO> getAllLaus(){
+        return lauMapper.toDTOList(lauRepository.findAll());
+    }
+
     public LauDTO getLauById(int lauId) {
         return lauMapper.toDTO(lauRepository.findOne(lauId));
     }

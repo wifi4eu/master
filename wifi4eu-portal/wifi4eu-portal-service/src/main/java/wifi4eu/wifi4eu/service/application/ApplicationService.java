@@ -238,7 +238,7 @@ public class ApplicationService {
     }
 
     public List<ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
-        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdOrderByDateAsc(callId)));
+        return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateAsc(callId));
     }
 
     public List<ApplicationDTO> getApplicationByCallAndCountry(int callId, String country) {
