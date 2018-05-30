@@ -17,18 +17,18 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     Iterable<Application> findByCallIdOrderByIdAsc(Integer callId);
     List<Application> findByCallIdOrderByDateAsc(Integer callId);
 
-    @Query(value = "SELECT ap FROM applications ap INNER JOIN registrations r ON ap.registration = r.id WHERE r._status != 1 AND ap.call_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT ap.* FROM applications ap INNER JOIN registrations r ON ap.registration = r.id WHERE r._status != 1 AND ap.call_id = ?1", nativeQuery = true)
 //    AND r.allFilesFlag = 1
     List<Application> findApplicationsByRegistrationNotInvalidated(int callId);
 
-    @Query(value = "SELECT count(ap) FROM applications ap WHERE ap._status != 1 AND ap.call_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT count(*) FROM applications ap WHERE ap._status != 1 AND ap.call_id = ?1", nativeQuery = true)
     Integer findApplicationsNotInvalidated(int callId);
 
-    @Query(value = "SELECT ap FROM applications ap INNER JOIN registrations r ON ap.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id " +
+    @Query(value = "SELECT ap.* FROM applications ap INNER JOIN registrations r ON ap.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id " +
             "INNER JOIN laus l ON m.lau = l.id WHERE ap._status != 1 AND ap.call_id = ?1 AND l.country_code = ?2 order by ap.date ASC", nativeQuery = true)
     List<Application> findApplicationsByCountry(int callId, String countryCode);
 
-    @Query(value = "SELECT count(m) FROM applications ap INNER JOIN registrations r ON ap.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id " +
+    @Query(value = "SELECT count(*) FROM applications ap INNER JOIN registrations r ON ap.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id " +
             "WHERE m.lau = ?1 AND m.id = ?2", nativeQuery = true)
     Integer findApplicationsWithSameLau(int lauId, int municipalityId);
 
@@ -36,10 +36,13 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
             "WHERE m.country = ?1 AND a.call_id = ?2 ORDER BY a.date ASC", nativeQuery = true)
     List<Application> findApplicationsCountry(String country, int callId);
 
-    @Query(value = "SELECT count(m) FROM Application a applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id " +
+    @Query(value = "SELECT count(*) FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id " +
             "WHERE m.lau = ?1 AND a._status != 1 AND a.call_id = ?2", nativeQuery = true)
     Integer countApplicationsBySameMunicipality(int lauId, int callId);
 
     @Query(value = "SELECT * FROM applications app LEFT JOIN registrations reg ON reg.id = app.registration LEFT JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]}", nativeQuery = true)
     List<Application> findByCallIdAndLauId(Integer callId, Integer lauId);
+
+    @Query(value = "select top 10 ROW_NUMBER() OVER(ORDER BY call_id ASC) as rownum, * from applications", nativeQuery = true)
+    Integer findNumberRowOfApplication(Integer applicationId);
 }

@@ -3,14 +3,14 @@ package wifi4eu.wifi4eu.common.dto.model;
 public class SimpleRegistrationDTO {
 
     private int id;
-    private int municipalityId;
+    private int municipality;
 
     public SimpleRegistrationDTO() {
     }
 
-    public SimpleRegistrationDTO(int id, int municipalityId) {
+    public SimpleRegistrationDTO(int id, int municipality) {
         this.id = id;
-        this.municipalityId = municipalityId;
+        this.municipality = municipality;
     }
 
     public int getId() {
@@ -22,10 +22,10 @@ public class SimpleRegistrationDTO {
     }
 
     public int getMunicipalityId() {
-        return municipalityId;
+        return municipality;
     }
 
-    public void setMunicipalityId(int municipalityId) {
-        this.municipalityId = municipalityId;
+    public void setMunicipalityId(int municipality) {
+        this.municipality = municipality;
     }
 }

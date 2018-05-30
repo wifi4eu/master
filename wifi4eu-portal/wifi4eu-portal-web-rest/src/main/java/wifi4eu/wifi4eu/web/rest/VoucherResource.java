@@ -98,6 +98,7 @@ public class VoucherResource {
         try {
             return voucherService.simulateVoucherFast(callId);
         } catch (Exception e) {
+            _log.error(e.getMessage(), e);
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }

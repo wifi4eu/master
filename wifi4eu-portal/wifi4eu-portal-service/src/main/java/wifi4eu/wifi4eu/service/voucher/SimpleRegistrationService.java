@@ -18,7 +18,7 @@ public class SimpleRegistrationService {
     private SimpleRegistrationMapper simpleRegistrationMapper;
 
     public List<SimpleRegistrationDTO> findAll(){
-        return simpleRegistrationMapper.toDTOList(simpleRegistrationRepository.findAllSimpleRegistrations());
+        return simpleRegistrationMapper.toDTOList(simpleRegistrationRepository.findAllSimpleRegistrationsFromApplications());
     }
 
 }

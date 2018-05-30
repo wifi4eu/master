@@ -8,7 +8,7 @@ import wifi4eu.wifi4eu.repository.voucher.SimpleMunicipalityRepository;
 
 import java.util.List;
 
-@Service("portalSimpleMunicipalityService")
+@Service
 public class SimpleMunicipalityService {
 
 

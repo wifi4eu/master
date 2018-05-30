@@ -8,14 +8,14 @@ public class SimpleRegistration {
     @Id
     private Integer id;
 
-    private Integer municipalityId;
+    private Integer municipality;
 
     public SimpleRegistration() {}
 
 
     public SimpleRegistration(Integer id, Integer municipalityId) {
         this.id = id;
-        this.municipalityId = municipalityId;
+        this.municipality = municipalityId;
     }
 
     public Integer getId() {
@@ -27,10 +27,10 @@ public class SimpleRegistration {
     }
 
     public Integer getMunicipalityId() {
-        return municipalityId;
+        return municipality;
     }
 
     public void setMunicipalityId(Integer municipalityId) {
-        this.municipalityId = municipalityId;
+        this.municipality = municipalityId;
     }
 }

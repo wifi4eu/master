@@ -8,7 +8,6 @@ public class SimpleMunicipalityDTO implements Serializable {
     private String country;
     private int lau;
 
-
     public SimpleMunicipalityDTO() {
     }
 
@@ -22,6 +21,10 @@ public class SimpleMunicipalityDTO implements Serializable {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getCountry() {
         return country;
     }
@@ -30,12 +33,12 @@ public class SimpleMunicipalityDTO implements Serializable {
         this.country = country;
     }
 
-    public int getLauId() {
+    public int getLau() {
         return lau;
     }
 
-    public void setLauId(int lauId) {
-        this.lau= lauId;
+    public void setLau(int lau) {
+        this.lau = lau;
     }
 
     @Override

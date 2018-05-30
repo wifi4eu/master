@@ -8,7 +8,7 @@ import wifi4eu.wifi4eu.repository.voucher.SimpleLauRepository;
 
 import java.util.List;
 
-@Service("portalSimpleLauService")
+@Service
 public class SimpleLauService {
 
     @Autowired

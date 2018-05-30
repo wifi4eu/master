@@ -4,23 +4,14 @@ import java.io.Serializable;
 
 public class SimpleLauDTO implements Serializable {
     private int id;
-    private String countryCode;
-    private String nuts3;
-    private String lau1;
-    private String lau2;
-    private String change;
-    private String name1;
-    private String name2;
-    private int pop;
-    private int area;
-    private String physicalAddress;
+    private String country_code;
 
     public SimpleLauDTO() {
     }
 
-    public SimpleLauDTO(int id, String countryCode) {
+    public SimpleLauDTO(int id, String country_code) {
         this.id = id;
-        this.countryCode = countryCode;
+        this.country_code = country_code;
     }
 
     public int getId() {
@@ -31,18 +22,11 @@ public class SimpleLauDTO implements Serializable {
         this.id = id;
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public String getCountry_code() {
+        return country_code;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    @Override
-    public String toString() {
-        return "SimpleLauDTO{" +
-                "id=" + id +
-                ", countryCode='" + countryCode + '\'';
+    public void setCountry_code(String country_code) {
+        this.country_code = country_code;
     }
 }
