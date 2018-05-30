@@ -13,11 +13,13 @@ public class VoucherSimulationDTO {
     private int voucherAssignment;
     private int selectionStatus;
     private ApplicationDTO application;
+    private int lau;
+    private String municipalityName;
 
     public VoucherSimulationDTO() {
     }
 
-    public VoucherSimulationDTO(int id, int euRank, int countryRank, String country, int municipality, int issues, int numApplications, int rejected, int voucherAssignment, int selectionStatus, ApplicationDTO application) {
+    public VoucherSimulationDTO(int id, int euRank, int countryRank, String country, int municipality, int issues, int numApplications, int rejected, int voucherAssignment, int selectionStatus, ApplicationDTO application, int lau, String municipalityName) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;
@@ -29,6 +31,8 @@ public class VoucherSimulationDTO {
         this.voucherAssignment = voucherAssignment;
         this.selectionStatus = selectionStatus;
         this.application = application;
+        this.lau = lau;
+        this.municipalityName = municipalityName;
     }
 
     public int getId() {
@@ -118,4 +122,21 @@ public class VoucherSimulationDTO {
     public void setApplication(ApplicationDTO application) {
         this.application = application;
     }
+
+    public int getLau() {
+        return lau;
+    }
+
+    public void setLau(int lau) {
+        this.lau = lau;
+    }
+
+    public String getMunicipalityName() {
+        return municipalityName;
+    }
+
+    public void setMunicipalityName(String municipalityName) {
+        this.municipalityName = municipalityName;
+    }
+
 }

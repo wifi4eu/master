@@ -277,7 +277,7 @@
                           <div style="position:relative;" (click)="op.show($event)">
                             <p-overlayPanel #op>
                                 <div class="ui-g"><i class="fa fa-ellipsis-v" aria-hidden="true" ></i></div>
-                                <div class="ui-g"><span>View</span></div>
+                                <div class="ui-g" (click)="goToMunicipality(rowData.lau)"><span>View</span></div>
                                 <div><i class="fa fa-ellipsis-v" aria-hidden="true" ></i>Reject</div>
                             </p-overlayPanel>
                             <i  class="fa fa-ellipsis-v actions-icon" aria-hidden="true" ></i>

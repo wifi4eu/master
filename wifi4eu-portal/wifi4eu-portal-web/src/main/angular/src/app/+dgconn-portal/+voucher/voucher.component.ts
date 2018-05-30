@@ -8,10 +8,11 @@ import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { Observable } from 'rxJs/Observable';
 import { SharedService } from "../../shared/shared.service";
-import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO } from "../../shared/swagger";
+import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO } from "../../shared/swagger";
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
 import { count } from "rxjs/operator/count";
 import { Paginator, MenuItem } from "primeng/primeng";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   templateUrl: 'voucher.component.html', providers: [CallApi, ApplicationApi, NutsApi, VoucherApi],
@@ -85,7 +86,7 @@ export class DgConnVoucherComponent {
   @ViewChild("paginator") paginator: Paginator;
 
   constructor(private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
-    private voucherApi: VoucherApi) {
+    private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, ) {
     this.callApi.allCalls().subscribe(
       (calls: CallDTOBase[]) => {
         this.callsLoaded = true;
@@ -94,7 +95,7 @@ export class DgConnVoucherComponent {
           this.callSelected = this.calls[0];
           this.loadingSimulation = true;
 
-          this.voucherApi.getVoucherAssignmentByCall(this.calls[0].id).subscribe((data: VoucherAssignmentDTO) => {
+          this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.calls[0].id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
             this.callVoucherAssignment = data;
             this.loadPage();
           })
@@ -252,4 +253,9 @@ export class DgConnVoucherComponent {
     this.displayMessage = false;
     this.simulationRequest.unsubscribe();
   }
+
+  private goToMunicipality(lauId: number) {
+    this.router.navigate(['../applicant-registrations/', lauId, 'call' ,this.callSelected.id], {relativeTo: this.route});
+  }
+
 }

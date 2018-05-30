@@ -99,4 +99,6 @@ public class VoucherAssignment {
     public void setVoucherSimulations(Set<VoucherSimulation> voucherSimulations) {
         this.voucherSimulations = voucherSimulations;
     }
+
+
 }
