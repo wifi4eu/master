@@ -70,8 +70,10 @@ public class ThreadResource {
         ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
         try {
             UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
-            if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null && !permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            if (thread != null) {
+                if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null && !permissionChecker.checkIfDashboardUser()) {
+                    throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+                }
             }
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {

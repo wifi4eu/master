@@ -36,4 +36,6 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     @Query("SELECT count(m) FROM Application a JOIN a.registration r JOIN r.municipality m WHERE m.lau.id =:lauId AND a.status != 1 AND a.call.id = :callId")
     Integer countApplicationsBySameMunicipality(@Param("lauId") int lauId, @Param("callId") int callId);
 
+    @Query(value = "SELECT * FROM applications app LEFT JOIN registrations reg ON reg.id = app.registration LEFT JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]}", nativeQuery = true)
+    List<Application> findByCallIdAndLauId(Integer callId, Integer lauId);
 }

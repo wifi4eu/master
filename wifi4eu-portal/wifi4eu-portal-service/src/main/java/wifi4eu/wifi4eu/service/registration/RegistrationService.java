@@ -7,9 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.common.enums.*;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
+import wifi4eu.wifi4eu.mapper.registration.legal_files.*;
+import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
+import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
+import wifi4eu.wifi4eu.repository.registration.legal_files.*;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
@@ -37,6 +42,12 @@ public class RegistrationService {
     RegistrationRepository registrationRepository;
 
     @Autowired
+    LegalFilesMapper legalFilesMapper;
+
+    @Autowired
+    LegalFilesRepository legalFilesRepository;
+
+    @Autowired
     ApplicationService applicationService;
 
     @Autowired
@@ -60,6 +71,12 @@ public class RegistrationService {
     @Autowired
     MayorService mayorService;
 
+    @Autowired
+    LegalFileCorrectionReasonMapper legalFileCorrectionReasonMapper;
+
+    @Autowired
+    LegalFileCorrectionReasonRepository legalFileCorrectionReasonRepository;
+
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
     }
@@ -80,22 +97,33 @@ public class RegistrationService {
     public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO){
 
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
-
         if(registrationDBO.getAllFilesFlag() != 1){
-            if(registrationDTO.getLegalFile1() == null){
-                registrationDBO.setLegalFile1(registrationDTO.getLegalFile1());
+            if (registrationDTO.getLegalFile1() == null) {
+                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 1);
+
+                registrationDBO.setLegalFile1Mime(null);
+                registrationDBO.setLegalFile1Size(0);
             }
 
-            if(registrationDTO.getLegalFile2() == null){
-                registrationDBO.setLegalFile2(registrationDTO.getLegalFile2());
+            if (registrationDTO.getLegalFile2() == null) {
+                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 2);
+
+                registrationDBO.setLegalFile2Mime(null);
+                registrationDBO.setLegalFile2Size(0);
             }
 
-            if(registrationDTO.getLegalFile3() == null){
-                registrationDBO.setLegalFile3(registrationDTO.getLegalFile3());
+            if (registrationDTO.getLegalFile3() == null) {
+                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 3);
+
+                registrationDBO.setLegalFile3Mime(null);
+                registrationDBO.setLegalFile3Size(0);
             }
 
-            if(registrationDTO.getLegalFile4() == null){
-                registrationDBO.setLegalFile4(registrationDTO.getLegalFile4());
+            if (registrationDTO.getLegalFile4() == null) {
+                legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 4);
+
+                registrationDBO.setLegalFile4Mime(null);
+                registrationDBO.setLegalFile4Size(0);
             }
         }
         return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
@@ -107,19 +135,41 @@ public class RegistrationService {
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
 
         if(registrationDTO.getLegalFile1() != null && !registrationDTO.getLegalFile1().isEmpty()){
-            registrationDBO.setLegalFile1(registrationDTO.getLegalFile1());
+            LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
+            legalFilesDTO.setRegistration(registrationDTO.getId());
+            legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
+            legalFilesDTO.setFileData(registrationDTO.getLegalFile1());
+
+            legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+
+            //registrationDBO.setLegalFile1Mime();
         }
 
         if(registrationDTO.getLegalFile2() != null && !registrationDTO.getLegalFile2().isEmpty()){
-            registrationDBO.setLegalFile2(registrationDTO.getLegalFile2());
+            LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
+            legalFilesDTO.setRegistration(registrationDTO.getId());
+            legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
+            legalFilesDTO.setFileData(registrationDTO.getLegalFile2());
+
+            legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
         }
 
         if(registrationDTO.getLegalFile3() != null && !registrationDTO.getLegalFile3().isEmpty()){
-            registrationDBO.setLegalFile3(registrationDTO.getLegalFile3());
+            LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
+            legalFilesDTO.setRegistration(registrationDTO.getId());
+            legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
+            legalFilesDTO.setFileData(registrationDTO.getLegalFile3());
+
+            legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
         }
 
         if(registrationDTO.getLegalFile4() != null && !registrationDTO.getLegalFile4().isEmpty()){
-            registrationDBO.setLegalFile4(registrationDTO.getLegalFile4());
+            LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
+            legalFilesDTO.setRegistration(registrationDTO.getId());
+            legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
+            legalFilesDTO.setFileData(registrationDTO.getLegalFile4());
+
+            legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
         }
 
         registrationDBO.setAllFilesFlag(registrationDTO.getAllFilesFlag());
@@ -135,6 +185,7 @@ public class RegistrationService {
             for (ApplicationDTO application : applicationService.getApplicationsByRegistrationId(registrationDTO.getId())) {
                 applicationService.deleteApplication(application.getId());
             }
+            legalFilesRepository.deleteByRegistration(registrationDTO.getId());
             registrationRepository.delete(registrationMapper.toEntity(registrationDTO));
             return registrationDTO;
         } else {
@@ -676,5 +727,18 @@ public class RegistrationService {
             issueType = 3;
         }
         return issueType;
+    }
+
+    public List<LegalFileCorrectionReasonDTO> getLegalFilesByRegistrationId(Integer registrationId) {
+        return legalFileCorrectionReasonMapper.toDTOList(legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(registrationId));
+    }
+
+    @Transactional
+    public LegalFileCorrectionReasonDTO saveLegalFile(LegalFileCorrectionReasonDTO legalFileDTO) {
+        return legalFileCorrectionReasonMapper.toDTO(legalFileCorrectionReasonRepository.save(legalFileCorrectionReasonMapper.toEntity(legalFileDTO)));
+    }
+
+    public RegistrationDTO saveRegistration(RegistrationDTO registrationDTO) {
+        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
     }
 }

@@ -1,18 +1,14 @@
 package wifi4eu.wifi4eu.service.municipality;
 
 import com.google.common.collect.Lists;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.entity.location.Nuts;
 import wifi4eu.wifi4eu.mapper.municipality.MunicipalityMapper;
 import wifi4eu.wifi4eu.repository.municipality.MunicipalityRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
-import wifi4eu.wifi4eu.service.location.LauService;
-import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
