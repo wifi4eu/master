@@ -155,7 +155,7 @@ public class VoucherService {
             // Countries extracted from list of applications in FIFO order
             List<String> participatingCountries = new ArrayList<>();
 
-            List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
+            Map<Integer, ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
 
             Map<Integer, ApplicationDTO> test = new HashMap<Integer, ApplicationDTO>();
 
@@ -246,7 +246,7 @@ public class VoucherService {
             }
 
             // List of applications cloned to use in the algorithm
-            List<ApplicationDTO> supportLOAlist = new ArrayList<>(listOfApplications);
+            List<ApplicationDTO> supportLOAlist = new ArrayList<>(listOfApplications.values());
 
             for (String country : participatingCountries) {
 

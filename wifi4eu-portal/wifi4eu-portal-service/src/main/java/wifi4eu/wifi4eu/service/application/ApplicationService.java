@@ -5,15 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
+import wifi4eu.wifi4eu.mapper.application.ApplicationHashMapperImpl;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
@@ -43,6 +41,9 @@ public class ApplicationService {
 
     @Autowired
     ApplicationMapper applicationMapper;
+
+    @Autowired
+    ApplicationHashMapperImpl applicationHashMapper;
 
     @Autowired
     ApplicationRepository applicationRepository;
@@ -237,8 +238,8 @@ public class ApplicationService {
       return applicationRepository.findApplicationsNotInvalidated(callId);
     }
 
-    public List<ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
-        return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateAsc(callId));
+    public Map<Integer, ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
+        return applicationHashMapper.toDTOMap(applicationRepository.findByCallIdOrderByDateAsc(callId));
     }
 
     public List<ApplicationDTO> getApplicationByCallAndCountry(int callId, String country) {
