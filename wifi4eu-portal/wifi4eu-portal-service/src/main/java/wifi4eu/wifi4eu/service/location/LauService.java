@@ -17,6 +17,10 @@ public class LauService {
     @Autowired
     LauRepository lauRepository;
 
+    public List<LauDTO> getAllLaus(){
+        return lauMapper.toDTOList(lauRepository.findAll());
+    }
+
     public LauDTO getLauById(int lauId) {
         return lauMapper.toDTO(lauRepository.findOne(lauId));
     }
@@ -40,5 +44,13 @@ public class LauService {
 
     public LauDTO updatePhysicalAddress(LauDTO lauDTO) {
         return lauMapper.toDTO(lauRepository.save(lauMapper.toEntity(lauDTO)));
+    }
+
+    public List<LauDTO> getLauByName1Country(String country, String name) {
+        return lauMapper.toDTOList(lauRepository.findLauByName1Country(country, name));
+    }
+
+    public List<LauDTO> getLauByName1(String name) {
+        return lauMapper.toDTOList(lauRepository.findLauByName1(name));
     }
 }

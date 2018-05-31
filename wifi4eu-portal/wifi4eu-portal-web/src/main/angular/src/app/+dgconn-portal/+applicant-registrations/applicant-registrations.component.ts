@@ -228,6 +228,10 @@ export class DgConnApplicantRegistrationsComponent {
         }
     }
 
+    private changeCountry(event) {
+        this.searchApplicants();
+    }
+
     private exportListExcel() {
         if (!this.loadingData && !this.downloadingList) {
             this.downloadingList = true;
@@ -238,16 +242,16 @@ export class DgConnApplicantRegistrationsComponent {
             if (this.searchingByName) {
                 this.applicationApi.exportExcelDGConnApplicantsListSearchingName(this.currentCall.id, countryCode, this.nameSearched).subscribe(
                     (response) => {
-                        let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
-                        FileSaver.saveAs(blob, 'applicants.xls');
+                        let blob = new Blob([response], {type: "application/vnd.ms-excel"});
+                        FileSaver.saveAs(blob, "applicants.xls");
                         this.downloadingList = false;
                     }
                 );
             } else {
                 this.applicationApi.exportExcelDGConnApplicantsList(this.currentCall.id, countryCode).subscribe(
                     (response) => {
-                        let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
-                        FileSaver.saveAs(blob, 'applicants.xls');
+                        let blob = new Blob([response], {type: "application/vnd.ms-excel"});
+                        FileSaver.saveAs(blob, "applicants.xls");
                         this.downloadingList = false;
                     }
                 );

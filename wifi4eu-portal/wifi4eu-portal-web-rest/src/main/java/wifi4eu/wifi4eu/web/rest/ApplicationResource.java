@@ -206,10 +206,32 @@ public class ApplicationResource {
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("Error on 'invalidateApplication' operation.", e);
+                _log.error("Error on 'validateApplication' operation.", e);
             }
             response.sendError(HttpStatus.BAD_REQUEST.value());
-            return new ResponseDTO(false, null, null);
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Get applications voucher2 info by call id")
+    @RequestMapping(value = "/valid/call/{callId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public Integer getApplicationsNotInvalidated(@PathVariable("callId") final Integer callId) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("getApplicationsVoucherInfoByCall: " + callId);
+            }
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+
+            return applicationService.countApplicationsNotInvalidated(callId);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.info("getApplicationsVoucherInfoByCall: " + callId);
+            }
+            return null;
         }
     }
 

@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { Location } from "@angular/common";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
@@ -179,7 +178,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
         }
     }
 
-// TODO: Temporaly, the BLOB data will be read from the registration itself.
     private getLegalFileUrl(index: number, fileNumber: number) {
         return this.registrationApi.getLegalFilesByFileType(this.registrations[index].id, fileNumber);
     }
@@ -528,9 +526,5 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             finalLegalFiles.push(lf4);
         }
         return finalLegalFiles;
-    }
-
-    private goBack() {
-        this.location.back();
     }
 }

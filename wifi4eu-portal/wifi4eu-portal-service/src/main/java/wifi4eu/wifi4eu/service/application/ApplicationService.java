@@ -191,6 +191,10 @@ public class ApplicationService {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
     }
 
+    public ApplicationDTO getApplicationByRegistrationId(int callId, int registrationsId){
+        return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationsId));
+    }
+
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(int callId) {
         List<ApplicationVoucherInfoDTO> applicationsVoucherInfo = new ArrayList<>();
         List<ApplicationDTO> applications = applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdOrderByDateAsc(callId)));
@@ -220,6 +224,39 @@ public class ApplicationService {
             }
         }
         return appVoucherInfoDTO;
+    }
+
+    public List<ApplicationDTO> getApplicationsByRegistrationNotInvalidated(int callId) {
+        return  applicationMapper.toDTOList(applicationRepository.findApplicationsByRegistrationNotInvalidated(callId));
+    }
+
+    public Integer countApplicationsNotInvalidated(int callId) {
+      return applicationRepository.findApplicationsNotInvalidated(callId);
+    }
+
+    public List<ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
+        return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateAsc(callId));
+    }
+
+    public List<ApplicationDTO> findByCallIdOrderByDateBeforeCallDateAsc(int callId, long startDate){
+        return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateBAsc(callId, startDate));
+
+    }
+
+    public List<ApplicationDTO> getApplicationByCallAndCountry(int callId, String country, long date) {
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsByCountry(callId, country, date));
+    }
+
+    public List<ApplicationDTO> getApplicationsCountryNameCall(int callId, String country) {
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsCountry(country, callId));
+    }
+
+    public List<Integer> getApplicationsIdByCountryAndNameAndCall(int callId, String country, long date){
+        return applicationRepository.findIdApplications(country, callId, date);
+    }
+
+    public Integer countApplicationWithSameMunicipalityName(int lauId, int callId){
+        return applicationRepository.countApplicationsBySameMunicipality(lauId, callId);
     }
 
     public List<ApplicantListItemDTO> findDgconnApplicantsList(Integer callId, String country, String name, PagingSortingDTO pagingSortingData) {
@@ -434,6 +471,23 @@ public class ApplicationService {
     }
 
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(int callId, int lauId) {
+        List<ApplicationDTO> applications = new ArrayList<>();
+        for (ApplicationDTO application : getApplicationsByCallIdAndLauIdCustom(callId, lauId)) {
+            RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
+            if (registration != null) {
+                MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+                if (municipality != null) {
+                    if (municipality.getLauId() == lauId) {
+                        applications.add(application);
+                    }
+                }
+            }
+        }
+        return applications;
+    }
+
+    //Optimal
+    private List<ApplicationDTO> getApplicationsByCallIdAndLauIdCustom(int callId, int lauId) {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdAndLauIdOrderByDateAsc(callId, lauId)));
     }
 
