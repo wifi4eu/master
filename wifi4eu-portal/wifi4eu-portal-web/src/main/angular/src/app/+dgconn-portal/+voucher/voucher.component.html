@@ -222,9 +222,8 @@
                         </span>
                       </div>
                       <div class="col-md-6">
-                          href="."
-                        <span class="download_pre-selection" [class.disabled]="callVoucherAssignment == null">
-                          <a (click)="exportListExcel()">
+                        <span class="download_pre-selection" [class.disabled]="callVoucherAssignment?.status != 2">
+                          <a href="">
                             {{'dgConn.voucherAssignment.downloadList.button' | translate}}
                           </a>
                         </span>
