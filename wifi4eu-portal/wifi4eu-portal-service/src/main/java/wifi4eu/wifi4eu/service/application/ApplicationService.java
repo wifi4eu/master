@@ -446,13 +446,8 @@ public class ApplicationService {
     }
 
     public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application) {
-        UserDTO currentUserDTO = userService.getUserByUserContext(UserHolder.getUser());
-        RegistrationDTO registrationFront = registrationService.getRegistrationById(application.getRegistrationId());
-
-        if(currentUserDTO.getId() !=  registrationFront.getUserId()){
-            throw new AppException("Incorrect application id");
-        }
-        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
+        ApplicationDTO applicationDB = applicationMapper.toDTO(applicationRepository.findOne(application.getRegistrationId()));
+        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(applicationDB.getRegistrationId());
         boolean pendingFollowup = false;
         for (LegalFileCorrectionReasonDTO legalFile : legalFiles) {
             if (legalFile.getRequestCorrection() && legalFile.getCorrectionReason() != null) {
@@ -463,14 +458,14 @@ public class ApplicationService {
         RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
         if (pendingFollowup) {
             registration.setAllFilesFlag(0);
-            application.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
+            applicationDB.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
         } else {
             registration.setAllFilesFlag(1);
-            application.setStatus(ApplicationStatus.HOLD.getValue());
+            applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
         }
-        application.setInvalidateReason(null);
+        applicationDB.setInvalidateReason(null);
         registrationService.saveRegistration(registration);
-        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
     }
 
     public List<ApplicationDTO> getApplicationsByCallId(int callId) {
