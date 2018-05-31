@@ -445,7 +445,8 @@ public class ApplicationService {
     }
 
     public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application) {
-        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
+        ApplicationDTO applicationDTO = getApplicationByRegistrationId(application.getCallId(), application.getRegistrationId());
+        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(applicationDTO.getRegistrationId());
         boolean pendingFollowup = false;
         for (LegalFileCorrectionReasonDTO legalFile : legalFiles) {
             if (legalFile.getRequestCorrection() && legalFile.getCorrectionReason() != null) {
@@ -453,17 +454,17 @@ public class ApplicationService {
                 break;
             }
         }
-        RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
+        RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
         if (pendingFollowup) {
             registration.setAllFilesFlag(0);
-            application.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
+            applicationDTO.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
         } else {
             registration.setAllFilesFlag(1);
-            application.setStatus(ApplicationStatus.HOLD.getValue());
+            applicationDTO.setStatus(ApplicationStatus.HOLD.getValue());
         }
-        application.setInvalidateReason(null);
+        applicationDTO.setInvalidateReason(null);
         registrationService.saveRegistration(registration);
-        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }
 
     public List<ApplicationDTO> getApplicationsByCallId(int callId) {
