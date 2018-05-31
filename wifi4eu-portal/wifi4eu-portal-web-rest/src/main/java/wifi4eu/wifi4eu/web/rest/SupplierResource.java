@@ -50,6 +50,7 @@ public class SupplierResource {
 
     Logger _log = LoggerFactory.getLogger(SupplierResource.class);
 
+    /*
     //TODO: limit access to this service
     @ApiOperation(value = "Get all the suppliers")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
@@ -74,6 +75,7 @@ public class SupplierResource {
         }
         return supplierService.getAllSuppliers();
     }
+    */
 
     //TODO: limit access to this service
     @ApiOperation(value = "Get supplier by specific id")
@@ -102,6 +104,7 @@ public class SupplierResource {
         return null;
     }
 
+    /*
     //TODO: is it necessary to be exposed? All the registration have to use submitSupplierRegistration endpoint?
     @ApiOperation(value = "Create supplier")
     @RequestMapping(method = RequestMethod.POST)
@@ -116,6 +119,34 @@ public class SupplierResource {
             }
             SupplierValidator.validateSupplier(supplierDTO);
             SupplierDTO resSupplier = supplierService.createSupplier(supplierDTO);
+            return new ResponseDTO(true, resSupplier, null);
+        } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'createSupplier' operation.", ade);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'createSupplier' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }
+    }
+    */
+
+    @ApiOperation(value = "Update supplier")
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ResponseDTO updateSupplier(@RequestBody final SupplierDTO supplierDTO, HttpServletResponse response) throws IOException {
+        try {
+            _log.info("updateSupplier");
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (supplierDTO.getUserId() != userDTO.getId()) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+            SupplierDTO resSupplier = supplierService.updateSupplier(supplierDTO);
             return new ResponseDTO(true, resSupplier, null);
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {

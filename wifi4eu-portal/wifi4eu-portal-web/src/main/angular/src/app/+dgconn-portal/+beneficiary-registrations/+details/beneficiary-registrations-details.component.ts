@@ -44,54 +44,48 @@ export class DgConnBeneficiaryRegistrationsDetailsComponent {
     }
 
     private getRegistrationDetailsInfo() {
-        this.municipalityApi.getMunicipalitiesByLauId(this.lauId).subscribe(
-            (municipalities: MunicipalityDTOBase[]) => {
-                for (let i = 0; i < municipalities.length; i++) {
-                    let municipality = municipalities[i];
-                    this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
-                        (mayor: MayorDTOBase) => {
-                            if (mayor) {
-                                this.registrationApi.getRegistrationByMunicipalityId(municipality.id).subscribe(
-                                    (registration: RegistrationDTOBase) => {
-                                        if (registration) {
-                                            this.entitiesChecked.push(false);
-                                            this.registrations.push(registration);
-                                            this.mayors.push(mayor);
-                                            this.municipalities.push(municipality);
-                                            if (this.registrations.length == this.municipalities.length) {
-                                                this.registrationIssues.push(0);
-                                                this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
+        if (this.lauId) {
+            this.clearPageInfo();
+            this.municipalityApi.getMunicipalitiesByLauId(this.lauId).subscribe(
+                (municipalities: MunicipalityDTOBase[]) => {
+                    for (let i = 0; i < municipalities.length; i++) {
+                        let municipality = municipalities[i];
+                        this.mayorApi.getMayorByMunicipalityId(municipality.id).subscribe(
+                            (mayor: MayorDTOBase) => {
+                                if (mayor) {
+                                    this.registrationApi.getRegistrationByMunicipalityId(municipality.id).subscribe(
+                                        (registration: RegistrationDTOBase) => {
+                                            if (registration) {
+                                                this.entitiesChecked.push(false);
+                                                this.registrations.push(registration);
+                                                this.mayors.push(mayor);
+                                                this.municipalities.push(municipality);
+                                                if (this.registrations.length == this.municipalities.length) {
+                                                    this.registrationIssues.push(0);
+                                                    this.setRegistrationIssue(registration, (this.registrationIssues.length - 1));
+                                                }
                                             }
                                         }
-                                    }
-                                );
+                                    );
+                                }
                             }
-                        }
-                    );
+                        );
+                    }
                 }
-            }
-        );
-        this.threadApi.getThreadByTypeAndReason(1, String(this.lauId)).subscribe(
-            (thread: ThreadDTOBase) => {
-                if (thread) {
-                    this.discussionThread = thread;
-                    this.displayedMessages = thread.messages;
+            );
+            this.threadApi.getThreadByTypeAndReason(1, String(this.lauId)).subscribe(
+                (thread: ThreadDTOBase) => {
+                    if (thread) {
+                        this.discussionThread = thread;
+                        this.displayedMessages = thread.messages;
+                    }
                 }
-            }
-        );
+            );
+        }
     }
 
     private getLegalFileUrl(index: number, fileNumber: number) {
-        switch (fileNumber) {
-            case 1:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile1);
-            case 2:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile2);
-            case 3:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile3);
-            case 4:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registrations[index].legalFile4);
-        }
+		return this.registrationApi.getLegalFilesByFileType(this.registrations[index].id, fileNumber);
     }
 
     private checkEntity(index: number) {

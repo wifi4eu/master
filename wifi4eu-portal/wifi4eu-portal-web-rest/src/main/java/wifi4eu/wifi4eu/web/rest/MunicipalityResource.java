@@ -76,6 +76,7 @@ public class MunicipalityResource {
         return municipalityService.getMunicipalityById(municipalityId);
     }
 
+    /*
     @ApiOperation(value = "Create municipality")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -107,6 +108,7 @@ public class MunicipalityResource {
         }
         return new ResponseDTO(true, null, null);
     }
+    */
 
     @ApiOperation(value = "Get municipality by specific id for thread")
     @RequestMapping(value = "/thread/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
@@ -180,8 +182,7 @@ public class MunicipalityResource {
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByLauId(@PathVariable("lauId") final Integer lauId, HttpServletResponse response) throws IOException {
         try{
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5){
+            if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("");
             }
         }
@@ -194,12 +195,12 @@ public class MunicipalityResource {
         return municipalityService.getMunicipalitiesByLauId(lauId);
     }
 
+    /*
     @ApiOperation(value = "Get municipalities by specific user id")
     @RequestMapping(value = "/userId/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<MunicipalityDTO> getMunicipalitiesByUserId(@PathVariable("userId") final Integer userId,
                                                            HttpServletResponse response) throws IOException {
-
         try {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
         } catch (AccessDeniedException ade) {
@@ -218,5 +219,5 @@ public class MunicipalityResource {
 
         return municipalityService.getMunicipalitiesByUserId(userId);
     }
-
+    */
 }

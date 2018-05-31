@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
+import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
@@ -19,6 +20,7 @@ import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 
 import java.text.MessageFormat;
@@ -189,6 +191,10 @@ public class ApplicationService {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
     }
 
+    public ApplicationDTO getApplicationByRegistrationId(int callId, int registrationsId){
+        return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationsId));
+    }
+
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(int callId) {
         List<ApplicationVoucherInfoDTO> applicationsVoucherInfo = new ArrayList<>();
         List<ApplicationDTO> applications = applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdOrderByDateAsc(callId)));
@@ -218,6 +224,39 @@ public class ApplicationService {
             }
         }
         return appVoucherInfoDTO;
+    }
+
+    public List<ApplicationDTO> getApplicationsByRegistrationNotInvalidated(int callId) {
+        return  applicationMapper.toDTOList(applicationRepository.findApplicationsByRegistrationNotInvalidated(callId));
+    }
+
+    public Integer countApplicationsNotInvalidated(int callId) {
+      return applicationRepository.findApplicationsNotInvalidated(callId);
+    }
+
+    public List<ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
+        return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateAsc(callId));
+    }
+
+    public List<ApplicationDTO> findByCallIdOrderByDateBeforeCallDateAsc(int callId, long startDate){
+        return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateBAsc(callId, startDate));
+
+    }
+
+    public List<ApplicationDTO> getApplicationByCallAndCountry(int callId, String country, long date) {
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsByCountry(callId, country, date));
+    }
+
+    public List<ApplicationDTO> getApplicationsCountryNameCall(int callId, String country) {
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsCountry(country, callId));
+    }
+
+    public List<Integer> getApplicationsIdByCountryAndNameAndCall(int callId, String country, long date){
+        return applicationRepository.findIdApplications(country, callId, date);
+    }
+
+    public Integer countApplicationWithSameMunicipalityName(int lauId, int callId){
+        return applicationRepository.countApplicationsBySameMunicipality(lauId, callId);
     }
 
     public List<ApplicantListItemDTO> findDgconnApplicantsList(Integer callId, String country, String name, PagingSortingDTO pagingSortingData) {
@@ -322,58 +361,69 @@ public class ApplicationService {
                 }
                 break;
         }
+
+        setIssues(applicantsList);
+
+        return applicantsList;
+    }
+
+    private void setIssues(List<ApplicantListItemDTO> applicantsList) {
+
         for (int i = 0; i < applicantsList.size(); i++) {
             ApplicantListItemDTO applicant = applicantsList.get(i);
             if (applicant.getCounter() == 1) {
-                List<RegistrationDTO> registrations = registrationService.getRegistrationsByLauId(applicant.getLauId());
-                for (RegistrationDTO registration : registrations) {
-                    if (registration != null) {
-                        applicant.setIssueStatus(registrationService.getRegistrationIssue(registration));
-                    }
-                }
+                applicant.setIssueStatus(registrationService.getRegistrationIssue(applicant.getLauId()));
             } else {
                 applicant.setIssueStatus(0);
             }
             applicantsList.set(i, applicant);
         }
-        return applicantsList;
     }
 
     public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
-        ApplicationDTO validatedApplication = applicationDTO;
+        RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
+
+        if(registration.getAllFilesFlag() != 1){
+            throw new AppException();
+        }
+        ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
+        if(applicationDBO == null){
+            throw new AppException("Incorrect application id");
+        }
+
+        applicationDBO.setStatus(ApplicationStatus.OK.getValue());
+        applicationDBO.setInvalidateReason(null);
+        ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
+        /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
         if (registration != null) {
             UserDTO user = userService.getUserById(registration.getUserId());
             MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
             if (user != null && municipality != null) {
-                List<ApplicationDTO> repeatedApplications = getApplicationsByCallIdAndLauId(applicationDTO.getCallId(), municipality.getLauId());
-                for (ApplicationDTO repeatedApplication : repeatedApplications) {
-                    if (repeatedApplication.getId() == applicationDTO.getId()) {
-                        repeatedApplication.setStatus(ApplicationStatus.OK.getValue());
-                        repeatedApplication.setInvalidateReason(null);
-                        validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-                        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
-                        if (user.getLang() != null) {
-                            locale = new Locale(user.getLang());
-                        }
-                        //Mails deactivated until 1.4.2 phase 2
-                        /*ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-                        String subject = bundle.getString("mail.validateApplication.subject");
-                        String msgBody = bundle.getString("mail.validateApplication.body");
-                        msgBody = MessageFormat.format(msgBody, municipality.getName());
-                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);*/
-                    } else {
-                        invalidateApplication(repeatedApplication);
-                    }
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (user.getLang() != null) {
+                    locale = new Locale(user.getLang());
                 }
+                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                String subject = bundle.getString("mail.validateApplication.subject");
+                String msgBody = bundle.getString("mail.validateApplication.body");
+                msgBody = MessageFormat.format(msgBody, municipality.getName());
+                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
             }
         }
+        */
         return validatedApplication;
     }
 
     public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO) {
-        applicationDTO.setStatus(ApplicationStatus.KO.getValue());
-        ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
+        if(applicationDBO == null){
+            throw new AppException("Incorrect application id");
+        }
+        applicationDBO.setStatus(ApplicationStatus.KO.getValue());
+        applicationDBO.setInvalidateReason(applicationDBO.getInvalidateReason());
+        ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
+        /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());
         if (registration != null) {
             UserDTO user = userService.getUserById(registration.getUserId());
@@ -383,15 +433,37 @@ public class ApplicationService {
                 if (user.getLang() != null) {
                     locale = new Locale(user.getLang());
                 }
-                //Mails deactivated until 1.4.2 phase 2
-                /*ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
                 String subject = bundle.getString("mail.invalidateApplication.subject");
                 String msgBody = bundle.getString("mail.invalidateApplication.body");
                 msgBody = MessageFormat.format(msgBody, municipality.getName());
-                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);*/
+                mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
             }
         }
+        */
         return invalidatedApplication;
+    }
+
+    public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application) {
+        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
+        boolean pendingFollowup = false;
+        for (LegalFileCorrectionReasonDTO legalFile : legalFiles) {
+            if (legalFile.getRequestCorrection() && legalFile.getCorrectionReason() != null) {
+                pendingFollowup = true;
+                break;
+            }
+        }
+        RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
+        if (pendingFollowup) {
+            registration.setAllFilesFlag(0);
+            application.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
+        } else {
+            registration.setAllFilesFlag(1);
+            application.setStatus(ApplicationStatus.HOLD.getValue());
+        }
+        application.setInvalidateReason(null);
+        registrationService.saveRegistration(registration);
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
     }
 
     public List<ApplicationDTO> getApplicationsByCallId(int callId) {
@@ -400,7 +472,7 @@ public class ApplicationService {
 
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(int callId, int lauId) {
         List<ApplicationDTO> applications = new ArrayList<>();
-        for (ApplicationDTO application : getApplicationsByCallId(callId)) {
+        for (ApplicationDTO application : getApplicationsByCallIdAndLauIdCustom(callId, lauId)) {
             RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
             if (registration != null) {
                 MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
@@ -412,5 +484,28 @@ public class ApplicationService {
             }
         }
         return applications;
+    }
+
+    //Optimal
+    private List<ApplicationDTO> getApplicationsByCallIdAndLauIdCustom(int callId, int lauId) {
+        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdAndLauIdOrderByDateAsc(callId, lauId)));
+    }
+
+    public byte[] exportExcelDGConnApplicantsList(Integer callId, String country) {
+        int totalCount = municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country);
+        int pageSize = totalCount;
+        PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
+        List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, null, pagingSortingData);
+        ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
+        return excelExportGenerator.exportExcelFile("applicants").toByteArray();
+    }
+
+    public byte[] exportExcelDGConnApplicantsListContainingName(Integer callId, String country, String name) {
+        int totalCount = municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name);
+        int pageSize = totalCount;
+        PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
+        List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, name, pagingSortingData);
+        ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
+        return excelExportGenerator.exportExcelFile("applicants").toByteArray();
     }
 }

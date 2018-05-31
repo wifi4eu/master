@@ -568,3 +568,23 @@ CREATE TABLE IF NOT EXISTS `wifi4eu`.`user_threads` (
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Table `dbo`.`legal_files`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `wifi4eu`.`legal_files` (
+  `id`					INT NOT NULL AUTO_INCREMENT,
+  `registration`		INT NOT NULL,
+  `type`				INT NOT NULL,
+  `data`				LONGTEXT NULL,
+  `upload_time`			bigint(20) DEFAULT NULL,
+  `request_correction`	TINYINT NOT NULL DEFAULT 0,
+  `correction_reason`	INT DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_bin;
+
+SET SQL_MODE = @OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;

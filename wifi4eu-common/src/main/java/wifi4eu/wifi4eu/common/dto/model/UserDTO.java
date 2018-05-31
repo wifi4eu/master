@@ -18,11 +18,12 @@ public class UserDTO {
     private long accessDate;
     private int type;
     private boolean verified;
+    private String csrfToken;
 
     public UserDTO() {
     }
 
-    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified) {
+    public UserDTO(int id, String ecasUsername, String ecasEmail, String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String password, String lang, long createDate, long accessDate, int type, boolean verified, String csrfToken) {
         this.id = id;
         this.ecasUsername = ecasUsername;
         this.ecasEmail = ecasEmail;
@@ -39,6 +40,7 @@ public class UserDTO {
         this.accessDate = accessDate;
         this.type = type;
         this.verified = verified;
+        this.csrfToken = csrfToken;
     }
 
     public int getId() {
@@ -168,4 +170,8 @@ public class UserDTO {
     public void setEcasEmail(String ecasEmail) {
         this.ecasEmail = ecasEmail;
     }
+
+    public String getCsrfToken() { return csrfToken; }
+
+    public void setCsrfToken(String csrfToken) { this.csrfToken = csrfToken; }
 }
