@@ -19,7 +19,7 @@ import { ResponseDTOBase } from "../../shared/swagger/model/ResponseDTO";
 import { SupplierDTOBase } from "../../shared/swagger/model/SupplierDTO";
 
 import { Paginator, DataGrid } from 'primeng/primeng';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-+select-supplier',
@@ -43,7 +43,7 @@ export class SelectSupplierComponent {
   private searchSuppliersInput: string = '';
   private displayedSuppliers: SupplierDTOBase[] = [];
   private suppliersCopy: SupplierDTOBase[] = [];
-
+  
   /* Assigning supplier and feedback settings */
   private application: ApplicationDTOBase;
   private selectedSupplier: SupplierDTOBase;
@@ -57,13 +57,23 @@ export class SelectSupplierComponent {
   private page: any = 0;
   private itemsPerPageSelector = [10, 20, 50, 100];
   private itemsPerPage: any = this.itemsPerPageSelector[1];
-
+  
   @ViewChild("gridSuppliers") gridSuppliers: DataGrid;
   @ViewChild("paginator") paginator: Paginator;
-
+  
   /* Search for the registered suppliers in the specific supplied region of the beneficiary */ 
   /* Part 1: Get region FK specific to the beneficiary */
-  constructor(private applicationApi: ApplicationApi, private supplierApi: SupplierApi, private callApi: CallApi, private localStorage: LocalStorageService, private registrationApi: RegistrationApi, private municipalityApi: MunicipalityApi, private lauApi: LauApi, private nutsApi: NutsApi) { 
+  constructor(
+    private applicationApi: ApplicationApi,
+    private supplierApi: SupplierApi,
+    private callApi: CallApi,
+    private localStorage: LocalStorageService,
+    private registrationApi: RegistrationApi,
+    private municipalityApi: MunicipalityApi,
+    private lauApi: LauApi,
+    private nutsApi: NutsApi,
+    private router: Router
+  ) { 
     
     
     
@@ -90,6 +100,7 @@ export class SelectSupplierComponent {
                       this.municipalityApi.getMunicipalityById(registrations[0].municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
                           this.municipalities.push(municipality);
+                          this.municipality = municipality;
                             this.lauApi.getLauById(municipality.lauId).subscribe(
                               (laus: LauDTOBase) => {
                                 this.nutsApi.getNutsByCode(laus.nuts3).subscribe(
@@ -168,14 +179,15 @@ export class SelectSupplierComponent {
     (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true; 
   }
 
-  /* Assign supplier Id to the benficiary application */
+  /* Access to the supplier details which is the final confirmation screen */
   private assignSupplier() {
     (this.displayMessage) ? this.displayMessage = false : this.displayMessage = true;
     this.application.supplierId = this.selectedSupplier.id; 
-
+    
     this.applicationApi.assignSupplier(this.application).subscribe(
       (resAplication: ResponseDTOBase) => {
         this.getStringDate(resAplication.data.date);
+        this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipality.id]);
       }
     );
     this.hasSupplierAssigned = true;
