@@ -68,7 +68,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
     private displayRequestCorrection = false;
     private loadingData = false;
     private processingRequest = false;
-    private registration: RegistrationDTOBase;
 
     constructor(private sanitizer: DomSanitizer, private route: ActivatedRoute, private sharedService: SharedService, private applicationApi: ApplicationApi, private beneficiaryApi: BeneficiaryApi, private registrationApi: RegistrationApi, private threadApi: ThreadApi, private userApi: UserApi, private municipalityApi: MunicipalityApi, private mayorApi: MayorApi, private translateService: TranslateService, private location: Location) {
         this.loadingData = true;
@@ -94,7 +93,6 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                         let application = applications[i];
                         this.registrationApi.getRegistrationById(application.registrationId).subscribe(
                             (registration: RegistrationDTOBase) => {
-                                this.registration = registration;
                                 if (registration) {
                                     this.userApi.getUserById(registration.userId).subscribe(
                                         (user: UserDTOBase) => {
@@ -295,27 +293,29 @@ export class DgConnApplicantRegistrationsDetailsComponent {
 
     private validateApplication() {
         if (!this.processingRequest) {
-            if (this.selectedIndex != null && this.registration.allFilesFlag == 1) {
-                this.processingRequest = true;
-                this.applicationApi.validateApplication(this.applications[this.selectedIndex]).subscribe(
-                    (response: ResponseDTOBase) => {
-                        if (response.success) {
-                            if (response.data != null) {
-                                this.applications[this.selectedIndex].status = 2;
-                                this.getApplicationDetailsInfo();
-                                this.sharedService.growlTranslation('You successfully validated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
+            if (this.selectedIndex != null) {
+                if (this.registrations[this.selectedIndex].allFilesFlag == 1) {
+                    this.processingRequest = true;
+                    this.applicationApi.validateApplication(this.applications[this.selectedIndex]).subscribe(
+                        (response: ResponseDTOBase) => {
+                            if (response.success) {
+                                if (response.data != null) {
+                                    this.applications[this.selectedIndex].status = 2;
+                                    this.getApplicationDetailsInfo();
+                                    this.sharedService.growlTranslation('You successfully validated the municipality.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.success', 'success');
+                                } else {
+                                    this.sharedService.growlTranslation('An error occurred while trying to validate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.error', 'error');
+                                }
                             } else {
                                 this.sharedService.growlTranslation('An error occurred while trying to validate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.error', 'error');
                             }
-                        } else {
+                            this.closeModal();
+                        }, error => {
                             this.sharedService.growlTranslation('An error occurred while trying to validate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.error', 'error');
+                            this.closeModal();
                         }
-                        this.closeModal();
-                    }, error => {
-                        this.sharedService.growlTranslation('An error occurred while trying to validate the municipality. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.validateMunicipality.error', 'error');
-                        this.closeModal();
-                    }
-                );
+                    );
+                }
             }
         }
     }

@@ -70,12 +70,11 @@ public class ThreadResource {
         try {
             UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
             ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
-            if (thread == null) {
-                response.sendError(HttpStatus.NOT_FOUND.value());
-            }
-            if(user.getType() != 5){
-                if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null) {
-                    throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            if (thread != null) {
+                if (user.getType() != 5) {
+                    if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null) {
+                        throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+                    }
                 }
             }
             return thread;
