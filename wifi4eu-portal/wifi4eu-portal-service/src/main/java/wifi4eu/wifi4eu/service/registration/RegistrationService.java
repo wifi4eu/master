@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.enums.*;
+import wifi4eu.wifi4eu.service.application.ApplicationWarningsChecker;
+import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.*;
-import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.*;
@@ -42,10 +44,7 @@ public class RegistrationService {
     RegistrationRepository registrationRepository;
 
     @Autowired
-    LegalFilesMapper legalFilesMapper;
-
-    @Autowired
-    LegalFilesRepository legalFilesRepository;
+    ApplicationIssueUtilRepository applicationIssueUtilRepository;
 
     @Autowired
     ApplicationService applicationService;
@@ -72,6 +71,12 @@ public class RegistrationService {
     MayorService mayorService;
 
     @Autowired
+    LegalFilesMapper legalFilesMapper;
+
+    @Autowired
+    LegalFilesRepository legalFilesRepository;
+
+    @Autowired
     LegalFileCorrectionReasonMapper legalFileCorrectionReasonMapper;
 
     @Autowired
@@ -90,7 +95,7 @@ public class RegistrationService {
         if (registrationDTO.getId() == 0) {
             registrationDTO.setMailCounter(3);
         }
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
+        return saveRegistration(registrationDTO);
     }
 
     @Transactional
@@ -175,7 +180,7 @@ public class RegistrationService {
         registrationDBO.setAllFilesFlag(registrationDTO.getAllFilesFlag());
         registrationDBO.setMailCounter(registrationDTO.getMailCounter());
 
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
+        return saveRegistration(registrationDBO);
     }
 
     @Transactional
@@ -727,6 +732,24 @@ public class RegistrationService {
             issueType = 3;
         }
         return issueType;
+    }
+
+    public Integer getRegistrationIssue(Integer lauId) {
+        List<ApplicationIssueUtil> applicationIssueUtils = applicationIssueUtilRepository.findApplicationIssueUtilByLauId(lauId);
+
+        if(applicationIssueUtils.size() != 1){
+            return 0;
+        } else {
+
+            Integer issueType = 0;
+            if (ApplicationWarningsChecker.registrationHasWarning1(applicationIssueUtils.get(0))) {
+                issueType = 1;
+            }
+            if (ApplicationWarningsChecker.registrationHasWarning3(applicationIssueUtils.get(0))) {
+                issueType = 3;
+            }
+            return issueType;
+        }
     }
 
     public List<LegalFileCorrectionReasonDTO> getLegalFilesByRegistrationId(Integer registrationId) {

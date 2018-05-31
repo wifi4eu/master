@@ -51,7 +51,7 @@
                         </span>
                         <br><br>
                         <span class="entity-subtitle">
-                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date | date:'yyyy-MM-dd'}} {{ applications[i].date | date:'shortTime'}}
+                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date/1000000 | date:'yyyy-MM-dd'}} {{ applications[i].date/1000000 | date:'shortTime'}}
                         </span>
                     </span>
                     <span class="right">
@@ -168,7 +168,7 @@
                                             </p-column>
                                             <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
                                                 <ng-template let-row="rowData" pTemplate="body">
-                                                    <a class="link-label" (click)="downloadLegalFile(i, row.type)">
+                                                    <a class="link-label" href="{{fileURL}}{{registrations[i].id}}/{{row.type}}" target="_blank">
                                                         <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
                                                     </a>
                                                 </ng-template>

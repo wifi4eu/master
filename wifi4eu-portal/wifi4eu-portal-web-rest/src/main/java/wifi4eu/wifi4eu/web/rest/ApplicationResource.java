@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
-import wifi4eu.wifi4eu.entity.application.Application;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -199,11 +198,17 @@ public class ApplicationResource {
 
             ApplicationDTO resApplication = applicationService.validateApplication(applicationDTO);
             return new ResponseDTO(true, resApplication, null);
-        } catch (Exception e) {
+        } catch (AccessDeniedException e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'validateApplication' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'validateApplication' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }
@@ -216,6 +221,11 @@ public class ApplicationResource {
             if (_log.isInfoEnabled()) {
                 _log.info("getApplicationsVoucherInfoByCall: " + callId);
             }
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+
             return applicationService.countApplicationsNotInvalidated(callId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
@@ -241,12 +251,18 @@ public class ApplicationResource {
 
             ApplicationDTO resApplication = applicationService.invalidateApplication(applicationDTO);
             return new ResponseDTO(true, resApplication, null);
-        } catch (Exception e) {
+        } catch (AccessDeniedException e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'invalidateApplication' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'invalidateApplication' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, null);
         }
     }
 

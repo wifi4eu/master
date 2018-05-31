@@ -1,7 +1,6 @@
 package wifi4eu.wifi4eu.repository.application;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +12,7 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
     Iterable<Application> findBySupplierId(Integer supplierId);
     Application findByCallIdAndRegistrationId(Integer callId, Integer registrationId);
     Iterable<Application> findByRegistrationId(Integer registrationId);
+
     Iterable<Application> findByCallId(Integer callId);
     Iterable<Application> findByCallIdOrderByIdAsc(Integer callId);
     List<Application> findByCallIdOrderByDateAsc(Integer callId);
@@ -44,9 +44,12 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
             "WHERE m.lau = ?1 AND a._status != 1 AND a.call_id = ?2", nativeQuery = true)
     Integer countApplicationsBySameMunicipality(int lauId, int callId);
 
-    @Query(value = "SELECT * FROM applications app LEFT JOIN registrations reg ON reg.id = app.registration LEFT JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]}", nativeQuery = true)
-    List<Application> findByCallIdAndLauId(Integer callId, Integer lauId);
-
     @Query(value = "SELECT a.* from applications a INNER JOIN registrations r ON a.registration = r.id WHERE a.call_id = ?1 AND a.date >= ?2 ORDER BY a.date ASC", nativeQuery = true)
     List<Application> findByCallIdOrderByDateBAsc(Integer callId, Long startDate);
+
+    @Query(value = "SELECT * FROM applications app INNER JOIN registrations reg ON reg.id = app.registration INNER JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]}", nativeQuery = true)
+    List<Application> findByCallIdAndLauId(Integer callId, Integer lauId);
+
+    @Query(value = "SELECT * FROM applications app LEFT JOIN registrations reg ON reg.id = app.registration LEFT JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]} ORDER BY app.date ASC", nativeQuery = true)
+    List<Application> findByCallIdAndLauIdOrderByDateAsc(Integer callId, Integer lauId);
 }

@@ -67,22 +67,28 @@ public class ThreadResource {
     @ResponseBody
     public ThreadDTO getThreadByTypeAndReason(@PathVariable("type") final Integer type, @PathVariable("reason") final String reason, HttpServletResponse response) throws IOException {
         _log.info("getThreadByTypeAndReason: " + type);
-        ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
         try {
             UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
-            if (thread != null) {
-                if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null && !permissionChecker.checkIfDashboardUser()) {
+            ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
+            if(user.getType() != 5){
+                if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null) {
                     throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
                 }
             }
+            return thread;
         } catch (AccessDeniedException ade) {
             if (_log.isErrorEnabled()) {
                 _log.error("AccessDenied on 'getThreadByTypeAndReason' operation.", ade);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
+        } catch (Exception ex){
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'getThreadByTypeAndReason' operation.", ex);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
         }
-        return thread;
     }
 
     @ApiOperation(value = "Set mediation to thread")
