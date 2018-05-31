@@ -69,11 +69,6 @@ public class SupplierService {
         SupplierDTO supplierDetails = supplierMapper.toDTO(supplierRepository.findOne(supplierId)); 
         supplierDetails.setAccountNumber(null);
         supplierDetails.setBic(null);
-        supplierDetails.setContactEmail(null);
-        supplierDetails.setContactName(null);
-        supplierDetails.setContactPhoneNumber(null);
-        supplierDetails.setContactPhonePrefix(null);
-        supplierDetails.setContactSurname(null);
         supplierDetails.setLang(null);
         supplierDetails.setLegalFile1(null);
         supplierDetails.setLegalFile2(null);
