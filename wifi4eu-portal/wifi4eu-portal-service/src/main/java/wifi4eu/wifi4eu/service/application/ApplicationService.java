@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
@@ -445,8 +446,13 @@ public class ApplicationService {
     }
 
     public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application) {
-        ApplicationDTO applicationDTO = getApplicationByRegistrationId(application.getCallId(), application.getRegistrationId());
-        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(applicationDTO.getRegistrationId());
+        UserDTO currentUserDTO = userService.getUserByUserContext(UserHolder.getUser());
+        RegistrationDTO registrationFront = registrationService.getRegistrationById(application.getRegistrationId());
+
+        if(currentUserDTO.getId() !=  registrationFront.getUserId()){
+            throw new AppException("Incorrect application id");
+        }
+        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
         boolean pendingFollowup = false;
         for (LegalFileCorrectionReasonDTO legalFile : legalFiles) {
             if (legalFile.getRequestCorrection() && legalFile.getCorrectionReason() != null) {
@@ -454,17 +460,17 @@ public class ApplicationService {
                 break;
             }
         }
-        RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
+        RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
         if (pendingFollowup) {
             registration.setAllFilesFlag(0);
-            applicationDTO.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
+            application.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
         } else {
             registration.setAllFilesFlag(1);
-            applicationDTO.setStatus(ApplicationStatus.HOLD.getValue());
+            application.setStatus(ApplicationStatus.HOLD.getValue());
         }
-        applicationDTO.setInvalidateReason(null);
+        application.setInvalidateReason(null);
         registrationService.saveRegistration(registration);
-        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
     }
 
     public List<ApplicationDTO> getApplicationsByCallId(int callId) {
