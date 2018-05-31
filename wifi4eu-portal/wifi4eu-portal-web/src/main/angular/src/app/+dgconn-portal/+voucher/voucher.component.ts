@@ -13,6 +13,7 @@ import { trigger, transition, style, animate, query, stagger, group, state } fro
 import { count } from "rxjs/operator/count";
 import { Paginator, MenuItem } from "primeng/primeng";
 import {ActivatedRoute, Router} from "@angular/router";
+import * as FileSaver from "file-saver";
 
 @Component({
   templateUrl: 'voucher.component.html', providers: [CallApi, ApplicationApi, NutsApi, VoucherApi],
@@ -83,6 +84,8 @@ export class DgConnVoucherComponent {
     }
   ];
 
+  private fileURL: string = window.location.href+'/wifi4eu/api/voucher/';
+
   @ViewChild("paginator") paginator: Paginator;
 
   constructor(private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
@@ -139,6 +142,15 @@ export class DgConnVoucherComponent {
   fillPaginator(response) {
     this.totalRecords = response.xtotalCount;
     this.pageLinks = Math.ceil(this.totalRecords / this.sizePage);
+  }
+
+  exportListExcel(){
+    this.loadingSimulation = true;
+    this.voucherApi.exportExcelVoucherSimulation(this.callVoucherAssignment.id, this.selectedCountry, this.page, this.sizePage, this.sortField, this.sortDirection).subscribe((response) => {
+      let blob = new Blob([response], {type: "application/vnd.ms-excel"});
+      FileSaver.saveAs(blob, `voucher-simulation-${this.callSelected.event}`);
+      this.loadingSimulation = false;
+    })    
   }
 
   compareFn(n1: NutsDTOBase, n2: NutsDTOBase): boolean {
