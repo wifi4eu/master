@@ -613,7 +613,6 @@ body {
 
 .containerTimeline .form-group {
   margin: 0;
-
 }
 
 .ui-calendar.ui-calendar-w-btn input {
@@ -1606,7 +1605,6 @@ p-tabview.white .ui-widget-content.ui-tabview {
   font-size: 1.2em;
   font-weight: bold;
   width: 20em;
-
 }
 
 .badge-success {
@@ -1740,4 +1738,29 @@ input.email_profile::-ms-clear{
 // Created for selectedSupplierDetails component
 .logo-size {
   height: 40px;
+}
+
+.company-details-content {
+  border: solid 1px rgba(0, 0, 0, 0.3);
+  padding: 10px 24px;
+}
+
+.select-installation-button {
+  color: #ffffff;
+  background-color: #004494;
+  border: solid 2px #004494;
+  margin-top: 0.2em;
+  font-family: Verdana;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.save-installation-button {
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
+  margin-top: 0.2em;
+  font-family: Verdana;
+  font-size: 1.2em;
+  font-weight: bold;
 }
