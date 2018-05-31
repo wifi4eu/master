@@ -55,7 +55,7 @@
                         </span>
                     </span>
                     <span class="right">
-                        <button type="button" class="btn greenButton" (click)="displayValidateModal(i)" [disabled]="applications[i].status == 2 || registration.allFilesFlag != 1">
+                        <button type="button" class="btn greenButton" (click)="displayValidateModal(i)" [disabled]="applications[i].status == 2 || registrations[i].allFilesFlag != 1">
                             {{ 'dgConn.applicantDetails.validateApplication.title' | translate }}
                         </button>
                         <button type="button" class="btn redButton" (click)="displayInvalidateModal(i)" [disabled]="applications[i].status == 1">
