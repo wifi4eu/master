@@ -3,54 +3,36 @@ package wifi4eu.wifi4eu.entity.exportImport;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "beneficiary_information")
 public class ExportImportBeneficiaryInformation {
 
-    @Column(name = "id")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "euRank")
-    private Integer euRank;
+    private String mun_OfficialName;
 
-    @Column(name = "countryRank")
-    private Integer countryRank;
+    private String mun_OfficialAddress;
 
-    @Column(name = "countryName")
-    private String countryName;
+    private String org_Name;
 
-    @Column(name = "municipalityName")
-    private String municipalityName;
+    private String org_TypeCode;
 
-    @Column(name = "issue")
-    private String issue;
+    private String sup_Name;
 
-    @Column(name = "numberOfRegistrations")
-    private Integer numberOfRegistrations;
+    private String sup_BankAccount;
 
-    @Column(name = "abacReference")
-    private String abacReference;
-
-    @Column(name = "abacStandarName")
-    private String abacStandarName;
-
-    @Column(name = "municipality")
-    private Integer municipality;
+    private Integer reg_RegistartionNumber;
 
     public ExportImportBeneficiaryInformation() {}
 
-    public ExportImportBeneficiaryInformation(Integer id, Integer euRank, Integer countryRank, String countryName, String municipalityName, String issue, Integer numberOfRegistrations, String abacReference, String abacStandarName, Integer municipality) {
+    public ExportImportBeneficiaryInformation(Integer id, String mun_OfficialName, String mun_OfficialAddress, String org_Name, String org_TypeCode, String sup_Name, String sup_BankAccount, Integer reg_RegistartionNumber) {
         this.id = id;
-        this.euRank = euRank;
-        this.countryRank = countryRank;
-        this.countryName = countryName;
-        this.municipalityName = municipalityName;
-        this.issue = issue;
-        this.numberOfRegistrations = numberOfRegistrations;
-        this.abacReference = abacReference;
-        this.abacStandarName = abacStandarName;
-        this.municipality = municipality;
+        this.mun_OfficialName = mun_OfficialName;
+        this.mun_OfficialAddress = mun_OfficialAddress;
+        this.org_Name = org_Name;
+        this.org_TypeCode = org_TypeCode;
+        this.sup_Name = sup_Name;
+        this.sup_BankAccount = sup_BankAccount;
+        this.reg_RegistartionNumber = reg_RegistartionNumber;
     }
 
     public Integer getId() {
@@ -61,75 +43,59 @@ public class ExportImportBeneficiaryInformation {
         this.id = id;
     }
 
-    public Integer getEuRank() {
-        return euRank;
+    public String getMun_OfficialName() {
+        return mun_OfficialName;
     }
 
-    public void setEuRank(Integer euRank) {
-        this.euRank = euRank;
+    public void setMun_OfficialName(String mun_OfficialName) {
+        this.mun_OfficialName = mun_OfficialName;
     }
 
-    public Integer getCountryRank() {
-        return countryRank;
+    public String getMun_OfficialAddress() {
+        return mun_OfficialAddress;
     }
 
-    public void setCountryRank(Integer countryRank) {
-        this.countryRank = countryRank;
+    public void setMun_OfficialAddress(String mun_OfficialAddress) {
+        this.mun_OfficialAddress = mun_OfficialAddress;
     }
 
-    public String getCountryName() {
-        return countryName;
+    public String getOrg_Name() {
+        return org_Name;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
+    public void setOrg_Name(String org_Name) {
+        this.org_Name = org_Name;
     }
 
-    public String getMunicipalityName() {
-        return municipalityName;
+    public String getOrg_TypeCode() {
+        return org_TypeCode;
     }
 
-    public void setMunicipalityName(String municipalityName) {
-        this.municipalityName = municipalityName;
+    public void setOrg_TypeCode(String org_TypeCode) {
+        this.org_TypeCode = org_TypeCode;
     }
 
-    public String getIssue() {
-        return issue;
+    public String getSup_Name() {
+        return sup_Name;
     }
 
-    public void setIssue(String issue) {
-        this.issue = issue;
+    public void setSup_Name(String sup_Name) {
+        this.sup_Name = sup_Name;
     }
 
-    public Integer getNumberOfRegistrations() {
-        return numberOfRegistrations;
+    public String getSup_BankAccount() {
+        return sup_BankAccount;
     }
 
-    public void setNumberOfRegistrations(Integer numberOfRegistrations) {
-        this.numberOfRegistrations = numberOfRegistrations;
+    public void setSup_BankAccount(String sup_BankAccount) {
+        this.sup_BankAccount = sup_BankAccount;
     }
 
-    public String getAbacReference() {
-        return abacReference;
+    public Integer getReg_RegistartionNumber() {
+        return reg_RegistartionNumber;
     }
 
-    public void setAbacReference(String abacReference) {
-        this.abacReference = abacReference;
-    }
-
-    public String getAbacStandarName() {
-        return abacStandarName;
-    }
-
-    public void setAbacStandarName(String abacStandarName) {
-        this.abacStandarName = abacStandarName;
-    }
-
-    public Integer getMunicipality() {
-        return municipality;
-    }
-
-    public void setMunicipality(Integer municipality) {
-        this.municipality = municipality;
+    public void setReg_RegistartionNumber(Integer reg_RegistartionNumber) {
+        this.reg_RegistartionNumber = reg_RegistartionNumber;
     }
 }

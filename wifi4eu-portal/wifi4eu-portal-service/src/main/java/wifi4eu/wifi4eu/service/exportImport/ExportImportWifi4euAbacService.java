@@ -181,8 +181,13 @@ public class ExportImportWifi4euAbacService {
 
     @Transactional
     public void importLegalEntityFBCValidate(final String jsonStringFile) throws Exception{
-        _log.info("importLegalEntityF");
-        //save the file in the table.
+        _log.info("importLegalEntityFBCValidate");
+        ResponseDTO result = new ResponseDTO();
+        Gson gson = new GsonBuilder().create();
+        JsonParser parser = new JsonParser();
+        JsonObject jsonString = parser.parse(jsonStringFile).getAsJsonObject();
+        JsonObject lefVal = jsonString.getAsJsonObject("validatedLEF");
+        JsonObject bcVal = jsonString.getAsJsonObject("validatedBC");
     }
 
     private Integer setIssueToDgconnBeneficiary(Integer lauId) {

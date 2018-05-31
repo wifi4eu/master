@@ -5,126 +5,97 @@ import java.io.Serializable;
 
 public class ExportImportBeneficiaryInformationDTO implements Serializable {
 
-    private int id;
-    private int euRank;
-    private int countryRank;
-    private String countryName;
-    private String municipalityName;
-    private String issue;
-    private int numberOfRegistrations;
-    private String abacReference;
-    private String abacStandarName;
-    private int municipality;
+    private Integer id;
+
+    private String mun_OfficialName;
+
+    private String mun_OfficialAddress;
+
+    private String org_Name;
+
+    private String org_TypeCode;
+
+    private String sup_Name;
+
+    private String sup_BankAccount;
+
+    private Integer reg_RegistartionNumber;
 
     public ExportImportBeneficiaryInformationDTO() {}
 
-    public ExportImportBeneficiaryInformationDTO(int id, int euRank, int countryRank, String countryName, String municipalityName, String issue, int numberOfRegistrations, String abacReference, String abacStandarName, int municipality) {
+    public ExportImportBeneficiaryInformationDTO(Integer id, String mun_OfficialName, String mun_OfficialAddress, String org_Name, String org_TypeCode, String sup_Name, String sup_BankAccount, Integer reg_RegistartionNumber) {
         this.id = id;
-        this.euRank = euRank;
-        this.countryRank = countryRank;
-        this.countryName = countryName;
-        this.municipalityName = municipalityName;
-        this.issue = issue;
-        this.numberOfRegistrations = numberOfRegistrations;
-        this.abacReference = abacReference;
-        this.abacStandarName = abacStandarName;
-        this.municipality = municipality;
+        this.mun_OfficialName = mun_OfficialName;
+        this.mun_OfficialAddress = mun_OfficialAddress;
+        this.org_Name = org_Name;
+        this.org_TypeCode = org_TypeCode;
+        this.sup_Name = sup_Name;
+        this.sup_BankAccount = sup_BankAccount;
+        this.reg_RegistartionNumber = reg_RegistartionNumber;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getEuRank() {
-        return euRank;
+    public String getMun_OfficialName() {
+        return mun_OfficialName;
     }
 
-    public void setEuRank(int euRank) {
-        this.euRank = euRank;
+    public void setMun_OfficialName(String mun_OfficialName) {
+        this.mun_OfficialName = mun_OfficialName;
     }
 
-    public int getCountryRank() {
-        return countryRank;
+    public String getMun_OfficialAddress() {
+        return mun_OfficialAddress;
     }
 
-    public void setCountryRank(int countryRank) {
-        this.countryRank = countryRank;
+    public void setMun_OfficialAddress(String mun_OfficialAddress) {
+        this.mun_OfficialAddress = mun_OfficialAddress;
     }
 
-    public String getCountryName() {
-        return countryName;
+    public String getOrg_Name() {
+        return org_Name;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
+    public void setOrg_Name(String org_Name) {
+        this.org_Name = org_Name;
     }
 
-    public String getMunicipalityName() {
-        return municipalityName;
+    public String getOrg_TypeCode() {
+        return org_TypeCode;
     }
 
-    public void setMunicipalityName(String municipalityName) {
-        this.municipalityName = municipalityName;
+    public void setOrg_TypeCode(String org_TypeCode) {
+        this.org_TypeCode = org_TypeCode;
     }
 
-    public String getIssue() {
-        return issue;
+    public String getSup_Name() {
+        return sup_Name;
     }
 
-    public void setIssue(String issue) {
-        this.issue = issue;
+    public void setSup_Name(String sup_Name) {
+        this.sup_Name = sup_Name;
     }
 
-    public int getNumberOfRegistrations() {
-        return numberOfRegistrations;
+    public String getSup_BankAccount() {
+        return sup_BankAccount;
     }
 
-    public void setNumberOfRegistrations(int numberOfRegistrations) {
-        this.numberOfRegistrations = numberOfRegistrations;
+    public void setSup_BankAccount(String sup_BankAccount) {
+        this.sup_BankAccount = sup_BankAccount;
     }
 
-    public String getAbacReference() {
-        return abacReference;
+    public Integer getReg_RegistartionNumber() {
+        return reg_RegistartionNumber;
     }
 
-    public void setAbacReference(String abacReference) {
-        this.abacReference = abacReference;
-    }
-
-    public String getAbacStandarName() {
-        return abacStandarName;
-    }
-
-    public void setAbacStandarName(String abacStandarName) {
-        this.abacStandarName = abacStandarName;
-    }
-
-    public int getMunicipality() {
-        return municipality;
-    }
-
-    public void setMunicipality(int municipality) {
-        this.municipality = municipality;
-    }
-
-    @Override
-    public String toString() {
-        return "ExportImportRegistrationDataDTO{" +
-                "id=" + id + '\'' +
-                ", euRank=" + euRank + '\'' +
-                ", countryRank=" + countryRank + '\'' +
-                ", countryName=" + countryName + '\'' +
-                ", municipalityName=" + municipalityName + '\'' +
-                ", issue=" + issue + '\'' +
-                ", numberOfRegistrations=" + numberOfRegistrations + '\'' +
-                ", abacReference='" + abacReference + '\'' +
-                ", abacStandarName='" + abacStandarName + '\'' +
-                ", municipality='" + municipality +
-                '}';
+    public void setReg_RegistartionNumber(Integer reg_RegistartionNumber) {
+        this.reg_RegistartionNumber = reg_RegistartionNumber;
     }
 
 }

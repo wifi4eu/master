@@ -508,36 +508,47 @@ CREATE TABLE [dbo].[municipalities_abac](
 	[municipality] [int] NOT NULL
 ) ON [PRIMARY]
 
+CREATE TABLE [dbo].[VALIDATED_LEF] (
+  [idLef] [int] NOT NULL,
+) ON [PRIMARY]
+
+CREATE TABLE [dbo].[VALIDATED_BC] (
+  [idBc] [int] NOT NULL,
+) ON [PRIMARY]
+
+INSERT INTO dbo.VALIDATED_LEF (idLef) VALUES (1);
+
+INSERT INTO dbo.VALIDATED_BC (idBc) VALUES (1);
 
 -- -----------------------------------------------------
 -- Table `dbo`.`beneficiary_information`
 -- -----------------------------------------------------
-CREATE TABLE [dbo].[beneficiary_information](
-	[id] [int] IDENTITY(1,1) NOT NULL,
-	[euRank] [int] NOT NULL,
-	[countryRank] [int] NULL,
-	[countryName] [varchar](255) NULL,
-	[municipalityName] [varchar](255) NULL,
-	[issue] [varchar](255) NULL,
-	[numberOfRegistrations] [int] NULL,
-	[abacReference] [varchar](255) NULL,
-	[abacStandarName] [varchar](255) NULL,
-	[municipality] [int] NOT NULL
-) ON [PRIMARY]
+--CREATE TABLE [dbo].[beneficiary_information](
+--	[id] [int] IDENTITY(1,1) NOT NULL,
+--	[euRank] [int] NOT NULL,
+--	[countryRank] [int] NULL,
+--	[countryName] [varchar](255) NULL,
+--	[municipalityName] [varchar](255) NULL,
+--	[issue] [varchar](255) NULL,
+--	[numberOfRegistrations] [int] NULL,
+--	[abacReference] [varchar](255) NULL,
+--	[abacStandarName] [varchar](255) NULL,
+--	[municipality] [int] NOT NULL
+--) ON [PRIMARY]
 
 
 -- -----------------------------------------------------
 -- Table `dbo`.`budgetary_commitment`
 -- -----------------------------------------------------
-CREATE TABLE [dbo].[budgetary_commitment](
-	[id] [int] IDENTITY(1,1) NOT NULL,
-	[euRank] [int] NOT NULL,
-	[countryRank] [int] NULL,
-	[countryName] [varchar](255) NULL,
-	[municipalityName] [varchar](255) NULL,
-	[issue] [varchar](255) NULL,
-	[numberOfRegistrations] [int] NULL,
-	[abacReference] [varchar](255) NULL,
-	[abacStandarName] [varchar](255) NULL,
-	[municipality] [int] NOT NULL
-) ON [PRIMARY]
+--CREATE TABLE [dbo].[budgetary_commitment](
+--	[id] [int] IDENTITY(1,1) NOT NULL,
+--	[euRank] [int] NOT NULL,
+--	[countryRank] [int] NULL,
+--	[countryName] [varchar](255) NULL,
+--	[municipalityName] [varchar](255) NULL,
+--	[issue] [varchar](255) NULL,
+--	[numberOfRegistrations] [int] NULL,
+--	[abacReference] [varchar](255) NULL,
+--	[abacStandarName] [varchar](255) NULL,
+--	[municipality] [int] NOT NULL
+--) ON [PRIMARY]
