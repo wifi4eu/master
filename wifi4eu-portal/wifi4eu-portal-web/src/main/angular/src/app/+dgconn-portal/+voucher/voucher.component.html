@@ -267,18 +267,25 @@
                       <p-column field="application.status" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationStatus' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
-                          <span *ngIf="row.application.status == 0">Applied</span>
-                          <span *ngIf="row.application.status == 2">Validated</span>
-                          <span *ngIf="row.application.status == 3">Pending</span>
+                          <span *ngIf="row.application.status == 0">{{'dgConn.voucherAssignment.applicationStatus.applied' | translate}}</span>
+                          <span *ngIf="row.application.status == 2">{{'dgConn.voucherAssignment.applicationStatus.validated' |translate}}</span>
+                          <span *ngIf="row.application.status == 3">{{'dgConn.status.pendingFollowup' | translate}}</span>
                         </ng-template>
                       </p-column>
                       <p-column header="{{'dgConn.voucherAssignment.table.action' | translate}}" styleClass="text-center not-hide-overflow">
                         <ng-template let-rowData="rowData" pTemplate="body">
                           <div style="position:relative;" (click)="op.show($event)">
                             <p-overlayPanel #op>
-                                <div class="ui-g"><i class="fa fa-ellipsis-v" aria-hidden="true" ></i></div>
-                                <div class="ui-g" (click)="goToMunicipality(rowData.lau)"><span>View</span></div>
-                                <div><i class="fa fa-ellipsis-v" aria-hidden="true" ></i>Reject</div>
+                              <div>
+                                <a (click)="goToMunicipality(rowData.lau)">
+                                  <i class="fa fa-ellipsis-v" aria-hidden="true" ></i>
+                                  <span>View</span>
+                                </a>                                  
+                              </div>
+                              <div>
+                                <i class="fa fa-ellipsis-v" aria-hidden="true" ></i>
+                                <span>Reject</span>
+                              </div>
                             </p-overlayPanel>
                             <i  class="fa fa-ellipsis-v actions-icon" aria-hidden="true" ></i>
                           </div>

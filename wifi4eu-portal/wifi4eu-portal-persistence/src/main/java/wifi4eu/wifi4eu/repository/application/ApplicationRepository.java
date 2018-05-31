@@ -40,14 +40,14 @@ public interface ApplicationRepository extends CrudRepository<Application,Intege
             "WHERE m.country = ?1 AND a.call_id = ?2 AND a.date >= ?3 ORDER BY a.date ASC", nativeQuery = true)
     List<Integer> findIdApplications(String country, int callId, Long date);
 
-    @Query(value = "SELECT count(*) FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id " +
-            "WHERE m.lau = ?1 AND a._status != 1 AND a.call_id = ?2", nativeQuery = true)
-    Integer countApplicationsBySameMunicipality(int lauId, int callId);
+    @Query(value = "SELECT count(a.id) FROM applications a INNER JOIN registrations r ON a.registration = r.id INNER JOIN municipalities m ON r.municipality = m.id " +
+            "WHERE m.lau = ?1 AND a._status != 1 AND a.call_id = ?2 AND a.date >= ?3", nativeQuery = true)
+    Integer countApplicationsBySameMunicipality(int lauId, int callId, long date);
 
     @Query(value = "SELECT a.* from applications a INNER JOIN registrations r ON a.registration = r.id WHERE a.call_id = ?1 AND a.date >= ?2 ORDER BY a.date ASC", nativeQuery = true)
     List<Application> findByCallIdOrderByDateBAsc(Integer callId, Long startDate);
 
-    @Query(value = "SELECT * FROM applications app INNER JOIN registrations reg ON reg.id = app.registration INNER JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]}", nativeQuery = true)
+    @Query(value = "SELECT app.* FROM applications app INNER JOIN registrations reg ON reg.id = app.registration INNER JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]}", nativeQuery = true)
     List<Application> findByCallIdAndLauId(Integer callId, Integer lauId);
 
     @Query(value = "SELECT * FROM applications app LEFT JOIN registrations reg ON reg.id = app.registration LEFT JOIN municipalities mun ON mun.id = reg.municipality WHERE app.call_id = ?#{[0]} AND mun.lau = ?#{[1]} ORDER BY app.date ASC", nativeQuery = true)

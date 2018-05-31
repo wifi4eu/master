@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface SimpleMunicipalityRepository extends CrudRepository<SimpleMunicipality, Integer> {
 
-    @Query(value = "SELECT municipalities.id, municipalities.country, municipalities.lau FROM municipalities INNER JOIN registrations ON municipalities.id = registrations.municipality INNER JOIN applications ON registrations.id = applications.registration", nativeQuery = true)
+    @Query(value = "SELECT municipalities.id, municipalities.country, municipalities.lau FROM municipalities INNER JOIN registrations ON municipalities.id = registrations.municipality INNER JOIN applications ON registrations.id = applications.registration WHERE municipalities.country IS NOT NULL AND municipalities.name IS NOT NULL", nativeQuery = true)
     List<SimpleMunicipality> findAllMunicipalitiesFromApplications();
 }

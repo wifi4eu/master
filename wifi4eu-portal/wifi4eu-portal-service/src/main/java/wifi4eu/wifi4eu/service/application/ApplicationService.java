@@ -255,8 +255,8 @@ public class ApplicationService {
         return applicationRepository.findIdApplications(country, callId, date);
     }
 
-    public Integer countApplicationWithSameMunicipalityName(int lauId, int callId){
-        return applicationRepository.countApplicationsBySameMunicipality(lauId, callId);
+    public Integer countApplicationWithSameMunicipalityName(int lauId, int callId, long date){
+        return applicationRepository.countApplicationsBySameMunicipality(lauId, callId, date);
     }
 
     public List<ApplicantListItemDTO> findDgconnApplicantsList(Integer callId, String country, String name, PagingSortingDTO pagingSortingData) {
