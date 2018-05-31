@@ -277,15 +277,15 @@
                         <ng-template let-rowData="rowData" pTemplate="body">
                           <div style="position:relative;" (click)="op.show($event)">
                             <p-overlayPanel #op>
-                              <div>
-                                <a (click)="goToMunicipality(rowData.lau)">
-                                  <i class="fa fa-ellipsis-v" aria-hidden="true" ></i>
-                                  <span>View</span>
-                                </a>                                  
+                              <div class="row">
+                                  <a (click)="goToMunicipality(rowData.lau)">
+                                <div class="col-sm-2"><span class="fa fa-eye"></span></div>
+                                <div class="col-sm-6">  <span>View</span></div>
+                              </a> 
                               </div>
-                              <div>
-                                <i class="fa fa-ellipsis-v" aria-hidden="true" ></i>
-                                <span>Reject</span>
+                              <div class="row">
+                                <div class="col-sm-2"><span class="fa fa-ban"></span></div>
+                                <div class="col-sm-6">  <span>Reject</span></div>
                               </div>
                             </p-overlayPanel>
                             <i  class="fa fa-ellipsis-v actions-icon" aria-hidden="true" ></i>

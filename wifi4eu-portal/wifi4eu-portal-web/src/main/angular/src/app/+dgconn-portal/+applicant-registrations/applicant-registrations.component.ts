@@ -117,13 +117,16 @@ export class DgConnApplicantRegistrationsComponent {
                 this.nameSearched = this.inputSearch.trim();
                 this.findApplicantsSubscription = this.applicationApi.findDgconnApplicantsListByCallIdSearchingName(this.currentCall.id, countryCode, this.nameSearched, pagingAndSortingData).subscribe(
                     (response: ResponseDTOBase) => {
-                        this.loadingData = false;
                         if (response.success) {
-                            this.applicantListItems = response.data;
                             this.totalItems = response.xtotalCount;
                             this.tableApplicants.totalRecords = this.totalItems;
-                            this.totalPages = this.totalItems / this.itemsPerPage;
-                            this.tableApplicants.pageLinks = this.totalPages;
+                            if (this.page > this.totalPages) {
+                                this.page = 0;
+                                this.filterApplicantsSearch();
+                            } else {
+                                this.applicantListItems = response.data;
+                                this.loadingData = false;
+                            }
                         }
                     }, error => {
                         this.loadingData = false;
@@ -133,13 +136,18 @@ export class DgConnApplicantRegistrationsComponent {
                 this.searchingByName = false;
                 this.findApplicantsSubscription = this.applicationApi.findDgconnApplicantsListByCallId(this.currentCall.id, countryCode, pagingAndSortingData).subscribe(
                     (response: ResponseDTOBase) => {
-                        this.loadingData = false;
                         if (response.success) {
-                            this.applicantListItems = response.data;
                             this.totalItems = response.xtotalCount;
                             this.tableApplicants.totalRecords = this.totalItems;
                             this.totalPages = this.totalItems / this.itemsPerPage;
                             this.tableApplicants.pageLinks = this.totalPages;
+                            if (this.page > this.totalPages) {
+                                this.page = 0;
+                                this.filterApplicantsSearch();
+                            } else {
+                                this.applicantListItems = response.data;
+                                this.loadingData = false;
+                            }
                         }
                     }, error => {
                         this.loadingData = false;
@@ -242,16 +250,16 @@ export class DgConnApplicantRegistrationsComponent {
             if (this.searchingByName) {
                 this.applicationApi.exportExcelDGConnApplicantsListSearchingName(this.currentCall.id, countryCode, this.nameSearched).subscribe(
                     (response) => {
-                        let blob = new Blob([response], {type: "application/vnd.ms-excel"});
-                        FileSaver.saveAs(blob, "applicants.xls");
+                        let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
+                        FileSaver.saveAs(blob, 'applicants.xls');
                         this.downloadingList = false;
                     }
                 );
             } else {
                 this.applicationApi.exportExcelDGConnApplicantsList(this.currentCall.id, countryCode).subscribe(
                     (response) => {
-                        let blob = new Blob([response], {type: "application/vnd.ms-excel"});
-                        FileSaver.saveAs(blob, "applicants.xls");
+                        let blob = new Blob([response], {type: 'application/vnd.ms-excel'});
+                        FileSaver.saveAs(blob, 'applicants.xls');
                         this.downloadingList = false;
                     }
                 );

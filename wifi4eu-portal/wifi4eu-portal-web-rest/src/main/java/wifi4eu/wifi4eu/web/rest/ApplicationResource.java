@@ -309,7 +309,8 @@ public class ApplicationResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'sendLegalDocumentsCorrection' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, null);
         }
     }
 

@@ -99,11 +99,13 @@ public class RegistrationResource {
             _log.info("createRegistration");
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getId() != registrationDTO.getUserId()) {
-                throw new AccessDeniedException("Incorrect user id");
+            if(userDTO.getType() != 5) {
+                if (userDTO.getId() != registrationDTO.getUserId()) {
+                    throw new AccessDeniedException("Incorrect user id");
+                }
+                permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
+                permissionChecker.check(userDTO, RightConstants.USER_TABLE + registrationDTO.getUserId());
             }
-            permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
-            permissionChecker.check(userDTO, RightConstants.USER_TABLE + registrationDTO.getUserId());
 
             //RegistrationValidator.validate(registrationDTO);
 
