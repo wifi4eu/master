@@ -25,7 +25,7 @@ import { SelectedSupplierDetailsComponent } from "./+selected-supplier-details/s
             path: 'additional-info/:municipalityId',
             component: AdditionalInfoComponent
         }, {
-            path: 'selected-supplier-details',
+            path: 'selected-supplier-details/:municipalityId',
             component: SelectedSupplierDetailsComponent
         }, {
             path: 'select-supplier/:municipalityId',
