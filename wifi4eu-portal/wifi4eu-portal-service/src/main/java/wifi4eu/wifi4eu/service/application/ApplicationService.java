@@ -450,7 +450,7 @@ public class ApplicationService {
     }
 
     public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application) {
-        ApplicationDTO applicationDB = applicationMapper.toDTO(applicationRepository.findOne(application.getRegistrationId()));
+        ApplicationDTO applicationDB = applicationMapper.toDTO(applicationRepository.findOne(application.getId()));
         List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(applicationDB.getRegistrationId());
         boolean pendingFollowup = false;
         for (LegalFileCorrectionReasonDTO legalFile : legalFiles) {

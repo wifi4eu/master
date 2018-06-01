@@ -195,9 +195,9 @@ public class VoucherResource {
             Pageable pageable;
 
             if (direction.equals("ASC") || direction.equals("asc")) {
-                pageable = new PageRequest(page, 20, Direction.ASC, field);
+                pageable = new PageRequest(page, Integer.MAX_VALUE, Direction.ASC, field);
             } else {
-                pageable = new PageRequest(page, 20, Direction.DESC, field);
+                pageable = new PageRequest(page, Integer.MAX_VALUE, Direction.DESC, field);
             }
 
             ResponseEntity<byte[]> responseReturn = null;
