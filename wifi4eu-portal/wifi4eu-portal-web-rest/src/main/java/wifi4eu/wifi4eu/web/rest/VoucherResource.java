@@ -128,8 +128,13 @@ public class VoucherResource {
     @ApiOperation(value = "Get voucher assignment by call")
     @RequestMapping(value = "/assignment/{assignmentId}/simulation", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseDTO getVoucherSimulationByVoucherAssignment(@PathVariable("assignmentId") final Integer assignmentId, @Nullable @RequestParam("country") String country,
-                                                               @RequestParam("page") Integer page, @RequestParam("size") Integer size, @RequestParam("field") String field, @RequestParam("direction") String direction) {
+    public ResponseDTO getVoucherSimulationByVoucherAssignment(@PathVariable("assignmentId") final Integer assignmentId,
+                                                               @RequestParam("country") String country,
+                                                               @RequestParam("municipality") String municipality,
+                                                               @RequestParam("page") Integer page,
+                                                               @RequestParam("size") Integer size,
+                                                               @RequestParam("field") String field,
+                                                               @RequestParam("direction") String direction) {
 
         try{
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -144,7 +149,7 @@ public class VoucherResource {
                 pageable = new PageRequest(page, size, Direction.DESC, field);
             }
 
-            return voucherService.getVoucherSimulationByVoucherAssignment(assignmentId, country, pageable);
+            return voucherService.getVoucherSimulationByVoucherAssignment(assignmentId, country, municipality, pageable);
         }
         catch (AccessDeniedException e){
             _log.error(e.getMessage());
@@ -183,9 +188,13 @@ public class VoucherResource {
     @ApiOperation(value = "Export voucher simulation")
     @RequestMapping(value = "/exportExcel/assignment/{assignmentId}/simulation", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<byte[]> exportExcelVoucherSimulation(@PathVariable("assignmentId") final Integer assignmentId, @Nullable @RequestParam("country") String country,
-                                                          @RequestParam("page") Integer page, @RequestParam("size") Integer size,
-                                                          @RequestParam("field") String field, @RequestParam("direction") String direction,
+    public ResponseEntity<byte[]> exportExcelVoucherSimulation(@PathVariable("assignmentId") final Integer assignmentId,
+                                                               @RequestParam("country") String country,
+                                                               @RequestParam("municipality") String municipality,
+                                                               @RequestParam("page") Integer page,
+                                                               @RequestParam("size") Integer size,
+                                                               @RequestParam("field") String field,
+                                                               @RequestParam("direction") String direction,
                                                           HttpServletResponse response) throws IOException {
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
@@ -206,7 +215,7 @@ public class VoucherResource {
             String filename = "dgconn-voucher-simulation.xls";
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-            responseReturn = new ResponseEntity<>(voucherService.exportVoucherSimulation(assignmentId, country, pageable), headers, HttpStatus.OK);
+            responseReturn = new ResponseEntity<>(voucherService.exportVoucherSimulation(assignmentId, country, municipality, pageable), headers, HttpStatus.OK);
             return responseReturn;
         }catch (AccessDeniedException e){
             if (_log.isErrorEnabled()) {

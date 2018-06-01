@@ -203,7 +203,7 @@
                   </select>
                 </div>
                 <div class="col-md-4">
-                  <input type="text" id="municipalitySearch" [(ngModel)]="municipalitySearch" name="municipalitySearch">
+                  <input type="text" id="municipalitySearch" (keydown)="searchByMunicipality($event)" [(ngModel)]="searchedMunicipality" name="searchedMunicipality">
                 </div>
                 <div class="col-md-4">
                   <button type="button" class="btn btn-primary simulate-button" (click)="simulateVoucherAssignment()">

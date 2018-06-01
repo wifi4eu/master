@@ -67,6 +67,8 @@ export class DgConnVoucherComponent {
   private pageLinks: number = null;
   private loadingSimulation = false;
 
+  private searchedMunicipality = null;
+
   private rowDisplayOptions = [20, 50, 100]
 
   private selectedCountry = 'All';
@@ -142,9 +144,15 @@ export class DgConnVoucherComponent {
     this.pageLinks = Math.ceil(this.totalRecords / this.sizePage);
   }
 
+  searchByMunicipality(event) {
+    if(event.keyCode == 13) {
+      this.loadPage();
+    }
+  }
+
   exportListExcel(){
     this.loadingSimulation = true;
-    this.voucherApi.exportExcelVoucherSimulation(this.callVoucherAssignment.id, this.selectedCountry, this.page, this.sizePage, this.sortField, this.sortDirection).subscribe((response) => {
+    this.voucherApi.exportExcelVoucherSimulation(this.callVoucherAssignment.id, this.selectedCountry, this.searchedMunicipality === null || this.searchedMunicipality === "" ? 'All' : this.searchedMunicipality, this.page, this.sizePage, this.sortField, this.sortDirection).subscribe((response) => {
       let blob = new Blob([response], {type: "application/vnd.ms-excel"});
       FileSaver.saveAs(blob, `voucher-simulation-${this.callSelected.event}`);
       this.loadingSimulation = false;
@@ -174,7 +182,7 @@ export class DgConnVoucherComponent {
     if(this.simulationAssignment != null)  {
       this.simulationAssignment.unsubscribe();
     }
-    this.simulationAssignment = this.voucherApi.getVoucherSimulationByVoucherAssignment(this.callVoucherAssignment.id, this.selectedCountry, this.page, this.sizePage, this.sortField, this.sortDirection).subscribe((response: ResponseDTO) => {
+    this.simulationAssignment = this.voucherApi.getVoucherSimulationByVoucherAssignment(this.callVoucherAssignment.id, this.selectedCountry, this.searchedMunicipality === null || this.searchedMunicipality === "" ? 'All' : this.searchedMunicipality, this.page, this.sizePage, this.sortField, this.sortDirection).subscribe((response: ResponseDTO) => {
       this.listAssignment = response.data;
       this.loadingSimulation = false;
       this.fillPaginator(response);

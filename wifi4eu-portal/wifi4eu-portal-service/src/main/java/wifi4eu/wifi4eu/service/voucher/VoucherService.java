@@ -123,13 +123,19 @@ public class VoucherService {
 
     }
 
-    public ResponseDTO getVoucherSimulationByVoucherAssignment(int voucherAssignmentId, String country, Pageable pageable) {
-        Page<VoucherSimulation> simulationPaged;
+    public ResponseDTO getVoucherSimulationByVoucherAssignment(int voucherAssignmentId, String country, String municipality, Pageable pageable) {
+        Page<VoucherSimulation> simulationPaged = null;
         if (country.equals("All")) {
             simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentOrdered(voucherAssignmentId, pageable);
-        } else {
-            simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentInCountryOrdered(voucherAssignmentId, country, pageable);
         }
+        if(!municipality.equalsIgnoreCase("All")){
+            simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityOrderedByEuRank(voucherAssignmentId, municipality, pageable);
+        }
+
+        if(!country.equalsIgnoreCase("All") && !municipality.equalsIgnoreCase("All")){
+            simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByEuRank(voucherAssignmentId, country, municipality, pageable);
+        }
+
         List<VoucherSimulationDTO> listSimulation = voucherSimulationMapper.toDTOList(Lists.newArrayList(simulationPaged.getContent()));
         for (VoucherSimulationDTO voucherSimulation : listSimulation) {
             MunicipalityDTO municipalityDTO = municipalityService.getMunicipalityById(voucherSimulation.getMunicipality());
@@ -139,9 +145,9 @@ public class VoucherService {
         return new ResponseDTO(true, listSimulation, simulationPaged.getTotalElements(), null);
     }
 
-    public byte[] exportVoucherSimulation(int voucherAssignmentId, String country, Pageable pageable) {
+    public byte[] exportVoucherSimulation(int voucherAssignmentId, String country, String municipalityName, Pageable pageable) {
 
-        List<VoucherSimulationDTO> simulationDTOS = (List<VoucherSimulationDTO>) getVoucherSimulationByVoucherAssignment(voucherAssignmentId, country, pageable).getData();
+        List<VoucherSimulationDTO> simulationDTOS = (List<VoucherSimulationDTO>) getVoucherSimulationByVoucherAssignment(voucherAssignmentId, country, municipalityName, pageable).getData();
 
         VoucherSimulationExportGenerator excelExportGenerator = new VoucherSimulationExportGenerator(simulationDTOS, VoucherSimulationDTO.class);
         return excelExportGenerator.exportExcelFile("voucher_simulation").toByteArray();

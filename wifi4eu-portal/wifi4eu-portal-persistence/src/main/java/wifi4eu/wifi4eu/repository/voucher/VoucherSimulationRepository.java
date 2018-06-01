@@ -20,6 +20,12 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
 
     Iterable<VoucherSimulation> findAllByVoucherAssignmentOrderByEuRank(@Param("idVoucherAssignment") int idVoucherAssignment);
 
+    @Query("SELECT vs FROM VoucherSimulation vs JOIN vs.voucherAssignment a INNER JOIN Municipality m ON m.id = vs.municipality WHERE LOWER(m.name) LIKE LOWER(CONCAT('%',:municipalityName,'%')) AND a.id =:idVoucherAssignment")
+    Page<VoucherSimulation> findAllByVoucherAssignmentAndMunicipalityOrderedByEuRank(@Param("idVoucherAssignment") int idVoucherAssignment, @Param("municipalityName") String municipalityName, Pageable pageable);
+
+    @Query("SELECT vs FROM VoucherSimulation vs JOIN vs.voucherAssignment a INNER JOIN Municipality m ON m.id = vs.municipality WHERE LOWER(m.name) LIKE LOWER(CONCAT('%',:municipalityName,'%')) AND a.id =:idVoucherAssignment AND vs.country =:country")
+    Page<VoucherSimulation> findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByEuRank(@Param("idVoucherAssignment") int idVoucherAssignment, @Param("country") String country, @Param("municipalityName") String municipalityName, Pageable pageable);
+
     @Query("SELECT vs FROM VoucherSimulation vs JOIN vs.voucherAssignment a WHERE a.id =:idVoucherAssignment")
     Page<VoucherSimulation> findAllByVoucherAssignmentOrdered(@Param("idVoucherAssignment") int idVoucherAssignment, Pageable pageable);
 
