@@ -253,6 +253,7 @@ export class DgConnVoucherComponent {
         this.loadingSimulation = false;
       }, (error) => {
         this.loadingSimulation = false;
+        this.displayConfirmingData = false;
       })
     }
   }
