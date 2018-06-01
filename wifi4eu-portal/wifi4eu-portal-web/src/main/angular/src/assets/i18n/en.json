@@ -651,5 +651,9 @@
   "benefPortal.selectSupplier.feedback.selected": "Installation company selected on {{date}}",
   "dgConn.exportExcel": "Export to Excel",
   "dgConn.correctionReason": "Correction Reason",
-  "dgConn.applicantDetails.legalFile.reason.cause6": "6. The document is missing signature"
+  "dgConn.applicantDetails.legalFile.reason.cause6": "6. The document is missing signature",
+  "dgconn.voucherAssignment.runningSimulation": "Running simulation...",
+  "dgconn.voucherAssignment.runningSimulation.cancel": "CANCEL",
+  "dgconn.voucherAssignment.downloading": "Downloading..."
+
 }
