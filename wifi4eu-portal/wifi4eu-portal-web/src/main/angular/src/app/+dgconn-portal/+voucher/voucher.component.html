@@ -389,7 +389,7 @@
           [resizable]="false"
           [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
-  <h1 class="Modalh1Confirmation" style="margin-top: -10em;">{{ 'dgconn.voucherAssignment.runningSimulation' | translate }}</h1>
+  <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningSimulation' | translate }}</h1>
   <p class="ModalpConfirmation" style="margin-bottom: 1em;">
     <button (click)="cancelSimulation()">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
   </p>
@@ -397,8 +397,8 @@
 
 <p-dialog [(visible)]="downloadingExcel" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
-  <p class="ModalLoaderDots" style="margin-top: -10em;"><span>.</span><span>.</span><span>.</span></p>
-  <h1 class="Modalh1Confirmation" style="margin-bottom: 1em;">{{ 'dgconn.voucherAssignment.downloading' | translate }}</h1>
+  <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+  <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.downloading' | translate }}</h1>
 </p-dialog>
 
 <style>
