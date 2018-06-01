@@ -156,7 +156,7 @@ export class DgConnVoucherComponent {
     this.downloadingExcel = false;
     this.voucherApi.exportExcelVoucherSimulation(this.callVoucherAssignment.id, this.selectedCountry, this.searchedMunicipality === null || this.searchedMunicipality === "" ? 'All' : this.searchedMunicipality, this.page, this.sizePage, this.sortField, this.sortDirection).subscribe((response) => {
       let blob = new Blob([response], {type: "application/vnd.ms-excel"});
-      FileSaver.saveAs(blob, `voucher-simulation-${this.callSelected.event}`);
+      FileSaver.saveAs(blob, `voucher-simulation-${this.callSelected.event}.xls`);
       this.loadingSimulation = false;
       this.downloadingExcel = false;
     }, (error) => {
