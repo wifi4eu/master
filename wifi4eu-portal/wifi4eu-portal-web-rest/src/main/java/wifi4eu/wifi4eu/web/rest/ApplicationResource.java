@@ -147,29 +147,6 @@ public class ApplicationResource {
             }
 
             ResponseDTO res = new ResponseDTO(true, null, null);
-            res.setData(applicationService.findDgconnApplicantsList(callId, null, name, pagingSortingData));
-            res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, null, name));
-            return res;
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("can't retrieve beneficiaries", e);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return new ResponseDTO(false, null, null);
-    }
-
-    @ApiOperation(value = "findDgconnApplicantsListByCallIdSearchingNameAndCountry")
-    @RequestMapping(value = "/findDgconnApplicantsListByCallIdSearchingNameAndCountry/{callId}", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO findDgconnApplicantsListByCallIdSearchingNameAndCountry(@PathVariable("callId") final Integer callId, @RequestParam("name") final String name, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-
-            ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(applicationService.findDgconnApplicantsList(callId, country, name, pagingSortingData));
             res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name));
             return res;
