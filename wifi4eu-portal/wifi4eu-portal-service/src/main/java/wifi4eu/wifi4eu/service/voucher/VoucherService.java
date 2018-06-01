@@ -143,7 +143,6 @@ public class VoucherService {
 
         List<VoucherSimulationDTO> simulationDTOS = (List<VoucherSimulationDTO>) getVoucherSimulationByVoucherAssignment(voucherAssignmentId, country, pageable).getData();
 
-        // = voucherSimulationMapper.toDTOList(Lists.newArrayList(voucherSimulationRepository.findAllByVoucherAssignment(voucherAssignmentId)));
         VoucherSimulationExportGenerator excelExportGenerator = new VoucherSimulationExportGenerator(simulationDTOS, VoucherSimulationDTO.class);
         return excelExportGenerator.exportExcelFile("voucher_simulation").toByteArray();
     }
