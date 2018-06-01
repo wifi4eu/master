@@ -8,9 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -19,12 +18,15 @@ import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.service.voucher.util.ScenariosService;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletResponse;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -37,34 +39,89 @@ public class VoucherResource {
     @Autowired
     ScenariosService scenariosService;
 
+    @Autowired
+    PermissionChecker permissionChecker;
+
     Logger _log = LoggerFactory.getLogger(VoucherResource.class);
 
     @ApiOperation(value = "Get all the voucher assignment")
     @RequestMapping(value = "/assignments", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<VoucherAssignmentDTO> allVoucherAssignments() {
-        return voucherService.getAllVoucherAssignment();
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: allVoucherAssignments");
+            }
+            return voucherService.getAllVoucherAssignment();
+        }
+        catch (AccessDeniedException e){
+            _log.error(e.getMessage());
+            return null;
+        }
+        catch (Exception e){
+            _log.error(e.getMessage(), e);
+            return null;
+        }
     }
 
     @ApiOperation(value = "Get voucher assignment by id")
     @RequestMapping(value = "/assignments/{assignmentId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public VoucherAssignmentDTO getVoucherAssignmentById(@PathVariable("assignmentId") final Integer assignmentId) {
-        return voucherService.getVoucherAssignmentById(assignmentId);
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: getVoucherAssignmentById");
+            }
+            return voucherService.getVoucherAssignmentById(assignmentId);
+        }
+        catch (AccessDeniedException e){
+            _log.error(e.getMessage());
+            return null;
+        }
+        catch (Exception e){
+            _log.error(e.getMessage(), e);
+            return null;
+        }
     }
 
     @ApiOperation(value = "Get voucher assignment by call")
     @RequestMapping(value = "/assignment/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public VoucherAssignmentDTO getVoucherAssignmentByCall(@PathVariable("callId") final Integer callId) {
-        return voucherService.getVoucherAssignmentByCall(callId);
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: getVoucherAssignmentByCall");
+            }
+            return voucherService.getVoucherAssignmentByCall(callId);
+        }
+        catch (AccessDeniedException e){
+            _log.error(e.getMessage());
+            return null;
+        }
+        catch (Exception e){
+            _log.error(e.getMessage(), e);
+            return null;
+        }
     }
 
     @ApiOperation(value = "Get voucher assignment by call")
     @RequestMapping(value = "/assignmentaux/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(@PathVariable("callId") final Integer callId) {
-        return voucherService.getVoucherAssignmentAuxiliarByCall(callId);
+        try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: getVoucherAssignmentAuxiliarByCall");
+            }
+            return voucherService.getVoucherAssignmentAuxiliarByCall(callId);
+        }
+        catch (AccessDeniedException e){
+            _log.error(e.getMessage());
+            return null;
+        }
+        catch (Exception e){
+            _log.error(e.getMessage(), e);
+            return null;
+        }
     }
 
 
@@ -74,28 +131,30 @@ public class VoucherResource {
     public ResponseDTO getVoucherSimulationByVoucherAssignment(@PathVariable("assignmentId") final Integer assignmentId, @Nullable @RequestParam("country") String country,
                                                                @RequestParam("page") Integer page, @RequestParam("size") Integer size, @RequestParam("field") String field, @RequestParam("direction") String direction) {
 
-        Pageable pageable = new PageRequest(page, size);
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: getVoucherSimulationByVoucherAssignment");
+            }
 
-        if (direction.equals("ASC") || direction.equals("asc")) {
-            pageable = new PageRequest(page, size, Direction.ASC, field);
-        } else {
-            pageable = new PageRequest(page, size, Direction.DESC, field);
+            Pageable pageable;
+
+            if (direction.equals("ASC") || direction.equals("asc")) {
+                pageable = new PageRequest(page, size, Direction.ASC, field);
+            } else {
+                pageable = new PageRequest(page, size, Direction.DESC, field);
+            }
+
+            return voucherService.getVoucherSimulationByVoucherAssignment(assignmentId, country, pageable);
+        }
+        catch (AccessDeniedException e){
+            _log.error(e.getMessage());
+            return new ResponseDTO(false, null, null);
+        }
+        catch (Exception e){
+            _log.error(e.getMessage(), e);
+            return new ResponseDTO(false, null, null);
         }
 
-        return voucherService.getVoucherSimulationByVoucherAssignment(assignmentId, country, pageable);
-    }
-
-    @ApiOperation(value = "Create voucher assignment")
-    @RequestMapping(value = "/assignments", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public ResponseDTO createVoucherAssignment(@RequestBody final VoucherAssignmentDTO voucherAssignmentDTO) {
-        try {
-            VoucherAssignmentDTO voucherAssignment = voucherService.createVoucherAssignment(voucherAssignmentDTO);
-            return new ResponseDTO(true, voucherAssignment, null);
-        } catch (Exception e) {
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
-        }
     }
 
     @ApiOperation(value = "Create voucher assignment")
@@ -105,25 +164,64 @@ public class VoucherResource {
     @ResponseBody
     public ResponseDTO simulateVoucherAssignment(@RequestBody final Integer callId) {
         try {
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: simulateVoucherAssignment");
+            }
+
             return voucherService.simulateVoucherFast(callId);
-        } catch (Exception e) {
+        }
+        catch (AccessDeniedException e){
+            _log.error(e.getMessage());
+            return new ResponseDTO(false, null, null);
+        }
+        catch (Exception e){
             _log.error(e.getMessage(), e);
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, null);
         }
     }
 
-
-    @ApiOperation(value = "READ EXCEL")
-    @RequestMapping(value = "/excel/scenario/{indexScenario}/call/{callId}", method = RequestMethod.GET, produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Export voucher simulation")
+    @RequestMapping(value = "/exportExcel/assignment/{assignmentId}/simulation", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseDTO readExcelScenario(@PathVariable("indexScenario") final Integer indexScenario, @PathVariable("callId") Integer callId) {
+    public ResponseEntity<byte[]> exportExcelVoucherSimulation(@PathVariable("assignmentId") final Integer assignmentId, @Nullable @RequestParam("country") String country,
+                                                          @RequestParam("page") Integer page, @RequestParam("size") Integer size,
+                                                          @RequestParam("field") String field, @RequestParam("direction") String direction,
+                                                          HttpServletResponse response) throws IOException {
         try {
-            scenariosService.readScenarioExcel(indexScenario, callId);
-            return new ResponseDTO();
-        } catch (Exception e) {
-            _log.debug("ERROR reading excel");
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: exportExcelVoucherSimulation");
+            }
+
+            Pageable pageable;
+
+            if (direction.equals("ASC") || direction.equals("asc")) {
+                pageable = new PageRequest(page, 20, Direction.ASC, field);
+            } else {
+                pageable = new PageRequest(page, 20, Direction.DESC, field);
+            }
+
+            ResponseEntity<byte[]> responseReturn = null;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
+            String filename = "dgconn-voucher-simulation.xls";
+            headers.setContentDispositionFormData(filename, filename);
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            responseReturn = new ResponseEntity<>(voucherService.exportVoucherSimulation(assignmentId, country, pageable), headers, HttpStatus.OK);
+            return responseReturn;
+        }catch (AccessDeniedException e){
+            if (_log.isErrorEnabled()) {
+                _log.error(e.getMessage());
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
         }
-        return new ResponseDTO();
+        catch (Exception e){
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'exportVoucherSimulation' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
     }
+
 }
