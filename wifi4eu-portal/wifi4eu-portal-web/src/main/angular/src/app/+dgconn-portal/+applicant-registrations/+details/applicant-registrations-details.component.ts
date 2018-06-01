@@ -343,8 +343,11 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                     for (let legalFile of this.legalFiles[this.selectedIndex]) {
                         if (legalFile.type == fileType) {
                             updatedLegalFile = legalFile;
-                            updatedLegalFile.requestCorrection = true;
                             updatedLegalFile.correctionReason = this.selectedReasonTypes[this.selectedIndex][i];
+                            if (updatedLegalFile.correctionReason != null)
+                                updatedLegalFile.requestCorrection = true;
+                            else
+                                updatedLegalFile.requestCorrection = false;
                         }
                     }
                     this.registrationApi.saveLegalFile(updatedLegalFile).subscribe(
@@ -494,7 +497,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
                 }
             }
         }
-        if (registration.legalFile1Size != null && registration.legalFile1Size > 0 ) {
+        if (registration.legalFile1Mime != null && registration.legalFile1Size > 0 ) {
             if (!lf1AlreadyExists) {
                 lf1.registrationId = registration.id;
                 lf1.type = 1;
@@ -502,7 +505,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             lf1.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf1);
         }
-        if (registration.legalFile2Size != null && registration.legalFile2Size > 0 ) {
+        if (registration.legalFile2Mime != null && registration.legalFile2Size > 0 ) {
             if (!lf2AlreadyExists) {
                 lf2.registrationId = registration.id;
                 lf2.type = 2;
@@ -510,7 +513,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             lf2.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf2);
         }
-        if (registration.legalFile3Size != null && registration.legalFile3Size > 0 ) {
+        if (registration.legalFile3Mime != null && registration.legalFile3Size > 0 ) {
             if (!lf3AlreadyExists) {
                 lf3.registrationId = registration.id;
                 lf3.type = 3;
@@ -518,7 +521,7 @@ export class DgConnApplicantRegistrationsDetailsComponent {
             lf3.uploadTime = registration.uploadTime;
             finalLegalFiles.push(lf3);
         }
-        if (registration.legalFile4Size != null && registration.legalFile4Size > 0 ) {
+        if (registration.legalFile4Mime != null && registration.legalFile4Size > 0 ) {
             if (!lf4AlreadyExists) {
                 lf4.registrationId = registration.id;
                 lf4.type = 4;
