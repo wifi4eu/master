@@ -927,12 +927,15 @@ public class VoucherService {
             SimpleRegistrationDTO registrationDTO = registrationsMap.get(application.getRegistrationId());
             if (registrationDTO != null) {
                 SimpleMunicipalityDTO municipalityDTO = municipalitiesMap.get(registrationDTO.getMunicipalityId());
-                try{
+
+                try {
                     SimpleLauDTO lauDTO = lausMap.get(municipalityDTO.getLau());
+
+
                     if (lauDTO.getCountry_code().equals(country)) {
                         appCountry.add(application);
                     }
-                }catch (Exception ex){
+                } catch (Exception ex){
                     _log.warn(ex.getMessage());
                 }
             }
