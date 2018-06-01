@@ -138,7 +138,7 @@ public class VoucherSimulationExportGenerator<T> {
                             value = "Main list";
                         }
                         break;
-                    case "duplicate":
+                    case "numApplications":
                         if((int) field.get(objectData) > 1){
                             value = "YES";
                         }else{
