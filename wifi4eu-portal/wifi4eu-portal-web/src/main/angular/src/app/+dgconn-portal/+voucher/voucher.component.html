@@ -292,10 +292,10 @@
                                 <div class="col-sm-6">  <span>{{'dgConn.voucherAssignment.applicationStatus.view' | translate}}</span></div>
                               </a> 
                               </div>
-                              <div class="row">
+                              <!--<div class="row">
                                 <div class="col-sm-2"><span class="fa fa-ban"></span></div>
                                 <div class="col-sm-6">  <span>{{'dgConn.voucherAssignment.applicationStatus.reject' | translate}}</span></div>
-                              </div>
+                              </div>-->
                             </p-overlayPanel>
                             <i  class="fa fa-ellipsis-v actions-icon" aria-hidden="true" ></i>
                           </div>
@@ -389,10 +389,16 @@
           [resizable]="false"
           [draggable]="false" [closable]="false" [closeOnEscape]="false">
     <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
-    <h1 class="Modalh1Confirmation">Running simulation....</h1>
-    <p class="ModalpConfirmation">
-      <button (click)="cancelSimulation()">CANCEL</button>
-    </p>
+  <h1 class="Modalh1Confirmation" style="margin-top: -10em;">{{ 'dgconn.voucherAssignment.runningSimulation' | translate }}</h1>
+  <p class="ModalpConfirmation" style="margin-bottom: 1em;">
+    <button (click)="cancelSimulation()">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+  </p>
+</p-dialog>
+
+<p-dialog [(visible)]="downloadingExcel" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+  <p class="ModalLoaderDots" style="margin-top: -10em;"><span>.</span><span>.</span><span>.</span></p>
+  <h1 class="Modalh1Confirmation" style="margin-bottom: 1em;">{{ 'dgconn.voucherAssignment.downloading' | translate }}</h1>
 </p-dialog>
 
 <style>

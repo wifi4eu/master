@@ -4,7 +4,7 @@ public class ApplicationDTO {
     private int id;
     private int callId;
     private int registrationId;
-    private int supplierId;
+    private Integer supplierId;
     private boolean voucherAwarded;
     private long date;
     private long lefExport;
@@ -22,7 +22,7 @@ public class ApplicationDTO {
     public ApplicationDTO() {
     }
 
-    public ApplicationDTO(int id, int callId, int registrationId, int supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason) {
+    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -66,11 +66,11 @@ public class ApplicationDTO {
         this.registrationId = registrationId;
     }
 
-    public int getSupplierId() {
+    public Integer getSupplierId() {
         return supplierId;
     }
 
-    public void setSupplierId(int supplierId) {
+    public void setSupplierId(Integer supplierId) {
         this.supplierId = supplierId;
     }
 

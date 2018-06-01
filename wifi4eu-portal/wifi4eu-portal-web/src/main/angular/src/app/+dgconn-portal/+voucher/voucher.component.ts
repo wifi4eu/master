@@ -87,6 +87,7 @@ export class DgConnVoucherComponent {
   ];
 
   @ViewChild("paginator") paginator: Paginator;
+  private downloadingExcel: boolean = false;
 
   constructor(private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
     private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, ) {
@@ -156,7 +157,8 @@ export class DgConnVoucherComponent {
       let blob = new Blob([response], {type: "application/vnd.ms-excel"});
       FileSaver.saveAs(blob, `voucher-simulation-${this.callSelected.event}`);
       this.loadingSimulation = false;
-    })
+      this.downloadingExcel = false;
+    });
   }
 
   compareFn(n1: NutsDTOBase, n2: NutsDTOBase): boolean {
