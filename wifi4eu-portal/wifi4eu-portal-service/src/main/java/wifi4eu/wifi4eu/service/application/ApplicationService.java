@@ -11,6 +11,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
@@ -372,10 +373,13 @@ public class ApplicationService {
 
         for (int i = 0; i < applicantsList.size(); i++) {
             ApplicantListItemDTO applicant = applicantsList.get(i);
-            if (applicant.getCounter() == 1) {
-                applicant.setIssueStatus(registrationService.getRegistrationIssue(applicant.getLauId()));
-            } else {
+            List<ApplicationIssueUtil> applicationIssueUtilList = registrationService.getRegistrationIssue(applicant.getLauId());
+            if(applicant.getCounter() == 0) {
                 applicant.setIssueStatus(0);
+                applicant.setStatus(0);
+            } else {
+                applicant.setIssueStatus(registrationService.getIssues(applicationIssueUtilList));
+                applicant.setStatus(registrationService.getStatus(applicationIssueUtilList));
             }
             applicantsList.set(i, applicant);
         }

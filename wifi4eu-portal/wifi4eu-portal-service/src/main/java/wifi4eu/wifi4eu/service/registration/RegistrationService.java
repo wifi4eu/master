@@ -27,11 +27,8 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.text.MessageFormat;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Service("portalRegistrationService")
 public class RegistrationService {
@@ -734,21 +731,41 @@ public class RegistrationService {
         return issueType;
     }
 
-    public Integer getRegistrationIssue(Integer lauId) {
+    public List<ApplicationIssueUtil> getRegistrationIssue(Integer lauId) {
         List<ApplicationIssueUtil> applicationIssueUtils = applicationIssueUtilRepository.findApplicationIssueUtilByLauId(lauId);
 
-        if(applicationIssueUtils.size() != 1){
-            return 0;
-        } else {
+        if (applicationIssueUtils.size() > 1) { //We have more than one applicant per lau, check status
+            //if status is KO remove from the list
+            applicationIssueUtils.removeIf(applicationIssueUtil -> applicationIssueUtil.getStatus() == ApplicationStatus.KO.getValue());
+        }
+
+        return applicationIssueUtils;
+    }
+
+    public Integer getIssues(List<ApplicationIssueUtil> applicationIssueUtilList){
+
+        if(applicationIssueUtilList.size() == 1){
 
             Integer issueType = 0;
-            if (ApplicationWarningsChecker.registrationHasWarning1(applicationIssueUtils.get(0))) {
+            if (ApplicationWarningsChecker.registrationHasWarning1(applicationIssueUtilList.get(0))) {
                 issueType = 1;
             }
-            if (ApplicationWarningsChecker.registrationHasWarning3(applicationIssueUtils.get(0))) {
+            if (ApplicationWarningsChecker.registrationHasWarning3(applicationIssueUtilList.get(0))) {
                 issueType = 3;
             }
             return issueType;
+
+        } else {
+            return 0;
+        }
+    }
+
+    public Integer getStatus(List<ApplicationIssueUtil> applicationIssueUtilList){
+
+        if(applicationIssueUtilList.size() == 1){
+            return applicationIssueUtilList.get(0).getStatus();
+        } else {
+            return -1;
         }
     }
 

@@ -19,16 +19,19 @@ public class ApplicationIssueUtil {
 
     private String mayorEmail;
 
+    private Integer status;
+
     public ApplicationIssueUtil() {
     }
 
-    public ApplicationIssueUtil(String id, String countryCode, String userEmail, String userEcasEmail, String userLang, String mayorEmail) {
+    public ApplicationIssueUtil(String id, String countryCode, String userEmail, String userEcasEmail, String userLang, String mayorEmail, Integer status) {
         this.id = id;
         this.countryCode = countryCode;
         this.userEmail = userEmail;
         this.userEcasEmail = userEcasEmail;
         this.userLang = userLang;
         this.mayorEmail = mayorEmail;
+        this.status = status;
     }
 
     public String getCountryCode() {
@@ -77,5 +80,13 @@ public class ApplicationIssueUtil {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
