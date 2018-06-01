@@ -125,14 +125,17 @@ public class VoucherService {
 
     public ResponseDTO getVoucherSimulationByVoucherAssignment(int voucherAssignmentId, String country, String municipality, Pageable pageable) {
         Page<VoucherSimulation> simulationPaged = null;
-        if (country.equals("All")) {
+
+        if((municipality.equalsIgnoreCase("All") || municipality.isEmpty()) && (country.equalsIgnoreCase("All"))){
             simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentOrdered(voucherAssignmentId, pageable);
         }
-        if(!municipality.equalsIgnoreCase("All")){
+        else if((!municipality.equalsIgnoreCase("All") && !municipality.isEmpty()) && (country.equalsIgnoreCase("All"))){
             simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityOrderedByEuRank(voucherAssignmentId, municipality, pageable);
         }
-
-        if(!country.equalsIgnoreCase("All") && !municipality.equalsIgnoreCase("All")){
+        else if((municipality.equalsIgnoreCase("All") || municipality.isEmpty()) && (!country.equalsIgnoreCase("All"))){
+            simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentInCountryOrdered(voucherAssignmentId, country, pageable);
+        }
+        else if((!municipality.equalsIgnoreCase("All") && !municipality.isEmpty()) && (!country.equalsIgnoreCase("All"))){
             simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByEuRank(voucherAssignmentId, country, municipality, pageable);
         }
 
