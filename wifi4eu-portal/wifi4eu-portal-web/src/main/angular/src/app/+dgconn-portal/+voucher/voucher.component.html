@@ -257,7 +257,17 @@
                             <span pTooltip="{{row.municipalityName}}" tooltipPosition="bottom">{{row.municipalityName}}</span>
                           </ng-template>
                       </p-column>
-                      <p-column field="issues" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.issues' | translate}}" styleClass="text-center"></p-column>
+                      <p-column field="issues" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.issues' | translate}}" styleClass="text-center">
+                        <ng-template let-row="rowData" pTemplate="body">
+                          <span *ngIf="row.issues == 0">-</span>
+                          <span *ngIf="row.issues == 1 || row.issues == 2" class="badge badge-warning">
+                              {{ 'dgConn.badge.warning' | translate }} {{ row.issues }}
+                          </span>
+                          <span *ngIf="row.issues == 3" class="badge badge-warning-yellow">
+                              {{ 'dgConn.badge.warning' | translate }} {{ row.issues }}
+                          </span>
+                        </ng-template>
+                      </p-column>
                       <p-column field="numApplications" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.duplicate' | translate}}" styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                           <span *ngIf="row.numApplications > 1" [class.duplicate-warn]="row.numApplications > 0">{{ 'shared.yes' | translate }}</span>

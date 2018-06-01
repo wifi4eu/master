@@ -511,7 +511,7 @@ public class VoucherService {
                 simulation.setVoucherAssignment(voucherAssignment.getId());
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO.getId());
-                simulation.setIssues(1);
+                simulation.setIssues(registrationService.getIssues(registrationService.getRegistrationIssue(municipalityDTO.getLau())));
                 simulation.setEuRank(applicationsIndexes.get(applicationAssigned.getId()) + 1);
                 simulation.setSelectionStatus(0);
                 simulation.setCountryRank(listOfIds.indexOf(applicationAssigned.getId()) + 1);
@@ -532,7 +532,7 @@ public class VoucherService {
                 simulation.setVoucherAssignment(voucherAssignment.getId());
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO.getId());
-                simulation.setIssues(1);
+                simulation.setIssues(registrationService.getIssues(registrationService.getRegistrationIssue(municipalityDTO.getLau())));
                 simulation.setEuRank(applicationsIndexes.get(reservedApplication.getId()) + 1);
                 simulation.setSelectionStatus(1);
                 simulation.setCountryRank(listOfIds.indexOf(reservedApplication.getId()) + 1);
