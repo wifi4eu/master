@@ -64,7 +64,7 @@
             </p-dataTable>
         </p-tabPanel>
     </p-tabView>
-   
+
 
     <div class="container font">
         <div class="ui-g-1"></div>
@@ -222,8 +222,8 @@
                         </span>
                       </div>
                       <div class="col-md-6">
-                        <span class="download_pre-selection" [class.disabled]="callVoucherAssignment?.status != 2">
-                          <a href="">
+                        <span class="download_pre-selection" [class.disabled]="callVoucherAssignment == null">
+                          <a (click)="exportListExcel()">
                             {{'dgConn.voucherAssignment.downloadList.button' | translate}}
                           </a>
                         </span>

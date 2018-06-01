@@ -32,6 +32,8 @@ import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
+import wifi4eu.wifi4eu.util.ExcelExportGenerator;
+import wifi4eu.wifi4eu.util.VoucherSimulationExportGenerator;
 
 import java.util.*;
 
@@ -135,6 +137,14 @@ public class VoucherService {
             voucherSimulation.setLau(municipalityDTO.getLauId());
         }
         return new ResponseDTO(true, listSimulation, simulationPaged.getTotalElements(), null);
+    }
+
+    public byte[] exportVoucherSimulation(int voucherAssignmentId, String country, Pageable pageable) {
+
+        List<VoucherSimulationDTO> simulationDTOS = (List<VoucherSimulationDTO>) getVoucherSimulationByVoucherAssignment(voucherAssignmentId, country, pageable).getData();
+
+        VoucherSimulationExportGenerator excelExportGenerator = new VoucherSimulationExportGenerator(simulationDTOS, VoucherSimulationDTO.class);
+        return excelExportGenerator.exportExcelFile("voucher_simulation").toByteArray();
     }
 
     @Transactional
