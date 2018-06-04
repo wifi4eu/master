@@ -92,7 +92,7 @@ export class AdditionalInfoComponent {
     }
 
     private checkFirstDocuments() {
-        if (this.registration.legalFile1Size == null || this.registration.legalFile1Size == 0 || this.registration.legalFile3Size == null || this.registration.legalFile3Size == 0) {
+        if (!this.registration.legalFile1Size || !this.registration.legalFile3Size) {
             this.deleteBlocker = true;
         } else {
             this.deleteBlocker = false;
@@ -127,7 +127,6 @@ export class AdditionalInfoComponent {
                                         break;
                                     case 2:
                                         this.doc3 = true;
-                                        ;
                                         break;
                                     case 3:
                                         this.doc4 = true;
@@ -186,18 +185,21 @@ export class AdditionalInfoComponent {
 
     private onSubmit() {
         if (this.registration.allFilesFlag != 1) {
-
             if (this.documentUrls[0]) {
-                this.registration.legalFile1 = this.documentUrls[0];
+                this.registration.legalFile1Mime = this.documentUrls[0];
+                this.registration.legalFile1Size = this.documentFiles[0].size;
             }
             if (this.documentUrls[1]) {
-                this.registration.legalFile2 = this.documentUrls[1];
+                this.registration.legalFile2Mime = this.documentUrls[1];
+                this.registration.legalFile2Size = this.documentFiles[1].size;
             }
             if (this.documentUrls[2]) {
-                this.registration.legalFile3 = this.documentUrls[2];
+                this.registration.legalFile3Mime = this.documentUrls[2];
+                this.registration.legalFile3Size = this.documentFiles[2].size;
             }
             if (this.documentUrls[3]) {
-                this.registration.legalFile4 = this.documentUrls[3];
+                this.registration.legalFile4Mime = this.documentUrls[3];
+                this.registration.legalFile4Size = this.documentFiles[3].size;
             }
 
             this.displayConfirmingData = true;
@@ -228,7 +230,7 @@ export class AdditionalInfoComponent {
 
     private updateMailings() {
         if (!this.isMayor) {
-            if (this.registration.legalFile1Size != null && this.registration.legalFile1Size > 0 && this.registration.legalFile2Size != null && this.registration.legalFile2Size > 0 && this.registration.legalFile3Size != null && this.registration.legalFile3Size > 0 && this.registration.legalFile4Size != null && this.registration.legalFile4Size > 0) {
+            if (!this.registration.legalFile1Size && !this.registration.legalFile2Size && !this.registration.legalFile3Size && !this.registration.legalFile4Size) {
                 this.registration.allFilesFlag = 1;
                 this.registration.mailCounter = 0;
             } else {
@@ -237,7 +239,7 @@ export class AdditionalInfoComponent {
                 this.registration.mailCounter = 3;
             }
         } else {
-            if (this.registration.legalFile1Size != null && this.registration.legalFile1Size > 0 && this.registration.legalFile3Size != null && this.registration.legalFile3Size > 0) {
+            if (!this.registration.legalFile1Size && !this.registration.legalFile3Size) {
                 this.registration.allFilesFlag = 1;
                 this.registration.mailCounter = 0;
             } else {
@@ -247,9 +249,6 @@ export class AdditionalInfoComponent {
             }
 
         }
-        let date = new Date();
-        this.date = date.getTime();
-        this.registration.uploadTime = this.date;
     }
 
     private deleteFromServer(index: number) {
@@ -257,16 +256,16 @@ export class AdditionalInfoComponent {
             this.filesUploaded = true;
             switch (index) {
                 case 0:
-                    this.registration.legalFile1 = null;
+                    this.registration.legalFile1Mime = null;
                     break;
                 case 1:
-                    this.registration.legalFile2 = null;
+                    this.registration.legalFile2Mime = null;
                     break;
                 case 2:
-                    this.registration.legalFile3 = null;
+                    this.registration.legalFile3Mime = null;
                     break;
                 case 3:
-                    this.registration.legalFile4 = null;
+                    this.registration.legalFile4Mime = null;
                     break;
             }
             this.updateMailings();
