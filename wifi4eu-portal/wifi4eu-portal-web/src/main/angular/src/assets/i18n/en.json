@@ -123,6 +123,7 @@
   "suppRegistration.company.info": "Please, provide information about your company.",
   "suppRegistration.company.name": "Company name",
   "suppRegistration.legal.address": "Official address",
+  "suppRegistration.legal.legalAddress": "Legal address",
   "suppRegistration.vat.label": "VAT number",
   "suppRegistration.bic.label": "BIC",
   "suppRegistration.bank.account": "Bank account number (IBAN format)",
@@ -223,6 +224,7 @@
   "shared.sendMessage.subject": "Your message",
   "shared.discussionForum.send": "Send",
   "shared.cancel.button": "Cancel",
+  "shared.select.text": "Select",
   "discussionForum.newMediation.text": "Mediation request",
   "discussionForum.mediationRequest.text": "By sending this request, the European Commission will intervene in the discussion to help all registered users resolve the issue.",
   "discussionForum.mediationRequest.selectText": "The purpose of the mediation process is to determine which registration should be valid.",
@@ -309,6 +311,30 @@
   "benefPortal.voucher.alreadyapplied": "You have already applied for a voucher",
   "benefPortal.voucher.timeleft.title": "Time left to the competition",
   "benefPortal.voucher.timeleft.subtitle": "The next call for applications will open on {{date}} at {{hour}} (Central European Summer Time). ",
+  
+  "benefPortal.selectSupplier.title": "Wi-Fi installation company",
+  "benefPortal.selectSupplier.title.text": "See which Wi-Fi installation companies have already registered and select the one from your choice. You can change the selection of the company up to 18 months after the signature of the grant agreement and until validation from the Wi-Fi installation company.",
+  "benefPortal.selectSupplier.table.logo": "Company logo",
+  "benefPortal.selectSupplier.table.web": "Company website",
+  "benefPortal.selectSupplier.buton.change": "Change selection of company",
+  "benefPortal.selectSupplier.buton.select": "Select installation company", 
+  "benefPortal.selectSupplier.details.title": "Select Wi-Fi installation company",
+  "benefPortal.selectSupplier.details.text": "Please confirm that the Wi-Fi installation company as indicated above will perform the installation of your local WiFi4EU network and its VAT number is correct.", 
+  
+  "benefPortal.selectSupplier.alert.gotvoucher": "You got the voucher. Please select a Wi-Fi installation company",
+  "benefPortal.selectSupplier.alert.selected": "A Wi-Fi installation company has been selected",
+  "benefPortal.selectSupplier.alert.companyselected": "You have selected the following company",
+  "benefPortal.selectSupplier.feedback.selected": "Installation company selected on",
+  
+  "benefPortal.selectedSupplierDetails.title.text": "Here you can see the Wi-Fi installation company that you have selected to install your WiFi4EU hotspot that has accepted your request. You are invited to get into direct contact with the Wi-Fi installation company to install the Wi-Fi equipment in the line with the specification of your grant agreement. After completing the installation, the Wi-Fi installation company will have to declare the completition of the installation.",
+  "benefPortal.selectSupplier.buton.saveAndNotify": "Save and notify Wi-Fi installation company of the selection", 
+  "benefPortal.selectSupplier.details.endText": "For changing your selection please press on \"select installation company\" button. For going to the next step please press \"Save and notify Wi-Fi installation company of the selection\".", 
+
+  "benefPortal.voucher.table.text1": "Your request for voucher has been submitted successfully. WiFi4EU will soon let you know if you got a voucher for free wi-fi.",
+  "benefPortal.voucher.statusmessage6": "Your request for voucher has been submitted successfully. WiFi4EU will soon let you know if you got a voucher for free wi-fi.",
+
+  
+
   "home.whatch.video": "Watch Video",
   "home.part3.text4": "Remaining time for the launch of the call:",
   "home.part4.subtitle": "Please visit the following links for more information about the project",
@@ -547,7 +573,7 @@
   "dgconn.dashboard.card.exportImport": "Export/Import Registration Data",
   "dgConn.export.dashboard": "Export",
   "dgConn.import.dashboard": "Import",
-  "itemMenu.listSuppliers": "Registered WiFi installation companies",
+  "itemMenu.listSuppliers": "Registered Wi-Fi installation companies",
   "shared.totalRecords": "Total records",
   "dgconn.dashboard.card.messageExport": "Your file have been exported correctly!",
   "dgconn.dashboard.card.messageImport": "Your file have been imported correctly!",
