@@ -1,39 +1,94 @@
+<html>
+<head>
+    <style type="text/css">
+    .myButton {
+	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f6f6f6));
+	background:-moz-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background:-o-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background:-ms-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0);
+	background-color:#ffffff;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#1841a8;
+	font-family:Arial;
+	font-size:19px;
+	font-weight:bold;
+	padding:32px 76px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
+}
+.myButton:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f6f6f6), color-stop(1, #ffffff));
+	background:-moz-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background:-webkit-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background:-o-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background:-ms-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff',GradientType=0);
+	background-color:#f6f6f6;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+    </style>
+</head>
+<body>
 <div class="exportImport"></div>
 <!--<div class="container" align="center">-->
 <div class="container">
+    <br/><br/><br/><br/>
+    <span>Wifi4eu Financial</span>
+    <br/>
+    <span>Export/Import Data</span>
+    <br/>
     <div class="ui-g">
-        <div class="clearfix"></div>
-        <div class="container font" style="margin-top: 5em;">
         <h1 class="beneficiaryTitle">Import Beneficiaries Info.</h1>
         <div class="ui-g-12">
             <span class="input-group-btn">
-                <input type="file" (change)="importLegalEntityF($event)" accept=".json,application/json">
+                <input type="file" (change)="importLegalEntityF($event)" accept=".json,application/json"/>
                 <!--button class="btn btn-primary" (click)="importLegalEntityF()" type="button">Import Beneficiaris Info.</button-->
             </span>
         </div>
-        <div class="clearfix"></div>
-        <div class="container font" style="margin-top: 5em;">
+    </div>
+    <div class="ui-g">
         <h1 class="beneficiaryTitle">Import Budgetary Commitment Info.</h1>
         <div class="ui-g-12">
             <span class="input-group-btn">
-                <input type="file" (change)="importBudgetaryCommitment($event)" accept=".json,application/json">
+                <input type="file" (change)="importBudgetaryCommitment($event)" accept=".json,application/json"/>
                 <!--<button class="btn btn-primary" (click)="importBudgetaryCommitment()" type="button">Import BC Info.</button>-->
             </span>
         </div>
-        <br/><br/><br/><br/>
+    </div>
+    <div class="container font" style="margin-top: 5em;">
         <div class="ui-g-12">
             <span class="input-group-btn">
                 <button class="btn btn-primary" (click)="exportLegalEntityFBCValidate()" type="button">Export Lef and Bc Validation</button>
             </span>
         </div>
     </div>
-    <!--div class="clearfix"></div>
-    <div class="container font" style="margin-top: 5em;">
-        <h1 class="beneficiaryTitle">WiFi4EU Abac Test</h1>
-        <p>Click lick on one of the buttons below to import/export your JSON file and communicate with ABAC.</p>
-        <input type="file" (change)="onFileSelection($event)" accept=".json,application/json">
-        <button (click)="exportJson()" [disabled]="!exportEnabled">Export</button>
-    </div-->
-</div>
+    <br/>
+    <font size="2" color="black" align="left">Legal Entities (LEF)</font>
+    <br/><br/>
+    <a href="#" class="myButton">Create Legal Entities to in ABAC from WIFI4EU files <br/><br/> <font size="2" color="black" align="left">Based on the file given by Wifi4eu portal, this button will import <br/> all parameters necessary for the Wifi4eu Interface to create the <br/> data. Wifi4eu will launch request in ABAC.</font></a>
+    <a href="#" class="myButton">Check Statuts of LEFs in ABAC <br/><br/> <font size="2" color="black" align="left">This button will check in ABAC the status of the LEFs for wich <br/> request creatation. In case there is a regected LEF, it will display <br/> a screen (country + municility + ABAC ref) so tou can provide <br/> the correct ABAC reference number for all regected LEFs.It will <br/> create a file  wich you can download a later must import into <br/> the Wifi4eu Portal.</font></a>
+    <br/><br/>
+    <font size="2" color="black" align="left">Budgetary Commitment (BC)</font>
+    <br/><br/>
+    <a href="#" class="myButton">Create BC <br/><br/> <font size="2" color="black" align="left">This button will import all parameters necessary for the Wifi4eu <br/> Interface to create the data and it will create the BC in ABAC.</font></a>
+    <a href="#" class="myButton">Check Statuts of BCs in ABAC <br/><br/> <font size="2" color="black" align="left">Once create by the Wifi4eu Interface and validated by your <br/> AOSD, clicking on this button will allow you to retrieve the data <br/> in a file so to updated the portal.</font></a>
 
+</div>
+</body>
+</html>
 

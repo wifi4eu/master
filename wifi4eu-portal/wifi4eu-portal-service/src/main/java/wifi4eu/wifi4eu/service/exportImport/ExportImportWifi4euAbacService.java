@@ -10,12 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.dto.model.ExportImportBeneficiaryInformationDTO;
+import wifi4eu.wifi4eu.entity.exportImport.ValidatedBC;
+import wifi4eu.wifi4eu.entity.exportImport.ValidatedLEF;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportRegistrationDataMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportRegistrationDataRepository;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBeneficiaryInformationMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportBeneficiaryInformationRepository;
 import wifi4eu.wifi4eu.mapper.exportImport.ExportImportBudgetaryCommitmentMapper;
 import wifi4eu.wifi4eu.repository.exportImport.ExportImportBudgetaryCommitmentRepository;
+import wifi4eu.wifi4eu.mapper.exportImport.ExportImportValidatedLefMapper;
+import wifi4eu.wifi4eu.repository.exportImport.ValidatedLefRepository;
+import wifi4eu.wifi4eu.mapper.exportImport.ExportImportValidatedBcMapper;
+import wifi4eu.wifi4eu.repository.exportImport.ValidatedBcRepository;
 import wifi4eu.wifi4eu.service.exportImport.file.CreateFile;
 import wifi4eu.wifi4eu.service.exportImport.file.ReadFile;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -50,6 +56,18 @@ public class ExportImportWifi4euAbacService {
 
     @Autowired
     ExportImportBudgetaryCommitmentRepository exportImportBudgetaryCommitmentRepository;
+
+    @Autowired
+    ExportImportValidatedLefMapper exportImportValidatedLefMapper;
+
+    @Autowired
+    ValidatedLefRepository validatedLefRepository;
+
+    @Autowired
+    ExportImportValidatedBcMapper exportImportValidatedBcMapper;
+
+    @Autowired
+    ValidatedBcRepository validatedBcRepository;
 
     @Autowired
     UserService userService;
@@ -185,9 +203,31 @@ public class ExportImportWifi4euAbacService {
         ResponseDTO result = new ResponseDTO();
         Gson gson = new GsonBuilder().create();
         JsonParser parser = new JsonParser();
-        JsonObject jsonString = parser.parse(jsonStringFile).getAsJsonObject();
-        JsonObject lefVal = jsonString.getAsJsonObject("validatedLEF");
-        JsonObject bcVal = jsonString.getAsJsonObject("validatedBC");
+        JsonObject resultJson = parser.parse(jsonStringFile).getAsJsonObject();
+        JsonArray callsJsonArrayLef = resultJson.getAsJsonArray("validatedLEF");
+        for (int i = 0; i < callsJsonArrayLef.size(); i++) {
+            JsonObject callJson = callsJsonArrayLef.get(i).getAsJsonObject();
+            CallDTO call = gson.fromJson(callJson, CallDTO.class);
+            JsonArray lefVals = resultJson.getAsJsonArray("idLef");
+            for (int u = 0; u < lefVals.size(); u++) {
+                JsonObject jsonStringLef = lefVals.get(u).getAsJsonObject();
+                JsonObject lefVal = jsonStringLef.getAsJsonObject("idLef");
+                ValidatedLEF validatedLEF=new ValidatedLEF(Integer.parseInt(lefVal.toString()));
+                validatedLefRepository.save(validatedLEF);
+            }
+        }
+        JsonArray callsJsonArrayBc = resultJson.getAsJsonArray("validatedBC");
+        for (int i = 0; i < callsJsonArrayBc.size(); i++) {
+            JsonObject callJson = callsJsonArrayBc.get(i).getAsJsonObject();
+            CallDTO call = gson.fromJson(callJson, CallDTO.class);
+            JsonArray lefBcs = resultJson.getAsJsonArray("idBc");
+            for (int u = 0; u < lefBcs.size(); u++) {
+                JsonObject jsonStringLef = lefBcs.get(u).getAsJsonObject();
+                JsonObject lefBc = jsonStringLef.getAsJsonObject("idBc");
+                ValidatedBC validatedBC=new ValidatedBC(Integer.parseInt(lefBc.toString()));
+                validatedBcRepository.save(validatedBC);
+            }
+        }
     }
 
     private Integer setIssueToDgconnBeneficiary(Integer lauId) {

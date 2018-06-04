@@ -113,18 +113,18 @@
         <!-- PERSISTENCE PROPERTIES -->
 
         <app.context.root>/wifi4eu</app.context.root>
-        <!--<app.context.root>/wifi4eu-financial</app.context.root>-->
+        <!--app.context.root>/wifi4eu-financial</app.context.root-->
         <app.datasource.name>wifi4euDS</app.datasource.name>
-        <!--<app.datasource.name>Wifi4euAbacDataSource</app.datasource.name>-->
+        <!--app.datasource.name>Wifi4euAbacDataSource</app.datasource.name-->
         <jndi.datasource.name>wififoreu</jndi.datasource.name>
-        <!--<jndi.datasource.name>jdbc/Wifi4euAbacDataSource</jndi.datasource.name>-->
+        <!--jndi.datasource.name>jdbc/Wifi4euAbacDataSource</jndi.datasource.name-->
         <persistence.unit.name>wifi4euPersistence</persistence.unit.name>
-        <!--<persistence.unit.name>wifi4eu-finanacialPersistence</persistence.unit.name>-->
+        <!--persistence.unit.name>wifi4eu-finanacialPersistence</persistence.unit.name-->
         <eclipselink.logging.level>WARNING</eclipselink.logging.level>
         <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
         <eclipselink.logging.parameters>true</eclipselink.logging.parameters>
         <eclipselink.target.database>SQLServer</eclipselink.target.database>
-        <!--<eclipselink.target.database>Oracle</eclipselink.target.database>-->
+        <!--eclipselink.target.database>Oracle</eclipselink.target.database-->
 
         <!-- App settings -->
         <schemes>http</schemes>
