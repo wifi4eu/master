@@ -207,7 +207,7 @@
                 </div>
                 <div class="col-md-4">
                   <button type="button" class="btn btn-primary simulate-button" (click)="simulateVoucherAssignment()">
-                    {{ 'dgConn.voucherAssignment.simulateVouchers' | translate }}
+                    {{ 'dgConn.voucherAssignment.simulateVouchers.button' | translate }}
                   </button>
                 </div>
               </div>
@@ -321,6 +321,23 @@
                   </div>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-md-3 col-offset-md-3">
+                  <button type="button" class="btn btn-primary preSelection-button" (click)="checkPreListEnabled()">
+                    {{'dgConn.voucherAssignment.preSelectionSave.button' | translate}}
+                  </button>
+                </div>
+                <div class="col-md-3">
+                  <button type="button" class="btn btn-primary preSelection-button" disabled>
+                    {{'dgConn.voucherAssignment.freezeList.button' | translate}}
+                  </button>
+                </div>
+                <div class="col-md-3">
+                  <button type="button" class="btn btn-primary preSelection-button" disabled>
+                    {{'dgConn.voucherAssignment.sendNotification.button' | translate}}
+                  </button>
+                </div>
+              </div>
             </p-tabPanel>
           </p-tabView>
         </div>
@@ -335,60 +352,10 @@
   </div>
 </ng-template>
 
-<ng-template #loadingTable>
-    <p-dataTable [value]="[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]" [responsive]="true" styleClass="tableloading">
-        <p-column header="{{'dgConn.voucherAssignment.table.euRank' | translate}}">
-          <ng-template let-rowData="rowData" pTemplate="body">
-            <div class="loading-table-cell"></div>
-          </ng-template>
-        </p-column>
-        <p-column header="{{'dgConn.voucherAssignment.table.countryRank' | translate}}" [style]="{'width':'10%'}">
-          <ng-template let-rowData="rowData" pTemplate="body">
-            <div class="loading-table-cell"></div>
-          </ng-template>
-        </p-column>
-        <p-column header="{{'dgConn.voucherAssignment.table.selectionStatus' | translate}}">
-          <ng-template let-rowData="rowData" pTemplate="body">
-            <div class="loading-table-cell"></div>
-          </ng-template>
-        </p-column>
-        <p-column header="{{'dgConn.voucherAssignment.table.country' | translate}}">
-          <ng-template let-rowData="rowData" pTemplate="body">
-            <div class="loading-table-cell"></div>
-          </ng-template>
-        </p-column>
-        <p-column header="{{'dgConn.voucherAssignment.table.municipality' | translate}}">
-          <ng-template let-rowData="rowData" pTemplate="body">
-            <div class="loading-table-cell"></div>
-          </ng-template>
-        </p-column>
-        <p-column header="{{'dgConn.voucherAssignment.table.issues' | translate}}">
-          <ng-template let-rowData="rowData" pTemplate="body">
-            <div class="loading-table-cell"></div>
-          </ng-template>
-        </p-column>
-        <p-column header="{{'dgConn.voucherAssignment.table.duplicate' | translate}}">
-          <ng-template let-rowData="rowData" pTemplate="body">
-            <div class="loading-table-cell"></div>
-          </ng-template>
-        </p-column>
-        <p-column header="{{'dgConn.voucherAssignment.table.applicationStatus' | translate}}">
-          <ng-template let-rowData="rowData" pTemplate="body">
-            <div class="loading-table-cell"></div>
-          </ng-template>
-        </p-column>
-        <p-column header="{{'dgConn.voucherAssignment.table.action' | translate}}">
-          <ng-template let-rowData="rowData" pTemplate="body">
-            <div class="loading-table-cell"></div>
-          </ng-template>
-        </p-column>
-      </p-dataTable>
-</ng-template>
-
 <p-dialog [(visible)]="displayConfirmingData" [modal]="true" [responsive]="true"
           [resizable]="false"
           [draggable]="false" [closable]="false" [closeOnEscape]="false">
-    <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
+  <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
   <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningSimulation' | translate }}</h1>
   <p class="ModalpConfirmation" style="margin-bottom: 1em;">
     <button (click)="cancelSimulation()">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
@@ -399,6 +366,19 @@
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
   <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
   <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.downloading' | translate }}</h1>
+</p-dialog>
+
+<p-dialog [(visible)]="preSelectedEnabled != null && !preSelectedEnabled" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+  <h1 class="Modalh1Confirmation">ERRORRRRRR</h1>
+  <button (click)="preSelectedEnabled = null">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+</p-dialog>
+
+<p-dialog [(visible)]="preSelectedEnabled != null && preSelectedEnabled" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+  <h1 class="Modalh1Confirmation">PA ALANTEEEEE</h1>
+  <button (click)="preSelectedEnabled = null">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+  <button (click)="savePreList()">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
 </p-dialog>
 
 <style>

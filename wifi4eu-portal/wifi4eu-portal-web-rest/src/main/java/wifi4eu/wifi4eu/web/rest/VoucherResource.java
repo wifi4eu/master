@@ -185,6 +185,42 @@ public class VoucherResource {
         }
     }
 
+    @ApiOperation(value = "Check pre-selected list enabled")
+    @RequestMapping(value = "/assignment/{assignmentId}/check-prelist-enabled", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public boolean checkSavePreSelectionEnabled(@PathVariable("assignmentId") final Integer assignmentId){
+        if (!permissionChecker.checkIfDashboardUser()) {
+            throw new AccessDeniedException("Access denied: exportExcelVoucherSimulation");
+        }
+        return voucherService.checkSavePreSelectionEnabled(assignmentId);
+    }
+
+    @ApiOperation(value = "Save simulation to pre-selected list")
+    @RequestMapping(value = "/assignment/save-prelist", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO savePreListSimulation(@RequestParam("assignmentId") Integer assignmentId, @RequestParam("callId") Integer callId, HttpServletResponse response) throws IOException {
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: exportExcelVoucherSimulation");
+            }
+            List<VoucherSimulationDTO> result = voucherService.savePreListSimulation(assignmentId, callId);
+            return new ResponseDTO(true, result, null);
+        }
+        catch (AccessDeniedException adex){
+            if(_log.isWarnEnabled()){
+                _log.warn(adex.getMessage());
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }catch (Exception ex){
+            if(_log.isWarnEnabled()){
+                _log.warn(ex.getMessage());
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
     @ApiOperation(value = "Export voucher simulation")
     @RequestMapping(value = "/exportExcel/assignment/{assignmentId}/simulation", method = RequestMethod.GET)
     @ResponseBody

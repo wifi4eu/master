@@ -66,6 +66,8 @@ export class DgConnVoucherComponent {
   private sortField = 'euRank';
   private pageLinks: number = null;
   private loadingSimulation = false;
+  private preSelectedEnabled = null;
+  private confirmationModal = false;
 
   private searchedMunicipality = null;
 
@@ -194,6 +196,18 @@ export class DgConnVoucherComponent {
     })
   }
 
+  checkPreListEnabled(){
+    this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id).subscribe((response: boolean) => {
+      this.preSelectedEnabled = response;
+    })
+  }
+
+  savePreList(){
+    this.voucherApi.savePreListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((res) => {
+      console.log("DSJAD")
+    })
+  }
+
   sortTable(event){
     this.sortField = event.field;
     this.sortDirection = event.order === 1 ? 'ASC' : 'DESC';
@@ -216,7 +230,7 @@ export class DgConnVoucherComponent {
       this.validApplications = data;
     });
 
-    this.voucherApi.getVoucherAssignmentByCall(this.callSelected.id).subscribe((data: VoucherAssignmentDTO) => {  
+    this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.callSelected.id).subscribe((data: VoucherAssignmentDTO) => {  
       this.callVoucherAssignment = data;
       if(data == null){
         this.simulateVoucherAssignment();
@@ -248,9 +262,9 @@ export class DgConnVoucherComponent {
       this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((data: VoucherAssignmentDTO) => {
         this.displayConfirmingData = false;
         this.callVoucherAssignment = data;
-        //this.show();
-        this.loadPage();
         this.loadingSimulation = false;
+        this.loadPage();
+        //window.location.reload();
       }, (error) => {
         this.loadingSimulation = false;
         this.displayConfirmingData = false;

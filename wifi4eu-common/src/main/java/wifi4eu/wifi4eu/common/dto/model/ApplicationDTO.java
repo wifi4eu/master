@@ -18,11 +18,12 @@ public class ApplicationDTO {
     private int lcStatus;
     private int status;
     private String invalidateReason;
+    private Boolean preSelectedFlag;
 
     public ApplicationDTO() {
     }
 
-    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason) {
+    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, Boolean preSelectedFlag) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -40,6 +41,7 @@ public class ApplicationDTO {
         this.lcStatus = lcStatus;
         this.status = status;
         this.invalidateReason = invalidateReason;
+        this.preSelectedFlag = preSelectedFlag;
     }
 
     public int getId() {
@@ -176,5 +178,13 @@ public class ApplicationDTO {
 
     public void setInvalidateReason(String invalidateReason) {
         this.invalidateReason = invalidateReason;
+    }
+
+    public Boolean getPreSelectedFlag() {
+        return preSelectedFlag;
+    }
+
+    public void setPreSelectedFlag(Boolean preSelectedFlag) {
+        this.preSelectedFlag = preSelectedFlag;
     }
 }
