@@ -116,10 +116,10 @@ export class SelectedSupplierDetailsComponent {
   private changeSupplier() {
     this.router.navigate(['/beneficiary-portal/select-supplier', this.municipality.id]);
   }
-
+  
   /* Assign supplier to the beneficiary application */
-  private assignSupplier() {
-
+  private saveAndNotify() {
+    this.router.navigate(['/beneficiary-portal/select-supplier', this.municipality.id]);
   }
 
 // End of exported class
