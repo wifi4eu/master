@@ -4,6 +4,7 @@ import { VoucherComponent } from "./+voucher/voucher.component";
 import { DiscussionComponent } from "./+discussion/discussion.component";
 import { BeneficiaryProfileComponent } from "./+profile/profile.component";
 import { AdditionalInfoComponent } from "./+additional-info/additional-info.component";
+import { MyVoucherComponent } from "./+my-voucher/my-voucher.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -13,6 +14,9 @@ import { AdditionalInfoComponent } from "./+additional-info/additional-info.comp
         }, {
             path: 'voucher',
             component: VoucherComponent,
+        }, {
+            path: 'my-voucher',
+            component: MyVoucherComponent,
         }, {
             path: 'discussion-forum/:threadId',
             component: DiscussionComponent
