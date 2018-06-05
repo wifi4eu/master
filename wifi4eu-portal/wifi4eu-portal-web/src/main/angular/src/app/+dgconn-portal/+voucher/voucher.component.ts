@@ -245,9 +245,9 @@ export class DgConnVoucherComponent {
     this.displayConfirmingData = true;
     this.loadingSimulation = true;
     if(this.callVoucherAssignment == null || this.callVoucherAssignment.status == 1){
-      this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((data: VoucherAssignmentDTO) => {
+      this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((resp: ResponseDTO) => {
         this.displayConfirmingData = false;
-        this.callVoucherAssignment = data.data;
+        this.callVoucherAssignment = resp.data;
         //this.show();
         this.loadPage();
         this.loadingSimulation = false;
