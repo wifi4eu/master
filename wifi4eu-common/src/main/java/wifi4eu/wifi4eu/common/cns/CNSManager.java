@@ -93,7 +93,7 @@ public class CNSManager {
     }
 
 
-    public void sendInoperationNotificationAfterInstallationConfirmation(String email, String name) {
+    public void sendInoperationNotificationAfterInstallationConfirmation(String email, String name, Locale locale) {
         logger.info("[I] sendInoperationNotificationAfterInstallationConfirmation");
 
         sendMessage(
@@ -106,7 +106,7 @@ public class CNSManager {
         logger.info("[F] sendInoperationNotificationAfterInstallationConfirmation");
     }
 
-    public void sendInoperationNotification(String email, String name, int numberOfDays) {
+    public void sendInoperationNotification(String email, String name, int numberOfDays, Locale locale) {
         logger.info("[I] sendInoperationNotification");
         logger.info("EMAIL SEND => " + email);
         logger.info("NAME SEND => " + name);
@@ -139,50 +139,59 @@ public class CNSManager {
     }
 
 
-    public void sendInstallationConfirmationNotification(String email, String name) {
+    public void sendInstallationConfirmationNotification(String email, String name, Locale locale) {
         logger.info("[I] sendInstallationConfirmationNotification");
 
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.submission.subject");
+        String msgBody = bundle.getString("mail.submission.body");
         sendMessage(
                 email,
                 name,
-                this.cnsMessageInstallationConfirmationSubject,
-                this.cnsMessageInstallationConfirmationBody,
-                this.cnsMessageInstallationConfirmationSummary);
+                subject,
+                msgBody,
+                subject);
 
         logger.info("[F] sendInstallationConfirmationNotification");
     }
 
 
-    public void sendInstallationConfirmationFromBeneficiary(String email, String name, String beneficiaryName) {
+    public void sendInstallationConfirmationFromBeneficiary(String email, String name, String beneficiaryName, Locale locale) {
         logger.info("[I] sendInstallationConfirmationFromBeneficiary");
 
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.confirmation.subject");
+        String msgBody = bundle.getString("mail.confirmation.body");
         sendMessage(
                 email,
                 name,
-                this.cnsMessageInstallationConfirmationBeneficiarySubject + beneficiaryName,
-                this.cnsMessageInstallationConfirmationBeneficiaryBody,
-                this.cnsMessageInstallationConfirmationBeneficiarySummary);
+                subject + beneficiaryName,
+                msgBody,
+                subject);
 
         logger.info("[F] sendInstallationConfirmationFromBeneficiary");
     }
 
 
-    public void sendInstallationRejectionFromBeneficiary(String email, String name, String beneficiaryName, String ccEmail, String ccName) {
+    public void sendInstallationRejectionFromBeneficiary(String email, String name, String beneficiaryName, String ccEmail, String ccName, Locale locale) {
         logger.info("[I] sendInstallationRejectionFromBeneficiary");
 
+        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+        String subject = bundle.getString("mail.revision.subject");
+        String msgBody = bundle.getString("mail.revision.body");
         sendMessage(
                 email,
                 name,
-                this.cnsMessageInstallationRejectionBeneficiarySubject + beneficiaryName,
-                this.cnsMessageInstallationRejectionBeneficiaryBody,
-                this.cnsMessageInstallationRejectionBeneficiarySummary);
+                subject + beneficiaryName,
+                msgBody,
+                subject);
 
         sendMessage(
                 ccEmail,
                 ccName,
-                this.cnsMessageInstallationRejectionBeneficiarySubject + beneficiaryName,
-                this.cnsMessageInstallationRejectionBeneficiaryBody,
-                this.cnsMessageInstallationRejectionBeneficiarySummary);
+                subject + beneficiaryName,
+                msgBody,
+                subject);
 
         logger.info("[F] sendInstallationRejectionFromBeneficiary");
     }
