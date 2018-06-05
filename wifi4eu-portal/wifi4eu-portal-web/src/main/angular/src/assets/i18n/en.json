@@ -665,6 +665,7 @@
   "dgConn.applicantDetails.legalFile.reason.cause6": "6. The document is missing signature",
   "dgconn.voucherAssignment.runningSimulation": "Running simulation...",
   "dgconn.voucherAssignment.runningSimulation.cancel": "CANCEL",
+  "dgconn.voucherAssignment.runningSimulation.confirm" : "CONFIRM",
   "dgconn.voucherAssignment.downloading": "Downloading..."
 
 }
