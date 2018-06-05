@@ -374,9 +374,11 @@ public class ApplicationService {
         for (int i = 0; i < applicantsList.size(); i++) {
             ApplicantListItemDTO applicant = applicantsList.get(i);
             List<ApplicationIssueUtil> applicationIssueUtilList = registrationService.getRegistrationIssue(applicant.getLauId());
-            if(applicant.getCounter() == 0) {
+            if(applicant.getCounter() == 0 && applicationIssueUtilList.size() > 1) {
                 applicant.setIssueStatus(0);
-                applicant.setStatus(0);
+                applicant.setStatus(1);
+            } else if(applicant.getCounter() == 0 && applicationIssueUtilList.size() == 1){
+                applicant.setIssueStatus(registrationService.getIssues(applicationIssueUtilList));
             } else {
                 applicant.setIssueStatus(registrationService.getIssues(applicationIssueUtilList));
                 applicant.setStatus(registrationService.getStatus(applicationIssueUtilList));
@@ -459,7 +461,7 @@ public class ApplicationService {
                 break;
             }
         }
-        RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
+        RegistrationDTO registration = registrationService.getRegistrationById(applicationDB.getRegistrationId());
         if (pendingFollowup) {
             registration.setAllFilesFlag(0);
             applicationDB.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
