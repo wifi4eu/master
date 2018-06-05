@@ -29,7 +29,7 @@ public class VoucherAssignment {
     @JoinColumn(name = "call")
     private Call call;
 
-    @OneToMany(mappedBy = "voucherAssignment")
+    @OneToMany(mappedBy = "voucherAssignment", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Set<VoucherSimulation> voucherSimulations;
 
     public VoucherAssignment() {

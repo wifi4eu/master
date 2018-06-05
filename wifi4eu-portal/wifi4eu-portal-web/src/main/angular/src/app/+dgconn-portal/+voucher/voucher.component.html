@@ -246,7 +246,7 @@
                           <span *ngIf="row.selectionStatus == 1">{{ 'dgConn.voucherAssignment.selectionStatus.reserve' | translate}}</span>
                         </ng-template>
                       </p-column>
-                      <p-column field="application.preSelectedFlag" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationStatus' | translate}}"
+                      <p-column field="application.preSelectedFlag" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationChange' | translate}}"
                       styleClass="text-center">
                       <ng-template let-row="rowData" pTemplate="body">
                         <span *ngIf="row.application.preSelectedFlag == 0" class="duplicate-warn">{{'dgConn.voucherAssignment.table.applicationChangeNew' | translate}}</span>
@@ -258,7 +258,7 @@
                           <span pTooltip="{{row.country}}" tooltipPosition="bottom">{{row.country}}</span>
                         </ng-template>
                       </p-column>
-                      <p-column field="municipality" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.municipality' | translate}}"
+                      <p-column field="municipalityName" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.municipality' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                             <span pTooltip="{{row.municipalityName}}" tooltipPosition="bottom">{{row.municipalityName}}</span>
@@ -281,7 +281,7 @@
                           <span *ngIf="row.numApplications == 1">{{ 'shared.no' | translate }}</span>
                         </ng-template>
                       </p-column>
-                      <p-column field="application.status" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationChange' | translate}}"
+                      <p-column field="application.status" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationStatus' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                           <span *ngIf="row.application.status == 0">{{'dgConn.voucherAssignment.applicationStatus.applied' | translate}}</span>
@@ -294,15 +294,17 @@
                           <div style="position:relative;" (click)="op.show($event)">
                             <p-overlayPanel #op>
                               <div class="row">
-                                  <a (click)="goToMunicipality(rowData.lau)">
+                                <a (click)="goToMunicipality(rowData.lau)">
                                 <div class="col-sm-2"><span class="fa fa-eye"></span></div>
                                 <div class="col-sm-6">  <span>{{'dgConn.voucherAssignment.applicationStatus.view' | translate}}</span></div>
                               </a> 
                               </div>
-                              <!--<div class="row">
-                                <div class="col-sm-2"><span class="fa fa-ban"></span></div>
-                                <div class="col-sm-6">  <span>{{'dgConn.voucherAssignment.applicationStatus.reject' | translate}}</span></div>
-                              </div>-->
+                              <div class="row">
+                                <a [class.reject-disabled]="!callVoucherAssignment?.hasPreListSaved">
+                                  <div class="col-sm-2"><span class="fa fa-ban"></span></div>
+                                  <div class="col-sm-6">  <span>{{'dgConn.voucherAssignment.applicationStatus.reject' | translate}}</span></div>
+                                </a>
+                              </div>
                             </p-overlayPanel>
                             <i  class="fa fa-ellipsis-v actions-icon" aria-hidden="true" ></i>
                           </div>
