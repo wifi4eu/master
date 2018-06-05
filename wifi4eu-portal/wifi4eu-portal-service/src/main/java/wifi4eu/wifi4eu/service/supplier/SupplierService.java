@@ -212,31 +212,7 @@ public class SupplierService {
     }
 
     public List<SupplierDTO> findSimilarSuppliers(int supplierId) {
-        List<SupplierDTO> similarSuppliers = new ArrayList<>();
-        SupplierDTO originalSupplier = getSupplierById(supplierId);
-        if (originalSupplier != null) {
-            List<SupplierDTO> suppliersVat = getSuppliersByVat(originalSupplier.getVat());
-            for (SupplierDTO suppVat : suppliersVat) {
-                if (suppVat.getId() != originalSupplier.getId()) {
-                    similarSuppliers.add(suppVat);
-                }
-            }
-            List<SupplierDTO> suppliersIban = getSuppliersByAccountNumber(originalSupplier.getAccountNumber());
-            for (SupplierDTO suppIban : suppliersIban) {
-                if (suppIban.getId() != originalSupplier.getId()) {
-                    boolean alreadyAddedd = false;
-                    for (SupplierDTO suppVat : suppliersVat) {
-                        if (suppVat.getId() == suppIban.getId()) {
-                            alreadyAddedd = true;
-                        }
-                    }
-                    if (!alreadyAddedd) {
-                        similarSuppliers.add(suppIban);
-                    }
-                }
-            }
-        }
-        return similarSuppliers;
+        return supplierMapper.toDTOList(supplierRepository.findSimilarSuppliers(supplierId));
     }
 
     @Transactional
