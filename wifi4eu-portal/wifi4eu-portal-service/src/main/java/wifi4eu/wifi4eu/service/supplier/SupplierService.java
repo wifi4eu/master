@@ -13,9 +13,12 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.common.utils.SupplierValidator;
+import wifi4eu.wifi4eu.entity.supplier.SupplierListItem;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
+import wifi4eu.wifi4eu.mapper.supplier.SupplierListItemMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
+import wifi4eu.wifi4eu.repository.supplier.SupplierListItemRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
 import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
@@ -33,7 +36,13 @@ public class SupplierService {
     SupplierMapper supplierMapper;
 
     @Autowired
+    SupplierListItemMapper supplierListItemMapper;
+
+    @Autowired
     SupplierRepository supplierRepository;
+
+    @Autowired
+    SupplierListItemRepository supplierListItemRepository;
 
     @Autowired
     SuppliedRegionMapper suppliedRegionMapper;
@@ -280,39 +289,54 @@ public class SupplierService {
     }
 
     public List<SupplierListItemDTO> findDgconnSuppliersList(String name, int page, int count, String orderField, int orderType) {
-        List<SupplierListItemDTO> suppliersList = new ArrayList<>();
+
         Direction direction;
         if (orderType == -1) {
             direction = Direction.DESC;
         } else {
             direction = Direction.ASC;
         }
-        List<SupplierDTO> suppliers;
-        if (name != null) {
-            if (!name.trim().isEmpty()) {
-                suppliers = supplierMapper.toDTOList(supplierRepository.findByNameContainingIgnoreCase(new PageRequest(page, count, direction, orderField), name).getContent());
-            } else {
-                suppliers = supplierMapper.toDTOList(supplierRepository.findAll(new PageRequest(page, count, direction, orderField)).getContent());
-            }
-        } else {
-            suppliers = supplierMapper.toDTOList(supplierRepository.findAll(new PageRequest(page, count, direction, orderField)).getContent());
+
+        if(name == null || name.trim().isEmpty()){
+            name = "";
         }
-        for (SupplierDTO supplier : suppliers) {
-            SupplierListItemDTO supplierItem = new SupplierListItemDTO(supplier.getId(), supplier.getName(), supplier.getWebsite(), supplier.getVat(), supplier.getAccountNumber(), supplier.getStatus());
-            List<SupplierDTO> similarSuppliers = findSimilarSuppliers(supplierItem.getId());
-            int numberRegistrations = 0;
-            if (supplierItem.getStatus() != 1) {
-                numberRegistrations = 1;
-            }
-            for (SupplierDTO similarSupplier : similarSuppliers) {
-                if (similarSupplier.getStatus() != 1) {
-                    numberRegistrations++;
+        List<SupplierListItemDTO> suppliers;
+
+        switch(orderField){
+            case "website":
+                if(direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByWebsiteAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByWebsiteDesc(name, page * count, count));
                 }
-            }
-            supplierItem.setNumberRegistrations(numberRegistrations);
-            suppliersList.add(supplierItem);
+                break;
+            case "vat":
+                if(direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByVatAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByVatDesc(name, page * count, count));
+                }
+
+                break;
+            case "status":
+                if(direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByStatusDesc(name, page * count, count));
+                }
+
+                break;
+            case "name":
+            default:
+                if(direction.equals(Direction.ASC)) {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNameAsc(name, page * count, count));
+                } else {
+                    suppliers = supplierListItemMapper.toDTOList(supplierListItemRepository.findSupplierListItemsOrderByNameDesc(name, page * count, count));
+                }
+                break;
+
         }
-        return suppliersList;
+        return suppliers;
     }
 
     public Long getCountAllSuppliers() {
