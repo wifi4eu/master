@@ -376,7 +376,7 @@ public class ApplicationService {
             List<ApplicationIssueUtil> applicationIssueUtilList = registrationService.getRegistrationIssue(applicant.getLauId());
             if(applicant.getCounter() == 0 && applicationIssueUtilList.size() > 1) {
                 applicant.setIssueStatus(0);
-                applicant.setStatus(1);
+                applicant.setStatus(ApplicationStatus.KO.getValue());
             } else if(applicant.getCounter() == 0 && applicationIssueUtilList.size() == 1){
                 applicant.setIssueStatus(registrationService.getIssues(applicationIssueUtilList));
             } else {
