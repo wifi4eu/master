@@ -51,7 +51,7 @@ export class CustomLayoutNavBarTopMenuComponent extends UxLayoutNavBarTopMenuCom
     @Input() goToHomeButton: boolean = false;
 
     get hasLinks(): boolean {
-        return this.links.length != 0;
+        return this.links != null && this.links.length != 0;
     }
 
     goToHome() {

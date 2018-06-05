@@ -14,8 +14,8 @@
     <modules>
         <module>wifi4eu-common</module>
         <module>wifi4eu-portal</module>
-        <!--<module>wifi4eu-public-portal</module>-->
-        <!--<module>wifi4eu-dgconn</module>-->
+        <module>wifi4eu-public-portal</module>
+        <module>wifi4eu-dgconn</module>
         <!--<module>wifi4eu-financial</module>-->
     </modules>
 
@@ -122,9 +122,11 @@
 
         <!-- App settings -->
         <schemes>http</schemes>
-        <server.address>localhost:8090</server.address>
+        <server.address>localhost:8080</server.address>
+        <!-- <server.address>localhost:8090</server.address> -->
         <server.test.address>wifi4eu.everisdigitalchannels.com</server.test.address>
-        <server.test.port>8090</server.test.port>
+        <server.test.port>8080</server.test.port>
+        <!-- <server.test.port>8090</server.test.port> -->
         <mail.serv.enable>false</mail.serv.enable>
         <!--
         <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
