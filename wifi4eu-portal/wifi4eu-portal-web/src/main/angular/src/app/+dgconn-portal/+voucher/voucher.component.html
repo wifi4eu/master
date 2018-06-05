@@ -117,10 +117,10 @@
                       <span class="fa fa-info" style="font-size: 2.5rem;border: 2px solid #fff;
                                       width: 50px; height: 50px;padding-top: 7px;border-radius: 100%;
                                       margin: 0 auto;"></span>
-                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 1">{{ 'dgConn.voucherAssignment.status.simulation' | translate }}</span>
-                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 2">{{ 'dgConn.voucherAssignment.status.preSelection' | translate }}</span>
-                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 3">{{ 'dgConn.voucherAssignment.status.finalList' | translate }}</span>
-                    </div>
+                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 1" [innerHTML]="'dgConn.voucherAssignment.status.simulation' | translate"></span>
+                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 2" [innerHTML]="'dgConn.voucherAssignment.status.preSelection' | translate"></span>
+                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 3" [innerHTML]="'dgConn.voucherAssignment.status.finalList' | translate"></span>
+                  </div>
                   </div>
                 </div>
                 <div class="col-md-8 col-sm-12">
@@ -246,6 +246,13 @@
                           <span *ngIf="row.selectionStatus == 1">{{ 'dgConn.voucherAssignment.selectionStatus.reserve' | translate}}</span>
                         </ng-template>
                       </p-column>
+                      <p-column field="application.preSelectedFlag" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationStatus' | translate}}"
+                      styleClass="text-center">
+                      <ng-template let-row="rowData" pTemplate="body">
+                        <span *ngIf="row.application.preSelectedFlag == 0" class="duplicate-warn">{{'dgConn.voucherAssignment.table.applicationChangeNew' | translate}}</span>
+                        <span *ngIf="row.application.preSelectedFlag == 1">-</span>
+                      </ng-template>
+                    </p-column>
                       <p-column field="country" [style]="{'width':'auto'}" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.country' | translate}}" styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                           <span pTooltip="{{row.country}}" tooltipPosition="bottom">{{row.country}}</span>
@@ -270,11 +277,11 @@
                       </p-column>
                       <p-column field="numApplications" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.duplicate' | translate}}" styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
-                          <span *ngIf="row.numApplications > 1" [class.duplicate-warn]="row.numApplications > 0">{{ 'shared.yes' | translate }}</span>
+                          <span *ngIf="row.numApplications > 1" class="duplicate-warn">{{ 'shared.yes' | translate }}</span>
                           <span *ngIf="row.numApplications == 1">{{ 'shared.no' | translate }}</span>
                         </ng-template>
                       </p-column>
-                      <p-column field="application.status" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationStatus' | translate}}"
+                      <p-column field="application.status" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationChange' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                           <span *ngIf="row.application.status == 0">{{'dgConn.voucherAssignment.applicationStatus.applied' | translate}}</span>
@@ -328,7 +335,7 @@
                   </button>
                 </div>
                 <div class="col-md-3">
-                  <button type="button" class="btn btn-primary preSelection-button" disabled>
+                  <button type="button" class="btn btn-primary preSelection-button" (click)="freezeList()" disabled>
                     {{'dgConn.voucherAssignment.freezeList.button' | translate}}
                   </button>
                 </div>
@@ -371,14 +378,38 @@
 <p-dialog [(visible)]="preSelectedEnabled != null && !preSelectedEnabled" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
   <h1 class="Modalh1Confirmation">ERRORRRRRR</h1>
-  <button (click)="preSelectedEnabled = null">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+  <div class="row center">
+    <div class="col-sm-6">
+      <button (click)="preSelectedEnabled = null">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+    </div>  
+  </div>
 </p-dialog>
 
 <p-dialog [(visible)]="preSelectedEnabled != null && preSelectedEnabled" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
   <h1 class="Modalh1Confirmation">PA ALANTEEEEE</h1>
-  <button (click)="preSelectedEnabled = null">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
-  <button (click)="savePreList()">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+    <div class="row center">
+      <div class="col-sm-6">
+       <button (click)="preSelectedEnabled = null" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+    </div>
+    <div class="col-sm-6">
+       <button (click)="savePreList()" class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog [(visible)]="displayFreezeConfirmation" [modal]="true" [responsive]="true"
+          [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+  <h1 class="Modalh1Confirmation ">{{ 'dgconn.voucherAssignment.runningFreeze.confirmation.title' | translate }}</h1>
+  <p class="center paddingStats">{{ 'dgconn.voucherAssignment.runningFreeze.confirmation.text' | translate }}</p>
+  <div class="row center ">
+    <div class="col-sm-6 marginStep1">
+     <button (click)="displayFreezeConfirmation = false" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+    </div>
+    <div class="col-sm-6 marginStep1">
+      <button class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+    </div>
+  </div>
 </p-dialog>
 
 <style>

@@ -68,6 +68,7 @@ export class DgConnVoucherComponent {
   private loadingSimulation = false;
   private preSelectedEnabled = null;
   private confirmationModal = false;
+  private displayFreezeConfirmation = false;
 
   private searchedMunicipality = null;
 
@@ -298,4 +299,7 @@ export class DgConnVoucherComponent {
     this.router.navigate(['../applicant-registrations/', lauId, 'call' ,this.callSelected.id], {relativeTo: this.route});
   }
 
+  private freezeList(){
+    this.displayFreezeConfirmation = true;
+  }
 }
