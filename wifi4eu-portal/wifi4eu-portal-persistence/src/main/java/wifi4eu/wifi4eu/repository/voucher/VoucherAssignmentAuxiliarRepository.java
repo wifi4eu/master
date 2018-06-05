@@ -8,4 +8,7 @@ public interface VoucherAssignmentAuxiliarRepository extends CrudRepository<Vouc
 
     @Query(value = "SELECT id, execution_date, status FROM voucher_assignments where call = ?1", nativeQuery = true)
     VoucherAssignmentAuxiliar findByCallIdAux(Integer callId);
+
+    @Query(value = "SELECT id, execution_date, status FROM voucher_assignments where call = ?1 AND status =?2", nativeQuery = true)
+    VoucherAssignmentAuxiliar findByCallIdAndStatusAux(Integer callId, Integer status);
 }

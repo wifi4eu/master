@@ -111,7 +111,13 @@ public class VoucherService {
     }
 
     public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(int callId) {
-        return voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAux(callId));
+
+        VoucherAssignmentAuxiliarDTO voucherAssignmentAuxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 2));
+        if(voucherAssignmentAuxiliarDTO != null){
+          return voucherAssignmentAuxiliarDTO;
+        }
+
+        return voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 1));
     }
 
     @Transactional
@@ -181,7 +187,11 @@ public class VoucherService {
     public List<VoucherSimulationDTO> savePreListSimulation(int voucherAssignmentId, int callId){
         if(checkSavePreSelectionEnabled(voucherAssignmentId)){
 
-            List<VoucherSimulationDTO> simulationList = getVoucherSimulationsByVoucherAssigmentId(voucherAssignmentId);
+            VoucherAssignmentAuxiliarDTO auxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 1));
+            if(auxiliarDTO == null){
+              throw new AppException("Voucher assigment not found");
+            }
+            List<VoucherSimulationDTO> simulationList = getVoucherSimulationsByVoucherAssigmentId(auxiliarDTO.getId());
 
             VoucherAssignmentDTO voucherAssignment = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.findByCallIdAndStatusEquals(callId, 2));
 
@@ -196,17 +206,30 @@ public class VoucherService {
 
             voucherAssignment.setStatus(2);
 
-            VoucherAssignment result = voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment));
+            Set<VoucherSimulationDTO> simulationsPreSave = new HashSet<>();
 
-            for (VoucherSimulationDTO voucherSimulation :simulationList) {
-                voucherSimulation.setVoucherAssignment(result.getId());
+            VoucherAssignmentDTO result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment))) ;
+
+            for (VoucherSimulationDTO voucherSimulation : simulationList) {
+                VoucherSimulationDTO voucherSimulationDTO = new VoucherSimulationDTO();
+                voucherSimulationDTO.setApplication(voucherSimulation.getApplication());
+                voucherSimulationDTO.setCountry(voucherSimulation.getCountry());
+                voucherSimulationDTO.setCountryRank(voucherSimulation.getCountryRank());
+                voucherSimulationDTO.setEuRank(voucherSimulation.getEuRank());
+                voucherSimulationDTO.setIssues(voucherSimulation.getIssues());
+                voucherSimulationDTO.setLau(voucherSimulation.getLau());
+                voucherSimulationDTO.setMunicipality(voucherSimulation.getMunicipality());
+                voucherSimulationDTO.setMunicipalityName(voucherSimulation.getMunicipalityName());
+                voucherSimulationDTO.setNumApplications(voucherSimulation.getNumApplications());
+                voucherSimulationDTO.setSelectionStatus(voucherSimulation.getSelectionStatus());
+                voucherSimulationDTO.setRejected(voucherSimulation.getRejected());
+                voucherSimulationDTO.setVoucherAssignment(result.getId());
+                simulationsPreSave.add(voucherSimulationDTO);
             }
 
-            Set<VoucherSimulationDTO> set = new HashSet<>();
-            set.addAll(simulationList);
-            voucherAssignment.setVoucherSimulations(set);
+            result.setVoucherSimulations(simulationsPreSave);
 
-            result = voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment));
+            result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
 
             voucherSimulationRepository.updateApplicationsInVoucherSimulationByVoucherAssignment(1, result.getId());
 
