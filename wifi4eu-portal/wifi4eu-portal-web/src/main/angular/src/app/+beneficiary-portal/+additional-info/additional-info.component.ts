@@ -58,7 +58,8 @@ export class AdditionalInfoComponent {
                                 this.checkFirstDocuments();
 
                             }, error => {
-                            });
+                            }
+                        );
                     }, error => {
                     }
                 );
@@ -71,7 +72,7 @@ export class AdditionalInfoComponent {
                                     if (this.mayor.name == this.user.name && this.mayor.surname == this.user.surname) {
                                         this.isMayor = true;
                                     } else {
-                                        this.isMayor = false
+                                        this.isMayor = false;
                                     }
                                 }, error => {
                                     this.isMayor = false;
@@ -110,7 +111,6 @@ export class AdditionalInfoComponent {
                     return;
                 }
                 if (event.target.files[0].type == "application/pdf" || event.target.files[0].type == "image/png" || event.target.files[0].type == "image/jpg" || event.target.files[0].type == "image/jpeg") {
-
                     this.documentFiles[index] = event.target.files[0];
                     this.reader.readAsDataURL(this.documentFiles[index]);
                     let subscription = Observable.interval(200).subscribe(
@@ -172,7 +172,6 @@ export class AdditionalInfoComponent {
                 this.doc4 = false;
                 break;
         }
-
         if (this.doc1 || this.doc2 || this.doc3 || this.doc4) {
             this.filesUploaded = true;
         }
@@ -201,17 +200,13 @@ export class AdditionalInfoComponent {
                 this.registration.legalFile4Mime = this.documentUrls[3];
                 this.registration.legalFile4Size = this.documentFiles[3].size;
             }
-
             this.displayConfirmingData = true;
-            this.updateMailings();
             this.registrationApi.updateRegistrationDocuments(this.registration).subscribe(
                 (response: ResponseDTOBase) => {
                     this.displayConfirmingData = false;
                     if (response.success) {
                         this.sharedService.growlTranslation('Your registration was successfully updated.', 'shared.registration.update.success', 'success');
                         this.registration = response.data;
-
-
                         this.router.navigateByUrl('/beneficiary-portal/voucher');
                     } else {
                         this.sharedService.growlTranslation('An error occurred and your registration could not be updated.', 'shared.registration.update.error', 'error');
@@ -228,28 +223,27 @@ export class AdditionalInfoComponent {
         this.checkFirstDocuments();
     }
 
-    private updateMailings() {
-        if (!this.isMayor) {
-            if (!this.registration.legalFile1Size && !this.registration.legalFile2Size && !this.registration.legalFile3Size && !this.registration.legalFile4Size) {
-                this.registration.allFilesFlag = 1;
-                this.registration.mailCounter = 0;
-            } else {
-                this.registration.allFilesFlag = 0;
-                this.registration.uploadTime = 0;
-                this.registration.mailCounter = 3;
-            }
-        } else {
-            if (!this.registration.legalFile1Size && !this.registration.legalFile3Size) {
-                this.registration.allFilesFlag = 1;
-                this.registration.mailCounter = 0;
-            } else {
-                this.registration.allFilesFlag = 0;
-                this.registration.uploadTime = 0;
-                this.registration.mailCounter = 3;
-            }
-
-        }
-    }
+    // private updateMailings() {
+    //     if (!this.isMayor) {
+    //         if (this.registration.legalFile1Size && this.registration.legalFile2Size && this.registration.legalFile3Size && this.registration.legalFile4Size) {
+    //             this.registration.allFilesFlag = 1;
+    //             this.registration.mailCounter = 0;
+    //         } else {
+    //             this.registration.allFilesFlag = 0;
+    //             this.registration.uploadTime = 0;
+    //             this.registration.mailCounter = 3;
+    //         }
+    //     } else {
+    //         if (this.registration.legalFile1Size && this.registration.legalFile3Size) {
+    //             this.registration.allFilesFlag = 1;
+    //             this.registration.mailCounter = 0;
+    //         } else {
+    //             this.registration.allFilesFlag = 0;
+    //             this.registration.uploadTime = 0;
+    //             this.registration.mailCounter = 3;
+    //         }
+    //     }
+    // }
 
     private deleteFromServer(index: number) {
         if (this.registration.allFilesFlag != 1) {
@@ -268,7 +262,6 @@ export class AdditionalInfoComponent {
                     this.registration.legalFile4Mime = null;
                     break;
             }
-            this.updateMailings();
             this.displayConfirmingData = true;
             this.registrationApi.deleteRegistrationDocuments(this.registration).subscribe(
                 (response: ResponseDTOBase) => {

@@ -21,6 +21,7 @@ import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.registration.legal_files.LegalFilesService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
@@ -96,7 +97,7 @@ public class RegistrationService {
     }
 
     @Transactional
-    public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO){
+    public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO) {
 
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
         if(registrationDBO.getAllFilesFlag() != 1){
@@ -132,52 +133,100 @@ public class RegistrationService {
     }
 
     @Transactional
-    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO){
+    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO) throws Exception {
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
         Long currentTime = new Date().getTime();
 
-        if (registrationDTO.getLegalFile1Mime() != null && !registrationDTO.getLegalFile1Mime().isEmpty() && registrationDTO.getLegalFile1Size() > 0) {
-            LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
-            legalFilesDTO.setRegistration(registrationDTO.getId());
-            legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
-            legalFilesDTO.setFileData(registrationDTO.getLegalFile1Mime());
-            legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-            registrationDBO.setLegalFile1Size(registrationDBO.getLegalFile1Size());
-            registrationDBO.setUploadTime(currentTime);
+        if (registrationDTO.getLegalFile1Mime() != null) {
+            byte[] lf1ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(registrationDTO.getLegalFile1Mime()));
+            String lf1Extension = LegalFilesService.getValidFileExtension(registrationDTO.getLegalFile1Mime());
+            if (lf1ByteArray.length > 1024000) {
+                throw new Exception("File size cannot bet greater than 1 MB.");
+            } else if (lf1Extension == null) {
+                throw new Exception("File must have a valid extension.");
+            } else {
+                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE1.getValue()));
+                if (legalFilesDTO == null) {
+                    legalFilesDTO = new LegalFilesDTO();
+                }
+                legalFilesDTO.setRegistration(registrationDTO.getId());
+                legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
+                legalFilesDTO.setFileData(registrationDTO.getLegalFile1Mime());
+                legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                registrationDBO.setLegalFile1Size(lf1ByteArray.length);
+                registrationDBO.setUploadTime(currentTime);
+            }
         }
 
-        if (registrationDTO.getLegalFile2Mime() != null && !registrationDTO.getLegalFile2Mime().isEmpty() && registrationDTO.getLegalFile2Size() > 0) {
-            LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
-            legalFilesDTO.setRegistration(registrationDTO.getId());
-            legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
-            legalFilesDTO.setFileData(registrationDTO.getLegalFile2Mime());
-            legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-            registrationDBO.setLegalFile2Size(registrationDBO.getLegalFile2Size());
-            registrationDBO.setUploadTime(currentTime);
+        if (registrationDTO.getLegalFile2Mime() != null) {
+            byte[] lf2ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(registrationDTO.getLegalFile2Mime()));
+            String lf2Extension = LegalFilesService.getValidFileExtension(registrationDTO.getLegalFile2Mime());
+            if (lf2ByteArray.length > 1024000) {
+                throw new Exception("File size cannot bet greater than 1 MB.");
+            } else if (lf2Extension == null) {
+                throw new Exception("File must have a valid extension.");
+            } else {
+                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE2.getValue()));
+                if (legalFilesDTO == null) {
+                    legalFilesDTO = new LegalFilesDTO();
+                }
+                legalFilesDTO.setRegistration(registrationDTO.getId());
+                legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
+                legalFilesDTO.setFileData(registrationDTO.getLegalFile2Mime());
+                legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                registrationDBO.setLegalFile2Size(lf2ByteArray.length);
+                registrationDBO.setUploadTime(currentTime);
+            }
         }
 
-        if (registrationDTO.getLegalFile3Mime() != null && !registrationDTO.getLegalFile3Mime().isEmpty() && registrationDTO.getLegalFile3Size() > 0) {
-            LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
-            legalFilesDTO.setRegistration(registrationDTO.getId());
-            legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
-            legalFilesDTO.setFileData(registrationDTO.getLegalFile3Mime());
-            legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-            registrationDBO.setLegalFile3Size(registrationDBO.getLegalFile3Size());
-            registrationDBO.setUploadTime(currentTime);
+        if (registrationDTO.getLegalFile3Mime() != null) {
+            byte[] lf3ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(registrationDTO.getLegalFile3Mime()));
+            String lf3Extension = LegalFilesService.getValidFileExtension(registrationDTO.getLegalFile3Mime());
+            if (lf3ByteArray.length > 1024000) {
+                throw new Exception("File size cannot bet greater than 1 MB.");
+            } else if (lf3Extension == null) {
+                throw new Exception("File must have a valid extension.");
+            } else {
+                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE3.getValue()));
+                if (legalFilesDTO == null) {
+                    legalFilesDTO = new LegalFilesDTO();
+                }
+                legalFilesDTO.setRegistration(registrationDTO.getId());
+                legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
+                legalFilesDTO.setFileData(registrationDTO.getLegalFile3Mime());
+                legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                registrationDBO.setLegalFile3Size(lf3ByteArray.length);
+                registrationDBO.setUploadTime(currentTime);
+            }
         }
 
-        if (registrationDTO.getLegalFile4Mime() != null && !registrationDTO.getLegalFile4Mime().isEmpty() && registrationDTO.getLegalFile4Size() > 0) {
-            LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
-            legalFilesDTO.setRegistration(registrationDTO.getId());
-            legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
-            legalFilesDTO.setFileData(registrationDTO.getLegalFile4Mime());
-            legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
-            registrationDBO.setLegalFile4Size(registrationDBO.getLegalFile4Size());
-            registrationDBO.setUploadTime(currentTime);
+        if (registrationDTO.getLegalFile4Mime() != null) {
+            byte[] lf4ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(registrationDTO.getLegalFile4Mime()));
+            String lf4Extension = LegalFilesService.getValidFileExtension(registrationDTO.getLegalFile4Mime());
+            if (lf4ByteArray.length > 1024000) {
+                throw new Exception("File size cannot bet greater than 1 MB.");
+            } else if (lf4Extension == null) {
+                throw new Exception("File must have a valid extension.");
+            } else {
+                LegalFilesDTO legalFilesDTO = legalFilesMapper.toDTO(legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE4.getValue()));
+                if (legalFilesDTO == null) {
+                    legalFilesDTO = new LegalFilesDTO();
+                }
+                legalFilesDTO.setRegistration(registrationDTO.getId());
+                legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
+                legalFilesDTO.setFileData(registrationDTO.getLegalFile4Mime());
+                legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                registrationDBO.setLegalFile4Size(lf4ByteArray.length);
+                registrationDBO.setUploadTime(currentTime);
+            }
         }
-        registrationDBO.setAllFilesFlag(registrationDTO.getAllFilesFlag());
-        registrationDBO.setMailCounter(registrationDTO.getMailCounter());
-
+        if (checkAllFilesFlag(registrationDBO)) {
+            registrationDBO.setAllFilesFlag(1);
+            registrationDBO.setMailCounter(0);
+        } else {
+            registrationDBO.setAllFilesFlag(0);
+            registrationDBO.setMailCounter(3);
+        }
         return saveRegistration(registrationDBO);
     }
 
@@ -781,5 +830,48 @@ public class RegistrationService {
 
     public RegistrationDTO saveRegistration(RegistrationDTO registrationDTO) {
         return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
+    }
+
+    public boolean checkIfMayor(RegistrationDTO registrationDTO) {
+        UserDTO user = userService.getUserById(registrationDTO.getUserId());
+        MayorDTO mayor = mayorService.getMayorByMunicipalityId(registrationDTO.getMunicipalityId());
+        if (user != null && mayor != null) {
+            if (mayor.getName().equals(user.getName()) && mayor.getSurname().equals(user.getSurname())) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkAllFilesFlag(RegistrationDTO registrationDTO) {
+        boolean allFilesFlag = false;
+        boolean lf1Exists = false;
+        if (legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE1.getValue()) != null) {
+            lf1Exists = true;
+        }
+        boolean lf2Exists = false;
+        if (legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE2.getValue()) != null) {
+            lf2Exists = true;
+        }
+        boolean lf3Exists = false;
+        if (legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE3.getValue()) != null) {
+            lf3Exists = true;
+        }
+        boolean lf4Exists = false;
+        if (legalFilesRepository.findByRegistrationAndFileType(registrationDTO.getId(), FileTypes.LEGALFILE4.getValue()) != null) {
+            lf4Exists = true;
+        }
+        if (checkIfMayor(registrationDTO)) {
+            if (lf1Exists && lf3Exists) {
+                allFilesFlag = true;
+            }
+        } else {
+            if (lf1Exists && lf2Exists && lf3Exists && lf4Exists) {
+                allFilesFlag = true;
+            }
+        }
+        return allFilesFlag;
     }
 }
