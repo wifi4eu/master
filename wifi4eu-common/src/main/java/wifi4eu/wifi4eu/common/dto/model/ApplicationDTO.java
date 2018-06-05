@@ -19,11 +19,12 @@ public class ApplicationDTO {
     private int status;
     private String invalidateReason;
     private Boolean preSelectedFlag;
+    private Boolean rejected;
 
     public ApplicationDTO() {
     }
 
-    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, Boolean preSelectedFlag) {
+    public ApplicationDTO(int id, int callId, int registrationId, Integer supplierId, boolean voucherAwarded, long date, long lefExport, long lefImport, int lefStatus, long bcExport, long bcImport, int bcStatus, long lcExport, long lcImport, int lcStatus, int status, String invalidateReason, Boolean preSelectedFlag, Boolean rejected) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -42,6 +43,7 @@ public class ApplicationDTO {
         this.status = status;
         this.invalidateReason = invalidateReason;
         this.preSelectedFlag = preSelectedFlag;
+        this.rejected = rejected;
     }
 
     public int getId() {
@@ -186,5 +188,13 @@ public class ApplicationDTO {
 
     public void setPreSelectedFlag(Boolean preSelectedFlag) {
         this.preSelectedFlag = preSelectedFlag;
+    }
+
+    public Boolean getRejected() {
+        return rejected;
+    }
+
+    public void setRejected(Boolean rejected) {
+        this.rejected = rejected;
     }
 }

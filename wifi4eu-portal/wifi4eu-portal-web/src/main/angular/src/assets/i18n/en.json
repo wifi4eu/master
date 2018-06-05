@@ -584,6 +584,7 @@
   "dgConn.voucherAssignment.applicationStatus.validated": "Validated",
   "dgConn.voucherAssignment.applicationStatus.view": "View",
   "dgConn.voucherAssignment.applicationStatus.reject": "Reject",
+  "dgConn.voucherAssignment.applicationStatus.select": "Select",
   "dgConn.voucherAssignment.preSelectionSave.button": "Save pre-selection list",
   "dgConn.voucherAssignment.freezeList.button": "Freeze",
   "dgconn.voucherAssignment.runningFreeze.confirmation.title": "Are you sure?",

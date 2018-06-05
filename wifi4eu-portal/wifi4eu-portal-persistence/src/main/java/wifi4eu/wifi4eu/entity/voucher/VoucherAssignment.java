@@ -44,14 +44,6 @@ public class VoucherAssignment {
         this.voucherSimulations = voucherSimulations;
     }
 
-    public VoucherAssignment(User user, Long executionDate, Integer status, Call call, Set<VoucherSimulation> voucherSimulations) {
-        this.user = user;
-        this.executionDate = executionDate;
-        this.status = status;
-        this.call = call;
-        this.voucherSimulations = voucherSimulations;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -99,6 +91,5 @@ public class VoucherAssignment {
     public void setVoucherSimulations(Set<VoucherSimulation> voucherSimulations) {
         this.voucherSimulations = voucherSimulations;
     }
-
 
 }

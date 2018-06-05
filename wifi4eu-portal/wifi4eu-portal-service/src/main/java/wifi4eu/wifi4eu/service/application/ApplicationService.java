@@ -514,4 +514,17 @@ public class ApplicationService {
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
     }
+
+    public ApplicationDTO rejectApplicationVoucherAssigment(int applicationId){
+        ApplicationDTO applicationDTO = getApplicationById(applicationId);
+        applicationDTO.setRejected(true);
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+    }
+
+    public ApplicationDTO selectApplicationVoucherAssigment(int applicationId){
+        ApplicationDTO applicationDTO = getApplicationById(applicationId);
+        applicationDTO.setRejected(false);
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+    }
+
 }

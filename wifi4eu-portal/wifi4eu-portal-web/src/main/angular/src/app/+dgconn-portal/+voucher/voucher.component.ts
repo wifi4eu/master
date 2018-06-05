@@ -8,7 +8,7 @@ import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { Observable } from 'rxJs/Observable';
 import { SharedService } from "../../shared/shared.service";
-import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO } from "../../shared/swagger";
+import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO } from "../../shared/swagger";
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
 import { count } from "rxjs/operator/count";
 import { Paginator, MenuItem } from "primeng/primeng";
@@ -61,7 +61,7 @@ export class DgConnVoucherComponent {
   
   private totalRecords: number = null;
   private page = 0;
-  private sizePage = 100;
+  private sizePage = 20;
   private sortDirection = 'ASC';
   private sortField = 'euRank';
   private pageLinks: number = null;
@@ -205,8 +205,9 @@ export class DgConnVoucherComponent {
 
   savePreList(){
     this.voucherApi.savePreListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((res) => {
-      console.log("DSJAD")
       this.preSelectedEnabled = null;
+    }, error => {
+      console.log("error => ", error);
     })
   }
 
@@ -291,6 +292,10 @@ export class DgConnVoucherComponent {
     }
   }
 
+  lookupRowStyleClass(rowData: VoucherSimulationDTO) {
+    return rowData.selectionStatus === 2 ? 'rejected-row' : '';
+}
+
   cancelSimulation() {
     this.displayMessage = false;
     this.simulationRequest.unsubscribe();
@@ -298,6 +303,26 @@ export class DgConnVoucherComponent {
 
   private goToMunicipality(lauId: number) {
     this.router.navigate(['../applicant-registrations/', lauId, 'call' ,this.callSelected.id], {relativeTo: this.route});
+  }
+
+  rejectApplication(applicationId: number){
+    this.applicationApi.rejectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
+      console.log("response => ", response);
+      var index = this.listAssignment.findIndex((x) => x.id == response.data.id)
+      this.listAssignment[index].application = <ApplicationDTO>response.data;
+    }, error => {
+      console.log("error => ", error);
+    })
+  }
+
+  selectApplication(applicationId: number){
+    this.applicationApi.selectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
+      console.log("response => ", response);
+      var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
+      this.listAssignment[index].application = <ApplicationDTO>response.data;
+    }, error => {
+      console.log("error => ", error);
+    }) 
   }
 
   private freezeList(){
