@@ -61,7 +61,7 @@ export class DgConnVoucherComponent {
   
   private totalRecords: number = null;
   private page = 0;
-  private sizePage = 20;
+  private sizePage = 100;
   private sortDirection = 'ASC';
   private sortField = 'euRank';
   private pageLinks: number = null;

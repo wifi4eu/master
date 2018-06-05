@@ -111,15 +111,15 @@
                 <div class="col-md-4 col-sm-12">
                   <h6>{{'dgConn.status' | translate}}</h6>
                   <div style="height: 155px; width: 155px; display: flex; align-items: center; justify-content: center;" class="voucher-status simulation"
-                    [class.simulation]="callVoucherAssignment?.status == 1 || callVoucherAssignment?.status == null" [class.pre-save]="callVoucherAssignment?.status == 2"
+                    [class.simulation]="callVoucherAssignment?.status == 1 || callVoucherAssignment?.status == null" [class.pre-save]="callVoucherAssignment?.status == 2 || callVoucherAssignment?.hasPreListSaved"
                     [class.saved]="callVoucherAssignment?.status == 3">
                     <div class="voucher-status-info" style="text-align: center; color: #fff;">
                       <span class="fa fa-info" style="font-size: 2.5rem;border: 2px solid #fff;
                                       width: 50px; height: 50px;padding-top: 7px;border-radius: 100%;
                                       margin: 0 auto;"></span>
-                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 1">{{ 'dgConn.voucherAssignment.status.simulation' | translate }}</span>
-                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 2">{{ 'dgConn.voucherAssignment.status.preSelection' | translate }}</span>
-                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 3">{{ 'dgConn.voucherAssignment.status.finalList' | translate }}</span>
+                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 1 && !callVoucherAssignment?.hasPreListSaved" [innerHTML]="'dgConn.voucherAssignment.status.simulation' | translate"></span>
+                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 2 || callVoucherAssignment?.hasPreListSaved" [innerHTML]="'dgConn.voucherAssignment.status.preSelection' | translate"></span>
+                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 3" [innerHTML]="'dgConn.voucherAssignment.status.finalList' | translate"></span>
                     </div>
                   </div>
                 </div>

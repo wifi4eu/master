@@ -111,13 +111,12 @@ public class VoucherService {
     }
 
     public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(int callId) {
-
-        VoucherAssignmentAuxiliarDTO voucherAssignmentAuxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 2));
-        if(voucherAssignmentAuxiliarDTO != null){
-          return voucherAssignmentAuxiliarDTO;
+        VoucherAssignmentAuxiliarDTO voucherAssignmentAuxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 1));
+        if(voucherAssignmentAuxiliarDTO == null){
+            throw new AppException("Voucher assigment not found for call id: " + callId);
         }
-
-        return voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 1));
+        voucherAssignmentAuxiliarDTO.setHasPreListSaved(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 2) != null);
+        return voucherAssignmentAuxiliarDTO;
     }
 
     @Transactional
