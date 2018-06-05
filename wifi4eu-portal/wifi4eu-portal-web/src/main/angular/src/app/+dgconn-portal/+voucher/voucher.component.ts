@@ -206,6 +206,7 @@ export class DgConnVoucherComponent {
   savePreList(){
     this.voucherApi.savePreListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((res) => {
       console.log("DSJAD")
+      this.preSelectedEnabled = null;
     })
   }
 

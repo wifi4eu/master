@@ -379,22 +379,24 @@
 
 <p-dialog [(visible)]="preSelectedEnabled != null && !preSelectedEnabled" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
-  <h1 class="Modalh1Confirmation">ERRORRRRRR</h1>
+  <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningSimulation.preSelectedError.title' | translate }}</h1>
+  <p class="center paddingStats">{{ 'dgconn.voucherAssignment.runningSimulation.preSelectedError.text' | translate }}</p>
   <div class="row center">
-    <div class="col-sm-6">
-      <button (click)="preSelectedEnabled = null">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+    <div class="col-sm-6 marginStep1">
+      <button  class="btn btn-primary publish-button" (click)="preSelectedEnabled = null">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>  
   </div>
 </p-dialog>
 
 <p-dialog [(visible)]="preSelectedEnabled != null && preSelectedEnabled" [modal]="true" [responsive]="true"
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
-  <h1 class="Modalh1Confirmation">PA ALANTEEEEE</h1>
+          <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningSimulation.preSelectedConfirmation.title' | translate }}</h1>
+          <p class="center paddingStats">{{ 'dgconn.voucherAssignment.runningSimulation.preSelectedConfirmation.text' | translate }}</p>
     <div class="row center">
-      <div class="col-sm-6">
+      <div class="col-sm-6 marginStep1">
        <button (click)="preSelectedEnabled = null" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6 marginStep1">
        <button (click)="savePreList()" class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>
   </div>
@@ -404,7 +406,7 @@
           [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
   <h1 class="Modalh1Confirmation ">{{ 'dgconn.voucherAssignment.runningFreeze.confirmation.title' | translate }}</h1>
   <p class="center paddingStats">{{ 'dgconn.voucherAssignment.runningFreeze.confirmation.text' | translate }}</p>
-  <div class="row center ">
+  <div class="row center">
     <div class="col-sm-6 marginStep1">
      <button (click)="displayFreezeConfirmation = false" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>
