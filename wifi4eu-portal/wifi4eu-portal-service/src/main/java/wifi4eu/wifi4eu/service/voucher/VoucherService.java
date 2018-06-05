@@ -17,6 +17,7 @@ import wifi4eu.wifi4eu.entity.location.Lau;
 import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.voucher.SimpleRegistration;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
+import wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
@@ -551,7 +552,12 @@ public class VoucherService {
             voucherAssignment.setVoucherSimulations(simulations);
             VoucherAssignmentDTO res = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment)));
 
-            return new ResponseDTO(true, res.getVoucherSimulations(), null);
+            VoucherAssignmentAuxiliarDTO voucher = new VoucherAssignmentAuxiliarDTO();
+            voucher.setId(res.getId());
+            voucher.setStatus(res.getStatus());
+            voucher.setExecutionDate(res.getExecutionDate());
+
+            return new ResponseDTO(true, voucher, null);
         }
         return new ResponseDTO(false, "User not defined", null);
     }
