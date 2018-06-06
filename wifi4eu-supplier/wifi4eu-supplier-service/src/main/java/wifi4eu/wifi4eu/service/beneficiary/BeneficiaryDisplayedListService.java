@@ -24,10 +24,13 @@ import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.user.UserConstants;
+import wifi4eu.wifi4eu.utils.UserUtils;
 
 import javax.xml.ws.Response;
 import java.security.Permission;
 import java.util.Date;
+import java.util.Locale;
 
 @Service("beneficiary")
 public class BeneficiaryDisplayedListService {
@@ -59,6 +62,9 @@ public class BeneficiaryDisplayedListService {
     @Autowired
     ApplicationService applicationService;
 
+    @Autowired
+    UserUtils userUtils;
+
     private final Logger _log = LoggerFactory.getLogger(BeneficiaryDisplayedListService.class);
 
     @Transactional
@@ -80,6 +86,7 @@ public class BeneficiaryDisplayedListService {
     @Transactional
     public ResponseDTO confirmWifiIndicatorByMunicipalityId(int id) {
         ResponseDTO response = new ResponseDTO();
+        SupplierDTO supplier = permissionChecker.checkSupplierPermission();
         Registration registration = registrationRepository.findByMunicipalityIdAndStatus(id, 2);
         if (registration != null) {
 
@@ -92,7 +99,12 @@ public class BeneficiaryDisplayedListService {
             String name = registration.getUser().getName();
             response.setSuccess(true);
             response.setData("WiFi Indicator updated successfully");
-            cnsManager.sendInstallationConfirmationNotification(email, name);
+            Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+            String lang = userUtils.getUserLangByUserId(supplier.getUserId());
+            if(lang != null){
+                locale = new Locale(lang);
+            }
+            cnsManager.sendInstallationConfirmationNotification(email, name, locale);
         } else {
             response.setSuccess(false);
             response.setData("Error querying municipality - registration");

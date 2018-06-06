@@ -28,6 +28,7 @@ import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
+import wifi4eu.wifi4eu.util.UserUtils;
 
 import java.util.*;
 import java.text.MessageFormat;
@@ -66,6 +67,9 @@ public class RegistrationService {
 
     @Autowired
     PermissionChecker permissionChecker;
+
+    @Autowired
+    UserUtils userUtils;
 
     public List<RegistrationDTO> getAllRegistrations() {
         return registrationMapper.toDTOList(Lists.newArrayList(registrationRepository.findAll()));
@@ -148,10 +152,14 @@ public class RegistrationService {
         Supplier supplier = applicationList.iterator().next().getSupplier();
         String name = supplier.getName();
         String email = supplier.getContactEmail();
-
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        String lang = userUtils.getUserLangByUserId(supplier.getUser().getId());
+        if(lang != null){
+            locale = new Locale(lang);
+        }
         //if beneficiary indicator and wifi indicator are true we send a confirmation email
         if (registration.isBeneficiaryIndicator() && registration.isWifiIndicator()) {
-            cnsManager.sendInstallationConfirmationFromBeneficiary(email, name, beneficiaryName);
+            cnsManager.sendInstallationConfirmationFromBeneficiary(email, name, beneficiaryName, locale);
             return true;
         } else if (!registration.isBeneficiaryIndicator() && !registration.isWifiIndicator()) {
             //if beneficiary indicator and wifi indicator are false we send a rejection email
@@ -159,7 +167,7 @@ public class RegistrationService {
             String ccName = user.getName();
             String ccEmail = user.getEmail();
             cnsManager.sendInstallationRejectionFromBeneficiary(email, name, beneficiaryName, ccEmail,
-                    ccName);
+                    ccName, locale);
             return true;
         }
         return false;
