@@ -188,11 +188,26 @@ public class VoucherResource {
     @ApiOperation(value = "Check pre-selected list enabled")
     @RequestMapping(value = "/assignment/{assignmentId}/check-prelist-enabled", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public boolean checkSavePreSelectionEnabled(@PathVariable("assignmentId") final Integer assignmentId){
-        if (!permissionChecker.checkIfDashboardUser()) {
-            throw new AccessDeniedException("Access denied: exportExcelVoucherSimulation");
+    public boolean checkSavePreSelectionEnabled(@PathVariable("assignmentId") final Integer assignmentId, HttpServletResponse response) throws IOException {
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: checkSavePreSelectionEnabled");
+            }
+            return voucherService.checkSavePreSelectionEnabled(assignmentId);
         }
-        return voucherService.checkSavePreSelectionEnabled(assignmentId);
+        catch (AccessDeniedException adex){
+            if(_log.isWarnEnabled()){
+                _log.warn(adex.getMessage());
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return false;
+        }catch (Exception ex){
+            if(_log.isWarnEnabled()){
+                _log.warn(ex.getMessage());
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return false;
+        }
     }
 
     @ApiOperation(value = "Save simulation to pre-selected list")
@@ -227,8 +242,6 @@ public class VoucherResource {
     public ResponseEntity<byte[]> exportExcelVoucherSimulation(@PathVariable("assignmentId") final Integer assignmentId,
                                                                @RequestParam("country") String country,
                                                                @RequestParam("municipality") String municipality,
-                                                               @RequestParam("page") Integer page,
-                                                               @RequestParam("size") Integer size,
                                                                @RequestParam("field") String field,
                                                                @RequestParam("direction") String direction,
                                                           HttpServletResponse response) throws IOException {
@@ -240,9 +253,9 @@ public class VoucherResource {
             Pageable pageable;
 
             if (direction.equals("ASC") || direction.equals("asc")) {
-                pageable = new PageRequest(page, Integer.MAX_VALUE, Direction.ASC, field);
+                pageable = new PageRequest(0, Integer.MAX_VALUE, Direction.ASC, field);
             } else {
-                pageable = new PageRequest(page, Integer.MAX_VALUE, Direction.DESC, field);
+                pageable = new PageRequest(0, Integer.MAX_VALUE, Direction.DESC, field);
             }
 
             ResponseEntity<byte[]> responseReturn = null;

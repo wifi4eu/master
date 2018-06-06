@@ -131,11 +131,14 @@ public class VoucherSimulationExportGenerator<T> {
                 ApplicationDTO applicationDTO;
                 switch (field.getName()) {
                     case "selectionStatus":
-                        if((int) field.get(objectData) == 1){
+                        if((int) field.get(objectData) == 0){
+                            value = "Main list";
+                        }
+                        else if((int) field.get(objectData) == 1){
                             value = "Reserve list";
                         }
-                        else {
-                            value = "Main list";
+                        else{
+                            value = "Rejected";
                         }
                         break;
                     case "numApplications":

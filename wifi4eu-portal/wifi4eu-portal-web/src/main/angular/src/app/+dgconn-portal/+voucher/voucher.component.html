@@ -145,9 +145,17 @@
                 <div class="col-md-12">
                   <div class="panel-dg panel-dg-voucher">
                     <p-dataTable [rowStyleClass]="lookupRowStyleClass" styleClass="tableAssignment {{(loadingSimulation === true) ? 'table-disabled': ''}}" #tableVoucher [@opacityTransition] [value]="listAssignment" [responsive]="true">
-                      <p-column field="euRank" [style]="{'width':'10%'}" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.euRank' | translate}}" styleClass="text-center"></p-column>
+                      <p-column field="euRank" [style]="{'width':'10%'}" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.euRank' | translate}}" styleClass="text-center">
+                        <ng-template let-row="rowData" pTemplate="body">
+                          <span *ngIf="row.selectionStatus != 2">{{row.euRank}}</span>
+                        </ng-template>
+                      </p-column>
                       <p-column field="countryRank" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.countryRank' | translate}}" styleClass="text-center"
-                        [style]="{'width':'10%'}"></p-column>
+                        [style]="{'width':'10%'}">
+                        <ng-template let-row="rowData" pTemplate="body">
+                          <span *ngIf="row.selectionStatus != 2">{{row.countryRank}}</span>
+                        </ng-template>
+                      </p-column>
                       <p-column field="selectionStatus" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.selectionStatus' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
