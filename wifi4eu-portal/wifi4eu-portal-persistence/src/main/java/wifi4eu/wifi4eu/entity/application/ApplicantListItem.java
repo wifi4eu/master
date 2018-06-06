@@ -7,39 +7,28 @@ import javax.persistence.Id;
 public class ApplicantListItem {
     @Id
     private Integer lauId;
-    private Integer euRanking;
-    private Integer countryRanking;
     private String countryCode;
     private String name;
     private Integer counter;
     private Boolean mediation;
     private Integer status;
     private Integer issueStatus;
+    private Long applicationDate;
+    private String invalidateReason;
 
     public ApplicantListItem() {
     }
 
-    public ApplicantListItem(Integer lauId, Integer euRanking, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation, Integer status) {
+    public ApplicantListItem(Integer lauId, String countryCode, String name, Integer counter, Boolean mediation, Integer status, Integer issueStatus, Long applicationDate, String invalidateReason) {
         this.lauId = lauId;
-        this.euRanking = euRanking;
-        this.countryRanking = countryRanking;
-        this.countryCode = countryCode;
-        this.name = name;
-        this.counter = counter;
-        this.mediation = mediation;
-        this.status = status;
-    }
-
-    public ApplicantListItem(Integer lauId, Integer euRanking, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation, Integer status, Integer issueStatus) {
-        this.lauId = lauId;
-        this.euRanking = euRanking;
-        this.countryRanking = countryRanking;
         this.countryCode = countryCode;
         this.name = name;
         this.counter = counter;
         this.mediation = mediation;
         this.status = status;
         this.issueStatus = issueStatus;
+        this.applicationDate = applicationDate;
+        this.invalidateReason = invalidateReason;
     }
 
     public Integer getLauId() {
@@ -48,22 +37,6 @@ public class ApplicantListItem {
 
     public void setLauId(Integer lauId) {
         this.lauId = lauId;
-    }
-
-    public Integer getEuRanking() {
-        return euRanking;
-    }
-
-    public void setEuRanking(Integer euRanking) {
-        this.euRanking = euRanking;
-    }
-
-    public Integer getCountryRanking() {
-        return countryRanking;
-    }
-
-    public void setCountryRanking(Integer countryRanking) {
-        this.countryRanking = countryRanking;
     }
 
     public String getCountryCode() {
@@ -112,5 +85,21 @@ public class ApplicantListItem {
 
     public void setIssueStatus(Integer issueStatus) {
         this.issueStatus = issueStatus;
+    }
+
+    public Long getApplicationDate() {
+        return applicationDate;
+    }
+
+    public void setApplicationDate(Long applicationDate) {
+        this.applicationDate = applicationDate;
+    }
+
+    public String getInvalidateReason() {
+        return invalidateReason;
+    }
+
+    public void setInvalidateReason(String invalidateReason) {
+        this.invalidateReason = invalidateReason;
     }
 }

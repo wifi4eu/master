@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
                            http://www.springframework.org/schema/security
@@ -8,74 +9,63 @@
 
     <security:http use-expressions="true" create-session="stateless"
                    entry-point-ref="http403ForbiddenEntryPoint" authentication-manager-ref="authenticationManager">
-    <!--<security:intercept-url pattern="/api/call" access="isAuthenticated()" />
-    <security:intercept-url pattern="/api/call/*" access="isAuthenticated()" />-->
+        <!--<security:intercept-url pattern="/api/call" access="isAuthenticated()" />
+        <security:intercept-url pattern="/api/call/*" access="isAuthenticated()" />-->
 
         <!--<security:intercept-url pattern="/api/timeline" method="GET" access="isAuthenticated()" />-->
         <!--<security:intercept-url pattern="/api/timeline" method="POST" access="isAuthenticated()" />-->
-        <security:custom-filter after="PRE_AUTH_FILTER" ref="customFilter" />
+        <security:custom-filter after="PRE_AUTH_FILTER" ref="customFilter"/>
         <security:custom-filter before="PRE_AUTH_FILTER" ref="auditFilter"/>
-        
+
     </security:http>
-    
+
     <security:authentication-manager id="authenticationManager">
         <security:authentication-provider ref="authProvider"/>
     </security:authentication-manager>
-    
-    <bean id="authProvider"
-          class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
-        <property name="preAuthenticatedUserDetailsService">
-            <bean class="wifi4eu.wifi4eu.service.security.UsersDetailsByTokenCustom">
-                <property name="userDetailsService">
-                    <bean id="cacheUserDetailsServiceCustom" class="wifi4eu.wifi4eu.service.security.CacheUserDetailsServiceCustom" />
-                </property>
-            </bean>
-        </property>
-    </bean>
 
     <bean id="customFilter"
           class="org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter">
         <property name="principalRequestHeader" value="authorization"/>
         <property name="exceptionIfHeaderMissing" value="false"/>
-        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="authenticationManager" ref="authenticationManager"/>
     </bean>
 
-    <bean id="http403ForbiddenEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
+    <bean id="http403ForbiddenEntryPoint"
+          class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
     <bean id="userSessionCache" class="wifi4eu.wifi4eu.common.security.UserSessionCache"/>
 
     <bean id="auditFilter" class="wifi4eu.wifi4eu.web.filter.AuditFilter"/>
 
 
+    <!--<security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider
+                ref="preauthAuthProvider" />
+    </security:authentication-manager>
 
-<!--<security:authentication-manager alias="authenticationManager">
-    <security:authentication-provider
-            ref="preauthAuthProvider" />
-</security:authentication-manager>
+    <security:http auto-config="true" use-expressions="true">
 
-<security:http auto-config="true" use-expressions="true">
+        <security:custom-filter after="PRE_AUTH_FILTER"
+                                ref="jeePreAuthenticatedFilter" />
+        <security:session-management
+                session-fixation-protection="none">
+        </security:session-management>
+    </security:http>
 
-    <security:custom-filter after="PRE_AUTH_FILTER"
-                            ref="jeePreAuthenticatedFilter" />
-    <security:session-management
-            session-fixation-protection="none">
-    </security:session-management>
-</security:http>
+    <bean id="jeePreAuthenticatedFilter"
+          class="org.springframework.security.web.authentication.preauth.j2ee.J2eePreAuthenticatedProcessingFilter">
+        <property name="authenticationManager" ref="authenticationManager" />
+    </bean>
 
-<bean id="jeePreAuthenticatedFilter"
-      class="org.springframework.security.web.authentication.preauth.j2ee.J2eePreAuthenticatedProcessingFilter">
-    <property name="authenticationManager" ref="authenticationManager" />
-</bean>
-
-<bean id="preauthAuthProvider"
-      class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
-    <property name="preAuthenticatedUserDetailsService">
-        <bean class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
-            <property name="userDetailsService" ref="allAuthenticatedUserService" />
-        </bean>
-    </property>
-</bean>
+    <bean id="preauthAuthProvider"
+          class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
+        <property name="preAuthenticatedUserDetailsService">
+            <bean class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
+                <property name="userDetailsService" ref="allAuthenticatedUserService" />
+            </bean>
+        </property>
+    </bean>
 
 
-<bean id="allAuthenticatedUserService" class="wifi4eu.wifi4eu.service.security.UserDetailsServiceCustom" />-->
+    <bean id="allAuthenticatedUserService" class="wifi4eu.wifi4eu.service.security.UserDetailsServiceCustom" />-->
 
 </beans>

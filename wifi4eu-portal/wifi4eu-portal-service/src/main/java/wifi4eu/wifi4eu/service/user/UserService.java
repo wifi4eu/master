@@ -12,6 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -19,6 +20,7 @@ import wifi4eu.wifi4eu.common.dto.security.ActivateAccountDTO;
 import wifi4eu.wifi4eu.common.dto.security.TempTokenDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.common.security.TokenGenerator;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.entity.security.TempToken;
@@ -37,6 +39,7 @@ import wifi4eu.wifi4eu.service.supplier.SupplierService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.util.MailService;
 
+import javax.servlet.http.Cookie;
 import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
@@ -248,6 +251,44 @@ public class UserService {
         } else {
             throw new Exception("Token doesn't exist.");
         }
+    }
+
+    @Transactional
+    public Cookie getCSRFCookie() throws AppException {
+        _log.debug("[i] getUserByEcasPerId");
+
+        Cookie cookie = null;
+        cookie = new Cookie("XSRF-TOKEN", generateCSRFToken());
+        cookie.setSecure(true);
+        cookie.setMaxAge(365 * 24 * 60 * 60);
+        cookie.setPath("/");
+
+        _log.debug("[f] getUserByEcasPerId");
+        return cookie;
+    }
+
+    private String generateCSRFToken() throws AppException{
+        String token = new TokenGenerator().generate();
+
+        if (token != null && token.length() > 0) {
+            UserContext userContext = UserHolder.getUser();
+            UserDTO user;
+            if (userContext != null) {
+                user = getUserByUserContext(userContext);
+                if (user != null) {
+                    user.setCsrfToken(token);
+                    userRepository.save(userMapper.toEntity(user));
+                } else {
+                    throw new AppException("Contact your administrator", HttpStatus.SC_INTERNAL_SERVER_ERROR, "");
+                }
+            } else {
+                throw new AppException("Contact your administrator", HttpStatus.SC_INTERNAL_SERVER_ERROR, "");
+            }
+        } else {
+            throw new AppException("Contact your administrator", HttpStatus.SC_INTERNAL_SERVER_ERROR, "");
+        }
+
+        return token;
     }
 
     @Transactional

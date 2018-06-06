@@ -2,28 +2,28 @@ package wifi4eu.wifi4eu.common.dto.model;
 
 public class ApplicantListItemDTO {
     private Integer lauId;
-    private Integer euRanking;
-    private Integer countryRanking;
     private String countryCode;
     private String name;
     private Integer counter;
     private Boolean mediation;
     private Integer status;
     private Integer issueStatus;
+    private Long applicationDate;
+    private String invalidateReason;
 
     public ApplicantListItemDTO() {
     }
 
-    public ApplicantListItemDTO(Integer lauId, Integer euRanking, Integer countryRanking, String countryCode, String name, Integer counter, Boolean mediation, Integer status, Integer issueStatus) {
+    public ApplicantListItemDTO(Integer lauId, String countryCode, String name, Integer counter, Boolean mediation, Integer status, Integer issueStatus, Long applicationDate, String invalidateReason) {
         this.lauId = lauId;
-        this.euRanking = euRanking;
-        this.countryRanking = countryRanking;
         this.countryCode = countryCode;
         this.name = name;
         this.counter = counter;
         this.mediation = mediation;
         this.status = status;
         this.issueStatus = issueStatus;
+        this.applicationDate = applicationDate;
+        this.invalidateReason = invalidateReason;
     }
 
     public Integer getLauId() {
@@ -32,22 +32,6 @@ public class ApplicantListItemDTO {
 
     public void setLauId(Integer lauId) {
         this.lauId = lauId;
-    }
-
-    public Integer getEuRanking() {
-        return euRanking;
-    }
-
-    public void setEuRanking(Integer euRanking) {
-        this.euRanking = euRanking;
-    }
-
-    public Integer getCountryRanking() {
-        return countryRanking;
-    }
-
-    public void setCountryRanking(Integer countryRanking) {
-        this.countryRanking = countryRanking;
     }
 
     public String getCountryCode() {
@@ -96,5 +80,21 @@ public class ApplicantListItemDTO {
 
     public void setIssueStatus(Integer issueStatus) {
         this.issueStatus = issueStatus;
+    }
+
+    public Long getApplicationDate() {
+        return applicationDate;
+    }
+
+    public void setApplicationDate(Long applicationDate) {
+        this.applicationDate = applicationDate;
+    }
+
+    public String getInvalidateReason() {
+        return invalidateReason;
+    }
+
+    public void setInvalidateReason(String invalidateReason) {
+        this.invalidateReason = invalidateReason;
     }
 }

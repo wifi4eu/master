@@ -24,31 +24,37 @@ import {DgConnApplicantRegistrationsDetailsComponent} from "./+applicant-registr
         }, {
             path: 'voucher',
             component: DgConnVoucherComponent,
-        }, {
+        },
+         /* {
             path: 'statistics',
             component: DgConnStatisticsComponent,
         }, {
             path: 'supplier-registrations',
             component: DgConnSupplierRegistrationsComponent,
-        }, {
+        } ,
+       {
             path: 'supplier-registrations/:id',
             component: DgConnSupplierRegistrationsDetailsComponent
-        }, {
+        }
+        , {
             path: 'beneficiary-registrations',
             component: DgConnBeneficiaryRegistrationsComponent,
         }, {
             path: 'beneficiary-registrations/:id',
             component: DgConnBeneficiaryRegistrationsDetailsComponent,
-        }, {
+        },*/
+         {
             path: 'applicant-registrations',
             component: DgConnApplicantRegistrationsComponent,
         }, {
             path: 'applicant-registrations/:lauId/call/:callId',
             component: DgConnApplicantRegistrationsDetailsComponent,
-        }, {
+        },
+         /*{
             path: 'manage-lau',
             component: DgConnManageLauComponent,
-        }, {
+        }, */
+        {
             path: 'discussion',
             component: DgConnDiscussionComponent,
         }

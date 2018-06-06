@@ -56,11 +56,14 @@ public class User {
     @Column(name = "ecas_username")
     private String ecasUsername;
 
+    @Column(name = "csrf_token")
+    private String csrfToken;
+
     public User() {
     }
 
 
-    public User(String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername) {
+    public User(String treatment, String name, String surname, String address, String addressNum, String postalCode, String email, String lang, String password, Long createDate, Long accessDate, Integer type, boolean verified, String ecasEmail, String ecasUsername, String csrfToken) {
         this.treatment = treatment;
         this.name = name;
         this.surname = surname;
@@ -76,6 +79,7 @@ public class User {
         this.verified = verified;
         this.ecasEmail = ecasEmail;
         this.ecasUsername = ecasUsername;
+        this.csrfToken = csrfToken;
     }
 
     public Integer getId() {
@@ -204,5 +208,13 @@ public class User {
 
     public void setEcasUsername(String ecasUsername) {
         this.ecasUsername = ecasUsername;
+    }
+
+    public String getCsrfToken() {
+        return csrfToken;
+    }
+
+    public void setCsrfToken(String csrfToken) {
+        this.csrfToken = csrfToken;
     }
 }

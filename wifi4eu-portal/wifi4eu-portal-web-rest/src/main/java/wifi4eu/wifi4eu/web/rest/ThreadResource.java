@@ -53,6 +53,9 @@ public class ThreadResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'getThreadById' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -64,17 +67,30 @@ public class ThreadResource {
     @ResponseBody
     public ThreadDTO getThreadByTypeAndReason(@PathVariable("type") final Integer type, @PathVariable("reason") final String reason, HttpServletResponse response) throws IOException {
         _log.info("getThreadByTypeAndReason: " + type);
-        ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
         try {
             UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
-            if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null && !permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
+            if (thread != null) {
+                if (user.getType() != 5) {
+                    if (userThreadsService.getByUserIdAndThreadId(user.getId(), thread.getId()) == null) {
+                        throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+                    }
+                }
             }
+            return thread;
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'getThreadByTypeAndReason' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
+        } catch (Exception ex){
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'getThreadByTypeAndReason' operation.", ex);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
         }
-        return thread;
     }
 
     @ApiOperation(value = "Set mediation to thread")
@@ -90,13 +106,16 @@ public class ThreadResource {
             ThreadDTO resThread = threadService.setMediationToThread(threadId);
             return new ResponseDTO(true, resThread, null);
         } catch (AccessDeniedException ade) {
+            if (_log.isErrorEnabled()) {
+                _log.error("AccessDenied on 'askMediationThread' operation.", ade);
+            }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'setMediationThread' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
 }

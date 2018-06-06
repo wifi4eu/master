@@ -92,11 +92,12 @@ export class AdditionalInfoComponent {
     }
 
     private checkFirstDocuments() {
-        if (this.registration.legalFile1 == null || this.registration.legalFile3 == null) {
+        if (this.registration.legalFile1Size == null || this.registration.legalFile1Size == 0 || this.registration.legalFile3Size == null || this.registration.legalFile3Size == 0) {
             this.deleteBlocker = true;
         } else {
             this.deleteBlocker = false;
         }
+		return true;
     }
 
     private uploadFile(event: any, index: number = 0) {
@@ -179,18 +180,8 @@ export class AdditionalInfoComponent {
         this.checkFirstDocuments();
     }
 
-
     private getLegalFileUrl(fileNumber: number) {
-        switch (fileNumber) {
-            case 1:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile1);
-            case 2:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile2);
-            case 3:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile3);
-            case 4:
-                return this.sanitizer.bypassSecurityTrustUrl(this.registration.legalFile4);
-        }
+		return this.registrationApi.getLegalFilesByFileType(this.registration.id, fileNumber);
     }
 
     private onSubmit() {
@@ -231,16 +222,13 @@ export class AdditionalInfoComponent {
         } else {
             this.sharedService.growlTranslation('You cant upload documents right now', 'shared.cantUploadDocs', 'error');
             this.filesUploaded = false;
-
         }
         this.checkFirstDocuments();
     }
 
     private updateMailings() {
         if (!this.isMayor) {
-
-
-            if (this.registration.legalFile1 && this.registration.legalFile2 && this.registration.legalFile3 && this.registration.legalFile4) {
+            if (this.registration.legalFile1Size != null && this.registration.legalFile1Size > 0 && this.registration.legalFile2Size != null && this.registration.legalFile2Size > 0 && this.registration.legalFile3Size != null && this.registration.legalFile3Size > 0 && this.registration.legalFile4Size != null && this.registration.legalFile4Size > 0) {
                 this.registration.allFilesFlag = 1;
                 this.registration.mailCounter = 0;
             } else {
@@ -249,7 +237,7 @@ export class AdditionalInfoComponent {
                 this.registration.mailCounter = 3;
             }
         } else {
-            if (this.registration.legalFile1 && this.registration.legalFile3) {
+            if (this.registration.legalFile1Size != null && this.registration.legalFile1Size > 0 && this.registration.legalFile3Size != null && this.registration.legalFile3Size > 0) {
                 this.registration.allFilesFlag = 1;
                 this.registration.mailCounter = 0;
             } else {
@@ -283,7 +271,7 @@ export class AdditionalInfoComponent {
             }
             this.updateMailings();
             this.displayConfirmingData = true;
-            this.registrationApi.createRegistration(this.registration).subscribe(
+            this.registrationApi.deleteRegistrationDocuments(this.registration).subscribe(
                 (response: ResponseDTOBase) => {
                     this.displayConfirmingData = false;
                     if (response.success) {

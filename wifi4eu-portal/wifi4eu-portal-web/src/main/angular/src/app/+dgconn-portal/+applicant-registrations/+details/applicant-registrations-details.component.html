@@ -1,13 +1,13 @@
 <div class="container">
     <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
-        <a class="link-label" routerLink="../../.." routerLinkActive="active">
+        <a class="link-label" (click)="goBack()">
             <i class="fa fa-long-arrow-left fa-2" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
         </a>
     </div>
     <div class="ui-g-12">
         <p>
             <span class="beneficiaryTitle">
-                {{ 'shared.municipalityDetails.title' | translate }}
+                {{ 'shared.municipalityDetails.title' | translate }}<span *ngIf="municipalities[0]"> - {{municipalities[0].name}}</span>
             </span>
         </p>
         <i *ngIf="loadingData" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
@@ -18,7 +18,7 @@
             {{ 'dgConn.duplicatedBeneficiaryDetails.desc' | translate }}
         </p>
     </div>
-    <div *ngIf="municipalities.length >= 1">
+    <div *ngIf="municipalities.length >= 1 && !loadingData">
         <div class="ui-g-12">
             <p *ngIf="municipalities.length == 1" class="beneficiaryMayor">
                 {{ 'dgConn.duplicatedBeneficiaryDetails.entity' | translate }}
@@ -34,19 +34,28 @@
                             {{ 'dgConn.duplicatedBeneficiaryDetails.applicant' | translate }} {{(i + 1)}}
                             ({{ 'discussionForum.beneficiary.registrationNumber' | translate }} {{users[i].id}})
                         </span>
-                        <span *ngIf="registrationIssues[i] == 1 || registrationIssues[i] == 2" class="badge badge-warning">
+                        <span *ngIf="applications[i].status == 1" class="entity-subtitle" style="margin-left: 0.5em;">
+                            <i class="fa fa-times" style="color: red;"></i> <i>{{ 'dgConn.status.invalid' | translate }}</i>
+                        </span>
+                        <span *ngIf="applications[i].status == 2" class="entity-subtitle" style="margin-left: 0.5em;">
+                            <i class="fa fa-check" style="color: green;"></i> <i>{{ 'dgConn.status.valid' | translate }}</i>
+                        </span>
+                        <span *ngIf="applications[i].status == 3" class="entity-subtitle" style="margin-left: 0.5em;">
+                            <i class="fa fa-info"></i> <i>{{ 'dgConn.status.pendingFollowup' | translate }}</i>
+                        </span>
+                        <span *ngIf="registrationIssues[i] == 1 || registrationIssues[i] == 2" class="badge badge-warning"  style="margin-left: 0.5em;">
                             {{ 'dgConn.badge.warning' | translate }} {{ registrationIssues[i] }}
                         </span>
-                        <span *ngIf="registrationIssues[i] == 3" class="badge badge-warning-yellow">
+                        <span *ngIf="registrationIssues[i] == 3" class="badge badge-warning-yellow"  style="margin-left: 0.5em;">
                             {{ 'dgConn.badge.warning' | translate }} {{ registrationIssues[i] }}
                         </span>
                         <br><br>
                         <span class="entity-subtitle">
-                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date | date: 'dd/MM/yyyy HH:mm' }}
+                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date/1000000 | date:'yyyy-MM-dd'}} {{ applications[i].date/1000000 | date:'shortTime'}}
                         </span>
                     </span>
                     <span class="right">
-                        <button type="button" class="btn greenButton" (click)="displayValidateModal(i)" [disabled]="applications[i].status == 2">
+                        <button type="button" class="btn greenButton" (click)="displayValidateModal(i)" [disabled]="applications[i].status == 2 || registrations[i].allFilesFlag != 1">
                             {{ 'dgConn.applicantDetails.validateApplication.title' | translate }}
                         </button>
                         <button type="button" class="btn redButton" (click)="displayInvalidateModal(i)" [disabled]="applications[i].status == 1">
@@ -134,43 +143,46 @@
                     <div class="ui-g-12">
                         <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
                             <p class="applicantDetailsNoMargin municipality-name profileData">
-                                <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.documentation' | translate }}</span>
+                                <span class="ui-g-8">{{ 'dgConn.supportingDocuments' | translate }}</span>
                             </p>
-                            <p class="applicantDetailsNoMargin" *ngIf="!registrations[i].legalFile1 && !registrations[i].legalFile2 && !registrations[i].legalFile3 && !registrations[i].legalFile4">
-                                <span class="ui-g-12">{{ 'dgConn.duplicatedBeneficiaryDetails.noDocuments' | translate }}</span>
+                            <p class="applicantDetailsNoMargin">
+                                <ux-accordion-boxes>
+                                    <custom-accordion-box [isExpanded]="true" [rightSide]="true">
+                                        <p-dataTable [value]="legalFiles[i]">
+                                            <p-column field="type" [sortable]="false" header="{{ 'dgConn.documentType' | translate }}" styleClass="text-center">
+                                                <ng-template let-row="rowData" pTemplate="body">
+                                                    <p-checkbox [value]="row.type" [label]="typeFilesList[row.type - 1]" [(ngModel)]="selectedFilesTypes[i]"></p-checkbox>
+                                                </ng-template>
+                                            </p-column>
+                                            <p-column field="uploadTime" [sortable]="false" header="{{ 'dgConn.dateRecieved' | translate }}" styleClass="text-center">
+                                                <ng-template let-row="rowData" pTemplate="body">
+                                                    <span *ngIf="row.uploadTime">{{ row.uploadTime | date:'dd/MM/yyyy' }}</span>
+                                                    <span *ngIf="!row.uploadTime">-</span>
+                                                </ng-template>
+                                            </p-column>
+                                            <p-column field="correctionReason" [sortable]="false" header="{{ 'dgConn.correctionReason' | translate }}" styleClass="text-center">
+                                                <ng-template let-row="rowData" pTemplate="body">
+                                                    <span *ngIf="row.correctionReason != null">{{invalidateReasonsList[row.correctionReason]}}</span>
+                                                    <span *ngIf="row.correctionReason == null">-</span>
+                                                </ng-template>
+                                            </p-column>
+                                            <p-column [sortable]="false" header="{{ 'dgConn.actions' | translate }}" styleClass="text-center">
+                                                <ng-template let-row="rowData" pTemplate="body">
+                                                    <a class="link-label" href="{{fileURL}}{{registrations[i].id}}/{{row.type}}" target="_blank">
+                                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
+                                                    </a>
+                                                </ng-template>
+                                            </p-column>
+                                        </p-dataTable>
+                                    </custom-accordion-box>
+                                </ux-accordion-boxes>
                             </p>
-                            <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile1">
-                                <span class="ui-g-12">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 1
-                                    <a class="link-label" style="margin-left: 2em;" [href]="getLegalFileUrl(i, 1)" download>
-                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                    </a>
-                                </span>
-                            </p>
-                            <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile2">
-                                <span class="ui-g-12">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 2
-                                    <a class="link-label" style="margin-left: 2em;" [href]="getLegalFileUrl(i, 2)" download>
-                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                    </a>
-                                </span>
-                            </p>
-                            <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile3">
-                                <span class="ui-g-12">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 3
-                                    <a class="link-label" style="margin-left: 2em;" [href]="getLegalFileUrl(i, 3)" download>
-                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                    </a>
-                                </span>
-                            </p>
-                            <p class="applicantDetailsNoMargin" *ngIf="registrations[i].legalFile4">
-                                <span class="ui-g-12">
-                                    <i class="fa fa-file-o" aria-hidden="true"></i> {{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} 4
-                                    <a class="link-label" style="margin-left: 2em;" [href]="getLegalFileUrl(i, 4)" download>
-                                        <i class="fa fa-download" aria-hidden="true"></i> {{ 'shared.download' | translate }}
-                                    </a>
-                                </span>
-                            </p>
+                            <div class="ui-g-12 right">
+                                <button type="button" class="btn btn-primary" (click)="displayRequestCorrectionModal(i)"
+                                        *ngIf="selectedFilesTypes[i]" [disabled]="selectedFilesTypes[i].length < 1">
+                                    {{ 'dgConn.requestCorrection' | translate }}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -218,7 +230,7 @@
 <div class="container font">
     <p-dialog [(visible)]="displayValidate" [modal]="true" [responsive]="true" [resizable]="false"
               [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
-        <form (ngSubmit)="validateApplication()" #invalidateConfirmationForm="ngForm">
+        <form (ngSubmit)="validateApplication()" #validateConfirmationForm="ngForm">
             <div class="form-group">
                 <div style="padding: 2em; padding-top: 0em;" class="center">
                     <h2 class="beneficiaryMayor">{{ 'dgConn.applicantDetails.validateApplication.title' | translate }}</h2>
@@ -268,6 +280,56 @@
                         <div class="col-sm-6">
                             <button type="submit" class="btn btn-primary publish-button"
                                     [disabled]="processingRequest || invalidateReason.trim().length < 1">
+                                {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+    <p-dialog [(visible)]="displayRequestCorrection" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false" [closable]="!processingRequest" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+        <form (ngSubmit)="requestLegalFilesCorrection()" #requestLegalFilesCorrectionForm="ngForm">
+            <div class="form-group">
+                <div style="padding: 2em; padding-top: 0em;" class="center">
+                    <h2 class="beneficiaryMayor">{{ 'dgConn.applicantDetails.requestLegalFilesCorrection.title' | translate }}</h2>
+                    <p [innerHTML]="'dgConn.applicantDetails.requestLegalFilesCorrection.desc' | translate"></p>
+                </div>
+                <div *ngFor="let typeNumber of selectedFilesTypes[selectedIndex]; let typeIndex = index">
+                    <hr *ngIf="i != 0" class="beneficiaryHr">
+                    <p class="applicantDetailsNoMargin ui-g-12">
+                        <span class="profileData">{{ 'dgConn.duplicatedBeneficiaryDetails.document' | translate }} {{typeIndex+1}}</span>
+                        <br>
+                        <span>- <span>{{typeFilesList[typeNumber - 1]}}</span></span>
+                    </p>
+                    <p class="applicantDetailsNoMargin">
+                        <span class="ui-g-12">{{ 'dgConn.correctionReason' | translate }}:</span>
+                        <span class="ui-g-12" style="margin-bottom: 1em;">
+                            <select [(ngModel)]="selectedReasonTypes[selectedIndex][typeIndex]" (ngModelChange)="selectCorrectionReason($event)"
+                                    [id]="'invalidateReason'+typeIndex" [name]="'invalidateReason'+typeIndex" class="form-control">
+                                <option selected [ngValue]="null">
+                                    -
+                                </option>
+                                <option *ngFor="let invalidateReason of invalidateReasonsList; let reasonIndex = index"
+                                        [ngValue]="reasonIndex">
+                                    {{ invalidateReason }}
+                                </option>
+                            </select>
+                        </span>
+                    </p>
+                </div>
+                <div>
+                    <div class="row center">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-primary cancel-button"
+                                    [disabled]="processingRequest" (click)="closeModal()">
+                                {{ 'shared.cancel.button' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-primary publish-button"
+                                    [disabled]="processingRequest || !correctRequestLegalFilesModal">
                                 {{ 'shared.confirm.button' | translate }} <i *ngIf="processingRequest" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
                             </button>
                         </div>
