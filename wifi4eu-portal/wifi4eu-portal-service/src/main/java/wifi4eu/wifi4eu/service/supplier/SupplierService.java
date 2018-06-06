@@ -126,7 +126,6 @@ public class SupplierService {
         supplierDTO.setContactSurname(contactSurname);
         supplierDTO.setContactPhonePrefix(contactPhonePrefix);
         supplierDTO.setContactPhoneNumber(contactPhoneNumber);
-
         return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
     }
 
@@ -136,17 +135,18 @@ public class SupplierService {
         supplierDTO.setAddress(address);
         supplierDTO.setVat(vat);
         supplierDTO.setBic(bic);
-        supplierDTO.setLogo(logo);
-        if (supplierDTO.getLogo() != null) {
-            byte[] logoByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(supplierDTO.getLogo()));
-            String logoMimeType = LegalFilesService.getMimeType(supplierDTO.getLogo());
+        if (logo != null) {
+            byte[] logoByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(logo));
+            String logoMimeType = LegalFilesService.getMimeType(logo);
             if (logoByteArray.length > 2560000) {
                 throw new Exception("File size cannot bet greater than 2.5 MB.");
             } else if (!logoMimeType.equals("image/png") && !logoMimeType.equals("image/jpg") && !logoMimeType.equals("image/jpeg")) {
                 throw new Exception("File must have a valid extension.");
             } else {
-                supplierDTO.setLogo(supplierDTO.getLogo());
+                supplierDTO.setLogo(logo);
             }
+        } else {
+            supplierDTO.setLogo(null);
         }
         return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
     }
