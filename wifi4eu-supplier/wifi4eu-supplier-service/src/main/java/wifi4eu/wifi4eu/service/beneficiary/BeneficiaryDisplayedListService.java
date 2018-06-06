@@ -27,6 +27,7 @@ import wifi4eu.wifi4eu.service.security.PermissionChecker;
 
 import javax.xml.ws.Response;
 import java.security.Permission;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Service("beneficiary")
@@ -86,12 +87,16 @@ public class BeneficiaryDisplayedListService {
             if (!checkPermissions(registration))
                 return permissionChecker.getAccessDeniedResponse();
 
-            registration.setWifiIndicator(true);
+            // registration.setWifiIndicator(true);
+            // Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            registration.setInstallationSiteSubmission(new java.sql.Date(new Date().getTime()));
             registrationRepository.save(registration);
             String email = registration.getUser().getEmail();
             String name = registration.getUser().getName();
+
             response.setSuccess(true);
-            response.setData("WiFi Indicator updated successfully");
+            response.setData(beneficiaryDisplayedListMapper.toDTO(beneficiaryDisplayedListRepository.findBeneficiaryByRegistrationId(registration.getId())));
+            // response.setData("WiFi Indicator updated successfully");
             cnsManager.sendInstallationConfirmationNotification(email, name);
         } else {
             response.setSuccess(false);

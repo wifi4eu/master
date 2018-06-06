@@ -105,7 +105,9 @@ export class InstallationListComponent implements OnInit {
                 let successBanner = document.getElementById("success");
                 successBanner.style.display = "block";
                 successBanner.scrollIntoView({ behavior: "smooth" });
-                this.beneficiarySelected.wifiIndicator = true;
+                this.beneficiaryService.beneficiarySelected = response.data;
+                // this.beneficiarySuggestions = response.data;
+                // this.beneficiarySelected.wifiIndicator = true;
             }
         }, error => {
             console.log(error);
@@ -120,6 +122,28 @@ export class InstallationListComponent implements OnInit {
 
     byId(bf1: BeneficiaryDisplayedListDTOBase, bf2: BeneficiaryDisplayedListDTOBase) {
         return bf1.id === bf2.id;
+    }
+
+    disablePermissionsIndicator(){
+        if (this.beneficiaryService.beneficiarySelected){
+            if (this.beneficiaryService.beneficiarySelected.installationSiteConfirmation){
+                console.log("1");
+                return true;
+            }
+            if (this.beneficiaryService.beneficiarySelected.installationSiteSubmission && this.beneficiaryService.beneficiarySelected.installationSiteRejection == null){
+                console.log("2");
+                return true;
+            } else {
+                if (this.beneficiaryService.beneficiarySelected.installationSiteRejection && (this.beneficiaryService.beneficiarySelected.installationSiteRejection > this.beneficiaryService.beneficiarySelected.installationSiteSubmission)){
+                    console.log("3");
+                    return true;
+                }
+            }
+            console.log("4");
+            return false;
+        }
+        console.log("5");
+        return true;
     }
 
 

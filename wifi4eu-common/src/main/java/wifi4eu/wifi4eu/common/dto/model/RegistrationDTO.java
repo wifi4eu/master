@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.common.dto.model;
 import javax.persistence.Column;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class RegistrationDTO implements Serializable {
     private int id;
@@ -17,8 +18,6 @@ public class RegistrationDTO implements Serializable {
     private String ipRegistration;
     private String associationName;
     private int organisationId;
-    private boolean wifiIndicator;
-    private boolean beneficiaryIndicator;
     private int idUserPM;
     private int idUserBPM;
     private int idStatusBeneficiary;
@@ -31,16 +30,16 @@ public class RegistrationDTO implements Serializable {
     private boolean conformity;
     private Timestamp firstFalseCheck;
     private Timestamp dateRegistered;
+    private Date installationSiteSubmission;
+    private Date installationSiteRejection;
+    private Date installationSiteConfirmation;
 
 
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String
-            legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int
-            organisationId, boolean wifiIndicator, boolean beneficiaryIndicator, int idStatusBeneficiary, boolean
-            compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int
-            actionTaken, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, int idUserPM, int idUserBPM) {
+
+    public RegistrationDTO(int id, int userId, int municipalityId, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, int idUserPM, int idUserBPM, int idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation) {
         this.id = id;
         this.userId = userId;
         this.municipalityId = municipalityId;
@@ -53,9 +52,7 @@ public class RegistrationDTO implements Serializable {
         this.ipRegistration = ipRegistration;
         this.associationName = associationName;
         this.organisationId = organisationId;
-        this.wifiIndicator = wifiIndicator;
-        this.beneficiaryIndicator = beneficiaryIndicator;
-        this.idUserPM  = idUserPM;
+        this.idUserPM = idUserPM;
         this.idUserBPM = idUserBPM;
         this.idStatusBeneficiary = idStatusBeneficiary;
         this.compliance = compliance;
@@ -67,6 +64,33 @@ public class RegistrationDTO implements Serializable {
         this.conformity = conformity;
         this.firstFalseCheck = firstFalseCheck;
         this.dateRegistered = dateRegistered;
+        this.installationSiteSubmission = installationSiteSubmission;
+        this.installationSiteRejection = installationSiteRejection;
+        this.installationSiteConfirmation = installationSiteConfirmation;
+    }
+
+    public Date getInstallationSiteSubmission() {
+        return installationSiteSubmission;
+    }
+
+    public void setInstallationSiteSubmission(Date installationSiteSubmission) {
+        this.installationSiteSubmission = installationSiteSubmission;
+    }
+
+    public Date getInstallationSiteRejection() {
+        return installationSiteRejection;
+    }
+
+    public void setInstallationSiteRejection(Date installationSiteRejection) {
+        this.installationSiteRejection = installationSiteRejection;
+    }
+
+    public Date getInstallationSiteConfirmation() {
+        return installationSiteConfirmation;
+    }
+
+    public void setInstallationSiteConfirmation(Date installationSiteConfirmation) {
+        this.installationSiteConfirmation = installationSiteConfirmation;
     }
 
     public int getId() {
@@ -164,8 +188,6 @@ public class RegistrationDTO implements Serializable {
                 ", ipRegistration='" + ipRegistration + '\'' +
                 ", associationName='" + associationName + '\'' +
                 ", organisationId=" + organisationId +
-                ", wifiIndicator=" + wifiIndicator +
-                ", beneficiaryIndicator=" + beneficiaryIndicator +
                 '}';
     }
 
@@ -183,22 +205,6 @@ public class RegistrationDTO implements Serializable {
 
     public void setOrganisationId(int organisationId) {
         this.organisationId = organisationId;
-    }
-
-    public boolean isWifiIndicator() {
-        return wifiIndicator;
-    }
-
-    public void setWifiIndicator(boolean wifiIndicator) {
-        this.wifiIndicator = wifiIndicator;
-    }
-
-    public boolean isBeneficiaryIndicator() {
-        return beneficiaryIndicator;
-    }
-
-    public void setBeneficiaryIndicator(boolean beneficiaryIndicator) {
-        this.beneficiaryIndicator = beneficiaryIndicator;
     }
 
     public int getIdStatusBeneficiary() {

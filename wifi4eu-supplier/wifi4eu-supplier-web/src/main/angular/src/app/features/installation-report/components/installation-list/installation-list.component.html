@@ -29,7 +29,8 @@
                 </p>
             </div>
             <div class="col-md-4 text-right btn-flat-link">
-                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" [isDisabled]="!isBeneficiarySelected || beneficiarySelected.wifiIndicator" (click)="openUpdateInstallationSite()">+ {{ 'installationReport.addSite' | translate }}</ux-button>
+                    <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" [isDisabled]="disablePermissionsIndicator()" (click)="openUpdateInstallationSite()">+ {{ 'installationReport.addSite' | translate }}</ux-button>
+                <!-- <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" [isDisabled]="!isBeneficiarySelected || beneficiarySelected.wifiIndicator" (click)="openUpdateInstallationSite()">+ {{ 'installationReport.addSite' | translate }}</ux-button> -->
             </div>
         </div>
         <p-dataTable [value]="installationSites" [rows]="searchParametersService.parameters.delta" [paginator]="true" [rowsPerPageOptions]="[5,10,20]"

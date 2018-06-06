@@ -1,20 +1,27 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class BeneficiaryDisplayedListDTO implements Serializable {
     private String name;
     private Integer id;
-    private Boolean wifiIndicator;
+
+    private Date installationSiteSubmission;
+    private Date installationSiteRejection;
+    private Date installationSiteConfirmation;
+
 
     public BeneficiaryDisplayedListDTO(){
 
     }
 
-    public BeneficiaryDisplayedListDTO(String name, Integer id, boolean wifiIndicator){
+    public BeneficiaryDisplayedListDTO(String name, Integer id, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation) {
         this.name = name;
         this.id = id;
-        this.wifiIndicator = wifiIndicator;
+        this.installationSiteSubmission = installationSiteSubmission;
+        this.installationSiteRejection = installationSiteRejection;
+        this.installationSiteConfirmation = installationSiteConfirmation;
     }
 
     public String getName(){
@@ -33,20 +40,27 @@ public class BeneficiaryDisplayedListDTO implements Serializable {
         this.id = id;
     }
 
-    public Boolean isWifiIndicator() {
-        return wifiIndicator;
+    public Date getInstallationSiteSubmission() {
+        return installationSiteSubmission;
     }
 
-    public void setWifiIndicator(Boolean wifiIndicator) {
-        this.wifiIndicator = wifiIndicator;
+    public void setInstallationSiteSubmission(Date installationSiteSubmission) {
+        this.installationSiteSubmission = installationSiteSubmission;
     }
 
-    @Override
-    public String toString() {
-        return "BeneficiaryDisplayedListDTO{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
-                ", wifiIndicator=" + wifiIndicator +
-                '}';
+    public Date getInstallationSiteRejection() {
+        return installationSiteRejection;
+    }
+
+    public void setInstallationSiteRejection(Date installationSiteRejection) {
+        this.installationSiteRejection = installationSiteRejection;
+    }
+
+    public Date getInstallationSiteConfirmation() {
+        return installationSiteConfirmation;
+    }
+
+    public void setInstallationSiteConfirmation(Date installationSiteConfirmation) {
+        this.installationSiteConfirmation = installationSiteConfirmation;
     }
 }
