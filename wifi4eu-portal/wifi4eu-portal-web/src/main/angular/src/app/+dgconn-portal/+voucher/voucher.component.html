@@ -115,7 +115,7 @@
                   <input type="text" id="municipalitySearch" (keydown)="searchByMunicipality($event)" [(ngModel)]="searchedMunicipality" name="searchedMunicipality">
                 </div>
                 <div class="col-md-4">
-                  <button type="button" class="btn btn-primary simulate-button" (click)="simulateVoucherAssignment()">
+                  <button type="button" class="btn btn-primary simulate-button" [disabled]="callVoucherAssignment?.hasFreezeListSaved" (click)="simulateVoucherAssignment()">
                     {{ 'dgConn.voucherAssignment.simulateVouchers.button' | translate }}
                   </button>
                 </div>
@@ -161,7 +161,8 @@
                         <ng-template let-row="rowData" pTemplate="body">
                           <span *ngIf="row.selectionStatus == 0">{{ 'dgConn.voucherAssignment.selectionStatus.mainList' | translate}}</span>
                           <span *ngIf="row.selectionStatus == 1">{{ 'dgConn.voucherAssignment.selectionStatus.reserve' | translate}}</span>
-                          <span *ngIf="row.selectionStatus == 2">Rejected</span>
+                          <span *ngIf="row.selectionStatus == 2">{{ 'dgConn.voucherAssignment.selectionStatus.rejected' | translate}}</span>
+                          <span *ngIf="row.selectionStatus == 3">{{ 'dgConn.voucherAssignment.selectionStatus.selected' | translate}}</span>
                         </ng-template>
                       </p-column>
                       <p-column field="application.preSelectedFlag" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationChange' | translate}}"
@@ -209,7 +210,7 @@
                       </p-column>
                       <p-column header="{{'dgConn.voucherAssignment.table.action' | translate}}" styleClass="text-center not-hide-overflow">
                         <ng-template let-rowData="rowData" pTemplate="body">
-                          <div style="position:relative;" (click)="op.show($event)">
+                          <div style="position:relative;" (click)="op.show($event)" *ngIf="!callVoucherAssignment?.hasFreezeListSaved">
                             <p-overlayPanel #op>
                               <div class="row">
                                 <a (click)="goToMunicipality(rowData.lau)">
@@ -253,19 +254,20 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-3 offset-md-3">
                   <button type="button" class="btn btn-primary preSelection-button" [disabled]="callVoucherAssignment?.hasPreListSaved" (click)="checkPreListEnabled()">
                     {{'dgConn.voucherAssignment.preSelectionSave.button' | translate}}
                   </button>
-                  <span style="color: #929292;" [innerHTML]="'dgConn.voucherAssignment.preList.date' | translate:{date:dateNumberPreList,hour:hourNumberPreList}"></span>
+                  <span style="color: #929292;" *ngIf="callVoucherAssignment?.hasPreListSaved" [innerHTML]="'dgConn.voucherAssignment.preList.date' | translate:{date:dateNumberPreList,hour:hourNumberPreList}"></span>
                 </div>
                 <div class="col-md-3">
-                  <button type="button" class="btn btn-primary preSelection-button" (click)="freezeList()" disabled>
+                  <button type="button" class="btn btn-primary preSelection-button" [disabled]="callVoucherAssignment?.hasFreezeListSaved"  (click)="freezeList()" disabled>
                     {{'dgConn.voucherAssignment.freezeList.button' | translate}}
                   </button>
+                  <span style="color: #929292;" *ngIf="callVoucherAssignment?.hasFreezeListSaved"  [innerHTML]="'dgConn.voucherAssignment.freezeList.date' | translate:{date:dateNumberFreeze,hour:hourNumberFreeze}"></span>
                 </div>
                 <div class="col-md-3">
-                  <button type="button" class="btn btn-primary preSelection-button" disabled>
+                  <button type="button" class="btn btn-primary preSelection-button" [disabled]="!callVoucherAssignment?.hasFreezeListSaved">
                     {{'dgConn.voucherAssignment.sendNotification.button' | translate}}
                   </button>
                 </div>
@@ -331,7 +333,7 @@
      <button (click)="displayFreezeConfirmation = false" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>
     <div class="col-sm-6 marginStep1">
-      <button class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
+      <button class="btn btn-primary publish-button" (click)="saveFreezeList()">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
     </div>
   </div>
 </p-dialog>

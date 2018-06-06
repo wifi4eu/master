@@ -73,8 +73,8 @@ export class DgConnVoucherComponent {
   private dateNumberPreList: string;
   private hourNumberPreList: string; 
 
-  private dateNumberFreeze: string;
-  private hourNumberFreeze: string; 
+  private dateNumberFreeze: string;
+  private hourNumberFreeze: string; 
 
   private searchedMunicipality = null;
 
@@ -109,11 +109,29 @@ export class DgConnVoucherComponent {
           this.loadingSimulation = true;
 
           this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.calls[0].id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
-            this.callVoucherAssignment = data;
-            let date = new Date(this.callVoucherAssignment.preListExecutionDate);
-            this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-            this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
-            this.loadPage();
+            if(data != null){
+              this.callVoucherAssignment = data;
+              let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+              this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+              this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+              if(data.hasFreezeListSaved){
+                this.voucherApi.getVoucherAssignmentByCallAndStatus(this.calls[0].id, 3).subscribe(
+                 (response: VoucherAssignmentAuxiliarDTO) => {
+                    if(response != null){
+                      this.callVoucherAssignment.id = response.id;
+                      let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
+                      this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+                      this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+                      this.loadPage();
+                    }                    
+                }, error => {
+                  console.log(error);
+                });
+              }
+              else{
+                this.loadPage();
+              }
+            }            
           })
 
           this.applicationApi.getApplicationsNotInvalidated(this.calls[0].id).subscribe((data) => {
@@ -345,4 +363,21 @@ export class DgConnVoucherComponent {
   private freezeList(){
     this.displayFreezeConfirmation = true;
   }
+
+  private saveFreezeList(){
+    this.voucherApi.saveFreezeListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
+      this.displayFreezeConfirmation = false;
+      let date = new Date(this.callVoucherAssignment.executionDate);
+      this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+      this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+      this.callVoucherAssignment.id = response.data.id;
+      this.callVoucherAssignment.hasFreezeListSaved = true;
+      this.callVoucherAssignment.freezeLisExecutionDate = response.data.executionDate;
+      //this.listAssignment = response.voucherSimulations;      
+      this.loadPage();
+    }, error => {
+      console.log(error);
+    });    
+  }
+
 }

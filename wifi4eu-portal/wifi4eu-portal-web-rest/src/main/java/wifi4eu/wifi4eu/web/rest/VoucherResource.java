@@ -24,6 +24,7 @@ import wifi4eu.wifi4eu.service.voucher.util.ScenariosService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletResponse;
@@ -216,7 +217,7 @@ public class VoucherResource {
     public ResponseDTO savePreListSimulation(@RequestParam("assignmentId") Integer assignmentId, @RequestParam("callId") Integer callId, HttpServletResponse response) throws IOException {
         try{
             if (!permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException("Access denied: exportExcelVoucherSimulation");
+                throw new AccessDeniedException("Access denied: savePreListSimulation");
             }
             List<VoucherSimulationDTO> result = voucherService.savePreListSimulation(assignmentId, callId);
             return new ResponseDTO(true, result, null);
@@ -233,6 +234,58 @@ public class VoucherResource {
             }
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
+    @ApiOperation(value = "Freeze simulation list")
+    @RequestMapping(value = "/assignment/freeze-simulation-list", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseDTO saveFreezeListSimulation(@RequestParam("assignmentId") Integer assignmentId, @RequestParam("callId") Integer callId, HttpServletResponse response) throws IOException {
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: saveFreezeListSimulation");
+            }
+            VoucherAssignmentDTO result = voucherService.saveFreezeListSimulation(assignmentId, callId);
+            return new ResponseDTO(true, result, null);
+        }
+        catch (AccessDeniedException adex){
+            if(_log.isWarnEnabled()){
+                _log.warn(adex.getMessage());
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
+        }catch (Exception ex){
+            if(_log.isWarnEnabled()){
+                _log.warn(ex.getMessage());
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
+        }
+    }
+
+
+    @ApiOperation(value = "Get voucher assignment auxiliar by call and status")
+    @RequestMapping(value = "/assignment/call/{callId}/status/{status}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public VoucherAssignmentAuxiliarDTO getVoucherAssignmentByCallAndStatus(@PathVariable("callId") Integer callId, @PathVariable("status") Integer status, HttpServletResponse response) throws IOException {
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: getVoucherAssignmentByCallAndStatus");
+            }
+            return voucherService.getVoucherAssignmentByCallAndStatus(callId, status);
+        }
+        catch (AccessDeniedException adex){
+            if(_log.isWarnEnabled()){
+                _log.warn(adex.getMessage());
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }catch (Exception ex){
+            if(_log.isWarnEnabled()){
+                _log.warn(ex.getMessage());
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return null;
         }
     }
 

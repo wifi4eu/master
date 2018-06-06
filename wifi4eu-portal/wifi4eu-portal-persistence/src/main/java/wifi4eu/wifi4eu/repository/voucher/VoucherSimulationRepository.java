@@ -18,6 +18,10 @@ public interface VoucherSimulationRepository extends CrudRepository<VoucherSimul
     @Query(value = "DELETE FROM voucher_simulations WHERE voucher_assignment = ?1", nativeQuery = true)
     void deleteVoucherSimulationByVoucherAssignment(int idVoucherAssignment);
 
+
+    @Query("SELECT vs FROM VoucherSimulation vs JOIN vs.voucherAssignment a WHERE a.id =:idVoucherAssignment AND vs.selectionStatus != 2")
+    List<VoucherSimulation> findAllByVoucherAssignmentAndStatusOrderByEuRank(@Param("idVoucherAssignment") int idVoucherAssignment);
+
     @Query("SELECT vs FROM VoucherSimulation vs JOIN vs.voucherAssignment a WHERE a.id =:idVoucherAssignment")
     List<VoucherSimulation> findAllByVoucherAssignmentOrderByEuRank(@Param("idVoucherAssignment") int idVoucherAssignment);
 

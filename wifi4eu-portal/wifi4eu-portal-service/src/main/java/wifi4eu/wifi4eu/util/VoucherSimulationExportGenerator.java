@@ -5,6 +5,7 @@ import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import wifi4eu.wifi4eu.common.dto.model.ApplicationDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherSimulationDTO;
+import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 
 import java.io.ByteArrayOutputStream;
@@ -131,14 +132,17 @@ public class VoucherSimulationExportGenerator<T> {
                 ApplicationDTO applicationDTO;
                 switch (field.getName()) {
                     case "selectionStatus":
-                        if((int) field.get(objectData) == 0){
+                        if((int) field.get(objectData) == SelectionStatus.MAIN_LIST.getValue()){
                             value = "Main list";
                         }
-                        else if((int) field.get(objectData) == 1){
+                        else if((int) field.get(objectData) == SelectionStatus.RESERVE_LIST.getValue()){
                             value = "Reserve list";
                         }
-                        else{
+                        else if((int) field.get(objectData) == SelectionStatus.REJECTED.getValue()){
                             value = "Rejected";
+                        }
+                        else if((int) field.get(objectData) == SelectionStatus.SELECTED.getValue()){
+                            value = "Selected";
                         }
                         break;
                     case "numApplications":
