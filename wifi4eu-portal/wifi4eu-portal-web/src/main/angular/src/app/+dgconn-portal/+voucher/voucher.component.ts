@@ -8,7 +8,7 @@ import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { Observable } from 'rxJs/Observable';
 import { SharedService } from "../../shared/shared.service";
-import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO } from "../../shared/swagger";
+import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO, VoucherAssignmentAuxiliarDTOBase } from "../../shared/swagger";
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
 import { count } from "rxjs/operator/count";
 import { Paginator, MenuItem } from "primeng/primeng";
@@ -52,7 +52,7 @@ export class DgConnVoucherComponent {
   private getApplicationsCall = null;
   private numVoucher = [];
   private percentageBudgetCall = [];
-  private callVoucherAssignment: VoucherAssignmentDTO = null;
+  private callVoucherAssignment: VoucherAssignmentAuxiliarDTO = null;
   private callsLoaded = false;
   private callSelected: CallDTOBase = null;
   private listAssignment: VoucherSimulationDTO[] = [];
@@ -69,6 +69,12 @@ export class DgConnVoucherComponent {
   private preSelectedEnabled = null;
   private confirmationModal = false;
   private displayFreezeConfirmation = false;
+
+  private dateNumberPreList: string;
+  private hourNumberPreList: string; 
+
+  private dateNumberFreeze: string;
+  private hourNumberFreeze: string; 
 
   private searchedMunicipality = null;
 
@@ -104,6 +110,9 @@ export class DgConnVoucherComponent {
 
           this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.calls[0].id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
             this.callVoucherAssignment = data;
+            let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+            this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+            this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
             this.loadPage();
           })
 
@@ -198,12 +207,20 @@ export class DgConnVoucherComponent {
   }
 
   checkPreListEnabled(){
+    if(this.callVoucherAssignment.hasPreListSaved){
+      return;
+    }
     this.voucherApi.checkSavePreSelectionEnabled(this.callVoucherAssignment.id).subscribe((response: boolean) => {
       this.preSelectedEnabled = response;
+    },(error) => {
+      console.log(error);      
     })
   }
 
   savePreList(){
+    if(this.callVoucherAssignment.hasPreListSaved){
+      return;
+    }
     this.voucherApi.savePreListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((res) => {
       this.preSelectedEnabled = null;
     }, error => {

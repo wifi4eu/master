@@ -6,6 +6,7 @@ public class VoucherAssignmentAuxiliarDTO {
     private Long executionDate;
     private Integer status;
     private Boolean hasPreListSaved;
+    private Long preListExecutionDate;
 
     public VoucherAssignmentAuxiliarDTO() {
 
@@ -41,5 +42,13 @@ public class VoucherAssignmentAuxiliarDTO {
 
     public void setHasPreListSaved(Boolean hasPreListSaved) {
         this.hasPreListSaved = hasPreListSaved;
+    }
+
+    public Long getPreListExecutionDate() {
+        return preListExecutionDate;
+    }
+
+    public void setPreListExecutionDate(Long preListExecutionDate) {
+        this.preListExecutionDate = preListExecutionDate;
     }
 }

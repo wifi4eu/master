@@ -253,10 +253,11 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-3 col-offset-md-3">
-                  <button type="button" class="btn btn-primary preSelection-button" (click)="checkPreListEnabled()">
+                <div class="col-md-3">
+                  <button type="button" class="btn btn-primary preSelection-button" [disabled]="callVoucherAssignment?.hasPreListSaved" (click)="checkPreListEnabled()">
                     {{'dgConn.voucherAssignment.preSelectionSave.button' | translate}}
                   </button>
+                  <span style="color: #929292;" [innerHTML]="'dgConn.voucherAssignment.preList.date' | translate:{date:dateNumberPreList,hour:hourNumberPreList}"></span>
                 </div>
                 <div class="col-md-3">
                   <button type="button" class="btn btn-primary preSelection-button" (click)="freezeList()" disabled>

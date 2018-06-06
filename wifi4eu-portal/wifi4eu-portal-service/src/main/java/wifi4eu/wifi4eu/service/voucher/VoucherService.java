@@ -19,6 +19,7 @@ import wifi4eu.wifi4eu.entity.municipality.Municipality;
 import wifi4eu.wifi4eu.entity.user.User;
 import wifi4eu.wifi4eu.entity.voucher.SimpleRegistration;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
+import wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
@@ -115,7 +116,13 @@ public class VoucherService {
         if(voucherAssignmentAuxiliarDTO == null){
             throw new AppException("Voucher assigment not found for call id: " + callId);
         }
-        voucherAssignmentAuxiliarDTO.setHasPreListSaved(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 2) != null);
+
+        VoucherAssignmentAuxiliarDTO voucherAssignmentPreList = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 2));
+
+        voucherAssignmentAuxiliarDTO.setHasPreListSaved(voucherAssignmentPreList != null);
+        if(voucherAssignmentPreList != null){
+            voucherAssignmentAuxiliarDTO.setPreListExecutionDate(voucherAssignmentPreList.getExecutionDate());
+        }
         return voucherAssignmentAuxiliarDTO;
     }
 
@@ -195,7 +202,8 @@ public class VoucherService {
             VoucherAssignmentDTO voucherAssignment = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.findByCallIdAndStatusEquals(callId, 2));
 
             if(voucherAssignment != null){
-                voucherAssignmentRepository.delete(voucherAssignmentMapper.toEntity(voucherAssignment));
+                //voucherAssignmentRepository.delete(voucherAssignmentMapper.toEntity(voucherAssignment));
+                throw new AppException("Existing Pre-selection list for callId: " + callId);
             }
 
             voucherAssignment = new VoucherAssignmentDTO();
