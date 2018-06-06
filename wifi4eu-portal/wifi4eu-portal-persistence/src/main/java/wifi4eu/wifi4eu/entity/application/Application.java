@@ -66,10 +66,13 @@ public class Application {
     @Column(name = "pre_selected_flag")
     private Boolean preSelectedFlag;
 
+    @Column(name = "rejected")
+    private Boolean rejected;
+
     public Application() {
     }
 
-    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, Boolean preSelectedFlag) {
+    public Application(Integer id, Integer callId, Integer registrationId, Integer supplierId, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, int status, String invalidateReason, Boolean preSelectedFlag, Boolean rejected) {
         this.id = id;
         this.callId = callId;
         this.registrationId = registrationId;
@@ -88,6 +91,7 @@ public class Application {
         this.status = status;
         this.invalidateReason = invalidateReason;
         this.preSelectedFlag = preSelectedFlag;
+        this.rejected = rejected;
     }
 
     public Integer getId() {
@@ -232,5 +236,13 @@ public class Application {
 
     public void setPreSelectedFlag(Boolean preSelectedFlag) {
         this.preSelectedFlag = preSelectedFlag;
+    }
+
+    public Boolean getRejected() {
+        return rejected;
+    }
+
+    public void setRejected(Boolean rejected) {
+        this.rejected = rejected;
     }
 }

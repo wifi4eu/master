@@ -1,94 +1,3 @@
-<!-- <div class="supplier"></div>
-<div class="container">
-    <div class="ui-g">
-        <div class="ui-g-12">
-            <div class="beneficiaryTitle">{{ 'dgConn.voucher.dashboard' | translate}}</div>
-        </div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-12">
-            <div class="ui-g-6">
-                <div class="ui-g-6"><i class="fa fa-paper-plane"></i> {{ 'dgConn.voucher.totalRequest' | translate}} <b>{{totalRequests}}</b>
-                </div>
-                <div class="ui-g-6"><i class="fa fa-globe"></i> {{ 'dgConn.voucher.totalMemberStates' | translate}} <b>{{countries.length}}</b>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="ui-g  panel-dg">
-        <div class="ui-g-12">
-            <div class="ui-g-2">
-                <p>{{ 'shared.country ' | translate }}</p>
-                <select style="width: 100%" name="chosenCountry" [(ngModel)]="chosenCountry" (change)="chooseCountryApplicationsInfo()">
-                    <option selected>-</option>
-                    <option [value]="country " *ngFor="let country of countries">{{country }}</option>
-                </select>
-            </div>
-            <div class="ui-g-2">
-                <p>{{ 'dgConn.voucher.maximumVouchers' | translate }}</p>
-                <input type="text" value="1000" disabled>
-            </div>
-
-            <div class="ui-g-2">
-                <p>{{ 'dgConn.voucher.minimumVouchers' | translate }}</p>
-                <input type="text" value="0" disabled>
-            </div>
-            <div class="ui-g-1"></div>
-            <div class="ui-g-4">
-                <button class="btn btn-primary voucherButtonsSimulate" (click)="displayInfo()">
-                    {{ 'dgConn.voucher.simulate' | translate }}
-                </button>
-                <br>
-                <button class="btn btn-primary voucherButtonsCancel">
-                    {{ 'dgConn.voucher.cancelAssignment' | translate }}
-                </button>
-
-            </div>
-        </div>
-    </div>
-
-    <hr class="beneficiaryHr">
-    <div class="ui-g">
-        <div class="ui-g-12">
-            <div class="beneficiaryTitle">{{ 'dgConn.voucher.dashboard' | translate}}</div>
-        </div>
-    </div>
-    <p-tabView class="white">
-        <p-tabPanel *ngFor="let call of calls; let i=index" [header]="'Call '+(i+1)">
-            <p-dataTable [value]="shownApplicationsInfo" [editable]="true" [responsive]="true" sortMode="multiple">
-                <p-column [sortable]="true" field="countryName"
-                          header="{{ 'shared.country ' | translate}}"></p-column>
-                <p-column [sortable]="true" field="municipalityName"
-                          header="{{ 'shared.municipality ' | translate}}"></p-column>
-            </p-dataTable>
-        </p-tabPanel>
-    </p-tabView>
-
-
-    <div class="container font">
-        <div class="ui-g-1"></div>
-        <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="false"
-                  [resizable]="false" [draggable]="false" [closeOnEscape]="true">
-            <div class="beneficiaryTitle center hiddenScroll">
-                {{ 'dgConn.voucher.confirmAssignment' | translate }}
-            </div>
-            <p class="voucherModal" [innerHTML]="'dgConn.voucher.confirmationAssignmentText' | translate"></p>
-            <div class="voucherModal md4Dashboard">
-                <button class="btn btn-primary voucherButtonsCancel">
-                    {{ 'shared.no' | translate }}
-                </button>
-
-                <button class="btn btn-primary voucherButtonsSimulate" (click)="displayInfo()">
-                    {{ 'shared.yes' | translate }}
-                </button>
-            </div>
-        </p-dialog>
-    </div>
-</div>
- -->
-<!--MODALS BELOW-->
-
 <div class="voucher-dg-screen">
   <div class="container voucher__assignment">
     <div *ngIf="callsLoaded; else loading;" [@opacityTransition]>
@@ -235,15 +144,24 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="panel-dg panel-dg-voucher">
-                    <p-dataTable styleClass="tableAssignment {{(loadingSimulation === true) ? 'table-disabled': ''}}" #tableVoucher [@opacityTransition] [value]="listAssignment" [responsive]="true">
-                      <p-column field="euRank" [style]="{'width':'10%'}" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.euRank' | translate}}" styleClass="text-center"></p-column>
+                    <p-dataTable [rowStyleClass]="lookupRowStyleClass" styleClass="tableAssignment {{(loadingSimulation === true) ? 'table-disabled': ''}}" #tableVoucher [@opacityTransition] [value]="listAssignment" [responsive]="true">
+                      <p-column field="euRank" [style]="{'width':'10%'}" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.euRank' | translate}}" styleClass="text-center">
+                        <ng-template let-row="rowData" pTemplate="body">
+                          <span *ngIf="row.selectionStatus != 2">{{row.euRank}}</span>
+                        </ng-template>
+                      </p-column>
                       <p-column field="countryRank" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.countryRank' | translate}}" styleClass="text-center"
-                        [style]="{'width':'10%'}"></p-column>
+                        [style]="{'width':'10%'}">
+                        <ng-template let-row="rowData" pTemplate="body">
+                          <span *ngIf="row.selectionStatus != 2">{{row.countryRank}}</span>
+                        </ng-template>
+                      </p-column>
                       <p-column field="selectionStatus" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.selectionStatus' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                           <span *ngIf="row.selectionStatus == 0">{{ 'dgConn.voucherAssignment.selectionStatus.mainList' | translate}}</span>
                           <span *ngIf="row.selectionStatus == 1">{{ 'dgConn.voucherAssignment.selectionStatus.reserve' | translate}}</span>
+                          <span *ngIf="row.selectionStatus == 2">Rejected</span>
                         </ng-template>
                       </p-column>
                       <p-column field="application.preSelectedFlag" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationChange' | translate}}"
@@ -300,9 +218,13 @@
                               </a> 
                               </div>
                               <div class="row">
-                                <a [class.reject-disabled]="!callVoucherAssignment?.hasPreListSaved">
+                                <a *ngIf="!rowData.application.rejected" [class.reject-disabled]="!callVoucherAssignment?.hasPreListSaved" (click)="rejectApplication(rowData.application.id)">
                                   <div class="col-sm-2"><span class="fa fa-ban"></span></div>
-                                  <div class="col-sm-6">  <span>{{'dgConn.voucherAssignment.applicationStatus.reject' | translate}}</span></div>
+                                  <div class="col-sm-6"><span>{{'dgConn.voucherAssignment.applicationStatus.reject' | translate}}</span></div>
+                                </a>
+                                <a *ngIf="rowData.application.rejected" [class.reject-disabled]="!callVoucherAssignment?.hasPreListSaved" (click)="selectApplication(rowData.application.id)">
+                                  <div class="col-sm-2"><span class="fa fa-ban"></span></div>
+                                  <div class="col-sm-6"><span>{{'dgConn.voucherAssignment.applicationStatus.select' | translate}}</span></div>
                                 </a>
                               </div>
                             </p-overlayPanel>
@@ -366,9 +288,6 @@
           [draggable]="false" [closable]="false" [closeOnEscape]="false">
   <p class="ModalLoaderDots"><span>.</span><span>.</span><span>.</span></p>
   <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningSimulation' | translate }}</h1>
-  <p class="ModalpConfirmation" style="margin-bottom: 1em;">
-    <button (click)="cancelSimulation()">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
-  </p>
 </p-dialog>
 
 <p-dialog [(visible)]="downloadingExcel" [modal]="true" [responsive]="true"
@@ -382,7 +301,7 @@
   <h1 class="Modalh1Confirmation">{{ 'dgconn.voucherAssignment.runningSimulation.preSelectedError.title' | translate }}</h1>
   <p class="center paddingStats">{{ 'dgconn.voucherAssignment.runningSimulation.preSelectedError.text' | translate }}</p>
   <div class="row center">
-    <div class="col-sm-6 marginStep1">
+    <div class="col-sm-12 marginStep1">
       <button  class="btn btn-primary publish-button" (click)="preSelectedEnabled = null">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>  
   </div>
@@ -423,5 +342,8 @@
     border-radius: 100px;
     color: #fff;
     font-weight: bold;
+  }
+  .rejected-row{
+    background: #ffd1d1;
   }
 </style>

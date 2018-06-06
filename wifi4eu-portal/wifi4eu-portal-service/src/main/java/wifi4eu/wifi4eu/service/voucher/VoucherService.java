@@ -330,6 +330,8 @@ public class VoucherService {
 
             HashMap<String, List<MunicipalityDTO>> countryTest = new HashMap<>();
 
+            List<ApplicationDTO> rejectedApplications = new ArrayList<>();
+
             int totalAssignedVouchers = 0;
 
             // Fill maximums and minimums for each country
@@ -355,6 +357,10 @@ public class VoucherService {
             // List of applications cloned to use in the algorithm
             List<ApplicationDTO> supportLOAlist = new ArrayList<>(listOfApplications);
 
+            if(_log.isInfoEnabled()){
+                _log.info("START - Assigning minimum vouchers");
+            }
+
             for (String country : participatingCountries) {
 
                 try {
@@ -369,6 +375,11 @@ public class VoucherService {
                     for (ApplicationDTO applicationDTO : applicationsCountry) {
 
                         if (applicationDTO.getStatus() == 1) {
+                            removeFromLOA(supportLOAlist, applicationDTO);
+                            continue;
+                        }
+                        if(applicationDTO.getRejected()){
+                            rejectedApplications.add(applicationDTO);
                             removeFromLOA(supportLOAlist, applicationDTO);
                             continue;
                         }
@@ -401,6 +412,11 @@ public class VoucherService {
                 }
             }
 
+            if(_log.isInfoEnabled()){
+                _log.info("END - Assigning minimum vouchers");
+                _log.info("START - Assigning maximum vouchers");
+            }
+
             for (ApplicationDTO applicationDTO : new ArrayList<>(supportLOAlist)) {
                 try {
                     if (totalAssignedVouchers >= vouchersToBeAssigned || supportLOAlist.size() == 0) {
@@ -408,6 +424,11 @@ public class VoucherService {
                     }
 
                     if (applicationDTO.getStatus() == 1) {
+                        removeFromLOA(supportLOAlist, applicationDTO);
+                        continue;
+                    }
+                    if(applicationDTO.getRejected()){
+                        rejectedApplications.add(applicationDTO);
                         removeFromLOA(supportLOAlist, applicationDTO);
                         continue;
                     }
@@ -456,6 +477,11 @@ public class VoucherService {
                 }
             }
 
+            if(_log.isInfoEnabled()){
+                _log.info("END - Assigning maximum vouchers");
+                _log.info("START - Filling reserve list");
+            }
+
             if (!supportLOAlist.isEmpty()) {
                 for (String country : participatingCountries) {
                     country = country.trim();
@@ -477,6 +503,12 @@ public class VoucherService {
                                 removeFromLOA(supportLOAlist, application);
                                 continue;
                             }
+                            if(application.getRejected()){
+                                rejectedApplications.add(application);
+                                removeFromLOA(supportLOAlist, application);
+                                continue;
+                            }
+
 
                             SimpleRegistrationDTO registrationDTO = registrationsHashMap.get(application.getRegistrationId());
 
@@ -515,6 +547,10 @@ public class VoucherService {
                         }
                     }
                 }
+            }
+
+            if(_log.isInfoEnabled()){
+                _log.info("END - Filling reserve list");
             }
 
             List<List<ApplicationDTO>> generalOutput = new ArrayList<>();
@@ -610,8 +646,35 @@ public class VoucherService {
                 simulations.add(simulation);
             }
 
+            for(ApplicationDTO rejectedApplication: rejectedApplications){
+                SimpleRegistrationDTO registrationDTO = registrationsHashMap.get(rejectedApplication.getRegistrationId());
+                SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
+
+                int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLau(), call.getId(), dateNanoSeconds);
+
+                VoucherSimulationDTO simulation = new VoucherSimulationDTO();
+                simulation.setApplication(rejectedApplication);
+                simulation.setCountry(municipalityDTO.getCountry());
+                simulation.setVoucherAssignment(voucherAssignment.getId());
+                simulation.setNumApplications(num);
+                simulation.setMunicipality(municipalityDTO.getId());
+                simulation.setIssues(registrationService.getIssues(registrationService.getRegistrationIssue(municipalityDTO.getLau())));
+                simulation.setEuRank(Integer.MAX_VALUE);
+                simulation.setSelectionStatus(2);
+                simulation.setCountryRank(Integer.MAX_VALUE);
+                simulations.add(simulation);
+            }
+
+            if(_log.isInfoEnabled()){
+                _log.info("START - Saving simulation to database");
+            }
+
             voucherAssignment.setVoucherSimulations(simulations);
             VoucherAssignmentDTO res = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment)));
+
+            if(_log.isInfoEnabled()){
+                _log.info("END - Saving simulation to database");
+            }
 
             return new ResponseDTO(true, res.getVoucherSimulations(), null);
         }
