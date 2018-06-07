@@ -27,8 +27,8 @@
                                       width: 50px; height: 50px;padding-top: 7px;border-radius: 100%;
                                       margin: 0 auto;"></span>
                       <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 1 && !callVoucherAssignment?.hasPreListSaved" [innerHTML]="'dgConn.voucherAssignment.status.simulation' | translate"></span>
-                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 2 || callVoucherAssignment?.hasPreListSaved" [innerHTML]="'dgConn.voucherAssignment.status.preSelection' | translate"></span>
-                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 3" [innerHTML]="'dgConn.voucherAssignment.status.finalList' | translate"></span>
+                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 2 || (callVoucherAssignment?.hasPreListSaved && !callVoucherAssignment?.hasFreezeListSaved)" [innerHTML]="'dgConn.voucherAssignment.status.preSelection' | translate"></span>
+                      <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 3 || callVoucherAssignment?.hasFreezeListSaved" [innerHTML]="'dgConn.voucherAssignment.status.finalList' | translate"></span>
                   </div>
                   </div>
                 </div>
@@ -168,7 +168,7 @@
                       <p-column field="application.preSelectedFlag" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationChange' | translate}}"
                       styleClass="text-center">
                       <ng-template let-row="rowData" pTemplate="body">
-                        <span *ngIf="row.application.preSelectedFlag == 0" class="duplicate-warn">{{'dgConn.voucherAssignment.table.applicationChangeNew' | translate}}</span>
+                        <span *ngIf="row.application.preSelectedFlag == 0 && callVoucherAssignment?.hasPreListSaved" class="duplicate-warn">{{'dgConn.voucherAssignment.table.applicationChangeNew' | translate}}</span>
                         <span *ngIf="row.application.preSelectedFlag == 1">-</span>
                       </ng-template>
                     </p-column>
@@ -224,7 +224,7 @@
                                   <div class="col-sm-6"><span>{{'dgConn.voucherAssignment.applicationStatus.reject' | translate}}</span></div>
                                 </a>
                                 <a *ngIf="rowData.application.rejected" [class.reject-disabled]="!callVoucherAssignment?.hasPreListSaved" (click)="selectApplication(rowData.application.id)">
-                                  <div class="col-sm-2"><span class="fa fa-ban"></span></div>
+                                  <div class="col-sm-2"><span class="fa fa-plus"></span></div>
                                   <div class="col-sm-6"><span>{{'dgConn.voucherAssignment.applicationStatus.select' | translate}}</span></div>
                                 </a>
                               </div>
@@ -255,13 +255,13 @@
               </div>
               <div class="row">
                 <div class="col-md-3 offset-md-3">
-                  <button type="button" class="btn btn-primary preSelection-button" [disabled]="callVoucherAssignment?.hasPreListSaved" (click)="checkPreListEnabled()">
+                  <button type="button" class="btn btn-primary preSelection-button" [disabled]="callVoucherAssignment == null || callVoucherAssignment?.hasPreListSaved" (click)="checkPreListEnabled()">
                     {{'dgConn.voucherAssignment.preSelectionSave.button' | translate}}
                   </button>
                   <span style="color: #929292;" *ngIf="callVoucherAssignment?.hasPreListSaved" [innerHTML]="'dgConn.voucherAssignment.preList.date' | translate:{date:dateNumberPreList,hour:hourNumberPreList}"></span>
                 </div>
                 <div class="col-md-3">
-                  <button type="button" class="btn btn-primary preSelection-button" [disabled]="callVoucherAssignment?.hasFreezeListSaved"  (click)="freezeList()" disabled>
+                  <button type="button" class="btn btn-primary preSelection-button" [disabled]="!callVoucherAssignment?.hasPreListSaved || callVoucherAssignment?.hasFreezeListSaved"  (click)="freezeList()" disabled>
                     {{'dgConn.voucherAssignment.freezeList.button' | translate}}
                   </button>
                   <span style="color: #929292;" *ngIf="callVoucherAssignment?.hasFreezeListSaved"  [innerHTML]="'dgConn.voucherAssignment.freezeList.date' | translate:{date:dateNumberFreeze,hour:hourNumberFreeze}"></span>
@@ -319,7 +319,7 @@
        <button (click)="preSelectedEnabled = null" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>
     <div class="col-sm-6 marginStep1">
-       <button (click)="savePreList()" class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+       <button #savePreListBtn (click)="savePreList(savePreListBtn)" class="btn btn-primary publish-button">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
     </div>
   </div>
 </p-dialog>
@@ -333,7 +333,7 @@
      <button (click)="displayFreezeConfirmation = false" class="btn btn-primary cancel-button">{{ 'dgconn.voucherAssignment.runningSimulation.cancel' | translate }}</button>
     </div>
     <div class="col-sm-6 marginStep1">
-      <button class="btn btn-primary publish-button" (click)="saveFreezeList()">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
+      <button class="btn btn-primary publish-button" #saveFreezeBtn (click)="saveFreezeList(saveFreezeBtn)">{{ 'dgconn.voucherAssignment.runningSimulation.confirm' | translate }}</button>
     </div>
   </div>
 </p-dialog>

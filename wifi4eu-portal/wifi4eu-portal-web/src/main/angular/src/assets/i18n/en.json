@@ -581,6 +581,7 @@
   "dgConn.voucherAssignment.selectionStatus.reserve": "Reserve",
   "dgConn.voucherAssignment.selectionStatus.mainList": "Main list",
   "dgConn.voucherAssignment.selectionStatus.selected": "Selected",
+  "dgConn.voucherAssignment.selectionStatus.rejected": "Rejected",
   "dgConn.voucherAssignment.applicationStatus.applied": "Applied",
   "dgConn.voucherAssignment.applicationStatus.validated": "Validated",
   "dgConn.voucherAssignment.applicationStatus.rejected": "Rejected",

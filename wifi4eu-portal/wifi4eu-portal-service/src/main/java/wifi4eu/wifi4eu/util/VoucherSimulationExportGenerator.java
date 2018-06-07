@@ -48,7 +48,25 @@ public class VoucherSimulationExportGenerator<T> {
                     Cell cell = row.createCell(i);
                     Field field;
 
-                    if (fieldNames.get(i).equalsIgnoreCase("status")){
+                    if(fieldNames.get(i).equalsIgnoreCase("changes")){
+                        VoucherSimulationDTO voucherSimulationDTO = (VoucherSimulationDTO) obj;
+                        ApplicationDTO applicationDTO = voucherSimulationDTO.getApplication();
+
+                        String value;
+
+                        if(!applicationDTO.getPreSelectedFlag()){
+                            value = "NEW";
+                        }else{
+                            value = "-";
+                        }
+                        cell.setCellValue(value);
+                    }
+                    else if(fieldNames.get(i).equalsIgnoreCase("registration")){
+                        VoucherSimulationDTO voucherSimulationDTO = (VoucherSimulationDTO) obj;
+                        Integer status = voucherSimulationDTO.getApplication().getRegistrationId();
+                        cell.setCellValue( status);
+                    }
+                    else if (fieldNames.get(i).equalsIgnoreCase("status")){
 
                         VoucherSimulationDTO voucherSimulationDTO = (VoucherSimulationDTO) obj;
                         Integer status = voucherSimulationDTO.getApplication().getStatus();
@@ -104,6 +122,10 @@ public class VoucherSimulationExportGenerator<T> {
             displayedFieldNames.add("Eu Rank");
             fieldNames.add("countryRank");
             displayedFieldNames.add("Country Rank");
+
+            displayedFieldNames.add("changes");
+            fieldNames.add("Changes");
+
             fieldNames.add("selectionStatus");
             displayedFieldNames.add("Selection Status");
             fieldNames.add("country");
@@ -116,8 +138,10 @@ public class VoucherSimulationExportGenerator<T> {
             displayedFieldNames.add("Status");
             fieldNames.add("numApplications");
             displayedFieldNames.add("Duplicated");
-            fieldNames.add("rejected");
-            displayedFieldNames.add("Rejected");
+//            fieldNames.add("rejected");
+//            displayedFieldNames.add("Rejected");
+            fieldNames.add("registration");
+            displayedFieldNames.add("Registration ID");
             fieldNames.add("municipality");
             displayedFieldNames.add("Municipality ID");
             fieldNames.add("application");
@@ -165,18 +189,14 @@ public class VoucherSimulationExportGenerator<T> {
                                 break;
                         }
                         break;
-                    case "rejected":
-                        if((int) field.get(objectData) == 1){
-                            value = "YES";
-                        }
-                        else{
-                            value = "NO";
-                        }
-                        break;
-                    /*case "registrationId":
-                        applicationDTO = (ApplicationDTO) field.get(objectData);
-                        value = String.valueOf(applicationDTO.getRegistrationId());
-                        break;*/
+//                    case "rejected":
+//                        if((int) field.get(objectData) == 1){
+//                            value = "YES";
+//                        }
+//                        else{
+//                            value = "NO";
+//                        }
+//                        break;
                     case "application":
                         applicationDTO = (ApplicationDTO) field.get(objectData);
                         value = String.valueOf(applicationDTO.getId());
