@@ -59,7 +59,7 @@
         <div id="navigation-buttons" class="form-group ui-g center">
             <div class="ui-lg-6"></div>
             <div class="ui-g-6 ui-md-6 ui-lg-3">
-                <button [disabled]="!registration.wifiIndicator" (click)="openReportInstallation()"
+                <button [disabled]="!registration.wifiIndicator || registration.beneficiaryIndicator" (click)="openReportInstallation()"
                         class="btn btn-primary cancel-button cancel-link installation">{{ 'benef.requestRevision' |
                     translate }}
                 </button>
