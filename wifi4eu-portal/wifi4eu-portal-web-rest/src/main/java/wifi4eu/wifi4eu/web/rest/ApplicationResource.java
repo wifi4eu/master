@@ -356,7 +356,7 @@ public class ApplicationResource {
                 _log.error("Error on 'rejectApplicationVoucherAssigment' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, null);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'rejectApplicationVoucherAssigment' operation.", e);
@@ -387,7 +387,7 @@ public class ApplicationResource {
                 _log.error("Error on 'selectApplicationVoucherAssigment' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, null);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'selectApplicationVoucherAssigment' operation.", e);

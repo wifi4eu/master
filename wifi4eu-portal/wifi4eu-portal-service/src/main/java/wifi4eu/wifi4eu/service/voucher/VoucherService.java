@@ -245,7 +245,7 @@ public class VoucherService {
     }
 
     @Transactional
-    public List<VoucherSimulationDTO> savePreListSimulation(int voucherAssignmentId, int callId){
+    public VoucherAssignmentDTO savePreListSimulation(int voucherAssignmentId, int callId){
         CallDTO callDTO = callService.getCallById(callId);
 
         if(callDTO == null){
@@ -301,7 +301,7 @@ public class VoucherService {
 
             voucherSimulationRepository.updateApplicationsInVoucherSimulationByVoucherAssignment(1, result.getId());
 
-            return getVoucherSimulationsByVoucherAssigmentId(result.getId());
+            return result;
         }else{
             throw new AppException("Error saving pre-selected list");
         }
@@ -361,9 +361,15 @@ public class VoucherService {
                 index++;
             }
 
+            if(_log.isInfoEnabled()){
+                _log.info("START - Initializing municipalities, laus & registrations");
+            }
+
             List<SimpleMunicipalityDTO> municipalities = simpleMunicipalityService.getAllMunicipalities();
             List<SimpleLauDTO> laus = simpleLauService.getAllLausFromApplications();
             List<SimpleRegistrationDTO> registrations = simpleRegistrationService.findAll();
+
+
 
             for (SimpleMunicipalityDTO mun : municipalities) {
                 municipalityHashMap.put(mun.getId(), mun);
@@ -380,18 +386,16 @@ public class VoucherService {
                 }
             }
 
+            if(_log.isInfoEnabled()){
+                _log.info("END - Initializing municipalities, laus & registrations");
+            }
+
             int nrParticipatingCountries = participatingCountries.size();
             if (participatingCountries.isEmpty()) {
                 return new ResponseDTO(false, "Simulation stopped", null);
             }
 
             int numReserveList = call.getReserve();
-
-            /* if(numReserveList == null){
-              numReserveList = 0;
-            } */
-
-            /* List<ApplicationDTO> assignedVouchers = new ArrayList<>(); */
 
             // String => name municipality, Application of the municipality
             HashMap<Integer, ApplicationDTO> assignedVouchers = new HashMap<>();
@@ -530,7 +534,7 @@ public class VoucherService {
 
                             if (numReserveCountry < numReserveList) {
                                 if (countryReserveList.get(country) == null) {
-                                    countryReserveList.put(country, new ArrayList<ApplicationDTO>());
+                                    countryReserveList.put(country, new ArrayList<>());
                                 }
                                 List<ApplicationDTO> countryApps = new ArrayList<>(countryReserveList.get(country));
                                 countryApps.add(applicationDTO);
@@ -608,10 +612,6 @@ public class VoucherService {
                                 countryApps.add(application);
                                 countryReserveList.put(country, countryApps);
                                 countryReserveListCounter.put(country, countryReserveListCounter.get(country) + 1);
-
-                                //                            if (countryReserveListCounter.get(country) == countryCounter.get(country)) {
-                                //                                continue;
-                                //                            }
 
                                 removeFromLOA(supportLOAlist, application);
                             }
@@ -773,8 +773,6 @@ public class VoucherService {
 
                 try {
                     SimpleLauDTO lauDTO = lausMap.get(municipalityDTO.getLau());
-
-
                     if (lauDTO.getCountry_code().equals(country)) {
                         appCountry.add(application);
                     }

@@ -517,12 +517,18 @@ public class ApplicationService {
 
     public ApplicationDTO rejectApplicationVoucherAssigment(int applicationId){
         ApplicationDTO applicationDTO = getApplicationById(applicationId);
+        if(applicationDTO == null){
+            throw new AppException("Application not found with id: " + applicationId);
+        }
         applicationDTO.setRejected(true);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }
 
     public ApplicationDTO selectApplicationVoucherAssigment(int applicationId){
         ApplicationDTO applicationDTO = getApplicationById(applicationId);
+        if(applicationDTO == null){
+            throw new AppException("Application not found with id: " + applicationId);
+        }
         applicationDTO.setRejected(false);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }

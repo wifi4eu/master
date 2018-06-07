@@ -219,7 +219,7 @@ public class VoucherResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: savePreListSimulation");
             }
-            List<VoucherSimulationDTO> result = voucherService.savePreListSimulation(assignmentId, callId);
+            VoucherAssignmentDTO result = voucherService.savePreListSimulation(assignmentId, callId);
             return new ResponseDTO(true, result, null);
         }
         catch (AccessDeniedException adex){

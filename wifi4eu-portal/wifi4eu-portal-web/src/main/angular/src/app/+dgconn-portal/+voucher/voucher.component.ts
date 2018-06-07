@@ -175,7 +175,6 @@ export class DgConnVoucherComponent {
   exportListExcel(){
     this.loadingSimulation = true;
     this.downloadingExcel = true;
-    console.log(this.callVoucherAssignment.id);
     this.voucherApi.exportExcelVoucherSimulation(this.callVoucherAssignment.id, this.selectedCountry, this.searchedMunicipality === null || this.searchedMunicipality === "" ? 'All' : this.searchedMunicipality, this.sortField, this.sortDirection).subscribe((response) => {
       let blob = new Blob([response], {type: "application/vnd.ms-excel"});
       FileSaver.saveAs(blob, `voucher-simulation-${this.callSelected.event}.xls`);
@@ -232,9 +231,13 @@ export class DgConnVoucherComponent {
     if(this.callVoucherAssignment.hasPreListSaved){
       return;
     }
-    this.voucherApi.savePreListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((res) => {
+    this.voucherApi.savePreListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
       this.preSelectedEnabled = null;
       this.callVoucherAssignment.hasPreListSaved = true;
+      this.callVoucherAssignment.preListExecutionDate = response.data.executionDate;
+      let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+      this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+      this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
       savePreListBtn.disabled = false;
     }, error => {
       console.log("error => ", error);
@@ -272,8 +275,6 @@ export class DgConnVoucherComponent {
         this.loadPage();
       }
     })
-
-    
   }
 
   show() {
@@ -289,12 +290,14 @@ export class DgConnVoucherComponent {
   }
 
   private simulateVoucherAssignment(){
+    if(this.callVoucherAssignment.hasFreezeListSaved){
+      return;
+    }
     this.displayConfirmingData = true;
     this.loadingSimulation = true;
     if(this.callVoucherAssignment == null || this.callVoucherAssignment.status == 1){
       this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((resp: ResponseDTO) => {
         this.displayConfirmingData = false;
-        console.log(resp);
         this.callVoucherAssignment = resp.data;
         //this.show();
         this.loadPage();
@@ -337,6 +340,9 @@ export class DgConnVoucherComponent {
   }
 
   rejectApplication(applicationId: number){
+    if((!this.callVoucherAssignment.hasPreListSaved && this.callVoucherAssignment == null) || (this.callVoucherAssignment.hasFreezeListSaved && this.callVoucherAssignment != null)){
+      return;
+    }
     this.applicationApi.rejectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
@@ -346,6 +352,9 @@ export class DgConnVoucherComponent {
   }
 
   selectApplication(applicationId: number){
+    if((!this.callVoucherAssignment.hasPreListSaved && this.callVoucherAssignment == null) || (this.callVoucherAssignment.hasFreezeListSaved && this.callVoucherAssignment != null)){
+      return;
+    }
     this.applicationApi.selectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
@@ -355,11 +364,13 @@ export class DgConnVoucherComponent {
   }
 
   private freezeList(){
+    if((!this.callVoucherAssignment.hasPreListSaved && this.callVoucherAssignment != null) || (this.callVoucherAssignment.hasFreezeListSaved && this.callVoucherAssignment != null)){
+      return;
+    }
     this.displayFreezeConfirmation = true;
   }
 
   private saveFreezeList(saveFreezeBtn){
-    console.log(saveFreezeBtn);
     saveFreezeBtn.disabled = true;
     this.voucherApi.saveFreezeListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
       this.displayFreezeConfirmation = false;
