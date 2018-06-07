@@ -5,6 +5,7 @@ import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Table(name = "registrations")
@@ -71,20 +72,23 @@ public class Registration {
     @Column(name = "action_taken")
     private int actionTaken;
 
-    @Column(name = "beneficiary_indicator")
-    private boolean beneficiaryIndicator;
-
     @Column(name = "id_pm")
     private int idUserPM;
 
     @Column(name = "id_bpm")
     private int idUserBPM;
 
-    @Column(name = "wifi_indicator")
-    private boolean wifiIndicator;
-
     @Column(name = "conformity")
     private boolean conformity;
+
+    @Column(name = "is_submission")
+    private Date installationSiteSubmission;
+
+    @Column(name = "is_rejection")
+    private Date installationSiteRejection;
+
+    @Column(name = "is_confirmation")
+    private Date installationSiteConfirmation;
 
     @Column(name = "first_false_check")
     private Timestamp firstFalseCheck;
@@ -95,7 +99,7 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, int idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, int idPM, int idBPM) {
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, String associationName, int organisationId, int idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, int idUserPM, int idUserBPM, boolean conformity, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, Timestamp firstFalseCheck, Timestamp dateRegistered) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -114,11 +118,12 @@ public class Registration {
         this.call = call;
         this.actionToBeTaken = actionToBeTaken;
         this.actionTaken = actionTaken;
-        this.beneficiaryIndicator = beneficiaryIndicator;
-        this.idUserPM = idPM;
-        this.idUserBPM = idBPM;
-        this.wifiIndicator = wifiIndicator;
+        this.idUserPM = idUserPM;
+        this.idUserBPM = idUserBPM;
         this.conformity = conformity;
+        this.installationSiteSubmission = installationSiteSubmission;
+        this.installationSiteRejection = installationSiteRejection;
+        this.installationSiteConfirmation = installationSiteConfirmation;
         this.firstFalseCheck = firstFalseCheck;
         this.dateRegistered = dateRegistered;
     }
@@ -275,6 +280,7 @@ public class Registration {
         this.actionTaken = actionTaken;
     }
 
+    /*
     public boolean isBeneficiaryIndicator() {
         return beneficiaryIndicator;
     }
@@ -290,6 +296,7 @@ public class Registration {
     public void setWifiIndicator(boolean wifiIndicator) {
         this.wifiIndicator = wifiIndicator;
     }
+    */
 
     public boolean isConformity() {
         return conformity;
@@ -329,5 +336,29 @@ public class Registration {
 
     public void setIdUserBPM(int idUserBPM) {
         this.idUserBPM = idUserBPM;
+    }
+
+    public Date getInstallationSiteSubmission() {
+        return installationSiteSubmission;
+    }
+
+    public void setInstallationSiteSubmission(Date installationSiteSubmission) {
+        this.installationSiteSubmission = installationSiteSubmission;
+    }
+
+    public Date getInstallationSiteRejection() {
+        return installationSiteRejection;
+    }
+
+    public void setInstallationSiteRejection(Date installationSiteRejection) {
+        this.installationSiteRejection = installationSiteRejection;
+    }
+
+    public Date getInstallationSiteConfirmation() {
+        return installationSiteConfirmation;
+    }
+
+    public void setInstallationSiteConfirmation(Date installationSiteConfirmation) {
+        this.installationSiteConfirmation = installationSiteConfirmation;
     }
 }

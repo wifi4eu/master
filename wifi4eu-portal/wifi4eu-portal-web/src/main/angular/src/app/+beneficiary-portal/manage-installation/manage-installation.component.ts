@@ -117,11 +117,11 @@ export class ManageInstallationComponent {
 
     sendConfirmInstallation() {
         this.displayConfirmingData = true;
-        this.registration.beneficiaryIndicator = true;
+        // this.registration.beneficiaryIndicator = true;
         this.indicators['beneficiaryIndicator'] = true;
-        this.registrationApi.confirmOrRejectInstallationReport(this.indicators).subscribe(
-            registration => {
-                this.displayConfirmingData = false;
+        this.registrationApi.confirmOrRejectInstallationReport(this.indicators).subscribe((response: ResponseDTOBase) => {
+            this.registration = response.data;    
+            this.displayConfirmingData = false;
             }, error => {
                 console.log(error);
                 this.displayConfirmingData = false;
@@ -132,11 +132,11 @@ export class ManageInstallationComponent {
 
     sendReportInstallation() {
         this.displayConfirmingData = true;
-        this.registration.wifiIndicator = false;
-        this.registration.beneficiaryIndicator = false;
+        // this.registration.wifiIndicator = false;
+        // this.registration.beneficiaryIndicator = false;
         this.indicators['beneficiaryIndicator'] = false;
-        this.registrationApi.confirmOrRejectInstallationReport(this.indicators).subscribe(
-            registration => {
+        this.registrationApi.confirmOrRejectInstallationReport(this.indicators).subscribe((response: ResponseDTOBase) => {
+                this.registration = response.data;   
                 this.displayConfirmingData = false;
             }, error => {
                 console.log(error);
@@ -161,6 +161,21 @@ export class ManageInstallationComponent {
             }
         );
         this.router.navigate(['../../access-point/' + this.installationSites[accessPointNumber].id], {relativeTo: this.route});
+    }
+
+    checkActionsAvailable(){
+        if (!this.registration.installationSiteConfirmation){
+            if (this.registration.installationSiteRejection){
+                if (this.registration.installationSiteSubmission > this.registration.installationSiteRejection){
+                    return false;
+                }
+            } else {
+                if (this.registration.installationSiteSubmission){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 
