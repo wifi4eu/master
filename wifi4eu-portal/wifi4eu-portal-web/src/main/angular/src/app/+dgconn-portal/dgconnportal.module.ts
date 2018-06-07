@@ -16,6 +16,7 @@ import {DgConnDiscussionComponent} from "./+discussion/discussion.component";
 import {SharedModule as SharedNgModule} from 'primeng/primeng';
 import { PaginatorModule } from "primeng/primeng";
 import {DgConnExportImportComponent} from "./+exportImport/exportImport.component";
+import {DgConfigureGlobalCommitmentsComponent} from "./+exportImport/+configureGlobalCommitments/configureGlobalCommitments.component";
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import {DgConnExportImportComponent} from "./+exportImport/exportImport.componen
         DgConnApplicantRegistrationsDetailsComponent,
         DgConnManageLauComponent,
         DgConnDiscussionComponent,
-        DgConnExportImportComponent
+        DgConnExportImportComponent,
+        DgConfigureGlobalCommitmentsComponent
     ],
     bootstrap: [DgConnPortalComponent]
 })

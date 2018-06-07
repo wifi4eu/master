@@ -508,6 +508,17 @@ CREATE TABLE [dbo].[municipalities_abac](
 	[municipality] [int] NOT NULL
 ) ON [PRIMARY]
 
+ -----------------------------------------------------
+ --Table `dbo`.`global_commitment`
+ -----------------------------------------------------
+CREATE TABLE [dbo].[global_commitment](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[call] [int] NOT NULL,
+	[globalCommitment] [varchar](255) NULL,
+	[ammount] [varchar](255) NULL,
+	[priority] [int] NOT NULL
+) ON [PRIMARY]
+
 CREATE TABLE [dbo].[VALIDATED_LEF] (
   [idLef] [int] NOT NULL,
 ) ON [PRIMARY]

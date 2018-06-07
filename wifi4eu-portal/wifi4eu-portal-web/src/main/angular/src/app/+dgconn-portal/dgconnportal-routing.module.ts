@@ -13,6 +13,7 @@ import {DgConnBeneficiaryRegistrationsDetailsComponent} from "./+beneficiary-reg
 import {DgConnSupplierRegistrationsDetailsComponent} from "./+supplier-registrations/details/supplier-registrations-details.component";
 import {DgConnExportImportComponent} from "./+exportImport/exportImport.component";
 import {DgConnApplicantRegistrationsDetailsComponent} from "./+applicant-registrations/+details/applicant-registrations-details.component";
+import {DgConfigureGlobalCommitmentsComponent} from "./+exportImport/+configureGlobalCommitments/configureGlobalCommitments.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -49,8 +50,10 @@ import {DgConnApplicantRegistrationsDetailsComponent} from "./+applicant-registr
         }, {
             path: 'exportImport',
             component: DgConnExportImportComponent,
+        }, {
+            path: 'exportImport/configureGlobalCommitments',
+            component: DgConfigureGlobalCommitmentsComponent
         }
-
 
 
     ])],
