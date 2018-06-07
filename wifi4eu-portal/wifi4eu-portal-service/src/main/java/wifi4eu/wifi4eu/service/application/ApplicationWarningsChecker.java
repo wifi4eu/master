@@ -10,6 +10,12 @@ public class ApplicationWarningsChecker {
         String userEmail = applicationIssueUtil.getUserEmail();
         String userEcasEmail = applicationIssueUtil.getUserEcasEmail();
         String mayorEmail = applicationIssueUtil.getMayorEmail();
+        if(userEmail == null){
+            userEmail = "";
+        }
+        if(userEcasEmail == null){
+            userEcasEmail = "";
+        }
         switch (countryCode.toUpperCase()) {
             case "AT":
                 if (!userEmail.trim().toLowerCase().endsWith(".at") ||
