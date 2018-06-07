@@ -136,7 +136,7 @@ export class InstallationListComponent implements OnInit {
             } else {
                 if (this.beneficiaryService.beneficiarySelected.installationSiteRejection && (this.beneficiaryService.beneficiarySelected.installationSiteRejection > this.beneficiaryService.beneficiarySelected.installationSiteSubmission)){
                     console.log("3");
-                    return true;
+                    return false;
                 }
             }
             console.log("4");
