@@ -5,7 +5,6 @@
         <base href="/">
         <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
         <link rel="icon" type="image/x-icon" href="favicon.ico">
-        <link href="/styles.b31338170f4c9b0f22b8.bundle.css" rel="stylesheet">
         <script type="text/javascript">
                 /*!
                  * ki.js v1.1.0 - 2015-10-06
@@ -109,7 +108,7 @@
                             </uxlayoutappmainheadercontainer>
                             <uxlayoutappmainnavbarcontainer _ngcontent-c0="">
                                 <ux-layout-nav-bar _ngcontent-c0="">
-                                    <div id="nav-bar" style="background-color:white">
+                                    <div id="nav-bar">
 
                                         
 
@@ -212,15 +211,17 @@
                             </uxlayoutappmainnavbarcontainer>
 
                             <div>
-                                <div id="w4eu-annoucement" class="w4eu-i18n" x-literal="home.announcement1" style="color:black; text-align:left;padding: 15px;background-color:#e6f2ff">
-                                            <p>The WiFi4EU Portal was closed on 15 May, a few hours after the launch of the first call, due to technical issues.</p>
-                                            <p>Municipalities who submitted an application before the Portal was closed will receive an individual notification e-mail confirming receipt of their application.</p>
-                                            <p>Given the very large number of applications received (over 10,000 applications for 1,183 vouchers), the first call for applications has been closed.</p>
-                                            <p>All applications will now be processed. Once the evaluation and award procedure is finalised, applicants will be informed whether or not their municipality has been awarded a WiFi4EU voucher.</p>
-                                            <p>The Portal will resume its activities once the technical issues are resolved and well in advance of the second call (planned for autumn 2018). All registered municipalities will be informed by email of the opening of the Portal.</p> <p>Existing registrations by municipalities may be used to apply for the next calls for applications. Existing registrations by Wi-Fi installation companies are also still valid for the next calls.</p>
-                                            <p>Should you have any questions, please contact <a href="https://europa.eu/european-union/contact/write-to-us_en">Europe direct</a>.</p>
-                                            <p>Thank you for your understanding.</p>    
-                            </div>    
+                                <div class="w4eu-annoucement-wrapper">
+                                    <div id="w4eu-annoucement" class="w4eu-i18n" x-literal="home.announcement1" style="text-align: left;padding: 15px;background-color: #e6f2ff;font-weight: 100;    font-size: 16px;margin: 20px;border: 3px solid;border-radius: .25rem;border-top-color: #6a98cc;border-bottom-color: #6a98cc;border-left-color: #6a98cc;    border-right-color: #6a98cc;">
+                                                <p>The WiFi4EU Portal was closed on 15 May, a few hours after the launch of the first call, due to technical issues.</p>
+                                                <p>Municipalities who submitted an application before the Portal was closed will receive an individual notification e-mail confirming receipt of their application.</p>
+                                                <p>Given the very large number of applications received (over 10,000 applications for 1,183 vouchers), the first call for applications has been closed.</p>
+                                                <p>All applications will now be processed. Once the evaluation and award procedure is finalised, applicants will be informed whether or not their municipality has been awarded a WiFi4EU voucher.</p>
+                                                <p>The Portal will resume its activities once the technical issues are resolved and well in advance of the second call (planned for autumn 2018). All registered municipalities will be informed by email of the opening of the Portal.</p> <p>Existing registrations by municipalities may be used to apply for the next calls for applications. Existing registrations by Wi-Fi installation companies are also still valid for the next calls.</p>
+                                                <p>Should you have any questions, please contact <a href="https://europa.eu/european-union/contact/write-to-us_en">Europe direct</a>.</p>
+                                                <p>Thank you for your understanding.</p>    
+                                    </div>
+                                </div>
 
                             <div id="main-content">
                                 <uxlayoutappmaincontentcontainer _ngcontent-c0="">
@@ -254,9 +255,6 @@
                                                          President of the European Commission</p>
                                                         <a class="btn btn-primary video-button changePassword w4eu-i18n" href="http://ec.europa.eu/avservices/video/player.cfm?ref=I152883" x-literal="home.watch.video" target="_blank">Watch Video</a>
                                                     </div>
-                                                    <div id="img-europeans">
-                                                        <img alt="" src="assets/images/copy-2.png">
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -275,9 +273,6 @@
                                                             <p class="europeans-text underline w4eu-i18n" x-literal="home.part2.subtitle5">See the list of eligible entities in your country</p>
                                                         </a>
                                                         <p class="europeans-text w4eu-i18n" x-literal="home.part2.subtitle6">The WiFi4EU voucher will cover the equipment and installation costs of Wi-Fi hotspots. Beneficiaries commit to pay for the connectivity (internet subscription) and maintenance of the equipment to offer free and high-quality Wi-Fi connectivity for at least 3 years.</p>
-                                                        <div class="img-scnd-top" id="img-scnd">
-                                                            <img alt="" src="assets/images/copy-3.png">
-                                                        </div>
                                                     </div>
                                                     <div class="col-xl-6">
                                                         <h2 class="entities w4eu-i18n" x-literal="home.part2.subtitle2">What can you expect?</h2>
@@ -287,8 +282,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                               
                                             <div class="container-fluid mayor">
                                                 <div class="row contenedor">
                                                     <div class="col-xl-6">
@@ -311,33 +304,6 @@
                                                         </p>
 
                                                     </div>
-                                                </div>
-
-
-
-                                                <!--div class="row">
-                                                    <div class="col-xl-2"></div>
-                                                    <div class="col-xl-8">
-                                                        <div class="col-xl-6">
-                                                            <img class="mayor-img" src="assets/images/account-balance-material-icons-regular.png">
-                                                            <p class="supplier supplierFont">I want to register a municipality</p>
-                                                            <a class="btn btn-primary changePassword video-button" href="/#/beneficiary-landing">Register now</a>
-                                                        </div>
-                                                        <div class="col-xl-6">
-                                                            <img class="supplier-img" src="assets/images/group-4.png">
-                                                            <p class="supplier">I want to register a Wi-Fi installation company</p>
-                                                            <a class="btn btn-primary changePassword video-button" href="/#/supplier-landing">Register now</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xl-2"></div>
-                                                </div-->
-                                            </div>
-                                            
-
-                                            
-                                            <div class="container-fluid third">
-                                                <div class="row contenedor">
-
                                                 </div>
                                             </div>
                                             <div class="content azul container-fluid">
@@ -364,7 +330,6 @@
                                                         </p>
                                                     </div>
                                                     <div class="col-xl-6">
-                                                        <img alt="" class="phoneIcon" src="assets/images/phone.PNG">
                                                         <a href="https://europa.eu/european-union/contact/write-to-us_en" target="_blank" class="w4eu-i18n" x-literal="home.part4.link4">
                                                             <p class="white-links">Europe Direct <span class="phoneNum">00 800 6 7 8 9 10 11 </span></p>
                                                         </a>
