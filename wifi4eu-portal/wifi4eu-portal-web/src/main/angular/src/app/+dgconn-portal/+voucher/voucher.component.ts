@@ -73,8 +73,8 @@ export class DgConnVoucherComponent {
   private dateNumberPreList: string;
   private hourNumberPreList: string; 
 
-  private dateNumberFreeze: string;
-  private hourNumberFreeze: string; 
+  private dateNumberFreeze: string;
+  private hourNumberFreeze: string; 
 
   private searchedMunicipality = null;
 
@@ -109,11 +109,32 @@ export class DgConnVoucherComponent {
           this.loadingSimulation = true;
 
           this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.calls[0].id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
-            this.callVoucherAssignment = data;
-            let date = new Date(this.callVoucherAssignment.preListExecutionDate);
-            this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-            this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
-            this.loadPage();
+            if(data != null){
+              this.callVoucherAssignment = data;
+              let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+              this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+              this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+              if(data.hasFreezeListSaved){
+                this.voucherApi.getVoucherAssignmentByCallAndStatus(this.calls[0].id, 3).subscribe(
+                 (response: VoucherAssignmentAuxiliarDTO) => {
+                    if(response != null){
+                      this.callVoucherAssignment.id = response.id;
+                      let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
+                      this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+                      this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+                      this.loadPage();
+                    }                    
+                }, error => {
+                  console.log(error);
+                });
+              }
+              else{
+                this.loadPage();
+              }
+            }       
+            else{
+              this.loadingSimulation = false;
+            }     
           })
 
           this.applicationApi.getApplicationsNotInvalidated(this.calls[0].id).subscribe((data) => {
@@ -124,19 +145,7 @@ export class DgConnVoucherComponent {
         let i = 0;
         for (let call of this.calls) {
           this.applicationsInfo[call.id] = [];
-          //this.numVoucher[i] = call.budget / call.budgetVoucher;
           this.percentageBudgetCall[i] = 0;
-          /* this.applicationApi.getApplicationsVoucherInfoByCall(call.id).subscribe(
-            (info: ApplicationVoucherInfoDTOBase[]) => {
-              if (info != null) {
-                this.applicationsInfo[call.id] = info;
-                this.totalRequests += info.length;
-                for (let item of info) {
-                  this.shownApplicationsInfo.push(item);
-                }
-              }
-            }
-          ); */
           i++;
         }
       }
@@ -166,6 +175,7 @@ export class DgConnVoucherComponent {
   exportListExcel(){
     this.loadingSimulation = true;
     this.downloadingExcel = true;
+    console.log(this.callVoucherAssignment.id);
     this.voucherApi.exportExcelVoucherSimulation(this.callVoucherAssignment.id, this.selectedCountry, this.searchedMunicipality === null || this.searchedMunicipality === "" ? 'All' : this.searchedMunicipality, this.sortField, this.sortDirection).subscribe((response) => {
       let blob = new Blob([response], {type: "application/vnd.ms-excel"});
       FileSaver.saveAs(blob, `voucher-simulation-${this.callSelected.event}.xls`);
@@ -193,10 +203,10 @@ export class DgConnVoucherComponent {
 
   loadPage(){
     this.loadingSimulation = true;
-    if (this.getApplicationsCall != null) {
+    if (this.getApplicationsCall != null && !this.getApplicationsCall['closed']) {
       this.getApplicationsCall.unsubscribe();
     }
-    if(this.simulationAssignment != null)  {
+    if(this.simulationAssignment != null && !this.simulationAssignment['closed'])  {
       this.simulationAssignment.unsubscribe();
     }
     this.simulationAssignment = this.voucherApi.getVoucherSimulationByVoucherAssignment(this.callVoucherAssignment.id, this.selectedCountry, this.searchedMunicipality === null || this.searchedMunicipality === "" ? 'All' : this.searchedMunicipality, this.page, this.sizePage, this.sortField, this.sortDirection).subscribe((response: ResponseDTO) => {
@@ -217,12 +227,15 @@ export class DgConnVoucherComponent {
     })
   }
 
-  savePreList(){
+  savePreList(savePreListBtn){
+    savePreListBtn.disabled = true;
     if(this.callVoucherAssignment.hasPreListSaved){
       return;
     }
     this.voucherApi.savePreListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((res) => {
       this.preSelectedEnabled = null;
+      this.callVoucherAssignment.hasPreListSaved = true;
+      savePreListBtn.disabled = false;
     }, error => {
       console.log("error => ", error);
     })
@@ -279,12 +292,13 @@ export class DgConnVoucherComponent {
     this.displayConfirmingData = true;
     this.loadingSimulation = true;
     if(this.callVoucherAssignment == null || this.callVoucherAssignment.status == 1){
-      this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((data: VoucherAssignmentDTO) => {
+      this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((resp: ResponseDTO) => {
         this.displayConfirmingData = false;
-        this.callVoucherAssignment = data;
-        this.loadingSimulation = false;
+        console.log(resp);
+        this.callVoucherAssignment = resp.data;
+        //this.show();
         this.loadPage();
-        //window.location.reload();
+        this.loadingSimulation = false;
       }, (error) => {
         this.loadingSimulation = false;
         this.displayConfirmingData = false;
@@ -324,8 +338,7 @@ export class DgConnVoucherComponent {
 
   rejectApplication(applicationId: number){
     this.applicationApi.rejectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
-      console.log("response => ", response);
-      var index = this.listAssignment.findIndex((x) => x.id == response.data.id)
+      var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
     }, error => {
       console.log("error => ", error);
@@ -334,7 +347,6 @@ export class DgConnVoucherComponent {
 
   selectApplication(applicationId: number){
     this.applicationApi.selectApplicationVoucherAssigment(applicationId).subscribe((response: ResponseDTO) => {
-      console.log("response => ", response);
       var index = this.listAssignment.findIndex((x) => x.application.id == response.data.id)
       this.listAssignment[index].application = <ApplicationDTO>response.data;
     }, error => {
@@ -345,4 +357,24 @@ export class DgConnVoucherComponent {
   private freezeList(){
     this.displayFreezeConfirmation = true;
   }
+
+  private saveFreezeList(saveFreezeBtn){
+    console.log(saveFreezeBtn);
+    saveFreezeBtn.disabled = true;
+    this.voucherApi.saveFreezeListSimulation(this.callVoucherAssignment.id, this.callSelected.id).subscribe((response: ResponseDTO) => {
+      this.displayFreezeConfirmation = false;
+      this.callVoucherAssignment.id = response.data.id;
+      this.callVoucherAssignment.hasFreezeListSaved = true;
+      this.callVoucherAssignment.executionDate = response.data.executionDate;  
+      this.callVoucherAssignment.freezeLisExecutionDate = response.data.executionDate;      
+      let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
+      this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+      this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+      this.loadPage();
+      saveFreezeBtn.disabled = false;
+    }, error => {
+      console.log(error);
+    });    
+  }
+
 }

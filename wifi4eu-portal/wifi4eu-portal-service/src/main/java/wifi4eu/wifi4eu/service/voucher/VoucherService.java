@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
+import wifi4eu.wifi4eu.common.enums.SelectionStatus;
+import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.application.Application;
@@ -39,6 +42,7 @@ import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.VoucherSimulationExportGenerator;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service("portalVoucherService")
 public class VoucherService {
@@ -111,6 +115,10 @@ public class VoucherService {
         return voucherAssignmentMapper.toDTO(voucherAssignmentRepository.findByCallId(callId));
     }
 
+    public VoucherAssignmentAuxiliarDTO getVoucherAssignmentByCallAndStatus(int callId, int status) {
+        return voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, status));
+    }
+
     public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(int callId) {
         VoucherAssignmentAuxiliarDTO voucherAssignmentAuxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 1));
         if(voucherAssignmentAuxiliarDTO == null){
@@ -123,18 +131,14 @@ public class VoucherService {
         if(voucherAssignmentPreList != null){
             voucherAssignmentAuxiliarDTO.setPreListExecutionDate(voucherAssignmentPreList.getExecutionDate());
         }
+
+        VoucherAssignmentAuxiliarDTO voucherAssignmentFreezeList = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 3));
+        voucherAssignmentAuxiliarDTO.setHasFreezeListSaved(voucherAssignmentFreezeList != null);
+        if(voucherAssignmentFreezeList != null){
+            voucherAssignmentAuxiliarDTO.setFreezeLisExecutionDate(voucherAssignmentFreezeList.getExecutionDate());
+        }
+
         return voucherAssignmentAuxiliarDTO;
-    }
-
-    @Transactional
-    public VoucherAssignmentDTO createVoucherAssignment(VoucherAssignmentDTO voucherAssignmentDTO) {
-        VoucherAssignment voucherAssignment = voucherAssignmentRepository
-                .save(voucherAssignmentMapper.toEntity(voucherAssignmentDTO));
-        return voucherAssignmentMapper.toDTO(voucherAssignment);
-    }
-
-    public void updateVoucherAssignment() {
-
     }
 
     public ResponseDTO getVoucherSimulationByVoucherAssignment(int voucherAssignmentId, String country, String municipality, Pageable pageable) {
@@ -182,7 +186,7 @@ public class VoucherService {
             if(simulation.getNumApplications() > 1) {
                 return false;
             }
-            if(simulation.getApplication().getStatus() != 2){
+            if(simulation.getApplication().getStatus() != ApplicationStatus.OK.getValue()){
                 return false;
             }
         }
@@ -190,7 +194,64 @@ public class VoucherService {
     }
 
     @Transactional
+    public VoucherAssignmentDTO saveFreezeListSimulation(int voucherAssignmentId, int callId){
+
+        CallDTO callDTO = callService.getCallById(callId);
+
+        if(callDTO == null){
+            throw new AppException("Call not exists");
+        }
+
+        VoucherAssignmentAuxiliarDTO voucherAssignmentAuxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callDTO.getId(), 3));
+
+        if(voucherAssignmentAuxiliarDTO != null){
+            throw new AppException("VoucherAssignment with id " + voucherAssignmentId + " not found");
+        }
+
+        List<VoucherSimulationDTO> simulationDTOS = voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentAndStatusOrderByEuRank(voucherAssignmentId));
+        Set<VoucherSimulationDTO> simulationDTOSet = new HashSet<>();
+
+        VoucherAssignmentDTO freezeVoucherAssignment = new VoucherAssignmentDTO();
+        freezeVoucherAssignment.setStatus(VoucherAssignmentStatus.FREEZE_LIST.getValue());
+        freezeVoucherAssignment.setExecutionDate(new Date().getTime());
+        freezeVoucherAssignment.setUser(userService.getUserByUserContext(UserHolder.getUser()));
+        freezeVoucherAssignment.setCall(callDTO);
+
+        VoucherAssignmentDTO result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(freezeVoucherAssignment)));
+
+        for (VoucherSimulationDTO voucherSimulation : simulationDTOS) {
+            VoucherSimulationDTO voucherSimulationDTO = new VoucherSimulationDTO();
+            voucherSimulationDTO.setApplication(voucherSimulation.getApplication());
+            voucherSimulationDTO.setCountry(voucherSimulation.getCountry());
+            voucherSimulationDTO.setCountryRank(voucherSimulation.getCountryRank());
+            voucherSimulationDTO.setEuRank(voucherSimulation.getEuRank());
+            voucherSimulationDTO.setIssues(voucherSimulation.getIssues());
+            voucherSimulationDTO.setLau(voucherSimulation.getLau());
+            voucherSimulationDTO.setMunicipality(voucherSimulation.getMunicipality());
+            voucherSimulationDTO.setMunicipalityName(voucherSimulation.getMunicipalityName());
+            voucherSimulationDTO.setNumApplications(voucherSimulation.getNumApplications());
+            voucherSimulationDTO.setSelectionStatus(voucherSimulation.getSelectionStatus());
+            if(voucherSimulation.getSelectionStatus() == SelectionStatus.MAIN_LIST.getValue()) {
+                voucherSimulationDTO.setSelectionStatus(SelectionStatus.SELECTED.getValue());
+            }
+            voucherSimulationDTO.setRejected(voucherSimulation.getRejected());
+            voucherSimulationDTO.setVoucherAssignment(result.getId());
+            simulationDTOSet.add(voucherSimulationDTO);
+        }
+
+        result.setVoucherSimulations(simulationDTOSet);
+
+        return voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(result)));
+    }
+
+    @Transactional
     public List<VoucherSimulationDTO> savePreListSimulation(int voucherAssignmentId, int callId){
+        CallDTO callDTO = callService.getCallById(callId);
+
+        if(callDTO == null){
+            throw new AppException("Call not exists");
+        }
+
         if(checkSavePreSelectionEnabled(voucherAssignmentId)){
 
             VoucherAssignmentAuxiliarDTO auxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 1));
@@ -211,7 +272,7 @@ public class VoucherService {
             voucherAssignment.setUser(userService.getUserByUserContext(UserHolder.getUser()));
             voucherAssignment.setExecutionDate(new Date().getTime());
 
-            voucherAssignment.setStatus(2);
+            voucherAssignment.setStatus(VoucherAssignmentStatus.PRE_LIST.getValue());
 
             Set<VoucherSimulationDTO> simulationsPreSave = new HashSet<>();
 
@@ -258,10 +319,16 @@ public class VoucherService {
         if (userContext != null) {
             CallDTO call = callService.getCallById(callId);
             if (call == null) {
+                if(_log.isWarnEnabled()){
+                    _log.warn("Call not exist");
+                }
                 return new ResponseDTO(false, "Call not exist", null);
             }
 
             if (call.getNumberVouchers() == 0) {
+                if(_log.isWarnEnabled()){
+                    _log.warn("Simulation stopped");
+                }
                 return new ResponseDTO(false, "Simulation stopped", null);
             }
 
@@ -684,23 +751,14 @@ public class VoucherService {
                 _log.info("END - Saving simulation to database");
             }
 
-            return new ResponseDTO(true, res.getVoucherSimulations(), null);
+            VoucherAssignmentAuxiliarDTO voucher = new VoucherAssignmentAuxiliarDTO();
+            voucher.setId(res.getId());
+            voucher.setStatus(res.getStatus());
+            voucher.setExecutionDate(res.getExecutionDate());
+
+            return new ResponseDTO(true, voucher, null);
         }
         return new ResponseDTO(false, "User not defined", null);
-    }
-
-    public Integer positionInApplicationList(List<ApplicationDTO> applicationsInput, ApplicationDTO applicationInput) {
-        int index = 0;
-        for (ApplicationDTO application : applicationsInput) {
-            if (application.getId() == applicationInput.getId()) {
-                return index;
-            }
-            index++;
-        }
-
-        return -1;
-
-
     }
 
     public List<ApplicationDTO> getFirtsApplicationCountry(HashMap<Integer, SimpleRegistrationDTO> registrationsMap,
@@ -726,24 +784,6 @@ public class VoucherService {
             }
         }
         return appCountry;
-    }
-
-    public int getPositionInCountry(List<Integer> applicationsCountry, Integer application) {
-        int index = applicationsCountry.indexOf(application);
-        /*for (Integer applicationCountry : applicationsCountry) {
-            if (applicationCountry == application) {
-                return index;
-            }
-            index++;
-        }*/
-        return index;
-    }
-
-    public boolean checkApplicationIsValid(ApplicationDTO applicationDTO) {
-        if (applicationDTO.getStatus() == 3) {
-            return false;
-        }
-        return true;
     }
 
     public void removeFromLOA(List<ApplicationDTO> listLOA, ApplicationDTO applicationDTO) {
