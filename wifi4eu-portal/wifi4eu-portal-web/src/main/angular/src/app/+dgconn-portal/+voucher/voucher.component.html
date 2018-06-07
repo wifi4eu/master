@@ -267,7 +267,7 @@
                   <span style="color: #929292;" *ngIf="callVoucherAssignment?.hasFreezeListSaved"  [innerHTML]="'dgConn.voucherAssignment.freezeList.date' | translate:{date:dateNumberFreeze,hour:hourNumberFreeze}"></span>
                 </div>
                 <div class="col-md-3">
-                  <button type="button" class="btn btn-primary preSelection-button" [disabled]="!callVoucherAssignment?.hasFreezeListSaved">
+                  <button type="button" class="btn btn-primary preSelection-button" (click)="sendNotificationToApplicants()" [disabled]="!callVoucherAssignment?.hasFreezeListSaved">
                     {{'dgConn.voucherAssignment.sendNotification.button' | translate}}
                   </button>
                 </div>

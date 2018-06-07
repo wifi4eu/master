@@ -237,6 +237,28 @@ public class VoucherResource {
         }
     }
 
+    @ApiOperation(value = "Send notifications  to applicants")
+    @RequestMapping(value = "/assignment/send-notifications", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO sendNotificationForApplicants(@RequestBody final Integer callId){
+
+        try{
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("Access denied: saveFreezeListSimulation");
+            }
+            voucherService.sendNotificationForApplicants(callId);
+            return new ResponseDTO(true, null, null);
+        }
+        catch (AccessDeniedException ade){
+
+        }
+        catch (Exception e){
+
+        }
+
+        return new ResponseDTO(false, null, null);
+    }
+
     @ApiOperation(value = "Freeze simulation list")
     @RequestMapping(value = "/assignment/freeze-simulation-list", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody

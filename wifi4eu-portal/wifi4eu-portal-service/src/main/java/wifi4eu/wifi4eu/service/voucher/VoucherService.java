@@ -24,10 +24,12 @@ import wifi4eu.wifi4eu.entity.voucher.SimpleRegistration;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
+import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherSimulationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.user.UserRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentAuxiliarRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherAssignmentRepository;
 import wifi4eu.wifi4eu.repository.voucher.VoucherSimulationRepository;
@@ -37,10 +39,13 @@ import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
+import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.util.VoucherSimulationExportGenerator;
 
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -78,6 +83,15 @@ public class VoucherService {
 
     @Autowired
     VoucherAssignmentAuxiliarRepository voucherAssignmentAuxiliarRepository;
+
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    MailService mailService;
 
     @Autowired
     private SimpleRegistrationService simpleRegistrationService;
@@ -800,6 +814,70 @@ public class VoucherService {
             }
         }
         return false;
+    }
+
+    public void sendNotificationForApplicants(int callId){
+
+        CallDTO callDTO = callService.getCallById(callId);
+
+        if(callDTO == null){
+            if(_log.isWarnEnabled()){
+                _log.warn("Call not found with id: " + callId);
+            }
+            throw new AppException("Call not found with id: " + callId);
+        }
+
+        List<UserDTO> successfulApplicants;
+        List<UserDTO> reserveApplicants;
+        List<UserDTO> unsuccessfulApplicants = new ArrayList<>();
+
+        VoucherAssignmentAuxiliarDTO finalVoucherAssignment = getVoucherAssignmentByCallAndStatus(callId, VoucherAssignmentStatus.FREEZE_LIST.getValue());
+
+        successfulApplicants =  userMapper.toDTOList(userRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.SELECTED.getValue()));
+        reserveApplicants =  userMapper.toDTOList(userRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.RESERVE_LIST.getValue()));
+        unsuccessfulApplicants.addAll(userMapper.toDTOList(userRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.REJECTED.getValue())));
+        unsuccessfulApplicants.addAll(userMapper.toDTOList(userRepository.getApplicationsNotSelectedInVoucherAssignment(callDTO.getId(), finalVoucherAssignment.getId())));
+
+        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+        String subject;
+        String msgBody;
+        for (UserDTO successfulApplicant: successfulApplicants) {
+            if (successfulApplicant.getLang() != null) {
+                locale = new Locale(successfulApplicant.getLang());
+            }
+            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+            subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
+            msgBody= bundle.getString("mail.dgConn.voucherAssignment.successfulApplicant.body");
+            String additionalInfoUrl = userService.getBaseUrl();
+            msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
+        }
+
+        for(UserDTO reserveApplicant: reserveApplicants){
+            // TODO: Email notify an unsuccessful application related to an applicant within the reserve list
+            if (reserveApplicant.getLang() != null) {
+                locale = new Locale(reserveApplicant.getLang());
+            }
+            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+            subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
+            msgBody= bundle.getString("mail.dgConn.voucherAssignment.reserveApplicant.body");
+            String additionalInfoUrl = userService.getBaseUrl();
+            msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
+        }
+
+        for(UserDTO unsuccessfulApplicant: unsuccessfulApplicants){
+            // TODO: Email notify an unsuccessful application
+            if (unsuccessfulApplicant.getLang() != null) {
+                locale = new Locale(unsuccessfulApplicant.getLang());
+            }
+            ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+            subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
+            msgBody= bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.body");
+
+            String option1 = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.option1");
+//            String option2 = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.option2");
+            msgBody = MessageFormat.format(msgBody, option1);
+        }
+
     }
 
 }
