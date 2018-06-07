@@ -111,4 +111,49 @@
             </p-dataTable>
         </div>
     </div>
+    <div class="ui-g-12">
+        <p>{{ 'dgconn.sendRequestCorrectionEmails.desc' | translate }}</p>
+        <button type="button" class="btn btn-primary" (click)="displayCorrectionEmailsModal()" [disabled]="!correctionRequestsEmailAvailable">
+            <b>{{ 'dgconn.sendRequestCorrectionEmails' | translate }}</b>
+        </button>
+        <p *ngIf="correctionRequestsEmailCounter == 1">
+            {{ 'dgconn.sendRequestCorrectionEmails.requestSentOn' | translate: {date:correctionRequestsEmailDate,time:correctionRequestsEmailTime} }}
+        </p>
+        <p *ngIf="correctionRequestsEmailCounter > 1">
+            {{ 'dgconn.sendRequestCorrectionEmails.lastRequestSentOn' | translate: {date:correctionRequestsEmailDate,time:correctionRequestsEmailTime} }}
+        </p>
+    </div>
+    <p-dialog [(visible)]="displayCorrectionEmails" [modal]="true" [responsive]="true" [resizable]="false"
+              [draggable]="false" [closable]="!sendingCorrectionEmails" [closeOnEscape]="false" (onAfterHide)="closeModal()">
+        <form (ngSubmit)="sendCorrectionEmails()" #correctionEmailsForm="ngForm">
+            <div class="form-group">
+                <div style="padding: 2em; padding-top: 0em;" class="center">
+                    <h2 class="beneficiaryMayor">{{ 'dgconn.sendRequestCorrectionEmails' | translate }}</h2>
+                    <p>{{ 'dgconn.sendRequestCorrectionEmails.modal.desc' | translate }}</p>
+                </div>
+                <div style="padding: 2em; padding-top: 0em;">
+                    <div class="row center">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-primary cancel-button"
+                                    [disabled]="sendingCorrectionEmails" (click)="closeModal()">
+                                {{ 'shared.cancel.button' | translate }}
+                            </button>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-primary publish-button"
+                                    [disabled]="sendingCorrectionEmails">
+                                {{ 'shared.confirm.button' | translate }} <i *ngIf="sendingCorrectionEmails" [@enterSpinner] class="fa fa-spinner loading-icon fa-3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+    <p-dialog [(visible)]="sendingCorrectionEmails" [modal]="true" [responsive]="true"
+              [resizable]="false" [draggable]="false" [closable]="false" [closeOnEscape]="false">
+        <p class="ModalLoaderDots"><span>·</span><span>·</span><span>·</span></p>
+        <h1 class="Modalh1Confirmation">{{ 'shared.loading.modal.title3' | translate }}</h1>
+        <p class="ModalpConfirmation">{{ 'shared.loading.modal.dontclose' | translate}}</p>
+    </p-dialog>
 </div>

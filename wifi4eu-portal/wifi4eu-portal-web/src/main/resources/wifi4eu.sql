@@ -596,3 +596,15 @@ CREATE TABLE dbo.voucher_simulations
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
+-- -----------------------------------------------------
+-- Table `dbo`.`correction_requests_emails`
+-- -----------------------------------------------------
+CREATE TABLE dbo.correction_requests_emails
+(
+  [id]                      INT NOT NULL IDENTITY,
+  [call]                    INT NULL,
+  [application]             INT NULL,
+  [date]                    BIGINT NULL,
+  [button_pressed_counter]  INT NULL,
+  PRIMARY KEY ([id])
+);

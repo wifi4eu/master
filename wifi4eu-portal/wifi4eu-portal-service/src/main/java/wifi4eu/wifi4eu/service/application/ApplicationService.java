@@ -8,14 +8,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
+import wifi4eu.wifi4eu.mapper.application.CorrectionRequestEmailMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.application.CorrectionRequestEmailRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -60,6 +61,12 @@ public class ApplicationService {
 
     @Autowired
     CallService callService;
+
+    @Autowired
+    CorrectionRequestEmailMapper correctionRequestEmailMapper;
+
+    @Autowired
+    CorrectionRequestEmailRepository correctionRequestEmailRepository;
 
     private static final Logger _log = LoggerFactory.getLogger(ApplicationService.class);
 
@@ -515,5 +522,66 @@ public class ApplicationService {
         List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, name, pagingSortingData);
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
+    }
+
+    public List<CorrectionRequestEmailDTO> sendCorrectionEmails(Integer callId) throws Exception {
+        List<ApplicationDTO> applications = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(callId, ApplicationStatus.PENDING_FOLLOWUP.getValue()));
+        List<CorrectionRequestEmailDTO> correctionEmails = new ArrayList<>();
+        CorrectionRequestEmailDTO lastCorrectionRequestEmail = getLastCorrectionRequestEmailInCall(callId);
+        Integer buttonPressedCounter;
+        if (lastCorrectionRequestEmail != null) {
+            buttonPressedCounter = lastCorrectionRequestEmail.getButtonPressedCounter() + 1;
+        } else {
+            buttonPressedCounter = 1;
+        }
+        if (!applications.isEmpty()) {
+            for (ApplicationDTO application : applications) {
+                RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
+                if (registration != null) {
+                    UserDTO user = userService.getUserById(registration.getUserId());
+                    MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
+                    if (user != null && municipality != null) {
+                        CorrectionRequestEmailDTO correctionRequestEmail = new CorrectionRequestEmailDTO();
+                        Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                        if (user.getLang() != null) {
+                            locale = new Locale(user.getLang());
+                        }
+                        ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+//                        String subject = bundle.getString("mail.invalidateApplication.subject");
+//                        String msgBody = bundle.getString("mail.invalidateApplication.body");
+//                        msgBody = MessageFormat.format(msgBody, municipality.getName());
+//                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                        correctionRequestEmail.setCallId(callId);
+                        correctionRequestEmail.setApplicationId(application.getId());
+                        correctionRequestEmail.setDate(new Date().getTime());
+                        correctionRequestEmail.setButtonPressedCounter(buttonPressedCounter);
+                        correctionEmails.add(correctionRequestEmailMapper.toDTO(correctionRequestEmailRepository.save(correctionRequestEmailMapper.toEntity(correctionRequestEmail))));
+                    }
+                }
+            }
+        }
+        return correctionEmails;
+    }
+
+    public CorrectionRequestEmailDTO getLastCorrectionRequestEmailInCall(Integer callId) {
+        List<CorrectionRequestEmailDTO> correctionRequests = correctionRequestEmailMapper.toDTOList(correctionRequestEmailRepository.findAllByCallIdOrderByDateDesc(callId));
+        if (!correctionRequests.isEmpty()) {
+            return correctionRequests.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public boolean checkIfCorrectionRequestEmailIsAvailable(Integer callId) {
+        CallDTO call = callService.getCallById(callId);
+        if (call != null) {
+            if (call.getEndDate() < new Date().getTime()) {
+                List<ApplicationDTO> pendingFollowupApps = applicationMapper.toDTOList(applicationRepository.findByCallIdAndStatus(call.getId(), ApplicationStatus.PENDING_FOLLOWUP.getValue()));
+                if (!pendingFollowupApps.isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

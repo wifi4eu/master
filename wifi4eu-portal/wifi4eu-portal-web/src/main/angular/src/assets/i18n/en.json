@@ -654,6 +654,10 @@
   "dgConn.applicantDetails.legalFile.reason.cause6": "6. The document is missing signature",
   "dgconn.voucherAssignment.runningSimulation": "Running simulation...",
   "dgconn.voucherAssignment.runningSimulation.cancel": "CANCEL",
-  "dgconn.voucherAssignment.downloading": "Downloading..."
-
+  "dgconn.voucherAssignment.downloading": "Downloading...",
+  "dgconn.sendRequestCorrectionEmails": "Send request for correction e-mails",
+  "dgconn.sendRequestCorrectionEmails.desc": "This button will send an e-mail to all applicants for which correction of supporting documents is requested.",
+  "dgconn.sendRequestCorrectionEmails.modal.desc": "This will send an e-mail to all the applicants for which a correction of documents is requested. Are you sure you want to send the e-mails?",
+  "dgconn.sendRequestCorrectionEmails.requestSentOn": "Request sent on {{date}} at {{time}}",
+  "dgconn.sendRequestCorrectionEmails.lastRequestSentOn": "Last request sent on {{date}} at {{time}}"
 }

@@ -334,4 +334,83 @@ public class ApplicationResource {
             return null;
         }
     }
+
+    @ApiOperation(value = "Resource to generate CorrectionRequestEmailDTO")
+    @RequestMapping(value = "/getCorrectionRequestEmail", method = RequestMethod.GET)
+    @ResponseBody
+    public CorrectionRequestEmailDTO getCorrectionRequestEmail() {
+        return new CorrectionRequestEmailDTO();
+    }
+
+    @ApiOperation(value = "Send request correction e-mails for a specific call")
+    @RequestMapping(value = "/sendCorrectionEmails", method = RequestMethod.POST)
+    @ResponseBody
+    public List<CorrectionRequestEmailDTO> sendCorrectionEmails(@RequestBody final Integer callId, HttpServletResponse response) throws IOException {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("sendCorrectionEmails");
+            }
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
+            return applicationService.sendCorrectionEmails(callId);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'sendCorrectionEmails' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+    }
+
+    @ApiOperation(value = "Get the last correction request email information")
+    @RequestMapping(value = "/getLastCorrectionRequestEmail", method = RequestMethod.POST)
+    @ResponseBody
+    public CorrectionRequestEmailDTO getLastCorrectionRequestEmail(@RequestBody final Integer callId, HttpServletResponse response) throws IOException {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("getLastCorrectionRequestEmail");
+            }
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
+            return applicationService.getLastCorrectionRequestEmailInCall(callId);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getLastCorrectionRequestEmail' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        }
+    }
+
+    @ApiOperation(value = "Check if whether the correction request email option is available for a specific call")
+    @RequestMapping(value = "/checkIfCorrectionRequestEmailIsAvailable", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean checkIfCorrectionRequestEmailIsAvailable(@RequestBody final Integer callId, HttpServletResponse response) throws IOException {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("checkIfCorrectionRequestEmailIsAvailable");
+            }
+            if (!permissionChecker.checkIfDashboardUser()) {
+                throw new AccessDeniedException("");
+            }
+            return applicationService.checkIfCorrectionRequestEmailIsAvailable(callId);
+        } catch (AccessDeniedException ade) {
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return false;
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'checkIfCorrectionRequestEmailIsAvailable' operation.", e);
+            }
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return false;
+        }
+    }
 }
