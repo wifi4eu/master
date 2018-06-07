@@ -1,7 +1,7 @@
-import {Component, Directive, EventEmitter, Input, Output} from "@angular/core";
-import {UxLayoutNavBarActionItemComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/ux-layout-nav-bar-action-item.component";
-import {UxLayoutLink} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/models/ux-layout-link";
-import {UxLayoutNavBarActionsComponent} from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/ux-layout-nav-bar-actions.component";
+import { Component, Input } from "@angular/core";
+import { UxLayoutNavBarActionItemComponent } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/ux-layout-nav-bar-action-item.component";
+import { UxLayoutLink } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/models/ux-layout-link";
+import { UxLayoutNavBarActionsComponent } from "@ec-digit-uxatec/eui-angular2-ux-commons/dist/ux-layout/ux-layout-nav-bar-actions.component";
 
 @Component({
     selector: "custom-layout-nav-bar-action-item",
@@ -14,17 +14,14 @@ import {UxLayoutNavBarActionsComponent} from "@ec-digit-uxatec/eui-angular2-ux-c
 
         <template [ngIf]="isOverlayPanel">
         <div class="overlay-panel right-position white state-open hidden-lg-up" [class.hidden]="!isActive" (click)="onClick($event)">
-            <div class="overlay-panel-toggle">
-                <a (click)="toggle($event)">
-                    <span class="label-open">
-                    <span class="fa fa-chevron-right"></span>
-                    </span>
+            <div>
+                <a (click)="toggle($event)" class="overlay-panel-close-button">
                     <span class="label-close">
                     <span class="fa fa-times"></span>
                     </span>
                 </a>
-            </div>      
-            
+            </div>
+
             <template [ngIf]="isOverlayPanelCustomContent">
                 <div class="header">
                 <ng-content select="uxLayoutNavBarOverlayPanelHeader"></ng-content>
@@ -52,7 +49,10 @@ import {UxLayoutNavBarActionsComponent} from "@ec-digit-uxatec/eui-angular2-ux-c
                     
                     <ul *ngIf="isShowHome">
                         <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                            <a [routerLink]="homeUrl">
+                            <a *ngIf="!goToHomeButton" [routerLink]="homeUrl">
+                                {{ 'shared.home.label' | translate }}
+                            </a>
+                            <a *ngIf="goToHomeButton" (click)="goToHome()">
                                 {{ 'shared.home.label' | translate }}
                             </a>
                         </li>
@@ -92,7 +92,11 @@ import {UxLayoutNavBarActionsComponent} from "@ec-digit-uxatec/eui-angular2-ux-c
             <ng-content></ng-content>       
         </aside>
         </template>
-    `
+    `,
+    styles: [
+        '.overlay-panel-close-button { position: fixed; padding: 0.75em; } .overlay-panel-close-button:hover { background: whitesmoke; }',
+        '.overlay-panel { height: unset; padding-bottom: 1em; }'
+    ]
 })
 
 export class CustomLayoutNavBarActionItemComponent extends UxLayoutNavBarActionItemComponent {
@@ -112,10 +116,15 @@ export class CustomLayoutNavBarActionItemComponent extends UxLayoutNavBarActionI
     @Input() isHiddenMobile: boolean;
     @Input() isShowProfilePicture: boolean = true;
     @Input() profilePictureIconClass: string = 'fa-user';
+    @Input() goToHomeButton: boolean = false;
 
     uxLayoutNavBarActionsComponent: UxLayoutNavBarActionsComponent;
 
     toggle(event: Event) {
         super.toggle(event);
+    }
+
+    goToHome() {
+        window.location.href = "/#/home";
     }
 }

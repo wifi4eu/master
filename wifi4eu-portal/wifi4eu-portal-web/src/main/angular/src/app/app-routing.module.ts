@@ -1,12 +1,11 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
+import { AppGuard } from "./app.guard";
+import { HomeComponent } from "./home/home.component";
+import { NotFoundComponent } from "./not-found/not-found.component";
 import { ActivationComponent } from "./activation/activation.component";
 import { ForgotComponent } from "./+forgot/forgot.component";
 import { HelpdeskComponent } from "./+helpdesk/helpdesk.component";
-import { NotFoundComponent } from "./not-found/not-found.component"
-import { AppGuard } from "./app.guard";
-// import {AppGuard} from "./app.guard";
-import { HomeComponent } from "./home/home.component";
 import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.component";
 // import {EcasComponent} from "./+ecas/ecas.component";
 
@@ -20,7 +19,7 @@ import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.componen
             path: 'home',
             component: HomeComponent,
             canActivate: [AppGuard]
-        }, /*{
+        }, {
             path: 'index.jsp',
             redirectTo: 'beneficiary-portal',
             canActivate: [AppGuard]
@@ -38,11 +37,13 @@ import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.componen
             path: 'helpdesk',
             component: HelpdeskComponent,
             canActivate: [AppGuard]
-        }, */{
+        }, 
+        /*{
             path: 'dgconn-portal',
             loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
             canActivate: [AppGuard]
-        }, /*{
+        }, */
+        {
             path: 'beneficiary-registration',
             loadChildren: 'app/beneficiary-registration/beneficiary-registration.module#BeneficiaryRegistrationModule',
             canActivate: [AppGuard]
@@ -59,12 +60,17 @@ import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.componen
         {
             path: 'list-suppliers',
             component: ListSuppliersComponent
-        }, */{
+        }, {
             path: 'notfound',
             component: NotFoundComponent
-        }, {
+        },
+        /*{
             path: '**',
             redirectTo: 'dgconn-portal'
+        } */
+        {
+            path: '**',
+            redirectTo: 'notfound'
         }
     ], { useHash: true })],
     providers: [AppGuard],

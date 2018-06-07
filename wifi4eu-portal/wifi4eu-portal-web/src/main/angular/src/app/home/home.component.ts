@@ -15,7 +15,8 @@ export class HomeComponent {
         }
     }
 
-    private redirectUser() {
+    /*
+    private redirectUser__dgconn() {
         switch (this.sharedService.user.type) {
             case 5:
                 this.router.navigateByUrl('/dgconn-portal');
@@ -25,8 +26,9 @@ export class HomeComponent {
                 break;
         }
     }
+    */
     
-    /*private redirectUser__public_portal() {
+    private redirectUser() {
         switch (this.sharedService.user.type) {
             case 1:
                 this.router.navigateByUrl('/supplier-portal/profile');
@@ -46,5 +48,5 @@ export class HomeComponent {
                 }
                 break;
         }
-    }*/
+    }
 }

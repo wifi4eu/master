@@ -91,6 +91,11 @@
             <artifactId>wifi4eu-dgconn-persistence</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+		<dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.17</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -123,6 +128,14 @@
                         <version>1.1.0.Beta2</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

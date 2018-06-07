@@ -3,17 +3,21 @@ package wifi4eu.wifi4eu.service.supplier;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.supplier.SuppliedRegion;
+import wifi4eu.wifi4eu.common.utils.SupplierValidator;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
@@ -41,6 +45,9 @@ public class SupplierService {
     UserService userService;
 
     @Autowired
+    NutsService nutsService;
+
+    @Autowired
     ThreadService threadService;
 
     @Autowired
@@ -57,28 +64,78 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.findOne(supplierId));
     }
 
+
     @Transactional
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
-        if (supplierDTO.getSuppliedRegions().isEmpty()) {
-            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
-        } else {
-            Integer supplierId = supplierDTO.getId();
-            List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
-            List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
-            if (supplierId == 0) {
+        UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+        if (userDTO != null) {
+            if (supplierDTO.getId() == 0) {
+                Integer supplierId = supplierDTO.getId();
+                List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
+                List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
                 supplierDTO.setSuppliedRegions(null);
                 supplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
                 supplierId = supplierDTO.getId();
+
+                for (SuppliedRegionDTO region : originalRegions) {
+                    region.setSupplierId(supplierId);
+                    correctRegions.add(region);
+                }
+                supplierDTO.setSuppliedRegions(correctRegions);
+                return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+
+            } else {
+                return null;
             }
-            for (SuppliedRegionDTO region : originalRegions) {
-                region.setSupplierId(supplierId);
-                correctRegions.add(region);
-            }
-            supplierDTO.setSuppliedRegions(correctRegions);
-            return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
         }
+        return null;
     }
 
+
+    @Transactional
+    public SupplierDTO updateContactDetails(SupplierDTO supplierDTO, String contactName, String contactSurname, String contactPhonePrefix, String contactPhoneNumber) {
+        supplierDTO.setContactName(contactName);
+        supplierDTO.setContactSurname(contactSurname);
+        supplierDTO.setContactPhonePrefix(contactPhonePrefix);
+        supplierDTO.setContactPhoneNumber(contactPhoneNumber);
+
+        return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+    }
+
+    @Transactional
+    public SupplierDTO updateSupplierDetails(SupplierDTO supplierDTO, String name, String address, String vat, String bic, String logo) {
+      supplierDTO.setName(name);
+      supplierDTO.setAddress(address);
+      supplierDTO.setVat(vat);
+      supplierDTO.setBic(bic);
+      supplierDTO.setLogo(logo);
+      return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+    }
+
+
+    /* OLD ONE
+        @Transactional
+        public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
+            if (supplierDTO.getSuppliedRegions().isEmpty()) {
+                return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+            } else {
+                Integer supplierId = supplierDTO.getId();
+                List<SuppliedRegionDTO> originalRegions = supplierDTO.getSuppliedRegions();
+                List<SuppliedRegionDTO> correctRegions = new ArrayList<>();
+                if (supplierId == 0) {
+                    supplierDTO.setSuppliedRegions(null);
+                    supplierDTO = supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+                    supplierId = supplierDTO.getId();
+                }
+                for (SuppliedRegionDTO region : originalRegions) {
+                    region.setSupplierId(supplierId);
+                    correctRegions.add(region);
+                }
+                supplierDTO.setSuppliedRegions(correctRegions);
+                return supplierMapper.toDTO(supplierRepository.save(supplierMapper.toEntity(supplierDTO)));
+            }
+        }
+    */
     @Transactional
     public SupplierDTO deleteSupplier(int supplierId) {
         //TODO: change to a soft delete
@@ -100,6 +157,8 @@ public class SupplierService {
 
         UserDTO userDTO;
 
+        SupplierValidator.validateSupplier(supplierDTO);
+
         UserContext userContext = UserHolder.getUser();
 
         if (userContext != null) {
@@ -118,76 +177,14 @@ public class SupplierService {
         userDTO.setCreateDate(new Date().getTime());
         userDTO.setType(1);
         userDTO.setVerified(false);
+        userDTO.setLang(supplierDTO.getLang());
         userDTO = userService.saveUserChanges(userDTO);
         userService.sendActivateAccountMail(userDTO);
         supplierDTO.setUserId(userDTO.getId());
         supplierDTO = createSupplier(supplierDTO);
-        checkDuplicateSuppliers(supplierDTO);
         return supplierDTO;
     }
 
-    private void checkDuplicateSuppliers(SupplierDTO supplierDTO) {
-        List<SupplierDTO> suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByVat(supplierDTO.getVat())));
-        if (!suppliers.isEmpty()) {
-            for (SupplierDTO supplier : suppliers) {
-                if (supplier.getId() != supplierDTO.getId()) {
-                    ThreadDTO thread = threadService.getThreadByTypeAndReason(2, supplierDTO.getVat());
-                    if (thread == null) {
-                        thread = new ThreadDTO();
-                        thread.setTitle("VAT: " +  supplierDTO.getVat());
-                        thread.setType(Constant.THREAD_REASON_VAT);
-                        thread.setReason(supplierDTO.getVat());
-                        thread = threadService.createThread(thread);
-                    }
-                    UserThreadsDTO specificSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplier.getUserId(), thread.getId());
-                    if (specificSupplierUserThreads == null) {
-                        specificSupplierUserThreads = new UserThreadsDTO();
-                        specificSupplierUserThreads.setUserId(supplier.getUserId());
-                        specificSupplierUserThreads.setThreadId(thread.getId());
-                        userThreadsService.createUserThreads(specificSupplierUserThreads);
-                    }
-                    UserThreadsDTO originalSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplierDTO.getUserId(), thread.getId());
-                    if (originalSupplierUserThreads == null) {
-                        originalSupplierUserThreads = new UserThreadsDTO();
-                        originalSupplierUserThreads.setUserId(supplierDTO.getUserId());
-                        originalSupplierUserThreads.setThreadId(thread.getId());
-                        userThreadsService.createUserThreads(originalSupplierUserThreads);
-                    }
-                }
-            }
-        }
-        suppliers = supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findByAccountNumber(supplierDTO.getAccountNumber())));
-        if (!suppliers.isEmpty()) {
-            for (SupplierDTO supplier : suppliers) {
-                if (supplier.getId() != supplierDTO.getId()) {
-                    ThreadDTO thread = threadService.getThreadByTypeAndReason(3, supplierDTO.getAccountNumber());
-                    if (thread == null) {
-                        thread = new ThreadDTO();
-                        thread.setTitle("IBAN: " +  supplierDTO.getAccountNumber());
-                        thread.setType(Constant.THREAD_REASON_IBAN);
-                        thread.setReason(supplierDTO.getAccountNumber());
-                        thread = threadService.createThread(thread);
-                    }
-                    UserThreadsDTO specificSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplier.getUserId(), thread.getId());
-                    if (specificSupplierUserThreads == null) {
-                        specificSupplierUserThreads = new UserThreadsDTO();
-                        specificSupplierUserThreads.setUserId(supplier.getUserId());
-                        specificSupplierUserThreads.setThreadId(thread.getId());
-                        userThreadsService.createUserThreads(specificSupplierUserThreads);
-                    }
-                    UserThreadsDTO originalSupplierUserThreads = userThreadsService.getByUserIdAndThreadId(supplierDTO.getUserId(), thread.getId());
-                    if (originalSupplierUserThreads == null) {
-                        originalSupplierUserThreads = new UserThreadsDTO();
-                        originalSupplierUserThreads.setUserId(supplierDTO.getUserId());
-                        originalSupplierUserThreads.setThreadId(thread.getId());
-                        userThreadsService.createUserThreads(originalSupplierUserThreads);
-                    }
-                }
-            }
-        }
-    }
-
-    @Cacheable(value = "portalGetSupplierByUserId")
     public SupplierDTO getSupplierByUserId(int userId) {
         return supplierMapper.toDTO(supplierRepository.findByUserId(userId));
     }
@@ -209,19 +206,23 @@ public class SupplierService {
         List<SupplierDTO> similarSuppliers = new ArrayList<>();
         SupplierDTO originalSupplier = getSupplierById(supplierId);
         if (originalSupplier != null) {
-            List<SupplierDTO> suppliersVat = getSuppliersByVat(originalSupplier.getAccountNumber());
-            if (!suppliersVat.isEmpty()) {
-                for (SupplierDTO supp : suppliersVat) {
-                    if (supp.getId() != originalSupplier.getId()) {
-                        similarSuppliers.add(supp);
-                    }
+            List<SupplierDTO> suppliersVat = getSuppliersByVat(originalSupplier.getVat());
+            for (SupplierDTO suppVat : suppliersVat) {
+                if (suppVat.getId() != originalSupplier.getId()) {
+                    similarSuppliers.add(suppVat);
                 }
             }
             List<SupplierDTO> suppliersIban = getSuppliersByAccountNumber(originalSupplier.getAccountNumber());
-            if (!suppliersIban.isEmpty()) {
-                for (SupplierDTO supp : suppliersIban) {
-                    if (supp.getId() != originalSupplier.getId()) {
-                        similarSuppliers.add(supp);
+            for (SupplierDTO suppIban : suppliersIban) {
+                if (suppIban.getId() != originalSupplier.getId()) {
+                    boolean alreadyAddedd = false;
+                    for (SupplierDTO suppVat : suppliersVat) {
+                        if (suppVat.getId() == suppIban.getId()) {
+                            alreadyAddedd = true;
+                        }
+                    }
+                    if (!alreadyAddedd) {
+                        similarSuppliers.add(suppIban);
                     }
                 }
             }
@@ -260,7 +261,7 @@ public class SupplierService {
 
     @Transactional
     public SupplierDTO invalidateSupplier(SupplierDTO supplierDTO) {
-        supplierDTO.setStatus(0);
+        supplierDTO.setStatus(1);
         supplierDTO = updateSupplier(supplierDTO);
         UserDTO user = userService.getUserById(supplierDTO.getUserId());
         if (user != null) {
@@ -276,5 +277,56 @@ public class SupplierService {
             }
         }
         return supplierDTO;
+    }
+
+    public List<SupplierListItemDTO> findDgconnSuppliersList(String name, int page, int count, String orderField, int orderType) {
+        List<SupplierListItemDTO> suppliersList = new ArrayList<>();
+        Direction direction;
+        if (orderType == -1) {
+            direction = Direction.DESC;
+        } else {
+            direction = Direction.ASC;
+        }
+        List<SupplierDTO> suppliers;
+        if (name != null) {
+            if (!name.trim().isEmpty()) {
+                suppliers = supplierMapper.toDTOList(supplierRepository.findByNameContainingIgnoreCase(new PageRequest(page, count, direction, orderField), name).getContent());
+            } else {
+                suppliers = supplierMapper.toDTOList(supplierRepository.findAll(new PageRequest(page, count, direction, orderField)).getContent());
+            }
+        } else {
+            suppliers = supplierMapper.toDTOList(supplierRepository.findAll(new PageRequest(page, count, direction, orderField)).getContent());
+        }
+        for (SupplierDTO supplier : suppliers) {
+            SupplierListItemDTO supplierItem = new SupplierListItemDTO(supplier.getId(), supplier.getName(), supplier.getWebsite(), supplier.getVat(), supplier.getAccountNumber(), supplier.getStatus());
+            List<SupplierDTO> similarSuppliers = findSimilarSuppliers(supplierItem.getId());
+            int numberRegistrations = 0;
+            if (supplierItem.getStatus() != 1) {
+                numberRegistrations = 1;
+            }
+            for (SupplierDTO similarSupplier : similarSuppliers) {
+                if (similarSupplier.getStatus() != 1) {
+                    numberRegistrations++;
+                }
+            }
+            supplierItem.setNumberRegistrations(numberRegistrations);
+            suppliersList.add(supplierItem);
+        }
+        return suppliersList;
+    }
+
+    public Long getCountAllSuppliers() {
+        return supplierRepository.count();
+    }
+
+    public Long getCountAllSuppliersContainingName(String name) {
+        return supplierRepository.countByNameContainingIgnoreCase(name);
+    }
+
+    public Page<String> getSuppliersByRegionOrCountry(String countryCode, int regionId, Pageable pageable) {
+        if (regionId == 0) {
+            return supplierRepository.findSuppliersByCountryCode(countryCode, pageable);
+        }
+        return supplierRepository.findSuppliersByRegion(regionId, pageable);
     }
 }
