@@ -150,4 +150,9 @@ public class ApplicationService {
         }
         return appVoucherInfoDTO;
     }
+
+    @Transactional
+    public ApplicationDTO saveApplication(ApplicationDTO applicationDTO) {
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+    }
 }

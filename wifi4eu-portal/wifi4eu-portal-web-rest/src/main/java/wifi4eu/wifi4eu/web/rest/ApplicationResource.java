@@ -25,6 +25,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Date;
 
 @CrossOrigin(origins = "*")
 @Controller
@@ -205,6 +206,26 @@ public class ApplicationResource {
                 _log.error("Error on 'invalidateApplication' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    // Save supplier Id into the application
+    @ApiOperation(value = "Assign supplier")
+    @RequestMapping(value = "/assignSupplier", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseDTO assignSupplier(@RequestBody final ApplicationDTO applicationDTO) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("assignSupplier");
+            }
+            applicationDTO.setDate(new Date().getTime());
+            ApplicationDTO resApplication = applicationService.saveApplication(applicationDTO);
+            return new ResponseDTO(true, resApplication, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'assignSupplier' operation.", e);
+            }
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
     }

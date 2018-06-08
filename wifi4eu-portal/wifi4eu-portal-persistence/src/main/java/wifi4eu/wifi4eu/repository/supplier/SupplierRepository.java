@@ -21,4 +21,8 @@ public interface SupplierRepository extends JpaRepository<Supplier,Integer> {
 
     @Query("SELECT distinct s.name FROM SuppliedRegion sr JOIN sr.region r JOIN sr.supplier s WHERE r.countryCode = :countryCode ORDER BY s.name")
     Page<String> findSuppliersByCountryCode(@Param("countryCode") String countryCode, Pageable pageable);
+
+    // HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+/*     @Query("SELECT distinct s.name FROM SuppliedRegion sr JOIN sr.region r JOIN sr.supplier s WHERE r.countryCode = :countryCode ORDER BY s.name")
+    Page<String> findSuppliersByCountryCode(@Param("countryCode") String countryCode, Pageable pageable); */
 }

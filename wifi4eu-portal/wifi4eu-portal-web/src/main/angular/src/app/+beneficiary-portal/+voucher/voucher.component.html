@@ -25,6 +25,8 @@
     </div>
 </div>
 
+voucher competition state is {{ voucherCompetitionState }}
+
 <!-- Timer & "Apply For Voucher" -->
 <div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
     <h2 *ngIf="voucherCompetitionState != 1" class="beneficiaryTitle marginTop">
@@ -45,10 +47,10 @@
     <timer-component *ngIf="voucherCompetitionState == 1" class="offset-lg-3 ui-lg-6 ui-g-12" (timerEvent)="openApplyForVoucher()"
         [expirationTimestamp]="currentCall.startDate">
     </timer-component>
-    <div class="ui-g-12 ui-md-8 offset-md-2">
+    <div class="ui-g-12 ui-md-10 offset-md-1">
         <div class="marginTop registrationPanel">
             <p-dataTable [value]="municipalities">
-                <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label">
+                <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <span>
                             <img alt="" class="municipality-icon" src="assets/images/account-balance-material-icons-regular.png">
@@ -58,7 +60,7 @@
                         </span>
                     </template>
                 </p-column>
-                <p-column header="" styleClass="label">
+                <p-column header="" styleClass="label text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <button *ngIf="!docsOpen[i]" class="btn btn-primary" id="muncicipalityButton"
                                 (click)="goToDocuments(i)">{{ 'shared.uploadDocuments' | translate}}
@@ -69,15 +71,29 @@
                         </span>
                     </template>
                 </p-column>
-                <p-column header="" styleClass="label">
+                <p-column header="" styleClass="label text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
-                        <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1 || !docsOpen[i]">
-                            {{ 'benefPortal.voucher.applyforvoucher' | translate }}
-                        </button>
-                        <span *ngIf="applications[i]">
-                            <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
-                            {{ 'benefPortal.voucher.applied' | translate }}
-                        </span>
+                        <div *ngIf="voucherCompetitionState == 2">
+                            <button class="btn btn-primary" id="voucherButton" (click)="applyForVoucher(i, $event)" *ngIf="!applications[i]" [disabled]="loadingButtons[i] || voucherCompetitionState == 0 || voucherCompetitionState == 1 || !docsOpen[i]">
+                                {{ 'benefPortal.voucher.applyforvoucher' | translate }}
+                            </button>
+                            <span *ngIf="applications[i]">
+                                <i class="fa fa-check" aria-hidden="true" style="color: #298B59"></i>
+                                {{ 'benefPortal.voucher.applied' | translate }}
+                            </span>
+                        </div>
+                        <div *ngIf="voucherCompetitionState == 5">
+                            <button class="btn btn-primary text-adjust" id="voucherButton" (click)="selectWifiInstallation()">
+                                {{ 'benefPortal.selectSupplier.details.title' | translate }}
+                            </button>
+                        </div>
+                        <div *ngIf="voucherCompetitionState == 6">
+                            <span class="subtitle-discover text-adjust pull-right">
+                                <i class="fas fa-wifi" aria-hidden="true" style="color: #298B59"></i>
+                                {{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ displayedDate }}
+                            </span>
+                        </div>
+
                     </template>
                 </p-column>
             </p-dataTable>
@@ -92,9 +108,7 @@
 <!-- "What's next?" steps -->
 <div id="bottom-block" class="ui-g-12 center">
     <p class="beneficiaryMayor">{{ 'benefPortal.voucher.whats.next' | translate }}</p>
-    <!--
     <p>{{ 'benefPortal.voucher.steps' | translate }}</p>
-    -->
     <div class="ui-g-12">
         <div class="ui-g-4 ui-sm-6">
             <img class="{{openedCalls}}" src="assets/images/clock.png" alt="">
@@ -113,6 +127,7 @@
         </div>
     </div>
 </div>
+
 <helpdesk-form-component portal="beneficiary-voucher"></helpdesk-form-component>
 
 <div class="container font">

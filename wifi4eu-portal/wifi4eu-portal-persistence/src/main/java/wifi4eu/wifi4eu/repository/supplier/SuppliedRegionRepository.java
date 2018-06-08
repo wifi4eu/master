@@ -10,4 +10,5 @@ public interface SuppliedRegionRepository  extends CrudRepository<SuppliedRegion
     @Query(value = "SELECT COUNT(id), region FROM supplied_regions GROUP BY region", nativeQuery = true)
     Iterable<Object> findSuppliedRegionsCountGroupedByRegionId();
     Iterable<SuppliedRegion> findBySupplierId(Integer supplierId);
+    Iterable<SuppliedRegion> findByRegionId(Integer regionId);
 }

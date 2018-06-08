@@ -5,6 +5,8 @@ import { DiscussionComponent } from "./+discussion/discussion.component";
 import { BeneficiaryProfileComponent } from "./+profile/profile.component";
 import { AdditionalInfoComponent } from "./+additional-info/additional-info.component";
 import { MyVoucherComponent } from "./+my-voucher/my-voucher.component";
+import { SelectSupplierComponent } from "./+select-supplier/select-supplier.component";
+import { SelectedSupplierDetailsComponent } from "./+selected-supplier-details/selected-supplier-details.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -26,7 +28,13 @@ import { MyVoucherComponent } from "./+my-voucher/my-voucher.component";
         }, {
             path: 'additional-info/:municipalityId',
             component: AdditionalInfoComponent
-        }
+        }, {
+            path: 'selected-supplier-details/:municipalityId',
+            component: SelectedSupplierDetailsComponent
+        }, {
+            path: 'select-supplier/:municipalityId',
+            component: SelectSupplierComponent
+        },
     ])],
     exports: [RouterModule]
 })

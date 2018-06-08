@@ -64,6 +64,15 @@ public class SupplierService {
         return supplierMapper.toDTO(supplierRepository.findOne(supplierId));
     }
 
+    public SupplierDTO getSupplierDetailsById(int supplierId) {
+        SupplierDTO supplierDetails = supplierMapper.toDTO(supplierRepository.findOne(supplierId)); 
+        supplierDetails.setAccountNumber(null);
+        supplierDetails.setBic(null);
+        supplierDetails.setLang(null);
+        supplierDetails.setLegalFile1(null);
+        supplierDetails.setLegalFile2(null);
+        return supplierDetails;  
+    }
 
     @Transactional
     public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
@@ -329,4 +338,16 @@ public class SupplierService {
         }
         return supplierRepository.findSuppliersByRegion(regionId, pageable);
     }
+
+    // New creation
+    public List<SupplierDTO> getSuppliersListByRegionId(int regionId) {
+        List<SuppliedRegionDTO> suppliedRegions = suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findByRegionId(regionId)));
+        List<SupplierDTO> suppliers = new ArrayList<>();
+        for (SuppliedRegionDTO suppliedRegion : suppliedRegions) {
+            SupplierDTO supplier = getSupplierById(suppliedRegion.getSupplierId());
+            suppliers.add(supplier);
+        }
+        return suppliers;
+    }
+
 }

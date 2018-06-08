@@ -31,6 +31,7 @@ import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -104,7 +105,26 @@ public class SupplierResource {
         return null;
     }
 
-    /*
+    //TODO: limit access to this service
+    @ApiOperation(value = "Get supplier deatils by specific id")
+    @RequestMapping(value = "/details/{supplierId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public SupplierDTO getSupplierDetailsById(@PathVariable("supplierId") final Integer supplierId, HttpServletResponse response) throws IOException {
+        SupplierDTO supplierDTO = new SupplierDTO();
+        try {
+            _log.info("getSupplierDetailsById: " + supplierId);
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            supplierDTO = supplierService.getSupplierDetailsById(supplierId);
+        } 
+        catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'getSupplierDetailsById' operation.", e);
+            }
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return supplierDTO;
+    }
+
     //TODO: is it necessary to be exposed? All the registration have to use submitSupplierRegistration endpoint?
     @ApiOperation(value = "Create supplier")
     @RequestMapping(method = RequestMethod.POST)
@@ -133,7 +153,7 @@ public class SupplierResource {
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
-    */
+    
 
     @ApiOperation(value = "Update supplier")
     @RequestMapping(method = RequestMethod.POST)
@@ -477,4 +497,22 @@ public class SupplierResource {
                 pageObj.getTotalElements(),
                 null);
     }
+
+    // New creation
+    @ApiOperation(value = "Get suppliers by regionID")
+    @RequestMapping(value = "/region/{regionId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<SupplierDTO> getSuppliersListByRegionId(@PathVariable("regionId") final Integer regionId, HttpServletResponse response) throws IOException {
+        _log.info("getSuppliersListByRegionId");
+        List<SupplierDTO> suppliersList = new ArrayList<>();
+        try {
+            suppliersList = supplierService.getSuppliersListByRegionId(regionId);
+        }
+        catch (Exception e){
+            response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        }
+        return suppliersList;
+    }
+
+
 }

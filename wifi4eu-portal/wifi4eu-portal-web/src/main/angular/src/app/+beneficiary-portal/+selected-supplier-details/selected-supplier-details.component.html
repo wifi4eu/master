@@ -1,0 +1,135 @@
+<div class="container labelModal rowMarginBottom">
+
+  <!-- Go back and info Status message -->
+  <div class="row">
+  
+    <div class="col-sm-2 col-md-2 col-lg-2">
+        <!-- path: 'select-supplier/:municipalityId' -->
+      <a class="link-label" routerLink="/beneficiary-portal/voucher" routerLinkActive="active">
+        <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
+      </a>
+    </div>
+  
+    <div class="col-sm-9 col-md-10 col-lg-6 offset-sm-1 offset-md-0 offset-lg-4">
+      <div class="alert alert-info text-uppercase voucherModal">
+        <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.selectSupplier.alert.selected' | translate }}
+      </div>
+    </div>
+  
+  </div>
+  
+  <!-- Municipality name, title and explanation text -->
+  <h3 *ngIf="municipality" class="beneficiaryTitle marginTop">{{municipality.name}}</h3>
+  <h5 class="beneficiaryMayor counterText" >{{ 'benefPortal.selectSupplier.title' | translate }}</h5>
+  <p>{{ 'benefPortal.selectedSupplierDetails.title.text' | translate }}</p>
+
+  
+  <!-- WiFi installation company details and Contact details -->
+  <div class="container marginTop">    
+    <div class="marginTop">
+      <p class="municipality-name">{{'benefPortal.selectSupplier.title' | translate }} <span class="text-lowercase">{{'dgConn.details' | translate }}</span></p>
+  
+      <div *ngIf="supplier" class="company-details-content col-xs-10 col-sm-10 col-md-7">
+        <div class="row">
+          <div class="col-sm-4">
+            <p>{{ 'suppRegistration.company.name' | translate }}</p>
+          </div>
+          <div class="col-sm-8">
+            <p class="profileData">{{ supplier.name }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <p>{{ 'suppRegistration.legal.legalAddress' | translate }}</p>
+          </div>
+          <div class="col-sm-8">
+            <p class="profileData">{{ supplier?.address }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <p>{{ 'suppRegistration.vat.label' | translate }}</p>
+          </div>
+          <div class="col-sm-8">
+            <p class="profileData">{{ supplier?.vat }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <p>{{ 'benefPortal.selectSupplier.table.web' | translate }}</p>
+          </div>
+          <div class="col-sm-8">
+            <p class="profileData">{{ supplier?.website }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <p>{{ 'benefPortal.selectSupplier.table.logo' | translate }}</p>
+          </div>
+          <div class="col-sm-8">
+            <img class="logo-size" src="{{ supplier?.logo }}">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="marginTop">    
+  
+      <p class="municipality-name marginTop">{{'benefRegistration.yourDetails.title' | translate }}</p>
+      
+      <div *ngIf="supplier" class="company-details-content col-xs-10 col-sm-10 col-md-7">
+        <div class="row">
+          <div class="col-sm-4">
+            <p>{{ 'suppRegistration.name.label' | translate }}</p>
+          </div>
+          <div class="col-sm-8">
+            <p class="profileData">{{ supplier.contactName }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <p>{{ 'suppRegistration.surname.label' | translate }}</p>
+          </div>
+          <div class="col-sm-8">
+            <p class="profileData">{{ supplier?.contactSurname }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <p>{{ 'suppRegistration.phone.number' | translate }}</p>
+          </div>
+          <div class="col-sm-8">
+            <p class="profileData">{{ supplier?.contactPhonePrefix }} {{ supplier?.contactPhoneNumber }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <p>{{ 'suppRegistration.email.label' | translate }}</p>
+          </div>
+          <div class="col-sm-8">
+            <p class="profileData">{{ supplier?.contactEmail }}</p>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  
+
+  <!-- "Select installation company" and "Save and notify Wi-Fi installation company" buttons -->
+  <p class="subtitle-discover text-adjust marginTop">{{ 'benefPortal.selectSupplier.details.endText' | translate }}</p> 
+  
+  <button class="btn btn-primary select-installation-button text-adjust" (click)="changeSupplier()">
+    {{ 'benefPortal.selectSupplier.buton.select' | translate }}
+  </button>
+
+  <button class="btn btn-primary save-installation-button text-adjust" (click)="saveAndNotify()">
+    {{ 'benefPortal.selectSupplier.buton.saveAndNotify' | translate }}
+  </button>
+
+  <p class="subtitle-discover text-adjust">{{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ displayedDate }}</p> 
+
+<!-- closing of container -->
+</div>

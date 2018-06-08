@@ -1,0 +1,172 @@
+<div class="container labelModal rowMarginBottom">
+
+<!-- Go back and info Status message -->
+<div class="row">
+
+  <div class="col-sm-2 col-md-2 col-lg-2">
+    <a class="link-label" routerLink="/beneficiary-portal/voucher" routerLinkActive="active">
+      <i class="fa fa-long-arrow-left" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
+    </a>
+  </div>
+
+  <div class="col-sm-9 col-md-10 col-lg-9 offset-sm-1 offset-md-0 offset-lg-1">
+    <div class="alert alert-info text-uppercase voucherModal">
+      <div>
+        <div *ngIf="!hasSupplierAssigned">
+          <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.selectSupplier.alert.gotvoucher' | translate }}
+        </div>
+        <div *ngIf="hasSupplierAssigned && selectedSupplier">
+            <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.selectSupplier.alert.companyselected' | translate }}: {{ selectedSupplier.name }}
+        </div>
+<!--         <div *ngIf="hasSupplierAssigned">
+            <strong>{{ 'shared.statusLabel' | translate }} </strong>{{ 'benefPortal.selectSupplier.alert.selected' | translate }}
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Title and explanation text -->
+  <h5 class="beneficiaryMayor counterText" >{{ 'benefPortal.selectSupplier.title' | translate }}</h5>
+  <p class="text-justify">{{ 'benefPortal.selectSupplier.title.text' | translate }}</p>
+
+<!-- Search bar -->
+<div class="panel panel-dg panel-padding panel-input">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <form #searchSuppliersForm="ngForm" (submit)="searchSuppliers()" class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </span>
+                <input type="search" name="searchInput" class="form-control" [(ngModel)]="searchSuppliersInput" placeholder="Please enter a company name">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                        <b>{{ 'shared.search.button' | translate }}</b>
+                    </button>
+                </span>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--   If supplier assigned, show name of selected company to the user -->
+<!-- <div *ngIf="hasSupplierAssigned" class="subtitle-discover text-justify">
+  <span>{{ "benefPortal.selectSupplier.title" | translate }} <span class="text-lowercase">{{ "shared.name.label" | translate }}:</span> <strong *ngIf="supplierAssigned">{{ supplierAssigned.name }}</strong></span>
+</div> -->
+
+<!-- Datatable -->
+<p-dataTable class="panel-select-supplier" [value]="suppliers" sortField="name" [sortOrder]="1" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [(selection)]="selectedSupplier" dataKey="name" [responsive]="true">
+
+  <p-column *ngIf="!hasSupplierAssigned" selectionMode="single"></p-column>
+
+  <!-- Datatable index -->
+  <!-- <p-column *ngIf="!hasSupplierAssigned" field="i" header="Index" [style]="{'width':'70px'}">
+    <template pTemplate="body" let-i="rowIndex">
+      <span class="row-index">{{i + 1}}</span>
+    </template>
+  </p-column> -->
+
+  <p-column field="logo" header="{{ 'benefPortal.selectSupplier.table.logo' | translate }}" styleClass="supplier-logo" [sortable]="true">
+    <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
+      <span>
+        <img src="{{ supplier.logo }}">
+      </span>
+    </template>
+  </p-column>
+
+  <p-column field="name" header="{{ 'suppRegistration.company.name' | translate }}" [sortable]="true">
+    <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
+      <span class="supplier-name">{{supplier.name}}</span>
+    </template>
+  </p-column>
+
+  <p-column field="address" header="{{ 'benefRegistration.address.label' | translate }}" [sortable]="true">
+    <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
+      <span class="supplier-address">{{supplier.address}}</span>
+    </template>
+  </p-column>
+
+  <p-column field="website" header="{{ 'benefPortal.selectSupplier.table.web' | translate }}" styleClass="supplier-website" [sortable]="true">
+    <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
+      <span class="supplier-website">{{supplier.website}}</span>
+    </template>
+  </p-column>
+
+  <p-column field="vat" header="{{ 'suppRegistration.vat.label' | translate }}" [sortable]="true">
+    <template pTemplate="body" let-supplier="rowData" let-i="rowIndex">
+      <span class="supplier-vat">{{supplier.vat}}</span>
+    </template>
+  </p-column>
+
+</p-dataTable>
+
+<!-- Feedback of user current selection -->
+  <!--   <div *ngIf="selectedSupplier">
+    <span>{{ 'benefPortal.selectSupplier.title' | translate }} : <strong>{{ selectedSupplier.name }}</strong> </span>
+    <span>{{ 'suppRegistration.vat.label' | translate }} : <strong>{{ selectedSupplier.vat }}</strong></span>
+  </div> -->
+    
+<!-- Change selection & select installation company buttons -->
+  <div>
+    <div *ngIf="hasSupplierAssigned">
+      <div class="row vertical-align">
+        <div class="col-sm-6 col-md-4 col-lg-3 offset-xs-1 offset-sm-2 offset-md-4 offset-lg-6">
+          <div (click)="changeSupplier()" class="link-label pull-right">
+            <i class="fa fa-refresh"></i> {{ 'benefPortal.selectSupplier.buton.change' | translate }}
+          </div>
+        </div>
+  
+        <div class="col-sm-6 col-md-4 col-lg-3">      
+          <button class="btn btn-primary text-adjust pull-right widthMax" (click)="selectSupplier()" [disabled]="true">
+            <b>{{ 'benefPortal.selectSupplier.buton.select' | translate }}</b>
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-sm-5 col-md-4 col-lg-3 offset-xs-6 offset-sm-7 offset-md-8 offset-lg-9">
+          <p class="subtitle-discover text-adjust pull-right">{{ 'benefPortal.selectSupplier.feedback.selected' | translate }} {{ displayedDate }}</p> 
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-6 offset-md-6 marginTop" *ngIf="!hasSupplierAssigned">      
+      <button class="btn btn-primary text-adjust pull-right" (click)="selectSupplier()" [disabled]="selectedSupplier == null">
+        <b>{{ 'benefPortal.selectSupplier.buton.select' | translate }}</b>
+      </button>
+    </div>
+  </div> 
+
+</div>
+
+  
+
+
+<!-- Modal: confirm wifi company selection -->
+<div class="container font" *ngIf="selectedSupplier">
+    <p-dialog [(visible)]="displayMessage" [modal]="true" [responsive]="true"
+              [resizable]="false" [draggable]="false" [closeOnEscape]="true">
+        <div class="beneficiaryTitle center hiddenScroll">
+          {{ 'benefPortal.selectSupplier.title' | translate }}
+        </div>
+
+        <p class="voucherModal">
+          <span class="searchInput">{{ 'benefPortal.selectSupplier.title' | translate }} : <strong>{{ selectedSupplier.name }}</strong> </span>
+          <span>{{ 'suppRegistration.vat.label' | translate }} : <strong>{{ selectedSupplier.vat }}</strong></span>
+        </p>
+
+        <p class="voucherModal">{{ 'benefPortal.selectSupplier.details.text' | translate }}</p>
+
+        <div class="voucherModal md4Dashboard">
+            <button class="btn btn-primary voucherButtonsCancel" (click)="selectSupplier()">
+              {{ 'shared.cancel.button' | translate }}
+            </button>
+
+            <button class="btn btn-primary voucherButtonsSimulate" (click)="assignSupplier()">
+              {{ 'suppRegistration.confirm.button' | translate }}
+            </button>
+        </div>
+    </p-dialog>
+</div>

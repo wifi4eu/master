@@ -613,7 +613,6 @@ body {
 
 .containerTimeline .form-group {
   margin: 0;
-
 }
 
 .ui-calendar.ui-calendar-w-btn input {
@@ -1606,7 +1605,6 @@ p-tabview.white .ui-widget-content.ui-tabview {
   font-size: 1.2em;
   font-weight: bold;
   width: 20em;
-
 }
 
 .badge-success {
@@ -1644,10 +1642,6 @@ p-tabview.white .ui-widget-content.ui-tabview {
   background-color: #ffeb3b;
 }
 
-.voucherModal {
-  text-align: center;
-}
-
 .dgConnDetailsHr {
   background:  none;
   border-top:  2px solid rgba(0, 0, 0, 0.1);
@@ -1667,5 +1661,106 @@ p-tabview.white .ui-widget-content.ui-tabview {
 }
 
 input.email_profile::-ms-clear{
-  display:none;
+  display: none;
+}
+
+.voucherModal {
+  text-align: center;
+}
+
+// Created for selectSupplier component
+.text-adjust {
+  overflow: hidden;
+  white-space: normal;
+}
+
+.panel-select-supplier {
+  td {
+    text-transform: lowercase;
+    color: #5c5c5c;
+    text-align: left;
+    margin-top: 1.4em;
+    margin-bottom: 0.5em;
+    font-size: 1rem;
+    font-family: verdana;
+      
+    .supplier-name::first-letter {
+      text-transform: uppercase;
+    }
+    
+    .supplier-address, .supplier-website {
+      text-transform: capitalize;
+    }
+    
+    .supplier-vat {
+      text-transform: uppercase;
+    }
+  }
+
+  .ui-selection-column {
+    width: 40px;
+  }
+
+  .ui-radiobutton-box {
+    border-color: #9F9F92;
+  }
+
+  .supplier-logo {
+    text-align: center;
+  
+    img {
+      height: 40px;
+    }
+  }
+  
+  .ui-column-title {
+    text-transform: capitalize;
+    font-size: 1rem;
+  }
+  
+  .ui-state-highlight {
+    // background-color: #B2C1F2;
+    background-color: #9BC53D;
+    border: none;
+  }
+  
+  .ui-datatable-data td {
+    vertical-align: middle;
+  }
+
+  @media screen and (max-width : 900px) {
+    .supplier-website {
+      display: none !important;
+    }  
+  }
+}
+
+// Created for selectedSupplierDetails component
+.logo-size {
+  height: 40px;
+}
+
+.company-details-content {
+  border: solid 1px rgba(0, 0, 0, 0.3);
+  padding: 10px 24px;
+}
+
+.select-installation-button {
+  color: #ffffff;
+  background-color: #004494;
+  border: solid 2px #004494;
+  margin-top: 0.2em;
+  font-family: Verdana;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.save-installation-button {
+  background-color: #ffffff;
+  color: #004494;
+  border: solid 2px #004494;
+  margin-top: 0.2em;
+  font-family: Verdana;
+  font-size: 1.2em;
+  font-weight: bold;
 }

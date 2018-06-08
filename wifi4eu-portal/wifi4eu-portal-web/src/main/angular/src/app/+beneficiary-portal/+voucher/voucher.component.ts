@@ -27,6 +27,9 @@ export class VoucherComponent {
     1 = There is a call created, but not started. DISPLAY TIMER
     2 = There is a call created, already started. You can 'Apply For Voucher'
     3 = Call created & started. You clicked 'Apply For Voucher' and are waiting for the approvement.
+    4 = Voucher awarded. You can now click on 'Sign grant agreement'. 
+    5 = Voucher awarded. You can now click on 'Select Wifi installation company'. 
+    6 = Voucher awarded. You already selected a Wi-Fi installation company. 
      */
     private voucherCompetitionState: number;
     private user: UserDTOBase;
@@ -41,6 +44,9 @@ export class VoucherComponent {
     private uploadDate: string[] = [];
     private uploadHour: string[] = [];
     private voucherApplied: string = "";
+    private selectionDate: Date;
+    private localeDate: Array<String>;
+    private displayedDate: String;
     private openedCalls: string = "";
     private isMayor: boolean = false;
     private registration: RegistrationDTOBase;
@@ -67,6 +73,7 @@ export class VoucherComponent {
         // Check if there are Calls
         if (this.user != null) {
             this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
+                /* this.registrationApi.getRegistrationsByUserId(this.user.id).subscribe( */
                 (registrations: RegistrationDTOBase[]) => {
                     this.registrationsDocs = registrations;
                     this.checkForCalls(registrations);
@@ -109,7 +116,7 @@ export class VoucherComponent {
                                             this.applicationApi.getApplicationByCallIdAndRegistrationId(this.currentCall.id, registration.id).subscribe(
                                                 (application: ApplicationDTOBase) => {
                                                     this.registrations.push(registration);
-                                                    this.municipalities.push(municipality);
+                                                    this.municipalities.push(municipality); 
                                                     this.mayors.push(mayor);
                                                     if (application.id != 0) {
                                                         this.applications.push(application);
@@ -157,17 +164,28 @@ export class VoucherComponent {
 
                                                         this.storedRegistrationQueues = newStoredRegistrationQueues;
                                                         this.localStorage.set('registrationQueue', JSON.stringify(this.storedRegistrationQueues));
-
+                                                        
                                                         let allApplied = true;
                                                         for (let app of this.applications) {
                                                             if (!app) {
                                                                 allApplied = false;
+                                                            }
+                                                            if(app.date) {
+                                                                // Get the date when supplier was selected
+                                                                this.getStringDate(app.date);
                                                             }
                                                         }
                                                         if (allApplied) {
                                                             this.voucherCompetitionState = 3;
                                                             this.voucherApplied = "greyImage";
                                                         }
+                                                        if (application.voucherAwarded) {
+                                                            this.voucherCompetitionState = 5;
+                                                        }
+                                                        if (application.supplierId) {
+                                                            this.voucherCompetitionState = 6;
+                                                        }
+                                                        
                                                     }
                                                 }
                                             );
@@ -314,4 +332,41 @@ export class VoucherComponent {
         }
     }
 
+    private sendToFirebase(callId: number, registrationId: number, userId: number, uploadTime: number) {
+        
+        let body =
+        '{"callId":' +
+        callId +
+        ', "registrationId":' +
+        registrationId +
+        ', "userId":' +
+        userId +
+        ', "fileUploadTimestamp":' +
+        uploadTime +
+        ', "queueTime":{".sv": "timestamp"}' +
+            "}";
+        
+        // Uncomment this piece of code before uploading
+        let url = this.firebaseURI.replace("@1", callId.toString()).replace("@2", userId.toString()).replace("@3", registrationId.toString());
+        
+        this.http.put(url, body, this.httpOptions).subscribe(
+            response => {
+                console.log("firebase success");
+            },
+            error => {
+                console.log("firebase error" + error);
+            }
+        );
+    }
+
+    private selectWifiInstallation() {
+        this.router.navigate(['/beneficiary-portal/select-supplier/', this.registration.municipalityId], {relativeTo: this.route});
+    }
+
+    /* Get displayed string date from epoch number */
+    private getStringDate(epoch) {
+        this.selectionDate = new Date(epoch);
+        this.localeDate = this.selectionDate.toLocaleDateString().split(' ');
+        this.displayedDate = this.localeDate[0];
+    }
 }

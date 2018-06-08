@@ -6,20 +6,25 @@ import { VoucherComponent } from "../+beneficiary-portal/+voucher/voucher.compon
 import { DiscussionComponent } from "./+discussion/discussion.component";
 import { BeneficiaryProfileComponent } from "./+profile/profile.component";
 import { AdditionalInfoComponent } from "./+additional-info/additional-info.component";
+import { SelectSupplierComponent } from './+select-supplier/select-supplier.component';
+import { DataGridModule } from "primeng/primeng";
+import { SelectedSupplierDetailsComponent } from "./+selected-supplier-details/selected-supplier-details.component";
 import { MyVoucherComponent } from "./+my-voucher/my-voucher.component";
-// import {SelectSupplierComponent} from "./+voucher/select-supplier/select-supplier.component";
 
 @NgModule({
-  imports: [SharedModule, BeneficiaryPortalRoutingModule, HttpModule],
-  declarations: [
-    VoucherComponent,
-    DiscussionComponent,
-    BeneficiaryProfileComponent,
-    AdditionalInfoComponent,
-    MyVoucherComponent
-    // SelectSupplierComponent
-  ]
-  // ,
-  // bootstrap: [BeneficiaryPortalComponent]
+    imports: [
+        SharedModule, BeneficiaryPortalRoutingModule, DataGridModule, HttpModule
+    ],
+    declarations: [
+        VoucherComponent,
+        DiscussionComponent,
+        BeneficiaryProfileComponent,
+        AdditionalInfoComponent,
+        SelectSupplierComponent,
+        SelectedSupplierDetailsComponent,
+        MyVoucherComponent
+    ]
+    // ,
+    // bootstrap: [BeneficiaryPortalComponent]
 })
 export class BeneficiaryPortalModule {}

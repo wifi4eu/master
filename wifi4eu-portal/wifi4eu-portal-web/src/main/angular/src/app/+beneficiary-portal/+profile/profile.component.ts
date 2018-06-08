@@ -55,7 +55,7 @@ export class BeneficiaryProfileComponent {
                         this.user = user;
                         if (this.user.type == 2 || this.user.type == 3) {
                             Object.assign(this.editedUser, this.user);
-                            this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
+                           this.registrationApi.getRegistrationsByUserId(this.user.id, new Date().getTime()).subscribe(
                                 (registrations: RegistrationDTOBase[]) => {
                                     if (registrations.length == 1) {
                                         this.oneRegsitration = true;
