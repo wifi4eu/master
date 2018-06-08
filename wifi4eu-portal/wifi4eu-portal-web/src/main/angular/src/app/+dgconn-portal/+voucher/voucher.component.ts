@@ -290,7 +290,7 @@ export class DgConnVoucherComponent {
   }
 
   private simulateVoucherAssignment(){
-    if(this.callVoucherAssignment.hasFreezeListSaved){
+    if(this.callVoucherAssignment != null && this.callVoucherAssignment.hasFreezeListSaved){
       return;
     }
     this.displayConfirmingData = true;
