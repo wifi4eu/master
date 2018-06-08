@@ -145,13 +145,14 @@
                 <div class="col-md-12">
                   <div class="panel-dg panel-dg-voucher">
                     <p-dataTable [rowStyleClass]="lookupRowStyleClass" styleClass="tableAssignment {{(loadingSimulation === true) ? 'table-disabled': ''}}" #tableVoucher [@opacityTransition] [value]="listAssignment" [responsive]="true">
-                      <p-column field="euRank" [style]="{'width':'10%'}" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.euRank' | translate}}" styleClass="text-center">
+                      <!-- [style]="{'width':'10%'}" -->
+                      <p-column field="euRank" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.euRank' | translate}}" styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                           <span *ngIf="row.selectionStatus != 2">{{row.euRank}}</span>
                         </ng-template>
                       </p-column>
-                      <p-column field="countryRank" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.countryRank' | translate}}" styleClass="text-center"
-                        [style]="{'width':'10%'}">
+                      <!-- [style]="{'width':'10%'}" -->
+                      <p-column field="countryRank" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.countryRank' | translate}}" styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                           <span *ngIf="row.selectionStatus != 2">{{row.countryRank}}</span>
                         </ng-template>
@@ -254,20 +255,20 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-3 offset-md-3">
+                <div class="col-md-3 offset-md-2">
                   <button type="button" class="btn btn-primary preSelection-button" [disabled]="callVoucherAssignment == null || callVoucherAssignment?.hasPreListSaved" (click)="checkPreListEnabled()">
                     {{'dgConn.voucherAssignment.preSelectionSave.button' | translate}}
                   </button>
-                  <span style="color: #929292;" *ngIf="callVoucherAssignment?.hasPreListSaved" [innerHTML]="'dgConn.voucherAssignment.preList.date' | translate:{date:dateNumberPreList,hour:hourNumberPreList}"></span>
+                  <span class="dates-voucher-assignment" *ngIf="callVoucherAssignment?.hasPreListSaved" [innerHTML]="'dgConn.voucherAssignment.preList.date' | translate:{date:dateNumberPreList,hour:hourNumberPreList}"></span>
                 </div>
                 <div class="col-md-3">
-                  <button type="button" class="btn btn-primary preSelection-button" [disabled]="!callVoucherAssignment?.hasPreListSaved || callVoucherAssignment?.hasFreezeListSaved"  (click)="freezeList()" disabled>
+                  <button type="button" class="btn btn-primary freezeList-button" [disabled]="!callVoucherAssignment?.hasPreListSaved || callVoucherAssignment?.hasFreezeListSaved"  (click)="freezeList()" disabled>
                     {{'dgConn.voucherAssignment.freezeList.button' | translate}}
                   </button>
-                  <span style="color: #929292;" *ngIf="callVoucherAssignment?.hasFreezeListSaved"  [innerHTML]="'dgConn.voucherAssignment.freezeList.date' | translate:{date:dateNumberFreeze,hour:hourNumberFreeze}"></span>
+                  <span class="dates-voucher-assignment" *ngIf="callVoucherAssignment?.hasFreezeListSaved"  [innerHTML]="'dgConn.voucherAssignment.freezeList.date' | translate:{date:dateNumberFreeze,hour:hourNumberFreeze}"></span>
                 </div>
-                <div class="col-md-3">
-                  <button type="button" class="btn btn-primary preSelection-button" (click)="sendNotificationToApplicants()" [disabled]="!callVoucherAssignment?.hasFreezeListSaved">
+                <div class="col-md-4">
+                  <button type="button" class="btn btn-primary sendNotification-button" (click)="sendNotificationToApplicants()" [disabled]="!callVoucherAssignment?.hasFreezeListSaved">
                     {{'dgConn.voucherAssignment.sendNotification.button' | translate}}
                   </button>
                 </div>
