@@ -345,7 +345,7 @@ public class ApplicationResource {
     @ApiOperation(value = "Send request correction e-mails for a specific call")
     @RequestMapping(value = "/sendCorrectionEmails", method = RequestMethod.POST)
     @ResponseBody
-    public List<CorrectionRequestEmailDTO> sendCorrectionEmails(@RequestBody final Integer callId, HttpServletResponse response) throws IOException {
+    public List<CorrectionRequestEmailDTO> sendCorrectionEmails(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
         try {
             if (_log.isInfoEnabled()) {
                 _log.info("sendCorrectionEmails");
@@ -369,7 +369,7 @@ public class ApplicationResource {
     @ApiOperation(value = "Get the last correction request email information")
     @RequestMapping(value = "/getLastCorrectionRequestEmail", method = RequestMethod.POST)
     @ResponseBody
-    public CorrectionRequestEmailDTO getLastCorrectionRequestEmail(@RequestBody final Integer callId, HttpServletResponse response) throws IOException {
+    public CorrectionRequestEmailDTO getLastCorrectionRequestEmail(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
         try {
             if (_log.isInfoEnabled()) {
                 _log.info("getLastCorrectionRequestEmail");
@@ -393,7 +393,7 @@ public class ApplicationResource {
     @ApiOperation(value = "Check if whether the correction request email option is available for a specific call")
     @RequestMapping(value = "/checkIfCorrectionRequestEmailIsAvailable", method = RequestMethod.POST)
     @ResponseBody
-    public boolean checkIfCorrectionRequestEmailIsAvailable(@RequestBody final Integer callId, HttpServletResponse response) throws IOException {
+    public boolean checkIfCorrectionRequestEmailIsAvailable(@RequestParam("callId") final Integer callId, HttpServletResponse response) throws IOException {
         try {
             if (_log.isInfoEnabled()) {
                 _log.info("checkIfCorrectionRequestEmailIsAvailable");

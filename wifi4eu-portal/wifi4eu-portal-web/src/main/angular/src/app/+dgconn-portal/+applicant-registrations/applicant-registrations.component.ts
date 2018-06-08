@@ -276,12 +276,13 @@ export class DgConnApplicantRegistrationsComponent {
     }
 
     private displayCorrectionEmailsModal() {
-        this.displayCorrectionEmails = true;
+        if (this.correctionRequestsEmailAvailable)
+            this.displayCorrectionEmails = true;
     }
 
     private sendCorrectionEmails() {
-        this.sendingCorrectionEmails = true;
-        if (this.currentCall != null) {
+        if (this.currentCall != null && this.correctionRequestsEmailAvailable) {
+            this.sendingCorrectionEmails = true;
             this.applicationApi.sendCorrectionEmails(this.currentCall.id).subscribe(
                 (correctionEmails: CorrectionRequestEmailDTOBase[]) => {
                     let numResults = correctionEmails.length;
@@ -295,6 +296,8 @@ export class DgConnApplicantRegistrationsComponent {
                         (enabled: boolean) => {
                             if (enabled)
                                 this.correctionRequestsEmailAvailable = true;
+                            else
+                                this.correctionRequestsEmailAvailable = false;
                         }
                     );
                     this.closeModal();
@@ -316,6 +319,8 @@ export class DgConnApplicantRegistrationsComponent {
                 (enabled: boolean) => {
                     if (enabled)
                         this.correctionRequestsEmailAvailable = true;
+                    else
+                        this.correctionRequestsEmailAvailable = false;
                 }
             );
             this.applicationApi.getLastCorrectionRequestEmail(callId).subscribe(
