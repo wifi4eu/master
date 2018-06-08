@@ -6,6 +6,7 @@ import { BeneficiaryProfileComponent } from "./+profile/profile.component";
 import { AdditionalInfoComponent } from "./+additional-info/additional-info.component";
 import { SelectSupplierComponent } from "./+select-supplier/select-supplier.component";
 import { SelectedSupplierDetailsComponent } from "./+selected-supplier-details/selected-supplier-details.component";
+import { MyVoucherComponent } from "./+my-voucher/my-voucher.component";
 
 @NgModule({
     imports: [RouterModule.forChild([
@@ -15,6 +16,9 @@ import { SelectedSupplierDetailsComponent } from "./+selected-supplier-details/s
         }, {
             path: 'voucher',
             component: VoucherComponent,
+        }, {
+            path: 'my-voucher',
+            component: MyVoucherComponent
         }, {
             path: 'discussion-forum/:threadId',
             component: DiscussionComponent

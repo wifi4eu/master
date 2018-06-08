@@ -1,6 +1,8 @@
+voucher competition state is {{ voucherCompetitionState }}
+
 <!-- Competition & user registration status -->
 <div id="upper-block" class="ui-g-12 center">
-    <div *ngIf="voucherCompetitionState == 0 || voucherCompetitionState == 1" class="ui-g-12">
+<!--     <div *ngIf="voucherCompetitionState == 0 || voucherCompetitionState == 1" class="ui-g-12">
         <i class="fa fa-check-circle success-failure-icon" style="color: green" aria-hidden="true"></i>
         <br>
         <br>
@@ -22,12 +24,16 @@
         <h2 class="beneficiaryTitle offset-lg-2 ui-lg-8 ui-g-12">
             {{ 'benefPortal.voucher.statusmessage5' | translate }}
         </h2>
+    </div> -->
+    <div *ngIf="voucherCompetitionState == 3" class="ui-g-12">
+        <h2 class="beneficiaryTitle">{{ 'benefPortal.myVoucher.title.text' | translate }}</h2>
+        <p class="text-justify col-xs-8 offset-xs-2 col-lg-6 offset-lg-3">{{ 'benefPortal.myVoucher.title.subtext' | translate }}</p>
     </div>
 </div>
 
 <!-- Timer & "Apply For Voucher" -->
 <div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
-    <h2 *ngIf="voucherCompetitionState != 1" class="beneficiaryTitle marginTop">
+<!--     <h2 *ngIf="voucherCompetitionState != 1" class="beneficiaryTitle marginTop">
         {{ 'itemMenu.appPortal' | translate }}
     </h2>
     <h2 *ngIf="voucherCompetitionState == 1" class="beneficiaryTitle marginTop">
@@ -44,10 +50,44 @@
     </p>
     <timer-component *ngIf="voucherCompetitionState == 1" class="offset-lg-3 ui-lg-6 ui-g-12" (timerEvent)="openApplyForVoucher()"
         [expirationTimestamp]="currentCall.startDate">
-    </timer-component>
+    </timer-component> -->
     <div class="ui-g-12 ui-md-10 offset-md-1">
         <div class="marginTop registrationPanel">
+            
             <p-dataTable [value]="municipalities">
+                <p-headerColumnGroup>
+                    <p-row>
+                        <p-column header="{{ 'benefPortal.myVoucher.datatable.text' | translate }}" colspan="4"></p-column>
+                    </p-row>
+                    <p-row>
+                        <p-column header="{{ 'shared.municipality.label' | translate }}" [sortable]="true"></p-column>
+                        <p-column header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 1"></p-column>
+                        <p-column header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 2"></p-column>
+                        <p-column header="{{ 'benefPortal.myVoucher.datatable.action' | translate }} 3"></p-column>
+                    </p-row>
+                </p-headerColumnGroup>
+
+                <p-column field="name" styleClass="label text-center">
+                    <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
+                        <span>
+                            <img alt="" class="municipality-icon" src="assets/images/account-balance-material-icons-regular.png">
+                            <a (click)="goToDocuments(i)">
+                                <span class="municipality-name">{{municipality.name}}</span>
+                            </a>
+                        </span>
+                    </template>
+                </p-column>
+
+            </p-dataTable>
+
+            <hr>
+            <hr>
+
+            <p-dataTable [value]="municipalities">
+                <p-headerColumnGroup>
+                        
+                </p-headerColumnGroup>
+                
                 <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <span>
@@ -100,52 +140,4 @@
             </p-dataTable>
         </div>
     </div>
-</div>
-
-<div id="middle-block" class="ui-g-12 center" style="background-color: #EAEEF2;">
-    <p>{{ 'shared.application.fifo.text' | translate }}</p>
-</div>
-
-<!-- "What's next?" steps -->
-<div id="bottom-block" class="ui-g-12 center">
-    <p class="beneficiaryMayor">{{ 'benefPortal.voucher.whats.next' | translate }}</p>
-    <p>{{ 'benefPortal.voucher.steps' | translate }}</p>
-    <div class="ui-g-12">
-        <div class="ui-g-4 ui-sm-6">
-            <img class="{{openedCalls}}" src="assets/images/clock.png" alt="">
-            <p>
-                <span class="dotSteps">1. </span>{{ 'benefPortal.voucher.step2' | translate}}</p>
-        </div>
-        <div class="ui-g-4 ui-sm-6">
-            <img class="{{voucherApplied}}" src="assets/images/apply.png" alt="">
-            <p>
-                <span class="dotSteps">2. </span>{{ 'benefPortal.voucher.step3' | translate}}</p>
-        </div>
-        <div class="ui-g-4 ui-sm-12">
-            <img class="{{stepCompleted}}" src="assets/images/voucher.png" alt="">
-            <p>
-                <span class="dotSteps">3. </span>{{ 'benefPortal.voucher.step4' | translate}}</p>
-        </div>
-    </div>
-</div>
-
-<helpdesk-form-component portal="beneficiary-voucher"></helpdesk-form-component>
-
-<div class="container font">
-  <div class="ui-g-1"></div>
-  <p-dialog [(visible)]="displayError" [modal]="true" [responsive]="true" [resizable]="false" [draggable]="false" [closable]="false" 
-    [closeOnEscape]="false" (onAfterHide)="closeModal()">
-    <div class="row">
-      <div class="col-xs-12">
-        <span>{{errorMessage}}</span>
-      </div>
-    </div>
-    <div class="row" style="margin-top: 30px;">
-      <div class="col-xs-12 col-lg-6 offset-lg-3" style="text-align: center;">
-        <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
-          {{ 'shared.confirm.button' | translate }}
-        </button>
-      </div>git
-    </div>
-  </p-dialog>
 </div>

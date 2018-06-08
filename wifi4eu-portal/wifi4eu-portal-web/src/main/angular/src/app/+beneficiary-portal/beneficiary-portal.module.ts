@@ -9,6 +9,7 @@ import { AdditionalInfoComponent } from "./+additional-info/additional-info.comp
 import { SelectSupplierComponent } from './+select-supplier/select-supplier.component';
 import { DataGridModule } from "primeng/primeng";
 import { SelectedSupplierDetailsComponent } from "./+selected-supplier-details/selected-supplier-details.component";
+import { MyVoucherComponent } from "./+my-voucher/my-voucher.component";
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { SelectedSupplierDetailsComponent } from "./+selected-supplier-details/s
         BeneficiaryProfileComponent,
         AdditionalInfoComponent,
         SelectSupplierComponent,
-        SelectedSupplierDetailsComponent
+        SelectedSupplierDetailsComponent,
+        MyVoucherComponent
     ]
     // ,
     // bootstrap: [BeneficiaryPortalComponent]
