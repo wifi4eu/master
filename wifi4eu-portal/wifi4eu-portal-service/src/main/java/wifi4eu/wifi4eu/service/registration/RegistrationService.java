@@ -136,10 +136,10 @@ public class RegistrationService {
     public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO) throws Exception {
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
         Long currentTime = new Date().getTime();
-
-        if (registrationDTO.getLegalFile1Mime() != null) {
-            byte[] lf1ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(registrationDTO.getLegalFile1Mime()));
-            String lf1Extension = LegalFilesService.getValidFileExtension(registrationDTO.getLegalFile1Mime());
+        String lf1 = registrationDTO.getLegalFile1Mime();
+        if (lf1 != null) {
+            byte[] lf1ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf1));
+            String lf1Extension = LegalFilesService.getValidFileExtension(lf1);
             if (lf1ByteArray.length > 1024000) {
                 throw new Exception("File size cannot bet greater than 1 MB.");
             } else if (lf1Extension == null) {
@@ -151,16 +151,17 @@ public class RegistrationService {
                 }
                 legalFilesDTO.setRegistration(registrationDTO.getId());
                 legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
-                legalFilesDTO.setFileData(registrationDTO.getLegalFile1Mime());
+                legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf1));
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                registrationDBO.setLegalFile1Mime(LegalFilesService.getMimeType(lf1));
                 registrationDBO.setLegalFile1Size(lf1ByteArray.length);
                 registrationDBO.setUploadTime(currentTime);
             }
         }
-
-        if (registrationDTO.getLegalFile2Mime() != null) {
-            byte[] lf2ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(registrationDTO.getLegalFile2Mime()));
-            String lf2Extension = LegalFilesService.getValidFileExtension(registrationDTO.getLegalFile2Mime());
+        String lf2 = registrationDTO.getLegalFile2Mime();
+        if (lf2 != null) {
+            byte[] lf2ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf2));
+            String lf2Extension = LegalFilesService.getValidFileExtension(lf2);
             if (lf2ByteArray.length > 1024000) {
                 throw new Exception("File size cannot bet greater than 1 MB.");
             } else if (lf2Extension == null) {
@@ -172,16 +173,17 @@ public class RegistrationService {
                 }
                 legalFilesDTO.setRegistration(registrationDTO.getId());
                 legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
-                legalFilesDTO.setFileData(registrationDTO.getLegalFile2Mime());
+                legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf2));
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                registrationDBO.setLegalFile2Mime(LegalFilesService.getMimeType(lf2));
                 registrationDBO.setLegalFile2Size(lf2ByteArray.length);
                 registrationDBO.setUploadTime(currentTime);
             }
         }
-
-        if (registrationDTO.getLegalFile3Mime() != null) {
-            byte[] lf3ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(registrationDTO.getLegalFile3Mime()));
-            String lf3Extension = LegalFilesService.getValidFileExtension(registrationDTO.getLegalFile3Mime());
+        String lf3 = registrationDTO.getLegalFile3Mime();
+        if (lf3 != null) {
+            byte[] lf3ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf3));
+            String lf3Extension = LegalFilesService.getValidFileExtension(lf3);
             if (lf3ByteArray.length > 1024000) {
                 throw new Exception("File size cannot bet greater than 1 MB.");
             } else if (lf3Extension == null) {
@@ -193,16 +195,17 @@ public class RegistrationService {
                 }
                 legalFilesDTO.setRegistration(registrationDTO.getId());
                 legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
-                legalFilesDTO.setFileData(registrationDTO.getLegalFile3Mime());
+                legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf3));
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                registrationDBO.setLegalFile3Mime(LegalFilesService.getMimeType(lf3));
                 registrationDBO.setLegalFile3Size(lf3ByteArray.length);
                 registrationDBO.setUploadTime(currentTime);
             }
         }
-
-        if (registrationDTO.getLegalFile4Mime() != null) {
-            byte[] lf4ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(registrationDTO.getLegalFile4Mime()));
-            String lf4Extension = LegalFilesService.getValidFileExtension(registrationDTO.getLegalFile4Mime());
+        String lf4 = registrationDTO.getLegalFile4Mime();
+        if (lf4 != null) {
+            byte[] lf4ByteArray = Base64.getMimeDecoder().decode(LegalFilesService.getBase64Data(lf4));
+            String lf4Extension = LegalFilesService.getValidFileExtension(lf4);
             if (lf4ByteArray.length > 1024000) {
                 throw new Exception("File size cannot bet greater than 1 MB.");
             } else if (lf4Extension == null) {
@@ -214,8 +217,9 @@ public class RegistrationService {
                 }
                 legalFilesDTO.setRegistration(registrationDTO.getId());
                 legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
-                legalFilesDTO.setFileData(registrationDTO.getLegalFile4Mime());
+                legalFilesDTO.setFileData(LegalFilesService.getBase64Data(lf4));
                 legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
+                registrationDBO.setLegalFile4Mime(LegalFilesService.getMimeType(lf4));
                 registrationDBO.setLegalFile4Size(lf4ByteArray.length);
                 registrationDBO.setUploadTime(currentTime);
             }
