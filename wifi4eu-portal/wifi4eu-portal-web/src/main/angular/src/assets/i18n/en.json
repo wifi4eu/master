@@ -390,6 +390,13 @@
   "benefPortal.voucher.municipalitySuccessApply.part1": "Stay tuned! WiFi4EU will communicate which applicants were selected for a voucher.",
   "benefPortal.voucher.municipalitySuccessApply.part2": "Note that the selection is conducted on a 'first-come first-served' basis (date and time of application) as well as criteria to ensure a geographical balance, as detailed in the CEF Telecom Work Programme.",
   "benefPortal.voucher.applied": "Applied",
+
+  "benefPortal.myVoucher.title.text": "My voucher",
+  "benefPortal.myVoucher.title.subtext": "As a beneficiary, you can first sign the grant agreement, then select a Wi-Fi installation company and finally confirm WiFi4EU network installation.",
+  "benefPortal.myVoucher.datatable.text": "For each municipality you can make the following actions:",
+  "benefPortal.myVoucher.datatable.action": "Action",
+
+
   "shared.name.required": "Name is required",
   "shared.surname.required": "Surname is required",
   "shared.phone.required": "Phone number is required",

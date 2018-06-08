@@ -49,6 +49,41 @@ voucher competition state is {{ voucherCompetitionState }}
     </timer-component>
     <div class="ui-g-12 ui-md-10 offset-md-1">
         <div class="marginTop registrationPanel">
+
+            <p-dataTable>
+                <p-headerColumnGroup>
+                    <p-row>
+                        <p-column header="This is a main title" rowspan='0'></p-column>
+                        <p-column header="class b" rowspan='4'></p-column>
+                    </p-row>
+                    <p-row>
+                        <p-column header="Municipality" rowspan='1'></p-column>
+                        <p-column header="Action 1" rowspan='1'></p-column>
+                        <p-column header="Action 2" rowspan='1'></p-column>
+                        <p-column header="Action 3" rowspan='1'></p-column>
+                    </p-row>
+                </p-headerColumnGroup>
+            </p-dataTable>
+            
+            <p-dataTable>
+                <p-headerColumnGroup>
+                        <p-row>
+                            <p-column header="Brand" rowspan="3"></p-column>
+                            <p-column header="Sale Rate" colspan="7"></p-column>
+                        </p-row>
+<!--                         <p-row>
+                            <p-column header="Sales" colspan="2"></p-column>
+                            <p-column header="Profits" colspan="2"></p-column>
+                        </p-row> -->
+                        <p-row>
+                            <p-column header="Last Year"></p-column>
+                            <p-column header="This Year"></p-column>
+                            <p-column header="Last Year"></p-column>
+                            <p-column header="This Year"></p-column>
+                        </p-row>
+                    </p-headerColumnGroup>
+            </p-dataTable>
+
             <p-dataTable [value]="municipalities">
                 <p-column field="name" header="{{ 'shared.municipality.label' | translate }}" [sortable]="true" styleClass="label text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
@@ -60,6 +95,7 @@ voucher competition state is {{ voucherCompetitionState }}
                         </span>
                     </template>
                 </p-column>
+
                 <p-column header="" styleClass="label text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <button *ngIf="!docsOpen[i]" class="btn btn-primary" id="muncicipalityButton"
@@ -71,6 +107,7 @@ voucher competition state is {{ voucherCompetitionState }}
                         </span>
                     </template>
                 </p-column>
+
                 <p-column header="" styleClass="label text-center">
                     <template pTemplate="body" let-municipality="rowData" let-i="rowIndex">
                         <div *ngIf="voucherCompetitionState == 2">
@@ -96,6 +133,7 @@ voucher competition state is {{ voucherCompetitionState }}
 
                     </template>
                 </p-column>
+
             </p-dataTable>
         </div>
     </div>
@@ -144,7 +182,7 @@ voucher competition state is {{ voucherCompetitionState }}
         <button type="button" class="btn btn-primary cancel-button" (click)="closeModal()">
           {{ 'shared.confirm.button' | translate }}
         </button>
-      </div>
+      </div>git
     </div>
   </p-dialog>
 </div>
