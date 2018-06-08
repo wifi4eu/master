@@ -547,10 +547,40 @@ public class ApplicationService {
                             locale = new Locale(user.getLang());
                         }
                         ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
-//                        String subject = bundle.getString("mail.invalidateApplication.subject");
-//                        String msgBody = bundle.getString("mail.invalidateApplication.body");
-//                        msgBody = MessageFormat.format(msgBody, municipality.getName());
-//                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                        String subject = bundle.getString("mail.correctionRequestEmail.subject");
+                        String msgBody = bundle.getString("mail.correctionRequestEmail.body");
+                        String[] correctionReasons = new String[6];
+                        correctionReasons[0] = bundle.getString("mail.correctionRequestEmail.reason1");
+                        correctionReasons[1] = bundle.getString("mail.correctionRequestEmail.reason2");
+                        correctionReasons[2] = bundle.getString("mail.correctionRequestEmail.reason3");
+                        correctionReasons[3] = bundle.getString("mail.correctionRequestEmail.reason4");
+                        correctionReasons[4] = bundle.getString("mail.correctionRequestEmail.reason5");
+                        correctionReasons[5] = bundle.getString("mail.correctionRequestEmail.reason6");
+                        String[] documentTypes = {"", "", "", ""};
+                        List<LegalFileCorrectionReasonDTO> legalFilesCorrectionReasons = registrationService.getLegalFilesByRegistrationId(registration.getId());
+                        for (LegalFileCorrectionReasonDTO legalFileCorrectionReason : legalFilesCorrectionReasons) {
+                            String emailString = "";
+                            switch (legalFileCorrectionReason.getType()) {
+                                case 1:
+                                    emailString = bundle.getString("mail.correctionRequestEmail.type1");
+                                    documentTypes[0] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                    break;
+                                case 2:
+                                    emailString = bundle.getString("mail.correctionRequestEmail.type3");
+                                    documentTypes[1] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                    break;
+                                case 3:
+                                    emailString = bundle.getString("mail.correctionRequestEmail.type2");
+                                    documentTypes[2] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                    break;
+                                case 4:
+                                    emailString = bundle.getString("mail.correctionRequestEmail.type4");
+                                    documentTypes[3] = MessageFormat.format(emailString, correctionReasons[legalFileCorrectionReason.getCorrectionReason()]);
+                                    break;
+                            }
+                        }
+                        msgBody = MessageFormat.format(msgBody, documentTypes);
+                        mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
                         correctionRequestEmail.setCallId(callId);
                         correctionRequestEmail.setApplicationId(application.getId());
                         correctionRequestEmail.setDate(new Date().getTime());

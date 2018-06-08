@@ -1,6 +1,7 @@
 import { Component, ViewChild } from "@angular/core";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { ActivatedRoute, Router } from '@angular/router';
+import { SharedService } from "../../shared/shared.service";
 import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
 import { CallApi } from "../../shared/swagger/api/CallApi";
 import { NutsApi } from "../../shared/swagger/api/NutsApi";
@@ -63,7 +64,7 @@ export class DgConnApplicantRegistrationsComponent {
     private correctionRequestsEmailDate: string = null;
     private correctionRequestsEmailTime: string = null;
 
-    constructor(private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router) {
+    constructor(private applicationApi: ApplicationApi, private callApi: CallApi, private nutsApi: NutsApi, private activatedRoute: ActivatedRoute, private router: Router, private sharedService: SharedService) {
         this.callApi.allCalls().subscribe(
             (calls: CallDTOBase[]) => {
                 if (calls.length > 0) {
@@ -292,6 +293,7 @@ export class DgConnApplicantRegistrationsComponent {
                         this.correctionRequestsEmailTime = ('0' + (timestamp.getUTCHours() + 2)).slice(-2) + ':' + ('0' + timestamp.getUTCMinutes()).slice(-2);
                         this.correctionRequestsEmailCounter = correctionEmails[numResults - 1].buttonPressedCounter;
                     }
+                    this.sharedService.growlTranslation('An email has been sent to the representants of the legal entities to supply the legal documents for the registration.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.success', 'success');
                     this.applicationApi.checkIfCorrectionRequestEmailIsAvailable(this.currentCall.id).subscribe(
                         (enabled: boolean) => {
                             if (enabled)
@@ -303,6 +305,7 @@ export class DgConnApplicantRegistrationsComponent {
                     this.closeModal();
                 }, error => {
                     this.closeModal();
+                    this.sharedService.growlTranslation('An error occurred while trying to request the legal documents of the registration. Please, try again later.', 'dgConn.duplicatedBeneficiaryDetails.requestLegalDocuments.error', 'error');
                 }
             );
         }
