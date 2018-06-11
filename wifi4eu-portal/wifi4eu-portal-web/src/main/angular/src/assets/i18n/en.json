@@ -583,6 +583,7 @@
   "dgConn.voucherAssignment.selectionStatus.selected": "Selected",
   "dgConn.voucherAssignment.selectionStatus.rejected": "Rejected",
   "dgConn.voucherAssignment.applicationStatus.applied": "Applied",
+  "dgConn.voucherAssignment.applicationStatus.invalidated": "Invalidated",
   "dgConn.voucherAssignment.applicationStatus.validated": "Validated",
   "dgConn.voucherAssignment.applicationStatus.rejected": "Rejected",
   "dgConn.voucherAssignment.applicationStatus.view": "View",

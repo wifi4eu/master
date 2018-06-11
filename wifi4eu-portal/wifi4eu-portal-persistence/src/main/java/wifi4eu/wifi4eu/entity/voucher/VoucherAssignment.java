@@ -29,18 +29,22 @@ public class VoucherAssignment {
     @JoinColumn(name = "call")
     private Call call;
 
+    @Column(name = "notified_date")
+    private Long notifiedDate;
+
     @OneToMany(mappedBy = "voucherAssignment", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Set<VoucherSimulation> voucherSimulations;
 
     public VoucherAssignment() {
     }
 
-    public VoucherAssignment(Integer id, User user, Long executionDate, Integer status, Call call, Set<VoucherSimulation> voucherSimulations) {
+    public VoucherAssignment(Integer id, User user, Long executionDate, Integer status, Call call, Long notifiedDate, Set<VoucherSimulation> voucherSimulations) {
         this.id = id;
         this.user = user;
         this.executionDate = executionDate;
         this.status = status;
         this.call = call;
+        this.notifiedDate = notifiedDate;
         this.voucherSimulations = voucherSimulations;
     }
 
@@ -82,6 +86,14 @@ public class VoucherAssignment {
 
     public void setCall(Call call) {
         this.call = call;
+    }
+
+    public Long getNotifiedDate() {
+        return notifiedDate;
+    }
+
+    public void setNotifiedDate(Long notifiedDate) {
+        this.notifiedDate = notifiedDate;
     }
 
     public Set<VoucherSimulation> getVoucherSimulations() {

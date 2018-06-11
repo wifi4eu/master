@@ -388,4 +388,13 @@ export class DgConnVoucherComponent {
     });    
   }
 
+  sendNotificationToApplicants(){
+    if(!this.callVoucherAssignment.hasFreezeListSaved){
+      return;
+    }
+    this.voucherApi.sendNotificationForApplicants(this.callSelected.id).subscribe((response: ResponseDTO) => {
+      console.log(response);
+    })
+  }
+
 }
