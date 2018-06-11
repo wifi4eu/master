@@ -369,15 +369,6 @@ public class VoucherService {
             long dateNanoSeconds =  call.getStartDate() * 1000000;
             List<ApplicationDTO> listOfApplications = applicationService.findByCallIdOrderByDateBeforeCallDateAsc(call.getId(), dateNanoSeconds);
 
-//            Map<Integer, Integer> applicationsIndexes = new HashMap<>(listOfApplications.size());
-//
-//            int index = 0;
-//            for (ApplicationDTO application : listOfApplications) {
-//                if(!application.getRejected()){
-//                applicationsIndexes.put(application.getId(), index);
-//                index++;}
-//            }
-
             if(_log.isInfoEnabled()){
                 _log.info("START - Initializing municipalities, laus & registrations");
             }
