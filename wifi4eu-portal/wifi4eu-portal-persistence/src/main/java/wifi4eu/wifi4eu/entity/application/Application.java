@@ -15,17 +15,14 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "call_id")
-    private Call call;
+    @Column(name = "call_id")
+    private Integer callId;
 
-    @ManyToOne
-    @JoinColumn(name = "registration")
-    private Registration registration;
+    @Column(name = "registration")
+    private Integer registrationId;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier")
-    private Supplier supplier;
+    @Column(name = "supplier")
+    private Integer supplierId;
 
     @Column(name = "voucher_awarded")
     private boolean voucherAwarded;
@@ -69,11 +66,11 @@ public class Application {
     public Application() {
     }
 
-    public Application(Integer id, Call call, Registration registration, Supplier supplier, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, Integer status, String invalidateReason) {
+    public Application(Integer id, Integer call, Integer registration, Integer supplier, boolean voucherAwarded, Long date, Long lefExport, Long lefImport, Integer lefStatus, Long bcExport, Long bcImport, Integer bcStatus, Long lcExport, Long lcImport, Integer lcStatus, Integer status, String invalidateReason) {
         this.id = id;
-        this.call = call;
-        this.registration = registration;
-        this.supplier = supplier;
+        this.callId = call;
+        this.registrationId = registration;
+        this.supplierId = supplier;
         this.voucherAwarded = voucherAwarded;
         this.date = date;
         this.lefExport = lefExport;
@@ -97,28 +94,28 @@ public class Application {
         this.id = id;
     }
 
-    public Call getCall() {
-        return call;
+    public Integer getCallId() {
+        return callId;
     }
 
-    public void setCall(Call call) {
-        this.call = call;
+    public void setCallId(Integer callId) {
+        this.callId = callId;
     }
 
-    public Registration getRegistration() {
-        return registration;
+    public Integer getRegistrationId() {
+        return registrationId;
     }
 
-    public void setRegistration(Registration registration) {
-        this.registration = registration;
+    public void setRegistrationId(Integer registrationId) {
+        this.registrationId = registrationId;
     }
 
-    public Supplier getSupplier() {
-        return supplier;
+    public Integer getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
     }
 
     public boolean isVoucherAwarded() {

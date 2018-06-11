@@ -91,7 +91,7 @@ export class AdditionalInfoComponent {
             this.supplier.legalFile2 = this.documentUrls[1];
         }
         this.displayConfirmingData = true;
-        this.supplierApi.createSupplier(this.supplier).subscribe(
+        this.supplierApi.updateSupplier(this.supplier).subscribe(
             (response: ResponseDTOBase) => {
                 this.displayConfirmingData = false;
                 if (response.success) {

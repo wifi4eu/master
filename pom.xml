@@ -132,6 +132,7 @@
         <server.azure.dev.address>wifi4eudev.azurewebsites.net</server.azure.dev.address>
         -->
         <server.azure.dev.address>wifi4eu-dev.everincloud.com</server.azure.dev.address>
+        <server.azure.dev.dgconn.address>cnect-wifi4eu-dev.everincloud.com</server.azure.dev.dgconn.address>
         <server.azure.test.address>wifi4eutest.azurewebsites.net</server.azure.test.address>
         <server.azure.test2.address>wifi4eutest.eu</server.azure.test2.address>
         <server.azure.pro.address>wifi4euprod.azurewebsites.net</server.azure.pro.address>
@@ -154,7 +155,7 @@
         <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
         <mail.smtp.port>587</mail.smtp.port>
         <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
-        <mail.smtp.password>bcf74eb9b6</mail.smtp.password>
+        <mail.smtp.password></mail.smtp.password>
         <mail.smtp.defaultEncoding>UTF-8</mail.smtp.defaultEncoding>
         <mail.serv.enable>true</mail.serv.enable>
 
@@ -187,7 +188,7 @@
                 <mail.smtp.host>smtp.gmail.com</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>portaleseveris@gmail.com</mail.smtp.username>
-                <mail.smtp.password>bcf74eb9b6</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -215,7 +216,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
                 <rabbitmq.host>10.0.2.31</rabbitmq.host>
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
@@ -226,7 +227,7 @@
             <properties>
                 <ng.env>dev</ng.env>
                 <schemes>https</schemes>
-                <server.address>${server.azure.dev.address}</server.address>
+                <server.address>${server.azure.dev.dgconn.address}</server.address>
                 <user.filter.path>wifi4eu.wifi4eu.web.filter.UserFilter</user.filter.path>
                 <enable.security.start>--&gt;</enable.security.start>
                 <enable.security.end>&lt;!--</enable.security.end>
@@ -237,10 +238,9 @@
                 <eclipselink.logging.level>WARNING</eclipselink.logging.level>
                 <eclipselink.logging.level.sql>WARNING</eclipselink.logging.level.sql>
                 <war.output.directory/>
-                <ecas.config.base.url>${server.ecas.stress}</ecas.config.base.url>
-                <ecas.server.address>${server.azure.dev.address}</ecas.server.address>
+                <ecas.config.base.url>${server.ecas.acc}</ecas.config.base.url>
+                <ecas.server.address>${server.azure.dev.dgconn.address}</ecas.server.address>
                 <ecas.server.port>${server.pro.port}</ecas.server.port>
-                <ecas.config.strength>BASIC</ecas.config.strength>
                 <mail.serv.enable>false</mail.serv.enable>
                 <mail.serv.location>https://dev.wifi4eu.everincloud.com/wifi4eu/#/</mail.serv.location>
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
@@ -273,7 +273,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -298,7 +298,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -321,7 +321,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -344,7 +344,7 @@
                 <mail.smtp.host>smtp.sendgrid.net</mail.smtp.host>
                 <mail.smtp.port>587</mail.smtp.port>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>.</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
             </properties>
         </profile>
         <profile>
@@ -369,7 +369,7 @@
                 <rabbitmq.username>devel</rabbitmq.username>
                 <rabbitmq.password>j9zezU2i17OBDKk</rabbitmq.password>
                 <mail.smtp.username>azure_efe0541f6fda2f126859caac07925571@azure.com</mail.smtp.username>
-                <mail.smtp.password>BPkn4N7gOHcnUQTRyB35T7.A2W_nPriFG$M</mail.smtp.password>
+                <mail.smtp.password></mail.smtp.password>
             </properties>
         </profile>
     </profiles>

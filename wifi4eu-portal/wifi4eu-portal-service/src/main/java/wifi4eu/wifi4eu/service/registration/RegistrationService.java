@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.enums.*;
+import wifi4eu.wifi4eu.service.application.ApplicationWarningsChecker;
+import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
 import wifi4eu.wifi4eu.mapper.registration.legal_files.*;
-import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
+import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
 import wifi4eu.wifi4eu.repository.registration.legal_files.*;
@@ -25,11 +27,8 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.text.MessageFormat;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Service("portalRegistrationService")
 public class RegistrationService {
@@ -42,10 +41,7 @@ public class RegistrationService {
     RegistrationRepository registrationRepository;
 
     @Autowired
-    LegalFilesMapper legalFilesMapper;
-
-    @Autowired
-    LegalFilesRepository legalFilesRepository;
+    ApplicationIssueUtilRepository applicationIssueUtilRepository;
 
     @Autowired
     ApplicationService applicationService;
@@ -72,6 +68,12 @@ public class RegistrationService {
     MayorService mayorService;
 
     @Autowired
+    LegalFilesMapper legalFilesMapper;
+
+    @Autowired
+    LegalFilesRepository legalFilesRepository;
+
+    @Autowired
     LegalFileCorrectionReasonMapper legalFileCorrectionReasonMapper;
 
     @Autowired
@@ -90,7 +92,7 @@ public class RegistrationService {
         if (registrationDTO.getId() == 0) {
             registrationDTO.setMailCounter(3);
         }
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDTO)));
+        return saveRegistration(registrationDTO);
     }
 
     @Transactional
@@ -175,7 +177,7 @@ public class RegistrationService {
         registrationDBO.setAllFilesFlag(registrationDTO.getAllFilesFlag());
         registrationDBO.setMailCounter(registrationDTO.getMailCounter());
 
-        return registrationMapper.toDTO(registrationRepository.save(registrationMapper.toEntity(registrationDBO)));
+        return saveRegistration(registrationDBO);
     }
 
     @Transactional
@@ -727,6 +729,44 @@ public class RegistrationService {
             issueType = 3;
         }
         return issueType;
+    }
+
+    public List<ApplicationIssueUtil> getRegistrationIssue(Integer lauId) {
+        List<ApplicationIssueUtil> applicationIssueUtils = applicationIssueUtilRepository.findApplicationIssueUtilByLauId(lauId);
+
+        if (applicationIssueUtils.size() > 1) { //We have more than one applicant per lau, check status
+            //if status is KO remove from the list
+            applicationIssueUtils.removeIf(applicationIssueUtil -> applicationIssueUtil.getStatus() == ApplicationStatus.KO.getValue());
+        }
+
+        return applicationIssueUtils;
+    }
+
+    public Integer getIssues(List<ApplicationIssueUtil> applicationIssueUtilList){
+
+        if(applicationIssueUtilList.size() == 1){
+
+            Integer issueType = 0;
+            if (ApplicationWarningsChecker.registrationHasWarning1(applicationIssueUtilList.get(0))) {
+                issueType = 1;
+            }
+            if (ApplicationWarningsChecker.registrationHasWarning3(applicationIssueUtilList.get(0))) {
+                issueType = 3;
+            }
+            return issueType;
+
+        } else {
+            return 0;
+        }
+    }
+
+    public Integer getStatus(List<ApplicationIssueUtil> applicationIssueUtilList){
+
+        if(applicationIssueUtilList.size() == 1){
+            return applicationIssueUtilList.get(0).getStatus();
+        } else {
+            return -1;
+        }
     }
 
     public List<LegalFileCorrectionReasonDTO> getLegalFilesByRegistrationId(Integer registrationId) {

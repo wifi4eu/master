@@ -147,29 +147,6 @@ public class ApplicationResource {
             }
 
             ResponseDTO res = new ResponseDTO(true, null, null);
-            res.setData(applicationService.findDgconnApplicantsList(callId, null, name, pagingSortingData));
-            res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, null, name));
-            return res;
-        } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("can't retrieve beneficiaries", e);
-            }
-            response.sendError(HttpStatus.NOT_FOUND.value());
-        }
-        return new ResponseDTO(false, null, null);
-    }
-
-    @ApiOperation(value = "findDgconnApplicantsListByCallIdSearchingNameAndCountry")
-    @RequestMapping(value = "/findDgconnApplicantsListByCallIdSearchingNameAndCountry/{callId}", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseDTO findDgconnApplicantsListByCallIdSearchingNameAndCountry(@PathVariable("callId") final Integer callId, @RequestParam("name") final String name, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
-        try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if (userDTO.getType() != 5) {
-                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-
-            ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(applicationService.findDgconnApplicantsList(callId, country, name, pagingSortingData));
             res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name));
             return res;
@@ -198,12 +175,40 @@ public class ApplicationResource {
 
             ApplicationDTO resApplication = applicationService.validateApplication(applicationDTO);
             return new ResponseDTO(true, resApplication, null);
-        } catch (Exception e) {
+        } catch (AccessDeniedException e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'validateApplication' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'validateApplication' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
+
+    @ApiOperation(value = "Get applications voucher2 info by call id")
+    @RequestMapping(value = "/valid/call/{callId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public Integer getApplicationsNotInvalidated(@PathVariable("callId") final Integer callId) {
+        try {
+            if (_log.isInfoEnabled()) {
+                _log.info("getApplicationsVoucherInfoByCall: " + callId);
+            }
+            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            if (userDTO.getType() != 5) {
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
+            }
+
+            return applicationService.countApplicationsNotInvalidated(callId);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.info("getApplicationsVoucherInfoByCall: " + callId);
+            }
+            return null;
         }
     }
 
@@ -223,12 +228,18 @@ public class ApplicationResource {
 
             ApplicationDTO resApplication = applicationService.invalidateApplication(applicationDTO);
             return new ResponseDTO(true, resApplication, null);
-        } catch (Exception e) {
+        } catch (AccessDeniedException e) {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'invalidateApplication' operation.", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'invalidateApplication' operation.", e);
+            }
+            response.sendError(HttpStatus.BAD_REQUEST.value());
+            return new ResponseDTO(false, null, null);
         }
     }
 
@@ -275,7 +286,8 @@ public class ApplicationResource {
             if (_log.isErrorEnabled()) {
                 _log.error("Error on 'sendLegalDocumentsCorrection' operation.", e);
             }
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return new ResponseDTO(false, null, null);
         }
     }
 

@@ -1,6 +1,6 @@
 <div class="container">
     <div class="ui-g-12" style="margin-top: 1em; font-size: 14px;">
-        <a class="link-label" routerLink="../../.." routerLinkActive="active">
+        <a class="link-label" (click)="goBack()">
             <i class="fa fa-long-arrow-left fa-2" aria-hidden="true"></i> {{ 'shared.back.button' | translate }}
         </a>
     </div>
@@ -51,11 +51,11 @@
                         </span>
                         <br><br>
                         <span class="entity-subtitle">
-                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date | date:'yyyy-MM-dd'}} {{ applications[i].date | date:'shortTime'}}
+                            {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date/1000000 | date:'yyyy-MM-dd'}} {{ applications[i].date/1000000 | date:'shortTime'}}
                         </span>
                     </span>
                     <span class="right">
-                        <button type="button" class="btn greenButton" (click)="displayValidateModal(i)" [disabled]="applications[i].status == 2 || registration.allFilesFlag != 1">
+                        <button type="button" class="btn greenButton" (click)="displayValidateModal(i)" [disabled]="applications[i].status == 2 || registrations[i].allFilesFlag != 1">
                             {{ 'dgConn.applicantDetails.validateApplication.title' | translate }}
                         </button>
                         <button type="button" class="btn redButton" (click)="displayInvalidateModal(i)" [disabled]="applications[i].status == 1">
