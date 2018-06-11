@@ -125,24 +125,21 @@ export class InstallationListComponent implements OnInit {
     }
 
     disablePermissionsIndicator(){
+        // return true -> not able to click
+        // return false -> able to click
         if (this.beneficiaryService.beneficiarySelected){
             if (this.beneficiaryService.beneficiarySelected.installationSiteConfirmation){
-                console.log("1");
                 return true;
             }
             if (this.beneficiaryService.beneficiarySelected.installationSiteSubmission && this.beneficiaryService.beneficiarySelected.installationSiteRejection == null){
-                console.log("2");
                 return true;
             } else {
-                if (this.beneficiaryService.beneficiarySelected.installationSiteRejection && (this.beneficiaryService.beneficiarySelected.installationSiteRejection > this.beneficiaryService.beneficiarySelected.installationSiteSubmission)){
-                    console.log("3");
-                    return false;
+                if (this.beneficiaryService.beneficiarySelected.installationSiteRejection && (this.beneficiaryService.beneficiarySelected.installationSiteSubmission > this.beneficiaryService.beneficiarySelected.installationSiteRejection)){
+                    return true;
                 }
             }
-            console.log("4");
             return false;
         }
-        console.log("5");
         return true;
     }
 
