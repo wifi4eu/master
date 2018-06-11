@@ -357,8 +357,9 @@ public class VoucherService {
 
             int index = 0;
             for (ApplicationDTO application : listOfApplications) {
+                if(!application.getRejected()){
                 applicationsIndexes.put(application.getId(), index);
-                index++;
+                index++;}
             }
 
             if(_log.isInfoEnabled()){
