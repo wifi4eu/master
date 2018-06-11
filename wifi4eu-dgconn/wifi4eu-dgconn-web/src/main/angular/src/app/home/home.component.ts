@@ -16,46 +16,15 @@ export class HomeComponent {
     }
 
     private redirectUser() {
+		// Only users of type '5' are accepted to access 'dgconn'
         switch (this.sharedService.user.type) {
             case 5:
                 this.router.navigateByUrl('/dgconn-portal');
                 break;
-            // FIXME JAVI
-            /*
             default:
                 this.router.navigateByUrl('/notfound');
                 break;
-            */
-            default:
-                let publicRedirection = this.localStorageService.get('public-redirection');
-                if (publicRedirection) {
-                    this.router.navigateByUrl(String(publicRedirection));
-                } else {
-                    this.router.navigateByUrl('/notfound');
-                }
-                break;
         }
     }
-    
-    /*private redirectUser__public_portal() {
-        switch (this.sharedService.user.type) {
-            case 1:
-                this.router.navigateByUrl('/supplier-portal/profile');
-                break;
-            case 3:
-                this.router.navigateByUrl('/beneficiary-portal/profile');
-                break;
-            case 5:
-                this.router.navigateByUrl('/dgconn-portal');
-                break;
-            default:
-                let publicRedirection = this.localStorageService.get('public-redirection');
-                if (publicRedirection) {
-                    this.router.navigateByUrl(String(publicRedirection));
-                } else {
-                    this.router.navigateByUrl('/beneficiary-registration');
-                }
-                break;
-        }
-    }*/
+
 }

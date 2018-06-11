@@ -5,7 +5,7 @@ import { HomeComponent } from "./home/home.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 //import { ActivationComponent } from "./activation/activation.component";
 //import { ForgotComponent } from "./+forgot/forgot.component";
-//import { HelpdeskComponent } from "./+helpdesk/helpdesk.component";
+import { HelpdeskComponent } from "./+helpdesk/helpdesk.component";
 //import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.component";
 // import {EcasComponent} from "./+ecas/ecas.component";
 
@@ -24,17 +24,16 @@ import { NotFoundComponent } from "./not-found/not-found.component";
             loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
             canActivate: [AppGuard]
         }, {
+            path: 'helpdesk',
+            component: HelpdeskComponent,
+            canActivate: [AppGuard]
+        }, {
             path: 'notfound',
             component: NotFoundComponent
-        },
-        /*{
-            path: '**',
-            redirectTo: 'dgconn-portal'
-        }*/
-        {
+        }, {
             path: '**',
             redirectTo: 'notfound'
-        }
+        }        
     ], { useHash: true })],
     providers: [AppGuard],
     exports: [RouterModule]

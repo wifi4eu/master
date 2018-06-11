@@ -15,19 +15,6 @@ export class HomeComponent {
         }
     }
 
-    /*
-    private redirectUser__dgconn() {
-        switch (this.sharedService.user.type) {
-            case 5:
-                this.router.navigateByUrl('/dgconn-portal');
-                break;
-            default:
-                this.router.navigateByUrl('/notfound');
-                break;
-        }
-    }
-    */
-    
     private redirectUser() {
         switch (this.sharedService.user.type) {
             case 1:
@@ -36,9 +23,11 @@ export class HomeComponent {
             case 3:
                 this.router.navigateByUrl('/beneficiary-portal/profile');
                 break;
+			/*
             case 5:
                 this.router.navigateByUrl('/dgconn-portal');
                 break;
+			*/
             default:
                 let publicRedirection = this.localStorageService.get('public-redirection');
                 if (publicRedirection) {
@@ -49,4 +38,5 @@ export class HomeComponent {
                 break;
         }
     }
+
 }

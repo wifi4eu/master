@@ -52,8 +52,6 @@ import {DgConnApplicantRegistrationsDetailsComponent} from "./+applicant-registr
             path: 'discussion',
             component: DgConnDiscussionComponent,
         }
-
-
     ])],
     exports: [RouterModule]
 })

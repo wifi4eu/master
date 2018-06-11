@@ -5,7 +5,7 @@ import { HomeComponent } from "./home/home.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { ActivationComponent } from "./activation/activation.component";
 import { ForgotComponent } from "./+forgot/forgot.component";
-import { HelpdeskComponent } from "./+helpdesk/helpdesk.component";
+// import { HelpdeskComponent } from "./+helpdesk/helpdesk.component";
 import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.component";
 // import {EcasComponent} from "./+ecas/ecas.component";
 
@@ -34,16 +34,12 @@ import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.componen
             loadChildren: 'app/+beneficiary-portal/beneficiary-portal.module#BeneficiaryPortalModule',
             canActivate: [AppGuard]
         }, {
+		/*
             path: 'helpdesk',
             component: HelpdeskComponent,
             canActivate: [AppGuard]
-        }, 
-        /*{
-            path: 'dgconn-portal',
-            loadChildren: 'app/+dgconn-portal/dgconnportal.module#DgConnPortalModule',
-            canActivate: [AppGuard]
-        }, */
-        {
+        }, {            
+		*/
             path: 'beneficiary-registration',
             loadChildren: 'app/beneficiary-registration/beneficiary-registration.module#BeneficiaryRegistrationModule',
             canActivate: [AppGuard]
@@ -55,20 +51,18 @@ import { ListSuppliersComponent } from "./list-suppliers/list-suppliers.componen
             path: 'supplier-portal',
             loadChildren: 'app/+supplier-portal/supplier-portal.module#SupplierPortalModule',
             canActivate: [AppGuard]
-
-        },
-        {
+        }, {
             path: 'list-suppliers',
             component: ListSuppliersComponent
         }, {
             path: 'notfound',
             component: NotFoundComponent
-        },
-        /*{
+		/*
+        }, {
             path: '**',
-            redirectTo: 'dgconn-portal'
-        } */
-        {
+            redirectTo: 'home'
+		*/
+        }, {
             path: '**',
             redirectTo: 'notfound'
         }

@@ -7,7 +7,7 @@ import {DgConnFourthReportComponent} from "./fourth-report/fourth-report.compone
 
 
 @NgModule({
-    imports: [[
+    imports: [[    
         {
             path: '',
             component: DgConnStatisticsComponent,
@@ -24,7 +24,6 @@ import {DgConnFourthReportComponent} from "./fourth-report/fourth-report.compone
             path: 'fourth-report',
             component: DgConnFourthReportComponent
         }
-
     ]]
 })
 export class StatisticsPortalRoutingModule {

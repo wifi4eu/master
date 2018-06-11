@@ -10,6 +10,9 @@ public class UserConstants {
     public final static String LOCAL = "localhost";
     public final static String DEFAULT_LANG = "en";
 
+    /**
+     *	Mocked user data used by the UserFilterMocked filter to login directly into the portal  
+     */
     public final static String MOCKED_USER_NAME = "Mr. Tester";
     public final static String MOCKED_MAIL = "tester@test.com";
     public final static String MOCKED_DOMAIN = "TemporalDom";

@@ -139,8 +139,8 @@ export class AppComponent {
             }
         );
     }
-
-    private initChildren() {
+	
+	private initChildren() {
         this.stringsTranslated.subscribe(() => {
             this.children[0] = [
                 new UxLayoutLink({
@@ -204,14 +204,6 @@ export class AppComponent {
                     url: '#'
                 })
             ];
-            /*
-            this.children[5] = [
-                new UxLayoutLink({
-                    label: this.menuTranslations.get('itemMenu.dgPortal'),
-                    url: 'dgconn-portal'
-                })
-            ];
-            */
             this.childrenInitialized.next();
         });
     }
@@ -249,12 +241,6 @@ export class AppComponent {
                     this.profileUrl = '/beneficiary-portal/profile';
                     this.menuLinks = this.children[2];
                     break;
-                /*
-                case 5:
-                    this.profileUrl = '/dgconn-portal';
-                    this.menuLinks = this.children[5];
-                    break;
-                */
                 default:
                     this.profileUrl = '/home';
                     this.menuLinks = this.children[0];

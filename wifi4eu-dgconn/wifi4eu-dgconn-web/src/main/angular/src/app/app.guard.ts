@@ -35,26 +35,12 @@ export class AppGuard implements CanActivate {
             case 'home':
                 allow = this.allowAccessToAnyone();
                 break;
-            /*case 'beneficiary-registration':
-            case 'supplier-registration':
-                allow = this.allowAccessToUnregistered();
-                if(!allow){
-                  if(this.allowAccessToSupplier() || this.allowAccessToBeneficiary()){
-                    this.router.navigateByUrl('/');
-                    allow = true;
-                  }
-                }
-                break;
-            case 'beneficiary-portal':
-                allow = this.allowAccessToBeneficiary();
-                break;
-            case 'supplier-portal':
-                allow = this.allowAccessToSupplier();
-                break;*/
+            case 'helpdesk':
             case 'dgconn-portal':
                 allow = this.allowAccessToDgConn();
                 break;
         }
+
         return allow;
     }
 
