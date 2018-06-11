@@ -108,38 +108,72 @@ export class DgConnVoucherComponent {
           this.callSelected = this.calls[0];
           this.loadingSimulation = true;
 
-          this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.calls[0].id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
-            if(data != null){
-              this.callVoucherAssignment = data;
-              let date = new Date(this.callVoucherAssignment.preListExecutionDate);
-              this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-              this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
-              if(data.hasFreezeListSaved){
-                this.voucherApi.getVoucherAssignmentByCallAndStatus(this.calls[0].id, 3).subscribe(
-                 (response: VoucherAssignmentAuxiliarDTO) => {
-                    if(response != null){
-                      this.callVoucherAssignment.id = response.id;
-                      let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
-                      this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
-                      this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
-                      this.loadPage();
-                    }                    
-                }, error => {
-                  console.log(error);
-                });
+          this.route.queryParams.subscribe((queryParams) => {
+            console.log(queryParams);
+              var callId = queryParams['call'] || this.calls[0].id;
+              var country = queryParams['country'] || 'All';
+              var page = queryParams['page'] || this.page; 
+              if(page == 1){
+                this.page = 0;
               }
-              else{
-                this.loadPage();
-              }
-            }       
-            else{
-              this.loadingSimulation = false;
-            }     
+              var size = queryParams['size'] || this.sizePage;
+              var sortField = queryParams['sortField'] || 'euRank';
+              var sortDirection = queryParams['sortDirection'] || this.sortDirection;
+              var municipality = queryParams['municipality'] || 'All';
+
+              console.log(callId);
+              console.log(country);
+              console.log(page);
+              console.log(size);
+              console.log(sortField);
+              console.log(sortDirection);
+
+              this.callSelected.id = callId;
+              this.page = page;
+              this.sizePage = size;
+              this.selectedCountry = country;
+              this.searchedMunicipality = municipality;
+              this.sortField = sortField;
+              this.sortDirection = sortDirection;
+
+              this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.callSelected.id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
+                if(data != null){
+                  this.callVoucherAssignment = data;
+                  let date = new Date(this.callVoucherAssignment.preListExecutionDate);
+                  this.dateNumberPreList = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+                  this.hourNumberPreList = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+                  if(data.hasFreezeListSaved){
+                    this.voucherApi.getVoucherAssignmentByCallAndStatus(this.callSelected.id, 3).subscribe(
+                     (response: VoucherAssignmentAuxiliarDTO) => {
+                        if(response != null){
+                          this.callVoucherAssignment.id = response.id;
+                          let date = new Date(this.callVoucherAssignment.freezeLisExecutionDate);
+                          this.dateNumberFreeze = ('0' + date.getUTCDate()).slice(-2) + "/" + ('0' + (date.getUTCMonth() + 1)).slice(-2) + "/" + date.getUTCFullYear();
+                          this.hourNumberFreeze = ('0' + (date.getUTCHours() + 2)).slice(-2) + ":" + ('0' + date.getUTCMinutes()).slice(-2); 
+                          this.loadPage();
+                        }                    
+                    }, error => {
+                      console.log(error);
+                    });
+                  }
+                  else{
+                    this.loadPage();
+                  }
+                }       
+                else{
+                  this.loadingSimulation = false;
+                }     
+              })
+    
+              this.applicationApi.getApplicationsNotInvalidated(this.calls[0].id).subscribe((data) => {
+                this.validApplications = data;
+              })
+
+
+
           })
 
-          this.applicationApi.getApplicationsNotInvalidated(this.calls[0].id).subscribe((data) => {
-            this.validApplications = data;
-          })
+        
          
         }
         let i = 0;
@@ -192,7 +226,8 @@ export class DgConnVoucherComponent {
   paginate(event){
     this.simulationAssignment.unsubscribe();
     this.page = event.page;
-    this.loadPage();
+    this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, municipality: this.searchedMunicipality, country: this.selectedCountry, page: this.page, size: this.sizePage, sortField : this.sortField, sortDirection: this.sortDirection} });
+    //this.loadPage();
   }
 
   changeRowSelection(pageSize: number){
@@ -247,7 +282,8 @@ export class DgConnVoucherComponent {
   sortTable(event){
     this.sortField = event.field;
     this.sortDirection = event.order === 1 ? 'ASC' : 'DESC';
-    this.loadPage();
+    this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, municipality: this.searchedMunicipality, country: this.selectedCountry, page: this.page+1, size: this.sizePage, sortField : this.sortField, sortDirection: this.sortDirection} });
+    //this.loadPage();
   }
 
   handleChange(event) {
