@@ -205,7 +205,8 @@
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                           <span *ngIf="row.application.status == 0">{{'dgConn.voucherAssignment.applicationStatus.applied' | translate}}</span>
-                          <span *ngIf="row.application.status == 2">{{'dgConn.voucherAssignment.applicationStatus.validated' |translate}}</span>
+                          <span *ngIf="row.application.status == 2">{{'dgConn.voucherAssignment.applicationStatus.validated' | translate}}</span>
+                          <span *ngIf="row.application.status == 1">{{'dgConn.voucherAssignment.applicationStatus.invalidated' | translate}}</span>
                           <span *ngIf="row.application.status == 3">{{'dgConn.status.pendingFollowup' | translate}}</span>
                         </ng-template>
                       </p-column>

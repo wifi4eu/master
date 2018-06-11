@@ -858,9 +858,9 @@ public class VoucherService {
             subject = MessageFormat.format(subject, callDTO.getEvent());
             msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
             // TODO: Change it to work with CNS
-//            if(!userService.isLocalHost()){
-//                mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-//            }
+            if(!userService.isLocalHost()){
+                //mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            }
         }
 
         for(ApplicationDTO reserveApplicant: reserveApplicants){
@@ -876,9 +876,9 @@ public class VoucherService {
             subject = MessageFormat.format(subject, callDTO.getEvent());
             msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
             // TODO: Change it to work with CNS
-//            if(!userService.isLocalHost()){
-//                mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-//            }
+            if(!userService.isLocalHost()){
+               // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            }
         }
 
         for(ApplicationDTO unsuccessfulApplicant: unsuccessfulApplicants){
@@ -901,9 +901,9 @@ public class VoucherService {
             msgBody = MessageFormat.format(msgBody, option);
             subject = MessageFormat.format(subject, callDTO.getEvent());
             // TODO: Change it to work with CNS
-//            if(!userService.isLocalHost()){
-//                mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-//            }
+            if(!userService.isLocalHost()){
+              // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            }
         }
 
         VoucherAssignment voucherAssignment = voucherAssignmentRepository.findByCallIdAndStatusEquals(callDTO.getId(), VoucherAssignmentStatus.FREEZE_LIST.getValue());
