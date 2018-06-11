@@ -566,7 +566,7 @@
   "dgConn.voucherAssignment.filterMunicipality": "Filter by municipality",
   "dgConn.voucherAssignment.simulateVouchers.button": "Simulate vouchers",
   "dgConn.voucherAssignment.tableHeader": "Voucher assignment list",
-  "dgConn.voucherAssignment.downloadList.button": "Download list",
+  "dgConn.voucherAssignment.downloadList.button": "Export to Excel",
   "dgConn.voucherAssignment.table.euRank": "EU Rank",
   "dgConn.voucherAssignment.table.countryRank": "Country ranking",
   "dgConn.voucherAssignment.table.selectionStatus": "Selection status",
