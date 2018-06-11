@@ -62,7 +62,7 @@ export class ManageInstallationComponent {
                             this.municipality = response.data;
                             this.searchParametersService.parameters.id_beneficiary = this.municipality.id;
                             this.beneficiaryService.beneficiarySelected = this.municipality;
-                            this.onSearch();
+                            // this.onSearch();
                             this.registration = response.data.registrations[0];
                             this.indicators["id"] = this.registration.id;
                         } else{
@@ -89,7 +89,6 @@ export class ManageInstallationComponent {
 
     onSearch() {
         this.totalResults = 0;
-
         this.installationsiteApi.getInstallationSiteListByBeneficiary(this.searchParametersService.parameters).subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.installationSites = response.data.data;
