@@ -369,15 +369,6 @@ public class VoucherService {
             long dateNanoSeconds =  call.getStartDate() * 1000000;
             List<ApplicationDTO> listOfApplications = applicationService.findByCallIdOrderByDateBeforeCallDateAsc(call.getId(), dateNanoSeconds);
 
-            Map<Integer, Integer> applicationsIndexes = new HashMap<>(listOfApplications.size());
-
-            int index = 0;
-            for (ApplicationDTO application : listOfApplications) {
-                if(!application.getRejected()){
-                applicationsIndexes.put(application.getId(), index);
-                index++;}
-            }
-
             if(_log.isInfoEnabled()){
                 _log.info("START - Initializing municipalities, laus & registrations");
             }
@@ -385,8 +376,6 @@ public class VoucherService {
             List<SimpleMunicipalityDTO> municipalities = simpleMunicipalityService.getAllMunicipalities();
             List<SimpleLauDTO> laus = simpleLauService.getAllLausFromApplications();
             List<SimpleRegistrationDTO> registrations = simpleRegistrationService.findAll();
-
-
 
             for (SimpleMunicipalityDTO mun : municipalities) {
                 municipalityHashMap.put(mun.getId(), mun);
@@ -695,6 +684,9 @@ public class VoucherService {
                 voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment));
             }
 
+
+            HashMap<String, Integer> countryRankCounter = new HashMap<>();
+            int i = 1;
             for (ApplicationDTO applicationAssigned : mainListOutput) {
 
                 SimpleRegistrationDTO registrationDTO = registrationsHashMap.get(applicationAssigned.getRegistrationId());
@@ -702,7 +694,7 @@ public class VoucherService {
 
                 int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLau(), call.getId(), dateNanoSeconds);
 
-                List<Integer> listOfIds = applicationService.getApplicationsIdByCountryAndNameAndCall(call.getId(), municipalityDTO.getCountry(), dateNanoSeconds);
+                countryRankCounter.put(municipalityDTO.getCountry(), countryRankCounter.getOrDefault(municipalityDTO.getCountry(), 0) + 1);
 
                 VoucherSimulationDTO simulation = new VoucherSimulationDTO();
                 simulation.setCountry(municipalityDTO.getCountry());
@@ -711,10 +703,11 @@ public class VoucherService {
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO.getId());
                 simulation.setIssues(registrationService.getIssues(registrationService.getRegistrationIssue(municipalityDTO.getLau())));
-                simulation.setEuRank(applicationsIndexes.get(applicationAssigned.getId()) + 1);
+                simulation.setEuRank(i);
                 simulation.setSelectionStatus(0);
-                simulation.setCountryRank(listOfIds.indexOf(applicationAssigned.getId()) + 1);
+                simulation.setCountryRank(countryRankCounter.get(municipalityDTO.getCountry()));
                 simulations.add(simulation);
+                i++;
             }
 
             for (ApplicationDTO reservedApplication : reserveListCompleted) {
@@ -723,7 +716,7 @@ public class VoucherService {
 
                 int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLau(), call.getId(), dateNanoSeconds);
 
-                List<Integer> listOfIds = applicationService.getApplicationsIdByCountryAndNameAndCall(call.getId(), municipalityDTO.getCountry(), dateNanoSeconds);
+                countryRankCounter.put(municipalityDTO.getCountry(), countryRankCounter.getOrDefault(municipalityDTO.getCountry(), 0) + 1);
 
                 VoucherSimulationDTO simulation = new VoucherSimulationDTO();
                 simulation.setApplication(reservedApplication);
@@ -732,10 +725,11 @@ public class VoucherService {
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO.getId());
                 simulation.setIssues(registrationService.getIssues(registrationService.getRegistrationIssue(municipalityDTO.getLau())));
-                simulation.setEuRank(applicationsIndexes.get(reservedApplication.getId()) + 1);
+                simulation.setEuRank(i);
                 simulation.setSelectionStatus(1);
-                simulation.setCountryRank(listOfIds.indexOf(reservedApplication.getId()) + 1);
+                simulation.setCountryRank(countryRankCounter.get(municipalityDTO.getCountry()));
                 simulations.add(simulation);
+                i++;
             }
 
             for(ApplicationDTO rejectedApplication: rejectedApplications){
@@ -744,6 +738,8 @@ public class VoucherService {
 
                 int num = applicationService.countApplicationWithSameMunicipalityName(municipalityDTO.getLau(), call.getId(), dateNanoSeconds);
 
+                countryRankCounter.put(municipalityDTO.getCountry(), countryRankCounter.getOrDefault(municipalityDTO.getCountry(), 0) + 1);
+
                 VoucherSimulationDTO simulation = new VoucherSimulationDTO();
                 simulation.setApplication(rejectedApplication);
                 simulation.setCountry(municipalityDTO.getCountry());
@@ -751,10 +747,11 @@ public class VoucherService {
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO.getId());
                 simulation.setIssues(registrationService.getIssues(registrationService.getRegistrationIssue(municipalityDTO.getLau())));
-                simulation.setEuRank(Integer.MAX_VALUE);
+                simulation.setEuRank(i);
                 simulation.setSelectionStatus(2);
-                simulation.setCountryRank(Integer.MAX_VALUE);
+                simulation.setCountryRank(countryRankCounter.get(municipalityDTO.getCountry()));
                 simulations.add(simulation);
+                i++;
             }
 
             if(_log.isInfoEnabled()){
