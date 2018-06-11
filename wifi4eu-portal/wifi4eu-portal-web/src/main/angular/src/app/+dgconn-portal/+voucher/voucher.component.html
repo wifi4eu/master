@@ -19,7 +19,7 @@
               <div class="row" style="    margin-bottom: 45px;margin-top: 18px;">
                 <div class="col-md-4 col-sm-12">
                   <h6>{{'dgConn.status' | translate}}</h6>
-                  <div style="height: 155px; width: 155px; display: flex; align-items: center; justify-content: center;" class="voucher-status simulation"
+                  <div style="height: 155px; width: 155px; padding-top: 40px;" class="voucher-status simulation"
                     [class.simulation]="callVoucherAssignment?.status == 1 || callVoucherAssignment?.status == null" [class.pre-save]="callVoucherAssignment?.status == 2 || (callVoucherAssignment?.hasPreListSaved && !callVoucherAssignment?.hasFreezeListSaved)"
                     [class.saved]="callVoucherAssignment?.status == 3 || callVoucherAssignment?.hasFreezeListSaved">
                     <div class="voucher-status-info" style="text-align: center; color: #fff;">
