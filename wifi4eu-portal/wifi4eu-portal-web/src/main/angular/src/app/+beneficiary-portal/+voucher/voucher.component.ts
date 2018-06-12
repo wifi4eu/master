@@ -171,7 +171,7 @@ export class VoucherComponent {
                                                             if (!app) {
                                                                 allApplied = false;
                                                             }
-                                                            if(app.date) {
+                                                            else if(app.date) {
                                                                 // Get the date when supplier was selected
                                                                 this.getStringDate(app.date);
                                                             }
