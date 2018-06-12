@@ -41,6 +41,10 @@ export class InstallationListComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.fillBeneficiaryDropdown();
+    }
+
+    fillBeneficiaryDropdown(){
         this.beneficiaryApi.getBeneficiariesList().subscribe((response: ResponseDTOBase) => {
             if (response.success) {
                 this.beneficiarySuggestions = response.data;
@@ -62,6 +66,7 @@ export class InstallationListComponent implements OnInit {
         let successBanner = document.getElementById("success");
         successBanner.style.display = "none"
         this.onSearch();
+        this.disablePermissionsIndicator();
     }
 
     onPage(event: any) {
@@ -105,7 +110,10 @@ export class InstallationListComponent implements OnInit {
                 let successBanner = document.getElementById("success");
                 successBanner.style.display = "block";
                 successBanner.scrollIntoView({ behavior: "smooth" });
+                this.fillBeneficiaryDropdown();
                 this.beneficiaryService.beneficiarySelected = response.data;
+                // ACTUALIZAR EL LISTADO DE LOS BENEFICIARIES. el listado se tiene que actualizar al darle al botón
+                // this.onSearch();
                 // this.beneficiarySuggestions = response.data;
                 // this.beneficiarySelected.wifiIndicator = true;
             }
@@ -127,19 +135,26 @@ export class InstallationListComponent implements OnInit {
     disablePermissionsIndicator(){
         // return true -> not able to click
         // return false -> able to click
+        console.log("submission : "+this.beneficiaryService.beneficiarySelected.installationSiteSubmission);
+        console.log("rejection : "+this.beneficiaryService.beneficiarySelected.installationSiteRejection);
         if (this.beneficiaryService.beneficiarySelected){
             if (this.beneficiaryService.beneficiarySelected.installationSiteConfirmation){
+                console.log("1");
                 return true;
             }
             if (this.beneficiaryService.beneficiarySelected.installationSiteSubmission && this.beneficiaryService.beneficiarySelected.installationSiteRejection == null){
+                console.log("2");
                 return true;
             } else {
                 if (this.beneficiaryService.beneficiarySelected.installationSiteRejection && (this.beneficiaryService.beneficiarySelected.installationSiteSubmission > this.beneficiaryService.beneficiarySelected.installationSiteRejection)){
+                    console.log("3");
                     return true;
                 }
             }
+            console.log("4");
             return false;
         }
+        console.log("5");
         return true;
     }
 
