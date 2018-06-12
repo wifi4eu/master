@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ViewChild } from "@angular/core";
+import { Component, ViewEncapsulation, ViewChild, ElementRef } from "@angular/core";
 import { CallApi } from "../../shared/swagger/api/CallApi";
 import { CallDTOBase } from "../../shared/swagger/model/CallDTO";
 import { ApplicationApi } from "../../shared/swagger/api/ApplicationApi";
@@ -11,7 +11,7 @@ import { SharedService } from "../../shared/shared.service";
 import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO, VoucherAssignmentAuxiliarDTOBase } from "../../shared/swagger";
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
 import { count } from "rxjs/operator/count";
-import { Paginator, MenuItem } from "primeng/primeng";
+import { Paginator, MenuItem, DataTable, TabView } from "primeng/primeng";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as FileSaver from "file-saver";
 
@@ -59,12 +59,16 @@ export class DgConnVoucherComponent {
   private municipalityMunicipality = null;
   private simulationRequest = null;
   
+  private indexTab = 0;
   private totalRecords: number = null;
   private page = 0;
   private sizePage = 20;
   private sortDirection = 'ASC';
   private sortField = 'euRank';
   private pageLinks: number = null;
+  private rowDisplayOptions = [20, 50, 100]
+  private columns = ['euRank','countryRank','selectionStatus','application.preSelectedFlag','country','municipalityName','issues','numApplications','application.status'];
+
   private loadingSimulation = false;
   private preSelectedEnabled = null;
   private confirmationModal = false;
@@ -72,31 +76,17 @@ export class DgConnVoucherComponent {
 
   private dateNumberPreList: string;
   private hourNumberPreList: string; 
-
   private dateNumberFreeze: string;
   private hourNumberFreeze: string; 
 
   private searchedMunicipality = null;
-
-  private rowDisplayOptions = [20, 50, 100]
-
   private selectedCountry = 'All';
 
-  private msgs = [];
-
-  private items: MenuItem[] = [
-    {
-        label: 'Next',
-        icon: 'fa-chevron-right'
-    },
-    {
-        label: 'Prev',
-        icon: 'fa-chevron-left'
-    }
-  ];
-
   @ViewChild("paginator") paginator: Paginator;
+  @ViewChild("tableVoucher") tableVoucher: DataTable;
+  @ViewChild("tabCalls") tabCalls: TabView;
   private downloadingExcel: boolean = false;
+  @ViewChild("municipalitySearch") municipalitySearch: ElementRef;
 
   constructor(private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
     private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, ) {
@@ -105,36 +95,74 @@ export class DgConnVoucherComponent {
         this.callsLoaded = true;
         this.calls = calls;
         if (this.calls.length > 0) {
-          this.callSelected = this.calls[0];
-          this.loadingSimulation = true;
+          /* this.callSelected = this.calls[0]; */
 
           this.route.queryParams.subscribe((queryParams) => {
-            console.log(queryParams);
-              var callId = queryParams['call'] || this.calls[0].id;
-              var country = queryParams['country'] || 'All';
-              var page = queryParams['page'] || this.page; 
-              if(page == 1){
+              var callId = typeof queryParams['call'] === 'undefined' ? this.calls[0].id : parseInt(queryParams['call']);
+              var country = typeof queryParams['country'] === 'undefined' ? 'All' : queryParams['country'];
+              var page = typeof queryParams['page'] === 'undefined' ? this.page : parseInt(queryParams['page']); 
+              
+              var size = typeof queryParams['size'] === 'undefined' ? this.sizePage : parseInt(queryParams['size']);
+              var sortField = typeof queryParams['sortField'] === 'undefined' ? 'euRank' : queryParams['sortField'];
+              var sortDirection = typeof queryParams['sortDirection'] === 'undefined' ? this.sortDirection : queryParams['sortDirection'];
+              var municipality = typeof queryParams['municipality'] === 'undefined' ? 'All' : queryParams['municipality'];
+
+              if(page < 0){
                 this.page = 0;
               }
-              var size = queryParams['size'] || this.sizePage;
-              var sortField = queryParams['sortField'] || 'euRank';
-              var sortDirection = queryParams['sortDirection'] || this.sortDirection;
-              var municipality = queryParams['municipality'] || 'All';
 
-              console.log(callId);
-              console.log(country);
-              console.log(page);
-              console.log(size);
-              console.log(sortField);
-              console.log(sortDirection);
+              if(size > 100){
+                this.sizePage = 100;
+              }
+              else if(size < 20){
+                this.sizePage = 20;
+              }
 
-              this.callSelected.id = callId;
+              if(!this.columns.some(x => x === sortField)){
+                sortField = this.columns[0];
+              }       
+
+              if(!this.calls.some(call => call.id === callId)){
+                this.callSelected = this.calls[0];
+              }else{
+                var index = this.calls.findIndex(call => call.id === callId);
+                this.callSelected = this.calls[index];
+              }
               this.page = page;
               this.sizePage = size;
               this.selectedCountry = country;
               this.searchedMunicipality = municipality;
               this.sortField = sortField;
-              this.sortDirection = sortDirection;
+              this.sortDirection = sortDirection.toUpperCase();
+
+              setTimeout(() => {
+                if(this.searchedMunicipality.toUpperCase() !== 'ALL'){
+                  this.municipalitySearch.nativeElement.value = this.searchedMunicipality;
+                }
+                this.tableVoucher.sortColumn = this.tableVoucher.columns.find(col => col.field === this.sortField);
+                this.tableVoucher.sortField = this.sortField;
+                this.tableVoucher.sortOrder = this.sortDirection === 'ASC' ? 1 : -1;
+                this.calls.forEach((element, _index) => {
+                  if(element.id === this.callSelected.id){
+                    var selectedTab = this.tabCalls.findSelectedTab();
+                    selectedTab.selected = false;
+                    this.tabCalls.tabs[_index].selected = true;
+                    return;
+                  }
+                });
+                this.tableVoucher.sortSingle();        
+              }, 200);
+
+              this.nutsApi.getNutsByLevel(0).subscribe((countries) => {
+                this.countries = <NutsDTOBase[]>countries;
+                this.countries.splice(0, 0, {id: 0, code: '0', label: 'All', level: 0, countryCode: "ALL", order: 1, sorting: 1});
+                countries.forEach((_country: NutsDTOBase, _index) => {
+                  if(_country.label == country){
+                    this.countrySelected = this.countries[_index];
+                    return;
+                  }
+                });
+              });
 
               this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.callSelected.id).subscribe((data: VoucherAssignmentAuxiliarDTO) => {
                 if(data != null){
@@ -162,19 +190,13 @@ export class DgConnVoucherComponent {
                 }       
                 else{
                   this.loadingSimulation = false;
+                  this.listAssignment = [];
                 }     
               })
-    
-              this.applicationApi.getApplicationsNotInvalidated(this.calls[0].id).subscribe((data) => {
+              this.applicationApi.getApplicationsNotInvalidated(this.callSelected.id).subscribe((data) => {
                 this.validApplications = data;
               })
-
-
-
           })
-
-        
-         
         }
         let i = 0;
         for (let call of this.calls) {
@@ -183,16 +205,16 @@ export class DgConnVoucherComponent {
           i++;
         }
       }
-    );
-    this.nutsApi.getNutsByLevel(0).subscribe((countries) => {
-      this.countries = <NutsDTOBase[]>countries;
-      this.countries.splice(0, 0, {id: 0, code: '0', label: 'All', level: 0, countryCode: "ALL", order: 1, sorting: 1});
-    });
+    ) 
+  }
+
+  filterTable(){
+    this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, municipality: this.searchedMunicipality, country: this.selectedCountry, page: this.page, size: this.sizePage, sortField : this.sortField, sortDirection: this.sortDirection} });
   }
 
   selectCountry(country: NutsDTOBase) {
     this.selectedCountry = country.label;
-    this.loadPage();
+    this.filterTable();
   }
 
   fillPaginator(response) {
@@ -202,7 +224,8 @@ export class DgConnVoucherComponent {
 
   searchByMunicipality(event) {
     if(event.keyCode == 13) {
-      this.loadPage();
+      this.searchedMunicipality = this.municipalitySearch.nativeElement.value;
+      this.filterTable();
     }
   }
 
@@ -226,13 +249,12 @@ export class DgConnVoucherComponent {
   paginate(event){
     this.simulationAssignment.unsubscribe();
     this.page = event.page;
-    this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, municipality: this.searchedMunicipality, country: this.selectedCountry, page: this.page, size: this.sizePage, sortField : this.sortField, sortDirection: this.sortDirection} });
-    //this.loadPage();
+    this.filterTable();
   }
 
   changeRowSelection(pageSize: number){
     this.sizePage = pageSize;
-    this.loadPage();
+    this.filterTable();
   }
 
   loadPage(){
@@ -282,12 +304,16 @@ export class DgConnVoucherComponent {
   sortTable(event){
     this.sortField = event.field;
     this.sortDirection = event.order === 1 ? 'ASC' : 'DESC';
-    this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, municipality: this.searchedMunicipality, country: this.selectedCountry, page: this.page+1, size: this.sizePage, sortField : this.sortField, sortDirection: this.sortDirection} });
-    //this.loadPage();
+    this.filterTable();
   }
 
   handleChange(event) {
-    this.loadingSimulation = true;
+    this.callSelected = this.calls[event.index];
+    console.log(this.callSelected);
+    this.sortField = 'euRank';
+    this.sortDirection = 'ASC';
+    this.filterTable();
+    /* this.loadingSimulation = true;
     this.sortField = 'euRank';
     this.sortDirection = 'ASC';
     this.listAssignment = [];
@@ -305,20 +331,12 @@ export class DgConnVoucherComponent {
     this.voucherApi.getVoucherAssignmentAuxiliarByCall(this.callSelected.id).subscribe((data: VoucherAssignmentDTO) => {  
       this.callVoucherAssignment = data;
       if(data == null){
-        this.simulateVoucherAssignment();
+        //this.simulateVoucherAssignment();
       }
       else{
         this.loadPage();
       }
-    })
-  }
-
-  show() {
-    if(this.msgs.length > 0){
-      this.msgs = [];
-    }
-    this.msgs.push({severity:'info', detail:'Simulation complete'});
-    setTimeout(() => this.msgs = [], 6000);
+    }) */
   }
 
   private displayInfo() {
@@ -335,7 +353,6 @@ export class DgConnVoucherComponent {
       this.simulationRequest = this.voucherApi.simulateVoucherAssignment(this.callSelected.id).subscribe((resp: ResponseDTO) => {
         this.displayConfirmingData = false;
         this.callVoucherAssignment = resp.data;
-        //this.show();
         this.loadPage();
         this.loadingSimulation = false;
       }, (error) => {

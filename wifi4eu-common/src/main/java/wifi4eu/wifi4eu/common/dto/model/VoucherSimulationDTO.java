@@ -138,5 +138,4 @@ public class VoucherSimulationDTO {
     public void setMunicipalityName(String municipalityName) {
         this.municipalityName = municipalityName;
     }
-
 }
