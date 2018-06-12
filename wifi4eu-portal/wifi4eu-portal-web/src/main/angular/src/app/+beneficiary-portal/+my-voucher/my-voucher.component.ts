@@ -45,13 +45,14 @@ export class MyVoucherComponent {
     private uploadDate: string[] = [];
     private uploadHour: string[] = [];
 
-    // Date supplier was selected
+    // getDateSring method properties
     private selectionDate: Date;
     private localeDate: Array<String>;
+    
+    // Properties for Datatable (TO BE COMPLETED)
     private supplierSelectedDates: Array<String> = [];
-
-    // Grant Agreement (TO BE COMPLETED)
     private grantAgreementDates: Array<String> = [];
+    private confirmButtonDisabled: boolean = true;
 
         /* -- voucherCompetitionState values --
     0 = There are no calls created
@@ -126,6 +127,8 @@ export class MyVoucherComponent {
                                                     this.mayors.push(mayor);
                                                     // FAKE - TO BE COMPLETED
                                                     this.grantAgreementDates.push(this.getStringDate(application.date));
+                                                    this.confirmButton();
+
                                                     if (application.id != 0) {
                                                         this.applications.push(application);
                                                     } else {
@@ -238,16 +241,34 @@ export class MyVoucherComponent {
         }
     }
 
+    /* TO BE COMPLETED */
+    /* Method that toggles if confirm network button is clickable */
+    private confirmButton() {
+        if(this.grantAgreementDates) {
+            if(this.applications) {
+                this.confirmButtonDisabled = false;
+            }
+        }
+    }
 
+    /* TO BE COMPLETED */
+    /* Confirm and send email to network installation company */ 
     private confirmInstallation() {
         console.log("Installation was confiremed");
     }
-
+    
+    /* Redirect to selected supplier details */
     private supplierDetails(event) {
         console.log("Municipality index is ", event);
         this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipalities[event].id]);
     }
-
+    
+    /* Get displayed string date from epoch number */
+    private getStringDate(epoch) {
+        this.selectionDate = new Date(epoch);
+        this.localeDate = this.selectionDate.toLocaleDateString().split(' ');
+        return this.localeDate[0];
+    }
     /* TO BE COMPLETED */
     private agreementDetails(event) {
         console.log("Agreement index is ", event);
@@ -257,12 +278,7 @@ export class MyVoucherComponent {
     /* TO BE COMPLETED */
     /* Method that returns when was grant agreement signed, fake for the moment */
 
-    /* Get displayed string date from epoch number */
-    private getStringDate(epoch) {
-    this.selectionDate = new Date(epoch);
-    this.localeDate = this.selectionDate.toLocaleDateString().split(' ');
-    return this.localeDate[0];
-  }
+
 
 // End of class export    
 }
