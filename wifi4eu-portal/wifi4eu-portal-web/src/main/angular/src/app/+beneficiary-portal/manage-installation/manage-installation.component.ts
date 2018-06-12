@@ -12,7 +12,6 @@ import {UxService} from '@ec-digit-uxatec/eui-angular2-ux-commons';
 import {MunicipalityApi} from "../../shared/swagger/api/MunicipalityApi";
 import {InstallationsiteApi} from "../../shared/swagger/api/InstallationsiteApi";
 import {BeneficiaryApi} from "../../shared/swagger/api/BeneficiaryApi";
-import {MayorApi} from "../../shared/swagger/api/MayorApi";
 import {RegistrationApi} from "../../shared/swagger/api/RegistrationApi";
 import {SearchParametersService} from "../../core/services/search-parameters.service";
 import {BeneficiaryService} from "../../core/services/beneficiary-service";
@@ -22,7 +21,7 @@ import {AccessPointBase} from "../../shared/swagger/model/AccessPoint";
 
 @Component({
     templateUrl: 'manage-installation.component.html',
-    providers: [MunicipalityApi, MayorApi, BeneficiaryApi, InstallationsiteApi, SearchParametersService, AccesspointsApi]
+    providers: [MunicipalityApi, BeneficiaryApi, InstallationsiteApi, SearchParametersService, AccesspointsApi]
 })
 
 
