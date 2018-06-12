@@ -119,7 +119,7 @@ export class SelectedSupplierDetailsComponent {
   
   /* Assign supplier to the beneficiary application */
   private saveAndNotify() {
-    this.router.navigate(['/beneficiary-portal/select-supplier', this.municipality.id]);
+    this.router.navigate(['/beneficiary-portal/my-voucher']);
   }
 
 // End of exported class
