@@ -2,6 +2,7 @@
 // Angular imports
 import { Component } from "@angular/core";
 import { LocalStorageService } from "angular-2-local-storage";
+import { Router } from '@angular/router';
 
 // DTO's imports
 import { UserDTOBase, RegistrationApi, RegistrationDTOBase, MayorApi, MayorDTOBase, CallApi, CallDTOBase, MunicipalityApi, MunicipalityDTOBase, ApplicationDTOBase, ApplicationApi } from "../../shared/swagger";
@@ -44,6 +45,13 @@ export class MyVoucherComponent {
     private uploadDate: string[] = [];
     private uploadHour: string[] = [];
 
+    // Date supplier was selected
+    private selectionDate: Date;
+    private localeDate: Array<String>;
+    private supplierSelectedDates: Array<String> = [];
+
+    // Grant Agreement (TO BE COMPLETED)
+    private grantAgreementDates: Array<String> = [];
 
         /* -- voucherCompetitionState values --
     0 = There are no calls created
@@ -61,8 +69,7 @@ export class MyVoucherComponent {
         private callApi: CallApi,
         private municipalityApi: MunicipalityApi,
         private applicationApi: ApplicationApi,
-
-       
+        private router: Router,
     ) {
         let storedUser = this.localStorage.get('user');
         this.user = storedUser ? JSON.parse(storedUser.toString()) : null;
@@ -105,6 +112,7 @@ export class MyVoucherComponent {
             (calls: CallDTOBase[]) => {
                 this.currentCall = calls[0];
                 for (let registration of registrations) {
+                    console.log("Registration is ", registration);
                     this.municipalityApi.getMunicipalityById(registration.municipalityId).subscribe(
                         (municipality: MunicipalityDTOBase) => {
                             if (municipality != null) {
@@ -116,11 +124,18 @@ export class MyVoucherComponent {
                                                     this.registrations.push(registration);
                                                     this.municipalities.push(municipality);
                                                     this.mayors.push(mayor);
+                                                    // FAKE - TO BE COMPLETED
+                                                    this.grantAgreementDates.push(this.getStringDate(application.date));
                                                     if (application.id != 0) {
                                                         this.applications.push(application);
                                                     } else {
                                                         this.applications.push(null);
                                                     }
+                                                    // console.log("Applications are ", this.applications);
+                                                    // console.log("Application date for first supplier is ", this.applications[0].date);
+                                                    this.supplierSelectedDates.push(this.getStringDate(application.date));
+                                                    console.log("Application DATES is ", this.supplierSelectedDates);
+                                                    // this.getStringDate(this.applications[].date);
                                                     var res = this.storedRegistrationQueues.filter((queue) => {
                                                         return registration.id == queue['idRegistration'];
                                                     })
@@ -184,6 +199,7 @@ export class MyVoucherComponent {
                                             this.loadingButtons.push(false);
                                             this.voucherCompetitionState = 0;
                                         }
+                                        console.log("Municipalities is ", this.municipalities);
                                     }
                                 );
                             }
@@ -221,5 +237,32 @@ export class MyVoucherComponent {
 
         }
     }
+
+
+    private confirmInstallation() {
+        console.log("Installation was confiremed");
+    }
+
+    private supplierDetails(event) {
+        console.log("Municipality index is ", event);
+        this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipalities[event].id]);
+    }
+
+    /* TO BE COMPLETED */
+    private agreementDetails(event) {
+        console.log("Agreement index is ", event);
+        // this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipalities[event].id]);
+    }
+
+    /* TO BE COMPLETED */
+    /* Method that returns when was grant agreement signed, fake for the moment */
+
+    /* Get displayed string date from epoch number */
+    private getStringDate(epoch) {
+    this.selectionDate = new Date(epoch);
+    this.localeDate = this.selectionDate.toLocaleDateString().split(' ');
+    return this.localeDate[0];
+  }
+
 // End of class export    
 }
