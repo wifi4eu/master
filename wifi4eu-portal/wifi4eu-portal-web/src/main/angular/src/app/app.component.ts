@@ -157,10 +157,10 @@ export class AppComponent {
                 })
             ];
             this.children[1] = [
-                new UxLayoutLink({
+                /* new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.suppPortal'),
                     url: '/supplier-portal/voucher'
-                }),
+                }), */
                 new UxLayoutLink({
                     label: this.menuTranslations.get('itemMenu.myAccount'),
                     url: '/supplier-portal/profile'
@@ -219,7 +219,7 @@ export class AppComponent {
                         this.router.navigateByUrl(String(publicRedirection));
                     }
                     this.sharedService.login(this.user);
-                    if (this.children.length == 6) {
+                    if (this.children.length == 5) {
                         this.updateHeader();
                     } else {
                         this.childrenInitialized.subscribe(() => this.updateHeader());

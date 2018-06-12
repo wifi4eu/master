@@ -23,11 +23,9 @@ export class HomeComponent {
             case 3:
                 this.router.navigateByUrl('/beneficiary-portal/profile');
                 break;
-			/*
             case 5:
-                this.router.navigateByUrl('/dgconn-portal');
+                this.router.navigateByUrl('/notfound');
                 break;
-			*/
             default:
                 let publicRedirection = this.localStorageService.get('public-redirection');
                 if (publicRedirection) {

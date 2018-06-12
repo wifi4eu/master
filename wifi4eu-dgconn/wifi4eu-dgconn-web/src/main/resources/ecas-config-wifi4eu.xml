@@ -11,7 +11,7 @@
     <!--<serviceResolver>eu.cec.digit.ecas.client.resolver.service.ReverseProxyAwareServiceResolver</serviceResolver>-->
 
 
-    <serverContextPath>/dashboard</serverContextPath>
+    <serverContextPath>${dgconn.context.name}</serverContextPath>
 
     <requestingUserDetails>true</requestingUserDetails>
 
@@ -19,10 +19,10 @@
     <extraGroupHandler>wifi4eu.wifi4eu.web.util.ecas.RbacEcasExtraGroupHandler</extraGroupHandler>
     -->
 
-    <ecasBaseUrl>${ecas.config.base.url}</ecasBaseUrl>
+    <ecasBaseUrl>${ecas.config.base.url.dgconn}</ecasBaseUrl>
     <assuranceLevel>${ecas.config.assuranceLevel}</assuranceLevel>
     <serverProtocol>${schemes}</serverProtocol>
-    <cas:serverName>${ecas.server.address}</cas:serverName>
+    <cas:serverName>${ecas.server.dgconn.address}</cas:serverName>
     <serverPort>${ecas.server.port}</serverPort>
     <serverSSLPort>${ecas.server.port}</serverSSLPort>
 

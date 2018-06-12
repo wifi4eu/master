@@ -152,7 +152,7 @@
   </profiles>
 
   <build>
-    <finalName>dashboard</finalName>
+    <finalName>${dgconn.name}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
