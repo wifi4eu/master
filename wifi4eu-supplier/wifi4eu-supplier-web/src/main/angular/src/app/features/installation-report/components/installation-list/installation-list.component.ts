@@ -112,10 +112,6 @@ export class InstallationListComponent implements OnInit {
                 successBanner.scrollIntoView({ behavior: "smooth" });
                 this.fillBeneficiaryDropdown();
                 this.beneficiaryService.beneficiarySelected = response.data;
-                // ACTUALIZAR EL LISTADO DE LOS BENEFICIARIES. el listado se tiene que actualizar al darle al botón
-                // this.onSearch();
-                // this.beneficiarySuggestions = response.data;
-                // this.beneficiarySelected.wifiIndicator = true;
             }
         }, error => {
             console.log(error);
@@ -139,22 +135,17 @@ export class InstallationListComponent implements OnInit {
         console.log("rejection : "+this.beneficiaryService.beneficiarySelected.installationSiteRejection);
         if (this.beneficiaryService.beneficiarySelected){
             if (this.beneficiaryService.beneficiarySelected.installationSiteConfirmation){
-                console.log("1");
                 return true;
             }
             if (this.beneficiaryService.beneficiarySelected.installationSiteSubmission && this.beneficiaryService.beneficiarySelected.installationSiteRejection == null){
-                console.log("2");
                 return true;
             } else {
                 if (this.beneficiaryService.beneficiarySelected.installationSiteRejection && (this.beneficiaryService.beneficiarySelected.installationSiteSubmission > this.beneficiaryService.beneficiarySelected.installationSiteRejection)){
-                    console.log("3");
                     return true;
                 }
             }
-            console.log("4");
             return false;
         }
-        console.log("5");
         return true;
     }
 
