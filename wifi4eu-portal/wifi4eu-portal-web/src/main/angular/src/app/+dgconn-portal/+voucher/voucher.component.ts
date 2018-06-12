@@ -106,6 +106,9 @@ export class DgConnVoucherComponent {
               var sortField = typeof queryParams['sortField'] === 'undefined' ? 'euRank' : queryParams['sortField'];
               var sortDirection = typeof queryParams['sortDirection'] === 'undefined' ? this.sortDirection : queryParams['sortDirection'];
               var municipality = typeof queryParams['municipality'] === 'undefined' ? 'All' : queryParams['municipality'];
+              if(municipality === ""){
+                municipality == 'All';
+              }
 
               if(page < 0){
                 this.page = 0;
