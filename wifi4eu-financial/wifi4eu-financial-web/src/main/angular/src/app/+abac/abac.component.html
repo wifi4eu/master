@@ -53,42 +53,67 @@
     <br/>
     <span>Export/Import Data</span>
     <br/><br/><br/>
-    <div class="ui-g">
-        <h1 class="beneficiaryTitle">Import Beneficiaries Info.</h1>
-        <div class="ui-g-12">
-            <span class="input-group-btn">
-                <input type="file" (change)="importLegalEntityF($event)" accept=".json,application/json"/>
-                <!--button class="btn btn-primary" (click)="importLegalEntityF()" type="button">Import Beneficiaris Info.</button-->
-            </span>
-        </div>
-    </div>
-    <div class="ui-g">
-        <h1 class="beneficiaryTitle">Import Budgetary Commitment Info.</h1>
-        <div class="ui-g-12">
-            <span class="input-group-btn">
-                <input type="file" (change)="importBudgetaryCommitment($event)" accept=".json,application/json"/>
-                <!--<button class="btn btn-primary" (click)="importBudgetaryCommitment()" type="button">Import BC Info.</button>-->
-            </span>
-        </div>
-    </div>
-    <div class="container font" style="margin-top: 5em;">
-        <div class="ui-g-12">
-            <span class="input-group-btn">
-                <button class="btn btn-primary" (click)="exportLegalEntityFBCValidate()" type="button">Export Lef and Bc Validation</button>
-            </span>
-        </div>
-    </div>
-    <br/><br/><br/>
+    <!--<div class="ui-g">-->
+        <!--<h1 class="beneficiaryTitle">Import Beneficiaries Info.</h1>-->
+        <!--<div class="ui-g-12">-->
+            <!--<span class="input-group-btn">-->
+                <!--<input type="file" (change)="importLegalEntityF($event)" accept=".json,application/json"/>-->
+                <!--&lt;!&ndash;button class="btn btn-primary" (click)="importLegalEntityF()" type="button">Import Beneficiaris Info.</button&ndash;&gt;-->
+            <!--</span>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="ui-g">-->
+        <!--<h1 class="beneficiaryTitle">Import Budgetary Commitment Info.</h1>-->
+        <!--<div class="ui-g-12">-->
+            <!--<span class="input-group-btn">-->
+                <!--<input type="file" (change)="importBudgetaryCommitment($event)" accept=".json,application/json"/>-->
+                <!--&lt;!&ndash;<button class="btn btn-primary" (click)="importBudgetaryCommitment()" type="button">Import BC Info.</button>&ndash;&gt;-->
+            <!--</span>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="container font" style="margin-top: 5em;">-->
+        <!--<div class="ui-g-12">-->
+            <!--<span class="input-group-btn">-->
+                <!--<button class="btn btn-primary" (click)="exportLegalEntityFBCValidate()" type="button">Export Lef and Bc Validation</button>-->
+            <!--</span>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<br/><br/><br/>-->
     <font size="2" color="black" align="left"><b>Legal Entities (LEF)</b></font>
     <br/><br/><br/>
-    <a href="#" class="myButton">Create Legal Entities to in ABAC from WIFI4EU files <br/><br/> <font size="2" color="black" align="left">Based on the file given by Wifi4eu portal, this button will import <br/> all parameters necessary for the Wifi4eu Interface to create the <br/> data. Wifi4eu will launch request in ABAC.</font></a>
-    <a href="#" class="myButton">Check Statuts of LEFs in ABAC <br/><br/> <font size="2" color="black" align="left">This button will check in ABAC the status of the LEFs for wich <br/> request creatation. In case there is a regected LEF, it will display <br/> a screen (country + municility + ABAC ref) so tou can provide <br/> the correct ABAC reference number for all regected LEFs.It will <br/> create a file  wich you can download a later must import into <br/> the Wifi4eu Portal.</font></a>
+    <table style="width:100%">
+        <tr style="height:100px">
+            <th align="center" valign="top">
+                <!--<a href="#" class="myButton">Import Final list from DG BUDG <br/><br/> <font size="2" color="black" align="left"> This button will import the municipalities as completed by DG <br/> BUDG into the portal. If a municipality exists olready in ABAC, <br/> this imported file will give the ABAC reference number to the <br/> portal.</font></a>-->
+                <input type="file" class="myButton" (change)="importLegalEntityF($event)" accept=".json,application/json">Create Legal Entities to in ABAC from WIFI4EU files <br/><br/> <font size="2" color="black" align="left">Based on the file given by Wifi4eu portal, this button will import <br/> all parameters necessary for the Wifi4eu Interface to create the <br/> data. Wifi4eu will launch request in ABAC.</font>
+
+                <!--<a href="#" class="myButton">Import Final list from DG BUDG <br/><br/> <font size="2" color="black" align="left"> This button will import the municipalities as completed by DG <br/> BUDG into the portal. If a municipality exists olready in ABAC, <br/> this imported file will give the ABAC reference number to the <br/> portal.</font></a>-->
+                <!--<input type="file" class="myButton" (change)="importLegalEntityF($event)" style="display:none" accept=".json,application/json">-->
+
+                <!--<button style="display:block;width:120px; height:30px;" onclick="document.getElementById('getFile').click()">Your text here</button>-->
+                <!--<input type='file' id="getFile" style="display:none">-->
+            </th>
+            <th align="center" valign="top">
+                <!--<a href="#" class="myButton">Check Statuts of LEFs in ABAC <br/><br/> <font size="2" color="black" align="left">This button will check in ABAC the status of the LEFs for wich <br/> request creatation. In case there is a regected LEF, it will display <br/> a screen (country + municility + ABAC ref) so tou can provide <br/> the correct ABAC reference number for all regected LEFs.It will <br/> create a file  wich you can download a later must import into <br/> the Wifi4eu Portal.</font></a>-->
+                <a class="myButton" (click)="exportLegalEntityFBCValidate()" type="button">Check Statuts of LEFs in ABAC <br/><br/> <font size="2" color="black" align="left">This button will check in ABAC the status of the LEFs for wich <br/> request creatation. In case there is a regected LEF, it will display <br/> a screen (country + municility + ABAC ref) so tou can provide <br/> the correct ABAC reference number for all regected LEFs.It will <br/> create a file  wich you can download a later must import into <br/> the Wifi4eu Portal.</font></a>
+            </th>
+        </tr>
+    </table>
     <br/><br/><br/>
     <font size="2" color="black" align="left"><b>Budgetary Commitment (BC)</b></font>
     <br/><br/><br/>
-    <a href="#" class="myButton">Create BC <br/><br/> <font size="2" color="black" align="left">This button will import all parameters necessary for the Wifi4eu <br/> Interface to create the data and it will create the BC in ABAC.</font></a>
-    <a href="#" class="myButton">Check Statuts of BCs in ABAC <br/><br/> <font size="2" color="black" align="left">Once create by the Wifi4eu Interface and validated by your <br/> AOSD, clicking on this button will allow you to retrieve the data <br/> in a file so to updated the portal.</font></a>
-
+    <table style="width:100%">
+        <tr style="height:100px">
+            <th align="center" valign="top">
+                <!--<a href="#" class="myButton">Import Final list from DG BUDG <br/><br/> <font size="2" color="black" align="left"> This button will import the municipalities as completed by DG <br/> BUDG into the portal. If a municipality exists olready in ABAC, <br/> this imported file will give the ABAC reference number to the <br/> portal.</font></a>-->
+                <input type="file" class="myButton" (change)="importBudgetaryCommitment($event)" accept=".json,application/json"><font align="left">Create BC</font> <br/><br/> <font size="2" color="black" align="left">This button will import all parameters necessary for the Wifi4eu <br/> Interface to create the data and it will create the BC in ABAC.</font>
+                <!--<a href="#" class="myButton">Create BC <br/><br/> <font size="2" color="black" align="left">This button will import all parameters necessary for the Wifi4eu <br/> Interface to create the data and it will create the BC in ABAC.</font></a>-->
+            </th>
+            <th align="center" valign="top">
+                <a href="#" class="myButton">Check Statuts of BCs in ABAC <br/><br/> <font size="2" color="black" align="left">Once create by the Wifi4eu Interface and validated by your <br/> AOSD, clicking on this button will allow you to retrieve the data <br/> in a file so to updated the portal.</font></a>
+            </th>
+        </tr>
+    </table>
 </div>
 <!--</body>-->
 </html>
