@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
+import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
@@ -191,6 +193,10 @@ public class ApplicationService {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
     }
 
+    public ApplicationDTO getApplicationByRegistrationId(int callId, int registrationsId){
+        return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationsId));
+    }
+
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(int callId) {
         List<ApplicationVoucherInfoDTO> applicationsVoucherInfo = new ArrayList<>();
         List<ApplicationDTO> applications = applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdOrderByDateAsc(callId)));
@@ -220,6 +226,39 @@ public class ApplicationService {
             }
         }
         return appVoucherInfoDTO;
+    }
+
+    public List<ApplicationDTO> getApplicationsByRegistrationNotInvalidated(int callId) {
+        return  applicationMapper.toDTOList(applicationRepository.findApplicationsByRegistrationNotInvalidated(callId));
+    }
+
+    public Integer countApplicationsNotInvalidated(int callId) {
+      return applicationRepository.findApplicationsNotInvalidated(callId);
+    }
+
+    public List<ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
+        return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateAsc(callId));
+    }
+
+    public List<ApplicationDTO> findByCallIdOrderByDateBeforeCallDateAsc(int callId, long startDate){
+        return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateBAsc(callId, startDate));
+
+    }
+
+    public List<ApplicationDTO> getApplicationByCallAndCountry(int callId, String country, long date) {
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsByCountry(callId, country, date));
+    }
+
+    public List<ApplicationDTO> getApplicationsCountryNameCall(int callId, String country) {
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsCountry(country, callId));
+    }
+
+    public List<Integer> getApplicationsIdByCountryAndNameAndCall(int callId, String country, long date){
+        return applicationRepository.findIdApplications(country, callId, date);
+    }
+
+    public Integer countApplicationWithSameMunicipalityName(int lauId, int callId, long date){
+        return applicationRepository.countApplicationsBySameMunicipality(lauId, callId, date);
     }
 
     public List<ApplicantListItemDTO> findDgconnApplicantsList(Integer callId, String country, String name, PagingSortingDTO pagingSortingData) {
@@ -324,30 +363,28 @@ public class ApplicationService {
                 }
                 break;
         }
+
+        setIssues(applicantsList);
+
+        return applicantsList;
+    }
+
+    private void setIssues(List<ApplicantListItemDTO> applicantsList) {
+
         for (int i = 0; i < applicantsList.size(); i++) {
             ApplicantListItemDTO applicant = applicantsList.get(i);
-            List<ApplicationDTO> applications = applicationMapper.toDTOList(applicationRepository.findByCallIdAndLauId(callId, applicant.getLauId()));
-            if (applicant.getCounter() == 1 || applicant.getCounter() == 0) {
-                ApplicationDTO validApplication = null;
-                for (ApplicationDTO application : applications) {
-                    if (application.getStatus() != ApplicationStatus.KO.getValue()) {
-                        validApplication = application;
-                    }
-                }
-                if (validApplication != null) {
-                    if (applicant.getStatus() == -1 || applicant.getApplicationDate() == -1) {
-                        applicant.setStatus(validApplication.getStatus());
-                        applicant.setApplicationDate(validApplication.getDate());
-                    }
-                    RegistrationDTO registration = registrationService.getRegistrationById(validApplication.getRegistrationId());
-                    applicant.setIssueStatus(registrationService.getRegistrationIssue(registration));
-                } else {
-                    applicant.setStatus(ApplicationStatus.KO.getValue());
-                }
+            List<ApplicationIssueUtil> applicationIssueUtilList = registrationService.getRegistrationIssue(applicant.getLauId());
+            if(applicant.getCounter() == 0 && applicationIssueUtilList.size() > 1) {
+                applicant.setIssueStatus(0);
+                applicant.setStatus(ApplicationStatus.KO.getValue());
+            } else if(applicant.getCounter() == 0 && applicationIssueUtilList.size() == 1){
+                applicant.setIssueStatus(registrationService.getIssues(applicationIssueUtilList));
+            } else {
+                applicant.setIssueStatus(registrationService.getIssues(applicationIssueUtilList));
+                applicant.setStatus(registrationService.getStatus(applicationIssueUtilList));
             }
             applicantsList.set(i, applicant);
         }
-        return applicantsList;
     }
 
     public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
@@ -356,9 +393,14 @@ public class ApplicationService {
         if(registration.getAllFilesFlag() != 1){
             throw new AppException();
         }
-        applicationDTO.setStatus(ApplicationStatus.OK.getValue());
-        applicationDTO.setInvalidateReason(null);
-        ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
+        if(applicationDBO == null){
+            throw new AppException("Incorrect application id");
+        }
+
+        applicationDBO.setStatus(ApplicationStatus.OK.getValue());
+        applicationDBO.setInvalidateReason(null);
+        ApplicationDTO validatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
         if (registration != null) {
@@ -381,8 +423,13 @@ public class ApplicationService {
     }
 
     public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO) {
-        applicationDTO.setStatus(ApplicationStatus.KO.getValue());
-        ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
+        ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
+        if(applicationDBO == null){
+            throw new AppException("Incorrect application id");
+        }
+        applicationDBO.setStatus(ApplicationStatus.KO.getValue());
+        applicationDBO.setInvalidateReason(applicationDBO.getInvalidateReason());
+        ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());
         if (registration != null) {
@@ -405,7 +452,8 @@ public class ApplicationService {
     }
 
     public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application) {
-        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(application.getRegistrationId());
+        ApplicationDTO applicationDB = applicationMapper.toDTO(applicationRepository.findOne(application.getId()));
+        List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(applicationDB.getRegistrationId());
         boolean pendingFollowup = false;
         for (LegalFileCorrectionReasonDTO legalFile : legalFiles) {
             if (legalFile.getRequestCorrection() && legalFile.getCorrectionReason() != null) {
@@ -413,17 +461,17 @@ public class ApplicationService {
                 break;
             }
         }
-        RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
+        RegistrationDTO registration = registrationService.getRegistrationById(applicationDB.getRegistrationId());
         if (pendingFollowup) {
             registration.setAllFilesFlag(0);
-            application.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
+            applicationDB.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());
         } else {
             registration.setAllFilesFlag(1);
-            application.setStatus(ApplicationStatus.HOLD.getValue());
+            applicationDB.setStatus(ApplicationStatus.HOLD.getValue());
         }
-        application.setInvalidateReason(null);
+        applicationDB.setInvalidateReason(null);
         registrationService.saveRegistration(registration);
-        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(application)));
+        return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
     }
 
     public List<ApplicationDTO> getApplicationsByCallId(int callId) {
@@ -432,7 +480,7 @@ public class ApplicationService {
 
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(int callId, int lauId) {
         List<ApplicationDTO> applications = new ArrayList<>();
-        for (ApplicationDTO application : getApplicationsByCallId(callId)) {
+        for (ApplicationDTO application : getApplicationsByCallIdAndLauIdCustom(callId, lauId)) {
             RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
             if (registration != null) {
                 MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipalityId());
@@ -444,6 +492,11 @@ public class ApplicationService {
             }
         }
         return applications;
+    }
+
+    //Optimal
+    private List<ApplicationDTO> getApplicationsByCallIdAndLauIdCustom(int callId, int lauId) {
+        return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByCallIdAndLauIdOrderByDateAsc(callId, lauId)));
     }
 
     public byte[] exportExcelDGConnApplicantsList(Integer callId, String country) {
