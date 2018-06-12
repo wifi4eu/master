@@ -1764,3 +1764,48 @@ input.email_profile::-ms-clear{
   font-size: 1.2em;
   font-weight: bold;
 }
+
+
+
+// My-voucher component styles
+.my-voucher-datatable {
+  thead tr th .ui-column-title {
+    color: #74776B;
+    font-weight: bold;
+    font-size: 13px;
+  }
+
+  thead tr:first-child th span {
+    color: #55574E;
+    font-size: 14px;
+  }
+
+  td {
+    font-size: 1.2em;
+    color: #5c5c5c;
+    text-align: left;
+    margin-top: 1.4em;
+    margin-bottom: 0.5em;    
+  }
+  
+  .align-self-center {
+    align-self: baseline; 
+    padding: 0.3em;
+  }
+  
+  .confirm-network-button {
+    padding: 10px;
+    color: #D9D9D6;
+    // font-weight: bold;
+  }
+
+  @media screen and (max-width : 514px) {
+    td {
+      margin: 0;
+      padding: 0;
+    }
+    ui-column-title {
+      
+    }
+  }
+}
