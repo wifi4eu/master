@@ -5,6 +5,7 @@ import wifi4eu.wifi4eu.entity.municipality.Municipality;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Table(name = "registrations")
@@ -77,11 +78,14 @@ public class Registration {
     @Column(name = "action_taken")
     private int actionTaken;
 
-    @Column(name = "beneficiary_indicator")
-    private boolean beneficiaryIndicator;
+    @Column(name = "is_submission")
+    private Date installationSiteSubmission;
 
-    @Column(name = "wifi_indicator")
-    private boolean wifiIndicator;
+    @Column(name = "is_rejection")
+    private Date installationSiteRejection;
+
+    @Column(name = "is_confirmation")
+    private Date installationSiteConfirmation;
 
     @Column(name = "conformity")
     private boolean conformity;
@@ -95,7 +99,8 @@ public class Registration {
     public Registration() {
     }
 
-    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, int organisation_id, String association_name, int idStatusBeneficiary, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, boolean beneficiaryIndicator, boolean wifiIndicator, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered, int idPm, int idBPM) {
+
+    public Registration(User user, Municipality municipality, String role, int status, String legalFile1, String legalFile2, String legalFile3, String legalFile4, String ipRegistration, int organisation_id, String association_name, int idStatusBeneficiary, int idUserPM, int idUserBPM, boolean compliance, String shortMemberState, String memberState, String call, int actionToBeTaken, int actionTaken, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation, boolean conformity, Timestamp firstFalseCheck, Timestamp dateRegistered) {
         this.user = user;
         this.municipality = municipality;
         this.role = role;
@@ -108,19 +113,44 @@ public class Registration {
         this.organisation_id = organisation_id;
         this.association_name = association_name;
         this.idStatusBeneficiary = idStatusBeneficiary;
-        this.idUserPM = idPm;
-        this.idUserBPM = idBPM;
+        this.idUserPM = idUserPM;
+        this.idUserBPM = idUserBPM;
         this.compliance = compliance;
         this.shortMemberState = shortMemberState;
         this.memberState = memberState;
         this.call = call;
         this.actionToBeTaken = actionToBeTaken;
         this.actionTaken = actionTaken;
-        this.beneficiaryIndicator = beneficiaryIndicator;
-        this.wifiIndicator = wifiIndicator;
+        this.installationSiteSubmission = installationSiteSubmission;
+        this.installationSiteRejection = installationSiteRejection;
+        this.installationSiteConfirmation = installationSiteConfirmation;
         this.conformity = conformity;
         this.firstFalseCheck = firstFalseCheck;
         this.dateRegistered = dateRegistered;
+    }
+
+    public Date getInstallationSiteSubmission() {
+        return installationSiteSubmission;
+    }
+
+    public void setInstallationSiteSubmission(Date installationSiteSubmission) {
+        this.installationSiteSubmission = installationSiteSubmission;
+    }
+
+    public Date getInstallationSiteRejection() {
+        return installationSiteRejection;
+    }
+
+    public void setInstallationSiteRejection(Date installationSiteRejection) {
+        this.installationSiteRejection = installationSiteRejection;
+    }
+
+    public Date getInstallationSiteConfirmation() {
+        return installationSiteConfirmation;
+    }
+
+    public void setInstallationSiteConfirmation(Date installationSiteConfirmation) {
+        this.installationSiteConfirmation = installationSiteConfirmation;
     }
 
     public Integer getId() {
@@ -273,22 +303,6 @@ public class Registration {
 
     public void setActionTaken(int actionTaken) {
         this.actionTaken = actionTaken;
-    }
-
-    public boolean isBeneficiaryIndicator() {
-        return beneficiaryIndicator;
-    }
-
-    public void setBeneficiaryIndicator(boolean beneficiaryIndicator) {
-        this.beneficiaryIndicator = beneficiaryIndicator;
-    }
-
-    public boolean isWifiIndicator() {
-        return wifiIndicator;
-    }
-
-    public void setWifiIndicator(boolean wifiIndicator) {
-        this.wifiIndicator = wifiIndicator;
     }
 
     public boolean isConformity() {

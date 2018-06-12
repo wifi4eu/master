@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.entity.beneficiary;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Entity
 public class BeneficiaryDisplayedList {
@@ -9,16 +10,44 @@ public class BeneficiaryDisplayedList {
     @Id
     private Integer id;
 
-    private boolean wifiIndicator;
+    private Date installationSiteSubmission;
+    private Date installationSiteRejection;
+    private Date installationSiteConfirmation;
 
     public BeneficiaryDisplayedList(){
 
     }
 
-    public BeneficiaryDisplayedList(String name, Integer id, boolean wifiIndicator){
+    public BeneficiaryDisplayedList(String name, Integer id, Date installationSiteSubmission, Date installationSiteRejection, Date installationSiteConfirmation) {
         this.name = name;
         this.id = id;
-        this.wifiIndicator = wifiIndicator;
+        this.installationSiteSubmission = installationSiteSubmission;
+        this.installationSiteRejection = installationSiteRejection;
+        this.installationSiteConfirmation = installationSiteConfirmation;
+    }
+
+    public Date getInstallationSiteSubmission() {
+        return installationSiteSubmission;
+    }
+
+    public void setInstallationSiteSubmission(Date installationSiteSubmission) {
+        this.installationSiteSubmission = installationSiteSubmission;
+    }
+
+    public Date getInstallationSiteRejection() {
+        return installationSiteRejection;
+    }
+
+    public void setInstallationSiteRejection(Date installationSiteRejection) {
+        this.installationSiteRejection = installationSiteRejection;
+    }
+
+    public Date getInstallationSiteConfirmation() {
+        return installationSiteConfirmation;
+    }
+
+    public void setInstallationSiteConfirmation(Date installationSiteConfirmation) {
+        this.installationSiteConfirmation = installationSiteConfirmation;
     }
 
     public String getName(){
@@ -37,11 +66,4 @@ public class BeneficiaryDisplayedList {
         this.id = id;
     }
 
-    public boolean isWifiIndicator() {
-        return wifiIndicator;
-    }
-
-    public void setWifiIndicator(boolean wifiIndicator) {
-        this.wifiIndicator = wifiIndicator;
-    }
 }

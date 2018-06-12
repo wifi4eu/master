@@ -29,7 +29,8 @@
                 </p>
             </div>
             <div class="col-md-4 text-right btn-flat-link">
-                <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" [isDisabled]="!isBeneficiarySelected || beneficiarySelected.wifiIndicator" (click)="openUpdateInstallationSite()">+ {{ 'installationReport.addSite' | translate }}</ux-button>
+                    <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" [isDisabled]="!isBeneficiarySelected || disablePermissionsIndicator()" (click)="openUpdateInstallationSite()">+ {{ 'installationReport.addSite' | translate }}</ux-button>
+                <!-- <ux-button [isFlat]="true" [isLarge]="true" typeClass="link" [isDisabled]="!isBeneficiarySelected || beneficiarySelected.wifiIndicator" (click)="openUpdateInstallationSite()">+ {{ 'installationReport.addSite' | translate }}</ux-button> -->
             </div>
         </div>
         <p-dataTable [value]="installationSites" [rows]="searchParametersService.parameters.delta" [paginator]="true" [rowsPerPageOptions]="[5,10,20]"
@@ -63,7 +64,7 @@
 
     <div class="row">
         <div class="col-md-3 offset-md-9 confirm-installation">
-            <ux-button typeClass="primary" (click)="openConfirmInstallation()" [isLarge]="true" [isDisabled]="!isBeneficiarySelected || beneficiarySelected.wifiIndicator">{{ 'installationReport.confirmInstallation' | translate }}</ux-button>
+            <ux-button typeClass="primary" (click)="openConfirmInstallation()" [isLarge]="true" [isDisabled]="!isBeneficiarySelected || disablePermissionsIndicator()">{{ 'installationReport.confirmInstallation' | translate }}</ux-button>
             <p>{{ 'installationReport.confirmationText' | translate}}</p>
         </div>
     </div>

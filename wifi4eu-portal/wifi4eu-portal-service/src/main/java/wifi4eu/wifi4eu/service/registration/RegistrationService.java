@@ -94,17 +94,26 @@ public class RegistrationService {
                 if (!checkPermissionsRegistrations(registration))
                     return permissionChecker.getAccessDeniedResponse();
 
-                if (registration != null && registration.isWifiIndicator()) {
+                // take origin submitted date
+                if (registration != null && registration.getInstallationSiteSubmission() != null){
+                // if (registration != null && registration.isWifiIndicator()) {
                     boolean beneficiaryIndicator = (boolean) map.get("beneficiaryIndicator");
 
-                    //we save the new indicators
-                    registration.setWifiIndicator(beneficiaryIndicator ? true : false);
-                    registration.setBeneficiaryIndicator(beneficiaryIndicator);
+                    if (beneficiaryIndicator) {
+                        registration.setInstallationSiteConfirmation(new java.sql.Date(new Date().getTime()));
+                    } else {
+                        registration.setInstallationSiteRejection(new java.sql.Date(new Date().getTime()));
+                    }
+                    // we save the new indicators
+                    // registration.setWifiIndicator(beneficiaryIndicator ? true : false);
+                    // registration.setBeneficiaryIndicator(beneficiaryIndicator);
                     if (sendEmailOnConfirmOrReject(registration)) {
                         registrationRepository.save(registration);
                         //if everything goes ok it's a success
                         response.setSuccess(true);
-                        response.setData("Beneficiary Indicator updated successfully");
+                        MunicipalityDTO municipality = municipalityService.getMunicipalityById(registration.getMunicipality().getId());
+                        response.setData(municipality);
+                        // response.setData("Beneficiary Indicator updated successfully");
                         return response;
                     }
 
@@ -158,18 +167,23 @@ public class RegistrationService {
             locale = new Locale(lang);
         }
         //if beneficiary indicator and wifi indicator are true we send a confirmation email
-        if (registration.isBeneficiaryIndicator() && registration.isWifiIndicator()) {
+        if (registration.getInstallationSiteConfirmation() != null) {
             cnsManager.sendInstallationConfirmationFromBeneficiary(email, name, beneficiaryName, locale);
             return true;
-        } else if (!registration.isBeneficiaryIndicator() && !registration.isWifiIndicator()) {
-            //if beneficiary indicator and wifi indicator are false we send a rejection email
-            User user = registration.getUser();
-            String ccName = user.getName();
-            String ccEmail = user.getEmail();
-            cnsManager.sendInstallationRejectionFromBeneficiary(email, name, beneficiaryName, ccEmail,
-                    ccName, locale);
-            return true;
+        } else {
+            Date dateSubmission = registration.getInstallationSiteSubmission();
+            Date dateReject = registration.getInstallationSiteRejection();
+            if (dateSubmission.before(dateReject)) {
+                // if rejection date is bigger than submission date, send email
+                User user = registration.getUser();
+                String ccName = user.getName();
+                String ccEmail = user.getEmail();
+                cnsManager.sendInstallationRejectionFromBeneficiary(email, name, beneficiaryName, ccEmail,
+                        ccName, locale);
+                return true;
+            }
         }
+
         return false;
     }
 
