@@ -362,8 +362,8 @@ export class VoucherComponent {
         );
     }
 
-    private selectWifiInstallation() {
-        this.router.navigate(['/beneficiary-portal/select-supplier/', this.registration.municipalityId], {relativeTo: this.route});
+    private selectWifiInstallation(i) {
+        this.router.navigate(['/beneficiary-portal/select-supplier/', this.registrations[i].municipalityId], {relativeTo: this.route});
     }
 
     /* Get displayed string date from epoch number */
