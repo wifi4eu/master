@@ -172,12 +172,11 @@ public class VoucherService {
         else if((!municipality.equalsIgnoreCase("All") && !municipality.isEmpty()) && (!country.equalsIgnoreCase("All"))){
             simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByEuRank(voucherAssignmentId, country, municipality, pageable);
         }
-
         List<VoucherSimulationDTO> listSimulation = voucherSimulationMapper.toDTOList(Lists.newArrayList(simulationPaged.getContent()));
         for (VoucherSimulationDTO voucherSimulation : listSimulation) {
-            MunicipalityDTO municipalityDTO = municipalityService.getMunicipalityById(voucherSimulation.getMunicipality());
-            voucherSimulation.setMunicipalityName(municipalityDTO.getName());
-            voucherSimulation.setLau(municipalityDTO.getLauId());
+            SimpleMunicipalityDTO simpleMunicipalityDTO = simpleMunicipalityService.getMunicipalityById(voucherSimulation.getMunicipality());
+            voucherSimulation.setMunicipalityName(simpleMunicipalityDTO.getName());
+            voucherSimulation.setLau(simpleMunicipalityDTO.getLau());
         }
         return new ResponseDTO(true, listSimulation, simulationPaged.getTotalElements(), null);
     }

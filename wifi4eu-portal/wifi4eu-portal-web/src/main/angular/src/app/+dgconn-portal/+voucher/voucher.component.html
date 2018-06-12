@@ -14,9 +14,9 @@
       </div>
       <div class="row">
         <div class="col-md-12">
-          <p-tabView (onChange)="handleChange($event)" class="voucher_call_tabs">
+          <p-tabView #tabCalls (onChange)="handleChange($event)" class="voucher_call_tabs">
             <p-tabPanel *ngFor="let call of calls; let i=index" [header]="'Call '+(i+1)" [@opacityTransition]>
-              <div class="row" style="    margin-bottom: 45px;margin-top: 18px;">
+              <div class="row" style="margin-bottom: 45px;margin-top: 18px;">
                 <div class="col-md-4 col-sm-12">
                   <h6>{{'dgConn.status' | translate}}</h6>
                   <div style="height: 155px; width: 155px; padding-top: 40px;" class="voucher-status simulation"
@@ -29,7 +29,7 @@
                       <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 1 && !callVoucherAssignment?.hasPreListSaved" [innerHTML]="'dgConn.voucherAssignment.status.simulation' | translate"></span>
                       <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 2 || (callVoucherAssignment?.hasPreListSaved && !callVoucherAssignment?.hasFreezeListSaved)" [innerHTML]="'dgConn.voucherAssignment.status.preSelection' | translate"></span>
                       <span style="font-size: 1.2rem;margin-top: 10px;" *ngIf="callVoucherAssignment?.status == 3 || callVoucherAssignment?.hasFreezeListSaved" [innerHTML]="'dgConn.voucherAssignment.status.finalList' | translate"></span>
-                  </div>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-8 col-sm-12">
@@ -112,7 +112,7 @@
                   </select>
                 </div>
                 <div class="col-md-4">
-                  <input type="text" id="municipalitySearch" (keydown)="searchByMunicipality($event)" [(ngModel)]="searchedMunicipality" name="searchedMunicipality">
+                  <input type="text" id="municipalitySearch" #municipalitySearch (keydown)="searchByMunicipality($event)" name="searchedMunicipality">
                 </div>
                 <div class="col-md-4">
                   <button type="button" class="btn btn-primary simulate-button" [disabled]="callVoucherAssignment?.hasFreezeListSaved" (click)="simulateVoucherAssignment()">
@@ -178,7 +178,7 @@
                           <span pTooltip="{{row.country}}" tooltipPosition="bottom">{{row.country}}</span>
                         </ng-template>
                       </p-column>
-                      <p-column field="municipalityName" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.municipality' | translate}}"
+                      <p-column field="municipalityName" sortable="true" header="{{'dgConn.voucherAssignment.table.municipality' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                             <span pTooltip="{{row.municipalityName}}" tooltipPosition="bottom">{{row.municipalityName}}</span>
@@ -245,7 +245,7 @@
                               </option>
                             </select>
                           </div>
-                          <p-paginator class="paginator-panel" [rows]="sizePage" totalRecords="{{totalRecords}}" #paginator (onPageChange)="paginate($event)" [rowsPerPageOptions]="itemsPerPageSelector"></p-paginator>
+                          <p-paginator class="paginator-panel" [first]="page * sizePage" [rows]="sizePage" totalRecords="{{totalRecords}}" #paginator (onPageChange)="paginate($event)" [rowsPerPageOptions]="itemsPerPageSelector"></p-paginator>
                           <div class="totalRecords">
                             <span style="color: #929292;">{{ 'shared.totalRecords' | translate }}: {{totalRecords}} </span>
                           </div>
