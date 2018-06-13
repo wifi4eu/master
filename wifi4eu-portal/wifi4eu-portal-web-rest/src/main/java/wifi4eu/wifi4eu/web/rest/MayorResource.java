@@ -2,8 +2,8 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -40,7 +40,7 @@ public class MayorResource {
     @Autowired
     private UserService userService;
 
-    Logger _log = LoggerFactory.getLogger(MayorResource.class);
+    Logger _log = LogManager.getLogger(MayorResource.class);
 
     /*
     @ApiOperation(value = "Get all the mayors")

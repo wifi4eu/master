@@ -1,10 +1,16 @@
 package wifi4eu.wifi4eu.service.mayor;
 
 import com.google.common.collect.Lists;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.MayorDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.mapper.mayor.MayorMapper;
 import wifi4eu.wifi4eu.repository.mayor.MayorRepository;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
@@ -30,6 +36,11 @@ public class MayorService {
     @Autowired
     PermissionChecker permissionChecker;
 
+    private final Logger _log = LogManager.getLogger(MayorService.class);
+
+    UserContext userContext = UserHolder.getUser();
+    UserDTO userConnected = userService.getUserByUserContext(userContext);
+
     public List<MayorDTO> getAllMayors() {
         return mayorMapper.toDTOList(Lists.newArrayList(mayorRepository.findAll()));
     }
@@ -47,7 +58,7 @@ public class MayorService {
       if(mayorDTO1 != null) {
         resMayor.setEmail(mayorDTO1.getEmail());
       }
-
+      _log.log(Level.getLevel("BUSINESS"),"User ID: " + userConnected.getId() + " - Mayor "+resMayor.getId()+" created");
       return resMayor;
     }
 
@@ -56,7 +67,8 @@ public class MayorService {
       
       mayorDetails.setName(name);
       mayorDetails.setSurname(surname);
-      
+
+      _log.info("User ID: " + userConnected.getId() + " - Mayor "+mayorDetails.getId()+" updated");
       return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDetails)));
     }
 
@@ -65,6 +77,7 @@ public class MayorService {
         MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.findOne(mayorId));
         if (mayorDTO != null) {
             mayorRepository.delete(mayorMapper.toEntity(mayorDTO));
+            _log.log(Level.getLevel("BUSINESS"),"User ID: " + userConnected.getId() + " - Mayor "+mayorId+" removed");
             return mayorDTO;
         } else {
             return null;

@@ -2,8 +2,8 @@ package wifi4eu.dgconn.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class NutsResource {
     @Autowired
     NutsService nutsService;
 
-    Logger _log = LoggerFactory.getLogger(LauResource.class);
+    Logger _log = LogManager.getLogger(LauResource.class);
 
     @ApiOperation(value = "Get all nuts")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")

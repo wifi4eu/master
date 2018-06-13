@@ -1,11 +1,9 @@
 package wifi4eu.wifi4eu.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
@@ -21,7 +19,7 @@ public class MailAsyncService implements Runnable {
 
     public final static String FROM_ADDRESS = "no-reply@wifi4eu.eu";
 
-    private final Logger _log = LoggerFactory.getLogger(MailAsyncService.class);
+    private final Logger _log = LogManager.getLogger(MailAsyncService.class);
 
     private String toAddress = null;
     private String fromAddress = null;

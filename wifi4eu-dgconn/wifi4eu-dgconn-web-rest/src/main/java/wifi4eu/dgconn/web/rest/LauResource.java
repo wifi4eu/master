@@ -2,11 +2,9 @@ package wifi4eu.dgconn.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.LauDTO;
@@ -30,7 +28,7 @@ public class LauResource {
     private final static String GET_LAUS_BY_NUTS3 = "getLausByNuts3: ";
     private final static String GET_LAUS_BY_COUNTRY_CODE_AND_NAME1_STARTING_WITH_IGNORE_CASE = "getLausByCountryCodeAndName1StartingWithIgnoreCase: ";
 
-    private Logger _log = LoggerFactory.getLogger(LauResource.class);
+    private Logger _log = LogManager.getLogger(LauResource.class);
 
     @ApiOperation(value = "Get lau by specific id")
     @RequestMapping(value = "/{lauId}", method = RequestMethod.GET, produces = "application/json")

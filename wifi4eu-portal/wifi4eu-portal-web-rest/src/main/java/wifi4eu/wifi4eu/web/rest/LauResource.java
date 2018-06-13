@@ -1,14 +1,12 @@
 package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
@@ -42,7 +40,7 @@ public class LauResource {
     private final static String GET_LAUS_BY_NUTS3 = "getLausByNuts3: ";
     private final static String GET_LAUS_BY_COUNTRY_CODE_AND_NAME1_STARTING_WITH_IGNORE_CASE = "getLausByCountryCodeAndName1StartingWithIgnoreCase: ";
 
-    private Logger _log = LoggerFactory.getLogger(LauResource.class);
+    private Logger _log = LogManager.getLogger(LauResource.class);
 
     @ApiOperation(value = "Get lau by specific id")
     @ApiImplicitParams({

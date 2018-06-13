@@ -1,10 +1,9 @@
 package wifi4eu.wifi4eu.web.rest;
 
-import com.microsoft.applicationinsights.web.dependencies.http.client.UserTokenHandler;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -12,16 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.model.UserThreadsDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
-import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
-import wifi4eu.wifi4eu.entity.security.Right;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
-import wifi4eu.wifi4eu.entity.thread.UserThreads;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserService;
-
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -43,7 +37,7 @@ public class UserThreadsResource {
     @Autowired
     private PermissionChecker permissionChecker;
 
-    Logger _log = LoggerFactory.getLogger(CallResource.class);
+    Logger _log = LogManager.getLogger(CallResource.class);
 
     /*
     @ApiOperation(value = "Get all the userThreads entries")

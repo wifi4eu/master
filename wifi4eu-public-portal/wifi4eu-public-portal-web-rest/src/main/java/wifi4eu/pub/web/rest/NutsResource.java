@@ -2,8 +2,9 @@ package wifi4eu.pub.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class NutsResource {
     @Autowired
     NutsService nutsService;
 
-    Logger _log = LoggerFactory.getLogger(NutsResource.class);
+    Logger _log = LogManager.getLogger(NutsResource.class);
 
     @ApiOperation(value = "getNuts")
     @RequestMapping(value = "/getNuts", method = RequestMethod.GET)
@@ -52,6 +53,9 @@ public class NutsResource {
     @ResponseBody
     public List<NutsDTO> getNutsByCountryCodeAndLevelOrderByLabelAsc(@PathVariable("countryCode") final String countryCode, @PathVariable("level") final Integer level) {
         _log.info("getNutsByCountryCodeAndLevelOrderByLabelAsc " + countryCode + level);
+        _log.error("getNutsByCountryCodeAndLevelOrderByLabelAsc " + countryCode + level);
+        _log.warn("getNutsByCountryCodeAndLevelOrderByLabelAsc " + countryCode + level);
+        _log.log(Level.getLevel("BUSINESS"), "getNutsByCountryCodeAndLevelOrderByLabelAsc " +countryCode +level);
         return nutsService.getNutsByCountryCodeAndLevelOrderByLabelAsc(countryCode, level);
     }
 }

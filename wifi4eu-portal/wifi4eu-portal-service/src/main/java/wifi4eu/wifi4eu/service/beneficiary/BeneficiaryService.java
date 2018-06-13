@@ -1,7 +1,7 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,7 +81,10 @@ public class BeneficiaryService {
     @Autowired
     MailService mailService;
 
-    private final Logger _log = LoggerFactory.getLogger(BeneficiaryService.class);
+    private final Logger _log = LogManager.getLogger(BeneficiaryService.class);
+
+    UserContext userContext = UserHolder.getUser();
+    UserDTO userConnected = userService.getUserByUserContext(userContext);
 
     private List<Integer> municipalitiesLauIdToHold = new ArrayList<>();
     private final String MAYOR = "Mayor";
@@ -95,7 +98,6 @@ public class BeneficiaryService {
             MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
                     nutsService.getNutsByLevel(0));
         }
-
 
         /* Get user from ECAS */
         UserDTO user = new UserDTO();
@@ -138,6 +140,7 @@ public class BeneficiaryService {
         /* check Duplicates and crate Threads if apply */
         checkDuplicates(resUser, resMunicipalities);
 
+        _log.info("User ID: " + userConnected.getId() + " - Registrations from beneficiary " +beneficiaryDTO.getUser().getId()+ " submitted");
         return registrations;
     }
 
@@ -164,6 +167,7 @@ public class BeneficiaryService {
             permissionChecker.addTablePermissions(userDTO, Integer.toString(registrationDtoOutput.getId()),
                     RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipalityId());
         }
+        _log.info("User ID: " + userConnected.getId() + " - List is obtained correctly");
         return registrations;
     }
 
@@ -173,7 +177,6 @@ public class BeneficiaryService {
             List<MunicipalityDTO> municipalitiesWithSameLau = municipalityService.getMunicipalitiesByLauId(municipalityDTO.getLauId());
             permissionChecker.addTablePermissions(userDTO, Integer.toString(municipalityDTO.getId()),
                     RightConstants.MUNICIPALITIES_TABLE, "[MUNICIPALITIES] - id: " + municipalityDTO.getId() + " - Country: " + municipalityDTO.getCountry() + " - Lau Id: " + municipalityDTO.getLauId());
-
 
             if (municipalitiesWithSameLau.size() > 1) {
                 Locale locale = new Locale(UserConstants.DEFAULT_LANG);
@@ -185,16 +188,19 @@ public class BeneficiaryService {
                 String msgBody = bundle.getString("mail.discussionMunicipality.body");
                 if (!userService.isLocalHost()) {
                     mailService.sendEmailAsync(userDTO.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                    _log.debug("User ID: " + userConnected.getId() + " - Email sent to "+userDTO.getEcasEmail());
                 }
 
                 if (municipalitiesWithSameLau.size() <= 10) {
                     for (MunicipalityDTO municipality : municipalitiesWithSameLau) {
                         RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipality.getId());
                         if (registrationDTO == null) {
+                            _log.debug("User ID: " + userConnected.getId() + " - Registration from the municipality "+municipality.getId()+" does not exist");
                             continue;
                         }
                         UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
                         if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
+                            _log.debug("User ID: " + userConnected.getId() + " - Registration from the municipality "+municipality.getId()+" does not exist");
                             continue;
                         }
                         locale = new Locale(userRegistration.getLang());
@@ -203,8 +209,8 @@ public class BeneficiaryService {
                         msgBody = bundle.getString("mail.discussionMunicipality.body");
                         if (!userService.isLocalHost()) {
                             mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            _log.debug("User ID: " + userConnected.getId() + " - Email sent to "+userRegistration.getEcasEmail());
                         }
-
                     }
                 }
 
@@ -212,10 +218,12 @@ public class BeneficiaryService {
                     for (MunicipalityDTO municipality : municipalitiesWithSameLau) {
                         RegistrationDTO registrationDTO = registrationService.getRegistrationByMunicipalityId(municipality.getId());
                         if (registrationDTO == null) {
+                            _log.debug("User ID: " + userConnected.getId() + " - Registration from the municipality "+municipality.getId()+" does not exist");
                             continue;
                         }
                         UserDTO userRegistration = userService.getUserById(registrationDTO.getUserId());
                         if (userRegistration.getId() == userDTO.getId() || userRegistration == null) {
+                            _log.debug("User ID: " + userConnected.getId() + " - Registration from the municipality "+municipality.getId()+" does not exist");
                             continue;
                         }
                         locale = new Locale(userRegistration.getLang());
@@ -224,22 +232,22 @@ public class BeneficiaryService {
                         msgBody = bundle.getString("mail.discussionMunicipality.body");
                         if (!userService.isLocalHost()) {
                             mailService.sendEmailAsync(userRegistration.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+                            _log.debug("User ID: " + userConnected.getId() + " - Email sent to "+userRegistration.getEcasEmail());
                         }
-
                     }
                 }
 
                 /* verificamos que existe el thread */
-
                 ThreadDTO threadDTO = threadService.getThreadByTypeAndReason(1, String.valueOf(municipalityDTO.getLauId()));
 
                 if (threadDTO == null) {
-                    /* creamos el thrad */
+                    /* creamos el thread */
                     threadDTO = new ThreadDTO();
                     threadDTO.setTitle(municipalityDTO.getName());
                     threadDTO.setType(Constant.THREAD_REASON_LAU);
                     threadDTO.setReason(String.valueOf(municipalityDTO.getLauId()));
                     threadDTO = threadService.createThread(threadDTO);
+                    _log.debug("User ID: " + userConnected.getId() + " - Thread "+threadDTO.getId()+ " created");
 
                     /* Añado todos los user threads */
                     for (MunicipalityDTO conflictMunicipality : municipalitiesWithSameLau) {
@@ -249,6 +257,7 @@ public class BeneficiaryService {
                             userThreadsDTO.setUserId(conflictRegistrationDTO.getUserId());
                             userThreadsDTO.setThreadId(threadDTO.getId());
                             userThreadsService.createUserThreads(userThreadsDTO);
+                            _log.debug("User ID: " + userConnected.getId() + " - User thread "+threadDTO.getId()+ " added");
                         }
                     }
                 } else {
@@ -257,14 +266,15 @@ public class BeneficiaryService {
                     userThreadsDTO.setUserId(userDTO.getId());
                     userThreadsDTO.setThreadId(threadDTO.getId());
                     userThreadsDTO = userThreadsService.createUserThreads(userThreadsDTO);
+                    _log.debug("User ID: " + userConnected.getId() + " - Thread "+threadDTO.getId()+ " added");
                 }
 
             }
 
             /* change registration status to Hold on conflict Registrations*/
             updateRegistrationStatusToHold(municipalitiesWithSameLau);
+            _log.info("User ID: " + userConnected.getId() + " - Duplicates checked");
             //municipalitiesLauIdToHold.add(municipality.getLauId());
-
         }
     }
 
@@ -274,6 +284,7 @@ public class BeneficiaryService {
         registration.setMunicipalityId(municipality.getId());
         registration.setUserId(userId);
         registration.setStatus(generateRegistrationStatus(municipality));
+        _log.info("User ID: " + userConnected.getId() + " - New registration generated");
         return registration;
     }
 
@@ -292,7 +303,9 @@ public class BeneficiaryService {
 
             MunicipalityDTO municipalityDtoOutput = municipalityService.createMunicipality(municipality);
             resMunicipalities.add(municipalityDtoOutput);
+            _log.debug("User ID: " + userConnected.getId() + " - Municipality "+municipalityDtoOutput.getId()+ " added to MunicipalityList");
         }
+        _log.info("User ID: " + userConnected.getId() + " - Municipality List gotten");
         return resMunicipalities;
     }
 
@@ -446,6 +459,7 @@ public class BeneficiaryService {
             }
             beneficiariesList.set(i, beneficiary);
         }
+        _log.info("User ID: " + userConnected.getId() + " - Beneficiaries List gotten");
         return beneficiariesList;
     }
 
@@ -515,7 +529,9 @@ public class BeneficiaryService {
             sb.append(beneficiaryListItem.getIssueStatus());
             sb.append(",");
             sb.append("\n");
+            _log.debug("User ID: " + userConnected.getId() + " - Beneficiary "+beneficiaryListItem+" added to the list");
         }
+        _log.info("User ID: " + userConnected.getId() + " - CSV generated");
         return sb.toString();
     }
 }

@@ -3,8 +3,8 @@ package wifi4eu.wifi4eu.service.user;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.http.HttpStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import wifi4eu.wifi4eu.common.Constant;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -50,7 +49,7 @@ import java.util.ResourceBundle;
 @PropertySource("classpath:env.properties")
 @Service
 public class UserService {
-    private final Logger _log = LoggerFactory.getLogger(UserService.class);
+    private final Logger _log = LogManager.getLogger(UserService.class);
 
     @Value("${mail.server.location}")
     private String baseUrl;

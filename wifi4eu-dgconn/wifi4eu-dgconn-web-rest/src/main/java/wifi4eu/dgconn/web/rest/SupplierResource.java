@@ -2,8 +2,8 @@ package wifi4eu.dgconn.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ public class SupplierResource {
     @Autowired
     private SupplierService supplierService;
 
-    Logger _log = LoggerFactory.getLogger(SupplierResource.class);
+    Logger _log = LogManager.getLogger(SupplierResource.class);
 
     //TODO: limit access to this service
     @ApiOperation(value = "Get all the suppliers")

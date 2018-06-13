@@ -3,8 +3,8 @@ package wifi4eu.wifi4eu.web.rest;
 import com.google.common.net.InetAddresses;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,7 +41,7 @@ public class BeneficiaryResource {
     @Autowired
     private UserService userService;
 
-    private final Logger _log = LoggerFactory.getLogger(BeneficiaryResource.class);
+    private final Logger _log = LogManager.getLogger(BeneficiaryResource.class);
 
 
     @ApiOperation(value = "Submit beneficiary registration")

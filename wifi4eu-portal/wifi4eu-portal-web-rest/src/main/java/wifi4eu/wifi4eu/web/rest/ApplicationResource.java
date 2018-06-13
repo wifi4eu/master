@@ -2,8 +2,9 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -43,7 +45,10 @@ public class ApplicationResource {
     @Autowired
     UserService userService;
 
-    Logger _log = LoggerFactory.getLogger(ApplicationResource.class);
+    UserContext userContext = UserHolder.getUser();
+    UserDTO userConnected = userService.getUserByUserContext(userContext);
+
+    Logger _log = LogManager.getLogger(ApplicationResource.class);
 
     @ApiOperation(value = "Get application by call and registration id")
     @RequestMapping(value = "/call/{callId}/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
@@ -56,12 +61,16 @@ public class ApplicationResource {
         try {
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
         } catch (Exception e) {
+            _log.error("User ID: " + userConnected.getEcasEmail() + " - Permission not found", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
 
         ApplicationDTO responseApp = applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
         if (responseApp == null) {
+            _log.warn("User ID: " + userConnected.getId() + " - Application not found");
             responseApp = new ApplicationDTO();
+        }else{
+            _log.info("User ID: " + userConnected.getId() + " - Application with id "+responseApp.getId()+" is obtained correctly");
         }
         return responseApp;
     }
@@ -74,6 +83,7 @@ public class ApplicationResource {
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
+                _log.error("User ID: " + userConnected.getId() + " - You have no permissions to access");
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
@@ -83,7 +93,7 @@ public class ApplicationResource {
             return applicationService.getApplicationsVoucherInfoByCall(callId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.info("getApplicationsVoucherInfoByCall: " + callId);
+                _log.error("User ID: " + userConnected.getId() + " - Applications Voucher with call id " + callId+" not found", e);
                 response.sendError(HttpStatus.NOT_FOUND.value());
             }
             return null;
@@ -118,16 +128,18 @@ public class ApplicationResource {
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
+                _log.log(Level.getLevel("BUSINESS"),"User ID: " + userConnected.getId() + " - You have no permissions to access");
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(applicationService.findDgconnApplicantsList(callId, country, null, pagingSortingData));
             res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country));
+            _log.info("User ID: " + userConnected.getId() + " - The DGConn Applicant List for call "+callId+" is obtained correctly");
             return res;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("can't retrieve applicants", e);
+                _log.error("User ID: " + userConnected.getId() + "- The DGConn Applicant List can not be retrieved", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
