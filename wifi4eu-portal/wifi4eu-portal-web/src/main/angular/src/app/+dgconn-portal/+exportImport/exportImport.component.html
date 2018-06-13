@@ -1,143 +1,274 @@
 <html>
-<head>
-    <style type="text/css">
-    .myButton {
-	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
-	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f6f6f6));
-	background:-moz-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
-	background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
-	background:-o-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
-	background:-ms-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
-	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0);
-	background-color:#ffffff;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	cursor:pointer;
-	color:#1841a8;
-	font-family:Arial;
-	font-size:19px;
-	font-weight:bold;
-	padding:32px 76px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #ffffff;
-}
-.myButton:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f6f6f6), color-stop(1, #ffffff));
-	background:-moz-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
-	background:-webkit-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
-	background:-o-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
-	background:-ms-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
-	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff',GradientType=0);
-	background-color:#f6f6f6;
-}
-.myButton:active {
-	position:relative;
-	top:1px;
-}
-    </style>
-</head>
-<body>
-    <div class="exportImport"></div>
-    <div class="container">
-        <!--<br/><br/><br/><br/>-->
-        <!--<div class="ui-g">-->
-            <!--<div class="ui-g-12">-->
-                <!--<span class="input-group-btn">-->
-                    <!--<button class="btn btn-primary" (click)="exportRegistrationData()" type="button">Export Registration Data</button>-->
-                <!--</span>-->
+    <head>
+        <style type="text/css">
+                .myButton {
+                    -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+                    -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+                    box-shadow:inset 0px 1px 0px 0px #ffffff;
+                    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f6f6f6));
+                    background:-moz-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                    background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                    background:-o-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                    background:-ms-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                    background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+                    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0);
+                    background-color:#ffffff;
+                    -moz-border-radius:6px;
+                    -webkit-border-radius:6px;
+                    border-radius:6px;
+                    border:1px solid #dcdcdc;
+                    display:inline-block;
+                    cursor:pointer;
+                    color:#1841a8;
+                    font-family:Arial;
+                    font-size:19px;
+                    font-weight:bold;
+                    padding:32px 76px;
+                    text-decoration:none;
+                    text-shadow:0px 1px 0px #ffffff;
+                }
+                .myButton:hover {
+                    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f6f6f6), color-stop(1, #ffffff));
+                    background:-moz-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+                    background:-webkit-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+                    background:-o-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+                    background:-ms-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+                    background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+                    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ffffff',GradientType=0);
+                    background-color:#f6f6f6;
+                }
+                .myButton:active {
+                    position:relative;
+                    top:1px;
+                }
+
+                label{
+                    -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+                    -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+                    box-shadow:inset 0px 1px 0px 0px #ffffff;
+                    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f6f6f6));
+                    background:-moz-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                    background:-webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                    background:-o-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                    background:-ms-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+                    background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+                    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0);
+                    background-color:#ffffff;
+                    -moz-border-radius:6px;
+                    -webkit-border-radius:6px;
+                    border-radius:6px;
+                    border:1px solid #dcdcdc;
+                    display:inline-block;
+                    cursor:pointer;
+                    color:#1841a8;
+                    font-family:Arial;
+                    font-size:19px;
+                    font-weight:bold;
+                    padding:32px 76px;
+                    text-decoration:none;
+                    text-shadow:0px 1px 0px #ffffff;
+                }
+
+                input[type="file"] {
+                    display: none;
+                }
+        </style>
+    </head>
+    <body>
+        <div class="exportImport"></div>
+        <div class="container">
+            <!--<br/><br/><br/><br/>-->
+            <!--<div class="ui-g">-->
+                <!--<div class="ui-g-12">-->
+                    <!--<span class="input-group-btn">-->
+                        <!--<button class="btn btn-primary" (click)="exportRegistrationData()" type="button">Export Registration Data</button>-->
+                    <!--</span>-->
+                <!--</div>-->
+                <!--<div class="ui-g-12">-->
+                    <!--<span class="input-group-btn">>-->
+                        <!--<button class="btn btn-primary" (click)="importRegistrationData()" type="button">Import Registration Data</button>-->
+                    <!--</span>-->
+                <!--</div>-->
             <!--</div>-->
-            <!--<div class="ui-g-12">-->
-                <!--<span class="input-group-btn">>-->
-                    <!--<button class="btn btn-primary" (click)="importRegistrationData()" type="button">Import Registration Data</button>-->
-                <!--</span>-->
+            <!--<div class="ui-g">-->
+                <!--<div class="ui-g-12">-->
+                    <!--<span class="input-group-btn">-->
+                        <!--<button class="btn btn-primary" (click)="exportBeneficiaryInformation()" type="button">Export Beneficiary Information</button>-->
+                    <!--</span>-->
+                <!--</div>-->
+                <!--<div class="ui-g-12">-->
+                    <!--<span class="input-group-btn">-->
+                        <!--<button class="btn btn-primary" (click)="exportBudgetaryCommitment()" type="button">Export Budgetary Commitment</button>-->
+                    <!--</span>-->
+                <!--</div>-->
             <!--</div>-->
-        <!--</div>-->
-        <!--<div class="ui-g">-->
-            <!--<div class="ui-g-12">-->
-                <!--<span class="input-group-btn">-->
-                    <!--<button class="btn btn-primary" (click)="exportBeneficiaryInformation()" type="button">Export Beneficiary Information</button>-->
-                <!--</span>-->
+            <!--<div class="container font" style="margin-top: 5em;">-->
+                <!--<h1 class="beneficiaryTitle">Import LEF and BC validates.</h1>-->
+                <!--<div class="ui-g-12">-->
+                    <!--<span class="input-group-btn">-->
+                        <!--<input type="file" (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json"/>-->
+                    <!--</span>-->
+                <!--</div>-->
             <!--</div>-->
-            <!--<div class="ui-g-12">-->
-                <!--<span class="input-group-btn">-->
-                    <!--<button class="btn btn-primary" (click)="exportBudgetaryCommitment()" type="button">Export Budgetary Commitment</button>-->
-                <!--</span>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="container font" style="margin-top: 5em;">-->
-            <!--<h1 class="beneficiaryTitle">Import LEF and BC validates.</h1>-->
-            <!--<div class="ui-g-12">-->
-                <!--<span class="input-group-btn">-->
-                    <!--<input type="file" (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json"/>-->
-                <!--</span>-->
-            <!--</div>-->
-        <!--</div>-->
-        <br/><br/><br/>
-        <font size="5" color="#003366" align="left"><b>ABAC</b></font>
-        <br/>
-        <span>Export/Import Data</span>
-        <br/><br/><br/><br/>
-        <font size="2" color="black" align="left"><b>Legal Entities (LEF)</b></font>
-        <br/><br/>
-        <table style="width:100%">
-            <tr style="height:100px">
-                <th align="center" valign="top">
-                    <a class="myButton">Import Final list from DG BUDG <br/><br/> <font size="2" color="black" align="left"> This button will import the municipalities as completed by DG <br/> BUDG into the portal. If a municipality exists olready in ABAC, <br/> this imported file will give the ABAC reference number to the <br/> portal.</font></a>
-                    <input type="file" (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json"/>
-                </th>
-                <th align="center" valign="top">
-                    <!--<a href="#" class="myButton">Export Legal Entities to be creates in ABAC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters neccesay for the <br/> Wifi4eu Interface to create the data.</font></a>-->
-                    <a class="myButton" (click)="exportBeneficiaryInformation()" type="button">Export Legal Entities to be creates in ABAC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters neccesay for the <br/> Wifi4eu Interface to create the data.</font></a>
-                </th>
-            </tr>
-            <tr style="height:100px">
-                <th align="center" valign="top">
-                    <a class="myButton">Import Legal Entities file from ABAC <br/><br/> <font size="2" color="black" align="left"> This button will import to the portal the legal entities file created <br/> in ABAC.</font></a>
-                    <input type="file" (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json"/>
-                </th>
-                <th align="center" valign="top">
-                    <a class="myButton" (click)="exportRegistrationData()" type="button"><font align="left">Export Registartion Data</font> <br/><br/> <font size="2" color="black" align="left"> This button will export registration data about the municipalities <br/> sending by email the file generated to generate the ABAC reference.</font></a>
-                </th>
-                <th align="center" valign="top">
-                    <a class="myButton" (click)="importRegistrationData()" type="button">Import ABAC references for all LEFs <br/><br/> <font size="2" color="black" align="left"> This button will import all ABAC LEF references in the portal.</font></a>
-                </th>
-            </tr>
-        </table>
-        <br/><br/><br/>
-        <font size="2" color="black" align="left"><b>Budgetary Commitment (BC)</b></font>
-        <br/><br/>
-        <table style="width:100%">
-            <tr style="height:100px">
-                <th align="center" valign="top">
-                    <!--<a href="#" class="myButton">Export BC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters for the Wifi4eu <br/> Interface to create the data.</font></a>-->
-                    <!--<a class="myButton">Export BC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters for the Wifi4eu <br/> Interface to create the data.</font></a>-->
-                    <a class="myButton" (click)="exportBudgetaryCommitment()" type="button">Export BC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters for the Wifi4eu <br/> Interface to create the data.</font></a>
-                    <!--<input type="file" (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json">This button will export all parameters for the Wifi4eu <br/> Interface to create the data.</input>-->
-                </th>
-                <th align="center"  valign="top">
-                    <!--<a href="#" class="myButton">Import BC from ABAC interface <br/><br/> <font size="2" color="black" align="left"> This button will import the ABAC reference numbers into the <br/> portal.</font></a>-->
-                    <a class="myButton">Import BC from ABAC interface <br/><br/> <font size="2" color="black" align="left"> This button will import the ABAC reference numbers into the <br/> portal.</font></a>
-                </th>
-            </tr>
-        </table>
-        <br/><br/><br/>
-        <font size="2" color="black" align="left"><b>Global Commitments</b></font>
-        <br/><br/>
-        <table style="width:100%">
-            <tr style="height:100px">
-                <th align="center"  valign="top">
-                    <!--<a href="#" class="myButton">Configure Global Commitments<br/><br/> <font size="2" color="black" align="left"> Lorem ipsum dolor sit amet, consectetur.</font></a>-->
-                    <a  href="#/dgconn-portal/exportImport/configureGlobalCommitments" class="myButton">Configure Global Commitments<br/><br/> <font size="2" color="black" align="left"> Lorem ipsum dolor sit amet, consectetur.</font></a>
-                </th>
-            </tr>
-        </table>
-    </div>
-</body>
+            <br/><br/><br/>
+            <font size="5" color="#003366" align="left"><b>ABAC</b></font>
+            <br/>
+            <span>Export/Import Data</span>
+            <br/><br/><br/><br/>
+            <font size="2" color="black" align="left"><b>Legal Entities (LEF)</b></font>
+            <br/><br/>
+            <table style="width:100%">
+                <tr style="height:100px">
+                    <th align="center" valign="top">
+                        <label id="#bb"> Import Final list from DG BUDG <br/><br/> <font size="2" color="black" align="left"> This button will import the municipalities as completed by DG <br/> BUDG into the portal. If a municipality exists olready in ABAC, <br/> this imported file will give the ABAC reference number to the <br/> portal.</font>
+                            <input type="file" class="myButton" (change)="importLegalEntityFBCValidate($event)"  accept=".json,application/json"/>
+                        </label>
+                    </th>
+                    <th align="center" valign="top">
+                        <!--<a href="#" class="myButton">Export Legal Entities to be creates in ABAC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters neccesay for the <br/> Wifi4eu Interface to create the data.</font></a>-->
+                        <a class="myButton" (click)="exportBeneficiaryInformation()" type="button">Export Legal Entities to be creates in ABAC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters neccesay for the <br/> Wifi4eu Interface to create the data.</font></a>
+                    </th>
+                </tr>
+                <tr style="height:100px">
+                    <th align="center" valign="top">
+                        <label id="#bc"> Import Legal Entities file from ABAC <br/><br/> <font size="2" color="black" align="left"> This button will import to the portal the legal entities file created <br/> in ABAC.</font>
+                            <input type="file" class="myButton" (change)="importLegalEntityFBCValidate($event)"  accept=".json,application/json"/>
+                        </label>
+                    </th>
+                    <th align="center" valign="top">
+                        <a class="myButton" (click)="exportRegistrationData()" type="button"><font align="left">Export Registartion Data</font> <br/><br/> <font size="2" color="black" align="left"> This button will export registration data about the municipalities <br/> sending by email the file generated to generate the ABAC reference.</font></a>
+                    </th>
+                    <th align="center" valign="top">
+                        <a class="myButton" (click)="importRegistrationData()" type="button">Import ABAC references for all LEFs <br/><br/> <font size="2" color="black" align="left"> This button will import all ABAC LEF references in the portal.</font></a>
+                    </th>
+                </tr>
+            </table>
+            <br/><br/><br/>
+            <font size="2" color="black" align="left"><b>Budgetary Commitment (BC)</b></font>
+            <br/><br/>
+            <table style="width:100%">
+                <tr style="height:100px">
+                    <th align="center" valign="top">
+                        <!--<a href="#" class="myButton">Export BC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters for the Wifi4eu <br/> Interface to create the data.</font></a>-->
+                        <!--<a class="myButton">Export BC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters for the Wifi4eu <br/> Interface to create the data.</font></a>-->
+                        <a class="myButton" (click)="exportBudgetaryCommitment()" type="button">Export BC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters for the Wifi4eu <br/> Interface to create the data.</font></a>
+                        <!--<input type="file" (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json">This button will export all parameters for the Wifi4eu <br/> Interface to create the data.</input>-->
+                    </th>
+                    <th align="center"  valign="top">
+                        <!--<a href="#" class="myButton">Import BC from ABAC interface <br/><br/> <font size="2" color="black" align="left"> This button will import the ABAC reference numbers into the <br/> portal.</font></a>-->
+                        <a href="#" class="myButton">Import BC from ABAC interface <br/><br/> <font size="2" color="black" align="left"> This button will import the ABAC reference numbers into the <br/> portal.</font></a>
+                    </th>
+                </tr>
+            </table>
+            <br/><br/><br/>
+            <font size="2" color="black" align="left"><b>Global Commitments</b></font>
+            <br/><br/>
+            <table style="width:100%">
+                <tr style="height:100px">
+                    <th align="center"  valign="top">
+                        <!--<a href="#" class="myButton">Configure Global Commitments<br/><br/> <font size="2" color="black" align="left"> Lorem ipsum dolor sit amet, consectetur.</font></a>-->
+                        <a  href="#/dgconn-portal/exportImport/configureGlobalCommitments" class="myButton">Configure Global Commitments<br/><br/> <font size="2" color="black" align="left"> Lorem ipsum dolor sit amet, consectetur.</font></a>
+                    </th>
+                </tr>
+            </table>
+        </div>
+    </body>
 </html>
+
+<!--<body>-->
+<!--<div class="exportImport"></div>-->
+<!--<div class="container">-->
+    <!--&lt;!&ndash;<br/><br/><br/><br/>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="ui-g">&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="ui-g-12">&ndash;&gt;-->
+    <!--&lt;!&ndash;<span class="input-group-btn">&ndash;&gt;-->
+    <!--&lt;!&ndash;<button class="btn btn-primary" (click)="exportRegistrationData()" type="button">Export Registration Data</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="ui-g-12">&ndash;&gt;-->
+    <!--&lt;!&ndash;<span class="input-group-btn">>&ndash;&gt;-->
+    <!--&lt;!&ndash;<button class="btn btn-primary" (click)="importRegistrationData()" type="button">Import Registration Data</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="ui-g">&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="ui-g-12">&ndash;&gt;-->
+    <!--&lt;!&ndash;<span class="input-group-btn">&ndash;&gt;-->
+    <!--&lt;!&ndash;<button class="btn btn-primary" (click)="exportBeneficiaryInformation()" type="button">Export Beneficiary Information</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="ui-g-12">&ndash;&gt;-->
+    <!--&lt;!&ndash;<span class="input-group-btn">&ndash;&gt;-->
+    <!--&lt;!&ndash;<button class="btn btn-primary" (click)="exportBudgetaryCommitment()" type="button">Export Budgetary Commitment</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="container font" style="margin-top: 5em;">&ndash;&gt;-->
+    <!--&lt;!&ndash;<h1 class="beneficiaryTitle">Import LEF and BC validates.</h1>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="ui-g-12">&ndash;&gt;-->
+    <!--&lt;!&ndash;<span class="input-group-btn">&ndash;&gt;-->
+    <!--&lt;!&ndash;<input type="file" (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;</span>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--<br/><br/><br/>-->
+    <!--<font size="5" color="#003366" align="left"><b>ABAC</b></font>-->
+    <!--<br/>-->
+    <!--<span>Export/Import Data</span>-->
+    <!--<br/><br/><br/><br/>-->
+    <!--<font size="2" color="black" align="left"><b>Legal Entities (LEF)</b></font>-->
+    <!--<br/><br/>-->
+    <!--<table style="width:100%">-->
+        <!--<tr style="height:100px">-->
+            <!--<th align="center" valign="top">-->
+                <!--<a class="myButton">Import Final list from DG BUDG <br/><br/> <font size="2" color="black" align="left"> This button will import the municipalities as completed by DG <br/> BUDG into the portal. If a municipality exists olready in ABAC, <br/> this imported file will give the ABAC reference number to the <br/> portal.</font></a>-->
+                <!--<input type="file" (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json"/>-->
+            <!--</th>-->
+            <!--<th align="center" valign="top">-->
+                <!--&lt;!&ndash;<a href="#" class="myButton">Export Legal Entities to be creates in ABAC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters neccesay for the <br/> Wifi4eu Interface to create the data.</font></a>&ndash;&gt;-->
+                <!--<a class="myButton" (click)="exportBeneficiaryInformation()" type="button">Export Legal Entities to be creates in ABAC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters neccesay for the <br/> Wifi4eu Interface to create the data.</font></a>-->
+            <!--</th>-->
+        <!--</tr>-->
+        <!--<tr style="height:100px">-->
+            <!--<th align="center" valign="top">-->
+                <!--<a class="myButton">Import Legal Entities file from ABAC <br/><br/> <font size="2" color="black" align="left"> This button will import to the portal the legal entities file created <br/> in ABAC.</font></a>-->
+                <!--<input type="file" (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json"/>-->
+            <!--</th>-->
+            <!--<th align="center" valign="top">-->
+                <!--<a class="myButton" (click)="exportRegistrationData()" type="button"><font align="left">Export Registartion Data</font> <br/><br/> <font size="2" color="black" align="left"> This button will export registration data about the municipalities <br/> sending by email the file generated to generate the ABAC reference.</font></a>-->
+            <!--</th>-->
+            <!--<th align="center" valign="top">-->
+                <!--<a class="myButton" (click)="importRegistrationData()" type="button">Import ABAC references for all LEFs <br/><br/> <font size="2" color="black" align="left"> This button will import all ABAC LEF references in the portal.</font></a>-->
+            <!--</th>-->
+        <!--</tr>-->
+    <!--</table>-->
+    <!--<br/><br/><br/>-->
+    <!--<font size="2" color="black" align="left"><b>Budgetary Commitment (BC)</b></font>-->
+    <!--<br/><br/>-->
+    <!--<table style="width:100%">-->
+        <!--<tr style="height:100px">-->
+            <!--<th align="center" valign="top">-->
+                <!--&lt;!&ndash;<a href="#" class="myButton">Export BC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters for the Wifi4eu <br/> Interface to create the data.</font></a>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a class="myButton">Export BC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters for the Wifi4eu <br/> Interface to create the data.</font></a>&ndash;&gt;-->
+                <!--<a class="myButton" (click)="exportBudgetaryCommitment()" type="button">Export BC <br/><br/> <font size="2" color="black" align="left"> This button will export all parameters for the Wifi4eu <br/> Interface to create the data.</font></a>-->
+                <!--&lt;!&ndash;<input type="file" (change)="importLegalEntityFBCValidate($event)" accept=".json,application/json">This button will export all parameters for the Wifi4eu <br/> Interface to create the data.</input>&ndash;&gt;-->
+            <!--</th>-->
+            <!--<th align="center"  valign="top">-->
+                <!--&lt;!&ndash;<a href="#" class="myButton">Import BC from ABAC interface <br/><br/> <font size="2" color="black" align="left"> This button will import the ABAC reference numbers into the <br/> portal.</font></a>&ndash;&gt;-->
+                <!--<a class="myButton">Import BC from ABAC interface <br/><br/> <font size="2" color="black" align="left"> This button will import the ABAC reference numbers into the <br/> portal.</font></a>-->
+            <!--</th>-->
+        <!--</tr>-->
+    <!--</table>-->
+    <!--<br/><br/><br/>-->
+    <!--<font size="2" color="black" align="left"><b>Global Commitments</b></font>-->
+    <!--<br/><br/>-->
+    <!--<table style="width:100%">-->
+        <!--<tr style="height:100px">-->
+            <!--<th align="center"  valign="top">-->
+                <!--&lt;!&ndash;<a href="#" class="myButton">Configure Global Commitments<br/><br/> <font size="2" color="black" align="left"> Lorem ipsum dolor sit amet, consectetur.</font></a>&ndash;&gt;-->
+                <!--<a  href="#/dgconn-portal/exportImport/configureGlobalCommitments" class="myButton">Configure Global Commitments<br/><br/> <font size="2" color="black" align="left"> Lorem ipsum dolor sit amet, consectetur.</font></a>-->
+            <!--</th>-->
+        <!--</tr>-->
+    <!--</table>-->
+<!--</div>-->
+<!--</body>-->
