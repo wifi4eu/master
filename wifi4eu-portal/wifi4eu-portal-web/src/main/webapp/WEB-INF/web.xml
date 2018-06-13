@@ -123,7 +123,7 @@
     <!--</security-constraint>-->
 
 
-    <!-- ${enable.security.start}
+    <!-- ${enable.security.start} -->
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>ecas-demo</web-resource-name>
@@ -139,7 +139,7 @@
             <transport-guarantee>NONE</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
-    ${enable.security.end} -->
+    <!-- ${enable.security.end} -->
 
     <resource-ref>
         <description>DB Connection</description>
@@ -148,11 +148,11 @@
         <res-auth>Container</res-auth>
     </resource-ref>
 
-    <!-- ${enable.login.start}
+    <!-- ${enable.login.start} -->
     <login-config>
         <auth-method>ECAS</auth-method>
         <realm-name>ecas-demo Realm</realm-name>
     </login-config>
-    ${enable.login.end} -->
+    <!-- ${enable.login.end} -->
 
 </web-app>
