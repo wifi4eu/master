@@ -45,8 +45,8 @@ public class ApplicationResource {
     @Autowired
     UserService userService;
 
-    UserContext userContext = UserHolder.getUser();
-    UserDTO userConnected = userService.getUserByUserContext(userContext);
+    UserContext userContext;
+    UserDTO userConnected;
 
     Logger _log = LogManager.getLogger(ApplicationResource.class);
 
@@ -54,6 +54,8 @@ public class ApplicationResource {
     @RequestMapping(value = "/call/{callId}/registration/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ApplicationDTO getApplicationByCallIdAndRegistrationId(@PathVariable("callId") final Integer callId, @PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         if (_log.isInfoEnabled()) {
             _log.info("getApplicationByCall: " + callId + " & Registration: " + registrationId);
         }
@@ -61,16 +63,16 @@ public class ApplicationResource {
         try {
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasEmail() + " - Permission not found", e);
+            _log.error("User ID: " /*+ userConnected.getEcasEmail()*/ + " - Permission not found", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
 
         ApplicationDTO responseApp = applicationService.getApplicationByCallIdAndRegistrationId(callId, registrationId);
         if (responseApp == null) {
-            _log.warn("User ID: " + userConnected.getId() + " - Application not found");
+            _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");
             responseApp = new ApplicationDTO();
         }else{
-            _log.info("User ID: " + userConnected.getId() + " - Application with id "+responseApp.getId()+" is obtained correctly");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application with id "+responseApp.getId()+" is obtained correctly");
         }
         return responseApp;
     }
@@ -83,7 +85,7 @@ public class ApplicationResource {
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
-                _log.error("User ID: " + userConnected.getId() + " - You have no permissions to access");
+                _log.error("User ID: "/* + userConnected.getId()*/ + " - You have no permissions to access");
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
@@ -93,7 +95,7 @@ public class ApplicationResource {
             return applicationService.getApplicationsVoucherInfoByCall(callId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("User ID: " + userConnected.getId() + " - Applications Voucher with call id " + callId+" not found", e);
+                _log.error("User ID: "/* + userConnected.getId()*/ + " - Applications Voucher with call id " + callId+" not found", e);
                 response.sendError(HttpStatus.NOT_FOUND.value());
             }
             return null;
@@ -128,18 +130,18 @@ public class ApplicationResource {
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
-                _log.log(Level.getLevel("BUSINESS"),"User ID: " + userConnected.getId() + " - You have no permissions to access");
+                _log.log(Level.getLevel("BUSINESS"),"User ID: "/* + userConnected.getId()*/ + " - You have no permissions to access");
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(applicationService.findDgconnApplicantsList(callId, country, null, pagingSortingData));
             res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country));
-            _log.info("User ID: " + userConnected.getId() + " - The DGConn Applicant List for call "+callId+" is obtained correctly");
+            _log.info("User ID: "/* + userConnected.getId()*/ + " - The DGConn Applicant List for call "+callId+" is obtained correctly");
             return res;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("User ID: " + userConnected.getId() + "- The DGConn Applicant List can not be retrieved", e);
+                _log.error("User ID: "/* + userConnected.getId()*/ + "- The DGConn Applicant List can not be retrieved", e);
             }
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));

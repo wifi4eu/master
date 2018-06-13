@@ -13,6 +13,9 @@ import wifi4eu.wifi4eu.mapper.audit.AuditMapper;
 import wifi4eu.wifi4eu.repository.audit.AuditRepository;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+
 @Service
 public class AuditService {
 
@@ -21,8 +24,8 @@ public class AuditService {
 
     private final static Logger _log = LogManager.getLogger(AuditService.class);
 
-    UserContext userContext = UserHolder.getUser();
-    UserDTO userConnected = userService.getUserByUserContext(userContext);
+   /* UserContext userContext;
+    UserDTO userConnected;*/
 
     @Autowired
     AuditRepository auditRepository;
@@ -32,8 +35,9 @@ public class AuditService {
 
     @Transactional
     public void createAuditData(AuditDataDTO auditDataDTO){
-        
-        _log.info("User ID: " + userConnected.getId() + " - Saving auditData: " + auditDataDTO.toString());
+        /*userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
+        _log.info("ECAS Username: " /*+ userConnected.getEcasUsername()*/ + " - Saving auditData: " + auditDataDTO.toString());
         auditRepository.save(auditMapper.toEntity(auditDataDTO));
     }
 }

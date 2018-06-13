@@ -26,6 +26,8 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 
+import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.DateTimeException;
 import java.util.*;
@@ -63,12 +65,11 @@ public class ApplicationService {
     CallService callService;
 
     private static final Logger _log = LogManager.getLogger(ApplicationService.class);
+    UserContext userContext;
+    UserDTO userConnected;
 
     @Autowired
     BeneficiaryService beneficiaryService;
-
-    UserContext userContext = UserHolder.getUser();
-    UserDTO userConnected = userService.getUserByUserContext(userContext);
 
     @Deprecated
     public List<ApplicationDTO> getAllApplications() {
@@ -84,19 +85,20 @@ public class ApplicationService {
      */
     public ApplicationDTO registerApplication(int callId, int userId, int registrationId,
                                               long uploadDocTimestamp, long queueTimestamp) {
-
+   /*     userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
         CallDTO callDTO = callService.getCallById(callId);
         UserDTO userDTO = userService.getUserById(userId);
         RegistrationDTO registrationDTO = registrationService.getRegistrationById(registrationId);
         // check all the information provided exists on DB
         if (callDTO != null && userDTO != null && registrationDTO != null) {
-            _log.debug("User ID: " + userConnected.getId() + " - All information provided exists");
+            _log.debug("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - All information provided exists");
             // check the queue date is between start/end of the call
             if (queueTimestamp / 1000000000 > callDTO.getStartDate() && queueTimestamp / 1000000000 < callDTO.getEndDate()) {
-                _log.debug("User ID: " + userConnected.getId() + " - The queue is from the call");
+                _log.debug("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - The queue is from the call");
                 //check information on the queue is right
                 if (registrationDTO.getUploadTime() == uploadDocTimestamp && registrationDTO.getUserId() == userId) {
-                    _log.debug("User ID: " + userConnected.getId() + " - All information provided exists");
+                    _log.debug("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - All information provided exists");
                     //check if this application was received previously
                     ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationId));
                     if (applicationDTO == null || applicationDTO.getDate() > queueTimestamp) {
@@ -110,29 +112,29 @@ public class ApplicationService {
                         applicationDTO.setDate(queueTimestamp);
                         
                         applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-                        _log.info("User ID: " + userConnected.getId() + " - Application " + applicationDTO.getId() + " Registered");
+                        _log.info("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Application " + applicationDTO.getId() + " Registered");
                         return applicationDTO;
                     } else {
-                        _log.error("User ID: " + userConnected.getId() + " - Trying to register an application existent on the DB, callId: "
+                        _log.error("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Trying to register an application existent on the DB, callId: "
                                 + callId + " userId: " + userId + " registrationId: " + registrationId +
                                 " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
                         return applicationDTO;
                     }
 
                 } else {
-                    _log.error("User ID: " + userConnected.getId() + " - Trying to register an application with incorrect uploadDocTimestamp or userId not match, callId: "
+                    _log.error("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Trying to register an application with incorrect uploadDocTimestamp or userId not match, callId: "
                             + callId + " userId: " + userId + " registrationId: " + registrationId +
                             " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
                 }
 
             } else {
-                _log.error("User ID: " + userConnected.getId() + " - Trying to register an application out of the call period, callId: "
+                _log.error("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Trying to register an application out of the call period, callId: "
                         + callId + " userId: " + userId + " registrationId: " + registrationId +
                         " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
             }
 
         } else {
-            _log.error("User ID: " + userConnected.getId() + " - The information provided is wrong, callId: "
+            _log.error("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - The information provided is wrong, callId: "
                     + callId + " userId: " + userId + " registrationId: " + registrationId +
                     " uploadDocTimestamp" + uploadDocTimestamp + "queueTimestamp" + queueTimestamp);
         }
@@ -143,11 +145,13 @@ public class ApplicationService {
     @Transactional
     @Deprecated
     public ApplicationDTO createApplication(ApplicationDTO applicationDTO) {
+       /* userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
         CallDTO actualCall = callService.getCallById(applicationDTO.getCallId());
         long startCallDate = actualCall.getStartDate();
         long actualDateTime = (new Date()).getTime();
         if (startCallDate > actualDateTime) {
-            _log.error("User ID: " + userConnected.getId() + " - The call is not available at the moment");
+            _log.error("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - The call is not available at the moment");
             throw new DateTimeException("The call is not available at the moment");
         }
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
@@ -169,10 +173,10 @@ public class ApplicationService {
                 msgBody = MessageFormat.format(msgBody, municipality.getName());
                 if (!userService.isLocalHost()) {
                     mailService.sendEmail(user.getEcasEmail(), MailService.FROM_ADDRESS, subject, msgBody);
-                    _log.debug("User ID: " + userConnected.getId() + " - Email sent to"+user.getEcasEmail());
+                    _log.debug("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Email sent to"+user.getEcasEmail());
                 }
             }
-            _log.info("User ID: " + userConnected.getId() + " - Application created");
+            _log.info("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Application created");
             return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
         }
         return null;
@@ -181,13 +185,15 @@ public class ApplicationService {
     @Transactional
     @Deprecated
     public ApplicationDTO deleteApplication(int applicationId) {
+        /*userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
         ApplicationDTO applicationDTO = applicationMapper.toDTO(applicationRepository.findOne(applicationId));
         if (applicationDTO != null) {
             applicationRepository.delete(applicationMapper.toEntity(applicationDTO));
-            _log.info("User ID: " + userConnected.getId() + " - Application with id "+ applicationId +" removed");
+            _log.info("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Application with id "+ applicationId +" removed");
             return applicationDTO;
         } else {
-            _log.error("User ID: " + userConnected.getId() + " - Application with id "+ applicationId +" not found");
+            _log.error("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Application with id "+ applicationId +" not found");
             return null;
         }
     }
@@ -399,15 +405,16 @@ public class ApplicationService {
     }
 
     public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
+       /* userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
-
         if(registration.getAllFilesFlag() != 1){
-            _log.error("User ID: " + userConnected.getId() + " - Application with id "+ applicationDTO.getId() +" can not be validated due to missing files");
+            _log.error("ECAS Username: " /*+ userConnected.getEcasUsername()*/ + " - Application with id "+ applicationDTO.getId() +" can not be validated due to missing files");
             throw new AppException();
         }
         ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
         if(applicationDBO == null){
-            _log.error("User ID: " + userConnected.getId() + " - Incorrect application id");
+            _log.error("ECAS Username: "+ /*userConnected.getEcasUsername() +*/ " - Incorrect application id");
             throw new AppException("Incorrect application id");
         }
 
@@ -432,14 +439,16 @@ public class ApplicationService {
             }
         }
         */
-        _log.info("User ID: " + userConnected.getId() + " - Application with id "+ applicationDTO.getId() +" is valid");
+        _log.info("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Application with id "+ applicationDTO.getId() +" is valid");
         return validatedApplication;
     }
 
     public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO) {
+       /* userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
         ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
         if(applicationDBO == null){
-            _log.error("User ID: " + userConnected.getId() + " - Incorrect application id");
+            _log.error("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Incorrect application id");
             throw new AppException("Incorrect application id");
         }
         applicationDBO.setStatus(ApplicationStatus.KO.getValue());
@@ -463,18 +472,20 @@ public class ApplicationService {
             }
         }
         */
-        _log.info("User ID: " + userConnected.getId() + " - Application with id "+ applicationDTO.getId() +" is invalid due the following reason: " + invalidatedApplication.getInvalidateReason());
+        _log.info("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Application with id "+ applicationDTO.getId() +" is invalid due the following reason: " + invalidatedApplication.getInvalidateReason());
         return invalidatedApplication;
     }
 
     public ApplicationDTO sendLegalDocumentsCorrection(ApplicationDTO application) {
+       /* userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
         ApplicationDTO applicationDB = applicationMapper.toDTO(applicationRepository.findOne(application.getId()));
         List<LegalFileCorrectionReasonDTO> legalFiles = registrationService.getLegalFilesByRegistrationId(applicationDB.getRegistrationId());
         boolean pendingFollowup = false;
         for (LegalFileCorrectionReasonDTO legalFile : legalFiles) {
             if (legalFile.getRequestCorrection() && legalFile.getCorrectionReason() != null) {
                 pendingFollowup = true;
-                _log.debug("User ID: " + userConnected.getId() + " - Legal file: " +legalFile.getCorrectionReason()+" from registration " +applicationDB.getRegistrationId() + " is pending for correction");
+                _log.debug("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Legal file: " +legalFile.getCorrectionReason()+" from registration " +applicationDB.getRegistrationId() + " is pending for correction");
                 break;
             }
         }
@@ -488,7 +499,7 @@ public class ApplicationService {
         }
         applicationDB.setInvalidateReason(null);
         registrationService.saveRegistration(registration);
-        _log.info("User ID: " + userConnected.getId() + " - Legal files from application " + application.getId() + " are sent for correction");
+        _log.info("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Legal files from application " + application.getId() + " are sent for correction");
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDB)));
     }
 
@@ -497,6 +508,8 @@ public class ApplicationService {
     }
 
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(int callId, int lauId) {
+       /* userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
         List<ApplicationDTO> applications = new ArrayList<>();
         for (ApplicationDTO application : getApplicationsByCallIdAndLauIdCustom(callId, lauId)) {
             RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
@@ -505,7 +518,7 @@ public class ApplicationService {
                 if (municipality != null) {
                     if (municipality.getLauId() == lauId) {
                         applications.add(application);
-                        _log.debug("User ID: " + userConnected.getId() + " - Application with id " + application.getId() + " added to the list");
+                        _log.debug("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Application with id " + application.getId() + " added to the list");
                     }
                 }
             }
@@ -519,22 +532,26 @@ public class ApplicationService {
     }
 
     public byte[] exportExcelDGConnApplicantsList(Integer callId, String country) {
+      /*  userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
         int totalCount = municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country);
         int pageSize = totalCount;
         PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
         List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, null, pagingSortingData);
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
-        _log.info("User ID: " + userConnected.getId() + " - Excel exported");
+        _log.info("ECAS Username: " /*+ userConnected.getEcasUsername()*/ + " - Excel exported");
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
     }
 
     public byte[] exportExcelDGConnApplicantsListContainingName(Integer callId, String country, String name) {
+       /* userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
         int totalCount = municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name);
         int pageSize = totalCount;
         PagingSortingDTO pagingSortingData = new PagingSortingDTO(0, pageSize, "lauId", 1);
         List<ApplicantListItemDTO> applicants = findDgconnApplicantsList(callId, country, name, pagingSortingData);
         ExcelExportGenerator excelExportGenerator = new ExcelExportGenerator(applicants, ApplicantListItemDTO.class);
-        _log.info("User ID: " + userConnected.getId() + " - Excel exported");
+        _log.info("ECAS Username: " /*+ userConnected.getEcasUsername()*/ + " - Excel exported");
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
     }
 }

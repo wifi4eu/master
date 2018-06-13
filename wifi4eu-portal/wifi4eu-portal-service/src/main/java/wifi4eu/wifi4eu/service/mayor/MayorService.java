@@ -17,6 +17,8 @@ import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -37,9 +39,9 @@ public class MayorService {
     PermissionChecker permissionChecker;
 
     private final Logger _log = LogManager.getLogger(MayorService.class);
-
-    UserContext userContext = UserHolder.getUser();
-    UserDTO userConnected = userService.getUserByUserContext(userContext);
+/*
+    UserContext userContext;
+    UserDTO userConnected;*/
 
     public List<MayorDTO> getAllMayors() {
         return mayorMapper.toDTOList(Lists.newArrayList(mayorRepository.findAll()));
@@ -51,33 +53,37 @@ public class MayorService {
 
     @Transactional
     public MayorDTO createMayor(MayorDTO mayorDTO) {
+        /*userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
+        MayorDTO resMayor = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
 
-      MayorDTO resMayor = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
-
-      MayorDTO mayorDTO1 = getMayorByMunicipalityId(mayorDTO.getMunicipalityId());
-      if(mayorDTO1 != null) {
-        resMayor.setEmail(mayorDTO1.getEmail());
-      }
-      _log.log(Level.getLevel("BUSINESS"),"User ID: " + userConnected.getId() + " - Mayor "+resMayor.getId()+" created");
-      return resMayor;
+        MayorDTO mayorDTO1 = getMayorByMunicipalityId(mayorDTO.getMunicipalityId());
+        if (mayorDTO1 != null) {
+            resMayor.setEmail(mayorDTO1.getEmail());
+        }
+        _log.log(Level.getLevel("BUSINESS"), "ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Mayor " + resMayor.getId() + " created");
+        return resMayor;
     }
 
     @Transactional
     public MayorDTO updateMayor(MayorDTO mayorDetails, String name, String surname) {
-      
-      mayorDetails.setName(name);
-      mayorDetails.setSurname(surname);
+        /*userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
+        mayorDetails.setName(name);
+        mayorDetails.setSurname(surname);
 
-      _log.info("User ID: " + userConnected.getId() + " - Mayor "+mayorDetails.getId()+" updated");
-      return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDetails)));
+        _log.info("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Mayor " + mayorDetails.getId() + " updated");
+        return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDetails)));
     }
 
     @Transactional
     public MayorDTO deleteMayor(int mayorId) {
+        /*userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);*/
         MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.findOne(mayorId));
         if (mayorDTO != null) {
             mayorRepository.delete(mayorMapper.toEntity(mayorDTO));
-            _log.log(Level.getLevel("BUSINESS"),"User ID: " + userConnected.getId() + " - Mayor "+mayorId+" removed");
+            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Mayor " + mayorId + " removed");
             return mayorDTO;
         } else {
             return null;
@@ -85,6 +91,6 @@ public class MayorService {
     }
 
     public MayorDTO getMayorByMunicipalityId(int municipalityId) {
-      return mayorMapper.toDTO(mayorRepository.findByMunicipalityId(municipalityId));
+        return mayorMapper.toDTO(mayorRepository.findByMunicipalityId(municipalityId));
     }
 }
