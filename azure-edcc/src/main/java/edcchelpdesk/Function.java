@@ -21,6 +21,7 @@ public class Function {
     /**
      * This function listens at endpoint "/api/edcc". Two ways to invoke it using "curl" command in bash:
      *    curl {your host}/api/edcc
+     *    Example - curl http://localhost:7071/api/edcc
      */
     @FunctionName("edcc")
     public HttpResponseMessage<String> run(

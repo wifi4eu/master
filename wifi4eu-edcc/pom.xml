@@ -13,6 +13,7 @@
 	<artifactId>wifi4eu-edcc</artifactId>
 	<packaging>war</packaging>
 
+	<name>WiFi4EU EDCC Bridge for Azure service</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
