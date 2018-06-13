@@ -145,13 +145,11 @@
                 <div class="col-md-12">
                   <div class="panel-dg panel-dg-voucher">
                     <p-dataTable [rowStyleClass]="lookupRowStyleClass" styleClass="tableAssignment {{(loadingSimulation === true) ? 'table-disabled': ''}}" #tableVoucher [@opacityTransition] [value]="listAssignment" [responsive]="true">
-                      <!-- [style]="{'width':'10%'}" -->
                       <p-column field="euRank" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.euRank' | translate}}" styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                           <span *ngIf="row.selectionStatus != 2">{{row.euRank}}</span>
                         </ng-template>
                       </p-column>
-                      <!-- [style]="{'width':'10%'}" -->
                       <p-column field="countryRank" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.countryRank' | translate}}" styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                           <span *ngIf="row.selectionStatus != 2">{{row.countryRank}}</span>
@@ -160,10 +158,10 @@
                       <p-column field="selectionStatus" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.selectionStatus' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
-                          <span *ngIf="row.selectionStatus == 0">{{ 'dgConn.voucherAssignment.selectionStatus.mainList' | translate}}</span>
-                          <span *ngIf="row.selectionStatus == 1">{{ 'dgConn.voucherAssignment.selectionStatus.reserve' | translate}}</span>
-                          <span *ngIf="row.selectionStatus == 2">{{ 'dgConn.voucherAssignment.selectionStatus.rejected' | translate}}</span>
-                          <span *ngIf="row.selectionStatus == 3">{{ 'dgConn.voucherAssignment.selectionStatus.selected' | translate}}</span>
+                          <span *ngIf="row.selectionStatus == 0">{{ 'dgConn.voucherAssignment.selectionStatus.mainList' | translate }}</span>
+                          <span *ngIf="row.selectionStatus == 1">{{ 'dgConn.voucherAssignment.selectionStatus.reserve' | translate }}</span>
+                          <span *ngIf="row.selectionStatus == 2">{{ 'dgConn.voucherAssignment.selectionStatus.rejected' | translate }}</span>
+                          <span *ngIf="row.selectionStatus == 3">{{ 'dgConn.voucherAssignment.selectionStatus.selected' | translate }}</span>
                         </ng-template>
                       </p-column>
                       <p-column field="application.preSelectedFlag" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.applicationChange' | translate}}"
@@ -178,7 +176,7 @@
                           <span pTooltip="{{row.country}}" tooltipPosition="bottom">{{row.country}}</span>
                         </ng-template>
                       </p-column>
-                      <p-column field="municipalityName" sortable="true" header="{{'dgConn.voucherAssignment.table.municipality' | translate}}"
+                      <p-column field="municipalityName" sortable="custom" (sortFunction)="sortTable($event)" header="{{'dgConn.voucherAssignment.table.municipality' | translate}}"
                         styleClass="text-center">
                         <ng-template let-row="rowData" pTemplate="body">
                             <span pTooltip="{{row.municipalityName}}" tooltipPosition="bottom">{{row.municipalityName}}</span>

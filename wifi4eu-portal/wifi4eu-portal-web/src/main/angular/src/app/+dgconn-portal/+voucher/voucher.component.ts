@@ -94,9 +94,7 @@ export class DgConnVoucherComponent {
       (calls: CallDTOBase[]) => {
         this.callsLoaded = true;
         this.calls = calls;
-        if (this.calls.length > 0) {
-          /* this.callSelected = this.calls[0]; */
-
+        if (calls.length > 0) {
           this.route.queryParams.subscribe((queryParams) => {
               var callId = typeof queryParams['call'] === 'undefined' ? this.calls[0].id : parseInt(queryParams['call']);
               var country = typeof queryParams['country'] === 'undefined' ? 'All' : queryParams['country'];
@@ -126,10 +124,10 @@ export class DgConnVoucherComponent {
               }       
 
               if(!this.calls.some(call => call.id === callId)){
-                this.callSelected = this.calls[0];
+                this.callSelected = calls[0];
               }else{
                 var index = this.calls.findIndex(call => call.id === callId);
-                this.callSelected = this.calls[index];
+                this.callSelected = calls[index];
               }
               this.page = page;
               this.sizePage = size;
@@ -145,7 +143,7 @@ export class DgConnVoucherComponent {
                 this.tableVoucher.sortColumn = this.tableVoucher.columns.find(col => col.field === this.sortField);
                 this.tableVoucher.sortField = this.sortField;
                 this.tableVoucher.sortOrder = this.sortDirection === 'ASC' ? 1 : -1;
-                this.calls.forEach((element, _index) => {
+                calls.forEach((element, _index) => {
                   if(element.id === this.callSelected.id){
                     var selectedTab = this.tabCalls.findSelectedTab();
                     selectedTab.selected = false;
@@ -212,11 +210,12 @@ export class DgConnVoucherComponent {
   }
 
   filterTable(){
-    this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, municipality: this.searchedMunicipality, country: this.selectedCountry, page: this.page, size: this.sizePage, sortField : this.sortField, sortDirection: this.sortDirection} });
+    this.router.navigate(['./dgconn-portal/voucher'], { queryParams: { call: this.callSelected.id, page: this.page, size: this.sizePage, municipality: this.searchedMunicipality, country: this.selectedCountry, sortField : this.sortField, sortDirection: this.sortDirection} });
   }
 
   selectCountry(country: NutsDTOBase) {
     this.selectedCountry = country.label;
+    this.page = 0;
     this.filterTable();
   }
 
@@ -227,6 +226,7 @@ export class DgConnVoucherComponent {
 
   searchByMunicipality(event) {
     if(event.keyCode == 13) {
+      this.page = 0;
       this.searchedMunicipality = this.municipalitySearch.nativeElement.value;
       this.filterTable();
     }
@@ -257,6 +257,7 @@ export class DgConnVoucherComponent {
 
   changeRowSelection(pageSize: number){
     this.sizePage = pageSize;
+    this.page = 0;
     this.filterTable();
   }
 

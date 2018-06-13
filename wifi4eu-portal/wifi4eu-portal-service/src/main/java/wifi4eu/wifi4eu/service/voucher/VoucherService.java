@@ -159,24 +159,33 @@ public class VoucherService {
 
     public ResponseDTO getVoucherSimulationByVoucherAssignment(int voucherAssignmentId, String country, String municipality, Pageable pageable) {
         Page<VoucherSimulation> simulationPaged = null;
+        List<VoucherSimulationDTO> listSimulation = new ArrayList<>();
+        int totalElements = 0;
+        String sortDirection = "ASC";
+        if(pageable.getSort().getOrderFor("municipalityName") != null){
+            sortDirection = pageable.getSort().getOrderFor("municipalityName").getDirection().name();
+        }
 
-        if((municipality.equalsIgnoreCase("All") || municipality.isEmpty()) && (country.equalsIgnoreCase("All"))){
-            simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentOrdered(voucherAssignmentId, pageable);
+        if(country.isEmpty() || country.equalsIgnoreCase("All")){
+            country = "";
         }
-        else if((!municipality.equalsIgnoreCase("All") && !municipality.isEmpty()) && (country.equalsIgnoreCase("All"))){
-            simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityOrderedByEuRank(voucherAssignmentId, municipality, pageable);
+        if(municipality.isEmpty() || municipality.equalsIgnoreCase("All")){
+            municipality = "";
         }
-        else if((municipality.equalsIgnoreCase("All") || municipality.isEmpty()) && (!country.equalsIgnoreCase("All"))){
-            simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentInCountryOrdered(voucherAssignmentId, country, pageable);
-        }
-        else if((!municipality.equalsIgnoreCase("All") && !municipality.isEmpty()) && (!country.equalsIgnoreCase("All"))){
+        if(pageable.getSort().getOrderFor("municipalityName") != null){
+            listSimulation = voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByMunicipalityName(voucherAssignmentId, municipality, country, pageable.getOffset(),pageable.getPageSize(), sortDirection));
+            totalElements = voucherSimulationRepository.countAllByVoucherAssignmentAndMunicipalityInCountryOrderedByMunicipalityName(voucherAssignmentId, municipality, country);
+        }else{
             simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByEuRank(voucherAssignmentId, country, municipality, pageable);
+            listSimulation = voucherSimulationMapper.toDTOList(Lists.newArrayList(simulationPaged.getContent()));
         }
-        List<VoucherSimulationDTO> listSimulation = voucherSimulationMapper.toDTOList(Lists.newArrayList(simulationPaged.getContent()));
         for (VoucherSimulationDTO voucherSimulation : listSimulation) {
             SimpleMunicipalityDTO simpleMunicipalityDTO = simpleMunicipalityService.getMunicipalityById(voucherSimulation.getMunicipality());
             voucherSimulation.setMunicipalityName(simpleMunicipalityDTO.getName());
             voucherSimulation.setLau(simpleMunicipalityDTO.getLau());
+        }
+        if(pageable.getSort().getOrderFor("municipalityName") != null){
+            return new ResponseDTO(true, listSimulation, (long) totalElements, null);
         }
         return new ResponseDTO(true, listSimulation, simulationPaged.getTotalElements(), null);
     }
