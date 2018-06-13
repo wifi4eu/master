@@ -24,6 +24,7 @@ import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -71,8 +72,8 @@ public class ApplicationResource {
         if (responseApp == null) {
             _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");
             responseApp = new ApplicationDTO();
-        }else{
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application with id "+responseApp.getId()+" is obtained correctly");
+        } else {
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application with id " + responseApp.getId() + " is obtained correctly");
         }
         return responseApp;
     }
@@ -95,7 +96,7 @@ public class ApplicationResource {
             return applicationService.getApplicationsVoucherInfoByCall(callId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("User ID: "/* + userConnected.getId()*/ + " - Applications Voucher with call id " + callId+" not found", e);
+                _log.error("User ID: "/* + userConnected.getId()*/ + " - Applications Voucher with call id " + callId + " not found", e);
                 response.sendError(HttpStatus.NOT_FOUND.value());
             }
             return null;
@@ -126,18 +127,20 @@ public class ApplicationResource {
     @RequestMapping(value = "/findDgconnApplicantsListByCallId/{callId}", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO findDgconnApplicantsListByCallId(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
 
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
-                _log.log(Level.getLevel("BUSINESS"),"User ID: "/* + userConnected.getId()*/ + " - You have no permissions to access");
+                _log.log(Level.getLevel("BUSINESS"), "User ID: "/* + userConnected.getId()*/ + " - You have no permissions to access");
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(applicationService.findDgconnApplicantsList(callId, country, null, pagingSortingData));
             res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country));
-            _log.info("User ID: "/* + userConnected.getId()*/ + " - The DGConn Applicant List for call "+callId+" is obtained correctly");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - The DGConn Applicant List for call " + callId + " is obtained correctly");
             return res;
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
