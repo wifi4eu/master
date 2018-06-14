@@ -109,6 +109,7 @@ public class MayorResource {
                                           HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Updating mayor details");
         try {
             MayorDTO mayorDetails = mayorService.getMayorById(mayorDTO.getId());
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -157,6 +158,7 @@ public class MayorResource {
     public MayorDTO getMayorByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting mayor by municipality id " + municipalityId);
         try {
             UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
             if (user.getType() != 5) {

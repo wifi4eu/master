@@ -53,6 +53,7 @@ public class ThreadMessageResource {
     public ResponseDTO createThreadMessage(@RequestBody final ThreadMessageDTO threadMessageDTO, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Creating thread message");
         try {
             UserDTO user = userConnected;
             if (userThreadsService.getByUserIdAndThreadId(user.getId(), threadMessageDTO.getThreadId()) == null && !permissionChecker.checkIfDashboardUser()) {

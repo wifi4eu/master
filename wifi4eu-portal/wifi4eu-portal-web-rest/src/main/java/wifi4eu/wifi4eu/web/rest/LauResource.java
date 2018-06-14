@@ -102,6 +102,7 @@ public class LauResource {
     public ResponseDTO updatePhysicalAddress(@RequestBody final LauDTO lauDTO, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Updating Lau physical address");
         try {
             if (userService.getUserByUserContext(UserHolder.getUser()).getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
