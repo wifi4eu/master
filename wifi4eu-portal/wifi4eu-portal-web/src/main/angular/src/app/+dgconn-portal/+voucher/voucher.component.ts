@@ -8,7 +8,7 @@ import { NutsApi } from "../../shared/swagger/api/NutsApi";
 import { NutsDTOBase } from "../../shared/swagger/model/NutsDTO";
 import { Observable } from 'rxJs/Observable';
 import { SharedService } from "../../shared/shared.service";
-import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO, VoucherAssignmentAuxiliarDTOBase } from "../../shared/swagger";
+import { VoucherAssignmentDTO, VoucherSimulationDTO, ResponseDTO, VoucherAssignmentAuxiliarDTO, ResponseDTOBase, ApplicationDTO, VoucherAssignmentAuxiliarDTOBase, RegistrationWarningApi } from "../../shared/swagger";
 import { trigger, transition, style, animate, query, stagger, group, state } from '@angular/animations';
 import { count } from "rxjs/operator/count";
 import { Paginator, MenuItem, DataTable, TabView } from "primeng/primeng";
@@ -16,7 +16,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import * as FileSaver from "file-saver";
 
 @Component({
-  templateUrl: 'voucher.component.html', providers: [CallApi, ApplicationApi, NutsApi, VoucherApi],
+  templateUrl: 'voucher.component.html', providers: [ApplicationApi, NutsApi, VoucherApi, RegistrationWarningApi, CallApi],
   styleUrls: ['./voucher.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: [
@@ -89,7 +89,7 @@ export class DgConnVoucherComponent {
   @ViewChild("municipalitySearch") municipalitySearch: ElementRef;
 
   constructor(private sharedService: SharedService, private callApi: CallApi, private applicationApi: ApplicationApi, private nutsApi: NutsApi,
-    private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, ) {
+    private voucherApi: VoucherApi, private router: Router, private route: ActivatedRoute, private registrationWarningApi: RegistrationWarningApi ) {
     this.callApi.allCalls().subscribe(
       (calls: CallDTOBase[]) => {
         this.callsLoaded = true;

@@ -16,16 +16,10 @@ import wifi4eu.wifi4eu.common.enums.SelectionStatus;
 import wifi4eu.wifi4eu.common.enums.VoucherAssignmentStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.common.security.UserContext;
-import wifi4eu.wifi4eu.entity.application.Application;
-import wifi4eu.wifi4eu.entity.location.Lau;
-import wifi4eu.wifi4eu.entity.municipality.Municipality;
-import wifi4eu.wifi4eu.entity.user.User;
-import wifi4eu.wifi4eu.entity.voucher.SimpleRegistration;
 import wifi4eu.wifi4eu.entity.voucher.VoucherAssignment;
-import wifi4eu.wifi4eu.entity.voucher.VoucherAssignmentAuxiliar;
 import wifi4eu.wifi4eu.entity.voucher.VoucherSimulation;
+import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
-import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentAuxiliarMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherAssignmentMapper;
 import wifi4eu.wifi4eu.mapper.voucher.VoucherSimulationMapper;
@@ -42,13 +36,12 @@ import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
-import wifi4eu.wifi4eu.util.ExcelExportGenerator;
+import wifi4eu.wifi4eu.service.warning.RegistrationWarningService;
 import wifi4eu.wifi4eu.util.MailService;
 import wifi4eu.wifi4eu.util.VoucherSimulationExportGenerator;
 
 import java.text.MessageFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service("portalVoucherService")
 public class VoucherService {
@@ -72,6 +65,9 @@ public class VoucherService {
 
     @Autowired
     VoucherManagementService voucherManagementService;
+
+    @Autowired
+    RegistrationWarningService registrationWarningService;
 
     @Autowired
     ApplicationService applicationService;
@@ -136,20 +132,20 @@ public class VoucherService {
 
     public VoucherAssignmentAuxiliarDTO getVoucherAssignmentAuxiliarByCall(int callId) {
         VoucherAssignmentAuxiliarDTO voucherAssignmentAuxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 1));
-        if(voucherAssignmentAuxiliarDTO == null){
+        if (voucherAssignmentAuxiliarDTO == null) {
             throw new AppException("Voucher assigment not found for call id: " + callId);
         }
 
         VoucherAssignmentAuxiliarDTO voucherAssignmentPreList = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 2));
 
         voucherAssignmentAuxiliarDTO.setHasPreListSaved(voucherAssignmentPreList != null);
-        if(voucherAssignmentPreList != null){
+        if (voucherAssignmentPreList != null) {
             voucherAssignmentAuxiliarDTO.setPreListExecutionDate(voucherAssignmentPreList.getExecutionDate());
         }
 
         VoucherAssignmentAuxiliarDTO voucherAssignmentFreezeList = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 3));
         voucherAssignmentAuxiliarDTO.setHasFreezeListSaved(voucherAssignmentFreezeList != null);
-        if(voucherAssignmentFreezeList != null){
+        if (voucherAssignmentFreezeList != null) {
             voucherAssignmentAuxiliarDTO.setFreezeLisExecutionDate(voucherAssignmentFreezeList.getExecutionDate());
             voucherAssignmentAuxiliarDTO.setNotifiedDate(voucherAssignmentFreezeList.getNotifiedDate());
         }
@@ -162,29 +158,32 @@ public class VoucherService {
         List<VoucherSimulationDTO> listSimulation = new ArrayList<>();
         int totalElements = 0;
         String sortDirection = "ASC";
-        if(pageable.getSort().getOrderFor("municipalityName") != null){
+        if (pageable.getSort().getOrderFor("municipalityName") != null) {
             sortDirection = pageable.getSort().getOrderFor("municipalityName").getDirection().name();
         }
 
-        if(country.isEmpty() || country.equalsIgnoreCase("All")){
+        if (country.isEmpty() || country.equalsIgnoreCase("All")) {
             country = "";
         }
-        if(municipality.isEmpty() || municipality.equalsIgnoreCase("All")){
+        if (municipality.isEmpty() || municipality.equalsIgnoreCase("All")) {
             municipality = "";
         }
-        if(pageable.getSort().getOrderFor("municipalityName") != null){
-            listSimulation = voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByMunicipalityName(voucherAssignmentId, municipality, country, pageable.getOffset(),pageable.getPageSize(), sortDirection));
+        if (pageable.getSort().getOrderFor("municipalityName") != null) {
+            listSimulation = voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByMunicipalityName(voucherAssignmentId, municipality, country, pageable.getOffset(), pageable.getPageSize(), sortDirection));
             totalElements = voucherSimulationRepository.countAllByVoucherAssignmentAndMunicipalityInCountryOrderedByMunicipalityName(voucherAssignmentId, municipality, country);
-        }else{
+        } else {
+
             simulationPaged = voucherSimulationRepository.findAllByVoucherAssignmentAndMunicipalityInCountryOrderedByEuRank(voucherAssignmentId, country, municipality, pageable);
             listSimulation = voucherSimulationMapper.toDTOList(Lists.newArrayList(simulationPaged.getContent()));
         }
         for (VoucherSimulationDTO voucherSimulation : listSimulation) {
+            List<RegistrationWarningDTO> warningList = registrationWarningService.getWarningsByRegistrationId(voucherSimulation.getApplication().getRegistrationId());
             SimpleMunicipalityDTO simpleMunicipalityDTO = simpleMunicipalityService.getMunicipalityById(voucherSimulation.getMunicipality());
             voucherSimulation.setMunicipalityName(simpleMunicipalityDTO.getName());
             voucherSimulation.setLau(simpleMunicipalityDTO.getLau());
+            voucherSimulation.setRegistrationWarningDTO(warningList);
         }
-        if(pageable.getSort().getOrderFor("municipalityName") != null){
+        if (pageable.getSort().getOrderFor("municipalityName") != null) {
             return new ResponseDTO(true, listSimulation, (long) totalElements, null);
         }
         return new ResponseDTO(true, listSimulation, simulationPaged.getTotalElements(), null);
@@ -198,19 +197,19 @@ public class VoucherService {
         return excelExportGenerator.exportExcelFile("voucher_simulation").toByteArray();
     }
 
-    public List<VoucherSimulationDTO> getVoucherSimulationsByVoucherAssigmentId(int voucherAssignmentId){
+    public List<VoucherSimulationDTO> getVoucherSimulationsByVoucherAssigmentId(int voucherAssignmentId) {
         return voucherSimulationMapper.toDTOList(voucherSimulationRepository.findAllByVoucherAssignmentOrderByEuRank(voucherAssignmentId));
     }
 
-    public boolean checkSavePreSelectionEnabled(int voucherAssignmentId){
+    public boolean checkSavePreSelectionEnabled(int voucherAssignmentId) {
 
         List<VoucherSimulationDTO> simulationList = getVoucherSimulationsByVoucherAssigmentId(voucherAssignmentId);
 
-        for (VoucherSimulationDTO simulation: simulationList) {
-            if(simulation.getNumApplications() > 1) {
+        for (VoucherSimulationDTO simulation : simulationList) {
+            if (simulation.getNumApplications() > 1) {
                 return false;
             }
-            if(simulation.getApplication().getStatus() != ApplicationStatus.OK.getValue()){
+            if (simulation.getApplication().getStatus() != ApplicationStatus.OK.getValue()) {
                 return false;
             }
         }
@@ -218,17 +217,17 @@ public class VoucherService {
     }
 
     @Transactional
-    public VoucherAssignmentDTO saveFreezeListSimulation(int voucherAssignmentId, int callId){
+    public VoucherAssignmentDTO saveFreezeListSimulation(int voucherAssignmentId, int callId) {
 
         CallDTO callDTO = callService.getCallById(callId);
 
-        if(callDTO == null){
+        if (callDTO == null) {
             throw new AppException("Call not exists");
         }
 
         VoucherAssignmentAuxiliarDTO voucherAssignmentAuxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callDTO.getId(), 3));
 
-        if(voucherAssignmentAuxiliarDTO != null){
+        if (voucherAssignmentAuxiliarDTO != null) {
             throw new AppException("VoucherAssignment with id " + voucherAssignmentId + " not found");
         }
 
@@ -249,13 +248,12 @@ public class VoucherService {
             voucherSimulationDTO.setCountry(voucherSimulation.getCountry());
             voucherSimulationDTO.setCountryRank(voucherSimulation.getCountryRank());
             voucherSimulationDTO.setEuRank(voucherSimulation.getEuRank());
-            voucherSimulationDTO.setIssues(voucherSimulation.getIssues());
             voucherSimulationDTO.setLau(voucherSimulation.getLau());
             voucherSimulationDTO.setMunicipality(voucherSimulation.getMunicipality());
             voucherSimulationDTO.setMunicipalityName(voucherSimulation.getMunicipalityName());
             voucherSimulationDTO.setNumApplications(voucherSimulation.getNumApplications());
             voucherSimulationDTO.setSelectionStatus(voucherSimulation.getSelectionStatus());
-            if(voucherSimulation.getSelectionStatus() == SelectionStatus.MAIN_LIST.getValue()) {
+            if (voucherSimulation.getSelectionStatus() == SelectionStatus.MAIN_LIST.getValue()) {
                 voucherSimulationDTO.setSelectionStatus(SelectionStatus.SELECTED.getValue());
             }
             voucherSimulationDTO.setRejected(voucherSimulation.getRejected());
@@ -269,24 +267,24 @@ public class VoucherService {
     }
 
     @Transactional
-    public VoucherAssignmentDTO savePreListSimulation(int voucherAssignmentId, int callId){
+    public VoucherAssignmentDTO savePreListSimulation(int voucherAssignmentId, int callId) {
         CallDTO callDTO = callService.getCallById(callId);
 
-        if(callDTO == null){
+        if (callDTO == null) {
             throw new AppException("Call not exists");
         }
 
-        if(checkSavePreSelectionEnabled(voucherAssignmentId)){
+        if (checkSavePreSelectionEnabled(voucherAssignmentId)) {
 
             VoucherAssignmentAuxiliarDTO auxiliarDTO = voucherAssignmentAuxiliarMapper.toDTO(voucherAssignmentAuxiliarRepository.findByCallIdAndStatusAux(callId, 1));
-            if(auxiliarDTO == null){
-              throw new AppException("Voucher assigment not found");
+            if (auxiliarDTO == null) {
+                throw new AppException("Voucher assigment not found");
             }
             List<VoucherSimulationDTO> simulationList = getVoucherSimulationsByVoucherAssigmentId(auxiliarDTO.getId());
 
             VoucherAssignmentDTO voucherAssignment = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.findByCallIdAndStatusEquals(callId, 2));
 
-            if(voucherAssignment != null){
+            if (voucherAssignment != null) {
                 //voucherAssignmentRepository.delete(voucherAssignmentMapper.toEntity(voucherAssignment));
                 throw new AppException("Existing Pre-selection list for callId: " + callId);
             }
@@ -300,7 +298,7 @@ public class VoucherService {
 
             Set<VoucherSimulationDTO> simulationsPreSave = new HashSet<>();
 
-            VoucherAssignmentDTO result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment))) ;
+            VoucherAssignmentDTO result = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment)));
 
             for (VoucherSimulationDTO voucherSimulation : simulationList) {
                 VoucherSimulationDTO voucherSimulationDTO = new VoucherSimulationDTO();
@@ -308,7 +306,6 @@ public class VoucherService {
                 voucherSimulationDTO.setCountry(voucherSimulation.getCountry());
                 voucherSimulationDTO.setCountryRank(voucherSimulation.getCountryRank());
                 voucherSimulationDTO.setEuRank(voucherSimulation.getEuRank());
-                voucherSimulationDTO.setIssues(voucherSimulation.getIssues());
                 voucherSimulationDTO.setLau(voucherSimulation.getLau());
                 voucherSimulationDTO.setMunicipality(voucherSimulation.getMunicipality());
                 voucherSimulationDTO.setMunicipalityName(voucherSimulation.getMunicipalityName());
@@ -326,7 +323,7 @@ public class VoucherService {
             voucherSimulationRepository.updateApplicationsInVoucherSimulationByVoucherAssignment(1, result.getId());
 
             return result;
-        }else{
+        } else {
             throw new AppException("Error saving pre-selected list");
         }
     }
@@ -343,14 +340,14 @@ public class VoucherService {
         if (userContext != null) {
             CallDTO call = callService.getCallById(callId);
             if (call == null) {
-                if(_log.isWarnEnabled()){
+                if (_log.isWarnEnabled()) {
                     _log.warn("Call not exist");
                 }
                 return new ResponseDTO(false, "Call not exist", null);
             }
 
             if (call.getNumberVouchers() == 0) {
-                if(_log.isWarnEnabled()){
+                if (_log.isWarnEnabled()) {
                     _log.warn("Simulation stopped");
                 }
                 return new ResponseDTO(false, "Simulation stopped", null);
@@ -373,11 +370,11 @@ public class VoucherService {
             // Countries extracted from list of applications in FIFO order
             List<String> participatingCountries = new ArrayList<>();
 
-           // List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
-            long dateNanoSeconds =  call.getStartDate() * 1000000;
+            // List<ApplicationDTO> listOfApplications = applicationService.getApplicationsByCallFiFoOrder(call.getId());
+            long dateNanoSeconds = call.getStartDate() * 1000000;
             List<ApplicationDTO> listOfApplications = applicationService.findByCallIdOrderByDateBeforeCallDateAsc(call.getId(), dateNanoSeconds);
 
-            if(_log.isInfoEnabled()){
+            if (_log.isInfoEnabled()) {
                 _log.info("START - Initializing municipalities, laus & registrations");
             }
 
@@ -400,7 +397,7 @@ public class VoucherService {
                 }
             }
 
-            if(_log.isInfoEnabled()){
+            if (_log.isInfoEnabled()) {
                 _log.info("END - Initializing municipalities, laus & registrations");
             }
 
@@ -450,7 +447,7 @@ public class VoucherService {
             // List of applications cloned to use in the algorithm
             List<ApplicationDTO> supportLOAlist = new ArrayList<>(listOfApplications);
 
-            if(_log.isInfoEnabled()){
+            if (_log.isInfoEnabled()) {
                 _log.info("START - Assigning minimum vouchers");
             }
 
@@ -471,7 +468,7 @@ public class VoucherService {
                             removeFromLOA(supportLOAlist, applicationDTO);
                             continue;
                         }
-                        if(applicationDTO.getRejected()){
+                        if (applicationDTO.getRejected()) {
                             rejectedApplications.add(applicationDTO);
                             removeFromLOA(supportLOAlist, applicationDTO);
                             continue;
@@ -505,7 +502,7 @@ public class VoucherService {
                 }
             }
 
-            if(_log.isInfoEnabled()){
+            if (_log.isInfoEnabled()) {
                 _log.info("END - Assigning minimum vouchers");
                 _log.info("START - Assigning maximum vouchers");
             }
@@ -520,7 +517,7 @@ public class VoucherService {
                         removeFromLOA(supportLOAlist, applicationDTO);
                         continue;
                     }
-                    if(applicationDTO.getRejected()){
+                    if (applicationDTO.getRejected()) {
                         rejectedApplications.add(applicationDTO);
                         removeFromLOA(supportLOAlist, applicationDTO);
                         continue;
@@ -570,7 +567,7 @@ public class VoucherService {
                 }
             }
 
-            if(_log.isInfoEnabled()){
+            if (_log.isInfoEnabled()) {
                 _log.info("END - Assigning maximum vouchers");
                 _log.info("START - Filling reserve list");
             }
@@ -596,7 +593,7 @@ public class VoucherService {
                                 removeFromLOA(supportLOAlist, application);
                                 continue;
                             }
-                            if(application.getRejected()){
+                            if (application.getRejected()) {
                                 rejectedApplications.add(application);
                                 removeFromLOA(supportLOAlist, application);
                                 continue;
@@ -638,7 +635,7 @@ public class VoucherService {
                 }
             }
 
-            if(_log.isInfoEnabled()){
+            if (_log.isInfoEnabled()) {
                 _log.info("END - Filling reserve list");
             }
 
@@ -682,8 +679,7 @@ public class VoucherService {
 
             if (voucherAssignment == null) {
                 voucherAssignment = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(assignmentDTO)));
-            }
-            else{
+            } else {
                 voucherSimulationRepository.deleteVoucherSimulationByVoucherAssignment(voucherAssignment.getId());
 
                 voucherAssignment.setCall(call);
@@ -710,7 +706,6 @@ public class VoucherService {
                 simulation.setVoucherAssignment(voucherAssignment.getId());
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO.getId());
-                simulation.setIssues(registrationService.getIssues(registrationService.getRegistrationIssue(municipalityDTO.getLau())));
                 simulation.setEuRank(i);
                 simulation.setSelectionStatus(0);
                 simulation.setCountryRank(countryRankCounter.get(municipalityDTO.getCountry()));
@@ -732,7 +727,6 @@ public class VoucherService {
                 simulation.setVoucherAssignment(voucherAssignment.getId());
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO.getId());
-                simulation.setIssues(registrationService.getIssues(registrationService.getRegistrationIssue(municipalityDTO.getLau())));
                 simulation.setEuRank(i);
                 simulation.setSelectionStatus(1);
                 simulation.setCountryRank(countryRankCounter.get(municipalityDTO.getCountry()));
@@ -740,7 +734,7 @@ public class VoucherService {
                 i++;
             }
 
-            for(ApplicationDTO rejectedApplication: rejectedApplications){
+            for (ApplicationDTO rejectedApplication : rejectedApplications) {
                 SimpleRegistrationDTO registrationDTO = registrationsHashMap.get(rejectedApplication.getRegistrationId());
                 SimpleMunicipalityDTO municipalityDTO = municipalityHashMap.get(registrationDTO.getMunicipalityId());
 
@@ -754,7 +748,6 @@ public class VoucherService {
                 simulation.setVoucherAssignment(voucherAssignment.getId());
                 simulation.setNumApplications(num);
                 simulation.setMunicipality(municipalityDTO.getId());
-                simulation.setIssues(registrationService.getIssues(registrationService.getRegistrationIssue(municipalityDTO.getLau())));
                 simulation.setEuRank(i);
                 simulation.setSelectionStatus(2);
                 simulation.setCountryRank(countryRankCounter.get(municipalityDTO.getCountry()));
@@ -762,14 +755,14 @@ public class VoucherService {
                 i++;
             }
 
-            if(_log.isInfoEnabled()){
+            if (_log.isInfoEnabled()) {
                 _log.info("START - Saving simulation to database");
             }
 
             voucherAssignment.setVoucherSimulations(simulations);
             VoucherAssignmentDTO res = voucherAssignmentMapper.toDTO(voucherAssignmentRepository.save(voucherAssignmentMapper.toEntity(voucherAssignment)));
 
-            if(_log.isInfoEnabled()){
+            if (_log.isInfoEnabled()) {
                 _log.info("END - Saving simulation to database");
             }
 
@@ -798,7 +791,7 @@ public class VoucherService {
                     if (lauDTO.getCountry_code().equals(country)) {
                         appCountry.add(application);
                     }
-                } catch (Exception ex){
+                } catch (Exception ex) {
                     _log.warn(ex.getMessage());
                 }
             }
@@ -824,12 +817,12 @@ public class VoucherService {
         return false;
     }
 
-    public VoucherAssignmentDTO sendNotificationForApplicants(int callId){
+    public VoucherAssignmentDTO sendNotificationForApplicants(int callId) {
 
         CallDTO callDTO = callService.getCallById(callId);
 
-        if(callDTO == null){
-            if(_log.isWarnEnabled()){
+        if (callDTO == null) {
+            if (_log.isWarnEnabled()) {
                 _log.warn("Call not found with id: " + callId);
             }
             throw new AppException("Call not found with id: " + callId);
@@ -841,8 +834,8 @@ public class VoucherService {
 
         VoucherAssignmentAuxiliarDTO finalVoucherAssignment = getVoucherAssignmentByCallAndStatus(callId, VoucherAssignmentStatus.FREEZE_LIST.getValue());
 
-        successfulApplicants =  applicationMapper.toDTOList(applicationRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.SELECTED.getValue()));
-        reserveApplicants =  applicationMapper.toDTOList(applicationRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.RESERVE_LIST.getValue()));
+        successfulApplicants = applicationMapper.toDTOList(applicationRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.SELECTED.getValue()));
+        reserveApplicants = applicationMapper.toDTOList(applicationRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.RESERVE_LIST.getValue()));
         unsuccessfulApplicants.addAll(applicationMapper.toDTOList(applicationRepository.getApplicationsSelectedInVoucherAssignment(finalVoucherAssignment.getId(), SelectionStatus.REJECTED.getValue())));
         unsuccessfulApplicants.addAll(applicationMapper.toDTOList(applicationRepository.getApplicationsNotSelectedInVoucherAssignment(callDTO.getId(), finalVoucherAssignment.getId())));
 
@@ -850,7 +843,7 @@ public class VoucherService {
         String subject;
         String msgBody;
 
-        for (ApplicationDTO successfulApplicant: successfulApplicants) {
+        for (ApplicationDTO successfulApplicant : successfulApplicants) {
             RegistrationDTO registrationDTO = registrationService.getRegistrationById(successfulApplicant.getRegistrationId());
             UserDTO userDTO = userService.getUserById(registrationDTO.getUserId());
             if (userDTO.getLang() != null) {
@@ -858,18 +851,18 @@ public class VoucherService {
             }
             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
             subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
-            msgBody= bundle.getString("mail.dgConn.voucherAssignment.successfulApplicant.body");
+            msgBody = bundle.getString("mail.dgConn.voucherAssignment.successfulApplicant.body");
             String additionalInfoUrl = userService.getBaseUrl() + "beneficiary-portal/my-voucher";
 //            subject = MessageFormat.format(subject, successfulApplicant.getCallId());
             subject = MessageFormat.format(subject, callDTO.getEvent());
             msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
             // TODO: Change it to work with CNS
-            if(!userService.isLocalHost()){
+            if (!userService.isLocalHost()) {
                 //mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
             }
         }
 
-        for(ApplicationDTO reserveApplicant: reserveApplicants){
+        for (ApplicationDTO reserveApplicant : reserveApplicants) {
             RegistrationDTO registrationDTO = registrationService.getRegistrationById(reserveApplicant.getRegistrationId());
             UserDTO userDTO = userService.getUserById(registrationDTO.getUserId());
             if (userDTO.getLang() != null) {
@@ -877,17 +870,17 @@ public class VoucherService {
             }
             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
             subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
-            msgBody= bundle.getString("mail.dgConn.voucherAssignment.reserveApplicant.body");
+            msgBody = bundle.getString("mail.dgConn.voucherAssignment.reserveApplicant.body");
             String additionalInfoUrl = userService.getBaseUrl();
             subject = MessageFormat.format(subject, callDTO.getEvent());
             msgBody = MessageFormat.format(msgBody, additionalInfoUrl);
             // TODO: Change it to work with CNS
-            if(!userService.isLocalHost()){
-               // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            if (!userService.isLocalHost()) {
+                // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
             }
         }
 
-        for(ApplicationDTO unsuccessfulApplicant: unsuccessfulApplicants){
+        for (ApplicationDTO unsuccessfulApplicant : unsuccessfulApplicants) {
             RegistrationDTO registrationDTO = registrationService.getRegistrationById(unsuccessfulApplicant.getRegistrationId());
             UserDTO userDTO = userService.getUserById(registrationDTO.getUserId());
             if (userDTO.getLang() != null) {
@@ -895,20 +888,20 @@ public class VoucherService {
             }
             ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
             subject = bundle.getString("mail.dgConn.voucherAssignment.subject");
-            msgBody= bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.body");
+            msgBody = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.body");
             String option;
 
-            if(unsuccessfulApplicant.getInvalidateReason() != null && !unsuccessfulApplicant.getInvalidateReason().isEmpty()){
+            if (unsuccessfulApplicant.getInvalidateReason() != null && !unsuccessfulApplicant.getInvalidateReason().isEmpty()) {
                 option = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.option1");
-            }else{
+            } else {
                 option = bundle.getString("mail.dgConn.voucherAssignment.unsuccesfulApplicant.option2");
             }
 
             msgBody = MessageFormat.format(msgBody, option);
             subject = MessageFormat.format(subject, callDTO.getEvent());
             // TODO: Change it to work with CNS
-            if(!userService.isLocalHost()){
-              // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
+            if (!userService.isLocalHost()) {
+                // mailService.sendEmailAsync(userDTO.getEmail(), MailService.FROM_ADDRESS, subject, msgBody);
             }
         }
 

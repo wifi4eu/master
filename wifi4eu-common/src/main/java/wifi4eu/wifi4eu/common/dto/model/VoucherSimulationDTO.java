@@ -1,5 +1,7 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
+import java.util.List;
+
 public class VoucherSimulationDTO {
 
     private int id;
@@ -7,7 +9,6 @@ public class VoucherSimulationDTO {
     private int countryRank;
     private String country;
     private int municipality;
-    private int issues;
     private int numApplications;
     private int rejected;
     private int voucherAssignment;
@@ -15,17 +16,17 @@ public class VoucherSimulationDTO {
     private ApplicationDTO application;
     private int lau;
     private String municipalityName;
+    private List<RegistrationWarningDTO> registrationWarningDTO;
 
     public VoucherSimulationDTO() {
     }
 
-    public VoucherSimulationDTO(int id, int euRank, int countryRank, String country, int municipality, int issues, int numApplications, int rejected, int voucherAssignment, int selectionStatus, ApplicationDTO application, int lau, String municipalityName) {
+    public VoucherSimulationDTO(List<RegistrationWarningDTO> registrationWarningDTO, int id, int euRank, int countryRank, String country, int municipality, int numApplications, int rejected, int voucherAssignment, int selectionStatus, ApplicationDTO application, int lau, String municipalityName) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;
         this.country = country;
         this.municipality = municipality;
-        this.issues = issues;
         this.numApplications = numApplications;
         this.rejected = rejected;
         this.voucherAssignment = voucherAssignment;
@@ -33,6 +34,7 @@ public class VoucherSimulationDTO {
         this.application = application;
         this.lau = lau;
         this.municipalityName = municipalityName;
+        this.registrationWarningDTO = registrationWarningDTO;
     }
 
     public int getId() {
@@ -73,14 +75,6 @@ public class VoucherSimulationDTO {
 
     public void setMunicipality(int municipality) {
         this.municipality = municipality;
-    }
-
-    public int getIssues() {
-        return issues;
-    }
-
-    public void setIssues(int issues) {
-        this.issues = issues;
     }
 
     public int getNumApplications() {
@@ -138,4 +132,13 @@ public class VoucherSimulationDTO {
     public void setMunicipalityName(String municipalityName) {
         this.municipalityName = municipalityName;
     }
+
+    public List<RegistrationWarningDTO> getRegistrationWarningDTO() {
+        return registrationWarningDTO;
+    }
+
+    public void setRegistrationWarningDTO(List<RegistrationWarningDTO> registrationWarningDTO) {
+        this.registrationWarningDTO = registrationWarningDTO;
+    }
+
 }

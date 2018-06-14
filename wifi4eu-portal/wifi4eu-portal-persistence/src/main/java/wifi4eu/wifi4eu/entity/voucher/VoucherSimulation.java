@@ -26,9 +26,6 @@ public class VoucherSimulation {
     @Column(name = "municipality")
     private Integer municipality;
 
-    @Column(name = "issues")
-    private Integer issues;
-
     @Column(name = "num_applications")
     private Integer numApplications;
 
@@ -49,13 +46,12 @@ public class VoucherSimulation {
     public VoucherSimulation() {
     }
 
-    public VoucherSimulation(Integer id, Integer euRank, Integer countryRank, String country, Integer municipality, Integer issues, Integer numApplications, Integer rejected, Integer selectionStatus, Application application, VoucherAssignment voucherAssignment) {
+    public VoucherSimulation(Integer id, Integer euRank, Integer countryRank, String country, Integer municipality, Integer numApplications, Integer rejected, Integer selectionStatus, Application application, VoucherAssignment voucherAssignment) {
         this.id = id;
         this.euRank = euRank;
         this.countryRank = countryRank;
         this.country = country;
         this.municipality = municipality;
-        this.issues = issues;
         this.numApplications = numApplications;
         this.rejected = rejected;
         this.selectionStatus = selectionStatus;
@@ -101,14 +97,6 @@ public class VoucherSimulation {
 
     public void setMunicipality(Integer municipality) {
         this.municipality = municipality;
-    }
-
-    public Integer getIssues() {
-        return issues;
-    }
-
-    public void setIssues(Integer issues) {
-        this.issues = issues;
     }
 
     public Integer getNumApplications() {
