@@ -1,6 +1,9 @@
 package wifi4eu.wifi4eu.service.supplier;
 
 import com.google.common.collect.Lists;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -54,16 +57,12 @@ public class SupplierService {
     UserService userService;
 
     @Autowired
-    NutsService nutsService;
-
-    @Autowired
-    ThreadService threadService;
-
-    @Autowired
-    UserThreadsService userThreadsService;
-
-    @Autowired
     MailService mailService;
+
+    private final Logger _log = LogManager.getLogger(SupplierService.class);
+
+    UserContext userContext;
+    UserDTO userConnected;
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -163,13 +162,10 @@ public class SupplierService {
 
     @Transactional
     public SupplierDTO submitSupplierRegistration(SupplierDTO supplierDTO) throws Exception {
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         UserDTO userDTO;
-
         SupplierValidator.validateSupplier(supplierDTO);
-
-        UserContext userContext = UserHolder.getUser();
-
         if (userContext != null) {
             // with ECAS
             userDTO = userService.getUserByUserContext(userContext);
@@ -191,6 +187,7 @@ public class SupplierService {
         userService.sendActivateAccountMail(userDTO);
         supplierDTO.setUserId(userDTO.getId());
         supplierDTO = createSupplier(supplierDTO);
+        _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Registration from supplier submitted");
         return supplierDTO;
     }
 
