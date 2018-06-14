@@ -53,8 +53,10 @@ public class Budg_soa_webUI extends UI {
 			InitialContext ic = new InitialContext();
 //			soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:comp/env/ejb/SoatubeWSClient");
 //			jmsProducer = (JmsProducerLocal)ic.lookup("java:comp/env/ejb/JmsProducer");
-			jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JmsProducer");
-			soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/SoatubeWSClient");
+//			jmsProducer = (JmsProducerLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/JmsProducer");
+//			soaTubeWSClient = (SoatubeWSClientLocal)ic.lookup("java:global/wifi4eu-financial/wifi4eu-financial-web/SoatubeWSClient");
+			jmsProducer = null;
+			soaTubeWSClient = null;
 
 		} catch (Exception e) {
 			e.printStackTrace();
