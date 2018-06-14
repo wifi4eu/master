@@ -3,9 +3,9 @@
 #npm install -g @angular/cli@latest
 echo "Check angular version"
 /var/quark/binaries/node/node-v8.9.3-linux-x64/lib/node_modules/@angular/cli/bin/ng -v
-echo "Config EC Dev Ops repo"
-npm config set "//ecdevops.eu/repository/npm-all/:_authToken=828d555c-441f-3ee2-8ec5-8fe715c389f2"
-npm config set registry https://ecdevops.eu/repository/npm-all/
+#echo "Config EC Dev Ops repo" - IT'S NOT NECESSARY: a proxy npm repository is configured (https://steps.everis.com/nexus/content/repositories/WIFIEU.Thirparty/)
+#npm config set "//ecdevops.eu/repository/npm-all/:_authToken=828d555c-441f-3ee2-8ec5-8fe715c389f2"
+#npm config set registry https://ecdevops.eu/repository/npm-all/
 echo "NPM install on angular folders"
 npm install --prefix ./wifi4eu-portal/wifi4eu-portal-web/src/main/angular/
 npm install --prefix ./wifi4eu-public-portal/wifi4eu-public-portal-web/src/main/angular/
