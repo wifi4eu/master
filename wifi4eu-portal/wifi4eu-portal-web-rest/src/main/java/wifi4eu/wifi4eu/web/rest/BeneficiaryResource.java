@@ -57,7 +57,7 @@ public class BeneficiaryResource {
     public ResponseDTO submitBeneficiaryRegistration(@RequestBody final BeneficiaryDTO beneficiaryDTO, HttpServletRequest request, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Submitting beneficiary registration");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Submitting beneficiary registration");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 0) {
@@ -75,10 +75,10 @@ public class BeneficiaryResource {
                 ip = request.getRemoteAddr();
             }
             List<RegistrationDTO> resRegistrations = beneficiaryService.submitBeneficiaryRegistration(beneficiaryDTO, ip);
-            _log.info("User ID: " + userConnected.getEcasUsername() + "- Beneficiary submitted successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary submitted successfully");
             return new ResponseDTO(true, resRegistrations, null);
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- Beneficiary cannot been submitted", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary cannot been submitted", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -97,7 +97,7 @@ public class BeneficiaryResource {
     public ResponseDTO findDgconnBeneficiaresList(@RequestParam("offset") final Integer offset, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting DGConn beneficiaries by offset " + offset + ", count" + count + ", order field" + orderField + " and order type " + orderType);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn beneficiaries by offset " + offset + ", count" + count + ", order field" + orderField + " and order type " + orderType);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -105,14 +105,14 @@ public class BeneficiaryResource {
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(beneficiaryService.findDgconnBeneficiaresList(null, offset, count, orderField, orderType));
             res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalities());
-            _log.info("User ID: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries retrieved successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries retrieved successfully");
             return res;
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve DGConn beneficiaries", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve DGConn beneficiaries", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries cannot been retrieved", e.getMessage());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
         }
     }
@@ -123,7 +123,7 @@ public class BeneficiaryResource {
     public ResponseDTO findDgconnBeneficiaresListSearchingName(@RequestParam("name") final String name, @RequestParam("offset") final Integer offset, @RequestParam("count") final Integer count, @RequestParam("orderField") String orderField, @RequestParam("orderType") Integer orderType, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting DGConn beneficiaries by searching name " + name + ",offset " + offset + ", count" + count + ", order field" + orderField + " and order type " + orderType);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting DGConn beneficiaries by searching name " + name + ",offset " + offset + ", count" + count + ", order field" + orderField + " and order type " + orderType);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -131,14 +131,14 @@ public class BeneficiaryResource {
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(beneficiaryService.findDgconnBeneficiaresList(name, offset, count, orderField, orderType));
             res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalitiesContainingName(name));
-            _log.info("User ID: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries retrieved successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries retrieved successfully");
             return res;
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve DGConn beneficiaries", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve DGConn beneficiaries", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- DGConn Beneficiaries cannot been retrieved", e.getMessage());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
         }
     }
@@ -149,7 +149,7 @@ public class BeneficiaryResource {
     public ResponseDTO exportCSVDGConnBeneficiariesList(HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Exporting CSV from DGConn beneficiaries");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting CSV from DGConn beneficiaries");
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -157,10 +157,10 @@ public class BeneficiaryResource {
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(beneficiaryService.exportCSVDGConnBeneficiariesList());
             res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalities());
-            _log.info("User ID: " + userConnected.getEcasUsername() + "- CSV exported successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- CSV exported successfully");
             return res;
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to export CSV", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export CSV", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -172,7 +172,7 @@ public class BeneficiaryResource {
     public ResponseDTO exportCSVDGConnBeneficiariesListSearchingName(@RequestParam("name") final String name, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Exporting CSV from DGConn beneficiaries by searching name " + name);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting CSV from DGConn beneficiaries by searching name " + name);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -180,10 +180,10 @@ public class BeneficiaryResource {
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(beneficiaryService.exportCSVDGConnBeneficiariesListSearchingName(name));
             res.setXTotalCount(beneficiaryService.getCountDistinctMunicipalitiesContainingName(name));
-            _log.info("User ID: " + userConnected.getEcasUsername() + "- CSV exported successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- CSV exported successfully");
             return res;
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to export CSV", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export CSV", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -195,7 +195,7 @@ public class BeneficiaryResource {
     public ResponseEntity<byte[]> exportExcelDGConnBeneficiariesList(HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Exporting Excel from DGConn beneficiaries");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting Excel from DGConn beneficiaries");
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -207,10 +207,10 @@ public class BeneficiaryResource {
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
             responseReturn = new ResponseEntity<>(beneficiaryService.exportExcelDGConnBeneficiariesList(), headers, HttpStatus.OK);
-            _log.info("User ID: " + userConnected.getEcasUsername() + "- Excel exported successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Excel exported successfully");
             return responseReturn;
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to export Excel", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export Excel", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -222,7 +222,7 @@ public class BeneficiaryResource {
     public ResponseEntity<byte[]> exportExcelDGConnBeneficiariesListSearchingName(@RequestParam("name") final String name, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Exporting Excel from DGConn beneficiaries by searching name" + name);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Exporting Excel from DGConn beneficiaries by searching name" + name);
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
@@ -234,10 +234,10 @@ public class BeneficiaryResource {
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
             responseReturn = new ResponseEntity<>(beneficiaryService.exportExcelDGConnBeneficiariesListContainingName(name), headers, HttpStatus.OK);
-            _log.info("User ID: " + userConnected.getEcasUsername() + "- Excel exported successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Excel exported successfully");
             return responseReturn;
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to export Excel", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to export Excel", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }

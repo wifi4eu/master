@@ -47,17 +47,17 @@ public class HelpdeskIssueResource {
     public List<HelpdeskIssueDTO> allHelpdeskIssues(HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting all the helpdesk issues");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting all the helpdesk issues");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the helpdesk issues", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the helpdesk issues", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- Helpdesk issues cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issues cannot been retrieved", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return helpdeskService.getAllHelpdeskIssues();
@@ -69,14 +69,14 @@ public class HelpdeskIssueResource {
     public HelpdeskIssueDTO getHelpdeskIssueById(@PathVariable("issueId") final Integer issueId, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting helpdesk issue by id " + issueId);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting helpdesk issue by id " + issueId);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- Helpdesk issue cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issue cannot been retrieved", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return helpdeskService.getHelpdeskIssueById(issueId);
@@ -89,7 +89,7 @@ public class HelpdeskIssueResource {
     public ResponseDTO createHelpdeskIssue(@RequestBody final HelpdeskIssueDTO helpdeskIssueDTO, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Creating helpdesk issue");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating helpdesk issue");
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getEcasEmail().equals(helpdeskIssueDTO.getFromEmail())) {
@@ -99,14 +99,14 @@ public class HelpdeskIssueResource {
             helpdeskIssueDTO.setCreateDate(new Date().getTime());
             helpdeskIssueDTO.setStatus(0);
             HelpdeskIssueDTO resHelpdeskIssue = helpdeskService.createHelpdeskIssue(helpdeskIssueDTO);
-            _log.info("User ID: " + userConnected.getEcasUsername() + "- Helpdesk issue created successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issue created successfully");
             return new ResponseDTO(true, resHelpdeskIssue, null);
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to create the helpdesk issue", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to create the helpdesk issue", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- Helpdesk issue cannot been created", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Helpdesk issue cannot been created", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }

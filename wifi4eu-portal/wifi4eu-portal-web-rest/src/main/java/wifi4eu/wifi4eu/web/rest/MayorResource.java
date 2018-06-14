@@ -109,7 +109,7 @@ public class MayorResource {
                                           HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Updating mayor details");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Updating mayor details");
         try {
             MayorDTO mayorDetails = mayorService.getMayorById(mayorDTO.getId());
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
@@ -118,13 +118,13 @@ public class MayorResource {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             permissionChecker.check(userDTO, RightConstants.MAYORS_TABLE + mayorDTO.getId());
-            _log.info("User ID: " + userConnected.getEcasUsername() + "- Mayor information updated successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Mayor information updated successfully");
             return new ResponseDTO(true, mayorService.updateMayor(mayorDetails, mayorDTO.getName(), mayorDTO.getSurname()), null);
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to update the mayor information", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to update the mayor information", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- Mayor information cannot been updated", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Mayor information cannot been updated", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
         }
         return new ResponseDTO(false, null, null);
@@ -158,7 +158,7 @@ public class MayorResource {
     public MayorDTO getMayorByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting mayor by municipality id " + municipalityId);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting mayor by municipality id " + municipalityId);
         try {
             UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
             if (user.getType() != 5) {
@@ -167,10 +167,10 @@ public class MayorResource {
                 }
             }
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the mayor from this municipality", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve the mayor from this municipality", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- The mayor from this municipality cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- The mayor from this municipality cannot been retrieved", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
         }
         return mayorService.getMayorByMunicipalityId(municipalityId);

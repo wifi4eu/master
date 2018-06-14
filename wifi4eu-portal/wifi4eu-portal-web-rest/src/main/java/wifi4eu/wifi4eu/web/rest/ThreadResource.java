@@ -51,14 +51,14 @@ public class ThreadResource {
     public ThreadDTO getThreadById(@PathVariable("threadId") final Integer threadId, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting thread by id " + threadId);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting thread by id " + threadId);
         try {
             UserDTO userDTO = userConnected;
             if (userThreadsService.getByUserIdAndThreadId(userDTO.getId(), threadId) == null) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this thread", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this thread", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -71,7 +71,7 @@ public class ThreadResource {
     public ThreadDTO getThreadByTypeAndReason(@PathVariable("type") final Integer type, @PathVariable("reason") final String reason, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Getting thread by type " + type + " and reason " + reason);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Getting thread by type " + type + " and reason " + reason);
         try {
             UserDTO user = userConnected;
             ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
@@ -84,11 +84,11 @@ public class ThreadResource {
             }
             return thread;
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this thread", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this thread", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- This thread cannot been retrieved", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been retrieved", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return null;
         }
@@ -100,21 +100,21 @@ public class ThreadResource {
     public ResponseDTO askMediationThread(@PathVariable("threadId") final Integer threadId, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Setting mediation to thread with id " + threadId);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Setting mediation to thread with id " + threadId);
         try {
             UserDTO user = userConnected;
             if (userThreadsService.getByUserIdAndThreadId(user.getId(), threadId) == null && !permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             ThreadDTO resThread = threadService.setMediationToThread(threadId);
-            _log.info("User ID: " + userConnected.getEcasUsername() + "- Mediation set to thread successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Mediation set to thread successfully");
             return new ResponseDTO(true, resThread, null);
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to set mediation to threads", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to set mediation to threads", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- This thread cannot been set with mediation", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread cannot been set with mediation", e.getMessage());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }

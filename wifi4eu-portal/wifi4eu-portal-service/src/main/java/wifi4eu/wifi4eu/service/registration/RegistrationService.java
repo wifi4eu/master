@@ -7,17 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.enums.*;
-import wifi4eu.wifi4eu.service.application.ApplicationWarningsChecker;
+import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
+import wifi4eu.wifi4eu.common.enums.FileTypes;
+import wifi4eu.wifi4eu.common.enums.RegistrationStatus;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
-import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
-import wifi4eu.wifi4eu.mapper.registration.legal_files.*;
 import wifi4eu.wifi4eu.mapper.registration.LegalFileCorrectionReasonMapper;
+import wifi4eu.wifi4eu.mapper.registration.RegistrationMapper;
+import wifi4eu.wifi4eu.mapper.registration.legal_files.LegalFilesMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.registration.LegalFileCorrectionReasonRepository;
 import wifi4eu.wifi4eu.repository.registration.RegistrationRepository;
-import wifi4eu.wifi4eu.repository.registration.legal_files.*;
+import wifi4eu.wifi4eu.repository.registration.legal_files.LegalFilesRepository;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
+import wifi4eu.wifi4eu.service.application.ApplicationWarningsChecker;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -27,8 +30,11 @@ import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
 
-import java.util.*;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Service("portalRegistrationService")
 public class RegistrationService {
@@ -87,6 +93,9 @@ public class RegistrationService {
         return registrationMapper.toDTO(registrationRepository.findOne(registrationId));
     }
 
+    UserContext userContext;
+    UserDTO userConnected;
+
     @Transactional
     public RegistrationDTO createRegistration(RegistrationDTO registrationDTO) {
         if (registrationDTO.getId() == 0) {
@@ -96,10 +105,10 @@ public class RegistrationService {
     }
 
     @Transactional
-    public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO){
+    public RegistrationDTO deleteRegistrationDocuments(RegistrationDTO registrationDTO) {
 
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
-        if(registrationDBO.getAllFilesFlag() != 1){
+        if (registrationDBO.getAllFilesFlag() != 1) {
             if (registrationDTO.getLegalFile1() == null) {
                 legalFilesRepository.deleteByRegistrationAndFileType(registrationDTO.getId(), 1);
 
@@ -132,11 +141,11 @@ public class RegistrationService {
     }
 
     @Transactional
-    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO){
+    public RegistrationDTO updateRegistrationDocuments(RegistrationDTO registrationDTO) {
 
         RegistrationDTO registrationDBO = registrationMapper.toDTO(registrationRepository.findOne(registrationDTO.getId()));
 
-        if(registrationDTO.getLegalFile1() != null && !registrationDTO.getLegalFile1().isEmpty()){
+        if (registrationDTO.getLegalFile1() != null && !registrationDTO.getLegalFile1().isEmpty()) {
             LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
             legalFilesDTO.setRegistration(registrationDTO.getId());
             legalFilesDTO.setFileType(FileTypes.LEGALFILE1.getValue());
@@ -147,7 +156,7 @@ public class RegistrationService {
             //registrationDBO.setLegalFile1Mime();
         }
 
-        if(registrationDTO.getLegalFile2() != null && !registrationDTO.getLegalFile2().isEmpty()){
+        if (registrationDTO.getLegalFile2() != null && !registrationDTO.getLegalFile2().isEmpty()) {
             LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
             legalFilesDTO.setRegistration(registrationDTO.getId());
             legalFilesDTO.setFileType(FileTypes.LEGALFILE2.getValue());
@@ -156,7 +165,7 @@ public class RegistrationService {
             legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
         }
 
-        if(registrationDTO.getLegalFile3() != null && !registrationDTO.getLegalFile3().isEmpty()){
+        if (registrationDTO.getLegalFile3() != null && !registrationDTO.getLegalFile3().isEmpty()) {
             LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
             legalFilesDTO.setRegistration(registrationDTO.getId());
             legalFilesDTO.setFileType(FileTypes.LEGALFILE3.getValue());
@@ -165,7 +174,7 @@ public class RegistrationService {
             legalFilesRepository.save(legalFilesMapper.toEntity(legalFilesDTO));
         }
 
-        if(registrationDTO.getLegalFile4() != null && !registrationDTO.getLegalFile4().isEmpty()){
+        if (registrationDTO.getLegalFile4() != null && !registrationDTO.getLegalFile4().isEmpty()) {
             LegalFilesDTO legalFilesDTO = new LegalFilesDTO();
             legalFilesDTO.setRegistration(registrationDTO.getId());
             legalFilesDTO.setFileType(FileTypes.LEGALFILE4.getValue());
@@ -742,9 +751,9 @@ public class RegistrationService {
         return applicationIssueUtils;
     }
 
-    public Integer getIssues(List<ApplicationIssueUtil> applicationIssueUtilList){
+    public Integer getIssues(List<ApplicationIssueUtil> applicationIssueUtilList) {
 
-        if(applicationIssueUtilList.size() == 1){
+        if (applicationIssueUtilList.size() == 1) {
 
             Integer issueType = 0;
             if (ApplicationWarningsChecker.registrationHasWarning1(applicationIssueUtilList.get(0))) {
@@ -760,9 +769,9 @@ public class RegistrationService {
         }
     }
 
-    public Integer getStatus(List<ApplicationIssueUtil> applicationIssueUtilList){
+    public Integer getStatus(List<ApplicationIssueUtil> applicationIssueUtilList) {
 
-        if(applicationIssueUtilList.size() == 1){
+        if (applicationIssueUtilList.size() == 1) {
             return applicationIssueUtilList.get(0).getStatus();
         } else {
             return -1;

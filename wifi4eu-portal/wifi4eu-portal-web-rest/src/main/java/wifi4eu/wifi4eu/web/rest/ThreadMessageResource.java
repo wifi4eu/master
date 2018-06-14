@@ -53,7 +53,7 @@ public class ThreadMessageResource {
     public ResponseDTO createThreadMessage(@RequestBody final ThreadMessageDTO threadMessageDTO, HttpServletResponse response) throws IOException {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
-        _log.debug("User ID: " + userConnected.getEcasUsername() + " - Creating thread message");
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Creating thread message");
         try {
             UserDTO user = userConnected;
             if (userThreadsService.getByUserIdAndThreadId(user.getId(), threadMessageDTO.getThreadId()) == null && !permissionChecker.checkIfDashboardUser()) {
@@ -64,14 +64,14 @@ public class ThreadMessageResource {
             }
             threadMessageDTO.setCreateDate(new Date().getTime());
             ThreadMessageDTO resThreadMessage = threadMessageService.createThreadMessage(threadMessageDTO);
-            _log.info("User ID: " + userConnected.getEcasUsername() + "- Thread message created successfully");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Thread message created successfully");
             return new ResponseDTO(true, resThreadMessage, null);
         } catch (AccessDeniedException ade) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to create thread messages", ade.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- You have no permissions to create thread messages", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasUsername() + "- This thread message cannot been created", e.getMessage());
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This thread message cannot been created", e.getMessage());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }
