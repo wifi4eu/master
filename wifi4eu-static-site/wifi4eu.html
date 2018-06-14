@@ -368,5 +368,18 @@
 
                     $("#ux-static-language-selector").value = "EN";
                 });
+
+                window.onload = function() {
+                    var userLang = navigator.language || navigator.userLanguage;
+                    if (userLang != null){
+                        userLang = userLang.toUpperCase();
+                    } else {
+                        userLang = 'EN';
+                    }
+                    $(".w4eu-i18n").each(function(itm, i) {
+                        itm.innerHTML = trans[userLang][itm.getAttribute("x-literal")];
+                    }); 
+                    document.getElementById("ux-static-language-selector").value = userLang;
+                };
             </script>    
 </html>
