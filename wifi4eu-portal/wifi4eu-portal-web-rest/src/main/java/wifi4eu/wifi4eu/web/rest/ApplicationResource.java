@@ -64,7 +64,7 @@ public class ApplicationResource {
         try {
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
         } catch (Exception e) {
-            _log.error("User ID: " /*+ userConnected.getEcasEmail()*/ + " - Permission not found", e);
+            _log.error("User ID: " + userConnected.getEcasEmail() + " - Permission not found", e);
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
 

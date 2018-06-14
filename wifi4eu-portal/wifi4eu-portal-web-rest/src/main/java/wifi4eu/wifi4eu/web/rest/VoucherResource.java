@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.web.rest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ResponseHeader;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentAuxiliarDTO;
 import wifi4eu.wifi4eu.common.dto.model.VoucherAssignmentDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
+import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.service.voucher.VoucherService;
 import wifi4eu.wifi4eu.service.voucher.util.ScenariosService;
 
@@ -37,6 +40,9 @@ public class VoucherResource {
 
     @Autowired
     ScenariosService scenariosService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     PermissionChecker permissionChecker;
@@ -124,7 +130,7 @@ public class VoucherResource {
     }
 
 
-    @ApiOperation(value = "Get voucher assignment by call")
+    @ApiOperation(value = "Get voucher simulation by voucher assignment")
     @RequestMapping(value = "/assignment/{assignmentId}/simulation", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO getVoucherSimulationByVoucherAssignment(@PathVariable("assignmentId") final Integer assignmentId,
@@ -147,22 +153,21 @@ public class VoucherResource {
             } else {
                 pageable = new PageRequest(page, size, Direction.DESC, field);
             }
-
+            _log.info("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Success on retrieving simulation by voucher assignment: " + assignmentId);
             return voucherService.getVoucherSimulationByVoucherAssignment(assignmentId, country, municipality, pageable);
         }
         catch (AccessDeniedException e){
-            _log.error(e.getMessage());
+            _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - You have no permissions to retrieve simulation by voucher assignment: " + assignmentId, e.getMessage());
             return new ResponseDTO(false, null, null);
         }
         catch (Exception e){
-            _log.error(e.getMessage(), e);
+            _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Voucher  Voucher simulation cannot be executed", e.getMessage());
             return new ResponseDTO(false, null, null);
         }
 
     }
 
     @ApiOperation(value = "Create voucher assignment")
-    @ResponseHeader(name = "Cache-control", response = String.class, description = "no-cache")
     @RequestMapping(value = "/assignment/simulate", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -171,15 +176,15 @@ public class VoucherResource {
             if (!permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException("Access denied: simulateVoucherAssignment");
             }
-
+            _log.log(Level.getLevel("BUSINESS"),"ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Success on voucher simulation");
             return voucherService.simulateVoucherFast(callId);
         }
         catch (AccessDeniedException e){
-            _log.error(e.getMessage());
+            _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - You have no permissions to run voucher simulation", e.getMessage());
             return new ResponseDTO(false, null, null);
         }
         catch (Exception e){
-            _log.error(e.getMessage(), e);
+            _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Voucher simulation cannot be executed", e.getMessage());
             return new ResponseDTO(false, null, null);
         }
     }
@@ -215,18 +220,15 @@ public class VoucherResource {
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
             responseReturn = new ResponseEntity<>(voucherService.exportVoucherSimulation(assignmentId, country, municipality, pageable), headers, HttpStatus.OK);
+            _log.info("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " - Success on downloading voucher simulations excel");
             return responseReturn;
         }catch (AccessDeniedException e){
-            if (_log.isErrorEnabled()) {
-                _log.error(e.getMessage());
-            }
+            _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " -  You have no permissions to download excel file", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
         catch (Exception e){
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'exportVoucherSimulation' operation.", e);
-            }
+            _log.error("ECAS Username: " + userService.getUserByUserContext(UserHolder.getUser()).getEcasUsername() + " -  Voucher simulation excel cannot been retrieved", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }

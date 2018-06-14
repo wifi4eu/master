@@ -91,6 +91,8 @@ public class VoucherService {
     @Autowired
     NutsService nutsService;
 
+    UserDTO userConnected;
+
     public List<VoucherAssignmentDTO> getAllVoucherAssignment() {
         return voucherAssignmentMapper.toDTOList(Lists.newArrayList(voucherAssignmentRepository.findAll()));
     }
@@ -119,6 +121,7 @@ public class VoucherService {
     }
 
     public ResponseDTO getVoucherSimulationByVoucherAssignment(int voucherAssignmentId, String country, String municipality, Pageable pageable) {
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Retrieving voucher simulations - voucherAssignment: " + voucherAssignmentId + "municipality: " + municipality + ", country: " + country);
         Page<VoucherSimulation> simulationPaged = null;
 
         if((municipality.equalsIgnoreCase("All") || municipality.isEmpty()) && (country.equalsIgnoreCase("All"))){
@@ -144,7 +147,7 @@ public class VoucherService {
     }
 
     public byte[] exportVoucherSimulation(int voucherAssignmentId, String country, String municipalityName, Pageable pageable) {
-
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Downloading excel voucher simulation with parameters - voucherAssignment: " + voucherAssignmentId + "municipality: " + municipalityName + ", country: " + country);
         List<VoucherSimulationDTO> simulationDTOS = (List<VoucherSimulationDTO>) getVoucherSimulationByVoucherAssignment(voucherAssignmentId, country, municipalityName, pageable).getData();
 
         VoucherSimulationExportGenerator excelExportGenerator = new VoucherSimulationExportGenerator(simulationDTOS, VoucherSimulationDTO.class);
@@ -153,7 +156,7 @@ public class VoucherService {
 
     @Transactional
     public ResponseDTO simulateVoucherFast(int callId) {
-
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Executing voucher simulation for call: " + callId);
         HashMap<Integer, SimpleMunicipalityDTO> municipalityHashMap = new HashMap<>();
         HashMap<Integer, SimpleLauDTO> lauHashMap = new HashMap<>();
         HashMap<Integer, SimpleRegistrationDTO> registrationsHashMap = new HashMap<>();
@@ -551,6 +554,7 @@ public class VoucherService {
             voucher.setStatus(res.getStatus());
             voucher.setExecutionDate(res.getExecutionDate());
 
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Voucher simulation successfully executed");
             return new ResponseDTO(true, voucher, null);
         }
         return new ResponseDTO(false, "User not defined", null);
