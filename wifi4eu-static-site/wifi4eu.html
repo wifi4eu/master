@@ -377,6 +377,9 @@
                     } else {
                         userLang = 'EN';
                     }
+                    if(userLang.indexOf('-') > 0){
+                        userLang = userLang.substring(0,userLang.indexOf('-'));
+                    }
                     $(".w4eu-i18n").each(function(itm, i) {
                         itm.innerHTML = trans[userLang][itm.getAttribute("x-literal")];
                     }); 
