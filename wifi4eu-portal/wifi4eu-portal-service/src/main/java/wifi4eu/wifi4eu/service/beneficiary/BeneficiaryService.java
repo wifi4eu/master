@@ -173,7 +173,7 @@ public class BeneficiaryService {
             permissionChecker.addTablePermissions(userDTO, Integer.toString(registrationDtoOutput.getId()),
                     RightConstants.REGISTRATIONS_TABLE, "[REGISTRATIONS] - id: " + registration.getId() + " - Role: " + registration.getRole() + " - Municipality Id: " + registration.getMunicipalityId());
         }
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - List is obtained correctly");
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - List is retrieved correctly");
         return registrations;
     }
 
@@ -314,7 +314,7 @@ public class BeneficiaryService {
             resMunicipalities.add(municipalityDtoOutput);
             _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Municipality " + municipalityDtoOutput.getId() + " added to the list");
         }
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Municipalities obtained correctly");
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Municipalities retrieved correctly");
         return resMunicipalities;
     }
 
@@ -469,7 +469,7 @@ public class BeneficiaryService {
             }
             beneficiariesList.set(i, beneficiary);
         }
-        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiaries obtained correctly");
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiaries retrieved correctly");
         return beneficiariesList;
     }
 

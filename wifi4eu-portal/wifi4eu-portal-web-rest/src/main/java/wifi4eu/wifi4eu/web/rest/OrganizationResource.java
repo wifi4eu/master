@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import wifi4eu.wifi4eu.common.dto.model.OrganizationDTO;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.organization.OrganizationService;
 
 import java.util.List;
@@ -22,11 +24,13 @@ public class OrganizationResource {
 
     Logger _log = LogManager.getLogger(OrganizationResource.class);
 
+    UserContext userContext;
+    UserDTO userConnected;
+
     @ApiOperation(value = "Get all the organizations")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<OrganizationDTO> allOrganizations() {
-        _log.info("allOrganizations");
         return organizationService.getAllOrganizations();
     }
 
@@ -34,7 +38,6 @@ public class OrganizationResource {
     @RequestMapping(value = "/{organizationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public OrganizationDTO getOrganizationById(@PathVariable("organizationId") final Integer organizationId) {
-        _log.info("getOrganizationById: " + organizationId);
         return organizationService.getOrganizationById(organizationId);
     }
 
@@ -76,7 +79,6 @@ public class OrganizationResource {
     @RequestMapping(value = "/country/{country}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<OrganizationDTO> getOrganizationsByCountry(@PathVariable("country") final String country) {
-        _log.info("getOrganizationsByCountry: " + country);
         return organizationService.getOrganizationsByCountry(country);
     }
 }

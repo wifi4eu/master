@@ -14,6 +14,7 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadMessageService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
@@ -42,33 +43,34 @@ public class ThreadMessageResource {
 
     Logger _log = LogManager.getLogger(CallResource.class);
 
+    UserContext userContext;
+    UserDTO userConnected;
+
     @ApiOperation(value = "Create thread message")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO createThreadMessage(@RequestBody final ThreadMessageDTO threadMessageDTO, HttpServletResponse response) throws IOException {
-        _log.info("createThreadMessage");
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
+            UserDTO user = userConnected;
             if (userThreadsService.getByUserIdAndThreadId(user.getId(), threadMessageDTO.getThreadId()) == null && !permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-            if(threadMessageDTO.getAuthorId() != user.getId()){
+            if (threadMessageDTO.getAuthorId() != user.getId()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             threadMessageDTO.setCreateDate(new Date().getTime());
             ThreadMessageDTO resThreadMessage = threadMessageService.createThreadMessage(threadMessageDTO);
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Thread message created successfully");
             return new ResponseDTO(true, resThreadMessage, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'createThreadMessage' operation.", ade);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to create thread messages", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'createThreadMessage' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- This thread message cannot been created", e.getMessage());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
     }

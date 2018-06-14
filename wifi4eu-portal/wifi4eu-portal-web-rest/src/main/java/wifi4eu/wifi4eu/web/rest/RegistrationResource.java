@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,9 @@ public class RegistrationResource {
 
     Logger _log = LogManager.getLogger(RegistrationResource.class);
 
+    UserContext userContext;
+    UserDTO userConnected;
+
 /*    @ApiOperation(value = "Get all the registrations")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -70,22 +74,17 @@ public class RegistrationResource {
     @RequestMapping(value = "/{registrationId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public RegistrationDTO getRegistrationById(@PathVariable("registrationId") final Integer registrationId, HttpServletResponse response) throws IOException {
-        _log.info("getRegistrationById: " + registrationId);
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'getRegistrationById' operation.", ade);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getRegistrationById' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- This registration cannot been retrieved", e.getMessage());
             response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
-
         return registrationService.getRegistrationById(registrationId);
     }
 
@@ -94,34 +93,27 @@ public class RegistrationResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO createRegistration(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            _log.info("createRegistration");
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
-            if(userDTO.getType() != 5) {
+            UserDTO userDTO = userConnected;
+            if (userDTO.getType() != 5) {
                 if (userDTO.getId() != registrationDTO.getUserId()) {
-                    throw new AccessDeniedException("Incorrect user id");
+                    throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
                 }
                 permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
                 permissionChecker.check(userDTO, RightConstants.USER_TABLE + registrationDTO.getUserId());
             }
-
             //RegistrationValidator.validate(registrationDTO);
-
             RegistrationDTO resRegistration = registrationService.createRegistration(registrationDTO);
+            _log.log(Level.getLevel("BUSINESS"), "User ID: " + userConnected.getEcasUsername() + "- Registration created successfully");
             return new ResponseDTO(true, resRegistration, null);
-
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'createRegistration' operation.", ade);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to create registrations", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            response.sendError(HttpStatus.BAD_REQUEST.value());
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'createRegistration' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- This registration cannot been created", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -131,30 +123,23 @@ public class RegistrationResource {
     @RequestMapping(value = "/deleteDocuments", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseDTO deleteRegistrationDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            _log.info("createRegistration");
-
-            UserContext userContext = UserHolder.getUser();
-            UserDTO userDTO = userService.getUserByUserContext(userContext);
-
+            UserDTO userDTO = userConnected;
             if (userDTO.getId() != registrationDTO.getUserId()) {
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-
             permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
-
             RegistrationDTO resRegistration = registrationService.deleteRegistrationDocuments(registrationDTO);
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Documents removed successfully");
             return new ResponseDTO(true, resRegistration, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'deleteRegistrationDocuments' operation.", ade);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to remove documents", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteRegistrationDocuments' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- These documents cannot been created", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -164,30 +149,23 @@ public class RegistrationResource {
     @RequestMapping(value = "/updateDocuments", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseDTO updateRegistrationDocuments(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            _log.info("createRegistration");
-
-            UserContext userContext = UserHolder.getUser();
-            UserDTO userDTO = userService.getUserByUserContext(userContext);
-
+            UserDTO userDTO = userConnected;
             if (userDTO.getId() != registrationDTO.getUserId()) {
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-
             permissionChecker.check(userDTO, RightConstants.REGISTRATIONS_TABLE + registrationDTO.getId());
-
             RegistrationDTO resRegistration = registrationService.updateRegistrationDocuments(registrationDTO);
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Documents updated successfully");
             return new ResponseDTO(true, resRegistration, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'updateRegistrationDocuments' operation.", ade);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to update documents", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'updateRegistrationDocuments' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- These documents cannot been removed", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }
@@ -223,16 +201,18 @@ public class RegistrationResource {
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<RegistrationDTO> getRegistrationsByUserId(@PathVariable("userId") final Integer userId, @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Registration retrieved successfully");
             return registrationService.getRegistrationsByUserId(userId);
         } catch (AccessDeniedException ade) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this registration", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getRegistrationsByUserId' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- This registration cannot been retrieved", e.getMessage());
             return null;
         }
     }
@@ -241,11 +221,11 @@ public class RegistrationResource {
     @RequestMapping(value = "/municipality/{municipalityId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public RegistrationDTO getRegistrationByMunicipalityId(@PathVariable("municipalityId") final Integer municipalityId, HttpServletResponse httpServletResponse) {
-        _log.info("getRegistrationsByMunicipalityId: " + municipalityId);
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
         httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         httpServletResponse.setDateHeader("Expires", 0); // Proxies.
-
         UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
         if (user.getType() != 5) {
             permissionChecker.check(RightConstants.MUNICIPALITIES_TABLE + municipalityId);
@@ -357,20 +337,14 @@ public class RegistrationResource {
     @RequestMapping(value = "/userThread/{userThreadId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public RegistrationDTO getRegistrationByUserThreadId(@PathVariable("userThreadId") final Integer userThreadId) {
-        _log.info("getRegistrationByUserThreadId: " + userThreadId);
-
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         UserThreadsDTO userThreadDTO = userThreadsService.getUserThreadsById(userThreadId);
         RegistrationDTO registration = registrationService.getRegistrationByUserThreadId(userThreadDTO.getThreadId(), userThreadDTO.getUserId());
-
-        UserContext userContext = UserHolder.getUser();
-        UserDTO user = userService.getUserByUserContext(userContext);
-
+        UserDTO user = userConnected;
         if (userThreadsService.getByUserIdAndThreadId(user.getId(), userThreadDTO.getThreadId()) != null) {
-
             //TODO Temporary solution to prevent information leaks
             // we check that the user has access to registrations table
-
             //registration.setLegalFile1(null);
             //registration.setLegalFile2(null);
             //registration.setLegalFile3(null);
@@ -383,9 +357,9 @@ public class RegistrationResource {
             registration.setOrganisationId(0);
             registration.setUploadTime(0);
             registration.setAllFilesFlag(0);
-
             return registration;
         } else {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You don't have any thread registered with this id");
             throw new AppException("The user in session does not contain any thread registered with the id provided.");
         }
     }
@@ -394,11 +368,9 @@ public class RegistrationResource {
     @RequestMapping(value = "/registrations/{registrationId}/{fileType}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ResponseDTO getLegalFilesByFileType(@PathVariable("registrationId") final Integer registrationId, @PathVariable("fileType") final Integer fileType, HttpServletResponse response) {
-        _log.info("getLegalFilesByFileType: " + registrationId + " " + fileType);
-
-		UserContext userContext = UserHolder.getUser();
-		UserDTO user = userService.getUserByUserContext(userContext);
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        UserDTO user = userConnected;
         RegistrationDTO registration = registrationService.getRegistrationById(registrationId);
         if (registration != null && user != null && (registration.getUserId() == user.getId() || user.getType() == 5)) {
             LegalFilesDTO registrationFile = legalFilesService.getLegalFileByRegistrationIdFileType(registration.getId(), fileType);
@@ -445,7 +417,7 @@ public class RegistrationResource {
                         response.getOutputStream().flush();
                         response.getOutputStream().close();
                     } catch (Exception ex) {
-                        _log.error(ex.getMessage(), ex);
+                        _log.error("User ID: " + userConnected.getEcasUsername() + "- The registration cannot been retrieved", ex.getMessage());
                     }
                 }
             }
@@ -459,23 +431,21 @@ public class RegistrationResource {
     @RequestMapping(value = "/getIssue", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO getRegistrationIssue(@RequestBody final RegistrationDTO registrationDTO, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            _log.info("getRegistrationIssue");
-
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            UserDTO userDTO = userConnected;
             if (userDTO.getType() != 5) {
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Issue retrieved successfully");
             return new ResponseDTO(true, registrationService.getRegistrationIssue(registrationDTO), null);
-
         } catch (AccessDeniedException ade) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this issue", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
-
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getRegistrationIssue' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- This issue cannot been retrieved", e.getMessage());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }
@@ -491,18 +461,20 @@ public class RegistrationResource {
     @RequestMapping(value = "/getLegalFiles/{registrationId}", method = RequestMethod.GET)
     @ResponseBody
     public List<LegalFileCorrectionReasonDTO> getLegalFilesByRegistrationId(@PathVariable("registrationId") final Integer registrationId, @RequestParam("date") final Long timestamp, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
             if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId)) {
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Legal files retrieved successfully");
             return registrationService.getLegalFilesByRegistrationId(registrationId);
         } catch (AccessDeniedException ade) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve these legal files", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getLegalFilesByRegistrationId' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- These legal files cannot been retrieved", e.getMessage());
             return null;
         }
     }
@@ -512,20 +484,21 @@ public class RegistrationResource {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public ResponseDTO saveLegalFile(@RequestBody final LegalFileCorrectionReasonDTO legalFileDTO, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            _log.info("saveLegalFile");
             if (!permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + legalFileDTO.getRegistrationId())) {
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             LegalFileCorrectionReasonDTO resLegalFile = registrationService.saveLegalFile(legalFileDTO);
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Legal file created/updated successfully");
             return new ResponseDTO(true, resLegalFile, null);
         } catch (AccessDeniedException ade) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to create/update legal files", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'saveLegalFileRegistration' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- These legal file cannot been created/updated", e.getMessage());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }

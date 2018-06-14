@@ -14,6 +14,7 @@ import wifi4eu.wifi4eu.common.dto.model.UserDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ErrorDTO;
 import wifi4eu.wifi4eu.common.dto.rest.ResponseDTO;
 import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.service.security.PermissionChecker;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
@@ -41,20 +42,22 @@ public class ThreadResource {
 
     Logger _log = LogManager.getLogger(CallResource.class);
 
+    UserContext userContext;
+    UserDTO userConnected;
+
     @ApiOperation(value = "Get thread by specific id")
     @RequestMapping(value = "/{threadId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ThreadDTO getThreadById(@PathVariable("threadId") final Integer threadId, HttpServletResponse response) throws IOException {
-        _log.info("getThreadById: " + threadId);
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
+            UserDTO userDTO = userConnected;
             if (userThreadsService.getByUserIdAndThreadId(userDTO.getId(), threadId) == null) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'getThreadById' operation.", ade);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this thread", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -65,9 +68,10 @@ public class ThreadResource {
     @RequestMapping(value = "/type/{type}/reason/{reason}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public ThreadDTO getThreadByTypeAndReason(@PathVariable("type") final Integer type, @PathVariable("reason") final String reason, HttpServletResponse response) throws IOException {
-        _log.info("getThreadByTypeAndReason: " + type);
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
+            UserDTO user = userConnected;
             ThreadDTO thread = threadService.getThreadByTypeAndReason(type, reason);
             if (thread != null) {
                 if (user.getType() != 5) {
@@ -78,15 +82,11 @@ public class ThreadResource {
             }
             return thread;
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'getThreadByTypeAndReason' operation.", ade);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve this thread", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
-        } catch (Exception ex){
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'getThreadByTypeAndReason' operation.", ex);
-            }
+        } catch (Exception e) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- This thread cannot been retrieved", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return null;
         }
@@ -96,24 +96,21 @@ public class ThreadResource {
     @RequestMapping(value = "{threadId}/setMediation", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public ResponseDTO askMediationThread(@PathVariable("threadId") final Integer threadId, HttpServletResponse response) throws IOException {
-        _log.info("setMediationThread");
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            UserDTO user = userService.getUserByUserContext(UserHolder.getUser());
+            UserDTO user = userConnected;
             if (userThreadsService.getByUserIdAndThreadId(user.getId(), threadId) == null && !permissionChecker.checkIfDashboardUser()) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             ThreadDTO resThread = threadService.setMediationToThread(threadId);
             return new ResponseDTO(true, resThread, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("AccessDenied on 'askMediationThread' operation.", ade);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to set mediation to threads", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'setMediationThread' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- This thread cannot been setted with a mediation", e.getMessage());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.getReasonPhrase()));
         }
     }

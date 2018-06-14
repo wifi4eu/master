@@ -64,7 +64,7 @@ public class ApplicationResource {
         try {
             permissionChecker.check(RightConstants.REGISTRATIONS_TABLE + registrationId);
         } catch (Exception e) {
-            _log.error("User ID: " + userConnected.getEcasEmail() + " - Permission not found", e);
+            _log.error("User ID: " + userConnected.getEcasEmail() + " - Permission not found", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
 
@@ -73,7 +73,7 @@ public class ApplicationResource {
             _log.warn("ECAS Username: " + userConnected.getEcasUsername() + " - Application not found");
             responseApp = new ApplicationDTO();
         } else {
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application with id " + responseApp.getId() + " is obtained correctly");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application is retrieved correctly");
         }
         return responseApp;
     }
@@ -83,20 +83,15 @@ public class ApplicationResource {
     @ResponseBody
     public List<ApplicationVoucherInfoDTO> getApplicationsVoucherInfoByCall(@PathVariable("callId") final Integer callId, HttpServletResponse response) throws IOException {
         try {
-
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
-                _log.error("User ID: "/* + userConnected.getId()*/ + " - You have no permissions to access");
+                _log.error("User ID: " + userConnected.getEcasUsername() + " - You have no permissions to access");
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
-            }
-
-            if (_log.isInfoEnabled()) {
-                _log.info("getApplicationsVoucherInfoByCall: " + callId);
             }
             return applicationService.getApplicationsVoucherInfoByCall(callId);
         } catch (Exception e) {
             if (_log.isErrorEnabled()) {
-                _log.error("User ID: "/* + userConnected.getId()*/ + " - Applications Voucher with call id " + callId + " not found", e);
+                _log.error("User ID: " + userConnected.getEcasUsername() + " - Applications' voucher information not found on this call", e.getMessage());
                 response.sendError(HttpStatus.NOT_FOUND.value());
             }
             return null;
@@ -130,22 +125,19 @@ public class ApplicationResource {
         userContext = UserHolder.getUser();
         userConnected = userService.getUserByUserContext(userContext);
         try {
-
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
-                _log.log(Level.getLevel("BUSINESS"), "User ID: "/* + userConnected.getId()*/ + " - You have no permissions to access");
+                _log.error("User ID: " + userConnected.getEcasUsername() + " - You have no permissions to access");
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
 
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(applicationService.findDgconnApplicantsList(callId, country, null, pagingSortingData));
             res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCall(callId, country));
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - The DGConn Applicant List for call " + callId + " is obtained correctly");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - The DGConn Applicants for this call are retrieved correctly");
             return res;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("User ID: "/* + userConnected.getId()*/ + "- The DGConn Applicant List can not be retrieved", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- The DGConn Applicants cannot be retrieved", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
@@ -156,21 +148,20 @@ public class ApplicationResource {
     @ResponseBody
     public ResponseDTO findDgconnApplicantsListByCallIdSearchingName(@PathVariable("callId") final Integer callId, @RequestParam("country") final String country, @RequestParam("name") final String name,
                                                                      @RequestBody final PagingSortingDTO pagingSortingData, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-
             ResponseDTO res = new ResponseDTO(true, null, null);
             res.setData(applicationService.findDgconnApplicantsList(callId, country, name, pagingSortingData));
             res.setXTotalCount(municipalityService.getCountDistinctMunicipalitiesThatAppliedCallContainingName(callId, country, name));
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- DGConn Applicants retrieved correctly");
             return res;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("can't retrieve applicants", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- The applicants cannot be retrieved", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return new ResponseDTO(false, null, null);
@@ -180,28 +171,22 @@ public class ApplicationResource {
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO validateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("validateApplication");
-            }
-
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-
             ApplicationDTO resApplication = applicationService.validateApplication(applicationDTO);
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Application validated");
             return new ResponseDTO(true, resApplication, null);
-        } catch (AccessDeniedException e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'validateApplication' operation.", e);
-            }
+        } catch (AccessDeniedException ade) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to validate this application", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'validateApplication' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- Application cannot been validated", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
         }
@@ -211,20 +196,20 @@ public class ApplicationResource {
     @RequestMapping(value = "/valid/call/{callId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public Integer getApplicationsNotInvalidated(@PathVariable("callId") final Integer callId) {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("getApplicationsVoucherInfoByCall: " + callId);
-            }
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Applications not invalidated are retrieved successfully");
             return applicationService.countApplicationsNotInvalidated(callId);
+        } catch (AccessDeniedException ade) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve applications not validated", ade.getMessage());
+            return null;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.info("getApplicationsVoucherInfoByCall: " + callId);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- Applications not validated cannot been retrieved", e.getMessage());
             return null;
         }
     }
@@ -233,28 +218,22 @@ public class ApplicationResource {
     @RequestMapping(value = "/invalidate", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO invalidateApplication(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("invalidateApplication");
-            }
-
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
-
             ApplicationDTO resApplication = applicationService.invalidateApplication(applicationDTO);
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Application invalidated successfully");
             return new ResponseDTO(true, resApplication, null);
-        } catch (AccessDeniedException e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'invalidateApplication' operation.", e);
-            }
+        } catch (AccessDeniedException ade) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to invalidate this application", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
-            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+            return new ResponseDTO(false, null, new ErrorDTO(0, ade.getMessage()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'invalidateApplication' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- Application cannot been invalidated", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, null);
         }
@@ -264,20 +243,20 @@ public class ApplicationResource {
     @RequestMapping(value = "/call/{callId}/lau/{lauId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<ApplicationDTO> getApplicationsByCallIdAndLauId(@PathVariable("callId") final Integer callId, @PathVariable("lauId") final Integer lauId, @RequestParam("currentDate") final Long currentDate, HttpServletResponse response) throws IOException {
-        if (_log.isInfoEnabled()) {
-            _log.info("getApplicationsByCallIdAndLauId");
-        }
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
             UserDTO userDTO = userService.getUserByUserContext(UserHolder.getUser());
             if (userDTO.getType() != 5) {
                 throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Applications retrieved successfully");
             return applicationService.getApplicationsByCallIdAndLauId(callId, lauId);
+        } catch (AccessDeniedException ade) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to retrieve these applications", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'getApplicationsByCallIdAndLauId' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- Applications cannot been retrieved", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
         }
         return null;
@@ -287,22 +266,21 @@ public class ApplicationResource {
     @RequestMapping(value = "/sendLegalDocumentsCorrection", method = RequestMethod.POST)
     @ResponseBody
     public ResponseDTO sendLegalDocumentsCorrection(@RequestBody final ApplicationDTO applicationDTO, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         try {
-            if (_log.isInfoEnabled()) {
-                _log.info("sendLegalDocumentsCorrection");
-            }
             if (!permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             ApplicationDTO resApplication = applicationService.sendLegalDocumentsCorrection(applicationDTO);
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Legal documents correction request sent successfully");
             return new ResponseDTO(true, resApplication, null);
         } catch (AccessDeniedException ade) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to request a legal documents' correction", ade.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'sendLegalDocumentsCorrection' operation.", e);
-            }
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- Request cannot been sent", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return new ResponseDTO(false, null, null);
         }
@@ -314,7 +292,7 @@ public class ApplicationResource {
     public ResponseEntity<byte[]> exportExcelDGConnApplicantsList(@RequestParam("callId") final Integer callId, @RequestParam("country") final String country, HttpServletResponse response) throws IOException {
         try {
             if (!permissionChecker.checkIfDashboardUser()) {
-                throw new AccessDeniedException("");
+                throw new AccessDeniedException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             ResponseEntity<byte[]> responseReturn = null;
             HttpHeaders headers = new HttpHeaders();
@@ -323,8 +301,14 @@ public class ApplicationResource {
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
             responseReturn = new ResponseEntity<>(applicationService.exportExcelDGConnApplicantsList(callId, country), headers, HttpStatus.OK);
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Excel exported successfully");
             return responseReturn;
         } catch (AccessDeniedException ade) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to export the excel", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
@@ -345,8 +329,14 @@ public class ApplicationResource {
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
             responseReturn = new ResponseEntity<>(applicationService.exportExcelDGConnApplicantsListContainingName(callId, country, name), headers, HttpStatus.OK);
+            _log.info("User ID: " + userConnected.getEcasUsername() + "- Excel exported successfully");
             return responseReturn;
         } catch (AccessDeniedException ade) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- You have no permissions to export the excel", ade.getMessage());
+            response.sendError(HttpStatus.NOT_FOUND.value());
+            return null;
+        } catch (Exception e) {
+            _log.error("User ID: " + userConnected.getEcasUsername() + "- Excel cannot been exported", e.getMessage());
             response.sendError(HttpStatus.NOT_FOUND.value());
             return null;
         }
