@@ -39,9 +39,9 @@ public class MayorService {
     PermissionChecker permissionChecker;
 
     private final Logger _log = LogManager.getLogger(MayorService.class);
-/*
+
     UserContext userContext;
-    UserDTO userConnected;*/
+    UserDTO userConnected;
 
     public List<MayorDTO> getAllMayors() {
         return mayorMapper.toDTOList(Lists.newArrayList(mayorRepository.findAll()));
@@ -53,37 +53,37 @@ public class MayorService {
 
     @Transactional
     public MayorDTO createMayor(MayorDTO mayorDTO) {
-        /*userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);*/
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         MayorDTO resMayor = mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDTO)));
 
         MayorDTO mayorDTO1 = getMayorByMunicipalityId(mayorDTO.getMunicipalityId());
         if (mayorDTO1 != null) {
             resMayor.setEmail(mayorDTO1.getEmail());
         }
-        _log.log(Level.getLevel("BUSINESS"), "ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Mayor " + resMayor.getId() + " created");
+        _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Mayor created");
         return resMayor;
     }
 
     @Transactional
     public MayorDTO updateMayor(MayorDTO mayorDetails, String name, String surname) {
-        /*userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);*/
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         mayorDetails.setName(name);
         mayorDetails.setSurname(surname);
 
-        _log.info("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Mayor " + mayorDetails.getId() + " updated");
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Mayor updated");
         return mayorMapper.toDTO(mayorRepository.save(mayorMapper.toEntity(mayorDetails)));
     }
 
     @Transactional
     public MayorDTO deleteMayor(int mayorId) {
-        /*userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);*/
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         MayorDTO mayorDTO = mayorMapper.toDTO(mayorRepository.findOne(mayorId));
         if (mayorDTO != null) {
             mayorRepository.delete(mayorMapper.toEntity(mayorDTO));
-            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Mayor " + mayorId + " removed");
+            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Mayor removed");
             return mayorDTO;
         } else {
             return null;
