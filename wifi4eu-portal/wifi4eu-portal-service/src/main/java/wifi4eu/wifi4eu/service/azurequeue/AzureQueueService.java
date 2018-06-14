@@ -30,19 +30,19 @@ public class AzureQueueService {
     UserService userService;
 
     private final static Logger _log = LogManager.getLogger(AzureQueueService.class);
-/*
+
     UserContext userContext;
-    UserDTO userConnected;*/
+    UserDTO userConnected;
 
     public AzureQueueService() {
     }
 
     public void addMessageAzureQueue(AzureQueueDTO azureQueueDTO) throws StorageException, InvalidKeyException, URISyntaxException {
-       /* userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);*/
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         if (azureQueueDTO != null && azureQueueDTO.getMessage() != null && !azureQueueDTO.getMessage().isEmpty()) {
             azureQueue.addMessageAzureQueue(azureQueueDTO.getMessage());
-            _log.info("ECAS Username: "/* + userConnected.getEcasUsername()*/ + " - Message added to azure queue");
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Message added to azure queue");
         }
     }
 
@@ -51,11 +51,11 @@ public class AzureQueueService {
     }
 
     public void createAzureQueue(String queueName) throws StorageException, InvalidKeyException, URISyntaxException {
-        /*userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);*/
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
         azureQueue.setQueueName(queueName);
         azureQueue.createAzureQueue();
-        _log.info("ECAS Username: " /*+ userConnected.getEcasUsername()*/ + " - Azure queue "+ queueName +" is created");
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Azure queue " + queueName + " is created");
     }
 
     public CloudQueueMessage peekMessageAzureQueue() throws InvalidKeyException, StorageException, URISyntaxException {

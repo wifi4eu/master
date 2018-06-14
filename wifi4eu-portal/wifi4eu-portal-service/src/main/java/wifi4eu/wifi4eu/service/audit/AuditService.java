@@ -24,8 +24,8 @@ public class AuditService {
 
     private final static Logger _log = LogManager.getLogger(AuditService.class);
 
-   /* UserContext userContext;
-    UserDTO userConnected;*/
+    UserContext userContext;
+    UserDTO userConnected;
 
     @Autowired
     AuditRepository auditRepository;
@@ -34,10 +34,10 @@ public class AuditService {
     AuditMapper auditMapper;
 
     @Transactional
-    public void createAuditData(AuditDataDTO auditDataDTO){
-        /*userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);*/
-        _log.info("ECAS Username: " /*+ userConnected.getEcasUsername()*/ + " - Saving auditData: " + auditDataDTO.toString());
+    public void createAuditData(AuditDataDTO auditDataDTO) {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Saving auditData: " + auditDataDTO.toString());
         auditRepository.save(auditMapper.toEntity(auditDataDTO));
     }
 }
