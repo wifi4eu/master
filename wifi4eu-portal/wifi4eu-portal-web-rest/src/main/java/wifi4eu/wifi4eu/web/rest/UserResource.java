@@ -40,6 +40,9 @@ public class UserResource {
 
     Logger _log = LogManager.getLogger(UserResource.class);
 
+    UserContext userContext;
+    UserDTO userConnected;
+
 /*    @ApiOperation(value = "Get all the users")
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
@@ -177,26 +180,22 @@ public class UserResource {
     @ApiOperation(value = "Delete user by specific id")
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseDTO deleteUser(@RequestBody final Integer userId,
-                                  HttpServletResponse response) throws IOException {
+    public ResponseDTO deleteUser(@RequestBody final Integer userId, HttpServletResponse response) throws IOException {
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Delete user registration");
         try {
-            _log.info("deleteUser: " + userId);
-
-            //check permission
             permissionChecker.check(RightConstants.USER_TABLE + userId);
             UserDTO resUser = userService.deleteUser(userId);
             resUser.setPassword(null);
+            _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Delete user registration operation successful");
             return new ResponseDTO(true, resUser, null);
         } catch (AccessDeniedException ade) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error with permission on 'deleteUser' operation.", ade);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permissions to delete this user", ade.getMessage());
             response.sendError(HttpStatus.FORBIDDEN.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.getReasonPhrase()));
         } catch (Exception e) {
-            if (_log.isErrorEnabled()) {
-                _log.error("Error on 'deleteUser' operation.", e);
-            }
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - This user cannot been deleted", e.getMessage());
             response.sendError(HttpStatus.BAD_REQUEST.value());
             return new ResponseDTO(false, null, new ErrorDTO(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         }

@@ -70,15 +70,6 @@ public class BeneficiaryService {
     NutsService nutsService;
 
     @Autowired
-    ApplicationService applicationService;
-
-    @Autowired
-    RightRepository rightRepository;
-
-    @Autowired
-    UserMapper userMapper;
-
-    @Autowired
     PermissionChecker permissionChecker;
 
     @Autowired
