@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wifi4eu.wifi4eu.common.dto.model.*;
-import wifi4eu.wifi4eu.common.ecas.UserHolder;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
@@ -102,7 +101,7 @@ public class ApplicationService {
                         }
 
                         applicationDTO.setDate(queueTimestamp);
-                        
+
                         applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
 
                         return applicationDTO;
@@ -193,7 +192,7 @@ public class ApplicationService {
         return applicationMapper.toDTOList(Lists.newArrayList(applicationRepository.findByRegistrationId(registrationId)));
     }
 
-    public ApplicationDTO getApplicationByRegistrationId(int callId, int registrationsId){
+    public ApplicationDTO getApplicationByRegistrationId(int callId, int registrationsId) {
         return applicationMapper.toDTO(applicationRepository.findByCallIdAndRegistrationId(callId, registrationsId));
     }
 
@@ -229,18 +228,18 @@ public class ApplicationService {
     }
 
     public List<ApplicationDTO> getApplicationsByRegistrationNotInvalidated(int callId) {
-        return  applicationMapper.toDTOList(applicationRepository.findApplicationsByRegistrationNotInvalidated(callId));
+        return applicationMapper.toDTOList(applicationRepository.findApplicationsByRegistrationNotInvalidated(callId));
     }
 
     public Integer countApplicationsNotInvalidated(int callId) {
-      return applicationRepository.findApplicationsNotInvalidated(callId);
+        return applicationRepository.findApplicationsNotInvalidated(callId);
     }
 
     public List<ApplicationDTO> getApplicationsByCallFiFoOrder(int callId) {
         return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateAsc(callId));
     }
 
-    public List<ApplicationDTO> findByCallIdOrderByDateBeforeCallDateAsc(int callId, long startDate){
+    public List<ApplicationDTO> findByCallIdOrderByDateBeforeCallDateAsc(int callId, long startDate) {
         return applicationMapper.toDTOList(applicationRepository.findByCallIdOrderByDateBAsc(callId, startDate));
 
     }
@@ -253,11 +252,11 @@ public class ApplicationService {
         return applicationMapper.toDTOList(applicationRepository.findApplicationsCountry(country, callId));
     }
 
-    public List<Integer> getApplicationsIdByCountryAndNameAndCall(int callId, String country, long date){
+    public List<Integer> getApplicationsIdByCountryAndNameAndCall(int callId, String country, long date) {
         return applicationRepository.findIdApplications(country, callId, date);
     }
 
-    public Integer countApplicationWithSameMunicipalityName(int lauId, int callId, long date){
+    public Integer countApplicationWithSameMunicipalityName(int lauId, int callId, long date) {
         return applicationRepository.countApplicationsBySameMunicipality(lauId, callId, date);
     }
 
@@ -374,11 +373,11 @@ public class ApplicationService {
         for (int i = 0; i < applicantsList.size(); i++) {
             ApplicantListItemDTO applicant = applicantsList.get(i);
             List<ApplicationIssueUtil> applicationIssueUtilList = registrationService.getRegistrationIssue(applicant.getLauId());
-            if(applicant.getCounter() == 0) {
-                applicant.setIssueStatus(0);
+            //GET ISSUES OF ALL REGISTRATIONS BY LAU ID
+            applicant.setIssueStatus(registrationService.getRegistrationIssues(applicant.getLauId()));
+            if (applicant.getCounter() == 0) {
                 applicant.setStatus(0);
             } else {
-                applicant.setIssueStatus(registrationService.getIssues(applicationIssueUtilList));
                 applicant.setStatus(registrationService.getStatus(applicationIssueUtilList));
             }
             applicantsList.set(i, applicant);
@@ -388,11 +387,11 @@ public class ApplicationService {
     public ApplicationDTO validateApplication(ApplicationDTO applicationDTO) {
         RegistrationDTO registration = registrationService.getRegistrationById(applicationDTO.getRegistrationId());
 
-        if(registration.getAllFilesFlag() != 1){
+        if (registration.getAllFilesFlag() != 1) {
             throw new AppException();
         }
         ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
-        if(applicationDBO == null){
+        if (applicationDBO == null) {
             throw new AppException("Incorrect application id");
         }
 
@@ -422,7 +421,7 @@ public class ApplicationService {
 
     public ApplicationDTO invalidateApplication(ApplicationDTO applicationDTO) {
         ApplicationDTO applicationDBO = applicationMapper.toDTO(applicationRepository.findOne(applicationDTO.getId()));
-        if(applicationDBO == null){
+        if (applicationDBO == null) {
             throw new AppException("Incorrect application id");
         }
         applicationDBO.setStatus(ApplicationStatus.KO.getValue());
@@ -515,18 +514,18 @@ public class ApplicationService {
         return excelExportGenerator.exportExcelFile("applicants").toByteArray();
     }
 
-    public ApplicationDTO rejectApplicationVoucherAssigment(int applicationId){
+    public ApplicationDTO rejectApplicationVoucherAssigment(int applicationId) {
         ApplicationDTO applicationDTO = getApplicationById(applicationId);
-        if(applicationDTO == null){
+        if (applicationDTO == null) {
             throw new AppException("Application not found with id: " + applicationId);
         }
         applicationDTO.setRejected(true);
         return applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
     }
 
-    public ApplicationDTO selectApplicationVoucherAssigment(int applicationId){
+    public ApplicationDTO selectApplicationVoucherAssigment(int applicationId) {
         ApplicationDTO applicationDTO = getApplicationById(applicationId);
-        if(applicationDTO == null){
+        if (applicationDTO == null) {
             throw new AppException("Application not found with id: " + applicationId);
         }
         applicationDTO.setRejected(false);

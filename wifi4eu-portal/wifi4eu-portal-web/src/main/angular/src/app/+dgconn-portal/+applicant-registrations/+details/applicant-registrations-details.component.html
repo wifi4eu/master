@@ -43,12 +43,13 @@
                         <span *ngIf="applications[i].status == 3" class="entity-subtitle" style="margin-left: 0.5em;">
                             <i class="fa fa-info"></i> <i>{{ 'dgConn.status.pendingFollowup' | translate }}</i>
                         </span>
-                        <span *ngIf="registrationIssues[i] == 1 || registrationIssues[i] == 2" class="badge badge-warning"  style="margin-left: 0.5em;">
-                            {{ 'dgConn.badge.warning' | translate }} {{ registrationIssues[i] }}
-                        </span>
-                        <span *ngIf="registrationIssues[i] == 3" class="badge badge-warning-yellow"  style="margin-left: 0.5em;">
-                            {{ 'dgConn.badge.warning' | translate }} {{ registrationIssues[i] }}
-                        </span>
+                        <div *ngIf="registrations[i].registrationWarningDTOList != null" class="mt-1">
+                            <span *ngFor="let warningObj of registrations[i].registrationWarningDTOList" [class.badge-warning]="warningObj.warning == 1 || warningObj.warning == 2"  [class.badge-warning-yellow]="warningObj.warning == 3" class="badge">
+                                {{ 'dgConn.badge.warning' | translate }} {{warningObj.warning}}
+                            </span>
+        
+                        </div>
+                       
                         <br><br>
                         <span class="entity-subtitle">
                             {{ 'dgConn.beneficiaries.applied' | translate }}: {{ applications[i].date/1000000 | date:'yyyy-MM-dd'}} {{ applications[i].date/1000000 | date:'shortTime'}}
