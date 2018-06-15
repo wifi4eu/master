@@ -1,6 +1,5 @@
 package wifi4eu.wifi4eu.service.beneficiary;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,7 @@ import wifi4eu.wifi4eu.common.utils.MunicipalityValidator;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 import wifi4eu.wifi4eu.entity.security.RightConstants;
 import wifi4eu.wifi4eu.mapper.beneficiary.BeneficiaryListItemMapper;
-import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.beneficiary.BeneficiaryListItemRepository;
-import wifi4eu.wifi4eu.repository.security.RightRepository;
-import wifi4eu.wifi4eu.service.application.ApplicationService;
 import wifi4eu.wifi4eu.service.location.LauService;
 import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.mayor.MayorService;
@@ -32,8 +28,6 @@ import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.ExcelExportGenerator;
 import wifi4eu.wifi4eu.util.MailService;
 
-import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -86,8 +80,6 @@ public class BeneficiaryService {
 
     @Transactional
     public List<RegistrationDTO> submitBeneficiaryRegistration(BeneficiaryDTO beneficiaryDTO, String ip) throws Exception {
-        userContext = UserHolder.getUser();
-        userConnected = userService.getUserByUserContext(userContext);
         /* Validate municipalities */
         for (MunicipalityDTO municipalityDTO : beneficiaryDTO.getMunicipalities()) {
             MunicipalityValidator.validateMunicipality(municipalityDTO, lauService.getLauById(municipalityDTO.getLauId()),
@@ -135,7 +127,6 @@ public class BeneficiaryService {
         /* check Duplicates and crate Threads if apply */
         checkDuplicates(resUser, resMunicipalities);
 
-        _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Registrations from beneficiary submitted");
         return registrations;
     }
 

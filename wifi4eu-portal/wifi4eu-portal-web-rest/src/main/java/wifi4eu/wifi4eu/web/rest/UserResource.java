@@ -2,6 +2,7 @@ package wifi4eu.wifi4eu.web.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,6 +183,7 @@ public class UserResource {
             permissionChecker.check(RightConstants.USER_TABLE + userId);
             UserDTO resUser = userService.deleteUser(userId);
             resUser.setPassword(null);
+            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
             return new ResponseDTO(true, resUser, null);
         } catch (AccessDeniedException ade) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - You have no permission to remove this user", ade.getMessage());

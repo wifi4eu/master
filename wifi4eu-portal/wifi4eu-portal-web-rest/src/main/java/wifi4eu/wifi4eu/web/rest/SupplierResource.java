@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -262,7 +263,7 @@ public class SupplierResource {
                 throw new AppException(HttpStatus.NOT_FOUND.getReasonPhrase());
             }
             SupplierDTO resSupplier = supplierService.submitSupplierRegistration(supplierDTO);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Registration submitted successfully");
+            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Supplier registration submitted successfully");
             return new ResponseDTO(true, resSupplier, null);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- This registration cannot been submitted", e.getMessage());

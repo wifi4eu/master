@@ -3,6 +3,7 @@ package wifi4eu.wifi4eu.web.rest;
 import com.google.common.net.InetAddresses;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +76,7 @@ public class BeneficiaryResource {
                 ip = request.getRemoteAddr();
             }
             List<RegistrationDTO> resRegistrations = beneficiaryService.submitBeneficiaryRegistration(beneficiaryDTO, ip);
-            _log.info("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary submitted successfully");
+            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Beneficiary submitted successfully");
             return new ResponseDTO(true, resRegistrations, null);
         } catch (Exception e) {
             _log.error("ECAS Username: " + userConnected.getEcasUsername() + "- Beneficiary cannot been submitted", e.getMessage());

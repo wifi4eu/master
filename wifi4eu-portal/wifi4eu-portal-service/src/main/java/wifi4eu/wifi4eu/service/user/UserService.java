@@ -3,7 +3,6 @@ package wifi4eu.wifi4eu.service.user;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.http.HttpStatus;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,6 @@ import wifi4eu.wifi4eu.mapper.security.TempTokenMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
-import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.security.TempTokenRepository;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
@@ -93,9 +91,6 @@ public class UserService {
 
     @Autowired
     UserThreadsService userThreadsService;
-
-    UserContext userContext;
-    UserDTO userConnected;
 
     public List<UserDTO> getAllUsers() {
         return userMapper.toDTOList(Lists.newArrayList(userRepository.findAll()));
@@ -172,8 +167,6 @@ public class UserService {
 
     @Transactional
     public UserDTO deleteUser(int userId) {
-        userContext = UserHolder.getUser();
-        userConnected = getUserByUserContext(userContext);
         UserDTO userDTO = userMapper.toDTO(userRepository.findOne(userId));
         if (userDTO != null) {
             switch (userDTO.getType()) {
@@ -197,7 +190,6 @@ public class UserService {
                     break;
             }
             userRepository.delete(userMapper.toEntity(userDTO));
-            _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Deleted user information from the database");
             return userDTO;
         } else {
             return null;
