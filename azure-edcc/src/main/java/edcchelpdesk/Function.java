@@ -7,6 +7,7 @@ import edcchelpdesk.dto.Response;
 import edcchelpdesk.dto.Token;
 import edcchelpdesk.getrequest.Constants;
 import edcchelpdesk.getrequest.Request;
+import edcchelpdesk.getrequest.utils.CoreProcess;
 import edcchelpdesk.getrequest.utils.RequestUtils;
 
 /**
@@ -20,59 +21,16 @@ public class Function {
      *    Example - curl https://azure-edcc-20180612164351176.azurewebsites.net/api/edcc
      *    Documentation: https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-first-java-maven
      */
-//    @FunctionName("Timer")
-////    @QueueOutput(name = "myQueueItem", queueName = "walkthrough", connection = "AzureWebJobsStorage")
-//    public String functionHandler(@TimerTrigger(name = "timerInfo", schedule = "0 0 9,17 * * MON-FRI") String timerInfo, final ExecutionContext executionContext) {
-//        executionContext.getLogger().info("Timer trigger input: " + timerInfo);
-//        return "From timer: \"" + timerInfo + "\"";
-//    }
-
 
     @FunctionName("edccTimer")
     public String run(
-//            @TimerTrigger(name = "edccTimerInfo", schedule = "0 0 9,17 * * MON-FRI")
-            @TimerTrigger(name = "edccTimerInfo", schedule = "*/10 * * * * *")
+            @TimerTrigger(name = "edccTimerInfo", schedule = "0 0 9,17 * * MON-FRI")
+//            @TimerTrigger(name = "edccTimerInfo", schedule = "*/10 * * * * *")
             String timerInfo,
             final ExecutionContext executionContext) {
-//            HttpRequestMessage<Optional<String>> request,
-//            final ExecutionContext context) {
 
         executionContext.getLogger().info("Timer trigger input: " + timerInfo);
-        StringBuilder returnInfo = new StringBuilder("Timer trigger executed ");
+        return CoreProcess.exec(timerInfo);
 
-        try {
-            Request requester = new Request();
-            final Token token = (Token) requester.send(Constants.URL_GET_TOKEN, Constants.POST, RequestUtils.generateHeaders(), Token.class);
-            System.out.println("Token created successfully : " + token);
-            Response response = (Response) requester.send(Constants.URL_CALL_EDCC+token.getAccess_token(), Constants.GET, RequestUtils.generateHeaders(), Response.class);
-            System.out.println("Response get successfully : " + response);
-            returnInfo.append("successfully at ");
-        } catch (Exception e) {
-            e.printStackTrace();
-            returnInfo.append("wrongly at ");
-        } finally {
-            returnInfo.append(timerInfo);
-        }
-
-        return returnInfo.toString();
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
-
-        // Parse query parameter
-        String query = request.getQueryParameters().get("name");
-        String name = request.getBody().orElse(query);
-
-        if (name == null) {
-            return request.createResponse(400, "Please pass a name on the query string or in the request body");
-        } else {
-            return request.createResponse(200, "Hello, " + name);
-        }
-*/
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }
