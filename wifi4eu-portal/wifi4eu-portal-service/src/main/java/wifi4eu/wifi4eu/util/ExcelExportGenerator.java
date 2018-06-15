@@ -7,7 +7,7 @@ import wifi4eu.wifi4eu.common.dto.model.BeneficiaryListItemDTO;
 import wifi4eu.wifi4eu.entity.application.ApplicantListItem;
 import wifi4eu.wifi4eu.entity.beneficiary.BeneficiaryListItem;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

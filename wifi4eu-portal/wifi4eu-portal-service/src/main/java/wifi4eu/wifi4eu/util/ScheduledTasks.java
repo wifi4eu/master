@@ -11,6 +11,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Controller;
 import wifi4eu.wifi4eu.common.dto.model.*;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.service.application.ApplicationService;
@@ -68,6 +70,9 @@ public class ScheduledTasks {
 
     private static final Logger _log = LogManager.getLogger(ScheduledTasks.class);
 
+    UserContext userContext;
+    UserDTO userConnected;
+
     private final static String QUEUE_NAME = "wifi4eu_apply";
 
     @Value("${rabbitmq.host}")
@@ -84,7 +89,9 @@ public class ScheduledTasks {
      */
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0/10 * * * ?")
     public void queueConsumer() {
-        _log.info("[i] queueConsumer");
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Consuming messages from the queue");
         try {
             ConnectionFactory factory = new ConnectionFactory();
             factory.setHost(rabbitMQHost);
@@ -92,7 +99,6 @@ public class ScheduledTasks {
             factory.setPassword(rabbitPassword);
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
-
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
             boolean autoAck = false;
@@ -104,7 +110,7 @@ public class ScheduledTasks {
                 GetResponse response = channel.basicGet(QUEUE_NAME, autoAck);
                 if (response == null) {
                     // No message retrieved.
-                    _log.info("queue is empty");
+                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The queue is empty");
                     break;
                 } else {
 
@@ -117,14 +123,12 @@ public class ScheduledTasks {
                     long messageCount = response.getMessageCount();
 
                     if (deliveryTag != 0) {
-                        _log.info("send deliveryTag:" + deliveryTag);
+                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sent with delivery tag " + deliveryTag);
                         channel.basicAck(deliveryTag, false); // acknowledge receipt of the message
                     } else {
-                        _log.error("error processing a message, deliveryTag: " + deliveryTag, " response: " + response);
+                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process a message" + response);
                     }
-
-                    _log.info("wdProcessTime: " + wdProcessTime + " messageCount: " + messageCount + " iterationCounter: " + iterationCounter);
-
+                    _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - wdProcessTime: " + wdProcessTime + " messageCount: " + messageCount + " iterationCounter: " + iterationCounter);
                     if (wdProcessTime < 100 && messageCount > 200 && messageCount % 9 != 1) {
                         i--;
                     } else if (wdProcessTime > 500) {
@@ -135,68 +139,58 @@ public class ScheduledTasks {
             }
 
             channel.close();
-            _log.info("queue channel has been closed");
+            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The queue channel has been closed");
             connection.close();
-            _log.info("queue connection has been closed");
+            _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The queue connection has been closed");
 
         } catch (Exception e) {
-            _log.error("can't process the queue", e);
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process the queue", e.getMessage());
         }
-        _log.info("[f] queueConsumer");
     }
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 9,17 * * MON-FRI")
     public void scheduleHelpdeskIssues() {
-
-        _log.info("[i] scheduleHelpdeskIssues");
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Starting helpdesk issues scheduled");
         List<HelpdeskIssueDTO> helpdeskIssueDTOS = helpdeskService.getAllHelpdeskIssueNoSubmited();
-
         for (HelpdeskIssueDTO helpdeskIssue : helpdeskIssueDTOS) {
 
             try {
                 HelpdeskTicketDTO helpdeskTicketDTO = new HelpdeskTicketDTO();
-
                 helpdeskTicketDTO.setEmailAdress(helpdeskIssue.getFromEmail());
                 helpdeskTicketDTO.setEmailAdressconf(helpdeskTicketDTO.getEmailAdress());
                 helpdeskTicketDTO.setUuid("wifi4eu_" + helpdeskIssue.getId());
-
                 UserDTO userDTO = userService.getUserByEcasEmail(helpdeskIssue.getFromEmail());
-
 
                 if (userDTO != null) {
                     helpdeskTicketDTO.setFirstname(userDTO.getName());
                     helpdeskTicketDTO.setLastname(userDTO.getSurname());
-
                     helpdeskTicketDTO.setTxtsubjext(helpdeskIssue.getTopic());
                     helpdeskTicketDTO.setQuestion(helpdeskIssue.getSummary());
-
                     String result = executePost("https://webtools.ec.europa.eu/form-tools/process.php", helpdeskTicketDTO.toString());
 
                     if (result != null && result.contains("Thankyou.js")) {
                         helpdeskIssue.setTicket(true);
                         helpdeskService.createHelpdeskIssue(helpdeskIssue);
                     } else {
-                        _log.error("result that not containt proper text, result: " + result);
+                        _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - The result do not contain the proper text");
                     }
                 } else {
-                    _log.error("scheduleHelpdeskIssues can't retrieve the user for heldesk issue with Id " + helpdeskIssue.getId());
+                    _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot retrieve the user for this helpdesk issue");
                 }
 
-
             } catch (Exception e) {
-                _log.error("scheduleHelpdeskIssues the helpdesk issue with Id " + helpdeskIssue.getId() + " can't be processed", e);
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot process this helpdesk issue", e.getMessage());
             }
         }
-        _log.info("[f] scheduleHelpdeskIssues");
     }
-
 
     //-- DGCONN-NOT-NECESSARY @Scheduled(cron = "0 0 8 ? * MON-FRI")
     public void sendDocRequest() {
-
-        _log.info("[i] sendDocRequest");
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending document request");
         List<RegistrationDTO> registrationDTOS = registrationService.getAllRegistrations();
         for (RegistrationDTO registrationDTO : registrationDTOS) {
             try {
@@ -219,22 +213,20 @@ public class ScheduledTasks {
                         int mailCounter = registrationDTO.getMailCounter() - 1;
                         registrationDTO.setMailCounter(mailCounter);
                         registrationService.createRegistration(registrationDTO);
+                        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Document request sent for registration with id " + registrationDTO.getId());
                     }
                 }
             } catch (Exception e) {
-                _log.error("sendDocRequest can't be done for registration with Id " + registrationDTO.getId());
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send document rquest for this registration", e.getMessage());
             }
-
         }
-
-        _log.info("[f] sendDocRequest");
     }
 
     private long processQueueMessage(GetResponse response) {
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending document request");
         try {
-            _log.info("[i] processQueueMessage");
-
             AMQP.BasicProperties props = response.getProps();
             byte[] body = response.getBody();
             Envelope envelope = response.getEnvelope();
@@ -243,25 +235,20 @@ public class ScheduledTasks {
             ObjectMapper mapper = new ObjectMapper();
             QueueApplicationElement qae = mapper.readValue(body, QueueApplicationElement.class);
 
-            ApplicationDTO applicatioDTO = applicationService.registerApplication(qae.getCallId(), qae.getUserId(), qae.getRegistrationId(),
+            ApplicationDTO applicationDTO = applicationService.registerApplication(qae.getCallId(), qae.getUserId(), qae.getRegistrationId(),
                     qae.getFileUploadTimestamp(), qae.getQueueTimestamp());
 
             long deliveryTag = 0;
 
-            if (applicatioDTO != null) {
+            if (applicationDTO != null) {
                 deliveryTag = response.getEnvelope().getDeliveryTag();
-                _log.info("deliveryTag: " + deliveryTag);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - The application delivery tag is " + deliveryTag);
             }
-
-            _log.info("[f] processQueueMessage");
             return deliveryTag;
-
         } catch (Exception e) {
-            _log.error("error reading a message from the queue", e);
+            _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot read a message from the queue", e.getMessage());
             return 0;
         }
-
-
     }
 
     public static String executePost(String targetURL, String urlParameters) {

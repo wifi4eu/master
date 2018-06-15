@@ -9,6 +9,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import wifi4eu.wifi4eu.common.dto.model.UserDTO;
+import wifi4eu.wifi4eu.common.ecas.UserHolder;
+import wifi4eu.wifi4eu.common.security.UserContext;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
@@ -33,17 +37,20 @@ public class MailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Autowired
+    private UserService userService;
+
     private final Logger _log = LogManager.getLogger(MailService.class);
 
+    UserContext userContext;
+    UserDTO userConnected;
+
     public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
-
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Sending asynchronous mail: " + fromAddress + " " + subject + " " + msgBody);
         if (enableMail) {
-
             try {
-                if (_log.isDebugEnabled()) {
-                    _log.debug("Sending async mail: " + fromAddress + " " + subject + " " + msgBody);
-                }
-
                 MimeMessage message = mailSender.createMimeMessage();
                 message.setSubject(subject, "UTF-8");
                 MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -52,7 +59,6 @@ public class MailService {
                 byte[] mgsBody64 = msgBody.getBytes("UTF-8");
                 message.setHeader("Content-Type", encodingOptions);
                 message.setHeader("Content-Type", "multipart/mixed");
-
 
                 MimeBodyPart bodyPart = new MimeBodyPart();
                 bodyPart.setHeader("Content-Type", "text/html; charset=utf-8");
@@ -65,23 +71,19 @@ public class MailService {
                 helper.setSubject(subject);
                 helper.setTo(toAddress);
                 helper.setFrom(fromAddress);
-
                 mailSender.send(message);
+                _log.debug("ECAS Username: " + userConnected.getEcasUsername() + " - Email sent to " + toAddress);
             } catch (Exception ex) {
-                _log.error(ex.getMessage());
+                _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Cannot send the message", ex.getMessage());
             }
-
         }
-
     }
 
     public void sendEmailAsync(String toAddress, String fromAddress, String subject, String msgBody) {
-
         if (enableMail) {
             MailAsyncService asyncService = new MailAsyncService(toAddress, fromAddress, subject, msgBody, this.mailSender);
             Thread thread = new Thread(asyncService);
             thread.start();
         }
-
     }
 }
