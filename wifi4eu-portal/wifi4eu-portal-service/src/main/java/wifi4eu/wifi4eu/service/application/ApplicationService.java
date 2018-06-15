@@ -456,7 +456,7 @@ public class ApplicationService {
                 break;
             }
         }
-        RegistrationDTO registration = registrationService.getRegistrationById(application.getRegistrationId());
+        RegistrationDTO registration = registrationService.getRegistrationById(applicationDB.getRegistrationId());
         if (pendingFollowup) {
             registration.setAllFilesFlag(0);
             applicationDB.setStatus(ApplicationStatus.PENDING_FOLLOWUP.getValue());

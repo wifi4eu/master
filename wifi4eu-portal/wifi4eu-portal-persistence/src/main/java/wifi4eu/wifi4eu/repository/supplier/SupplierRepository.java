@@ -22,4 +22,7 @@ public interface SupplierRepository extends JpaRepository<Supplier,Integer> {
 
     @Query("SELECT distinct s.name FROM SuppliedRegion sr JOIN sr.region r JOIN sr.supplier s WHERE r.countryCode = :countryCode ORDER BY s.name")
     Page<String> findSuppliersByCountryCode(@Param("countryCode") String countryCode, Pageable pageable);
+
+    @Query(value = "SELECT * FROM suppliers WHERE id != ?#{[0]} and (vat = (SELECT vat FROM suppliers where id = ?#{[0]}) OR account_number = (SELECT account_number FROM suppliers where id = ?#{[0]}))", nativeQuery = true)
+    List<Supplier> findSimilarSuppliers(Integer supplierId);
 }
