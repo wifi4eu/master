@@ -43,9 +43,9 @@
                         <span *ngIf="applications[i].status == 3" class="entity-subtitle" style="margin-left: 0.5em;">
                             <i class="fa fa-info"></i> <i>{{ 'dgConn.status.pendingFollowup' | translate }}</i>
                         </span>
-                        <div *ngIf="registrations[i].registrationWarningDTOList != null">
-                            <span *ngFor="let warning of registrations[i].registrationWarningDTOList" [class.badge-warning]="warning.warning == 1"  [class.badge-warning-yellow]="warning.warning == 3" class="badge">
-                                {{ 'dgConn.badge.warning' | translate }} {{warning.warning}}
+                        <div *ngIf="registrations[i].registrationWarningDTOList != null" class="mt-1">
+                            <span *ngFor="let warningObj of registrations[i].registrationWarningDTOList" [class.badge-warning]="warningObj.warning == 1 || warningObj.warning == 2"  [class.badge-warning-yellow]="warningObj.warning == 3" class="badge">
+                                {{ 'dgConn.badge.warning' | translate }} {{warningObj.warning}}
                             </span>
         
                         </div>

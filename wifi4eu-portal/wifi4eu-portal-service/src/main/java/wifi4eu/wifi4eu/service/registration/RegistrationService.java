@@ -319,15 +319,25 @@ public class RegistrationService {
 //    }
 
     public List<ApplicationIssueUtil> getRegistrationIssue(Integer lauId) {
-//        List<ApplicationIssueUtil> applicationIssueUtils = applicationIssueUtilRepository.findApplicationIssueUtilByLauId(lauId);
-//
-//        if (applicationIssueUtils.size() > 1) { //We have more than one applicant per lau, check status
-//            //if status is KO remove from the list
-//            applicationIssueUtils.removeIf(applicationIssueUtil -> applicationIssueUtil.getStatus() == ApplicationStatus.KO.getValue());
-//        }
-//
-//        return applicationIssueUtils;
-        return null;
+        List<ApplicationIssueUtil> applicationIssueUtils = applicationIssueUtilRepository.findApplicationIssueUtilByLauId(lauId);
+
+        if (applicationIssueUtils.size() > 1) { //We have more than one applicant per lau, check status
+            //if status is KO remove from the list
+            applicationIssueUtils.removeIf(applicationIssueUtil -> applicationIssueUtil.getStatus() == ApplicationStatus.KO.getValue());
+        }
+
+        return applicationIssueUtils;
+    }
+
+    public List<Integer> getRegistrationIssues(Integer lauId) {
+        Set<Integer> issues = new HashSet<>();
+        for (RegistrationDTO registrationDTO : getRegistrationsByLauId(lauId)) {
+            if (registrationDTO != null) {
+                List<RegistrationWarningDTO> registrationWarningDTOS = registrationWarningService.getWarningsByRegistrationId(registrationDTO.getId());
+                registrationWarningDTOS.forEach(x -> issues.add(x.getWarning()));
+            }
+        }
+        return Lists.newArrayList(issues);
     }
 
     public Integer getIssues(List<ApplicationIssueUtil> applicationIssueUtilList) {
