@@ -11,10 +11,13 @@ import wifi4eu.wifi4eu.common.dto.model.*;
 import wifi4eu.wifi4eu.common.enums.ApplicationStatus;
 import wifi4eu.wifi4eu.common.exception.AppException;
 import wifi4eu.wifi4eu.entity.application.ApplicationIssueUtil;
+import wifi4eu.wifi4eu.entity.warnings.RegistrationWarning;
 import wifi4eu.wifi4eu.mapper.application.ApplicantListItemMapper;
 import wifi4eu.wifi4eu.mapper.application.ApplicationMapper;
 import wifi4eu.wifi4eu.repository.application.ApplicantListItemRepository;
+import wifi4eu.wifi4eu.repository.application.ApplicationIssueUtilRepository;
 import wifi4eu.wifi4eu.repository.application.ApplicationRepository;
+import wifi4eu.wifi4eu.repository.warning.RegistrationWarningRepository;
 import wifi4eu.wifi4eu.service.beneficiary.BeneficiaryService;
 import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
@@ -59,6 +62,9 @@ public class ApplicationService {
 
     @Autowired
     CallService callService;
+
+    @Autowired
+    RegistrationWarningRepository registrationWarningRepository;
 
     private static final Logger _log = LoggerFactory.getLogger(ApplicationService.class);
 
@@ -370,17 +376,9 @@ public class ApplicationService {
 
     private void setIssues(List<ApplicantListItemDTO> applicantsList) {
 
-        for (int i = 0; i < applicantsList.size(); i++) {
-            ApplicantListItemDTO applicant = applicantsList.get(i);
-            List<ApplicationIssueUtil> applicationIssueUtilList = registrationService.getRegistrationIssue(applicant.getLauId());
-            //GET ISSUES OF ALL REGISTRATIONS BY LAU ID
-            applicant.setIssueStatus(registrationService.getRegistrationIssues(applicant.getLauId()));
-            if (applicant.getCounter() == 0) {
-                applicant.setStatus(0);
-            } else {
-                applicant.setStatus(registrationService.getStatus(applicationIssueUtilList));
-            }
-            applicantsList.set(i, applicant);
+        for(ApplicantListItemDTO applicantListItemDTO : applicantsList){
+            List<Integer> warnings = registrationWarningRepository.findAllByLauId(applicantListItemDTO.getLauId());
+            applicantListItemDTO.setIssueStatus(warnings);
         }
     }
 
@@ -425,7 +423,7 @@ public class ApplicationService {
             throw new AppException("Incorrect application id");
         }
         applicationDBO.setStatus(ApplicationStatus.KO.getValue());
-        applicationDBO.setInvalidateReason(applicationDBO.getInvalidateReason());
+        applicationDBO.setInvalidateReason(applicationDTO.getInvalidateReason());
         ApplicationDTO invalidatedApplication = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDBO)));
         /* TODO: The emails are not sent as of the time of this comment, but they will be enabled in the near future.
         RegistrationDTO registration = registrationService.getRegistrationById(invalidatedApplication.getRegistrationId());

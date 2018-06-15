@@ -13,9 +13,8 @@ public class RegistrationWarning {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "registration_id")
-    private Registration registration;
+    @Column(name = "registration_id")
+    private Integer registration;
 
     @Column(name = "warning")
     private Integer warning;
@@ -23,7 +22,7 @@ public class RegistrationWarning {
     public RegistrationWarning() {
     }
 
-    public RegistrationWarning(Registration registration, Integer warning) {
+    public RegistrationWarning(Integer registration, Integer warning) {
         this.registration = registration;
         this.warning = warning;
     }
@@ -36,11 +35,11 @@ public class RegistrationWarning {
         this.id = id;
     }
 
-    public Registration getRegistration() {
+    public Integer getRegistration() {
         return registration;
     }
 
-    public void setRegistration(Registration registration) {
+    public void setRegistration(Integer registration) {
         this.registration = registration;
     }
 

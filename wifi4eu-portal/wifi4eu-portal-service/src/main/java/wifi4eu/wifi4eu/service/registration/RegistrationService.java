@@ -307,66 +307,6 @@ public class RegistrationService {
         return registrations;
     }
 
-//    public Integer getRegistrationIssue(RegistrationDTO registration) {
-//        Integer issueType = 0;
-//        if (registrationHasWarning1(registration)) {
-//            issueType = 1;
-//        }
-//        if (registrationHasWarning3(registration)) {
-//            issueType = 3;
-//        }
-//        return issueType;
-//    }
-
-    public List<ApplicationIssueUtil> getRegistrationIssue(Integer lauId) {
-        List<ApplicationIssueUtil> applicationIssueUtils = applicationIssueUtilRepository.findApplicationIssueUtilByLauId(lauId);
-
-        if (applicationIssueUtils.size() > 1) { //We have more than one applicant per lau, check status
-            //if status is KO remove from the list
-            applicationIssueUtils.removeIf(applicationIssueUtil -> applicationIssueUtil.getStatus() == ApplicationStatus.KO.getValue());
-        }
-
-        return applicationIssueUtils;
-    }
-
-    public List<Integer> getRegistrationIssues(Integer lauId) {
-        Set<Integer> issues = new HashSet<>();
-        for (RegistrationDTO registrationDTO : getRegistrationsByLauId(lauId)) {
-            if (registrationDTO != null) {
-                List<RegistrationWarningDTO> registrationWarningDTOS = registrationWarningService.getWarningsByRegistrationId(registrationDTO.getId());
-                registrationWarningDTOS.forEach(x -> issues.add(x.getWarning()));
-            }
-        }
-        return Lists.newArrayList(issues);
-    }
-
-    public Integer getIssues(List<ApplicationIssueUtil> applicationIssueUtilList) {
-
-        if (applicationIssueUtilList.size() == 1) {
-
-            Integer issueType = 0;
-            if (ApplicationWarningsChecker.registrationHasWarning1(applicationIssueUtilList.get(0))) {
-                issueType = 1;
-            }
-            if (ApplicationWarningsChecker.registrationHasWarning3(applicationIssueUtilList.get(0))) {
-                issueType = 3;
-            }
-            return issueType;
-
-        } else {
-            return 0;
-        }
-    }
-
-    public Integer getStatus(List<ApplicationIssueUtil> applicationIssueUtilList) {
-
-        if (applicationIssueUtilList.size() == 1) {
-            return applicationIssueUtilList.get(0).getStatus();
-        } else {
-            return -1;
-        }
-    }
-
     public List<LegalFileCorrectionReasonDTO> getLegalFilesByRegistrationId(Integer registrationId) {
         return legalFileCorrectionReasonMapper.toDTOList(legalFileCorrectionReasonRepository.findByRegistrationIdOrderByTypeAsc(registrationId));
     }

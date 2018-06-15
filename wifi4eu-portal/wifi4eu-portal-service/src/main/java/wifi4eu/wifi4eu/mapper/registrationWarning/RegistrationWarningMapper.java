@@ -12,12 +12,12 @@ import java.util.List;
 public interface RegistrationWarningMapper {
 
     @Mappings({
-            @Mapping(source = "entity.registration.id", target = "registrationId"),
+            @Mapping(source = "entity.registration", target = "registrationId"),
     })
     RegistrationWarningDTO toDTO(RegistrationWarning entity);
 
     @Mappings({
-            @Mapping(source = "vo.registrationId", target = "registration.id"),
+            @Mapping(source = "vo.registrationId", target = "registration"),
     })
     RegistrationWarning toEntity(RegistrationWarningDTO vo);
 

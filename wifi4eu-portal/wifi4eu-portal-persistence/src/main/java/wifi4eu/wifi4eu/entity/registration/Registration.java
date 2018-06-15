@@ -72,7 +72,8 @@ public class Registration {
     @Column(name = "mail_counter")
     private int mailCounter;
 
-    @OneToMany(mappedBy = "registration", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn(name = "registration_id")
     private List<RegistrationWarning> registrationWarningList;
 
 

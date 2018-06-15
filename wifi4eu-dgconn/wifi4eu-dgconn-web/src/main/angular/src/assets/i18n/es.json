@@ -595,7 +595,7 @@
   "dgConn.voucherAssignment.validApplications": "Total of valid applications for the call:",
   "dgConn.voucherAssignment.budgetForeseen": "Total budget foreseen for the all in EUR:",
   "dgConn.voucherAssignment.percentMaximumCountry": "The % of total budget as a maximum budgeted for each Country:",
-  "gConn.voucherAssignment.valueVoucher": "Value of each voucher:",
+  "dgConn.voucherAssignment.valueVoucher": "Value of each voucher:",
   "dgConn.voucherAssignment.totalVouchersForeseen": "Total of vouchers foreseen for the call:",
   "dgConn.voucherAssignment.maxReserveVouchers": "Maximum number of reserve vouchers per country:",
   "dgConn.voucherAssignment.filterCountry": "Filter by country",

@@ -1,6 +1,8 @@
 package wifi4eu.wifi4eu.service.warning;
 
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.*;
@@ -20,25 +22,14 @@ import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
 import wifi4eu.wifi4eu.service.registration.RegistrationService;
 import wifi4eu.wifi4eu.service.user.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Service
 public class RegistrationWarningService {
-    @Autowired
-    MunicipalityService municipalityService;
 
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    RegistrationService registrationService;
-
-    @Autowired
-    LauService lauService;
-
-    @Autowired
-    MayorService mayorService;
+    Logger _log = LoggerFactory.getLogger(RegistrationWarningService.class);
 
     @Autowired
     RegistrationMapper registrationMapper;
@@ -60,13 +51,39 @@ public class RegistrationWarningService {
 
     public ResponseDTO uploadRegistrationWarnings() {
         ResponseDTO responseDTO = new ResponseDTO();
-        List<Registration> oldRegistrations = Lists.newArrayList(registrationRepository.findAll());
-
-        for (Registration oldRegistration : oldRegistrations) {
-            createWarningsByRegistration(registrationMapper.toDTO(oldRegistration));
-        }
+        createWarningsForAllRegistrations();
         responseDTO.setSuccess(true);
         return responseDTO;
+    }
+
+    public void createWarningsForAllRegistrations() {
+        List<ApplicationIssueUtil> applicationIssueUtilList = applicationIssueUtilRepository.findAllApplicationIssueUtil();
+        List<RegistrationWarning> toSaveList = new ArrayList<>();
+
+        for(ApplicationIssueUtil applicationIssueUtil : applicationIssueUtilList) {
+            if (ApplicationWarningsChecker.registrationHasWarning1(applicationIssueUtil)) {
+                RegistrationWarning registrationWarnings = new RegistrationWarning();
+                registrationWarnings.setRegistration(Integer.valueOf(applicationIssueUtil.getId()));
+                registrationWarnings.setWarning(1);
+                toSaveList.add(registrationWarnings);
+            }
+
+        /*if (ApplicationWarningsChecker.registrationHasWarning2(applicationIssueUtil)) {
+            Registration registration = registrationMapper.toEntity(registrationDTO);
+            RegistrationWarning registrationWarnings = new RegistrationWarning();
+            registrationWarnings.setRegistration(applicationIssueUtil.getId());
+            registrationWarnings.setWarning(2);
+            toSaveList.add(registrationWarnings);
+        }*/
+
+            if (ApplicationWarningsChecker.registrationHasWarning3(applicationIssueUtil)) {
+                RegistrationWarning registrationWarnings = new RegistrationWarning();
+                registrationWarnings.setRegistration(Integer.valueOf(applicationIssueUtil.getId()));
+                registrationWarnings.setWarning(3);
+                toSaveList.add(registrationWarnings);
+            }
+        }
+        registrationWarningRepository.save(toSaveList);
     }
 
     public void createWarningsByRegistration(RegistrationDTO registrationDTO) {
@@ -75,23 +92,24 @@ public class RegistrationWarningService {
         if (ApplicationWarningsChecker.registrationHasWarning1(applicationIssueUtil)) {
             Registration registration = registrationMapper.toEntity(registrationDTO);
             RegistrationWarning registrationWarnings = new RegistrationWarning();
-            registrationWarnings.setRegistration(registration);
+            registrationWarnings.setRegistration(registration.getId());
             registrationWarnings.setWarning(1);
             registrationWarningRepository.save(registrationWarnings);
         }
 
-//        if (ApplicationWarningsChecker.registrationHasWarning2(applicationIssueUtil)) {
-//            Registration registration = registrationMapper.toEntity(registrationDTO);
-//            RegistrationWarning registrationWarnings = new RegistrationWarning();
-//            registrationWarnings.setRegistration(registration);
-//            registrationWarnings.setWarning(2);
-//            registrationWarningRepository.save(registrationWarnings);
-//        }
+
+        /*if (ApplicationWarningsChecker.registrationHasWarning2(applicationIssueUtil)) {
+            Registration registration = registrationMapper.toEntity(registrationDTO);
+            RegistrationWarning registrationWarnings = new RegistrationWarning();
+            registrationWarnings.setRegistration(applicationIssueUtil.getId());
+            registrationWarnings.setWarning(2);
+            toSaveList.add(registrationWarnings);
+        }*/
 
         if (ApplicationWarningsChecker.registrationHasWarning3(applicationIssueUtil)) {
             Registration registration = registrationMapper.toEntity(registrationDTO);
             RegistrationWarning registrationWarnings = new RegistrationWarning();
-            registrationWarnings.setRegistration(registration);
+            registrationWarnings.setRegistration(registration.getId());
             registrationWarnings.setWarning(3);
             registrationWarningRepository.save(registrationWarnings);
         }
