@@ -113,7 +113,7 @@ public class ApplicationService {
                         }
                         applicationDTO.setDate(queueTimestamp);
                         applicationDTO = applicationMapper.toDTO(applicationRepository.save(applicationMapper.toEntity(applicationDTO)));
-                        _log.info("ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " Registered");
+                        _log.log(Level.getLevel("BUSINESS"), "ECAS Username: " + userConnected.getEcasUsername() + " - Application " + applicationDTO.getId() + " created successfully");
                         return applicationDTO;
                     } else {
                         _log.error("ECAS Username: " + userConnected.getEcasUsername() + " - Trying to register an application existent on the DB, callId: "
