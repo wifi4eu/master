@@ -20,6 +20,7 @@ import wifi4eu.wifi4eu.mapper.security.RightMapper;
 import wifi4eu.wifi4eu.mapper.user.UserMapper;
 import wifi4eu.wifi4eu.repository.security.RightRepository;
 import wifi4eu.wifi4eu.repository.user.UserRepository;
+import wifi4eu.wifi4eu.service.user.UserService;
 
 import java.util.List;
 
@@ -39,6 +40,13 @@ public class PermissionChecker {
 
     @Autowired
     RightRepository rightRepository;
+
+    @Autowired
+    UserService userService;
+
+    UserContext userContext;
+    UserDTO userConnected;
+
 
     public boolean check(String rightDesc){
 
@@ -66,7 +74,9 @@ public class PermissionChecker {
     @Transactional
     public void addTablePermissions(final UserDTO userDTO, final String rowId,
                                     final String destTable, final String logInfo) {
-        _log.debug("addTablePermissions " + logInfo);
+        userContext = UserHolder.getUser();
+        userConnected = userService.getUserByUserContext(userContext);
+        _log.debug("ECAS Username: " + userConnected.getEcasUsername() + "- Adding table permissions");
 
         User user = userMapper.toEntity(userDTO);
         Iterable<Right> rightsFound = rightRepository.findByRightdescAndUserId(destTable + rowId, user.getId());
