@@ -1,54 +1,268 @@
+<!--custom-wizard-steps [isCustomContent]="true" *ngIf="!(successRegistration || failureRegistration)">
+    <ux-wizard-step label="{{ 'benefRegistration.beneficiaryRegistration.step1.title' | translate }}" [isCompleted]="completed[0]"
+                    [isActive]="active[0]">
+        <uxWizardStepCustomContent>
+            <beneficiary-registration-step1 [countries]="countries" [country]="country"
+                                            [organizations]="organizations"
+                                            [(multipleMunicipalities)]="multipleMunicipalities"
+                                            (countryChange)="selectCountry($event)"
+                                            [organization]="organization"
+                                            (organizationChange)="selectOrganization($event)"
+                                            (onNext)="navigate(2)"></beneficiary-registration-step1>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'benefRegistration.registration.beneficiary.title' | translate }}" [isCompleted]="completed[1]"
+                    [isActive]="active[1]">
+        <uxWizardStepCustomContent>
+            <beneficiary-registration-step2 [country]="country"
+                                            [multipleMunicipalities]="multipleMunicipalities"
+                                            [(municipalities)]="municipalities"
+                                            [(laus)]="laus" [(mayors)]="mayors"
+                                            (onNext)="navigate(3)" (onBack)="navigate(1)"></beneficiary-registration-step2>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'benefRegistration.registration.entity.title' | translate }}" [isCompleted]="completed[2]"
+                    [isActive]="active[2]">
+        <uxWizardStepCustomContent>
+            <beneficiary-registration-step3 [(initialUser)]="initialUser" [mayors]="mayors"
+                                            [multipleMunicipalities]="multipleMunicipalities"
+                                            [municipalities]="municipalities" [(associationName)]="associationName"
+                                            (onNext)="navigate(4)" (onBack)="navigate(2)"></beneficiary-registration-step3>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+    <ux-wizard-step label="{{ 'benefRegistration.registration.review.title' | translate }}" [isCompleted]="completed[3]"
+                    [isActive]="active[3]">
+        <uxWizardStepCustomContent>
+            <beneficiary-registration-step4 [initialUser]="initialUser" [country]="country"
+                                            [municipalities]="municipalities" [mayors]="mayors"
+                                            [multipleMunicipalities]="multipleMunicipalities"
+                                            (onNext)="submitRegistration()" (onBack)="navigate(3)"
+                                            (onEdit)="navigate($event)"></beneficiary-registration-step4>
+        </uxWizardStepCustomContent>
+    </ux-wizard-step>
+</custom-wizard-steps>
+
+<failure-component *ngIf="failureRegistration" [alreadyRegistered]="alreadyRegistered"></failure-component>
+<helpdesk-form-component portal="beneficiary-registration"></helpdesk-form-component-->
+
+
 <html>
 <body>
-    <div class="container">
-        <br/><br/>
-        <font size="5" color="#003366" align="left"><b>Configure global commitments</b></font>
-        <br/>
-        <span>Loren ipsum dolor sit amet.</span>
-        <br/><br/><br/>
-        <div class="ui-g">
-            <div class="ui-g-12">
-                <div class="ui-g-6">
-                    <!--p-dataTable [value]="voucherManagementsFirst">
-                        <p-column [sortable]="true" field="member_state"
-                                  header="{{ 'dgConn.helpdesk.memberState' | translate}}"></p-column>
-                        <p-column [sortable]="true" field="minimum"
-                                  header="{{ 'dgConn.voucher.minimum' | translate}}"></p-column>
-                        <p-column [sortable]="true" field="maximum"
-                                  header="{{ 'dgConn.voucher.maximum' | translate}}"></p-column>
-                    </p-dataTable-->
-                    <p-dataTable [value]="voucherManagementsFirst">
-                        <p-column [sortable]="true" field="member_state"
-                                  header="Call"></p-column>
-                        <p-column [sortable]="true" field="minimum"
-                                  header="Global Commitment (with position)"></p-column>
-                        <p-column [sortable]="true" field="maximum"
-                                  header="Amount"></p-column>
-                        <p-column [sortable]="true" field="maximum"
-                                  header="Priority"></p-column>
-                        <p-column header="Actions"></p-column>
+<div class="container">
+    <br/><br/>
+    <font size="5" color="#003366" align="left"><b>Configure global commitments</b></font>
+    <br/>
+    <span>Loren ipsum dolor sit amet.</span>
+    <br/><br/><br/>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <div class="ui-g-6">
+                <!--p-dataTable [value]="voucherManagementsFirst">
+                    <p-column [sortable]="true" field="member_state"
+                              header="{{ 'dgConn.helpdesk.memberState' | translate}}"></p-column>
+                    <p-column [sortable]="true" field="minimum"
+                              header="{{ 'dgConn.voucher.minimum' | translate}}"></p-column>
+                    <p-column [sortable]="true" field="maximum"
+                              header="{{ 'dgConn.voucher.maximum' | translate}}"></p-column>
+                </p-dataTable-->
+                <!--div class="panel-dg">
+                    <p-dataTable #tableSuppliers [totalRecords]="totalItems" [value]="supplierListItems" [lazy]="true"
+                                 (onLazyLoad)="loadData($event)"
+                                 [paginator]="true" [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="totalItems"
+                                 [rows]="itemsPerPage">
+                        <p-column field="name" [sortable]="true" header="{{ 'suppRegistration.company.name' | translate }}"
+                                  styleClass="text-center"></p-column>
+                        <p-column field="website" [sortable]="true" header="{{ 'suppRegistration.company.web' | translate }}"
+                                  styleClass="text-center"></p-column>
+                        <p-column field="vat" [sortable]="true" header="{{ 'suppRegistration.vat.label' | translate }}"
+                                  styleClass="text-center"></p-column>
+                        <p-column field="status" [sortable]="true" header="{{ 'dgConn.status' | translate }}"
+                                  styleClass="text-center">>
+                            <ng-template let-rowData="rowData" pTemplate="body">
+                                <span class="badge badge-success" *ngIf="!rowData.status">{{ 'dgConn.beneficiaries.registered' | translate | uppercase }}</span>
+                                <span class="badge badge-fail" *ngIf="rowData.status">{{ 'dgConn.badge.invalid' | translate | uppercase }}</span>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="numberRegistrations" [sortable]="false"
+                                  header="{{ 'dgConn.number.registrations' | translate }}" styleClass="text-center"></p-column>
+                        <p-column [sortable]="false" header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
+                            <ng-template let-row="rowData" pTemplate="body">
+                    <span [routerLink]="['./', row.id]" class="action-label">
+                        <span class="fa fa-eye"></span> <span>{{ 'dgConn.view' | translate }}</span>
+                    </span>
+                            </ng-template>
+                        </p-column>
+                        <footer>
+                            <div style="position: absolute; bottom: 25px; left: 20px;">
+                    <span *ngIf="!loadingData">
+                        Total records: {{tableSuppliers.totalRecords}}
+                    </span>
+                                <span *ngIf="loadingData">
+                        {{ 'shared.loading.modal.title' | translate }} <i [@enterSpinner]
+                                                                          class="fa fa-spinner loading-icon"></i>
+                    </span>
+                            </div>
+                        </footer>
+                    </p-dataTable>
+                </div-->
+
+
+                <!--div class="panel-dg">
+                    <p-dataTable #tableSuppliers [totalRecords]="totalItems" [value]="supplierListItems" [lazy]="true"
+                                 (onLazyLoad)="loadData($event)"
+                                 [paginator]="true" [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="totalItems"
+                                 [rows]="itemsPerPage">
+                        <p-column field="name" [sortable]="true" header="{{ 'suppRegistration.company.name' | translate }}"
+                                  styleClass="text-center"></p-column>
+                        <p-column field="website" [sortable]="true" header="{{ 'suppRegistration.company.web' | translate }}"
+                                  styleClass="text-center"></p-column>
+                        <p-column field="vat" [sortable]="true" header="{{ 'suppRegistration.vat.label' | translate }}"
+                                  styleClass="text-center"></p-column>
+                        <p-column field="status" [sortable]="true" header="{{ 'dgConn.status' | translate }}"
+                                  styleClass="text-center">
+                            <ng-template let-rowData="rowData" pTemplate="body">
+                                <span class="badge badge-success" *ngIf="!rowData.status">{{ 'dgConn.beneficiaries.registered' | translate | uppercase }}</span>
+                                <span class="badge badge-fail" *ngIf="rowData.status">{{ 'dgConn.badge.invalid' | translate | uppercase }}</span>
+                            </ng-template>
+                        </p-column>
+                        <p-column field="numberRegistrations" [sortable]="false"
+                                  header="{{ 'dgConn.number.registrations' | translate }}" styleClass="text-center"></p-column>
+                        <p-column [sortable]="false" header="{{ 'dgConn.details' | translate }}" styleClass="text-center">
+                            <ng-template let-row="rowData" pTemplate="body">
+                    <span [routerLink]="['./', row.id]" class="action-label">
+                        <span class="fa fa-eye"></span> <span>{{ 'dgConn.view' | translate }}</span>
+                    </span>
+                            </ng-template>
+                        </p-column>
+                        <footer>
+                            <div style="position: absolute; bottom: 25px; left: 20px;">
+                    <span *ngIf="!loadingData">
+                        Total records: {{tableSuppliers.totalRecords}}
+                    </span>
+                                <span *ngIf="loadingData">
+                        {{ 'shared.loading.modal.title' | translate }} <i [@enterSpinner]
+                                                                          class="fa fa-spinner loading-icon"></i>
+                    </span>
+                            </div>
+                        </footer>
+                    </p-dataTable>
+                </div-->
+
+                <!--div class="panel-dg">
+                    <p-dataTable #tableSuppliers [totalRecords]="totalItems" [value]="supplierListItems" [lazy]="true"
+                                 (onLazyLoad)="loadData($event)"
+                                 [paginator]="true" [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="totalItems"
+                                 [rows]="itemsPerPage">
+                        <p-column field="name" [sortable]="true" header="Call"
+                                  styleClass="text-center"></p-column>
+                        <p-column field="website" [sortable]="true" header="Global Commitment (with position)"
+                                  styleClass="text-center"></p-column>
+                        <p-column field="vat" [sortable]="true" header="Amount"
+                                  styleClass="text-center"></p-column>
+                        <p-column field="status" [sortable]="true" header="Priority"
+                                  styleClass="text-center"></p-column>
+                        <p-column [sortable]="false" header="Add" styleClass="text-center">
+                            <ng-template let-row="rowData" pTemplate="body">
+                    <span [routerLink]="['./', row.id]" class="action-label">
+                        <span class="fa fa-eye"></span> <span>{{ 'dgConn.view' | translate }}</span>
+                    </span>
+                            </ng-template>
+                        </p-column>
+                        <footer>
+                            <div style="position: absolute; bottom: 25px; left: 20px;">
+                    <span *ngIf="!loadingData">
+                        Total records: {{tableSuppliers.totalRecords}}
+                    </span>
+                                <span *ngIf="loadingData">
+                        {{ 'shared.loading.modal.title' | translate }} <i [@enterSpinner]
+                                                                          class="fa fa-spinner loading-icon"></i>
+                    </span>
+                            </div>
+                        </footer>
                     </p-dataTable>
                 </div>
-                <!--<div class="ui-g-6">-->
-                    <!--&lt;!&ndash;p-dataTable [value]="voucherManagementsSecond" *ngIf="displayTable">-->
-                        <!--<p-column [sortable]="true" field="member_state"-->
-                                  <!--header="{{ 'dgConn.helpdesk.memberState' | translate}}"></p-column>-->
-                        <!--<p-column [sortable]="true" field="minimum"-->
-                                  <!--header="{{ 'dgConn.voucher.minimum' | translate}}"></p-column>-->
-                        <!--<p-column [sortable]="true" field="maximum"-->
-                                  <!--header="{{ 'dgConn.voucher.maximum' | translate}}"></p-column>-->
-                    <!--</p-dataTable&ndash;&gt;-->
-                    <!--<p-dataTable [value]="voucherManagementsSecond" *ngIf="displayTable">-->
-                        <!--<p-column [sortable]="true" field="member_state"-->
-                                  <!--header="{{ 'dgConn.helpdesk.memberState' | translate}}"></p-column>-->
-                        <!--<p-column [sortable]="true" field="minimum"-->
-                                  <!--header="{{ 'dgConn.voucher.minimum' | translate}}"></p-column>-->
-                        <!--<p-column [sortable]="true" field="maximum"-->
-                                  <!--header="{{ 'dgConn.voucher.maximum' | translate}}"></p-column>-->
-                    <!--</p-dataTable>-->
-                <!--</div>-->
+
+                <p-dataTable [value]="response">
+                    <p-column [sortable]="true" field="data"
+                              header=Call></p-column>
+                    <p-column [sortable]="true" field="globalCommitment"
+                              header="Global Commitment (with position)"></p-column>
+                    <p-column [sortable]="true" field="ammount"
+                              header="Amount"></p-column>
+                    <p-column [sortable]="true" field="priority"
+                              header="Priority"></p-column>
+                    <p-column header="Add"></p-column>
+                </p-dataTable-->
+
+                <table style="width:100%">
+                    <tr style="height:100px">
+                        <th align="left" valign="top">
+                            Call -
+                        </th>
+                        <th align="left" valign="top">
+                            Global Commitment (with position) -
+                        </th>
+                        <th align="left" valign="top">
+                            Amount -
+                        </th>
+                        <th align="left" valign="top">
+                            Priority -
+                        </th>
+                        <th align="right" valign="top">
+                            Add
+                        </th>
+                    </tr>
+                    <tr style="height:100px">
+                        <th align="left" valign="top">
+                            1 -
+                        </th>
+                        <th align="left" valign="top">
+                            SI2.XXXXXX.1 -
+                        </th>
+                        <th align="left" valign="top">
+                            1000eu -
+                        </th>
+                        <th align="left" valign="top">
+                            1
+                        </th>
+                    </tr>
+                </table>
+                <!--div *ngFor="let data of response; let i = index">
+                    <div>
+                    <span class="left">
+                        <span>
+                             {{ data.id }}
+                        </span>
+                    </span>
+                    </div>
+                </div-->
+                <!--p-dataTable #tableBeneficiary [totalRecords]="totalItems" [value]="beneficiaryListItems" [lazy]="true" (onLazyLoad)="loadData($event)"
+                             [paginator]="true" [rowsPerPageOptions]="rowsPerPageOptions" [totalRecords]="totalItems" [rows]="itemsPerPage">
+                    <p-column field="countryCode" [sortable]="true" header="{{ 'dgConn.beneficiaries.country' | translate }}" styleClass="text-center"></p-column>
+                    <p-column field="name" [sortable]="true" header="{{ 'dgConn.beneficiaries.name' | translate }}" styleClass="text-center"></p-column>
+                    <p-column field="status" [sortable]="true" header="{{ 'dgConn.status' | translate }}" styleClass="text-center"></p-column>
+                </p-dataTable-->
             </div>
+            <!--<div class="ui-g-6">-->
+            <!--&lt;!&ndash;p-dataTable [value]="voucherManagementsSecond" *ngIf="displayTable">-->
+            <!--<p-column [sortable]="true" field="member_state"-->
+            <!--header="{{ 'dgConn.helpdesk.memberState' | translate}}"></p-column>-->
+            <!--<p-column [sortable]="true" field="minimum"-->
+            <!--header="{{ 'dgConn.voucher.minimum' | translate}}"></p-column>-->
+            <!--<p-column [sortable]="true" field="maximum"-->
+            <!--header="{{ 'dgConn.voucher.maximum' | translate}}"></p-column>-->
+            <!--</p-dataTable&ndash;&gt;-->
+            <!--<p-dataTable [value]="voucherManagementsSecond" *ngIf="displayTable">-->
+            <!--<p-column [sortable]="true" field="member_state"-->
+            <!--header="{{ 'dgConn.helpdesk.memberState' | translate}}"></p-column>-->
+            <!--<p-column [sortable]="true" field="minimum"-->
+            <!--header="{{ 'dgConn.voucher.minimum' | translate}}"></p-column>-->
+            <!--<p-column [sortable]="true" field="maximum"-->
+            <!--header="{{ 'dgConn.voucher.maximum' | translate}}"></p-column>-->
+            <!--</p-dataTable>-->
+            <!--</div>-->
         </div>
     </div>
+</div>
 </body>
 </html>

@@ -1,7 +1,9 @@
 package wifi4eu.wifi4eu.common.dto.model;
 
 
-public class GlobalCommitmentDTO {
+import java.io.Serializable;
+
+public class GlobalCommitmentDTO implements Serializable{
     private Integer id;
     private Integer call;
     private String globalCommitment;

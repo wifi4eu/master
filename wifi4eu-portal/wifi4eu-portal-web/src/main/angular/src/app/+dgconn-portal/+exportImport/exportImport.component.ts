@@ -6,7 +6,7 @@ import {ExportImportApi} from "../../shared/swagger/api/ExportImportApi";
 import {SharedService} from "../../shared/shared.service";
 import {CallApi} from "../../shared/swagger/api/CallApi";
 import {ApplicationApi} from "../../shared/swagger/api/ApplicationApi";
-import { ResponseDTO } from '../../shared/swagger/model/ResponseDTO';
+import {ResponseDTO} from '../../shared/swagger/model/ResponseDTO';
 import {TranslateService} from "ng2-translate";
 
 
