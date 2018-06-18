@@ -259,15 +259,7 @@ export class MyVoucherComponent {
     
     /* Redirect to selected supplier details */
     private supplierDetails(event) {
-        // console.log("Municipality index is ", event);
-        // Old routing:
-        // this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipalities[event].id]);
-        // New routing:
-        console.log("Info being passed is: ", this.applications);
-        console.log("Event is ", event);
-        console.log("Supplier id is ", this.applications[event].supplierId);
         this.router.navigate(['/beneficiary-portal/selected-supplier-details', this.municipalities[event].id, this.applications[event].supplierId]);
-
     }
     
     /* Get displayed string date from epoch number */
