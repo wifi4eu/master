@@ -468,7 +468,7 @@ CREATE TABLE voucher_management
 ) ON [PRIMARY];
 
 INSERT INTO voucher_management
-  (id, call_id, member_state, minimum, maximum, reserve)
+  (id, call_id, member_state, minimum, maximum, reserve, country_code)
 VALUES
   (1, 1, N'ÖSTERREICH', 15, 95, 15, N'AT'),
   (2, 1, N'BELGIQUE-BELGIË', 15, 95, 15, N'BE'),

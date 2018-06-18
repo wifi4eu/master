@@ -7,10 +7,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "temp_tokens")
 public class TempToken {
-    @Id
-    @SequenceGenerator(name = "temptoken_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "temptoken_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "token")

@@ -213,7 +213,7 @@ export class {{classname}} implements I{{classname}} {
             body: formParams.toString(),
 {{/hasFormParams}}
             search: queryParameters,
-            responseType: ResponseContentType.Json
+            responseType: "{{path}}".indexOf('Excel') == -1 ? ResponseContentType.Json : ResponseContentType.Blob
         });
 
         return this.http.request(path, requestOptions);

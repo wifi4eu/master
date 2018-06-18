@@ -13,7 +13,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import {ActivationComponent} from "./activation/activation.component";
 // import {ForgotComponent} from "./+forgot/forgot.component";
 import {Ng2Bs3ModalModule} from "ng2-bs3-modal/ng2-bs3-modal";
-import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
+// import {HelpdeskComponent} from "./+helpdesk/helpdesk.component";
 import {NotFoundComponent} from "./not-found/not-found.component"
 // import {AppGuard} from "./app.guard";
 import {LocalStorageModule} from 'angular-2-local-storage';
@@ -36,7 +36,7 @@ export function translateFactory(http: Http) {
         AppComponent,
         ActivationComponent,
         ForgotComponent,
-        HelpdeskComponent,
+        // HelpdeskComponent,
         HomeComponent,
         // EcasComponent,
         NotFoundComponent,
@@ -46,7 +46,7 @@ export function translateFactory(http: Http) {
         // MapComponent,
         ActivationComponent,
         ForgotComponent,
-        HelpdeskComponent,
+        // HelpdeskComponent,
         HomeComponent,
         // EcasComponent,
         NotFoundComponent,
