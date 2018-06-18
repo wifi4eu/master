@@ -241,6 +241,11 @@ export class MyVoucherComponent {
         }
     }
 
+    // Allows beneficiary to select a supplier
+    private selectWifiInstallation(i) {
+        this.router.navigate(['/beneficiary-portal/select-supplier/', this.municipalities[i].id]);
+    }
+
     /* TO BE COMPLETED */
     /* Method that toggles if confirm network button is clickable */
     private confirmButton() {
