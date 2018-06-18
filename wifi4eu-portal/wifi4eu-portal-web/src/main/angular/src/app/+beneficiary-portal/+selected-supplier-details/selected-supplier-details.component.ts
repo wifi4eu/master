@@ -34,6 +34,7 @@ export class SelectedSupplierDetailsComponent {
   
   // Component specific properties
   private municipalityId: number;
+  private supplierId: number;
 
   // Date supplier was selected
   private selectionDate: Date;
@@ -53,8 +54,13 @@ export class SelectedSupplierDetailsComponent {
   ) {
 
   /* Observable<string> */
-  const id: any = route.params.map(p => p.id);
-  this.municipalityId = id.source.value.municipalityId;
+  const municipalityId: any = route.params.map(p => p.id);
+  this.municipalityId = municipalityId.source.value.municipalityId;
+  console.log("Municipality id is ", this.municipalityId);
+  
+  const supplierId: any = route.params.map(p => p.id);
+  this.supplierId = supplierId.source.value.supplierId;
+  console.log("Supplier id is ", this.supplierId);
   
   this.municipalityApi.getMunicipalityById(this.municipalityId).subscribe(
     (municipality: MunicipalityDTOBase) => {
@@ -79,7 +85,6 @@ export class SelectedSupplierDetailsComponent {
               this.applicationApi.getApplicationByCallIdAndRegistrationId(calls[0].id, this.registration.id).subscribe(
                 (application: ApplicationDTOBase) => {
                   this.application = application;
-                  console.log("Application is: ", this.application);
                   this.getSupplierDetails();  
                 }
               );
@@ -95,7 +100,7 @@ export class SelectedSupplierDetailsComponent {
       
   /*  -- METHODS -- */
   getSupplierDetails() {
-    this.supplierApi.getSupplierDetailsById(this.application.supplierId).subscribe(
+    this.supplierApi.getSupplierDetailsById(this.supplierId).subscribe(
       (supplier: SupplierDTOBase) => {            
         this.supplier = supplier;
       }
@@ -119,7 +124,22 @@ export class SelectedSupplierDetailsComponent {
   
   /* Assign supplier to the beneficiary application */
   private saveAndNotify() {
-    this.router.navigate(['/beneficiary-portal/my-voucher']);
+    console.log("Municipality ID is ", this.municipality.id);
+    this.application.supplierId = this.supplierId; 
+    this.applicationApi.assignSupplier(this.application).subscribe(
+      (resAplication: ResponseDTOBase) => {
+        this.getStringDate(resAplication.data.date);
+        
+        this.supplierApi.notifySelectedSupplier(this.municipality.id).subscribe(
+          (res: ResponseDTOBase) => {
+            console.log("The result of sending email is ", res);
+          }
+        );
+      }
+    );
+
+    console.log("-- End of method --")
+    // this.router.navigate(['/beneficiary-portal/my-voucher']);
   }
 
 // End of exported class

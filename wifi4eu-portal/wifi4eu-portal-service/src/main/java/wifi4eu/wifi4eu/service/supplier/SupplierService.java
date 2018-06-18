@@ -18,12 +18,19 @@ import wifi4eu.wifi4eu.mapper.supplier.SuppliedRegionMapper;
 import wifi4eu.wifi4eu.mapper.supplier.SupplierMapper;
 import wifi4eu.wifi4eu.repository.supplier.SuppliedRegionRepository;
 import wifi4eu.wifi4eu.repository.supplier.SupplierRepository;
+import wifi4eu.wifi4eu.service.call.CallService;
 import wifi4eu.wifi4eu.service.location.NutsService;
 import wifi4eu.wifi4eu.service.thread.ThreadService;
 import wifi4eu.wifi4eu.service.thread.UserThreadsService;
 import wifi4eu.wifi4eu.service.user.UserConstants;
 import wifi4eu.wifi4eu.service.user.UserService;
 import wifi4eu.wifi4eu.util.MailService;
+
+// Added for the mail:
+import wifi4eu.wifi4eu.service.municipality.MunicipalityService;
+import wifi4eu.wifi4eu.service.registration.RegistrationService;
+import wifi4eu.wifi4eu.service.application.ApplicationService;
+// ------------------
 
 import java.text.MessageFormat;
 import java.util.*;
@@ -56,6 +63,20 @@ public class SupplierService {
 
     @Autowired
     MailService mailService;
+
+    // Added the following:
+    @Autowired
+    MunicipalityService municipalityService;
+
+    @Autowired
+    RegistrationService registrationService;
+
+    @Autowired
+    CallService callService;
+
+    @Autowired
+    ApplicationService applicationService;
+    // --------------------
 
     public List<SupplierDTO> getAllSuppliers() {
         return supplierMapper.toDTOList(Lists.newArrayList(supplierRepository.findAll()));
@@ -289,7 +310,7 @@ public class SupplierService {
         return supplierRepository.findSuppliersByRegion(regionId, pageable);
     }
 
-    // New creation
+    // Get all supplier that supply a specific region
     public List<SupplierDTO> getSuppliersListByRegionId(int regionId) {
         List<SuppliedRegionDTO> suppliedRegions = suppliedRegionMapper.toDTOList(Lists.newArrayList(suppliedRegionRepository.findByRegionId(regionId)));
         List<SupplierDTO> suppliers = new ArrayList<>();
@@ -298,6 +319,39 @@ public class SupplierService {
             suppliers.add(supplier);
         }
         return suppliers;
+    }
+
+    // Send email to notify supplier that a beneficiary has selected him
+    public void notifySelectedSupplier(int municipalityId) throws Exception {
+        MunicipalityDTO municipality = municipalityService.getMunicipalityById(municipalityId);
+        int registrationId = registrationService.getRegistrationByMunicipalityId(municipalityId).getId();
+        // List<CallDTO> calls = callService.getAllCalls();
+        CallDTO call = callService.getCallById(1);
+        // If having an error on calls, check that the calls are not null/empty. 
+        // ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(calls.get(calls.size()-1).getId(), registrationId);
+        ApplicationDTO application = applicationService.getApplicationByCallIdAndRegistrationId(call.getId(), registrationId);
+        if(application != null) {
+            SupplierDTO supplier = getSupplierById(application.getSupplierId());
+            
+            /* Send email may be commented in the front */
+            UserDTO user = userService.getUserById(supplier.getUserId());
+            if (user != null) {
+                Locale locale = new Locale(UserConstants.DEFAULT_LANG);
+                if (user.getLang() != null) {
+                    locale = new Locale(user.getLang());
+                }
+                ResourceBundle bundle = ResourceBundle.getBundle("MailBundle", locale);
+                String fromAddress = MailService.FROM_ADDRESS;
+                String subject = bundle.getString("mail.notifySelectedSupplier.subject");
+                String msgBody = bundle.getString("mail.notifySelectedSupplier.body");
+                msgBody = MessageFormat.format(msgBody, municipality.getName(), municipality.getCountry() );
+                mailService.sendEmail(supplier.getContactEmail(), fromAddress, subject, msgBody);
+            } else {
+                throw new Exception("User doesn't exist.");
+            }
+        } else {
+            throw new Exception("Application doesn't exist.");
+        }
     }
 
 }

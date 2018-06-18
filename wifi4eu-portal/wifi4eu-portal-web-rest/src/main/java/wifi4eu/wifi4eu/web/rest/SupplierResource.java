@@ -332,5 +332,20 @@ public class SupplierResource {
         return suppliersList;
     }
 
-
+    @ApiOperation(value = "Notify supplier by email that a beneficiary selected him")
+    // @RequestMapping(value = "/notifySelectedSupplier/", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/notifySelectedSupplier", method = RequestMethod.POST)
+    // public ResponseDTO notifySelectedSupplier(@RequestParam("municipalityId") final int municipalityId, @RequestParam("callId") final int calId) {
+    public ResponseDTO notifySelectedSupplier(@RequestBody final int municipalityId) {
+        _log.info("notify Selected Supplier: " + municipalityId);
+        try {
+            supplierService.notifySelectedSupplier(municipalityId);
+            return new ResponseDTO(true, null, null);
+        } catch (Exception e) {
+            if (_log.isErrorEnabled()) {
+                _log.error("Error on 'notifySelectedSupplier' operation.", e);
+            }
+            return new ResponseDTO(false, null, new ErrorDTO(0, e.getMessage()));
+        }
+    }
 }
