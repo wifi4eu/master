@@ -5,14 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskCommentDTO;
 import wifi4eu.wifi4eu.common.dto.model.HelpdeskIssueDTO;
-import wifi4eu.wifi4eu.entity.helpdesk.HelpdeskComment;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskCommentMapper;
 import wifi4eu.wifi4eu.mapper.helpdesk.HelpdeskIssueMapper;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskCommentRepository;
 import wifi4eu.wifi4eu.repository.helpdesk.HelpdeskIssueRepository;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,6 +32,10 @@ public class HelpdeskService {
 
     public HelpdeskIssueDTO getHelpdeskIssueById(int helpdeskIssueId) {
         return helpdeskIssueMapper.toDTO(helpdeskIssueRepository.findOne(helpdeskIssueId));
+    }
+
+    public List<HelpdeskIssueDTO> getAllHelpdeskIssueNoSubmited(){
+        return helpdeskIssueMapper.toDTOList(helpdeskIssueRepository.findAllByTicketFalse());
     }
 
     public HelpdeskIssueDTO createHelpdeskIssue(HelpdeskIssueDTO helpdeskIssueDTO) {

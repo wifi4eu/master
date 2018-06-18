@@ -1,3654 +1,3654 @@
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE', 'BELGIQUE-BELGIË', '0', 'BE', '1', '1');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE1', 'RÉGION DE BRUXELLES-CAPITALE / BRUSSELS HOOFDSTEDELIJK GEWEST', '1', 'BE', '1', '2');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE10', 'Région de Bruxelles-Capitale / Brussels Hoofdstedelijk Gewest', '2', 'BE', '1', '3');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE100', 'Arr. de Bruxelles-Capitale / Arr. van Brussel-Hoofdstad', '3', 'BE', '1', '4');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE2', 'VLAAGEWEST', '1', 'BE', '1', '5');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE21', 'Prov. Antwerpen', '2', 'BE', '1', '6');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE211', 'Arr. Antwerpen', '3', 'BE', '1', '7');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE212', 'Arr. Mechelen', '3', 'BE', '1', '8');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE213', 'Arr. Turnhout', '3', 'BE', '1', '9');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE22', 'Prov. Limburg (BE)', '2', 'BE', '1', '10');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE221', 'Arr. Hasselt', '3', 'BE', '1', '11');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE222', 'Arr. Maaseik', '3', 'BE', '1', '12');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE223', 'Arr. Tongeren', '3', 'BE', '1', '13');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE23', 'Prov. Oost-Vlaanderen', '2', 'BE', '1', '14');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE231', 'Arr. Aalst', '3', 'BE', '1', '15');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE232', 'Arr. Dendermonde', '3', 'BE', '1', '16');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE233', 'Arr. Eeklo', '3', 'BE', '1', '17');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE234', 'Arr. Gent', '3', 'BE', '1', '18');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE235', 'Arr. Oudenaarde', '3', 'BE', '1', '19');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE236', 'Arr. Sint-Niklaas', '3', 'BE', '1', '20');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE24', 'Prov. Vlaams-Brabant', '2', 'BE', '1', '21');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE241', 'Arr. Halle-Vilvoorde', '3', 'BE', '1', '22');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE242', 'Arr. Leuven', '3', 'BE', '1', '23');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE25', 'Prov. West-Vlaanderen', '2', 'BE', '1', '24');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE251', 'Arr. Brugge', '3', 'BE', '1', '25');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE252', 'Arr. Diksmuide', '3', 'BE', '1', '26');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE253', 'Arr. Ieper', '3', 'BE', '1', '27');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE254', 'Arr. Kortrijk', '3', 'BE', '1', '28');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE255', 'Arr. Oostende', '3', 'BE', '1', '29');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE256', 'Arr. Roeselare', '3', 'BE', '1', '30');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE257', 'Arr. Tielt', '3', 'BE', '1', '31');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE258', 'Arr. Veurne', '3', 'BE', '1', '32');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE3', 'RÉGION WALLONNE', '1', 'BE', '1', '33');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE31', 'Prov. Brabant Wallon', '2', 'BE', '1', '34');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE310', 'Arr. Nivelles', '3', 'BE', '1', '35');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE32', 'Prov. Hainaut', '2', 'BE', '1', '36');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE321', 'Arr. Ath', '3', 'BE', '1', '37');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE322', 'Arr. Charleroi', '3', 'BE', '1', '38');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE323', 'Arr. Mons', '3', 'BE', '1', '39');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE324', 'Arr. Mouscron', '3', 'BE', '1', '40');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE325', 'Arr. Soignies', '3', 'BE', '1', '41');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE326', 'Arr. Thuin', '3', 'BE', '1', '42');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE327', 'Arr. Tournai', '3', 'BE', '1', '43');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE33', 'Prov. Liège', '2', 'BE', '1', '44');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE331', 'Arr. Huy', '3', 'BE', '1', '45');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE332', 'Arr. Liège', '3', 'BE', '1', '46');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE334', 'Arr. Waremme', '3', 'BE', '1', '47');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE335', 'Arr. Verviers - communes francophones', '3', 'BE', '1', '48');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE336', 'Bezirk Verviers - Deutschsprachige Gemeinschaft', '3', 'BE', '1', '49');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE34', 'Prov. Luxembourg (BE)', '2', 'BE', '1', '50');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE341', 'Arr. Arlon', '3', 'BE', '1', '51');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE342', 'Arr. Bastogne', '3', 'BE', '1', '52');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE343', 'Arr. Marche-en-Famenne', '3', 'BE', '1', '53');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE344', 'Arr. Neufchâteau', '3', 'BE', '1', '54');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE345', 'Arr. Virton', '3', 'BE', '1', '55');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE35', 'Prov. Namur', '2', 'BE', '1', '56');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE351', 'Arr. Dinant', '3', 'BE', '1', '57');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE352', 'Arr. Namur', '3', 'BE', '1', '58');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BE353', 'Arr. Philippeville', '3', 'BE', '1', '59');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BEZ', 'EXTRA-REGIO NUTS 1', '1', 'BE', '1', '60');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BEZZ', 'Extra-Regio NUTS 2', '2', 'BE', '1', '61');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BEZZZ', 'Extra-Regio NUTS 3', '3', 'BE', '1', '62');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG', 'БЪЛГАРИЯ (BULGARIA)', '0', 'BG', '2', '63');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG3', 'СЕВЕРНА И ЮГОИЗТОЧНА БЪЛГАРИЯ (SEVERNA I YUGOIZTOCHNA BULGARIA)', '1', 'BG', '2', '64');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG31', 'Северозападен (Severozapaden)', '2', 'BG', '2', '65');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG311', 'Видин (Vidin)', '3', 'BG', '2', '66');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG312', 'Монтана (Montana)', '3', 'BG', '2', '67');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG313', 'Враца (Vratsa)', '3', 'BG', '2', '68');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG314', 'Плевен (Pleven)', '3', 'BG', '2', '69');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG315', 'Ловеч (Lovech)', '3', 'BG', '2', '70');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG32', 'Северен централен (Severen tsentralen)', '2', 'BG', '2', '71');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG321', 'Велико Търново (Veliko Tarnovo)', '3', 'BG', '2', '72');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG322', 'Габрово (Gabrovo)', '3', 'BG', '2', '73');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG323', 'Русе (Ruse)', '3', 'BG', '2', '74');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG324', 'Разград (Razgrad)', '3', 'BG', '2', '75');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG325', 'Силистра (Silistra)', '3', 'BG', '2', '76');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG33', 'Североизточен (Severoiztochen)', '2', 'BG', '2', '77');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG331', 'Варна (Varna)', '3', 'BG', '2', '78');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG332', 'Добрич (Dobrich)', '3', 'BG', '2', '79');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG333', 'Шумен (Shumen)', '3', 'BG', '2', '80');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG334', 'Търговище (Targovishte)', '3', 'BG', '2', '81');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG34', 'Югоизточен (Yugoiztochen)', '2', 'BG', '2', '82');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG341', 'Бургас (Burgas)', '3', 'BG', '2', '83');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG342', 'Сливен (Sliven)', '3', 'BG', '2', '84');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG343', 'Ямбол (Yambol)', '3', 'BG', '2', '85');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG344', 'Стара Загора (Stara Zagora)', '3', 'BG', '2', '86');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG4', 'ЮГОЗАПАДНА И ЮЖНА ЦЕНТРАЛНА БЪЛГАРИЯ (YUGOZAPADNA I YUZHNA TSENTRALNA BULGARIA)', '1', 'BG', '2', '87');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG41', 'Югозападен (Yugozapaden)', '2', 'BG', '2', '88');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG411', 'София (столица) (Sofia (stolitsa))', '3', 'BG', '2', '89');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG412', 'София (Sofia)', '3', 'BG', '2', '90');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG413', 'Благоевград (Blagoevgrad)', '3', 'BG', '2', '91');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG414', 'Перник (Pernik)', '3', 'BG', '2', '92');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG415', 'Кюстендил (Kyustendil)', '3', 'BG', '2', '93');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG42', 'Южен централен (Yuzhen tsentralen)', '2', 'BG', '2', '94');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG421', 'Пловдив (Plovdiv)', '3', 'BG', '2', '95');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG422', 'Хасково (Haskovo)', '3', 'BG', '2', '96');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG423', 'Пазарджик (Pazardzhik)', '3', 'BG', '2', '97');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG424', 'Смолян (Smolyan)', '3', 'BG', '2', '98');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BG425', 'Кърджали (Kardzhali)', '3', 'BG', '2', '99');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BGZ', 'EXTRA-REGIO NUTS 1', '1', 'BG', '2', '100');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BGZZ', 'Extra-Regio NUTS 2', '2', 'BG', '2', '101');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('BGZZZ', 'Extra-Regio NUTS 3', '3', 'BG', '2', '102');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ', 'ČESKÁ REPUBLIKA', '0', 'CZ', '3', '103');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ0', 'ČESKÁ REPUBLIKA', '1', 'CZ', '3', '104');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ01', 'Praha', '2', 'CZ', '3', '105');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ010', 'Hlavní město Praha', '3', 'CZ', '3', '106');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ02', 'Střední Čechy', '2', 'CZ', '3', '107');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ020', 'Středočeský kraj', '3', 'CZ', '3', '108');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ03', 'Jihozápad', '2', 'CZ', '3', '109');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ031', 'Jihočeský kraj', '3', 'CZ', '3', '110');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ032', 'Plzeňský kraj', '3', 'CZ', '3', '111');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ04', 'Severozápad', '2', 'CZ', '3', '112');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ041', 'Karlovarský kraj', '3', 'CZ', '3', '113');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ042', 'Ústecký kraj', '3', 'CZ', '3', '114');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ05', 'Severovýchod', '2', 'CZ', '3', '115');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ051', 'Liberecký kraj', '3', 'CZ', '3', '116');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ052', 'Královéhradecký kraj', '3', 'CZ', '3', '117');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ053', 'Pardubický kraj', '3', 'CZ', '3', '118');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ06', 'Jihovýchod', '2', 'CZ', '3', '119');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ063', 'Kraj Vysočina', '3', 'CZ', '3', '120');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ064', 'Jihomoravský kraj', '3', 'CZ', '3', '121');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ07', 'Střední Morava', '2', 'CZ', '3', '122');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ071', 'Olomoucký kraj', '3', 'CZ', '3', '123');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ072', 'Zlínský kraj', '3', 'CZ', '3', '124');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ08', 'Moravskoslezsko', '2', 'CZ', '3', '125');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZ080', 'Moravskoslezský kraj', '3', 'CZ', '3', '126');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZZ', 'EXTRA-REGIO NUTS 1', '1', 'CZ', '3', '127');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZZZ', 'Extra-Regio NUTS 2', '2', 'CZ', '3', '128');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CZZZZ', 'Extra-Regio NUTS 3', '3', 'CZ', '3', '129');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK', 'DANMARK', '0', 'DK', '4', '130');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK0', 'DANMARK', '1', 'DK', '4', '131');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK01', 'Hovedstaden', '2', 'DK', '4', '132');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK011', 'Byen København', '3', 'DK', '4', '133');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK012', 'Københavns omegn', '3', 'DK', '4', '134');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK013', 'Nordsjælland', '3', 'DK', '4', '135');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK014', 'Bornholm', '3', 'DK', '4', '136');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK02', 'Sjælland', '2', 'DK', '4', '137');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK021', 'Østsjælland', '3', 'DK', '4', '138');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK022', 'Vest- og Sydsjælland', '3', 'DK', '4', '139');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK03', 'Syddanmark', '2', 'DK', '4', '140');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK031', 'Fyn', '3', 'DK', '4', '141');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK032', 'Sydjylland', '3', 'DK', '4', '142');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK04', 'Midtjylland', '2', 'DK', '4', '143');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK041', 'Vestjylland', '3', 'DK', '4', '144');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK042', 'Østjylland', '3', 'DK', '4', '145');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK05', 'Nordjylland', '2', 'DK', '4', '146');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DK050', 'Nordjylland', '3', 'DK', '4', '147');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DKZ', 'EXTRA-REGIO NUTS 1', '1', 'DK', '4', '148');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DKZZ', 'Extra-Regio NUTS 2', '2', 'DK', '4', '149');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DKZZZ', 'Extra-Regio NUTS 3', '3', 'DK', '4', '150');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE', 'DEUTSCHLAND', '0', 'DE', '5', '151');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE1', 'BADEN-WÜRTTEMBERG', '1', 'DE', '5', '152');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE11', 'Stuttgart', '2', 'DE', '5', '153');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE111', 'Stuttgart, Stadtkreis', '3', 'DE', '5', '154');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE112', 'Böblingen', '3', 'DE', '5', '155');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE113', 'Esslingen', '3', 'DE', '5', '156');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE114', 'Göppingen', '3', 'DE', '5', '157');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE115', 'Ludwigsburg', '3', 'DE', '5', '158');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE116', 'Rems-Murr-Kreis', '3', 'DE', '5', '159');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE117', 'Heilbronn, Stadtkreis', '3', 'DE', '5', '160');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE118', 'Heilbronn, Landkreis', '3', 'DE', '5', '161');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE119', 'Hohenlohekreis', '3', 'DE', '5', '162');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE11A', 'Schwäbisch Hall', '3', 'DE', '5', '163');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE11B', 'Main-Tauber-Kreis', '3', 'DE', '5', '164');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE11C', 'Heidenheim', '3', 'DE', '5', '165');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE11D', 'Ostalbkreis', '3', 'DE', '5', '166');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE12', 'Karlsruhe', '2', 'DE', '5', '167');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE121', 'Baden-Baden, Stadtkreis', '3', 'DE', '5', '168');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE122', 'Karlsruhe, Stadtkreis', '3', 'DE', '5', '169');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE123', 'Karlsruhe, Landkreis', '3', 'DE', '5', '170');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE124', 'Rastatt', '3', 'DE', '5', '171');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE125', 'Heidelberg, Stadtkreis', '3', 'DE', '5', '172');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE126', 'Mannheim, Stadtkreis', '3', 'DE', '5', '173');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE127', 'Neckar-Odenwald-Kreis', '3', 'DE', '5', '174');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE128', 'Rhein-Neckar-Kreis', '3', 'DE', '5', '175');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE129', 'Pforzheim, Stadtkreis', '3', 'DE', '5', '176');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE12A', 'Calw', '3', 'DE', '5', '177');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE12B', 'Enzkreis', '3', 'DE', '5', '178');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE12C', 'Freudenstadt', '3', 'DE', '5', '179');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE13', 'Freiburg', '2', 'DE', '5', '180');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE131', 'Freiburg im Breisgau, Stadtkreis', '3', 'DE', '5', '181');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE132', 'Breisgau-Hochschwarzwald', '3', 'DE', '5', '182');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE133', 'Emmendingen', '3', 'DE', '5', '183');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE134', 'Ortenaukreis', '3', 'DE', '5', '184');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE135', 'Rottweil', '3', 'DE', '5', '185');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE136', 'Schwarzwald-Baar-Kreis', '3', 'DE', '5', '186');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE137', 'Tuttlingen', '3', 'DE', '5', '187');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE138', 'Konstanz', '3', 'DE', '5', '188');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE139', 'Lörrach', '3', 'DE', '5', '189');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE13A', 'Waldshut', '3', 'DE', '5', '190');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE14', 'Tübingen', '2', 'DE', '5', '191');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE141', 'Reutlingen', '3', 'DE', '5', '192');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE142', 'Tübingen, Landkreis', '3', 'DE', '5', '193');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE143', 'Zollernalbkreis', '3', 'DE', '5', '194');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE144', 'Ulm, Stadtkreis', '3', 'DE', '5', '195');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE145', 'Alb-Donau-Kreis', '3', 'DE', '5', '196');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE146', 'Biberach', '3', 'DE', '5', '197');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE147', 'Bodenseekreis', '3', 'DE', '5', '198');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE148', 'Ravensburg', '3', 'DE', '5', '199');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE149', 'Sigmaringen', '3', 'DE', '5', '200');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE2', 'BAYERN', '1', 'DE', '5', '201');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21', 'Oberbayern', '2', 'DE', '5', '202');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE211', 'Ingolstadt, Kreisfreie Stadt', '3', 'DE', '5', '203');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE212', 'München, Kreisfreie Stadt', '3', 'DE', '5', '204');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE213', 'Rosenheim, Kreisfreie Stadt', '3', 'DE', '5', '205');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE214', 'Altötting', '3', 'DE', '5', '206');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE215', 'Berchtesgadener Land', '3', 'DE', '5', '207');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE216', 'Bad Tölz-Wolfratshausen', '3', 'DE', '5', '208');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE217', 'Dachau', '3', 'DE', '5', '209');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE218', 'Ebersberg', '3', 'DE', '5', '210');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE219', 'Eichstätt', '3', 'DE', '5', '211');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21A', 'Erding', '3', 'DE', '5', '212');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21B', 'Freising', '3', 'DE', '5', '213');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21C', 'Fürstenfeldbruck', '3', 'DE', '5', '214');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21D', 'Garmisch-Partenkirchen', '3', 'DE', '5', '215');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21E', 'Landsberg am Lech', '3', 'DE', '5', '216');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21F', 'Miesbach', '3', 'DE', '5', '217');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21G', 'Mühldorf a. Inn', '3', 'DE', '5', '218');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21H', 'München, Landkreis', '3', 'DE', '5', '219');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21I', 'Neuburg-Schrobenhausen', '3', 'DE', '5', '220');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21J', 'Pfaffenhofen a. d. Ilm', '3', 'DE', '5', '221');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21K', 'Rosenheim, Landkreis', '3', 'DE', '5', '222');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21L', 'Starnberg', '3', 'DE', '5', '223');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21M', 'Traunstein', '3', 'DE', '5', '224');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE21N', 'Weilheim-Schongau', '3', 'DE', '5', '225');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE22', 'Niederbayern', '2', 'DE', '5', '226');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE221', 'Landshut, Kreisfreie Stadt', '3', 'DE', '5', '227');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE222', 'Passau, Kreisfreie Stadt', '3', 'DE', '5', '228');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE223', 'Straubing, Kreisfreie Stadt', '3', 'DE', '5', '229');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE224', 'Deggendorf', '3', 'DE', '5', '230');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE225', 'Freyung-Grafenau', '3', 'DE', '5', '231');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE226', 'Kelheim', '3', 'DE', '5', '232');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE227', 'Landshut, Landkreis', '3', 'DE', '5', '233');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE228', 'Passau, Landkreis', '3', 'DE', '5', '234');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE229', 'Regen', '3', 'DE', '5', '235');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE22A', 'Rottal-Inn', '3', 'DE', '5', '236');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE22B', 'Straubing-Bogen', '3', 'DE', '5', '237');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE22C', 'Dingolfing-Landau', '3', 'DE', '5', '238');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE23', 'Oberpfalz', '2', 'DE', '5', '239');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE231', 'Amberg, Kreisfreie Stadt', '3', 'DE', '5', '240');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE232', 'Regensburg, Kreisfreie Stadt', '3', 'DE', '5', '241');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE233', 'Weiden i. d. Opf, Kreisfreie Stadt', '3', 'DE', '5', '242');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE234', 'Amberg-Sulzbach', '3', 'DE', '5', '243');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE235', 'Cham', '3', 'DE', '5', '244');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE236', 'Neumarkt i. d. OPf.', '3', 'DE', '5', '245');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE237', 'Neustadt a. d. Waldnaab', '3', 'DE', '5', '246');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE238', 'Regensburg, Landkreis', '3', 'DE', '5', '247');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE239', 'Schwandorf', '3', 'DE', '5', '248');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE23A', 'Tirschenreuth', '3', 'DE', '5', '249');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE24', 'Oberfranken', '2', 'DE', '5', '250');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE241', 'Bamberg, Kreisfreie Stadt', '3', 'DE', '5', '251');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE242', 'Bayreuth, Kreisfreie Stadt', '3', 'DE', '5', '252');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE243', 'Coburg, Kreisfreie Stadt', '3', 'DE', '5', '253');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE244', 'Hof, Kreisfreie Stadt', '3', 'DE', '5', '254');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE245', 'Bamberg, Landkreis', '3', 'DE', '5', '255');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE246', 'Bayreuth, Landkreis', '3', 'DE', '5', '256');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE247', 'Coburg, Landkreis', '3', 'DE', '5', '257');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE248', 'Forchheim', '3', 'DE', '5', '258');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE249', 'Hof, Landkreis', '3', 'DE', '5', '259');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE24A', 'Kronach', '3', 'DE', '5', '260');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE24B', 'Kulmbach', '3', 'DE', '5', '261');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE24C', 'Lichtenfels', '3', 'DE', '5', '262');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE24D', 'Wunsiedel i. Fichtelgebirge', '3', 'DE', '5', '263');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE25', 'Mittelfranken', '2', 'DE', '5', '264');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE251', 'Ansbach, Kreisfreie Stadt', '3', 'DE', '5', '265');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE252', 'Erlangen, Kreisfreie Stadt', '3', 'DE', '5', '266');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE253', 'Fürth, Kreisfreie Stadt', '3', 'DE', '5', '267');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE254', 'Nürnberg, Kreisfreie Stadt', '3', 'DE', '5', '268');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE255', 'Schwabach, Kreisfreie Stadt', '3', 'DE', '5', '269');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE256', 'Ansbach, Landkreis', '3', 'DE', '5', '270');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE257', 'Erlangen-Höchstadt', '3', 'DE', '5', '271');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE258', 'Fürth, Landkreis', '3', 'DE', '5', '272');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE259', 'Nürnberger Land', '3', 'DE', '5', '273');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE25A', 'Neustadt a. d. Aisch-Bad Windsheim', '3', 'DE', '5', '274');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE25B', 'Roth', '3', 'DE', '5', '275');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE25C', 'Weißenburg-Gunzenhausen', '3', 'DE', '5', '276');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE26', 'Unterfranken', '2', 'DE', '5', '277');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE261', 'Aschaffenburg, Kreisfreie Stadt', '3', 'DE', '5', '278');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE262', 'Schweinfurt, Kreisfreie Stadt', '3', 'DE', '5', '279');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE263', 'Würzburg, Kreisfreie Stadt', '3', 'DE', '5', '280');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE264', 'Aschaffenburg, Landkreis', '3', 'DE', '5', '281');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE265', 'Bad Kissingen', '3', 'DE', '5', '282');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE266', 'Rhön-Grabfeld', '3', 'DE', '5', '283');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE267', 'Haßberge', '3', 'DE', '5', '284');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE268', 'Kitzingen', '3', 'DE', '5', '285');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE269', 'Miltenberg', '3', 'DE', '5', '286');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE26A', 'Main-Spessart', '3', 'DE', '5', '287');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE26B', 'Schweinfurt, Landkreis', '3', 'DE', '5', '288');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE26C', 'Würzburg, Landkreis', '3', 'DE', '5', '289');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE27', 'Schwaben', '2', 'DE', '5', '290');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE271', 'Augsburg, Kreisfreie Stadt', '3', 'DE', '5', '291');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE272', 'Kaufbeuren, Kreisfreie Stadt', '3', 'DE', '5', '292');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE273', 'Kempten (Allgäu), Kreisfreie Stadt', '3', 'DE', '5', '293');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE274', 'Memmingen, Kreisfreie Stadt', '3', 'DE', '5', '294');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE275', 'Aichach-Friedberg', '3', 'DE', '5', '295');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE276', 'Augsburg, Landkreis', '3', 'DE', '5', '296');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE277', 'Dillingen a.d. Donau', '3', 'DE', '5', '297');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE278', 'Günzburg', '3', 'DE', '5', '298');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE279', 'Neu-Ulm', '3', 'DE', '5', '299');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE27A', 'Lindau (Bodensee)', '3', 'DE', '5', '300');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE27B', 'Ostallgäu', '3', 'DE', '5', '301');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE27C', 'Unterallgäu', '3', 'DE', '5', '302');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE27D', 'Donau-Ries', '3', 'DE', '5', '303');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE27E', 'Oberallgäu', '3', 'DE', '5', '304');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE3', 'BERLIN', '1', 'DE', '5', '305');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE30', 'Berlin', '2', 'DE', '5', '306');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE300', 'Berlin', '3', 'DE', '5', '307');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE4', 'BRANDENBURG', '1', 'DE', '5', '308');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE40', 'Brandenburg', '2', 'DE', '5', '309');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE401', 'Brandenburg an der Havel, Kreisfreie Stadt', '3', 'DE', '5', '310');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE402', 'Cottbus, Kreisfreie Stadt', '3', 'DE', '5', '311');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE403', 'Frankfurt (Oder), Kreisfreie Stadt', '3', 'DE', '5', '312');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE404', 'Potsdam, Kreisfreie Stadt', '3', 'DE', '5', '313');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE405', 'Barnim', '3', 'DE', '5', '314');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE406', 'Dahme-Spreewald', '3', 'DE', '5', '315');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE407', 'Elbe-Elster', '3', 'DE', '5', '316');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE408', 'Havelland', '3', 'DE', '5', '317');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE409', 'Märkisch-Oderland', '3', 'DE', '5', '318');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE40A', 'Oberhavel', '3', 'DE', '5', '319');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE40B', 'Oberspreewald-Lausitz', '3', 'DE', '5', '320');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE40C', 'Oder-Spree', '3', 'DE', '5', '321');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE40D', 'Ostprignitz-Ruppin', '3', 'DE', '5', '322');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE40E', 'Potsdam-Mittelmark', '3', 'DE', '5', '323');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE40F', 'Prignitz', '3', 'DE', '5', '324');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE40G', 'Spree-Neiße', '3', 'DE', '5', '325');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE40H', 'Teltow-Fläming', '3', 'DE', '5', '326');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE40I', 'Uckermark', '3', 'DE', '5', '327');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE5', 'BREMEN', '1', 'DE', '5', '328');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE50', 'Bremen', '2', 'DE', '5', '329');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE501', 'Bremen, Kreisfreie Stadt', '3', 'DE', '5', '330');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE502', 'Bremerhaven, Kreisfreie Stadt', '3', 'DE', '5', '331');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE6', 'HAMBURG', '1', 'DE', '5', '332');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE60', 'Hamburg', '2', 'DE', '5', '333');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE600', 'Hamburg', '3', 'DE', '5', '334');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE7', 'HESSEN', '1', 'DE', '5', '335');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE71', 'Darmstadt', '2', 'DE', '5', '336');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE711', 'Darmstadt, Kreisfreie Stadt', '3', 'DE', '5', '337');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE712', 'Frankfurt am Main, Kreisfreie Stadt', '3', 'DE', '5', '338');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE713', 'Offenbach am Main, Kreisfreie Stadt', '3', 'DE', '5', '339');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE714', 'Wiesbaden, Kreisfreie Stadt', '3', 'DE', '5', '340');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE715', 'Bergstraße', '3', 'DE', '5', '341');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE716', 'Darmstadt-Dieburg', '3', 'DE', '5', '342');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE717', 'Groß-Gerau', '3', 'DE', '5', '343');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE718', 'Hochtaunuskreis', '3', 'DE', '5', '344');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE719', 'Main-Kinzig-Kreis', '3', 'DE', '5', '345');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE71A', 'Main-Taunus-Kreis', '3', 'DE', '5', '346');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE71B', 'Odenwaldkreis', '3', 'DE', '5', '347');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE71C', 'Offenbach, Landkreis', '3', 'DE', '5', '348');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE71D', 'Rheingau-Taunus-Kreis', '3', 'DE', '5', '349');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE71E', 'Wetteraukreis', '3', 'DE', '5', '350');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE72', 'Gießen', '2', 'DE', '5', '351');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE721', 'Gießen, Landkreis', '3', 'DE', '5', '352');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE722', 'Lahn-Dill-Kreis', '3', 'DE', '5', '353');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE723', 'Limburg-Weilburg', '3', 'DE', '5', '354');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE724', 'Marburg-Biedenkopf', '3', 'DE', '5', '355');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE725', 'Vogelsbergkreis', '3', 'DE', '5', '356');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE73', 'Kassel', '2', 'DE', '5', '357');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE731', 'Kassel, Kreisfreie Stadt', '3', 'DE', '5', '358');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE732', 'Fulda', '3', 'DE', '5', '359');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE733', 'Hersfeld-Rotenburg', '3', 'DE', '5', '360');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE734', 'Kassel, Landkreis', '3', 'DE', '5', '361');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE735', 'Schwalm-Eder-Kreis', '3', 'DE', '5', '362');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE736', 'Waldeck-Frankenberg', '3', 'DE', '5', '363');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE737', 'Werra-Meißner-Kreis', '3', 'DE', '5', '364');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE8', 'MECKLENBURG-VORPOMMERN', '1', 'DE', '5', '365');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE80', 'Mecklenburg-Vorpommern', '2', 'DE', '5', '366');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE803', 'Rostock, Kreisfreie Stadt', '3', 'DE', '5', '367');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE804', 'Schwerin, Kreisfreie Stadt', '3', 'DE', '5', '368');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE80J', 'Mecklenburgische Seenplatte', '3', 'DE', '5', '369');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE80K', 'Landkreis Rostock', '3', 'DE', '5', '370');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE80L', 'Vorpommern-Rügen', '3', 'DE', '5', '371');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE80M', 'Nordwestmecklenburg', '3', 'DE', '5', '372');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE80N', 'Vorpommern-Greifswald', '3', 'DE', '5', '373');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE80O', 'Ludwigslust-Parchim', '3', 'DE', '5', '374');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE9', 'NIEDERSACHSEN', '1', 'DE', '5', '375');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE91', 'Braunschweig', '2', 'DE', '5', '376');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE911', 'Braunschweig, Kreisfreie Stadt', '3', 'DE', '5', '377');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE912', 'Salzgitter, Kreisfreie Stadt', '3', 'DE', '5', '378');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE913', 'Wolfsburg, Kreisfreie Stadt', '3', 'DE', '5', '379');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE914', 'Gifhorn', '3', 'DE', '5', '380');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE915', 'Göttingen', '3', 'DE', '5', '381');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE916', 'Goslar', '3', 'DE', '5', '382');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE917', 'Helmstedt', '3', 'DE', '5', '383');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE918', 'Northeim', '3', 'DE', '5', '384');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE919', 'Osterode am Harz', '3', 'DE', '5', '385');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE91A', 'Peine', '3', 'DE', '5', '386');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE91B', 'Wolfenbüttel', '3', 'DE', '5', '387');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE92', 'Hannover', '2', 'DE', '5', '388');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE922', 'Diepholz', '3', 'DE', '5', '389');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE923', 'Hameln-Pyrmont', '3', 'DE', '5', '390');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE925', 'Hildesheim', '3', 'DE', '5', '391');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE926', 'Holzminden', '3', 'DE', '5', '392');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE927', 'Nienburg (Weser)', '3', 'DE', '5', '393');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE928', 'Schaumburg', '3', 'DE', '5', '394');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE929', 'Region Hannover', '3', 'DE', '5', '395');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE93', 'Lüneburg', '2', 'DE', '5', '396');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE931', 'Celle', '3', 'DE', '5', '397');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE932', 'Cuxhaven', '3', 'DE', '5', '398');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE933', 'Harburg', '3', 'DE', '5', '399');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE934', 'Lüchow-Dannenberg', '3', 'DE', '5', '400');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE935', 'Lüneburg, Landkreis', '3', 'DE', '5', '401');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE936', 'Osterholz', '3', 'DE', '5', '402');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE937', 'Rotenburg (Wümme)', '3', 'DE', '5', '403');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE938', 'Heidekreis', '3', 'DE', '5', '404');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE939', 'Stade', '3', 'DE', '5', '405');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE93A', 'Uelzen', '3', 'DE', '5', '406');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE93B', 'Verden', '3', 'DE', '5', '407');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE94', 'Weser-Ems', '2', 'DE', '5', '408');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE941', 'Delmenhorst, Kreisfreie Stadt', '3', 'DE', '5', '409');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE942', 'Emden, Kreisfreie Stadt', '3', 'DE', '5', '410');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE943', 'Oldenburg (Oldenburg), Kreisfreie Stadt', '3', 'DE', '5', '411');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE944', 'Osnabrück, Kreisfreie Stadt', '3', 'DE', '5', '412');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE945', 'Wilhelmshaven, Kreisfreie Stadt', '3', 'DE', '5', '413');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE946', 'Ammerland', '3', 'DE', '5', '414');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE947', 'Aurich', '3', 'DE', '5', '415');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE948', 'Cloppenburg', '3', 'DE', '5', '416');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE949', 'Emsland', '3', 'DE', '5', '417');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE94A', 'Friesland (DE)', '3', 'DE', '5', '418');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE94B', 'Grafschaft Bentheim', '3', 'DE', '5', '419');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE94C', 'Leer', '3', 'DE', '5', '420');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE94D', 'Oldenburg, Landkreis', '3', 'DE', '5', '421');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE94E', 'Osnabrück, Landkreis', '3', 'DE', '5', '422');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE94F', 'Vechta', '3', 'DE', '5', '423');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE94G', 'Wesermarsch', '3', 'DE', '5', '424');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DE94H', 'Wittmund', '3', 'DE', '5', '425');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA', 'NORDRHEIN-WESTFALEN', '1', 'DE', '5', '426');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1', 'Düsseldorf', '2', 'DE', '5', '427');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA11', 'Düsseldorf, Kreisfreie Stadt', '3', 'DE', '5', '428');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA12', 'Duisburg, Kreisfreie Stadt', '3', 'DE', '5', '429');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA13', 'Essen, Kreisfreie Stadt', '3', 'DE', '5', '430');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA14', 'Krefeld, Kreisfreie Stadt', '3', 'DE', '5', '431');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA15', 'Mönchengladbach, Kreisfreie Stadt', '3', 'DE', '5', '432');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA16', 'Mülheim an der Ruhr,Kreisfreie Stadt', '3', 'DE', '5', '433');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA17', 'Oberhausen, Kreisfreie Stadt', '3', 'DE', '5', '434');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA18', 'Remscheid, Kreisfreie Stadt', '3', 'DE', '5', '435');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE', 'SACHSEN-ANHALT', '1', 'DE', '5', '550');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE0', 'Sachsen-Anhalt', '2', 'DE', '5', '551');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE01', 'Dessau-Roßlau, Kreisfreie Stadt', '3', 'DE', '5', '552');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE02', 'Halle (Saale), Kreisfreie Stadt', '3', 'DE', '5', '553');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE03', 'Magdeburg, Kreisfreie Stadt', '3', 'DE', '5', '554');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE04', 'Altmarkkreis Salzwedel', '3', 'DE', '5', '555');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE05', 'Anhalt-Bitterfeld', '3', 'DE', '5', '556');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE06', 'Jerichower Land', '3', 'DE', '5', '557');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE07', 'Börde', '3', 'DE', '5', '558');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE08', 'Burgenlandkreis', '3', 'DE', '5', '559');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE09', 'Harz', '3', 'DE', '5', '560');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE0A', 'Mansfeld-Südharz', '3', 'DE', '5', '561');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE0B', 'Saalekreis', '3', 'DE', '5', '562');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE0C', 'Salzlandkreis', '3', 'DE', '5', '563');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE0D', 'Stendal', '3', 'DE', '5', '564');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEE0E', 'Wittenberg', '3', 'DE', '5', '565');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF', 'SCHLESWIG-HOLSTEIN', '1', 'DE', '5', '566');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF0', 'Schleswig-Holstein', '2', 'DE', '5', '567');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF01', 'Flensburg, Kreisfreie Stadt', '3', 'DE', '5', '568');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF02', 'Kiel, Kreisfreie Stadt', '3', 'DE', '5', '569');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF03', 'Lübeck, Kreisfreie Stadt', '3', 'DE', '5', '570');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF04', 'Neumünster, Kreisfreie Stadt', '3', 'DE', '5', '571');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF05', 'Dithmarschen', '3', 'DE', '5', '572');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF06', 'Herzogtum Lauenburg', '3', 'DE', '5', '573');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF07', 'Nordfriesland', '3', 'DE', '5', '574');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF08', 'Ostholstein', '3', 'DE', '5', '575');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF09', 'Pinneberg', '3', 'DE', '5', '576');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF0A', 'Plön', '3', 'DE', '5', '577');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF0B', 'Rendsburg-Eckernförde', '3', 'DE', '5', '578');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF0C', 'Schleswig-Flensburg', '3', 'DE', '5', '579');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF0D', 'Segeberg', '3', 'DE', '5', '580');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF0E', 'Steinburg', '3', 'DE', '5', '581');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEF0F', 'Stormarn', '3', 'DE', '5', '582');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG', 'THÜRINGEN', '1', 'DE', '5', '583');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0', 'Thüringen', '2', 'DE', '5', '584');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG01', 'Erfurt, Kreisfreie Stadt', '3', 'DE', '5', '585');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG02', 'Gera, Kreisfreie Stadt', '3', 'DE', '5', '586');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG03', 'Jena, Kreisfreie Stadt', '3', 'DE', '5', '587');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG04', 'Suhl, Kreisfreie Stadt', '3', 'DE', '5', '588');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG05', 'Weimar, Kreisfreie Stadt', '3', 'DE', '5', '589');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG06', 'Eichsfeld', '3', 'DE', '5', '590');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG07', 'Nordhausen', '3', 'DE', '5', '591');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG09', 'Unstrut-Hainich-Kreis', '3', 'DE', '5', '592');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0A', 'Kyffhäuserkreis', '3', 'DE', '5', '593');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0B', 'Schmalkalden-Meiningen', '3', 'DE', '5', '594');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0C', 'Gotha', '3', 'DE', '5', '595');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0D', 'Sömmerda', '3', 'DE', '5', '596');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0E', 'Hildburghausen', '3', 'DE', '5', '597');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0F', 'Ilm-Kreis', '3', 'DE', '5', '598');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0G', 'Weimarer Land', '3', 'DE', '5', '599');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0H', 'Sonneberg', '3', 'DE', '5', '600');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0I', 'Saalfeld-Rudolstadt', '3', 'DE', '5', '601');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0J', 'Saale-Holzland-Kreis', '3', 'DE', '5', '602');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0K', 'Saale-Orla-Kreis', '3', 'DE', '5', '603');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0L', 'Greiz', '3', 'DE', '5', '604');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0M', 'Altenburger Land', '3', 'DE', '5', '605');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0N', 'Eisenach, Kreisfreie Stadt', '3', 'DE', '5', '606');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEG0P', 'Wartburgkreis', '3', 'DE', '5', '607');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEZ', 'EXTRA-REGIO NUTS 1', '1', 'DE', '5', '608');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEZZ', 'Extra-Regio NUTS 2', '2', 'DE', '5', '609');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEZZZ', 'Extra-Regio NUTS 3', '3', 'DE', '5', '610');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EE', 'EESTI', '0', 'EE', '6', '611');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EE0', 'EESTI', '1', 'EE', '6', '612');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EE00', 'Eesti', '2', 'EE', '6', '613');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EE001', 'Põhja-Eesti', '3', 'EE', '6', '614');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EE004', 'Lääne-Eesti', '3', 'EE', '6', '615');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EE006', 'Kesk-Eesti', '3', 'EE', '6', '616');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EE007', 'Kirde-Eesti', '3', 'EE', '6', '617');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EE008', 'Lõuna-Eesti', '3', 'EE', '6', '618');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EEZ', 'EXTRA-REGIO NUTS 1', '1', 'EE', '6', '619');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EEZZ', 'Extra-Regio NUTS 2', '2', 'EE', '6', '620');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EEZZZ', 'Extra-Regio NUTS 3', '3', 'EE', '6', '621');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IE', 'IRELAND', '0', 'IE', '7', '622');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IE0', 'IRELAND', '1', 'IE', '7', '623');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IE01', 'B`_ORDER`, Midland and Western', '2', 'IE', '7', '624');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IE011', 'B`_ORDER`', '3', 'IE', '7', '625');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IE012', 'Midland', '3', 'IE', '7', '626');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IE013', 'West', '3', 'IE', '7', '627');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IE02', 'Southern and Eastern', '2', 'IE', '7', '628');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IE021', 'Dublin', '3', 'IE', '7', '629');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IE022', 'Mid-East', '3', 'IE', '7', '630');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IE023', 'Mid-West', '3', 'IE', '7', '631');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IE024', 'South-East (IE)', '3', 'IE', '7', '632');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IE025', 'South-West (IE)', '3', 'IE', '7', '633');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IEZ', 'EXTRA-REGIO NUTS 1', '1', 'IE', '7', '634');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IEZZ', 'Extra-Regio NUTS 2', '2', 'IE', '7', '635');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IEZZZ', 'Extra-Regio NUTS 3', '3', 'IE', '7', '636');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL', 'ΕΛΛΑΔΑ (ELLADA)', '0', 'EL', '8', '637');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL3', 'ATTIKΗ (ATTIKI)', '1', 'EL', '8', '638');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL30', 'Aττική (Attiki)', '2', 'EL', '8', '639');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL301', 'Βόρειος Τομέας Αθηνών (Voreios Tomeas Athinon)', '3', 'EL', '8', '640');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL302', 'Δυτικός Τομέας Αθηνών (Dytikos Tomeas Athinon)', '3', 'EL', '8', '641');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL303', 'Κεντρικός Τομέας Αθηνών (Kentrikos Tomeas Athinon)', '3', 'EL', '8', '642');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL304', 'Νότιος Τομέας Αθηνών (Notios Tomeas Athinon)', '3', 'EL', '8', '643');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL305', 'Ανατολική Αττική (Anatoliki Attiki)', '3', 'EL', '8', '644');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL306', 'Δυτική Αττική (Dytiki Attiki)', '3', 'EL', '8', '645');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL307', 'Πειραιάς, Νήσοι (Peiraias, Nisoi)', '3', 'EL', '8', '646');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL4', 'NΗΣΙΑ ΑΙΓΑΙΟΥ, KΡΗΤΗ (NISIA AIGAIOU, KRITI)', '1', 'EL', '8', '647');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL41', 'Βόρειο Αιγαίο (Voreio Aigaio)', '2', 'EL', '8', '648');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL411', 'Λέσβος, Λήμνος (Lesvos, Limnos)', '3', 'EL', '8', '649');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL412', 'Ικαρία, Σάμος (Ikaria, Samos)', '3', 'EL', '8', '650');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL413', 'Χίος (Chios)', '3', 'EL', '8', '651');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL42', 'Νότιο Αιγαίο (Notio Aigaio)', '2', 'EL', '8', '652');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL421', 'Κάλυμνος, Κάρπαθος, Κως, Ρόδος (Kalymnos, Karpathos, Kos, Rodos)', '3', 'EL', '8', '653');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL43', 'Κρήτη (Kriti)', '2', 'EL', '8', '655');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL431', 'Ηράκλειο (Irakleio)', '3', 'EL', '8', '656');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL432', 'Λασίθι (Lasithi)', '3', 'EL', '8', '657');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL433', 'Ρεθύμνη (Rethymni)', '3', 'EL', '8', '658');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL434', 'Χανιά (Chania)', '3', 'EL', '8', '659');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL5', 'ΒΟΡΕΙΑ ΕΛΛΑΔΑ (VOREIA ELLADA)', '1', 'EL', '8', '660');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL51', 'Aνατολική Μακεδονία, Θράκη (Anatoliki Makedonia, Thraki)', '2', 'EL', '8', '661');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL511', 'Έβρος (Evros)', '3', 'EL', '8', '662');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL512', 'Ξάνθη (Xanthi)', '3', 'EL', '8', '663');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL513', 'Ροδόπη (Rodopi)', '3', 'EL', '8', '664');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL514', 'Δράμα (Drama)', '3', 'EL', '8', '665');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL515', 'Θάσος, Καβάλα (Thasos, Kavala)', '3', 'EL', '8', '666');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL52', 'Κεντρική Μακεδονία (Kentriki Makedonia)', '2', 'EL', '8', '667');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL521', 'Ημαθία (Imathia)', '3', 'EL', '8', '668');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL522', 'Θεσσαλονίκη (Thessaloniki)', '3', 'EL', '8', '669');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL523', 'Κιλκίς (Kilkis)', '3', 'EL', '8', '670');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL524', 'Πέλλα (Pella)', '3', 'EL', '8', '671');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL525', 'Πιερία (Pieria)', '3', 'EL', '8', '672');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL526', 'Σέρρες (Serres)', '3', 'EL', '8', '673');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL527', 'Χαλκιδική (Chalkidiki)', '3', 'EL', '8', '674');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL53', 'Δυτική Μακεδονία (Dytiki Makedonia)', '2', 'EL', '8', '675');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL531', 'Γρεβενά, Κοζάνη (Grevena, Kozani)', '3', 'EL', '8', '676');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL532', 'Καστοριά (Kastoria)', '3', 'EL', '8', '677');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL533', 'Φλώρινα (Florina)', '3', 'EL', '8', '678');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL54', 'Ήπειρος (Ipeiros)', '2', 'EL', '8', '679');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL541', 'Άρτα, Πρέβεζα (Arta, Preveza)', '3', 'EL', '8', '680');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL542', 'Θεσπρωτία (Thesprotia)', '3', 'EL', '8', '681');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL543', 'Ιωάννινα (Ioannina)', '3', 'EL', '8', '682');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL6', 'ΚΕΝΤΡΙΚΗ ΕΛΛΑΔΑ (KENTRIKI ELLADA)', '1', 'EL', '8', '683');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL61', 'Θεσσαλία (Thessalia)', '2', 'EL', '8', '684');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL611', 'Καρδίτσα, Τρίκαλα (Karditsa, Trikala)', '3', 'EL', '8', '685');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL612', 'Λάρισα (Larisa)', '3', 'EL', '8', '686');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL613', 'Μαγνησία, Σποράδες (Magnisia, Sporades)', '3', 'EL', '8', '687');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL62', 'Ιόνια Νησιά (Ionia Nisia)', '2', 'EL', '8', '688');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL621', 'Ζάκυνθος (Zakynthos)', '3', 'EL', '8', '689');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL622', 'Κέρκυρα (Kerkyra)', '3', 'EL', '8', '690');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL623', 'Ιθάκη, Κεφαλληνία (Ithaki, Kefallinia)', '3', 'EL', '8', '691');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL624', 'Λευκάδα (Lefkada)', '3', 'EL', '8', '692');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL63', 'Δυτική Ελλάδα (Dytiki Ellada)', '2', 'EL', '8', '693');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL631', 'Αιτωλοακαρνανία (Aitoloakarnania)', '3', 'EL', '8', '694');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL632', 'Αχαΐα (Achaia)', '3', 'EL', '8', '695');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL633', 'Ηλεία (Ileia)', '3', 'EL', '8', '696');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL64', 'Στερεά Ελλάδα (Sterea Ellada)', '2', 'EL', '8', '697');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL641', 'Βοιωτία (Voiotia)', '3', 'EL', '8', '698');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL642', 'Εύβοια (Evvoia)', '3', 'EL', '8', '699');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL643', 'Ευρυτανία (Evrytania)', '3', 'EL', '8', '700');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL644', 'Φθιώτιδα (Fthiotida)', '3', 'EL', '8', '701');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL645', 'Φωκίδα (Fokida)', '3', 'EL', '8', '702');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL65', 'Πελοπόννησος (Peloponnisos)', '2', 'EL', '8', '703');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL651', 'Αργολίδα, Αρκαδία (Argolida, Arkadia)', '3', 'EL', '8', '704');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL652', 'Κορινθία (Korinthia)', '3', 'EL', '8', '705');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('EL653', 'Λακωνία, Μεσσηνία (Lakonia, Messinia)', '3', 'EL', '8', '706');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ELZ', 'EXTRA-REGIO NUTS 1', '1', 'EL', '8', '707');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ELZZ', 'Extra-Regio NUTS 2', '2', 'EL', '8', '708');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ELZZZ', 'Extra-Regio NUTS 3', '3', 'EL', '8', '709');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES', 'ESPAÑA', '0', 'ES', '9', '710');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES1', 'NOROESTE', '1', 'ES', '9', '711');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES11', 'Galicia', '2', 'ES', '9', '712');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES111', 'A Coruña', '3', 'ES', '9', '713');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES112', 'Lugo', '3', 'ES', '9', '714');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES113', 'Ourense', '3', 'ES', '9', '715');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES114', 'Pontevedra', '3', 'ES', '9', '716');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES12', 'Principado de Asturias', '2', 'ES', '9', '717');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES120', 'Asturias', '3', 'ES', '9', '718');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES13', 'Cantabria', '2', 'ES', '9', '719');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES130', 'Cantabria', '3', 'ES', '9', '720');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES2', 'NORESTE', '1', 'ES', '9', '721');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES21', 'País Vasco', '2', 'ES', '9', '722');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES211', 'Araba/Álava', '3', 'ES', '9', '723');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES212', 'Gipuzkoa', '3', 'ES', '9', '724');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES213', 'Bizkaia', '3', 'ES', '9', '725');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES22', 'Comunidad Foral de Navarra', '2', 'ES', '9', '726');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES220', 'Navarra', '3', 'ES', '9', '727');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES23', 'La Rioja', '2', 'ES', '9', '728');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES230', 'La Rioja', '3', 'ES', '9', '729');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES24', 'Aragón', '2', 'ES', '9', '730');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES241', 'Huesca', '3', 'ES', '9', '731');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES242', 'Teruel', '3', 'ES', '9', '732');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES243', 'Zaragoza', '3', 'ES', '9', '733');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES3', 'COMUNIDAD DE MADRID', '1', 'ES', '9', '734');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES30', 'Comunidad de Madrid', '2', 'ES', '9', '735');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES300', 'Madrid', '3', 'ES', '9', '736');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES4', 'CENTRO (ES)', '1', 'ES', '9', '737');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES41', 'Castilla y León', '2', 'ES', '9', '738');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES411', 'Ávila', '3', 'ES', '9', '739');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES412', 'Burgos', '3', 'ES', '9', '740');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES413', 'León', '3', 'ES', '9', '741');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES414', 'Palencia', '3', 'ES', '9', '742');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES415', 'Salamanca', '3', 'ES', '9', '743');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES416', 'Segovia', '3', 'ES', '9', '744');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES417', 'Soria', '3', 'ES', '9', '745');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES418', 'Valladolid', '3', 'ES', '9', '746');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES419', 'Zamora', '3', 'ES', '9', '747');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES42', 'Castilla-La Mancha', '2', 'ES', '9', '748');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES421', 'Albacete', '3', 'ES', '9', '749');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES422', 'Ciudad Real', '3', 'ES', '9', '750');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES423', 'Cuenca', '3', 'ES', '9', '751');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES424', 'Guadalajara', '3', 'ES', '9', '752');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES425', 'Toledo', '3', 'ES', '9', '753');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES43', 'Extremadura', '2', 'ES', '9', '754');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES431', 'Badajoz', '3', 'ES', '9', '755');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES432', 'Cáceres', '3', 'ES', '9', '756');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES5', 'ESTE', '1', 'ES', '9', '757');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES51', 'Cataluña', '2', 'ES', '9', '758');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES511', 'Barcelona', '3', 'ES', '9', '759');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES512', 'Girona', '3', 'ES', '9', '760');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES513', 'Lleida', '3', 'ES', '9', '761');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA19', 'Solingen, Kreisfreie Stadt', '3', 'DE', '5', '436');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1A', 'Wuppertal, Kreisfreie Stadt', '3', 'DE', '5', '437');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1B', 'Kleve', '3', 'DE', '5', '438');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1C', 'Mettmann', '3', 'DE', '5', '439');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1D', 'Rhein-Kreis Neuss', '3', 'DE', '5', '440');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1E', 'Viersen', '3', 'DE', '5', '441');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA1F', 'Wesel', '3', 'DE', '5', '442');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA2', 'Köln', '2', 'DE', '5', '443');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA22', 'Bonn, Kreisfreie Stadt', '3', 'DE', '5', '444');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA23', 'Köln, Kreisfreie Stadt', '3', 'DE', '5', '445');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA24', 'Leverkusen, Kreisfreie Stadt', '3', 'DE', '5', '446');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA26', 'Düren', '3', 'DE', '5', '447');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA27', 'Rhein-Erft-Kreis', '3', 'DE', '5', '448');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA28', 'Euskirchen', '3', 'DE', '5', '449');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA29', 'Heinsberg', '3', 'DE', '5', '450');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA2A', 'Oberbergischer Kreis', '3', 'DE', '5', '451');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA2B', 'Rheinisch-Bergischer Kreis', '3', 'DE', '5', '452');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA2C', 'Rhein-Sieg-Kreis', '3', 'DE', '5', '453');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA2D', 'Städteregion Aachen', '3', 'DE', '5', '454');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA3', 'Münster', '2', 'DE', '5', '455');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA31', 'Bottrop, Kreisfreie Stadt', '3', 'DE', '5', '456');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA32', 'Gelsenkirchen, Kreisfreie Stadt', '3', 'DE', '5', '457');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA33', 'Münster, Kreisfreie Stadt', '3', 'DE', '5', '458');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA34', 'Borken', '3', 'DE', '5', '459');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA35', 'Coesfeld', '3', 'DE', '5', '460');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA36', 'Recklinghausen', '3', 'DE', '5', '461');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA37', 'Steinfurt', '3', 'DE', '5', '462');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA38', 'Warendorf', '3', 'DE', '5', '463');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA4', 'Detmold', '2', 'DE', '5', '464');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA41', 'Bielefeld, Kreisfreie Stadt', '3', 'DE', '5', '465');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA42', 'Gütersloh', '3', 'DE', '5', '466');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA43', 'Herford', '3', 'DE', '5', '467');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA44', 'Höxter', '3', 'DE', '5', '468');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA45', 'Lippe', '3', 'DE', '5', '469');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA46', 'Minden-Lübbecke', '3', 'DE', '5', '470');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA47', 'Paderborn', '3', 'DE', '5', '471');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA5', 'Arnsberg', '2', 'DE', '5', '472');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA51', 'Bochum, Kreisfreie Stadt', '3', 'DE', '5', '473');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA52', 'Dortmund, Kreisfreie Stadt', '3', 'DE', '5', '474');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA53', 'Hagen, Kreisfreie Stadt', '3', 'DE', '5', '475');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA54', 'Hamm, Kreisfreie Stadt', '3', 'DE', '5', '476');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA55', 'Herne, Kreisfreie Stadt', '3', 'DE', '5', '477');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA56', 'Ennepe-Ruhr-Kreis', '3', 'DE', '5', '478');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA57', 'Hochsauerlandkreis', '3', 'DE', '5', '479');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA58', 'Märkischer Kreis', '3', 'DE', '5', '480');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA59', 'Olpe', '3', 'DE', '5', '481');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA5A', 'Siegen-Wittgenstein', '3', 'DE', '5', '482');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA5B', 'Soest', '3', 'DE', '5', '483');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEA5C', 'Unna', '3', 'DE', '5', '484');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB', 'RHEINLAND-PFALZ', '1', 'DE', '5', '485');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB1', 'Koblenz', '2', 'DE', '5', '486');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB11', 'Koblenz, Kreisfreie Stadt', '3', 'DE', '5', '487');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB12', 'Ahrweiler', '3', 'DE', '5', '488');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB13', 'Altenkirchen (Westerwald)', '3', 'DE', '5', '489');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB14', 'Bad Kreuznach', '3', 'DE', '5', '490');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB15', 'Birkenfeld', '3', 'DE', '5', '491');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB16', 'Cochem-Zell', '3', 'DE', '5', '492');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB17', 'Mayen-Koblenz', '3', 'DE', '5', '493');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB18', 'Neuwied', '3', 'DE', '5', '494');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB19', 'Rhein-Hunsrück-Kreis', '3', 'DE', '5', '495');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB1A', 'Rhein-Lahn-Kreis', '3', 'DE', '5', '496');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB1B', 'Westerwaldkreis', '3', 'DE', '5', '497');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB2', 'Trier', '2', 'DE', '5', '498');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB21', 'Trier, Kreisfreie Stadt', '3', 'DE', '5', '499');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB22', 'Bernkastel-Wittlich', '3', 'DE', '5', '500');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB23', 'Eifelkreis Bitburg-Prüm', '3', 'DE', '5', '501');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB24', 'Vulkaneifel', '3', 'DE', '5', '502');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB25', 'Trier-Saarburg', '3', 'DE', '5', '503');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3', 'Rheinhessen-Pfalz', '2', 'DE', '5', '504');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB31', 'Frankenthal (Pfalz), Kreisfreie Stadt', '3', 'DE', '5', '505');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB32', 'Kaiserslautern, Kreisfreie Stadt', '3', 'DE', '5', '506');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB33', 'Landau in der Pfalz, Kreisfreie Stadt', '3', 'DE', '5', '507');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB34', 'Ludwigshafen am Rhein, Kreisfreie Stadt', '3', 'DE', '5', '508');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB35', 'Mainz, Kreisfreie Stadt', '3', 'DE', '5', '509');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB36', 'Neustadt an der Weinstraße, Kreisfreie Stadt', '3', 'DE', '5', '510');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB37', 'Pirmasens, Kreisfreie Stadt', '3', 'DE', '5', '511');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB38', 'Speyer, Kreisfreie Stadt', '3', 'DE', '5', '512');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB39', 'Worms, Kreisfreie Stadt', '3', 'DE', '5', '513');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3A', 'Zweibrücken, Kreisfreie Stadt', '3', 'DE', '5', '514');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3B', 'Alzey-Worms', '3', 'DE', '5', '515');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3C', 'Bad Dürkheim', '3', 'DE', '5', '516');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3D', 'Donnersbergkreis', '3', 'DE', '5', '517');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3E', 'Germersheim', '3', 'DE', '5', '518');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3F', 'Kaiserslautern, Landkreis', '3', 'DE', '5', '519');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3G', 'Kusel', '3', 'DE', '5', '520');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3H', 'Südliche Weinstraße', '3', 'DE', '5', '521');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3I', 'Rhein-Pfalz-Kreis', '3', 'DE', '5', '522');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3J', 'Mainz-Bingen', '3', 'DE', '5', '523');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEB3K', 'Südwestpfalz', '3', 'DE', '5', '524');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC', 'SAARLAND', '1', 'DE', '5', '525');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC0', 'Saarland', '2', 'DE', '5', '526');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC01', 'Regionalverband Saarbrücken', '3', 'DE', '5', '527');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC02', 'Merzig-Wadern', '3', 'DE', '5', '528');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC03', 'Neunkirchen', '3', 'DE', '5', '529');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC04', 'Saarlouis', '3', 'DE', '5', '530');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC05', 'Saarpfalz-Kreis', '3', 'DE', '5', '531');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DEC06', 'St. Wendel', '3', 'DE', '5', '532');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED', 'SACHSEN', '1', 'DE', '5', '533');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED2', 'Dresden', '2', 'DE', '5', '534');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED21', 'Dresden, Kreisfreie Stadt', '3', 'DE', '5', '535');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED2C', 'Bautzen', '3', 'DE', '5', '536');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED2D', 'Görlitz', '3', 'DE', '5', '537');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED2E', 'Meißen', '3', 'DE', '5', '538');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED2F', 'Sächsische Schweiz-Osterzgebirge', '3', 'DE', '5', '539');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED4', 'Chemnitz', '2', 'DE', '5', '540');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED41', 'Chemnitz, Kreisfreie Stadt', '3', 'DE', '5', '541');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED42', 'Erzgebirgskreis', '3', 'DE', '5', '542');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED43', 'Mittelsachsen', '3', 'DE', '5', '543');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED44', 'Vogtlandkreis', '3', 'DE', '5', '544');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED45', 'Zwickau', '3', 'DE', '5', '545');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED5', 'Leipzig', '2', 'DE', '5', '546');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED51', 'Leipzig, Kreisfreie Stadt', '3', 'DE', '5', '547');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED52', 'Leipzig', '3', 'DE', '5', '548');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('DED53', 'Nordsachsen', '3', 'DE', '5', '549');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES514', 'Tarragona', '3', 'ES', '9', '762');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES52', 'Comunidad Valenciana', '2', 'ES', '9', '763');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES521', 'Alicante / Alacant', '3', 'ES', '9', '764');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES522', 'Castellón / Castelló', '3', 'ES', '9', '765');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES523', 'Valencia / València', '3', 'ES', '9', '766');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES53', 'Illes Balears', '2', 'ES', '9', '767');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES531', 'Eivissa y Formentera', '3', 'ES', '9', '768');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES532', 'Mallorca', '3', 'ES', '9', '769');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES533', 'Menorca', '3', 'ES', '9', '770');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES6', 'SUR', '1', 'ES', '9', '771');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES61', 'Andalucía', '2', 'ES', '9', '772');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES611', 'Almería', '3', 'ES', '9', '773');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES612', 'Cádiz', '3', 'ES', '9', '774');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES613', 'Córdoba', '3', 'ES', '9', '775');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES614', 'Granada', '3', 'ES', '9', '776');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES615', 'Huelva', '3', 'ES', '9', '777');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES616', 'Jaén', '3', 'ES', '9', '778');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES617', 'Málaga', '3', 'ES', '9', '779');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES618', 'Sevilla', '3', 'ES', '9', '780');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES62', 'Región de Murcia', '2', 'ES', '9', '781');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES620', 'Murcia', '3', 'ES', '9', '782');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES63', 'Ciudad Autónoma de Ceuta', '2', 'ES', '9', '783');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES630', 'Ceuta', '3', 'ES', '9', '784');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES64', 'Ciudad Autónoma de Melilla', '2', 'ES', '9', '785');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES640', 'Melilla', '3', 'ES', '9', '786');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES7', 'CANARIAS', '1', 'ES', '9', '787');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES70', 'Canarias', '2', 'ES', '9', '788');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES703', 'El Hierro', '3', 'ES', '9', '789');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES704', 'Fuerteventura', '3', 'ES', '9', '790');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES705', 'Gran Canaria', '3', 'ES', '9', '791');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES706', 'La Gomera', '3', 'ES', '9', '792');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES707', 'La Palma', '3', 'ES', '9', '793');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES708', 'Lanzarote', '3', 'ES', '9', '794');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ES709', 'Tenerife', '3', 'ES', '9', '795');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ESZ', 'EXTRA-REGIO NUTS 1', '1', 'ES', '9', '796');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ESZZ', 'Extra-Regio NUTS 2', '2', 'ES', '9', '797');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ESZZZ', 'Extra-Regio NUTS 3', '3', 'ES', '9', '798');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR', 'FRANCE', '0', 'FR', '10', '799');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR1', 'ÎLE DE FRANCE', '1', 'FR', '10', '800');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR10', 'Île de France', '2', 'FR', '10', '801');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR101', 'Paris', '3', 'FR', '10', '802');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR102', 'Seine-et-Marne', '3', 'FR', '10', '803');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR103', 'Yvelines', '3', 'FR', '10', '804');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR104', 'Essonne', '3', 'FR', '10', '805');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR105', 'Hauts-de-Seine', '3', 'FR', '10', '806');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR106', 'Seine-Saint-Denis', '3', 'FR', '10', '807');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR107', 'Val-de-Marne', '3', 'FR', '10', '808');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR108', 'Val-d''Oise', '3', 'FR', '10', '809');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR2', 'BASSIN PARISIEN', '1', 'FR', '10', '810');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR21', 'Champagne-Ardenne', '2', 'FR', '10', '811');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR211', 'Ardennes', '3', 'FR', '10', '812');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR212', 'Aube', '3', 'FR', '10', '813');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR213', 'Marne', '3', 'FR', '10', '814');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR214', 'Haute-Marne', '3', 'FR', '10', '815');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR22', 'Picardie', '2', 'FR', '10', '816');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR221', 'Aisne', '3', 'FR', '10', '817');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR222', 'Oise', '3', 'FR', '10', '818');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR223', 'Somme', '3', 'FR', '10', '819');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR23', 'Haute-Normandie', '2', 'FR', '10', '820');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR231', 'Eure', '3', 'FR', '10', '821');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR232', 'Seine-Maritime', '3', 'FR', '10', '822');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR24', 'Centre', '2', 'FR', '10', '823');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR241', 'Cher', '3', 'FR', '10', '824');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR242', 'Eure-et-Loir', '3', 'FR', '10', '825');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR243', 'Indre', '3', 'FR', '10', '826');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR244', 'Indre-et-Loire', '3', 'FR', '10', '827');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR245', 'Loir-et-Cher', '3', 'FR', '10', '828');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR246', 'Loiret', '3', 'FR', '10', '829');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR25', 'Basse-Normandie', '2', 'FR', '10', '830');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR251', 'Calvados', '3', 'FR', '10', '831');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR252', 'Manche', '3', 'FR', '10', '832');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR253', 'Orne', '3', 'FR', '10', '833');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR26', 'Bourgogne', '2', 'FR', '10', '834');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR261', 'Côte-d''Or', '3', 'FR', '10', '835');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR262', 'Nièvre', '3', 'FR', '10', '836');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR263', 'Saône-et-Loire', '3', 'FR', '10', '837');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR264', 'Yonne', '3', 'FR', '10', '838');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR3', 'NORD - PAS-DE-CALAIS', '1', 'FR', '10', '839');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR30', 'Nord - Pas-de-Calais', '2', 'FR', '10', '840');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR301', 'Nord', '3', 'FR', '10', '841');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR302', 'Pas-de-Calais', '3', 'FR', '10', '842');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR4', 'EST', '1', 'FR', '10', '843');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR41', 'Lorraine', '2', 'FR', '10', '844');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR411', 'Meurthe-et-Moselle', '3', 'FR', '10', '845');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR412', 'Meuse', '3', 'FR', '10', '846');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR413', 'Moselle', '3', 'FR', '10', '847');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR414', 'Vosges', '3', 'FR', '10', '848');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR42', 'Alsace', '2', 'FR', '10', '849');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR421', 'Bas-Rhin', '3', 'FR', '10', '850');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR422', 'Haut-Rhin', '3', 'FR', '10', '851');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR43', 'Franche-Comté', '2', 'FR', '10', '852');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR431', 'Doubs', '3', 'FR', '10', '853');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR432', 'Jura', '3', 'FR', '10', '854');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR433', 'Haute-Saône', '3', 'FR', '10', '855');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR434', 'Territoire de Belfort', '3', 'FR', '10', '856');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR5', 'OUEST', '1', 'FR', '10', '857');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR51', 'Pays de la Loire', '2', 'FR', '10', '858');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR511', 'Loire-Atlantique', '3', 'FR', '10', '859');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR512', 'Maine-et-Loire', '3', 'FR', '10', '860');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR513', 'Mayenne', '3', 'FR', '10', '861');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR514', 'Sarthe', '3', 'FR', '10', '862');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR515', 'Vendée', '3', 'FR', '10', '863');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR52', 'Bretagne', '2', 'FR', '10', '864');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR521', 'Côtes-d''Armor', '3', 'FR', '10', '865');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR522', 'Finistère', '3', 'FR', '10', '866');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR523', 'Ille-et-Vilaine', '3', 'FR', '10', '867');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR524', 'Morbihan', '3', 'FR', '10', '868');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR53', 'Poitou-Charentes', '2', 'FR', '10', '869');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR531', 'Charente', '3', 'FR', '10', '870');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR532', 'Charente-Maritime', '3', 'FR', '10', '871');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR533', 'Deux-Sèvres', '3', 'FR', '10', '872');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR534', 'Vienne', '3', 'FR', '10', '873');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR6', 'SUD-OUEST', '1', 'FR', '10', '874');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR61', 'Aquitaine', '2', 'FR', '10', '875');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR611', 'Dordogne', '3', 'FR', '10', '876');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR612', 'Gironde', '3', 'FR', '10', '877');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR613', 'Landes', '3', 'FR', '10', '878');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR614', 'Lot-et-Garonne', '3', 'FR', '10', '879');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR615', 'Pyrénées-Atlantiques', '3', 'FR', '10', '880');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR62', 'Midi-Pyrénées', '2', 'FR', '10', '881');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR621', 'Ariège', '3', 'FR', '10', '882');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR622', 'Aveyron', '3', 'FR', '10', '883');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR623', 'Haute-Garonne', '3', 'FR', '10', '884');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR624', 'Gers', '3', 'FR', '10', '885');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR625', 'Lot', '3', 'FR', '10', '886');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR626', 'Hautes-Pyrénées', '3', 'FR', '10', '887');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR627', 'Tarn', '3', 'FR', '10', '888');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR628', 'Tarn-et-Garonne', '3', 'FR', '10', '889');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR63', 'Limousin', '2', 'FR', '10', '890');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR631', 'Corrèze', '3', 'FR', '10', '891');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR632', 'Creuse', '3', 'FR', '10', '892');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR633', 'Haute-Vienne', '3', 'FR', '10', '893');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR7', 'CENTRE-EST', '1', 'FR', '10', '894');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR71', 'Rhône-Alpes', '2', 'FR', '10', '895');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR711', 'Ain', '3', 'FR', '10', '896');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR712', 'Ardèche', '3', 'FR', '10', '897');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR713', 'Drôme', '3', 'FR', '10', '898');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR714', 'Isère', '3', 'FR', '10', '899');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR715', 'Loire', '3', 'FR', '10', '900');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR716', 'Rhône', '3', 'FR', '10', '901');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR717', 'Savoie', '3', 'FR', '10', '902');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR718', 'Haute-Savoie', '3', 'FR', '10', '903');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR72', 'Auvergne', '2', 'FR', '10', '904');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR721', 'Allier', '3', 'FR', '10', '905');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR722', 'Cantal', '3', 'FR', '10', '906');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR723', 'Haute-Loire', '3', 'FR', '10', '907');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR724', 'Puy-de-Dôme', '3', 'FR', '10', '908');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR8', 'MÉDITERRANÉE', '1', 'FR', '10', '909');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR81', 'Languedoc-Roussillon', '2', 'FR', '10', '910');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR811', 'Aude', '3', 'FR', '10', '911');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR812', 'Gard', '3', 'FR', '10', '912');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR813', 'Hérault', '3', 'FR', '10', '913');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR814', 'Lozère', '3', 'FR', '10', '914');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR815', 'Pyrénées-Orientales', '3', 'FR', '10', '915');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR82', 'Provence-Alpes-Côte d''Azur', '2', 'FR', '10', '916');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR821', 'Alpes-de-Haute-Provence', '3', 'FR', '10', '917');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR822', 'Hautes-Alpes', '3', 'FR', '10', '918');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR823', 'Alpes-Maritimes', '3', 'FR', '10', '919');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR824', 'Bouches-du-Rhône', '3', 'FR', '10', '920');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR825', 'Var', '3', 'FR', '10', '921');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR826', 'Vaucluse', '3', 'FR', '10', '922');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR83', 'Corse', '2', 'FR', '10', '923');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR831', 'Corse-du-Sud', '3', 'FR', '10', '924');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FR832', 'Haute-Corse', '3', 'FR', '10', '925');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRA', 'DÉPARTEMENTS D''OUTRE-MER', '1', 'FR', '10', '926');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRA1', 'Guadeloupe', '2', 'FR', '10', '927');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRA10', 'Guadeloupe', '3', 'FR', '10', '928');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRA2', 'Martinique', '2', 'FR', '10', '929');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRA20', 'Martinique', '3', 'FR', '10', '930');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRA3', 'Guyane', '2', 'FR', '10', '931');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRA30', 'Guyane', '3', 'FR', '10', '932');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRA4', 'La Réunion', '2', 'FR', '10', '933');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRA40', 'La Réunion', '3', 'FR', '10', '934');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRA5', 'Mayotte', '2', 'FR', '10', '935');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRA50', 'Mayotte', '3', 'FR', '10', '936');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRZ', 'EXTRA-REGIO NUTS 1', '1', 'FR', '10', '937');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRZZ', 'Extra-Regio NUTS 2', '2', 'FR', '10', '938');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FRZZZ', 'Extra-Regio NUTS 3', '3', 'FR', '10', '939');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR', 'HRVATSKA', '0', 'HR', '11', '940');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR0', 'HRVATSKA', '1', 'HR', '11', '941');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR03', 'Jadranska Hrvatska', '2', 'HR', '11', '942');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR031', 'Primorsko-goranska županija', '3', 'HR', '11', '943');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR032', 'Ličko-senjska županija', '3', 'HR', '11', '944');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR033', 'Zadarska županija', '3', 'HR', '11', '945');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR034', 'Šibensko-kninska županija', '3', 'HR', '11', '946');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR035', 'Splitsko-dalmatinska županija', '3', 'HR', '11', '947');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR036', 'Istarska županija', '3', 'HR', '11', '948');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR037', 'Dubrovačko-neretvanska županija', '3', 'HR', '11', '949');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR04', 'Kontinentalna Hrvatska', '2', 'HR', '11', '950');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR041', 'Grad Zagreb', '3', 'HR', '11', '951');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR042', 'Zagrebačka županija', '3', 'HR', '11', '952');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR043', 'Krapinsko-zagorska županija', '3', 'HR', '11', '953');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR044', 'Varaždinska županija', '3', 'HR', '11', '954');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR045', 'Koprivničko-križevačka županija', '3', 'HR', '11', '955');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR046', 'Međimurska županija', '3', 'HR', '11', '956');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR047', 'Bjelovarsko-bilogorska županija', '3', 'HR', '11', '957');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR048', 'Virovitičko-podravska županija', '3', 'HR', '11', '958');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR049', 'Požeško-slavonska županija', '3', 'HR', '11', '959');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR04A', 'Brodsko-posavska županija', '3', 'HR', '11', '960');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR04B', 'Osječko-baranjska županija', '3', 'HR', '11', '961');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR04C', 'Vukovarsko-srijemska županija', '3', 'HR', '11', '962');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR04D', 'Karlovačka županija', '3', 'HR', '11', '963');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HR04E', 'Sisačko-moslavačka županija', '3', 'HR', '11', '964');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HRZ', 'EXTRA-REGIO NUTS 1', '1', 'HR', '11', '965');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HRZZ', 'Extra-Regio NUTS 2', '2', 'HR', '11', '966');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HRZZZ', 'Extra-Regio NUTS 3', '3', 'HR', '11', '967');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('IT', 'ITALIA ', '0', 'IT', '12', '968');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC', 'NORD-OVEST', '1', 'IT', '12', '969');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC1', 'Piemonte', '2', 'IT', '12', '970');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC11', 'Torino', '3', 'IT', '12', '971');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC12', 'Vercelli', '3', 'IT', '12', '972');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC13', 'Biella', '3', 'IT', '12', '973');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC14', 'Verbano-Cusio-Ossola', '3', 'IT', '12', '974');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC15', 'Novara', '3', 'IT', '12', '975');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC16', 'Cuneo', '3', 'IT', '12', '976');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC17', 'Asti', '3', 'IT', '12', '977');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC18', 'Alessandria', '3', 'IT', '12', '978');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC2', 'Valle d''Aosta/Vallée d''Aoste', '2', 'IT', '12', '979');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC20', 'Valle d''Aosta/Vallée d''Aoste', '3', 'IT', '12', '980');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC3', 'Liguria', '2', 'IT', '12', '981');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC31', 'Imperia', '3', 'IT', '12', '982');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC32', 'Savona', '3', 'IT', '12', '983');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC33', 'Genova', '3', 'IT', '12', '984');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC34', 'La Spezia', '3', 'IT', '12', '985');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC4', 'Lombardia', '2', 'IT', '12', '986');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC41', 'Varese', '3', 'IT', '12', '987');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC42', 'Como', '3', 'IT', '12', '988');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC43', 'Lecco', '3', 'IT', '12', '989');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC44', 'Sondrio', '3', 'IT', '12', '990');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC46', 'Bergamo', '3', 'IT', '12', '991');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC47', 'Brescia', '3', 'IT', '12', '992');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC48', 'Pavia', '3', 'IT', '12', '993');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC49', 'Lodi', '3', 'IT', '12', '994');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC4A', 'Cremona', '3', 'IT', '12', '995');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC4B', 'Mantova', '3', 'IT', '12', '996');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC4C', 'Milano', '3', 'IT', '12', '997');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITC4D', 'Monza e della Brianza', '3', 'IT', '12', '998');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF', 'SUD', '1', 'IT', '12', '999');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF1', 'Abruzzo', '2', 'IT', '12', '1000');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF11', 'L''Aquila', '3', 'IT', '12', '1001');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF12', 'Teramo', '3', 'IT', '12', '1002');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF13', 'Pescara', '3', 'IT', '12', '1003');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF14', 'Chieti', '3', 'IT', '12', '1004');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF2', 'Molise', '2', 'IT', '12', '1005');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF21', 'Isernia', '3', 'IT', '12', '1006');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF22', 'Campobasso', '3', 'IT', '12', '1007');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF3', 'Campania', '2', 'IT', '12', '1008');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF31', 'Caserta', '3', 'IT', '12', '1009');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF32', 'Benevento', '3', 'IT', '12', '1010');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF33', 'Napoli', '3', 'IT', '12', '1011');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF34', 'Avellino', '3', 'IT', '12', '1012');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF35', 'Salerno', '3', 'IT', '12', '1013');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF4', 'Puglia', '2', 'IT', '12', '1014');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF43', 'Taranto', '3', 'IT', '12', '1015');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF44', 'Brindisi', '3', 'IT', '12', '1016');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF45', 'Lecce', '3', 'IT', '12', '1017');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF46', 'Foggia', '3', 'IT', '12', '1018');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF47', 'Bari', '3', 'IT', '12', '1019');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF48', 'Barletta-Andria-Trani', '3', 'IT', '12', '1020');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF5', 'Basilicata', '2', 'IT', '12', '1021');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF51', 'Potenza', '3', 'IT', '12', '1022');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF52', 'Matera', '3', 'IT', '12', '1023');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF6', 'Calabria', '2', 'IT', '12', '1024');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF61', 'Cosenza', '3', 'IT', '12', '1025');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF62', 'Crotone', '3', 'IT', '12', '1026');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF63', 'Catanzaro', '3', 'IT', '12', '1027');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF64', 'Vibo Valentia', '3', 'IT', '12', '1028');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITF65', 'Reggio di Calabria', '3', 'IT', '12', '1029');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG', 'ISOLE', '1', 'IT', '12', '1030');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG1', 'Sicilia', '2', 'IT', '12', '1031');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG11', 'Trapani', '3', 'IT', '12', '1032');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG12', 'Palermo', '3', 'IT', '12', '1033');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG13', 'Messina', '3', 'IT', '12', '1034');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG14', 'Agrigento', '3', 'IT', '12', '1035');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG15', 'Caltanissetta', '3', 'IT', '12', '1036');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG16', 'Enna', '3', 'IT', '12', '1037');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG17', 'Catania', '3', 'IT', '12', '1038');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG18', 'Ragusa', '3', 'IT', '12', '1039');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG19', 'Siracusa', '3', 'IT', '12', '1040');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG2', 'Sardegna', '2', 'IT', '12', '1041');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG25', 'Sassari', '3', 'IT', '12', '1042');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG26', 'Nuoro', '3', 'IT', '12', '1043');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG27', 'Cagliari', '3', 'IT', '12', '1044');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG28', 'Oristano', '3', 'IT', '12', '1045');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG29', 'Olbia-Tempio', '3', 'IT', '12', '1046');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG2A', 'Ogliastra', '3', 'IT', '12', '1047');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG2B', 'Medio Campidano', '3', 'IT', '12', '1048');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITG2C', 'Carbonia-Iglesias', '3', 'IT', '12', '1049');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH', 'NORD-EST', '1', 'IT', '12', '1050');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH1', 'Provincia Autonoma di Bolzano/Bozen', '2', 'IT', '12', '1051');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH10', 'Bolzano-Bozen', '3', 'IT', '12', '1052');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH2', 'Provincia Autonoma di Trento', '2', 'IT', '12', '1053');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH20', 'Trento', '3', 'IT', '12', '1054');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH3', 'Veneto', '2', 'IT', '12', '1055');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH31', 'Verona', '3', 'IT', '12', '1056');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH32', 'Vicenza', '3', 'IT', '12', '1057');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH33', 'Belluno', '3', 'IT', '12', '1058');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH34', 'Treviso', '3', 'IT', '12', '1059');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH35', 'Venezia', '3', 'IT', '12', '1060');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH36', 'Padova', '3', 'IT', '12', '1061');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH37', 'Rovigo', '3', 'IT', '12', '1062');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH4', 'Friuli-Venezia Giulia', '2', 'IT', '12', '1063');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH41', 'Pordenone', '3', 'IT', '12', '1064');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH42', 'Udine', '3', 'IT', '12', '1065');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH43', 'Gorizia', '3', 'IT', '12', '1066');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH44', 'Trieste', '3', 'IT', '12', '1067');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH5', 'Emilia-Romagna', '2', 'IT', '12', '1068');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH51', 'Piacenza', '3', 'IT', '12', '1069');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH52', 'Parma', '3', 'IT', '12', '1070');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH53', 'Reggio nell''Emilia', '3', 'IT', '12', '1071');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH54', 'Modena', '3', 'IT', '12', '1072');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH55', 'Bologna', '3', 'IT', '12', '1073');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH56', 'Ferrara', '3', 'IT', '12', '1074');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH57', 'Ravenna', '3', 'IT', '12', '1075');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH58', 'Forlì-Cesena', '3', 'IT', '12', '1076');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITH59', 'Rimini', '3', 'IT', '12', '1077');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI', 'CENTRO (IT)', '1', 'IT', '12', '1078');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI1', 'Toscana', '2', 'IT', '12', '1079');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI11', 'Massa-Carrara', '3', 'IT', '12', '1080');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI12', 'Lucca', '3', 'IT', '12', '1081');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI13', 'Pistoia', '3', 'IT', '12', '1082');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI14', 'Firenze', '3', 'IT', '12', '1083');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI15', 'Prato', '3', 'IT', '12', '1084');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI16', 'Livorno', '3', 'IT', '12', '1085');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI17', 'Pisa', '3', 'IT', '12', '1086');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI18', 'Arezzo', '3', 'IT', '12', '1087');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI19', 'Siena', '3', 'IT', '12', '1088');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI1A', 'Grosseto', '3', 'IT', '12', '1089');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI2', 'Umbria', '2', 'IT', '12', '1090');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI21', 'Perugia', '3', 'IT', '12', '1091');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI22', 'Terni', '3', 'IT', '12', '1092');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI3', 'Marche', '2', 'IT', '12', '1093');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI31', 'Pesaro e Urbino', '3', 'IT', '12', '1094');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI32', 'Ancona', '3', 'IT', '12', '1095');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI33', 'Macerata', '3', 'IT', '12', '1096');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI34', 'Ascoli Piceno', '3', 'IT', '12', '1097');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI35', 'Fermo', '3', 'IT', '12', '1098');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI4', 'Lazio', '2', 'IT', '12', '1099');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI41', 'Viterbo', '3', 'IT', '12', '1100');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI42', 'Rieti', '3', 'IT', '12', '1101');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI43', 'Roma', '3', 'IT', '12', '1102');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI44', 'Latina', '3', 'IT', '12', '1103');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITI45', 'Frosinone', '3', 'IT', '12', '1104');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITZ', 'EXTRA-REGIO NUTS 1', '1', 'IT', '12', '1105');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITZZ', 'Extra-Regio NUTS 2', '2', 'IT', '12', '1106');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ITZZZ', 'Extra-Regio NUTS 3', '3', 'IT', '12', '1107');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CY', 'ΚΥΠΡΟΣ (KYPROS)', '0', 'CY', '13', '1108');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CY0', 'ΚΥΠΡΟΣ (Kypros)', '1', 'CY', '13', '1109');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CY00', 'Κύπρος (Kypros)', '2', 'CY', '13', '1110');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CY000', 'Κύπρος (Kypros)', '3', 'CY', '13', '1111');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CYZ', 'EXTRA-REGIO NUTS 1', '1', 'CY', '13', '1112');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CYZZ', 'Extra-Regio NUTS 2', '2', 'CY', '13', '1113');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('CYZZZ', 'Extra-Regio NUTS 3', '3', 'CY', '13', '1114');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LV', 'LATVIJA', '0', 'LV', '14', '1115');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LV0', 'LATVIJA', '1', 'LV', '14', '1116');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LV00', 'Latvija', '2', 'LV', '14', '1117');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LV003', 'Kurzeme', '3', 'LV', '14', '1118');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LV005', 'Latgale', '3', 'LV', '14', '1119');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LV006', 'Rīga', '3', 'LV', '14', '1120');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LV007', 'Pierīga', '3', 'LV', '14', '1121');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LV008', 'Vidzeme', '3', 'LV', '14', '1122');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LV009', 'Zemgale', '3', 'LV', '14', '1123');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LVZ', 'EXTRA-REGIO NUTS 1', '1', 'LV', '14', '1124');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LVZZ', 'Extra-Regio NUTS 2', '2', 'LV', '14', '1125');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LVZZZ', 'Extra-Regio NUTS 3', '3', 'LV', '14', '1126');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT', 'LIETUVA', '0', 'LT', '15', '1127');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT0', 'LIETUVA', '1', 'LT', '15', '1128');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT00', 'Lietuva', '2', 'LT', '15', '1129');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT001', 'Alytaus apskritis', '3', 'LT', '15', '1130');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT002', 'Kauno apskritis', '3', 'LT', '15', '1131');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT003', 'Klaipėdos apskritis', '3', 'LT', '15', '1132');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT004', 'Marijampolės apskritis', '3', 'LT', '15', '1133');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT005', 'Panevėžio apskritis', '3', 'LT', '15', '1134');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT006', 'Šiaulių apskritis', '3', 'LT', '15', '1135');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT007', 'Tauragės apskritis', '3', 'LT', '15', '1136');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT008', 'Telšių apskritis', '3', 'LT', '15', '1137');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT009', 'Utenos apskritis', '3', 'LT', '15', '1138');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LT00A', 'Vilniaus apskritis', '3', 'LT', '15', '1139');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LTZ', 'EXTRA-REGIO NUTS 1', '1', 'LT', '15', '1140');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LTZZ', 'Extra-Regio NUTS 2', '2', 'LT', '15', '1141');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LTZZZ', 'Extra-Regio NUTS 3', '3', 'LT', '15', '1142');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LU', 'LUXEMBOURG', '0', 'LU', '16', '1143');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LU0', 'LUXEMBOURG', '1', 'LU', '16', '1144');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LU00', 'Luxembourg', '2', 'LU', '16', '1145');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LU000', 'Luxembourg', '3', 'LU', '16', '1146');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LUZ', 'EXTRA-REGIO NUTS 1', '1', 'LU', '16', '1147');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LUZZ', 'Extra-Regio NUTS 2', '2', 'LU', '16', '1148');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('LUZZZ', 'Extra-Regio NUTS 3', '3', 'LU', '16', '1149');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU', 'MAGYARORSZÁG', '0', 'HU', '17', '1150');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU1', 'KÖZÉP-MAGYARORSZÁG', '1', 'HU', '17', '1151');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU10', 'Közép-Magyarország', '2', 'HU', '17', '1152');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU101', 'Budapest', '3', 'HU', '17', '1153');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU102', 'Pest', '3', 'HU', '17', '1154');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU2', 'DUNÁNTÚL', '1', 'HU', '17', '1155');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU21', 'Közép-Dunántúl', '2', 'HU', '17', '1156');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU211', 'Fejér', '3', 'HU', '17', '1157');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU212', 'Komárom-Esztergom', '3', 'HU', '17', '1158');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU213', 'Veszprém', '3', 'HU', '17', '1159');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU22', 'Nyugat-Dunántúl', '2', 'HU', '17', '1160');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU221', 'Győr-Moson-Sopron', '3', 'HU', '17', '1161');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU222', 'Vas', '3', 'HU', '17', '1162');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU223', 'Zala', '3', 'HU', '17', '1163');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU23', 'Dél-Dunántúl', '2', 'HU', '17', '1164');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU231', 'Baranya', '3', 'HU', '17', '1165');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU232', 'Somogy', '3', 'HU', '17', '1166');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU233', 'Tolna', '3', 'HU', '17', '1167');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU3', 'ALFÖLD ÉS ÉSZAK', '1', 'HU', '17', '1168');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU31', 'Észak-Magyarország', '2', 'HU', '17', '1169');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU311', 'Borsod-Abaúj-Zemplén', '3', 'HU', '17', '1170');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU312', 'Heves', '3', 'HU', '17', '1171');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU313', 'Nógrád', '3', 'HU', '17', '1172');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU32', 'Észak-Alföld', '2', 'HU', '17', '1173');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU321', 'Hajdú-Bihar', '3', 'HU', '17', '1174');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU322', 'Jász-Nagykun-Szolnok', '3', 'HU', '17', '1175');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU323', 'Szabolcs-Szatmár-Bereg', '3', 'HU', '17', '1176');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU33', 'Dél-Alföld', '2', 'HU', '17', '1177');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU331', 'Bács-Kiskun', '3', 'HU', '17', '1178');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU332', 'Békés', '3', 'HU', '17', '1179');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HU333', 'Csongrád', '3', 'HU', '17', '1180');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HUZ', 'EXTRA-REGIO NUTS 1', '1', 'HU', '17', '1181');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HUZZ', 'Extra-Regio NUTS 2', '2', 'HU', '17', '1182');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('HUZZZ', 'Extra-Regio NUTS 3', '3', 'HU', '17', '1183');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('MT', 'MALTA', '0', 'MT', '18', '1184');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('MT0', 'MALTA', '1', 'MT', '18', '1185');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('MT00', 'Malta', '2', 'MT', '18', '1186');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('MT001', 'Malta', '3', 'MT', '18', '1187');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('MT002', 'Gozo and Comino / Għawdex u Kemmuna', '3', 'MT', '18', '1188');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('MTZ', 'EXTRA-REGIO NUTS 1', '1', 'MT', '18', '1189');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('MTZZ', 'Extra-Regio NUTS 2', '2', 'MT', '18', '1190');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('MTZZZ', 'Extra-Regio NUTS 3', '3', 'MT', '18', '1191');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL', 'NEDERLAND', '0', 'NL', '19', '1192');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL1', 'NOORD-NEDERLAND', '1', 'NL', '19', '1193');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL11', 'Groningen', '2', 'NL', '19', '1194');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL111', 'Oost-Groningen', '3', 'NL', '19', '1195');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL112', 'Delfzijl en omgeving', '3', 'NL', '19', '1196');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL113', 'Overig Groningen', '3', 'NL', '19', '1197');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL12', 'Friesland (NL)', '2', 'NL', '19', '1198');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL121', 'Noord-Friesland', '3', 'NL', '19', '1199');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL122', 'Zuidwest-Friesland', '3', 'NL', '19', '1200');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL123', 'Zuidoost-Friesland', '3', 'NL', '19', '1201');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL13', 'Drenthe', '2', 'NL', '19', '1202');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL131', 'Noord-Drenthe', '3', 'NL', '19', '1203');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL132', 'Zuidoost-Drenthe', '3', 'NL', '19', '1204');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL133', 'Zuidwest-Drenthe', '3', 'NL', '19', '1205');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL2', 'OOST-NEDERLAND', '1', 'NL', '19', '1206');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL21', 'Overijssel', '2', 'NL', '19', '1207');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL211', 'Noord-Overijssel', '3', 'NL', '19', '1208');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL212', 'Zuidwest-Overijssel', '3', 'NL', '19', '1209');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL213', 'Twente', '3', 'NL', '19', '1210');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL22', 'Gelderland', '2', 'NL', '19', '1211');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL221', 'Veluwe', '3', 'NL', '19', '1212');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL224', 'Zuidwest-Gelderland', '3', 'NL', '19', '1213');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL225', 'Achterhoek', '3', 'NL', '19', '1214');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL226', 'Arnhem/Nijmegen', '3', 'NL', '19', '1215');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL23', 'Flevoland', '2', 'NL', '19', '1216');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL230', 'Flevoland', '3', 'NL', '19', '1217');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL3', 'WEST-NEDERLAND', '1', 'NL', '19', '1218');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL31', 'Utrecht', '2', 'NL', '19', '1219');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL310', 'Utrecht', '3', 'NL', '19', '1220');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL32', 'Noord-Holland', '2', 'NL', '19', '1221');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL321', 'Kop van Noord-Holland', '3', 'NL', '19', '1222');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL322', 'Alkmaar en omgeving', '3', 'NL', '19', '1223');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL323', 'IJmond', '3', 'NL', '19', '1224');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL324', 'Agglomeratie Haarlem', '3', 'NL', '19', '1225');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL325', 'Zaanstreek', '3', 'NL', '19', '1226');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL326', 'Groot-Amsterdam', '3', 'NL', '19', '1227');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL327', 'Het Gooi en Vechtstreek', '3', 'NL', '19', '1228');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL33', 'Zuid-Holland', '2', 'NL', '19', '1229');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL332', 'Agglomeratie ''s-Gravenhage', '3', 'NL', '19', '1230');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL333', 'Delft en Westland', '3', 'NL', '19', '1231');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL337', 'Agglomeratie Leiden en Bollenstreek', '3', 'NL', '19', '1232');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL338', 'Oost-Zuid-Holland', '3', 'NL', '19', '1233');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL339', 'Groot-Rijnmond', '3', 'NL', '19', '1234');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL33A', 'Zuidoost-Zuid-Holland', '3', 'NL', '19', '1235');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL34', 'Zeeland', '2', 'NL', '19', '1236');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL341', 'Zeeuwsch-Vlaanderen', '3', 'NL', '19', '1237');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL342', 'Overig Zeeland', '3', 'NL', '19', '1238');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL4', 'ZUID-NEDERLAND', '1', 'NL', '19', '1239');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL41', 'Noord-Brabant', '2', 'NL', '19', '1240');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL411', 'West-Noord-Brabant', '3', 'NL', '19', '1241');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL412', 'Midden-Noord-Brabant', '3', 'NL', '19', '1242');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL413', 'Noordoost-Noord-Brabant', '3', 'NL', '19', '1243');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL414', 'Zuidoost-Noord-Brabant', '3', 'NL', '19', '1244');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL42', 'Limburg (NL)', '2', 'NL', '19', '1245');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL421', 'Noord-Limburg', '3', 'NL', '19', '1246');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL422', 'Midden-Limburg', '3', 'NL', '19', '1247');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NL423', 'Zuid-Limburg', '3', 'NL', '19', '1248');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NLZ', 'EXTRA-REGIO NUTS 1', '1', 'NL', '19', '1249');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NLZZ', 'Extra-Regio NUTS 2', '2', 'NL', '19', '1250');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('NLZZZ', 'Extra-Regio NUTS 3', '3', 'NL', '19', '1251');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT', 'ÖSTERREICH', '0', 'AT', '20', '1252');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT1', 'OSTÖSTERREICH', '1', 'AT', '20', '1253');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT11', 'Burgenland ', '2', 'AT', '20', '1254');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT111', 'Mittelburgenland', '3', 'AT', '20', '1255');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT112', 'Nordburgenland', '3', 'AT', '20', '1256');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT113', 'Südburgenland', '3', 'AT', '20', '1257');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT12', 'Niederösterreich', '2', 'AT', '20', '1258');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT121', 'Mostviertel-Eisenwurzen', '3', 'AT', '20', '1259');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT122', 'Niederösterreich-Süd', '3', 'AT', '20', '1260');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT123', 'Sankt Pölten', '3', 'AT', '20', '1261');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT124', 'Waldviertel', '3', 'AT', '20', '1262');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT125', 'Weinviertel', '3', 'AT', '20', '1263');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT126', 'Wiener Umland/Nordteil', '3', 'AT', '20', '1264');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT127', 'Wiener Umland/Südteil', '3', 'AT', '20', '1265');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT13', 'Wien', '2', 'AT', '20', '1266');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT130', 'Wien', '3', 'AT', '20', '1267');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT2', 'SÜDÖSTERREICH', '1', 'AT', '20', '1268');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT21', 'Kärnten', '2', 'AT', '20', '1269');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT211', 'Klagenfurt-Villach', '3', 'AT', '20', '1270');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT212', 'Oberkärnten', '3', 'AT', '20', '1271');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT213', 'Unterkärnten', '3', 'AT', '20', '1272');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT22', 'Steiermark', '2', 'AT', '20', '1273');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT221', 'Graz', '3', 'AT', '20', '1274');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT222', 'Liezen', '3', 'AT', '20', '1275');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT223', 'Östliche Obersteiermark', '3', 'AT', '20', '1276');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT224', 'Oststeiermark', '3', 'AT', '20', '1277');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT225', 'West- und Südsteiermark', '3', 'AT', '20', '1278');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT226', 'Westliche Obersteiermark', '3', 'AT', '20', '1279');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT3', 'WESTÖSTERREICH', '1', 'AT', '20', '1280');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT31', 'Oberösterreich', '2', 'AT', '20', '1281');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT311', 'Innviertel', '3', 'AT', '20', '1282');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT312', 'Linz-Wels', '3', 'AT', '20', '1283');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT313', 'Mühlviertel', '3', 'AT', '20', '1284');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT314', 'Steyr-Kirchdorf', '3', 'AT', '20', '1285');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT315', 'Traunviertel', '3', 'AT', '20', '1286');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT32', 'Salzburg', '2', 'AT', '20', '1287');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT321', 'Lungau', '3', 'AT', '20', '1288');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT322', 'Pinzgau-Pongau', '3', 'AT', '20', '1289');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT323', 'Salzburg und Umgebung', '3', 'AT', '20', '1290');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT33', 'Tirol', '2', 'AT', '20', '1291');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT331', 'Außerfern', '3', 'AT', '20', '1292');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT332', 'Innsbruck', '3', 'AT', '20', '1293');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT333', 'Osttirol', '3', 'AT', '20', '1294');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT334', 'Tiroler Oberland', '3', 'AT', '20', '1295');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT335', 'Tiroler Unterland', '3', 'AT', '20', '1296');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT34', 'Vorarlberg', '2', 'AT', '20', '1297');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT341', 'Bludenz-Bregenzer Wald', '3', 'AT', '20', '1298');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('AT342', 'Rheintal-Bodenseegebiet', '3', 'AT', '20', '1299');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ATZ', 'EXTRA-REGIO NUTS 1', '1', 'AT', '20', '1300');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ATZZ', 'Extra-Regio NUTS 2', '2', 'AT', '20', '1301');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ATZZZ', 'Extra-Regio NUTS 3', '3', 'AT', '20', '1302');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL', 'POLSKA', '0', 'PL', '21', '1303');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL1', 'REGION CENTRALNY', '1', 'PL', '21', '1304');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL11', 'Łódzkie', '2', 'PL', '21', '1305');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL113', 'Miasto Łódź', '3', 'PL', '21', '1306');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL114', 'Łódzki', '3', 'PL', '21', '1307');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL115', 'Piotrkowski', '3', 'PL', '21', '1308');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL116', 'Sieradzki', '3', 'PL', '21', '1309');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL117', 'Skierniewicki', '3', 'PL', '21', '1310');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL12', 'Mazowieckie', '2', 'PL', '21', '1311');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL127', 'Miasto Warszawa', '3', 'PL', '21', '1312');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL128', 'Radomski', '3', 'PL', '21', '1313');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL129', 'Warszawski wschodni', '3', 'PL', '21', '1314');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL12A', 'Warszawski zachodni', '3', 'PL', '21', '1315');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL12B', 'Ciechanowski', '3', 'PL', '21', '1316');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL12C', 'Płocki', '3', 'PL', '21', '1317');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL12D', 'Ostrołęcki', '3', 'PL', '21', '1318');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL12E', 'Siedlecki', '3', 'PL', '21', '1319');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL2', 'REGION POŁUDNIOWY', '1', 'PL', '21', '1320');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL21', 'Małopolskie', '2', 'PL', '21', '1321');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL213', 'Miasto Kraków', '3', 'PL', '21', '1322');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL214', 'Krakowski', '3', 'PL', '21', '1323');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL217', 'Tarnowski', '3', 'PL', '21', '1324');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL218', 'Nowosądecki', '3', 'PL', '21', '1325');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL219', 'Nowotarski', '3', 'PL', '21', '1326');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL21A', 'Oświęcimski', '3', 'PL', '21', '1327');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL22', 'Śląskie', '2', 'PL', '21', '1328');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL224', 'Częstochowski', '3', 'PL', '21', '1329');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL225', 'Bielski', '3', 'PL', '21', '1330');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL227', 'Rybnicki', '3', 'PL', '21', '1331');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL228', 'Bytomski', '3', 'PL', '21', '1332');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL229', 'Gliwicki', '3', 'PL', '21', '1333');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL22A', 'Katowicki', '3', 'PL', '21', '1334');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL22B', 'Sosnowiecki', '3', 'PL', '21', '1335');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL22C', 'Tyski', '3', 'PL', '21', '1336');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL3', 'REGION WSCHODNI', '1', 'PL', '21', '1337');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL31', 'Lubelskie', '2', 'PL', '21', '1338');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL311', 'Bialski', '3', 'PL', '21', '1339');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL312', 'Chełmsko-zamojski', '3', 'PL', '21', '1340');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL314', 'Lubelski', '3', 'PL', '21', '1341');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL315', 'Puławski', '3', 'PL', '21', '1342');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL32', 'Podkarpackie', '2', 'PL', '21', '1343');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL323', 'Krośnieński', '3', 'PL', '21', '1344');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL324', 'Przemyski', '3', 'PL', '21', '1345');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL325', 'Rzeszowski', '3', 'PL', '21', '1346');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL326', 'Tarnobrzeski', '3', 'PL', '21', '1347');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL33', 'Świętokrzyskie', '2', 'PL', '21', '1348');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL331', 'Kielecki', '3', 'PL', '21', '1349');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL332', 'Sandomiersko-jędrzejowski', '3', 'PL', '21', '1350');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL34', 'Podlaskie', '2', 'PL', '21', '1351');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL343', 'Białostocki', '3', 'PL', '21', '1352');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL344', 'Łomżyński', '3', 'PL', '21', '1353');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL345', 'Suwalski', '3', 'PL', '21', '1354');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL4', 'REGION PÓŁNOCNO-ZACHODNI', '1', 'PL', '21', '1355');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL41', 'Wielkopolskie', '2', 'PL', '21', '1356');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL411', 'Pilski', '3', 'PL', '21', '1357');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL414', 'Koniński', '3', 'PL', '21', '1358');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL415', 'Miasto Poznań', '3', 'PL', '21', '1359');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL416', 'Kaliski', '3', 'PL', '21', '1360');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL417', 'Leszczyński', '3', 'PL', '21', '1361');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL418', 'Poznański', '3', 'PL', '21', '1362');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL42', 'Zachodniopomorskie', '2', 'PL', '21', '1363');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL424', 'Miasto Szczecin', '3', 'PL', '21', '1364');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL426', 'Koszaliński', '3', 'PL', '21', '1365');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL427', 'Szczecinecko-pyrzycki', '3', 'PL', '21', '1366');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL428', 'Szczeciński', '3', 'PL', '21', '1367');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL43', 'Lubuskie', '2', 'PL', '21', '1368');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL431', 'Gorzowski', '3', 'PL', '21', '1369');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL432', 'Zielonogórski', '3', 'PL', '21', '1370');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL5', 'REGION POŁUDNIOWO-ZACHODNI', '1', 'PL', '21', '1371');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL51', 'Dolnośląskie', '2', 'PL', '21', '1372');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL514', 'Miasto Wrocław', '3', 'PL', '21', '1373');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL515', 'Jeleniogórski', '3', 'PL', '21', '1374');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL516', 'Legnicko-głogowski', '3', 'PL', '21', '1375');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL517', 'Wałbrzyski', '3', 'PL', '21', '1376');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL518', 'Wrocławski', '3', 'PL', '21', '1377');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL52', 'Opolskie', '2', 'PL', '21', '1378');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL523', 'Nyski', '3', 'PL', '21', '1379');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL524', 'Opolski', '3', 'PL', '21', '1380');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL6', 'REGION PÓŁNOCNY', '1', 'PL', '21', '1381');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL61', 'Kujawsko-pomorskie', '2', 'PL', '21', '1382');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL613', 'Bydgosko-toruński', '3', 'PL', '21', '1383');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL616', 'Grudziądzki', '3', 'PL', '21', '1384');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL617', 'Inowrocławski', '3', 'PL', '21', '1385');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL618', 'Świecki', '3', 'PL', '21', '1386');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL619', 'Włocławski', '3', 'PL', '21', '1387');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL62', 'Warmińsko-mazurskie', '2', 'PL', '21', '1388');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL621', 'Elbląski', '3', 'PL', '21', '1389');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL622', 'Olsztyński', '3', 'PL', '21', '1390');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL623', 'Ełcki', '3', 'PL', '21', '1391');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL63', 'Pomorskie', '2', 'PL', '21', '1392');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL633', 'Trójmiejski', '3', 'PL', '21', '1393');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL634', 'Gdański', '3', 'PL', '21', '1394');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL636', 'Słupski', '3', 'PL', '21', '1395');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL637', 'Chojnicki', '3', 'PL', '21', '1396');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PL638', 'Starogardzki', '3', 'PL', '21', '1397');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PLZ', 'EXTRA-REGIO NUTS 1', '1', 'PL', '21', '1398');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PLZZ', 'Extra-Regio NUTS 2', '2', 'PL', '21', '1399');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PLZZZ', 'Extra-Regio NUTS 3', '3', 'PL', '21', '1400');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT', 'PORTUGAL', '0', 'PT', '22', '1401');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT1', 'CONTINENTE', '1', 'PT', '22', '1402');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT11', 'Norte', '2', 'PT', '22', '1403');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT111', 'Alto Minho', '3', 'PT', '22', '1404');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT112', 'Cávado', '3', 'PT', '22', '1405');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT119', 'Ave', '3', 'PT', '22', '1406');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT11A', 'Área Metropolitana do Porto', '3', 'PT', '22', '1407');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT11B', 'Alto Tâmega', '3', 'PT', '22', '1408');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT11C', 'Tâmega e Sousa', '3', 'PT', '22', '1409');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT11D', 'Douro', '3', 'PT', '22', '1410');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT11E', 'Terras de Trás-os-Montes', '3', 'PT', '22', '1411');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT15', 'Algarve', '2', 'PT', '22', '1412');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT150', 'Algarve', '3', 'PT', '22', '1413');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT16', 'Centro (PT)', '2', 'PT', '22', '1414');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT16B', 'Oeste', '3', 'PT', '22', '1415');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT16D', 'Região de Aveiro', '3', 'PT', '22', '1416');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT16E', 'Região de Coimbra', '3', 'PT', '22', '1417');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT16F', 'Região de Leiria', '3', 'PT', '22', '1418');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT16G', 'Viseu Dão Lafões', '3', 'PT', '22', '1419');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT16H', 'Beira Baixa', '3', 'PT', '22', '1420');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT16I', 'Médio Tejo', '3', 'PT', '22', '1421');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT16J', 'Beiras e Serra da Estrela', '3', 'PT', '22', '1422');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT17', 'Área Metropolitana de Lisboa', '2', 'PT', '22', '1423');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT170', 'Área Metropolitana de Lisboa', '3', 'PT', '22', '1424');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT18', 'Alentejo', '2', 'PT', '22', '1425');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT181', 'Alentejo Litoral', '3', 'PT', '22', '1426');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT184', 'Baixo Alentejo', '3', 'PT', '22', '1427');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT185', 'Lezíria do Tejo', '3', 'PT', '22', '1428');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT186', 'Alto Alentejo', '3', 'PT', '22', '1429');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT187', 'Alentejo Central', '3', 'PT', '22', '1430');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT2', 'REGIÃO AUTÓNOMA DOS AÇORES', '1', 'PT', '22', '1431');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT20', 'Região Autónoma dos Açores', '2', 'PT', '22', '1432');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT200', 'Região Autónoma dos Açores', '3', 'PT', '22', '1433');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT3', 'REGIÃO AUTÓNOMA DA MADEIRA', '1', 'PT', '22', '1434');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT30', 'Região Autónoma da Madeira', '2', 'PT', '22', '1435');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PT300', 'Região Autónoma da Madeira', '3', 'PT', '22', '1436');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PTZ', 'EXTRA-REGIO NUTS 1', '1', 'PT', '22', '1437');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PTZZ', 'Extra-Regio NUTS 2', '2', 'PT', '22', '1438');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('PTZZZ', 'Extra-Regio NUTS 3', '3', 'PT', '22', '1439');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO', 'ROMÂNIA', '0', 'RO', '23', '1440');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO1', 'MACROREGIUNEA UNU', '1', 'RO', '23', '1441');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO11', 'Nord-Vest', '2', 'RO', '23', '1442');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO111', 'Bihor', '3', 'RO', '23', '1443');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO112', 'Bistriţa-Năsăud', '3', 'RO', '23', '1444');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO113', 'Cluj', '3', 'RO', '23', '1445');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO114', 'Maramureş', '3', 'RO', '23', '1446');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO115', 'Satu Mare', '3', 'RO', '23', '1447');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO116', 'Sălaj', '3', 'RO', '23', '1448');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO12', 'Centru', '2', 'RO', '23', '1449');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO121', 'Alba', '3', 'RO', '23', '1450');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO122', 'Braşov', '3', 'RO', '23', '1451');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO123', 'Covasna', '3', 'RO', '23', '1452');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO124', 'Harghita', '3', 'RO', '23', '1453');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO125', 'Mureş', '3', 'RO', '23', '1454');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO126', 'Sibiu', '3', 'RO', '23', '1455');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO2', 'MACROREGIUNEA DOI', '1', 'RO', '23', '1456');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO21', 'Nord-Est', '2', 'RO', '23', '1457');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO211', 'Bacău', '3', 'RO', '23', '1458');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO212', 'Botoşani', '3', 'RO', '23', '1459');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO213', 'Iaşi', '3', 'RO', '23', '1460');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO214', 'Neamţ', '3', 'RO', '23', '1461');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO215', 'Suceava', '3', 'RO', '23', '1462');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO216', 'Vaslui', '3', 'RO', '23', '1463');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO22', 'Sud-Est', '2', 'RO', '23', '1464');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO221', 'Brăila', '3', 'RO', '23', '1465');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO222', 'Buzău', '3', 'RO', '23', '1466');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO223', 'Constanţa', '3', 'RO', '23', '1467');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO224', 'Galaţi', '3', 'RO', '23', '1468');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO225', 'Tulcea', '3', 'RO', '23', '1469');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO226', 'Vrancea', '3', 'RO', '23', '1470');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO3', 'MACROREGIUNEA TREI', '1', 'RO', '23', '1471');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO31', 'Sud - Muntenia', '2', 'RO', '23', '1472');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO311', 'Argeş', '3', 'RO', '23', '1473');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO312', 'Călăraşi', '3', 'RO', '23', '1474');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO313', 'Dâmboviţa', '3', 'RO', '23', '1475');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO314', 'Giurgiu', '3', 'RO', '23', '1476');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO315', 'Ialomiţa', '3', 'RO', '23', '1477');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO316', 'Prahova', '3', 'RO', '23', '1478');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO317', 'Teleorman', '3', 'RO', '23', '1479');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO32', 'Bucureşti - Ilfov', '2', 'RO', '23', '1480');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO321', 'Bucureşti', '3', 'RO', '23', '1481');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO322', 'Ilfov', '3', 'RO', '23', '1482');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO4', 'MACROREGIUNEA PATRU', '1', 'RO', '23', '1483');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO41', 'Sud-Vest Oltenia', '2', 'RO', '23', '1484');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO411', 'Dolj', '3', 'RO', '23', '1485');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO412', 'Gorj', '3', 'RO', '23', '1486');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO413', 'Mehedinţi', '3', 'RO', '23', '1487');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO414', 'Olt', '3', 'RO', '23', '1488');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO415', 'Vâlcea', '3', 'RO', '23', '1489');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO42', 'Vest', '2', 'RO', '23', '1490');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO421', 'Arad', '3', 'RO', '23', '1491');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO422', 'Caraş-Severin', '3', 'RO', '23', '1492');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO423', 'Hunedoara', '3', 'RO', '23', '1493');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('RO424', 'Timiş', '3', 'RO', '23', '1494');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ROZ', 'EXTRA-REGIO NUTS 1', '1', 'RO', '23', '1495');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ROZZ', 'Extra-Regio NUTS 2', '2', 'RO', '23', '1496');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('ROZZZ', 'Extra-Regio NUTS 3', '3', 'RO', '23', '1497');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI', 'SLOVENIJA', '0', 'SI', '24', '1498');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI0', 'SLOVENIJA', '1', 'SI', '24', '1499');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI03', 'Vzhodna Slovenija', '2', 'SI', '24', '1500');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI031', 'Pomurska', '3', 'SI', '24', '1501');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI032', 'Podravska', '3', 'SI', '24', '1502');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI033', 'Koroška', '3', 'SI', '24', '1503');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI034', 'Savinjska', '3', 'SI', '24', '1504');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI035', 'Zasavska', '3', 'SI', '24', '1505');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI036', 'Posavska', '3', 'SI', '24', '1506');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI037', 'Jugovzhodna Slovenija', '3', 'SI', '24', '1507');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI038', 'Primorsko-notranjska', '3', 'SI', '24', '1508');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI04', 'Zahodna Slovenija', '2', 'SI', '24', '1509');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI041', 'Osrednjeslovenska', '3', 'SI', '24', '1510');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI042', 'Gorenjska', '3', 'SI', '24', '1511');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI043', 'Goriška', '3', 'SI', '24', '1512');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SI044', 'Obalno-kraška', '3', 'SI', '24', '1513');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SIZ', 'EXTRA-REGIO NUTS 1', '1', 'SI', '24', '1514');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SIZZ', 'Extra-Regio NUTS 2', '2', 'SI', '24', '1515');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SIZZZ', 'Extra-Regio NUTS 3', '3', 'SI', '24', '1516');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK', 'SLOVENSKO', '0', 'SK', '25', '1517');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK0', 'SLOVENSKO', '1', 'SK', '25', '1518');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK01', 'Bratislavský kraj', '2', 'SK', '25', '1519');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK010', 'Bratislavský kraj', '3', 'SK', '25', '1520');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK02', 'Západné Slovensko', '2', 'SK', '25', '1521');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK021', 'Trnavský kraj', '3', 'SK', '25', '1522');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK022', 'Trenčiansky kraj', '3', 'SK', '25', '1523');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK023', 'Nitriansky kraj', '3', 'SK', '25', '1524');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK03', 'Stredné Slovensko', '2', 'SK', '25', '1525');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK031', 'Žilinský kraj', '3', 'SK', '25', '1526');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK032', 'Banskobystrický kraj', '3', 'SK', '25', '1527');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK04', 'Východné Slovensko', '2', 'SK', '25', '1528');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK041', 'Prešovský kraj', '3', 'SK', '25', '1529');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SK042', 'Košický kraj', '3', 'SK', '25', '1530');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SKZ', 'EXTRA-REGIO NUTS 1', '1', 'SK', '25', '1531');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SKZZ', 'Extra-Regio NUTS 2', '2', 'SK', '25', '1532');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SKZZZ', 'Extra-Regio NUTS 3', '3', 'SK', '25', '1533');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI', 'SUOMI / FINLAND', '0', 'FI', '26', '1534');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1', 'MANNER-SUOMI', '1', 'FI', '26', '1535');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI19', 'Länsi-Suomi', '2', 'FI', '26', '1536');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI193', 'Keski-Suomi', '3', 'FI', '26', '1537');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI194', 'Etelä-Pohjanmaa', '3', 'FI', '26', '1538');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI195', 'Pohjanmaa', '3', 'FI', '26', '1539');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI196', 'Satakunta', '3', 'FI', '26', '1540');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI197', 'Pirkanmaa', '3', 'FI', '26', '1541');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1B', 'Helsinki-Uusimaa', '2', 'FI', '26', '1542');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1B1', 'Helsinki-Uusimaa', '3', 'FI', '26', '1543');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1C', 'Etelä-Suomi', '2', 'FI', '26', '1544');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1C1', 'Varsinais-Suomi', '3', 'FI', '26', '1545');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1C2', 'Kanta-Häme', '3', 'FI', '26', '1546');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1C3', 'Päijät-Häme', '3', 'FI', '26', '1547');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1C4', 'Kymenlaakso', '3', 'FI', '26', '1548');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1C5', 'Etelä-Karjala', '3', 'FI', '26', '1549');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1D', 'Pohjois- ja Itä-Suomi', '2', 'FI', '26', '1550');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1D1', 'Etelä-Savo', '3', 'FI', '26', '1551');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1D2', 'Pohjois-Savo', '3', 'FI', '26', '1552');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1D3', 'Pohjois-Karjala', '3', 'FI', '26', '1553');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1D4', 'Kainuu', '3', 'FI', '26', '1554');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1D5', 'Keski-Pohjanmaa', '3', 'FI', '26', '1555');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1D6', 'Pohjois-Pohjanmaa', '3', 'FI', '26', '1556');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI1D7', 'Lappi', '3', 'FI', '26', '1557');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI2', 'ÅLAND', '1', 'FI', '26', '1558');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI20', 'Åland', '2', 'FI', '26', '1559');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FI200', 'Åland', '3', 'FI', '26', '1560');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FIZ', 'EXTRA-REGIO NUTS 1', '1', 'FI', '26', '1561');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FIZZ', 'Extra-Regio NUTS 2', '2', 'FI', '26', '1562');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('FIZZZ', 'Extra-Regio NUTS 3', '3', 'FI', '26', '1563');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE', 'SVERIGE', '0', 'SE', '27', '1564');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE1', 'ÖSTRA SVERIGE', '1', 'SE', '27', '1565');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE11', 'Stockholm', '2', 'SE', '27', '1566');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE110', 'Stockholms län', '3', 'SE', '27', '1567');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE12', 'Östra Mellansverige', '2', 'SE', '27', '1568');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE121', 'Uppsala län', '3', 'SE', '27', '1569');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE122', 'Södermanlands län', '3', 'SE', '27', '1570');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE123', 'Östergötlands län', '3', 'SE', '27', '1571');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE124', 'Örebro län', '3', 'SE', '27', '1572');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE125', 'Västmanlands län', '3', 'SE', '27', '1573');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE2', 'SÖDRA SVERIGE', '1', 'SE', '27', '1574');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE21', 'Småland med öarna', '2', 'SE', '27', '1575');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE211', 'Jönköpings län', '3', 'SE', '27', '1576');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE212', 'Kronobergs län', '3', 'SE', '27', '1577');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE213', 'Kalmar län', '3', 'SE', '27', '1578');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE214', 'Gotlands län', '3', 'SE', '27', '1579');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE22', 'Sydsverige', '2', 'SE', '27', '1580');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE221', 'Blekinge län', '3', 'SE', '27', '1581');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE224', 'Skåne län', '3', 'SE', '27', '1582');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE23', 'Västsverige', '2', 'SE', '27', '1583');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE231', 'Hallands län', '3', 'SE', '27', '1584');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE232', 'Västra Götalands län', '3', 'SE', '27', '1585');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE3', 'NORRA SVERIGE', '1', 'SE', '27', '1586');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE31', 'Norra Mellansverige', '2', 'SE', '27', '1587');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE311', 'Värmlands län', '3', 'SE', '27', '1588');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE312', 'Dalarnas län', '3', 'SE', '27', '1589');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE313', 'Gävleborgs län', '3', 'SE', '27', '1590');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE32', 'Mellersta Norrland', '2', 'SE', '27', '1591');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE321', 'Västernorrlands län', '3', 'SE', '27', '1592');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE322', 'Jämtlands län', '3', 'SE', '27', '1593');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE33', 'Övre Norrland', '2', 'SE', '27', '1594');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE331', 'Västerbottens län', '3', 'SE', '27', '1595');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SE332', 'Norrbottens län', '3', 'SE', '27', '1596');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SEZ', 'EXTRA-REGIO NUTS 1', '1', 'SE', '27', '1597');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SEZZ', 'Extra-Regio NUTS 2', '2', 'SE', '27', '1598');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('SEZZZ', 'Extra-Regio NUTS 3', '3', 'SE', '27', '1599');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UK', 'UNITED KINGDOM', '0', 'UK', '28', '1600');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKC', 'NORTH EAST (ENGLAND)', '1', 'UK', '28', '1601');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKC1', 'Tees Valley and Durham', '2', 'UK', '28', '1602');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKC11', 'Hartlepool and Stockton-on-Tees', '3', 'UK', '28', '1603');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKC12', 'South Teesside', '3', 'UK', '28', '1604');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKC13', 'Darlington', '3', 'UK', '28', '1605');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKC14', 'Durham CC', '3', 'UK', '28', '1606');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKC2', 'Northumberland and Tyne and Wear', '2', 'UK', '28', '1607');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKC21', 'Northumberland', '3', 'UK', '28', '1608');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKC22', 'Tyneside', '3', 'UK', '28', '1609');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKC23', 'Sunderland', '3', 'UK', '28', '1610');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD', 'NORTH WEST (ENGLAND)', '1', 'UK', '28', '1611');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD1', 'Cumbria', '2', 'UK', '28', '1612');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD11', 'West Cumbria', '3', 'UK', '28', '1613');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD12', 'East Cumbria', '3', 'UK', '28', '1614');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD3', 'Greater Manchester', '2', 'UK', '28', '1615');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD33', 'Manchester', '3', 'UK', '28', '1616');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD34', 'Greater Manchester South West', '3', 'UK', '28', '1617');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD35', 'Greater Manchester South East', '3', 'UK', '28', '1618');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD36', 'Greater Manchester North West', '3', 'UK', '28', '1619');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD37', 'Greater Manchester North East', '3', 'UK', '28', '1620');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD4', 'Lancashire', '2', 'UK', '28', '1621');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD41', 'Blackburn with Darwen', '3', 'UK', '28', '1622');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD42', 'Blackpool', '3', 'UK', '28', '1623');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD44', 'Lancaster and Wyre', '3', 'UK', '28', '1624');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD45', 'Mid Lancashire', '3', 'UK', '28', '1625');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD46', 'East Lancashire', '3', 'UK', '28', '1626');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD47', 'Chorley and West Lancashire', '3', 'UK', '28', '1627');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD6', 'Cheshire', '2', 'UK', '28', '1628');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD61', 'Warrington', '3', 'UK', '28', '1629');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD62', 'Cheshire East', '3', 'UK', '28', '1630');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD63', 'Cheshire West and Chester', '3', 'UK', '28', '1631');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD7', 'Merseyside', '2', 'UK', '28', '1632');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD71', 'East Merseyside', '3', 'UK', '28', '1633');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD72', 'Liverpool', '3', 'UK', '28', '1634');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD73', 'Sefton', '3', 'UK', '28', '1635');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKD74', 'Wirral', '3', 'UK', '28', '1636');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE', 'YORKSHIRE AND THE HUMBER', '1', 'UK', '28', '1637');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE1', 'East Yorkshire and Northern Lincolnshire', '2', 'UK', '28', '1638');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE11', 'Kingston upon Hull, City of', '3', 'UK', '28', '1639');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE12', 'East Riding of Yorkshire', '3', 'UK', '28', '1640');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE13', 'North and North East Lincolnshire', '3', 'UK', '28', '1641');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE2', 'North Yorkshire', '2', 'UK', '28', '1642');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE21', 'York', '3', 'UK', '28', '1643');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE22', 'North Yorkshire CC', '3', 'UK', '28', '1644');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE3', 'South Yorkshire', '2', 'UK', '28', '1645');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE31', 'Barnsley, Doncaster and Rotherham', '3', 'UK', '28', '1646');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE32', 'Sheffield', '3', 'UK', '28', '1647');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE4', 'West Yorkshire', '2', 'UK', '28', '1648');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE41', 'Bradford', '3', 'UK', '28', '1649');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE42', 'Leeds', '3', 'UK', '28', '1650');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE44', 'Calderdale and Kirklees', '3', 'UK', '28', '1651');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKE45', 'Wakefield', '3', 'UK', '28', '1652');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF', 'EAST MIDLANDS (ENGLAND)', '1', 'UK', '28', '1653');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF1', 'Derbyshire and Nottinghamshire', '2', 'UK', '28', '1654');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF11', 'Derby', '3', 'UK', '28', '1655');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF12', 'East Derbyshire', '3', 'UK', '28', '1656');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF13', 'South and West Derbyshire', '3', 'UK', '28', '1657');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF14', 'Nottingham', '3', 'UK', '28', '1658');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF15', 'North Nottinghamshire', '3', 'UK', '28', '1659');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF16', 'South Nottinghamshire', '3', 'UK', '28', '1660');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF2', 'Leicestershire, Rutland and Northamptonshire', '2', 'UK', '28', '1661');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF21', 'Leicester', '3', 'UK', '28', '1662');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF22', 'Leicestershire CC and Rutland', '3', 'UK', '28', '1663');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF24', 'West Northamptonshire', '3', 'UK', '28', '1664');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF25', 'North Northamptonshire', '3', 'UK', '28', '1665');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF3', 'Lincolnshire', '2', 'UK', '28', '1666');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKF30', 'Lincolnshire', '3', 'UK', '28', '1667');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG', 'WEST MIDLANDS (ENGLAND)', '1', 'UK', '28', '1668');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG1', 'Herefordshire, Worcestershire and Warwickshire', '2', 'UK', '28', '1669');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG11', 'Herefordshire, County of', '3', 'UK', '28', '1670');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG12', 'Worcestershire', '3', 'UK', '28', '1671');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG13', 'Warwickshire', '3', 'UK', '28', '1672');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG2', 'Shropshire and Staffordshire', '2', 'UK', '28', '1673');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG21', 'Telford and Wrekin', '3', 'UK', '28', '1674');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG22', 'Shropshire CC', '3', 'UK', '28', '1675');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG23', 'Stoke-on-Trent', '3', 'UK', '28', '1676');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG24', 'Staffordshire CC', '3', 'UK', '28', '1677');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG3', 'West Midlands', '2', 'UK', '28', '1678');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG31', 'Birmingham', '3', 'UK', '28', '1679');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG32', 'Solihull', '3', 'UK', '28', '1680');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG33', 'Coventry', '3', 'UK', '28', '1681');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG36', 'Dudley', '3', 'UK', '28', '1682');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG37', 'Sandwell', '3', 'UK', '28', '1683');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG38', 'Walsall', '3', 'UK', '28', '1684');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKG39', 'Wolverhampton', '3', 'UK', '28', '1685');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH', 'EAST OF ENGLAND', '1', 'UK', '28', '1686');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH1', 'East Anglia', '2', 'UK', '28', '1687');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH11', 'Peterborough', '3', 'UK', '28', '1688');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH12', 'Cambridgeshire CC', '3', 'UK', '28', '1689');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH14', 'Suffolk', '3', 'UK', '28', '1690');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH15', 'Norwich and East Norfolk', '3', 'UK', '28', '1691');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH16', 'North and West Norfolk', '3', 'UK', '28', '1692');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH17', 'Breckland and South Norfolk', '3', 'UK', '28', '1693');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH2', 'Bedfordshire and Hertfordshire', '2', 'UK', '28', '1694');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH21', 'Luton', '3', 'UK', '28', '1695');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH23', 'Hertfordshire', '3', 'UK', '28', '1696');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH24', 'Bedford', '3', 'UK', '28', '1697');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH25', 'Central Bedfordshire', '3', 'UK', '28', '1698');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH3', 'Essex', '2', 'UK', '28', '1699');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH31', 'Southend-on-Sea', '3', 'UK', '28', '1700');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH32', 'Thurrock', '3', 'UK', '28', '1701');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH34', 'Essex Haven Gateway', '3', 'UK', '28', '1702');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH35', 'West Essex', '3', 'UK', '28', '1703');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH36', 'Heart of Essex', '3', 'UK', '28', '1704');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKH37', 'Essex Thames Gateway', '3', 'UK', '28', '1705');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI', 'LONDON', '1', 'UK', '28', '1706');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI3', 'Inner London - West', '2', 'UK', '28', '1707');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI31', 'Camden and City of London', '3', 'UK', '28', '1708');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI32', 'Westminster', '3', 'UK', '28', '1709');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI33', 'Kensington & Chelsea and Hammersmith & Fulham', '3', 'UK', '28', '1710');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI34', 'Wandsworth', '3', 'UK', '28', '1711');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI4', 'Inner London - East', '2', 'UK', '28', '1712');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI41', 'Hackney and Newham', '3', 'UK', '28', '1713');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI42', 'Tower Hamlets', '3', 'UK', '28', '1714');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI43', 'Haringey and Islington', '3', 'UK', '28', '1715');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI44', 'Lewisham and Southwark', '3', 'UK', '28', '1716');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI45', 'Lambeth', '3', 'UK', '28', '1717');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI5', 'Outer London - East and North East', '2', 'UK', '28', '1718');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI51', 'Bexley and Greenwich', '3', 'UK', '28', '1719');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI52', 'Barking & Dagenham and Havering', '3', 'UK', '28', '1720');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI53', 'Redbridge and Waltham Forest', '3', 'UK', '28', '1721');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI54', 'Enfield', '3', 'UK', '28', '1722');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI6', 'Outer London - South', '2', 'UK', '28', '1723');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI61', 'Bromley', '3', 'UK', '28', '1724');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI62', 'Croydon', '3', 'UK', '28', '1725');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI63', 'Merton, Kingston upon Thames and Sutton', '3', 'UK', '28', '1726');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI7', 'Outer London - West and North West', '2', 'UK', '28', '1727');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI71', 'Barnet', '3', 'UK', '28', '1728');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI72', 'Brent', '3', 'UK', '28', '1729');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI73', 'Ealing', '3', 'UK', '28', '1730');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI74', 'Harrow and Hillingdon', '3', 'UK', '28', '1731');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKI75', 'Hounslow and Richmond upon Thames', '3', 'UK', '28', '1732');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ', 'SOUTH EAST (ENGLAND)', '1', 'UK', '28', '1733');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ1', 'Berkshire, Buckinghamshire and Oxfordshire', '2', 'UK', '28', '1734');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ11', 'Berkshire', '3', 'UK', '28', '1735');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ12', 'Milton Keynes', '3', 'UK', '28', '1736');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ13', 'Buckinghamshire CC', '3', 'UK', '28', '1737');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ14', 'Oxfordshire', '3', 'UK', '28', '1738');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ2', 'Surrey, East and West Sussex', '2', 'UK', '28', '1739');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ21', 'Brighton and Hove', '3', 'UK', '28', '1740');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ22', 'East Sussex CC', '3', 'UK', '28', '1741');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ25', 'West Surrey', '3', 'UK', '28', '1742');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ26', 'East Surrey', '3', 'UK', '28', '1743');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ27', 'West Sussex (South West)', '3', 'UK', '28', '1744');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ28', 'West Sussex (North East)', '3', 'UK', '28', '1745');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ3', 'Hampshire and Isle of Wight', '2', 'UK', '28', '1746');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ31', 'Portsmouth', '3', 'UK', '28', '1747');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ32', 'Southampton', '3', 'UK', '28', '1748');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ34', 'Isle of Wight', '3', 'UK', '28', '1749');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ35', 'South Hampshire', '3', 'UK', '28', '1750');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ36', 'Central Hampshire', '3', 'UK', '28', '1751');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ37', 'North Hampshire', '3', 'UK', '28', '1752');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ4', 'Kent', '2', 'UK', '28', '1753');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ41', 'Medway', '3', 'UK', '28', '1754');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ43', 'Kent Thames Gateway', '3', 'UK', '28', '1755');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ44', 'East Kent', '3', 'UK', '28', '1756');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ45', 'Mid Kent', '3', 'UK', '28', '1757');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKJ46', 'West Kent', '3', 'UK', '28', '1758');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK', 'SOUTH WEST (ENGLAND)', '1', 'UK', '28', '1759');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK1', 'Gloucestershire, Wiltshire and Bristol/Bath area', '2', 'UK', '28', '1760');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK11', 'Bristol, City of', '3', 'UK', '28', '1761');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK12', 'Bath and North East Somerset, North Somerset and South Gloucestershire', '3', 'UK', '28', '1762');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK13', 'Gloucestershire', '3', 'UK', '28', '1763');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK14', 'Swindon', '3', 'UK', '28', '1764');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK15', 'Wiltshire CC', '3', 'UK', '28', '1765');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK2', 'Dorset and Somerset', '2', 'UK', '28', '1766');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK21', 'Bournemouth and Poole', '3', 'UK', '28', '1767');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK22', 'Dorset CC', '3', 'UK', '28', '1768');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK23', 'Somerset', '3', 'UK', '28', '1769');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK3', 'Cornwall and Isles of Scilly', '2', 'UK', '28', '1770');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK30', 'Cornwall and Isles of Scilly', '3', 'UK', '28', '1771');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK4', 'Devon', '2', 'UK', '28', '1772');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK41', 'Plymouth', '3', 'UK', '28', '1773');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK42', 'Torbay', '3', 'UK', '28', '1774');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKK43', 'Devon CC', '3', 'UK', '28', '1775');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL', 'WALES', '1', 'UK', '28', '1776');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL1', 'West Wales and The Valleys', '2', 'UK', '28', '1777');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL11', 'Isle of Anglesey', '3', 'UK', '28', '1778');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL12', 'Gwynedd', '3', 'UK', '28', '1779');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL13', 'Conwy and Denbighshire', '3', 'UK', '28', '1780');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL14', 'South West Wales', '3', 'UK', '28', '1781');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL15', 'Central Valleys', '3', 'UK', '28', '1782');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL16', 'Gwent Valleys', '3', 'UK', '28', '1783');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL17', 'Bridgend and Neath Port Talbot', '3', 'UK', '28', '1784');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL18', 'Swansea', '3', 'UK', '28', '1785');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL2', 'East Wales', '2', 'UK', '28', '1786');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL21', 'Monmouthshire and Newport', '3', 'UK', '28', '1787');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL22', 'Cardiff and Vale of Glamorgan', '3', 'UK', '28', '1788');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL23', 'Flintshire and Wrexham', '3', 'UK', '28', '1789');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKL24', 'Powys', '3', 'UK', '28', '1790');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM', 'SCOTLAND', '1', 'UK', '28', '1791');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM2', 'Eastern Scotland', '2', 'UK', '28', '1792');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM21', 'Angus and Dundee City', '3', 'UK', '28', '1793');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM22', 'Clackmannanshire and Fife', '3', 'UK', '28', '1794');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM23', 'East Lothian and Midlothian', '3', 'UK', '28', '1795');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM24', 'Scottish B`_ORDER`s', '3', 'UK', '28', '1796');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM25', 'Edinburgh, City of', '3', 'UK', '28', '1797');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM26', 'Falkirk', '3', 'UK', '28', '1798');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM27', 'Perth & Kinross and Stirling', '3', 'UK', '28', '1799');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM28', 'West Lothian', '3', 'UK', '28', '1800');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM3', 'South Western Scotland', '2', 'UK', '28', '1801');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM31', 'East Dunbartonshire, West Dunbartonshire and Helensburgh & Lomond', '3', 'UK', '28', '1802');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM32', 'Dumfries & Galloway', '3', 'UK', '28', '1803');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM33', 'East Ayrshire and North Ayrshire mainland', '3', 'UK', '28', '1804');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM34', 'Glasgow City', '3', 'UK', '28', '1805');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM35', 'Inverclyde, East Renfrewshire and Renfrewshire', '3', 'UK', '28', '1806');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM36', 'North Lanarkshire', '3', 'UK', '28', '1807');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM37', 'South Ayrshire', '3', 'UK', '28', '1808');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM38', 'South Lanarkshire', '3', 'UK', '28', '1809');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM5', 'North Eastern Scotland', '2', 'UK', '28', '1810');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM50', 'Aberdeen City and Aberdeenshire', '3', 'UK', '28', '1811');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM6', 'Highlands and Islands', '2', 'UK', '28', '1812');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM61', 'Caithness & Sutherland and Ross & Cromarty', '3', 'UK', '28', '1813');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM62', 'Inverness & Nairn and Moray, Badenoch & Strathspey', '3', 'UK', '28', '1814');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM63', 'Lochaber, Skye & Lochalsh, Arran & Cumbrae and Argyll & Bute', '3', 'UK', '28', '1815');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM64', 'Eilean Siar (Western Isles)', '3', 'UK', '28', '1816');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM65', 'Orkney Islands', '3', 'UK', '28', '1817');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKM66', 'Shetland Islands', '3', 'UK', '28', '1818');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKN', 'NORTHERN IRELAND', '1', 'UK', '28', '1819');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKN0', 'Northern Ireland', '2', 'UK', '28', '1820');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKN01', 'Belfast', '3', 'UK', '28', '1821');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKN02', 'Outer Belfast', '3', 'UK', '28', '1822');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKN03', 'East of Northern Ireland', '3', 'UK', '28', '1823');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKN04', 'North of Northern Ireland', '3', 'UK', '28', '1824');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKN05', 'West and South of Northern Ireland', '3', 'UK', '28', '1825');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKZ', 'EXTRA-REGIO NUTS 1', '1', 'UK', '28', '1826');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKZZ', 'Extra-Regio NUTS 2', '2', 'UK', '28', '1827');
-INSERT INTO nuts (code, label, level, COUNTRY_CODE, `_ORDER`, SORTING)
-VALUES ('UKZZZ', 'Extra-Regio NUTS 3', '3', 'UK', '28', '1828');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE', N'BELGIQUE-BELGIË', N'0', N'BE', N'1', N'1');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE1', N'RÉGION DE BRUXELLES-CAPITALE / BRUSSELS HOOFDSTEDELIJK GEWEST', N'1', N'BE', N'1', N'2');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE10', N'Région de Bruxelles-Capitale / Brussels Hoofdstedelijk Gewest', N'2', N'BE', N'1', N'3');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE100', N'Arr. de Bruxelles-Capitale / Arr. van Brussel-Hoofdstad', N'3', N'BE', N'1', N'4');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE2', N'VLAAGEWEST', N'1', N'BE', N'1', N'5');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE21', N'Prov. Antwerpen', N'2', N'BE', N'1', N'6');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE211', N'Arr. Antwerpen', N'3', N'BE', N'1', N'7');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE212', N'Arr. Mechelen', N'3', N'BE', N'1', N'8');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE213', N'Arr. Turnhout', N'3', N'BE', N'1', N'9');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE22', N'Prov. Limburg (BE)', N'2', N'BE', N'1', N'10');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE221', N'Arr. Hasselt', N'3', N'BE', N'1', N'11');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE222', N'Arr. Maaseik', N'3', N'BE', N'1', N'12');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE223', N'Arr. Tongeren', N'3', N'BE', N'1', N'13');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE23', N'Prov. Oost-Vlaanderen', N'2', N'BE', N'1', N'14');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE231', N'Arr. Aalst', N'3', N'BE', N'1', N'15');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE232', N'Arr. Dendermonde', N'3', N'BE', N'1', N'16');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE233', N'Arr. Eeklo', N'3', N'BE', N'1', N'17');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE234', N'Arr. Gent', N'3', N'BE', N'1', N'18');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE235', N'Arr. Oudenaarde', N'3', N'BE', N'1', N'19');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE236', N'Arr. Sint-Niklaas', N'3', N'BE', N'1', N'20');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE24', N'Prov. Vlaams-Brabant', N'2', N'BE', N'1', N'21');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE241', N'Arr. Halle-Vilvoorde', N'3', N'BE', N'1', N'22');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE242', N'Arr. Leuven', N'3', N'BE', N'1', N'23');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE25', N'Prov. West-Vlaanderen', N'2', N'BE', N'1', N'24');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE251', N'Arr. Brugge', N'3', N'BE', N'1', N'25');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE252', N'Arr. Diksmuide', N'3', N'BE', N'1', N'26');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE253', N'Arr. Ieper', N'3', N'BE', N'1', N'27');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE254', N'Arr. Kortrijk', N'3', N'BE', N'1', N'28');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE255', N'Arr. Oostende', N'3', N'BE', N'1', N'29');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE256', N'Arr. Roeselare', N'3', N'BE', N'1', N'30');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE257', N'Arr. Tielt', N'3', N'BE', N'1', N'31');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE258', N'Arr. Veurne', N'3', N'BE', N'1', N'32');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE3', N'RÉGION WALLONNE', N'1', N'BE', N'1', N'33');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE31', N'Prov. Brabant Wallon', N'2', N'BE', N'1', N'34');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE310', N'Arr. Nivelles', N'3', N'BE', N'1', N'35');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE32', N'Prov. Hainaut', N'2', N'BE', N'1', N'36');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE321', N'Arr. Ath', N'3', N'BE', N'1', N'37');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE322', N'Arr. Charleroi', N'3', N'BE', N'1', N'38');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE323', N'Arr. Mons', N'3', N'BE', N'1', N'39');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE324', N'Arr. Mouscron', N'3', N'BE', N'1', N'40');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE325', N'Arr. Soignies', N'3', N'BE', N'1', N'41');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE326', N'Arr. Thuin', N'3', N'BE', N'1', N'42');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE327', N'Arr. Tournai', N'3', N'BE', N'1', N'43');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE33', N'Prov. Liège', N'2', N'BE', N'1', N'44');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE331', N'Arr. Huy', N'3', N'BE', N'1', N'45');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE332', N'Arr. Liège', N'3', N'BE', N'1', N'46');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE334', N'Arr. Waremme', N'3', N'BE', N'1', N'47');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE335', N'Arr. Verviers - communes francophones', N'3', N'BE', N'1', N'48');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE336', N'Bezirk Verviers - Deutschsprachige Gemeinschaft', N'3', N'BE', N'1', N'49');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE34', N'Prov. Luxembourg (BE)', N'2', N'BE', N'1', N'50');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE341', N'Arr. Arlon', N'3', N'BE', N'1', N'51');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE342', N'Arr. Bastogne', N'3', N'BE', N'1', N'52');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE343', N'Arr. Marche-en-Famenne', N'3', N'BE', N'1', N'53');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE344', N'Arr. Neufchâteau', N'3', N'BE', N'1', N'54');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE345', N'Arr. Virton', N'3', N'BE', N'1', N'55');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE35', N'Prov. Namur', N'2', N'BE', N'1', N'56');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE351', N'Arr. Dinant', N'3', N'BE', N'1', N'57');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE352', N'Arr. Namur', N'3', N'BE', N'1', N'58');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BE353', N'Arr. Philippeville', N'3', N'BE', N'1', N'59');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BEZ', N'EXTRA-REGIO NUTS 1', N'1', N'BE', N'1', N'60');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BEZZ', N'Extra-Regio NUTS 2', N'2', N'BE', N'1', N'61');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BEZZZ', N'Extra-Regio NUTS 3', N'3', N'BE', N'1', N'62');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG', N'БЪЛГАРИЯ (BULGARIA)', N'0', N'BG', N'2', N'63');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG3', N'СЕВЕРНА И ЮГОИЗТОЧНА БЪЛГАРИЯ (SEVERNA I YUGOIZTOCHNA BULGARIA)', N'1', N'BG', N'2', N'64');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG31', N'Северозападен (Severozapaden)', N'2', N'BG', N'2', N'65');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG311', N'Видин (Vidin)', N'3', N'BG', N'2', N'66');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG312', N'Монтана (Montana)', N'3', N'BG', N'2', N'67');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG313', N'Враца (Vratsa)', N'3', N'BG', N'2', N'68');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG314', N'Плевен (Pleven)', N'3', N'BG', N'2', N'69');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG315', N'Ловеч (Lovech)', N'3', N'BG', N'2', N'70');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG32', N'Северен централен (Severen tsentralen)', N'2', N'BG', N'2', N'71');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG321', N'Велико Търново (Veliko Tarnovo)', N'3', N'BG', N'2', N'72');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG322', N'Габрово (Gabrovo)', N'3', N'BG', N'2', N'73');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG323', N'Русе (Ruse)', N'3', N'BG', N'2', N'74');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG324', N'Разград (Razgrad)', N'3', N'BG', N'2', N'75');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG325', N'Силистра (Silistra)', N'3', N'BG', N'2', N'76');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG33', N'Североизточен (Severoiztochen)', N'2', N'BG', N'2', N'77');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG331', N'Варна (Varna)', N'3', N'BG', N'2', N'78');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG332', N'Добрич (Dobrich)', N'3', N'BG', N'2', N'79');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG333', N'Шумен (Shumen)', N'3', N'BG', N'2', N'80');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG334', N'Търговище (Targovishte)', N'3', N'BG', N'2', N'81');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG34', N'Югоизточен (Yugoiztochen)', N'2', N'BG', N'2', N'82');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG341', N'Бургас (Burgas)', N'3', N'BG', N'2', N'83');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG342', N'Сливен (Sliven)', N'3', N'BG', N'2', N'84');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG343', N'Ямбол (Yambol)', N'3', N'BG', N'2', N'85');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG344', N'Стара Загора (Stara Zagora)', N'3', N'BG', N'2', N'86');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG4', N'ЮГОЗАПАДНА И ЮЖНА ЦЕНТРАЛНА БЪЛГАРИЯ (YUGOZAPADNA I YUZHNA TSENTRALNA BULGARIA)', N'1', N'BG', N'2', N'87');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG41', N'Югозападен (Yugozapaden)', N'2', N'BG', N'2', N'88');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG411', N'София (столица) (Sofia (stolitsa))', N'3', N'BG', N'2', N'89');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG412', N'София (Sofia)', N'3', N'BG', N'2', N'90');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG413', N'Благоевград (Blagoevgrad)', N'3', N'BG', N'2', N'91');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG414', N'Перник (Pernik)', N'3', N'BG', N'2', N'92');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG415', N'Кюстендил (Kyustendil)', N'3', N'BG', N'2', N'93');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG42', N'Южен централен (Yuzhen tsentralen)', N'2', N'BG', N'2', N'94');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG421', N'Пловдив (Plovdiv)', N'3', N'BG', N'2', N'95');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG422', N'Хасково (Haskovo)', N'3', N'BG', N'2', N'96');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG423', N'Пазарджик (Pazardzhik)', N'3', N'BG', N'2', N'97');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG424', N'Смолян (Smolyan)', N'3', N'BG', N'2', N'98');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BG425', N'Кърджали (Kardzhali)', N'3', N'BG', N'2', N'99');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BGZ', N'EXTRA-REGIO NUTS 1', N'1', N'BG', N'2', N'100');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BGZZ', N'Extra-Regio NUTS 2', N'2', N'BG', N'2', N'101');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'BGZZZ', N'Extra-Regio NUTS 3', N'3', N'BG', N'2', N'102');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ', N'ČESKÁ REPUBLIKA', N'0', N'CZ', N'3', N'103');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ0', N'ČESKÁ REPUBLIKA', N'1', N'CZ', N'3', N'104');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ01', N'Praha', N'2', N'CZ', N'3', N'105');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ010', N'Hlavní město Praha', N'3', N'CZ', N'3', N'106');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ02', N'Střední Čechy', N'2', N'CZ', N'3', N'107');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ020', N'Středočeský kraj', N'3', N'CZ', N'3', N'108');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ03', N'Jihozápad', N'2', N'CZ', N'3', N'109');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ031', N'Jihočeský kraj', N'3', N'CZ', N'3', N'110');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ032', N'Plzeňský kraj', N'3', N'CZ', N'3', N'111');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ04', N'Severozápad', N'2', N'CZ', N'3', N'112');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ041', N'Karlovarský kraj', N'3', N'CZ', N'3', N'113');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ042', N'Ústecký kraj', N'3', N'CZ', N'3', N'114');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ05', N'Severovýchod', N'2', N'CZ', N'3', N'115');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ051', N'Liberecký kraj', N'3', N'CZ', N'3', N'116');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ052', N'Královéhradecký kraj', N'3', N'CZ', N'3', N'117');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ053', N'Pardubický kraj', N'3', N'CZ', N'3', N'118');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ06', N'Jihovýchod', N'2', N'CZ', N'3', N'119');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ063', N'Kraj Vysočina', N'3', N'CZ', N'3', N'120');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ064', N'Jihomoravský kraj', N'3', N'CZ', N'3', N'121');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ07', N'Střední Morava', N'2', N'CZ', N'3', N'122');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ071', N'Olomoucký kraj', N'3', N'CZ', N'3', N'123');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ072', N'Zlínský kraj', N'3', N'CZ', N'3', N'124');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ08', N'Moravskoslezsko', N'2', N'CZ', N'3', N'125');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZ080', N'Moravskoslezský kraj', N'3', N'CZ', N'3', N'126');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZZ', N'EXTRA-REGIO NUTS 1', N'1', N'CZ', N'3', N'127');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZZZ', N'Extra-Regio NUTS 2', N'2', N'CZ', N'3', N'128');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CZZZZ', N'Extra-Regio NUTS 3', N'3', N'CZ', N'3', N'129');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK', N'DANMARK', N'0', N'DK', N'4', N'130');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK0', N'DANMARK', N'1', N'DK', N'4', N'131');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK01', N'Hovedstaden', N'2', N'DK', N'4', N'132');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK011', N'Byen København', N'3', N'DK', N'4', N'133');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK012', N'Københavns omegn', N'3', N'DK', N'4', N'134');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK013', N'Nordsjælland', N'3', N'DK', N'4', N'135');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK014', N'Bornholm', N'3', N'DK', N'4', N'136');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK02', N'Sjælland', N'2', N'DK', N'4', N'137');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK021', N'Østsjælland', N'3', N'DK', N'4', N'138');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK022', N'Vest- og Sydsjælland', N'3', N'DK', N'4', N'139');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK03', N'Syddanmark', N'2', N'DK', N'4', N'140');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK031', N'Fyn', N'3', N'DK', N'4', N'141');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK032', N'Sydjylland', N'3', N'DK', N'4', N'142');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK04', N'Midtjylland', N'2', N'DK', N'4', N'143');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK041', N'Vestjylland', N'3', N'DK', N'4', N'144');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK042', N'Østjylland', N'3', N'DK', N'4', N'145');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK05', N'Nordjylland', N'2', N'DK', N'4', N'146');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DK050', N'Nordjylland', N'3', N'DK', N'4', N'147');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DKZ', N'EXTRA-REGIO NUTS 1', N'1', N'DK', N'4', N'148');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DKZZ', N'Extra-Regio NUTS 2', N'2', N'DK', N'4', N'149');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DKZZZ', N'Extra-Regio NUTS 3', N'3', N'DK', N'4', N'150');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE', N'DEUTSCHLAND', N'0', N'DE', N'5', N'151');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE1', N'BADEN-WÜRTTEMBERG', N'1', N'DE', N'5', N'152');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE11', N'Stuttgart', N'2', N'DE', N'5', N'153');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE111', N'Stuttgart, Stadtkreis', N'3', N'DE', N'5', N'154');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE112', N'Böblingen', N'3', N'DE', N'5', N'155');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE113', N'Esslingen', N'3', N'DE', N'5', N'156');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE114', N'Göppingen', N'3', N'DE', N'5', N'157');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE115', N'Ludwigsburg', N'3', N'DE', N'5', N'158');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE116', N'Rems-Murr-Kreis', N'3', N'DE', N'5', N'159');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE117', N'Heilbronn, Stadtkreis', N'3', N'DE', N'5', N'160');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE118', N'Heilbronn, Landkreis', N'3', N'DE', N'5', N'161');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE119', N'Hohenlohekreis', N'3', N'DE', N'5', N'162');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE11A', N'Schwäbisch Hall', N'3', N'DE', N'5', N'163');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE11B', N'Main-Tauber-Kreis', N'3', N'DE', N'5', N'164');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE11C', N'Heidenheim', N'3', N'DE', N'5', N'165');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE11D', N'Ostalbkreis', N'3', N'DE', N'5', N'166');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE12', N'Karlsruhe', N'2', N'DE', N'5', N'167');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE121', N'Baden-Baden, Stadtkreis', N'3', N'DE', N'5', N'168');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE122', N'Karlsruhe, Stadtkreis', N'3', N'DE', N'5', N'169');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE123', N'Karlsruhe, Landkreis', N'3', N'DE', N'5', N'170');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE124', N'Rastatt', N'3', N'DE', N'5', N'171');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE125', N'Heidelberg, Stadtkreis', N'3', N'DE', N'5', N'172');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE126', N'Mannheim, Stadtkreis', N'3', N'DE', N'5', N'173');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE127', N'Neckar-Odenwald-Kreis', N'3', N'DE', N'5', N'174');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE128', N'Rhein-Neckar-Kreis', N'3', N'DE', N'5', N'175');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE129', N'Pforzheim, Stadtkreis', N'3', N'DE', N'5', N'176');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE12A', N'Calw', N'3', N'DE', N'5', N'177');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE12B', N'Enzkreis', N'3', N'DE', N'5', N'178');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE12C', N'Freudenstadt', N'3', N'DE', N'5', N'179');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE13', N'Freiburg', N'2', N'DE', N'5', N'180');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE131', N'Freiburg im Breisgau, Stadtkreis', N'3', N'DE', N'5', N'181');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE132', N'Breisgau-Hochschwarzwald', N'3', N'DE', N'5', N'182');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE133', N'Emmendingen', N'3', N'DE', N'5', N'183');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE134', N'Ortenaukreis', N'3', N'DE', N'5', N'184');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE135', N'Rottweil', N'3', N'DE', N'5', N'185');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE136', N'Schwarzwald-Baar-Kreis', N'3', N'DE', N'5', N'186');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE137', N'Tuttlingen', N'3', N'DE', N'5', N'187');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE138', N'Konstanz', N'3', N'DE', N'5', N'188');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE139', N'Lörrach', N'3', N'DE', N'5', N'189');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE13A', N'Waldshut', N'3', N'DE', N'5', N'190');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE14', N'Tübingen', N'2', N'DE', N'5', N'191');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE141', N'Reutlingen', N'3', N'DE', N'5', N'192');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE142', N'Tübingen, Landkreis', N'3', N'DE', N'5', N'193');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE143', N'Zollernalbkreis', N'3', N'DE', N'5', N'194');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE144', N'Ulm, Stadtkreis', N'3', N'DE', N'5', N'195');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE145', N'Alb-Donau-Kreis', N'3', N'DE', N'5', N'196');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE146', N'Biberach', N'3', N'DE', N'5', N'197');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE147', N'Bodenseekreis', N'3', N'DE', N'5', N'198');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE148', N'Ravensburg', N'3', N'DE', N'5', N'199');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE149', N'Sigmaringen', N'3', N'DE', N'5', N'200');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE2', N'BAYERN', N'1', N'DE', N'5', N'201');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21', N'Oberbayern', N'2', N'DE', N'5', N'202');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE211', N'Ingolstadt, Kreisfreie Stadt', N'3', N'DE', N'5', N'203');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE212', N'München, Kreisfreie Stadt', N'3', N'DE', N'5', N'204');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE213', N'Rosenheim, Kreisfreie Stadt', N'3', N'DE', N'5', N'205');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE214', N'Altötting', N'3', N'DE', N'5', N'206');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE215', N'Berchtesgadener Land', N'3', N'DE', N'5', N'207');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE216', N'Bad Tölz-Wolfratshausen', N'3', N'DE', N'5', N'208');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE217', N'Dachau', N'3', N'DE', N'5', N'209');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE218', N'Ebersberg', N'3', N'DE', N'5', N'210');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE219', N'Eichstätt', N'3', N'DE', N'5', N'211');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21A', N'Erding', N'3', N'DE', N'5', N'212');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21B', N'Freising', N'3', N'DE', N'5', N'213');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21C', N'Fürstenfeldbruck', N'3', N'DE', N'5', N'214');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21D', N'Garmisch-Partenkirchen', N'3', N'DE', N'5', N'215');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21E', N'Landsberg am Lech', N'3', N'DE', N'5', N'216');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21F', N'Miesbach', N'3', N'DE', N'5', N'217');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21G', N'Mühldorf a. Inn', N'3', N'DE', N'5', N'218');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21H', N'München, Landkreis', N'3', N'DE', N'5', N'219');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21I', N'Neuburg-Schrobenhausen', N'3', N'DE', N'5', N'220');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21J', N'Pfaffenhofen a. d. Ilm', N'3', N'DE', N'5', N'221');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21K', N'Rosenheim, Landkreis', N'3', N'DE', N'5', N'222');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21L', N'Starnberg', N'3', N'DE', N'5', N'223');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21M', N'Traunstein', N'3', N'DE', N'5', N'224');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE21N', N'Weilheim-Schongau', N'3', N'DE', N'5', N'225');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE22', N'Niederbayern', N'2', N'DE', N'5', N'226');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE221', N'Landshut, Kreisfreie Stadt', N'3', N'DE', N'5', N'227');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE222', N'Passau, Kreisfreie Stadt', N'3', N'DE', N'5', N'228');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE223', N'Straubing, Kreisfreie Stadt', N'3', N'DE', N'5', N'229');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE224', N'Deggendorf', N'3', N'DE', N'5', N'230');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE225', N'Freyung-Grafenau', N'3', N'DE', N'5', N'231');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE226', N'Kelheim', N'3', N'DE', N'5', N'232');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE227', N'Landshut, Landkreis', N'3', N'DE', N'5', N'233');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE228', N'Passau, Landkreis', N'3', N'DE', N'5', N'234');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE229', N'Regen', N'3', N'DE', N'5', N'235');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE22A', N'Rottal-Inn', N'3', N'DE', N'5', N'236');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE22B', N'Straubing-Bogen', N'3', N'DE', N'5', N'237');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE22C', N'Dingolfing-Landau', N'3', N'DE', N'5', N'238');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE23', N'Oberpfalz', N'2', N'DE', N'5', N'239');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE231', N'Amberg, Kreisfreie Stadt', N'3', N'DE', N'5', N'240');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE232', N'Regensburg, Kreisfreie Stadt', N'3', N'DE', N'5', N'241');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE233', N'Weiden i. d. Opf, Kreisfreie Stadt', N'3', N'DE', N'5', N'242');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE234', N'Amberg-Sulzbach', N'3', N'DE', N'5', N'243');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE235', N'Cham', N'3', N'DE', N'5', N'244');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE236', N'Neumarkt i. d. OPf.', N'3', N'DE', N'5', N'245');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE237', N'Neustadt a. d. Waldnaab', N'3', N'DE', N'5', N'246');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE238', N'Regensburg, Landkreis', N'3', N'DE', N'5', N'247');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE239', N'Schwandorf', N'3', N'DE', N'5', N'248');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE23A', N'Tirschenreuth', N'3', N'DE', N'5', N'249');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE24', N'Oberfranken', N'2', N'DE', N'5', N'250');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE241', N'Bamberg, Kreisfreie Stadt', N'3', N'DE', N'5', N'251');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE242', N'Bayreuth, Kreisfreie Stadt', N'3', N'DE', N'5', N'252');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE243', N'Coburg, Kreisfreie Stadt', N'3', N'DE', N'5', N'253');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE244', N'Hof, Kreisfreie Stadt', N'3', N'DE', N'5', N'254');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE245', N'Bamberg, Landkreis', N'3', N'DE', N'5', N'255');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE246', N'Bayreuth, Landkreis', N'3', N'DE', N'5', N'256');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE247', N'Coburg, Landkreis', N'3', N'DE', N'5', N'257');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE248', N'Forchheim', N'3', N'DE', N'5', N'258');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE249', N'Hof, Landkreis', N'3', N'DE', N'5', N'259');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE24A', N'Kronach', N'3', N'DE', N'5', N'260');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE24B', N'Kulmbach', N'3', N'DE', N'5', N'261');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE24C', N'Lichtenfels', N'3', N'DE', N'5', N'262');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE24D', N'Wunsiedel i. Fichtelgebirge', N'3', N'DE', N'5', N'263');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE25', N'Mittelfranken', N'2', N'DE', N'5', N'264');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE251', N'Ansbach, Kreisfreie Stadt', N'3', N'DE', N'5', N'265');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE252', N'Erlangen, Kreisfreie Stadt', N'3', N'DE', N'5', N'266');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE253', N'Fürth, Kreisfreie Stadt', N'3', N'DE', N'5', N'267');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE254', N'Nürnberg, Kreisfreie Stadt', N'3', N'DE', N'5', N'268');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE255', N'Schwabach, Kreisfreie Stadt', N'3', N'DE', N'5', N'269');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE256', N'Ansbach, Landkreis', N'3', N'DE', N'5', N'270');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE257', N'Erlangen-Höchstadt', N'3', N'DE', N'5', N'271');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE258', N'Fürth, Landkreis', N'3', N'DE', N'5', N'272');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE259', N'Nürnberger Land', N'3', N'DE', N'5', N'273');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE25A', N'Neustadt a. d. Aisch-Bad Windsheim', N'3', N'DE', N'5', N'274');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE25B', N'Roth', N'3', N'DE', N'5', N'275');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE25C', N'Weißenburg-Gunzenhausen', N'3', N'DE', N'5', N'276');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE26', N'Unterfranken', N'2', N'DE', N'5', N'277');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE261', N'Aschaffenburg, Kreisfreie Stadt', N'3', N'DE', N'5', N'278');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE262', N'Schweinfurt, Kreisfreie Stadt', N'3', N'DE', N'5', N'279');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE263', N'Würzburg, Kreisfreie Stadt', N'3', N'DE', N'5', N'280');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE264', N'Aschaffenburg, Landkreis', N'3', N'DE', N'5', N'281');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE265', N'Bad Kissingen', N'3', N'DE', N'5', N'282');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE266', N'Rhön-Grabfeld', N'3', N'DE', N'5', N'283');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE267', N'Haßberge', N'3', N'DE', N'5', N'284');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE268', N'Kitzingen', N'3', N'DE', N'5', N'285');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE269', N'Miltenberg', N'3', N'DE', N'5', N'286');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE26A', N'Main-Spessart', N'3', N'DE', N'5', N'287');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE26B', N'Schweinfurt, Landkreis', N'3', N'DE', N'5', N'288');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE26C', N'Würzburg, Landkreis', N'3', N'DE', N'5', N'289');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE27', N'Schwaben', N'2', N'DE', N'5', N'290');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE271', N'Augsburg, Kreisfreie Stadt', N'3', N'DE', N'5', N'291');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE272', N'Kaufbeuren, Kreisfreie Stadt', N'3', N'DE', N'5', N'292');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE273', N'Kempten (Allgäu), Kreisfreie Stadt', N'3', N'DE', N'5', N'293');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE274', N'Memmingen, Kreisfreie Stadt', N'3', N'DE', N'5', N'294');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE275', N'Aichach-Friedberg', N'3', N'DE', N'5', N'295');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE276', N'Augsburg, Landkreis', N'3', N'DE', N'5', N'296');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE277', N'Dillingen a.d. Donau', N'3', N'DE', N'5', N'297');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE278', N'Günzburg', N'3', N'DE', N'5', N'298');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE279', N'Neu-Ulm', N'3', N'DE', N'5', N'299');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE27A', N'Lindau (Bodensee)', N'3', N'DE', N'5', N'300');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE27B', N'Ostallgäu', N'3', N'DE', N'5', N'301');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE27C', N'Unterallgäu', N'3', N'DE', N'5', N'302');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE27D', N'Donau-Ries', N'3', N'DE', N'5', N'303');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE27E', N'Oberallgäu', N'3', N'DE', N'5', N'304');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE3', N'BERLIN', N'1', N'DE', N'5', N'305');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE30', N'Berlin', N'2', N'DE', N'5', N'306');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE300', N'Berlin', N'3', N'DE', N'5', N'307');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE4', N'BRANDENBURG', N'1', N'DE', N'5', N'308');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE40', N'Brandenburg', N'2', N'DE', N'5', N'309');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE401', N'Brandenburg an der Havel, Kreisfreie Stadt', N'3', N'DE', N'5', N'310');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE402', N'Cottbus, Kreisfreie Stadt', N'3', N'DE', N'5', N'311');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE403', N'Frankfurt (Oder), Kreisfreie Stadt', N'3', N'DE', N'5', N'312');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE404', N'Potsdam, Kreisfreie Stadt', N'3', N'DE', N'5', N'313');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE405', N'Barnim', N'3', N'DE', N'5', N'314');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE406', N'Dahme-Spreewald', N'3', N'DE', N'5', N'315');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE407', N'Elbe-Elster', N'3', N'DE', N'5', N'316');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE408', N'Havelland', N'3', N'DE', N'5', N'317');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE409', N'Märkisch-Oderland', N'3', N'DE', N'5', N'318');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE40A', N'Oberhavel', N'3', N'DE', N'5', N'319');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE40B', N'Oberspreewald-Lausitz', N'3', N'DE', N'5', N'320');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE40C', N'Oder-Spree', N'3', N'DE', N'5', N'321');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE40D', N'Ostprignitz-Ruppin', N'3', N'DE', N'5', N'322');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE40E', N'Potsdam-Mittelmark', N'3', N'DE', N'5', N'323');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE40F', N'Prignitz', N'3', N'DE', N'5', N'324');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE40G', N'Spree-Neiße', N'3', N'DE', N'5', N'325');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE40H', N'Teltow-Fläming', N'3', N'DE', N'5', N'326');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE40I', N'Uckermark', N'3', N'DE', N'5', N'327');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE5', N'BREMEN', N'1', N'DE', N'5', N'328');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE50', N'Bremen', N'2', N'DE', N'5', N'329');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE501', N'Bremen, Kreisfreie Stadt', N'3', N'DE', N'5', N'330');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE502', N'Bremerhaven, Kreisfreie Stadt', N'3', N'DE', N'5', N'331');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE6', N'HAMBURG', N'1', N'DE', N'5', N'332');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE60', N'Hamburg', N'2', N'DE', N'5', N'333');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE600', N'Hamburg', N'3', N'DE', N'5', N'334');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE7', N'HESSEN', N'1', N'DE', N'5', N'335');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE71', N'Darmstadt', N'2', N'DE', N'5', N'336');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE711', N'Darmstadt, Kreisfreie Stadt', N'3', N'DE', N'5', N'337');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE712', N'Frankfurt am Main, Kreisfreie Stadt', N'3', N'DE', N'5', N'338');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE713', N'Offenbach am Main, Kreisfreie Stadt', N'3', N'DE', N'5', N'339');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE714', N'Wiesbaden, Kreisfreie Stadt', N'3', N'DE', N'5', N'340');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE715', N'Bergstraße', N'3', N'DE', N'5', N'341');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE716', N'Darmstadt-Dieburg', N'3', N'DE', N'5', N'342');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE717', N'Groß-Gerau', N'3', N'DE', N'5', N'343');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE718', N'Hochtaunuskreis', N'3', N'DE', N'5', N'344');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE719', N'Main-Kinzig-Kreis', N'3', N'DE', N'5', N'345');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE71A', N'Main-Taunus-Kreis', N'3', N'DE', N'5', N'346');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE71B', N'Odenwaldkreis', N'3', N'DE', N'5', N'347');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE71C', N'Offenbach, Landkreis', N'3', N'DE', N'5', N'348');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE71D', N'Rheingau-Taunus-Kreis', N'3', N'DE', N'5', N'349');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE71E', N'Wetteraukreis', N'3', N'DE', N'5', N'350');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE72', N'Gießen', N'2', N'DE', N'5', N'351');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE721', N'Gießen, Landkreis', N'3', N'DE', N'5', N'352');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE722', N'Lahn-Dill-Kreis', N'3', N'DE', N'5', N'353');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE723', N'Limburg-Weilburg', N'3', N'DE', N'5', N'354');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE724', N'Marburg-Biedenkopf', N'3', N'DE', N'5', N'355');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE725', N'Vogelsbergkreis', N'3', N'DE', N'5', N'356');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE73', N'Kassel', N'2', N'DE', N'5', N'357');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE731', N'Kassel, Kreisfreie Stadt', N'3', N'DE', N'5', N'358');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE732', N'Fulda', N'3', N'DE', N'5', N'359');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE733', N'Hersfeld-Rotenburg', N'3', N'DE', N'5', N'360');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE734', N'Kassel, Landkreis', N'3', N'DE', N'5', N'361');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE735', N'Schwalm-Eder-Kreis', N'3', N'DE', N'5', N'362');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE736', N'Waldeck-Frankenberg', N'3', N'DE', N'5', N'363');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE737', N'Werra-Meißner-Kreis', N'3', N'DE', N'5', N'364');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE8', N'MECKLENBURG-VORPOMMERN', N'1', N'DE', N'5', N'365');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE80', N'Mecklenburg-Vorpommern', N'2', N'DE', N'5', N'366');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE803', N'Rostock, Kreisfreie Stadt', N'3', N'DE', N'5', N'367');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE804', N'Schwerin, Kreisfreie Stadt', N'3', N'DE', N'5', N'368');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE80J', N'Mecklenburgische Seenplatte', N'3', N'DE', N'5', N'369');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE80K', N'Landkreis Rostock', N'3', N'DE', N'5', N'370');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE80L', N'Vorpommern-Rügen', N'3', N'DE', N'5', N'371');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE80M', N'Nordwestmecklenburg', N'3', N'DE', N'5', N'372');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE80N', N'Vorpommern-Greifswald', N'3', N'DE', N'5', N'373');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE80O', N'Ludwigslust-Parchim', N'3', N'DE', N'5', N'374');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE9', N'NIEDERSACHSEN', N'1', N'DE', N'5', N'375');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE91', N'Braunschweig', N'2', N'DE', N'5', N'376');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE911', N'Braunschweig, Kreisfreie Stadt', N'3', N'DE', N'5', N'377');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE912', N'Salzgitter, Kreisfreie Stadt', N'3', N'DE', N'5', N'378');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE913', N'Wolfsburg, Kreisfreie Stadt', N'3', N'DE', N'5', N'379');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE914', N'Gifhorn', N'3', N'DE', N'5', N'380');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE915', N'Göttingen', N'3', N'DE', N'5', N'381');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE916', N'Goslar', N'3', N'DE', N'5', N'382');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE917', N'Helmstedt', N'3', N'DE', N'5', N'383');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE918', N'Northeim', N'3', N'DE', N'5', N'384');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE919', N'Osterode am Harz', N'3', N'DE', N'5', N'385');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE91A', N'Peine', N'3', N'DE', N'5', N'386');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE91B', N'Wolfenbüttel', N'3', N'DE', N'5', N'387');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE92', N'Hannover', N'2', N'DE', N'5', N'388');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE922', N'Diepholz', N'3', N'DE', N'5', N'389');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE923', N'Hameln-Pyrmont', N'3', N'DE', N'5', N'390');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE925', N'Hildesheim', N'3', N'DE', N'5', N'391');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE926', N'Holzminden', N'3', N'DE', N'5', N'392');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE927', N'Nienburg (Weser)', N'3', N'DE', N'5', N'393');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE928', N'Schaumburg', N'3', N'DE', N'5', N'394');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE929', N'Region Hannover', N'3', N'DE', N'5', N'395');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE93', N'Lüneburg', N'2', N'DE', N'5', N'396');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE931', N'Celle', N'3', N'DE', N'5', N'397');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE932', N'Cuxhaven', N'3', N'DE', N'5', N'398');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE933', N'Harburg', N'3', N'DE', N'5', N'399');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE934', N'Lüchow-Dannenberg', N'3', N'DE', N'5', N'400');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE935', N'Lüneburg, Landkreis', N'3', N'DE', N'5', N'401');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE936', N'Osterholz', N'3', N'DE', N'5', N'402');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE937', N'Rotenburg (Wümme)', N'3', N'DE', N'5', N'403');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE938', N'Heidekreis', N'3', N'DE', N'5', N'404');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE939', N'Stade', N'3', N'DE', N'5', N'405');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE93A', N'Uelzen', N'3', N'DE', N'5', N'406');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE93B', N'Verden', N'3', N'DE', N'5', N'407');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE94', N'Weser-Ems', N'2', N'DE', N'5', N'408');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE941', N'Delmenhorst, Kreisfreie Stadt', N'3', N'DE', N'5', N'409');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE942', N'Emden, Kreisfreie Stadt', N'3', N'DE', N'5', N'410');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE943', N'Oldenburg (Oldenburg), Kreisfreie Stadt', N'3', N'DE', N'5', N'411');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE944', N'Osnabrück, Kreisfreie Stadt', N'3', N'DE', N'5', N'412');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE945', N'Wilhelmshaven, Kreisfreie Stadt', N'3', N'DE', N'5', N'413');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE946', N'Ammerland', N'3', N'DE', N'5', N'414');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE947', N'Aurich', N'3', N'DE', N'5', N'415');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE948', N'Cloppenburg', N'3', N'DE', N'5', N'416');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE949', N'Emsland', N'3', N'DE', N'5', N'417');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE94A', N'Friesland (DE)', N'3', N'DE', N'5', N'418');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE94B', N'Grafschaft Bentheim', N'3', N'DE', N'5', N'419');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE94C', N'Leer', N'3', N'DE', N'5', N'420');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE94D', N'Oldenburg, Landkreis', N'3', N'DE', N'5', N'421');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE94E', N'Osnabrück, Landkreis', N'3', N'DE', N'5', N'422');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE94F', N'Vechta', N'3', N'DE', N'5', N'423');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE94G', N'Wesermarsch', N'3', N'DE', N'5', N'424');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DE94H', N'Wittmund', N'3', N'DE', N'5', N'425');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA', N'NORDRHEIN-WESTFALEN', N'1', N'DE', N'5', N'426');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA1', N'Düsseldorf', N'2', N'DE', N'5', N'427');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA11', N'Düsseldorf, Kreisfreie Stadt', N'3', N'DE', N'5', N'428');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA12', N'Duisburg, Kreisfreie Stadt', N'3', N'DE', N'5', N'429');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA13', N'Essen, Kreisfreie Stadt', N'3', N'DE', N'5', N'430');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA14', N'Krefeld, Kreisfreie Stadt', N'3', N'DE', N'5', N'431');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA15', N'Mönchengladbach, Kreisfreie Stadt', N'3', N'DE', N'5', N'432');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA16', N'Mülheim an der Ruhr,Kreisfreie Stadt', N'3', N'DE', N'5', N'433');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA17', N'Oberhausen, Kreisfreie Stadt', N'3', N'DE', N'5', N'434');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA18', N'Remscheid, Kreisfreie Stadt', N'3', N'DE', N'5', N'435');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE', N'SACHSEN-ANHALT', N'1', N'DE', N'5', N'550');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE0', N'Sachsen-Anhalt', N'2', N'DE', N'5', N'551');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE01', N'Dessau-Roßlau, Kreisfreie Stadt', N'3', N'DE', N'5', N'552');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE02', N'Halle (Saale), Kreisfreie Stadt', N'3', N'DE', N'5', N'553');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE03', N'Magdeburg, Kreisfreie Stadt', N'3', N'DE', N'5', N'554');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE04', N'Altmarkkreis Salzwedel', N'3', N'DE', N'5', N'555');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE05', N'Anhalt-Bitterfeld', N'3', N'DE', N'5', N'556');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE06', N'Jerichower Land', N'3', N'DE', N'5', N'557');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE07', N'Börde', N'3', N'DE', N'5', N'558');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE08', N'Burgenlandkreis', N'3', N'DE', N'5', N'559');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE09', N'Harz', N'3', N'DE', N'5', N'560');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE0A', N'Mansfeld-Südharz', N'3', N'DE', N'5', N'561');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE0B', N'Saalekreis', N'3', N'DE', N'5', N'562');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE0C', N'Salzlandkreis', N'3', N'DE', N'5', N'563');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE0D', N'Stendal', N'3', N'DE', N'5', N'564');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEE0E', N'Wittenberg', N'3', N'DE', N'5', N'565');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF', N'SCHLESWIG-HOLSTEIN', N'1', N'DE', N'5', N'566');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF0', N'Schleswig-Holstein', N'2', N'DE', N'5', N'567');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF01', N'Flensburg, Kreisfreie Stadt', N'3', N'DE', N'5', N'568');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF02', N'Kiel, Kreisfreie Stadt', N'3', N'DE', N'5', N'569');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF03', N'Lübeck, Kreisfreie Stadt', N'3', N'DE', N'5', N'570');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF04', N'Neumünster, Kreisfreie Stadt', N'3', N'DE', N'5', N'571');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF05', N'Dithmarschen', N'3', N'DE', N'5', N'572');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF06', N'Herzogtum Lauenburg', N'3', N'DE', N'5', N'573');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF07', N'Nordfriesland', N'3', N'DE', N'5', N'574');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF08', N'Ostholstein', N'3', N'DE', N'5', N'575');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF09', N'Pinneberg', N'3', N'DE', N'5', N'576');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF0A', N'Plön', N'3', N'DE', N'5', N'577');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF0B', N'Rendsburg-Eckernförde', N'3', N'DE', N'5', N'578');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF0C', N'Schleswig-Flensburg', N'3', N'DE', N'5', N'579');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF0D', N'Segeberg', N'3', N'DE', N'5', N'580');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF0E', N'Steinburg', N'3', N'DE', N'5', N'581');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEF0F', N'Stormarn', N'3', N'DE', N'5', N'582');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG', N'THÜRINGEN', N'1', N'DE', N'5', N'583');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0', N'Thüringen', N'2', N'DE', N'5', N'584');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG01', N'Erfurt, Kreisfreie Stadt', N'3', N'DE', N'5', N'585');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG02', N'Gera, Kreisfreie Stadt', N'3', N'DE', N'5', N'586');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG03', N'Jena, Kreisfreie Stadt', N'3', N'DE', N'5', N'587');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG04', N'Suhl, Kreisfreie Stadt', N'3', N'DE', N'5', N'588');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG05', N'Weimar, Kreisfreie Stadt', N'3', N'DE', N'5', N'589');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG06', N'Eichsfeld', N'3', N'DE', N'5', N'590');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG07', N'Nordhausen', N'3', N'DE', N'5', N'591');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG09', N'Unstrut-Hainich-Kreis', N'3', N'DE', N'5', N'592');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0A', N'Kyffhäuserkreis', N'3', N'DE', N'5', N'593');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0B', N'Schmalkalden-Meiningen', N'3', N'DE', N'5', N'594');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0C', N'Gotha', N'3', N'DE', N'5', N'595');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0D', N'Sömmerda', N'3', N'DE', N'5', N'596');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0E', N'Hildburghausen', N'3', N'DE', N'5', N'597');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0F', N'Ilm-Kreis', N'3', N'DE', N'5', N'598');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0G', N'Weimarer Land', N'3', N'DE', N'5', N'599');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0H', N'Sonneberg', N'3', N'DE', N'5', N'600');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0I', N'Saalfeld-Rudolstadt', N'3', N'DE', N'5', N'601');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0J', N'Saale-Holzland-Kreis', N'3', N'DE', N'5', N'602');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0K', N'Saale-Orla-Kreis', N'3', N'DE', N'5', N'603');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0L', N'Greiz', N'3', N'DE', N'5', N'604');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0M', N'Altenburger Land', N'3', N'DE', N'5', N'605');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0N', N'Eisenach, Kreisfreie Stadt', N'3', N'DE', N'5', N'606');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEG0P', N'Wartburgkreis', N'3', N'DE', N'5', N'607');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEZ', N'EXTRA-REGIO NUTS 1', N'1', N'DE', N'5', N'608');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEZZ', N'Extra-Regio NUTS 2', N'2', N'DE', N'5', N'609');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEZZZ', N'Extra-Regio NUTS 3', N'3', N'DE', N'5', N'610');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EE', N'EESTI', N'0', N'EE', N'6', N'611');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EE0', N'EESTI', N'1', N'EE', N'6', N'612');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EE00', N'Eesti', N'2', N'EE', N'6', N'613');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EE001', N'Põhja-Eesti', N'3', N'EE', N'6', N'614');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EE004', N'Lääne-Eesti', N'3', N'EE', N'6', N'615');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EE006', N'Kesk-Eesti', N'3', N'EE', N'6', N'616');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EE007', N'Kirde-Eesti', N'3', N'EE', N'6', N'617');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EE008', N'Lõuna-Eesti', N'3', N'EE', N'6', N'618');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EEZ', N'EXTRA-REGIO NUTS 1', N'1', N'EE', N'6', N'619');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EEZZ', N'Extra-Regio NUTS 2', N'2', N'EE', N'6', N'620');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EEZZZ', N'Extra-Regio NUTS 3', N'3', N'EE', N'6', N'621');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IE', N'IRELAND', N'0', N'IE', N'7', N'622');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IE0', N'IRELAND', N'1', N'IE', N'7', N'623');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IE01', N'B_ORDER, Midland and Western', N'2', N'IE', N'7', N'624');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IE011', N'B_ORDER', N'3', N'IE', N'7', N'625');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IE012', N'Midland', N'3', N'IE', N'7', N'626');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IE013', N'West', N'3', N'IE', N'7', N'627');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IE02', N'Southern and Eastern', N'2', N'IE', N'7', N'628');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IE021', N'Dublin', N'3', N'IE', N'7', N'629');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IE022', N'Mid-East', N'3', N'IE', N'7', N'630');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IE023', N'Mid-West', N'3', N'IE', N'7', N'631');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IE024', N'South-East (IE)', N'3', N'IE', N'7', N'632');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IE025', N'South-West (IE)', N'3', N'IE', N'7', N'633');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IEZ', N'EXTRA-REGIO NUTS 1', N'1', N'IE', N'7', N'634');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IEZZ', N'Extra-Regio NUTS 2', N'2', N'IE', N'7', N'635');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IEZZZ', N'Extra-Regio NUTS 3', N'3', N'IE', N'7', N'636');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL', N'ΕΛΛΑΔΑ (ELLADA)', N'0', N'EL', N'8', N'637');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL3', N'ATTIKΗ (ATTIKI)', N'1', N'EL', N'8', N'638');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL30', N'Aττική (Attiki)', N'2', N'EL', N'8', N'639');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL301', N'Βόρειος Τομέας Αθηνών (Voreios Tomeas Athinon)', N'3', N'EL', N'8', N'640');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL302', N'Δυτικός Τομέας Αθηνών (Dytikos Tomeas Athinon)', N'3', N'EL', N'8', N'641');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL303', N'Κεντρικός Τομέας Αθηνών (Kentrikos Tomeas Athinon)', N'3', N'EL', N'8', N'642');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL304', N'Νότιος Τομέας Αθηνών (Notios Tomeas Athinon)', N'3', N'EL', N'8', N'643');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL305', N'Ανατολική Αττική (Anatoliki Attiki)', N'3', N'EL', N'8', N'644');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL306', N'Δυτική Αττική (Dytiki Attiki)', N'3', N'EL', N'8', N'645');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL307', N'Πειραιάς, Νήσοι (Peiraias, Nisoi)', N'3', N'EL', N'8', N'646');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL4', N'NΗΣΙΑ ΑΙΓΑΙΟΥ, KΡΗΤΗ (NISIA AIGAIOU, KRITI)', N'1', N'EL', N'8', N'647');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL41', N'Βόρειο Αιγαίο (Voreio Aigaio)', N'2', N'EL', N'8', N'648');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL411', N'Λέσβος, Λήμνος (Lesvos, Limnos)', N'3', N'EL', N'8', N'649');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL412', N'Ικαρία, Σάμος (Ikaria, Samos)', N'3', N'EL', N'8', N'650');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL413', N'Χίος (Chios)', N'3', N'EL', N'8', N'651');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL42', N'Νότιο Αιγαίο (Notio Aigaio)', N'2', N'EL', N'8', N'652');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL421', N'Κάλυμνος, Κάρπαθος, Κως, Ρόδος (Kalymnos, Karpathos, Kos, Rodos)', N'3', N'EL', N'8', N'653');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL43', N'Κρήτη (Kriti)', N'2', N'EL', N'8', N'655');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL431', N'Ηράκλειο (Irakleio)', N'3', N'EL', N'8', N'656');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL432', N'Λασίθι (Lasithi)', N'3', N'EL', N'8', N'657');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL433', N'Ρεθύμνη (Rethymni)', N'3', N'EL', N'8', N'658');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL434', N'Χανιά (Chania)', N'3', N'EL', N'8', N'659');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL5', N'ΒΟΡΕΙΑ ΕΛΛΑΔΑ (VOREIA ELLADA)', N'1', N'EL', N'8', N'660');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL51', N'Aνατολική Μακεδονία, Θράκη (Anatoliki Makedonia, Thraki)', N'2', N'EL', N'8', N'661');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL511', N'Έβρος (Evros)', N'3', N'EL', N'8', N'662');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL512', N'Ξάνθη (Xanthi)', N'3', N'EL', N'8', N'663');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL513', N'Ροδόπη (Rodopi)', N'3', N'EL', N'8', N'664');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL514', N'Δράμα (Drama)', N'3', N'EL', N'8', N'665');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL515', N'Θάσος, Καβάλα (Thasos, Kavala)', N'3', N'EL', N'8', N'666');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL52', N'Κεντρική Μακεδονία (Kentriki Makedonia)', N'2', N'EL', N'8', N'667');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL521', N'Ημαθία (Imathia)', N'3', N'EL', N'8', N'668');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL522', N'Θεσσαλονίκη (Thessaloniki)', N'3', N'EL', N'8', N'669');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL523', N'Κιλκίς (Kilkis)', N'3', N'EL', N'8', N'670');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL524', N'Πέλλα (Pella)', N'3', N'EL', N'8', N'671');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL525', N'Πιερία (Pieria)', N'3', N'EL', N'8', N'672');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL526', N'Σέρρες (Serres)', N'3', N'EL', N'8', N'673');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL527', N'Χαλκιδική (Chalkidiki)', N'3', N'EL', N'8', N'674');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL53', N'Δυτική Μακεδονία (Dytiki Makedonia)', N'2', N'EL', N'8', N'675');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL531', N'Γρεβενά, Κοζάνη (Grevena, Kozani)', N'3', N'EL', N'8', N'676');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL532', N'Καστοριά (Kastoria)', N'3', N'EL', N'8', N'677');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL533', N'Φλώρινα (Florina)', N'3', N'EL', N'8', N'678');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL54', N'Ήπειρος (Ipeiros)', N'2', N'EL', N'8', N'679');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL541', N'Άρτα, Πρέβεζα (Arta, Preveza)', N'3', N'EL', N'8', N'680');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL542', N'Θεσπρωτία (Thesprotia)', N'3', N'EL', N'8', N'681');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL543', N'Ιωάννινα (Ioannina)', N'3', N'EL', N'8', N'682');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL6', N'ΚΕΝΤΡΙΚΗ ΕΛΛΑΔΑ (KENTRIKI ELLADA)', N'1', N'EL', N'8', N'683');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL61', N'Θεσσαλία (Thessalia)', N'2', N'EL', N'8', N'684');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL611', N'Καρδίτσα, Τρίκαλα (Karditsa, Trikala)', N'3', N'EL', N'8', N'685');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL612', N'Λάρισα (Larisa)', N'3', N'EL', N'8', N'686');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL613', N'Μαγνησία, Σποράδες (Magnisia, Sporades)', N'3', N'EL', N'8', N'687');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL62', N'Ιόνια Νησιά (Ionia Nisia)', N'2', N'EL', N'8', N'688');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL621', N'Ζάκυνθος (Zakynthos)', N'3', N'EL', N'8', N'689');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL622', N'Κέρκυρα (Kerkyra)', N'3', N'EL', N'8', N'690');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL623', N'Ιθάκη, Κεφαλληνία (Ithaki, Kefallinia)', N'3', N'EL', N'8', N'691');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL624', N'Λευκάδα (Lefkada)', N'3', N'EL', N'8', N'692');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL63', N'Δυτική Ελλάδα (Dytiki Ellada)', N'2', N'EL', N'8', N'693');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL631', N'Αιτωλοακαρνανία (Aitoloakarnania)', N'3', N'EL', N'8', N'694');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL632', N'Αχαΐα (Achaia)', N'3', N'EL', N'8', N'695');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL633', N'Ηλεία (Ileia)', N'3', N'EL', N'8', N'696');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL64', N'Στερεά Ελλάδα (Sterea Ellada)', N'2', N'EL', N'8', N'697');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL641', N'Βοιωτία (Voiotia)', N'3', N'EL', N'8', N'698');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL642', N'Εύβοια (Evvoia)', N'3', N'EL', N'8', N'699');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL643', N'Ευρυτανία (Evrytania)', N'3', N'EL', N'8', N'700');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL644', N'Φθιώτιδα (Fthiotida)', N'3', N'EL', N'8', N'701');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL645', N'Φωκίδα (Fokida)', N'3', N'EL', N'8', N'702');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL65', N'Πελοπόννησος (Peloponnisos)', N'2', N'EL', N'8', N'703');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL651', N'Αργολίδα, Αρκαδία (Argolida, Arkadia)', N'3', N'EL', N'8', N'704');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL652', N'Κορινθία (Korinthia)', N'3', N'EL', N'8', N'705');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'EL653', N'Λακωνία, Μεσσηνία (Lakonia, Messinia)', N'3', N'EL', N'8', N'706');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ELZ', N'EXTRA-REGIO NUTS 1', N'1', N'EL', N'8', N'707');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ELZZ', N'Extra-Regio NUTS 2', N'2', N'EL', N'8', N'708');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ELZZZ', N'Extra-Regio NUTS 3', N'3', N'EL', N'8', N'709');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES', N'ESPAÑA', N'0', N'ES', N'9', N'710');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES1', N'NOROESTE', N'1', N'ES', N'9', N'711');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES11', N'Galicia', N'2', N'ES', N'9', N'712');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES111', N'A Coruña', N'3', N'ES', N'9', N'713');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES112', N'Lugo', N'3', N'ES', N'9', N'714');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES113', N'Ourense', N'3', N'ES', N'9', N'715');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES114', N'Pontevedra', N'3', N'ES', N'9', N'716');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES12', N'Principado de Asturias', N'2', N'ES', N'9', N'717');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES120', N'Asturias', N'3', N'ES', N'9', N'718');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES13', N'Cantabria', N'2', N'ES', N'9', N'719');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES130', N'Cantabria', N'3', N'ES', N'9', N'720');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES2', N'NORESTE', N'1', N'ES', N'9', N'721');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES21', N'País Vasco', N'2', N'ES', N'9', N'722');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES211', N'Araba/Álava', N'3', N'ES', N'9', N'723');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES212', N'Gipuzkoa', N'3', N'ES', N'9', N'724');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES213', N'Bizkaia', N'3', N'ES', N'9', N'725');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES22', N'Comunidad Foral de Navarra', N'2', N'ES', N'9', N'726');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES220', N'Navarra', N'3', N'ES', N'9', N'727');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES23', N'La Rioja', N'2', N'ES', N'9', N'728');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES230', N'La Rioja', N'3', N'ES', N'9', N'729');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES24', N'Aragón', N'2', N'ES', N'9', N'730');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES241', N'Huesca', N'3', N'ES', N'9', N'731');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES242', N'Teruel', N'3', N'ES', N'9', N'732');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES243', N'Zaragoza', N'3', N'ES', N'9', N'733');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES3', N'COMUNIDAD DE MADRID', N'1', N'ES', N'9', N'734');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES30', N'Comunidad de Madrid', N'2', N'ES', N'9', N'735');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES300', N'Madrid', N'3', N'ES', N'9', N'736');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES4', N'CENTRO (ES)', N'1', N'ES', N'9', N'737');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES41', N'Castilla y León', N'2', N'ES', N'9', N'738');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES411', N'Ávila', N'3', N'ES', N'9', N'739');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES412', N'Burgos', N'3', N'ES', N'9', N'740');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES413', N'León', N'3', N'ES', N'9', N'741');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES414', N'Palencia', N'3', N'ES', N'9', N'742');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES415', N'Salamanca', N'3', N'ES', N'9', N'743');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES416', N'Segovia', N'3', N'ES', N'9', N'744');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES417', N'Soria', N'3', N'ES', N'9', N'745');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES418', N'Valladolid', N'3', N'ES', N'9', N'746');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES419', N'Zamora', N'3', N'ES', N'9', N'747');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES42', N'Castilla-La Mancha', N'2', N'ES', N'9', N'748');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES421', N'Albacete', N'3', N'ES', N'9', N'749');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES422', N'Ciudad Real', N'3', N'ES', N'9', N'750');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES423', N'Cuenca', N'3', N'ES', N'9', N'751');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES424', N'Guadalajara', N'3', N'ES', N'9', N'752');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES425', N'Toledo', N'3', N'ES', N'9', N'753');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES43', N'Extremadura', N'2', N'ES', N'9', N'754');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES431', N'Badajoz', N'3', N'ES', N'9', N'755');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES432', N'Cáceres', N'3', N'ES', N'9', N'756');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES5', N'ESTE', N'1', N'ES', N'9', N'757');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES51', N'Cataluña', N'2', N'ES', N'9', N'758');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES511', N'Barcelona', N'3', N'ES', N'9', N'759');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES512', N'Girona', N'3', N'ES', N'9', N'760');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES513', N'Lleida', N'3', N'ES', N'9', N'761');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA19', N'Solingen, Kreisfreie Stadt', N'3', N'DE', N'5', N'436');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA1A', N'Wuppertal, Kreisfreie Stadt', N'3', N'DE', N'5', N'437');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA1B', N'Kleve', N'3', N'DE', N'5', N'438');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA1C', N'Mettmann', N'3', N'DE', N'5', N'439');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA1D', N'Rhein-Kreis Neuss', N'3', N'DE', N'5', N'440');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA1E', N'Viersen', N'3', N'DE', N'5', N'441');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA1F', N'Wesel', N'3', N'DE', N'5', N'442');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA2', N'Köln', N'2', N'DE', N'5', N'443');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA22', N'Bonn, Kreisfreie Stadt', N'3', N'DE', N'5', N'444');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA23', N'Köln, Kreisfreie Stadt', N'3', N'DE', N'5', N'445');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA24', N'Leverkusen, Kreisfreie Stadt', N'3', N'DE', N'5', N'446');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA26', N'Düren', N'3', N'DE', N'5', N'447');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA27', N'Rhein-Erft-Kreis', N'3', N'DE', N'5', N'448');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA28', N'Euskirchen', N'3', N'DE', N'5', N'449');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA29', N'Heinsberg', N'3', N'DE', N'5', N'450');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA2A', N'Oberbergischer Kreis', N'3', N'DE', N'5', N'451');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA2B', N'Rheinisch-Bergischer Kreis', N'3', N'DE', N'5', N'452');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA2C', N'Rhein-Sieg-Kreis', N'3', N'DE', N'5', N'453');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA2D', N'Städteregion Aachen', N'3', N'DE', N'5', N'454');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA3', N'Münster', N'2', N'DE', N'5', N'455');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA31', N'Bottrop, Kreisfreie Stadt', N'3', N'DE', N'5', N'456');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA32', N'Gelsenkirchen, Kreisfreie Stadt', N'3', N'DE', N'5', N'457');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA33', N'Münster, Kreisfreie Stadt', N'3', N'DE', N'5', N'458');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA34', N'Borken', N'3', N'DE', N'5', N'459');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA35', N'Coesfeld', N'3', N'DE', N'5', N'460');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA36', N'Recklinghausen', N'3', N'DE', N'5', N'461');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA37', N'Steinfurt', N'3', N'DE', N'5', N'462');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA38', N'Warendorf', N'3', N'DE', N'5', N'463');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA4', N'Detmold', N'2', N'DE', N'5', N'464');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA41', N'Bielefeld, Kreisfreie Stadt', N'3', N'DE', N'5', N'465');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA42', N'Gütersloh', N'3', N'DE', N'5', N'466');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA43', N'Herford', N'3', N'DE', N'5', N'467');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA44', N'Höxter', N'3', N'DE', N'5', N'468');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA45', N'Lippe', N'3', N'DE', N'5', N'469');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA46', N'Minden-Lübbecke', N'3', N'DE', N'5', N'470');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA47', N'Paderborn', N'3', N'DE', N'5', N'471');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA5', N'Arnsberg', N'2', N'DE', N'5', N'472');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA51', N'Bochum, Kreisfreie Stadt', N'3', N'DE', N'5', N'473');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA52', N'Dortmund, Kreisfreie Stadt', N'3', N'DE', N'5', N'474');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA53', N'Hagen, Kreisfreie Stadt', N'3', N'DE', N'5', N'475');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA54', N'Hamm, Kreisfreie Stadt', N'3', N'DE', N'5', N'476');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA55', N'Herne, Kreisfreie Stadt', N'3', N'DE', N'5', N'477');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA56', N'Ennepe-Ruhr-Kreis', N'3', N'DE', N'5', N'478');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA57', N'Hochsauerlandkreis', N'3', N'DE', N'5', N'479');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA58', N'Märkischer Kreis', N'3', N'DE', N'5', N'480');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA59', N'Olpe', N'3', N'DE', N'5', N'481');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA5A', N'Siegen-Wittgenstein', N'3', N'DE', N'5', N'482');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA5B', N'Soest', N'3', N'DE', N'5', N'483');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEA5C', N'Unna', N'3', N'DE', N'5', N'484');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB', N'RHEINLAND-PFALZ', N'1', N'DE', N'5', N'485');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB1', N'Koblenz', N'2', N'DE', N'5', N'486');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB11', N'Koblenz, Kreisfreie Stadt', N'3', N'DE', N'5', N'487');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB12', N'Ahrweiler', N'3', N'DE', N'5', N'488');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB13', N'Altenkirchen (Westerwald)', N'3', N'DE', N'5', N'489');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB14', N'Bad Kreuznach', N'3', N'DE', N'5', N'490');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB15', N'Birkenfeld', N'3', N'DE', N'5', N'491');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB16', N'Cochem-Zell', N'3', N'DE', N'5', N'492');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB17', N'Mayen-Koblenz', N'3', N'DE', N'5', N'493');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB18', N'Neuwied', N'3', N'DE', N'5', N'494');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB19', N'Rhein-Hunsrück-Kreis', N'3', N'DE', N'5', N'495');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB1A', N'Rhein-Lahn-Kreis', N'3', N'DE', N'5', N'496');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB1B', N'Westerwaldkreis', N'3', N'DE', N'5', N'497');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB2', N'Trier', N'2', N'DE', N'5', N'498');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB21', N'Trier, Kreisfreie Stadt', N'3', N'DE', N'5', N'499');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB22', N'Bernkastel-Wittlich', N'3', N'DE', N'5', N'500');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB23', N'Eifelkreis Bitburg-Prüm', N'3', N'DE', N'5', N'501');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB24', N'Vulkaneifel', N'3', N'DE', N'5', N'502');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB25', N'Trier-Saarburg', N'3', N'DE', N'5', N'503');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB3', N'Rheinhessen-Pfalz', N'2', N'DE', N'5', N'504');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB31', N'Frankenthal (Pfalz), Kreisfreie Stadt', N'3', N'DE', N'5', N'505');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB32', N'Kaiserslautern, Kreisfreie Stadt', N'3', N'DE', N'5', N'506');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB33', N'Landau in der Pfalz, Kreisfreie Stadt', N'3', N'DE', N'5', N'507');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB34', N'Ludwigshafen am Rhein, Kreisfreie Stadt', N'3', N'DE', N'5', N'508');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB35', N'Mainz, Kreisfreie Stadt', N'3', N'DE', N'5', N'509');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB36', N'Neustadt an der Weinstraße, Kreisfreie Stadt', N'3', N'DE', N'5', N'510');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB37', N'Pirmasens, Kreisfreie Stadt', N'3', N'DE', N'5', N'511');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB38', N'Speyer, Kreisfreie Stadt', N'3', N'DE', N'5', N'512');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB39', N'Worms, Kreisfreie Stadt', N'3', N'DE', N'5', N'513');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB3A', N'Zweibrücken, Kreisfreie Stadt', N'3', N'DE', N'5', N'514');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB3B', N'Alzey-Worms', N'3', N'DE', N'5', N'515');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB3C', N'Bad Dürkheim', N'3', N'DE', N'5', N'516');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB3D', N'Donnersbergkreis', N'3', N'DE', N'5', N'517');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB3E', N'Germersheim', N'3', N'DE', N'5', N'518');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB3F', N'Kaiserslautern, Landkreis', N'3', N'DE', N'5', N'519');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB3G', N'Kusel', N'3', N'DE', N'5', N'520');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB3H', N'Südliche Weinstraße', N'3', N'DE', N'5', N'521');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB3I', N'Rhein-Pfalz-Kreis', N'3', N'DE', N'5', N'522');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB3J', N'Mainz-Bingen', N'3', N'DE', N'5', N'523');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEB3K', N'Südwestpfalz', N'3', N'DE', N'5', N'524');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEC', N'SAARLAND', N'1', N'DE', N'5', N'525');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEC0', N'Saarland', N'2', N'DE', N'5', N'526');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEC01', N'Regionalverband Saarbrücken', N'3', N'DE', N'5', N'527');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEC02', N'Merzig-Wadern', N'3', N'DE', N'5', N'528');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEC03', N'Neunkirchen', N'3', N'DE', N'5', N'529');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEC04', N'Saarlouis', N'3', N'DE', N'5', N'530');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEC05', N'Saarpfalz-Kreis', N'3', N'DE', N'5', N'531');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DEC06', N'St. Wendel', N'3', N'DE', N'5', N'532');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED', N'SACHSEN', N'1', N'DE', N'5', N'533');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED2', N'Dresden', N'2', N'DE', N'5', N'534');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED21', N'Dresden, Kreisfreie Stadt', N'3', N'DE', N'5', N'535');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED2C', N'Bautzen', N'3', N'DE', N'5', N'536');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED2D', N'Görlitz', N'3', N'DE', N'5', N'537');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED2E', N'Meißen', N'3', N'DE', N'5', N'538');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED2F', N'Sächsische Schweiz-Osterzgebirge', N'3', N'DE', N'5', N'539');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED4', N'Chemnitz', N'2', N'DE', N'5', N'540');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED41', N'Chemnitz, Kreisfreie Stadt', N'3', N'DE', N'5', N'541');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED42', N'Erzgebirgskreis', N'3', N'DE', N'5', N'542');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED43', N'Mittelsachsen', N'3', N'DE', N'5', N'543');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED44', N'Vogtlandkreis', N'3', N'DE', N'5', N'544');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED45', N'Zwickau', N'3', N'DE', N'5', N'545');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED5', N'Leipzig', N'2', N'DE', N'5', N'546');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED51', N'Leipzig, Kreisfreie Stadt', N'3', N'DE', N'5', N'547');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED52', N'Leipzig', N'3', N'DE', N'5', N'548');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'DED53', N'Nordsachsen', N'3', N'DE', N'5', N'549');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES514', N'Tarragona', N'3', N'ES', N'9', N'762');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES52', N'Comunidad Valenciana', N'2', N'ES', N'9', N'763');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES521', N'Alicante / Alacant', N'3', N'ES', N'9', N'764');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES522', N'Castellón / Castelló', N'3', N'ES', N'9', N'765');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES523', N'Valencia / València', N'3', N'ES', N'9', N'766');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES53', N'Illes Balears', N'2', N'ES', N'9', N'767');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES531', N'Eivissa y Formentera', N'3', N'ES', N'9', N'768');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES532', N'Mallorca', N'3', N'ES', N'9', N'769');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES533', N'Menorca', N'3', N'ES', N'9', N'770');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES6', N'SUR', N'1', N'ES', N'9', N'771');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES61', N'Andalucía', N'2', N'ES', N'9', N'772');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES611', N'Almería', N'3', N'ES', N'9', N'773');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES612', N'Cádiz', N'3', N'ES', N'9', N'774');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES613', N'Córdoba', N'3', N'ES', N'9', N'775');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES614', N'Granada', N'3', N'ES', N'9', N'776');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES615', N'Huelva', N'3', N'ES', N'9', N'777');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES616', N'Jaén', N'3', N'ES', N'9', N'778');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES617', N'Málaga', N'3', N'ES', N'9', N'779');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES618', N'Sevilla', N'3', N'ES', N'9', N'780');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES62', N'Región de Murcia', N'2', N'ES', N'9', N'781');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES620', N'Murcia', N'3', N'ES', N'9', N'782');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES63', N'Ciudad Autónoma de Ceuta', N'2', N'ES', N'9', N'783');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES630', N'Ceuta', N'3', N'ES', N'9', N'784');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES64', N'Ciudad Autónoma de Melilla', N'2', N'ES', N'9', N'785');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES640', N'Melilla', N'3', N'ES', N'9', N'786');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES7', N'CANARIAS', N'1', N'ES', N'9', N'787');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES70', N'Canarias', N'2', N'ES', N'9', N'788');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES703', N'El Hierro', N'3', N'ES', N'9', N'789');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES704', N'Fuerteventura', N'3', N'ES', N'9', N'790');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES705', N'Gran Canaria', N'3', N'ES', N'9', N'791');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES706', N'La Gomera', N'3', N'ES', N'9', N'792');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES707', N'La Palma', N'3', N'ES', N'9', N'793');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES708', N'Lanzarote', N'3', N'ES', N'9', N'794');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ES709', N'Tenerife', N'3', N'ES', N'9', N'795');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ESZ', N'EXTRA-REGIO NUTS 1', N'1', N'ES', N'9', N'796');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ESZZ', N'Extra-Regio NUTS 2', N'2', N'ES', N'9', N'797');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ESZZZ', N'Extra-Regio NUTS 3', N'3', N'ES', N'9', N'798');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR', N'FRANCE', N'0', N'FR', N'10', N'799');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR1', N'ÎLE DE FRANCE', N'1', N'FR', N'10', N'800');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR10', N'Île de France', N'2', N'FR', N'10', N'801');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR101', N'Paris', N'3', N'FR', N'10', N'802');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR102', N'Seine-et-Marne', N'3', N'FR', N'10', N'803');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR103', N'Yvelines', N'3', N'FR', N'10', N'804');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR104', N'Essonne', N'3', N'FR', N'10', N'805');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR105', N'Hauts-de-Seine', N'3', N'FR', N'10', N'806');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR106', N'Seine-Saint-Denis', N'3', N'FR', N'10', N'807');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR107', N'Val-de-Marne', N'3', N'FR', N'10', N'808');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR108', N'Val-d''Oise', N'3', N'FR', N'10', N'809');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR2', N'BASSIN PARISIEN', N'1', N'FR', N'10', N'810');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR21', N'Champagne-Ardenne', N'2', N'FR', N'10', N'811');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR211', N'Ardennes', N'3', N'FR', N'10', N'812');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR212', N'Aube', N'3', N'FR', N'10', N'813');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR213', N'Marne', N'3', N'FR', N'10', N'814');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR214', N'Haute-Marne', N'3', N'FR', N'10', N'815');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR22', N'Picardie', N'2', N'FR', N'10', N'816');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR221', N'Aisne', N'3', N'FR', N'10', N'817');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR222', N'Oise', N'3', N'FR', N'10', N'818');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR223', N'Somme', N'3', N'FR', N'10', N'819');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR23', N'Haute-Normandie', N'2', N'FR', N'10', N'820');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR231', N'Eure', N'3', N'FR', N'10', N'821');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR232', N'Seine-Maritime', N'3', N'FR', N'10', N'822');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR24', N'Centre', N'2', N'FR', N'10', N'823');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR241', N'Cher', N'3', N'FR', N'10', N'824');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR242', N'Eure-et-Loir', N'3', N'FR', N'10', N'825');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR243', N'Indre', N'3', N'FR', N'10', N'826');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR244', N'Indre-et-Loire', N'3', N'FR', N'10', N'827');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR245', N'Loir-et-Cher', N'3', N'FR', N'10', N'828');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR246', N'Loiret', N'3', N'FR', N'10', N'829');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR25', N'Basse-Normandie', N'2', N'FR', N'10', N'830');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR251', N'Calvados', N'3', N'FR', N'10', N'831');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR252', N'Manche', N'3', N'FR', N'10', N'832');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR253', N'Orne', N'3', N'FR', N'10', N'833');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR26', N'Bourgogne', N'2', N'FR', N'10', N'834');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR261', N'Côte-d''Or', N'3', N'FR', N'10', N'835');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR262', N'Nièvre', N'3', N'FR', N'10', N'836');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR263', N'Saône-et-Loire', N'3', N'FR', N'10', N'837');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR264', N'Yonne', N'3', N'FR', N'10', N'838');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR3', N'NORD - PAS-DE-CALAIS', N'1', N'FR', N'10', N'839');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR30', N'Nord - Pas-de-Calais', N'2', N'FR', N'10', N'840');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR301', N'Nord', N'3', N'FR', N'10', N'841');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR302', N'Pas-de-Calais', N'3', N'FR', N'10', N'842');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR4', N'EST', N'1', N'FR', N'10', N'843');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR41', N'Lorraine', N'2', N'FR', N'10', N'844');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR411', N'Meurthe-et-Moselle', N'3', N'FR', N'10', N'845');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR412', N'Meuse', N'3', N'FR', N'10', N'846');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR413', N'Moselle', N'3', N'FR', N'10', N'847');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR414', N'Vosges', N'3', N'FR', N'10', N'848');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR42', N'Alsace', N'2', N'FR', N'10', N'849');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR421', N'Bas-Rhin', N'3', N'FR', N'10', N'850');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR422', N'Haut-Rhin', N'3', N'FR', N'10', N'851');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR43', N'Franche-Comté', N'2', N'FR', N'10', N'852');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR431', N'Doubs', N'3', N'FR', N'10', N'853');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR432', N'Jura', N'3', N'FR', N'10', N'854');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR433', N'Haute-Saône', N'3', N'FR', N'10', N'855');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR434', N'Territoire de Belfort', N'3', N'FR', N'10', N'856');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR5', N'OUEST', N'1', N'FR', N'10', N'857');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR51', N'Pays de la Loire', N'2', N'FR', N'10', N'858');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR511', N'Loire-Atlantique', N'3', N'FR', N'10', N'859');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR512', N'Maine-et-Loire', N'3', N'FR', N'10', N'860');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR513', N'Mayenne', N'3', N'FR', N'10', N'861');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR514', N'Sarthe', N'3', N'FR', N'10', N'862');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR515', N'Vendée', N'3', N'FR', N'10', N'863');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR52', N'Bretagne', N'2', N'FR', N'10', N'864');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR521', N'Côtes-d''Armor', N'3', N'FR', N'10', N'865');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR522', N'Finistère', N'3', N'FR', N'10', N'866');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR523', N'Ille-et-Vilaine', N'3', N'FR', N'10', N'867');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR524', N'Morbihan', N'3', N'FR', N'10', N'868');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR53', N'Poitou-Charentes', N'2', N'FR', N'10', N'869');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR531', N'Charente', N'3', N'FR', N'10', N'870');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR532', N'Charente-Maritime', N'3', N'FR', N'10', N'871');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR533', N'Deux-Sèvres', N'3', N'FR', N'10', N'872');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR534', N'Vienne', N'3', N'FR', N'10', N'873');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR6', N'SUD-OUEST', N'1', N'FR', N'10', N'874');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR61', N'Aquitaine', N'2', N'FR', N'10', N'875');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR611', N'Dordogne', N'3', N'FR', N'10', N'876');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR612', N'Gironde', N'3', N'FR', N'10', N'877');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR613', N'Landes', N'3', N'FR', N'10', N'878');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR614', N'Lot-et-Garonne', N'3', N'FR', N'10', N'879');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR615', N'Pyrénées-Atlantiques', N'3', N'FR', N'10', N'880');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR62', N'Midi-Pyrénées', N'2', N'FR', N'10', N'881');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR621', N'Ariège', N'3', N'FR', N'10', N'882');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR622', N'Aveyron', N'3', N'FR', N'10', N'883');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR623', N'Haute-Garonne', N'3', N'FR', N'10', N'884');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR624', N'Gers', N'3', N'FR', N'10', N'885');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR625', N'Lot', N'3', N'FR', N'10', N'886');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR626', N'Hautes-Pyrénées', N'3', N'FR', N'10', N'887');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR627', N'Tarn', N'3', N'FR', N'10', N'888');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR628', N'Tarn-et-Garonne', N'3', N'FR', N'10', N'889');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR63', N'Limousin', N'2', N'FR', N'10', N'890');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR631', N'Corrèze', N'3', N'FR', N'10', N'891');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR632', N'Creuse', N'3', N'FR', N'10', N'892');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR633', N'Haute-Vienne', N'3', N'FR', N'10', N'893');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR7', N'CENTRE-EST', N'1', N'FR', N'10', N'894');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR71', N'Rhône-Alpes', N'2', N'FR', N'10', N'895');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR711', N'Ain', N'3', N'FR', N'10', N'896');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR712', N'Ardèche', N'3', N'FR', N'10', N'897');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR713', N'Drôme', N'3', N'FR', N'10', N'898');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR714', N'Isère', N'3', N'FR', N'10', N'899');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR715', N'Loire', N'3', N'FR', N'10', N'900');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR716', N'Rhône', N'3', N'FR', N'10', N'901');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR717', N'Savoie', N'3', N'FR', N'10', N'902');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR718', N'Haute-Savoie', N'3', N'FR', N'10', N'903');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR72', N'Auvergne', N'2', N'FR', N'10', N'904');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR721', N'Allier', N'3', N'FR', N'10', N'905');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR722', N'Cantal', N'3', N'FR', N'10', N'906');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR723', N'Haute-Loire', N'3', N'FR', N'10', N'907');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR724', N'Puy-de-Dôme', N'3', N'FR', N'10', N'908');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR8', N'MÉDITERRANÉE', N'1', N'FR', N'10', N'909');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR81', N'Languedoc-Roussillon', N'2', N'FR', N'10', N'910');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR811', N'Aude', N'3', N'FR', N'10', N'911');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR812', N'Gard', N'3', N'FR', N'10', N'912');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR813', N'Hérault', N'3', N'FR', N'10', N'913');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR814', N'Lozère', N'3', N'FR', N'10', N'914');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR815', N'Pyrénées-Orientales', N'3', N'FR', N'10', N'915');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR82', N'Provence-Alpes-Côte d''Azur', N'2', N'FR', N'10', N'916');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR821', N'Alpes-de-Haute-Provence', N'3', N'FR', N'10', N'917');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR822', N'Hautes-Alpes', N'3', N'FR', N'10', N'918');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR823', N'Alpes-Maritimes', N'3', N'FR', N'10', N'919');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR824', N'Bouches-du-Rhône', N'3', N'FR', N'10', N'920');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR825', N'Var', N'3', N'FR', N'10', N'921');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR826', N'Vaucluse', N'3', N'FR', N'10', N'922');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR83', N'Corse', N'2', N'FR', N'10', N'923');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR831', N'Corse-du-Sud', N'3', N'FR', N'10', N'924');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FR832', N'Haute-Corse', N'3', N'FR', N'10', N'925');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRA', N'DÉPARTEMENTS D''OUTRE-MER', N'1', N'FR', N'10', N'926');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRA1', N'Guadeloupe', N'2', N'FR', N'10', N'927');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRA10', N'Guadeloupe', N'3', N'FR', N'10', N'928');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRA2', N'Martinique', N'2', N'FR', N'10', N'929');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRA20', N'Martinique', N'3', N'FR', N'10', N'930');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRA3', N'Guyane', N'2', N'FR', N'10', N'931');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRA30', N'Guyane', N'3', N'FR', N'10', N'932');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRA4', N'La Réunion', N'2', N'FR', N'10', N'933');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRA40', N'La Réunion', N'3', N'FR', N'10', N'934');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRA5', N'Mayotte', N'2', N'FR', N'10', N'935');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRA50', N'Mayotte', N'3', N'FR', N'10', N'936');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRZ', N'EXTRA-REGIO NUTS 1', N'1', N'FR', N'10', N'937');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRZZ', N'Extra-Regio NUTS 2', N'2', N'FR', N'10', N'938');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FRZZZ', N'Extra-Regio NUTS 3', N'3', N'FR', N'10', N'939');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR', N'HRVATSKA', N'0', N'HR', N'11', N'940');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR0', N'HRVATSKA', N'1', N'HR', N'11', N'941');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR03', N'Jadranska Hrvatska', N'2', N'HR', N'11', N'942');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR031', N'Primorsko-goranska županija', N'3', N'HR', N'11', N'943');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR032', N'Ličko-senjska županija', N'3', N'HR', N'11', N'944');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR033', N'Zadarska županija', N'3', N'HR', N'11', N'945');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR034', N'Šibensko-kninska županija', N'3', N'HR', N'11', N'946');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR035', N'Splitsko-dalmatinska županija', N'3', N'HR', N'11', N'947');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR036', N'Istarska županija', N'3', N'HR', N'11', N'948');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR037', N'Dubrovačko-neretvanska županija', N'3', N'HR', N'11', N'949');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR04', N'Kontinentalna Hrvatska', N'2', N'HR', N'11', N'950');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR041', N'Grad Zagreb', N'3', N'HR', N'11', N'951');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR042', N'Zagrebačka županija', N'3', N'HR', N'11', N'952');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR043', N'Krapinsko-zagorska županija', N'3', N'HR', N'11', N'953');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR044', N'Varaždinska županija', N'3', N'HR', N'11', N'954');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR045', N'Koprivničko-križevačka županija', N'3', N'HR', N'11', N'955');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR046', N'Međimurska županija', N'3', N'HR', N'11', N'956');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR047', N'Bjelovarsko-bilogorska županija', N'3', N'HR', N'11', N'957');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR048', N'Virovitičko-podravska županija', N'3', N'HR', N'11', N'958');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR049', N'Požeško-slavonska županija', N'3', N'HR', N'11', N'959');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR04A', N'Brodsko-posavska županija', N'3', N'HR', N'11', N'960');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR04B', N'Osječko-baranjska županija', N'3', N'HR', N'11', N'961');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR04C', N'Vukovarsko-srijemska županija', N'3', N'HR', N'11', N'962');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR04D', N'Karlovačka županija', N'3', N'HR', N'11', N'963');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HR04E', N'Sisačko-moslavačka županija', N'3', N'HR', N'11', N'964');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HRZ', N'EXTRA-REGIO NUTS 1', N'1', N'HR', N'11', N'965');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HRZZ', N'Extra-Regio NUTS 2', N'2', N'HR', N'11', N'966');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HRZZZ', N'Extra-Regio NUTS 3', N'3', N'HR', N'11', N'967');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'IT', N'ITALIA ', N'0', N'IT', N'12', N'968');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC', N'NORD-OVEST', N'1', N'IT', N'12', N'969');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC1', N'Piemonte', N'2', N'IT', N'12', N'970');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC11', N'Torino', N'3', N'IT', N'12', N'971');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC12', N'Vercelli', N'3', N'IT', N'12', N'972');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC13', N'Biella', N'3', N'IT', N'12', N'973');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC14', N'Verbano-Cusio-Ossola', N'3', N'IT', N'12', N'974');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC15', N'Novara', N'3', N'IT', N'12', N'975');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC16', N'Cuneo', N'3', N'IT', N'12', N'976');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC17', N'Asti', N'3', N'IT', N'12', N'977');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC18', N'Alessandria', N'3', N'IT', N'12', N'978');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC2', N'Valle d''Aosta/Vallée d''Aoste', N'2', N'IT', N'12', N'979');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC20', N'Valle d''Aosta/Vallée d''Aoste', N'3', N'IT', N'12', N'980');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC3', N'Liguria', N'2', N'IT', N'12', N'981');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC31', N'Imperia', N'3', N'IT', N'12', N'982');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC32', N'Savona', N'3', N'IT', N'12', N'983');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC33', N'Genova', N'3', N'IT', N'12', N'984');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC34', N'La Spezia', N'3', N'IT', N'12', N'985');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC4', N'Lombardia', N'2', N'IT', N'12', N'986');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC41', N'Varese', N'3', N'IT', N'12', N'987');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC42', N'Como', N'3', N'IT', N'12', N'988');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC43', N'Lecco', N'3', N'IT', N'12', N'989');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC44', N'Sondrio', N'3', N'IT', N'12', N'990');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC46', N'Bergamo', N'3', N'IT', N'12', N'991');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC47', N'Brescia', N'3', N'IT', N'12', N'992');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC48', N'Pavia', N'3', N'IT', N'12', N'993');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC49', N'Lodi', N'3', N'IT', N'12', N'994');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC4A', N'Cremona', N'3', N'IT', N'12', N'995');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC4B', N'Mantova', N'3', N'IT', N'12', N'996');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC4C', N'Milano', N'3', N'IT', N'12', N'997');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITC4D', N'Monza e della Brianza', N'3', N'IT', N'12', N'998');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF', N'SUD', N'1', N'IT', N'12', N'999');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF1', N'Abruzzo', N'2', N'IT', N'12', N'1000');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF11', N'L''Aquila', N'3', N'IT', N'12', N'1001');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF12', N'Teramo', N'3', N'IT', N'12', N'1002');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF13', N'Pescara', N'3', N'IT', N'12', N'1003');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF14', N'Chieti', N'3', N'IT', N'12', N'1004');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF2', N'Molise', N'2', N'IT', N'12', N'1005');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF21', N'Isernia', N'3', N'IT', N'12', N'1006');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF22', N'Campobasso', N'3', N'IT', N'12', N'1007');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF3', N'Campania', N'2', N'IT', N'12', N'1008');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF31', N'Caserta', N'3', N'IT', N'12', N'1009');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF32', N'Benevento', N'3', N'IT', N'12', N'1010');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF33', N'Napoli', N'3', N'IT', N'12', N'1011');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF34', N'Avellino', N'3', N'IT', N'12', N'1012');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF35', N'Salerno', N'3', N'IT', N'12', N'1013');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF4', N'Puglia', N'2', N'IT', N'12', N'1014');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF43', N'Taranto', N'3', N'IT', N'12', N'1015');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF44', N'Brindisi', N'3', N'IT', N'12', N'1016');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF45', N'Lecce', N'3', N'IT', N'12', N'1017');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF46', N'Foggia', N'3', N'IT', N'12', N'1018');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF47', N'Bari', N'3', N'IT', N'12', N'1019');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF48', N'Barletta-Andria-Trani', N'3', N'IT', N'12', N'1020');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF5', N'Basilicata', N'2', N'IT', N'12', N'1021');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF51', N'Potenza', N'3', N'IT', N'12', N'1022');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF52', N'Matera', N'3', N'IT', N'12', N'1023');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF6', N'Calabria', N'2', N'IT', N'12', N'1024');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF61', N'Cosenza', N'3', N'IT', N'12', N'1025');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF62', N'Crotone', N'3', N'IT', N'12', N'1026');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF63', N'Catanzaro', N'3', N'IT', N'12', N'1027');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF64', N'Vibo Valentia', N'3', N'IT', N'12', N'1028');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITF65', N'Reggio di Calabria', N'3', N'IT', N'12', N'1029');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG', N'ISOLE', N'1', N'IT', N'12', N'1030');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG1', N'Sicilia', N'2', N'IT', N'12', N'1031');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG11', N'Trapani', N'3', N'IT', N'12', N'1032');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG12', N'Palermo', N'3', N'IT', N'12', N'1033');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG13', N'Messina', N'3', N'IT', N'12', N'1034');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG14', N'Agrigento', N'3', N'IT', N'12', N'1035');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG15', N'Caltanissetta', N'3', N'IT', N'12', N'1036');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG16', N'Enna', N'3', N'IT', N'12', N'1037');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG17', N'Catania', N'3', N'IT', N'12', N'1038');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG18', N'Ragusa', N'3', N'IT', N'12', N'1039');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG19', N'Siracusa', N'3', N'IT', N'12', N'1040');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG2', N'Sardegna', N'2', N'IT', N'12', N'1041');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG25', N'Sassari', N'3', N'IT', N'12', N'1042');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG26', N'Nuoro', N'3', N'IT', N'12', N'1043');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG27', N'Cagliari', N'3', N'IT', N'12', N'1044');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG28', N'Oristano', N'3', N'IT', N'12', N'1045');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG29', N'Olbia-Tempio', N'3', N'IT', N'12', N'1046');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG2A', N'Ogliastra', N'3', N'IT', N'12', N'1047');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG2B', N'Medio Campidano', N'3', N'IT', N'12', N'1048');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITG2C', N'Carbonia-Iglesias', N'3', N'IT', N'12', N'1049');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH', N'NORD-EST', N'1', N'IT', N'12', N'1050');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH1', N'Provincia Autonoma di Bolzano/Bozen', N'2', N'IT', N'12', N'1051');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH10', N'Bolzano-Bozen', N'3', N'IT', N'12', N'1052');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH2', N'Provincia Autonoma di Trento', N'2', N'IT', N'12', N'1053');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH20', N'Trento', N'3', N'IT', N'12', N'1054');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH3', N'Veneto', N'2', N'IT', N'12', N'1055');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH31', N'Verona', N'3', N'IT', N'12', N'1056');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH32', N'Vicenza', N'3', N'IT', N'12', N'1057');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH33', N'Belluno', N'3', N'IT', N'12', N'1058');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH34', N'Treviso', N'3', N'IT', N'12', N'1059');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH35', N'Venezia', N'3', N'IT', N'12', N'1060');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH36', N'Padova', N'3', N'IT', N'12', N'1061');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH37', N'Rovigo', N'3', N'IT', N'12', N'1062');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH4', N'Friuli-Venezia Giulia', N'2', N'IT', N'12', N'1063');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH41', N'Pordenone', N'3', N'IT', N'12', N'1064');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH42', N'Udine', N'3', N'IT', N'12', N'1065');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH43', N'Gorizia', N'3', N'IT', N'12', N'1066');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH44', N'Trieste', N'3', N'IT', N'12', N'1067');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH5', N'Emilia-Romagna', N'2', N'IT', N'12', N'1068');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH51', N'Piacenza', N'3', N'IT', N'12', N'1069');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH52', N'Parma', N'3', N'IT', N'12', N'1070');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH53', N'Reggio nell''Emilia', N'3', N'IT', N'12', N'1071');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH54', N'Modena', N'3', N'IT', N'12', N'1072');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH55', N'Bologna', N'3', N'IT', N'12', N'1073');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH56', N'Ferrara', N'3', N'IT', N'12', N'1074');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH57', N'Ravenna', N'3', N'IT', N'12', N'1075');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH58', N'Forlì-Cesena', N'3', N'IT', N'12', N'1076');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITH59', N'Rimini', N'3', N'IT', N'12', N'1077');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI', N'CENTRO (IT)', N'1', N'IT', N'12', N'1078');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI1', N'Toscana', N'2', N'IT', N'12', N'1079');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI11', N'Massa-Carrara', N'3', N'IT', N'12', N'1080');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI12', N'Lucca', N'3', N'IT', N'12', N'1081');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI13', N'Pistoia', N'3', N'IT', N'12', N'1082');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI14', N'Firenze', N'3', N'IT', N'12', N'1083');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI15', N'Prato', N'3', N'IT', N'12', N'1084');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI16', N'Livorno', N'3', N'IT', N'12', N'1085');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI17', N'Pisa', N'3', N'IT', N'12', N'1086');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI18', N'Arezzo', N'3', N'IT', N'12', N'1087');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI19', N'Siena', N'3', N'IT', N'12', N'1088');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI1A', N'Grosseto', N'3', N'IT', N'12', N'1089');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI2', N'Umbria', N'2', N'IT', N'12', N'1090');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI21', N'Perugia', N'3', N'IT', N'12', N'1091');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI22', N'Terni', N'3', N'IT', N'12', N'1092');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI3', N'Marche', N'2', N'IT', N'12', N'1093');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI31', N'Pesaro e Urbino', N'3', N'IT', N'12', N'1094');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI32', N'Ancona', N'3', N'IT', N'12', N'1095');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI33', N'Macerata', N'3', N'IT', N'12', N'1096');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI34', N'Ascoli Piceno', N'3', N'IT', N'12', N'1097');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI35', N'Fermo', N'3', N'IT', N'12', N'1098');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI4', N'Lazio', N'2', N'IT', N'12', N'1099');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI41', N'Viterbo', N'3', N'IT', N'12', N'1100');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI42', N'Rieti', N'3', N'IT', N'12', N'1101');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI43', N'Roma', N'3', N'IT', N'12', N'1102');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI44', N'Latina', N'3', N'IT', N'12', N'1103');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITI45', N'Frosinone', N'3', N'IT', N'12', N'1104');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITZ', N'EXTRA-REGIO NUTS 1', N'1', N'IT', N'12', N'1105');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITZZ', N'Extra-Regio NUTS 2', N'2', N'IT', N'12', N'1106');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ITZZZ', N'Extra-Regio NUTS 3', N'3', N'IT', N'12', N'1107');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CY', N'ΚΥΠΡΟΣ (KYPROS)', N'0', N'CY', N'13', N'1108');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CY0', N'ΚΥΠΡΟΣ (Kypros)', N'1', N'CY', N'13', N'1109');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CY00', N'Κύπρος (Kypros)', N'2', N'CY', N'13', N'1110');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CY000', N'Κύπρος (Kypros)', N'3', N'CY', N'13', N'1111');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CYZ', N'EXTRA-REGIO NUTS 1', N'1', N'CY', N'13', N'1112');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CYZZ', N'Extra-Regio NUTS 2', N'2', N'CY', N'13', N'1113');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'CYZZZ', N'Extra-Regio NUTS 3', N'3', N'CY', N'13', N'1114');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LV', N'LATVIJA', N'0', N'LV', N'14', N'1115');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LV0', N'LATVIJA', N'1', N'LV', N'14', N'1116');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LV00', N'Latvija', N'2', N'LV', N'14', N'1117');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LV003', N'Kurzeme', N'3', N'LV', N'14', N'1118');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LV005', N'Latgale', N'3', N'LV', N'14', N'1119');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LV006', N'Rīga', N'3', N'LV', N'14', N'1120');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LV007', N'Pierīga', N'3', N'LV', N'14', N'1121');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LV008', N'Vidzeme', N'3', N'LV', N'14', N'1122');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LV009', N'Zemgale', N'3', N'LV', N'14', N'1123');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LVZ', N'EXTRA-REGIO NUTS 1', N'1', N'LV', N'14', N'1124');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LVZZ', N'Extra-Regio NUTS 2', N'2', N'LV', N'14', N'1125');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LVZZZ', N'Extra-Regio NUTS 3', N'3', N'LV', N'14', N'1126');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT', N'LIETUVA', N'0', N'LT', N'15', N'1127');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT0', N'LIETUVA', N'1', N'LT', N'15', N'1128');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT00', N'Lietuva', N'2', N'LT', N'15', N'1129');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT001', N'Alytaus apskritis', N'3', N'LT', N'15', N'1130');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT002', N'Kauno apskritis', N'3', N'LT', N'15', N'1131');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT003', N'Klaipėdos apskritis', N'3', N'LT', N'15', N'1132');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT004', N'Marijampolės apskritis', N'3', N'LT', N'15', N'1133');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT005', N'Panevėžio apskritis', N'3', N'LT', N'15', N'1134');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT006', N'Šiaulių apskritis', N'3', N'LT', N'15', N'1135');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT007', N'Tauragės apskritis', N'3', N'LT', N'15', N'1136');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT008', N'Telšių apskritis', N'3', N'LT', N'15', N'1137');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT009', N'Utenos apskritis', N'3', N'LT', N'15', N'1138');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LT00A', N'Vilniaus apskritis', N'3', N'LT', N'15', N'1139');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LTZ', N'EXTRA-REGIO NUTS 1', N'1', N'LT', N'15', N'1140');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LTZZ', N'Extra-Regio NUTS 2', N'2', N'LT', N'15', N'1141');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LTZZZ', N'Extra-Regio NUTS 3', N'3', N'LT', N'15', N'1142');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LU', N'LUXEMBOURG', N'0', N'LU', N'16', N'1143');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LU0', N'LUXEMBOURG', N'1', N'LU', N'16', N'1144');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LU00', N'Luxembourg', N'2', N'LU', N'16', N'1145');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LU000', N'Luxembourg', N'3', N'LU', N'16', N'1146');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LUZ', N'EXTRA-REGIO NUTS 1', N'1', N'LU', N'16', N'1147');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LUZZ', N'Extra-Regio NUTS 2', N'2', N'LU', N'16', N'1148');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'LUZZZ', N'Extra-Regio NUTS 3', N'3', N'LU', N'16', N'1149');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU', N'MAGYARORSZÁG', N'0', N'HU', N'17', N'1150');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU1', N'KÖZÉP-MAGYARORSZÁG', N'1', N'HU', N'17', N'1151');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU10', N'Közép-Magyarország', N'2', N'HU', N'17', N'1152');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU101', N'Budapest', N'3', N'HU', N'17', N'1153');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU102', N'Pest', N'3', N'HU', N'17', N'1154');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU2', N'DUNÁNTÚL', N'1', N'HU', N'17', N'1155');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU21', N'Közép-Dunántúl', N'2', N'HU', N'17', N'1156');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU211', N'Fejér', N'3', N'HU', N'17', N'1157');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU212', N'Komárom-Esztergom', N'3', N'HU', N'17', N'1158');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU213', N'Veszprém', N'3', N'HU', N'17', N'1159');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU22', N'Nyugat-Dunántúl', N'2', N'HU', N'17', N'1160');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU221', N'Győr-Moson-Sopron', N'3', N'HU', N'17', N'1161');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU222', N'Vas', N'3', N'HU', N'17', N'1162');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU223', N'Zala', N'3', N'HU', N'17', N'1163');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU23', N'Dél-Dunántúl', N'2', N'HU', N'17', N'1164');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU231', N'Baranya', N'3', N'HU', N'17', N'1165');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU232', N'Somogy', N'3', N'HU', N'17', N'1166');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU233', N'Tolna', N'3', N'HU', N'17', N'1167');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU3', N'ALFÖLD ÉS ÉSZAK', N'1', N'HU', N'17', N'1168');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU31', N'Észak-Magyarország', N'2', N'HU', N'17', N'1169');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU311', N'Borsod-Abaúj-Zemplén', N'3', N'HU', N'17', N'1170');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU312', N'Heves', N'3', N'HU', N'17', N'1171');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU313', N'Nógrád', N'3', N'HU', N'17', N'1172');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU32', N'Észak-Alföld', N'2', N'HU', N'17', N'1173');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU321', N'Hajdú-Bihar', N'3', N'HU', N'17', N'1174');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU322', N'Jász-Nagykun-Szolnok', N'3', N'HU', N'17', N'1175');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU323', N'Szabolcs-Szatmár-Bereg', N'3', N'HU', N'17', N'1176');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU33', N'Dél-Alföld', N'2', N'HU', N'17', N'1177');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU331', N'Bács-Kiskun', N'3', N'HU', N'17', N'1178');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU332', N'Békés', N'3', N'HU', N'17', N'1179');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HU333', N'Csongrád', N'3', N'HU', N'17', N'1180');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HUZ', N'EXTRA-REGIO NUTS 1', N'1', N'HU', N'17', N'1181');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HUZZ', N'Extra-Regio NUTS 2', N'2', N'HU', N'17', N'1182');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'HUZZZ', N'Extra-Regio NUTS 3', N'3', N'HU', N'17', N'1183');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'MT', N'MALTA', N'0', N'MT', N'18', N'1184');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'MT0', N'MALTA', N'1', N'MT', N'18', N'1185');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'MT00', N'Malta', N'2', N'MT', N'18', N'1186');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'MT001', N'Malta', N'3', N'MT', N'18', N'1187');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'MT002', N'Gozo and Comino / Għawdex u Kemmuna', N'3', N'MT', N'18', N'1188');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'MTZ', N'EXTRA-REGIO NUTS 1', N'1', N'MT', N'18', N'1189');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'MTZZ', N'Extra-Regio NUTS 2', N'2', N'MT', N'18', N'1190');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'MTZZZ', N'Extra-Regio NUTS 3', N'3', N'MT', N'18', N'1191');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL', N'NEDERLAND', N'0', N'NL', N'19', N'1192');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL1', N'NOORD-NEDERLAND', N'1', N'NL', N'19', N'1193');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL11', N'Groningen', N'2', N'NL', N'19', N'1194');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL111', N'Oost-Groningen', N'3', N'NL', N'19', N'1195');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL112', N'Delfzijl en omgeving', N'3', N'NL', N'19', N'1196');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL113', N'Overig Groningen', N'3', N'NL', N'19', N'1197');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL12', N'Friesland (NL)', N'2', N'NL', N'19', N'1198');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL121', N'Noord-Friesland', N'3', N'NL', N'19', N'1199');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL122', N'Zuidwest-Friesland', N'3', N'NL', N'19', N'1200');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL123', N'Zuidoost-Friesland', N'3', N'NL', N'19', N'1201');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL13', N'Drenthe', N'2', N'NL', N'19', N'1202');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL131', N'Noord-Drenthe', N'3', N'NL', N'19', N'1203');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL132', N'Zuidoost-Drenthe', N'3', N'NL', N'19', N'1204');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL133', N'Zuidwest-Drenthe', N'3', N'NL', N'19', N'1205');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL2', N'OOST-NEDERLAND', N'1', N'NL', N'19', N'1206');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL21', N'Overijssel', N'2', N'NL', N'19', N'1207');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL211', N'Noord-Overijssel', N'3', N'NL', N'19', N'1208');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL212', N'Zuidwest-Overijssel', N'3', N'NL', N'19', N'1209');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL213', N'Twente', N'3', N'NL', N'19', N'1210');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL22', N'Gelderland', N'2', N'NL', N'19', N'1211');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL221', N'Veluwe', N'3', N'NL', N'19', N'1212');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL224', N'Zuidwest-Gelderland', N'3', N'NL', N'19', N'1213');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL225', N'Achterhoek', N'3', N'NL', N'19', N'1214');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL226', N'Arnhem/Nijmegen', N'3', N'NL', N'19', N'1215');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL23', N'Flevoland', N'2', N'NL', N'19', N'1216');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL230', N'Flevoland', N'3', N'NL', N'19', N'1217');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL3', N'WEST-NEDERLAND', N'1', N'NL', N'19', N'1218');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL31', N'Utrecht', N'2', N'NL', N'19', N'1219');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL310', N'Utrecht', N'3', N'NL', N'19', N'1220');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL32', N'Noord-Holland', N'2', N'NL', N'19', N'1221');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL321', N'Kop van Noord-Holland', N'3', N'NL', N'19', N'1222');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL322', N'Alkmaar en omgeving', N'3', N'NL', N'19', N'1223');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL323', N'IJmond', N'3', N'NL', N'19', N'1224');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL324', N'Agglomeratie Haarlem', N'3', N'NL', N'19', N'1225');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL325', N'Zaanstreek', N'3', N'NL', N'19', N'1226');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL326', N'Groot-Amsterdam', N'3', N'NL', N'19', N'1227');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL327', N'Het Gooi en Vechtstreek', N'3', N'NL', N'19', N'1228');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL33', N'Zuid-Holland', N'2', N'NL', N'19', N'1229');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL332', N'Agglomeratie ''s-Gravenhage', N'3', N'NL', N'19', N'1230');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL333', N'Delft en Westland', N'3', N'NL', N'19', N'1231');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL337', N'Agglomeratie Leiden en Bollenstreek', N'3', N'NL', N'19', N'1232');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL338', N'Oost-Zuid-Holland', N'3', N'NL', N'19', N'1233');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL339', N'Groot-Rijnmond', N'3', N'NL', N'19', N'1234');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL33A', N'Zuidoost-Zuid-Holland', N'3', N'NL', N'19', N'1235');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL34', N'Zeeland', N'2', N'NL', N'19', N'1236');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL341', N'Zeeuwsch-Vlaanderen', N'3', N'NL', N'19', N'1237');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL342', N'Overig Zeeland', N'3', N'NL', N'19', N'1238');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL4', N'ZUID-NEDERLAND', N'1', N'NL', N'19', N'1239');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL41', N'Noord-Brabant', N'2', N'NL', N'19', N'1240');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL411', N'West-Noord-Brabant', N'3', N'NL', N'19', N'1241');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL412', N'Midden-Noord-Brabant', N'3', N'NL', N'19', N'1242');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL413', N'Noordoost-Noord-Brabant', N'3', N'NL', N'19', N'1243');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL414', N'Zuidoost-Noord-Brabant', N'3', N'NL', N'19', N'1244');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL42', N'Limburg (NL)', N'2', N'NL', N'19', N'1245');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL421', N'Noord-Limburg', N'3', N'NL', N'19', N'1246');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL422', N'Midden-Limburg', N'3', N'NL', N'19', N'1247');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NL423', N'Zuid-Limburg', N'3', N'NL', N'19', N'1248');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NLZ', N'EXTRA-REGIO NUTS 1', N'1', N'NL', N'19', N'1249');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NLZZ', N'Extra-Regio NUTS 2', N'2', N'NL', N'19', N'1250');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'NLZZZ', N'Extra-Regio NUTS 3', N'3', N'NL', N'19', N'1251');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT', N'ÖSTERREICH', N'0', N'AT', N'20', N'1252');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT1', N'OSTÖSTERREICH', N'1', N'AT', N'20', N'1253');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT11', N'Burgenland ', N'2', N'AT', N'20', N'1254');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT111', N'Mittelburgenland', N'3', N'AT', N'20', N'1255');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT112', N'Nordburgenland', N'3', N'AT', N'20', N'1256');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT113', N'Südburgenland', N'3', N'AT', N'20', N'1257');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT12', N'Niederösterreich', N'2', N'AT', N'20', N'1258');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT121', N'Mostviertel-Eisenwurzen', N'3', N'AT', N'20', N'1259');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT122', N'Niederösterreich-Süd', N'3', N'AT', N'20', N'1260');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT123', N'Sankt Pölten', N'3', N'AT', N'20', N'1261');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT124', N'Waldviertel', N'3', N'AT', N'20', N'1262');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT125', N'Weinviertel', N'3', N'AT', N'20', N'1263');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT126', N'Wiener Umland/Nordteil', N'3', N'AT', N'20', N'1264');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT127', N'Wiener Umland/Südteil', N'3', N'AT', N'20', N'1265');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT13', N'Wien', N'2', N'AT', N'20', N'1266');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT130', N'Wien', N'3', N'AT', N'20', N'1267');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT2', N'SÜDÖSTERREICH', N'1', N'AT', N'20', N'1268');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT21', N'Kärnten', N'2', N'AT', N'20', N'1269');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT211', N'Klagenfurt-Villach', N'3', N'AT', N'20', N'1270');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT212', N'Oberkärnten', N'3', N'AT', N'20', N'1271');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT213', N'Unterkärnten', N'3', N'AT', N'20', N'1272');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT22', N'Steiermark', N'2', N'AT', N'20', N'1273');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT221', N'Graz', N'3', N'AT', N'20', N'1274');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT222', N'Liezen', N'3', N'AT', N'20', N'1275');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT223', N'Östliche Obersteiermark', N'3', N'AT', N'20', N'1276');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT224', N'Oststeiermark', N'3', N'AT', N'20', N'1277');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT225', N'West- und Südsteiermark', N'3', N'AT', N'20', N'1278');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT226', N'Westliche Obersteiermark', N'3', N'AT', N'20', N'1279');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT3', N'WESTÖSTERREICH', N'1', N'AT', N'20', N'1280');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT31', N'Oberösterreich', N'2', N'AT', N'20', N'1281');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT311', N'Innviertel', N'3', N'AT', N'20', N'1282');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT312', N'Linz-Wels', N'3', N'AT', N'20', N'1283');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT313', N'Mühlviertel', N'3', N'AT', N'20', N'1284');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT314', N'Steyr-Kirchdorf', N'3', N'AT', N'20', N'1285');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT315', N'Traunviertel', N'3', N'AT', N'20', N'1286');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT32', N'Salzburg', N'2', N'AT', N'20', N'1287');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT321', N'Lungau', N'3', N'AT', N'20', N'1288');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT322', N'Pinzgau-Pongau', N'3', N'AT', N'20', N'1289');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT323', N'Salzburg und Umgebung', N'3', N'AT', N'20', N'1290');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT33', N'Tirol', N'2', N'AT', N'20', N'1291');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT331', N'Außerfern', N'3', N'AT', N'20', N'1292');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT332', N'Innsbruck', N'3', N'AT', N'20', N'1293');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT333', N'Osttirol', N'3', N'AT', N'20', N'1294');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT334', N'Tiroler Oberland', N'3', N'AT', N'20', N'1295');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT335', N'Tiroler Unterland', N'3', N'AT', N'20', N'1296');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT34', N'Vorarlberg', N'2', N'AT', N'20', N'1297');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT341', N'Bludenz-Bregenzer Wald', N'3', N'AT', N'20', N'1298');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'AT342', N'Rheintal-Bodenseegebiet', N'3', N'AT', N'20', N'1299');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ATZ', N'EXTRA-REGIO NUTS 1', N'1', N'AT', N'20', N'1300');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ATZZ', N'Extra-Regio NUTS 2', N'2', N'AT', N'20', N'1301');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ATZZZ', N'Extra-Regio NUTS 3', N'3', N'AT', N'20', N'1302');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL', N'POLSKA', N'0', N'PL', N'21', N'1303');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL1', N'REGION CENTRALNY', N'1', N'PL', N'21', N'1304');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL11', N'Łódzkie', N'2', N'PL', N'21', N'1305');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL113', N'Miasto Łódź', N'3', N'PL', N'21', N'1306');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL114', N'Łódzki', N'3', N'PL', N'21', N'1307');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL115', N'Piotrkowski', N'3', N'PL', N'21', N'1308');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL116', N'Sieradzki', N'3', N'PL', N'21', N'1309');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL117', N'Skierniewicki', N'3', N'PL', N'21', N'1310');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL12', N'Mazowieckie', N'2', N'PL', N'21', N'1311');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL127', N'Miasto Warszawa', N'3', N'PL', N'21', N'1312');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL128', N'Radomski', N'3', N'PL', N'21', N'1313');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL129', N'Warszawski wschodni', N'3', N'PL', N'21', N'1314');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL12A', N'Warszawski zachodni', N'3', N'PL', N'21', N'1315');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL12B', N'Ciechanowski', N'3', N'PL', N'21', N'1316');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL12C', N'Płocki', N'3', N'PL', N'21', N'1317');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL12D', N'Ostrołęcki', N'3', N'PL', N'21', N'1318');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL12E', N'Siedlecki', N'3', N'PL', N'21', N'1319');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL2', N'REGION POŁUDNIOWY', N'1', N'PL', N'21', N'1320');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL21', N'Małopolskie', N'2', N'PL', N'21', N'1321');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL213', N'Miasto Kraków', N'3', N'PL', N'21', N'1322');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL214', N'Krakowski', N'3', N'PL', N'21', N'1323');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL217', N'Tarnowski', N'3', N'PL', N'21', N'1324');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL218', N'Nowosądecki', N'3', N'PL', N'21', N'1325');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL219', N'Nowotarski', N'3', N'PL', N'21', N'1326');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL21A', N'Oświęcimski', N'3', N'PL', N'21', N'1327');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL22', N'Śląskie', N'2', N'PL', N'21', N'1328');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL224', N'Częstochowski', N'3', N'PL', N'21', N'1329');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL225', N'Bielski', N'3', N'PL', N'21', N'1330');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL227', N'Rybnicki', N'3', N'PL', N'21', N'1331');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL228', N'Bytomski', N'3', N'PL', N'21', N'1332');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL229', N'Gliwicki', N'3', N'PL', N'21', N'1333');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL22A', N'Katowicki', N'3', N'PL', N'21', N'1334');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL22B', N'Sosnowiecki', N'3', N'PL', N'21', N'1335');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL22C', N'Tyski', N'3', N'PL', N'21', N'1336');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL3', N'REGION WSCHODNI', N'1', N'PL', N'21', N'1337');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL31', N'Lubelskie', N'2', N'PL', N'21', N'1338');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL311', N'Bialski', N'3', N'PL', N'21', N'1339');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL312', N'Chełmsko-zamojski', N'3', N'PL', N'21', N'1340');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL314', N'Lubelski', N'3', N'PL', N'21', N'1341');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL315', N'Puławski', N'3', N'PL', N'21', N'1342');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL32', N'Podkarpackie', N'2', N'PL', N'21', N'1343');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL323', N'Krośnieński', N'3', N'PL', N'21', N'1344');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL324', N'Przemyski', N'3', N'PL', N'21', N'1345');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL325', N'Rzeszowski', N'3', N'PL', N'21', N'1346');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL326', N'Tarnobrzeski', N'3', N'PL', N'21', N'1347');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL33', N'Świętokrzyskie', N'2', N'PL', N'21', N'1348');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL331', N'Kielecki', N'3', N'PL', N'21', N'1349');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL332', N'Sandomiersko-jędrzejowski', N'3', N'PL', N'21', N'1350');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL34', N'Podlaskie', N'2', N'PL', N'21', N'1351');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL343', N'Białostocki', N'3', N'PL', N'21', N'1352');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL344', N'Łomżyński', N'3', N'PL', N'21', N'1353');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL345', N'Suwalski', N'3', N'PL', N'21', N'1354');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL4', N'REGION PÓŁNOCNO-ZACHODNI', N'1', N'PL', N'21', N'1355');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL41', N'Wielkopolskie', N'2', N'PL', N'21', N'1356');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL411', N'Pilski', N'3', N'PL', N'21', N'1357');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL414', N'Koniński', N'3', N'PL', N'21', N'1358');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL415', N'Miasto Poznań', N'3', N'PL', N'21', N'1359');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL416', N'Kaliski', N'3', N'PL', N'21', N'1360');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL417', N'Leszczyński', N'3', N'PL', N'21', N'1361');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL418', N'Poznański', N'3', N'PL', N'21', N'1362');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL42', N'Zachodniopomorskie', N'2', N'PL', N'21', N'1363');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL424', N'Miasto Szczecin', N'3', N'PL', N'21', N'1364');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL426', N'Koszaliński', N'3', N'PL', N'21', N'1365');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL427', N'Szczecinecko-pyrzycki', N'3', N'PL', N'21', N'1366');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL428', N'Szczeciński', N'3', N'PL', N'21', N'1367');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL43', N'Lubuskie', N'2', N'PL', N'21', N'1368');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL431', N'Gorzowski', N'3', N'PL', N'21', N'1369');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL432', N'Zielonogórski', N'3', N'PL', N'21', N'1370');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL5', N'REGION POŁUDNIOWO-ZACHODNI', N'1', N'PL', N'21', N'1371');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL51', N'Dolnośląskie', N'2', N'PL', N'21', N'1372');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL514', N'Miasto Wrocław', N'3', N'PL', N'21', N'1373');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL515', N'Jeleniogórski', N'3', N'PL', N'21', N'1374');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL516', N'Legnicko-głogowski', N'3', N'PL', N'21', N'1375');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL517', N'Wałbrzyski', N'3', N'PL', N'21', N'1376');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL518', N'Wrocławski', N'3', N'PL', N'21', N'1377');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL52', N'Opolskie', N'2', N'PL', N'21', N'1378');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL523', N'Nyski', N'3', N'PL', N'21', N'1379');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL524', N'Opolski', N'3', N'PL', N'21', N'1380');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL6', N'REGION PÓŁNOCNY', N'1', N'PL', N'21', N'1381');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL61', N'Kujawsko-pomorskie', N'2', N'PL', N'21', N'1382');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL613', N'Bydgosko-toruński', N'3', N'PL', N'21', N'1383');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL616', N'Grudziądzki', N'3', N'PL', N'21', N'1384');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL617', N'Inowrocławski', N'3', N'PL', N'21', N'1385');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL618', N'Świecki', N'3', N'PL', N'21', N'1386');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL619', N'Włocławski', N'3', N'PL', N'21', N'1387');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL62', N'Warmińsko-mazurskie', N'2', N'PL', N'21', N'1388');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL621', N'Elbląski', N'3', N'PL', N'21', N'1389');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL622', N'Olsztyński', N'3', N'PL', N'21', N'1390');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL623', N'Ełcki', N'3', N'PL', N'21', N'1391');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL63', N'Pomorskie', N'2', N'PL', N'21', N'1392');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL633', N'Trójmiejski', N'3', N'PL', N'21', N'1393');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL634', N'Gdański', N'3', N'PL', N'21', N'1394');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL636', N'Słupski', N'3', N'PL', N'21', N'1395');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL637', N'Chojnicki', N'3', N'PL', N'21', N'1396');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PL638', N'Starogardzki', N'3', N'PL', N'21', N'1397');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PLZ', N'EXTRA-REGIO NUTS 1', N'1', N'PL', N'21', N'1398');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PLZZ', N'Extra-Regio NUTS 2', N'2', N'PL', N'21', N'1399');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PLZZZ', N'Extra-Regio NUTS 3', N'3', N'PL', N'21', N'1400');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT', N'PORTUGAL', N'0', N'PT', N'22', N'1401');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT1', N'CONTINENTE', N'1', N'PT', N'22', N'1402');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT11', N'Norte', N'2', N'PT', N'22', N'1403');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT111', N'Alto Minho', N'3', N'PT', N'22', N'1404');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT112', N'Cávado', N'3', N'PT', N'22', N'1405');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT119', N'Ave', N'3', N'PT', N'22', N'1406');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT11A', N'Área Metropolitana do Porto', N'3', N'PT', N'22', N'1407');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT11B', N'Alto Tâmega', N'3', N'PT', N'22', N'1408');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT11C', N'Tâmega e Sousa', N'3', N'PT', N'22', N'1409');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT11D', N'Douro', N'3', N'PT', N'22', N'1410');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT11E', N'Terras de Trás-os-Montes', N'3', N'PT', N'22', N'1411');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT15', N'Algarve', N'2', N'PT', N'22', N'1412');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT150', N'Algarve', N'3', N'PT', N'22', N'1413');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT16', N'Centro (PT)', N'2', N'PT', N'22', N'1414');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT16B', N'Oeste', N'3', N'PT', N'22', N'1415');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT16D', N'Região de Aveiro', N'3', N'PT', N'22', N'1416');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT16E', N'Região de Coimbra', N'3', N'PT', N'22', N'1417');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT16F', N'Região de Leiria', N'3', N'PT', N'22', N'1418');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT16G', N'Viseu Dão Lafões', N'3', N'PT', N'22', N'1419');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT16H', N'Beira Baixa', N'3', N'PT', N'22', N'1420');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT16I', N'Médio Tejo', N'3', N'PT', N'22', N'1421');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT16J', N'Beiras e Serra da Estrela', N'3', N'PT', N'22', N'1422');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT17', N'Área Metropolitana de Lisboa', N'2', N'PT', N'22', N'1423');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT170', N'Área Metropolitana de Lisboa', N'3', N'PT', N'22', N'1424');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT18', N'Alentejo', N'2', N'PT', N'22', N'1425');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT181', N'Alentejo Litoral', N'3', N'PT', N'22', N'1426');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT184', N'Baixo Alentejo', N'3', N'PT', N'22', N'1427');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT185', N'Lezíria do Tejo', N'3', N'PT', N'22', N'1428');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT186', N'Alto Alentejo', N'3', N'PT', N'22', N'1429');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT187', N'Alentejo Central', N'3', N'PT', N'22', N'1430');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT2', N'REGIÃO AUTÓNOMA DOS AÇORES', N'1', N'PT', N'22', N'1431');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT20', N'Região Autónoma dos Açores', N'2', N'PT', N'22', N'1432');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT200', N'Região Autónoma dos Açores', N'3', N'PT', N'22', N'1433');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT3', N'REGIÃO AUTÓNOMA DA MADEIRA', N'1', N'PT', N'22', N'1434');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT30', N'Região Autónoma da Madeira', N'2', N'PT', N'22', N'1435');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PT300', N'Região Autónoma da Madeira', N'3', N'PT', N'22', N'1436');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PTZ', N'EXTRA-REGIO NUTS 1', N'1', N'PT', N'22', N'1437');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PTZZ', N'Extra-Regio NUTS 2', N'2', N'PT', N'22', N'1438');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'PTZZZ', N'Extra-Regio NUTS 3', N'3', N'PT', N'22', N'1439');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO', N'ROMÂNIA', N'0', N'RO', N'23', N'1440');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO1', N'MACROREGIUNEA UNU', N'1', N'RO', N'23', N'1441');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO11', N'Nord-Vest', N'2', N'RO', N'23', N'1442');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO111', N'Bihor', N'3', N'RO', N'23', N'1443');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO112', N'Bistriţa-Năsăud', N'3', N'RO', N'23', N'1444');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO113', N'Cluj', N'3', N'RO', N'23', N'1445');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO114', N'Maramureş', N'3', N'RO', N'23', N'1446');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO115', N'Satu Mare', N'3', N'RO', N'23', N'1447');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO116', N'Sălaj', N'3', N'RO', N'23', N'1448');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO12', N'Centru', N'2', N'RO', N'23', N'1449');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO121', N'Alba', N'3', N'RO', N'23', N'1450');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO122', N'Braşov', N'3', N'RO', N'23', N'1451');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO123', N'Covasna', N'3', N'RO', N'23', N'1452');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO124', N'Harghita', N'3', N'RO', N'23', N'1453');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO125', N'Mureş', N'3', N'RO', N'23', N'1454');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO126', N'Sibiu', N'3', N'RO', N'23', N'1455');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO2', N'MACROREGIUNEA DOI', N'1', N'RO', N'23', N'1456');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO21', N'Nord-Est', N'2', N'RO', N'23', N'1457');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO211', N'Bacău', N'3', N'RO', N'23', N'1458');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO212', N'Botoşani', N'3', N'RO', N'23', N'1459');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO213', N'Iaşi', N'3', N'RO', N'23', N'1460');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO214', N'Neamţ', N'3', N'RO', N'23', N'1461');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO215', N'Suceava', N'3', N'RO', N'23', N'1462');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO216', N'Vaslui', N'3', N'RO', N'23', N'1463');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO22', N'Sud-Est', N'2', N'RO', N'23', N'1464');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO221', N'Brăila', N'3', N'RO', N'23', N'1465');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO222', N'Buzău', N'3', N'RO', N'23', N'1466');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO223', N'Constanţa', N'3', N'RO', N'23', N'1467');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO224', N'Galaţi', N'3', N'RO', N'23', N'1468');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO225', N'Tulcea', N'3', N'RO', N'23', N'1469');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO226', N'Vrancea', N'3', N'RO', N'23', N'1470');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO3', N'MACROREGIUNEA TREI', N'1', N'RO', N'23', N'1471');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO31', N'Sud - Muntenia', N'2', N'RO', N'23', N'1472');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO311', N'Argeş', N'3', N'RO', N'23', N'1473');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO312', N'Călăraşi', N'3', N'RO', N'23', N'1474');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO313', N'Dâmboviţa', N'3', N'RO', N'23', N'1475');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO314', N'Giurgiu', N'3', N'RO', N'23', N'1476');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO315', N'Ialomiţa', N'3', N'RO', N'23', N'1477');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO316', N'Prahova', N'3', N'RO', N'23', N'1478');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO317', N'Teleorman', N'3', N'RO', N'23', N'1479');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO32', N'Bucureşti - Ilfov', N'2', N'RO', N'23', N'1480');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO321', N'Bucureşti', N'3', N'RO', N'23', N'1481');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO322', N'Ilfov', N'3', N'RO', N'23', N'1482');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO4', N'MACROREGIUNEA PATRU', N'1', N'RO', N'23', N'1483');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO41', N'Sud-Vest Oltenia', N'2', N'RO', N'23', N'1484');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO411', N'Dolj', N'3', N'RO', N'23', N'1485');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO412', N'Gorj', N'3', N'RO', N'23', N'1486');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO413', N'Mehedinţi', N'3', N'RO', N'23', N'1487');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO414', N'Olt', N'3', N'RO', N'23', N'1488');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO415', N'Vâlcea', N'3', N'RO', N'23', N'1489');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO42', N'Vest', N'2', N'RO', N'23', N'1490');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO421', N'Arad', N'3', N'RO', N'23', N'1491');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO422', N'Caraş-Severin', N'3', N'RO', N'23', N'1492');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO423', N'Hunedoara', N'3', N'RO', N'23', N'1493');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'RO424', N'Timiş', N'3', N'RO', N'23', N'1494');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ROZ', N'EXTRA-REGIO NUTS 1', N'1', N'RO', N'23', N'1495');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ROZZ', N'Extra-Regio NUTS 2', N'2', N'RO', N'23', N'1496');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'ROZZZ', N'Extra-Regio NUTS 3', N'3', N'RO', N'23', N'1497');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI', N'SLOVENIJA', N'0', N'SI', N'24', N'1498');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI0', N'SLOVENIJA', N'1', N'SI', N'24', N'1499');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI03', N'Vzhodna Slovenija', N'2', N'SI', N'24', N'1500');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI031', N'Pomurska', N'3', N'SI', N'24', N'1501');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI032', N'Podravska', N'3', N'SI', N'24', N'1502');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI033', N'Koroška', N'3', N'SI', N'24', N'1503');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI034', N'Savinjska', N'3', N'SI', N'24', N'1504');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI035', N'Zasavska', N'3', N'SI', N'24', N'1505');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI036', N'Posavska', N'3', N'SI', N'24', N'1506');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI037', N'Jugovzhodna Slovenija', N'3', N'SI', N'24', N'1507');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI038', N'Primorsko-notranjska', N'3', N'SI', N'24', N'1508');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI04', N'Zahodna Slovenija', N'2', N'SI', N'24', N'1509');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI041', N'Osrednjeslovenska', N'3', N'SI', N'24', N'1510');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI042', N'Gorenjska', N'3', N'SI', N'24', N'1511');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI043', N'Goriška', N'3', N'SI', N'24', N'1512');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SI044', N'Obalno-kraška', N'3', N'SI', N'24', N'1513');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SIZ', N'EXTRA-REGIO NUTS 1', N'1', N'SI', N'24', N'1514');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SIZZ', N'Extra-Regio NUTS 2', N'2', N'SI', N'24', N'1515');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SIZZZ', N'Extra-Regio NUTS 3', N'3', N'SI', N'24', N'1516');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK', N'SLOVENSKO', N'0', N'SK', N'25', N'1517');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK0', N'SLOVENSKO', N'1', N'SK', N'25', N'1518');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK01', N'Bratislavský kraj', N'2', N'SK', N'25', N'1519');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK010', N'Bratislavský kraj', N'3', N'SK', N'25', N'1520');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK02', N'Západné Slovensko', N'2', N'SK', N'25', N'1521');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK021', N'Trnavský kraj', N'3', N'SK', N'25', N'1522');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK022', N'Trenčiansky kraj', N'3', N'SK', N'25', N'1523');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK023', N'Nitriansky kraj', N'3', N'SK', N'25', N'1524');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK03', N'Stredné Slovensko', N'2', N'SK', N'25', N'1525');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK031', N'Žilinský kraj', N'3', N'SK', N'25', N'1526');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK032', N'Banskobystrický kraj', N'3', N'SK', N'25', N'1527');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK04', N'Východné Slovensko', N'2', N'SK', N'25', N'1528');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK041', N'Prešovský kraj', N'3', N'SK', N'25', N'1529');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SK042', N'Košický kraj', N'3', N'SK', N'25', N'1530');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SKZ', N'EXTRA-REGIO NUTS 1', N'1', N'SK', N'25', N'1531');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SKZZ', N'Extra-Regio NUTS 2', N'2', N'SK', N'25', N'1532');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SKZZZ', N'Extra-Regio NUTS 3', N'3', N'SK', N'25', N'1533');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI', N'SUOMI / FINLAND', N'0', N'FI', N'26', N'1534');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1', N'MANNER-SUOMI', N'1', N'FI', N'26', N'1535');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI19', N'Länsi-Suomi', N'2', N'FI', N'26', N'1536');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI193', N'Keski-Suomi', N'3', N'FI', N'26', N'1537');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI194', N'Etelä-Pohjanmaa', N'3', N'FI', N'26', N'1538');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI195', N'Pohjanmaa', N'3', N'FI', N'26', N'1539');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI196', N'Satakunta', N'3', N'FI', N'26', N'1540');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI197', N'Pirkanmaa', N'3', N'FI', N'26', N'1541');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1B', N'Helsinki-Uusimaa', N'2', N'FI', N'26', N'1542');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1B1', N'Helsinki-Uusimaa', N'3', N'FI', N'26', N'1543');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1C', N'Etelä-Suomi', N'2', N'FI', N'26', N'1544');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1C1', N'Varsinais-Suomi', N'3', N'FI', N'26', N'1545');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1C2', N'Kanta-Häme', N'3', N'FI', N'26', N'1546');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1C3', N'Päijät-Häme', N'3', N'FI', N'26', N'1547');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1C4', N'Kymenlaakso', N'3', N'FI', N'26', N'1548');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1C5', N'Etelä-Karjala', N'3', N'FI', N'26', N'1549');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1D', N'Pohjois- ja Itä-Suomi', N'2', N'FI', N'26', N'1550');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1D1', N'Etelä-Savo', N'3', N'FI', N'26', N'1551');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1D2', N'Pohjois-Savo', N'3', N'FI', N'26', N'1552');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1D3', N'Pohjois-Karjala', N'3', N'FI', N'26', N'1553');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1D4', N'Kainuu', N'3', N'FI', N'26', N'1554');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1D5', N'Keski-Pohjanmaa', N'3', N'FI', N'26', N'1555');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1D6', N'Pohjois-Pohjanmaa', N'3', N'FI', N'26', N'1556');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI1D7', N'Lappi', N'3', N'FI', N'26', N'1557');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI2', N'ÅLAND', N'1', N'FI', N'26', N'1558');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI20', N'Åland', N'2', N'FI', N'26', N'1559');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FI200', N'Åland', N'3', N'FI', N'26', N'1560');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FIZ', N'EXTRA-REGIO NUTS 1', N'1', N'FI', N'26', N'1561');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FIZZ', N'Extra-Regio NUTS 2', N'2', N'FI', N'26', N'1562');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'FIZZZ', N'Extra-Regio NUTS 3', N'3', N'FI', N'26', N'1563');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE', N'SVERIGE', N'0', N'SE', N'27', N'1564');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE1', N'ÖSTRA SVERIGE', N'1', N'SE', N'27', N'1565');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE11', N'Stockholm', N'2', N'SE', N'27', N'1566');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE110', N'Stockholms län', N'3', N'SE', N'27', N'1567');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE12', N'Östra Mellansverige', N'2', N'SE', N'27', N'1568');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE121', N'Uppsala län', N'3', N'SE', N'27', N'1569');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE122', N'Södermanlands län', N'3', N'SE', N'27', N'1570');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE123', N'Östergötlands län', N'3', N'SE', N'27', N'1571');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE124', N'Örebro län', N'3', N'SE', N'27', N'1572');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE125', N'Västmanlands län', N'3', N'SE', N'27', N'1573');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE2', N'SÖDRA SVERIGE', N'1', N'SE', N'27', N'1574');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE21', N'Småland med öarna', N'2', N'SE', N'27', N'1575');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE211', N'Jönköpings län', N'3', N'SE', N'27', N'1576');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE212', N'Kronobergs län', N'3', N'SE', N'27', N'1577');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE213', N'Kalmar län', N'3', N'SE', N'27', N'1578');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE214', N'Gotlands län', N'3', N'SE', N'27', N'1579');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE22', N'Sydsverige', N'2', N'SE', N'27', N'1580');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE221', N'Blekinge län', N'3', N'SE', N'27', N'1581');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE224', N'Skåne län', N'3', N'SE', N'27', N'1582');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE23', N'Västsverige', N'2', N'SE', N'27', N'1583');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE231', N'Hallands län', N'3', N'SE', N'27', N'1584');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE232', N'Västra Götalands län', N'3', N'SE', N'27', N'1585');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE3', N'NORRA SVERIGE', N'1', N'SE', N'27', N'1586');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE31', N'Norra Mellansverige', N'2', N'SE', N'27', N'1587');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE311', N'Värmlands län', N'3', N'SE', N'27', N'1588');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE312', N'Dalarnas län', N'3', N'SE', N'27', N'1589');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE313', N'Gävleborgs län', N'3', N'SE', N'27', N'1590');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE32', N'Mellersta Norrland', N'2', N'SE', N'27', N'1591');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE321', N'Västernorrlands län', N'3', N'SE', N'27', N'1592');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE322', N'Jämtlands län', N'3', N'SE', N'27', N'1593');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE33', N'Övre Norrland', N'2', N'SE', N'27', N'1594');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE331', N'Västerbottens län', N'3', N'SE', N'27', N'1595');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SE332', N'Norrbottens län', N'3', N'SE', N'27', N'1596');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SEZ', N'EXTRA-REGIO NUTS 1', N'1', N'SE', N'27', N'1597');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SEZZ', N'Extra-Regio NUTS 2', N'2', N'SE', N'27', N'1598');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'SEZZZ', N'Extra-Regio NUTS 3', N'3', N'SE', N'27', N'1599');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UK', N'UNITED KINGDOM', N'0', N'UK', N'28', N'1600');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKC', N'NORTH EAST (ENGLAND)', N'1', N'UK', N'28', N'1601');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKC1', N'Tees Valley and Durham', N'2', N'UK', N'28', N'1602');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKC11', N'Hartlepool and Stockton-on-Tees', N'3', N'UK', N'28', N'1603');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKC12', N'South Teesside', N'3', N'UK', N'28', N'1604');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKC13', N'Darlington', N'3', N'UK', N'28', N'1605');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKC14', N'Durham CC', N'3', N'UK', N'28', N'1606');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKC2', N'Northumberland and Tyne and Wear', N'2', N'UK', N'28', N'1607');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKC21', N'Northumberland', N'3', N'UK', N'28', N'1608');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKC22', N'Tyneside', N'3', N'UK', N'28', N'1609');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKC23', N'Sunderland', N'3', N'UK', N'28', N'1610');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD', N'NORTH WEST (ENGLAND)', N'1', N'UK', N'28', N'1611');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD1', N'Cumbria', N'2', N'UK', N'28', N'1612');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD11', N'West Cumbria', N'3', N'UK', N'28', N'1613');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD12', N'East Cumbria', N'3', N'UK', N'28', N'1614');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD3', N'Greater Manchester', N'2', N'UK', N'28', N'1615');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD33', N'Manchester', N'3', N'UK', N'28', N'1616');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD34', N'Greater Manchester South West', N'3', N'UK', N'28', N'1617');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD35', N'Greater Manchester South East', N'3', N'UK', N'28', N'1618');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD36', N'Greater Manchester North West', N'3', N'UK', N'28', N'1619');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD37', N'Greater Manchester North East', N'3', N'UK', N'28', N'1620');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD4', N'Lancashire', N'2', N'UK', N'28', N'1621');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD41', N'Blackburn with Darwen', N'3', N'UK', N'28', N'1622');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD42', N'Blackpool', N'3', N'UK', N'28', N'1623');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD44', N'Lancaster and Wyre', N'3', N'UK', N'28', N'1624');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD45', N'Mid Lancashire', N'3', N'UK', N'28', N'1625');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD46', N'East Lancashire', N'3', N'UK', N'28', N'1626');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD47', N'Chorley and West Lancashire', N'3', N'UK', N'28', N'1627');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD6', N'Cheshire', N'2', N'UK', N'28', N'1628');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD61', N'Warrington', N'3', N'UK', N'28', N'1629');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD62', N'Cheshire East', N'3', N'UK', N'28', N'1630');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD63', N'Cheshire West and Chester', N'3', N'UK', N'28', N'1631');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD7', N'Merseyside', N'2', N'UK', N'28', N'1632');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD71', N'East Merseyside', N'3', N'UK', N'28', N'1633');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD72', N'Liverpool', N'3', N'UK', N'28', N'1634');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD73', N'Sefton', N'3', N'UK', N'28', N'1635');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKD74', N'Wirral', N'3', N'UK', N'28', N'1636');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE', N'YORKSHIRE AND THE HUMBER', N'1', N'UK', N'28', N'1637');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE1', N'East Yorkshire and Northern Lincolnshire', N'2', N'UK', N'28', N'1638');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE11', N'Kingston upon Hull, City of', N'3', N'UK', N'28', N'1639');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE12', N'East Riding of Yorkshire', N'3', N'UK', N'28', N'1640');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE13', N'North and North East Lincolnshire', N'3', N'UK', N'28', N'1641');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE2', N'North Yorkshire', N'2', N'UK', N'28', N'1642');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE21', N'York', N'3', N'UK', N'28', N'1643');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE22', N'North Yorkshire CC', N'3', N'UK', N'28', N'1644');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE3', N'South Yorkshire', N'2', N'UK', N'28', N'1645');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE31', N'Barnsley, Doncaster and Rotherham', N'3', N'UK', N'28', N'1646');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE32', N'Sheffield', N'3', N'UK', N'28', N'1647');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE4', N'West Yorkshire', N'2', N'UK', N'28', N'1648');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE41', N'Bradford', N'3', N'UK', N'28', N'1649');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE42', N'Leeds', N'3', N'UK', N'28', N'1650');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE44', N'Calderdale and Kirklees', N'3', N'UK', N'28', N'1651');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKE45', N'Wakefield', N'3', N'UK', N'28', N'1652');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF', N'EAST MIDLANDS (ENGLAND)', N'1', N'UK', N'28', N'1653');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF1', N'Derbyshire and Nottinghamshire', N'2', N'UK', N'28', N'1654');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF11', N'Derby', N'3', N'UK', N'28', N'1655');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF12', N'East Derbyshire', N'3', N'UK', N'28', N'1656');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF13', N'South and West Derbyshire', N'3', N'UK', N'28', N'1657');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF14', N'Nottingham', N'3', N'UK', N'28', N'1658');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF15', N'North Nottinghamshire', N'3', N'UK', N'28', N'1659');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF16', N'South Nottinghamshire', N'3', N'UK', N'28', N'1660');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF2', N'Leicestershire, Rutland and Northamptonshire', N'2', N'UK', N'28', N'1661');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF21', N'Leicester', N'3', N'UK', N'28', N'1662');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF22', N'Leicestershire CC and Rutland', N'3', N'UK', N'28', N'1663');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF24', N'West Northamptonshire', N'3', N'UK', N'28', N'1664');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF25', N'North Northamptonshire', N'3', N'UK', N'28', N'1665');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF3', N'Lincolnshire', N'2', N'UK', N'28', N'1666');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKF30', N'Lincolnshire', N'3', N'UK', N'28', N'1667');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG', N'WEST MIDLANDS (ENGLAND)', N'1', N'UK', N'28', N'1668');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG1', N'Herefordshire, Worcestershire and Warwickshire', N'2', N'UK', N'28', N'1669');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG11', N'Herefordshire, County of', N'3', N'UK', N'28', N'1670');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG12', N'Worcestershire', N'3', N'UK', N'28', N'1671');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG13', N'Warwickshire', N'3', N'UK', N'28', N'1672');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG2', N'Shropshire and Staffordshire', N'2', N'UK', N'28', N'1673');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG21', N'Telford and Wrekin', N'3', N'UK', N'28', N'1674');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG22', N'Shropshire CC', N'3', N'UK', N'28', N'1675');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG23', N'Stoke-on-Trent', N'3', N'UK', N'28', N'1676');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG24', N'Staffordshire CC', N'3', N'UK', N'28', N'1677');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG3', N'West Midlands', N'2', N'UK', N'28', N'1678');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG31', N'Birmingham', N'3', N'UK', N'28', N'1679');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG32', N'Solihull', N'3', N'UK', N'28', N'1680');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG33', N'Coventry', N'3', N'UK', N'28', N'1681');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG36', N'Dudley', N'3', N'UK', N'28', N'1682');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG37', N'Sandwell', N'3', N'UK', N'28', N'1683');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG38', N'Walsall', N'3', N'UK', N'28', N'1684');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKG39', N'Wolverhampton', N'3', N'UK', N'28', N'1685');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH', N'EAST OF ENGLAND', N'1', N'UK', N'28', N'1686');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH1', N'East Anglia', N'2', N'UK', N'28', N'1687');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH11', N'Peterborough', N'3', N'UK', N'28', N'1688');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH12', N'Cambridgeshire CC', N'3', N'UK', N'28', N'1689');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH14', N'Suffolk', N'3', N'UK', N'28', N'1690');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH15', N'Norwich and East Norfolk', N'3', N'UK', N'28', N'1691');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH16', N'North and West Norfolk', N'3', N'UK', N'28', N'1692');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH17', N'Breckland and South Norfolk', N'3', N'UK', N'28', N'1693');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH2', N'Bedfordshire and Hertfordshire', N'2', N'UK', N'28', N'1694');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH21', N'Luton', N'3', N'UK', N'28', N'1695');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH23', N'Hertfordshire', N'3', N'UK', N'28', N'1696');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH24', N'Bedford', N'3', N'UK', N'28', N'1697');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH25', N'Central Bedfordshire', N'3', N'UK', N'28', N'1698');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH3', N'Essex', N'2', N'UK', N'28', N'1699');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH31', N'Southend-on-Sea', N'3', N'UK', N'28', N'1700');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH32', N'Thurrock', N'3', N'UK', N'28', N'1701');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH34', N'Essex Haven Gateway', N'3', N'UK', N'28', N'1702');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH35', N'West Essex', N'3', N'UK', N'28', N'1703');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH36', N'Heart of Essex', N'3', N'UK', N'28', N'1704');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKH37', N'Essex Thames Gateway', N'3', N'UK', N'28', N'1705');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI', N'LONDON', N'1', N'UK', N'28', N'1706');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI3', N'Inner London - West', N'2', N'UK', N'28', N'1707');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI31', N'Camden and City of London', N'3', N'UK', N'28', N'1708');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI32', N'Westminster', N'3', N'UK', N'28', N'1709');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI33', N'Kensington & Chelsea and Hammersmith & Fulham', N'3', N'UK', N'28', N'1710');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI34', N'Wandsworth', N'3', N'UK', N'28', N'1711');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI4', N'Inner London - East', N'2', N'UK', N'28', N'1712');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI41', N'Hackney and Newham', N'3', N'UK', N'28', N'1713');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI42', N'Tower Hamlets', N'3', N'UK', N'28', N'1714');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI43', N'Haringey and Islington', N'3', N'UK', N'28', N'1715');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI44', N'Lewisham and Southwark', N'3', N'UK', N'28', N'1716');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI45', N'Lambeth', N'3', N'UK', N'28', N'1717');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI5', N'Outer London - East and North East', N'2', N'UK', N'28', N'1718');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI51', N'Bexley and Greenwich', N'3', N'UK', N'28', N'1719');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI52', N'Barking & Dagenham and Havering', N'3', N'UK', N'28', N'1720');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI53', N'Redbridge and Waltham Forest', N'3', N'UK', N'28', N'1721');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI54', N'Enfield', N'3', N'UK', N'28', N'1722');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI6', N'Outer London - South', N'2', N'UK', N'28', N'1723');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI61', N'Bromley', N'3', N'UK', N'28', N'1724');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI62', N'Croydon', N'3', N'UK', N'28', N'1725');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI63', N'Merton, Kingston upon Thames and Sutton', N'3', N'UK', N'28', N'1726');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI7', N'Outer London - West and North West', N'2', N'UK', N'28', N'1727');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI71', N'Barnet', N'3', N'UK', N'28', N'1728');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI72', N'Brent', N'3', N'UK', N'28', N'1729');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI73', N'Ealing', N'3', N'UK', N'28', N'1730');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI74', N'Harrow and Hillingdon', N'3', N'UK', N'28', N'1731');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKI75', N'Hounslow and Richmond upon Thames', N'3', N'UK', N'28', N'1732');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ', N'SOUTH EAST (ENGLAND)', N'1', N'UK', N'28', N'1733');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ1', N'Berkshire, Buckinghamshire and Oxfordshire', N'2', N'UK', N'28', N'1734');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ11', N'Berkshire', N'3', N'UK', N'28', N'1735');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ12', N'Milton Keynes', N'3', N'UK', N'28', N'1736');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ13', N'Buckinghamshire CC', N'3', N'UK', N'28', N'1737');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ14', N'Oxfordshire', N'3', N'UK', N'28', N'1738');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ2', N'Surrey, East and West Sussex', N'2', N'UK', N'28', N'1739');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ21', N'Brighton and Hove', N'3', N'UK', N'28', N'1740');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ22', N'East Sussex CC', N'3', N'UK', N'28', N'1741');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ25', N'West Surrey', N'3', N'UK', N'28', N'1742');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ26', N'East Surrey', N'3', N'UK', N'28', N'1743');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ27', N'West Sussex (South West)', N'3', N'UK', N'28', N'1744');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ28', N'West Sussex (North East)', N'3', N'UK', N'28', N'1745');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ3', N'Hampshire and Isle of Wight', N'2', N'UK', N'28', N'1746');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ31', N'Portsmouth', N'3', N'UK', N'28', N'1747');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ32', N'Southampton', N'3', N'UK', N'28', N'1748');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ34', N'Isle of Wight', N'3', N'UK', N'28', N'1749');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ35', N'South Hampshire', N'3', N'UK', N'28', N'1750');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ36', N'Central Hampshire', N'3', N'UK', N'28', N'1751');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ37', N'North Hampshire', N'3', N'UK', N'28', N'1752');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ4', N'Kent', N'2', N'UK', N'28', N'1753');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ41', N'Medway', N'3', N'UK', N'28', N'1754');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ43', N'Kent Thames Gateway', N'3', N'UK', N'28', N'1755');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ44', N'East Kent', N'3', N'UK', N'28', N'1756');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ45', N'Mid Kent', N'3', N'UK', N'28', N'1757');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKJ46', N'West Kent', N'3', N'UK', N'28', N'1758');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK', N'SOUTH WEST (ENGLAND)', N'1', N'UK', N'28', N'1759');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK1', N'Gloucestershire, Wiltshire and Bristol/Bath area', N'2', N'UK', N'28', N'1760');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK11', N'Bristol, City of', N'3', N'UK', N'28', N'1761');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK12', N'Bath and North East Somerset, North Somerset and South Gloucestershire', N'3', N'UK', N'28', N'1762');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK13', N'Gloucestershire', N'3', N'UK', N'28', N'1763');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK14', N'Swindon', N'3', N'UK', N'28', N'1764');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK15', N'Wiltshire CC', N'3', N'UK', N'28', N'1765');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK2', N'Dorset and Somerset', N'2', N'UK', N'28', N'1766');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK21', N'Bournemouth and Poole', N'3', N'UK', N'28', N'1767');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK22', N'Dorset CC', N'3', N'UK', N'28', N'1768');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK23', N'Somerset', N'3', N'UK', N'28', N'1769');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK3', N'Cornwall and Isles of Scilly', N'2', N'UK', N'28', N'1770');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK30', N'Cornwall and Isles of Scilly', N'3', N'UK', N'28', N'1771');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK4', N'Devon', N'2', N'UK', N'28', N'1772');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK41', N'Plymouth', N'3', N'UK', N'28', N'1773');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK42', N'Torbay', N'3', N'UK', N'28', N'1774');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKK43', N'Devon CC', N'3', N'UK', N'28', N'1775');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL', N'WALES', N'1', N'UK', N'28', N'1776');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL1', N'West Wales and The Valleys', N'2', N'UK', N'28', N'1777');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL11', N'Isle of Anglesey', N'3', N'UK', N'28', N'1778');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL12', N'Gwynedd', N'3', N'UK', N'28', N'1779');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL13', N'Conwy and Denbighshire', N'3', N'UK', N'28', N'1780');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL14', N'South West Wales', N'3', N'UK', N'28', N'1781');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL15', N'Central Valleys', N'3', N'UK', N'28', N'1782');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL16', N'Gwent Valleys', N'3', N'UK', N'28', N'1783');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL17', N'Bridgend and Neath Port Talbot', N'3', N'UK', N'28', N'1784');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL18', N'Swansea', N'3', N'UK', N'28', N'1785');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL2', N'East Wales', N'2', N'UK', N'28', N'1786');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL21', N'Monmouthshire and Newport', N'3', N'UK', N'28', N'1787');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL22', N'Cardiff and Vale of Glamorgan', N'3', N'UK', N'28', N'1788');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL23', N'Flintshire and Wrexham', N'3', N'UK', N'28', N'1789');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKL24', N'Powys', N'3', N'UK', N'28', N'1790');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM', N'SCOTLAND', N'1', N'UK', N'28', N'1791');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM2', N'Eastern Scotland', N'2', N'UK', N'28', N'1792');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM21', N'Angus and Dundee City', N'3', N'UK', N'28', N'1793');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM22', N'Clackmannanshire and Fife', N'3', N'UK', N'28', N'1794');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM23', N'East Lothian and Midlothian', N'3', N'UK', N'28', N'1795');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM24', N'Scottish B_ORDERs', N'3', N'UK', N'28', N'1796');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM25', N'Edinburgh, City of', N'3', N'UK', N'28', N'1797');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM26', N'Falkirk', N'3', N'UK', N'28', N'1798');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM27', N'Perth & Kinross and Stirling', N'3', N'UK', N'28', N'1799');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM28', N'West Lothian', N'3', N'UK', N'28', N'1800');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM3', N'South Western Scotland', N'2', N'UK', N'28', N'1801');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM31', N'East Dunbartonshire, West Dunbartonshire and Helensburgh & Lomond', N'3', N'UK', N'28', N'1802');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM32', N'Dumfries & Galloway', N'3', N'UK', N'28', N'1803');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM33', N'East Ayrshire and North Ayrshire mainland', N'3', N'UK', N'28', N'1804');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM34', N'Glasgow City', N'3', N'UK', N'28', N'1805');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM35', N'Inverclyde, East Renfrewshire and Renfrewshire', N'3', N'UK', N'28', N'1806');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM36', N'North Lanarkshire', N'3', N'UK', N'28', N'1807');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM37', N'South Ayrshire', N'3', N'UK', N'28', N'1808');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM38', N'South Lanarkshire', N'3', N'UK', N'28', N'1809');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM5', N'North Eastern Scotland', N'2', N'UK', N'28', N'1810');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM50', N'Aberdeen City and Aberdeenshire', N'3', N'UK', N'28', N'1811');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM6', N'Highlands and Islands', N'2', N'UK', N'28', N'1812');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM61', N'Caithness & Sutherland and Ross & Cromarty', N'3', N'UK', N'28', N'1813');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM62', N'Inverness & Nairn and Moray, Badenoch & Strathspey', N'3', N'UK', N'28', N'1814');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM63', N'Lochaber, Skye & Lochalsh, Arran & Cumbrae and Argyll & Bute', N'3', N'UK', N'28', N'1815');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM64', N'Eilean Siar (Western Isles)', N'3', N'UK', N'28', N'1816');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM65', N'Orkney Islands', N'3', N'UK', N'28', N'1817');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKM66', N'Shetland Islands', N'3', N'UK', N'28', N'1818');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKN', N'NORTHERN IRELAND', N'1', N'UK', N'28', N'1819');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKN0', N'Northern Ireland', N'2', N'UK', N'28', N'1820');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKN01', N'Belfast', N'3', N'UK', N'28', N'1821');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKN02', N'Outer Belfast', N'3', N'UK', N'28', N'1822');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKN03', N'East of Northern Ireland', N'3', N'UK', N'28', N'1823');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKN04', N'North of Northern Ireland', N'3', N'UK', N'28', N'1824');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKN05', N'West and South of Northern Ireland', N'3', N'UK', N'28', N'1825');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKZ', N'EXTRA-REGIO NUTS 1', N'1', N'UK', N'28', N'1826');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKZZ', N'Extra-Regio NUTS 2', N'2', N'UK', N'28', N'1827');
+INSERT INTO nuts (code, label, level, COUNTRY_CODE, _ORDER, SORTING)
+VALUES (N'UKZZZ', N'Extra-Regio NUTS 3', N'3', N'UK', N'28', N'1828');

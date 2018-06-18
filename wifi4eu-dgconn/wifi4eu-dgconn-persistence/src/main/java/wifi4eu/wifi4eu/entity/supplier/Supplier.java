@@ -8,10 +8,10 @@ import java.util.List;
 @Entity
 @Table(name = "suppliers")
 public class Supplier {
-    @Id
-    @SequenceGenerator(name = "supp_seq", allocationSize = 1, initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "supp_seq")
+
     @Column(name = "id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name")
